@@ -1,98 +1,124 @@
 
 
-# Calendar — Independent App with Cross-Domain Integration
+# Control Center — Advanced Overhaul
 
 ## Current State
-- **CalendarWindow** (525 lines): Local-only, localStorage events, Nova SDK styled, month/week views, categories. No DB connection.
-- **CalendarWorkspace** (462 lines): Full page route, references `calendar_events` table that **doesn't exist** in the DB, has domain filtering, CRUD mutations that fail silently.
-- **TodoWindow**: Local-only hardcoded todos, no DB persistence.
-- **DB tables that exist**: `appointments` (concierge), `crm_tasks` (business). No `calendar_events` table.
+The Control Center pull-down (`ControlCenter.tsx`) is a 182-line panel with:
+- 8 toggle tiles: WiFi, Bluetooth, Dark/Light Mode, DND, AirPlay, Focus, Night Shift, Reduce Motion
+- 2 sliders: Volume, Brightness
+- No live data, no connection to real system state, no expandable sections
+
+This is extremely basic compared to what iOS/macOS Control Center offers. It needs to be a true command surface.
 
 ## What Will Be Built
 
-A unified Calendar app that is:
-1. An independent windowed OS app (replacing the current CalendarWindow)
-2. Connected to real database tables
-3. Aggregates events from all domains: appointments, CRM tasks, business deadlines, finance events, and user-created events
+A premium, expandable Control Center with multiple sections, live system data, and deep integration with Settings (each tile links to its Settings section on long-press/click-through).
 
 ```text
-┌──────────────────────────────────────────────────────────────┐
-│ 📅 Calendar                              Day Week Month Agenda│
-│ ← April 2026 →                          [+ New Event] [Today]│
-├──────────┬───────────────────────────────────────────────────┤
-│ Mini     │  ┌───┬───┬───┬───┬───┬───┬───┐                   │
-│ Calendar │  │Mon│Tue│Wed│Thu│Fri│Sat│Sun│                   │
-│          │  ├───┼───┼───┼───┼───┼───┼───┤                   │
-│ ──────── │  │   │   │ 1 │ 2 │ 3 │ 4 │ 5 │                   │
-│ Sources  │  │ 🔵│   │   │ 🟡│   │   │   │ ← color dots     │
-│ ☑ My Cal │  │ 6 │ 7 │ 8 │...│   │   │   │                   │
-│ ☑ Business│ └───┴───┴───┴───┴───┴───┴───┘                   │
-│ ☑ Finance│                                                   │
-│ ☑ Concierge│ Selected Day: Wed Apr 15                        │
-│ ☑ Todos  │  ┌─────────────────────────────┐                  │
-│          │  │ 🔵 09:00 Team Standup       │                  │
-│ ──────── │  │ 🟡 14:30 Dentist (Concierge)│                  │
-│ Upcoming │  │ 🟣 17:00 Invoice Due (Fin)  │                  │
-│ • Standup│  │ ☐  Review financials (Todo) │                  │
-│ • Dentist│  └─────────────────────────────┘                  │
-└──────────┴───────────────────────────────────────────────────┘
+┌──────────────────────────────────┐
+│ Control Center              [×]  │
+├──────────────────────────────────┤
+│ ┌─────┐ ┌─────┐ ┌─────┐ ┌────┐ │
+│ │WiFi │ │ BT  │ │ VPN │ │Air │ │  ← Connectivity cluster
+│ │ ● ON│ │ OFF│ │ OFF│ │Drop│ │    (expandable: show network
+│ └─────┘ └─────┘ └─────┘ └────┘ │     name, BT device, etc.)
+├──────────────────────────────────┤
+│ ┌─────┐ ┌─────┐ ┌─────┐ ┌────┐ │
+│ │Focus│ │ DND │ │Dark │ │Lock│ │  ← Mode cluster
+│ │ OFF │ │ OFF │ │ ON  │ │Scrn│ │
+│ └─────┘ └─────┘ └─────┘ └────┘ │
+├──────────────────────────────────┤
+│ 🔊 Volume ──────────●── 72%     │  ← Sliders
+│ ☀️ Brightness ────●────── 80%    │
+├──────────────────────────────────┤
+│ ♬ Now Playing                    │  ← Media widget
+│ "Morning Jazz" — Spotify  ▶ ▐▐  │
+├──────────────────────────────────┤
+│ 🔋 Battery 87% · 4h 12m left    │  ← System status
+│ 💾 Storage 42GB / 128GB used     │
+│ 📡 Network ↑ 2.1 MB/s ↓ 12 MB/s│
+├──────────────────────────────────┤
+│ 🌙 Night Shift  ⬚ Screen Mirror │  ← Quick extras
+│ 📱 Reduce Motion ⬚ Stage Mgr    │
+├──────────────────────────────────┤
+│ 🛡 System Health: 94 ● healthy   │  ← Live pulse
+│ ⚡ 2 active workflows · 0 alerts │
+├──────────────────────────────────┤
+│ [Open Settings]                  │
+└──────────────────────────────────┘
 ```
 
-## Implementation Plan
+## Detailed Sections
 
-### Step 1: Create `calendar_events` Database Table
-Migration to create the table with RLS policies:
-- Columns: `id`, `user_id`, `title`, `event_date`, `start_time`, `end_time`, `domain` (personal/business/household/finance), `event_type` (meeting/task/reminder/appointment/deadline/travel), `location`, `priority`, `notes`, `source` (manual/crm/concierge/finance), `source_id`, `color`, `recurring`, `created_at`, `updated_at`
-- RLS: users can only access their own events
+### 1. Connectivity Cluster (expandable)
+- **WiFi** — shows connected network name, signal strength; tap to toggle, long-press opens Settings > WiFi
+- **Bluetooth** — shows connected device name; tap toggle, long-press opens Settings > Bluetooth
+- **VPN** — toggle with status indicator (Connected/Disconnected)
+- **AirDrop/Screen Mirror** — toggle with discovery mode
 
-### Step 2: Unified Calendar Data Service (`src/lib/data-services/unified-calendar-service.ts`)
-Aggregates events from multiple sources into a single timeline:
-- `calendar_events` table (user-created events)
-- `appointments` table (concierge appointments → mapped as calendar items)
-- `crm_tasks` with `due_date` (business tasks → mapped as deadline items)
-- Demo data fallback when not authenticated
-- Returns unified `UnifiedCalendarEvent[]` with source attribution
+### 2. Mode Cluster
+- **Focus Mode** — with active focus profile name (Work, Personal, Sleep)
+- **Do Not Disturb** — with scheduled time display
+- **Dark/Light Mode** — theme toggle with smooth transition
+- **Lock Screen** — instant lock action
+- **Stage Manager** — toggle window tiling mode
 
-### Step 3: React Query Hook (`src/hooks/use-unified-calendar.ts`)
-- `useUnifiedCalendar(year, month, sources[])` — fetches from all sources, merges, deduplicates
-- `useCalendarSources()` — toggle-able source list (My Calendar, Business, Finance, Concierge, Todos)
-- Reuses existing `useCreateCalendarEvent`, `useUpdateCalendarEvent`, `useDeleteCalendarEvent` (now pointing to real table)
+### 3. Sliders (enhanced)
+- **Volume** — with output device selector (Speakers, Headphones)
+- **Brightness** — with auto-brightness toggle
+- Both show exact percentage, smooth haptic-style interaction
 
-### Step 4: Rewrite CalendarWindow as Full App (`src/components/sita/shell/windows/CalendarWindow.tsx`)
-Complete rewrite with:
-- **4 views**: Day, Week, Month, Agenda (current has only month/week)
-- **Source sidebar**: Toggleable event sources with color-coded dots (Business=blue, Finance=green, Concierge=amber, Personal=violet, Todos=gray)
-- **Mini calendar** navigation (keeping existing pattern)
-- **Day view**: Hour-by-hour timeline (7am–9pm) with event blocks
-- **Week view**: 7-column hour grid with events positioned by time
-- **Month view**: Enhanced current grid with multi-source dot indicators
-- **Agenda view**: Scrollable chronological list grouped by date
-- **Event detail panel**: Click event to see details, edit, delete
-- **Create event dialog**: Full form with domain, type, time, location, recurrence
-- **Todo integration**: Shows todos with due dates as calendar items (checkbox to complete)
-- **Conflict detection**: Visual warning when events overlap
-- **DB persistence**: All CRUD operations go to `calendar_events` table
-- Nova SDK styling with glassmorphic cards, animated transitions
+### 4. Now Playing Widget
+- Shows current media (if any) or "Nothing Playing"
+- Album art thumbnail, track name, artist
+- Play/Pause, Previous, Next, AirPlay output buttons
+- Progress bar
 
-### Step 5: Update CalendarWorkspace Page
-Simplify to redirect shim that opens the Calendar window app (like ConciergeCenter pattern), keeping the route for backward compat.
+### 5. System Status Strip
+- **Battery** — percentage, estimated time remaining, charging status
+- **Storage** — used/total with color bar
+- **Network** — live upload/download speed indicators
+- **Memory** — RAM usage percentage
 
-### Step 6: Mobile Calendar (`src/pages/mobile/MobileCalendar.tsx`)
-- Swipeable day/week view
-- Source filter chips
-- Tap to view event details
-- FAB for new event
-- Pulls from same unified data service
+### 6. Quick Extras Grid
+- Night Shift, Reduce Motion, Screen Recording, Screenshot, Calculator, Timer
+- Each is a small tap-to-activate tile
 
-### Files Created/Modified
+### 7. Live System Pulse (unique to SITA OS)
+- System health score from Mission Control data
+- Active workflow count
+- Open incident count (with red dot if > 0)
+- Tapping opens Mission Control
+
+### 8. Settings Integration
+- Every tile has a "chevron" indicator — tapping opens that tile's detail, long-pressing opens the corresponding Settings section
+- Bottom "Open Settings" button launches the Settings window app
+- Consistent behavior: Control Center = quick toggle, Settings = deep configuration
+
+## Settings Integration (NOT merging into Settings)
+The Control Center remains a separate overlay. It does NOT become part of Settings. Instead:
+- Each Control Center tile links to its matching Settings section via `openWindow("settings", { section: "wifi" })`
+- Settings sections remain the deep-dive; Control Center is the quick-access surface
+
+## Implementation
+
+### File: `src/components/sita/shell/ControlCenter.tsx` (full rewrite)
+- Expand from 182 lines to ~450 lines
+- Import `useOSRuntime` for live system data
+- Import `useMissionControlSummary` for health score
+- Use `useSettingsValue` for all persisted toggles
+- Add `useWindowManager` for opening Settings sections
+- Structured as composable sub-components: `ConnectivityCluster`, `ModeCluster`, `SliderSection`, `NowPlayingWidget`, `SystemStatusStrip`, `QuickExtrasGrid`, `SystemPulseBar`
+- Premium glassmorphic styling matching existing panel aesthetic
+- Smooth spring animations for tile state changes
+- Expandable tile detail views (tap WiFi tile to see available networks)
+
+### No other files need modification
+The Control Center is self-contained. It already has proper integration points in `ShellLayout.tsx` and `ShellLiveLayer.tsx`.
+
+### Files Modified
 
 | File | Action |
 |---|---|
-| Migration SQL | Create `calendar_events` table with RLS |
-| `src/lib/data-services/unified-calendar-service.ts` | Create — multi-source aggregation |
-| `src/hooks/use-unified-calendar.ts` | Create — unified query hook |
-| `src/components/sita/shell/windows/CalendarWindow.tsx` | Rewrite — full app with 4 views, DB-connected |
-| `src/hooks/use-calendar-mutations.ts` | Update — ensure pointing to real table |
-| `src/pages/CalendarWorkspace.tsx` | Simplify — redirect to window app |
-| `src/pages/mobile/MobileCalendar.tsx` | Create — mobile calendar |
+| `src/components/sita/shell/ControlCenter.tsx` | Full rewrite — 8 sections, live data, settings links |
 
