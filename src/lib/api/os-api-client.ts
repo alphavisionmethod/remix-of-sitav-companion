@@ -179,7 +179,7 @@ async function gateway<T = Record<string, unknown>>(
     };
 
     const fetchOpts: RequestInit = { method, headers };
-    if (method !== "GET" && method !== "HEAD" && body) {
+    if (method !== "GET" && body) {
       fetchOpts.body = JSON.stringify(body);
     }
 
@@ -234,9 +234,9 @@ export const osApi = {
       gateway<{ commands: OsCommand[] }>(`/commands?limit=${params?.limit || 50}&offset=${params?.offset || 0}`),
     get: (id: string) => gateway<{ command: OsCommand; events: CommandEvent[] }>(`/commands/${id}`),
     create: (params: CreateCommandParams) =>
-      gateway<OperationResult>("/commands", "POST", params),
+      gateway<OperationResult>("/commands", "POST", params as unknown as Record<string, unknown>),
     simulate: (params: CreateCommandParams) =>
-      gateway<OperationResult>("/commands/simulate", "POST", params),
+      gateway<OperationResult>("/commands/simulate", "POST", params as unknown as Record<string, unknown>),
     approve: (id: string) => gateway<OperationResult>(`/commands/${id}/approve`, "POST"),
     deny: (id: string) => gateway<OperationResult>(`/commands/${id}/deny`, "POST"),
     cancel: (id: string) => gateway<OperationResult>(`/commands/${id}/cancel`, "POST"),
