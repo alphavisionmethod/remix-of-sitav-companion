@@ -155,6 +155,9 @@ const BusinessAdvisorBoardPage = () => {
             Actions {board.actionStats.total > 0 && `(${board.actionStats.total})`}
           </TabsTrigger>
           <TabsTrigger value="proof" className="text-[10px]">Proof</TabsTrigger>
+          <TabsTrigger value="tools" className="text-[10px]">Tools</TabsTrigger>
+          <TabsTrigger value="radar" className="text-[10px]">Radar</TabsTrigger>
+          <TabsTrigger value="planning" className="text-[10px]">Planning</TabsTrigger>
           <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
           <TabsTrigger value="report" className="text-[10px]">Report</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
