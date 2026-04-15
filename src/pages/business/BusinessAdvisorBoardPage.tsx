@@ -287,6 +287,29 @@ const BusinessAdvisorBoardPage = () => {
           />
         </TabsContent>
 
+        {/* ── Clients Tab ────────────────────────────────── */}
+        <TabsContent value="clients" className="mt-4">
+          <ClientIntelligenceHub
+            snapshot={board.clientSnapshot}
+            clients={board.clientList}
+            onResolveSignal={board.handleResolveSignal}
+          />
+        </TabsContent>
+
+        {/* ── Performance Tab ────────────────────────────── */}
+        <TabsContent value="performance" className="mt-4">
+          <AdvisorPerformancePanel snapshot={board.perfSnapshot} />
+        </TabsContent>
+
+        {/* ── Journal Tab ────────────────────────────────── */}
+        <TabsContent value="journal" className="mt-4">
+          <DecisionJournalPanel
+            snapshot={board.journalSnapshot}
+            decisions={board.journalDecisions}
+            onUpdateOutcome={board.handleUpdateDecisionOutcome}
+          />
+        </TabsContent>
+
         {/* ── Memory Tab ─────────────────────────────────── */}
         <TabsContent value="memory" className="mt-4">
           <AdvisorMemoryInspector
