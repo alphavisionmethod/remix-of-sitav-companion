@@ -245,12 +245,12 @@ serve(async (req) => {
 
     if (action === "memory.reset-slice") {
       const { memory_layer, advisor_id } = payload;
-      const query = supabase
+      let query = supabase
         .from("advisor_board_memory")
         .update({ status: "archived" })
         .eq("user_id", userId);
-      if (memory_layer) query.eq("memory_layer", memory_layer);
-      if (advisor_id) query.eq("advisor_id", advisor_id);
+      if (memory_layer) query = query.eq("memory_layer", memory_layer);
+      if (advisor_id) query = query.eq("advisor_id", advisor_id);
       const { error } = await query;
       if (error) return errResp(error.message, 500);
       return jsonResp({ success: true });

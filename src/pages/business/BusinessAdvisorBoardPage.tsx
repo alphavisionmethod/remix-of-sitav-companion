@@ -3,7 +3,7 @@
 // World-class AI executive operating layer
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Sparkles, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -54,7 +54,32 @@ const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
 
-  const criticalRecs = board.aiRecommendations.filter(r => r.urgency === "critical" || r.urgency === "high");
+  // Merge persistent + in-memory recommendations; persistent takes priority
+  const mergedRecommendations = useMemo(() => {
+    const persistedMap = new Map(
+      (board.persistedRecommendations ?? []).map((r: any) => [r.title, r])
+    );
+    const merged = [...board.aiRecommendations];
+    for (const pr of board.persistedRecommendations ?? []) {
+      if (!merged.find(m => m.title === pr.title)) {
+        merged.push({
+          advisorId: pr.advisor_id,
+          title: pr.title,
+          summary: pr.summary,
+          urgency: pr.urgency_score > 80 ? "critical" : pr.urgency_score > 60 ? "high" : pr.urgency_score > 40 ? "medium" : "low",
+          confidence: pr.confidence_score / 100,
+          suggestedActions: [],
+          riskFlags: [],
+          rationale: pr.rationale,
+          domain: pr.domain,
+          category: pr.category,
+        });
+      }
+    }
+    return merged;
+  }, [board.aiRecommendations, board.persistedRecommendations]);
+
+  const criticalRecs = mergedRecommendations.filter(r => r.urgency === "critical" || r.urgency === "high");
 
   // Show Executive Reset if focus mode is active
   if (board.focusModeActive) {
@@ -112,7 +137,7 @@ const BusinessAdvisorBoardPage = () => {
           <div>
             <h1 className="text-lg font-display font-bold text-foreground">Board of Advisors</h1>
             <p className="text-[10px] text-muted-foreground">
-              {board.advisors.length} advisors · {board.coordinatedRecommendations.length} insights · {board.actionStats.total} actions
+              {board.advisors.length} advisors · {mergedRecommendations.length} insights · {board.actionStats.total} actions
             </p>
           </div>
         </div>
@@ -151,7 +176,7 @@ const BusinessAdvisorBoardPage = () => {
         <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] flex-wrap h-auto gap-0.5 p-1">
           <TabsTrigger value="boardroom" className="text-[10px]">Boardroom</TabsTrigger>
           <TabsTrigger value="insights" className="text-[10px]">
-            Insights {board.coordinatedRecommendations.length > 0 && `(${board.coordinatedRecommendations.length})`}
+            Insights {mergedRecommendations.length > 0 && `(${mergedRecommendations.length})`}
           </TabsTrigger>
           <TabsTrigger value="conversation" className="text-[10px]">Chat</TabsTrigger>
           <TabsTrigger value="scenarios" className="text-[10px]">Scenarios</TabsTrigger>
@@ -184,7 +209,7 @@ const BusinessAdvisorBoardPage = () => {
 
           <BoardroomModuleGrid
             brief={board.profitabilityBrief}
-            recommendations={board.aiRecommendations}
+            recommendations={mergedRecommendations}
             actionQueue={board.actionQueue}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -231,7 +256,7 @@ const BusinessAdvisorBoardPage = () => {
 
         {/* ── Debates Tab ─────────────────────────────────── */}
         <TabsContent value="debates" className="mt-4">
-          <AdvisorDebateView recommendations={board.aiRecommendations} />
+          <AdvisorDebateView recommendations={mergedRecommendations} />
         </TabsContent>
 
         {/* ── Actions Tab ────────────────────────────────── */}
@@ -347,7 +372,7 @@ const BusinessAdvisorBoardPage = () => {
         {board.selectedAdvisor && (
           <AdvisorDetailSheet
             advisor={board.selectedAdvisor}
-            recommendation={board.aiRecommendations.find(r => r.advisorId === board.selectedAdvisor?.id)}
+            recommendation={mergedRecommendations.find(r => r.advisorId === board.selectedAdvisor?.id)}
             onClose={() => board.setSelectedAdvisor(null)}
           />
         )}
@@ -355,7 +380,7 @@ const BusinessAdvisorBoardPage = () => {
 
       {/* ── Proactive Notifications ──────────────────────── */}
       <AdvisorNotificationSystem
-        recommendations={board.aiRecommendations}
+        recommendations={mergedRecommendations}
         onAction={board.convertToAction}
       />
     </motion.div>
