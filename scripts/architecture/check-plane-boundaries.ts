@@ -149,9 +149,34 @@ for (const f of efFiles) {
   }
 }
 
+// Plane distribution
+const planeCounts: Record<string, number> = {};
+for (const f of allFiles) {
+  const p = getPlane(f) || "product";
+  planeCounts[p] = (planeCounts[p] || 0) + 1;
+}
+
 // Report
 console.log(`\n═══ SITA OS Plane Boundary Check ═══\n`);
 console.log(`Scanned ${allFiles.length + efFiles.length} files\n`);
+console.log("Plane Distribution:");
+for (const [plane, count] of Object.entries(planeCounts).sort((a, b) => b[1] - a[1])) {
+  console.log(`  ${plane.padEnd(15)} ${count} files`);
+}
+console.log("");
+
+// Write JSON report
+const reportDir = "generated";
+if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+fs.writeFileSync(`${reportDir}/boundary-check-report.json`, JSON.stringify({
+  timestamp: new Date().toISOString(),
+  total_files: allFiles.length + efFiles.length,
+  plane_distribution: planeCounts,
+  violations_count: violations.length,
+  violations,
+  passed: violations.length === 0,
+}, null, 2));
+console.log("📄 Report: generated/boundary-check-report.json\n");
 
 if (violations.length === 0) {
   console.log("✅ All plane boundaries respected — no violations found");
