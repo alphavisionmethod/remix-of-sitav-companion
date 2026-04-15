@@ -1,7 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Cloud Audit Service
 // Security events, suspicious behavior, admin actions audit
+// Queries real DB with demo fallback
 // ═══════════════════════════════════════════════════════════════
+
+import { fromTable } from "@/lib/supabase-helpers";
 
 export type AuditSeverity = "info" | "warning" | "critical";
 
@@ -47,6 +50,30 @@ class CloudAuditService {
     return this.instance;
   }
 
+  async getRecentEventsAsync(limit = 50): Promise<AuditEvent[]> {
+    try {
+      const { data, error } = await fromTable("cloud_audit_events")
+        .select("*").order("created_at", { ascending: false }).limit(limit);
+
+      if (error || !data || data.length === 0) return this.getRecentEvents(limit);
+
+      return data.map((e: any) => ({
+        id: e.id,
+        actorUserId: e.actor_user_id,
+        actorName: e.actor_user_id?.slice(0, 8) || "System",
+        action: e.action,
+        targetType: e.target_type || "unknown",
+        targetId: e.target_id || "",
+        details: (e.details as Record<string, unknown>) || {},
+        ipAddress: e.ip_address || "unknown",
+        severity: e.severity as AuditSeverity,
+        createdAt: e.created_at,
+      }));
+    } catch {
+      return this.getRecentEvents(limit);
+    }
+  }
+
   getRecentEvents(limit = 50): AuditEvent[] {
     const actions = [
       { action: "user.suspend", target: "user", sev: "warning" as const },
@@ -80,24 +107,9 @@ class CloudAuditService {
 
   getSuspiciousBehaviors(): SuspiciousBehavior[] {
     return [
-      {
-        id: "sb1", userId: "u1", userName: "Unknown Actor",
-        behaviorType: "mass_deletion", description: "Deleted 847 files in 2 minutes",
-        severity: "critical", detectedAt: new Date(Date.now() - 3600000).toISOString(),
-        resolved: false, details: { fileCount: 847, duration: "2m" },
-      },
-      {
-        id: "sb2", userId: "u2", userName: "Bob Martinez",
-        behaviorType: "rapid_token_refresh", description: "Token refreshed 45 times in 10 minutes",
-        severity: "warning", detectedAt: new Date(Date.now() - 7200000).toISOString(),
-        resolved: false, details: { refreshCount: 45, window: "10m" },
-      },
-      {
-        id: "sb3", userId: "u3", userName: "Eve Johnson",
-        behaviorType: "unusual_ip", description: "Login from new country (Nigeria) after long inactivity",
-        severity: "warning", detectedAt: new Date(Date.now() - 14400000).toISOString(),
-        resolved: true, details: { country: "Nigeria", previousCountry: "USA" },
-      },
+      { id: "sb1", userId: "u1", userName: "Unknown Actor", behaviorType: "mass_deletion", description: "Deleted 847 files in 2 minutes", severity: "critical", detectedAt: new Date(Date.now() - 3600000).toISOString(), resolved: false, details: { fileCount: 847, duration: "2m" } },
+      { id: "sb2", userId: "u2", userName: "Bob Martinez", behaviorType: "rapid_token_refresh", description: "Token refreshed 45 times in 10 minutes", severity: "warning", detectedAt: new Date(Date.now() - 7200000).toISOString(), resolved: false, details: { refreshCount: 45, window: "10m" } },
+      { id: "sb3", userId: "u3", userName: "Eve Johnson", behaviorType: "unusual_ip", description: "Login from new country (Nigeria) after long inactivity", severity: "warning", detectedAt: new Date(Date.now() - 14400000).toISOString(), resolved: true, details: { country: "Nigeria", previousCountry: "USA" } },
     ];
   }
 
