@@ -151,6 +151,12 @@ run "cp -r src/lib/ai-engineering/* backend/services/ai-engineering/ 2>/dev/null
 run "cp -r src/lib/detection/* backend/services/detection/ 2>/dev/null || true"
 run "cp -r src/lib/verification/* backend/services/verification/ 2>/dev/null || true"
 run "cp -r src/lib/shopify/* backend/services/shopify/ 2>/dev/null || true"
+run "cp -r src/lib/sovereign-ai-gateway/* backend/gateway/ai/ 2>/dev/null || true"
+run "cp -r src/lib/internal-agents/* backend/workers/agents/ 2>/dev/null || true"
+run "cp -r src/lib/platform-law/* backend/services/platform-law/ 2>/dev/null || true"
+run "cp -r src/lib/capabilities/* backend/services/capabilities/ 2>/dev/null || true"
+run "cp -r src/lib/delivery-methodology/* backend/services/delivery-methodology/ 2>/dev/null || true"
+run "cp -r src/lib/dual-reality/* backend/services/dual-reality/ 2>/dev/null || true"
 run "cp -r supabase/functions/* backend/edge-functions/ 2>/dev/null || true"
 
 # ── Phase 5: Move app surfaces ──
