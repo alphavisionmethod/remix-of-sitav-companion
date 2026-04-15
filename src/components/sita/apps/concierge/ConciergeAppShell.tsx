@@ -350,9 +350,15 @@ export function ConciergeAppShell() {
     }
     return (
       <div className="flex items-center justify-center min-h-[300px]">
-        <span className="text-[hsl(0_0%_100%/0.2)] uppercase tracking-[0.2em] text-lg font-medium">
-          {activeModule.toUpperCase()} — Coming Soon
-        </span>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="w-12 h-12 rounded-full bg-[hsl(0_0%_100%/0.04)] flex items-center justify-center">
+            <CalendarHeart className="w-5 h-5 text-[hsl(0_0%_100%/0.15)]" />
+          </div>
+          <span className="text-[hsl(0_0%_100%/0.3)] text-sm font-medium">
+            {activeModule.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+          </span>
+          <span className="text-[hsl(0_0%_100%/0.15)] text-xs">This module is not yet configured for your household</span>
+        </div>
       </div>
     );
   };

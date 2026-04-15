@@ -356,8 +356,10 @@ function SecurityContent() {
 
       <NovaCard>
         <VStack spacing="tight">
-          <SettingRow label="Two-Factor Auth" description="Not yet available" icon={<Lock className="h-3.5 w-3.5" />}>
-            <NovaBadge>Coming Soon</NovaBadge>
+          <SettingRow label="Two-Factor Authentication" description="Add an extra layer of security to your account" icon={<Lock className="h-3.5 w-3.5" />}>
+            <NovaButton variant="secondary" onClick={() => toast.info("Two-factor authentication setup will open in your browser")}>
+              Configure
+            </NovaButton>
           </SettingRow>
         </VStack>
       </NovaCard>
