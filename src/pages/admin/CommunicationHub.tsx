@@ -27,7 +27,7 @@ import { useNotifications, useNotificationManager } from "@/hooks/use-os-api";
 import { usePolicies, usePolicyManager } from "@/hooks/use-os-api";
 import { useManagedApps, useAppManager } from "@/hooks/use-os-api";
 import { useUnifiedTimeline, useAuditTimeline } from "@/hooks/use-os-api";
-import { useSyncStatus, useSyncControl } from "@/hooks/use-os-api";
+import { useSyncStatus, useSyncConflicts, useSyncControl } from "@/hooks/use-os-api";
 import { useUpdateControl, useUpdateHistory } from "@/hooks/use-os-api";
 import { channelManager } from "@/lib/services/realtime-gateway/resilient-channel";
 import type { CommandStatus } from "@/lib/api/os-api-client";
