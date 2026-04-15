@@ -42,6 +42,7 @@ import { useWindowLauncher } from "./shell/ShellWindowLayer";
 import { ShellAccessoryLayer } from "./shell/ShellAccessoryLayer";
 import { ShellLiveLayer } from "./shell/ShellLiveLayer";
 import { SecurePromptProvider } from "./shell/SecurePromptProvider";
+import { FilePickerProvider } from "./shell/FilePickerService";
 import { SecurePrompt } from "./shell/SecurePrompt";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
@@ -113,6 +114,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     };
     window.addEventListener("sita-open-mission-control", handler);
     return () => window.removeEventListener("sita-open-mission-control", handler);
+  }, [doLaunchApp]);
+
+  // Listen for sita-open-app-store events (from AppStoreCenter redirect shim)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const module = detail?.module || "store";
+      (window as any).__appStoreInitialModule = module;
+      doLaunchApp("app-store");
+      window.dispatchEvent(new CustomEvent("sita-app-store-navigate", { detail: { module } }));
+    };
+    window.addEventListener("sita-open-app-store", handler);
+    return () => window.removeEventListener("sita-open-app-store", handler);
   }, [doLaunchApp]);
 
   // Hooks
@@ -208,6 +222,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     <OSWindowProvider>
     <WindowManagerContext.Provider value={wm}>
     <SecurePromptProvider>
+    <FilePickerProvider>
     <SidebarProvider>
       <SkipToContent />
       <RouteAnnouncer />
@@ -275,6 +290,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Secure Elevation Prompt (trusted path) */}
       <SecurePrompt />
     </SidebarProvider>
+    </FilePickerProvider>
     </SecurePromptProvider>
     </WindowManagerContext.Provider>
     </OSWindowProvider>
