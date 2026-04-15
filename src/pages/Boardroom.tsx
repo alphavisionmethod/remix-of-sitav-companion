@@ -1113,6 +1113,8 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 // ── Main Boardroom ────────────────────────────────────────────
 
 const Boardroom = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const os = useOSOrchestration();
   const signature = useExperienceSignature();
   const interfaceState = useAdaptiveInterface();
