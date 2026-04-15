@@ -3,20 +3,34 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Smartphone, HardDrive, RefreshCw,
   Shield, Wrench, Settings2, Cloud, HeartPulse, Activity,
-  Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale
+  Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale,
+  Building2, Server, Cog, DollarSign, LifeBuoy, FileCheck,
+  Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket
 } from "lucide-react";
 
 const tabs = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "users", label: "Users", icon: Users },
+  { key: "tenants", label: "Tenants", icon: Building2 },
   { key: "devices", label: "Devices", icon: Smartphone },
   { key: "storage", label: "Storage", icon: HardDrive },
+  { key: "storage-health", label: "Storage Health", icon: Server },
   { key: "sync", label: "Sync Ops", icon: RefreshCw },
   { key: "sync-objects", label: "Sync Objects", icon: Database },
   { key: "device-identity", label: "Device Identity", icon: Fingerprint },
   { key: "encryption", label: "Encryption", icon: Lock },
   { key: "namespaces", label: "Namespaces", icon: Layers },
-  { key: "audit", label: "Audit & Security", icon: Shield },
+  { key: "workers", label: "Workers", icon: Cog },
+  { key: "lifecycle", label: "Lifecycle", icon: Timer },
+  { key: "cost", label: "Cost", icon: DollarSign },
+  { key: "integrity", label: "Integrity", icon: FileCheck },
+  { key: "audit", label: "Audit", icon: Shield },
+  { key: "compliance", label: "Compliance", icon: ShieldCheck },
+  { key: "support", label: "Support", icon: LifeBuoy },
+  { key: "feature-flags", label: "Flags", icon: Flag },
+  { key: "maintenance", label: "Maintenance", icon: PauseCircle },
+  { key: "observability", label: "Observability", icon: BarChart3 },
+  { key: "bootstrap", label: "Bootstrap", icon: Rocket },
   { key: "jobs", label: "Jobs & Repair", icon: Wrench },
   { key: "recovery", label: "Recovery", icon: RotateCcw },
   { key: "monitoring", label: "Monitoring", icon: HeartPulse },
@@ -24,7 +38,7 @@ const tabs = [
   { key: "collaboration", label: "Collaboration", icon: Share2 },
   { key: "sharing", label: "Sharing", icon: Share2 },
   { key: "governance", label: "Governance", icon: Shield },
-  { key: "policy", label: "Policy & Config", icon: Settings2 },
+  { key: "policy", label: "Policy", icon: Settings2 },
 ] as const;
 
 export type CloudTab = (typeof tabs)[number]["key"];
@@ -50,7 +64,7 @@ export function CloudAdminLayout({ activeTab, onTabChange, children }: CloudAdmi
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-1 p-1 bg-muted/50 rounded-lg border border-border/50">
+      <div className="flex flex-wrap gap-1 p-1 bg-muted/50 rounded-lg border border-border/50 max-h-[180px] overflow-y-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
