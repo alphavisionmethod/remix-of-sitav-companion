@@ -20,6 +20,10 @@ import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";
 import { SyncActivityJournal } from "@/components/sita/SyncActivityJournal";
 import { CloudFileBrowser } from "@/components/cloud/CloudFileBrowser";
 import { CloudTrashManager } from "@/components/cloud/CloudTrashManager";
+import { CloudActivityTimeline } from "@/components/cloud/CloudActivityTimeline";
+import { CloudDeviceSafety } from "@/components/cloud/CloudDeviceSafety";
+import { CloudImportExport } from "@/components/cloud/CloudImportExport";
+import { CloudNamespaceToggles } from "@/components/cloud/CloudNamespaceToggles";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [
