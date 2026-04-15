@@ -12,11 +12,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import {
   FileText, LayoutDashboard, FolderOpen, Search, Cpu, Brain,
-  Eye, ShieldAlert, Settings
+  Eye, ShieldAlert, Settings, HardDrive,
 } from "lucide-react";
 
 import FilesOverview from "./files/FilesOverview";
 import FilesAll from "./files/FilesAll";
+import FilesExplorer from "./files/FilesExplorer";
 import FilesProcessing from "./files/FilesProcessing";
 import FilesReview from "./files/FilesReview";
 import FilesSearch from "./files/FilesSearch";
@@ -34,9 +35,10 @@ const DOMAIN_CONFIG: DomainConfig = {
   version: "Files v2.0",
 };
 
-type SubPage = "overview" | "all" | "processing" | "review" | "search" | "memory" | "sensitive" | "settings";
+type SubPage = "overview" | "explorer" | "all" | "processing" | "review" | "search" | "memory" | "sensitive" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/files/explorer")) return "explorer";
   if (path.includes("/files/all")) return "all";
   if (path.includes("/files/processing")) return "processing";
   if (path.includes("/files/review")) return "review";
@@ -52,6 +54,7 @@ const TAB_GROUPS: NavTabGroup[] = [
     label: "Browse",
     tabs: [
       { key: "overview", label: "Overview", icon: LayoutDashboard },
+      { key: "explorer", label: "Explorer", icon: HardDrive },
       { key: "all", label: "All Files", icon: FolderOpen },
       { key: "search", label: "Search", icon: Search },
     ],
@@ -75,6 +78,7 @@ const TAB_GROUPS: NavTabGroup[] = [
 
 const pages: Record<SubPage, React.ComponentType> = {
   overview: FilesOverview,
+  explorer: FilesExplorer,
   all: FilesAll,
   processing: FilesProcessing,
   review: FilesReview,
