@@ -1,5 +1,11 @@
 import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
+import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
+
+/** Helper to wrap a page element with a permission gate */
+function gated(permission: string, element: React.ReactNode) {
+  return <PermissionGatedRoute permission={permission}>{element}</PermissionGatedRoute>;
+}
 
 // ── ECO: Ecosystem Orchestrator ──
 const ECO01EcosystemCommand = lazy(() => import("@/pages/admin/ECO01EcosystemCommand"));
