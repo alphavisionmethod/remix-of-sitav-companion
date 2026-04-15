@@ -115,7 +115,7 @@ function getDomainColor(domain: string): string {
 // Main Component
 // ═══════════════════════════════════════════════════════════════
 
-export default function CalendarWindow() {
+export function CalendarWindow() {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const [viewMonth, setViewMonth] = useState(today.getMonth());
