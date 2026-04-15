@@ -214,3 +214,15 @@ export type { ServiceHealthNode, DegradedFeature, DegradationNotification, Syste
 export { DigestJournalService, digestJournalService } from "./digest-journal";
 export type { DailyDigest, WeeklyJournal, MonthlyReview, DigestPreferences, DigestSection, DigestActionItem } from "./digest-journal";
 
+// ── Protocol Bridge ─────────────────────────────────────────────
+export {
+  executeCommand, initiateProtocolApproval, resolveProtocolApproval,
+  evaluateTrustClaim, evaluateRolloutReadiness,
+  createAgentCommand, acknowledgeAgentCommand,
+} from "./protocol-bridge";
+
+// ── Degraded Mode Integration ────────────────────────────────────
+export {
+  initializeDegradedMode, reportServiceHealth, getSystemMode, isFeatureAvailable,
+} from "./degraded-mode/integration";
+
