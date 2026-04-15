@@ -1,86 +1,141 @@
 
 
-# Runtime Truth Layer — `src/lib/runtime/`
+# SITA OS — Information Architecture Compression & Page Consolidation
 
-## What This Adds
+## Scale of Work
 
-A single formal runtime truth layer that unifies scattered runtime-like code (surface detection, feature flags, service startup, reality classification, recovery, host bridges) into one canonical location. This layer answers: "What is running, where, in what mode, with what capabilities, and what happens when it fails?"
+| Category | Current Count |
+|----------|--------------|
+| Total page files | 975 |
+| Admin pages | 495 |
+| Route definitions | ~588 |
+| Route files | 11 |
+| Top-level user destinations | ~40+ competing |
+| Admin top-level domains | ~25+ competing |
 
-## Existing Code to Integrate (Not Duplicate)
+## Strategy
 
-| Existing Module | What It Does | Runtime Layer Treatment |
-|----------------|-------------|------------------------|
-| `services/surface-detection/` | Detects Electron/PWA/Capacitor/Mobile/Web | `runtime-detection.ts` re-exports and extends |
-| `dual-reality/reality-mode-registry.ts` | real/demo/sandbox modes | `runtime-truth-classification.ts` references, does not duplicate |
-| `dual-reality/surface-class-registry.ts` | admin_os/user_app surface classes | `simulated-surface-registry.ts` references |
-| `os-services/recovery-levels.ts` | 8-level repair escalation | `recovery-behavior-registry.ts` references |
-| `os-services/app-lifecycle.ts` | 12-state app lifecycle | `service-lifecycle-registry.ts` references |
-| `core-services/self-healing/fleet-health.ts` | Service health records | `service-failure-consequence-map.ts` references |
-| `scripts/generate-startup-order.ts` | Startup phase ordering | `service-startup-order.ts` replaces with importable TS |
-| `packages/contracts/runtime/` | SurfaceType, ActiveSurface contracts | All runtime files import from contracts |
+This is NOT a delete-everything refactor. The existing system already uses a redirect-shim pattern (BusinessCenter, MoneyCenter, ConciergeCenter, AdminCenter all redirect to `/desktop` and open windowed apps). Most "pages" are already internal modules inside windowed app shells like MissionControlAppShell (872 lines, ~140 admin modules).
 
-## New Files (26 files, 0 duplicates)
+**The actual work is**: creating the canonical IA registries, route taxonomy, and consolidation maps -- then compressing navigation, adding redirect wrappers for deprecated routes, and normalizing naming.
 
+## Phase 1 — Canonical Route Registry & Page Classification
+
+Create two new architecture files:
+
+### `src/lib/architecture/canonical-route-registry.ts`
+- Define the canonical IA taxonomy for both user and admin surfaces
+- Map every route to its canonical domain, page class (overview/board/console/workspace/explorer/settings/timeline/detail/studio), deprecation status, and redirect target
+- ~10 user domains, ~10 admin domains as defined in the spec
+
+### `src/lib/architecture/page-consolidation-map.ts`
+- Classification of all 975 pages: KEEP_AS_PRIMARY, KEEP_AS_SUBVIEW, MERGE_INTO_OTHER_PAGE, REDIRECT_TO_CANONICAL_PAGE, DEPRECATE_WITH_WRAPPER
+- Old route -> new route mapping
+- Compatibility wrapper flags
+
+## Phase 2 — Define Canonical IA Taxonomy
+
+### User App (10 canonical top-level destinations)
 ```text
-src/lib/runtime/
-├─ index.ts                          — barrel export
-├─ runtime-detection.ts              — extends surface-detection with full RuntimeTarget enum
-├─ runtime-context.ts                — unified RuntimeContext (surface + mode + capabilities + trust)
-├─ runtime-flags.ts                  — typed runtime feature flags (not feature flags — runtime behavior switches)
-├─ runtime-assertions.ts             — runtime invariant checks (assert surface, assert mode, assert capability)
-├─ runtime-truth-classification.ts   — maps every route/feature to its truth tier (proven/simulated/presentational)
-├─ runtime-capability-matrix.ts      — what capabilities exist per runtime target (web/desktop/mobile/appliance)
-├─ runtime-feature-registry.ts       — registry of features with their runtime requirements
-├─ product-reality-tiers.ts          — tiered reality classification (T1 proven → T4 presentational)
-├─ runtime-message-registry.ts       — canonical message types that flow through the system
-├─ runtime-transport-map.ts          — maps message types to transport mechanisms (ws/http/ipc/local)
-├─ message-trust-classification.ts   — classifies messages by trust level (verified/standard/untrusted)
-├─ message-replay-policy.ts          — replay/idempotency rules per message type
-├─ message-failure-policy.ts         — failure handling per message type (retry/drop/dlq/escalate)
-├─ service-lifecycle-registry.ts     — canonical service lifecycle states (references os-services/app-lifecycle)
-├─ service-startup-order.ts          — importable startup ordering (replaces script-only version)
-├─ service-domain-map.ts             — maps every service to its owning domain
-├─ service-failure-consequence-map.ts — maps service failure to user-facing impact
-├─ system-command-registry.ts        — all system commands with authority requirements
-├─ host-bridge-registry.ts           — host bridges (Electron IPC, Capacitor, PWA service worker)
-├─ recovery-behavior-registry.ts     — recovery strategies per service/surface (references recovery-levels)
-├─ reality-classification-registry.ts — route-level reality classification entries
-├─ simulated-surface-registry.ts     — tracks which surfaces are simulated vs real
-├─ web/                              — web-specific runtime policies (empty dir, future)
-├─ desktop/                          — desktop/Electron-specific runtime policies (empty dir, future)
-├─ appliance/                        — appliance-specific runtime policies (empty dir, future)
-├─ mobile/                           — mobile-specific runtime policies (empty dir, future)
-└─ migration/                        — runtime migration utilities (empty dir, future)
+/desktop          — Home/Desktop
+/boardroom/*      — Boardroom (today, at-risk, revenue, history, replay)
+/business/*       — Business OS (CRM, leads, customers, invoices, operations)
+/money/*          — Money OS (bills, cash, receivables, reserves, scenarios)
+/concierge/*      — Concierge OS (household, calendar, errands, travel)
+/files/*          — Files (explorer, search, processing, sensitive)
+/investments/*    — Investment Office (markets, portfolio, strategy, risk)
+/revenue-office/* — Revenue Office (pipeline, campaigns, retention)
+/digital-presence/* — Digital Presence (builder, brand, analytics)
+/settings/*       — Settings
 ```
+Plus system utilities: /search, /notifications, /apps/*, /communications
 
-## Wiring Strategy
+### Admin Control Plane (10 canonical domains)
+```text
+/admin/overview              — Executive Overview (merge AdminDashboard + MissionControlHome + AdminOperationsHub)
+/admin/users/*               — Users & Environments
+/admin/ai-runtime/*          — Advisors, AI Team, Gateway, Models (merge AIG*, AIT*, CAI*, SAG*, advisor-board/*, intelligence/*)
+/admin/integrations/*        — Connectors, OAuth, Sync (merge CN*, PFA*, ISA*)
+/admin/trust-security/*      — Policies, Security, Proofs (merge SEC*, trust, security/*)
+/admin/health/*              — Observability, Incidents, Fleet (merge health pages, fleet, incidents)
+/admin/releases/*            — Deployments, Rings, Readiness (merge launch/*, releases)
+/admin/verification/*        — Truth, Reality Audit, Conformance (merge ITC*, RCP*, V*, JVC*, CJ*)
+/admin/config/*              — Flags, Manifests, Registries (merge PLE*, FIP*, feature flags)
+/admin/support/*             — Cases, Diagnostics, Recovery
+```
+Plus internal planes: /admin/founder/*, /admin/engineering/*, /admin/mc/*, /admin/strategic/*
 
-1. **`runtime-detection.ts`** imports from `@/lib/services/surface-detection` and extends with `RuntimeTarget` enum covering all 7 targets (browser, electron, capacitor, pwa, node, deno, docker)
-2. **`runtime-context.ts`** composes: surface detection + reality mode + capability matrix + trust state into one `RuntimeContext` object
-3. **`service-startup-order.ts`** contains the same data as `scripts/generate-startup-order.ts` but as an importable TypeScript constant with dependency graph
-4. **`service-failure-consequence-map.ts`** references `FleetHealthService` types from self-healing
-5. **`recovery-behavior-registry.ts`** references `RecoveryLevel` from `os-services/recovery-levels.ts`
-6. **`reality-classification-registry.ts`** uses `RealityClassificationRecord` from `reality-records/canonical-records.ts`
-7. **`host-bridge-registry.ts`** references `SurfaceType` from contracts
-8. **All files** are pure TypeScript — no React, no side effects, no IO
+## Phase 3 — Admin Overlap Resolution
 
-## Integration Points
+The biggest consolidation targets:
 
-- **`src/planes/os.ts`** — add re-export of runtime barrel
-- **`src/lib/orchestration/shared/orchestration-context.ts`** — import `RuntimeContext` from runtime layer
-- **Existing hooks** (`useSurfaceType`) — unchanged, runtime layer is lower-level
-- **Admin pages** — can inspect runtime registries for truth dashboards
+| Concept | Competing Pages | Resolution |
+|---------|----------------|------------|
+| Executive overview | AdminDashboard, MissionControlHome, AdminOperationsHub, PlatformTruthDashboard | AdminDashboard = primary; others redirect |
+| Truth/verification | TruthIndexDashboard, GeneratedTruthDashboard, ITC01-14, RCP01-11, V01-07, JVC01-14, CJ01-09, LaunchHonestyBoard x2 | Keep ITC/RCP/V/JVC/CJ as subviews under /admin/verification; merge overlapping top-level truth dashboards |
+| AI runtime | AIG01-09, AIT01-08, SAG01-12, CAI01-15, intelligence/* (12 pages), advisor-board/* (6), strategic/* (12) | Keep as subviews under /admin/ai-runtime; no top-level promotion |
+| Security | SEC01-06, SecurityCommandCenter, MCTrustSecurity | SecurityCommandCenter = primary; SEC* as subviews |
+| Devices/surfaces | DWE01-07, UAO01-08, MSA01-05, AND01-05, APL01-06, NOT01-05, NRC01-06, HRS01-06, NSS01-04 | Group under /admin/surfaces/* as subview families |
+| Cloud admin | 47 Cloud* pages | Already scoped under /admin/cloud; keep as-is |
+| Dual Reality | DRS01-10 | Keep under /admin/reality; already coherent |
 
-## Build Verification
+## Phase 4 — User Surface Compression
 
-Full `tsc --noEmit` after all files created.
+| Domain | Competing Pages | Resolution |
+|--------|----------------|------------|
+| Boardroom | Boardroom, GlobalBoardroom, WeeklyBoardroom, BusinessBoardroom, FinanceBoardroom, MoneyBoardroom, ConciergeBoardroom, FamilyBoardroom, InvestmentBoardroom, GrowthBoardroom, PresenceBoardroom | /boardroom = unified entry; domain boardrooms become tabs/modes inside windowed app |
+| Business | BusinessCenter (shim) → 48 pages via CRM + operations | Already well-structured via shim; keep |
+| Money | MoneyCenter (shim) → 34 pages | Already well-structured; keep |
+| Concierge | ConciergeCenter (shim) → 21 pages + HouseholdCommandCenter, LifeAdminCenter | Keep shim; merge HouseholdCommandCenter + LifeAdminCenter as concierge subviews |
+| OS utilities | ~40 standalone pages (clipboard, print, network, etc.) | Keep as system utilities; no top-level nav promotion |
 
-## File Summary
+## Phase 5 — Create Compatibility Infrastructure
+
+### Route redirect wrappers
+For every deprecated route, add a redirect entry. The existing shim pattern (BusinessCenter dispatches event + redirects to /desktop) is the model. No pages are hard-deleted; they get redirect wrappers.
+
+### Navigation compression
+- Update the MissionControlAppShell sidebar groups to match the 10-domain admin IA
+- Update Owner sidebar to point to canonical admin domains
+- Ensure command palette/search still surfaces deep pages
+
+## Phase 6 — Architecture Governance Files
+
+### `src/lib/architecture/ia-governance.ts`
+- Top-level route count guards (max 12 user, max 12 admin)
+- Page class validation (every page must have a valid class)
+- Duplicate concept detection rules
+- Navigation coherence assertions
+
+### Update existing files
+- `src/lib/architecture/route-registry.ts` — add canonical domain + page class fields
+- `scripts/generate-route-manifest.ts` — add IA domain + consolidation status to output
+
+## Phase 7 — Tests
+
+### `scripts/architecture/check-ia-coherence.ts`
+- Assert admin top-level domains <= 12
+- Assert user top-level domains <= 12
+- Assert no deprecated routes in primary navigation
+- Assert every page file has a route entry
+- Assert page class naming conventions
+
+## Files Created/Modified Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Runtime layer | 22 source files | 0 |
-| Subdirectory stubs | 5 (web/desktop/appliance/mobile/migration `.gitkeep`) | 0 |
-| Plane wiring | 0 | 1 (`planes/os.ts`) |
-| **Total** | **27** | **1** |
+| Architecture registries | 3 (canonical-route-registry, page-consolidation-map, ia-governance) | 2 (route-registry, generate-route-manifest) |
+| Navigation updates | 0 | 1 (MissionControlAppShell sidebar groups) |
+| CI enforcement | 1 (check-ia-coherence.ts) | 0 |
+| Route redirect cleanup | 0 | ~4 route files (add redirects for merged routes) |
+| **Total** | **4** | **~7** |
+
+## What This Does NOT Do (And Why)
+
+- **Does not delete any page files** — Pages stay as modules inside windowed apps; the shim architecture already isolates them
+- **Does not restructure page directories** — Moving 975 files would create massive git churn with no user benefit
+- **Does not change the windowed app architecture** — The App-in-OS model is correct; consolidation happens at the IA/navigation/registry level
+- **Does not merge page component code** — Unique functionality stays in its file; consolidation is structural (routes + navigation + classification)
+
+The result: one coherent IA taxonomy, enforced by registries and CI, with compressed navigation and zero breakage.
 
