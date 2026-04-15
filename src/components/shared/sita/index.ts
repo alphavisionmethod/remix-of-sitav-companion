@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 export { SitaCard } from "@/components/sita/SitaCard";
-export { SitaCharts } from "@/components/sita/SitaCharts";
+export * from "@/components/sita/SitaCharts";
 export { SitaCompanionBar } from "@/components/sita/SitaCompanionBar";
-export { SitaComponents } from "@/components/sita/SitaComponents";
+export * from "@/components/sita/SitaComponents";
 export { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 export { SitaTopBar } from "@/components/sita/SitaTopBar";
 export { PageSkeleton } from "@/components/sita/PageSkeleton";

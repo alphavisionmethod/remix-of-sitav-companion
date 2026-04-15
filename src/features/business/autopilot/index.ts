@@ -3,6 +3,6 @@
 // Canonical import: @/features/business/autopilot
 // ═══════════════════════════════════════════════════════════════
 
-export { AutopilotCommandCenter } from "@/components/autopilot/AutopilotCommandCenter";
-export { AutopilotWizard } from "@/components/autopilot/AutopilotWizard";
-export { CustomerAutopilotPanel } from "@/components/autopilot/CustomerAutopilotPanel";
+export { default as AutopilotCommandCenter } from "@/components/autopilot/AutopilotCommandCenter";
+export { default as AutopilotWizard } from "@/components/autopilot/AutopilotWizard";
+export { default as CustomerAutopilotPanel } from "@/components/autopilot/CustomerAutopilotPanel";

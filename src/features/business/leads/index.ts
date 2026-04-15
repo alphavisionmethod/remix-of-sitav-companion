@@ -10,7 +10,7 @@ export { LeadConfidenceDisplay } from "@/components/business/lead-inbox/LeadConf
 export { LeadConversionFunnel } from "@/components/business/lead-inbox/LeadConversionFunnel";
 export { LeadDetailPanel } from "@/components/business/lead-inbox/LeadDetailPanel";
 export { LeadDuplicateDrawer } from "@/components/business/lead-inbox/LeadDuplicateDrawer";
-export { LeadEmptyStates } from "@/components/business/lead-inbox/LeadEmptyStates";
+export { LeadEmptyState } from "@/components/business/lead-inbox/LeadEmptyStates";
 export { LeadHeatIndicator } from "@/components/business/lead-inbox/LeadHeatIndicator";
 export { LeadHeatMap } from "@/components/business/lead-inbox/LeadHeatMap";
 export { LeadInboxHeader } from "@/components/business/lead-inbox/LeadInboxHeader";
