@@ -1,96 +1,155 @@
 
 
-# SITA OS — Multi-User Cloud Storage Platform: Database + Backend Integration
+# SITA OS — Part 2: Deep Platform Operations, Tenant Separation, and Governance
 
 ## Current State
-The frontend and service architecture is fully built (38 sync engine files, 5 cloud backbone services, 20 admin pages, user settings). However, the **database only has 8 tables** (devices, storage_usage, sync_jobs, plans, user_plans, audit_events, feature_flags, policies). The master prompt requires ~11 additional tables for files, blobs, folders, versions, trash, sync objects, conflicts, shares, and device sessions. All cloud backbone services currently return **demo/mock data** — none read from the real database.
+The platform has 120+ DB tables, 60+ edge functions, 20 cloud admin pages, 5 backbone services, and 3 user-facing cloud components. Part 1 (storage, sync, devices, quotas, version history, conflicts, admin console) is complete. Part 2 adds the deeper operational and governance layers.
 
-## What This Plan Adds
+## What This Plan Adds (30 sections condensed into 6 implementation batches)
 
-### Batch 1: Database Migration (~11 new tables)
-Create a single migration adding all missing cloud storage tables:
+---
 
-| Table | Purpose |
-|-------|---------|
-| `cloud_folders` | Folder hierarchy per user (parent_id, path_cache) |
-| `cloud_files` | File metadata (folder_id, blob_id, size, mime, checksum, version) |
-| `cloud_blobs` | Object storage references (storage_key, size, checksum, compression, encryption_class) |
-| `cloud_file_versions` | Version history per file (version, blob_id, origin_device_id, restore_point) |
-| `cloud_trash` | Soft-deleted items with purge_after lifecycle |
-| `cloud_sync_objects` | Versioned sync entities (namespace, type, metadata, content_hash) |
-| `cloud_sync_changes` | Change log for push/pull (change_type, from/to version, origin device) |
-| `cloud_sync_checkpoints` | Per-device checkpoint for efficient delta sync |
-| `cloud_conflicts` | Conflict records (base_version, device_a/b, strategy, resolution) |
-| `cloud_shares` | Sharing/ACL records (owner, target, permission, expiry) |
-| `cloud_device_sessions` | Device session tokens (refresh_token_hash, push_token, last_ip) |
+### Batch 1: Database Migration — Tenant, Lifecycle, Workers, Admin RBAC, Abuse (1 large migration)
 
-All tables get RLS policies (user owns own data, admins see all), indexes, and updated_at triggers.
+New tables:
 
-### Batch 2: Edge Functions (4 functions)
-Backend API for real storage operations:
+| Table | Covers Prompt Sections |
+|-------|----------------------|
+| `cloud_tenants` | #1 — Tenant/org accounts with type, region, residency |
+| `cloud_tenant_memberships` | #1 — User membership in tenants with roles |
+| `cloud_tenant_plans` | #1 — Org-level plan assignment |
+| `cloud_tenant_quotas` | #1 — Org storage pools |
+| `cloud_tenant_policies` | #1 — Org-wide policy rules |
+| `cloud_shared_workspaces` | #1, #16 — Team-shared spaces |
+| `cloud_storage_providers` | #2 — Backend abstraction registry (S3/R2/GCS/Azure/MinIO) |
+| `cloud_storage_tiers` | #3 — Hot/warm/cold/archive tier definitions |
+| `cloud_lifecycle_rules` | #3, #27 — Retention and migration policies |
+| `cloud_archive_jobs` | #3 — Archive/restore workflow tracking |
+| `cloud_preview_jobs` | #4 — Thumbnail/media processing queue |
+| `cloud_search_index` | #5 — Metadata search index entries |
+| `cloud_activity_journal` | #6 — First-class activity/timeline events |
+| `cloud_worker_jobs` | #7 — Unified worker queue with dead-letter |
+| `cloud_admin_roles` | #8 — Internal admin RBAC (super/support/storage/security/billing/auditor/tenant) |
+| `cloud_admin_role_assignments` | #8 — User-to-admin-role mapping |
+| `cloud_support_sessions` | #9 — Support troubleshooting sessions with audit |
+| `cloud_abuse_events` | #10 — Mass-change, ransomware, API abuse detection |
+| `cloud_reconciliation_runs` | #11 — Integrity job results |
+| `cloud_import_export_jobs` | #12 — Import/export/migration pipeline tracking |
+| `cloud_backup_snapshots` | #13 — DR backup metadata |
+| `cloud_account_closure_requests` | #15 — Formal account deletion workflow |
+| `cloud_namespace_registry` | #21 — Sync namespace governance |
+| `cloud_maintenance_modes` | #22 — Platform-wide operational controls |
+| `cloud_compliance_hooks` | #28 — Legal hold, consent, deletion attestations |
 
-1. **`cloud-storage-api`** — Single edge function handling:
-   - `POST /upload-init` — allocate blob, check quota, return signed upload URL
-   - `POST /upload-finalize` — verify checksum, commit file metadata, update quota
-   - `POST /download-url` — generate signed download URL with ownership check
-   - `POST /delete` — soft delete to trash, update quota
-   - `POST /restore` — undelete from trash
-   - `GET /files` — list user's files/folders
-   - `POST /folder` — create folder
+All tables get RLS (user owns own data, admins via `has_role`), indexes, and `updated_at` triggers.
 
-2. **`cloud-sync-api`** — Sync push/pull:
-   - `POST /push` — accept sync changes, update sync objects, create change records
-   - `POST /pull` — return changes since checkpoint
-   - `POST /checkpoint` — update device checkpoint
+---
 
-3. **`cloud-device-api`** — Device management:
-   - `POST /register` — register new device session
-   - `POST /revoke` — revoke device
-   - `POST /trust` — update trust state
+### Batch 2: Edge Functions (3 new functions)
 
-4. **`cloud-admin-api`** — Admin operations:
-   - `POST /repair` — trigger reindex/reconciliation jobs
-   - `GET /health` — platform health stats from real DB
-   - `POST /quota-override` — admin quota adjustments
+1. **`cloud-worker-api`** — Unified worker orchestration:
+   - `POST /enqueue` — Submit background jobs (preview gen, reconciliation, archive migration, cleanup)
+   - `POST /process` — Dequeue and execute next job
+   - `GET /status` — Worker queue health
+   - `POST /dead-letter/retry` — Retry dead-letter jobs
 
-### Batch 3: Cloud Backbone Services — Wire to Real DB (~5 files updated)
-Update all 5 cloud backbone services to query real database tables instead of returning mock data:
+2. **`cloud-tenant-api`** — Tenant/org management:
+   - `POST /create` — Create tenant
+   - `POST /invite` — Add member
+   - `POST /policy` — Set tenant policies
+   - `GET /usage` — Tenant-wide storage usage
+   - `POST /workspace` — Create shared workspace
 
-- **`cloud-storage-service.ts`** — Query `cloud_storage_usage`, `cloud_blobs`, `cloud_files`
-- **`cloud-device-service.ts`** — Query `cloud_devices`, `cloud_device_sessions`
-- **`cloud-quota-service.ts`** — Query `cloud_plans`, `cloud_user_plans`, `cloud_storage_usage`
-- **`cloud-sync-service.ts`** — Query `cloud_sync_jobs`, `cloud_sync_changes`, `cloud_conflicts`
-- **`cloud-audit-service.ts`** — Query `cloud_audit_events`
+3. **`cloud-lifecycle-api`** — Lifecycle, compliance, account closure:
+   - `POST /archive` — Tier migration request
+   - `POST /restore-archive` — Restore from cold storage
+   - `POST /account-closure` — Initiate account deletion workflow
+   - `POST /export` — Generate user data export
+   - `POST /compliance/hold` — Legal hold toggle
+   - `GET /reconciliation` — Run/view integrity checks
 
-Each service keeps its demo data as fallback when no DB rows exist (graceful degradation).
+---
 
-### Batch 4: User-Facing File Manager + Upload UI (~3 new components)
-1. **`CloudFileBrowser.tsx`** — File browser with folder navigation, upload button, drag-and-drop, grid/list view, file actions (download, rename, delete, share, version history)
-2. **`CloudTrashManager.tsx`** — Trash view with restore/purge, purge countdown, bulk actions
-3. **`CloudVersionHistory.tsx`** — Per-file version timeline with restore, compare, origin device display
+### Batch 3: New Backbone Services (5 new service files)
 
-### Batch 5: Wiring + Integration (~4 files updated)
-- Add "Files" and "Trash" tabs to `UserCloudSettings.tsx` or create a new `/cloud` user page
-- Wire file browser to `cloud-storage-api` edge function
-- Connect admin pages to real DB via updated backbone services
-- Add conflict resolution UI to user settings
-- Update `CloudDashboard.tsx` to show real metrics from DB
+| Service | Sections Covered |
+|---------|-----------------|
+| `cloud-tenant-service.ts` | #1 — Tenant CRUD, membership, quotas, policies |
+| `cloud-worker-service.ts` | #7 — Worker queue management, dead-letter, stats |
+| `cloud-lifecycle-service.ts` | #3, #15, #27 — Tiering, retention, account closure |
+| `cloud-abuse-service.ts` | #10 — Abuse detection, mass-change patterns, quarantine |
+| `cloud-support-service.ts` | #9 — Support sessions, diagnostic bundles, safe views |
+
+Update `index.ts` barrel to export all new services.
+
+---
+
+### Batch 4: Admin UI — 8 New Admin Pages
+
+| Page | Sections Covered |
+|------|-----------------|
+| `CloudTenantAdmin.tsx` | #1 — Tenant/org management, memberships, policies |
+| `CloudStorageHealthAdmin.tsx` | #2, #25A — Backend status, provider registry, latency |
+| `CloudWorkerOpsAdmin.tsx` | #7, #25B — Queue depth, failed jobs, dead-letter, throughput |
+| `CloudCostCapacityAdmin.tsx` | #20, #25C — Cost attribution, growth trends, per-plan load |
+| `CloudSupportConsole.tsx` | #9, #25D — User/device search, sync trace, repair workflows |
+| `CloudIntegrityAdmin.tsx` | #11, #25E — Reconciliation runs, quota drift, repair status |
+| `CloudLifecycleAdmin.tsx` | #3, #27 — Tiering rules, retention policies, archive jobs |
+| `CloudComplianceAdmin.tsx` | #14, #28 — Residency, legal hold, compliance hooks, audit retention |
+
+All pages follow existing glassmorphic dark-first SITA OS design with metric cards, data tables, action buttons, and status badges.
+
+---
+
+### Batch 5: User-Facing Enhancements — 4 New Components + Settings Expansion
+
+| Component | Sections Covered |
+|-----------|-----------------|
+| `CloudActivityTimeline.tsx` | #6, #26 — Rich activity journal with event types and device origins |
+| `CloudDeviceSafety.tsx` | #19 — Device revoke, session revoke, emergency sync pause, suspicious alerts |
+| `CloudImportExport.tsx` | #12, #26 — Import from other clouds, export my data, migration status |
+| `CloudNamespaceToggles.tsx` | #21, #26 — Sync namespace governance with encryption class and retention |
+
+Update `UserCloudSettings.tsx` to add new tabs: Activity, Safety, Import/Export.
+
+---
+
+### Batch 6: Wiring, Feature Flags, Observability, First-Device Bootstrap
+
+1. **Feature flag expansion** — Add flag entries for: delta-sync, e2ee-classes, previews, archive-tiering, sharing, app-cloud-apis, nearby-sync, new-conflict-engines. Support percentage rollout and tenant-specific targeting. (#23)
+
+2. **Notification types** — Add cloud notification templates to existing `notifications` table for: upload-complete, sync-paused, quota-near-full, device-revoked, conflict-detected, suspicious-activity, restore-complete, share-invite. (#18)
+
+3. **First-device bootstrap** — Add `cloud_bootstrap_markers` table and logic in `cloud-device-api` for root folder init, default quota, first-device trust, initial namespace setup. (#29)
+
+4. **Maintenance mode controls** — Wire `cloud_maintenance_modes` to admin UI with pause uploads, read-only mode, rebuild indexes, throttle preview gen. (#22)
+
+5. **Observability metrics** — Add `cloud_metrics_snapshots` table for upload success rate, finalize latency, websocket clients, conflict rate, orphan count, preview queue depth. (#24)
+
+6. **Product polish** — Sync blocker plain-language reasons, one-click safe repairs, trust badges, "last synced" confidence cues, over-quota guidance. (#30)
+
+---
 
 ## File Summary
 
 | Batch | Type | Count | Description |
 |-------|------|-------|-------------|
-| 1 | Migration | 1 | 11 new tables + RLS + indexes + triggers |
-| 2 | Edge Functions | 4 | Storage API, Sync API, Device API, Admin API |
-| 3 | Service Updates | 5 | Wire backbone services to real DB |
-| 4 | UI Components | 3 | File browser, trash manager, version history |
-| 5 | Integration | ~4 | Wire everything together, real metrics |
+| 1 | Migration | 1 | ~25 new tables + RLS + indexes + triggers |
+| 2 | Edge Functions | 3 | Worker, Tenant, Lifecycle APIs |
+| 3 | Backbone Services | 5 | Tenant, Worker, Lifecycle, Abuse, Support |
+| 4 | Admin Pages | 8 | Deep operational admin surfaces |
+| 5 | User Components | 4 + update | Activity, Safety, Import/Export, Namespaces |
+| 6 | Wiring | ~6 updates | Feature flags, notifications, bootstrap, observability |
+
+**Total: ~1 migration, 3 edge functions, 5 services, 12 UI components, ~6 wiring updates**
 
 ## Technical Notes
-- All edge functions use JWT validation in-code, CORS headers, and Zod input validation
-- Signed URLs use Supabase Storage `user-files` bucket with user_id folder isolation
-- Quota enforcement is server-side in edge functions (not client-side)
-- Sync checkpoint model enables efficient delta pull without full re-scan
-- Demo data fallback ensures the UI works even before real data exists
+- All new tables use `user_id` scoped RLS with `has_role` for admin access
+- Tenant isolation validated via `cloud_tenant_memberships` + security definer function
+- Worker jobs use exponential backoff and dead-letter after max attempts
+- Abuse detection uses pattern matching on audit events (mass-delete spikes, rapid rewrites)
+- Support sessions are fully audited with redacted field lists per viewer role
+- Feature flags support: internal, beta, tenant-specific, percentage rollout, device-class targeting
 - No new npm dependencies required
+- All UI follows existing glassmorphic SITA OS design system
 
