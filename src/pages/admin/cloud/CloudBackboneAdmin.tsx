@@ -34,7 +34,7 @@ export default function CloudBackboneAdmin() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
-      <PageTruthBanner mode="demo" context="Cloud Backbone — Demo data shown" />
+      <PageTruthBanner truthState="demo" freshness="live" />
       <CloudAdminLayout activeTab={activeTab} onTabChange={setActiveTab}>
         <TabContent />
       </CloudAdminLayout>
