@@ -217,9 +217,9 @@ export function useBusinessAdvisorBoard() {
   });
 
   // ── AI Recommendations (cognitive pipeline) ────────────────
-  const aiRecommendations = useQuery({
+  const cognitivePipeline = useQuery({
     queryKey: ["business-advisor-deep-intelligence"],
-    queryFn: async (): Promise<AIRecommendation[]> => {
+    queryFn: async (): Promise<CognitivePipelineResult> => {
       const { data, error } = await supabase.functions.invoke("advisor-deep-intelligence", {
         body: {
           advisorIds: BUSINESS_ADVISORS.map(a => a.id),
@@ -233,15 +233,27 @@ export function useBusinessAdvisorBoard() {
         },
       });
       if (error) throw error;
-
-      // Invalidate persisted recs since new ones were generated
       queryClient.invalidateQueries({ queryKey: ["board-recommendations"] });
-
-      return data?.recommendations ?? [];
+      return {
+        recommendations: data?.recommendations ?? [],
+        boardSummary: data?.boardSummary ?? "",
+        topPriority: data?.topPriority ?? "",
+        executiveSummary: data?.executiveSummary ?? "",
+        disagreements: data?.disagreements ?? [],
+        signals: data?.signals ?? [],
+        receipt: data?.receipt ?? {},
+      };
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  const aiRecommendations = useMemo(() => ({
+    data: cognitivePipeline.data?.recommendations ?? [],
+    isLoading: cognitivePipeline.isLoading,
+    error: cognitivePipeline.error,
+    refetch: cognitivePipeline.refetch,
+  }), [cognitivePipeline]);
 
   // ── Mutation: Update recommendation status ─────────────────
   const updateRecMutation = useMutation({
