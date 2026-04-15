@@ -35,8 +35,9 @@
         "src/packages/internal-agent-config"
       ],
       "deployment_target": "npm_package",
+      "runtime": "any",
       "allowed_dependencies": [],
-      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile"]
+      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile", "product", "internal-tools"]
     },
     "backend": {
       "directories": [
@@ -59,12 +60,19 @@
         "src/lib/detection",
         "src/lib/verification",
         "src/lib/shopify",
+        "src/lib/sovereign-ai-gateway",
+        "src/lib/internal-agents",
+        "src/lib/platform-law",
+        "src/lib/capabilities",
+        "src/lib/delivery-methodology",
+        "src/lib/dual-reality",
         "src/lib/services/release-intelligence",
         "src/lib/services/degraded-mode",
         "src/lib/services/digest-journal",
         "supabase/functions"
       ],
       "deployment_target": "edge_functions_and_api",
+      "runtime": "deno",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["os", "admin", "founder", "mobile"]
     },
@@ -80,6 +88,7 @@
         "src/components/sita/kernel"
       ],
       "deployment_target": "electron_or_docker",
+      "runtime": "electron",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["backend", "admin", "founder", "mobile"]
     },
@@ -93,6 +102,7 @@
         "src/lib/admin-ai"
       ],
       "deployment_target": "spa_cdn",
+      "runtime": "browser",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["os", "founder", "mobile", "backend"]
     },
@@ -104,6 +114,7 @@
         "src/pages/enterprise"
       ],
       "deployment_target": "spa_cdn",
+      "runtime": "browser",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["os", "admin", "mobile", "backend"]
     },
@@ -113,6 +124,7 @@
         "src/components/mobile"
       ],
       "deployment_target": "flutter_app",
+      "runtime": "flutter",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["os", "admin", "founder", "backend"]
     },
@@ -124,9 +136,12 @@
         "src/lib/reality-audit",
         "src/lib/reality-records",
         "src/lib/demo-data",
+        "src/lib/demo-scenarios",
+        "src/lib/mock-data",
         "src/lib/seed"
       ],
       "deployment_target": "local_dev",
+      "runtime": "node",
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile"]
     },
@@ -136,6 +151,7 @@
         "src/components",
         "src/hooks",
         "src/lib/engines",
+        "src/lib/engine",
         "src/lib/services",
         "src/lib/customer-journey",
         "src/lib/app-platform",
@@ -143,9 +159,20 @@
         "src/lib/investment-office",
         "src/lib/pack-store",
         "src/lib/ux-trust",
-        "src/lib/setup"
+        "src/lib/setup",
+        "src/lib/data-services",
+        "src/contexts",
+        "src/lib/hooks",
+        "src/lib/constants",
+        "src/lib/types",
+        "src/lib/utils",
+        "src/lib/architecture",
+        "src/lib/api",
+        "src/lib/contracts",
+        "src/lib/integrations"
       ],
       "deployment_target": "spa_cdn",
+      "runtime": "browser",
       "allowed_dependencies": ["shared", "backend", "os"],
       "forbidden_dependencies": []
     }
