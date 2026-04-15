@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — OS Plane Public API
+// SITA OS — OS Plane Public API (Complete)
 // Kernel, runtime, SDK, shell, security, recovery.
 // Direct imports from @/lib/nova-sdk/ are forbidden outside this barrel.
 // ═══════════════════════════════════════════════════════════════
@@ -71,7 +71,7 @@ export type {
   AuditResult, PolishScore,
 } from "@/lib/nova-sdk/extensions";
 
-// ── OS Security Subsystem ──
+// ── OS Security Subsystem (all 17 modules) ──
 export {
   bootOSSecurity, isOSSecurityBooted,
   AuthDaemon, getAuthDaemon,
@@ -101,7 +101,7 @@ export type {
   SecurityNotification, SecurityEventType,
 } from "@/lib/os-security";
 
-// ── OS Services (Platform Daemons) ──
+// ── OS Services (Platform Daemons — all 33) ──
 export { accessibilityd } from "@/lib/os-services/accessibilityd";
 export { audiod } from "@/lib/os-services/audiod";
 export { AutomationDaemon, getAutomationDaemon } from "@/lib/os-services/automationd";

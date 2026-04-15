@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Backend Plane Public API
+// SITA OS — Backend Plane Public API (Complete)
 // All consumer code MUST import backend capabilities from here.
 // Direct imports from @/lib/core-services/ are forbidden.
 // ═══════════════════════════════════════════════════════════════
@@ -42,16 +42,16 @@ export { ExecutorService } from "@/lib/core-services/executor-service";
 // ── Trust Governor ──
 export * from "@/lib/core-services/trust-governor";
 
-// ── Policy Engine (re-export barrel — includes PolicyRule, PolicyCondition, etc.) ──
+// ── Policy Engine ──
 export * from "@/lib/core-services/policy-engine";
 
-// ── Workflow Engine (re-export barrel) ──
+// ── Workflow Engine ──
 export { WorkflowEngine } from "@/lib/core-services/workflow-engine";
 
-// ── Memory Service (re-export barrel) ──
+// ── Memory Service ──
 export { MemoryService } from "@/lib/core-services/memory-service";
 
-// ── Verification Engine (re-export barrel) ──
+// ── Verification Engine ──
 export { VerificationEngine } from "@/lib/core-services/verification-engine";
 
 // ── Self-Healing ──
@@ -105,6 +105,12 @@ export * from "@/lib/core-services/identity-auth";
 
 // ── Handoff ──
 export * from "@/lib/core-services/handoff";
+
+// ── Biometric Auth ──
+export * from "@/lib/core-services/biometric-auth";
+
+// ── Device Presence ──
+export * from "@/lib/core-services/device-presence-service";
 
 // ── Cloud Backbone ──
 export {
@@ -177,6 +183,18 @@ export * from "@/lib/ai-engineering";
 // ── Dual Reality ──
 export * from "@/lib/dual-reality";
 
+// ── Intelligence Architecture ──
+export * from "@/lib/intelligence-architecture";
+
+// ── Detection ──
+export * from "@/lib/detection";
+
+// ── Verification ──
+export * from "@/lib/verification";
+
+// ── Sovereign AI Gateway ──
+export * from "@/lib/sovereign-ai-gateway";
+
 // ── Platform Plane Services ──
 export { environmentConfig } from "@/lib/platform-plane/environment-config";
 export { planeRegistry } from "@/lib/platform-plane/plane-registry";
@@ -187,3 +205,18 @@ export { notificationRouter } from "@/lib/platform-plane/notification-router";
 export { supportWorkflow } from "@/lib/platform-plane/support-workflow";
 export { adminRbacEngine } from "@/lib/platform-plane/admin-rbac-engine";
 export { adminSafety } from "@/lib/platform-plane/admin-safety";
+
+// ── Internal Agents ──
+export * from "@/lib/internal-agents";
+
+// ── Platform Law ──
+export * from "@/lib/platform-law";
+
+// ── Capabilities ──
+export * from "@/lib/capabilities";
+
+// ── Shopify ──
+export * from "@/lib/shopify";
+
+// ── Delivery Methodology ──
+export * from "@/lib/delivery-methodology";

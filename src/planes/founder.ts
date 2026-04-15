@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Founder Plane Public API
+// SITA OS — Founder Plane Public API (Complete)
 // Strategic command, simulations, AI cost governance, objectives.
 // May depend on: shared. Must NOT import from os/admin/mobile.
 // ═══════════════════════════════════════════════════════════════
@@ -24,3 +24,6 @@ export * from "@/lib/compute-governance";
 
 // ── Intelligence Architecture ──
 export * from "@/lib/intelligence-architecture";
+
+// ── Delivery Methodology ──
+export * from "@/lib/delivery-methodology";
