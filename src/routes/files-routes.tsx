@@ -9,6 +9,7 @@ export function getFilesRoutes() {
     <>
       <Route path="/files" element={<FilesCenter />} />
       <Route path="/files/overview" element={<FilesCenter />} />
+      <Route path="/files/explorer" element={<FilesCenter />} />
       <Route path="/files/all" element={<FilesCenter />} />
       <Route path="/files/processing" element={<FilesCenter />} />
       <Route path="/files/review" element={<FilesCenter />} />
