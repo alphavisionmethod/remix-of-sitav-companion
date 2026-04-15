@@ -6,11 +6,11 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { path: "/admin", icon: LayoutDashboard, label: "Home" },
-  { path: "/admin/mc-system-health", icon: Activity, label: "Health" },
-  { path: "/admin/command-center", icon: MessageSquare, label: "Command" },
-  { path: "/admin/mc-incidents", icon: AlertTriangle, label: "Incidents" },
-  { path: "/admin/mc-trust-security", icon: Shield, label: "Trust" },
+  { path: "/admin/dashboard", icon: LayoutDashboard, label: "Home" },
+  { path: "/admin/mc/system-health", icon: Activity, label: "Health" },
+  { path: "/admin/founder/command", icon: MessageSquare, label: "Command" },
+  { path: "/admin/mc/incidents", icon: AlertTriangle, label: "Incidents" },
+  { path: "/admin/mc/trust-security", icon: Shield, label: "Trust" },
 ];
 
 export function FounderMobileNav() {
