@@ -15,10 +15,10 @@ import { CloudRecoveryAdmin } from "./CloudRecoveryAdmin";
 import { CloudMonitoringAdmin } from "./CloudMonitoringAdmin";
 import { CloudActivityAdmin } from "./CloudActivityAdmin";
 import { CloudCollaborationAdmin } from "./CloudCollaborationAdmin";
-import CloudSyncObjectsAdmin from "./CloudSyncObjectsAdmin";
-import CloudDeviceIdentityAdmin from "./CloudDeviceIdentityAdmin";
-import CloudEncryptionAdmin from "./CloudEncryptionAdmin";
-import CloudNamespacesAdmin from "./CloudNamespacesAdmin";
+import { CloudSyncObjectsAdmin } from "./CloudSyncObjectsAdmin";
+import { CloudDeviceIdentityAdmin } from "./CloudDeviceIdentityAdmin";
+import { CloudEncryptionAdmin } from "./CloudEncryptionAdmin";
+import { CloudNamespacesAdmin } from "./CloudNamespacesAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,

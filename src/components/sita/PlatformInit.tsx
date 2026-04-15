@@ -40,7 +40,9 @@ export function PlatformInit() {
 
   // Start Sync Daemon (syncd)
   useEffect(() => {
-    syncd.start();
+    const userId = "platform-user";
+    const deviceId = "primary-device";
+    syncd.start(userId, deviceId);
     console.log("[PlatformInit] syncd started");
     return () => {
       syncd.stop();
