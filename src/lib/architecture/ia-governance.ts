@@ -51,6 +51,9 @@ const DEPRECATED_NEW_FILE_PATHS = [
   "src/components/intelligence/",   // → src/features/intelligence/
   "src/components/money/",          // → src/features/money/
   "src/components/auth/",           // → src/features/auth/
+
+  // Pages → Admin domain barrels
+  "src/pages/admin/",               // → src/admin/pages/<domain>/
 ];
 
 /**
