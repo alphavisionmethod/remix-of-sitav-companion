@@ -121,11 +121,31 @@
 | `src/pages/` (non-admin, non-founder, non-mobile) | Product routes |
 | `src/components/` (non-admin, non-mobile, non-sita) | Product UI |
 | `src/hooks/` | Product React hooks |
-| `src/lib/engines/` | Product domain engines |
-| `src/lib/services/` | Product service layer |
 | `src/lib/customer-journey/` | Customer journey engine |
 | `src/lib/app-platform/` | App platform |
 | `src/lib/design-system/` | Design system |
 | `src/lib/investment-office/` | Investment office |
 | `src/lib/pack-store/` | Pack store |
 | `src/lib/ux-trust/` | UX trust engine |
+
+## Backend Plane — Services Layer (200+ service subdirectories)
+| Old Path | New Path | Notes |
+|----------|----------|-------|
+| `src/lib/services/` (entire tree) | `backend/services/shim-layer/` | 217 service subdirs — canonical shim layer |
+| `src/lib/ai-gateway/` | `backend/gateway/budget/` | Budget gate for AI routing |
+| `src/lib/engines/` | `backend/services/engines/` | Domain engines |
+
+### Key service subdirectories included in the move:
+- `trust-governor`, `policy-engine`, `executor-service`, `receipt-service`
+- `event-bus`, `workflow-engine`, `memory-service`, `verification-engine`
+- `fraud-sentinel`, `governance-simulator`, `search-fabric`, `projection-service`
+- `self-healing`, `security`, `ai-workforce`, `ai-economics`, `model-router`
+- `inference-gateway`, `council-orchestrator`, `revenue-autopilot`
+- `capital-allocation`, `outcome-engine`, `realtime-gateway`, `service-registry`
+- `cloud-control-plane-infra`, `edge-device-runtime`, `fleet-ota`, `incident-management`
+- `founder-orchestrator`, `release-intelligence`, `digest-engine`, `protocol-bridge`
+- `degraded-mode`, `digital-twins`, `document-engine`, `enterprise-control-plane`
+- `life-simulation`, `autonomous-negotiation`, `relationship-intelligence`
+- `time-wealth`, `family-constitution`, `compound-life-score`, `predictive-needs`
+- `legacy-planning`, `opportunity-radar`, `decision-intelligence`, `os-awareness`
+- And 150+ more (see `ls src/lib/services/` for full list)
