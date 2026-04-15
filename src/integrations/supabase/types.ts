@@ -1805,6 +1805,66 @@ export type Database = {
         }
         Relationships: []
       }
+      calendar_events: {
+        Row: {
+          color: string | null
+          created_at: string
+          domain: string
+          end_time: string | null
+          event_date: string
+          event_type: string
+          id: string
+          location: string | null
+          notes: string | null
+          priority: string | null
+          recurring: string | null
+          source: string
+          source_id: string | null
+          start_time: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          domain?: string
+          end_time?: string | null
+          event_date: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          priority?: string | null
+          recurring?: string | null
+          source?: string
+          source_id?: string | null
+          start_time?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          domain?: string
+          end_time?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          priority?: string | null
+          recurring?: string | null
+          source?: string
+          source_id?: string | null
+          start_time?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       client_capability_matrix: {
         Row: {
           capabilities: Json | null
