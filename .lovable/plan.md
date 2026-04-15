@@ -1,52 +1,47 @@
 
 
-# Part 2 — OS vs App Separation for Admin Dashboard
+# Part 3 — OS/App/Cloud Architecture Lock-In (Admin Dashboard)
 
-## Build Error Fix (Immediate)
-- **MCLogsAudit.tsx line 44-45**: Duplicate `isDemoMode` binding. Remove line 44 (`const { isDemo: isDemoMode } = useAuth()`) since line 45 already provides `isDemoMode` from `useDataMode()`.
+## What Already Exists from Part 2
+SurfaceAuthorityMatrix (14 action entries), StateAuthorityMap (3 classes), ControlReceiptsPanel, EmergencyAuthorityPanel, PlatformAdaptationRules (10 rules + exclusive features), RemoteAuthoritySession, Command Origin badges, Trust Authority in StatusStrip, LearningYouPanel dual tabs. All routed and in sidebar.
 
-## What Already Exists (Admin-Only, No Duplication Risk)
-All 14 core features from Part 1 are already implemented and wired inside `src/components/admin/shells/` and `src/pages/admin/`. The admin shell (`FounderControlShell`) is fully separate from the user OS shell. No changes needed to user-facing routes.
+## What Part 3 Adds (New Admin-Only Surfaces)
+Part 3 formalizes the **full architectural governance model** with deeper matrices and lifecycle visualizations that Part 2's panels don't cover.
 
-## What Part 2 Requires (New Admin-Only Features)
+### Batch 1 — Feature Ownership & Command Routing
+1. **FeatureOwnershipMatrix.tsx** — Interactive table of all 10 canonical features (File Open, File Sync, App Execution, App Install, Device Trust, Remote Lock, System Update, Security Alert, Workspace Continuity, Command Execution) with 6 ownership columns (Execution, Truth, Control, Approval, Visibility, Recovery). Each cell shows the responsible layer (OS/Cloud/App) with color coding and expandable details. Filterable by layer. New page at `/admin/mc/feature-ownership`.
 
-Part 2 defines the **governance and authority model** that makes the admin dashboard aware of the OS/App/Cloud separation. These are **admin-only visibility and control surfaces** — they do not touch the user OS.
+2. **CommandRoutingLifecycle.tsx** — Visual 6-stage pipeline: Origin → Cloud Parse → Cloud Plan → App Approval → OS Execute → Cloud Verify. Each stage is an interactive node showing what happens. Below: 4 canonical routing cases (Optimize Performance, Fix Sync, Install Low-Trust App, Remove Trusted Device) rendered as animated step-through walkthroughs. New page at `/admin/mc/command-routing`.
 
-### Batch 1 — Authority & Origin Framework
-1. **Surface Authority Matrix Panel** (`SurfaceAuthorityMatrix.tsx`) — Interactive table showing every critical action with columns: Can initiate from OS? App? Cloud decides? App approves? OS executes? Offline? Rollback? Filterable by domain. Placed in MissionControlHome as a collapsible section.
+3. **ApprovalFlowArchitecture.tsx** — Shows the structured approval sequence (request → risk eval → approval request → prompt → decision → execution → receipt → audit). Lists all 8 approval-required action classes. Each class expandable to show the full prompt template with action/device/risk/rollback fields. New page at `/admin/mc/approval-flow`.
 
-2. **Command Origin Classifier** — Enhance existing `ExecutionTimeline` entries and `UndoToastSystem` items with an `origin` badge (`os_local` | `app_remote` | `admin_control_plane`). Visual distinction between local actions, remote commands, and admin plane operations.
+### Batch 2 — Failure, Recovery & Events
+4. **FailureOwnershipModel.tsx** — Matrix panel mapping each feature to: failure detector, user-visible surface, recovery authority, execution layer of repair. Includes 2 worked examples (sync upload failure, trust anomaly) as expandable case studies with step-by-step flow diagrams.
 
-3. **Control Receipts Panel** (`ControlReceiptsPanel.tsx`) — Shows structured receipts for every critical admin action: action, target device/service, reason, result, rollback availability, timestamp, audit link. Accessible from sidebar under Operations.
+5. **RecoveryOwnershipModel.tsx** — For each feature: planner, authorizer, executor, visibility surface. Two worked examples (local file conflict, device compromise). Each with animated flow arrows showing which layer acts when. Combined with Failure panel on a single page at `/admin/mc/failure-recovery`.
 
-### Batch 2 — Emergency & Remote Authority
-4. **Emergency Authority Mode** (`EmergencyAuthorityPanel.tsx`) — Dedicated emergency control surface in the admin dashboard with: device lock, sync pause, trust revoke, account freeze, force sign-out, approval freeze. Each action goes through SafetyConfirmDialog. Accessible from sidebar with a red shield icon.
+6. **EventRoutingModel.tsx** — Three-column layout: OS Events (11 types), Cloud Events (11 types), App Events (8 types). Below: event infrastructure checklist (event IDs, correlation IDs, actor tags, trust tags, risk tags, visibility scope, audit linkage, retry support) with live status indicators. New page at `/admin/mc/event-routing`.
 
-5. **Remote Authority Sessions** (`RemoteAuthoritySession.tsx`) — When controlling a specific device/service, create a tracked session showing: target, commands issued, trust level, time window, required approvals, audit trail. Displayed as a slide-panel overlay.
+### Batch 3 — Copy, Visibility & Validation
+7. **UXCopySeparation.tsx** — Side-by-side panel showing OS language (Open, Continue, Run, Save, Restore, Resume, Install) vs App language (Approve, Deny, Control, Lock, Revoke, Monitor, Review, Send command). Each word linked to its architectural rationale. Added as a tab inside PlatformAdaptationRules (not a new page).
 
-6. **Platform Adaptation Rules Panel** (`PlatformAdaptationRules.tsx`) — Admin-visible panel showing how behavior adapts per platform (OS vs App): what's prioritized, what's hidden, what's confirmation-heavy. Editable rules with simulation preview.
+8. **VisibilityRulesPanel.tsx** — Two-column comparison: what OS shows (local status, work continuity, sync state, trust messages, runtime state, update progress) vs what App shows (account-wide view, device fleet, trust state, command history, pending approvals, rollout overview, remote results). Added as a tab inside PlatformAdaptationRules.
 
-### Batch 3 — State Authority & Intelligence Separation
-7. **State Authority Map** (`StateAuthorityMap.tsx`) — Visual diagram showing three authority classes: Execution State (OS-owned), Canonical State (Cloud-owned), Control State (App-owned). Each class lists its state items with live status indicators. Placed in LiveSystemMap as an overlay mode.
+9. **ArchitectureSeparationTests.tsx** — Admin panel showing test assertions that prove the architecture: App cannot impersonate OS execution, OS cannot self-authorize risky actions, Cloud cannot bypass App approval, offline OS remains usable, offline App limits controls, trust propagation works, command routing correct, audit trails exist, rollback works. Each test shows pass/fail with explanation. New page at `/admin/mc/architecture-tests`.
 
-8. **Global vs User Style Memory Panel** — Enhance existing `LearningYouPanel` to split into two tabs: "Platform Memory" (routing patterns, failure patterns, command efficiency) and "Your Style" (existing preferences). This is a modification, not a new file.
+### Batch 4 — Expand Existing + Wiring
+10. **Expand SurfaceAuthorityMatrix** — Add the missing entries from Part 3's Section 12 (Force Sync, Delete Trusted Device) plus expand existing entries to include all 6 ownership dimensions (not just boolean flags). Add "Decision Surface" and "Recovery Surface" columns.
 
-9. **Trust UX Authority Split** — Add a "Trust Authority" section to the StatusStrip showing which surface currently holds trust authority for active sessions. Badge showing `OS: contextual` vs `App: authoritative` trust posture.
+11. **Expand StateAuthorityMap** — Add the full state items from Part 3 Section 5 (OS: 8 items, Cloud: 13 items, App: 7 items) ensuring every canonical state item is represented.
 
-### Batch 4 — Wiring & Polish
-10. **Sidebar updates** — Add new nav items for Emergency Authority, Control Receipts, and Authority Matrix under a new "Authority & Control" group in FounderSidebar.
-
-11. **Route registration** — Add routes for the 4 new pages under `/admin/mc/` prefix, wrapped in AdminRoute with appropriate permissions.
-
-12. **MissionControlHome integration** — Add collapsible SurfaceAuthorityMatrix and StateAuthorityMap widgets to the dashboard, with the existing stagger animation pattern.
+12. **Route & Sidebar Wiring** — Register 5 new routes (`feature-ownership`, `command-routing`, `approval-flow`, `failure-recovery`, `event-routing`, `architecture-tests`) in AdminRoutes.tsx. Add new sidebar group "Architecture Governance" in FounderSidebar with all new pages. Export all new components from index.ts.
 
 ## Technical Details
-
-- All new components live in `src/components/admin/shells/` (panels) or `src/pages/admin/modules/` (full pages)
-- Follow existing patterns: glassmorphic cards (`bg-white/[0.03]`), `WhyTooltip`, `motion` animations, `ExplainSimply` context awareness
-- Demo data follows existing `DEMO_*` constant pattern — fully populated, no stubs
-- Command origin tags use a shared type: `type CommandOrigin = "os_local" | "app_remote" | "admin_control_plane"`
-- Emergency actions all route through `SafetyConfirmDialog` with `risk: "critical"` and dual approval
-- No user OS files are touched — everything is admin-only under `/admin/` routes and `AdminRoute` guard
-- Total: ~6 new component files, ~6 modified files across 4 batches
+- All new components in `src/components/admin/shells/` (panels) and `src/pages/admin/modules/` (pages)
+- Follow existing glassmorphic pattern: `bg-white/[0.03]`, `WhyTooltip`, `motion` animations
+- Full demo data for every panel — no stubs, no placeholders
+- Reuse `CommandOrigin` type from SurfaceAuthorityMatrix
+- New shared type: `type OwnershipLayer = "os" | "cloud" | "app" | "os_cloud" | "app_cloud" | "os_app"`
+- No user OS files touched — all admin-only under `/admin/` routes
+- Total: ~8 new component files, ~4 modified files, 6 new routes
 
