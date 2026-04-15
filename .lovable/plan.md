@@ -1,87 +1,153 @@
 
 
-# Board of Advisors — Final Phases Completion & Error Audit
+# SITA OS — Control Domain Architecture: Protocols, Release, Graph, AI, Simulations
 
-## Audit Results: What Is Done
+## What This Plan Does
 
-### Phase 1: Database Schema — COMPLETE
-- 8 tables created with RLS policies (1 policy each, `auth.uid() = user_id`)
-- Realtime enabled on `advisor_board_recommendations` and `advisor_board_actions`
-- All tables verified in production database
-- Linter: 0 issues
+Adds 5 **control domain** packages to the shared layer and wires them into the existing architecture. These are not new planes — they are structured contract/engine packages that consolidate scattered logic into disciplined, importable domains with strict dependency rules.
 
-### Phase 2: Unified Board API — COMPLETE
-- `business-board-api` edge function: 453 lines, 20+ action routes
-- Covers: boardroom.summary, recommendations CRUD, actions CRUD, memory CRUD, autonomy CRUD, health CRUD, profit signals CRUD, reflections CRUD, tool executions CRUD
-- Auth: JWT validated in-code via `getUser()`
-- Deployed and responding (401 for unauthenticated = correct)
-
-### Phase 3: Cognitive Pipeline — COMPLETE
-- `advisor-deep-intelligence`: 838 lines, 8-layer pipeline
-- Perception → Normalization → Classification → Reasoning → Synthesis → Planning → Reflection → Persistence
-- Multi-model routing (7 task types with fallbacks)
-- 12 business archetypes with risk/flow/metric profiles
-- 10 advisor personas with structured reasoning
-
-### Phase 4: Frontend Wiring — COMPLETE
-- `useBusinessAdvisorBoard.ts`: 637 lines, fully wired
-- Queries: boardSummary, persistedRecs, healthScores, profitSignals, autonomyPolicies via BoardAPI
-- Mutations: updateRecommendation, createAction, storeMemory, upsertAutonomy
-- Realtime subscriptions on recommendations and actions tables
-- `board-api-client.ts`: 277 lines, typed SDK covering all endpoints
-
-### Phase 5: Model Routing — COMPLETE (inside Phase 3)
-- 7 task-specific model routes with primary + fallback
-- signal_classification → gemini-2.5-flash-lite
-- advisor_reasoning → gemini-3-flash-preview
-- reflection → gemini-2.5-flash-lite
-
-### Phase 6: Admin Control Plane — COMPLETE
-- 6 admin pages created and routed under `/admin/advisor-board/`
-- All wired to real `BoardAPI` calls (not mock data)
-- Routes registered in `AdminRoutes.tsx` with permission gates
+Since this is a Lovable SPA (not a monorepo with separate `/os`, `/backend` folders on disk), all new domains live under `src/packages/` (shared contracts) and `src/lib/` (implementations), following the existing pattern.
 
 ---
 
-## Issues Found
+## Current State
 
-### Issue 1: AdvisorBoardCatalog uses LOCAL state only
-The catalog page (`AdvisorBoardCatalog.tsx`) manages advisor enable/disable and intensity in `useState` — changes are lost on page reload. It needs to persist to the `advisor_autonomy_policies` table via `BoardAPI.upsertAutonomy()`.
-
-### Issue 2: Missing `advisor_board_memory` reset-slice query chain bug
-In `business-board-api/index.ts` line 248-254, the `memory.reset-slice` handler builds a query with conditional `.eq()` calls, but the `await query` happens after the conditional — the query variable from line 248 is `const` but the `.eq()` calls return a new query object (Supabase SDK is immutable). The conditionals need to reassign properly.
-
-### Issue 3: Boardroom page components not consuming persistent data
-The 16-tab boardroom page (`BusinessAdvisorBoardPage.tsx`) passes `board.*` props but individual tab components (insights, actions, proof, etc.) likely still rely on in-memory engine state for rendering rather than the new persistent `boardSummaryData`, `persistedRecommendations`, `healthScoresData`, etc.
-
-### Issue 4: Missing `updated_at` triggers
-The 8 new tables need `UPDATE` triggers calling `update_updated_at_column()` for the `updated_at` column to auto-update. The trigger function exists but may not be attached to these tables.
+- **Protocols**: `src/packages/protocols/` exists with 5 files (commands, approvals, trust, agent, rollout). Missing: websocket, receipts, notifications, sync, updates, timeline, compatibility.
+- **Release**: `src/lib/services/release-intelligence/` has 124 lines. No structured release domain.
+- **Graph**: `src/packages/contracts/graph/` has node/edge types. `src/lib/services/entity-graph/` has a basic in-memory service. No lineage, retrieval, privacy, or reconciliation.
+- **AI**: Scattered across `src/lib/ai/`, `src/lib/sovereign-ai-gateway/`, `src/lib/compute-governance/`, `src/lib/no-hallucination/`, `src/lib/ai-gateway/`. No unified domain.
+- **Simulations**: `src/lib/simulation/` has 3 files (Monte Carlo). `src/lib/services/digital-twins/` exists. No scenario packs, chaos, dry-runs, or verification.
 
 ---
 
 ## Implementation Plan
 
-### Task 1: Fix AdvisorBoardCatalog persistence
-Wire enable/disable and intensity changes to `BoardAPI.upsertAutonomy()` so they persist. Load initial state from `autonomyPolicies` query.
+### Phase 1: Expand Protocol Contracts (src/packages/protocols/)
 
-### Task 2: Fix memory.reset-slice query chain
-Use `let` instead of chaining on `const`, or restructure the conditional query building.
+Add 7 new protocol definition files. These are **pure types/schemas only** — zero runtime dependencies.
 
-### Task 3: Add `updated_at` triggers to all 8 Board tables
-Single migration adding `CREATE TRIGGER` for each table.
+**New files:**
+- `src/packages/protocols/receipt-protocol.ts` — execution/approval/verification/rollback/trust receipt schemas
+- `src/packages/protocols/websocket-protocol.ts` — event envelope, reconnect/resume, subscription model, backpressure rules, delivery assurance
+- `src/packages/protocols/notification-protocol.ts` — categories, urgency semantics, action payloads, push wake format, delivery acknowledgement
+- `src/packages/protocols/sync-protocol.ts` — sync state, conflict payload, repair request, checkpoint, device capability
+- `src/packages/protocols/update-protocol.ts` — update manifest, install state, rollback, post-update verification, compatibility negotiation
+- `src/packages/protocols/timeline-protocol.ts` — timeline event schema, narrative events, system journal, digest feed
+- `src/packages/protocols/compatibility-protocol.ts` — version compatibility, capability fallback, graceful degradation, rollout compatibility gates
 
-### Task 4: Wire boardroom tab components to persistent data
-Update the key boardroom tabs (Insights, Actions, Proof, Health) to display data from `boardSummaryData`, `persistedRecommendations`, `healthScoresData`, and `persistedProfitSignals` alongside in-memory engine state.
+**Updated:** `src/packages/protocols/index.ts` — re-export all 12 protocol modules.
 
-### Task 5: TypeScript build verification
-Run full build to confirm 0 errors across all files.
+### Phase 2: Release Engineering Domain
+
+**Contracts (src/packages/release-contracts/):**
+- `index.ts` barrel
+- `rollout-types.ts` — rollout state machine, cohort targeting, canary promotion, blast-radius estimation
+- `rollback-types.ts` — rollback orchestration, eligibility, preconditions, receipts
+- `compatibility-types.ts` — app/backend/OS compatibility matrix, migration compatibility, release gates
+- `regression-types.ts` — regression fingerprints, suspected regression detectors, known-bad patterns
+- `artifact-types.ts` — version metadata, bundle metadata, SBOM references, signing policy
+- `health-types.ts` — post-release health comparisons, hold/expand/rollback thresholds
+
+**Engine (src/lib/engines/release-engine.ts):**
+Consolidates `release-intelligence` into a structured engine with: rollout planner, rollback orchestrator, compatibility checker, regression detector, release health scorer, release narrative generator.
+
+### Phase 3: Graph Domain
+
+**Contracts (src/packages/graph-contracts/):**
+- `index.ts` barrel
+- `node-types.ts` — 12 canonical node types (user, device, workspace, file, command, approval, app, incident, policy, release, timeline, automation)
+- `edge-types.ts` — 12 canonical edge types (owns, affects, depends_on, approved_by, executed_on, caused_by, belongs_to, generated_from, blocked_by, escalated_to, triggered, resolved_by)
+- `lineage-types.ts` — data/decision/AI/command/release lineage
+- `retrieval-types.ts` — evidence pack builder contract, trust-scoped retrieval filters, semantic retrieval orchestration
+- `privacy-types.ts` — visibility scopes, workspace isolation, sensitive relationship masking
+- `reconciliation-types.ts` — graph drift detection, eventual consistency rules, canonical correction paths
+
+**Engine (src/lib/engines/graph-engine.ts):**
+Wraps and extends the existing `EntityGraphService` with lineage tracking, privacy filtering, and reconciliation hooks.
+
+### Phase 4: AI Governance Domain
+
+**Contracts (src/packages/ai-contracts/):**
+- `index.ts` barrel
+- `prompt-types.ts` — prompt definitions, versioning, ownership, rollout/rollback, quality metadata
+- `routing-types.ts` — model routing policies, inference tier mapping, local vs cloud, fallback rules
+- `safety-types.ts` — trust boundaries, action gating, grounding enforcement, contradiction checks
+- `economics-types.ts` — budget policies, cost tracking, cache strategy, spend ceilings, feature cost allocation
+- `tool-policy-types.ts` — which AI roles may call which tools, data exposure rules, high-risk restrictions
+- `memory-types.ts` — AI-specific memory governance, preference/workflow/procedural memory contracts, expiry rules
+- `eval-types.ts` — prompt evaluations, regression evals, hallucination evals, task success benchmarks
+- `agent-governance-types.ts` — agent role definitions, rights, planner/reviewer separation, escalation rules
+
+**Engine (src/lib/engines/ai-governance-engine.ts):**
+Unified AI governance facade that coordinates existing modules: `compute-governance/model-routing-engine`, `no-hallucination/*`, `sovereign-ai-gateway`, and `ai/ai-capability-client`. Provides: `evaluatePromptSafety()`, `routeModel()`, `checkBudget()`, `enforceToolPolicy()`, `auditAIAction()`.
+
+### Phase 5: Simulation Domain
+
+**Contracts (src/packages/simulation-contracts/):**
+- `index.ts` barrel
+- `digital-twin-types.ts` — user/device/system/release/trust/sync twin models
+- `scenario-types.ts` — scenario pack definitions, rollout/sync-failure/trust-attack/budget-reduction/network-degradation scenarios
+- `dry-run-types.ts` — command/policy/rollout/approval simulation contracts
+- `what-if-types.ts` — forecasting, tradeoff comparisons
+- `chaos-types.ts` — chaos scripts, outage scenarios, resilience drills
+- `verification-types.ts` — simulation result validation, predicted-vs-actual comparison, simulation confidence
+
+**Engine (src/lib/engines/simulation-engine.ts):**
+Wraps existing `monte-carlo-engine`, `digital-twins`, and `governance-simulator`. Adds: scenario runner, dry-run executor, chaos orchestrator, verification pipeline.
+
+### Phase 6: Dependency Enforcement & Validation Scripts
+
+**New CI validation scripts:**
+- `scripts/validation/check-protocol-purity.ts` — Ensures `src/packages/protocols/` imports nothing from `src/lib/` or plane implementations
+- `scripts/validation/check-no-runtime-in-shared.ts` — Ensures all `src/packages/` files are pure types/schemas with no runtime side effects
+- `scripts/validation/check-no-ui-in-backend.ts` — Ensures backend services don't import React/UI components
+- `scripts/validation/check-no-backend-in-ui.ts` — Ensures UI pages don't import backend internals directly (must go through services layer)
+- `scripts/validation/check-deployable-plane-isolation.ts` — Validates each plane's manifest dependencies
+
+**Updated docs:**
+- `docs/refactor/dependency-matrix.md` — Add protocols, release, graph, ai, simulations rows
+- `docs/refactor/protocol-ownership.md` — New file mapping each protocol to its owning service
+- `docs/refactor/deployment-map.md` — New file documenting deployment targets per plane
+
+### Phase 7: Barrel Exports & Wiring
+
+**Wire into existing architecture:**
+- Update `src/packages/index.ts` to export new contract packages
+- Update `src/planes/shared.ts` to re-export key types from new domains
+- Update `src/lib/services/protocol-bridge/index.ts` to integrate new protocol types (receipt, websocket, notification, sync)
+- Update `scripts/check-import-boundaries.ts` to include new domain boundary rules
+- Add per-plane `PLANE_MANIFEST.md` updates for new dependency declarations
+
+### Phase 8: TypeScript Build Verification
+
+Full `tsc --noEmit` to confirm 0 errors across all new and modified files.
 
 ---
 
-## Technical Details
+## File Count Summary
 
-- Migration: ~20 lines SQL for 8 `CREATE TRIGGER` statements
-- AdvisorBoardCatalog.tsx: Add `useQuery` for autonomy policies, `useMutation` for upsert, replace local `useState`
-- business-board-api: Fix ~5 lines in memory.reset-slice handler
-- Boardroom tab components: Pass persistent data props alongside existing engine data
+| Category | New Files | Modified Files |
+|----------|-----------|----------------|
+| Protocol contracts | 7 | 1 (index.ts) |
+| Release contracts | 7 | 0 |
+| Graph contracts | 7 | 0 |
+| AI contracts | 9 | 0 |
+| Simulation contracts | 7 | 0 |
+| Engines | 5 | 0 |
+| Validation scripts | 5 | 1 (check-import-boundaries.ts) |
+| Docs | 2 | 1 (dependency-matrix.md) |
+| Wiring/barrels | 0 | 4 (index.ts, shared.ts, protocol-bridge, packages/index) |
+| **Total** | **49** | **7** |
+
+## Dependency Rules Enforced
+
+```text
+src/packages/*     → NOTHING (pure types, zero imports from src/lib/)
+src/lib/engines/*  → src/packages/* + src/lib/services/* (implementation layer)
+src/lib/services/* → src/packages/* (contracts only)
+src/pages/*        → src/hooks/* + src/lib/services/* (never direct engine/packages)
+src/hooks/*        → src/lib/services/* (bridge layer)
+```
+
+All new contract packages are leaf nodes — they import nothing.
 
