@@ -69,6 +69,11 @@ const GalleryApp = lazy(() => import("@/pages/apps/GalleryApp"));
 const WeatherNewsApp = lazy(() => import("@/pages/apps/WeatherNewsApp"));
 const Navigate = lazy(() => import("react-router-dom").then(m => ({ default: m.Navigate })));
 
+// ── Intelligence Layer ──────────────────────────────────────
+const IntelligenceDashboard = lazy(() => import("@/pages/intelligence/IntelligenceDashboard"));
+const DeviceMeshPanel = lazy(() => import("@/pages/intelligence/DeviceMeshPanel"));
+const PrivacyControlCenter = lazy(() => import("@/pages/intelligence/PrivacyControlCenter"));
+
 export function getOSRoutes() {
   return (
     <>
@@ -198,6 +203,12 @@ export function getOSRoutes() {
       <Route path="/apps/health" element={<HealthApp />} />
       <Route path="/apps/gallery" element={<GalleryApp />} />
       <Route path="/apps/weather-news" element={<WeatherNewsApp />} />
+
+      {/* Intelligence Layer */}
+      <Route path="/intelligence" element={<IntelligenceDashboard />} />
+      <Route path="/intelligence/dashboard" element={<IntelligenceDashboard />} />
+      <Route path="/intelligence/device-mesh" element={<DeviceMeshPanel />} />
+      <Route path="/intelligence/privacy" element={<PrivacyControlCenter />} />
     </>
   );
 }

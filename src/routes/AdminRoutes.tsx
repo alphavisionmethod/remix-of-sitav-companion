@@ -28,6 +28,7 @@ const PatternLearningCenter = lazy(() => import("@/pages/admin/intelligence/Patt
 const ZeroWastePromptView = lazy(() => import("@/pages/admin/intelligence/ZeroWastePromptView"));
 const SmartDigestCenter = lazy(() => import("@/pages/admin/intelligence/SmartDigestCenter"));
 const CrossTenantGovernance = lazy(() => import("@/pages/admin/intelligence/CrossTenantGovernance"));
+const IntelligenceLayerAdmin = lazy(() => import("@/pages/admin/intelligence/IntelligenceLayerAdmin"));
 
 const AIG01ProviderRegistry = lazy(() => import("@/pages/admin/AIG01ProviderRegistry"));
 const AIG02ModelRegistry = lazy(() => import("@/pages/admin/AIG02ModelRegistry"));
@@ -114,6 +115,7 @@ export function getAdminRoutes() {
     <Route key="a28" path="/admin/intelligence/prompts" element={<ZeroWastePromptView />} />,
     <Route key="a29" path="/admin/intelligence/digests" element={<SmartDigestCenter />} />,
     <Route key="a30" path="/admin/intelligence/cross-tenant" element={<CrossTenantGovernance />} />,
+    <Route key="a31b" path="/admin/intelligence/layer" element={<IntelligenceLayerAdmin />} />,
     <Route key="a31" path="/admin/ai-gateway/providers" element={<AIG01ProviderRegistry />} />,
     <Route key="a32" path="/admin/ai-gateway/models" element={<AIG02ModelRegistry />} />,
     <Route key="a33" path="/admin/ai-gateway/routing" element={<AIG03RoutingMatrix />} />,

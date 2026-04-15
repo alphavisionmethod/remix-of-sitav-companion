@@ -3,7 +3,7 @@ import {
   Home, Briefcase, DollarSign, Headphones, FolderOpen, Settings, Shield, LogOut,
   LayoutDashboard, TrendingUp, Calendar, ListTodo, BarChart3,
   Grid3X3, ChevronRight, Clock, Users, FileText, Receipt, CreditCard, PiggyBank,
-  ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap
+  ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap, Brain
 } from "lucide-react";
 import { getRunningApps, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,7 @@ const domainColors: Record<string, { bg: string; ring: string }> = {
   "/settings":       { bg: "from-gray-400 to-slate-500",      ring: "ring-gray-400/50" },
   "/owner":          { bg: "from-red-400 to-rose-500",        ring: "ring-red-400/50" },
   "/app-store":      { bg: "from-violet-400 to-purple-500",   ring: "ring-violet-400/50" },
+  "/intelligence":   { bg: "from-cyan-400 to-blue-500",       ring: "ring-cyan-400/50" },
 };
 
 const getColors = (url: string) => domainColors[url] || { bg: "from-gray-500 to-gray-700", ring: "ring-gray-400/40" };
@@ -86,10 +87,11 @@ const primaryNav = [
 ];
 
 const favoritesNav = [
-  { title: "Revenue",   url: "/revenue-office", icon: TrendingUp },
-  { title: "Boardroom", url: "/boardroom",      icon: BarChart3 },
-  { title: "Calendar",  url: "/calendar",       icon: Calendar },
-  { title: "Tasks",     url: "/tasks",          icon: ListTodo },
+  { title: "Revenue",      url: "/revenue-office", icon: TrendingUp },
+  { title: "Boardroom",    url: "/boardroom",      icon: BarChart3 },
+  { title: "Intelligence", url: "/intelligence",   icon: Brain },
+  { title: "Calendar",     url: "/calendar",       icon: Calendar },
+  { title: "Tasks",        url: "/tasks",          icon: ListTodo },
 ];
 
 const bottomNav = [
