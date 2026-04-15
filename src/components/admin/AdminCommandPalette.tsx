@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/command";
 import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
-  Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
+  Layers, Link2, Lock, Rocket, Server, Shield, ShieldCheck, Target, TrendingUp, Zap,
   BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale,
   DollarSign, Receipt, RotateCcw, Terminal
 } from "lucide-react";
