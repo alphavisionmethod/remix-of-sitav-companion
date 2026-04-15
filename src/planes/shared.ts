@@ -28,9 +28,6 @@ export * from "@/packages/entitlements";
 // ── Database Schemas ──
 export * from "@/packages/database-schemas";
 
-// ── Protocols ──
-export * from "@/packages/protocols";
-
 // ── Store Metadata ──
 export * from "@/packages/store-metadata";
 

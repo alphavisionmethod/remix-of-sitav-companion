@@ -4,22 +4,26 @@
 // Direct imports from @/lib/nova-sdk/ are forbidden outside this barrel.
 // ═══════════════════════════════════════════════════════════════
 
-// ── Nova SDK ──
-export { NovaKernel } from "@/lib/nova-sdk/kernel/NovaKernel";
-export { NovaRuntime } from "@/lib/nova-sdk/runtime/NovaRuntime";
+// ── Nova SDK (full barrel) ──
+export {
+  validateManifest,
+  AppRegistry,
+  DesignContractEnforcer,
+  useAppRuntime,
+  useNovaApp,
+} from "@/lib/nova-sdk";
 
-// ── Lifecycle ──
-export { LifecycleManager } from "@/lib/nova-sdk/core/LifecycleManager";
+export type {
+  AppManifest,
+  NovaPermissionId,
+  RegisteredApp,
+  AppRuntimeState,
+} from "@/lib/nova-sdk";
 
-// ── System Services ──
-export { ServiceRegistry } from "@/lib/nova-sdk/services/ServiceRegistry";
-
-// ── Extensions ──
-export { ExtensionManager } from "@/lib/nova-sdk/extensions/ExtensionManager";
-
-// ── OS Hooks ──
-export { useKernelBoot } from "@/lib/nova-sdk/hooks/useKernelBoot";
-
-// ── Types ──
-export type { AppManifest, AppState, LifecycleState } from "@/lib/nova-sdk/core/types";
-export type { NovaProcess, ProcessPriority } from "@/lib/nova-sdk/kernel/types";
+// ── Kernel subsystems ──
+export { BootManager } from "@/lib/nova-sdk/kernel/boot";
+export { Compositor } from "@/lib/nova-sdk/kernel/compositor";
+export { ProcessManager } from "@/lib/nova-sdk/kernel/process-manager";
+export { Scheduler } from "@/lib/nova-sdk/kernel/scheduler";
+export { SyscallDispatcher } from "@/lib/nova-sdk/kernel/syscall";
+export { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
