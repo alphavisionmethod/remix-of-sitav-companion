@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      action_safety_classifications: {
+        Row: {
+          action_key: string
+          confirmation_prompt: string | null
+          created_at: string
+          description: string | null
+          domain: string | null
+          id: string
+          max_autonomy_level: number
+          policy_overrides: Json | null
+          requires_audit: boolean
+          requires_confirmation: boolean
+          rollback_capable: boolean
+          safety_class: string
+          trust_threshold: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          confirmation_prompt?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          id?: string
+          max_autonomy_level?: number
+          policy_overrides?: Json | null
+          requires_audit?: boolean
+          requires_confirmation?: boolean
+          rollback_capable?: boolean
+          safety_class?: string
+          trust_threshold?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          confirmation_prompt?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          id?: string
+          max_autonomy_level?: number
+          policy_overrides?: Json | null
+          requires_audit?: boolean
+          requires_confirmation?: boolean
+          rollback_capable?: boolean
+          safety_class?: string
+          trust_threshold?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_action_audit: {
         Row: {
           action: string
@@ -4240,6 +4294,54 @@ export type Database = {
         }
         Relationships: []
       }
+      context_graph_snapshots: {
+        Row: {
+          active_mode: string | null
+          active_signals: string[]
+          cognitive_load: number | null
+          context_data: Json
+          created_at: string
+          device_id: string | null
+          freshness_score: number
+          id: string
+          signal_count: number
+          snapshot_type: string
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          active_mode?: string | null
+          active_signals?: string[]
+          cognitive_load?: number | null
+          context_data?: Json
+          created_at?: string
+          device_id?: string | null
+          freshness_score?: number
+          id?: string
+          signal_count?: number
+          snapshot_type?: string
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          active_mode?: string | null
+          active_signals?: string[]
+          cognitive_load?: number | null
+          context_data?: Json
+          created_at?: string
+          device_id?: string | null
+          freshness_score?: number
+          id?: string
+          signal_count?: number
+          snapshot_type?: string
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       crm_automations: {
         Row: {
           actions: Json
@@ -5002,6 +5104,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      device_mesh_peers: {
+        Row: {
+          battery_level: number | null
+          capabilities: string[]
+          created_at: string
+          device_name: string
+          device_type: string
+          id: string
+          is_online: boolean
+          last_handshake: string | null
+          mesh_group: string | null
+          network_type: string | null
+          os_version: string | null
+          platform: string | null
+          proximity_status: string
+          role: string
+          trust_score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          battery_level?: number | null
+          capabilities?: string[]
+          created_at?: string
+          device_name: string
+          device_type?: string
+          id?: string
+          is_online?: boolean
+          last_handshake?: string | null
+          mesh_group?: string | null
+          network_type?: string | null
+          os_version?: string | null
+          platform?: string | null
+          proximity_status?: string
+          role?: string
+          trust_score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          battery_level?: number | null
+          capabilities?: string[]
+          created_at?: string
+          device_name?: string
+          device_type?: string
+          id?: string
+          is_online?: boolean
+          last_handshake?: string | null
+          mesh_group?: string | null
+          network_type?: string | null
+          os_version?: string | null
+          platform?: string | null
+          proximity_status?: string
+          role?: string
+          trust_score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       device_ownership: {
         Row: {
