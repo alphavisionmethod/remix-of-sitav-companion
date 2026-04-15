@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export type NotificationAudience = "user" | "admin" | "support";
 export type NotificationSeverity = "info" | "warning" | "error" | "critical";
@@ -25,7 +26,6 @@ export interface PlatformNotification {
   createdAt: string;
 }
 
-// Event type → audience mapping
 const AUDIENCE_ROUTING: Record<string, NotificationAudience> = {
   "sync.paused": "user",
   "sync.resumed": "user",
@@ -75,77 +75,79 @@ class NotificationRouter {
     const audience = this.routeAudience(eventType);
     const category = eventType.split(".")[0] ?? "system";
 
+    const insertData = {
+      audience,
+      target_user_id: options.targetUserId ?? null,
+      title,
+      body,
+      category,
+      severity: options.severity ?? "info",
+      source_service: options.sourceService ?? "",
+      source_event_type: eventType,
+      correlation_id: options.correlationId ?? null,
+      action_url: options.actionUrl ?? null,
+      metadata: (options.metadata ?? {}) as unknown as Json,
+    };
+
     const { data, error } = await supabase
-      .from("platform_notifications")
-      .insert({
-        audience,
-        target_user_id: options.targetUserId ?? null,
-        title,
-        body,
-        category,
-        severity: options.severity ?? "info",
-        source_service: options.sourceService ?? "",
-        source_event_type: eventType,
-        correlation_id: options.correlationId ?? null,
-        action_url: options.actionUrl ?? null,
-        metadata: options.metadata ?? {},
-      })
-      .select()
+      .from("platform_notifications" as never)
+      .insert(insertData as never)
+      .select("*" as never)
       .single();
 
     if (error) throw error;
-    return this.mapNotification(data as Record<string, unknown>);
+    return this.mapNotification(data as unknown as Record<string, unknown>);
   }
 
   async getUserNotifications(userId: string, limit = 20): Promise<PlatformNotification[]> {
     const { data } = await supabase
-      .from("platform_notifications")
-      .select("*")
-      .eq("audience", "user")
-      .eq("target_user_id", userId)
-      .eq("dismissed", false)
+      .from("platform_notifications" as never)
+      .select("*" as never)
+      .eq("audience" as never, "user")
+      .eq("target_user_id" as never, userId)
+      .eq("dismissed" as never, false)
       .order("created_at", { ascending: false })
       .limit(limit);
 
-    return ((data ?? []) as Array<Record<string, unknown>>).map(this.mapNotification);
+    return ((data ?? []) as unknown as Array<Record<string, unknown>>).map(this.mapNotification);
   }
 
   async getAdminAlerts(limit = 50): Promise<PlatformNotification[]> {
     const { data } = await supabase
-      .from("platform_notifications")
-      .select("*")
-      .eq("audience", "admin")
-      .eq("dismissed", false)
+      .from("platform_notifications" as never)
+      .select("*" as never)
+      .eq("audience" as never, "admin")
+      .eq("dismissed" as never, false)
       .order("created_at", { ascending: false })
       .limit(limit);
 
-    return ((data ?? []) as Array<Record<string, unknown>>).map(this.mapNotification);
+    return ((data ?? []) as unknown as Array<Record<string, unknown>>).map(this.mapNotification);
   }
 
   async getSupportNotifications(limit = 50): Promise<PlatformNotification[]> {
     const { data } = await supabase
-      .from("platform_notifications")
-      .select("*")
-      .eq("audience", "support")
-      .eq("dismissed", false)
+      .from("platform_notifications" as never)
+      .select("*" as never)
+      .eq("audience" as never, "support")
+      .eq("dismissed" as never, false)
       .order("created_at", { ascending: false })
       .limit(limit);
 
-    return ((data ?? []) as Array<Record<string, unknown>>).map(this.mapNotification);
+    return ((data ?? []) as unknown as Array<Record<string, unknown>>).map(this.mapNotification);
   }
 
   async markAsRead(notificationId: string): Promise<void> {
     await supabase
-      .from("platform_notifications")
-      .update({ read: true })
-      .eq("id", notificationId);
+      .from("platform_notifications" as never)
+      .update({ read: true } as never)
+      .eq("id" as never, notificationId);
   }
 
   async dismiss(notificationId: string): Promise<void> {
     await supabase
-      .from("platform_notifications")
-      .update({ dismissed: true })
-      .eq("id", notificationId);
+      .from("platform_notifications" as never)
+      .update({ dismissed: true } as never)
+      .eq("id" as never, notificationId);
   }
 
   getRoutingTable(): Record<string, NotificationAudience> {

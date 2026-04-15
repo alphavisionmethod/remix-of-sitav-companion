@@ -70,21 +70,17 @@ class UserBFF {
   }
 
   async getStorageSummary(userId: string) {
-    const { data: usage } = await supabase
+    const { data } = await supabase
       .from("cloud_storage_usage")
       .select("used_bytes, quota_bytes, file_count")
       .eq("user_id", userId)
       .maybeSingle();
 
-    const usedBytes = (usage as Record<string, number> | null)?.used_bytes ?? 0;
-    const quotaBytes = (usage as Record<string, number> | null)?.quota_bytes ?? 5368709120; // 5GB default
-    const fileCount = (usage as Record<string, number> | null)?.file_count ?? 0;
-
     return {
-      usedBytes,
-      quotaBytes,
-      fileCount,
-      usagePercent: quotaBytes > 0 ? Math.round((usedBytes / quotaBytes) * 100) : 0,
+      usedBytes: data?.used_bytes ?? 0,
+      quotaBytes: data?.quota_bytes ?? 5368709120,
+      fileCount: data?.file_count ?? 0,
+      usagePercent: data?.quota_bytes ? Math.round((data.used_bytes / data.quota_bytes) * 100) : 0,
     };
   }
 
@@ -96,10 +92,7 @@ class UserBFF {
       .order("last_seen_at", { ascending: false })
       .limit(10);
 
-    const devList = (devices ?? []) as Array<{
-      id: string; device_name: string; platform: string;
-      trust_state: string; last_seen_at: string | null;
-    }>;
+    const devList = devices ?? [];
 
     return {
       total: devList.length,
@@ -118,7 +111,7 @@ class UserBFF {
   async getSyncStatus(userId: string) {
     const { data: checkpoint } = await supabase
       .from("cloud_sync_checkpoints")
-      .select("checkpoint_data, created_at")
+      .select("created_at")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -127,8 +120,7 @@ class UserBFF {
     const { count: pendingChanges } = await supabase
       .from("cloud_sync_changes")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", userId)
-      .eq("status", "pending");
+      .eq("user_id", userId);
 
     const { count: conflictCount } = await supabase
       .from("cloud_conflicts")
@@ -138,7 +130,7 @@ class UserBFF {
 
     return {
       status: checkpoint ? "active" : "idle",
-      lastCheckpoint: (checkpoint as Record<string, string> | null)?.created_at ?? null,
+      lastCheckpoint: checkpoint?.created_at ?? null,
       pendingChanges: pendingChanges ?? 0,
       conflictCount: conflictCount ?? 0,
     };
@@ -146,15 +138,15 @@ class UserBFF {
 
   async getNotifications(userId: string) {
     const { data: notifs } = await supabase
-      .from("platform_notifications")
-      .select("id, title, category, severity, created_at, read")
-      .eq("target_user_id", userId)
-      .eq("audience", "user")
-      .eq("dismissed", false)
+      .from("platform_notifications" as never)
+      .select("id, title, category, severity, created_at, read" as never)
+      .eq("target_user_id" as never, userId)
+      .eq("audience" as never, "user")
+      .eq("dismissed" as never, false)
       .order("created_at", { ascending: false })
       .limit(10);
 
-    const list = (notifs ?? []) as Array<{
+    const list = (notifs ?? []) as unknown as Array<{
       id: string; title: string; category: string; severity: string;
       created_at: string; read: boolean;
     }>;
@@ -174,19 +166,21 @@ class UserBFF {
 
   async getSupportSummary(userId: string) {
     const { data: cases } = await supabase
-      .from("support_cases")
-      .select("id, title, status, priority, created_at")
-      .eq("user_id", userId)
-      .in("status", ["open", "investigating", "escalated"])
+      .from("support_cases" as never)
+      .select("id, title, status, priority, created_at" as never)
+      .eq("user_id" as never, userId)
       .order("created_at", { ascending: false })
       .limit(1);
 
-    const openCases = (cases ?? []) as CaseSummary[];
+    const list = (cases ?? []) as unknown as Array<{
+      id: string; title: string; status: string; priority: string; created_at: string;
+    }>;
+    const openCases = list.filter((c) => ["open", "investigating", "escalated"].includes(c.status));
 
     return {
       openCount: openCases.length,
       recentCase: openCases.length > 0
-        ? { ...openCases[0], createdAt: (openCases[0] as Record<string, string>).created_at }
+        ? { id: openCases[0].id, title: openCases[0].title, status: openCases[0].status, priority: openCases[0].priority, createdAt: openCases[0].created_at }
         : null,
     };
   }

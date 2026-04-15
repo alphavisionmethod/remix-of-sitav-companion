@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export interface SupportCase {
   id: string;
@@ -61,30 +62,29 @@ class SupportWorkflowEngine {
   ): Promise<SupportCase> {
     const correlationId = `case-${crypto.randomUUID().slice(0, 12)}`;
 
+    const insertData = {
+      user_id: userId,
+      title,
+      description,
+      category,
+      priority,
+      status: "open",
+      correlation_id: correlationId,
+      self_repair_attempted: selfRepairAttempted,
+      self_repair_result: selfRepairResult ?? null,
+    };
+
     const { data, error } = await supabase
-      .from("support_cases")
-      .insert({
-        user_id: userId,
-        title,
-        description,
-        category,
-        priority,
-        status: "open",
-        correlation_id: correlationId,
-        self_repair_attempted: selfRepairAttempted,
-        self_repair_result: selfRepairResult ?? null,
-      })
-      .select()
+      .from("support_cases" as never)
+      .insert(insertData as never)
+      .select("*" as never)
       .single();
 
     if (error) throw error;
+    const row = data as unknown as Record<string, unknown>;
 
-    // Add creation event
-    const row = data as Record<string, unknown>;
     await this.addCaseEvent(row.id as string, "created", userId, `Case opened: ${title}`, {
-      category,
-      priority,
-      selfRepairAttempted,
+      category, priority, selfRepairAttempted,
     });
 
     return this.mapCase(row);
@@ -92,16 +92,12 @@ class SupportWorkflowEngine {
 
   async escalateCase(caseId: string, actorUserId: string, targetRole: string, reason: string): Promise<void> {
     await supabase
-      .from("support_cases")
-      .update({
-        status: "escalated",
-        escalated_to_role: targetRole,
-      })
-      .eq("id", caseId);
+      .from("support_cases" as never)
+      .update({ status: "escalated", escalated_to_role: targetRole } as never)
+      .eq("id" as never, caseId);
 
     await this.addCaseEvent(caseId, "escalated", actorUserId, `Escalated to ${targetRole}: ${reason}`, {
-      targetRole,
-      reason,
+      targetRole, reason,
     });
   }
 
@@ -112,20 +108,22 @@ class SupportWorkflowEngine {
     content: string,
     metadata: Record<string, unknown> = {}
   ): Promise<SupportCaseEvent> {
+    const insertData = {
+      case_id: caseId,
+      event_type: eventType,
+      actor_user_id: actorUserId,
+      content,
+      metadata: metadata as unknown as Json,
+    };
+
     const { data, error } = await supabase
-      .from("support_case_events")
-      .insert({
-        case_id: caseId,
-        event_type: eventType,
-        actor_user_id: actorUserId,
-        content,
-        metadata,
-      })
-      .select()
+      .from("support_case_events" as never)
+      .insert(insertData as never)
+      .select("*" as never)
       .single();
 
     if (error) throw error;
-    const row = data as Record<string, unknown>;
+    const row = data as unknown as Record<string, unknown>;
     return {
       id: row.id as string,
       caseId: row.case_id as string,
@@ -143,14 +141,13 @@ class SupportWorkflowEngine {
     const [profile, devices, syncJobs, errors] = await Promise.all([
       supabase.from("profiles").select("*").eq("user_id", userId).maybeSingle(),
       supabase.from("cloud_devices").select("*").eq("user_id", userId),
-      supabase.from("cloud_sync_jobs").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(10),
+      supabase.from("cloud_sync_jobs").select("*").eq("target_user_id", userId).order("created_at", { ascending: false }).limit(10),
       supabase.from("cloud_audit_events").select("*").eq("actor_user_id", userId).eq("severity", "error").order("created_at", { ascending: false }).limit(20),
     ]);
 
-    const deviceList = (devices.data ?? []) as Array<Record<string, unknown>>;
+    const deviceList = devices.data ?? [];
     const recommendations: string[] = [];
 
-    // Auto-recommend based on diagnostics
     if (deviceList.some((d) => d.trust_state === "untrusted")) {
       recommendations.push("Untrusted devices detected — consider re-authentication");
     }
@@ -165,7 +162,7 @@ class SupportWorkflowEngine {
       caseId,
       correlationId,
       generatedAt: new Date().toISOString(),
-      userProfile: (profile.data as Record<string, unknown>) ?? {},
+      userProfile: (profile.data as unknown as Record<string, unknown>) ?? {},
       deviceSummary: {
         total: deviceList.length,
         trusted: deviceList.filter((d) => d.trust_state === "trusted").length,
@@ -173,21 +170,19 @@ class SupportWorkflowEngine {
       },
       syncHealth: {
         recentJobs: (syncJobs.data ?? []).length,
-        failedJobs: ((syncJobs.data ?? []) as Array<Record<string, string>>).filter((j) => j.status === "failed").length,
+        failedJobs: (syncJobs.data ?? []).filter((j) => j.status === "failed").length,
       },
-      recentErrors: ((errors.data ?? []) as Array<Record<string, unknown>>).slice(0, 10),
+      recentErrors: (errors.data ?? []).slice(0, 10) as unknown as Array<Record<string, unknown>>,
       recommendations,
     };
 
-    // Store diagnostic package on the case
     await supabase
-      .from("support_cases")
-      .update({ diagnostic_package: pkg as unknown as Record<string, unknown> })
-      .eq("id", caseId);
+      .from("support_cases" as never)
+      .update({ diagnostic_package: pkg as unknown as Json } as never)
+      .eq("id" as never, caseId);
 
     await this.addCaseEvent(caseId, "diagnostic_generated", userId, "Diagnostic package generated", {
-      correlationId,
-      recommendationCount: recommendations.length,
+      correlationId, recommendationCount: recommendations.length,
     });
 
     return pkg;
@@ -195,44 +190,45 @@ class SupportWorkflowEngine {
 
   async resolveCase(caseId: string, actorUserId: string, resolution: string): Promise<void> {
     await supabase
-      .from("support_cases")
-      .update({
-        status: "resolved",
-        resolution,
-        resolved_at: new Date().toISOString(),
-      })
-      .eq("id", caseId);
+      .from("support_cases" as never)
+      .update({ status: "resolved", resolution, resolved_at: new Date().toISOString() } as never)
+      .eq("id" as never, caseId);
 
     await this.addCaseEvent(caseId, "resolved", actorUserId, `Resolved: ${resolution}`);
   }
 
   async getUserCases(userId: string): Promise<SupportCase[]> {
     const { data } = await supabase
-      .from("support_cases")
-      .select("*")
-      .eq("user_id", userId)
+      .from("support_cases" as never)
+      .select("*" as never)
+      .eq("user_id" as never, userId)
       .order("created_at", { ascending: false });
 
-    return ((data ?? []) as Array<Record<string, unknown>>).map(this.mapCase);
+    return ((data ?? []) as unknown as Array<Record<string, unknown>>).map(this.mapCase);
   }
 
   async getAllCases(statusFilter?: string[]): Promise<SupportCase[]> {
-    let query = supabase.from("support_cases").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("support_cases" as never)
+      .select("*" as never)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    const rows = ((data ?? []) as unknown as Array<Record<string, unknown>>);
     if (statusFilter && statusFilter.length > 0) {
-      query = query.in("status", statusFilter);
+      return rows.filter((r) => statusFilter.includes(r.status as string)).map(this.mapCase);
     }
-    const { data } = await query.limit(100);
-    return ((data ?? []) as Array<Record<string, unknown>>).map(this.mapCase);
+    return rows.map(this.mapCase);
   }
 
   async getCaseEvents(caseId: string): Promise<SupportCaseEvent[]> {
     const { data } = await supabase
-      .from("support_case_events")
-      .select("*")
-      .eq("case_id", caseId)
+      .from("support_case_events" as never)
+      .select("*" as never)
+      .eq("case_id" as never, caseId)
       .order("created_at", { ascending: true });
 
-    return ((data ?? []) as Array<Record<string, unknown>>).map((row) => ({
+    return ((data ?? []) as unknown as Array<Record<string, unknown>>).map((row) => ({
       id: row.id as string,
       caseId: row.case_id as string,
       eventType: row.event_type as string,

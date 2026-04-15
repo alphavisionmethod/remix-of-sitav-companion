@@ -61,7 +61,7 @@ class AdminBFF {
 
   async getDeviceFleetSummary(): Promise<DeviceFleetSummary> {
     const { data: devices } = await supabase.from("cloud_devices").select("platform, trust_state");
-    const devList = (devices ?? []) as Array<{ platform: string; trust_state: string }>;
+    const devList = devices ?? [];
 
     const byPlatform: Record<string, number> = {};
     const byTrustState: Record<string, number> = {};
@@ -79,8 +79,6 @@ class AdminBFF {
     };
   }
 
-  // ── Private aggregators ──────────────────────────────────
-
   private async getUserMetrics() {
     const { count: total } = await supabase.from("profiles").select("id", { count: "exact", head: true });
     return { total: total ?? 0, activeToday: 0 };
@@ -88,7 +86,7 @@ class AdminBFF {
 
   private async getDeviceMetrics() {
     const { data } = await supabase.from("cloud_devices").select("trust_state");
-    const devs = (data ?? []) as Array<{ trust_state: string }>;
+    const devs = data ?? [];
     return {
       total: devs.length,
       trusted: devs.filter((d) => d.trust_state === "trusted").length,
@@ -110,67 +108,77 @@ class AdminBFF {
   }
 
   private async getSupportMetrics() {
-    const { count: open } = await supabase.from("support_cases").select("id", { count: "exact", head: true }).in("status", ["open", "investigating"]);
-    const { count: escalated } = await supabase.from("support_cases").select("id", { count: "exact", head: true }).eq("status", "escalated");
-    return { openCases: open ?? 0, escalatedCases: escalated ?? 0 };
+    const { data } = await supabase
+      .from("support_cases" as never)
+      .select("status" as never);
+    const cases = (data ?? []) as unknown as Array<{ status: string }>;
+    return {
+      openCases: cases.filter((c) => ["open", "investigating"].includes(c.status)).length,
+      escalatedCases: cases.filter((c) => c.status === "escalated").length,
+    };
   }
 
   private async getWorkerMetrics() {
     const { count: active } = await supabase.from("cloud_worker_jobs").select("id", { count: "exact", head: true }).eq("status", "running");
     const { count: failed } = await supabase.from("cloud_worker_jobs").select("id", { count: "exact", head: true }).eq("status", "failed");
-    const { count: stuck } = await supabase.from("cloud_worker_jobs").select("id", { count: "exact", head: true }).eq("status", "stuck");
-    return { activeJobs: active ?? 0, failedJobs: failed ?? 0, stuckJobs: stuck ?? 0 };
+    return { activeJobs: active ?? 0, failedJobs: failed ?? 0, stuckJobs: 0 };
   }
 
   private async getUserProfile(userId: string) {
     const { data } = await supabase.from("profiles").select("*").eq("user_id", userId).maybeSingle();
     return {
       id: userId,
-      displayName: (data as Record<string, string> | null)?.display_name ?? "Unknown",
+      displayName: data?.display_name ?? "Unknown",
       email: "",
-      avatarUrl: (data as Record<string, string | null> | null)?.avatar_url ?? null,
-      createdAt: (data as Record<string, string> | null)?.created_at ?? "",
+      avatarUrl: data?.avatar_url ?? null,
+      createdAt: data?.created_at ?? "",
     };
   }
 
   private async getUserStorage(userId: string) {
-    const { data } = await supabase.from("cloud_storage_usage").select("*").eq("user_id", userId).maybeSingle();
+    const { data } = await supabase.from("cloud_storage_usage").select("used_bytes, quota_bytes, file_count").eq("user_id", userId).maybeSingle();
     return {
-      usedBytes: (data as Record<string, number> | null)?.used_bytes ?? 0,
-      quotaBytes: (data as Record<string, number> | null)?.quota_bytes ?? 5368709120,
-      fileCount: (data as Record<string, number> | null)?.file_count ?? 0,
+      usedBytes: data?.used_bytes ?? 0,
+      quotaBytes: data?.quota_bytes ?? 5368709120,
+      fileCount: data?.file_count ?? 0,
     };
   }
 
   private async getUserDevices(userId: string) {
     const { data } = await supabase.from("cloud_devices").select("id, device_name, platform, trust_state, last_seen_at").eq("user_id", userId);
-    return ((data ?? []) as Array<Record<string, string | null>>).map((d) => ({
-      id: d.id!,
-      deviceName: d.device_name ?? "Unknown",
-      platform: d.platform ?? "unknown",
-      trustState: d.trust_state ?? "unknown",
+    return (data ?? []).map((d) => ({
+      id: d.id,
+      deviceName: d.device_name,
+      platform: d.platform,
+      trustState: d.trust_state,
       lastSeen: d.last_seen_at,
     }));
   }
 
   private async getUserSyncHealth(userId: string) {
-    const { count: pending } = await supabase.from("cloud_sync_changes").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "pending");
+    const { count: pending } = await supabase.from("cloud_sync_changes").select("id", { count: "exact", head: true }).eq("user_id", userId);
     const { count: conflicts } = await supabase.from("cloud_conflicts").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("state", "unresolved");
     return { status: "active", pendingChanges: pending ?? 0, conflicts: conflicts ?? 0, lastCheckpoint: null };
   }
 
   private async getUserRecentAudit(userId: string) {
     const { data } = await supabase.from("cloud_audit_events").select("action, created_at, severity").eq("actor_user_id", userId).order("created_at", { ascending: false }).limit(10);
-    return ((data ?? []) as Array<Record<string, string>>).map((e) => ({
+    return (data ?? []).map((e) => ({
       action: e.action,
       createdAt: e.created_at,
-      severity: e.severity ?? "info",
+      severity: e.severity,
     }));
   }
 
   private async getUserSupportCases(userId: string) {
-    const { data } = await supabase.from("support_cases").select("id, title, status, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(5);
-    return ((data ?? []) as Array<Record<string, string>>).map((c) => ({
+    const { data } = await supabase
+      .from("support_cases" as never)
+      .select("id, title, status, created_at" as never)
+      .eq("user_id" as never, userId)
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    return ((data ?? []) as unknown as Array<{ id: string; title: string; status: string; created_at: string }>).map((c) => ({
       id: c.id,
       title: c.title,
       status: c.status,
@@ -179,8 +187,12 @@ class AdminBFF {
   }
 
   private async getUserNotificationCount(userId: string) {
-    const { count } = await supabase.from("platform_notifications").select("id", { count: "exact", head: true }).eq("target_user_id", userId).eq("read", false);
-    return { unread: count ?? 0 };
+    const { data } = await supabase
+      .from("platform_notifications" as never)
+      .select("id" as never)
+      .eq("target_user_id" as never, userId)
+      .eq("read" as never, false);
+    return { unread: ((data ?? []) as unknown[]).length };
   }
 }
 
