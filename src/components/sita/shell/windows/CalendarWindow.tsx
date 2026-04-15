@@ -141,14 +141,14 @@ export default function CalendarWindow() {
     if (m < 0) { m = 11; y--; }
     setViewMonth(m);
     setViewYear(y);
-    SoundEngine.play("tap");
+    SoundEngine.click();
   }, [viewMonth, viewYear]);
 
   const goToday = useCallback(() => {
     setSelectedDate(today);
     setViewMonth(today.getMonth());
     setViewYear(today.getFullYear());
-    SoundEngine.play("tap");
+    SoundEngine.click();
   }, [today]);
 
   const selectedDateStr = toDateStr(selectedDate);
@@ -158,19 +158,19 @@ export default function CalendarWindow() {
   const handleCreateEvent = useCallback((input: CalendarEventInput) => {
     createMutation.mutate(input);
     setShowCreateDialog(false);
-    SoundEngine.play("success");
+    SoundEngine.approve();
   }, [createMutation]);
 
   const handleDeleteEvent = useCallback((id: string) => {
     if (id.startsWith("demo-") || id.startsWith("apt-")) return;
     deleteMutation.mutate(id);
     setEditingEvent(null);
-    SoundEngine.play("tap");
+    SoundEngine.click();
   }, [deleteMutation]);
 
   return (
-    <AppStateWrapper appId="calendar" appName="Calendar" isLoading={isLoading}>
-      <AppLayout title="Calendar" icon="📅">
+    <>
+      <AppLayout>
         <div className="flex h-full overflow-hidden">
           {/* ── Sidebar ── */}
           {!sidebarCollapsed && (
@@ -187,7 +187,7 @@ export default function CalendarWindow() {
                   month={viewMonth}
                   selectedDate={selectedDate}
                   events={events}
-                  onSelectDate={(d) => { setSelectedDate(d); SoundEngine.play("tap"); }}
+                  onSelectDate={(d) => { setSelectedDate(d); SoundEngine.click(); }}
                   onNavigate={navigateMonth}
                 />
               </div>
@@ -266,7 +266,7 @@ export default function CalendarWindow() {
                 {(["day", "week", "month", "agenda"] as ViewMode[]).map(v => (
                   <button
                     key={v}
-                    onClick={() => { setViewMode(v); SoundEngine.play("tap"); }}
+                    onClick={() => { setViewMode(v); SoundEngine.click(); }}
                     className={cn(
                       "px-2 py-1 rounded-md text-[9px] font-medium transition-all capitalize",
                       viewMode === v
@@ -276,7 +276,7 @@ export default function CalendarWindow() {
                   >{v}</button>
                 ))}
                 <button
-                  onClick={() => { setShowCreateDialog(true); SoundEngine.play("tap"); }}
+                  onClick={() => { setShowCreateDialog(true); SoundEngine.click(); }}
                   className="flex items-center gap-1 px-2 py-1 rounded-md text-[9px] font-medium bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:opacity-90 transition-opacity ml-1"
                 >
                   <Plus className="w-3 h-3" /> New Event
@@ -344,7 +344,7 @@ export default function CalendarWindow() {
           />
         )}
       </AppLayout>
-    </AppStateWrapper>
+    </>
   );
 }
 
