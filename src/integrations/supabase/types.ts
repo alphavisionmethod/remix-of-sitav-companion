@@ -3986,6 +3986,36 @@ export type Database = {
           },
         ]
       }
+      communication_metrics: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json | null
+          metric_type: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          user_id: string
+          value?: number
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
@@ -6096,6 +6126,54 @@ export type Database = {
           platform?: string | null
           sent_at?: string | null
           status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          channel: string
+          created_at: string
+          email_enabled: boolean
+          enabled: boolean
+          id: string
+          in_app_enabled: boolean
+          push_enabled: boolean
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          scope: string
+          updated_at: string
+          urgency_filter: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          email_enabled?: boolean
+          enabled?: boolean
+          id?: string
+          in_app_enabled?: boolean
+          push_enabled?: boolean
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          scope?: string
+          updated_at?: string
+          urgency_filter?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          email_enabled?: boolean
+          enabled?: boolean
+          id?: string
+          in_app_enabled?: boolean
+          push_enabled?: boolean
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          scope?: string
+          updated_at?: string
+          urgency_filter?: string
           user_id?: string
         }
         Relationships: []
