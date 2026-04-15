@@ -990,8 +990,12 @@ export default function CommunicationHub() {
             { value: "commands", label: "Commands", icon: Terminal },
             { value: "system", label: "System", icon: Activity },
             { value: "security", label: "Security", icon: Shield },
+            { value: "sync", label: "Sync", icon: RefreshCw },
+            { value: "notifications", label: "Notifications", icon: Bell },
+            { value: "updates", label: "Updates", icon: Zap },
             { value: "policies", label: "Policies", icon: FileText },
             { value: "apps", label: "Apps", icon: Box },
+            { value: "audit", label: "Audit", icon: Eye },
             { value: "timeline", label: "Timeline", icon: Clock },
             { value: "api", label: "API Domains", icon: Network },
           ].map(tab => (
@@ -1010,8 +1014,12 @@ export default function CommunicationHub() {
           <TabsContent value="commands"><CommandsPanel /></TabsContent>
           <TabsContent value="system"><SystemPanel /></TabsContent>
           <TabsContent value="security"><SecurityPanel /></TabsContent>
+          <TabsContent value="sync"><SyncPanel /></TabsContent>
+          <TabsContent value="notifications"><NotificationsPanel /></TabsContent>
+          <TabsContent value="updates"><UpdatesPanel /></TabsContent>
           <TabsContent value="policies"><PoliciesPanel /></TabsContent>
           <TabsContent value="apps"><AppsPanel /></TabsContent>
+          <TabsContent value="audit"><AuditPanel /></TabsContent>
           <TabsContent value="timeline"><TimelinePanel /></TabsContent>
           <TabsContent value="api"><ApiDomainsPanel /></TabsContent>
         </div>
