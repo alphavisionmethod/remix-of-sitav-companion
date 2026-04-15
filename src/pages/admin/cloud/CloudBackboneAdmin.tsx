@@ -41,6 +41,12 @@ import { EnvironmentSwitcher } from "./EnvironmentSwitcher";
 import { SupportConsoleSafe } from "./SupportConsoleSafe";
 import { AdminTokenManager } from "./AdminTokenManager";
 import { ApiGatewayRoutesAdmin } from "./ApiGatewayRoutesAdmin";
+// Part 2 — Platform Glue tabs
+import { DomainOwnershipAdmin } from "./DomainOwnershipAdmin";
+import { ServiceIdentityAdmin } from "./ServiceIdentityAdmin";
+import { AdminSafetyRails } from "./AdminSafetyRails";
+import { SupportCaseManager } from "./SupportCaseManager";
+import { ConfigChangeHistory } from "./ConfigChangeHistory";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -81,6 +87,12 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   "support-safe": SupportConsoleSafe,
   tokens: AdminTokenManager,
   "gateway-routes": ApiGatewayRoutesAdmin,
+  // Part 2 — Platform Glue tabs
+  "domain-ownership": DomainOwnershipAdmin,
+  "service-identity": ServiceIdentityAdmin,
+  "safety-rails": AdminSafetyRails,
+  "support-cases": SupportCaseManager,
+  "config-history": ConfigChangeHistory,
 };
 
 export default function CloudBackboneAdmin() {

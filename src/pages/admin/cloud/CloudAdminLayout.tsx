@@ -6,7 +6,7 @@ import {
   Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale,
   Building2, Server, Cog, DollarSign, LifeBuoy, FileCheck,
   Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket,
-  Key, Globe, Search, Network
+  Key, Globe, Search, Network, ShieldAlert, History, MessageSquare
 } from "lucide-react";
 
 const tabs = [
@@ -48,6 +48,12 @@ const tabs = [
   { key: "support-safe", label: "Support Safe", icon: LifeBuoy },
   { key: "tokens", label: "Tokens", icon: Key },
   { key: "gateway-routes", label: "Gateway", icon: Network },
+  // Part 2 — Platform Glue tabs
+  { key: "domain-ownership", label: "Domains", icon: Network },
+  { key: "service-identity", label: "Service Auth", icon: Fingerprint },
+  { key: "safety-rails", label: "Safety Rails", icon: ShieldAlert },
+  { key: "support-cases", label: "Cases", icon: MessageSquare },
+  { key: "config-history", label: "Config History", icon: History },
 ] as const;
 
 export type CloudTab = (typeof tabs)[number]["key"];
@@ -58,7 +64,6 @@ interface CloudAdminLayoutProps {
   children: React.ReactNode;
 }
 
-// Tab grouping for visual separation
 const TAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: "Core", keys: ["dashboard", "users", "tenants", "devices"] },
   { label: "Storage & Sync", keys: ["storage", "storage-health", "sync", "sync-objects"] },
@@ -67,6 +72,7 @@ const TAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: "Governance", keys: ["policy", "governance", "feature-flags", "maintenance"] },
   { label: "Collaboration", keys: ["activity", "collaboration", "sharing", "support", "observability", "bootstrap"] },
   { label: "Platform", keys: ["planes", "rbac", "admin-audit", "environments", "support-safe", "tokens", "gateway-routes"] },
+  { label: "Platform Glue", keys: ["domain-ownership", "service-identity", "safety-rails", "support-cases", "config-history"] },
 ];
 
 function getEnvironmentBadge(): { label: string; colorClass: string } {
@@ -85,7 +91,6 @@ export function CloudAdminLayout({ activeTab, onTabChange, children }: CloudAdmi
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center">
           <Cloud className="h-5 w-5 text-primary" />
@@ -109,7 +114,6 @@ export function CloudAdminLayout({ activeTab, onTabChange, children }: CloudAdmi
         </div>
       </div>
 
-      {/* Tab Navigation — grouped */}
       <div className="space-y-2 max-h-[220px] overflow-y-auto p-1 bg-muted/30 rounded-lg border border-border/50">
         {TAB_GROUPS.map((group) => {
           const groupTabs = tabs.filter((t) => group.keys.includes(t.key));
@@ -145,7 +149,6 @@ export function CloudAdminLayout({ activeTab, onTabChange, children }: CloudAdmi
         })}
       </div>
 
-      {/* Content */}
       <motion.div
         key={activeTab}
         initial={{ opacity: 0, y: 8 }}
