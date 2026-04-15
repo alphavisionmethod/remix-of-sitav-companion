@@ -7,7 +7,7 @@ import {
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
   PanelLeft, Settings, Sparkles, SlidersHorizontal, ShieldAlert, FileText,
-  Zap, Monitor
+  Zap, Monitor, Radio, RotateCcw
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
 import { useState as useReactState } from "react";
@@ -86,6 +86,17 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Emergency Authority", icon: ShieldAlert, path: "/admin/mc/emergency" },
       { label: "Platform Adaptation", icon: Zap, path: "/admin/mc/platform-adaptation" },
       { label: "State Authority Map", icon: Layers, path: "/admin/mc/state-authority" },
+    ],
+  },
+  {
+    title: "Architecture Governance",
+    items: [
+      { label: "Feature Ownership", icon: Layers, path: "/admin/mc/feature-ownership" },
+      { label: "Command Routing", icon: Radio, path: "/admin/mc/command-routing" },
+      { label: "Approval Flow", icon: ShieldAlert, path: "/admin/mc/approval-flow" },
+      { label: "Failure & Recovery", icon: RotateCcw, path: "/admin/mc/failure-recovery" },
+      { label: "Event Routing", icon: Activity, path: "/admin/mc/event-routing" },
+      { label: "Architecture Tests", icon: Shield, path: "/admin/mc/architecture-tests" },
     ],
   },
 ];

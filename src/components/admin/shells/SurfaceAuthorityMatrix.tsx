@@ -27,23 +27,27 @@ interface AuthorityEntry {
   rollbackAvailable: boolean;
   riskLevel: "low" | "medium" | "high" | "critical";
   description: string;
+  decisionSurface: "os" | "cloud" | "app" | "os_cloud" | "app_cloud";
+  recoverySurface: "os" | "cloud" | "app" | "os_cloud" | "app_cloud";
 }
 
 const DEMO_AUTHORITY_DATA: AuthorityEntry[] = [
-  { id: "am-1", action: "Install trusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: true, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "low", description: "Install from official, policy-verified catalog. Cloud validates trust signature, OS handles installation." },
-  { id: "am-2", action: "Install untrusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "Requires App approval for unknown publisher. Cloud evaluates risk score and policy compliance." },
-  { id: "am-3", action: "Remote device lock", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "App-exclusive emergency action. Cloud validates identity, OS enforces lock state." },
-  { id: "am-4", action: "Sync file to device", domain: "Sync", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: false, riskLevel: "low", description: "OS initiates sync, Cloud resolves conflicts and coordinates canonical state." },
-  { id: "am-5", action: "Remove trusted device", domain: "Trust", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: false, riskLevel: "critical", description: "App-only action. Cloud revokes device trust. Device session terminated remotely." },
-  { id: "am-6", action: "Export encrypted data", domain: "Security", osCanInitiate: true, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "high", description: "Both surfaces can initiate. App confirms via out-of-band approval. Cloud authorizes key release." },
-  { id: "am-7", action: "Open workspace", domain: "Continuity", osCanInitiate: true, appCanInitiate: false, cloudDecides: false, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: false, riskLevel: "low", description: "OS-exclusive continuity action. Local state restored from cache or cloud." },
-  { id: "am-8", action: "Change trust threshold", domain: "Trust", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "Admin/App initiated. Cloud evaluates policy impact before applying new threshold." },
-  { id: "am-9", action: "Emergency account freeze", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "critical", description: "App-exclusive emergency action. All sessions terminated, all sync paused." },
-  { id: "am-10", action: "Resume workspace handoff", domain: "Continuity", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "medium", description: "OS initiates continuity handoff. Cloud verifies device trust before releasing state." },
-  { id: "am-11", action: "Canary rollout expansion", domain: "Releases", osCanInitiate: false, appCanInitiate: false, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "medium", description: "Admin-plane initiated. Cloud decides based on health metrics. App approves expansion." },
-  { id: "am-12", action: "AI budget policy change", domain: "Intelligence", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "medium", description: "App/Admin initiated. Cloud enforces new budget limits across all AI workforce roles." },
-  { id: "am-13", action: "Force sign-out everywhere", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "critical", description: "App-exclusive. Cloud invalidates all sessions. All OS instances sign out immediately." },
-  { id: "am-14", action: "Local performance tuning", domain: "Performance", osCanInitiate: true, appCanInitiate: false, cloudDecides: false, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: true, riskLevel: "low", description: "OS-only. Device-local optimization with no cloud dependency. Fully reversible." },
+  { id: "am-1", action: "Install trusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: true, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "low", description: "Install from official, policy-verified catalog. Cloud validates trust signature, OS handles installation.", decisionSurface: "cloud", recoverySurface: "os" },
+  { id: "am-2", action: "Install untrusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "Requires App approval for unknown publisher. Cloud evaluates risk score and policy compliance.", decisionSurface: "cloud", recoverySurface: "os" },
+  { id: "am-3", action: "Remote device lock", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "App-exclusive emergency action. Cloud validates identity, OS enforces lock state.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
+  { id: "am-4", action: "Sync file to device", domain: "Sync", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: false, riskLevel: "low", description: "OS initiates sync, Cloud resolves conflicts and coordinates canonical state.", decisionSurface: "cloud", recoverySurface: "os_cloud" },
+  { id: "am-5", action: "Remove trusted device", domain: "Trust", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: false, riskLevel: "critical", description: "App-only action. Cloud revokes device trust. Device session terminated remotely.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
+  { id: "am-6", action: "Export encrypted data", domain: "Security", osCanInitiate: true, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "high", description: "Both surfaces can initiate. App confirms via out-of-band approval. Cloud authorizes key release.", decisionSurface: "cloud", recoverySurface: "cloud" },
+  { id: "am-7", action: "Open workspace", domain: "Continuity", osCanInitiate: true, appCanInitiate: false, cloudDecides: false, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: false, riskLevel: "low", description: "OS-exclusive continuity action. Local state restored from cache or cloud.", decisionSurface: "os", recoverySurface: "os" },
+  { id: "am-8", action: "Change trust threshold", domain: "Trust", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "Admin/App initiated. Cloud evaluates policy impact before applying new threshold.", decisionSurface: "app_cloud", recoverySurface: "cloud" },
+  { id: "am-9", action: "Emergency account freeze", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "critical", description: "App-exclusive emergency action. All sessions terminated, all sync paused.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
+  { id: "am-10", action: "Resume workspace handoff", domain: "Continuity", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "medium", description: "OS initiates continuity handoff. Cloud verifies device trust before releasing state.", decisionSurface: "cloud", recoverySurface: "os_cloud" },
+  { id: "am-11", action: "Canary rollout expansion", domain: "Releases", osCanInitiate: false, appCanInitiate: false, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "medium", description: "Admin-plane initiated. Cloud decides based on health metrics. App approves expansion.", decisionSurface: "cloud", recoverySurface: "cloud" },
+  { id: "am-12", action: "AI budget policy change", domain: "Intelligence", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: true, riskLevel: "medium", description: "App/Admin initiated. Cloud enforces new budget limits across all AI workforce roles.", decisionSurface: "cloud", recoverySurface: "cloud" },
+  { id: "am-13", action: "Force sign-out everywhere", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "critical", description: "App-exclusive. Cloud invalidates all sessions. All OS instances sign out immediately.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
+  { id: "am-14", action: "Local performance tuning", domain: "Performance", osCanInitiate: true, appCanInitiate: false, cloudDecides: false, appApproves: false, osExecutes: true, offlineCapable: true, rollbackAvailable: true, riskLevel: "low", description: "OS-only. Device-local optimization with no cloud dependency. Fully reversible.", decisionSurface: "os", recoverySurface: "os" },
+  { id: "am-15", action: "Force sync all devices", domain: "Sync", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: false, riskLevel: "medium", description: "App initiates fleet-wide sync. Cloud orchestrates order and conflict resolution. Each OS executes its sync.", decisionSurface: "cloud", recoverySurface: "os_cloud" },
+  { id: "am-16", action: "Delete trusted device", domain: "Trust", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: false, offlineCapable: false, rollbackAvailable: false, riskLevel: "critical", description: "App initiates permanent device removal. Cloud requires strong reauth. Device session and data purged per policy.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
 ];
 
 const DOMAIN_COLORS: Record<string, string> = {
@@ -88,9 +92,19 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
     { label: "Cloud Decides", icon: Cloud, tooltip: "Cloud evaluates and decides" },
     { label: "App Approves", icon: Lock, tooltip: "Requires App approval" },
     { label: "OS Executes", icon: Monitor, tooltip: "OS performs the execution" },
+    { label: "Decides", icon: Cloud, tooltip: "Decision surface owner" },
+    { label: "Recovery", icon: RotateCcw, tooltip: "Recovery surface owner" },
     { label: "Offline", icon: Wifi, tooltip: "Works without cloud connectivity" },
     { label: "Rollback", icon: RotateCcw, tooltip: "Action can be reversed" },
   ];
+
+  const SURFACE_LABELS: Record<string, { label: string; color: string }> = {
+    os: { label: "OS", color: "text-blue-400" },
+    cloud: { label: "Cloud", color: "text-cyan-400" },
+    app: { label: "App", color: "text-purple-400" },
+    os_cloud: { label: "OS+Cloud", color: "text-teal-400" },
+    app_cloud: { label: "App+Cloud", color: "text-indigo-400" },
+  };
 
   return (
     <Card className="border-white/[0.06] bg-white/[0.03] backdrop-blur-xl">
@@ -189,6 +203,12 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
                           <td className="px-3 py-2.5"><BoolCell value={entry.cloudDecides} /></td>
                           <td className="px-3 py-2.5"><BoolCell value={entry.appApproves} /></td>
                           <td className="px-3 py-2.5"><BoolCell value={entry.osExecutes} /></td>
+                          <td className="px-3 py-2.5 text-center">
+                            <span className={cn("text-[8px] font-medium", SURFACE_LABELS[entry.decisionSurface]?.color)}>{SURFACE_LABELS[entry.decisionSurface]?.label}</span>
+                          </td>
+                          <td className="px-3 py-2.5 text-center">
+                            <span className={cn("text-[8px] font-medium", SURFACE_LABELS[entry.recoverySurface]?.color)}>{SURFACE_LABELS[entry.recoverySurface]?.label}</span>
+                          </td>
                           <td className="px-3 py-2.5">
                             {entry.offlineCapable
                               ? <Wifi className="h-3.5 w-3.5 text-emerald-400 mx-auto" />
@@ -203,7 +223,7 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
                         </tr>
                         {expandedId === entry.id && (
                           <tr key={`${entry.id}-detail`}>
-                            <td colSpan={9} className="px-4 py-3 bg-white/[0.02]">
+                            <td colSpan={11} className="px-4 py-3 bg-white/[0.02]">
                               <motion.div
                                 initial={{ opacity: 0, y: -4 }}
                                 animate={{ opacity: 1, y: 0 }}
