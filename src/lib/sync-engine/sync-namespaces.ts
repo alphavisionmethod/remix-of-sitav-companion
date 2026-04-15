@@ -438,4 +438,4 @@ class NamespaceRegistry {
 /** Singleton namespace registry */
 export const namespaceRegistry = new NamespaceRegistry();
 
-export type { SyncNamespace, NamespacePolicyFlags };
+
