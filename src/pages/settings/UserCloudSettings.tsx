@@ -8,13 +8,15 @@ import {
   Cloud, HardDrive, Smartphone, RefreshCw, Shield, Clock,
   Trash2, History, CheckCircle, Lock, Wifi, Laptop, TabletSmartphone,
   Folder, FolderOpen, Eye, EyeOff, Zap, Radio, AlertTriangle,
-  FileText, Image, Music, Video, Database, Globe, Sparkles
+  FileText, Image, Music, Video, Database, Globe, Sparkles,
+  Download, Users, Activity, Wrench, Search
 } from "lucide-react";
 import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
 import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";
+import { SyncActivityJournal } from "@/components/sita/SyncActivityJournal";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [
@@ -272,11 +274,45 @@ export default function UserCloudSettings() {
           <Button variant="outline" className="w-full justify-start text-sm" onClick={() => toast.info("Version history opening...")}>
             <History className="h-4 w-4 mr-2" /> Version History Browser
           </Button>
-          <Button variant="outline" className="w-full justify-start text-sm" onClick={() => toast.info("Activity log opening...")}>
-            <Clock className="h-4 w-4 mr-2" /> Recent Activity
+          <Button variant="outline" className="w-full justify-start text-sm" onClick={() => toast.info("Data export requested")}>
+            <Download className="h-4 w-4 mr-2" /> Export All Data
           </Button>
         </CardContent>
       </Card>
+
+      {/* Repair & Diagnostics */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Wrench className="h-4 w-4 text-primary" /> Repair & Diagnostics
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {[
+            { label: "Reset Local Cache", desc: "Clear and rebuild sync cache", risk: "safe" },
+            { label: "Rebuild Search Index", desc: "Recreate local search index", risk: "safe" },
+            { label: "Retry Failed Uploads", desc: "Retry all pending upload jobs", risk: "safe" },
+            { label: "Force Re-download", desc: "Re-download all data from cloud", risk: "medium" },
+          ].map(action => (
+            <Button
+              key={action.label}
+              variant="outline"
+              className="w-full justify-between text-sm"
+              onClick={() => toast.success(`${action.label} completed`)}
+            >
+              <span className="flex items-center gap-2">
+                <Wrench className="h-4 w-4" /> {action.label}
+              </span>
+              <Badge variant="outline" className={cn("text-xs", action.risk === "safe" ? "text-emerald-400 border-emerald-400/30" : "text-amber-400 border-amber-400/30")}>
+                {action.risk}
+              </Badge>
+            </Button>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Activity Journal */}
+      <SyncActivityJournal maxEntries={8} />
     </div>
   );
 }
