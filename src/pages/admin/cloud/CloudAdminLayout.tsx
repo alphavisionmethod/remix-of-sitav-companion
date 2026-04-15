@@ -47,6 +47,7 @@ const tabs = [
   { key: "environments", label: "Environments", icon: Globe },
   { key: "support-safe", label: "Support Safe", icon: LifeBuoy },
   { key: "tokens", label: "Tokens", icon: Key },
+  { key: "gateway-routes", label: "Gateway", icon: Network },
 ] as const;
 
 export type CloudTab = (typeof tabs)[number]["key"];
