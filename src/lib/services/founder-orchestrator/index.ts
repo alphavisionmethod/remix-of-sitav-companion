@@ -302,10 +302,10 @@ export const founderOrchestrator = {
     const tasks = this.decomposeToTaskGraph(intentText, parsed.domain);
     const assignments = this.classifyAgentAssignment(tasks);
 
-    const riskLevel = tasks.reduce<TaskRisk>((max, t) => {
-      const order: TaskRisk[] = ["low", "medium", "high", "critical"];
-      return order.indexOf(t.risk) > order.indexOf(max) ? t.risk : max;
-    }, "low");
+    const riskOrder = ["low", "medium", "high", "critical"];
+    const riskLevel = tasks.reduce((max: string, t) => {
+      return riskOrder.indexOf(t.risk) > riskOrder.indexOf(max) ? t.risk : max;
+    }, "low") as TaskRisk;
 
     const { data, error } = await fromTable("founder_directives").insert({
       user_id: userId,
