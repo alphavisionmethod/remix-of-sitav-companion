@@ -1,13 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Platform Infrastructure Initialization
 // Wires Electron bridge + offline sync + core substrate hydration
-// + Realtime event bridge + Sync Engine
+// + Realtime event bridge + Sync Engine + Unified WS
 // ═══════════════════════════════════════════════════════════════
 
 import { useElectronBridge } from "@/hooks/useElectronBridge";
 import { useOfflineStore } from "@/hooks/useOfflineStore";
 import { useCoreSubstrateHydration } from "@/hooks/useCoreSubstrateHydration";
 import { useRealtimeBridge } from "@/hooks/useRealtimeBridge";
+import { useUnifiedWsBridge, useWsCacheInvalidation } from "@/hooks/use-unified-ws";
 import { useEffect } from "react";
 import { createCloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
 import { bootOSSecurity, isOSSecurityBooted } from "@/lib/os-security";
@@ -22,6 +23,8 @@ export function PlatformInit() {
   useOfflineStore({ key: "sita-platform-sync", enableSync: true });
   useCoreSubstrateHydration();
   useRealtimeBridge();
+  useUnifiedWsBridge();
+  useWsCacheInvalidation();
 
   // Start Cloud Sync Manager
   useEffect(() => {

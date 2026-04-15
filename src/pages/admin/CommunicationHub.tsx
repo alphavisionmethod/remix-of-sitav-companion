@@ -3,7 +3,7 @@
 // Unified view of all API domains, commands, events, and channels
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +30,8 @@ import { useUnifiedTimeline, useAuditTimeline } from "@/hooks/use-os-api";
 import { useSyncStatus, useSyncConflicts, useSyncControl } from "@/hooks/use-os-api";
 import { useUpdateControl, useUpdateHistory } from "@/hooks/use-os-api";
 import { channelManager } from "@/lib/services/realtime-gateway/resilient-channel";
+import { useWsEventStream, useWsConnectionStatus, useWsEventRate } from "@/hooks/use-unified-ws";
+import type { WsEventEnvelope, WsEventScope } from "@/packages/contracts/core/ws-event-envelope";
 import type { CommandStatus } from "@/lib/api/os-api-client";
 
 // ── Status Helpers ─────────────────────────────────────────────
@@ -950,6 +952,291 @@ function ApiDomainsPanel() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// LIVE STREAM TAB
+// ═══════════════════════════════════════════════════════════════
+
+const SCOPE_COLORS: Record<string, string> = {
+  system: "bg-blue-500/20 text-blue-400",
+  command: "bg-purple-500/20 text-purple-400",
+  security: "bg-red-500/20 text-red-400",
+  sync: "bg-cyan-500/20 text-cyan-400",
+  device: "bg-amber-500/20 text-amber-400",
+  update: "bg-emerald-500/20 text-emerald-400",
+  ai: "bg-violet-500/20 text-violet-400",
+  healing: "bg-teal-500/20 text-teal-400",
+  notification: "bg-yellow-500/20 text-yellow-400",
+  timeline: "bg-indigo-500/20 text-indigo-400",
+  audit: "bg-zinc-500/20 text-zinc-400",
+  admin: "bg-rose-500/20 text-rose-400",
+};
+
+const RISK_COLORS: Record<string, string> = {
+  none: "bg-zinc-500/20 text-zinc-400",
+  low: "bg-green-500/20 text-green-400",
+  medium: "bg-amber-500/20 text-amber-400",
+  high: "bg-orange-500/20 text-orange-400",
+  critical: "bg-red-500/20 text-red-400",
+};
+
+const ALL_SCOPES: WsEventScope[] = [
+  "system", "command", "security", "sync", "device",
+  "update", "ai", "healing", "notification", "timeline", "audit",
+];
+
+function LiveStreamPanel() {
+  const { events, clear } = useWsEventStream(["*"], 200);
+  const { state, isConnected, metrics } = useWsConnectionStatus();
+  const rate = useWsEventRate();
+  const [scopeFilter, setScopeFilter] = useState<Set<WsEventScope>>(new Set());
+  const [selectedEvent, setSelectedEvent] = useState<WsEventEnvelope | null>(null);
+
+  const filtered = useMemo(() => {
+    if (scopeFilter.size === 0) return events;
+    return events.filter((e) => scopeFilter.has(e.scope));
+  }, [events, scopeFilter]);
+
+  const toggleScope = (scope: WsEventScope) => {
+    setScopeFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(scope)) next.delete(scope); else next.add(scope);
+      return next;
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Connection Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className={`h-3 w-3 rounded-full ${isConnected ? "bg-emerald-400 animate-pulse" : state === "reconnecting" ? "bg-amber-400 animate-pulse" : "bg-red-400"}`} />
+          <span className="text-sm font-medium capitalize">{state}</span>
+          <Badge variant="outline" className="text-xs">{rate.toFixed(1)} evt/s</Badge>
+          <Badge variant="outline" className="text-xs">{metrics.eventCount} total</Badge>
+          {metrics.lastLatencyMs !== null && (
+            <Badge variant="outline" className="text-xs">{metrics.lastLatencyMs}ms latency</Badge>
+          )}
+        </div>
+        <Button variant="outline" size="sm" onClick={clear}>
+          <RotateCcw className="h-3.5 w-3.5 mr-1" /> Clear
+        </Button>
+      </div>
+
+      {/* Scope Filter Chips */}
+      <div className="flex flex-wrap gap-1.5">
+        {ALL_SCOPES.map((scope) => (
+          <button
+            key={scope}
+            onClick={() => toggleScope(scope)}
+            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+              scopeFilter.size === 0 || scopeFilter.has(scope)
+                ? SCOPE_COLORS[scope] ?? "bg-zinc-500/20 text-zinc-400"
+                : "bg-white/[0.03] text-muted-foreground opacity-40"
+            }`}
+          >
+            {scope}
+          </button>
+        ))}
+      </div>
+
+      {/* Event Stream + Detail */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2 bg-white/[0.02] border-white/[0.06]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Live Events ({filtered.length})</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <ScrollArea className="h-[500px]">
+              <div className="divide-y divide-white/[0.04]">
+                {filtered.length === 0 && (
+                  <div className="p-8 text-center text-muted-foreground text-sm">
+                    <Radio className="h-8 w-8 mx-auto mb-2 opacity-30" />
+                    Waiting for events...
+                  </div>
+                )}
+                {filtered.map((evt) => (
+                  <button
+                    key={evt.event_id}
+                    onClick={() => setSelectedEvent(evt)}
+                    className={`w-full text-left px-4 py-2.5 hover:bg-white/[0.03] transition-colors ${
+                      selectedEvent?.event_id === evt.event_id ? "bg-primary/5" : ""
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={`${SCOPE_COLORS[evt.scope] ?? ""} border-0 text-[10px]`}>
+                          {evt.scope}
+                        </Badge>
+                        <span className="text-xs font-mono text-foreground">{evt.type}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {evt.risk_level !== "none" && (
+                          <Badge variant="outline" className={`${RISK_COLORS[evt.risk_level] ?? ""} border-0 text-[10px]`}>
+                            {evt.risk_level}
+                          </Badge>
+                        )}
+                        <span className="text-[10px] text-muted-foreground font-mono">
+                          {new Date(evt.timestamp).toLocaleTimeString()}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
+                      {evt.actor_type}:{evt.actor_id} → {evt.source}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+
+        {/* Detail Panel */}
+        <Card className="bg-white/[0.02] border-white/[0.06]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Event Detail</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedEvent ? (
+              <div className="space-y-3 text-xs">
+                {([
+                  ["Event ID", selectedEvent.event_id],
+                  ["Type", selectedEvent.type],
+                  ["Scope", selectedEvent.scope],
+                  ["Risk", selectedEvent.risk_level],
+                  ["Correlation", selectedEvent.correlation_id],
+                  ["Actor", `${selectedEvent.actor_type}:${selectedEvent.actor_id}`],
+                  ["Source", selectedEvent.source],
+                  ["Timestamp", selectedEvent.timestamp],
+                  ["Seq", String(selectedEvent.seq ?? "—")],
+                  ["Device", selectedEvent.device_id ?? "—"],
+                  ["Domain", selectedEvent.domain ?? "—"],
+                ] as [string, string][]).map(([label, value]) => (
+                  <div key={label}>
+                    <span className="text-muted-foreground">{label}:</span>
+                    <span className="ml-2 font-mono text-foreground break-all">{value}</span>
+                  </div>
+                ))}
+                <div>
+                  <span className="text-muted-foreground">Payload:</span>
+                  <pre className="mt-1 p-2 rounded bg-white/[0.03] overflow-auto text-[10px] max-h-48 font-mono">
+                    {JSON.stringify(selectedEvent.payload, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">Select an event to view details</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// OBSERVABILITY TAB
+// ═══════════════════════════════════════════════════════════════
+
+function ObservabilityPanel() {
+  const { state, metrics, activeScopes } = useWsConnectionStatus();
+  const rate = useWsEventRate();
+
+  const metricCards = [
+    { label: "Connection State", value: state, icon: Radio, color: state === "connected" ? "text-emerald-400" : "text-amber-400" },
+    { label: "Total Events", value: metrics.eventCount.toLocaleString(), icon: Activity, color: "text-blue-400" },
+    { label: "Event Rate", value: `${rate.toFixed(1)}/s`, icon: Zap, color: "text-purple-400" },
+    { label: "Connects", value: metrics.connectCount, icon: CheckCircle2, color: "text-emerald-400" },
+    { label: "Disconnects", value: metrics.disconnectCount, icon: XCircle, color: "text-red-400" },
+    { label: "Reconnects", value: metrics.reconnectCount, icon: RefreshCw, color: "text-amber-400" },
+    { label: "Last Latency", value: metrics.lastLatencyMs !== null ? `${metrics.lastLatencyMs}ms` : "—", icon: Clock, color: "text-cyan-400" },
+    { label: "Stale Corrections", value: metrics.staleCorrections, icon: AlertTriangle, color: "text-orange-400" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Metric Cards Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {metricCards.map((card) => (
+          <Card key={card.label} className="bg-white/[0.02] border-white/[0.06]">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <card.icon className={`h-4 w-4 ${card.color}`} />
+                <span className={`text-lg font-bold ${card.color}`}>{String(card.value)}</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground">{card.label}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Active Subscriptions */}
+      <Card className="bg-white/[0.02] border-white/[0.06]">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <Layers className="h-4 w-4 text-primary" />
+            Active Subscriptions by Scope
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            {activeScopes.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No active scoped subscriptions (wildcard active)</p>
+            ) : (
+              activeScopes.map((scope) => (
+                <Badge key={scope} variant="outline" className={`${SCOPE_COLORS[scope] ?? ""} border-0`}>
+                  {scope}
+                </Badge>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Connection Timeline */}
+      <Card className="bg-white/[0.02] border-white/[0.06]">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <Network className="h-4 w-4 text-primary" />
+            Connection Health
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Uptime</span>
+              <span className="font-mono">
+                {metrics.connectionStartedAt
+                  ? `${Math.floor((Date.now() - metrics.connectionStartedAt) / 60_000)}m`
+                  : "—"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Last Event</span>
+              <span className="font-mono">
+                {metrics.lastEventAt
+                  ? new Date(metrics.lastEventAt).toLocaleTimeString()
+                  : "—"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Reconnect Success Rate</span>
+              <span className="font-mono">
+                {metrics.reconnectCount > 0
+                  ? `${Math.round((metrics.connectCount / (metrics.connectCount + metrics.reconnectCount)) * 100)}%`
+                  : "100%"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Duplicate Suppressed</span>
+              <span className="font-mono">{metrics.staleCorrections}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // MAIN PAGE
 // ═══════════════════════════════════════════════════════════════
 
@@ -988,6 +1275,7 @@ export default function CommunicationHub() {
         <TabsList className="bg-white/[0.03] border border-white/[0.06] p-1 h-auto flex-wrap">
           {[
             { value: "commands", label: "Commands", icon: Terminal },
+            { value: "live", label: "Live Stream", icon: Radio },
             { value: "system", label: "System", icon: Activity },
             { value: "security", label: "Security", icon: Shield },
             { value: "sync", label: "Sync", icon: RefreshCw },
@@ -997,6 +1285,7 @@ export default function CommunicationHub() {
             { value: "apps", label: "Apps", icon: Box },
             { value: "audit", label: "Audit", icon: Eye },
             { value: "timeline", label: "Timeline", icon: Clock },
+            { value: "observability", label: "Observability", icon: Activity },
             { value: "api", label: "API Domains", icon: Network },
           ].map(tab => (
             <TabsTrigger
@@ -1012,6 +1301,7 @@ export default function CommunicationHub() {
 
         <div className="mt-4">
           <TabsContent value="commands"><CommandsPanel /></TabsContent>
+          <TabsContent value="live"><LiveStreamPanel /></TabsContent>
           <TabsContent value="system"><SystemPanel /></TabsContent>
           <TabsContent value="security"><SecurityPanel /></TabsContent>
           <TabsContent value="sync"><SyncPanel /></TabsContent>
@@ -1021,6 +1311,7 @@ export default function CommunicationHub() {
           <TabsContent value="apps"><AppsPanel /></TabsContent>
           <TabsContent value="audit"><AuditPanel /></TabsContent>
           <TabsContent value="timeline"><TimelinePanel /></TabsContent>
+          <TabsContent value="observability"><ObservabilityPanel /></TabsContent>
           <TabsContent value="api"><ApiDomainsPanel /></TabsContent>
         </div>
       </Tabs>
