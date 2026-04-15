@@ -8,7 +8,7 @@ import {
   Activity, Shield, Server, AlertTriangle, CheckCircle, Clock,
   ArrowUpRight, Bell, Database, Cpu, Globe, Lock, RefreshCw,
   Layers, GitBranch, Radio, Target, TrendingUp, BarChart3, Brain, Crown,
-  Link2, Rocket, Play, Eye, Zap, DollarSign, Wifi
+  Link2, Rocket, Play, Eye, Zap, DollarSign, Wifi, Wrench
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
