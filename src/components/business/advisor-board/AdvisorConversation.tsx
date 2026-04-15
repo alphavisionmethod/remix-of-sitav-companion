@@ -49,7 +49,7 @@ export function AdvisorConversation({ selectedAdvisor, onSelectAdvisor, memorySn
       setMessages([{
         id: `welcome-${Date.now()}`,
         role: "advisor",
-        content: `I'm **${selectedAdvisor.displayName}**, your ${selectedAdvisor.role}. ${selectedAdvisor.personality.backstory.slice(0, 150)}...\n\nHow can I help you today?`,
+        content: `I'm **${selectedAdvisor.displayName}**, your ${selectedAdvisor.role}. ${selectedAdvisor.promptTemplate.slice(0, 150)}...\n\nHow can I help you today?`,
         advisorId: selectedAdvisor.id,
         timestamp: new Date().toISOString(),
       }]);
@@ -75,7 +75,8 @@ export function AdvisorConversation({ selectedAdvisor, onSelectAdvisor, memorySn
           advisorId: selectedAdvisor.id,
           advisorName: selectedAdvisor.displayName,
           advisorRole: selectedAdvisor.role,
-          personality: selectedAdvisor.personality,
+          personalityTraits: selectedAdvisor.personalityTraits,
+          communicationStyle: selectedAdvisor.communicationStyle,
           domainScope: selectedAdvisor.domainScope,
           userMessage: userMsg.content,
           conversationHistory: messages.slice(-10).map(m => ({

@@ -93,10 +93,10 @@ export function WeeklyExecutiveReport({ brief, profitSummary, reflectionSummary 
             learnings: profitSummary.learnings,
           },
           reflection: {
-            totalActions: reflectionSummary.totalActions,
-            approvedCount: reflectionSummary.approvedCount,
-            ignoredCount: reflectionSummary.ignoredCount,
-            advisorAccuracyScores: reflectionSummary.advisorAccuracyScores,
+            totalEntries: reflectionSummary.totalEntries,
+            wins: reflectionSummary.wins,
+            misses: reflectionSummary.misses,
+            advisorAccuracy: reflectionSummary.advisorAccuracy,
           },
         },
       });
