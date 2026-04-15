@@ -97,6 +97,10 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   "safety-rails": AdminSafetyRails,
   "support-cases": SupportCaseManager,
   "config-history": ConfigChangeHistory,
+  "client-capability": ClientCapabilityAdmin,
+  "release-governance": ReleaseGovernanceAdmin,
+  "read-models": ReadModelSnapshotsAdmin,
+  "data-flows": DataFlowMapAdmin,
 };
 
 export default function CloudBackboneAdmin() {
