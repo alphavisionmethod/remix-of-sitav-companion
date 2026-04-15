@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign, SmilePlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

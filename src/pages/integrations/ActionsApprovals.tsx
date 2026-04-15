@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/components/sita/cards";
-import { useAuth } from "@/contexts/AuthContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";

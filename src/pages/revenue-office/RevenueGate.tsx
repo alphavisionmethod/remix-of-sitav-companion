@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
 import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle, FileText, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

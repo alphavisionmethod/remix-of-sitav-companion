@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
-import { useAuth } from "@/contexts/AuthContext";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";

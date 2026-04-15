@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Zap, Mail, MessageSquare, Play, Pause, Plus, Users, BarChart3, Clock, ArrowRight, AlertTriangle, TrendingUp, Send, Shield } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

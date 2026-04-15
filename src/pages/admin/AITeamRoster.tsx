@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

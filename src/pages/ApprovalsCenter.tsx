@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { useAuth } from "@/contexts/AuthContext";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";

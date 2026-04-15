@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
-import { useAuth } from "@/contexts/AuthContext";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { ReceiptRecord } from "@/components/concierge";

@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";

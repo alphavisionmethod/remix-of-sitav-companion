@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { FinanceCreditCard } from "@/components/finance/FinanceCreditCard";
-import { useAuth } from "@/contexts/AuthContext";
 import { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
 import { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
 import { FinanceRecentTransactions } from "@/components/finance/FinanceRecentTransactions";

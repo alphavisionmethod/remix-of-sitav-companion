@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight, Swords, Droplets } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

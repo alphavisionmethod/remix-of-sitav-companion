@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { FlaskConical, ArrowUpRight, ArrowDownRight, BarChart3, Play, Pause, Plus, Brain, Target, TrendingUp, Zap, AlertTriangle, CheckCircle, Eye, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

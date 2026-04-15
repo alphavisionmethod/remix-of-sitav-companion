@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, QueueCard, TimelineCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
-import { useAuth } from "@/contexts/AuthContext";
 import { FreshnessBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";

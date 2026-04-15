@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight, Layers, AlertTriangle, Clock } from "lucide-react";
