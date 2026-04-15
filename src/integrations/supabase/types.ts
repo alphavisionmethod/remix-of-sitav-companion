@@ -1472,6 +1472,338 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_audit_events: {
+        Row: {
+          action: string
+          actor_user_id: string
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: string | null
+          severity: string
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
+      cloud_devices: {
+        Row: {
+          client_version: string | null
+          created_at: string
+          device_name: string
+          id: string
+          ip_address: string | null
+          is_current: boolean | null
+          last_seen_at: string
+          platform: string
+          requires_reauth: boolean | null
+          trust_state: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          client_version?: string | null
+          created_at?: string
+          device_name?: string
+          id?: string
+          ip_address?: string | null
+          is_current?: boolean | null
+          last_seen_at?: string
+          platform?: string
+          requires_reauth?: boolean | null
+          trust_state?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          client_version?: string | null
+          created_at?: string
+          device_name?: string
+          id?: string
+          ip_address?: string | null
+          is_current?: boolean | null
+          last_seen_at?: string
+          platform?: string
+          requires_reauth?: boolean | null
+          trust_state?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_feature_flags: {
+        Row: {
+          conditions: Json | null
+          created_at: string
+          description: string | null
+          display_name: string
+          enabled: boolean
+          flag_key: string
+          id: string
+          scope: string
+          updated_at: string
+        }
+        Insert: {
+          conditions?: Json | null
+          created_at?: string
+          description?: string | null
+          display_name: string
+          enabled?: boolean
+          flag_key: string
+          id?: string
+          scope?: string
+          updated_at?: string
+        }
+        Update: {
+          conditions?: Json | null
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          enabled?: boolean
+          flag_key?: string
+          id?: string
+          scope?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_plans: {
+        Row: {
+          created_at: string
+          display_name: string
+          features: Json
+          id: string
+          is_active: boolean | null
+          max_devices: number
+          max_file_size_bytes: number
+          plan_key: string
+          price_cents: number | null
+          storage_limit_bytes: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          max_devices?: number
+          max_file_size_bytes?: number
+          plan_key: string
+          price_cents?: number | null
+          storage_limit_bytes?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          max_devices?: number
+          max_file_size_bytes?: number
+          plan_key?: string
+          price_cents?: number | null
+          storage_limit_bytes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_policies: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          display_name: string
+          enforced: boolean
+          id: string
+          policy_key: string
+          updated_at: string
+          value_json: Json
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          enforced?: boolean
+          id?: string
+          policy_key: string
+          updated_at?: string
+          value_json?: Json
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          enforced?: boolean
+          id?: string
+          policy_key?: string
+          updated_at?: string
+          value_json?: Json
+        }
+        Relationships: []
+      }
+      cloud_storage_usage: {
+        Row: {
+          created_at: string
+          failed_downloads: number | null
+          failed_uploads: number | null
+          file_count: number
+          id: string
+          largest_file_bytes: number | null
+          last_reconciled_at: string | null
+          orphaned_blobs: number | null
+          quota_bytes: number
+          updated_at: string
+          used_bytes: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          failed_downloads?: number | null
+          failed_uploads?: number | null
+          file_count?: number
+          id?: string
+          largest_file_bytes?: number | null
+          last_reconciled_at?: string | null
+          orphaned_blobs?: number | null
+          quota_bytes?: number
+          updated_at?: string
+          used_bytes?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          failed_downloads?: number | null
+          failed_uploads?: number | null
+          file_count?: number
+          id?: string
+          largest_file_bytes?: number | null
+          last_reconciled_at?: string | null
+          orphaned_blobs?: number | null
+          quota_bytes?: number
+          updated_at?: string
+          used_bytes?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_sync_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          job_type: string
+          progress_pct: number | null
+          result_summary: string | null
+          started_at: string | null
+          status: string
+          target_user_id: string | null
+          triggered_by: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          job_type?: string
+          progress_pct?: number | null
+          result_summary?: string | null
+          started_at?: string | null
+          status?: string
+          target_user_id?: string | null
+          triggered_by: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          job_type?: string
+          progress_pct?: number | null
+          result_summary?: string | null
+          started_at?: string | null
+          status?: string
+          target_user_id?: string | null
+          triggered_by?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_user_plans: {
+        Row: {
+          bonus_storage_bytes: number | null
+          created_at: string
+          id: string
+          overage_allowed: boolean | null
+          plan_id: string | null
+          status: string
+          trial_ends_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bonus_storage_bytes?: number | null
+          created_at?: string
+          id?: string
+          overage_allowed?: boolean | null
+          plan_id?: string | null
+          status?: string
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bonus_storage_bytes?: number | null
+          created_at?: string
+          id?: string
+          overage_allowed?: boolean | null
+          plan_id?: string | null
+          status?: string
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_user_plans_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       command_memory: {
         Row: {
           command_id: string | null
@@ -5120,6 +5452,24 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       v_outcome_verification_summary: {
@@ -5184,6 +5534,13 @@ export type Database = {
       }
     }
     Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_org_member: {
         Args: { _org_id: string; _user_id: string }
         Returns: boolean
@@ -5194,7 +5551,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -5321,6 +5678,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
