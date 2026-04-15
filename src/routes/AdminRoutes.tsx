@@ -151,6 +151,14 @@ const SRE06AutoRollbackCenter = lazy(() => import("@/pages/admin/SRE06AutoRollba
 const SRE07VersionIntelligence = lazy(() => import("@/pages/admin/SRE07VersionIntelligence"));
 const SRE08SelfOptimizationBudgets = lazy(() => import("@/pages/admin/SRE08SelfOptimizationBudgets"));
 
+// ── BOA: Board of Advisors Admin ──
+const AdvisorBoardCatalog = lazy(() => import("@/pages/admin/AdvisorBoardCatalog"));
+const AdvisorRecommendationMonitor = lazy(() => import("@/pages/admin/AdvisorRecommendationMonitor"));
+const AdvisorActionApprovalAdmin = lazy(() => import("@/pages/admin/AdvisorActionApprovalAdmin"));
+const AdvisorMemoryInspectorAdmin = lazy(() => import("@/pages/admin/AdvisorMemoryInspector"));
+const AdvisorAutonomyPolicyEditor = lazy(() => import("@/pages/admin/AdvisorAutonomyPolicyEditor"));
+const AdvisorProfitabilityDashboard = lazy(() => import("@/pages/admin/AdvisorProfitabilityDashboard"));
+
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
