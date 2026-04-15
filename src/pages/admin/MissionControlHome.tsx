@@ -277,6 +277,20 @@ const MissionControlHome = () => {
           <ExecutionTimeline compact maxVisible={5} />
         </motion.div>
 
+        {/* Continuous Verification */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-emerald-400" /> Continuous Verification
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ContinuousVerificationPanel />
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Platform Pulse — Summary Panels */}
         <motion.div variants={fadeUp}>
           <h2 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
