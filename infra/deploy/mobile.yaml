@@ -1,0 +1,100 @@
+# SITA OS — Mobile Deployment Manifest
+apiVersion: deploy/v1
+kind: MobileDeployment
+metadata:
+  name: sita-mobile
+  plane: mobile
+
+spec:
+  platform:
+    flutter:
+      version: "3.24"
+      dart_version: "3.5"
+      min_sdk:
+        ios: "16.0"
+        android: "26"
+      target_sdk:
+        android: "34"
+
+  build:
+    ios:
+      signing:
+        team_id: "${APPLE_TEAM_ID}"
+        provisioning_profile: "${IOS_PROVISIONING_PROFILE}"
+        certificate: "${IOS_DISTRIBUTION_CERT}"
+      capabilities:
+        - push-notifications
+        - associated-domains
+        - keychain-sharing
+        - face-id
+      entitlements:
+        aps_environment: production
+        keychain_access_groups:
+          - "${APPLE_TEAM_ID}.com.sita.os"
+
+    android:
+      signing:
+        keystore: "${ANDROID_KEYSTORE_PATH}"
+        key_alias: "${ANDROID_KEY_ALIAS}"
+      permissions:
+        - android.permission.USE_BIOMETRIC
+        - android.permission.USE_FINGERPRINT
+        - android.permission.INTERNET
+        - android.permission.RECEIVE_BOOT_COMPLETED
+        - android.permission.VIBRATE
+      features:
+        - android.hardware.fingerprint
+        - android.hardware.camera
+
+  push_notifications:
+    apns:
+      key_id: "${APNS_KEY_ID}"
+      team_id: "${APPLE_TEAM_ID}"
+      bundle_id: "com.sita.os"
+      environment: production
+    fcm:
+      project_id: "${FIREBASE_PROJECT_ID}"
+      sender_id: "${FCM_SENDER_ID}"
+
+  security:
+    certificate_pinning:
+      enabled: true
+      pins:
+        - host: "api.sita.os"
+          sha256: "${API_CERT_SHA256}"
+    biometric_auth:
+      required_for:
+        - approvals
+        - payment_execution
+        - settings_changes
+      fallback: device_passcode
+    secure_storage:
+      ios: keychain
+      android: android_keystore
+    attestation:
+      ios: app_attest
+      android: play_integrity
+
+  api:
+    base_url: "${API_BASE_URL}"
+    websocket_url: "${WS_BASE_URL}"
+    timeout_ms: 30000
+    retry:
+      max_attempts: 3
+      backoff: exponential
+
+  ci:
+    ios:
+      runner: macos-latest
+      xcode_version: "16.0"
+      steps:
+        - flutter pub get
+        - flutter build ios --release
+        - fastlane ios release
+    android:
+      runner: ubuntu-latest
+      java_version: "17"
+      steps:
+        - flutter pub get
+        - flutter build appbundle --release
+        - fastlane android release
