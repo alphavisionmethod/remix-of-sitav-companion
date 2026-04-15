@@ -40,43 +40,12 @@ while ((m = re.exec(content)) !== null) {
   routes.push({ path: routePath, component, domain, owner: deriveOwner(routePath) });
 }
 
-// ── IA domain classification ────────────────────────────────────
-
-function classifyIADomain(routePath: string): string {
-  if (routePath.startsWith("/admin/ai-runtime")) return "admin-ai-runtime";
-  if (routePath.startsWith("/admin/trust-security")) return "admin-trust-security";
-  if (routePath.startsWith("/admin/integrations")) return "admin-integrations";
-  if (routePath.startsWith("/admin/health")) return "admin-health";
-  if (routePath.startsWith("/admin/releases")) return "admin-releases";
-  if (routePath.startsWith("/admin/verification")) return "admin-verification";
-  if (routePath.startsWith("/admin/config")) return "admin-config";
-  if (routePath.startsWith("/admin/support")) return "admin-support";
-  if (routePath.startsWith("/admin/users")) return "admin-users";
-  if (routePath.startsWith("/admin")) return "admin-overview";
-  if (routePath.startsWith("/business")) return "business";
-  if (routePath.startsWith("/money")) return "money";
-  if (routePath.startsWith("/concierge")) return "concierge";
-  if (routePath.startsWith("/boardroom")) return "boardroom";
-  if (routePath.startsWith("/files")) return "files";
-  if (routePath.startsWith("/settings")) return "settings";
-  if (routePath.startsWith("/investments") || routePath.startsWith("/investment-office")) return "investments";
-  if (routePath.startsWith("/revenue-office")) return "revenue-office";
-  if (routePath.startsWith("/digital-presence")) return "digital-presence";
-  if (routePath.startsWith("/desktop") || routePath === "/") return "desktop";
-  return "other";
-}
-
 const manifest = {
-  version: "3.0.0",
+  version: "2.2.0",
   generatedAt: new Date().toISOString(),
   totalRoutes: routes.length,
   ownerDistribution: routes.reduce((acc, r) => { acc[r.owner] = (acc[r.owner] || 0) + 1; return acc; }, {} as Record<string, number>),
-  iaDomainDistribution: routes.reduce((acc, r) => {
-    const d = classifyIADomain(r.path);
-    acc[d] = (acc[d] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>),
-  routes: routes.map(r => ({ ...r, iaDomain: classifyIADomain(r.path) })),
+  routes,
 };
 
 const outPath = path.join(process.cwd(), "generated/route-manifest.json");

@@ -1,150 +1,76 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Information Architecture Governance
-// Runtime guards to prevent IA sprawl from returning.
+// Enforces canonical directory structure and route limits.
 // ═══════════════════════════════════════════════════════════════
 
-import {
-  type PageClass,
-  type CanonicalRouteEntry,
-  CANONICAL_ROUTE_REGISTRY,
-  getTopNavRoutes,
-  getIASummary,
-} from "./canonical-route-registry";
+import { DIRECTORY_ORGANIZATION_MAP, type DirectoryMapping } from "./directory-organization-map";
 
-// ── Governance Constants ────────────────────────────────────────
-
-/** Maximum allowed top-level user navigation destinations */
+// ── Hard Limits ──
 export const MAX_USER_TOP_LEVEL = 12;
-
-/** Maximum allowed top-level admin navigation domains */
 export const MAX_ADMIN_TOP_LEVEL = 12;
 
-/** Valid page class suffixes — enforced in naming conventions */
-export const VALID_PAGE_CLASSES: PageClass[] = [
-  "overview", "board", "dashboard", "console", "center",
-  "workspace", "explorer", "studio", "settings", "timeline",
-  "detail", "registry", "monitor", "wizard", "redirect",
+// ── Canonical Page Classifications ──
+export type PageClassification =
+  | "overview"
+  | "board"
+  | "dashboard"
+  | "console"
+  | "center"
+  | "workspace"
+  | "explorer"
+  | "studio"
+  | "settings"
+  | "timeline"
+  | "detail";
+
+// ── Deprecated Path Prefixes ──
+// New files should NOT be created under these paths.
+// Use the canonical path from DIRECTORY_ORGANIZATION_MAP instead.
+const DEPRECATED_NEW_FILE_PATHS = [
+  "src/components/sita/",       // → src/runtimes/shell/ or src/features/
+  "src/components/admin-ai/",   // → src/admin/modules/ai/
+  "src/components/admin-os/",   // → src/admin/modules/runtime/
 ];
 
-/** Semantic naming rules — what each page class means */
-export const PAGE_CLASS_SEMANTICS: Record<PageClass, string> = {
-  overview:   "Domain home / summary landing page",
-  board:      "Strategic or cross-signal decision view",
-  dashboard:  "Metrics-heavy summary with charts/KPIs",
-  console:    "Admin/operator power control surface",
-  center:     "Broad domain home with multiple entry points",
-  workspace:  "Active task or work-oriented editing area",
-  explorer:   "Drill-down, inspection, search, and filter UI",
-  studio:     "Configuration, creation, or composition environment",
-  settings:   "Preferences, config, and feature toggles",
-  timeline:   "Event, proof, history, or audit trail view",
-  detail:     "Single-entity deep view or profile",
-  registry:   "Canonical records listing with CRUD",
-  monitor:    "Real-time observability and metrics stream",
-  wizard:     "Multi-step guided flow (onboarding, auth, setup)",
-  redirect:   "Compatibility redirect shim to canonical route",
-};
+/**
+ * Validate that a new file path follows canonical directory organization.
+ * Returns warnings (not errors) — this is advisory for now.
+ */
+export function validateDirectoryOrganization(filePath: string): string[] {
+  const warnings: string[] = [];
 
-// ── Governance Assertions ───────────────────────────────────────
+  for (const deprecated of DEPRECATED_NEW_FILE_PATHS) {
+    if (filePath.startsWith(deprecated)) {
+      const mapping = DIRECTORY_ORGANIZATION_MAP.find(m =>
+        m.legacyPaths.some(lp => filePath.startsWith(lp.replace("*", "")))
+      );
+      const suggestion = mapping?.canonicalPath ?? "the appropriate canonical path";
+      warnings.push(
+        `New file "${filePath}" is in deprecated path "${deprecated}". ` +
+        `Use "${suggestion}" instead.`
+      );
+    }
+  }
 
-export interface IAViolation {
-  rule: string;
-  message: string;
-  severity: "error" | "warning";
-  details?: string;
+  return warnings;
 }
 
 /**
- * Run all IA governance checks and return violations.
- * Zero violations = healthy IA.
+ * Get all barrel mappings for audit purposes.
  */
-export function checkIAGovernance(): IAViolation[] {
-  const violations: IAViolation[] = [];
-  const summary = getIASummary();
+export function getOrganizationAudit(): {
+  total: number;
+  barrelOnly: number;
+  physicallyMoved: number;
+  mappings: DirectoryMapping[];
+} {
+  const barrelOnly = DIRECTORY_ORGANIZATION_MAP.filter(m => m.status === "barrel-only").length;
+  const physicallyMoved = DIRECTORY_ORGANIZATION_MAP.filter(m => m.status === "physically-moved").length;
 
-  // Rule 1: User top-level count guard
-  if (summary.userTopLevelCount > MAX_USER_TOP_LEVEL) {
-    violations.push({
-      rule: "max-user-top-level",
-      message: `User top-level nav has ${summary.userTopLevelCount} entries (max ${MAX_USER_TOP_LEVEL})`,
-      severity: "error",
-    });
-  }
-
-  // Rule 2: Admin top-level count guard
-  if (summary.adminTopLevelCount > MAX_ADMIN_TOP_LEVEL) {
-    violations.push({
-      rule: "max-admin-top-level",
-      message: `Admin top-level nav has ${summary.adminTopLevelCount} entries (max ${MAX_ADMIN_TOP_LEVEL})`,
-      severity: "error",
-    });
-  }
-
-  // Rule 3: No deprecated routes in top nav
-  const userTopNav = getTopNavRoutes("user");
-  const adminTopNav = getTopNavRoutes("admin");
-  const allTopNav = [...userTopNav, ...adminTopNav];
-
-  for (const route of allTopNav) {
-    if (route.status === "redirect_to_canonical" || route.status === "deprecated_wrapper") {
-      violations.push({
-        rule: "no-deprecated-in-nav",
-        message: `Deprecated route "${route.path}" appears in top-level navigation`,
-        severity: "error",
-        details: `Status: ${route.status}, redirect: ${route.redirectTarget}`,
-      });
-    }
-  }
-
-  // Rule 4: Every redirect must have a target
-  for (const route of CANONICAL_ROUTE_REGISTRY) {
-    if (route.status === "redirect_to_canonical" && !route.redirectTarget) {
-      violations.push({
-        rule: "redirect-needs-target",
-        message: `Redirect route "${route.path}" has no redirectTarget`,
-        severity: "error",
-      });
-    }
-  }
-
-  // Rule 5: Page class must be valid
-  for (const route of CANONICAL_ROUTE_REGISTRY) {
-    if (!VALID_PAGE_CLASSES.includes(route.pageClass)) {
-      violations.push({
-        rule: "valid-page-class",
-        message: `Route "${route.path}" has invalid pageClass "${route.pageClass}"`,
-        severity: "error",
-      });
-    }
-  }
-
-  // Rule 6: Duplicate concept detection — no two canonical routes should share path prefix + same pageClass
-  const canonicalRoutes = CANONICAL_ROUTE_REGISTRY.filter(r => r.status === "canonical");
-  const seen = new Set<string>();
-  for (const route of canonicalRoutes) {
-    const key = `${route.domain}:${route.pageClass}`;
-    if (seen.has(key) && route.pageClass !== "settings" && route.pageClass !== "workspace") {
-      violations.push({
-        rule: "no-duplicate-canonical",
-        message: `Duplicate canonical ${route.pageClass} in domain "${route.domain}" at "${route.path}"`,
-        severity: "warning",
-      });
-    }
-    seen.add(key);
-  }
-
-  return violations;
-}
-
-/**
- * Assert zero governance violations. Throws on failure.
- * Use in CI or tests.
- */
-export function assertIAGovernance(): void {
-  const violations = checkIAGovernance();
-  const errors = violations.filter(v => v.severity === "error");
-  if (errors.length > 0) {
-    const details = errors.map(v => `  [${v.rule}] ${v.message}`).join("\n");
-    throw new Error(`IA Governance: ${errors.length} violations\n${details}`);
-  }
+  return {
+    total: DIRECTORY_ORGANIZATION_MAP.length,
+    barrelOnly,
+    physicallyMoved,
+    mappings: DIRECTORY_ORGANIZATION_MAP,
+  };
 }

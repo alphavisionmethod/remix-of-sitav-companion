@@ -1,138 +1,82 @@
 
 
-# SITA OS — Source Directory Reorganization
+# Orchestration Authority Consolidation — Remaining Gaps
 
-## Reality Check
+## Audit Results
 
-| Metric | Value |
-|--------|-------|
-| Total files to organize | 4,090 |
-| Total import statements | 10,712 |
-| Unique import path prefixes | 296 |
-| Files importing `@/components` | 5,237 statements |
-| Files importing `@/lib` | 3,335 statements |
-| Files importing `@/hooks` | 740 statements |
+The 4-layer canonical spine is **100% complete** (40 files across intent/planning/execution/proof/shared/migration). The facade, hooks (4), CI scripts (3), and docs (2) are all in place.
 
-**This is a mass-rename of ~4,000 files touching ~10,700 import statements.** Every moved file requires updating every file that imports it. Moving `src/components/business/SomeWidget.tsx` to `src/features/business/components/SomeWidget.tsx` means finding and rewriting every `@/components/business/SomeWidget` import across the entire codebase.
+**What is NOT done:**
 
-## Critical Risk Assessment
+| Gap | Impact |
+|-----|--------|
+| Legacy consumers still import old orchestrators directly | Facade is bypassed — violates "one entry point" rule |
+| No compatibility wrappers on legacy files | Migration safety missing |
+| `planes/backend.ts` exports `CanonicalChainOrchestrator` directly | Backend plane exposes legacy path |
+| `sita-kernel.ts` imports `AgentOrchestrator` + `CanonicalChainOrchestrator` directly | Kernel bypasses facade |
+| `use-admin-data.ts` dynamically imports `agent-orchestrator` | Hook directly calls execution adapter |
+| `use-companion.ts` imports `FleetStatus` type from `agent-orchestrator` | Type coupling to legacy file |
+| Missing `orchestration-ids.ts` from spec | ID generation not centralized |
 
-This reorganization at this scale has a **very high probability of causing build breakage** if done in a single pass. The reasons:
+## Implementation Plan
 
-1. **10,700+ import rewrites** — each one is a potential typo or missed reference
-2. **No automated refactoring tools** available in this environment (no `jscodeshift`, no IDE rename)
-3. **Circular dependency risk** — moving files between layers can surface hidden circular imports
-4. **The `@/` alias is singular** — there's only one alias (`@/ → src/`), so every path change requires updating consumers
-5. **Build system has no tolerance** — one wrong import = broken build
+### Task 1: Add `orchestration-ids.ts`
 
-## Recommended Approach: Barrel Re-exports (Zero Breakage)
+Create `src/lib/orchestration/shared/orchestration-ids.ts` with centralized ID generation for envelope, correlation, execution, receipt, and proof chain IDs. Update envelope and proof builders to import from here.
 
-Instead of physically moving 4,090 files and rewriting 10,700 imports, we create the **target directory structure as a re-export layer** that maps to the canonical organization. Existing files stay where they are. New code imports from the canonical paths.
+### Task 2: Add compatibility wrappers to 6 legacy orchestrator files
 
-This is exactly how the project already handles similar problems (e.g., `src/lib/services/` re-exports from `src/lib/core-services/`).
+Add deprecation headers and re-export wrappers to each legacy file so existing consumers don't break:
 
-### What gets created
+- `src/lib/core-services/canonical-chain-orchestrator.ts` — add `@deprecated` + re-export `orchestrationFacade.processIntent` as compatibility shim
+- `src/lib/core-services/agent-orchestrator.ts` — add `@deprecated` header noting it's now an execution adapter
+- `src/lib/services/ai-workforce/workforce-orchestrator.ts` — add `@deprecated` header
+- `src/lib/services/council-orchestrator/index.ts` — add `@deprecated` header (intent support only)
+- `src/lib/services/founder-orchestrator/index.ts` — add `@deprecated` header (planning adapter only)
+- `src/lib/services/ecosystem-orchestrator/index.ts` — add `@deprecated` header (cross-device adapter only)
 
-```text
-src/features/          — barrel re-exports to components/pages by domain
-src/admin/             — barrel re-exports to pages/admin + components/admin
-src/platform/          — barrel re-exports to lib/ platform modules
-src/domains/           — barrel re-exports to lib/ domain logic
-src/runtimes/          — barrel re-exports to lib/runtime + components/mobile + components/sita/shell
-src/contracts/         — barrel re-exports to packages/contracts
-src/data/              — barrel re-exports to lib/data-services + integrations
-src/app/               — barrel re-exports for App.tsx, main.tsx, providers
-```
+Each wrapper preserves existing exports but adds a top-of-file deprecation notice with the canonical replacement path.
 
-Each barrel file is a single `index.ts` that re-exports from the current physical location. Example:
+### Task 3: Rewire `planes/backend.ts`
 
+Replace line 19:
 ```typescript
-// src/features/business/index.ts
-export * from "@/components/business";
-export * from "@/pages/BusinessCenter";
-// ... etc
+// Before:
+export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
+// After:
+export { OrchestrationFacade, orchestrationFacade } from "@/lib/orchestration";
+export type { ProcessIntentRequest } from "@/lib/orchestration";
+// Legacy compat re-export:
+export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
 ```
 
-### Phase 1 — Create canonical barrel structure (27 top-level barrels)
+### Task 4: Rewire `sita-kernel.ts`
 
-Create `index.ts` files in each new canonical directory that re-export from current locations:
+Add import of `orchestrationFacade` from `@/lib/orchestration`. Keep `AgentOrchestrator` import (it's used as an execution adapter internally, which is correct), but add a comment marking it as "execution adapter — subordinate to orchestration facade."
 
-| New Path | Re-exports From |
-|----------|----------------|
-| `src/features/advisors/` | `@/components/advisors`, `@/hooks/useAdvisor*` |
-| `src/features/auth/` | `@/components/auth`, `@/pages/auth/*` |
-| `src/features/boardroom/` | `@/components/sita/apps/boardroom`, `@/pages/Boardroom*` |
-| `src/features/business/` | `@/components/business`, `@/pages/business/*`, `@/pages/BusinessCenter` |
-| `src/features/concierge/` | `@/components/concierge`, `@/pages/concierge/*` |
-| `src/features/files/` | `@/components/files`, `@/pages/files/*` |
-| `src/features/money/` | `@/components/money`, `@/components/finance`, `@/pages/money/*` |
-| `src/features/intelligence/` | `@/components/intelligence` |
-| `src/features/investment-office/` | `@/components/investment`, `@/pages/investment-office/*` |
-| `src/features/notifications/` | `@/components/notifications` |
-| `src/features/revenue-office/` | `@/components/revenue-office`, `@/pages/revenue-office/*` |
-| `src/features/onboarding/` | `@/components/sita/onboarding`, `@/hooks/useSetup*` |
-| `src/features/mobile/` | `@/components/mobile`, `@/pages/mobile/*` |
-| `src/features/settings/` | `@/pages/settings/*` |
-| `src/admin/modules/ai/` | `@/components/admin-ai`, `@/pages/admin/ai-*` |
-| `src/admin/modules/architecture/` | `@/components/admin/architecture` |
-| `src/admin/modules/cloud/` | `@/pages/admin/Cloud*` |
-| `src/admin/modules/security/` | `@/pages/admin/SEC*` |
-| `src/admin/modules/verification/` | `@/pages/admin/ITC*`, `@/pages/admin/V*`, `@/pages/admin/RCP*` |
-| `src/admin/shell/` | `@/components/admin/shells` |
-| `src/platform/auth/` | `@/lib/auth`, `@/contexts/AuthContext` |
-| `src/platform/governance/` | `@/lib/architecture`, `@/components/governance` |
-| `src/platform/proof/` | `@/lib/core-services/proof*` |
-| `src/runtimes/shell/` | `@/components/sita/shell`, `@/components/sita/os` |
-| `src/runtimes/desktop/` | `@/lib/runtime/desktop` |
-| `src/runtimes/mobile/` | `@/lib/runtime/mobile`, `@/components/mobile` |
-| `src/contracts/` | `@/packages/contracts` |
-| `src/data/` | `@/lib/data-services` |
+### Task 5: Rewire `use-admin-data.ts`
 
-### Phase 2 — Create canonical directory map
+Replace the dynamic `import("@/lib/core-services/agent-orchestrator")` with a comment noting it reads agent runtime state (read-only, acceptable as execution status inspection). No orchestration logic in the hook.
 
-Create `src/lib/architecture/directory-organization-map.ts`:
-- Maps every current path to its canonical target path
-- Documents the migration status (barrel-only vs physically-moved)
-- Serves as the authority for future physical migrations
+### Task 6: Update `src/lib/orchestration/index.ts` barrel
 
-### Phase 3 — Add architecture governance rule
+Add export of `orchestration-ids.ts` types. Ensure all proof builders, shared types, and migration utilities are exported.
 
-Update `src/lib/architecture/ia-governance.ts`:
-- Add `validateDirectoryOrganization()` that checks new files are created in canonical paths, not legacy paths
-- Warn on new files added to `src/components/sita/` (should use `src/runtimes/shell/` or `src/features/`)
+### Task 7: Build verification
 
-### Phase 4 — Update architecture docs
+Full `tsc --noEmit` to confirm 0 errors.
 
-Create `src/lib/architecture/DIRECTORY_ORGANIZATION.md`:
-- Documents the canonical directory model
-- Maps "where should I put X?" for every category
-- Lists migration status per directory
-
-## What This Does NOT Do
-
-- **Does not move any existing files** — all 4,090 files stay in place
-- **Does not rewrite any imports** — existing `@/components/*` and `@/lib/*` imports remain valid
-- **Does not risk build breakage** — barrel re-exports are additive only
-- **Does not change any runtime behavior** — pure organizational metadata
-
-## Why This Is The Right Approach
-
-The project already uses this exact pattern:
-- `src/lib/services/` re-exports from `src/lib/core-services/`
-- `src/planes/` re-exports from various `src/lib/` modules
-- `src/lib/architecture/index.ts` barrels all architecture modules
-
-Physically moving 4,090 files and rewriting 10,700 imports in one pass without automated refactoring tools would almost certainly break the build. The barrel approach achieves the same organizational clarity with zero risk.
-
-New code can immediately use the clean paths (`@/features/business`, `@/admin/modules/ai`). Over time, files can be physically migrated one module at a time with targeted import rewrites.
+---
 
 ## File Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Feature barrels | ~15 `index.ts` | 0 |
-| Admin module barrels | ~8 `index.ts` | 0 |
-| Platform/runtime barrels | ~6 `index.ts` | 0 |
-| Architecture map | 2 (map + docs) | 1 (ia-governance) |
-| **Total** | **~31** | **1** |
+| Shared types | 1 (`orchestration-ids.ts`) | 0 |
+| Legacy wrappers | 0 | 6 (deprecation headers) |
+| Plane rewiring | 0 | 1 (`planes/backend.ts`) |
+| Kernel rewiring | 0 | 1 (`sita-kernel.ts`) |
+| Hook rewiring | 0 | 1 (`use-admin-data.ts`) |
+| Barrel update | 0 | 1 (`orchestration/index.ts`) |
+| **Total** | **1** | **10** |
 
