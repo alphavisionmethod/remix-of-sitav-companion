@@ -21,6 +21,22 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      "no-restricted-imports": ["warn", {
+        "patterns": [
+          {
+            "group": ["@/lib/core-services/*"],
+            "message": "Use @/planes/backend barrel instead of direct core-services imports. See docs/architecture/MIGRATION-BLUEPRINT.md"
+          },
+          {
+            "group": ["@/lib/nova-sdk/*"],
+            "message": "Use @/planes/os barrel instead of direct nova-sdk imports. See docs/architecture/MIGRATION-BLUEPRINT.md"
+          },
+          {
+            "group": ["@/lib/platform-plane/*"],
+            "message": "Use @/planes/admin or @/planes/founder barrel instead of direct platform-plane imports."
+          }
+        ]
+      }],
     },
   },
 );
