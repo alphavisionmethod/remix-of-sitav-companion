@@ -15,6 +15,24 @@ const SYS01SystemIntelligence = lazy(() => import("@/pages/admin/SYS01SystemInte
 const OS01PlatformCommandCenter = lazy(() => import("@/pages/admin/OS01PlatformCommandCenter"));
 const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 
+// ── MC: Mission Control Module Pages ──
+const MCDevicesCenter = lazy(() => import("@/pages/admin/modules/MCDevicesCenter"));
+const MCStorageCenter = lazy(() => import("@/pages/admin/modules/MCStorageCenter"));
+const MCUsersCenter = lazy(() => import("@/pages/admin/modules/MCUsersCenter"));
+const MCWorkspacesContinuity = lazy(() => import("@/pages/admin/modules/MCWorkspacesContinuity"));
+const MCSyncCloud = lazy(() => import("@/pages/admin/modules/MCSyncCloud"));
+const MCJobsMaintenance = lazy(() => import("@/pages/admin/modules/MCJobsMaintenance"));
+const MCTrustSecurity = lazy(() => import("@/pages/admin/modules/MCTrustSecurity"));
+const MCReleasesUpdates = lazy(() => import("@/pages/admin/modules/MCReleasesUpdates"));
+const MCAIControl = lazy(() => import("@/pages/admin/modules/MCAIControl"));
+const MCIncidents = lazy(() => import("@/pages/admin/modules/MCIncidents"));
+const MCPoliciesFlags = lazy(() => import("@/pages/admin/modules/MCPoliciesFlags"));
+const MCCostsAIBudgets = lazy(() => import("@/pages/admin/modules/MCCostsAIBudgets"));
+const MCLogsAudit = lazy(() => import("@/pages/admin/modules/MCLogsAudit"));
+const MCSupport = lazy(() => import("@/pages/admin/modules/MCSupport"));
+const MCKnowledgeBase = lazy(() => import("@/pages/admin/modules/MCKnowledgeBase"));
+const MCSystemHealth = lazy(() => import("@/pages/admin/modules/MCSystemHealth"));
+
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
@@ -218,5 +236,22 @@ export function getAdminRoutes() {
     <Route key="sre06" path="/admin/engineering/rollback" element={gated("maintenance.emergency", <SRE06AutoRollbackCenter />)} />,
     <Route key="sre07" path="/admin/engineering/version-intel" element={gated("maintenance.view", <SRE07VersionIntelligence />)} />,
     <Route key="sre08" path="/admin/engineering/optimization" element={gated("maintenance.view", <SRE08SelfOptimizationBudgets />)} />,
+    // ── MC: Mission Control Module Pages ──
+    <Route key="mc01" path="/admin/mc/devices" element={gated("maintenance.view", <MCDevicesCenter />)} />,
+    <Route key="mc02" path="/admin/mc/storage" element={gated("storage.view", <MCStorageCenter />)} />,
+    <Route key="mc03" path="/admin/mc/users" element={gated("users.view", <MCUsersCenter />)} />,
+    <Route key="mc04" path="/admin/mc/workspaces" element={gated("sync.view", <MCWorkspacesContinuity />)} />,
+    <Route key="mc05" path="/admin/mc/sync-cloud" element={gated("sync.view", <MCSyncCloud />)} />,
+    <Route key="mc06" path="/admin/mc/jobs" element={gated("maintenance.view", <MCJobsMaintenance />)} />,
+    <Route key="mc07" path="/admin/mc/trust-security" element={gated("audit.view", <MCTrustSecurity />)} />,
+    <Route key="mc08" path="/admin/mc/releases" element={gated("flags.rollout", <MCReleasesUpdates />)} />,
+    <Route key="mc09" path="/admin/mc/ai-control" element={gated("flags.view", <MCAIControl />)} />,
+    <Route key="mc10" path="/admin/mc/incidents" element={gated("maintenance.view", <MCIncidents />)} />,
+    <Route key="mc11" path="/admin/mc/policies" element={gated("policy.view", <MCPoliciesFlags />)} />,
+    <Route key="mc12" path="/admin/mc/costs" element={gated("flags.view", <MCCostsAIBudgets />)} />,
+    <Route key="mc13" path="/admin/mc/logs" element={gated("audit.view", <MCLogsAudit />)} />,
+    <Route key="mc14" path="/admin/mc/support" element={gated("support.view", <MCSupport />)} />,
+    <Route key="mc15" path="/admin/mc/knowledge" element={gated("maintenance.view", <MCKnowledgeBase />)} />,
+    <Route key="mc16" path="/admin/mc/system-health" element={gated("maintenance.view", <MCSystemHealth />)} />,
   ];
 }
