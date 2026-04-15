@@ -40,6 +40,11 @@ import { AdvisorDebateView } from "@/components/business/advisor-board/AdvisorDe
 import { WeeklyExecutiveReport } from "@/components/business/advisor-board/WeeklyExecutiveReport";
 import { AdvisorNotificationSystem } from "@/components/business/advisor-board/AdvisorNotificationSystem";
 
+// Part 4 components
+import { AdvisorToolExecutionPanel } from "@/components/business/advisor-board/AdvisorToolExecutionPanel";
+import { BusinessRadarPanel } from "@/components/business/advisor-board/BusinessRadarPanel";
+import { StrategicPlanningStudio } from "@/components/business/advisor-board/StrategicPlanningStudio";
+
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
@@ -150,6 +155,9 @@ const BusinessAdvisorBoardPage = () => {
             Actions {board.actionStats.total > 0 && `(${board.actionStats.total})`}
           </TabsTrigger>
           <TabsTrigger value="proof" className="text-[10px]">Proof</TabsTrigger>
+          <TabsTrigger value="tools" className="text-[10px]">Tools</TabsTrigger>
+          <TabsTrigger value="radar" className="text-[10px]">Radar</TabsTrigger>
+          <TabsTrigger value="planning" className="text-[10px]">Planning</TabsTrigger>
           <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
           <TabsTrigger value="report" className="text-[10px]">Report</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
@@ -233,6 +241,42 @@ const BusinessAdvisorBoardPage = () => {
         {/* ── Proof Tab ──────────────────────────────────── */}
         <TabsContent value="proof" className="mt-4">
           <ProofTimelinePanel actions={board.actionQueue} />
+        </TabsContent>
+
+        {/* ── Tools Tab ──────────────────────────────────── */}
+        <TabsContent value="tools" className="mt-4">
+          <AdvisorToolExecutionPanel
+            tools={board.tools}
+            executions={board.toolExecutions}
+            stats={board.toolStats}
+            onRequestExecution={board.handleToolRequest}
+            onApprove={board.handleToolApprove}
+            onExecute={board.handleToolExecute}
+            onRollback={board.handleToolRollback}
+            onCancel={board.handleToolCancel}
+          />
+        </TabsContent>
+
+        {/* ── Radar Tab ──────────────────────────────────── */}
+        <TabsContent value="radar" className="mt-4">
+          <BusinessRadarPanel
+            snapshot={board.radarSnapshot}
+            signals={board.radarSignals}
+            onAcknowledge={board.handleRadarAcknowledge}
+            onAcknowledgeAll={board.handleRadarAcknowledgeAll}
+            onGenerateSignal={board.handleRadarGenerate}
+          />
+        </TabsContent>
+
+        {/* ── Planning Tab ───────────────────────────────── */}
+        <TabsContent value="planning" className="mt-4">
+          <StrategicPlanningStudio
+            snapshot={board.planningSnapshot}
+            strategyDoc={board.strategyDoc}
+            onUpdateGoalProgress={board.handleUpdateGoalProgress}
+            onUpdateMilestone={board.handleUpdateMilestone}
+            onGenerateStrategy={board.handleGenerateStrategy}
+          />
         </TabsContent>
 
         {/* ── Memory Tab ─────────────────────────────────── */}

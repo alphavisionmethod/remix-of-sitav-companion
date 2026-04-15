@@ -21,6 +21,11 @@ import {
 } from "@/lib/engines/business-action-pipeline";
 // Part 2 imports
 import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
+// Part 4 imports
+import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/lib/engines/advisor-tool-execution-engine";
+import { getBusinessRadarEngine } from "@/lib/engines/business-radar-engine";
+import { getStrategicPlanningEngine } from "@/lib/engines/strategic-planning-engine";
+import type { MilestoneStatus } from "@/lib/engines/strategic-planning-engine";
 import { getBusinessContextGraph } from "@/lib/engines/business-context-graph";
 import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/lib/engines/business-archetype-engine";
 import { getCrossAdvisorCoordinator } from "@/lib/engines/cross-advisor-coordinator";
@@ -270,6 +275,40 @@ export function useBusinessAdvisorBoard() {
   // ── Conversation advisor ────────────────────────────────────────
   const [conversationAdvisor, setConversationAdvisor] = useState<AdvisorPersona | null>(null);
 
+  // ── Part 4 Engine singletons ─────────────────────────────────
+  const toolEngine = useMemo(() => getAdvisorToolExecutionEngine(), []);
+  const radarEngine = useMemo(() => getBusinessRadarEngine(), []);
+  const planningEngine = useMemo(() => getStrategicPlanningEngine(), []);
+
+  // Part 4 state
+  const [toolExecutions, setToolExecutions] = useState(toolEngine.getAllExecutions());
+  const [radarSignals, setRadarSignals] = useState(radarEngine.getSignals());
+  const [radarSnapshot, setRadarSnapshot] = useState(radarEngine.getSnapshot());
+  const [planningSnapshot, setPlanningSnapshot] = useState(planningEngine.getSnapshot());
+  const [strategyDoc, setStrategyDoc] = useState(planningEngine.generateStrategyDocument());
+
+  const refreshToolState = useCallback(() => setToolExecutions(toolEngine.getAllExecutions()), [toolEngine]);
+  const refreshRadar = useCallback(() => { setRadarSignals(radarEngine.getSignals()); setRadarSnapshot(radarEngine.getSnapshot()); }, [radarEngine]);
+
+  const handleToolApprove = useCallback((id: string) => { toolEngine.approve(id); toolEngine.execute(id); refreshToolState(); toast.success("Tool execution approved & executed"); }, [toolEngine, refreshToolState]);
+  const handleToolExecute = useCallback((id: string) => { toolEngine.execute(id); refreshToolState(); toast.success("Tool executed"); }, [toolEngine, refreshToolState]);
+  const handleToolRollback = useCallback((id: string) => { toolEngine.rollback(id); refreshToolState(); toast.info("Tool execution rolled back"); }, [toolEngine, refreshToolState]);
+  const handleToolCancel = useCallback((id: string) => { toolEngine.cancel(id); refreshToolState(); toast.info("Tool execution cancelled"); }, [toolEngine, refreshToolState]);
+  const handleToolRequest = useCallback((toolId: string, advisorId: string, params: Record<string, unknown>) => {
+    const advisor = BUSINESS_ADVISORS.find(a => a.id === advisorId);
+    toolEngine.requestExecution({ toolId, advisorId, advisorName: advisor?.displayName ?? advisorId, parameters: params, confidence: 0.85, impactSummary: "Advisor-initiated action" });
+    refreshToolState();
+    toast.info("Tool execution requested");
+  }, [toolEngine, refreshToolState]);
+
+  const handleRadarAcknowledge = useCallback((id: string) => { radarEngine.acknowledge(id); refreshRadar(); }, [radarEngine, refreshRadar]);
+  const handleRadarAcknowledgeAll = useCallback(() => { radarEngine.acknowledgeAll(); refreshRadar(); }, [radarEngine, refreshRadar]);
+  const handleRadarGenerate = useCallback(() => { radarEngine.generateSignal(); refreshRadar(); toast.info("New signal detected"); }, [radarEngine, refreshRadar]);
+
+  const handleUpdateGoalProgress = useCallback((goalId: string, progress: number) => { planningEngine.updateGoalProgress(goalId, progress); setPlanningSnapshot(planningEngine.getSnapshot()); }, [planningEngine]);
+  const handleUpdateMilestone = useCallback((id: string, status: MilestoneStatus) => { planningEngine.updateMilestoneStatus(id, status); setPlanningSnapshot(planningEngine.getSnapshot()); toast.success("Milestone updated"); }, [planningEngine]);
+  const handleGenerateStrategy = useCallback(() => { setStrategyDoc(planningEngine.generateStrategyDocument()); toast.success("Strategy document generated"); }, [planningEngine]);
+
   return {
     // Advisors
     advisors: BUSINESS_ADVISORS,
@@ -327,5 +366,25 @@ export function useBusinessAdvisorBoard() {
     reflectionSummary,
     conversationAdvisor,
     setConversationAdvisor,
+
+    // Part 4: Tool Execution + Radar + Planning
+    tools: ADVISOR_TOOLS,
+    toolExecutions,
+    toolStats: toolEngine.getStats(),
+    handleToolApprove,
+    handleToolExecute,
+    handleToolRollback,
+    handleToolCancel,
+    handleToolRequest,
+    radarSignals,
+    radarSnapshot,
+    handleRadarAcknowledge,
+    handleRadarAcknowledgeAll,
+    handleRadarGenerate,
+    planningSnapshot,
+    strategyDoc,
+    handleUpdateGoalProgress,
+    handleUpdateMilestone,
+    handleGenerateStrategy,
   };
 }
