@@ -91,7 +91,7 @@ export function CloudPolicyAdmin() {
                     <Badge key={f} variant="secondary" className="text-[10px]">{f}</Badge>
                   ))}
                 </div>
-                <Button size="sm" variant="outline" className="w-full text-xs" onClick={() => toast.info(`Editing plan: ${plan.name}`)}>
+                <Button size="sm" variant="outline" className="w-full text-xs" onClick={() => toast.info(`Editing plan: ${plan.displayName}`)}>
                   Edit Plan
                 </Button>
               </div>
