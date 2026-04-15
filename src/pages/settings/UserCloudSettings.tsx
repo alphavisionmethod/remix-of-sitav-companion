@@ -24,6 +24,7 @@ import { CloudActivityTimeline } from "@/components/cloud/CloudActivityTimeline"
 import { CloudDeviceSafety } from "@/components/cloud/CloudDeviceSafety";
 import { CloudImportExport } from "@/components/cloud/CloudImportExport";
 import { CloudNamespaceToggles } from "@/components/cloud/CloudNamespaceToggles";
+import { CloudDeviceOwnership } from "@/components/cloud/CloudDeviceOwnership";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [
@@ -128,12 +129,15 @@ export default function UserCloudSettings() {
 
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 md:grid-cols-7">
+        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8">
           <TabsTrigger value="files" className="flex items-center gap-1.5 text-xs">
             <Files className="h-3.5 w-3.5" /> Files
           </TabsTrigger>
           <TabsTrigger value="trash" className="flex items-center gap-1.5 text-xs">
             <Trash2 className="h-3.5 w-3.5" /> Trash
+          </TabsTrigger>
+          <TabsTrigger value="devices" className="flex items-center gap-1.5 text-xs">
+            <Smartphone className="h-3.5 w-3.5" /> Devices
           </TabsTrigger>
           <TabsTrigger value="activity" className="flex items-center gap-1.5 text-xs">
             <Activity className="h-3.5 w-3.5" /> Activity
@@ -309,6 +313,11 @@ export default function UserCloudSettings() {
 
           {/* Activity Journal */}
           <SyncActivityJournal maxEntries={8} />
+        </TabsContent>
+
+        {/* DEVICES TAB */}
+        <TabsContent value="devices" className="mt-4">
+          <CloudDeviceOwnership />
         </TabsContent>
 
         {/* SAFETY TAB */}

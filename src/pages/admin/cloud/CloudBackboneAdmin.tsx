@@ -40,6 +40,7 @@ import { AdminAuditExplorer } from "./AdminAuditExplorer";
 import { EnvironmentSwitcher } from "./EnvironmentSwitcher";
 import { SupportConsoleSafe } from "./SupportConsoleSafe";
 import { AdminTokenManager } from "./AdminTokenManager";
+import { ApiGatewayRoutesAdmin } from "./ApiGatewayRoutesAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -79,6 +80,7 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   environments: EnvironmentSwitcher,
   "support-safe": SupportConsoleSafe,
   tokens: AdminTokenManager,
+  "gateway-routes": ApiGatewayRoutesAdmin,
 };
 
 export default function CloudBackboneAdmin() {
