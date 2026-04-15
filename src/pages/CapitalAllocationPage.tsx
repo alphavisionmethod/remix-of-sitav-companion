@@ -15,7 +15,7 @@ import { ASSET_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_ALLOCATIONS } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 export default function CapitalAllocationPage() {

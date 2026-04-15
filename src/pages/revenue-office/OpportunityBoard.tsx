@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight, Layers, AlertTriangle, Clock } from "lucide-react";
@@ -8,7 +10,7 @@ import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/lib/demo-data/rev
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const categoryColors: Record<string, string> = {

@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -60,7 +62,7 @@ import {
 } from "@/lib/internal-agents/rights";
 import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACTION_PIPELINE_STATES } from "@/lib/internal-agents/launch-readiness";
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
-  const isDemoMode = true;
+  const { isDemo: isDemoMode } = useAuth();
   const toggleMode = () => {};
   const refreshConnectors = () => {};
   const connectors: Array<{ name: string; status: string; lastSync: string; type: string }> = [];

@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign, SmilePlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +16,7 @@ import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONV
 import { clientSentimentService } from "@/lib/services/client-sentiment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 export default function RelationshipCenter() {

@@ -5,6 +5,7 @@
 // Now wired to real Supabase data via useGovernanceSummary.
 // ═══════════════════════════════════════════════════════════════
 
+import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
@@ -16,7 +17,7 @@ import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };

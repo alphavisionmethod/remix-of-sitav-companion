@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
+import { useAuth } from "@/contexts/AuthContext";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -15,7 +17,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const weeklyStats = {

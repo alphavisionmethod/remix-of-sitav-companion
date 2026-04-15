@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, SummaryCard, StatusCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
+import { useAuth } from "@/contexts/AuthContext";
 import { TrustBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -11,7 +13,7 @@ import { useMemo } from "react";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const FinancialHealthPulse = () => {

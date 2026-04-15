@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
@@ -10,7 +12,7 @@ import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type Dem
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 

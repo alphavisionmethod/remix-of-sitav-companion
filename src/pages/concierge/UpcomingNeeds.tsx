@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/components/sita/cards";
+import { useAuth } from "@/contexts/AuthContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
@@ -13,7 +15,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const OBLIGATIONS: UpcomingObligation[] = [

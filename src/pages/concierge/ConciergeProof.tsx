@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
+import { useAuth } from "@/contexts/AuthContext";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { ReceiptRecord } from "@/components/concierge";
@@ -7,7 +9,7 @@ import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, G
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 interface ProofRecord {

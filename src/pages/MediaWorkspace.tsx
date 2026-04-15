@@ -25,7 +25,7 @@ import {
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const MediaWorkspace = () => {

@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
+import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, TimelineCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
@@ -16,7 +18,7 @@ import { getTopAdvisors } from "@/lib/engines/adaptive-advisor-roster";
 import { getBoardroomAgenda } from "@/lib/engines/adaptive-boardroom-framing";
 
 const BusinessBoardroom = () => {
-const isDemoMode = true;
+const { isDemo: isDemoMode } = useAuth();
 const [mode, setMode] = useState("weekly");
   const { profile } = useBusinessProfile();
   const adaptiveAdvisors = useMemo(() => {
