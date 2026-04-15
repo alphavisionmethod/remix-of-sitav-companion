@@ -1,4 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -18,6 +19,7 @@ import {
 
 
 const ApprovalsCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const [expandedId, setExpandedId] = useState<string | null>(null);
