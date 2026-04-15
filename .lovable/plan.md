@@ -1,133 +1,76 @@
 
+# Audit: Founder/Admin AI Control Dashboard — Gaps Found
 
-# Founder / Admin AI Control Dashboard — Implementation Plan
+## What's Already Fully Implemented (Complete)
+1. **3-Panel Shell** (Section 3) — FounderControlShell with sidebar, main, right panel
+2. **Global Command Bar** (Section 4) — Always-visible, NLP input, plan cards, Approve/Simulate/Edit/Cancel
+3. **Left Sidebar** (Section 6) — 18 modules across 6 groups, collapsible, environment badge, alert badges
+4. **Right AI Panel** (Section 9) — Summary/Detailed modes, active tasks, reasoning trace, suggestions with Why/Simulate/Apply
+5. **Command Templates** (Section 17D) — 8 templates: Reliability Sprint, Security Sweep, etc.
+6. **Safety UX** (Section 12) — Risk previews, typed CONFIRM for critical, safer alternatives, rollback info
+7. **Execution Timeline** (Section 13) — Full command-to-outcome lifecycle, expandable events
+8. **One-Click Actions** (Section 11) — 8 quick actions wired to safety dialogs
+9. **Simulation Preview** (Section 17B) — 3 what-if scenarios with metric comparisons
+10. **Mobile Nav** (Section 14) — Bottom nav for mobile
+11. **All 16 Module Pages** (Section 8) — Routed and permission-gated
+12. **Rollout Status Banner** — Active in trust ribbon area
 
-## Current State Assessment
+## Gaps Found (Need Enhancement)
 
-The codebase already has significant foundation:
-- **Founder Orchestrator** (`src/lib/services/founder-orchestrator/index.ts`): Full directive parsing, task decomposition, agent routing, execution plans, cost snapshots, runbooks — 422 lines of real logic, not stubs.
-- **FCC01–FCC12 Pages**: Command console, task graph, CI/CD, runbooks, dashboard, programs, cost, sync/storage ops, security, oversight, incidents, knowledge — all exist with real UI.
-- **SRE01–SRE08 Pages**: Validation, builder-critic, simulation, standards, chaos, rollback, version intel, optimization — all exist.
-- **AdminShell**: Minimal — just a density toggle and trust ribbon. No sidebar, no command bar, no right panel.
-- **AdminCommandPalette**: Exists but is a Cmd+K popup, not the always-visible command bar the prompt requires.
-- **No unified founder shell** with the 3-panel layout (sidebar + main + right AI panel) described in the prompt.
+### Gap 1: MissionControlHome Missing Prompt-Required Elements
+The dashboard (Section 7) is missing several items the prompt explicitly requires:
+- **Health Score Gauge** (circular, 0-100) — Currently just a text badge saying "Platform healthy"
+- **AI Suggestions Panel** with Explain/Simulate/Apply/Dismiss actions — Not on the home dashboard (only in the right panel)
+- **Quick Action Cards** — Not embedded in the dashboard (OneClickActions exists but isn't used on home)
+- **AI Budget Health** metric — Missing from the top KPI strip
+- **Sync Reliability** metric — Missing from top KPI strip
+- **"What should I do next?"** guidance — Missing
 
-## What's Missing (Gap Analysis)
+### Gap 2: MissionControlHome Should Show OneClickActions + CommandTemplateCards
+The prompt says the home screen should include one-click strategic actions and template cards. These components exist but aren't imported/rendered on the dashboard.
 
-1. **Unified Founder Control Shell** — The 3-panel layout (left sidebar, main content, right AI transparency panel) doesn't exist. Pages render inside the generic AdminShell which is just content + a thin utility bar.
-2. **Always-Visible Global Command Bar** — No persistent top command bar. Current command input is buried inside FCC01.
-3. **Left Sidebar Navigation** — No dedicated admin/founder sidebar with the 18 module sections listed in the prompt.
-4. **Right AI Transparency Panel** — No persistent right panel showing live AI reasoning, active tasks, confidence, progress.
-5. **Unified Home Dashboard** — MissionControlHome exists but doesn't match the prompt's design (health score + activity feed + AI suggestions + quick actions as described).
-6. **Module gap pages** — Several modules from the prompt don't have dedicated pages yet:
-   - **Devices** (fleet-level device management with trust/mesh/revoke)
-   - **Storage** (blob health, orphans, lifecycle, quota drift)
-   - **Users** (platform-level user management with segments, trust history)
-   - **Trust & Security** (unified threat view)
-   - **Workspaces & Continuity** (restore success, cross-device handoff)
-   - **Releases & Updates** (canary control, rollout curve)
-   - **AI Control** (unified agent + cost + model router + review conflicts)
-   - **Incidents** (severity timeline + mitigations + postmortem)
-   - **Logs & Audit** (correlated audit explorer)
-   - **Policies & Flags** (dry-run, blast radius preview)
-   - **Costs & AI Budgets** (unified cost dashboard)
-   - **Jobs & Maintenance** (job queues, stuck jobs, dead letters)
-   - **Support** (case queue, diagnostic bundles, safe repair)
-   - **Knowledge Base** (living memory, runbooks, AI retrieval)
-7. **One-Click Strategic Actions** — Template cards for "Reliability Sprint", "Security Sweep" etc.
-8. **Safety UX** — Confirmation dialogs with risk preview, blast radius, rollback availability.
-9. **History/Timeline** — Command → plan → execution → outcome timeline view.
-10. **Mobile Responsive** — Not addressed for the founder shell.
+### Gap 3: MissionControlHome Missing ExecutionTimeline
+The prompt requires a "recent activity timeline" showing command lifecycle. The ExecutionTimeline component exists but isn't shown on the home dashboard.
 
-## Implementation Plan (7 Batches)
+### Gap 4: Mobile Nav Paths Are Wrong
+`FounderMobileNav.tsx` uses paths like `/admin/mc-system-health` and `/admin/command-center` but the actual routes are `/admin/mc/system-health` and `/admin/founder/command`. These links won't resolve.
 
-### Batch 1: Founder Control Shell (Core Layout)
-Build the unified 3-panel shell that wraps all `/admin/*` routes.
+### Gap 5: SimulationPreview Not Used Anywhere
+The component exists but isn't rendered in any page. Should be on the Command Center or Dashboard.
 
-**Files to create:**
-- `src/components/admin/shells/FounderControlShell.tsx` — The master layout with:
-  - Top Global Command Bar (always visible, large input, autocomplete, command history)
-  - Left sidebar (collapsible, 18 module groups, alert badges, environment badge)
-  - Main content area (renders children/Outlet)
-  - Right AI Transparency Panel (collapsible, shows active tasks, reasoning, confidence)
-- `src/components/admin/shells/GlobalCommandBar.tsx` — Command bar component with intent parsing, plan preview cards, action buttons (Approve/Edit/Simulate/Cancel)
-- `src/components/admin/shells/FounderSidebar.tsx` — 18-section sidebar with icons, badges, keyboard nav, favorites
-- `src/components/admin/shells/AITransparencyPanel.tsx` — Right panel showing active AI tasks, reasoning trace, progress, confidence, risk, summary/detailed modes
+### Gap 6: "Why am I seeing this?" Not Implemented
+Section 16 requires this tooltip everywhere on AI suggestions. The right panel has "Why?" buttons but no actual tooltip/popover with explanations across module pages.
 
-**Files to modify:**
-- `src/App.tsx` — Replace `AdminShellLayout` with `FounderControlShell`
-- `src/components/admin/shells/index.ts` — Re-export new shell
+### Gap 7: Glossary Help Not Implemented  
+Section 16 requires "glossary help built in" — no glossary component exists.
 
-### Batch 2: Home Dashboard (Complete Redesign)
-Replace or heavily enhance `MissionControlHome.tsx` to match the prompt's dashboard spec.
+---
 
-**Enhance `src/pages/admin/MissionControlHome.tsx`:**
-- Platform Health Summary hero (score gauge, sync, security, incidents, release readiness, AI cost efficiency)
-- Live Activity Feed (real-time events from audit_events, formatted as timeline)
-- AI Suggestions Panel (strategic recommendations with Explain/Simulate/Apply/Dismiss actions)
-- Quick Action Cards (one-click strategic templates)
-- Pending Approvals strip
-- Active Objectives strip
+## Implementation Plan (3 Focused Batches)
 
-### Batch 3: Module Pages — System Operations (6 pages)
-Create the missing module pages that don't exist yet.
+### Batch A: Enhance MissionControlHome (Largest Gap)
+- Add circular health score gauge (computed from subsystem health weights per Section 7)
+- Add top KPI strip with: Health %, Sync Reliability, Security Risk, Active Incidents, Release Readiness, AI Cost Efficiency (6 pills as prompt specifies)
+- Import and render `OneClickActions` in a "Quick Actions" section
+- Import and render `CommandTemplateCards` (compact mode) 
+- Import and render `ExecutionTimeline` (compact, maxVisible=5) showing recent activity
+- Add AI Suggestions section with Explain/Simulate/Apply/Dismiss actions (pull from DEMO_SUGGESTIONS pattern used in AITransparencyPanel)
 
-**Create:**
-- `src/pages/admin/modules/MCDevicesCenter.tsx` — Fleet device management (trust, revoke, mesh, update eligibility)
-- `src/pages/admin/modules/MCStorageCenter.tsx` — Blob/object storage health (orphans, lifecycle, quota drift, reconciliation)
-- `src/pages/admin/modules/MCUsersCenter.tsx` — Platform user management (search, segments, plan, trust, support timeline)
-- `src/pages/admin/modules/MCWorkspacesContinuity.tsx` — Workspace adoption, restore success, cross-device handoff
-- `src/pages/admin/modules/MCSyncCloud.tsx` — Sync health, conflicts, repair tools (consolidate/enhance FCC08)
-- `src/pages/admin/modules/MCJobsMaintenance.tsx` — Background jobs, queues, retries, stuck jobs, dead letter
+### Batch B: Fix Wiring Issues
+- Fix `FounderMobileNav.tsx` paths to match actual routes (`/admin/mc/system-health`, `/admin/founder/command`, `/admin/mc/incidents`, `/admin/mc/trust-security`)
+- Add `SimulationPreview` to the Command Center page (FCC01) or create a dedicated command center sub-view
+- Wire `CommandTemplateCards` `onSelectTemplate` callback to actually populate the GlobalCommandBar
 
-### Batch 4: Module Pages — Governance & Intelligence (6 pages)
-**Create:**
-- `src/pages/admin/modules/MCTrustSecurity.tsx` — Unified trust/risk/security oversight with threat level, trust trends, blocked actions
-- `src/pages/admin/modules/MCReleasesUpdates.tsx` — Canary control, rollout curves, crash delta, rollback, release scores
-- `src/pages/admin/modules/MCAIControl.tsx` — Unified AI control: active agents, cost, model router, review conflicts, escalations
-- `src/pages/admin/modules/MCIncidents.tsx` — Incident response: severity, timeline, mitigations, postmortem, runbook links
-- `src/pages/admin/modules/MCPoliciesFlags.tsx` — Policy bundles, dry-run simulation, blast radius, staged changes
-- `src/pages/admin/modules/MCCostsAIBudgets.tsx` — AI cost by feature, token trends, local vs cloud, cache hits, forecasts
+### Batch C: Beginner-Friendly UX Layer
+- Create a reusable `WhyTooltip` component (small "?" icon with popover explaining the metric/suggestion in plain language)
+- Add `WhyTooltip` to AI suggestions on home dashboard and right panel
+- Create a `GlossaryDrawer` component with searchable terms (SLO, canary, rollback, trust score, etc.)
+- Add glossary trigger to sidebar footer
+- Add placeholder guidance examples in module pages where applicable
 
-### Batch 5: Module Pages — Support & Knowledge (4 pages)
-**Create:**
-- `src/pages/admin/modules/MCLogsAudit.tsx` — Structured audit explorer with correlation, filtering, linked explanations
-- `src/pages/admin/modules/MCSupport.tsx` — Support case queue, diagnostic bundles, safe repair, escalation
-- `src/pages/admin/modules/MCKnowledgeBase.tsx` — Living memory: architecture docs, runbooks, incident lessons, AI retrieval
-- `src/pages/admin/modules/MCSystemHealth.tsx` — Full subsystem health cards with scores, trends, drill-downs
-
-### Batch 6: Strategic Features & Safety UX
-**Create:**
-- `src/components/admin/shells/CommandTemplateCards.tsx` — Prebuilt strategic templates: Reliability Sprint, Security Sweep, Release Preparation, Cost Reduction, etc.
-- `src/components/admin/shells/SafetyConfirmDialog.tsx` — Risk-aware confirmation: what changes, who's affected, risk level, rollback availability, safer alternatives
-- `src/components/admin/shells/ExecutionTimeline.tsx` — Beautiful command → plan → execution → outcome timeline
-- `src/components/admin/shells/OneClickActions.tsx` — Quick action grid wired to founderOrchestrator
-- `src/components/admin/shells/SimulationPreview.tsx` — "What if" simulation preview cards
-
-### Batch 7: Route Wiring, Mobile Responsive, Polish
-**Modify:**
-- `src/routes/AdminRoutes.tsx` — Register all new MC module routes
-- `src/components/admin/AdminCommandPalette.tsx` — Update with new module paths
-- `src/components/admin/shells/FounderControlShell.tsx` — Add mobile responsive breakpoints (collapsible sidebar, stacked layout, touch-friendly command bar)
-
-**Create:**
-- `src/components/admin/shells/FounderMobileNav.tsx` — Mobile bottom nav for founder shell (health, command, approvals, incidents)
-
-## Technical Approach
-
-- All new pages follow existing glassmorphic dark-first design tokens
-- All module pages use `useAuth().isDemo` for reality mode, never hardcoded
-- All routes wrapped with `gated()` permission checks
-- Data fetches use `fromTable()` + `useQuery` pattern already established
-- AI transparency panel consumes `founderOrchestrator` state + audit_events
-- Command bar integrates with existing `founderOrchestrator.parseDirective()` and `decomposeToTaskGraph()`
-- No new database tables needed — leverages existing `incidents`, `approval_queue`, `audit_events`, etc.
-- No stubs — every component renders meaningful UI with demo data fallback via `isDemo`
-
-## Design Language
-- Glass panels: `bg-white/[0.03] backdrop-blur-xl border-white/[0.06]`
-- Premium spacing, calm transitions, `framer-motion` fade-ups
-- Color: green=healthy, yellow=warning, red=critical, blue=action, purple=AI
-- Dense data behind expandable sections, plain language by default
-- "Why am I seeing this?" tooltips on AI suggestions
-
+### Technical Notes
+- No database changes needed
+- No new routes needed
+- All changes are frontend component composition
+- Follows existing glassmorphic design tokens
+- Uses existing `useAuth().isDemo` pattern
