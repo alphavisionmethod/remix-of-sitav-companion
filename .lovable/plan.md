@@ -1,183 +1,182 @@
 
 
-# SITA Business OS — Advanced Board of Advisors Implementation
+# Part 2: Board of Advisors — Deep Intelligence Layer
 
 ## Summary
 
-Transform the existing Business Advisor Board page into a full executive advisory boardroom with 10 specialized advisors, a multi-layer intelligence engine, autonomous action pipeline, profitability intelligence, and a premium cinematic UI — all wired into the existing Business OS shell.
+Add 7 new engines, 6 new UI components, and 1 new edge function to transform the existing Board of Advisors from a recommendation dashboard into a full cognitive operating system with memory, business-type adaptation, cross-advisor coordination, continuous profit loop, confidence scoring, and owner control.
 
-## What Already Exists
+## What Exists (Part 1 — Complete)
 
-- **BusinessAppShell** with sidebar entry `advisor-board` routing to `BusinessAdvisorBoardPage`
-- **business-advisor-engine.ts** (772 lines) — stateless engine with `AdvisorOutput` types, board synthesis, escalation packets, disagreement detection
-- **advisor-orchestration.ts** (221 lines) — multi-advisor registry with 9 core advisors, escalation rules, handoff protocols
-- **advisor-config/registry.ts** — 26-advisor registry with capabilities, blocked actions, maturity levels
-- **advisor-intelligence/** — confidence model, context assembler, council deliberation, hallucination taxonomy, memory lifecycle
-- **advisor-board/** components — `BusinessAdvisorBoardPanel`, `AdvisorDisagreementCard`, `EscalationPacketPreview`, `ModuleAdvisorPanel`
-- **Boardroom bridge** already wired for escalation and decisions
+- 10 advisor personas with distinct personalities (`business-advisor-personas.ts`, 326 lines)
+- Profitability engine with leak/cash/capacity/retention/growth analysis (`business-profitability-engine.ts`, 320 lines)
+- 6-level autonomy model with domain permissions (`business-autonomy-engine.ts`, 136 lines)
+- Action execution pipeline with simulate/approve/execute/rollback (`business-action-pipeline.ts`, 166 lines)
+- Edge function for AI recommendations via Lovable AI (`business-advisor-intelligence`)
+- Full boardroom UI: 6-tab page, 15 components, presence bar, health score, proof timeline
 
-## What's Missing (The Build)
+## What Part 2 Adds
 
-The current system is a read-only synthesis dashboard. It lacks:
-1. The 10 distinct advisor personas with personality-driven outputs
-2. The executive boardroom surface (Today/At Risk/Revenue/Cash/Clients/Ops/Team modules)
-3. The 6-layer autonomy model with action execution pipeline
-4. The profitability intelligence engine
-5. Live AI-powered advisor recommendations via Lovable AI
-6. The action queue with approval/simulation/proof workflow
-7. Daily/weekly brief composers wired to real data
-8. Premium cinematic UI with advisor portraits, presence indicators, trust mode controls
+### Engines (7 new files in `src/lib/engines/`)
 
-## Architecture
+**1. `advisor-memory-engine.ts`** — Multi-layer memory architecture
+- Short-term: active tasks, current boardroom state, open decisions, pending approvals
+- Mid-term: client histories, pipeline patterns, recurring failures, scheduling patterns
+- Long-term: business goals, strategic priorities, risk patterns, seasonal shifts
+- Preference: communication style, approval tolerance, detail depth, reminder sensitivity
+- Procedural: what workflows work, what automations are allowed, what "done correctly" looks like
+- All stored in-memory with `getMemorySnapshot()`, `correctMemory()`, `archiveMemory()` methods
+- Memory items tagged with advisor, confidence, and expiry
+
+**2. `business-context-graph.ts`** — Shared Business Context Model
+- Unified graph containing: business identity, revenue engine, client model, financial model, operations model, people model, trust/governance model, performance model
+- All advisors query one `SharedBusinessContext` instance
+- Continuously updated from leads, invoices, tasks, clients, schedules
+- Exposes `getBusinessSnapshot()` for edge function context injection
+
+**3. `business-archetype-engine.ts`** — Business-Type Adaptation
+- 12 archetypes: solo provider, local service, agency, consulting, appointment-based, project-based, recurring service, e-commerce, field ops, small team, hybrid, household-blend
+- Each defines: priority advisors, top risks, profit leaks, key workflows, automation opportunities, important metrics
+- `adaptBoard(archetype)` reshapes advisor weighting and module visibility
+- Auto-detected from business context or manually selected
+
+**4. `cross-advisor-coordinator.ts`** — Cross-Advisor Synthesis
+- De-duplicates overlapping recommendations from multiple advisors
+- Conflict resolution: when Sales and Client Success both surface same client, merges into single coherent action
+- Produces ranked `CoordinatedRecommendation[]` with primary owner, contributing advisors, merged rationale
+- Generates board-level `EscalationBundle` for multi-advisor consensus items
+
+**5. `confidence-risk-scorer.ts`** — Decision Confidence & Risk Scoring
+- 8-dimension scoring: confidence, urgency, business impact, reversibility, profitability relevance, relationship risk, operational risk, clarity
+- Each recommendation/action gets a `ConfidenceProfile`
+- Scores determine: recommendation ranking, surfacing priority, automation eligibility, approval requirements, boardroom display prominence
+- Thresholds gated by autonomy level
+
+**6. `continuous-profit-engine.ts`** — Continuous Profitability Loop
+- Runs perpetual cycle: detect leaks → identify recoveries → prioritize easiest wins → simulate → recommend/execute → track outcome → learn
+- Monitors 14 profit levers: missed leads, slow response, unclosed loops, quote delays, no-shows, underused calendar, overdue invoices, pricing weakness, client neglect, hidden costs, inefficient scheduling, over-servicing, subscription waste, team imbalance
+- Output categories: recover revenue now, prevent loss, improve margin, improve efficiency, improve retention, improve capacity
+- Integrates with memory engine to learn which profit actions actually worked
+
+**7. `advisor-reflection-engine.ts`** — Reflection & Learning
+- Tracks: what owner approved, what owner ignored, what improved outcomes, what should be tuned
+- Learning signals stored as preference updates in memory engine
+- Generates `ReflectionSummary` for weekly review: wins, misses, patterns detected, advisor accuracy scores
+- Learning is visible, bounded, editable, never autonomous
+
+### Edge Function (1 new)
+
+**`supabase/functions/advisor-deep-intelligence/index.ts`**
+- Extended AI function that accepts full business context graph + memory snapshot + archetype
+- Generates persona-specific recommendations using advisor prompt templates enriched with memory context
+- Returns structured output with 8-dimension confidence profiles
+- Handles advisor coordination (de-dup, merge) server-side for richer synthesis
+- Logs to `ai_inference_receipts` with extended metadata
+
+### UI Components (6 new in `src/components/business/advisor-board/`)
+
+**1. `MorningExecutiveBrief.tsx`** — Full morning brief surface
+- Opens with time-aware greeting and business health pulse
+- Top 3 priorities from profit engine
+- Revenue at risk summary
+- Cash pressure forecast
+- Blocked workflows
+- One strategic insight from Strategy Advisor
+- One action SITA can take now (with approve button)
+- Replaces the simpler `DailyBriefView`
+
+**2. `RevenueRescuePanel.tsx`** — Revenue rescue moment
+- When leads are slipping, shows: ranked callback list, draft follow-ups, schedule blocks, urgency explanation, expected recovery impact
+- Prominent CTA: "Recover $X pipeline" with one-click action bundle
+
+**3. `BusinessArchetypeSelector.tsx`** — Business type selector
+- Premium card-based selector for 12 archetypes
+- Shows what changes per archetype: priority advisors, key metrics, automation opportunities
+- Persisted in context graph
+
+**4. `AdvisorMemoryInspector.tsx`** — Memory inspection & correction
+- Browse memory by advisor, layer (short/mid/long/preference/procedural)
+- Edit/correct/archive individual memory items
+- Shows confidence and expiry for each item
+
+**5. `CrossAdvisorReasoningView.tsx`** — Cross-advisor synthesis display
+- Shows how multiple advisors contributed to a recommendation
+- Primary owner, supporting advisors, merged rationale, confidence breakdown
+- Visual: advisor portraits with contribution badges
+
+**6. `ExecutiveResetMode.tsx`** — Overload relief surface
+- Detects owner overload (too many items, low clarity score)
+- Narrows board to essentials only
+- Shows only critical actions, fades non-essential surfaces
+- CEO and EA advisors take prominence
+
+### Hook Enhancement
+
+**`useBusinessAdvisorBoard.ts`** — Extended with:
+- Business context graph integration
+- Memory engine state
+- Archetype selection and adaptation
+- Cross-advisor coordination pipeline
+- Continuous profit loop signals
+- Confidence profiles on all recommendations
+- Reflection/learning data for weekly review
+- Morning brief vs full boardroom mode toggle
+
+### Page Enhancement
+
+**`BusinessAdvisorBoardPage.tsx`** — Extended with:
+- New tab: "Memory" for memory inspector
+- Morning Brief mode (auto-activates before noon on first visit)
+- Revenue Rescue panel in boardroom tab when pipeline risk > threshold
+- Executive Reset Mode overlay when overload detected
+- Archetype selector in autonomy tab
+- Cross-advisor reasoning view on recommendation cards
+
+## Architecture Flow
 
 ```text
-┌─────────────────────────────────────────────────────────┐
-│                  Business Advisor Board                   │
-│  ┌──────────┬──────────┬──────────┬──────────┬────────┐ │
-│  │Executive │ Today's  │ At Risk  │ Revenue  │  Cash  │ │
-│  │  Brief   │ Priorities│  Panel  │  Panel   │ Panel  │ │
-│  ├──────────┼──────────┼──────────┼──────────┼────────┤ │
-│  │ Clients  │   Ops    │   Team   │ Oppty    │ Action │ │
-│  │  Panel   │  Panel   │  Panel   │  Panel   │ Queue  │ │
-│  └──────────┴──────────┴──────────┴──────────┴────────┘ │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │          Advisor Presence Bar (10 Advisors)          │ │
-│  │  CEO · COO · Sales · Marketing · Finance · Client   │ │
-│  │  Success · EA · People · Risk · Strategy             │ │
-│  └─────────────────────────────────────────────────────┘ │
-│  ┌──────────┬──────────┬──────────┬──────────┐          │
-│  │Recommend │Simulation│ Approval │  Proof   │          │
-│  │ Center   │  Queue   │  Queue   │ Timeline │          │
-│  └──────────┴──────────┴──────────┴──────────┘          │
-└─────────────────────────────────────────────────────────┘
+Business Context Graph ──┬── Archetype Engine ── Advisor Weighting
+                         ├── Memory Engine ────── Context Enrichment
+                         ├── Profit Engine ────── Leak/Recovery Signals
+                         └── Confidence Scorer ── Risk Profiles
+                                    │
+                         ┌──────────▼──────────┐
+                         │  advisor-deep-       │
+                         │  intelligence (AI)   │
+                         └──────────┬──────────┘
+                                    │
+                         Cross-Advisor Coordinator
+                                    │
+                         ┌──────────▼──────────┐
+                         │  Action Pipeline     │
+                         │  (simulate/approve)  │
+                         └──────────┬──────────┘
+                                    │
+                         Reflection Engine ── Memory Updates
 ```
 
-## Implementation Plan (8 Steps)
-
-### Step 1: Advisor Persona Engine
-**File**: `src/lib/engines/business-advisor-personas.ts`
-
-Define the 10 advisors with distinct personas — each with: role, personality traits, communication style, decision style, risk tolerance, domain scope, recommendation patterns, escalation rules. This is the "soul" file. Each advisor has a deterministic portrait URL (pravatar.cc), a color accent, and a structured prompt template for Lovable AI calls.
-
-### Step 2: Business Profitability Intelligence Engine
-**File**: `src/lib/engines/business-profitability-engine.ts`
-
-Pure stateless engine with functions:
-- `detectRevenueLeaks()` — missed leads, delayed follow-ups, quote delays, pipeline holes
-- `detectMarginPressure()` — underpriced patterns, subscription waste, over-servicing
-- `assessCashAwareness()` — bill calendar, invoice aging, receivables, reserve monitoring
-- `assessCapacityIntelligence()` — overloaded schedules, workflow congestion, team gaps
-- `assessRetentionRisk()` — neglected clients, churn signals, delivery delays
-- `assessGrowthOpportunity()` — best lead sources, conversion timing, bottlenecks
-- `computeBusinessHealthScore()` — composite 0-100 score
-- `generateProfitabilityBrief()` — structured narrative for the executive brief
-
-All functions work with the existing CRM, leads, invoices, and customer data structures.
-
-### Step 3: Autonomy Policy Engine
-**File**: `src/lib/engines/business-autonomy-engine.ts`
-
-Implements the 6-level autonomy model:
-- Level 1 (Observe) → Level 6 (Full Executive Automation)
-- Domain permission scoping (email, files, finance, CRM, calendar, messaging, scheduling)
-- Approval threshold rules (outbound comms, finance actions, schedule changes, destructive ops)
-- Emergency pause mechanism
-- Trust mode state machine
-- Action proof logging interface
-
-### Step 4: Action Execution Pipeline
-**File**: `src/lib/engines/business-action-pipeline.ts`
-
-The action layer that connects advisor recommendations to execution:
-- `ActionQueue` — structured queue with status (proposed → simulated → approval-ready → approved → executing → completed → verified)
-- `simulateAction()` — preview consequences before execution
-- `requestApproval()` — route to approval queue
-- `executeAction()` — run approved actions with proof emission
-- `rollbackAction()` — reverse when possible
-- Integration with existing `advisor_action_queue` DB table
-
-### Step 5: Edge Function — Advisor Intelligence
-**File**: `supabase/functions/business-advisor-intelligence/index.ts`
-
-Edge function that calls Lovable AI (gemini-3-flash-preview) with persona-specific prompts to generate advisor recommendations. Accepts business context (leads, pipeline, invoices, clients, schedules) and returns structured `AdvisorOutput[]`. Handles rate limits (429/402) and logs to `ai_inference_receipts`.
-
-### Step 6: Executive Boardroom Surface (Main UI)
-Replace the current `BusinessAdvisorBoardPage` with a full executive boardroom. New components:
-
-- **`src/pages/business/BusinessAdvisorBoardPage.tsx`** — Rewritten as the main orchestrator with tab navigation (Boardroom / Advisors / Actions / Proof / Briefs)
-- **`src/components/business/advisor-board/ExecutiveBriefCard.tsx`** — Calm high-level business summary
-- **`src/components/business/advisor-board/AdvisorPresenceBar.tsx`** — 10 advisors with portraits, status dots, confidence scores, click to expand
-- **`src/components/business/advisor-board/BoardroomModuleGrid.tsx`** — The 12-module grid (Today, At Risk, Revenue, Cash, Clients, Ops, Team, Opportunities, Recommendations, Action Queue, Proof Stream, Health Score)
-- **`src/components/business/advisor-board/ActionQueuePanel.tsx`** — Executable actions with approve/simulate/reject controls
-- **`src/components/business/advisor-board/AdvisorDetailSheet.tsx`** — Deep-dive into single advisor with persona, history, recommendations, trust settings
-- **`src/components/business/advisor-board/AutonomyLevelControl.tsx`** — Visual control for setting autonomy level per domain
-- **`src/components/business/advisor-board/TrustModeIndicator.tsx`** — Always-visible indicator showing current autonomy posture
-- **`src/components/business/advisor-board/ProfitLeakCard.tsx`** — Revenue/margin/cash leak visualization
-- **`src/components/business/advisor-board/RevenueRecoveryCard.tsx`** — Recovery opportunity cards with one-click actions
-- **`src/components/business/advisor-board/BusinessHealthScoreCard.tsx`** — Composite health with sparkline trend
-- **`src/components/business/advisor-board/ProofTimelinePanel.tsx`** — Recent advisor actions with full audit trail
-- **`src/components/business/advisor-board/RecommendationCard.tsx`** — Cross-advisor ranked recommendation with confidence, rationale, simulate button
-- **`src/components/business/advisor-board/DailyBriefView.tsx`** — Morning brief and end-of-day review
-- **`src/components/business/advisor-board/WeeklyReviewView.tsx`** — Weekly operating review with profit/risk summary
-
-### Step 7: Hook — useBusinessAdvisorBoard
-**File**: `src/hooks/useBusinessAdvisorBoard.ts`
-
-Central hook that:
-- Calls the edge function for AI-powered recommendations
-- Runs local profitability engine for real-time signals
-- Manages action queue state
-- Manages autonomy level per domain
-- Provides trust mode state
-- Handles approve/reject/simulate flows
-- Emits proof receipts to database
-
-### Step 8: Wire Into Business OS Shell
-- Add new sidebar entries under Intelligence group: split `advisor-board` into sub-pages (Boardroom, Advisor Council, Actions, Briefs, Autonomy Settings)
-- Register the new pages in the `pages` map in `BusinessAppShell.tsx`
-- Add advisor presence strip to the Business OS shell header area
-- Wire profitability signals to the existing Boardroom bridge for cross-OS escalation
-
-## Design Philosophy (Frontend)
-
-- **Dark glassmorphic** boardroom aesthetic matching existing SITA design tokens
-- **Premium advisor portraits** (96px circular, pravatar.cc) with speaking indicators and status dots
-- **Calm modular layout** — no noise, no clutter, scannable in 5 seconds
-- **Confidence visualizations** — green/amber/orange/red bars with numeric scores
-- **Action cards** with approve/simulate/reject as primary CTAs
-- **Animated transitions** — framer-motion stagger, subtle scale-in for cards
-- **Trust mode strip** always visible — shows what's autonomous vs. requires approval
-- **Profitability prominently featured** — revenue at risk, margin leaks, cash pressure shown as first-class metrics
-- **Advisor personality visible** — each advisor card shows their communication style and decision approach
-
-## Database (No New Tables)
-
-Uses existing tables: `advisor_requests`, `advisor_action_queue`, `ai_inference_receipts`, `boardroom_items`, `boardroom_recommendations`. No new migrations needed.
-
-## Files Changed/Created
+## Files Created/Modified
 
 | File | Action |
 |---|---|
-| `src/lib/engines/business-advisor-personas.ts` | Create — 10 advisor personas |
-| `src/lib/engines/business-profitability-engine.ts` | Create — profitability intelligence |
-| `src/lib/engines/business-autonomy-engine.ts` | Create — 6-level autonomy model |
-| `src/lib/engines/business-action-pipeline.ts` | Create — action execution pipeline |
-| `supabase/functions/business-advisor-intelligence/index.ts` | Create — AI edge function |
-| `src/hooks/useBusinessAdvisorBoard.ts` | Create — central board hook |
-| `src/pages/business/BusinessAdvisorBoardPage.tsx` | Rewrite — full boardroom surface |
-| `src/components/business/advisor-board/ExecutiveBriefCard.tsx` | Create |
-| `src/components/business/advisor-board/AdvisorPresenceBar.tsx` | Create |
-| `src/components/business/advisor-board/BoardroomModuleGrid.tsx` | Create |
-| `src/components/business/advisor-board/ActionQueuePanel.tsx` | Create |
-| `src/components/business/advisor-board/AdvisorDetailSheet.tsx` | Create |
-| `src/components/business/advisor-board/AutonomyLevelControl.tsx` | Create |
-| `src/components/business/advisor-board/TrustModeIndicator.tsx` | Create |
-| `src/components/business/advisor-board/ProfitLeakCard.tsx` | Create |
-| `src/components/business/advisor-board/RevenueRecoveryCard.tsx` | Create |
-| `src/components/business/advisor-board/BusinessHealthScoreCard.tsx` | Create |
-| `src/components/business/advisor-board/ProofTimelinePanel.tsx` | Create |
-| `src/components/business/advisor-board/RecommendationCard.tsx` | Create |
-| `src/components/business/advisor-board/DailyBriefView.tsx` | Create |
-| `src/components/business/advisor-board/WeeklyReviewView.tsx` | Create |
-| `src/components/sita/apps/business/BusinessAppShell.tsx` | Modify — add new sidebar entries + page registrations |
+| `src/lib/engines/advisor-memory-engine.ts` | Create |
+| `src/lib/engines/business-context-graph.ts` | Create |
+| `src/lib/engines/business-archetype-engine.ts` | Create |
+| `src/lib/engines/cross-advisor-coordinator.ts` | Create |
+| `src/lib/engines/confidence-risk-scorer.ts` | Create |
+| `src/lib/engines/continuous-profit-engine.ts` | Create |
+| `src/lib/engines/advisor-reflection-engine.ts` | Create |
+| `supabase/functions/advisor-deep-intelligence/index.ts` | Create |
+| `src/components/business/advisor-board/MorningExecutiveBrief.tsx` | Create |
+| `src/components/business/advisor-board/RevenueRescuePanel.tsx` | Create |
+| `src/components/business/advisor-board/BusinessArchetypeSelector.tsx` | Create |
+| `src/components/business/advisor-board/AdvisorMemoryInspector.tsx` | Create |
+| `src/components/business/advisor-board/CrossAdvisorReasoningView.tsx` | Create |
+| `src/components/business/advisor-board/ExecutiveResetMode.tsx` | Create |
+| `src/hooks/useBusinessAdvisorBoard.ts` | Extend |
+| `src/pages/business/BusinessAdvisorBoardPage.tsx` | Extend |
+
+## No Database Changes
+
+All memory, context, and archetype state managed in-memory and via existing tables (`ai_inference_receipts`, `advisor_action_queue`). No new migrations needed.
 
