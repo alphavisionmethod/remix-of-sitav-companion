@@ -6,7 +6,8 @@ import {
   LayoutDashboard, Terminal, Activity, Cloud, HardDrive, Users, Smartphone,
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
-  PanelLeft, Settings, Sparkles, SlidersHorizontal
+  PanelLeft, Settings, Sparkles, SlidersHorizontal, ShieldAlert, FileText,
+  Zap, Monitor
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
 import { useState as useReactState } from "react";
@@ -75,6 +76,16 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: "Support", icon: HeadphonesIcon, path: "/admin/mc/support" },
       { label: "Knowledge Base", icon: BookOpen, path: "/admin/mc/knowledge" },
+    ],
+  },
+  {
+    title: "Authority & Control",
+    items: [
+      { label: "Authority Matrix", icon: Shield, path: "/admin/mc/authority-matrix" },
+      { label: "Control Receipts", icon: FileText, path: "/admin/mc/control-receipts" },
+      { label: "Emergency Authority", icon: ShieldAlert, path: "/admin/mc/emergency" },
+      { label: "Platform Adaptation", icon: Zap, path: "/admin/mc/platform-adaptation" },
+      { label: "State Authority Map", icon: Layers, path: "/admin/mc/state-authority" },
     ],
   },
 ];

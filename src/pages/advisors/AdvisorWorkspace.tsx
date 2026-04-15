@@ -533,7 +533,6 @@ return (
         </div>
       ) : (
         <EmptyState icon={FileText} title="No proof history yet" description="Actions and verifications will appear here as advisors operate in live mode" />
-  const { isDemo: isDemoMode } = useAuth();
       )}
     </div>
   );
@@ -890,7 +889,6 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
         )}
         {messages.length > 0 && !isStreaming && (
           <SitaButton variant="ghost" size="sm" onClick={clear}>Clear</SitaButton>
-  const { isDemo: isDemoMode } = useAuth();
         )}
       </div>
     </div>

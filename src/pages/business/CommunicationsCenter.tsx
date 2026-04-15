@@ -106,7 +106,6 @@ const CommunicationsCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
-  const { isDemo: isDemoMode } = useAuth();
       <ConfirmationDialog state={confirmation} />
 
       <div className="flex items-center justify-between px-1">

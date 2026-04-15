@@ -65,7 +65,6 @@ const QuotesWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
-  const { isDemo: isDemoMode } = useAuth();
       <CrossAppAction to="/business/invoices" label="Convert to Invoice" variant="chip" context={{ entityType: "quote", entityId: selectedId || "all" }} />
 
       <div className="flex items-center justify-between px-1">
