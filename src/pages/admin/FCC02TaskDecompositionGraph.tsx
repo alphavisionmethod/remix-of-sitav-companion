@@ -170,7 +170,7 @@ export default function FCC02TaskDecompositionGraph() {
                                   </div>
                                   <Badge variant="outline" className={`text-[9px] ${RISK_COLORS[t.risk]}`}>{t.risk}</Badge>
                                   <div className="text-[10px] text-muted-foreground w-10 text-right">{Math.round(t.confidence * 100)}%</div>
-                                  {t.requiresApproval && <Shield className="h-3 w-3 text-sita-gold" title="Requires approval" />}
+                                  {t.requiresApproval && <Shield className="h-3 w-3 text-sita-gold" />}
                                 </div>
                               );
                             })}

@@ -68,6 +68,7 @@ export interface RunbookRecord {
   steps: { order: number; action: string; agentClass: AgentClass; automate: boolean }[];
   agent_assignments: { agentClass: AgentClass; role: string }[];
   auto_heal_enabled: boolean;
+  auto_heal_config: Record<string, unknown>;
   tags: string[];
   execution_count: number;
   last_executed_at: string | null;
