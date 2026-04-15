@@ -47,6 +47,10 @@ import { ServiceIdentityAdmin } from "./ServiceIdentityAdmin";
 import { AdminSafetyRails } from "./AdminSafetyRails";
 import { SupportCaseManager } from "./SupportCaseManager";
 import { ConfigChangeHistory } from "./ConfigChangeHistory";
+import { ClientCapabilityAdmin } from "./ClientCapabilityAdmin";
+import { ReleaseGovernanceAdmin } from "./ReleaseGovernanceAdmin";
+import { ReadModelSnapshotsAdmin } from "./ReadModelSnapshotsAdmin";
+import { DataFlowMapAdmin } from "./DataFlowMapAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -93,6 +97,10 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   "safety-rails": AdminSafetyRails,
   "support-cases": SupportCaseManager,
   "config-history": ConfigChangeHistory,
+  "client-capability": ClientCapabilityAdmin,
+  "release-governance": ReleaseGovernanceAdmin,
+  "read-models": ReadModelSnapshotsAdmin,
+  "data-flows": DataFlowMapAdmin,
 };
 
 export default function CloudBackboneAdmin() {
