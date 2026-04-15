@@ -79,12 +79,12 @@ class DiagnosticBundleGenerator {
     });
 
     // Crash history
-    const crashes = crashd.getRecentDumps(20);
+    const crashes = crashd.getCrashes(20);
     sections.push({
       name: 'crash_history', collectedAt: now, redacted: privacyLevel !== 'full',
       data: {
         recentCrashes: crashes.map(c => ({
-          id: c.id, service: c.service, reason: c.reason,
+          id: c.id, service: c.processName, reason: c.signal,
           timestamp: c.timestamp, severity: c.severity,
           stackTrace: privacyLevel === 'full' ? c.stackTrace : '[REDACTED]',
         })),
