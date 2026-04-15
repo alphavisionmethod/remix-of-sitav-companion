@@ -5992,6 +5992,72 @@ export type Database = {
           },
         ]
       }
+      managed_apps: {
+        Row: {
+          app_key: string
+          config: Json | null
+          crash_count: number
+          created_at: string
+          description: string | null
+          device_id: string | null
+          display_name: string
+          domain: string
+          health_status: string
+          id: string
+          install_source: string
+          install_state: string
+          last_crash_at: string | null
+          last_health_check_at: string | null
+          permissions: Json
+          trust_level: string
+          updated_at: string
+          user_id: string
+          version: string
+        }
+        Insert: {
+          app_key: string
+          config?: Json | null
+          crash_count?: number
+          created_at?: string
+          description?: string | null
+          device_id?: string | null
+          display_name: string
+          domain?: string
+          health_status?: string
+          id?: string
+          install_source?: string
+          install_state?: string
+          last_crash_at?: string | null
+          last_health_check_at?: string | null
+          permissions?: Json
+          trust_level?: string
+          updated_at?: string
+          user_id: string
+          version?: string
+        }
+        Update: {
+          app_key?: string
+          config?: Json | null
+          crash_count?: number
+          created_at?: string
+          description?: string | null
+          device_id?: string | null
+          display_name?: string
+          domain?: string
+          health_status?: string
+          id?: string
+          install_source?: string
+          install_state?: string
+          last_crash_at?: string | null
+          last_health_check_at?: string | null
+          permissions?: Json
+          trust_level?: string
+          updated_at?: string
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
       notification_delivery_receipts: {
         Row: {
           channel: string | null
@@ -6568,6 +6634,146 @@ export type Database = {
         }
         Relationships: []
       }
+      os_command_events: {
+        Row: {
+          actor: string | null
+          command_id: string
+          correlation_id: string | null
+          created_at: string
+          from_state: string | null
+          id: string
+          metadata: Json | null
+          reason: string | null
+          to_state: string
+          user_id: string
+        }
+        Insert: {
+          actor?: string | null
+          command_id: string
+          correlation_id?: string | null
+          created_at?: string
+          from_state?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          to_state: string
+          user_id: string
+        }
+        Update: {
+          actor?: string | null
+          command_id?: string
+          correlation_id?: string | null
+          created_at?: string
+          from_state?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          to_state?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "os_command_events_command_id_fkey"
+            columns: ["command_id"]
+            isOneToOne: false
+            referencedRelation: "os_commands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      os_commands: {
+        Row: {
+          actor_user_id: string | null
+          approval_requested_at: string | null
+          approval_state: string | null
+          approved_at: string | null
+          approved_by: string | null
+          command_text: string | null
+          command_type: string
+          completed_at: string | null
+          correlation_id: string
+          created_at: string
+          dispatched_at: string | null
+          error_message: string | null
+          id: string
+          origin: string
+          plan_json: Json | null
+          result: Json | null
+          rollback_available: boolean
+          rollback_payload: Json | null
+          safety_mode: string
+          simulation_first: boolean
+          status: string
+          structured_command: Json | null
+          target_device_id: string | null
+          target_device_ids: string[] | null
+          updated_at: string
+          user_id: string
+          verification_state: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          approval_requested_at?: string | null
+          approval_state?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          command_text?: string | null
+          command_type?: string
+          completed_at?: string | null
+          correlation_id?: string
+          created_at?: string
+          dispatched_at?: string | null
+          error_message?: string | null
+          id?: string
+          origin?: string
+          plan_json?: Json | null
+          result?: Json | null
+          rollback_available?: boolean
+          rollback_payload?: Json | null
+          safety_mode?: string
+          simulation_first?: boolean
+          status?: string
+          structured_command?: Json | null
+          target_device_id?: string | null
+          target_device_ids?: string[] | null
+          updated_at?: string
+          user_id: string
+          verification_state?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          approval_requested_at?: string | null
+          approval_state?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          command_text?: string | null
+          command_type?: string
+          completed_at?: string | null
+          correlation_id?: string
+          created_at?: string
+          dispatched_at?: string | null
+          error_message?: string | null
+          id?: string
+          origin?: string
+          plan_json?: Json | null
+          result?: Json | null
+          rollback_available?: boolean
+          rollback_payload?: Json | null
+          safety_mode?: string
+          simulation_first?: boolean
+          status?: string
+          structured_command?: Json | null
+          target_device_id?: string | null
+          target_device_ids?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verification_state?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       os_elevation_tokens: {
         Row: {
           action: string
@@ -6650,6 +6856,57 @@ export type Database = {
           rotated_at?: string
           scope?: string
           secret_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_policies: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string
+          description: string | null
+          display_name: string
+          domain: string
+          enabled: boolean
+          id: string
+          policy_key: string
+          priority: number
+          scope: string
+          scope_ref: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          description?: string | null
+          display_name: string
+          domain?: string
+          enabled?: boolean
+          id?: string
+          policy_key: string
+          priority?: number
+          scope?: string
+          scope_ref?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          domain?: string
+          enabled?: boolean
+          id?: string
+          policy_key?: string
+          priority?: number
+          scope?: string
+          scope_ref?: string | null
           updated_at?: string
           user_id?: string
         }
