@@ -41,7 +41,6 @@ const DEMO_LOGS: AuditEntry[] = [
 ];
 
 export default function MCLogsAudit() {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [actorFilter, setActorFilter] = useState<LogActor | "all">("all");
