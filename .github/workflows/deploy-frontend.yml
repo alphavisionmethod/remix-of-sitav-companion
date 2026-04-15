@@ -1,0 +1,39 @@
+name: Deploy Frontend
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "shared/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app:
+          - { name: "product-shell", domain: "app.sita.os" }
+          - { name: "admin-console", domain: "admin.sita.os" }
+          - { name: "founder-center", domain: "founder.sita.os" }
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - name: Build ${{ matrix.app.name }}
+        run: pnpm --filter @sita/${{ matrix.app.name }} build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      
+      - name: Deploy to CDN
+        run: echo "Deploy apps/${{ matrix.app.name }}/dist to ${{ matrix.app.domain }}"

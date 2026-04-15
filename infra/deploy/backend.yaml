@@ -1,0 +1,49 @@
+# SITA OS — Backend Deployment (Edge Functions)
+apiVersion: deploy/v1
+kind: edge-functions
+metadata:
+  name: backend
+  plane: backend
+  owner: platform-team
+
+spec:
+  runtime: deno
+  source_dir: backend/edge-functions
+  
+  functions:
+    - name: ai-gateway
+      verify_jwt: false
+      memory_limit: 256
+      timeout_seconds: 30
+    - name: intelligence-api
+      verify_jwt: false
+      memory_limit: 256
+      timeout_seconds: 60
+    - name: advisor-agent-loop
+      verify_jwt: false
+      memory_limit: 256
+      timeout_seconds: 120
+    - name: os-agent-channel
+      verify_jwt: false
+      memory_limit: 128
+      timeout_seconds: 30
+    - name: admin-api
+      verify_jwt: false
+      memory_limit: 128
+      timeout_seconds: 30
+
+  secrets:
+    - SUPABASE_SERVICE_ROLE_KEY
+    - LOVABLE_API_KEY
+    - OPENAI_API_KEY
+    - ANTHROPIC_API_KEY
+    - VAPID_PRIVATE_KEY
+
+  health_check:
+    function: ai-gateway
+    method: OPTIONS
+    expected_status: 200
+
+  deploy:
+    strategy: immediate
+    rollback_on_error: true

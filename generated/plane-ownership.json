@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-04-15T00:00:00.000Z",
+  "description": "Maps every source directory to its owning plane, deployment target, and allowed dependencies.",
+  "planes": {
+    "shared": {
+      "directories": [
+        "src/packages/contracts",
+        "src/packages/business-contracts",
+        "src/packages/finance-contracts",
+        "src/packages/concierge-contracts",
+        "src/packages/protocols",
+        "src/packages/design-tokens",
+        "src/packages/database-schemas",
+        "src/packages/auth",
+        "src/packages/event-types",
+        "src/packages/client-sdk",
+        "src/packages/shell-grammar",
+        "src/packages/workflow-primitives",
+        "src/packages/feature-flags",
+        "src/packages/entitlements",
+        "src/packages/store-metadata",
+        "src/packages/template-registry",
+        "src/packages/microinteraction-engine",
+        "src/packages/pack-manifests"
+      ],
+      "deployment_target": "npm_package",
+      "allowed_dependencies": [],
+      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile"]
+    },
+    "backend": {
+      "directories": [
+        "src/lib/core-services",
+        "src/lib/platform-plane",
+        "src/lib/ai",
+        "src/lib/services/ai-gateway",
+        "src/lib/services/release-intelligence",
+        "src/lib/services/degraded-mode",
+        "src/lib/services/digest-journal",
+        "supabase/functions"
+      ],
+      "deployment_target": "edge_functions_and_api",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["os", "admin", "founder", "mobile"]
+    },
+    "os": {
+      "directories": [
+        "src/lib/nova-sdk",
+        "src/components/sita/shell",
+        "src/components/sita/os"
+      ],
+      "deployment_target": "electron_or_docker",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["backend", "admin", "founder", "mobile"]
+    },
+    "admin": {
+      "directories": [
+        "src/pages/admin",
+        "src/components/admin"
+      ],
+      "deployment_target": "spa_cdn",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["os", "founder", "mobile", "backend"]
+    },
+    "founder": {
+      "directories": [
+        "src/pages/founder"
+      ],
+      "deployment_target": "spa_cdn",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["os", "admin", "mobile", "backend"]
+    },
+    "mobile": {
+      "directories": [
+        "src/pages/mobile",
+        "src/components/mobile"
+      ],
+      "deployment_target": "flutter_app",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["os", "admin", "founder", "backend"]
+    },
+    "product": {
+      "directories": [
+        "src/pages",
+        "src/components",
+        "src/hooks",
+        "src/lib/engines",
+        "src/lib/services"
+      ],
+      "deployment_target": "spa_cdn",
+      "allowed_dependencies": ["shared", "backend", "os"],
+      "forbidden_dependencies": []
+    }
+  },
+  "dependency_matrix": {
+    "shared": { "can_import_from": [] },
+    "backend": { "can_import_from": ["shared"] },
+    "os": { "can_import_from": ["shared"] },
+    "admin": { "can_import_from": ["shared"] },
+    "founder": { "can_import_from": ["shared"] },
+    "mobile": { "can_import_from": ["shared"] },
+    "product": { "can_import_from": ["shared", "backend", "os"] }
+  }
+}
