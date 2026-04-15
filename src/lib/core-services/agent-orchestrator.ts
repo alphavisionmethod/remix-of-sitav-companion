@@ -1,5 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Agent Runtime Orchestrator
+// @deprecated — EXECUTION ADAPTER ONLY. This file is retained as an
+// execution adapter subordinate to the canonical orchestration facade.
+// It manages agent fleet lifecycle/scheduling but does NOT own
+// orchestration authority. New orchestration consumers MUST use:
+//   import { orchestrationFacade } from "@/lib/orchestration";
+//
 // Lifecycle manager, scheduler, and task queue for the 40-agent fleet
 // ═══════════════════════════════════════════════════════════════
 

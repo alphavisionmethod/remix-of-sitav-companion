@@ -1,9 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Chain Orchestrator
-// Extracted from core-services/index.ts
-// Orchestrates: Intent → Policy → Workflow → Execution →
-//               Verification → Receipt → Projection → Memory → Events
-// With DB persistence at every step
+// @deprecated — This is a LEGACY orchestrator retained for backward
+// compatibility. New consumers MUST use the canonical 4-layer
+// orchestration facade at @/lib/orchestration (OrchestrationFacade).
+//
+// This file is now an internal execution implementation detail.
+// The facade delegates to this class internally.
+//
+// Migration path: import { orchestrationFacade } from "@/lib/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import { evaluatePolicy, classifyRiskTier, type PolicyContext, type PolicyEvaluationResult } from "./policy-engine";
