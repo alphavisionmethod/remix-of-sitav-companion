@@ -4,10 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useMemo } from "react";
-import { AppLayout } from "@/lib/nova-sdk/ui/layout";
+import { AppLayout, VStack, HStack } from "@/lib/nova-sdk/ui/layout";
 import { NovaText, NovaButton, NovaBadge, NovaInput } from "@/lib/nova-sdk/ui/components";
-import { NovaCard, VStack, HStack } from "@/lib/nova-sdk/ui/layout";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
