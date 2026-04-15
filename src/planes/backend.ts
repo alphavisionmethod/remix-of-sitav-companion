@@ -37,46 +37,48 @@ export type { BillingAccount, BillingLimits } from "@/lib/core-services/billing-
 export { EventBus, getEventBus } from "@/lib/core-services/event-bus";
 
 // ── Executor Service ──
-export { ExecutorService, getExecutorService } from "@/lib/core-services/executor-service";
+export { ExecutorService } from "@/lib/core-services/executor-service";
 
 // ── Trust Governor ──
 export * from "@/lib/core-services/trust-governor";
 
 // ── Policy Engine ──
-export * from "@/lib/core-services/policy-engine";
+// Use explicit re-exports to avoid name collisions with workflow-engine
+export { PolicyEngine, getPolicyEngine } from "@/lib/core-services/policy-engine";
 
 // ── Workflow Engine ──
-export * from "@/lib/core-services/workflow-engine";
+export { WorkflowEngine, getWorkflowEngine } from "@/lib/core-services/workflow-engine";
 
 // ── Memory Service ──
-export * from "@/lib/core-services/memory-service";
+export { MemoryService, getMemoryService } from "@/lib/core-services/memory-service";
 
 // ── Verification Engine ──
-export * from "@/lib/core-services/verification-engine";
+export { VerificationEngine, getVerificationEngine } from "@/lib/core-services/verification-engine";
 
 // ── Self-Healing ──
-export * from "@/lib/core-services/self-healing";
+export { SelfHealingEngine, getSelfHealingEngine } from "@/lib/core-services/self-healing";
 
 // ── Security ──
-export * from "@/lib/core-services/security";
+export { SecurityFabric, getSecurityFabric } from "@/lib/core-services/security";
 
 // ── Search Fabric ──
-export { searchFabric } from "@/lib/core-services/search-fabric";
+export type { SearchQuery, SearchResult, SearchFacets } from "@/lib/core-services/search-fabric";
 
 // ── Projection Service ──
-export * from "@/lib/core-services/projection-service";
+export { ProjectionService, getProjectionService } from "@/lib/core-services/projection-service";
 
 // ── Fraud Sentinel ──
-export { fraudSentinel } from "@/lib/core-services/fraud-sentinel";
+export type { FraudSignal, FraudRule, FraudSeverity, FraudAction } from "@/lib/core-services/fraud-sentinel";
 
 // ── Governance Simulator ──
-export { governanceSimulator } from "@/lib/core-services/governance-simulator";
+export type { SimulationScenario, SimulationInput, SimulationResult } from "@/lib/core-services/governance-simulator";
 
 // ── Epistemic Firewall ──
 export * from "@/lib/core-services/epistemic-firewall";
 
 // ── Conscience Gate ──
-export * from "@/lib/core-services/conscience-gate";
+// Explicit to avoid collisions
+export { ConscienceGate, getConscienceGate } from "@/lib/core-services/conscience-gate";
 
 // ── Service Registry ──
 export * from "@/lib/core-services/service-registry";
@@ -109,14 +111,14 @@ export {
 export type {
   StorageUsageRecord, StorageHealthReport, BucketStats,
   SyncHealthReport, SyncConflict, SyncJob, DelayedUser,
-  CloudDevice, TrustState, DeviceFleetReport,
+  CloudDevice, DeviceFleetReport,
   CloudPlan, UserPlanAssignment, QuotaOverview,
   AuditEvent, SuspiciousBehavior, SecurityAlert, AuditSeverity,
   CloudTenant, TenantMembership, TenantQuota, TenantPolicy, SharedWorkspace,
   WorkerJob, WorkerQueueStats,
   LifecycleRule, ArchiveJob, StorageTier, AccountClosureRequest, ReconciliationRun,
   AbuseEvent, AbuseSummary,
-  SupportSession, DiagnosticBundle,
+  SupportSession,
 } from "@/lib/cloud-backbone";
 
 // ── Persistence Layer ──
@@ -143,9 +145,6 @@ export type {
 // ── AI Services Gateway ──
 export * from "@/lib/services/ai-gateway";
 
-// ── Sovereign AI Gateway (Compute Governance) ──
-export * from "@/lib/sovereign-ai-gateway";
-
 // ── Domain Engines ──
 export * from "@/lib/domain-engines";
 
@@ -158,9 +157,6 @@ export * from "@/lib/strategic-intelligence";
 // ── Boardroom ──
 export * from "@/lib/boardroom";
 
-// ── Intelligence Architecture ──
-export * from "@/lib/intelligence-architecture";
-
 // ── Compute Governance ──
 export * from "@/lib/compute-governance";
 
@@ -170,11 +166,11 @@ export * from "@/lib/no-hallucination";
 // ── Advisor Protocol ──
 export * from "@/lib/advisor-protocol";
 
-// ── Detection ──
-export * from "@/lib/detection";
-
 // ── AI Engineering ──
 export * from "@/lib/ai-engineering";
+
+// ── Dual Reality ──
+export * from "@/lib/dual-reality";
 
 // ── Platform Plane Services ──
 export { environmentConfig } from "@/lib/platform-plane/environment-config";
@@ -186,6 +182,3 @@ export { notificationRouter } from "@/lib/platform-plane/notification-router";
 export { supportWorkflow } from "@/lib/platform-plane/support-workflow";
 export { adminRbacEngine } from "@/lib/platform-plane/admin-rbac-engine";
 export { adminSafety } from "@/lib/platform-plane/admin-safety";
-
-// ── Verification ──
-export * from "@/lib/verification";

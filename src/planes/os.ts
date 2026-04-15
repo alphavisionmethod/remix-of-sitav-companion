@@ -102,41 +102,41 @@ export type {
 } from "@/lib/os-security";
 
 // ── OS Services (Platform Daemons) ──
-export { getAccessibilityDaemon } from "@/lib/os-services/accessibilityd";
-export { getAudioDaemon } from "@/lib/os-services/audiod";
-export { getAutomationDaemon } from "@/lib/os-services/automationd";
-export { getBluetoothDaemon } from "@/lib/os-services/btd";
-export { getCrashDaemon } from "@/lib/os-services/crashd";
-export { getDeviceDaemon } from "@/lib/os-services/deviced";
-export { getHealthDaemon } from "@/lib/os-services/healthd";
-export { getHelpEngine } from "@/lib/os-services/help-engine";
-export { getPowerDaemon } from "@/lib/os-services/powerd";
-export { getSettingsDaemon } from "@/lib/os-services/settingsd";
-export { getTimeDaemon } from "@/lib/os-services/timed";
-export { getWifiDaemon } from "@/lib/os-services/wifid";
+export { accessibilityd } from "@/lib/os-services/accessibilityd";
+export { audiod } from "@/lib/os-services/audiod";
+export { automationd } from "@/lib/os-services/automationd";
+export { btd } from "@/lib/os-services/btd";
+export { crashd } from "@/lib/os-services/crashd";
+export { deviced } from "@/lib/os-services/deviced";
+export { healthd } from "@/lib/os-services/healthd";
+export { powerd } from "@/lib/os-services/powerd";
+export { settingsd } from "@/lib/os-services/settingsd";
+export { timed } from "@/lib/os-services/timed";
+export { wifid } from "@/lib/os-services/wifid";
 
 // ── OS Services (Infrastructure) ──
 export { capabilityCatalog } from "@/lib/os-services/capability-catalog";
-export { diagnosticBundle } from "@/lib/os-services/diagnostic-bundle";
-export { entityIdentity } from "@/lib/os-services/entity-identity";
+export { diagnosticBundleGenerator } from "@/lib/os-services/diagnostic-bundle";
+export { entityRegistry, parseEntityId, makeEntityId } from "@/lib/os-services/entity-identity";
 export { healthGraph } from "@/lib/os-services/health-graph";
 export { localizationInfra } from "@/lib/os-services/localization-infra";
 export { migrationEngine } from "@/lib/os-services/migration-engine";
 export { networkPolicyMatrix } from "@/lib/os-services/network-policy-matrix";
 export { notificationClassifier } from "@/lib/os-services/notification-classifier";
-export { osEventSystem } from "@/lib/os-services/os-event-system";
-export { platformIpcBus } from "@/lib/os-services/platform-ipc-bus";
+export { osEvents, OS_TOPICS } from "@/lib/os-services/os-event-system";
 export { policyResolver } from "@/lib/os-services/policy-resolver";
 export { quotaGovernor } from "@/lib/os-services/quota-governor";
 export { recommendationRanker } from "@/lib/os-services/recommendation-ranker";
-export { recoveryLevels } from "@/lib/os-services/recovery-levels";
+export { recoveryEngine } from "@/lib/os-services/recovery-levels";
+export type { RecoveryLevel } from "@/lib/os-services/recovery-levels";
 export { releaseLifecycle } from "@/lib/os-services/release-lifecycle";
-export { searchIndexer } from "@/lib/os-services/search-indexer";
+export { SearchIndexer, getSearchIndexer } from "@/lib/os-services/search-indexer";
 export { signingTrustChain } from "@/lib/os-services/signing-trust-chain";
 export { sloTargets } from "@/lib/os-services/slo-targets";
 export { storageStrategy } from "@/lib/os-services/storage-strategy";
 export { appLifecycle } from "@/lib/os-services/app-lifecycle";
-export { abiVersioning } from "@/lib/os-services/abi-versioning";
+export { abiVersionManager } from "@/lib/os-services/abi-versioning";
+export { getHelpEngine } from "@/lib/os-services/help-engine";
 
 // ── Sync Engine ──
 export * from "@/lib/sync-engine";

@@ -27,4 +27,4 @@ export { notificationRouter } from "@/lib/platform-plane/notification-router";
 export * from "@/lib/admin-ai";
 
 // ── Admin Route Truth ──
-export { adminRouteTruthService } from "@/lib/core-services/admin-route-truth-service";
+export { loadManifest, validateRouteTruth, getRouteMismatches, getManifestStaleness, saveSnapshot } from "@/lib/services/admin-route-truth-service";
