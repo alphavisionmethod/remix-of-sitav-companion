@@ -27,13 +27,66 @@ import { DailyBriefView } from "@/components/business/advisor-board/DailyBriefVi
 import { WeeklyReviewView } from "@/components/business/advisor-board/WeeklyReviewView";
 import { AutonomyLevelControl } from "@/components/business/advisor-board/AutonomyLevelControl";
 
+// Part 2 components
+import { MorningExecutiveBrief } from "@/components/business/advisor-board/MorningExecutiveBrief";
+import { RevenueRescuePanel } from "@/components/business/advisor-board/RevenueRescuePanel";
+import { BusinessArchetypeSelector } from "@/components/business/advisor-board/BusinessArchetypeSelector";
+import { AdvisorMemoryInspector } from "@/components/business/advisor-board/AdvisorMemoryInspector";
+import { CrossAdvisorReasoningView } from "@/components/business/advisor-board/CrossAdvisorReasoningView";
+import { ExecutiveResetMode } from "@/components/business/advisor-board/ExecutiveResetMode";
+
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
 
+  const criticalRecs = board.aiRecommendations.filter(r => r.urgency === "critical" || r.urgency === "high");
+
+  // Show Executive Reset if focus mode is active
+  if (board.focusModeActive) {
+    return (
+      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <ExecutiveResetMode
+          isActive
+          overloadScore={board.overloadScore}
+          criticalActions={criticalRecs}
+          onActivate={() => board.setFocusModeActive(true)}
+          onDeactivate={() => board.setFocusModeActive(false)}
+          onApproveAction={board.convertToAction}
+        />
+      </motion.div>
+    );
+  }
+
+  // Morning Brief mode
+  if (board.briefMode === "brief") {
+    return (
+      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <MorningExecutiveBrief
+          brief={board.profitabilityBrief}
+          profitSummary={board.profitSummary}
+          context={board.businessContext}
+          recommendations={board.aiRecommendations}
+          onApproveAction={board.convertToAction}
+          onDismiss={() => board.setBriefMode("board")}
+        />
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div className="space-y-4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
+
+      {/* ── Overload Detection Banner ─────────────────── */}
+      <ExecutiveResetMode
+        isActive={false}
+        overloadScore={board.overloadScore}
+        criticalActions={criticalRecs}
+        onActivate={() => board.setFocusModeActive(true)}
+        onDeactivate={() => board.setFocusModeActive(false)}
+      />
 
       {/* ── Header ─────────────────────────────────────── */}
       <div className="flex items-center justify-between">
@@ -44,11 +97,19 @@ const BusinessAdvisorBoardPage = () => {
           <div>
             <h1 className="text-lg font-display font-bold text-foreground">Board of Advisors</h1>
             <p className="text-[10px] text-muted-foreground">
-              {board.advisors.length} advisors · {board.aiRecommendations.length} recommendations · {board.actionStats.total} actions
+              {board.advisors.length} advisors · {board.coordinatedRecommendations.length} insights · {board.actionStats.total} actions
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-[10px] h-7"
+            onClick={() => board.setBriefMode("brief")}
+          >
+            Morning Brief
+          </Button>
           <TrustModeIndicator state={board.trustState} onTogglePause={board.toggleEmergencyPause} />
           <Button
             variant="ghost"
@@ -74,13 +135,14 @@ const BusinessAdvisorBoardPage = () => {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)]">
           <TabsTrigger value="boardroom" className="text-[10px]">Boardroom</TabsTrigger>
-          <TabsTrigger value="recommendations" className="text-[10px]">
-            Recommendations {board.aiRecommendations.length > 0 && `(${board.aiRecommendations.length})`}
+          <TabsTrigger value="insights" className="text-[10px]">
+            Insights {board.coordinatedRecommendations.length > 0 && `(${board.coordinatedRecommendations.length})`}
           </TabsTrigger>
           <TabsTrigger value="actions" className="text-[10px]">
             Actions {board.actionStats.total > 0 && `(${board.actionStats.total})`}
           </TabsTrigger>
           <TabsTrigger value="proof" className="text-[10px]">Proof</TabsTrigger>
+          <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
           <TabsTrigger value="briefs" className="text-[10px]">Briefs</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
         </TabsList>
@@ -88,6 +150,15 @@ const BusinessAdvisorBoardPage = () => {
         {/* ── Boardroom Tab ──────────────────────────────── */}
         <TabsContent value="boardroom" className="space-y-4 mt-4">
           <ExecutiveBriefCard brief={board.profitabilityBrief} />
+
+          {/* Revenue Rescue when pipeline is at risk */}
+          {board.profitSummary.criticalSignals.length > 0 && (
+            <RevenueRescuePanel
+              signals={board.profitSummary.criticalSignals}
+              totalAtRisk={board.profitSummary.totalAtRisk}
+            />
+          )}
+
           <BoardroomModuleGrid
             brief={board.profitabilityBrief}
             recommendations={board.aiRecommendations}
@@ -100,32 +171,23 @@ const BusinessAdvisorBoardPage = () => {
           <BusinessHealthScoreCard score={board.profitabilityBrief.healthScore} />
         </TabsContent>
 
-        {/* ── Recommendations Tab ────────────────────────── */}
-        <TabsContent value="recommendations" className="mt-4">
+        {/* ── Insights Tab (Cross-Advisor Coordinated) ──── */}
+        <TabsContent value="insights" className="mt-4">
           {board.aiLoading ? (
             <div className="flex items-center justify-center py-16">
               <Loader2 className="h-6 w-6 animate-spin text-[hsl(265_55%_58%)]" />
               <span className="ml-3 text-xs text-muted-foreground">Advisors are deliberating...</span>
             </div>
-          ) : board.aiRecommendations.length === 0 ? (
+          ) : board.coordinatedRecommendations.length === 0 ? (
             <div className="text-center py-16">
               <Sparkles className="h-8 w-8 mx-auto text-muted-foreground/30 mb-3" />
-              <p className="text-xs text-muted-foreground">No recommendations yet</p>
+              <p className="text-xs text-muted-foreground">No insights yet</p>
               <Button variant="ghost" size="sm" className="mt-2 text-[10px]" onClick={() => board.refetchAI()}>
                 Request Advisor Analysis
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {board.aiRecommendations.map((rec, i) => (
-                <RecommendationCard
-                  key={`${rec.advisorId}-${i}`}
-                  recommendation={rec}
-                  onConvertToAction={board.convertToAction}
-                  index={i}
-                />
-              ))}
-            </div>
+            <CrossAdvisorReasoningView recommendations={board.coordinatedRecommendations} />
           )}
         </TabsContent>
 
@@ -146,6 +208,15 @@ const BusinessAdvisorBoardPage = () => {
           <ProofTimelinePanel actions={board.actionQueue} />
         </TabsContent>
 
+        {/* ── Memory Tab ─────────────────────────────────── */}
+        <TabsContent value="memory" className="mt-4">
+          <AdvisorMemoryInspector
+            snapshot={board.memorySnapshot}
+            onCorrect={board.correctMemory}
+            onArchive={board.archiveMemory}
+          />
+        </TabsContent>
+
         {/* ── Briefs Tab ─────────────────────────────────── */}
         <TabsContent value="briefs" className="mt-4">
           <Tabs defaultValue="daily">
@@ -163,7 +234,11 @@ const BusinessAdvisorBoardPage = () => {
         </TabsContent>
 
         {/* ── Autonomy Tab ───────────────────────────────── */}
-        <TabsContent value="autonomy" className="mt-4">
+        <TabsContent value="autonomy" className="mt-4 space-y-6">
+          <BusinessArchetypeSelector
+            selected={board.selectedArchetype}
+            onSelect={board.setArchetype}
+          />
           <AutonomyLevelControl
             state={board.trustState}
             onDomainChange={board.updateDomainLevel}

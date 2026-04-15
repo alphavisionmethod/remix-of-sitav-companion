@@ -66,3 +66,12 @@ export { generateHomeAdvisors, generateRecoveryAdvisors, generateInboxAdvisors,
 export type { AdvisorOutput, EscalationPacket, BoardSynthesisTheme,
   AdvisorDisagreement, AdvisorAction, EscalationRec } from "./business-advisor-engine";
 
+// ── Part 2: Deep Intelligence Layer ─────────────────────────────
+export { AdvisorMemoryEngine, getAdvisorMemoryEngine } from "./advisor-memory-engine";
+export { SharedBusinessContextGraph, getBusinessContextGraph } from "./business-context-graph";
+export { BusinessArchetypeEngine, getBusinessArchetypeEngine, ARCHETYPE_PROFILES } from "./business-archetype-engine";
+export { CrossAdvisorCoordinator, getCrossAdvisorCoordinator } from "./cross-advisor-coordinator";
+export { ConfidenceRiskScorer, getConfidenceRiskScorer } from "./confidence-risk-scorer";
+export { ContinuousProfitEngine, getContinuousProfitEngine } from "./continuous-profit-engine";
+export { AdvisorReflectionEngine, getAdvisorReflectionEngine } from "./advisor-reflection-engine";
+
