@@ -107,6 +107,9 @@ const MissionControlHome = () => {
       </div>
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
+        {/* No Silent Failure Alerts */}
+        <NoSilentFailureAlerts />
+
         {/* Warning banners */}
         {(pendingMutations > 0 || failedMutations > 0) && (
           <motion.div variants={fadeUp}>

@@ -6,9 +6,11 @@ import {
   LayoutDashboard, Terminal, Activity, Cloud, HardDrive, Users, Smartphone,
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
-  PanelLeft, Settings, Sparkles
+  PanelLeft, Settings, Sparkles, SlidersHorizontal
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
+import { useState as useReactState } from "react";
+import { LearningYouPanel } from "./LearningYouPanel";
 
 interface NavItem {
   label: string;
