@@ -42,30 +42,29 @@ export { ExecutorService } from "@/lib/core-services/executor-service";
 // ── Trust Governor ──
 export * from "@/lib/core-services/trust-governor";
 
-// ── Policy Engine ──
-// Use explicit re-exports to avoid name collisions with workflow-engine
-export { PolicyEngine, getPolicyEngine } from "@/lib/core-services/policy-engine";
+// ── Policy Engine (re-export barrel — includes PolicyRule, PolicyCondition, etc.) ──
+export * from "@/lib/core-services/policy-engine";
 
-// ── Workflow Engine ──
-export { WorkflowEngine, getWorkflowEngine } from "@/lib/core-services/workflow-engine";
+// ── Workflow Engine (re-export barrel) ──
+export { WorkflowEngine } from "@/lib/core-services/workflow-engine";
 
-// ── Memory Service ──
-export { MemoryService, getMemoryService } from "@/lib/core-services/memory-service";
+// ── Memory Service (re-export barrel) ──
+export { MemoryService } from "@/lib/core-services/memory-service";
 
-// ── Verification Engine ──
-export { VerificationEngine, getVerificationEngine } from "@/lib/core-services/verification-engine";
+// ── Verification Engine (re-export barrel) ──
+export { VerificationEngine } from "@/lib/core-services/verification-engine";
 
-// ── Self-Healing ──
-export { SelfHealingEngine, getSelfHealingEngine } from "@/lib/core-services/self-healing";
+// ── Self-Healing (re-export barrel) ──
+export * from "@/lib/core-services/self-healing";
 
-// ── Security ──
-export { SecurityFabric, getSecurityFabric } from "@/lib/core-services/security";
+// ── Security (re-export barrel) ──
+export * from "@/lib/core-services/security";
 
 // ── Search Fabric ──
 export type { SearchQuery, SearchResult, SearchFacets } from "@/lib/core-services/search-fabric";
 
 // ── Projection Service ──
-export { ProjectionService, getProjectionService } from "@/lib/core-services/projection-service";
+export { ProjectionService } from "@/lib/core-services/projection-service";
 
 // ── Fraud Sentinel ──
 export type { FraudSignal, FraudRule, FraudSeverity, FraudAction } from "@/lib/core-services/fraud-sentinel";
