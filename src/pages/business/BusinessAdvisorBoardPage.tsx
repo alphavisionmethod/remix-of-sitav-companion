@@ -45,6 +45,11 @@ import { AdvisorToolExecutionPanel } from "@/components/business/advisor-board/A
 import { BusinessRadarPanel } from "@/components/business/advisor-board/BusinessRadarPanel";
 import { StrategicPlanningStudio } from "@/components/business/advisor-board/StrategicPlanningStudio";
 
+// Part 5 components
+import { ClientIntelligenceHub } from "@/components/business/advisor-board/ClientIntelligenceHub";
+import { AdvisorPerformancePanel } from "@/components/business/advisor-board/AdvisorPerformancePanel";
+import { DecisionJournalPanel } from "@/components/business/advisor-board/DecisionJournalPanel";
+
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
@@ -158,6 +163,9 @@ const BusinessAdvisorBoardPage = () => {
           <TabsTrigger value="tools" className="text-[10px]">Tools</TabsTrigger>
           <TabsTrigger value="radar" className="text-[10px]">Radar</TabsTrigger>
           <TabsTrigger value="planning" className="text-[10px]">Planning</TabsTrigger>
+          <TabsTrigger value="clients" className="text-[10px]">Clients</TabsTrigger>
+          <TabsTrigger value="performance" className="text-[10px]">Performance</TabsTrigger>
+          <TabsTrigger value="journal" className="text-[10px]">Journal</TabsTrigger>
           <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
           <TabsTrigger value="report" className="text-[10px]">Report</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
@@ -276,6 +284,29 @@ const BusinessAdvisorBoardPage = () => {
             onUpdateGoalProgress={board.handleUpdateGoalProgress}
             onUpdateMilestone={board.handleUpdateMilestone}
             onGenerateStrategy={board.handleGenerateStrategy}
+          />
+        </TabsContent>
+
+        {/* ── Clients Tab ────────────────────────────────── */}
+        <TabsContent value="clients" className="mt-4">
+          <ClientIntelligenceHub
+            snapshot={board.clientSnapshot}
+            clients={board.clientList}
+            onResolveSignal={board.handleResolveSignal}
+          />
+        </TabsContent>
+
+        {/* ── Performance Tab ────────────────────────────── */}
+        <TabsContent value="performance" className="mt-4">
+          <AdvisorPerformancePanel snapshot={board.perfSnapshot} />
+        </TabsContent>
+
+        {/* ── Journal Tab ────────────────────────────────── */}
+        <TabsContent value="journal" className="mt-4">
+          <DecisionJournalPanel
+            snapshot={board.journalSnapshot}
+            decisions={board.journalDecisions}
+            onUpdateOutcome={board.handleUpdateDecisionOutcome}
           />
         </TabsContent>
 
