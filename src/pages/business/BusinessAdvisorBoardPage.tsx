@@ -243,6 +243,42 @@ const BusinessAdvisorBoardPage = () => {
           <ProofTimelinePanel actions={board.actionQueue} />
         </TabsContent>
 
+        {/* ── Tools Tab ──────────────────────────────────── */}
+        <TabsContent value="tools" className="mt-4">
+          <AdvisorToolExecutionPanel
+            tools={board.tools}
+            executions={board.toolExecutions}
+            stats={board.toolStats}
+            onRequestExecution={board.handleToolRequest}
+            onApprove={board.handleToolApprove}
+            onExecute={board.handleToolExecute}
+            onRollback={board.handleToolRollback}
+            onCancel={board.handleToolCancel}
+          />
+        </TabsContent>
+
+        {/* ── Radar Tab ──────────────────────────────────── */}
+        <TabsContent value="radar" className="mt-4">
+          <BusinessRadarPanel
+            snapshot={board.radarSnapshot}
+            signals={board.radarSignals}
+            onAcknowledge={board.handleRadarAcknowledge}
+            onAcknowledgeAll={board.handleRadarAcknowledgeAll}
+            onGenerateSignal={board.handleRadarGenerate}
+          />
+        </TabsContent>
+
+        {/* ── Planning Tab ───────────────────────────────── */}
+        <TabsContent value="planning" className="mt-4">
+          <StrategicPlanningStudio
+            snapshot={board.planningSnapshot}
+            strategyDoc={board.strategyDoc}
+            onUpdateGoalProgress={board.handleUpdateGoalProgress}
+            onUpdateMilestone={board.handleUpdateMilestone}
+            onGenerateStrategy={board.handleGenerateStrategy}
+          />
+        </TabsContent>
+
         {/* ── Memory Tab ─────────────────────────────────── */}
         <TabsContent value="memory" className="mt-4">
           <AdvisorMemoryInspector
