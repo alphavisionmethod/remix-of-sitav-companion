@@ -66,7 +66,7 @@ const TAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: "Operations", keys: ["workers", "lifecycle", "cost", "integrity", "jobs", "recovery", "monitoring"] },
   { label: "Governance", keys: ["policy", "governance", "feature-flags", "maintenance"] },
   { label: "Collaboration", keys: ["activity", "collaboration", "sharing", "support", "observability", "bootstrap"] },
-  { label: "Platform", keys: ["planes", "rbac", "admin-audit", "environments", "support-safe", "tokens"] },
+  { label: "Platform", keys: ["planes", "rbac", "admin-audit", "environments", "support-safe", "tokens", "gateway-routes"] },
 ];
 
 function getEnvironmentBadge(): { label: string; colorClass: string } {
