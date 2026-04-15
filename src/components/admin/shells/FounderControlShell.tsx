@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { GlobalCommandBar } from "./GlobalCommandBar";
 import { FounderSidebar } from "./FounderSidebar";
 import { AITransparencyPanel } from "./AITransparencyPanel";
+import { FounderMobileNav } from "./FounderMobileNav";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
 import { Badge } from "@/components/ui/badge";
@@ -34,8 +35,8 @@ export function FounderControlShell({
       {/* Top Global Command Bar */}
       <GlobalCommandBar />
 
-      {/* Trust ribbon (compact) */}
-      <div className="px-4 py-1.5 border-b border-border/20 bg-card/20">
+      {/* Trust ribbon (compact) — hidden on mobile */}
+      <div className="hidden md:block px-4 py-1.5 border-b border-border/20 bg-card/20">
         <div className="flex items-center justify-between">
           <TrustRibbon />
           <RolloutStatusBanner />
@@ -44,23 +45,30 @@ export function FounderControlShell({
 
       {/* Three-panel layout */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar */}
-        <FounderSidebar
-          collapsed={sidebarCollapsed}
-          onToggle={() => setSidebarCollapsed(c => !c)}
-        />
+        {/* Left Sidebar — hidden on mobile */}
+        <div className="hidden md:block">
+          <FounderSidebar
+            collapsed={sidebarCollapsed}
+            onToggle={() => setSidebarCollapsed(c => !c)}
+          />
+        </div>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
           <Outlet />
         </main>
 
-        {/* Right AI Transparency Panel */}
-        <AITransparencyPanel
-          collapsed={aiPanelCollapsed}
-          onToggle={() => setAiPanelCollapsed(c => !c)}
-        />
+        {/* Right AI Transparency Panel — hidden on mobile */}
+        <div className="hidden lg:block">
+          <AITransparencyPanel
+            collapsed={aiPanelCollapsed}
+            onToggle={() => setAiPanelCollapsed(c => !c)}
+          />
+        </div>
       </div>
+
+      {/* Mobile bottom nav */}
+      <FounderMobileNav />
     </div>
   );
 }
