@@ -318,7 +318,6 @@ const RevenueCallingPage = () => {
   };
 
   const nextInQueue = () => {
-  const { isDemo: isDemoMode } = useAuth();
     const next = dialerIndex + 1;
     if (next < dialerQueue.length) {
       setDialerIndex(next);

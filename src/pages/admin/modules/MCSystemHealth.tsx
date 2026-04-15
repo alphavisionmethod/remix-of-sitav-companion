@@ -40,7 +40,6 @@ const SUBSYSTEMS: Subsystem[] = [
 ];
 
 export default function MCSystemHealth() {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const overallScore = Math.round(SUBSYSTEMS.reduce((s, sub) => s + sub.score, 0) / SUBSYSTEMS.length * 10) / 10;

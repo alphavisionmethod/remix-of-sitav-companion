@@ -50,7 +50,6 @@ const NetWorthOffice = () => {
   }, [accounts]);
 
   const fmt = (cents: number) => `$${(Math.abs(cents) / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-  const { isDemo: isDemoMode } = useAuth();
   const pct = analysis.totalAssets > 0 ? ((analysis.netWorth / analysis.totalAssets) * 100).toFixed(0) : "0";
 
   return (
