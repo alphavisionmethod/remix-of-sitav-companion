@@ -7,6 +7,7 @@ import { AITransparencyPanel } from "./AITransparencyPanel";
 import { FounderMobileNav } from "./FounderMobileNav";
 import { StatusStrip } from "./StatusStrip";
 import { SafeModeProvider } from "./SafeModeProvider";
+import { ExplainSimplyProvider } from "./ExplainSimplyProvider";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
 
@@ -24,6 +25,7 @@ export function FounderControlShell({
 
   return (
     <SafeModeProvider>
+      <ExplainSimplyProvider>
       <div className="min-h-screen bg-background flex flex-col">
         {/* Degraded banner */}
         {showDegradedBanner && (
@@ -66,6 +68,7 @@ export function FounderControlShell({
         {/* Mobile bottom nav */}
         <FounderMobileNav />
       </div>
+      </ExplainSimplyProvider>
     </SafeModeProvider>
   );
 }

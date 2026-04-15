@@ -32,6 +32,7 @@ import { LiveSystemMap } from "@/components/admin/shells/LiveSystemMap";
 import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
 import { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
 import { ContinuousVerificationPanel } from "@/components/admin/shells/ContinuousVerificationPanel";
+import { ExplainSimplyToggle } from "@/components/admin/shells/ExplainSimplyToggle";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -96,6 +97,7 @@ const MissionControlHome = () => {
           <p className="text-xs text-muted-foreground mt-1">Platform truth at a glance · Last refreshed {lastRefresh.toLocaleTimeString()}</p>
         </div>
         <div className="flex items-center gap-2">
+          <ExplainSimplyToggle />
           <Badge variant="outline" className="text-[9px] text-muted-foreground hidden md:inline-flex">⌘K for commands</Badge>
           <Badge variant="outline" className={statusColor[overallHealth]}>
             <Radio className="h-3 w-3 mr-1" /> Platform {overallHealth}
