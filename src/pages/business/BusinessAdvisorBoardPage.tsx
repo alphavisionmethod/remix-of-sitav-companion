@@ -139,7 +139,6 @@ const BusinessAdvisorBoardPage = () => {
             <p className="text-[10px] text-muted-foreground">
               {board.advisors.length} advisors · {mergedRecommendations.length} insights · {board.actionStats.total} actions
             </p>
-            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
