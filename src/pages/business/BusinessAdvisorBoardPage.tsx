@@ -22,9 +22,7 @@ import { ProfitLeakCard } from "@/components/business/advisor-board/ProfitLeakCa
 import { RevenueRecoveryCard } from "@/components/business/advisor-board/RevenueRecoveryCard";
 import { BusinessHealthScoreCard } from "@/components/business/advisor-board/BusinessHealthScoreCard";
 import { ProofTimelinePanel } from "@/components/business/advisor-board/ProofTimelinePanel";
-import { RecommendationCard } from "@/components/business/advisor-board/RecommendationCard";
 import { DailyBriefView } from "@/components/business/advisor-board/DailyBriefView";
-import { WeeklyReviewView } from "@/components/business/advisor-board/WeeklyReviewView";
 import { AutonomyLevelControl } from "@/components/business/advisor-board/AutonomyLevelControl";
 
 // Part 2 components
@@ -34,6 +32,13 @@ import { BusinessArchetypeSelector } from "@/components/business/advisor-board/B
 import { AdvisorMemoryInspector } from "@/components/business/advisor-board/AdvisorMemoryInspector";
 import { CrossAdvisorReasoningView } from "@/components/business/advisor-board/CrossAdvisorReasoningView";
 import { ExecutiveResetMode } from "@/components/business/advisor-board/ExecutiveResetMode";
+
+// Part 3 components
+import { AdvisorConversation } from "@/components/business/advisor-board/AdvisorConversation";
+import { ScenarioSimulatorPanel } from "@/components/business/advisor-board/ScenarioSimulatorPanel";
+import { AdvisorDebateView } from "@/components/business/advisor-board/AdvisorDebateView";
+import { WeeklyExecutiveReport } from "@/components/business/advisor-board/WeeklyExecutiveReport";
+import { AdvisorNotificationSystem } from "@/components/business/advisor-board/AdvisorNotificationSystem";
 
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
@@ -133,17 +138,20 @@ const BusinessAdvisorBoardPage = () => {
 
       {/* ── Tab Navigation ─────────────────────────────── */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)]">
+        <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] flex-wrap h-auto gap-0.5 p-1">
           <TabsTrigger value="boardroom" className="text-[10px]">Boardroom</TabsTrigger>
           <TabsTrigger value="insights" className="text-[10px]">
             Insights {board.coordinatedRecommendations.length > 0 && `(${board.coordinatedRecommendations.length})`}
           </TabsTrigger>
+          <TabsTrigger value="conversation" className="text-[10px]">Chat</TabsTrigger>
+          <TabsTrigger value="scenarios" className="text-[10px]">Scenarios</TabsTrigger>
+          <TabsTrigger value="debates" className="text-[10px]">Debates</TabsTrigger>
           <TabsTrigger value="actions" className="text-[10px]">
             Actions {board.actionStats.total > 0 && `(${board.actionStats.total})`}
           </TabsTrigger>
           <TabsTrigger value="proof" className="text-[10px]">Proof</TabsTrigger>
           <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
-          <TabsTrigger value="briefs" className="text-[10px]">Briefs</TabsTrigger>
+          <TabsTrigger value="report" className="text-[10px]">Report</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
         </TabsList>
 
@@ -151,7 +159,6 @@ const BusinessAdvisorBoardPage = () => {
         <TabsContent value="boardroom" className="space-y-4 mt-4">
           <ExecutiveBriefCard brief={board.profitabilityBrief} />
 
-          {/* Revenue Rescue when pipeline is at risk */}
           {board.profitSummary.criticalSignals.length > 0 && (
             <RevenueRescuePanel
               signals={board.profitSummary.criticalSignals}
@@ -191,6 +198,26 @@ const BusinessAdvisorBoardPage = () => {
           )}
         </TabsContent>
 
+        {/* ── Conversation Tab ────────────────────────────── */}
+        <TabsContent value="conversation" className="mt-4">
+          <AdvisorConversation
+            selectedAdvisor={board.conversationAdvisor}
+            onSelectAdvisor={board.setConversationAdvisor}
+            memorySnapshot={board.memorySnapshot}
+            businessContext={board.businessContext}
+          />
+        </TabsContent>
+
+        {/* ── Scenarios Tab ───────────────────────────────── */}
+        <TabsContent value="scenarios" className="mt-4">
+          <ScenarioSimulatorPanel />
+        </TabsContent>
+
+        {/* ── Debates Tab ─────────────────────────────────── */}
+        <TabsContent value="debates" className="mt-4">
+          <AdvisorDebateView recommendations={board.aiRecommendations} />
+        </TabsContent>
+
         {/* ── Actions Tab ────────────────────────────────── */}
         <TabsContent value="actions" className="mt-4">
           <ActionQueuePanel
@@ -217,20 +244,13 @@ const BusinessAdvisorBoardPage = () => {
           />
         </TabsContent>
 
-        {/* ── Briefs Tab ─────────────────────────────────── */}
-        <TabsContent value="briefs" className="mt-4">
-          <Tabs defaultValue="daily">
-            <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)]">
-              <TabsTrigger value="daily" className="text-[10px]">Daily Brief</TabsTrigger>
-              <TabsTrigger value="weekly" className="text-[10px]">Weekly Review</TabsTrigger>
-            </TabsList>
-            <TabsContent value="daily" className="mt-4">
-              <DailyBriefView brief={board.profitabilityBrief} recommendations={board.aiRecommendations} />
-            </TabsContent>
-            <TabsContent value="weekly" className="mt-4">
-              <WeeklyReviewView brief={board.profitabilityBrief} />
-            </TabsContent>
-          </Tabs>
+        {/* ── Report Tab ─────────────────────────────────── */}
+        <TabsContent value="report" className="mt-4">
+          <WeeklyExecutiveReport
+            brief={board.profitabilityBrief}
+            profitSummary={board.profitSummary}
+            reflectionSummary={board.reflectionSummary}
+          />
         </TabsContent>
 
         {/* ── Autonomy Tab ───────────────────────────────── */}
@@ -257,6 +277,12 @@ const BusinessAdvisorBoardPage = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* ── Proactive Notifications ──────────────────────── */}
+      <AdvisorNotificationSystem
+        recommendations={board.aiRecommendations}
+        onAction={board.convertToAction}
+      />
     </motion.div>
   );
 };
