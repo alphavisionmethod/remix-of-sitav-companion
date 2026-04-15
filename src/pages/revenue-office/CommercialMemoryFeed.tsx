@@ -9,13 +9,12 @@ import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package
 import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
+  const { isDemo: isDemoMode } = useAuth();
   const memoryEvents = isDemoMode ? DEMO_memoryEvents : DEMO_memoryEvents;
   const pinnedItems = DEMO_MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");

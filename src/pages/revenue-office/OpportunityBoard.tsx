@@ -9,8 +9,6 @@ import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/lib/demo-data/rev
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",
@@ -24,6 +22,7 @@ const categoryColors: Record<string, string> = {
 const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
+  const { isDemo: isDemoMode } = useAuth();
   const opportunities = isDemoMode ? DEMO_opportunities : DEMO_opportunities;
   const [tab, setTab] = useState("ranked");
   const [watchlist, setWatchlist] = useState<Set<number>>(new Set());

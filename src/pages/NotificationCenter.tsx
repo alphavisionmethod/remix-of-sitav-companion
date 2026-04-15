@@ -217,6 +217,7 @@ const NotificationCenter = () => {
   };
 
   const handleDismiss = (id: string) => {
+  const { isDemo: isDemoMode } = useAuth();
     toast.success("Notification dismissed");
   };
 

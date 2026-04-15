@@ -15,10 +15,9 @@ import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONV
 import { clientSentimentService } from "@/lib/services/client-sentiment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function RelationshipCenter() {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: liveContacts, isLoading } = useCustomers();
   const [tab, setTab] = useState("contacts");
 

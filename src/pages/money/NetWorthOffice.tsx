@@ -16,10 +16,10 @@ import { useMemo, useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
-const { isDemo: isDemoMode } = useAuth();
 
 
 const NetWorthOffice = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
   const { data: goals = [] } = useSavingsGoals();
@@ -50,6 +50,7 @@ const NetWorthOffice = () => {
   }, [accounts]);
 
   const fmt = (cents: number) => `$${(Math.abs(cents) / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  const { isDemo: isDemoMode } = useAuth();
   const pct = analysis.totalAssets > 0 ? ((analysis.netWorth / analysis.totalAssets) * 100).toFixed(0) : "0";
 
   return (

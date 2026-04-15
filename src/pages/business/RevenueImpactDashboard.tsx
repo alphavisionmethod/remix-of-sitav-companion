@@ -50,6 +50,7 @@ interface TrendPoint {
 // ── Demo Data ──────────────────────────────────────────────────
 
 function generateTrend(granularity: Granularity): TrendPoint[] {
+  const { isDemo: isDemoMode } = useAuth();
   const points: TrendPoint[] = [];
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
   const now = new Date();
@@ -83,8 +84,6 @@ const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_PLAYBOOK_REVENUE } from "@/lib/demo-data/business";
-
-const { isDemo: isDemoMode } = useAuth();
 
 
 

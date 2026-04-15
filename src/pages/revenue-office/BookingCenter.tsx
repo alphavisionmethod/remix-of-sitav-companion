@@ -20,10 +20,9 @@ import {
   DEMO_PREP_CHECKLISTS,
 } from "@/lib/demo-data/revenue-office";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function BookingCenter() {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: liveBookings, isLoading } = useBookings();
   const [tab, setTab] = useState("upcoming");
 

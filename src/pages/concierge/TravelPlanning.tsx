@@ -13,8 +13,6 @@ import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
 import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
@@ -31,6 +29,7 @@ const trips: Trip[] = [
 type TravelView = "trips" | "prep" | "itinerary" | "logistics" | "post-trip";
 
 const TravelPlanning = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);
 

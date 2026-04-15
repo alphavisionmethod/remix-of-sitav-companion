@@ -14,8 +14,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const OBLIGATIONS: UpcomingObligation[] = [
   { id: "u1", title: "Dentist appointment — Alex", type: "appointment", dueLabel: "Today 2:30 PM", who: "Alex", prepNeeded: true },
@@ -41,6 +39,7 @@ const REVIEW_ITEMS: ReviewItem[] = [
 type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const [view, setView] = useState<UpcomingView>("today");
 
   const todayItems = OBLIGATIONS.filter(o => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));
@@ -48,6 +47,7 @@ const UpcomingNeeds = () => {
   const overdueCount = OBLIGATIONS.filter(o => o.dueLabel.includes("Overdue")).length;
 
   const filterForView = () => {
+  const { isDemo: isDemoMode } = useAuth();
     switch (view) {
       case "today": return todayItems;
       case "3-day": return threeDayItems;

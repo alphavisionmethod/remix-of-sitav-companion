@@ -12,8 +12,6 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const autonomyColors: Record<string, string> = {
   "auto-low-risk": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
@@ -25,6 +23,7 @@ const autonomyColors: Record<string, string> = {
 const autonomyLevels = ["observe-only", "draft-only", "supervised", "auto-low-risk"] as const;
 
 const AITeamRoster = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { isDemo: isDemoMode } = useAIEngDomain("efficiencyScores", DEMO_AGENTS);
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");

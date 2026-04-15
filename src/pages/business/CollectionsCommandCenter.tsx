@@ -26,8 +26,6 @@ import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransiti
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 // ── Chase Sequence ──────────────────────────────────────────────
 
@@ -67,6 +65,7 @@ const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("collections", primaryMode);
   const { data: accounts = [] } = useCollectionsAccounts();
@@ -104,6 +103,7 @@ const CollectionsCommandCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+  const { isDemo: isDemoMode } = useAuth();
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2">

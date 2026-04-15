@@ -17,8 +17,6 @@ import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
@@ -31,6 +29,7 @@ const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 
 const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
+  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();

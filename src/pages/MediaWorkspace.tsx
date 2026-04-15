@@ -26,6 +26,8 @@ import {
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 const MediaWorkspace = () => {

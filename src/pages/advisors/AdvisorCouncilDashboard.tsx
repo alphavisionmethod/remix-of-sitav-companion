@@ -26,8 +26,6 @@ import { toast } from "sonner";
 import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 // ── Demo Data ────────────────────────────────────────────────
 
@@ -158,6 +156,7 @@ function useAgentIntelligence(action: string) {
 // ── Main Dashboard ───────────────────────────────────────────
 
 export default function AdvisorCouncilDashboard() {
+  const { isDemo: isDemoMode } = useAuth();
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);

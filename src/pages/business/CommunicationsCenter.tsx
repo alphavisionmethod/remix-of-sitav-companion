@@ -20,8 +20,6 @@ import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
@@ -108,6 +106,7 @@ const CommunicationsCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+  const { isDemo: isDemoMode } = useAuth();
       <ConfirmationDialog state={confirmation} />
 
       <div className="flex items-center justify-between px-1">

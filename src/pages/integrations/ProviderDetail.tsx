@@ -12,10 +12,9 @@ import { getProviderById } from "@/lib/demo-data/integrations";
 import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function ProviderDetail() {
+  const { isDemo: isDemoMode } = useAuth();
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);
@@ -29,6 +28,7 @@ export default function ProviderDetail() {
   const writeCaps = provider.capabilities.filter(c => c.type === "write");
 
   const startConnect = () => {
+  const { isDemo: isDemoMode } = useAuth();
     setConnecting(true);
     setWizardStep(0);
   };

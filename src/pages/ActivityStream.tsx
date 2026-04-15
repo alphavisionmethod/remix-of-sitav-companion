@@ -26,6 +26,8 @@ import {
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 

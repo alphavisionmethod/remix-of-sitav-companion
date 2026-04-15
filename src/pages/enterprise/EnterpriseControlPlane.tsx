@@ -26,7 +26,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ENT_CAPABILITIES as DEMO_CAPABILITIES, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/lib/demo-data/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Safe default for demo mode
 
 
 

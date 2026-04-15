@@ -103,6 +103,7 @@ const NotesWorkspace = () => {
   };
 
   const handleExtractTasks = () => {
+  const { isDemo: isDemoMode } = useAuth();
     toast.success("Extracted 2 action items as tasks");
   };
 

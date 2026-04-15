@@ -14,10 +14,9 @@ import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, 
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function LeakDetector() {
+  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeakItems();
   const [tab, setTab] = useState("active");

@@ -334,6 +334,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
 
   // Load preferences from profile
   const loadPrefs = (prefs: Record<string, any> | null) => {
+  const { isDemo: isDemoMode } = useAuth();
     if (!prefs) return;
     if (prefs.autonomy) setAutonomy(prefs.autonomy);
     if (prefs.trustMode) setTrustMode(prefs.trustMode);
@@ -404,6 +405,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
   });
 
   const handleToggle = () => {
+  const { isDemo: isDemoMode } = useAuth();
     toggleDemoMode();
     toast.success(isDemoMode ? "Switched to Live Mode" : "Switched to Demo Mode");
   };
@@ -424,6 +426,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
     : settingsSections;
 
   const renderSection = () => {
+  const { isDemo: isDemoMode } = useAuth();
     switch (activeSection) {
       case "identity":
         return (

@@ -12,8 +12,6 @@ import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METR
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const CONNECTION_HEALTH = [
   { service: "CRM / Pipeline", status: "connected", health: 98 },
@@ -27,6 +25,7 @@ const CONNECTION_HEALTH = [
 const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
+  const { isDemo: isDemoMode } = useAuth();
   const navigate = useNavigate();
   const { data: liveDeals, isLoading } = useDeals();
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");

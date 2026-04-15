@@ -14,12 +14,11 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
 
 export default function PipelineStudio() {
+  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("kanban");
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();
