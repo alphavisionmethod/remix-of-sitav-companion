@@ -627,8 +627,189 @@ export function DeviceModeContent() {
           <VStack spacing="micro">
             <NovaText variant="body">View Active Policies</NovaText>
             <NovaText variant="label" muted className="!text-[10px]">See all enforced rules and protection status</NovaText>
-          </VStack>
+           </VStack>
           <NovaButton variant="secondary" className="!text-[10px]" icon={<ChevronRight className="h-3 w-3" />}>Open</NovaButton>
+        </HStack>
+      </NovaCard>
+    </VStack>
+  );
+}
+
+// ── Desktop Widgets ──────────────────────────────────────────
+
+const WIDGET_CATEGORIES: { key: string; label: string; types: string[] }[] = [
+  { key: "core", label: "Core", types: ["clock", "system", "quick-actions", "calendar", "notifications", "continuity", "apps-rail"] },
+  { key: "business", label: "Business", types: ["crm-pipeline", "leads-recovered", "business-kpi", "boardroom-brief"] },
+  { key: "finance", label: "Finance", types: ["investment-pulse", "finance-snapshot", "portfolio-globe"] },
+  { key: "lifestyle", label: "Lifestyle", types: ["weather", "concierge-tasks", "what-matters", "advisor-council", "notifications-feed", "calendar-today"] },
+];
+
+const WIDGET_ICON_MAP: Record<string, any> = {
+  clock: Clock, system: Activity, "quick-actions": Layout, calendar: Clock,
+  notifications: Bell, continuity: ChevronRight, "apps-rail": Layout,
+  "crm-pipeline": TrendingUp, "leads-recovered": Eye, "business-kpi": TrendingUp,
+  "boardroom-brief": Brain, "investment-pulse": TrendingUp, "finance-snapshot": DollarSign,
+  "portfolio-globe": Globe, weather: Sun, "concierge-tasks": Activity,
+  "what-matters": Activity, "advisor-council": Brain, "notifications-feed": Bell,
+  "calendar-today": Clock,
+};
+
+import { useDesktopWidgets } from "@/hooks/useDesktopWidgets";
+import { DollarSign, TrendingUp, Brain } from "lucide-react";
+
+export function WidgetsContent() {
+  const { widgets, hiddenWidgets, allWidgets, addWidget, removeWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+
+  const visibleCount = widgets.length;
+  const totalCount = allTypes.length;
+
+  const filteredTypes = allTypes.filter(w => {
+    const q = search.toLowerCase();
+    const matchSearch = !q || w.label.toLowerCase().includes(q) || w.description?.toLowerCase().includes(q);
+    const matchCat = activeCategory === "all" || WIDGET_CATEGORIES.find(c => c.key === activeCategory)?.types.includes(w.type);
+    return matchSearch && matchCat;
+  });
+
+  const isVisible = (type: string) => allWidgets.find(w => w.type === type)?.visible ?? false;
+
+  const toggleWidget = (type: string) => {
+    if (isVisible(type)) {
+      const w = allWidgets.find(ww => ww.type === type);
+      if (w) removeWidget(w.id);
+    } else {
+      addWidget(type);
+    }
+  };
+
+  const getSize = (type: string) => allWidgets.find(w => w.type === type)?.size || "md";
+
+  const handleResize = (type: string, size: "sm" | "md" | "lg") => {
+    const w = allWidgets.find(ww => ww.type === type);
+    if (w) resizeWidget(w.id, size);
+  };
+
+  return (
+    <VStack spacing="tight">
+      {/* Stats */}
+      <NovaCard>
+        <HStack spacing="tight" align="center" className="justify-between">
+          <VStack spacing="micro">
+            <NovaText variant="label" className="!text-[11px] font-semibold">Desktop Widgets</NovaText>
+            <NovaText variant="label" muted>{visibleCount} active of {totalCount} available</NovaText>
+          </VStack>
+          <HStack spacing="micro">
+            <NovaBadge variant="info" className="!text-[9px]">{visibleCount} Active</NovaBadge>
+            <NovaBadge variant="default" className="!text-[9px]">{totalCount - visibleCount} Hidden</NovaBadge>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Search & Filter */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <div className="relative">
+            <Eye className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-[hsl(0_0%_50%)]" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search widgets…"
+              className="w-full pl-7 pr-2 py-1.5 rounded-lg text-[10px] bg-[hsl(0_0%_100%/0.04)] border border-[hsl(0_0%_100%/0.08)] text-foreground placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:border-[hsl(var(--primary)/0.4)]"
+            />
+          </div>
+          <HStack spacing="micro">
+            <button
+              onClick={() => setActiveCategory("all")}
+              className={cn(
+                "px-2.5 py-1 rounded-md text-[9px] font-medium transition-all",
+                activeCategory === "all"
+                  ? "bg-[hsl(var(--primary)/0.15)] text-[hsl(var(--primary))]"
+                  : "text-[hsl(0_0%_55%)] hover:text-[hsl(0_0%_75%)] hover:bg-[hsl(0_0%_100%/0.04)]"
+              )}
+            >All</button>
+            {WIDGET_CATEGORIES.map(cat => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={cn(
+                  "px-2.5 py-1 rounded-md text-[9px] font-medium transition-all",
+                  activeCategory === cat.key
+                    ? "bg-[hsl(var(--primary)/0.15)] text-[hsl(var(--primary))]"
+                    : "text-[hsl(0_0%_55%)] hover:text-[hsl(0_0%_75%)] hover:bg-[hsl(0_0%_100%/0.04)]"
+                )}
+              >{cat.label}</button>
+            ))}
+          </HStack>
+        </VStack>
+      </NovaCard>
+
+      {/* Widget Grid */}
+      <div className="grid grid-cols-1 gap-1.5">
+        {filteredTypes.map(w => {
+          const IconComp = WIDGET_ICON_MAP[w.type] || Layout;
+          const active = isVisible(w.type);
+          const currentSize = getSize(w.type);
+          return (
+            <NovaCard key={w.type} className={cn(
+              "transition-all",
+              active && "ring-1 ring-[hsl(var(--primary)/0.2)]"
+            )}>
+              <HStack spacing="tight" align="center" className="justify-between">
+                <HStack spacing="tight" align="center" className="flex-1 min-w-0">
+                  <div className={cn(
+                    "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
+                    active ? "bg-[hsl(var(--primary)/0.15)]" : "bg-[hsl(0_0%_100%/0.04)]"
+                  )}>
+                    <IconComp className={cn("h-3.5 w-3.5", active ? "text-[hsl(var(--primary))]" : "text-[hsl(0_0%_50%)]")} />
+                  </div>
+                  <VStack spacing="micro" className="min-w-0">
+                    <NovaText variant="label" className="!text-[10px] font-medium truncate">{w.label}</NovaText>
+                    <NovaText variant="label" muted className="!text-[8px] truncate">{w.description}</NovaText>
+                  </VStack>
+                </HStack>
+                <HStack spacing="micro" align="center">
+                  {active && (
+                    <HStack spacing="micro">
+                      {(["sm", "md", "lg"] as const).map(s => (
+                        <button
+                          key={s}
+                          onClick={() => handleResize(w.type, s)}
+                          className={cn(
+                            "px-1.5 py-0.5 rounded text-[8px] font-medium transition-all",
+                            currentSize === s
+                              ? "bg-[hsl(var(--primary)/0.2)] text-[hsl(var(--primary))]"
+                              : "text-[hsl(0_0%_45%)] hover:text-[hsl(0_0%_65%)]"
+                          )}
+                        >{s.toUpperCase()}</button>
+                      ))}
+                    </HStack>
+                  )}
+                  <NovaToggle checked={active} onChange={() => toggleWidget(w.type)} />
+                </HStack>
+              </HStack>
+            </NovaCard>
+          );
+        })}
+      </div>
+
+      {filteredTypes.length === 0 && (
+        <NovaCard>
+          <NovaText variant="label" muted className="text-center py-4">No widgets match your search</NovaText>
+        </NovaCard>
+      )}
+
+      {/* Reset */}
+      <NovaCard>
+        <HStack spacing="tight" align="center" className="justify-between">
+          <VStack spacing="micro">
+            <NovaText variant="label" className="!text-[10px] font-medium">Reset Widget Layout</NovaText>
+            <NovaText variant="label" muted className="!text-[8px]">Restore default positions and visibility</NovaText>
+          </VStack>
+          <NovaButton variant="secondary" className="!text-[10px]" onClick={() => { resetWidgets(); toast.success("Widgets reset to defaults"); }}>
+            Reset
+          </NovaButton>
         </HStack>
       </NovaCard>
     </VStack>
