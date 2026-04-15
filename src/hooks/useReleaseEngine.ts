@@ -4,6 +4,9 @@
 
 import { useCallback, useMemo } from "react";
 import { getReleaseEngine } from "@/lib/engines/release-engine";
+import type { RolloutStateMachine } from "@/packages/release-contracts/rollout-types";
+import type { ReleaseHealthSnapshot, ReleaseHealthThresholds } from "@/packages/release-contracts/health-types";
+import type { ReleaseGateSet } from "@/packages/release-contracts/compatibility-types";
 
 export function useReleaseEngine() {
   const engine = useMemo(() => getReleaseEngine(), []);
@@ -14,31 +17,38 @@ export function useReleaseEngine() {
     autoPromote: boolean; ownerId: string;
   }) => engine.planner.planRollout(version, config), [engine]);
 
-  const evaluateCanary = useCallback((rolloutId: string, metrics: Array<{
-    metric_name: string; canary_value: number; baseline_value: number;
-    threshold: number; weight: number;
-  }>) => engine.planner.evaluateCanary(rolloutId, metrics), [engine]);
+  const evaluateCanaryPromotion = useCallback((
+    rollout: RolloutStateMachine, metrics: Record<string, number>, baselineMetrics: Record<string, number>,
+  ) => engine.planner.evaluateCanaryPromotion(rollout, metrics, baselineMetrics), [engine]);
 
-  const checkRollbackEligibility = useCallback((releaseId: string, reason: string) =>
-    engine.rollback.checkEligibility(releaseId, reason), [engine]);
+  const estimateBlastRadius = useCallback((rollout: RolloutStateMachine, totalUsers: number) =>
+    engine.planner.estimateBlastRadius(rollout, totalUsers), [engine]);
 
-  const orchestrateRollback = useCallback((releaseId: string, opts: {
-    strategy: "immediate" | "staged" | "blue_green"; reason: string; approvedBy: string;
-  }) => engine.rollback.orchestrate(releaseId, opts), [engine]);
+  const evaluateRollbackEligibility = useCallback((rolloutId: string, version: string) =>
+    engine.rollback.evaluateEligibility(rolloutId, version), [engine]);
 
-  const checkCompatibility = useCallback((source: string, sourceVersion: string, targets: Array<{
-    component: string; version: string; minimumVersion?: string;
-  }>) => engine.compatibility.check(source, sourceVersion, targets), [engine]);
+  const createRollback = useCallback((rolloutId: string, version: string, targetVersion: string, reason: string, initiatedBy: string) =>
+    engine.rollback.createRollback(rolloutId, version, targetVersion, reason, initiatedBy), [engine]);
 
-  const detectRegressions = useCallback((releaseId: string, metrics: Array<{
-    metric: string; baseline: number; current: number; threshold: number;
-  }>) => engine.regression.detect(releaseId, metrics), [engine]);
+  const checkGates = useCallback((version: string, gates: ReleaseGateSet) =>
+    engine.compatibility.checkGates(version, gates), [engine]);
 
-  const scoreReleaseHealth = useCallback((releaseId: string) =>
-    engine.health.score(releaseId), [engine]);
+  const buildCompatibilityMatrix = useCallback((components: Array<{ name: string; version: string; compatibleWith: Record<string, string> }>) =>
+    engine.compatibility.buildMatrix(components), [engine]);
+
+  const detectRegressions = useCallback((baseline: Record<string, number>, current: Record<string, number>, thresholds: Record<string, number>) =>
+    engine.regression.detectRegressions(baseline, current, thresholds), [engine]);
+
+  const compareReleases = useCallback((baseline: Record<string, number>, current: Record<string, number>) =>
+    engine.regression.compareReleases(baseline, current), [engine]);
+
+  const scoreHealth = useCallback((snapshot: ReleaseHealthSnapshot, thresholds: ReleaseHealthThresholds) =>
+    engine.health.scoreHealth(snapshot, thresholds), [engine]);
 
   return {
-    planRollout, evaluateCanary, checkRollbackEligibility,
-    orchestrateRollback, checkCompatibility, detectRegressions, scoreReleaseHealth,
+    planRollout, evaluateCanaryPromotion, estimateBlastRadius,
+    evaluateRollbackEligibility, createRollback,
+    checkGates, buildCompatibilityMatrix,
+    detectRegressions, compareReleases, scoreHealth,
   };
 }

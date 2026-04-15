@@ -10,7 +10,7 @@ import type { RolloutPlan } from "@/packages/protocols/rollout-protocol";
 import type { ReceiptEnvelope, ReceiptQuery } from "@/packages/protocols/receipt-protocol";
 import type { WsSubscription, WsConnectionState, WsClientSafeEvent } from "@/packages/protocols/websocket-protocol";
 import type { NotificationEnvelope, NotificationPreference } from "@/packages/protocols/notification-protocol";
-import type { SyncCheckpoint, SyncConflict, type ConflictResolution } from "@/packages/protocols/sync-protocol";
+import type { SyncCheckpoint, SyncConflict, ConflictResolution } from "@/packages/protocols/sync-protocol";
 import type { UpdateManifest, UpdateInstallState } from "@/packages/protocols/update-protocol";
 import type { TimelineEvent, TimelineQuery } from "@/packages/protocols/timeline-protocol";
 import type { CompatibilityCheck, VersionCompatibility } from "@/packages/protocols/compatibility-protocol";
