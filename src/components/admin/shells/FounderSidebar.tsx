@@ -8,6 +8,7 @@ import {
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
   PanelLeft, Settings, Sparkles
 } from "lucide-react";
+import { GlossaryDrawer } from "./GlossaryDrawer";
 
 interface NavItem {
   label: string;
