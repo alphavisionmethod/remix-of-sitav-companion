@@ -33,7 +33,8 @@ import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingSta
 import { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
 import { ContinuousVerificationPanel } from "@/components/admin/shells/ContinuousVerificationPanel";
 import { ExplainSimplyToggle } from "@/components/admin/shells/ExplainSimplyToggle";
-
+import { SurfaceAuthorityMatrix } from "@/components/admin/shells/SurfaceAuthorityMatrix";
+import { StateAuthorityMap } from "@/components/admin/shells/StateAuthorityMap";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
@@ -294,6 +295,16 @@ const MissionControlHome = () => {
               <ContinuousVerificationPanel />
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Surface Authority Matrix */}
+        <motion.div variants={fadeUp}>
+          <SurfaceAuthorityMatrix compact />
+        </motion.div>
+
+        {/* State Authority Map */}
+        <motion.div variants={fadeUp}>
+          <StateAuthorityMap compact />
         </motion.div>
 
         {/* Platform Pulse — Summary Panels */}
