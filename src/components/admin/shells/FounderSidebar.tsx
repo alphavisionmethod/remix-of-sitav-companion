@@ -42,6 +42,7 @@ const NAV_GROUPS: NavGroup[] = [
     defaultOpen: true,
     items: [
       { label: "Sync Cloud", icon: Cloud, path: "/admin/mc/sync-cloud" },
+      { label: "Communication Hub", icon: Network, path: "/admin/communication-hub" },
       { label: "Storage", icon: HardDrive, path: "/admin/mc/storage" },
       { label: "Devices", icon: Smartphone, path: "/admin/mc/devices" },
       { label: "Workspaces", icon: Layers, path: "/admin/mc/workspaces" },
