@@ -1,0 +1,38 @@
+# SITA OS — Product Shell Deployment
+# Vite SPA → CDN
+apiVersion: deploy/v1
+kind: frontend-spa
+metadata:
+  name: product-shell
+  plane: product
+  owner: product-team
+
+spec:
+  build:
+    tool: vite
+    command: pnpm --filter @sita/product-shell build
+    output_dir: apps/product-shell/dist
+    node_version: "20"
+
+  hosting:
+    provider: cdn
+    custom_domain: app.sita.os
+    ssl: true
+    spa_fallback: true
+    cache_policy:
+      assets: "max-age=31536000, immutable"
+      html: "max-age=0, must-revalidate"
+
+  environment:
+    VITE_SUPABASE_URL: "${SUPABASE_URL}"
+    VITE_SUPABASE_PUBLISHABLE_KEY: "${SUPABASE_ANON_KEY}"
+    VITE_APP_VERSION: "${GIT_SHA}"
+
+  health_check:
+    path: /
+    expected_status: 200
+
+  rollout:
+    strategy: blue_green
+    canary_percent: 10
+    auto_promote_after_minutes: 30

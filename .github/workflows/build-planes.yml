@@ -1,0 +1,49 @@
+name: Build All Planes
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plane:
+          - { name: "product-shell", filter: "@sita/product-shell" }
+          - { name: "admin-console", filter: "@sita/admin-console" }
+          - { name: "founder-center", filter: "@sita/founder-center" }
+          - { name: "backend", filter: "@sita/backend" }
+          - { name: "os", filter: "@sita/os" }
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - name: Typecheck ${{ matrix.plane.name }}
+        run: pnpm --filter ${{ matrix.plane.filter }} typecheck
+      
+      - name: Build ${{ matrix.plane.name }}
+        run: pnpm --filter ${{ matrix.plane.filter }} build
+
+  typecheck-all:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck

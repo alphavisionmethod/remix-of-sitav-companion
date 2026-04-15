@@ -1,0 +1,35 @@
+# SITA OS — Admin Console Deployment
+apiVersion: deploy/v1
+kind: frontend-spa
+metadata:
+  name: admin-console
+  plane: admin
+  owner: platform-team
+
+spec:
+  build:
+    tool: vite
+    command: pnpm --filter @sita/admin-console build
+    output_dir: apps/admin-console/dist
+    node_version: "20"
+
+  hosting:
+    provider: cdn
+    custom_domain: admin.sita.os
+    ssl: true
+    spa_fallback: true
+    ip_allowlist: "${ADMIN_IP_ALLOWLIST}"
+
+  environment:
+    VITE_SUPABASE_URL: "${SUPABASE_URL}"
+    VITE_SUPABASE_PUBLISHABLE_KEY: "${SUPABASE_ANON_KEY}"
+    VITE_ADMIN_MODE: "true"
+
+  auth:
+    required_role: admin
+    mfa_required: true
+    session_timeout_minutes: 30
+
+  health_check:
+    path: /
+    expected_status: 200

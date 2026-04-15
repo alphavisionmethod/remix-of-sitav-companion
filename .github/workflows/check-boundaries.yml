@@ -1,0 +1,36 @@
+name: Check Architecture Boundaries
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  boundary-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - name: Run architecture boundary checker
+        run: npx tsx scripts/architecture/check-plane-boundaries.ts
+      
+      - name: Run import boundary checker
+        run: npx tsx scripts/check-import-boundaries.ts
+      
+      - name: Upload boundary report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boundary-report
+          path: generated/boundary-check-report.json

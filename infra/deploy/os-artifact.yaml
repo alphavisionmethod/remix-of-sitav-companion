@@ -1,0 +1,38 @@
+# SITA OS — OS Artifact Deployment
+apiVersion: deploy/v1
+kind: os-artifact
+metadata:
+  name: sita-os-runtime
+  plane: os
+  owner: os-team
+
+spec:
+  packaging:
+    format: electron
+    targets:
+      - platform: linux
+        arch: [x64, arm64]
+      - platform: darwin
+        arch: [x64, arm64]
+      - platform: win32
+        arch: [x64]
+
+  build:
+    command: pnpm --filter @sita/os build
+    output_dir: os/dist
+
+  signing:
+    code_signing: true
+    notarization: true
+    integrity_hash: sha256
+
+  update:
+    strategy: differential
+    channel: stable
+    auto_update: true
+    rollback_slots: 2
+
+  recovery:
+    safe_mode: true
+    factory_reset_available: true
+    state_snapshot_on_update: true

@@ -1,0 +1,35 @@
+# SITA OS — Founder Center Deployment
+apiVersion: deploy/v1
+kind: frontend-spa
+metadata:
+  name: founder-center
+  plane: founder
+  owner: founder-team
+
+spec:
+  build:
+    tool: vite
+    command: pnpm --filter @sita/founder-center build
+    output_dir: apps/founder-center/dist
+    node_version: "20"
+
+  hosting:
+    provider: cdn
+    custom_domain: founder.sita.os
+    ssl: true
+    spa_fallback: true
+
+  environment:
+    VITE_SUPABASE_URL: "${SUPABASE_URL}"
+    VITE_SUPABASE_PUBLISHABLE_KEY: "${SUPABASE_ANON_KEY}"
+    VITE_FOUNDER_MODE: "true"
+
+  auth:
+    required_role: founder
+    mfa_required: true
+    session_timeout_minutes: 15
+    device_trust_required: true
+
+  health_check:
+    path: /
+    expected_status: 200
