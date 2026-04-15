@@ -120,7 +120,7 @@ export interface PolicySnapshot {
   evaluatedAt: string;
   decisions: Array<{
     policyId: string;
-    decision: "allow" | "deny" | "require_approval" | "downgrade";
+    decision: string;
     reason: string;
   }>;
   riskTier: string;
