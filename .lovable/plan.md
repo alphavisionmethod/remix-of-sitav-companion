@@ -1,155 +1,159 @@
 
 
-# SITA OS — Part 2: Deep Platform Operations, Tenant Separation, and Governance
+# SITA OS — Control Plane / Product Plane / Shared Core Separation
 
-## Current State
-The platform has 120+ DB tables, 60+ edge functions, 20 cloud admin pages, 5 backbone services, and 3 user-facing cloud components. Part 1 (storage, sync, devices, quotas, version history, conflicts, admin console) is complete. Part 2 adds the deeper operational and governance layers.
+## Current State Assessment
 
-## What This Plan Adds (30 sections condensed into 6 implementation batches)
+The codebase already has significant infrastructure:
+- **150+ admin pages** under `/admin/*` (protected by `AdminRoute` + `useRequireAdmin`)
+- **32 cloud admin tabs** in `CloudBackboneAdmin`
+- **7 user-facing cloud components** in `src/components/cloud/`
+- **11 cloud backbone services** in `src/lib/cloud-backbone/`
+- **65+ edge functions** deployed
+- **DB RBAC** via `user_roles` table + `has_role()` security definer
+- **Role-permission engine** (in-memory) in `src/lib/services/role-permission-engine/`
+- **Enterprise control plane service** exists but is thin
+- **Tenant sovereignty** types exist in `src/lib/architecture/tenant-sovereignty.ts`
 
----
-
-### Batch 1: Database Migration — Tenant, Lifecycle, Workers, Admin RBAC, Abuse (1 large migration)
-
-New tables:
-
-| Table | Covers Prompt Sections |
-|-------|----------------------|
-| `cloud_tenants` | #1 — Tenant/org accounts with type, region, residency |
-| `cloud_tenant_memberships` | #1 — User membership in tenants with roles |
-| `cloud_tenant_plans` | #1 — Org-level plan assignment |
-| `cloud_tenant_quotas` | #1 — Org storage pools |
-| `cloud_tenant_policies` | #1 — Org-wide policy rules |
-| `cloud_shared_workspaces` | #1, #16 — Team-shared spaces |
-| `cloud_storage_providers` | #2 — Backend abstraction registry (S3/R2/GCS/Azure/MinIO) |
-| `cloud_storage_tiers` | #3 — Hot/warm/cold/archive tier definitions |
-| `cloud_lifecycle_rules` | #3, #27 — Retention and migration policies |
-| `cloud_archive_jobs` | #3 — Archive/restore workflow tracking |
-| `cloud_preview_jobs` | #4 — Thumbnail/media processing queue |
-| `cloud_search_index` | #5 — Metadata search index entries |
-| `cloud_activity_journal` | #6 — First-class activity/timeline events |
-| `cloud_worker_jobs` | #7 — Unified worker queue with dead-letter |
-| `cloud_admin_roles` | #8 — Internal admin RBAC (super/support/storage/security/billing/auditor/tenant) |
-| `cloud_admin_role_assignments` | #8 — User-to-admin-role mapping |
-| `cloud_support_sessions` | #9 — Support troubleshooting sessions with audit |
-| `cloud_abuse_events` | #10 — Mass-change, ransomware, API abuse detection |
-| `cloud_reconciliation_runs` | #11 — Integrity job results |
-| `cloud_import_export_jobs` | #12 — Import/export/migration pipeline tracking |
-| `cloud_backup_snapshots` | #13 — DR backup metadata |
-| `cloud_account_closure_requests` | #15 — Formal account deletion workflow |
-| `cloud_namespace_registry` | #21 — Sync namespace governance |
-| `cloud_maintenance_modes` | #22 — Platform-wide operational controls |
-| `cloud_compliance_hooks` | #28 — Legal hold, consent, deletion attestations |
-
-All tables get RLS (user owns own data, admins via `has_role`), indexes, and `updated_at` triggers.
+**What's missing for true 3-plane separation:**
+1. No formal plane registry / boundary enforcement between Control, Product, and Shared Core
+2. Admin RBAC is binary (admin vs not-admin) — no granular admin roles enforced in backend
+3. No token class separation (user vs admin vs service)
+4. No environment-aware config system
+5. No API gateway separation (admin vs user)
+6. No Support Console distinct from Admin Console at the access level
+7. No formal admin action audit trail in backend
+8. No device ownership model separating "user's own devices" from "admin device management"
 
 ---
 
-### Batch 2: Edge Functions (3 new functions)
+## Implementation Plan — 4 Batches
 
-1. **`cloud-worker-api`** — Unified worker orchestration:
-   - `POST /enqueue` — Submit background jobs (preview gen, reconciliation, archive migration, cleanup)
-   - `POST /process` — Dequeue and execute next job
-   - `GET /status` — Worker queue health
-   - `POST /dead-letter/retry` — Retry dead-letter jobs
+### Batch 1: Database — Granular Admin RBAC + Plane Registry + Admin Audit (1 migration)
 
-2. **`cloud-tenant-api`** — Tenant/org management:
-   - `POST /create` — Create tenant
-   - `POST /invite` — Add member
-   - `POST /policy` — Set tenant policies
-   - `GET /usage` — Tenant-wide storage usage
-   - `POST /workspace` — Create shared workspace
+**New tables:**
 
-3. **`cloud-lifecycle-api`** — Lifecycle, compliance, account closure:
-   - `POST /archive` — Tier migration request
-   - `POST /restore-archive` — Restore from cold storage
-   - `POST /account-closure` — Initiate account deletion workflow
-   - `POST /export` — Generate user data export
-   - `POST /compliance/hold` — Legal hold toggle
-   - `GET /reconciliation` — Run/view integrity checks
+| Table | Purpose |
+|-------|---------|
+| `platform_planes` | Registry of planes (control, product, shared-core) with metadata |
+| `plane_service_assignments` | Maps each service/capability to its owning plane |
+| `admin_role_permissions` | Granular permissions per admin role (support.view_user, storage.repair, security.audit, etc.) |
+| `admin_action_audit` | Every admin action logged with actor, target, action, plane, justification, timestamp |
+| `admin_sessions` | Separate session tracking for admin logins with stronger TTL |
+| `environment_configs` | Environment registry (dev/staging/prod) with per-env feature flag context |
+| `token_classes` | Token class definitions (user, admin, service) with scope templates |
+| `api_gateway_routes` | Route registry mapping endpoints to planes and required token class |
+| `device_ownership` | Enhanced device-to-user binding with admin vs user action scoping |
+| `support_access_grants` | Time-limited, audited support access grants to user accounts |
 
----
+**Seed data:**
+- 3 planes: `control`, `product`, `shared-core`
+- 7 admin roles with permissions: super-admin (all), platform-admin, storage-admin, security-admin, support-admin, billing-admin, read-only-auditor
+- 3 environments: dev, staging, production
+- 3 token classes: user, admin, service
 
-### Batch 3: New Backbone Services (5 new service files)
-
-| Service | Sections Covered |
-|---------|-----------------|
-| `cloud-tenant-service.ts` | #1 — Tenant CRUD, membership, quotas, policies |
-| `cloud-worker-service.ts` | #7 — Worker queue management, dead-letter, stats |
-| `cloud-lifecycle-service.ts` | #3, #15, #27 — Tiering, retention, account closure |
-| `cloud-abuse-service.ts` | #10 — Abuse detection, mass-change patterns, quarantine |
-| `cloud-support-service.ts` | #9 — Support sessions, diagnostic bundles, safe views |
-
-Update `index.ts` barrel to export all new services.
+**RLS:** Admin-only via `has_role`, with support-admin getting read-only on support-scoped tables.
 
 ---
 
-### Batch 4: Admin UI — 8 New Admin Pages
+### Batch 2: Shared Core Services + Edge Functions (3 services, 2 edge functions)
 
-| Page | Sections Covered |
-|------|-----------------|
-| `CloudTenantAdmin.tsx` | #1 — Tenant/org management, memberships, policies |
-| `CloudStorageHealthAdmin.tsx` | #2, #25A — Backend status, provider registry, latency |
-| `CloudWorkerOpsAdmin.tsx` | #7, #25B — Queue depth, failed jobs, dead-letter, throughput |
-| `CloudCostCapacityAdmin.tsx` | #20, #25C — Cost attribution, growth trends, per-plan load |
-| `CloudSupportConsole.tsx` | #9, #25D — User/device search, sync trace, repair workflows |
-| `CloudIntegrityAdmin.tsx` | #11, #25E — Reconciliation runs, quota drift, repair status |
-| `CloudLifecycleAdmin.tsx` | #3, #27 — Tiering rules, retention policies, archive jobs |
-| `CloudComplianceAdmin.tsx` | #14, #28 — Residency, legal hold, compliance hooks, audit retention |
+**New backbone services:**
 
-All pages follow existing glassmorphic dark-first SITA OS design with metric cards, data tables, action buttons, and status badges.
+1. **`src/lib/platform-plane/plane-registry.ts`** — Plane boundary enforcement
+   - `resolvePlane(serviceId)` — Which plane owns this service
+   - `validateCrossPlaneAccess(sourcePlane, targetPlane, action)` — Enforce boundaries
+   - `getPlaneServices(plane)` — List services in a plane
+   - `auditPlaneViolation(source, target, action)` — Log violations
+
+2. **`src/lib/platform-plane/admin-rbac-engine.ts`** — Granular admin RBAC
+   - `hasAdminPermission(userId, permission)` — Check granular permission
+   - `getAdminPermissions(userId)` — All permissions for admin user
+   - `requirePermission(userId, permission)` — Throw if missing
+   - Permission categories: `users.*`, `devices.*`, `storage.*`, `sync.*`, `policy.*`, `flags.*`, `audit.*`, `support.*`, `maintenance.*`
+
+3. **`src/lib/platform-plane/environment-config.ts`** — Environment awareness
+   - `getCurrentEnvironment()` — Detect current env
+   - `getEnvConfig(key)` — Environment-specific config
+   - `isProduction()` / `isStaging()` / `isDev()`
+
+**New edge functions:**
+
+1. **`admin-gateway`** — Unified admin API gateway
+   - Validates admin token class
+   - Checks granular permission per route
+   - Logs every action to `admin_action_audit`
+   - Routes: `/users/*`, `/devices/*`, `/storage/*`, `/sync/*`, `/policy/*`, `/flags/*`, `/audit/*`, `/support/*`
+
+2. **`support-gateway`** — Support-scoped API gateway
+   - Limited permission set (view-only + safe repairs)
+   - Cannot modify policies, quotas, or flags
+   - All actions audited with justification field
+   - Routes: `/support/user-lookup`, `/support/device-inspect`, `/support/sync-trace`, `/support/run-diagnostic`, `/support/safe-repair`
 
 ---
 
-### Batch 5: User-Facing Enhancements — 4 New Components + Settings Expansion
+### Batch 3: Admin UI — 6 New Pages + Support Console Separation
 
-| Component | Sections Covered |
-|-----------|-----------------|
-| `CloudActivityTimeline.tsx` | #6, #26 — Rich activity journal with event types and device origins |
-| `CloudDeviceSafety.tsx` | #19 — Device revoke, session revoke, emergency sync pause, suspicious alerts |
-| `CloudImportExport.tsx` | #12, #26 — Import from other clouds, export my data, migration status |
-| `CloudNamespaceToggles.tsx` | #21, #26 — Sync namespace governance with encryption class and retention |
+| Page | Purpose |
+|------|---------|
+| `PlatformPlaneOverview.tsx` | Visual 3-plane architecture map with service counts, health, and boundary violations |
+| `AdminRBACConsole.tsx` | Manage admin roles, assign permissions, view role hierarchy |
+| `AdminAuditExplorer.tsx` | Search/filter all admin actions by actor, target, time, plane |
+| `EnvironmentSwitcher.tsx` | Environment-aware dashboard showing config per env, flag contexts |
+| `SupportConsoleSafe.tsx` | Separated support console — user lookup, device inspect, sync trace, diagnostics (read-only + safe repairs only) |
+| `AdminTokenManager.tsx` | Token class management, session viewer, admin session TTL controls |
 
-Update `UserCloudSettings.tsx` to add new tabs: Activity, Safety, Import/Export.
+**Update existing:**
+- `CloudAdminLayout.tsx` — Add "Platform" tab group (Planes, RBAC, Audit, Environments, Tokens)
+- `CloudBackboneAdmin.tsx` — Wire 6 new tabs
+- `AdminRoutes.tsx` — Add routes for new pages
 
 ---
 
-### Batch 6: Wiring, Feature Flags, Observability, First-Device Bootstrap
+### Batch 4: Product Plane Boundary + User Device Ownership + Wiring
 
-1. **Feature flag expansion** — Add flag entries for: delta-sync, e2ee-classes, previews, archive-tiering, sharing, app-cloud-apis, nearby-sync, new-conflict-engines. Support percentage rollout and tenant-specific targeting. (#23)
+**New user-facing components:**
 
-2. **Notification types** — Add cloud notification templates to existing `notifications` table for: upload-complete, sync-paused, quota-near-full, device-revoked, conflict-detected, suspicious-activity, restore-complete, share-invite. (#18)
+1. **`src/components/cloud/CloudDeviceOwnership.tsx`** — User's own device management
+   - Rename, revoke own devices
+   - See sync status per device
+   - See last-seen timestamps
+   - Trust status badges
+   - Cannot see other users' devices
 
-3. **First-device bootstrap** — Add `cloud_bootstrap_markers` table and logic in `cloud-device-api` for root folder init, default quota, first-device trust, initial namespace setup. (#29)
+2. **`src/components/platform/PlaneBoundaryGuard.tsx`** — Route-level guard
+   - Wraps admin routes to enforce plane + permission checks
+   - Shows "Insufficient permissions" for wrong admin role
+   - Logs boundary violations
 
-4. **Maintenance mode controls** — Wire `cloud_maintenance_modes` to admin UI with pause uploads, read-only mode, rebuild indexes, throttle preview gen. (#22)
+**Wiring updates:**
 
-5. **Observability metrics** — Add `cloud_metrics_snapshots` table for upload success rate, finalize latency, websocket clients, conflict rate, orphan count, preview queue depth. (#24)
-
-6. **Product polish** — Sync blocker plain-language reasons, one-click safe repairs, trust badges, "last synced" confidence cues, over-quota guidance. (#30)
+- Update `useRequireAdmin` → `useRequireAdminPermission(permission)` for granular checks
+- Add `useCurrentPlane()` hook — returns which plane the current route belongs to
+- Add plane badges to admin page headers showing "Control Plane" context
+- Update `AdminRoute` to accept optional `requiredPermission` prop
+- Wire `admin_action_audit` logging into existing admin action buttons across all 32 cloud admin tabs
+- Add environment indicator badge to admin layout header
 
 ---
 
 ## File Summary
 
-| Batch | Type | Count | Description |
-|-------|------|-------|-------------|
-| 1 | Migration | 1 | ~25 new tables + RLS + indexes + triggers |
-| 2 | Edge Functions | 3 | Worker, Tenant, Lifecycle APIs |
-| 3 | Backbone Services | 5 | Tenant, Worker, Lifecycle, Abuse, Support |
-| 4 | Admin Pages | 8 | Deep operational admin surfaces |
-| 5 | User Components | 4 + update | Activity, Safety, Import/Export, Namespaces |
-| 6 | Wiring | ~6 updates | Feature flags, notifications, bootstrap, observability |
+| Batch | Type | Count |
+|-------|------|-------|
+| 1 | Migration | 1 (10 tables + seeds) |
+| 2 | Services + Edge Functions | 3 services + 2 edge functions |
+| 3 | Admin Pages | 6 new + 3 updates |
+| 4 | User Components + Wiring | 2 components + 5 hook/guard updates |
 
-**Total: ~1 migration, 3 edge functions, 5 services, 12 UI components, ~6 wiring updates**
+**Total: ~1 migration, 2 edge functions, 3 services, 6 admin pages, 2 user components, ~8 wiring updates**
 
 ## Technical Notes
-- All new tables use `user_id` scoped RLS with `has_role` for admin access
-- Tenant isolation validated via `cloud_tenant_memberships` + security definer function
-- Worker jobs use exponential backoff and dead-letter after max attempts
-- Abuse detection uses pattern matching on audit events (mass-delete spikes, rapid rewrites)
-- Support sessions are fully audited with redacted field lists per viewer role
-- Feature flags support: internal, beta, tenant-specific, percentage rollout, device-class targeting
-- No new npm dependencies required
-- All UI follows existing glassmorphic SITA OS design system
+- Granular permissions use dot-notation: `users.view`, `users.suspend`, `storage.repair`, `policy.edit`, `flags.rollout`
+- Support console enforces `support.*` permissions only — cannot access `policy.*` or `flags.*`
+- Admin audit uses `admin_action_audit` table with RLS restricted to `security-admin` and `super-admin` roles
+- Environment detection uses `VITE_SUPABASE_URL` hostname pattern matching
+- Plane boundary violations are logged but not hard-blocked (advisory mode first, enforced mode later via feature flag)
+- All UI follows existing glassmorphic dark-first SITA OS design
 
