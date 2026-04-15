@@ -42,7 +42,7 @@ export { default as AIT01TeamOverview } from "@/pages/admin/AIT01TeamOverview";
 export { default as AIT02RoleRegistry } from "@/pages/admin/AIT02RoleRegistry";
 export { default as AIT03TaskInvocation } from "@/pages/admin/AIT03TaskInvocation";
 export { default as AIT04ActivityFeedPage } from "@/pages/admin/AIT04ActivityFeedPage";
-export { default as AIT04to08Boards } from "@/pages/admin/AIT04to08Boards";
+export { AIT04ActivityFeed, AIT05CostEfficiency, AIT06Recommendations, AIT07ApprovalQueue, AIT08LaunchTruth } from "@/pages/admin/AIT04to08Boards";
 export { default as AIT05CostEfficiency } from "@/pages/admin/AIT05CostEfficiency";
 export { default as AIT06RecommendationsPage } from "@/pages/admin/AIT06RecommendationsPage";
 export { default as AIT07ApprovalQueuePage } from "@/pages/admin/AIT07ApprovalQueuePage";
