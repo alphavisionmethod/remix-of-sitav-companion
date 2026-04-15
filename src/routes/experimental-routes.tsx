@@ -1,5 +1,6 @@
 import { Route, Navigate, Outlet } from "react-router-dom";
 import { lazy } from "react";
+const AppStoreCenter = lazy(() => import("@/pages/AppStoreCenter"));
 
 // Investment Office
 const InvestmentBoardroom = lazy(() => import("@/pages/investment-office/InvestmentBoardroom"));
@@ -267,25 +268,8 @@ export function getExperimentalRoutes() {
       <Route path="/store/surfaces" element={<StoreCategoryPage />} />
       <Route path="/store/:segment" element={<StoreCategoryPage />} />
 
-      {/* App Platform */}
-      <Route path="/app-store" element={<AppStorePage />} />
-      <Route path="/app-store/app/:appId" element={<AppPlatformDetailPage />} />
-      <Route path="/app-store/bundle/:bundleId" element={<BundleDetailPage />} />
-      <Route path="/app-store/library" element={<AppLibraryPage />} />
-      <Route path="/app-store/updates" element={<AppUpdatesPage />} />
-      <Route path="/app-store/permissions" element={<AppPermissionsCenterPage />} />
-      <Route path="/app-store/associations" element={<AppAssociationsPage />} />
-      <Route path="/app-store/compare" element={<AppComparePage />} />
-      <Route path="/app-store/manage/:appId" element={<AppManagePage />} />
-      <Route path="/app-store/web-install" element={<WebAppInstallPage />} />
-      <Route path="/app-store/external-install" element={<ExternalInstallerPage />} />
-      <Route path="/app-store/receipts" element={<AppReceiptsPage />} />
-      <Route path="/app-store/receipts/:appId" element={<AppReceiptsPage />} />
-      <Route path="/app-store/receipt/:receiptId" element={<AppReceiptDetailPage />} />
-      <Route path="/app-store/enterprise" element={<EnterpriseCatalogPage />} />
-      <Route path="/app-store/dev-tools" element={<DevToolsCatalogPage />} />
-      <Route path="/app-store/open-with" element={<OpenWithPage />} />
-      <Route path="/app-store/first-launch/:appId" element={<FirstLaunchPage />} />
+      {/* App Platform — redirect shim to windowed app */}
+      <Route path="/app-store/*" element={<AppStoreCenter />} />
 
       {/* Digital Twins & Intelligence */}
       <Route path="/digital-twins" element={<DigitalTwinsPage />} />

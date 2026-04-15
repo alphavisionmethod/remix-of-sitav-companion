@@ -42,6 +42,7 @@ import { useWindowLauncher } from "./shell/ShellWindowLayer";
 import { ShellAccessoryLayer } from "./shell/ShellAccessoryLayer";
 import { ShellLiveLayer } from "./shell/ShellLiveLayer";
 import { SecurePromptProvider } from "./shell/SecurePromptProvider";
+import { FilePickerProvider } from "./shell/FilePickerService";
 import { SecurePrompt } from "./shell/SecurePrompt";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
@@ -221,6 +222,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     <OSWindowProvider>
     <WindowManagerContext.Provider value={wm}>
     <SecurePromptProvider>
+    <FilePickerProvider>
     <SidebarProvider>
       <SkipToContent />
       <RouteAnnouncer />
@@ -288,6 +290,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Secure Elevation Prompt (trusted path) */}
       <SecurePrompt />
     </SidebarProvider>
+    </FilePickerProvider>
     </SecurePromptProvider>
     </WindowManagerContext.Provider>
     </OSWindowProvider>
