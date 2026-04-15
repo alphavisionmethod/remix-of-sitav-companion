@@ -97,6 +97,35 @@ export default function UserCloudSettings() {
         <SyncStatusIndicator />
       </div>
 
+      {/* Sync Confidence Banner */}
+      <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <CheckCircle className="h-4 w-4 text-emerald-400" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-medium text-foreground">Everything synced</p>
+          <p className="text-xs text-muted-foreground">Last synced just now · 3 devices connected · No blockers</p>
+        </div>
+        <Badge variant="outline" className="text-xs text-emerald-400 border-emerald-500/30">
+          <Shield className="h-3 w-3 mr-1" /> Verified
+        </Badge>
+      </div>
+
+      {/* Over-Quota Warning (shown when usage > 85%) */}
+      {usagePct > 85 && (
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
+          <AlertTriangle className="h-5 w-5 text-amber-400" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-foreground">Storage almost full ({usagePct}%)</p>
+            <p className="text-xs text-muted-foreground">
+              Clean up old files, empty trash, or upgrade your plan to avoid sync pausing.
+            </p>
+          </div>
+          <Button size="sm" variant="outline" className="text-xs" onClick={() => toast.info("Plan upgrade options shown")}>Upgrade</Button>
+        </div>
+      )}
+
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4 md:grid-cols-7">

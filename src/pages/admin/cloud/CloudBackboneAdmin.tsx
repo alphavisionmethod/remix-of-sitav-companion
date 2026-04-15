@@ -21,18 +21,42 @@ import { CloudSyncObjectsAdmin } from "./CloudSyncObjectsAdmin";
 import { CloudDeviceIdentityAdmin } from "./CloudDeviceIdentityAdmin";
 import { CloudEncryptionAdmin } from "./CloudEncryptionAdmin";
 import { CloudNamespacesAdmin } from "./CloudNamespacesAdmin";
+import { CloudTenantAdmin } from "./CloudTenantAdmin";
+import { CloudStorageHealthAdmin } from "./CloudStorageHealthAdmin";
+import { CloudWorkerOpsAdmin } from "./CloudWorkerOpsAdmin";
+import { CloudCostCapacityAdmin } from "./CloudCostCapacityAdmin";
+import { CloudSupportConsole } from "./CloudSupportConsole";
+import { CloudIntegrityAdmin } from "./CloudIntegrityAdmin";
+import { CloudLifecycleAdmin } from "./CloudLifecycleAdmin";
+import { CloudComplianceAdmin } from "./CloudComplianceAdmin";
+import { CloudFeatureFlagsAdmin } from "./CloudFeatureFlagsAdmin";
+import { CloudMaintenanceModeAdmin } from "./CloudMaintenanceModeAdmin";
+import { CloudObservabilityAdmin } from "./CloudObservabilityAdmin";
+import { CloudBootstrapAdmin } from "./CloudBootstrapAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
   users: CloudUsersAdmin,
+  tenants: CloudTenantAdmin,
   devices: CloudDevicesAdmin,
   storage: CloudStorageAdmin,
+  "storage-health": CloudStorageHealthAdmin,
   sync: CloudSyncAdmin,
   "sync-objects": CloudSyncObjectsAdmin,
   "device-identity": CloudDeviceIdentityAdmin,
   encryption: CloudEncryptionAdmin,
   namespaces: CloudNamespacesAdmin,
+  workers: CloudWorkerOpsAdmin,
+  lifecycle: CloudLifecycleAdmin,
+  cost: CloudCostCapacityAdmin,
+  integrity: CloudIntegrityAdmin,
   audit: CloudAuditAdmin,
+  compliance: CloudComplianceAdmin,
+  support: CloudSupportConsole,
+  "feature-flags": CloudFeatureFlagsAdmin,
+  maintenance: CloudMaintenanceModeAdmin,
+  observability: CloudObservabilityAdmin,
+  bootstrap: CloudBootstrapAdmin,
   jobs: CloudJobsAdmin,
   recovery: CloudRecoveryAdmin,
   monitoring: CloudMonitoringAdmin,
