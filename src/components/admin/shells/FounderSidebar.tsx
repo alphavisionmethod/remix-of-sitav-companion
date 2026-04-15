@@ -7,7 +7,7 @@ import {
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
   PanelLeft, Settings, Sparkles, SlidersHorizontal, ShieldAlert, FileText,
-  Zap, Monitor, Radio, RotateCcw
+  Zap, Monitor, Radio, RotateCcw, Network
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
 import { useState as useReactState } from "react";
@@ -42,6 +42,7 @@ const NAV_GROUPS: NavGroup[] = [
     defaultOpen: true,
     items: [
       { label: "Sync Cloud", icon: Cloud, path: "/admin/mc/sync-cloud" },
+      { label: "Communication Hub", icon: Network, path: "/admin/communication-hub" },
       { label: "Storage", icon: HardDrive, path: "/admin/mc/storage" },
       { label: "Devices", icon: Smartphone, path: "/admin/mc/devices" },
       { label: "Workspaces", icon: Layers, path: "/admin/mc/workspaces" },
