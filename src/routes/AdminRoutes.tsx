@@ -92,6 +92,10 @@ const FCC05FounderDashboard = lazy(() => import("@/pages/admin/FCC05FounderDashb
 const FCC06ProgramManagementBoard = lazy(() => import("@/pages/admin/FCC06ProgramManagementBoard"));
 const FCC07PlatformCostCapacity = lazy(() => import("@/pages/admin/FCC07PlatformCostCapacity"));
 const FCC08SyncStorageOps = lazy(() => import("@/pages/admin/FCC08SyncStorageOps"));
+const FCC09SecurityRiskCenter = lazy(() => import("@/pages/admin/FCC09SecurityRiskCenter"));
+const FCC10HumanOversightEscalation = lazy(() => import("@/pages/admin/FCC10HumanOversightEscalation"));
+const FCC11IncidentResponseTimeline = lazy(() => import("@/pages/admin/FCC11IncidentResponseTimeline"));
+const FCC12KnowledgeMemorySystem = lazy(() => import("@/pages/admin/FCC12KnowledgeMemorySystem"));
 
 export function getAdminRoutes() {
   return [
@@ -181,5 +185,9 @@ export function getAdminRoutes() {
     <Route key="fcc06" path="/admin/founder/programs" element={<FCC06ProgramManagementBoard />} />,
     <Route key="fcc07" path="/admin/founder/cost" element={<FCC07PlatformCostCapacity />} />,
     <Route key="fcc08" path="/admin/founder/sync-ops" element={<FCC08SyncStorageOps />} />,
+    <Route key="fcc09" path="/admin/founder/security" element={<FCC09SecurityRiskCenter />} />,
+    <Route key="fcc10" path="/admin/founder/oversight" element={<FCC10HumanOversightEscalation />} />,
+    <Route key="fcc11" path="/admin/founder/incidents" element={<FCC11IncidentResponseTimeline />} />,
+    <Route key="fcc12" path="/admin/founder/knowledge" element={<FCC12KnowledgeMemorySystem />} />,
   ];
 }
