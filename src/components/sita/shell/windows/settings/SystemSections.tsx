@@ -338,7 +338,7 @@ export function OperatingModesContent() {
             {modes.map(m => (
               <button
                 key={m}
-                onClick={() => { os.switchMode(m as any); toast.success(`Switched to ${m.replace("_", " ")} mode`); }}
+                onClick={() => { os.setMode(m as any); toast.success(`Switched to ${m.replace("_", " ")} mode`); }}
                 className={cn(
                   "p-2 rounded-lg text-left transition-all border text-[10px]",
                   currentMode === m
