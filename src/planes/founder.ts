@@ -15,3 +15,12 @@ export type { PlaneKey, PlaneInfo } from "@/lib/platform-plane/plane-registry";
 // ── Service Auth ──
 export { serviceAuth } from "@/lib/platform-plane/service-auth";
 export type { ServiceIdentity, ServiceToken } from "@/lib/platform-plane/service-auth";
+
+// ── Strategic Intelligence ──
+export * from "@/lib/strategic-intelligence";
+
+// ── Compute Governance ──
+export * from "@/lib/compute-governance";
+
+// ── Intelligence Architecture ──
+export * from "@/lib/intelligence-architecture";

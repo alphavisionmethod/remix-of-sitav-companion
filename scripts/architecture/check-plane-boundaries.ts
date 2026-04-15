@@ -11,20 +11,27 @@ import * as path from "path";
 interface Violation { file: string; rule: string; detail: string }
 const violations: Violation[] = [];
 
-// Current src/ mapping to logical planes
+// Current src/ mapping to logical planes — COMPLETE COVERAGE
 const PLANE_MEMBERSHIP: Record<string, string> = {
+  // ── Admin ──
   "src/pages/admin/": "admin",
   "src/components/admin/": "admin",
   "src/components/admin-ai/": "admin",
   "src/components/admin-os/": "admin",
   "src/components/governance/": "admin",
   "src/lib/admin-ai/": "admin",
+
+  // ── Founder ──
   "src/pages/owner/": "founder",
   "src/pages/owner-mode/": "founder",
   "src/pages/mission-control/": "founder",
   "src/pages/enterprise/": "founder",
+
+  // ── Mobile ──
   "src/pages/mobile/": "mobile",
   "src/components/mobile/": "mobile",
+
+  // ── Shared (contracts, tokens, schemas, auth, events) ──
   "src/packages/contracts/": "shared",
   "src/packages/business-contracts/": "shared",
   "src/packages/finance-contracts/": "shared",
@@ -35,20 +42,75 @@ const PLANE_MEMBERSHIP: Record<string, string> = {
   "src/packages/auth/": "shared",
   "src/packages/policy-contracts/": "shared",
   "src/packages/proof-model/": "shared",
+  "src/packages/enterprise-contracts/": "shared",
+  "src/packages/moat-contracts/": "shared",
+  "src/packages/protocols/": "shared",
+  "src/packages/database-schemas/": "shared",
+  "src/packages/client-sdk/": "shared",
+  "src/packages/shell-grammar/": "shared",
+  "src/packages/workflow-primitives/": "shared",
+  "src/packages/feature-flags/": "shared",
+  "src/packages/entitlements/": "shared",
+  "src/packages/store-metadata/": "shared",
+  "src/packages/template-registry/": "shared",
+  "src/packages/microinteraction-engine/": "shared",
+  "src/packages/pack-manifests/": "shared",
+  "src/packages/telemetry/": "shared",
+  "src/packages/advisor-config/": "shared",
+  "src/packages/feature-governance/": "shared",
+  "src/packages/internal-agent-config/": "shared",
+  "src/packages/audit-contracts/": "shared",
+  "src/packages/reality-contracts/": "shared",
+
+  // ── OS (kernel, runtime, services, security, sync) ──
   "src/lib/nova-sdk/": "os",
   "src/lib/os-services/": "os",
   "src/lib/os-security/": "os",
   "src/lib/sync-engine/": "os",
+  "src/components/sita/shell/": "os",
+  "src/components/sita/os/": "os",
+  "src/components/sita/boot/": "os",
+  "src/components/sita/kernel/": "os",
+
+  // ── Backend (core-services, cloud, AI, intelligence, persistence, observability) ──
   "src/lib/core-services/": "backend",
   "src/lib/cloud-backbone/": "backend",
   "src/lib/platform-plane/": "backend",
   "src/lib/persistence/": "backend",
-  "src/lib/ai-gateway/": "backend",
-  "src/lib/sovereign-ai-gateway/": "backend",
+  "src/lib/ai/": "backend",
+  "src/lib/services/ai-gateway/": "backend",
   "src/lib/observability/": "backend",
   "src/lib/intelligence-architecture/": "backend",
+  "src/lib/advisor-intelligence/": "backend",
+  "src/lib/advisor-protocol/": "backend",
+  "src/lib/boardroom/": "backend",
+  "src/lib/strategic-intelligence/": "backend",
+  "src/lib/domain-engines/": "backend",
+  "src/lib/detection/": "backend",
+  "src/lib/ai-engineering/": "backend",
+  "src/lib/compute-governance/": "backend",
+  "src/lib/no-hallucination/": "backend",
+  "src/lib/shopify/": "backend",
+  "src/lib/verification/": "backend",
+
+  // ── Internal Tools ──
   "src/lib/simulation/": "internal-tools",
   "src/lib/fip/": "internal-tools",
+  "src/lib/dual-reality/": "internal-tools",
+  "src/lib/reality-audit/": "internal-tools",
+  "src/lib/reality-records/": "internal-tools",
+  "src/lib/demo-data/": "internal-tools",
+  "src/lib/seed/": "internal-tools",
+
+  // ── Product (default surfaces and engines) ──
+  "src/lib/customer-journey/": "product",
+  "src/lib/app-platform/": "product",
+  "src/lib/design-system/": "product",
+  "src/lib/setup/": "product",
+  "src/lib/investment-office/": "product",
+  "src/lib/pack-store/": "product",
+  "src/lib/ux-trust/": "product",
+  "src/lib/engines/": "product",
 };
 
 // Dependency rules: plane -> allowed import planes
@@ -92,6 +154,10 @@ const CROSS_PLANE_RULES: Array<{ from: string; forbiddenImport: RegExp; detail: 
   { from: "backend", forbiddenImport: /from\s+["']@\/pages\//, detail: "backend imports pages" },
   { from: "backend", forbiddenImport: /from\s+["']@\/components\//, detail: "backend imports UI components" },
   { from: "backend", forbiddenImport: /from\s+["']react/, detail: "backend imports React" },
+
+  // internal-tools must not import frontend surfaces
+  { from: "internal-tools", forbiddenImport: /from\s+["']@\/pages\//, detail: "internal-tools imports pages" },
+  { from: "internal-tools", forbiddenImport: /from\s+["']@\/components\/admin\//, detail: "internal-tools imports admin components" },
 ];
 
 function scanDir(dir: string): string[] {
@@ -146,6 +212,21 @@ for (const f of efFiles) {
   }
   if (/from\s+["']react/.test(content)) {
     violations.push({ file: rel, rule: "EDGE_FN_REACT", detail: "Edge function imports React" });
+  }
+}
+
+// Demo/prod leakage check
+const DEMO_PATTERNS = [/from\s+["']@\/lib\/demo-data/, /from\s+["']@\/lib\/seed\//];
+const productionDirs = ["src/lib/core-services", "src/lib/cloud-backbone", "src/lib/platform-plane"];
+for (const dir of productionDirs) {
+  for (const f of scanDir(dir)) {
+    const content = fs.readFileSync(f, "utf-8");
+    const rel = path.relative(process.cwd(), f);
+    for (const pat of DEMO_PATTERNS) {
+      if (pat.test(content)) {
+        violations.push({ file: rel, rule: "DEMO_PROD_LEAK", detail: "Production code imports demo/seed data" });
+      }
+    }
   }
 }
 

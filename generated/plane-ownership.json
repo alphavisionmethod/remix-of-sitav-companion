@@ -8,6 +8,13 @@
         "src/packages/business-contracts",
         "src/packages/finance-contracts",
         "src/packages/concierge-contracts",
+        "src/packages/boardroom-contracts",
+        "src/packages/enterprise-contracts",
+        "src/packages/moat-contracts",
+        "src/packages/policy-contracts",
+        "src/packages/proof-model",
+        "src/packages/reality-contracts",
+        "src/packages/audit-contracts",
         "src/packages/protocols",
         "src/packages/design-tokens",
         "src/packages/database-schemas",
@@ -21,7 +28,11 @@
         "src/packages/store-metadata",
         "src/packages/template-registry",
         "src/packages/microinteraction-engine",
-        "src/packages/pack-manifests"
+        "src/packages/pack-manifests",
+        "src/packages/telemetry",
+        "src/packages/advisor-config",
+        "src/packages/feature-governance",
+        "src/packages/internal-agent-config"
       ],
       "deployment_target": "npm_package",
       "allowed_dependencies": [],
@@ -32,7 +43,22 @@
         "src/lib/core-services",
         "src/lib/platform-plane",
         "src/lib/ai",
+        "src/lib/cloud-backbone",
+        "src/lib/persistence",
+        "src/lib/observability",
         "src/lib/services/ai-gateway",
+        "src/lib/intelligence-architecture",
+        "src/lib/advisor-intelligence",
+        "src/lib/advisor-protocol",
+        "src/lib/boardroom",
+        "src/lib/strategic-intelligence",
+        "src/lib/domain-engines",
+        "src/lib/compute-governance",
+        "src/lib/no-hallucination",
+        "src/lib/ai-engineering",
+        "src/lib/detection",
+        "src/lib/verification",
+        "src/lib/shopify",
         "src/lib/services/release-intelligence",
         "src/lib/services/degraded-mode",
         "src/lib/services/digest-journal",
@@ -45,8 +71,13 @@
     "os": {
       "directories": [
         "src/lib/nova-sdk",
+        "src/lib/os-services",
+        "src/lib/os-security",
+        "src/lib/sync-engine",
         "src/components/sita/shell",
-        "src/components/sita/os"
+        "src/components/sita/os",
+        "src/components/sita/boot",
+        "src/components/sita/kernel"
       ],
       "deployment_target": "electron_or_docker",
       "allowed_dependencies": ["shared"],
@@ -55,7 +86,11 @@
     "admin": {
       "directories": [
         "src/pages/admin",
-        "src/components/admin"
+        "src/components/admin",
+        "src/components/admin-ai",
+        "src/components/admin-os",
+        "src/components/governance",
+        "src/lib/admin-ai"
       ],
       "deployment_target": "spa_cdn",
       "allowed_dependencies": ["shared"],
@@ -63,7 +98,10 @@
     },
     "founder": {
       "directories": [
-        "src/pages/founder"
+        "src/pages/owner",
+        "src/pages/owner-mode",
+        "src/pages/mission-control",
+        "src/pages/enterprise"
       ],
       "deployment_target": "spa_cdn",
       "allowed_dependencies": ["shared"],
@@ -78,13 +116,34 @@
       "allowed_dependencies": ["shared"],
       "forbidden_dependencies": ["os", "admin", "founder", "backend"]
     },
+    "internal-tools": {
+      "directories": [
+        "src/lib/simulation",
+        "src/lib/fip",
+        "src/lib/dual-reality",
+        "src/lib/reality-audit",
+        "src/lib/reality-records",
+        "src/lib/demo-data",
+        "src/lib/seed"
+      ],
+      "deployment_target": "local_dev",
+      "allowed_dependencies": ["shared"],
+      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile"]
+    },
     "product": {
       "directories": [
         "src/pages",
         "src/components",
         "src/hooks",
         "src/lib/engines",
-        "src/lib/services"
+        "src/lib/services",
+        "src/lib/customer-journey",
+        "src/lib/app-platform",
+        "src/lib/design-system",
+        "src/lib/investment-office",
+        "src/lib/pack-store",
+        "src/lib/ux-trust",
+        "src/lib/setup"
       ],
       "deployment_target": "spa_cdn",
       "allowed_dependencies": ["shared", "backend", "os"],
@@ -98,6 +157,7 @@
     "admin": { "can_import_from": ["shared"] },
     "founder": { "can_import_from": ["shared"] },
     "mobile": { "can_import_from": ["shared"] },
+    "internal-tools": { "can_import_from": ["shared"] },
     "product": { "can_import_from": ["shared", "backend", "os"] }
   }
 }

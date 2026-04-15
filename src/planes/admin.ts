@@ -22,3 +22,9 @@ export type { SupportCase, SupportCaseEvent, DiagnosticPackage } from "@/lib/pla
 
 // ── Notification Router ──
 export { notificationRouter } from "@/lib/platform-plane/notification-router";
+
+// ── Admin AI Workforce Client ──
+export * from "@/lib/admin-ai";
+
+// ── Admin Route Truth ──
+export { loadManifest, validateRouteTruth, getRouteMismatches, getManifestStaleness, saveSnapshot } from "@/lib/services/admin-route-truth-service";

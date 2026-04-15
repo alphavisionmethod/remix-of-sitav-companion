@@ -19,9 +19,124 @@ export type {
   AppRuntimeState,
 } from "@/lib/nova-sdk";
 
+// ── Nova SDK UI Components ──
+export {
+  NovaText, NovaButton, NovaInput, NovaCard, NovaList, NovaModal,
+  NovaSidebar, NovaSectionLabel, NovaToggle, NovaSlider, NovaTextArea,
+  NovaToolbar, NovaBadge, NovaAvatar,
+} from "@/lib/nova-sdk";
+
+// ── Nova SDK Layout ──
+export {
+  VStack, HStack, Spacer, Divider, SplitView, AppLayout, NovaScrollArea,
+} from "@/lib/nova-sdk";
+
+// ── Nova SDK Services ──
+export {
+  ServiceManager, FileSystemService, WindowServer,
+  InputService, NotificationService, SettingsService,
+} from "@/lib/nova-sdk";
+
+export type {
+  SystemService, ServiceDescriptor, ServiceLogEntry, ServiceStatus, RestartPolicy,
+  FSNode, FSPermissions, MountPoint, FSWatchCallback,
+  WindowState, WindowRule, SnapZone,
+  ModifierState, HotkeyBinding, GestureState, InputRecording, AccessibilityConfig,
+  SystemNotification, NotificationAction, NotificationGroup, DNDConfig,
+  SettingsSchema, SettingsLayer,
+} from "@/lib/nova-sdk";
+
+// ── Nova SDK System ──
+export { createWindowAPI } from "@/lib/nova-sdk/system/window-api";
+export type { NovaWindowOptions, NovaWindowHandle } from "@/lib/nova-sdk/system/window-api";
+export { NovaBridge } from "@/lib/nova-sdk/system/bridge";
+
 // ── Kernel subsystems ──
 export { NovaKernel } from "@/lib/nova-sdk/kernel/boot";
 export { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 export { Scheduler } from "@/lib/nova-sdk/kernel/scheduler";
 export { Syscall, ERRNO } from "@/lib/nova-sdk/kernel/syscall";
 export { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
+
+// ── Nova SDK Extensions ──
+export {
+  PluginRegistry, WidgetRegistry, IntegrationRegistry,
+  auditAnimationConsistency, auditSoundCoverage, auditInteractionFeedback, getPolishScore,
+} from "@/lib/nova-sdk/extensions";
+export type {
+  PluginManifest, ExtensionPoint, PluginLifecycle, ExtensionHandler,
+  InstalledPlugin, TrustLevel,
+  WidgetManifest, WidgetProps, WidgetPlacement, WidgetSize, WidgetCategory,
+  IntegrationManifest, IntegrationInstance, IntegrationType, IntegrationStatus,
+  AuditResult, PolishScore,
+} from "@/lib/nova-sdk/extensions";
+
+// ── OS Security Subsystem ──
+export {
+  bootOSSecurity, isOSSecurityBooted,
+  AuthDaemon, getAuthDaemon,
+  PolicyDaemon, getPolicyDaemon, registerService, getServiceIdentity,
+  SecretsDaemon, getSecretsDaemon,
+  SessionDaemon, getSessionDaemon,
+  AuditDaemon, getAuditDaemon,
+  ControlCenterDaemon, getControlCenterDaemon,
+  PolicyBundleManager, getPolicyBundleManager, DEVICE_MODES,
+  ContextualDecisionEngine, getContextualDecisionEngine,
+  UpdateDaemon, getUpdateDaemon,
+  OnboardingDaemon, getOnboardingDaemon,
+  ElevationEngine, getElevationEngine,
+  NotifyDaemon, getNotifyDaemon,
+} from "@/lib/os-security";
+
+export type {
+  EnvironmentalContext, PolicyDecision,
+  SessionEvent, LockedScreenCapabilities,
+  CommandResult,
+  DeviceMode, PolicyBundle, FullPolicyContent, PolicyBundleSource, DeviceModeDefinition,
+  EnhancedPolicyContext, EnhancedPolicyDecision, EnhancedDecisionType,
+  UpdateState, UpdateChannel, UpdateCatalogEntry, UpdatePreflightResult, UpdateProgress,
+  HealthValidationResult, RollbackEvent, SystemSlot,
+  OnboardingSession, OnboardingStep, ProtectionDefaults,
+  ElevationResult,
+  SecurityNotification, SecurityEventType,
+} from "@/lib/os-security";
+
+// ── OS Services (Platform Daemons) ──
+export { accessibilityd } from "@/lib/os-services/accessibilityd";
+export { audiod } from "@/lib/os-services/audiod";
+export { AutomationDaemon, getAutomationDaemon } from "@/lib/os-services/automationd";
+export { BluetoothDaemon, getBluetoothDaemon } from "@/lib/os-services/btd";
+export { crashd } from "@/lib/os-services/crashd";
+export { deviced } from "@/lib/os-services/deviced";
+export { healthd } from "@/lib/os-services/healthd";
+export { PowerDaemon, getPowerDaemon } from "@/lib/os-services/powerd";
+export { settingsd } from "@/lib/os-services/settingsd";
+export { timed } from "@/lib/os-services/timed";
+export { WifiDaemon, getWifiDaemon } from "@/lib/os-services/wifid";
+
+// ── OS Services (Infrastructure) ──
+export { capabilityCatalog } from "@/lib/os-services/capability-catalog";
+export { diagnosticBundleGenerator } from "@/lib/os-services/diagnostic-bundle";
+export { entityRegistry, parseEntityId, makeEntityId } from "@/lib/os-services/entity-identity";
+export { healthGraph } from "@/lib/os-services/health-graph";
+export { localizationInfra } from "@/lib/os-services/localization-infra";
+export { migrationEngine } from "@/lib/os-services/migration-engine";
+export { networkPolicyMatrix } from "@/lib/os-services/network-policy-matrix";
+export { notificationClassifier } from "@/lib/os-services/notification-classifier";
+export { osEvents, OS_TOPICS } from "@/lib/os-services/os-event-system";
+export { policyResolver } from "@/lib/os-services/policy-resolver";
+export { quotaGovernor } from "@/lib/os-services/quota-governor";
+export { recommendationRanker } from "@/lib/os-services/recommendation-ranker";
+export { recoveryEngine } from "@/lib/os-services/recovery-levels";
+export type { RecoveryLevel } from "@/lib/os-services/recovery-levels";
+export { releaseLifecycle } from "@/lib/os-services/release-lifecycle";
+export { SearchIndexer, getSearchIndexer } from "@/lib/os-services/search-indexer";
+export { signingTrustChain } from "@/lib/os-services/signing-trust-chain";
+export { sloTargets } from "@/lib/os-services/slo-targets";
+export { storageStrategy } from "@/lib/os-services/storage-strategy";
+export { appLifecycle } from "@/lib/os-services/app-lifecycle";
+export { abiVersionManager } from "@/lib/os-services/abi-versioning";
+export { getHelpEngine } from "@/lib/os-services/help-engine";
+
+// ── Sync Engine ──
+export * from "@/lib/sync-engine";

@@ -7,3 +7,9 @@
 // ── User BFF ──
 export { userBFF } from "@/lib/platform-plane/user-bff";
 export type { UserDashboard, DeviceSummary, NotificationSummary, CaseSummary } from "@/lib/platform-plane/user-bff";
+
+// ── Biometric Auth ──
+export * from "@/lib/core-services/biometric-auth";
+
+// ── Device Presence ──
+export * from "@/lib/core-services/device-presence-service";
