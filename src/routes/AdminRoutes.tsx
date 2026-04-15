@@ -122,6 +122,9 @@ const CAI13MemoryGovernance = lazy(() => import("@/pages/admin/CAI13MemoryGovern
 const CAI14BoundaryControl = lazy(() => import("@/pages/admin/CAI14BoundaryControl"));
 const CAI15SignatureStudio = lazy(() => import("@/pages/admin/CAI15SignatureStudio"));
 
+// ── Communication Hub ──
+const CommunicationHub = lazy(() => import("@/pages/admin/CommunicationHub"));
+
 // ── FCC: Founder Command Control ──
 const FCC01FounderCommandConsole = lazy(() => import("@/pages/admin/FCC01FounderCommandConsole"));
 const FCC02TaskDecompositionGraph = lazy(() => import("@/pages/admin/FCC02TaskDecompositionGraph"));
