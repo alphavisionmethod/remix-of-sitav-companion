@@ -25,6 +25,9 @@ import { CloudDeviceSafety } from "@/components/cloud/CloudDeviceSafety";
 import { CloudImportExport } from "@/components/cloud/CloudImportExport";
 import { CloudNamespaceToggles } from "@/components/cloud/CloudNamespaceToggles";
 import { CloudDeviceOwnership } from "@/components/cloud/CloudDeviceOwnership";
+import { UserSupportEscalation } from "@/components/cloud/UserSupportEscalation";
+import { UserNotificationCenter } from "@/components/cloud/UserNotificationCenter";
+import { PlatformDegradedBanner } from "@/components/cloud/PlatformDegradedBanner";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [

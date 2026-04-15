@@ -47,6 +47,10 @@ import { ServiceIdentityAdmin } from "./ServiceIdentityAdmin";
 import { AdminSafetyRails } from "./AdminSafetyRails";
 import { SupportCaseManager } from "./SupportCaseManager";
 import { ConfigChangeHistory } from "./ConfigChangeHistory";
+import { ClientCapabilityAdmin } from "./ClientCapabilityAdmin";
+import { ReleaseGovernanceAdmin } from "./ReleaseGovernanceAdmin";
+import { ReadModelSnapshotsAdmin } from "./ReadModelSnapshotsAdmin";
+import { DataFlowMapAdmin } from "./DataFlowMapAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
