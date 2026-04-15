@@ -23,7 +23,7 @@ interface CalendarEvent {
 }
 
 function useCalendarData(year: number, month: number) {
-  const { user } = useAuth();
+  const { user, isDemo: isDemoMode } = useAuth();
 
   return useQuery({
     queryKey: ["calendar-data", user?.id, year, month, isDemoMode],

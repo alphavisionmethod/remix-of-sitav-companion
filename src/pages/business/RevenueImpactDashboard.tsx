@@ -50,7 +50,7 @@ interface TrendPoint {
 // ── Demo Data ──────────────────────────────────────────────────
 
 function generateTrend(granularity: Granularity): TrendPoint[] {
-  const { isDemo: isDemoMode } = useAuth();
+  // isDemoMode is checked in the component, not here
   const points: TrendPoint[] = [];
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
   const now = new Date();
