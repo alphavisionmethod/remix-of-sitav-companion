@@ -282,8 +282,20 @@ export default function UserCloudSettings() {
           <SyncActivityJournal maxEntries={8} />
         </TabsContent>
 
+        {/* SAFETY TAB */}
+        <TabsContent value="safety" className="mt-4">
+          <CloudDeviceSafety />
+        </TabsContent>
+
+        {/* TRANSFER TAB */}
+        <TabsContent value="transfer" className="mt-4">
+          <CloudImportExport />
+        </TabsContent>
+
         {/* SETTINGS TAB */}
         <TabsContent value="settings" className="mt-4 space-y-4">
+          {/* Namespace Governance */}
+          <CloudNamespaceToggles />
           {/* Encryption */}
           <Card>
             <CardHeader className="pb-3">
