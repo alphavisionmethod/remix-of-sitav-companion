@@ -40,6 +40,14 @@ const MCEmergencyAuthority = lazy(() => import("@/pages/admin/modules/MCEmergenc
 const MCPlatformAdaptation = lazy(() => import("@/pages/admin/modules/MCPlatformAdaptation"));
 const MCStateAuthority = lazy(() => import("@/pages/admin/modules/MCStateAuthority"));
 
+// ── MC: Architecture Governance Module Pages ──
+const MCFeatureOwnership = lazy(() => import("@/pages/admin/modules/MCFeatureOwnership"));
+const MCCommandRouting = lazy(() => import("@/pages/admin/modules/MCCommandRouting"));
+const MCApprovalFlow = lazy(() => import("@/pages/admin/modules/MCApprovalFlow"));
+const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
+const MCEventRouting = lazy(() => import("@/pages/admin/modules/MCEventRouting"));
+const MCArchitectureTests = lazy(() => import("@/pages/admin/modules/MCArchitectureTests"));
+
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
@@ -265,5 +273,12 @@ export function getAdminRoutes() {
     <Route key="mc19" path="/admin/mc/emergency" element={gated("maintenance.emergency", <MCEmergencyAuthority />)} />,
     <Route key="mc20" path="/admin/mc/platform-adaptation" element={gated("policy.view", <MCPlatformAdaptation />)} />,
     <Route key="mc21" path="/admin/mc/state-authority" element={gated("audit.view", <MCStateAuthority />)} />,
+    // ── MC: Architecture Governance ──
+    <Route key="mc22" path="/admin/mc/feature-ownership" element={gated("audit.view", <MCFeatureOwnership />)} />,
+    <Route key="mc23" path="/admin/mc/command-routing" element={gated("audit.view", <MCCommandRouting />)} />,
+    <Route key="mc24" path="/admin/mc/approval-flow" element={gated("audit.view", <MCApprovalFlow />)} />,
+    <Route key="mc25" path="/admin/mc/failure-recovery" element={gated("audit.view", <MCFailureRecovery />)} />,
+    <Route key="mc26" path="/admin/mc/event-routing" element={gated("audit.view", <MCEventRouting />)} />,
+    <Route key="mc27" path="/admin/mc/architecture-tests" element={gated("audit.view", <MCArchitectureTests />)} />,
   ];
 }
