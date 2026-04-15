@@ -6,18 +6,18 @@
 export { default as CRMConnectModal } from "@/components/business/CRMConnectModal";
 export { default as CRMImportWizard } from "@/components/business/CRMImportWizard";
 
-// CRM sub-components (named exports)
-export { CRMAdvisorBoard } from "@/components/business/crm/CRMAdvisorBoard";
+// CRM sub-components — mixed default/named exports
+export { default as CRMAdvisorBoard } from "@/components/business/crm/CRMAdvisorBoard";
 export * from "@/components/business/crm/CRMAdvisorInsight";
-export { CRMCommandSearch } from "@/components/business/crm/CRMCommandSearch";
-export { CRMCommunicationQueue } from "@/components/business/crm/CRMCommunicationQueue";
+export { default as CRMCommandSearch } from "@/components/business/crm/CRMCommandSearch";
+export { default as CRMCommunicationQueue } from "@/components/business/crm/CRMCommunicationQueue";
 export { CRMCompanyDetail } from "@/components/business/crm/CRMCompanyDetail";
 export { CRMConciergeLinkage } from "@/components/business/crm/CRMConciergeLinkage";
 export { CRMContactDetail } from "@/components/business/crm/CRMContactDetail";
 export { CRMContactForm } from "@/components/business/crm/CRMContactForm";
-export { CRMCustomFields } from "@/components/business/crm/CRMCustomFields";
+export { default as CRMCustomFields } from "@/components/business/crm/CRMCustomFields";
 export { CRMDealDetail } from "@/components/business/crm/CRMDealDetail";
-export { CRMDuplicateReview } from "@/components/business/crm/CRMDuplicateReview";
+export { default as CRMDuplicateReview } from "@/components/business/crm/CRMDuplicateReview";
 export { CRMEmptyState } from "@/components/business/crm/CRMEmptyState";
 export { CRMEscalateToBoardroom } from "@/components/business/crm/CRMEscalateToBoardroom";
 export { CRMFilesLinkage } from "@/components/business/crm/CRMFilesLinkage";
