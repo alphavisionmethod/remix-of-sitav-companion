@@ -107,6 +107,12 @@ function getOrCreateKernel(): SitaOSKernel {
   const memoryGovernance = createMemoryGovernance();
   const boundaryEngine = createBoundaryEngine();
   const experienceSignature = createExperienceSignature();
+  const deviceMesh = createDeviceMesh();
+  const contextGraph = createContextGraph();
+  const universalStateSync = createUniversalStateSync();
+  const explainability = createExplainability();
+  const actionSafety = createActionSafety();
+  const workspaceIntelligence = createWorkspaceIntelligence();
 
   // ═══════════════════════════════════════════════════════════
   // CROSS-WIRING: Connect all 15 services into one coherent OS
@@ -280,6 +286,7 @@ function getOrCreateKernel(): SitaOSKernel {
     personalGraph, intentOrchestrator, attentionOS, continuityEngine, trustActions,
     chiefOfStaff, timingIntelligence, relationships, digestEngine, sitaModes,
     adaptiveInterface, opportunityEngine, memoryGovernance, boundaryEngine, experienceSignature,
+    deviceMesh, contextGraph, universalStateSync, explainability, actionSafety, workspaceIntelligence,
     hydrated: false,
     currentLayer: "app" as Layer,
     currentDomain: undefined,
