@@ -3,7 +3,7 @@ import {
   Home, Briefcase, DollarSign, Headphones, FolderOpen, Settings, Shield, LogOut,
   LayoutDashboard, TrendingUp, Calendar, ListTodo, BarChart3,
   Grid3X3, ChevronRight, Clock, Users, FileText, Receipt, CreditCard, PiggyBank,
-  ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap
+  ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap, Brain
 } from "lucide-react";
 import { getRunningApps, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { cn } from "@/lib/utils";
@@ -86,10 +86,11 @@ const primaryNav = [
 ];
 
 const favoritesNav = [
-  { title: "Revenue",   url: "/revenue-office", icon: TrendingUp },
-  { title: "Boardroom", url: "/boardroom",      icon: BarChart3 },
-  { title: "Calendar",  url: "/calendar",       icon: Calendar },
-  { title: "Tasks",     url: "/tasks",          icon: ListTodo },
+  { title: "Revenue",      url: "/revenue-office", icon: TrendingUp },
+  { title: "Boardroom",    url: "/boardroom",      icon: BarChart3 },
+  { title: "Intelligence", url: "/intelligence",   icon: Brain },
+  { title: "Calendar",     url: "/calendar",       icon: Calendar },
+  { title: "Tasks",        url: "/tasks",          icon: ListTodo },
 ];
 
 const bottomNav = [
