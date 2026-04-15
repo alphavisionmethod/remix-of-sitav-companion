@@ -59,9 +59,58 @@ export interface SettingsSchema {
   // Cloud
   "cloud.syncEnabled": boolean;
   "cloud.lastSyncAt": string;
+  "cloud.syncSettings": boolean;
+  "cloud.syncFiles": boolean;
+  "cloud.syncContacts": boolean;
+  "cloud.encryption": "standard" | "enhanced" | "zero-knowledge";
 
   // Input (extra)
   "input.autocorrect": boolean;
+
+  // AI & Intelligence
+  "ai.autonomyLevel": "always-ask" | "simulate-first" | "trusted";
+  "ai.confidenceThreshold": number;
+  "ai.budgetMode": "frugal" | "standard" | "premium";
+  "ai.contradictionDisplay": "always" | "high-only" | "never";
+  "ai.promptHistory": boolean;
+
+  // Trust & Security
+  "trust.mode": "cautious" | "balanced" | "confident";
+  "trust.simulationPref": "always" | "smart" | "never";
+  "trust.sessionTimeout": number;
+
+  // Business & Workflows
+  "business.followUpPolicy": "aggressive" | "smart" | "gentle";
+  "business.leadScoring": "recency" | "engagement" | "value";
+  "business.autoArchiveStale": boolean;
+  "business.revenueForecast": boolean;
+  "business.pipelineAlerts": boolean;
+  "workflows.trustGate": "auto" | "simulate" | "approve";
+  "workflows.morningRoutine": boolean;
+  "workflows.endOfDay": boolean;
+  "workflows.smartBatching": boolean;
+
+  // Household
+  "household.sharedCalendar": boolean;
+  "household.sharedGrocery": boolean;
+  "household.expenseSharing": boolean;
+
+  // Privacy extended
+  "privacy.piiRedaction": boolean;
+  "privacy.docRetention": "1year" | "7years" | "forever";
+  "privacy.trackingPrevention": "standard" | "strict" | "off";
+  "privacy.adPersonalization": boolean;
+
+  // Display extended
+  "display.autoBrightness": boolean;
+  "display.trueTone": boolean;
+  "display.refreshRate": "auto" | "60" | "120";
+
+  // General extended
+  "general.dateFormat": "mdy" | "dmy" | "ymd";
+  "general.timeFormat": "12h" | "24h";
+  "general.timezone": string;
+  "general.startupBehavior": "lastState" | "home" | "dashboard";
 
   // Accessibility
   "accessibility.voiceOver": boolean;
