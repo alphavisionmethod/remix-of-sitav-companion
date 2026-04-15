@@ -24,7 +24,6 @@ import {
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

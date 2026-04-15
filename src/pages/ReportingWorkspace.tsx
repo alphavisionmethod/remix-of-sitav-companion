@@ -26,7 +26,6 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, 
 import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
@@ -52,7 +51,8 @@ const DEMO_TRUST_DATA = [
 ];
 
 const ReportingWorkspace = () => {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const [period, setPeriod] = useState("6m");
   const [tab, setTab] = useState("executive");
 

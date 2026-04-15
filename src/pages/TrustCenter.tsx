@@ -30,7 +30,6 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const DOMAIN_CONFIG: DomainConfig = {
@@ -64,7 +63,8 @@ const TAB_GROUPS: NavTabGroup[] = [
 
 /* ── Overview ── */
 const TrustOverviewPage = () => {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const [automationsPaused, setAutomationsPaused] = useState(false);
   const [trustMode, setTrustMode] = useState<"suggest" | "approve-execute" | "autonomous">("approve-execute");
 
@@ -198,7 +198,8 @@ const TrustOverviewPage = () => {
 
 /* ── Devices Page ── */
 const TrustDevicesPage = () => {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const { data: devices = [] } = useQuery({
     queryKey: ["trust_devices", user?.id],
     queryFn: async () => {

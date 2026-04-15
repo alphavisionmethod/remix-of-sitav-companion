@@ -19,14 +19,14 @@ import {
 import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 
 const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const qc = useQueryClient();
   const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();
   const { data: MOCK_DELEGATIONS = [] } = useDelegations();

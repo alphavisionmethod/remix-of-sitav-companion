@@ -13,7 +13,6 @@ import {
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

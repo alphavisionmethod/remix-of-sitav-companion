@@ -25,7 +25,6 @@ import {
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 // ── Demo Data ──────────────────────────────────────────────────
@@ -90,7 +89,8 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 };
 
 export default function TasksWorkflowsCenter() {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const os = useOSOrchestration();
   const interfaceState = useAdaptiveInterface();
   const attentionStack = os.hydrated ? os.getAttentionStack() : { critical: [], active: [], queued: [], deferred: [] };
