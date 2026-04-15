@@ -213,6 +213,8 @@ const ConfidencePill = ({ value }: { value: number }) => {
 // ── NEW: Advisor Voice Track ──────────────────────────────────
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   
   if (!isDemoMode) {
     return (
@@ -279,6 +281,8 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 // ── NEW: Disagreement Card ────────────────────────────────────
 
 const DisagreementCards = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -313,6 +317,8 @@ const DisagreementCards = () => {
 // ── NEW: Decision Memory Strip ────────────────────────────────
 
 const DecisionMemoryStrip = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
@@ -379,6 +385,8 @@ const CarryoverPanel = () => {
 // ── NEW: Proof Summary Board ──────────────────────────────────
 
 const ProofSummaryBoard = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
@@ -599,6 +607,8 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 // ── Packet View with Advisor Enhancements ─────────────────────
 
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
