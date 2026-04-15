@@ -443,6 +443,432 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_autonomy_policies: {
+        Row: {
+          allow_client_facing: boolean
+          allow_communication: boolean
+          allow_financial: boolean
+          allow_scheduling: boolean
+          autonomy_level: number
+          created_at: string
+          domain: string
+          emergency_stop: boolean
+          id: string
+          max_financial_impact_cents: number
+          paused_at: string | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          require_approval_above_confidence: number
+          settings: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allow_client_facing?: boolean
+          allow_communication?: boolean
+          allow_financial?: boolean
+          allow_scheduling?: boolean
+          autonomy_level?: number
+          created_at?: string
+          domain?: string
+          emergency_stop?: boolean
+          id?: string
+          max_financial_impact_cents?: number
+          paused_at?: string | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          require_approval_above_confidence?: number
+          settings?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allow_client_facing?: boolean
+          allow_communication?: boolean
+          allow_financial?: boolean
+          allow_scheduling?: boolean
+          autonomy_level?: number
+          created_at?: string
+          domain?: string
+          emergency_stop?: boolean
+          id?: string
+          max_financial_impact_cents?: number
+          paused_at?: string | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          require_approval_above_confidence?: number
+          settings?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_board_actions: {
+        Row: {
+          action_type: string
+          advisor_id: string
+          approved_at: string | null
+          approved_by: string | null
+          completed_at: string | null
+          confidence: number
+          created_at: string
+          description: string
+          domain: string
+          error_message: string | null
+          executed_at: string | null
+          failed_at: string | null
+          id: string
+          parameters: Json | null
+          proof_receipt: Json | null
+          recommendation_id: string | null
+          requires_approval: boolean
+          result: Json | null
+          reverted_at: string | null
+          risk_tier: string
+          rollback_data: Json | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_type?: string
+          advisor_id: string
+          approved_at?: string | null
+          approved_by?: string | null
+          completed_at?: string | null
+          confidence?: number
+          created_at?: string
+          description?: string
+          domain?: string
+          error_message?: string | null
+          executed_at?: string | null
+          failed_at?: string | null
+          id?: string
+          parameters?: Json | null
+          proof_receipt?: Json | null
+          recommendation_id?: string | null
+          requires_approval?: boolean
+          result?: Json | null
+          reverted_at?: string | null
+          risk_tier?: string
+          rollback_data?: Json | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          advisor_id?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          completed_at?: string | null
+          confidence?: number
+          created_at?: string
+          description?: string
+          domain?: string
+          error_message?: string | null
+          executed_at?: string | null
+          failed_at?: string | null
+          id?: string
+          parameters?: Json | null
+          proof_receipt?: Json | null
+          recommendation_id?: string | null
+          requires_approval?: boolean
+          result?: Json | null
+          reverted_at?: string | null
+          risk_tier?: string
+          rollback_data?: Json | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_board_actions_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_board_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      advisor_board_memory: {
+        Row: {
+          access_count: number
+          advisor_id: string
+          category: string
+          confidence: number
+          content: string
+          context_ref: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          importance: number
+          last_accessed_at: string | null
+          memory_layer: string
+          metadata: Json | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_count?: number
+          advisor_id: string
+          category?: string
+          confidence?: number
+          content: string
+          context_ref?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          importance?: number
+          last_accessed_at?: string | null
+          memory_layer?: string
+          metadata?: Json | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_count?: number
+          advisor_id?: string
+          category?: string
+          confidence?: number
+          content?: string
+          context_ref?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          importance?: number
+          last_accessed_at?: string | null
+          memory_layer?: string
+          metadata?: Json | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_board_recommendations: {
+        Row: {
+          action_plan: Json | null
+          advisor_id: string
+          business_impact_score: number
+          category: string
+          clarity_score: number
+          confidence_score: number
+          contributing_advisors: Json | null
+          created_at: string
+          domain: string
+          evidence_refs: Json | null
+          id: string
+          operational_risk_score: number
+          profitability_score: number
+          rationale: string
+          relationship_risk_score: number
+          resolution_notes: string | null
+          resolved_at: string | null
+          reversibility_score: number
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+          urgency_score: number
+          user_id: string
+        }
+        Insert: {
+          action_plan?: Json | null
+          advisor_id: string
+          business_impact_score?: number
+          category?: string
+          clarity_score?: number
+          confidence_score?: number
+          contributing_advisors?: Json | null
+          created_at?: string
+          domain?: string
+          evidence_refs?: Json | null
+          id?: string
+          operational_risk_score?: number
+          profitability_score?: number
+          rationale?: string
+          relationship_risk_score?: number
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          reversibility_score?: number
+          status?: string
+          summary?: string
+          title: string
+          updated_at?: string
+          urgency_score?: number
+          user_id: string
+        }
+        Update: {
+          action_plan?: Json | null
+          advisor_id?: string
+          business_impact_score?: number
+          category?: string
+          clarity_score?: number
+          confidence_score?: number
+          contributing_advisors?: Json | null
+          created_at?: string
+          domain?: string
+          evidence_refs?: Json | null
+          id?: string
+          operational_risk_score?: number
+          profitability_score?: number
+          rationale?: string
+          relationship_risk_score?: number
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          reversibility_score?: number
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+          urgency_score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_board_reflections: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          id: string
+          lesson_learned: string | null
+          outcome_observed: string | null
+          outcome_quality: number | null
+          owner_action: string
+          owner_feedback: string | null
+          pattern_tags: Json | null
+          recommendation_id: string | null
+          should_repeat: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          id?: string
+          lesson_learned?: string | null
+          outcome_observed?: string | null
+          outcome_quality?: number | null
+          owner_action?: string
+          owner_feedback?: string | null
+          pattern_tags?: Json | null
+          recommendation_id?: string | null
+          should_repeat?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          id?: string
+          lesson_learned?: string | null
+          outcome_observed?: string | null
+          outcome_quality?: number | null
+          owner_action?: string
+          owner_feedback?: string | null
+          pattern_tags?: Json | null
+          recommendation_id?: string | null
+          should_repeat?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_board_reflections_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_board_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      advisor_board_tool_executions: {
+        Row: {
+          action_id: string | null
+          advisor_id: string
+          approval_state: string
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          executed_at: string | null
+          id: string
+          operation: string
+          parameters: Json | null
+          result: Json | null
+          rollback_capable: boolean
+          rollback_data: Json | null
+          rolled_back_at: string | null
+          status: string
+          tool_category: string
+          tool_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_id?: string | null
+          advisor_id: string
+          approval_state?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          executed_at?: string | null
+          id?: string
+          operation: string
+          parameters?: Json | null
+          result?: Json | null
+          rollback_capable?: boolean
+          rollback_data?: Json | null
+          rolled_back_at?: string | null
+          status?: string
+          tool_category: string
+          tool_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_id?: string | null
+          advisor_id?: string
+          approval_state?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          executed_at?: string | null
+          id?: string
+          operation?: string
+          parameters?: Json | null
+          result?: Json | null
+          rollback_capable?: boolean
+          rollback_data?: Json | null
+          rolled_back_at?: string | null
+          status?: string
+          tool_category?: string
+          tool_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_board_tool_executions_action_id_fkey"
+            columns: ["action_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_board_actions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       advisor_feedback: {
         Row: {
           advisor_id: string
@@ -1773,6 +2199,54 @@ export type Database = {
           session_mode?: string
           session_type?: string
           status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      business_health_scores: {
+        Row: {
+          biggest_drag: string | null
+          biggest_mover: string | null
+          contributing_signals: Json | null
+          created_at: string
+          dimension: string
+          id: string
+          improvement_opportunity: string | null
+          previous_score: number | null
+          score: number
+          scored_at: string
+          trend: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          biggest_drag?: string | null
+          biggest_mover?: string | null
+          contributing_signals?: Json | null
+          created_at?: string
+          dimension: string
+          id?: string
+          improvement_opportunity?: string | null
+          previous_score?: number | null
+          score?: number
+          scored_at?: string
+          trend?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          biggest_drag?: string | null
+          biggest_mover?: string | null
+          contributing_signals?: Json | null
+          created_at?: string
+          dimension?: string
+          id?: string
+          improvement_opportunity?: string | null
+          previous_score?: number | null
+          score?: number
+          scored_at?: string
+          trend?: string
           updated_at?: string
           user_id?: string
         }
@@ -7555,6 +8029,63 @@ export type Database = {
           id?: string
           preferences?: Json
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profit_signals: {
+        Row: {
+          actual_impact_cents: number | null
+          category: string
+          confidence: number
+          created_at: string
+          description: string
+          estimated_impact_cents: number | null
+          id: string
+          resolution_outcome: string | null
+          resolved_at: string | null
+          signal_type: string
+          source_data: Json | null
+          status: string
+          title: string
+          updated_at: string
+          urgency: string
+          user_id: string
+        }
+        Insert: {
+          actual_impact_cents?: number | null
+          category?: string
+          confidence?: number
+          created_at?: string
+          description?: string
+          estimated_impact_cents?: number | null
+          id?: string
+          resolution_outcome?: string | null
+          resolved_at?: string | null
+          signal_type: string
+          source_data?: Json | null
+          status?: string
+          title: string
+          updated_at?: string
+          urgency?: string
+          user_id: string
+        }
+        Update: {
+          actual_impact_cents?: number | null
+          category?: string
+          confidence?: number
+          created_at?: string
+          description?: string
+          estimated_impact_cents?: number | null
+          id?: string
+          resolution_outcome?: string | null
+          resolved_at?: string | null
+          signal_type?: string
+          source_data?: Json | null
+          status?: string
+          title?: string
+          updated_at?: string
+          urgency?: string
           user_id?: string
         }
         Relationships: []
