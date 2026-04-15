@@ -15,6 +15,10 @@ import { CloudRecoveryAdmin } from "./CloudRecoveryAdmin";
 import { CloudMonitoringAdmin } from "./CloudMonitoringAdmin";
 import { CloudActivityAdmin } from "./CloudActivityAdmin";
 import { CloudCollaborationAdmin } from "./CloudCollaborationAdmin";
+import CloudSyncObjectsAdmin from "./CloudSyncObjectsAdmin";
+import CloudDeviceIdentityAdmin from "./CloudDeviceIdentityAdmin";
+import CloudEncryptionAdmin from "./CloudEncryptionAdmin";
+import CloudNamespacesAdmin from "./CloudNamespacesAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -22,6 +26,10 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   devices: CloudDevicesAdmin,
   storage: CloudStorageAdmin,
   sync: CloudSyncAdmin,
+  "sync-objects": CloudSyncObjectsAdmin,
+  "device-identity": CloudDeviceIdentityAdmin,
+  encryption: CloudEncryptionAdmin,
+  namespaces: CloudNamespacesAdmin,
   audit: CloudAuditAdmin,
   jobs: CloudJobsAdmin,
   recovery: CloudRecoveryAdmin,

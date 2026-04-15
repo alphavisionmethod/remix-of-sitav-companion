@@ -6,16 +6,49 @@ import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import {
   Cloud, HardDrive, Smartphone, RefreshCw, Shield, Clock,
-  Trash2, History, Wifi, WifiOff, CheckCircle, Settings
+  Trash2, History, CheckCircle, Lock, Wifi, Laptop, TabletSmartphone,
+  Folder, FolderOpen, Eye, EyeOff, Zap, Radio, AlertTriangle,
+  FileText, Image, Music, Video, Database, Globe, Sparkles
 } from "lucide-react";
 import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
 import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
-import { cloudQuotaService } from "@/lib/cloud-backbone/cloud-quota-service";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";
+
+/* ── Namespace selective sync config ── */
+const SYNC_NAMESPACES = [
+  { key: "files.documents", label: "Documents", icon: FileText, size: "1.2 GB", enabled: true },
+  { key: "files.photos", label: "Photos", icon: Image, size: "4.8 GB", enabled: true },
+  { key: "files.music", label: "Music", icon: Music, size: "2.1 GB", enabled: false },
+  { key: "files.videos", label: "Videos", icon: Video, size: "8.3 GB", enabled: false },
+  { key: "settings.all", label: "Settings & Preferences", icon: Database, size: "12 MB", enabled: true },
+  { key: "session.desktop", label: "Session & Continuity", icon: Laptop, size: "48 MB", enabled: true },
+];
+
+const ENCRYPTION_NAMESPACES = [
+  { namespace: "files.documents", encryption: "encrypted-at-rest", label: "Documents" },
+  { namespace: "files.photos", encryption: "standard", label: "Photos" },
+  { namespace: "settings.all", encryption: "e2ee", label: "Settings" },
+  { namespace: "session.desktop", encryption: "device-bound", label: "Sessions" },
+];
+
+const ENCRYPTION_LABELS: Record<string, { label: string; color: string }> = {
+  standard: { label: "Standard", color: "text-muted-foreground" },
+  "encrypted-at-rest": { label: "Encrypted at Rest", color: "text-blue-400" },
+  e2ee: { label: "End-to-End", color: "text-emerald-400" },
+  "device-bound": { label: "Device Bound", color: "text-amber-400" },
+};
 
 export default function UserCloudSettings() {
   const [selectiveSync, setSelectiveSync] = useState(true);
   const [offlineMode, setOfflineMode] = useState(true);
+  const [sessionContinuity, setSessionContinuity] = useState(true);
+  const [nearbySync, setNearbySync] = useState(false);
+  const [predictiveSync, setPredictiveSync] = useState(true);
+  const [namespaceStates, setNamespaceStates] = useState<Record<string, boolean>>(
+    Object.fromEntries(SYNC_NAMESPACES.map(ns => [ns.key, ns.enabled]))
+  );
   const [repairing, setRepairing] = useState(false);
 
   const usedBytes = 3_200_000_000;
@@ -30,16 +63,28 @@ export default function UserCloudSettings() {
     setRepairing(false);
   };
 
+  const toggleNamespace = (key: string) => {
+    setNamespaceStates(prev => {
+      const next = { ...prev, [key]: !prev[key] };
+      toast.success(`${key} sync ${next[key] ? "enabled" : "disabled"}`);
+      return next;
+    });
+  };
+
   return (
     <div className="p-4 md:p-6 max-w-[900px] mx-auto space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center">
-          <Cloud className="h-5 w-5 text-primary" />
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center">
+            <Cloud className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Cloud & Sync</h1>
+            <p className="text-sm text-muted-foreground">Storage, devices, sync, privacy & continuity</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Cloud Settings</h1>
-          <p className="text-sm text-muted-foreground">Manage your storage, devices, and sync preferences</p>
-        </div>
+        <SyncStatusIndicator />
       </div>
 
       {/* Storage Usage */}
@@ -62,7 +107,7 @@ export default function UserCloudSettings() {
         </CardContent>
       </Card>
 
-      {/* Devices */}
+      {/* Devices & Presence */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
@@ -76,11 +121,21 @@ export default function UserCloudSettings() {
                 <span className="text-lg">{cloudDeviceService.getPlatformIcon(d.platform)}</span>
                 <div>
                   <p className="text-sm font-medium">{d.deviceName}</p>
-                  <p className="text-xs text-muted-foreground">v{d.clientVersion} · {d.isCurrent ? "This device" : "Last seen recently"}</p>
+                  <p className="text-xs text-muted-foreground">
+                    v{d.clientVersion} · {d.isCurrent ? "This device" : "Last seen recently"}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={cloudDeviceService.getTrustBadgeVariant(d.trustState)} className="text-xs capitalize">{d.trustState}</Badge>
+                {d.isCurrent && (
+                  <span className="flex items-center gap-1 text-xs text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Online
+                  </span>
+                )}
+                <Badge variant={cloudDeviceService.getTrustBadgeVariant(d.trustState)} className="text-xs capitalize">
+                  {d.trustState}
+                </Badge>
                 {!d.isCurrent && (
                   <Button size="sm" variant="ghost" className="text-xs text-muted-foreground" onClick={() => toast.info("Device removed")}>
                     Remove
@@ -92,20 +147,48 @@ export default function UserCloudSettings() {
         </CardContent>
       </Card>
 
-      {/* Sync & Offline */}
+      {/* Selective Sync — Namespace Picker */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <RefreshCw className="h-4 w-4 text-primary" /> Sync & Offline
+            <FolderOpen className="h-4 w-4 text-primary" /> Selective Sync
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-xs text-muted-foreground mb-3">Choose which data categories sync to this device</p>
+          {SYNC_NAMESPACES.map(ns => {
+            const Icon = ns.icon;
+            const on = namespaceStates[ns.key] ?? false;
+            return (
+              <div key={ns.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
+                <div className="flex items-center gap-3">
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium">{ns.label}</p>
+                    <p className="text-xs text-muted-foreground">{ns.size}</p>
+                  </div>
+                </div>
+                <Switch checked={on} onCheckedChange={() => toggleNamespace(ns.key)} />
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
+      {/* Sync & Continuity */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <RefreshCw className="h-4 w-4 text-primary" /> Sync & Continuity
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium">Selective Sync</p>
-              <p className="text-xs text-muted-foreground">Choose which folders sync to this device</p>
+              <p className="text-sm font-medium">Session Continuity</p>
+              <p className="text-xs text-muted-foreground">Resume open apps & windows on other devices</p>
             </div>
-            <Switch checked={selectiveSync} onCheckedChange={setSelectiveSync} />
+            <Switch checked={sessionContinuity} onCheckedChange={setSessionContinuity} />
           </div>
           <div className="flex items-center justify-between">
             <div>
@@ -113,6 +196,24 @@ export default function UserCloudSettings() {
               <p className="text-xs text-muted-foreground">Cache files locally for offline access</p>
             </div>
             <Switch checked={offlineMode} onCheckedChange={setOfflineMode} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div>
+                <p className="text-sm font-medium">Nearby Sync</p>
+                <p className="text-xs text-muted-foreground">Transfer files to nearby devices over local network</p>
+              </div>
+            </div>
+            <Switch checked={nearbySync} onCheckedChange={setNearbySync} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-amber-400" /> Smart Pre-sync
+              </p>
+              <p className="text-xs text-muted-foreground">Preload likely-needed files on active devices</p>
+            </div>
+            <Switch checked={predictiveSync} onCheckedChange={setPredictiveSync} />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
             <div className="flex items-center gap-2">
@@ -126,21 +227,27 @@ export default function UserCloudSettings() {
         </CardContent>
       </Card>
 
-      {/* Privacy & Security */}
+      {/* Encryption & Privacy per Namespace */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <Shield className="h-4 w-4 text-primary" /> Privacy & Security
+            <Shield className="h-4 w-4 text-primary" /> Privacy & Encryption
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-            <div>
-              <p className="text-sm font-medium">Encryption</p>
-              <p className="text-xs text-muted-foreground">All files encrypted at rest (AES-256)</p>
-            </div>
-            <Badge variant="default" className="text-xs">Active</Badge>
-          </div>
+          <p className="text-xs text-muted-foreground mb-2">Encryption class applied per data category</p>
+          {ENCRYPTION_NAMESPACES.map(ns => {
+            const enc = ENCRYPTION_LABELS[ns.encryption] ?? ENCRYPTION_LABELS.standard;
+            return (
+              <div key={ns.namespace} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
+                <div className="flex items-center gap-3">
+                  <Lock className="h-4 w-4 text-muted-foreground" />
+                  <p className="text-sm font-medium">{ns.label}</p>
+                </div>
+                <Badge variant="outline" className={cn("text-xs", enc.color)}>{enc.label}</Badge>
+              </div>
+            );
+          })}
           <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
             <div>
               <p className="text-sm font-medium">Transfer Security</p>
@@ -151,11 +258,11 @@ export default function UserCloudSettings() {
         </CardContent>
       </Card>
 
-      {/* Recovery */}
+      {/* Version History & Recovery */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <History className="h-4 w-4 text-primary" /> Recovery
+            <History className="h-4 w-4 text-primary" /> Recovery & History
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -163,7 +270,7 @@ export default function UserCloudSettings() {
             <Trash2 className="h-4 w-4 mr-2" /> Restore Deleted Files
           </Button>
           <Button variant="outline" className="w-full justify-start text-sm" onClick={() => toast.info("Version history opening...")}>
-            <History className="h-4 w-4 mr-2" /> Version History
+            <History className="h-4 w-4 mr-2" /> Version History Browser
           </Button>
           <Button variant="outline" className="w-full justify-start text-sm" onClick={() => toast.info("Activity log opening...")}>
             <Clock className="h-4 w-4 mr-2" /> Recent Activity
