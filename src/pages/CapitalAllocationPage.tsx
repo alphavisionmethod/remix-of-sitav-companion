@@ -33,7 +33,6 @@ export default function CapitalAllocationPage() {
         const current = total > 0 ? (a.balance_cents / total) * 100 : 0;
         const target = Math.round(current); // Use current as target baseline
         return {
-  const { isDemo: isDemoMode } = useAuth();
           asset: a.account_name || a.account_type || `Account ${i + 1}`,
           target,
           current: Math.round(current * 10) / 10,

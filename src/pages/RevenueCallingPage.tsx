@@ -101,7 +101,6 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
 }
 
 function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () => void; onSkip: () => void }) {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [state, setState] = useState<DialerState>("dialing");
   const [elapsed, setElapsed] = useState(0);
@@ -318,7 +317,6 @@ const RevenueCallingPage = () => {
   };
 
   const nextInQueue = () => {
-  const { isDemo: isDemoMode } = useAuth();
     const next = dialerIndex + 1;
     if (next < dialerQueue.length) {
       setDialerIndex(next);

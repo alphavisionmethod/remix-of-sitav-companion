@@ -33,6 +33,13 @@ const MCSupport = lazy(() => import("@/pages/admin/modules/MCSupport"));
 const MCKnowledgeBase = lazy(() => import("@/pages/admin/modules/MCKnowledgeBase"));
 const MCSystemHealth = lazy(() => import("@/pages/admin/modules/MCSystemHealth"));
 
+// ── MC: Authority & Control Module Pages ──
+const MCAuthorityMatrix = lazy(() => import("@/pages/admin/modules/MCAuthorityMatrix"));
+const MCControlReceipts = lazy(() => import("@/pages/admin/modules/MCControlReceipts"));
+const MCEmergencyAuthority = lazy(() => import("@/pages/admin/modules/MCEmergencyAuthority"));
+const MCPlatformAdaptation = lazy(() => import("@/pages/admin/modules/MCPlatformAdaptation"));
+const MCStateAuthority = lazy(() => import("@/pages/admin/modules/MCStateAuthority"));
+
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
@@ -253,5 +260,10 @@ export function getAdminRoutes() {
     <Route key="mc14" path="/admin/mc/support" element={gated("support.view", <MCSupport />)} />,
     <Route key="mc15" path="/admin/mc/knowledge" element={gated("maintenance.view", <MCKnowledgeBase />)} />,
     <Route key="mc16" path="/admin/mc/system-health" element={gated("maintenance.view", <MCSystemHealth />)} />,
+    <Route key="mc17" path="/admin/mc/authority-matrix" element={gated("audit.view", <MCAuthorityMatrix />)} />,
+    <Route key="mc18" path="/admin/mc/control-receipts" element={gated("audit.view", <MCControlReceipts />)} />,
+    <Route key="mc19" path="/admin/mc/emergency" element={gated("maintenance.emergency", <MCEmergencyAuthority />)} />,
+    <Route key="mc20" path="/admin/mc/platform-adaptation" element={gated("policy.view", <MCPlatformAdaptation />)} />,
+    <Route key="mc21" path="/admin/mc/state-authority" element={gated("audit.view", <MCStateAuthority />)} />,
   ];
 }

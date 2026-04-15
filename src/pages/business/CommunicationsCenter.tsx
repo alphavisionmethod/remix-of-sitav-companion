@@ -38,7 +38,7 @@ const fallbackComms: Communication[] = [
 const CommunicationsCenter = () => {
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("communications", primaryMode);
-  const { user } = useAuth();
+  const { user, isDemo: isDemoMode } = useAuth();
   const queryClient = useQueryClient();
   const { data: dbComms = [] } = useCommunications();
   const { confirmation, confirm: confirmAction } = useConfirmation();
@@ -106,7 +106,6 @@ const CommunicationsCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
-  const { isDemo: isDemoMode } = useAuth();
       <ConfirmationDialog state={confirmation} />
 
       <div className="flex items-center justify-between px-1">

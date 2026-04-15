@@ -50,7 +50,7 @@ interface TrendPoint {
 // ── Demo Data ──────────────────────────────────────────────────
 
 function generateTrend(granularity: Granularity): TrendPoint[] {
-  const { isDemo: isDemoMode } = useAuth();
+  // isDemoMode is checked in the component, not here
   const points: TrendPoint[] = [];
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
   const now = new Date();
@@ -120,7 +120,7 @@ const RevenueImpactDashboard = () => {
   const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
   const [granularity, setGranularity] = useState<Granularity>("daily");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
-  const { user } = useAuth();
+  const { user, isDemo: isDemoMode } = useAuth();
 
   // Real data: aggregate from invoices + payment_transactions
   const { data: realRevenue } = useQuery({

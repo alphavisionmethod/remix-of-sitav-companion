@@ -89,9 +89,8 @@ const ReportingWorkspace = () => {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-<SitaPageHeader
+      <SitaPageHeader
         icon={<BarChart3 className="h-6 w-6" />}
-  const { isDemo: isDemoMode } = useAuth();
         title="Reporting & Analytics"
         subtitle="Insights across business, finance, operations, and trust"
       >

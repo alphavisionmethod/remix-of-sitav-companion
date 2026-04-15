@@ -395,6 +395,7 @@ const SimulationStudio = () => (
 // ── Approval Queue ──────────────────────────────────────────────
 
 const ApprovalQueue = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { user } = useAuth();
 const { pendingApprovals, isLoading } = useApprovalQueue();
 
@@ -451,13 +452,13 @@ const { pendingApprovals, isLoading } = useApprovalQueue();
 // ── Memory Transparency ─────────────────────────────────────────
 
 const MemoryTransparency = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { user } = useAuth();
 const { data: dbMemory = [] } = useQuery({
     queryKey: ["advisor-memory", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
-  const { isDemo: isDemoMode } = useAuth();
       return data || [];
     },
   });
@@ -533,7 +534,6 @@ return (
         </div>
       ) : (
         <EmptyState icon={FileText} title="No proof history yet" description="Actions and verifications will appear here as advisors operate in live mode" />
-  const { isDemo: isDemoMode } = useAuth();
       )}
     </div>
   );
@@ -542,6 +542,7 @@ return (
 // ── Single Advisor Workspace ────────────────────────────────────
 
 const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
+  const { isDemo: isDemoMode } = useAuth();
   const navigate = useNavigate();
 const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
 
@@ -890,7 +891,6 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
         )}
         {messages.length > 0 && !isStreaming && (
           <SitaButton variant="ghost" size="sm" onClick={clear}>Clear</SitaButton>
-  const { isDemo: isDemoMode } = useAuth();
         )}
       </div>
     </div>
