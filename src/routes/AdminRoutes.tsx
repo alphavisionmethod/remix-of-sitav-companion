@@ -199,5 +199,14 @@ export function getAdminRoutes() {
     <Route key="fcc10" path="/admin/founder/oversight" element={<FCC10HumanOversightEscalation />} />,
     <Route key="fcc11" path="/admin/founder/incidents" element={<FCC11IncidentResponseTimeline />} />,
     <Route key="fcc12" path="/admin/founder/knowledge" element={<FCC12KnowledgeMemorySystem />} />,
+    // ── SRE: Engineering Governance ──
+    <Route key="sre01" path="/admin/engineering/validation" element={<SRE01ValidationCenter />} />,
+    <Route key="sre02" path="/admin/engineering/builder-critic" element={<SRE02BuilderCriticConsole />} />,
+    <Route key="sre03" path="/admin/engineering/simulation" element={<SRE03SimulationLab />} />,
+    <Route key="sre04" path="/admin/engineering/standards" element={<SRE04CodeStandardsTestGen />} />,
+    <Route key="sre05" path="/admin/engineering/chaos" element={<SRE05ChaosTestingFramework />} />,
+    <Route key="sre06" path="/admin/engineering/rollback" element={<SRE06AutoRollbackCenter />} />,
+    <Route key="sre07" path="/admin/engineering/version-intel" element={<SRE07VersionIntelligence />} />,
+    <Route key="sre08" path="/admin/engineering/optimization" element={<SRE08SelfOptimizationBudgets />} />,
   ];
 }
