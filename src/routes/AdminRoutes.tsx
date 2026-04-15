@@ -159,5 +159,6 @@ export function getAdminRoutes() {
     // ── SYS: System Intelligence ──
     <Route key="sys01" path="/admin/system-intelligence" element={<SYS01SystemIntelligence />} />,
     <Route key="os01" path="/admin/os-platform" element={<OS01PlatformCommandCenter />} />,
+    <Route key="cloud01" path="/admin/cloud-backbone" element={<CloudBackboneAdmin />} />,
   ];
 }
