@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
 import {
   Users, Share2, Link, Shield, Building2, Eye, Globe,
-  Lock, UserPlus, FolderOpen, FileText, Settings2, Zap
+  Lock, UserPlus, FolderOpen, FileText, Settings2, Zap, Clock
 } from "lucide-react";
 
 interface SharingConfig {
