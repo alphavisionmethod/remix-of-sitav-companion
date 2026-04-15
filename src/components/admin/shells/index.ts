@@ -19,3 +19,5 @@ export { ContinuousVerificationPanel } from "./ContinuousVerificationPanel";
 export { LearningYouPanel } from "./LearningYouPanel";
 export { NoSilentFailureAlerts } from "./NoSilentFailureAlerts";
 export { pushUndoAction, useUndoActions } from "./UndoToastSystem";
+export { SafetyConfirmDialog } from "./SafetyConfirmDialog";
+export type { SafetyAction, RiskLevel } from "./SafetyConfirmDialog";
