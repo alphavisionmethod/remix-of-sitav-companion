@@ -69,6 +69,9 @@
         "src/lib/services/release-intelligence",
         "src/lib/services/degraded-mode",
         "src/lib/services/digest-journal",
+        "src/lib/services",
+        "src/lib/ai-gateway",
+        "src/lib/engines",
         "supabase/functions"
       ],
       "deployment_target": "edge_functions_and_api",

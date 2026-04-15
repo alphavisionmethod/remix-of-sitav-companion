@@ -159,6 +159,20 @@ run "cp -r src/lib/delivery-methodology/* backend/services/delivery-methodology/
 run "cp -r src/lib/dual-reality/* backend/services/dual-reality/ 2>/dev/null || true"
 run "cp -r supabase/functions/* backend/edge-functions/ 2>/dev/null || true"
 
+# ── Phase 4b: Move services tree (200+ subdirs) ──
+log "Phase 4b: Moving services tree..."
+run "mkdir -p backend/services/shim-layer"
+run "cp -r src/lib/services/* backend/services/shim-layer/ 2>/dev/null || true"
+run "rm -rf backend/services/shim-layer/ai-gateway 2>/dev/null || true"
+
+# ── Phase 4c: Move ai-gateway budget gate ──
+run "mkdir -p backend/gateway/budget"
+run "cp -r src/lib/ai-gateway/* backend/gateway/budget/ 2>/dev/null || true"
+
+# ── Phase 4d: Move engines ──
+run "mkdir -p backend/services/engines"
+run "cp -r src/lib/engines/* backend/services/engines/ 2>/dev/null || true"
+
 # ── Phase 5: Move app surfaces ──
 log "Phase 5: Moving app surfaces..."
 run "cp -r src/pages/ apps/product-shell/src/pages/ 2>/dev/null || true"

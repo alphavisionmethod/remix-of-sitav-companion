@@ -77,6 +77,11 @@ const IMPORT_MAP: Array<{ pattern: RegExp; replacement: string }> = [
   { pattern: /from\s+["']@\/lib\/delivery-methodology(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/delivery-methodology$1"' },
   { pattern: /from\s+["']@\/lib\/dual-reality(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/dual-reality$1"' },
 
+  // ── Backend: Services layer (MUST come after ai-gateway to avoid over-matching) ──
+  { pattern: /from\s+["']@\/lib\/services(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/services$1"' },
+  { pattern: /from\s+["']@\/lib\/ai-gateway(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/budget-gate$1"' },
+  { pattern: /from\s+["']@\/lib\/engines(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/engines$1"' },
+
   // ── Internal tools ──
   { pattern: /from\s+["']@\/lib\/simulation(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/simulations$1"' },
   { pattern: /from\s+["']@\/lib\/fip(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/fip$1"' },

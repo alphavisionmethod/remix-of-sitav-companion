@@ -220,3 +220,10 @@ export * from "@/lib/shopify";
 
 // ── Delivery Methodology ──
 export * from "@/lib/delivery-methodology";
+
+// ── Services Layer (200+ backend service implementations) ──
+// Namespaced to avoid collisions with core-services re-exports above
+export * as Services from "@/lib/services";
+
+// ── AI Budget Gate ──
+export * as BudgetGate from "@/lib/ai-gateway/budget-gate";
