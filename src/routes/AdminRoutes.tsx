@@ -7,6 +7,7 @@ const SEC01SessionSecrets = lazy(() => import("@/pages/admin/SEC01SessionSecrets
 const SEC02SecurityFoundation = lazy(() => import("@/pages/admin/SEC02SecurityFoundation"));
 const SYS01SystemIntelligence = lazy(() => import("@/pages/admin/SYS01SystemIntelligence"));
 const OS01PlatformCommandCenter = lazy(() => import("@/pages/admin/OS01PlatformCommandCenter"));
+const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
@@ -158,5 +159,6 @@ export function getAdminRoutes() {
     // ── SYS: System Intelligence ──
     <Route key="sys01" path="/admin/system-intelligence" element={<SYS01SystemIntelligence />} />,
     <Route key="os01" path="/admin/os-platform" element={<OS01PlatformCommandCenter />} />,
+    <Route key="cloud01" path="/admin/cloud-backbone" element={<CloudBackboneAdmin />} />,
   ];
 }
