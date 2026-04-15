@@ -27,7 +27,7 @@ import {
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

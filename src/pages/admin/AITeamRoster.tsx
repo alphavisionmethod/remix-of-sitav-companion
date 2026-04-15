@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -11,7 +12,7 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const autonomyColors: Record<string, string> = {

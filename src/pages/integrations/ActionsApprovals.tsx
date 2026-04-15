@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ import { DEMO_ACTION_REQUESTS } from "@/lib/demo-data/integrations";
 import type { DemoActionRequest } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {

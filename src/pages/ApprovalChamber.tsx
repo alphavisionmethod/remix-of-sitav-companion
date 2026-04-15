@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

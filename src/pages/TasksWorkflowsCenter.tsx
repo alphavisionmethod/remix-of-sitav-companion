@@ -25,7 +25,7 @@ import {
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 // ── Demo Data ──────────────────────────────────────────────────

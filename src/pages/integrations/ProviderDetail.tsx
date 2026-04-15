@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ import { getProviderById } from "@/lib/demo-data/integrations";
 import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 export default function ProviderDetail() {

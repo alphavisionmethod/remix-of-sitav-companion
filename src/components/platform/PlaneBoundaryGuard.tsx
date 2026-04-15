@@ -16,6 +16,7 @@ const PLANE_INFO: Record<PlaneKey, { label: string; icon: any; color: string }> 
   control: { label: "Control Plane", icon: Shield, color: "text-purple-400 bg-purple-500/10 border-purple-500/30" },
   product: { label: "Product Plane", icon: Monitor, color: "text-blue-400 bg-blue-500/10 border-blue-500/30" },
   "shared-core": { label: "Shared Core", icon: Server, color: "text-amber-400 bg-amber-500/10 border-amber-500/30" },
+  "internal-execution": { label: "Internal Execution", icon: Layers, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
 };
 
 export function PlaneBoundaryGuard({

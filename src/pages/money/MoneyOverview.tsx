@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { FinanceCreditCard } from "@/components/finance/FinanceCreditCard";
 import { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
 import { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
@@ -9,7 +10,7 @@ import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
-const isDemoMode = true;
+const { isDemo: isDemoMode } = useAuth();
 
 const MoneyOverview = () => {
   const { navigateTo } = useFinanceNavigation();

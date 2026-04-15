@@ -20,7 +20,7 @@ import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";

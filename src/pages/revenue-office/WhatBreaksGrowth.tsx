@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import {
 import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const FRAGILITY_MATRIX = [

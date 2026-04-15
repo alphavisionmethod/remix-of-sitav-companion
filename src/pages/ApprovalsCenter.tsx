@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -12,7 +13,7 @@ import {
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

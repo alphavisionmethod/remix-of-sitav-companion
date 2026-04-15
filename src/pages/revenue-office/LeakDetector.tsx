@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { AlertTriangle, DollarSign, Clock, Users, ArrowRight, TrendingDown, TrendingUp, CheckCircle, Wrench, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, 
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 export default function LeakDetector() {

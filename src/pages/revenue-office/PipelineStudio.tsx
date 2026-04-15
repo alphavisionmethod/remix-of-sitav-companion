@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Target, DollarSign, Clock, TrendingUp, AlertTriangle, ArrowRight, Filter, Plus, MoreHorizontal, User, Calendar, Phone, Mail, Eye, Zap, BarChart3, ArrowDown } from "lucide-react";
@@ -13,7 +14,7 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };

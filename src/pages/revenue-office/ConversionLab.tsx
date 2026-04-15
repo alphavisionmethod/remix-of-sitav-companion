@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FlaskConical, ArrowUpRight, ArrowDownRight, BarChart3, Play, Pause, Plus, Brain, Target, TrendingUp, Zap, AlertTriangle, CheckCircle, Eye, RefreshCw } from "lucide-react";
@@ -9,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DEMO_EXPERIMENTS } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const FUNNEL_BENCHMARKS = [

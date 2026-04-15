@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, User, Video, MapPin, Plus, Check, X, AlertTriangle, TrendingUp, ArrowRight, CheckSquare, Phone, Zap } from "lucide-react";
@@ -19,7 +20,7 @@ import {
   DEMO_PREP_CHECKLISTS,
 } from "@/lib/demo-data/revenue-office";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 export default function BookingCenter() {

@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Clock, Zap, AlertTriangle, Users, Heart, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +8,7 @@ import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const AUTOMATION_OVERLAY = [

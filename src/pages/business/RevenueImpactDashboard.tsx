@@ -84,7 +84,7 @@ const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_PLAYBOOK_REVENUE } from "@/lib/demo-data/business";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 

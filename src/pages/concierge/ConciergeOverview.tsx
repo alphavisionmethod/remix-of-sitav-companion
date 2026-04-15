@@ -3,6 +3,7 @@
 // Soft, warm, relieving — gentlest motion + most breathing room
 // ═══════════════════════════════════════════════════════════════
 
+import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
 import { DomainCard } from "@/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
@@ -19,7 +20,7 @@ import {
   Plane, Headphones, ArrowRight, Home, Stethoscope, FileText
 } from "lucide-react";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 const ConciergeOverview = () => {

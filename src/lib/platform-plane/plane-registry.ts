@@ -4,7 +4,7 @@
 
 import { fromTable } from "@/lib/supabase-helpers";
 
-export type PlaneKey = "control" | "product" | "shared-core";
+export type PlaneKey = "control" | "product" | "shared-core" | "internal-execution";
 
 export interface PlaneInfo {
   id: string;
@@ -36,9 +36,10 @@ interface CrossPlaneAccess {
 const serviceCache = new Map<string, PlaneKey>();
 
 const CROSS_PLANE_RULES: Record<string, Record<string, boolean>> = {
-  product:       { "shared-core": true, control: false },
-  control:       { "shared-core": true, product: false },
-  "shared-core": { product: true, control: true },
+  product:              { "shared-core": true, control: false, "internal-execution": false },
+  control:              { "shared-core": true, product: false, "internal-execution": true },
+  "shared-core":        { product: true, control: true, "internal-execution": true },
+  "internal-execution": { "shared-core": true, control: true, product: false },
 };
 
 export const planeRegistry = {

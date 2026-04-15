@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import type { PlaneKey } from "@/lib/platform-plane";
 
 const PLANE_ROUTE_MAP: Record<string, PlaneKey> = {
+  "/admin/founder": "internal-execution",
+  "/admin/engineering": "internal-execution",
   "/admin": "control",
   "/settings": "product",
   "/cloud": "product",

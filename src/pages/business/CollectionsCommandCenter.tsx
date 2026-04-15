@@ -3,6 +3,7 @@
 // Escalation ladders, aging buckets, automated chase sequences
 // ═══════════════════════════════════════════════════════════════
 
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
@@ -25,7 +26,7 @@ import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransiti
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
-const isDemoMode = true; // TODO: wire to reality mode context
+const { isDemo: isDemoMode } = useAuth();
 
 
 // ── Chase Sequence ──────────────────────────────────────────────
