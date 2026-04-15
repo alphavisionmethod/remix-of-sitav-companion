@@ -19,6 +19,13 @@ const MobileConcierge = lazy(() => import("@/pages/mobile/MobileConcierge"));
 const MobileMore = lazy(() => import("@/pages/mobile/MobileMore"));
 const MobileInvestment = lazy(() => import("@/pages/mobile/MobileInvestment"));
 const MobileFiles = lazy(() => import("@/pages/mobile/MobileFiles"));
+const MobileCommand = lazy(() => import("@/pages/mobile/MobileCommand"));
+const MobileAIChat = lazy(() => import("@/pages/mobile/MobileAIChat"));
+const MobileSystemMonitor = lazy(() => import("@/pages/mobile/MobileSystemMonitor"));
+const MobileSyncControl = lazy(() => import("@/pages/mobile/MobileSyncControl"));
+const MobileNotificationCenter = lazy(() => import("@/pages/mobile/MobileNotificationCenter"));
+const MobileTimeline = lazy(() => import("@/pages/mobile/MobileTimeline"));
+const MobileInbox = lazy(() => import("@/pages/mobile/MobileInbox"));
 
 export const MobileRoutes = ({ ProtectedRoute }: { ProtectedRoute: React.ComponentType<{ children: React.ReactNode }> }) => (
   <>
@@ -40,5 +47,12 @@ export const MobileRoutes = ({ ProtectedRoute }: { ProtectedRoute: React.Compone
     <Route path="/mobile/more" element={<ProtectedRoute><MobileMore /></ProtectedRoute>} />
     <Route path="/mobile/investment" element={<ProtectedRoute><MobileInvestment /></ProtectedRoute>} />
     <Route path="/mobile/files" element={<ProtectedRoute><MobileFiles /></ProtectedRoute>} />
+    <Route path="/mobile/command" element={<ProtectedRoute><MobileCommand /></ProtectedRoute>} />
+    <Route path="/mobile/ai-chat" element={<ProtectedRoute><MobileAIChat /></ProtectedRoute>} />
+    <Route path="/mobile/system-monitor" element={<ProtectedRoute><MobileSystemMonitor /></ProtectedRoute>} />
+    <Route path="/mobile/sync" element={<ProtectedRoute><MobileSyncControl /></ProtectedRoute>} />
+    <Route path="/mobile/notifications" element={<ProtectedRoute><MobileNotificationCenter /></ProtectedRoute>} />
+    <Route path="/mobile/timeline" element={<ProtectedRoute><MobileTimeline /></ProtectedRoute>} />
+    <Route path="/mobile/inbox" element={<ProtectedRoute><MobileInbox /></ProtectedRoute>} />
   </>
 );

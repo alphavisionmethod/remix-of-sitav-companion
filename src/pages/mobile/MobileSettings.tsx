@@ -98,6 +98,16 @@ const MobileSettings = () => {
         <ToggleRow icon={Moon} label="Dark Mode" description="Always use dark theme" defaultOn />
       </div>
 
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Policies</h2>
+      <div className="space-y-1.5 mb-6">
+        <ToggleRow icon={Shield} label="Require Approval for Deletions" description="File and data deletions need explicit confirmation" defaultOn />
+        <ToggleRow icon={Shield} label="Require Approval for Trust Changes" description="Device trust level modifications require approval" defaultOn />
+        <ToggleRow icon={Bell} label="Update Install Confirmation" description="Always confirm before applying system updates" defaultOn />
+        <ToggleRow icon={Moon} label="Conservative Sync Mode" description="Prefer safety over speed in sync operations" />
+        <ToggleRow icon={Shield} label="AI Autonomy: Low" description="AI suggestions always require manual approval" defaultOn />
+        <ToggleRow icon={Fingerprint} label="Privacy: Minimal Telemetry" description="Send only essential diagnostics data" />
+      </div>
+
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Device</h2>
       <div className="space-y-1.5 mb-6">
         <NavRow icon={Smartphone} label="Device Info" />
