@@ -203,6 +203,12 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
                           <td className="px-3 py-2.5"><BoolCell value={entry.cloudDecides} /></td>
                           <td className="px-3 py-2.5"><BoolCell value={entry.appApproves} /></td>
                           <td className="px-3 py-2.5"><BoolCell value={entry.osExecutes} /></td>
+                          <td className="px-3 py-2.5 text-center">
+                            <span className={cn("text-[8px] font-medium", SURFACE_LABELS[entry.decisionSurface]?.color)}>{SURFACE_LABELS[entry.decisionSurface]?.label}</span>
+                          </td>
+                          <td className="px-3 py-2.5 text-center">
+                            <span className={cn("text-[8px] font-medium", SURFACE_LABELS[entry.recoverySurface]?.color)}>{SURFACE_LABELS[entry.recoverySurface]?.label}</span>
+                          </td>
                           <td className="px-3 py-2.5">
                             {entry.offlineCapable
                               ? <Wifi className="h-3.5 w-3.5 text-emerald-400 mx-auto" />
@@ -217,7 +223,7 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
                         </tr>
                         {expandedId === entry.id && (
                           <tr key={`${entry.id}-detail`}>
-                            <td colSpan={9} className="px-4 py-3 bg-white/[0.02]">
+                            <td colSpan={11} className="px-4 py-3 bg-white/[0.02]">
                               <motion.div
                                 initial={{ opacity: 0, y: -4 }}
                                 animate={{ opacity: 1, y: 0 }}
