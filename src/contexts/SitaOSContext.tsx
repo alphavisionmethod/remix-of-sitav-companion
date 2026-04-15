@@ -25,6 +25,12 @@ import { createOpportunityEngine, type OpportunityEngineService } from "@/lib/se
 import { createMemoryGovernance, type MemoryGovernanceEngine } from "@/lib/services/memory-governance/memory-governance-engine";
 import { createBoundaryEngine, type BoundaryEngineService } from "@/lib/services/boundary-engine/boundary-engine";
 import { createExperienceSignature, type ExperienceSignatureService } from "@/lib/services/experience-signature/experience-signature";
+import { createDeviceMesh, type DeviceMeshService } from "@/lib/services/device-mesh/index";
+import { createContextGraph, type ContextGraphService } from "@/lib/services/context-graph/index";
+import { createUniversalStateSync, type UniversalStateSyncService } from "@/lib/services/universal-state-sync/index";
+import { createExplainability, type ExplainabilityService } from "@/lib/services/explainability/index";
+import { createActionSafety, type ActionSafetyService } from "@/lib/services/action-safety/index";
+import { createWorkspaceIntelligence, type WorkspaceIntelligenceService } from "@/lib/services/workspace-intelligence/index";
 
 // ── CAI Persistence Bridge ──────────────────────────────────────
 import {
@@ -55,6 +61,14 @@ export interface SitaOSKernel {
   memoryGovernance: MemoryGovernanceEngine;
   boundaryEngine: BoundaryEngineService;
   experienceSignature: ExperienceSignatureService;
+
+  // Wave 4 — Intelligent Differentiation
+  deviceMesh: DeviceMeshService;
+  contextGraph: ContextGraphService;
+  universalStateSync: UniversalStateSyncService;
+  explainability: ExplainabilityService;
+  actionSafety: ActionSafetyService;
+  workspaceIntelligence: WorkspaceIntelligenceService;
 
   // Meta
   hydrated: boolean;
