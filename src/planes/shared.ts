@@ -102,3 +102,9 @@ export type {
 export type {
   TrustClaim, TrustEvidence, TrustGrading, TrustDecision, TrustReceipt, TrustGrade,
 } from "@/packages/protocols/trust-evaluation";
+
+// ── New Control Domain Contracts ──
+export * as ReleaseContracts from "@/packages/release-contracts";
+export * as GraphContracts from "@/packages/graph-contracts";
+export * as AIContracts from "@/packages/ai-contracts";
+export * as SimulationContracts from "@/packages/simulation-contracts";
