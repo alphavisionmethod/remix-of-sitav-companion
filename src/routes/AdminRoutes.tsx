@@ -88,6 +88,10 @@ const FCC01FounderCommandConsole = lazy(() => import("@/pages/admin/FCC01Founder
 const FCC02TaskDecompositionGraph = lazy(() => import("@/pages/admin/FCC02TaskDecompositionGraph"));
 const FCC03CICDPipelineBoard = lazy(() => import("@/pages/admin/FCC03CICDPipelineBoard"));
 const FCC04RunbookCenter = lazy(() => import("@/pages/admin/FCC04RunbookCenter"));
+const FCC05FounderDashboard = lazy(() => import("@/pages/admin/FCC05FounderDashboard"));
+const FCC06ProgramManagementBoard = lazy(() => import("@/pages/admin/FCC06ProgramManagementBoard"));
+const FCC07PlatformCostCapacity = lazy(() => import("@/pages/admin/FCC07PlatformCostCapacity"));
+const FCC08SyncStorageOps = lazy(() => import("@/pages/admin/FCC08SyncStorageOps"));
 
 export function getAdminRoutes() {
   return [
