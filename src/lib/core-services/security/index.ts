@@ -21,5 +21,5 @@ export * from "./chaos-testing-framework";
 // Batch 4 — Integration Fabric
 export * from "./security-fabric";
 
-// Legacy re-export (selective to avoid conflicts)
-export { SecurityPostureEngine, createSecurityPostureEngine } from "./security-posture-engine";
+// Legacy — re-export the posture engine proxy (it re-exports from lib/services)
+export * from "./security-posture-engine";
