@@ -535,10 +535,19 @@ export function useBusinessAdvisorBoard() {
     setSelectedAdvisor,
 
     // AI Intelligence
-    aiRecommendations: aiRecommendations.data ?? [],
+    aiRecommendations: aiRecommendations.data,
     aiLoading: aiRecommendations.isLoading,
     aiError: aiRecommendations.error,
     refetchAI: aiRecommendations.refetch,
+
+    // Cognitive Pipeline (Phase 3)
+    pipelineResult: cognitivePipeline.data ?? null,
+    boardSummary: cognitivePipeline.data?.boardSummary ?? "",
+    topPriority: cognitivePipeline.data?.topPriority ?? "",
+    executiveSummary: cognitivePipeline.data?.executiveSummary ?? "",
+    advisorDisagreements: cognitivePipeline.data?.disagreements ?? [],
+    businessSignals: cognitivePipeline.data?.signals ?? [],
+    pipelineReceipt: cognitivePipeline.data?.receipt ?? null,
 
     // Profitability
     profitabilityBrief,
