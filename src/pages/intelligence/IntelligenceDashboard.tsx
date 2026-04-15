@@ -108,7 +108,7 @@ export default function IntelligenceDashboard() {
                   <div key={i.id} className="flex items-center justify-between p-2 rounded-lg bg-white/[0.02]">
                     <div>
                       <p className="text-sm text-foreground">{i.title}</p>
-                      <p className="text-xs text-muted-foreground">{i.description}</p>
+                      <p className="text-xs text-muted-foreground">{i.message}</p>
                     </div>
                     <Button
                       size="sm"
