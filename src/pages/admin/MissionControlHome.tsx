@@ -242,6 +242,34 @@ const MissionControlHome = () => {
           <CommandTemplateCards compact />
         </motion.div>
 
+        {/* Self-Healing Status */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Wrench className="h-4 w-4 text-blue-400" /> Self-Healing Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SelfHealingStatusPanel />
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Live System Map */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Activity className="h-4 w-4 text-primary" /> Live System Map
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <LiveSystemMap compact />
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Recent Activity Timeline */}
         <motion.div variants={fadeUp}>
           <ExecutionTimeline compact maxVisible={5} />
