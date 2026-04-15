@@ -125,8 +125,8 @@ export function InteractiveTutorial() {
   useEffect(() => {
     if (!user?.id) return;
     const key = `sita-tutorial-${user.id}`;
-    const dismissed = localStorage.getItem(key);
-    if (!dismissed) {
+    const flag = localStorage.getItem(key);
+    if (flag !== "never") {
       // Show tutorial after a delay so the page loads first
       const timer = setTimeout(() => {
         setHasRun(false);
@@ -144,8 +144,20 @@ export function InteractiveTutorial() {
 
   const dismiss = useCallback(() => {
     setActive(false);
-    if (user?.id) localStorage.setItem(`sita-tutorial-${user.id}`, "done");
+    if (user?.id) localStorage.setItem(`sita-tutorial-${user.id}`, "never");
     setHasRun(true);
+  }, [user?.id]);
+
+  const closeForNow = useCallback(() => {
+    setActive(false);
+    setHasRun(true);
+    // No localStorage write — will show again next session
+  }, []);
+
+  const neverShowAgain = useCallback(() => {
+    setActive(false);
+    setHasRun(true);
+    if (user?.id) localStorage.setItem(`sita-tutorial-${user.id}`, "never");
   }, [user?.id]);
 
   const goToStep = useCallback((idx: number) => {
@@ -170,7 +182,7 @@ export function InteractiveTutorial() {
     return (
       <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }}
         className="fixed bottom-6 right-6 z-[90] w-80 rounded-2xl border border-primary/20 bg-card shadow-2xl shadow-primary/10 p-5">
-        <button onClick={() => setHasRun(true)} className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={closeForNow} className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors">
           <X className="h-3.5 w-3.5" />
         </button>
         <div className="flex items-start gap-3">
@@ -187,9 +199,9 @@ export function InteractiveTutorial() {
             className="flex-1 rounded-xl bg-primary py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5">
             <Play className="h-3 w-3" /> Start Tour
           </button>
-          <button onClick={() => { setHasRun(true); if (user?.id) localStorage.setItem(`sita-tutorial-${user.id}`, "done"); }}
+          <button onClick={neverShowAgain}
             className="rounded-xl border border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
-            Skip
+            Don't show again
           </button>
         </div>
       </motion.div>
