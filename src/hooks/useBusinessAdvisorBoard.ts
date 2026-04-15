@@ -261,6 +261,15 @@ export function useBusinessAdvisorBoard() {
     toast.info("Memory archived");
   }, [memoryEngine]);
 
+  // ── Reflection summary ─────────────────────────────────────────
+  const reflectionSummary = useMemo(
+    () => reflectionEngine.generateWeeklySummary(BUSINESS_ADVISORS.map(a => a.id)),
+    [reflectionEngine]
+  );
+
+  // ── Conversation advisor ────────────────────────────────────────
+  const [conversationAdvisor, setConversationAdvisor] = useState<AdvisorPersona | null>(null);
+
   return {
     // Advisors
     advisors: BUSINESS_ADVISORS,
@@ -313,5 +322,10 @@ export function useBusinessAdvisorBoard() {
     briefMode,
     setBriefMode,
     reflectionEngine,
+
+    // Part 3: Executive Experience
+    reflectionSummary,
+    conversationAdvisor,
+    setConversationAdvisor,
   };
 }
