@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Smartphone, HardDrive, RefreshCw,
   Shield, Wrench, Settings2, Cloud, HeartPulse, Activity,
-  Share2, RotateCcw, Database, Fingerprint, Lock, Layers
+  Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale
 } from "lucide-react";
 
 const tabs = [
@@ -22,6 +22,8 @@ const tabs = [
   { key: "monitoring", label: "Monitoring", icon: HeartPulse },
   { key: "activity", label: "Activity", icon: Activity },
   { key: "collaboration", label: "Collaboration", icon: Share2 },
+  { key: "sharing", label: "Sharing", icon: Share2 },
+  { key: "governance", label: "Governance", icon: Shield },
   { key: "policy", label: "Policy & Config", icon: Settings2 },
 ] as const;
 

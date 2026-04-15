@@ -15,6 +15,8 @@ import { CloudRecoveryAdmin } from "./CloudRecoveryAdmin";
 import { CloudMonitoringAdmin } from "./CloudMonitoringAdmin";
 import { CloudActivityAdmin } from "./CloudActivityAdmin";
 import { CloudCollaborationAdmin } from "./CloudCollaborationAdmin";
+import { CloudSharingAdmin } from "./CloudSharingAdmin";
+import { CloudGovernanceAdmin } from "./CloudGovernanceAdmin";
 import { CloudSyncObjectsAdmin } from "./CloudSyncObjectsAdmin";
 import { CloudDeviceIdentityAdmin } from "./CloudDeviceIdentityAdmin";
 import { CloudEncryptionAdmin } from "./CloudEncryptionAdmin";
@@ -36,6 +38,8 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   monitoring: CloudMonitoringAdmin,
   activity: CloudActivityAdmin,
   collaboration: CloudCollaborationAdmin,
+  sharing: CloudSharingAdmin,
+  governance: CloudGovernanceAdmin,
   policy: CloudPolicyAdmin,
 };
 
