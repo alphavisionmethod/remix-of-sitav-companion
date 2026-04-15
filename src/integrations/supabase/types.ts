@@ -1508,6 +1508,137 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_blobs: {
+        Row: {
+          checksum: string | null
+          compression: string | null
+          created_at: string
+          encryption_class: string | null
+          finalized: boolean
+          id: string
+          size: number
+          storage_backend: string | null
+          storage_key: string
+          user_id: string
+        }
+        Insert: {
+          checksum?: string | null
+          compression?: string | null
+          created_at?: string
+          encryption_class?: string | null
+          finalized?: boolean
+          id?: string
+          size?: number
+          storage_backend?: string | null
+          storage_key: string
+          user_id: string
+        }
+        Update: {
+          checksum?: string | null
+          compression?: string | null
+          created_at?: string
+          encryption_class?: string | null
+          finalized?: boolean
+          id?: string
+          size?: number
+          storage_backend?: string | null
+          storage_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_conflicts: {
+        Row: {
+          base_version: number
+          created_at: string
+          details: Json | null
+          device_a: string | null
+          device_b: string | null
+          id: string
+          object_id: string
+          resolved_at: string | null
+          state: string
+          strategy: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          base_version?: number
+          created_at?: string
+          details?: Json | null
+          device_a?: string | null
+          device_b?: string | null
+          id?: string
+          object_id: string
+          resolved_at?: string | null
+          state?: string
+          strategy?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          base_version?: number
+          created_at?: string
+          details?: Json | null
+          device_a?: string | null
+          device_b?: string | null
+          id?: string
+          object_id?: string
+          resolved_at?: string | null
+          state?: string
+          strategy?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_device_sessions: {
+        Row: {
+          created_at: string
+          device_id: string
+          id: string
+          last_ip: string | null
+          last_seen: string | null
+          push_token: string | null
+          refresh_token_hash: string | null
+          revoked_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          id?: string
+          last_ip?: string | null
+          last_seen?: string | null
+          push_token?: string | null
+          refresh_token_hash?: string | null
+          revoked_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          id?: string
+          last_ip?: string | null
+          last_seen?: string | null
+          push_token?: string | null
+          refresh_token_hash?: string | null
+          revoked_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_device_sessions_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cloud_devices: {
         Row: {
           client_version: string | null
@@ -1592,6 +1723,161 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_file_versions: {
+        Row: {
+          blob_id: string | null
+          checksum: string | null
+          created_at: string
+          file_id: string
+          id: string
+          origin_device_id: string | null
+          restore_point: boolean
+          size: number
+          user_id: string
+          version: number
+        }
+        Insert: {
+          blob_id?: string | null
+          checksum?: string | null
+          created_at?: string
+          file_id: string
+          id?: string
+          origin_device_id?: string | null
+          restore_point?: boolean
+          size?: number
+          user_id: string
+          version?: number
+        }
+        Update: {
+          blob_id?: string | null
+          checksum?: string | null
+          created_at?: string
+          file_id?: string
+          id?: string
+          origin_device_id?: string | null
+          restore_point?: boolean
+          size?: number
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_file_versions_blob_id_fkey"
+            columns: ["blob_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_blobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cloud_file_versions_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_files: {
+        Row: {
+          blob_id: string | null
+          checksum: string | null
+          created_at: string
+          deleted: boolean
+          folder_id: string | null
+          id: string
+          last_opened_at: string | null
+          mime_type: string | null
+          name: string
+          size: number
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          blob_id?: string | null
+          checksum?: string | null
+          created_at?: string
+          deleted?: boolean
+          folder_id?: string | null
+          id?: string
+          last_opened_at?: string | null
+          mime_type?: string | null
+          name?: string
+          size?: number
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          blob_id?: string | null
+          checksum?: string | null
+          created_at?: string
+          deleted?: boolean
+          folder_id?: string | null
+          id?: string
+          last_opened_at?: string | null
+          mime_type?: string | null
+          name?: string
+          size?: number
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_files_blob_id_fkey"
+            columns: ["blob_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_blobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cloud_files_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_folders: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          parent_id: string | null
+          path_cache: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string
+          parent_id?: string | null
+          path_cache?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          parent_id?: string | null
+          path_cache?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_folders_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cloud_plans: {
         Row: {
           created_at: string
@@ -1670,6 +1956,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_shares: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          object_id: string
+          object_type: string
+          owner_user_id: string
+          permission: string
+          target_user_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          object_id: string
+          object_type?: string
+          owner_user_id: string
+          permission?: string
+          target_user_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          object_id?: string
+          object_type?: string
+          owner_user_id?: string
+          permission?: string
+          target_user_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cloud_storage_usage: {
         Row: {
           created_at: string
@@ -1711,6 +2033,77 @@ export type Database = {
           quota_bytes?: number
           updated_at?: string
           used_bytes?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_sync_changes: {
+        Row: {
+          change_type: string
+          created_at: string
+          from_version: number | null
+          id: string
+          object_id: string
+          origin_device_id: string | null
+          payload: Json | null
+          to_version: number | null
+          user_id: string
+        }
+        Insert: {
+          change_type?: string
+          created_at?: string
+          from_version?: number | null
+          id?: string
+          object_id: string
+          origin_device_id?: string | null
+          payload?: Json | null
+          to_version?: number | null
+          user_id: string
+        }
+        Update: {
+          change_type?: string
+          created_at?: string
+          from_version?: number | null
+          id?: string
+          object_id?: string
+          origin_device_id?: string | null
+          payload?: Json | null
+          to_version?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_sync_changes_object_id_fkey"
+            columns: ["object_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_sync_objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_sync_checkpoints: {
+        Row: {
+          device_id: string
+          id: string
+          last_change_id: string | null
+          namespace: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          device_id: string
+          id?: string
+          last_change_id?: string | null
+          namespace?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          device_id?: string
+          id?: string
+          last_change_id?: string | null
+          namespace?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -1757,6 +2150,90 @@ export type Database = {
           target_user_id?: string | null
           triggered_by?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_sync_objects: {
+        Row: {
+          blob_ref: string | null
+          content_hash: string | null
+          created_at: string
+          deleted: boolean
+          id: string
+          metadata_json: Json | null
+          namespace: string
+          origin_device_id: string | null
+          type: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          blob_ref?: string | null
+          content_hash?: string | null
+          created_at?: string
+          deleted?: boolean
+          id?: string
+          metadata_json?: Json | null
+          namespace?: string
+          origin_device_id?: string | null
+          type?: string
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          blob_ref?: string | null
+          content_hash?: string | null
+          created_at?: string
+          deleted?: boolean
+          id?: string
+          metadata_json?: Json | null
+          namespace?: string
+          origin_device_id?: string | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      cloud_trash: {
+        Row: {
+          deleted_at: string
+          deleted_by_device_id: string | null
+          id: string
+          object_id: string
+          object_type: string
+          original_name: string | null
+          original_path: string | null
+          purge_after: string
+          size: number | null
+          user_id: string
+        }
+        Insert: {
+          deleted_at?: string
+          deleted_by_device_id?: string | null
+          id?: string
+          object_id: string
+          object_type?: string
+          original_name?: string | null
+          original_path?: string | null
+          purge_after?: string
+          size?: number | null
+          user_id: string
+        }
+        Update: {
+          deleted_at?: string
+          deleted_by_device_id?: string | null
+          id?: string
+          object_id?: string
+          object_type?: string
+          original_name?: string | null
+          original_path?: string | null
+          purge_after?: string
+          size?: number | null
+          user_id?: string
         }
         Relationships: []
       }
