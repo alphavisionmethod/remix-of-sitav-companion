@@ -13,6 +13,11 @@ import type { SitaMode } from "@/lib/services/sita-modes/index";
 import type { MeetingPrepPacket } from "@/lib/services/relationship-intelligence/index";
 import type { StaffIntervention } from "@/lib/services/chief-of-staff/chief-of-staff";
 import type { ActionEvaluation, DeviceContext, UserTrustContext } from "@/lib/services/trust-actions/trust-weighted-actions";
+import type { MeshTopology, MeshPeer, DeviceRole } from "@/lib/services/device-mesh/index";
+import type { UnifiedContext, SignalSource } from "@/lib/services/context-graph/index";
+import type { Explanation } from "@/lib/services/explainability/index";
+import type { SafetyClass, PreExecutionValidation } from "@/lib/services/action-safety/index";
+import type { WorkspaceId, WorkspaceSuggestion, WorkspacePolicy } from "@/lib/services/workspace-intelligence/index";
 
 export interface OSOrchestrationAPI {
   hydrated: boolean;
@@ -45,6 +50,29 @@ export interface OSOrchestrationAPI {
 
   // Graph
   resolveCrossDomain: (nodeId: string) => { touchedDomains: string[]; narrative: string };
+
+  // Device Mesh
+  getMeshTopology: () => MeshTopology;
+  getOnlinePeers: () => MeshPeer[];
+  setDeviceRole: (deviceId: string, role: DeviceRole) => void;
+
+  // Context Graph
+  getCurrentContext: () => UnifiedContext;
+  updateContextSignal: (source: SignalSource, key: string, value: unknown) => void;
+
+  // Explainability
+  explainDecision: (decisionId: string) => Explanation;
+  explainTrustScore: (entityId: string, score: number) => Explanation;
+  getRecentExplanations: (limit?: number) => Explanation[];
+
+  // Action Safety
+  validateAction: (actionKey: string, trust: number) => PreExecutionValidation;
+  getActionSafetyStats: () => { passive: number; assisted: number; active_reversible: number; high_risk: number; total: number };
+
+  // Workspace Intelligence
+  suggestWorkspace: () => WorkspaceSuggestion;
+  getWorkspacePolicy: (wsId: WorkspaceId) => WorkspacePolicy;
+  applyWorkspace: (wsId: WorkspaceId) => { applied: boolean; policiesActivated: string[]; automationsTriggered: string[] };
 }
 
 export function useOSOrchestration(): OSOrchestrationAPI {
@@ -79,5 +107,37 @@ export function useOSOrchestration(): OSOrchestrationAPI {
       const result = kernel.personalGraph.resolveCrossDomain(nodeId);
       return { touchedDomains: result.touchedDomains, narrative: result.narrative };
     },
+
+    // Device Mesh
+    getMeshTopology: () => kernel.deviceMesh.getMeshTopology(),
+    getOnlinePeers: () => kernel.deviceMesh.getOnlinePeers(),
+    setDeviceRole: (deviceId, role) => kernel.deviceMesh.setDeviceRole(deviceId, role),
+
+    // Context Graph
+    getCurrentContext: () => kernel.contextGraph.getCurrentContext(),
+    updateContextSignal: (source, key, value) => kernel.contextGraph.updateSignal(source, key, value),
+
+    // Explainability
+    explainDecision: (decisionId) => kernel.explainability.explainDecision(decisionId),
+    explainTrustScore: (entityId, score) => kernel.explainability.explainTrustScore(entityId, score),
+    getRecentExplanations: (limit) => kernel.explainability.getRecentExplanations(limit),
+
+    // Action Safety
+    validateAction: (actionKey, trust) => kernel.actionSafety.validatePreExecution(actionKey, trust),
+    getActionSafetyStats: () => kernel.actionSafety.getStats(),
+
+    // Workspace Intelligence
+    suggestWorkspace: () => {
+      const ctx = kernel.contextGraph.getCurrentContext();
+      return kernel.workspaceIntelligence.suggestWorkspace({
+        timeOfDay: ctx.timeOfDay,
+        dayOfWeek: ctx.dayOfWeek,
+        activeApps: ctx.activeApps,
+        mode: ctx.activeMode,
+        cognitiveLoad: ctx.cognitiveLoad,
+      });
+    },
+    getWorkspacePolicy: (wsId) => kernel.workspaceIntelligence.getWorkspacePolicy(wsId),
+    applyWorkspace: (wsId) => kernel.workspaceIntelligence.applyWorkspaceContext(wsId),
   };
 }

@@ -25,6 +25,12 @@ import { createOpportunityEngine, type OpportunityEngineService } from "@/lib/se
 import { createMemoryGovernance, type MemoryGovernanceEngine } from "@/lib/services/memory-governance/memory-governance-engine";
 import { createBoundaryEngine, type BoundaryEngineService } from "@/lib/services/boundary-engine/boundary-engine";
 import { createExperienceSignature, type ExperienceSignatureService } from "@/lib/services/experience-signature/experience-signature";
+import { createDeviceMesh, type DeviceMeshService } from "@/lib/services/device-mesh/index";
+import { createContextGraph, type ContextGraphService } from "@/lib/services/context-graph/index";
+import { createUniversalStateSync, type UniversalStateSyncService } from "@/lib/services/universal-state-sync/index";
+import { createExplainability, type ExplainabilityService } from "@/lib/services/explainability/index";
+import { createActionSafety, type ActionSafetyService } from "@/lib/services/action-safety/index";
+import { createWorkspaceIntelligence, type WorkspaceIntelligenceService } from "@/lib/services/workspace-intelligence/index";
 
 // ── CAI Persistence Bridge ──────────────────────────────────────
 import {
@@ -55,6 +61,14 @@ export interface SitaOSKernel {
   memoryGovernance: MemoryGovernanceEngine;
   boundaryEngine: BoundaryEngineService;
   experienceSignature: ExperienceSignatureService;
+
+  // Wave 4 — Intelligent Differentiation
+  deviceMesh: DeviceMeshService;
+  contextGraph: ContextGraphService;
+  universalStateSync: UniversalStateSyncService;
+  explainability: ExplainabilityService;
+  actionSafety: ActionSafetyService;
+  workspaceIntelligence: WorkspaceIntelligenceService;
 
   // Meta
   hydrated: boolean;
@@ -93,6 +107,12 @@ function getOrCreateKernel(): SitaOSKernel {
   const memoryGovernance = createMemoryGovernance();
   const boundaryEngine = createBoundaryEngine();
   const experienceSignature = createExperienceSignature();
+  const deviceMesh = createDeviceMesh();
+  const contextGraph = createContextGraph();
+  const universalStateSync = createUniversalStateSync();
+  const explainability = createExplainability();
+  const actionSafety = createActionSafety();
+  const workspaceIntelligence = createWorkspaceIntelligence();
 
   // ═══════════════════════════════════════════════════════════
   // CROSS-WIRING: Connect all 15 services into one coherent OS
@@ -266,6 +286,7 @@ function getOrCreateKernel(): SitaOSKernel {
     personalGraph, intentOrchestrator, attentionOS, continuityEngine, trustActions,
     chiefOfStaff, timingIntelligence, relationships, digestEngine, sitaModes,
     adaptiveInterface, opportunityEngine, memoryGovernance, boundaryEngine, experienceSignature,
+    deviceMesh, contextGraph, universalStateSync, explainability, actionSafety, workspaceIntelligence,
     hydrated: false,
     currentLayer: "app" as Layer,
     currentDomain: undefined,
@@ -324,6 +345,12 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.opportunityEngine.loadPersistedState(),
       k.memoryGovernance.loadPersistedState(),
       k.boundaryEngine.loadPersistedState(),
+      k.deviceMesh.loadPersistedState(),
+      k.contextGraph.loadPersistedState(),
+      k.universalStateSync.loadPersistedState(),
+      k.explainability.loadPersistedState(),
+      k.actionSafety.loadPersistedState(),
+      k.workspaceIntelligence.loadPersistedState(),
     ]).then(() => {
       // Register the current web surface with mobile detection
       const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
@@ -336,6 +363,17 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
         capabilities: ["keyboard", ...(isMobile ? ["touch"] : ["mouse", "biometric"])],
       });
       k.attentionOS.setActiveSurface(isMobile ? "mobile" : "desktop");
+
+      // Seed context graph with initial signals
+      k.contextGraph.batchUpdateSignals([
+        { source: "device", key: "userId", value: user.id },
+        { source: "device", key: "deviceId", value: navigator.userAgent.slice(0, 32) },
+        { source: "device", key: "type", value: isMobile ? "mobile" : "desktop" },
+        { source: "mode", key: "current", value: k.sitaModes.getMode() },
+        { source: "cognitive_load", key: "score", value: k.attentionOS.getCognitiveLoad().score },
+        { source: "network", key: "online", value: navigator.onLine },
+        { source: "time", key: "hour", value: new Date().getHours() },
+      ]);
 
       // Start device heartbeat + persist device to connected_devices table
       import("@/lib/services/device-presence-service").then(({ startHeartbeat, registerCurrentDevice }) => {
@@ -385,7 +423,7 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.memoryGovernance.applyDecay();
 
       setKernel({ ...k, hydrated: true });
-      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired, CAI tables active");
+      console.log("[SitaOS] Kernel hydrated — 21 services cross-wired, CAI tables active");
     }).catch((err) => {
       console.warn("[SitaOS] Partial hydration error:", err);
       setKernel({ ...k, hydrated: true });
