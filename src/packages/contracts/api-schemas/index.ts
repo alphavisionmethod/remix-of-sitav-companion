@@ -768,6 +768,7 @@ export interface EdgeFunctionMap {
   "vapid-public-key": { request: VapidPublicKeyRequest; response: VapidPublicKeyResponse };
   "verification-recorder": { request: VerificationRecorderRequest; response: VerificationRecorderResponse };
   "intelligence-api": { request: Record<string, unknown>; response: Record<string, unknown> };
+  "api-gateway": { request: Record<string, unknown>; response: Record<string, unknown> };
 }
 
 export type EdgeFunctionName = keyof EdgeFunctionMap;
