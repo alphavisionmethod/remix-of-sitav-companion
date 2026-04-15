@@ -372,7 +372,7 @@ const BusinessAdvisorBoardPage = () => {
         {board.selectedAdvisor && (
           <AdvisorDetailSheet
             advisor={board.selectedAdvisor}
-            recommendation={board.aiRecommendations.find(r => r.advisorId === board.selectedAdvisor?.id)}
+            recommendation={mergedRecommendations.find(r => r.advisorId === board.selectedAdvisor?.id)}
             onClose={() => board.setSelectedAdvisor(null)}
           />
         )}
@@ -380,7 +380,7 @@ const BusinessAdvisorBoardPage = () => {
 
       {/* ── Proactive Notifications ──────────────────────── */}
       <AdvisorNotificationSystem
-        recommendations={board.aiRecommendations}
+        recommendations={mergedRecommendations}
         onAction={board.convertToAction}
       />
     </motion.div>
