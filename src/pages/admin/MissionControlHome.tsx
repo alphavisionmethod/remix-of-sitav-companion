@@ -220,6 +220,11 @@ const MissionControlHome = () => {
           </motion.div>
         </div>
 
+        {/* Full System Audit */}
+        <motion.div variants={fadeUp}>
+          <FullSystemAudit />
+        </motion.div>
+
         {/* AI Suggestions */}
         <motion.div variants={fadeUp}>
           <AISuggestionsPanel />
