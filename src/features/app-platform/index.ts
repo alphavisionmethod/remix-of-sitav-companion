@@ -3,11 +3,9 @@
 // Canonical import: @/features/app-platform
 // ═══════════════════════════════════════════════════════════════
 
-// App shell components from sita/apps
-export * from "@/components/sita/apps/app-store";
-export * from "@/components/sita/apps/boardroom";
-export * from "@/components/sita/apps/business";
-export * from "@/components/sita/apps/concierge";
-export * from "@/components/sita/apps/finance";
-export * from "@/components/sita/apps/investment";
-export * from "@/components/sita/apps/mission-control";
+export { AppStoreShell } from "@/components/sita/apps/app-store/AppStoreShell";
+export { BusinessAppShell } from "@/components/sita/apps/business/BusinessAppShell";
+export { ConciergeAppShell } from "@/components/sita/apps/concierge/ConciergeAppShell";
+export { FinanceAppShell } from "@/components/sita/apps/finance/FinanceAppShell";
+export { InvestmentAppShell } from "@/components/sita/apps/investment/InvestmentAppShell";
+export { MissionControlAppShell } from "@/components/sita/apps/mission-control/MissionControlAppShell";
