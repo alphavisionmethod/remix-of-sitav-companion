@@ -277,9 +277,12 @@ export function InteractiveTutorial() {
                   <ArrowLeft className="h-3.5 w-3.5" /> Back
                 </button>
 
-                <div className="flex items-center gap-2">
-                  <button onClick={dismiss} className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors">
-                    Skip tour
+                <div className="flex items-center gap-3">
+                  <button onClick={closeForNow} className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors">
+                    Close for now
+                  </button>
+                  <button onClick={neverShowAgain} className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors">
+                    Don't show again
                   </button>
                   <button onClick={next}
                     className="flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
