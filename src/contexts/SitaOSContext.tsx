@@ -423,7 +423,7 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.memoryGovernance.applyDecay();
 
       setKernel({ ...k, hydrated: true });
-      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired, CAI tables active");
+      console.log("[SitaOS] Kernel hydrated — 21 services cross-wired, CAI tables active");
     }).catch((err) => {
       console.warn("[SitaOS] Partial hydration error:", err);
       setKernel({ ...k, hydrated: true });
