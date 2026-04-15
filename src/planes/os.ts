@@ -146,3 +146,6 @@ export type {
 
 // ── Sync Engine ──
 export * from "@/lib/sync-engine";
+
+// ── Runtime Truth Layer ──
+export * from "@/lib/runtime";
