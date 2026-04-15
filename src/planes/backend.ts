@@ -189,8 +189,8 @@ export * from "@/lib/intelligence-architecture";
 // ── Detection ──
 export * from "@/lib/detection";
 
-// ── Verification ──
-export * from "@/lib/verification";
+// ── Verification (namespaced — LaunchHonestyClass overlaps with core-services/launch-readiness) ──
+export * as Verification from "@/lib/verification";
 
 // ── Sovereign AI Gateway (namespaced — AIProvider/TaskClass/CostTier overlap with services/ai-gateway) ──
 export * as SovereignAIGateway from "@/lib/sovereign-ai-gateway";
