@@ -28,6 +28,8 @@ import { CommandTemplateCards } from "@/components/admin/shells/CommandTemplateC
 import { ExecutionTimeline } from "@/components/admin/shells/ExecutionTimeline";
 import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
 import { FullSystemAudit } from "@/components/admin/shells/FullSystemAudit";
+import { LiveSystemMap } from "@/components/admin/shells/LiveSystemMap";
+import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
