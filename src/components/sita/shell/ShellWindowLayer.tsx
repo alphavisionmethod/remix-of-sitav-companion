@@ -35,6 +35,7 @@ import { BusinessAppShell } from "../apps/business/BusinessAppShell";
 import { ConciergeAppShell } from "../apps/concierge/ConciergeAppShell";
 import { InvestmentAppShell } from "../apps/investment/InvestmentAppShell";
 import { BoardroomAppShell } from "../apps/boardroom/BoardroomAppShell";
+import { MissionControlAppShell } from "../apps/mission-control/MissionControlAppShell";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
@@ -106,6 +107,8 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   trust: { name: "Security Center", component: <SecurityCenterWindow />, width: 540, position: { x: 180, y: 80 } },
   "policy-center": { name: "Policy Center", component: <PolicyDashboardWindow />, width: 500, position: { x: 200, y: 90 } },
   "com.sita.policy-center": { name: "Policy Center", component: <PolicyDashboardWindow />, width: 500, position: { x: 200, y: 90 } },
+  "mission-control": { name: "Mission Control", component: <MissionControlAppShell />, width: 1300, position: { x: 60, y: 40 } },
+  "sita-mission-control": { name: "Mission Control", component: <MissionControlAppShell />, width: 1300, position: { x: 60, y: 40 } },
 };
 
 // Canonical mapping: collapse catalog aliases to a single window ID
@@ -115,6 +118,7 @@ const CANONICAL_WINDOW_ID: Record<string, string> = {
   "sita-concierge": "concierge",
   "sita-boardroom": "boardroom",
   "sita-investment-office": "investment",
+  "sita-mission-control": "mission-control",
   "money": "finance",
   "files-app": "finder",
   "settings-app": "settings",
