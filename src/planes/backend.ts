@@ -174,14 +174,14 @@ export * from "@/lib/compute-governance";
 // ── No-Hallucination ──
 export * from "@/lib/no-hallucination";
 
-// ── Advisor Protocol ──
-export * from "@/lib/advisor-protocol";
+// ── Advisor Protocol (namespaced to avoid collision with intelligence-architecture) ──
+export * as AdvisorProtocol from "@/lib/advisor-protocol";
 
-// ── AI Engineering ──
-export * from "@/lib/ai-engineering";
+// ── AI Engineering (namespaced — RawSignal/SignalSource overlap with intelligence-architecture) ──
+export * as AIEngineering from "@/lib/ai-engineering";
 
-// ── Dual Reality ──
-export * from "@/lib/dual-reality";
+// ── Dual Reality (namespaced — SurfaceClass overlaps with verification) ──
+export * as DualReality from "@/lib/dual-reality";
 
 // ── Intelligence Architecture ──
 export * from "@/lib/intelligence-architecture";
@@ -192,8 +192,8 @@ export * from "@/lib/detection";
 // ── Verification ──
 export * from "@/lib/verification";
 
-// ── Sovereign AI Gateway ──
-export * from "@/lib/sovereign-ai-gateway";
+// ── Sovereign AI Gateway (namespaced — AIProvider/TaskClass/CostTier overlap with services/ai-gateway) ──
+export * as SovereignAIGateway from "@/lib/sovereign-ai-gateway";
 
 // ── Platform Plane Services ──
 export { environmentConfig } from "@/lib/platform-plane/environment-config";
@@ -206,8 +206,8 @@ export { supportWorkflow } from "@/lib/platform-plane/support-workflow";
 export { adminRbacEngine } from "@/lib/platform-plane/admin-rbac-engine";
 export { adminSafety } from "@/lib/platform-plane/admin-safety";
 
-// ── Internal Agents ──
-export * from "@/lib/internal-agents";
+// ── Internal Agents (namespaced — LaunchReadinessResult overlaps with core-services/launch-readiness) ──
+export * as InternalAgents from "@/lib/internal-agents";
 
 // ── Platform Law ──
 export * from "@/lib/platform-law";
