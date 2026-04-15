@@ -102,6 +102,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("sita-open-concierge", handler);
   }, [doLaunchApp]);
 
+  // Listen for sita-open-mission-control events (from AdminCenter redirect shim)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const module = detail?.module || "dashboard";
+      (window as any).__missionControlInitialModule = module;
+      doLaunchApp("mission-control");
+      window.dispatchEvent(new CustomEvent("sita-mission-control-navigate", { detail: { module } }));
+    };
+    window.addEventListener("sita-open-mission-control", handler);
+    return () => window.removeEventListener("sita-open-mission-control", handler);
+  }, [doLaunchApp]);
+
   // Hooks
   useAdaptiveInterface();
   useZeroLatency();
