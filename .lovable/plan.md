@@ -1,121 +1,128 @@
 
 
-# SITA OS — Distributed Sync Ecosystem Implementation Plan
+# SITA OS — Part 2: Ecosystem-Grade Sync Extensions
 
-## What Already Exists
-- **Cloud Backbone services** (5 files): storage, sync, device, quota, audit — all singleton mock services
-- **Cloud Admin Console** (12 tabs): Dashboard, Users, Devices, Storage, Sync Ops, Audit, Jobs, Recovery, Monitoring, Activity, Collaboration, Policy
-- **CloudSyncManager**: Version vectors, conflict resolution, patch queuing (simulated)
-- **offline-db.ts**: IndexedDB persistence with cache, action queue, sync manager
-- **useOfflineStore hook**: Cache-first data access with offline queue
-- **OS daemons**: authd, sessiond, secretsd, policyd, notifyd, wifid, controlcenterd, settingsd
-- **PlatformInit**: Wires electron bridge, offline store, realtime bridge
-- **UserCloudSettings page**: Basic storage/device/sync settings for end users
+## Current State
+The Part 1 sync engine is complete across 30 files (~5,500 lines): core daemon, adapters, security, transport, SDK, state machine, notifications, and admin UI. The sync-object-model already includes `SyncObjectPermissions` (owner/readers/writers/ACLs) and tombstone handling. What's missing are the 32 Part 2 sections: sharing/collaboration, version history, search, presence, push wake, device enrollment, recovery, multi-account, governance, quotas, trust scoring, compliance, abuse prevention, activity journal, media handling, and more.
 
-## What's Missing (the prompt's 34 sections)
-No `syncd` daemon exists. No sync object model, namespace model, delta engine, encryption classes, device identity binding, session/continuity sync, settings sync adapters, file watcher, app SDK sync API, nearby/peer sync, predictive sync, or sync UX state machine. The existing services are admin dashboards with demo data — not a real sync engine.
+## Implementation Plan — 5 Batches (~20 new files, ~4,500 lines)
 
-## Implementation Plan — 6 Batches (~30 files, ~5,500 lines)
+### Batch 1: Sharing + Version History + Activity Journal (~4 files, ~900 lines)
+`src/lib/sync-engine/collaboration/`
 
-### Batch 1: Sync Object Model + Sync Daemon Core (~5 files, ~1,100 lines)
-`src/lib/sync-engine/`
+1. **`sharing-engine.ts`** — Full sharing/collaboration layer: object/folder sharing, link sharing (expiring, password-protected), invite flows, ACL management (read/comment/edit/admin/owner), presence indicators, collaborative conflict modes, shared workspace handoff. Extends the existing `SyncObjectPermissions` model.
 
-1. **`sync-object-model.ts`** — Full versioned sync object schema with all required classes (file, folder, setting, app_setting, app_state, session, window_layout, notification_state, device_preference, sync_policy_override, presence_state, clipboard_item, shared_item). Includes tombstone handling, encryption classes (standard, encrypted-at-rest, e2ee, device-bound, non-syncable), content hashing, and blob references.
+2. **`version-history.ts`** — Version history engine: per-object version timeline, restore to any version, compare versions, settings restore points, session restore points, rollback. Retention window management, tombstone lifecycle (configurable TTL), soft/hard delete propagation, undelete, legal deletion workflows.
 
-2. **`sync-namespaces.ts`** — Namespace registry (files.documents, files.photos, settings.ui.theme, settings.network, app.*, session.*, device.*, system.*). Supports selective sync, policy control, encryption class per namespace, conflict strategy selection, and app-specific access control.
+3. **`activity-journal.ts`** — Global activity journal: recent sync actions across all devices, device activity log, major changes, restore points, share events, trust changes, recovery actions. Powers "what changed, on which device, when, can I undo it?" UX.
 
-3. **`syncd.ts`** — The core sync daemon. Implements: start/stop lifecycle, push/pull queues, inbound/outbound processing, version vector management, checkpoint tracking, offline queue integration, websocket connection state, sync scheduling (realtime/background/low-power/metered/recovery modes), battery/network-aware throttling, namespace priority, and backpressure handling. Wires to existing EventBus and IPC bus.
+4. **`content-classifier.ts`** — Data classification engine: public metadata, private standard, sensitive encrypted, device-local only, non-syncable, regulated/compliance-sensitive. Maps classes to encryption requirements and sync policy. Includes rich file semantics (MIME classification, preview/thumbnail metadata, duplicate detection).
 
-4. **`conflict-resolver.ts`** — Full conflict resolution engine with 5 strategies: last-write-wins, merge-by-key (JSON merge patch), text merge (line-based diff), manual conflict (binary/divergent), app-defined merge. Tracks base version, both edits, strategy attempted, resolution outcome, and user-visible explanation.
+### Batch 2: Search + Presence + Push/Wake + Enrollment (~4 files, ~900 lines)
+`src/lib/sync-engine/ecosystem/`
 
-5. **`delta-engine.ts`** — Delta sync engine: text patches (line diff), JSON patch/merge patch, block-level chunk diffs for large files, metadata-only changes. Checksum validation, version base reference, fallback to full upload on patch failure.
+5. **`sync-search.ts`** — Sync search/index layer: metadata index, local content index, remote object search, settings/app-state discoverability, full-text search for supported documents, cross-device recent activity search, E2EE-aware search boundaries.
 
-### Batch 2: Sync Adapters + Local Cache DB (~5 files, ~900 lines)
-`src/lib/sync-engine/adapters/`
+6. **`presence-engine.ts`** — Live ecosystem presence: active device presence, "recently active on phone/tablet/desktop", current device capabilities, continuity handoff candidates, recent app/device activity graph, "Continue Notes from Phone" style suggestions.
 
-6. **`file-watch-adapter.ts`** — File watcher integration: watches selected sync roots, detects create/update/delete/rename/move, debounces event storms, maps paths to object IDs, computes content hashes, decides full vs delta upload, supports sparse/on-demand files. Integrates with SitaFS.
+7. **`push-wake.ts`** — Push notification and wake strategy: APNs/FCM integration hooks, wake-for-sync, silent push throttling, fallback polling windows, power-aware wake limits, mobile background sync reliability.
 
-7. **`settings-sync-adapter.ts`** — Settings sync: per-setting syncability flags, policy lock, merge strategy per setting, local override rules, export/import fallback. Integrates with settingsd. Covers theme, wallpaper refs, language, shortcuts, Calm schedule, notification prefs, accessibility, app prefs.
+8. **`device-enrollment.ts`** — Device bootstrap/enrollment flow: registration, account sign-in, device naming, trust confirmation, key sync/bootstrap, selective sync setup, restore-from-cloud, first-sync prioritization, intelligent hydration. Also handles account recovery, lost device revocation, E2EE recovery keys, trusted device recovery approval.
 
-8. **`session-sync-adapter.ts`** — Session/continuity sync: open apps, window layouts, tab groups, workspace restore metadata, handoff candidates, recent docs, resume tokens. The "wow feature" — continue work across devices.
+### Batch 3: Governance + Quotas + Trust + Compliance (~4 files, ~900 lines)
+`src/lib/sync-engine/governance/`
 
-9. **`app-state-adapter.ts`** — App state sync bridge: recent files, in-app view state, editor cursor/history, app-specific lightweight sync via SDK manifest declarations.
+9. **`sync-quotas.ts`** — Quotas/billing/storage management: per-user quotas, per-namespace quotas, large file handling, cache size management, pinned/offline budgets, quota warnings, cleanup recommendations, percentage display.
 
-10. **`sync-cache-db.ts`** — Enhanced local sync database (extends existing IndexedDB): local_objects, pending_changes, sync_checkpoints, download_jobs, upload_jobs, conflicts, hydration_state, device_sync_prefs. WAL-safe semantics, crash-safe queue, migration support.
+10. **`app-governance.ts`** — App-level sync governance: per-app sync quotas, namespace limits, sync policy declarations, background sync budget, app allowlists/blocklists, E2EE class declarations, merge strategy mandates.
 
-### Batch 3: Encryption + Device Identity + Auth Integration (~4 files, ~800 lines)
-`src/lib/sync-engine/security/`
+11. **`trust-scoring.ts`** — Device trust scoring: 7 trust states (trusted, limited, pending, revoked, high-risk, managed, guest). Trust score influences namespace access, E2EE key release, session restore, nearby sync, destructive actions. Extends existing `DeviceTrustLevel`.
 
-11. **`sync-encryption.ts`** — Multi-class encryption engine: server-visible standard, encrypted-at-rest, E2EE sync, device-bound encrypted, non-syncable. Key derivation hierarchy, portable user-controlled keys, integration with secretsd. Never syncs raw TPM-bound material.
+12. **`compliance-engine.ts`** — Compliance/legal/regional hooks: data export (full account), account deletion workflow, regional storage policy, child account restrictions, consent records, audit trails, privacy controls. Also multi-account/profile support (personal, work, guest, child with namespace isolation).
 
-12. **`device-identity.ts`** — Device identity binding: registration flow, device-specific credentials/tokens, trust levels (trusted/semi-trusted/revoked/pending), capabilities JSON, per-device sync authorization, revocation support, integration with authd.
+### Batch 4: Optimization + Jobs + Health + Abuse Prevention (~4 files, ~900 lines)
+`src/lib/sync-engine/operations/`
 
-13. **`sync-auth.ts`** — Auth integration: OAuth2/OIDC style flows, JWT access tokens, refresh token rotation, device binding, session revocation hooks, token storage via secretsd.
+13. **`transfer-optimizer.ts`** — Compression, dedup, transfer optimization: gzip/brotli/lz4 compression, content-defined chunking, resumable uploads, dedup across versions, transfer class prioritization, prefetch policy. Enhances existing upload-scheduler.
 
-14. **`sync-policy.ts`** — Policy integration: disable sync on managed devices, namespace-level allow/deny, block sync on untrusted networks (integrates wifid/shieldd), disable session sync for guests, force E2EE for sensitive namespaces, restrict web client data classes.
+14. **`job-engine.ts`** — Background job engine: job queue framework, retry backoff (exponential), dead-letter handling, network/battery-aware retry, stuck job detection, cancellation, dependency ordering. Handles uploads, downloads, hydration, conflict processing, reindexing, key rotation, re-auth.
 
-### Batch 4: Realtime Layer + Upload/Download Scheduler (~4 files, ~700 lines)
-`src/lib/sync-engine/transport/`
+15. **`sync-health.ts`** — Full sync health model: 9 health states (healthy, delayed, paused, offline, conflict-heavy, attention-needed, degraded-security, re-auth-required, quota-blocked). User-facing diagnostics, last successful sync, items pending, device connection status, current blocker, repair actions. Extends existing state machine.
 
-15. **`realtime-client.ts`** — WebSocket sync client: auth with token, subscribe to device/user channels, receive object change events, fetch missing payloads, reconnect with checkpoint replay, heartbeat/keepalive, push notification wake signals.
+16. **`abuse-prevention.ts`** — Abuse prevention: rate limits, upload throttling, suspicious device detection, bot detection, token misuse detection, anomaly detection, large deletion guardrails, ransomware-like mass-change detection (pause propagation, create checkpoint, notify, require confirmation).
 
-16. **`upload-scheduler.ts`** — Upload/download scheduler: large file chunking, resumable uploads, checksum verification, signed URL flow, priority queue (high: session handoff; medium: documents; low: media), bandwidth awareness, retry with exponential backoff.
+### Batch 5: Admin UI + User UX Extensions (~4 files, ~900 lines)
 
-17. **`nearby-sync.ts`** — Peer-to-peer sync: local discovery, mutual authentication, encrypted transfer, fallback to cloud, bandwidth awareness, trust gating. For fast device bootstrap, large local transfers, handoff without cloud round-trip.
+17. **`src/pages/admin/cloud/CloudSharingAdmin.tsx`** — Sharing & collaboration admin: active shares, link management, ACL overview, presence monitoring, shared workspace activity.
 
-18. **`predictive-sync.ts`** — Recommendation engine: preload recently used docs across active devices, pin likely-needed files, suggest VPN on public Wi-Fi, pre-restore last workspace on device switch. Local-first, explainable, disableable, privacy-preserving.
+18. **`src/pages/admin/cloud/CloudGovernanceAdmin.tsx`** — Governance admin: quotas overview, per-app sync budgets, trust scoring dashboard, compliance status, abuse alerts, API versioning status, selective sync policy matrix.
 
-### Batch 5: App SDK + UX State Machine + Notifications (~4 files, ~800 lines)
+19. **`src/components/sita/SyncActivityJournal.tsx`** — User-facing activity journal: timeline of sync events, device activity, share events, restore points, "what changed" answers. Embedded in UserCloudSettings.
 
-19. **`src/lib/sync-engine/app-sdk.ts`** — App developer sync SDK: object registration, namespace declaration, conflict strategy declaration, custom merge handlers, local cache helper, secure sync class declaration, offline queue integration, change notifications, sync status hooks. Apps declare sync in manifest.
+20. **Enhanced `UserCloudSettings.tsx`** — Add: sharing management, version history browser, search across synced content, device enrollment status, quota usage with cleanup, trust state visibility, multi-account switcher, data export/import, activity journal embed, repair/resync tools panel.
 
-20. **`src/lib/sync-engine/sync-state-machine.ts`** — UX state machine with all required states: syncing, up-to-date, offline, paused, waiting-for-wifi, waiting-for-charge, conflict, attention-needed, secure-sync-active, downloading, uploading, pending, error. Transitions, observers, and UI binding hooks.
-
-21. **`src/lib/sync-engine/sync-notifications.ts`** — Notification integration with notifyd: sync status changes, conflict alerts, device activity, paused/offline state, restore progress, "resume on another device" suggestions, public Wi-Fi warnings, storage full alerts.
-
-22. **`src/lib/sync-engine/index.ts`** — Barrel export wiring all modules together.
-
-### Batch 6: Admin UI Enhancements + User Sync UX (~8 files, ~1,200 lines)
-
-23. **`src/pages/admin/cloud/CloudSyncObjectsAdmin.tsx`** — Admin view of sync objects: browse by namespace, view version history, inspect object metadata, view conflict resolution history, tombstone management.
-
-24. **`src/pages/admin/cloud/CloudDeviceIdentityAdmin.tsx`** — Enhanced device admin: trust state management with audit trail, device capabilities inspection, per-device sync policy overrides, force re-auth, device timeline, sync authorization matrix.
-
-25. **`src/pages/admin/cloud/CloudEncryptionAdmin.tsx`** — Encryption oversight: E2EE status per namespace, key rotation status, encryption class distribution, device encryption capability audit, recovery key management visibility.
-
-26. **`src/pages/admin/cloud/CloudNamespacesAdmin.tsx`** — Namespace management: per-namespace sync policy, conflict strategy selection, encryption class assignment, selective sync defaults, app namespace registration.
-
-27. **Enhanced `UserCloudSettings.tsx`** — Add: selective sync folder picker, on-demand file hydration controls, session/continuity sync toggle, device presence display, sync state machine indicator, conflict resolution UI, nearby sync discovery, offline pinned files, version history browser, encryption/privacy state per namespace.
-
-28. **`src/components/sita/SyncStatusIndicator.tsx`** — System tray/control center sync widget: real-time sync state, progress bars, conflict count, device count, network quality indicator, click-to-expand detail view.
-
-29. **`src/components/sita/ConflictResolutionDialog.tsx`** — User-facing conflict resolution: side-by-side diff view, keep local/keep remote/merge options, version timeline, "why did this conflict?" explanation.
-
-30. **Wire into `CloudAdminLayout`** — Add 4 new tabs (Sync Objects, Device Identity, Encryption, Namespaces) to the existing 12-tab layout. Wire syncd into PlatformInit. Connect sync state machine to control center.
-
-### PlatformInit Wiring
-- Mount `syncd` in `PlatformInit.tsx` alongside existing hooks
-- Connect to authd for identity, secretsd for tokens, policyd for rules, wifid for network state
-- Start/stop based on auth state (like existing useRealtimeBridge pattern)
+### Wiring
+- Update `src/lib/sync-engine/index.ts` barrel export with all new modules
+- Add 2 new admin tabs ("Sharing" and "Governance") to `CloudAdminLayout`
+- Wire activity journal and enhanced controls into UserCloudSettings
+- Connect trust scoring into existing device-identity and sync-policy modules
+- Connect job engine into syncd for background processing
+- Connect abuse prevention into realtime-client and upload-scheduler
 
 ## File Summary
 
 | Batch | Files | ~Lines | Coverage |
 |-------|-------|--------|----------|
-| 1 | 5 | ~1,100 | Sync object model, namespaces, syncd daemon, conflicts, deltas |
-| 2 | 5 | ~900 | File/settings/session/app adapters, local cache DB |
-| 3 | 4 | ~800 | Encryption, device identity, auth, policy integration |
-| 4 | 4 | ~700 | Realtime WS, upload scheduler, nearby sync, predictive sync |
-| 5 | 4 | ~800 | App SDK, state machine, notifications, barrel export |
-| 6 | 8 | ~1,200 | 4 new admin tabs, enhanced user settings, sync widgets, conflict UI |
-| **Total** | **~30 files** | **~5,500** | All 34 sections of the prompt |
+| 1 | 4 | ~900 | Sharing, version history, activity journal, content classification |
+| 2 | 4 | ~900 | Search, presence, push/wake, device enrollment/recovery |
+| 3 | 4 | ~900 | Quotas, app governance, trust scoring, compliance/multi-account |
+| 4 | 4 | ~900 | Transfer optimization, job engine, health model, abuse prevention |
+| 5 | 4 | ~900 | Sharing admin, governance admin, activity journal UX, enhanced settings |
+| **Total** | **~20** | **~4,500** | All 32 Part 2 sections |
+
+## Part 2 Section Coverage Map
+
+| # | Section | File |
+|---|---------|------|
+| 1 | Sharing & Collaboration | `sharing-engine.ts` |
+| 2 | Data Retention / Tombstone Policy | `version-history.ts` |
+| 3 | Version History & Restore | `version-history.ts` |
+| 4 | Sync Search & Index | `sync-search.ts` |
+| 5 | Presence, Activity, Continuity | `presence-engine.ts` |
+| 6 | Push Notification & Wake | `push-wake.ts` |
+| 7 | Device Bootstrap / Enrollment | `device-enrollment.ts` |
+| 8 | Account & Trust Recovery | `device-enrollment.ts` |
+| 9 | Multi-Account / Profile Support | `compliance-engine.ts` |
+| 10 | App-Level Sync Governance | `app-governance.ts` |
+| 11 | Quotas, Billing, Storage | `sync-quotas.ts` |
+| 12 | Selective Sync Policy Matrix | `app-governance.ts` + existing `sync-policy.ts` |
+| 13 | Content Classification | `content-classifier.ts` |
+| 14 | Compliance / Legal / Regional | `compliance-engine.ts` |
+| 15 | Device Trust Scoring | `trust-scoring.ts` |
+| 16 | Sync Policy by Network/Security | Enhanced existing `sync-policy.ts` |
+| 17 | Compression, Dedup, Optimization | `transfer-optimizer.ts` |
+| 18 | Background Job Engine | `job-engine.ts` |
+| 19 | Full Sync Health Model | `sync-health.ts` |
+| 20 | Repair & Resync Tools | `sync-health.ts` |
+| 21 | Admin / Enterprise Control | `CloudGovernanceAdmin.tsx` |
+| 22 | Web Client Capability Model | `compliance-engine.ts` (client caps) |
+| 23 | API Versioning & Evolution | Existing `abi-versioning.ts` + `app-governance.ts` |
+| 24 | Sync Telemetry & Observability | `sync-health.ts` |
+| 25 | Abuse Prevention | `abuse-prevention.ts` |
+| 26 | Global Activity Journal | `activity-journal.ts` |
+| 27 | Rich File Semantics | `content-classifier.ts` |
+| 28 | Media Handling / Photo Strategy | `content-classifier.ts` + `transfer-optimizer.ts` |
+| 29 | Shared Settings / Ecosystem Defaults | `app-governance.ts` |
+| 30 | Migration, Import, Exit | `compliance-engine.ts` |
+| 31 | "Wow" Layer | `presence-engine.ts` + `push-wake.ts` + `trust-scoring.ts` |
+| 32 | Summary | All of the above |
 
 ## Technical Notes
-- All new services follow existing daemon singleton pattern
-- All integrate with existing EventBus + IPC bus for cross-system communication
-- syncd is the single sync choke point — no app bypasses it (per architecture rules)
-- Encryption classes respect secretsd key hierarchy — no raw secret sync
-- Admin pages use existing glassmorphic dark design
-- State machine drives all UX — no ambiguous sync states
-- Zero external dependencies added
+- All new modules follow existing singleton pattern with EventBus/IPC integration
+- No external dependencies added
+- Admin pages use the established glassmorphic dark design system
+- Trust scoring extends existing `DeviceTrustLevel` with scoring algorithm
+- Job engine replaces ad-hoc retry logic in syncd with unified framework
+- Abuse prevention wires into realtime-client and upload-scheduler as middleware
+- Zero duplication with Part 1 code — new modules extend, not rewrite
 
