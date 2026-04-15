@@ -92,14 +92,21 @@ const PLANE_MEMBERSHIP: Record<string, string> = {
   "src/lib/no-hallucination/": "backend",
   "src/lib/shopify/": "backend",
   "src/lib/verification/": "backend",
+  "src/lib/sovereign-ai-gateway/": "backend",
+  "src/lib/internal-agents/": "backend",
+  "src/lib/platform-law/": "backend",
+  "src/lib/capabilities/": "backend",
+  "src/lib/delivery-methodology/": "backend",
+  "src/lib/dual-reality/": "backend",
 
   // ── Internal Tools ──
   "src/lib/simulation/": "internal-tools",
   "src/lib/fip/": "internal-tools",
-  "src/lib/dual-reality/": "internal-tools",
   "src/lib/reality-audit/": "internal-tools",
   "src/lib/reality-records/": "internal-tools",
   "src/lib/demo-data/": "internal-tools",
+  "src/lib/demo-scenarios/": "internal-tools",
+  "src/lib/mock-data/": "internal-tools",
   "src/lib/seed/": "internal-tools",
 
   // ── Product (default surfaces and engines) ──
@@ -111,7 +118,16 @@ const PLANE_MEMBERSHIP: Record<string, string> = {
   "src/lib/pack-store/": "product",
   "src/lib/ux-trust/": "product",
   "src/lib/engines/": "product",
-};
+  "src/lib/engine/": "product",
+  "src/lib/data-services/": "product",
+  "src/lib/hooks/": "product",
+  "src/lib/constants/": "product",
+  "src/lib/types/": "product",
+  "src/lib/utils/": "product",
+  "src/lib/architecture/": "product",
+  "src/lib/api/": "product",
+  "src/lib/contracts/": "product",
+  "src/lib/integrations/": "product",
 
 // Dependency rules: plane -> allowed import planes
 const ALLOWED_DEPS: Record<string, string[]> = {
