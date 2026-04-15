@@ -115,6 +115,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("sita-open-mission-control", handler);
   }, [doLaunchApp]);
 
+  // Listen for sita-open-app-store events (from AppStoreCenter redirect shim)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const module = detail?.module || "store";
+      (window as any).__appStoreInitialModule = module;
+      doLaunchApp("app-store");
+      window.dispatchEvent(new CustomEvent("sita-app-store-navigate", { detail: { module } }));
+    };
+    window.addEventListener("sita-open-app-store", handler);
+    return () => window.removeEventListener("sita-open-app-store", handler);
+  }, [doLaunchApp]);
+
   // Hooks
   useAdaptiveInterface();
   useZeroLatency();
