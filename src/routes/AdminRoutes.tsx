@@ -15,6 +15,24 @@ const SYS01SystemIntelligence = lazy(() => import("@/pages/admin/SYS01SystemInte
 const OS01PlatformCommandCenter = lazy(() => import("@/pages/admin/OS01PlatformCommandCenter"));
 const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 
+// ── MC: Mission Control Module Pages ──
+const MCDevicesCenter = lazy(() => import("@/pages/admin/modules/MCDevicesCenter"));
+const MCStorageCenter = lazy(() => import("@/pages/admin/modules/MCStorageCenter"));
+const MCUsersCenter = lazy(() => import("@/pages/admin/modules/MCUsersCenter"));
+const MCWorkspacesContinuity = lazy(() => import("@/pages/admin/modules/MCWorkspacesContinuity"));
+const MCSyncCloud = lazy(() => import("@/pages/admin/modules/MCSyncCloud"));
+const MCJobsMaintenance = lazy(() => import("@/pages/admin/modules/MCJobsMaintenance"));
+const MCTrustSecurity = lazy(() => import("@/pages/admin/modules/MCTrustSecurity"));
+const MCReleasesUpdates = lazy(() => import("@/pages/admin/modules/MCReleasesUpdates"));
+const MCAIControl = lazy(() => import("@/pages/admin/modules/MCAIControl"));
+const MCIncidents = lazy(() => import("@/pages/admin/modules/MCIncidents"));
+const MCPoliciesFlags = lazy(() => import("@/pages/admin/modules/MCPoliciesFlags"));
+const MCCostsAIBudgets = lazy(() => import("@/pages/admin/modules/MCCostsAIBudgets"));
+const MCLogsAudit = lazy(() => import("@/pages/admin/modules/MCLogsAudit"));
+const MCSupport = lazy(() => import("@/pages/admin/modules/MCSupport"));
+const MCKnowledgeBase = lazy(() => import("@/pages/admin/modules/MCKnowledgeBase"));
+const MCSystemHealth = lazy(() => import("@/pages/admin/modules/MCSystemHealth"));
+
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
