@@ -24,7 +24,7 @@ export * from "./pack-manifests";
 export * from "./store-metadata";
 export * from "./template-registry";
 export * from "./microinteraction-engine";
-export * from "./protocols";
+// protocols — import directly from @/packages/protocols (collides with contracts)
 
 
 // Colliding sibling packages — import directly from their paths:
