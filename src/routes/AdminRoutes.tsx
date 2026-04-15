@@ -83,6 +83,12 @@ const CAI13MemoryGovernance = lazy(() => import("@/pages/admin/CAI13MemoryGovern
 const CAI14BoundaryControl = lazy(() => import("@/pages/admin/CAI14BoundaryControl"));
 const CAI15SignatureStudio = lazy(() => import("@/pages/admin/CAI15SignatureStudio"));
 
+// ── FCC: Founder Command Control ──
+const FCC01FounderCommandConsole = lazy(() => import("@/pages/admin/FCC01FounderCommandConsole"));
+const FCC02TaskDecompositionGraph = lazy(() => import("@/pages/admin/FCC02TaskDecompositionGraph"));
+const FCC03CICDPipelineBoard = lazy(() => import("@/pages/admin/FCC03CICDPipelineBoard"));
+const FCC04RunbookCenter = lazy(() => import("@/pages/admin/FCC04RunbookCenter"));
+
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />,
@@ -162,5 +168,10 @@ export function getAdminRoutes() {
     <Route key="sys01" path="/admin/system-intelligence" element={<SYS01SystemIntelligence />} />,
     <Route key="os01" path="/admin/os-platform" element={<OS01PlatformCommandCenter />} />,
     <Route key="cloud01" path="/admin/cloud-backbone" element={<CloudBackboneAdmin />} />,
+    // ── FCC: Founder Command Control ──
+    <Route key="fcc01" path="/admin/founder/command" element={<FCC01FounderCommandConsole />} />,
+    <Route key="fcc02" path="/admin/founder/tasks" element={<FCC02TaskDecompositionGraph />} />,
+    <Route key="fcc03" path="/admin/founder/cicd" element={<FCC03CICDPipelineBoard />} />,
+    <Route key="fcc04" path="/admin/founder/runbooks" element={<FCC04RunbookCenter />} />,
   ];
 }
