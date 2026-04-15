@@ -166,6 +166,7 @@ export default function FCC01FounderCommandConsole() {
           <TabsTrigger value="directives">Active Directives</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
           <TabsTrigger value="recommendations">AI Recommendations</TabsTrigger>
+          <TabsTrigger value="simulation">Simulation</TabsTrigger>
         </TabsList>
 
         <TabsContent value="directives" className="space-y-4">
@@ -285,6 +286,10 @@ export default function FCC01FounderCommandConsole() {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="simulation">
+          <SimulationPreview />
         </TabsContent>
       </Tabs>
     </div>
