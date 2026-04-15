@@ -345,6 +345,12 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.opportunityEngine.loadPersistedState(),
       k.memoryGovernance.loadPersistedState(),
       k.boundaryEngine.loadPersistedState(),
+      k.deviceMesh.loadPersistedState(),
+      k.contextGraph.loadPersistedState(),
+      k.universalStateSync.loadPersistedState(),
+      k.explainability.loadPersistedState(),
+      k.actionSafety.loadPersistedState(),
+      k.workspaceIntelligence.loadPersistedState(),
     ]).then(() => {
       // Register the current web surface with mobile detection
       const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
