@@ -303,8 +303,9 @@ interface NavGroup {
 }
 
 const NAV_GROUPS: NavGroup[] = [
+  // ── Domain 1: Executive Overview ──
   {
-    title: "Overview",
+    title: "Executive Overview",
     defaultOpen: true,
     items: [
       { label: "Dashboard", icon: LayoutDashboard, moduleId: "dashboard" },
@@ -312,40 +313,92 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "System Health", icon: Activity, moduleId: "mc-system-health" },
     ],
   },
+  // ── Domain 2: Users & Environments ──
   {
-    title: "Infrastructure",
+    title: "Users & Environments",
     items: [
-      { label: "Sync Cloud", icon: Cloud, moduleId: "mc-sync-cloud" },
-      { label: "Communication Hub", icon: Network, moduleId: "communication-hub" },
-      { label: "Storage", icon: HardDrive, moduleId: "mc-storage" },
+      { label: "Users", icon: Users, moduleId: "mc-users" },
       { label: "Devices", icon: Smartphone, moduleId: "mc-devices" },
       { label: "Workspaces", icon: Layers, moduleId: "mc-workspaces" },
     ],
   },
+  // ── Domain 3: AI Runtime ──
   {
-    title: "People & Trust",
-    items: [
-      { label: "Users", icon: Users, moduleId: "mc-users" },
-      { label: "Trust & Security", icon: Shield, moduleId: "mc-trust-security" },
-    ],
-  },
-  {
-    title: "Intelligence",
+    title: "AI Runtime",
     items: [
       { label: "AI Control", icon: Brain, moduleId: "mc-ai-control" },
+      { label: "Team Overview", icon: Users, moduleId: "ai-team-overview" },
+      { label: "Role Registry", icon: Shield, moduleId: "ai-team-roles" },
+      { label: "Task Invocation", icon: Zap, moduleId: "ai-team-invoke" },
       { label: "Costs & Budgets", icon: DollarSign, moduleId: "mc-costs" },
-      { label: "Policies & Flags", icon: Flag, moduleId: "mc-policies" },
+      { label: "Recommendations", icon: Lightbulb, moduleId: "ai-team-recommendations" },
+      { label: "Approval Queue", icon: Shield, moduleId: "ai-team-approvals" },
+      { label: "Activity Feed", icon: Activity, moduleId: "ai-team-activity" },
+      { label: "Launch Truth", icon: Target, moduleId: "ai-team-launch-truth" },
     ],
   },
+  // ── Domain 4: Integrations ──
   {
-    title: "Operations",
+    title: "Integrations",
     items: [
-      { label: "Releases", icon: Rocket, moduleId: "mc-releases" },
+      { label: "Sync Cloud", icon: Cloud, moduleId: "mc-sync-cloud" },
+      { label: "Communication Hub", icon: Network, moduleId: "communication-hub" },
+      { label: "Storage", icon: HardDrive, moduleId: "mc-storage" },
+    ],
+  },
+  // ── Domain 5: Trust & Security ──
+  {
+    title: "Trust & Security",
+    items: [
+      { label: "Trust & Security", icon: Shield, moduleId: "mc-trust-security" },
+      { label: "Command Center", icon: Lock, moduleId: "security-command-center" },
+      { label: "Sessions & Secrets", icon: Fingerprint, moduleId: "security-sessions" },
+      { label: "Foundation", icon: Shield, moduleId: "security-foundation" },
+      { label: "Risk Center", icon: ShieldAlert, moduleId: "fcc-security" },
+      { label: "Authority Matrix", icon: Shield, moduleId: "mc-authority-matrix" },
+      { label: "Control Receipts", icon: FileText, moduleId: "mc-control-receipts" },
+      { label: "Emergency Authority", icon: ShieldAlert, moduleId: "mc-emergency" },
+    ],
+  },
+  // ── Domain 6: Health & Observability ──
+  {
+    title: "Health & Observability",
+    items: [
       { label: "Incidents", icon: AlertTriangle, moduleId: "mc-incidents" },
       { label: "Jobs & Maintenance", icon: Wrench, moduleId: "mc-jobs" },
       { label: "Logs & Audit", icon: ScrollText, moduleId: "mc-logs" },
+      { label: "Platform Adaptation", icon: Zap, moduleId: "mc-platform-adaptation" },
+      { label: "State Authority Map", icon: Layers, moduleId: "mc-state-authority" },
     ],
   },
+  // ── Domain 7: Releases & Deployments ──
+  {
+    title: "Releases",
+    items: [
+      { label: "Releases & Updates", icon: Rocket, moduleId: "mc-releases" },
+    ],
+  },
+  // ── Domain 8: Verification & Truth ──
+  {
+    title: "Verification & Truth",
+    items: [
+      { label: "Policies & Flags", icon: Flag, moduleId: "mc-policies" },
+      { label: "Architecture Dashboard", icon: Network, moduleId: "mc-architecture" },
+      { label: "Feature Ownership", icon: Layers, moduleId: "mc-feature-ownership" },
+      { label: "Architecture Tests", icon: Shield, moduleId: "mc-architecture-tests" },
+    ],
+  },
+  // ── Domain 9: Config & Governance ──
+  {
+    title: "Config & Governance",
+    items: [
+      { label: "Command Routing", icon: Radio, moduleId: "mc-command-routing" },
+      { label: "Approval Flow", icon: ShieldAlert, moduleId: "mc-approval-flow" },
+      { label: "Event Routing", icon: Activity, moduleId: "mc-event-routing" },
+      { label: "Failure & Recovery", icon: RotateCcw, moduleId: "mc-failure-recovery" },
+    ],
+  },
+  // ── Domain 10: Support & Recovery ──
   {
     title: "Support & Knowledge",
     items: [
@@ -353,79 +406,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Knowledge Base", icon: BookOpen, moduleId: "mc-knowledge" },
     ],
   },
-  {
-    title: "Authority & Control",
-    items: [
-      { label: "Authority Matrix", icon: Shield, moduleId: "mc-authority-matrix" },
-      { label: "Control Receipts", icon: FileText, moduleId: "mc-control-receipts" },
-      { label: "Emergency Authority", icon: ShieldAlert, moduleId: "mc-emergency" },
-      { label: "Platform Adaptation", icon: Zap, moduleId: "mc-platform-adaptation" },
-      { label: "State Authority Map", icon: Layers, moduleId: "mc-state-authority" },
-    ],
-  },
-  {
-    title: "Architecture Governance",
-    items: [
-      { label: "Dashboard", icon: Network, moduleId: "mc-architecture" },
-      { label: "Feature Ownership", icon: Layers, moduleId: "mc-feature-ownership" },
-      { label: "Command Routing", icon: Radio, moduleId: "mc-command-routing" },
-      { label: "Approval Flow", icon: ShieldAlert, moduleId: "mc-approval-flow" },
-      { label: "Failure & Recovery", icon: RotateCcw, moduleId: "mc-failure-recovery" },
-      { label: "Event Routing", icon: Activity, moduleId: "mc-event-routing" },
-      { label: "Architecture Tests", icon: Shield, moduleId: "mc-architecture-tests" },
-    ],
-  },
-  {
-    title: "Security",
-    items: [
-      { label: "Command Center", icon: Lock, moduleId: "security-command-center" },
-      { label: "Sessions & Secrets", icon: Fingerprint, moduleId: "security-sessions" },
-      { label: "Foundation", icon: Shield, moduleId: "security-foundation" },
-      { label: "Risk Center", icon: ShieldAlert, moduleId: "fcc-security" },
-    ],
-  },
-  {
-    title: "Engineering",
-    items: [
-      { label: "Validation", icon: Target, moduleId: "sre-validation" },
-      { label: "Builder & Critic", icon: Scale, moduleId: "sre-builder-critic" },
-      { label: "Simulation Lab", icon: Microscope, moduleId: "sre-simulation" },
-      { label: "Code Standards", icon: FileText, moduleId: "sre-standards" },
-      { label: "Chaos Testing", icon: Zap, moduleId: "sre-chaos" },
-      { label: "Auto Rollback", icon: RotateCcw, moduleId: "sre-rollback" },
-      { label: "Version Intelligence", icon: GitBranch, moduleId: "sre-version-intel" },
-      { label: "Self-Optimization", icon: Gauge, moduleId: "sre-optimization" },
-    ],
-  },
-  {
-    title: "Founder",
-    items: [
-      { label: "Dashboard", icon: Crown, moduleId: "fcc-dashboard" },
-      { label: "Task Graph", icon: Workflow, moduleId: "fcc-tasks" },
-      { label: "CI/CD Pipeline", icon: GitBranch, moduleId: "fcc-cicd" },
-      { label: "Runbooks", icon: BookOpen, moduleId: "fcc-runbooks" },
-      { label: "Programs", icon: BarChart3, moduleId: "fcc-programs" },
-      { label: "Cost & Capacity", icon: DollarSign, moduleId: "fcc-cost" },
-      { label: "Sync & Storage Ops", icon: Database, moduleId: "fcc-sync-ops" },
-      { label: "Human Oversight", icon: Eye, moduleId: "fcc-oversight" },
-      { label: "Incident Timeline", icon: AlertTriangle, moduleId: "fcc-incidents" },
-      { label: "Knowledge & Memory", icon: BrainCircuit, moduleId: "fcc-knowledge" },
-    ],
-  },
-  {
-    title: "AI Team",
-    items: [
-      { label: "Team Overview", icon: Users, moduleId: "ai-team-overview" },
-      { label: "Role Registry", icon: Shield, moduleId: "ai-team-roles" },
-      { label: "Task Invocation", icon: Zap, moduleId: "ai-team-invoke" },
-      { label: "Activity Feed", icon: Activity, moduleId: "ai-team-activity" },
-      { label: "Cost Efficiency", icon: DollarSign, moduleId: "ai-team-cost" },
-      { label: "Recommendations", icon: Lightbulb, moduleId: "ai-team-recommendations" },
-      { label: "Approval Queue", icon: Shield, moduleId: "ai-team-approvals" },
-      { label: "Launch Truth", icon: Target, moduleId: "ai-team-launch-truth" },
-      { label: "Setup Checklist", icon: FileText, moduleId: "ai-team-setup" },
-    ],
-  },
+  // ── Internal Planes (collapsible) ──
   {
     title: "AI Gateway",
     items: [
@@ -491,6 +472,34 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Memory Governance", icon: Database, moduleId: "cai-memory" },
       { label: "Boundary Control", icon: ShieldAlert, moduleId: "cai-boundaries" },
       { label: "Signature Studio", icon: Fingerprint, moduleId: "cai-signature" },
+    ],
+  },
+  {
+    title: "Engineering",
+    items: [
+      { label: "Validation", icon: Target, moduleId: "sre-validation" },
+      { label: "Builder & Critic", icon: Scale, moduleId: "sre-builder-critic" },
+      { label: "Simulation Lab", icon: Microscope, moduleId: "sre-simulation" },
+      { label: "Code Standards", icon: FileText, moduleId: "sre-standards" },
+      { label: "Chaos Testing", icon: Zap, moduleId: "sre-chaos" },
+      { label: "Auto Rollback", icon: RotateCcw, moduleId: "sre-rollback" },
+      { label: "Version Intelligence", icon: GitBranch, moduleId: "sre-version-intel" },
+      { label: "Self-Optimization", icon: Gauge, moduleId: "sre-optimization" },
+    ],
+  },
+  {
+    title: "Founder",
+    items: [
+      { label: "Dashboard", icon: Crown, moduleId: "fcc-dashboard" },
+      { label: "Task Graph", icon: Workflow, moduleId: "fcc-tasks" },
+      { label: "CI/CD Pipeline", icon: GitBranch, moduleId: "fcc-cicd" },
+      { label: "Runbooks", icon: BookOpen, moduleId: "fcc-runbooks" },
+      { label: "Programs", icon: BarChart3, moduleId: "fcc-programs" },
+      { label: "Cost & Capacity", icon: DollarSign, moduleId: "fcc-cost" },
+      { label: "Sync & Storage Ops", icon: Database, moduleId: "fcc-sync-ops" },
+      { label: "Human Oversight", icon: Eye, moduleId: "fcc-oversight" },
+      { label: "Incident Timeline", icon: AlertTriangle, moduleId: "fcc-incidents" },
+      { label: "Knowledge & Memory", icon: BrainCircuit, moduleId: "fcc-knowledge" },
     ],
   },
 ];
