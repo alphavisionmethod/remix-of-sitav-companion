@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Approval Chamber
 // Premium governed approval surface with simulation preview,
@@ -25,7 +26,6 @@ import { toast } from "sonner";
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 
@@ -295,6 +295,8 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 // ── Main Page ────────────────────────────────────────────────
 
 const ApprovalChamber = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();

@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Premium Boardroom Experience
 // Where advisor voices become one governed plan
@@ -56,7 +57,6 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 
@@ -213,6 +213,8 @@ const ConfidencePill = ({ value }: { value: number }) => {
 // ── NEW: Advisor Voice Track ──────────────────────────────────
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   
   if (!isDemoMode) {
     return (
@@ -279,6 +281,8 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 // ── NEW: Disagreement Card ────────────────────────────────────
 
 const DisagreementCards = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -313,6 +317,8 @@ const DisagreementCards = () => {
 // ── NEW: Decision Memory Strip ────────────────────────────────
 
 const DecisionMemoryStrip = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
@@ -379,6 +385,8 @@ const CarryoverPanel = () => {
 // ── NEW: Proof Summary Board ──────────────────────────────────
 
 const ProofSummaryBoard = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   if (!isDemoMode) return null;
   
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
@@ -599,6 +607,8 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 // ── Packet View with Advisor Enhancements ─────────────────────
 
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
@@ -1113,6 +1123,8 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 // ── Main Boardroom ────────────────────────────────────────────
 
 const Boardroom = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const os = useOSOrchestration();
   const signature = useExperienceSignature();
   const interfaceState = useAdaptiveInterface();

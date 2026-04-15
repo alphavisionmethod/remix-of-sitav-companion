@@ -22,7 +22,6 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
@@ -59,8 +58,9 @@ export default function CommunicationsPage() {
   const [channelFilter, setChannelFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedComm, setSelectedComm] = useState<CommunicationEntry | null>(null);
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
 
+  const isDemoMode = isDemo;
   const { data: realComms } = useQuery({
     queryKey: ["communications", user?.id],
     enabled: !!user && !isDemoMode,

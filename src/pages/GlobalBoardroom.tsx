@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Global OS Boardroom (Cinematic)
 // Synthesized executive review across Business, Finance, Concierge
@@ -19,12 +20,13 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMoneyKPIs } from "@/hooks/use-domain-data";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
   const { data: leads = [] } = useLeads();

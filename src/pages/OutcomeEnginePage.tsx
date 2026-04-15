@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Outcome Engine
 // Category-defining surface: frames everything as outcomes,
@@ -20,12 +21,13 @@ import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-d
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 
 
 export default function OutcomeEnginePage() {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { data: liveOutcomes } = useOutcomes();
 
   // Map live data to demo shape or use demo data

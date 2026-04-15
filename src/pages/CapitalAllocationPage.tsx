@@ -15,12 +15,12 @@ import { ASSET_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_ALLOCATIONS } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 export default function CapitalAllocationPage() {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
 
+  const isDemoMode = isDemo;
   const { data: realAllocations } = useQuery({
     queryKey: ["capital-allocations", user?.id],
     enabled: !!user && !isDemoMode,

@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Notes & Knowledge Workspace
 // Capture, organize, link to entities. Templates, meeting-note
@@ -25,7 +26,6 @@ import {
   MessageSquare, Calendar,
 } from "lucide-react";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
@@ -59,6 +59,8 @@ const DEMO_LINKED_ENTITIES = [
 ];
 
 const NotesWorkspace = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { data: liveNotes } = useNotes();
 
   const notes: Note[] = useMemo(() => {

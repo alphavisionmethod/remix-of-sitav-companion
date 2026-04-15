@@ -29,7 +29,6 @@ import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 
@@ -249,7 +248,8 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 // ── Main Page ───────────────────────────────────────────────────
 
 const RevenueCallingPage = () => {
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const { data: liveContacts } = useCallingContacts();
   const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");

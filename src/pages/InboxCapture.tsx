@@ -18,7 +18,6 @@ import {
 import { DEMO_INBOX_ITEMS } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const typeIcons: Record<string, typeof FileText> = {
@@ -36,7 +35,8 @@ const InboxCapture = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user , isDemo} = useAuth();
+  const isDemoMode = isDemo;
   const qc = useQueryClient();
   const [quickInput, setQuickInput] = useState("");
 
