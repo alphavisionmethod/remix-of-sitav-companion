@@ -25,6 +25,8 @@ import { useMoneyKPIs } from "@/hooks/use-domain-data";
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
   const { data: leads = [] } = useLeads();

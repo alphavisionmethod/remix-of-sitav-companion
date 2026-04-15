@@ -26,6 +26,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function OutcomeEnginePage() {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { data: liveOutcomes } = useOutcomes();
 
   // Map live data to demo shape or use demo data

@@ -295,6 +295,8 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 // ── Main Page ────────────────────────────────────────────────
 
 const ApprovalChamber = () => {
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();
