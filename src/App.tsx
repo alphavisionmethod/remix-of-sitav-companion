@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, Outlet, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
-import { getAdminRoutes } from "@/routes/AdminRoutes";
+
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -34,9 +34,6 @@ import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
-import { AdminShell } from "@/components/admin/shells/AdminShell";
-import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
-import { FounderControlShell } from "@/components/admin/shells/FounderControlShell";
 
 // Route families
 import { getOSRoutes } from "@/routes/os-routes";
@@ -87,9 +84,7 @@ const ConditionalAdminTools = () => {
   return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
 };
 
-const AdminShellLayout = () => <FounderControlShell />;
-const LegacyAdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
-const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
+const AdminCenter = lazy(() => import("@/pages/AdminCenter"));
 
 // ═══════════════════════════════════════════════════════════════
 // Loading & auth guards
@@ -261,14 +256,10 @@ const App = () => (
                         {getExperimentalRoutes()}
 
                         {/* Owner workspace */}
-                        <Route element={<OwnerShellLayout />}>
-                          {getOwnerRoutes()}
-                        </Route>
+                        {getOwnerRoutes()}
 
-                        {/* Admin */}
-                        <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
-                          {getAdminRoutes()}
-                        </Route>
+                        {/* Admin — redirect shim to windowed Mission Control app */}
+                        <Route path="/admin/*" element={<AdminRoute><AdminCenter /></AdminRoute>} />
 
                         <Route path="*" element={<NotFound />} />
                       </Routes>
