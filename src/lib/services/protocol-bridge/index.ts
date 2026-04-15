@@ -104,10 +104,10 @@ export function resolveProtocolApproval(approvalId: string, decision: ProtocolAp
   if (!request) return false;
   
   addDecision(approvalId, {
-    decidedBy: decision.decided_by,
+    approverId: decision.decided_by,
     decision: decision.decision === "approve" ? "approve" : "reject",
     reason: decision.comments,
-    timestamp: decision.decided_at,
+    decidedAt: decision.decided_at,
   });
   return true;
 }
