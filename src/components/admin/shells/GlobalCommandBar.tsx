@@ -147,8 +147,7 @@ export function GlobalCommandBar() {
       if (plan) {
         pushUndoAction({
           label: `Executed: ${plan.objective}`,
-          undoFn: () => console.log("[Undo] Reverting:", plan.objective),
-          expiresInMs: 86400000,
+          rollbackReady: plan.rollbackAvailable,
         });
       }
       setTimeout(() => {
