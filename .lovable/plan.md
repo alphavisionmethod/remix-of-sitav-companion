@@ -1,59 +1,80 @@
 
 
-# Part 3 Architecture Lock-In — Deployment Verification Result
+# Mobile App / OS Gap Analysis + Implementation Plan
 
-## Verdict: 100% Complete — No Stubs, No Placeholders
+## Audit Summary
 
-Every section of the Part 3 prompt is mapped to a fully implemented, fully wired React component with real data, interactive UI, and correct routing.
+The mobile app has **18 pages** and **6 components**. After reading every mobile file, the following critical screens from the audit prompt are **missing entirely**:
+
+### What Exists (Solid)
+- Home/Pulse, Business, Money, Concierge, Investment, Files, Boardroom — domain views
+- Approvals + Approval Detail — working approve/reject flow
+- Alerts — filter-based alert list
+- Device Trust — enrollment, revoke, re-verify with trust levels
+- Emergency Actions — 5 emergency controls with 2-step confirm
+- Quick Capture — 4 capture modes with desktop handoff
+- Proof Log + Receipt Detail — immutable receipt list
+- Settings — biometric, push, dark mode toggles
+- Communication Inbox (desktop only, 285 lines) — full 3-pane with search/filter/star/archive
+
+### What's Missing (8 Critical Gaps)
+
+| # | Missing Screen | Audit Section | Priority |
+|---|---|---|---|
+| 1 | **Mobile Command Center** | §4 — Command system (NL commands, history, undo, simulation, receipts) | Critical |
+| 2 | **Mobile AI Chat** | §7 — AI conversation (system-aware, explain, suggest, trigger commands) | Critical |
+| 3 | **Mobile System Monitor** | §8 — Full visibility (CPU, memory, sync, trust, network, anomalies) | Critical |
+| 4 | **Mobile Sync Control** | §9 — Sync control (queue, conflicts, pause/resume/force, repair) | High |
+| 5 | **Mobile Notification Center** | §10 — Event + notification (actionable, prioritized, history) | High |
+| 6 | **Mobile Timeline/History** | §16 — Full event timeline (commands, approvals, updates, receipts) | High |
+| 7 | **Enhanced Policy Settings** | §17 — Policy engine (approval rules, trust, sync, update, AI prefs) | Medium |
+| 8 | **Mobile Inbox** | Memory spec — Premium mobile inbox with threads, swipe, AI queue | High |
+
+### Existing Pages Needing Enhancement
+- **MobileMore.tsx**: Missing links to new screens
+- **MobileRoutes.tsx**: Missing route registrations
+- **MobileSettings.tsx**: No policy controls (§17)
 
 ---
 
-## Component-by-Component Audit
+## Implementation Plan — 5 Batches
 
-| Prompt Section | Component | Lines | Status |
-|---|---|---|---|
-| 1. Responsibility Table | `FeatureOwnershipMatrix.tsx` (layer configs) | 314 | Done |
-| 2. Feature Matrix (10 features × 6 dims) | `FeatureOwnershipMatrix.tsx` | 314 | Done |
-| 3. Command Routing (6 stages) | `CommandRoutingLifecycle.tsx` | 275 | Done |
-| 4. Example Routing Cases (4) | `CommandRoutingLifecycle.tsx` walkthroughs | 275 | Done |
-| 5. State Ownership (3 classes) | `StateAuthorityMap.tsx` | 176 | Done |
-| 6. Event Routing (30+ events) | `EventRoutingModel.tsx` | 197 | Done |
-| 7. Approval Flow (8 stages + 8 classes) | `ApprovalFlowArchitecture.tsx` | 232 | Done |
-| 8. Remote Authority Sessions | `RemoteAuthoritySession.tsx` (Part 2) | wired | Done |
-| 9-11. Exclusive Powers (OS/App/Cloud) | `PlatformAdaptationRules.tsx` "Exclusive" tab | 384 | Done |
-| 12. Surface Authority Matrix (16 entries) | `SurfaceAuthorityMatrix.tsx` | 258 | Done |
-| 13. Failure Ownership | `FailureRecoveryModel.tsx` failure tab | 296 | Done |
-| 14. Recovery Ownership | `FailureRecoveryModel.tsx` recovery tab | 296 | Done |
-| 15. Platform Adaptation (10 rules) | `PlatformAdaptationRules.tsx` "Rules" tab | 384 | Done |
-| 16. UX Copy Separation | `PlatformAdaptationRules.tsx` "UX Copy" tab | 384 | Done |
-| 17. Visibility Rules | `PlatformAdaptationRules.tsx` "Visibility" tab | 384 | Done |
-| 18. Implementation Rules | Enforced across all components | -- | Done |
-| 19. Architecture Tests (12 assertions) | `ArchitectureSeparationTests.tsx` | 229 | Done |
-| 20. Deliverables | All routes + sidebar + exports | -- | Done |
+### Batch 1: Command Center + AI Chat (Critical authority surfaces)
+- **MobileCommand.tsx** — Natural language command bar, saved command templates, command history list, simulation preview before risky actions, approval integration, command receipt display, undo support
+- **MobileAIChat.tsx** — Chat interface with message bubbles, system-aware responses, "why did this happen?" queries, action suggestions with confidence/risk badges, command triggers from chat, markdown rendering
 
-## Wiring Verification
+### Batch 2: System Monitor + Sync Control (Operational visibility)
+- **MobileSystemMonitor.tsx** — Visual gauge cards (CPU, memory, network, storage), security posture ring, trust score, device fleet status, update state, trend sparklines with up/down indicators, anomaly alert badges
+- **MobileSyncControl.tsx** — Sync queue list with progress bars, per-device sync state cards, conflict items with resolution actions, pause/resume/force-sync controls, latency metrics, last successful sync timestamps, repair suggestion cards
 
-- **6 routes** registered in `AdminRoutes.tsx` (lines 277-282), all permission-gated with `audit.view`
-- **Sidebar group** "Architecture Governance" in `FounderSidebar.tsx` with 6 links
-- **All exports** in `src/components/admin/shells/index.ts`
-- **6 page wrappers** in `src/pages/admin/modules/`
+### Batch 3: Notification Center + Timeline (Event awareness)
+- **MobileNotificationCenter.tsx** — Priority-grouped notifications (critical/normal/info), inline approval prompts, command completion alerts, security alerts with action buttons, sync issue warnings, notification history with date grouping and filter pills
+- **MobileTimeline.tsx** — Unified chronological event log (commands, approvals, updates, sync events, trust changes, security events, repairs), domain color-coding, receipt links, search and filter by type/domain/date
 
-## Data Quality Check
+### Batch 4: Mobile Inbox + Enhanced Settings (Communication + policy)
+- **MobileInbox.tsx** — Three-tab layout (Primary/Social/Updates), threaded message cards with avatar colors, swipe-to-archive/star gestures, AI-suggested action queue panel, priority sorting, compose button, search bar, channel badges (email/SMS/system)
+- **Enhanced MobileSettings.tsx** — New "Policies" section with toggleable policy rules: require approval for file deletion, approval for trust changes, update install confirmation, sync behavior, AI assistant autonomy level, privacy preferences — each with descriptive sublabels
 
-- `FeatureOwnershipMatrix`: 10 features, each with 6 ownership dimensions, all with detailed descriptions
-- `SurfaceAuthorityMatrix`: 16 entries with decision/recovery surfaces, risk levels, offline capability
-- `StateAuthorityMap`: 3 authority classes (OS: 6 items, Cloud: 9 items, App: 6 items = 21 total)
-- `EventRoutingModel`: 11 OS events + 11 Cloud events + 8 App events + infrastructure checklist
-- `ApprovalFlowArchitecture`: 8-stage sequence + 8 approval-required classes with prompt templates
-- `FailureRecoveryModel`: 10 failure entries + case studies with recovery ownership
-- `PlatformAdaptationRules`: 10 adaptation rules + 6 OS exclusive + 6 App exclusive + 6 Cloud exclusive + UX copy + visibility rules
-- `ArchitectureSeparationTests`: 12 test assertions with verification methods
+### Batch 5: Wiring + Audit Document
+- Add all 6 new routes to **MobileRoutes.tsx**
+- Add all new screen links to **MobileMore.tsx** grid
+- Add notification badge indicator to **MobileTabBar.tsx** (bell icon overlay)
+- Generate **/mnt/documents/MISSING_APP_OS.md** — Full 28-section audit document with status, gaps, and deployment readiness per subsystem
 
-## No Stubs Found
+### Design Consistency (matching existing mobile style exactly)
+- `MobileShell` wrapper on every page
+- Dark-first: `bg-card`, `border-border/40`, `bg-card/50`
+- Typography: `text-sm font-semibold` headings, `text-[10px]-[11px]` labels
+- Cards: `rounded-xl border border-border/40 bg-card p-4`
+- Filters: pill buttons with `rounded-full` active state
+- Accents: `text-primary`, `text-[hsl(var(--trust-safe))]`, `text-[hsl(var(--sita-gold))]`
+- Icons: lucide-react, 4-5w sizing
+- Motion: framer-motion for list animations
+- Safe area padding via `env(safe-area-inset-bottom)`
 
-Every component uses real typed data arrays, interactive tabs/accordions, search/filter, motion animations, glassmorphic card design, and `WhyTooltip` explanations. No `TODO`, no `placeholder`, no empty states without content.
-
-## What This Plan Confirms
-
-No code changes are needed. Part 3 is deployment-ready. All 20 sections of the prompt are fully implemented with production-quality UI components, correctly routed, permission-gated, and integrated into the founder sidebar.
+### Technical Notes
+- All new pages use demo data arrays (matching existing pattern) — no backend stubs
+- All components are self-contained with local state management
+- All follow the existing `export default function` or `const X = () =>` patterns
+- Zero new dependencies required
 
