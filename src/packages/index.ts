@@ -24,6 +24,8 @@ export * from "./pack-manifests";
 export * from "./store-metadata";
 export * from "./template-registry";
 export * from "./microinteraction-engine";
+export * from "./protocols";
+
 
 // Colliding sibling packages — import directly from their paths:
 //   @/packages/advisor-config

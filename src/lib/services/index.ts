@@ -206,3 +206,11 @@ export { AmbientIntelligenceService, createAmbientIntelligence } from "./os-awar
 // ── Phase 13: OS Orchestration (15 Systems) ──────────────────
 export * from "./os-orchestration";
 
+// ── Phase 14: Platform Systems (Part 6) ──────────────────────
+export { ReleaseIntelligenceService, releaseIntelligence } from "./release-intelligence";
+export type { CompatibilityEntry, RegressionFingerprint, ReleaseState, ReleaseReadinessScore } from "./release-intelligence";
+export { DegradedModeService, degradedModeService } from "./degraded-mode";
+export type { ServiceHealthNode, DegradedFeature, DegradationNotification, SystemOperatingMode } from "./degraded-mode";
+export { DigestJournalService, digestJournalService } from "./digest-journal";
+export type { DailyDigest, WeeklyJournal, MonthlyReview, DigestPreferences, DigestSection, DigestActionItem } from "./digest-journal";
+

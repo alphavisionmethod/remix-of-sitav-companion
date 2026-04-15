@@ -75,3 +75,8 @@ export { ConfidenceRiskScorer, getConfidenceRiskScorer } from "./confidence-risk
 export { ContinuousProfitEngine, getContinuousProfitEngine } from "./continuous-profit-engine";
 export { AdvisorReflectionEngine, getAdvisorReflectionEngine } from "./advisor-reflection-engine";
 
+// ── Economic Intelligence Engine ────────────────────────────────
+export { EconomicIntelligenceEngine, economicIntelligence } from "./economic-intelligence-engine";
+export type { RevenueProjection, CostBreakdown, UnitEconomics, CashRunway, CostOptimization } from "./economic-intelligence-engine";
+
+
