@@ -5,7 +5,8 @@ import {
   Shield, Wrench, Settings2, Cloud, HeartPulse, Activity,
   Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale,
   Building2, Server, Cog, DollarSign, LifeBuoy, FileCheck,
-  Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket
+  Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket,
+  Key, Globe, Search
 } from "lucide-react";
 
 const tabs = [
@@ -39,6 +40,13 @@ const tabs = [
   { key: "sharing", label: "Sharing", icon: Share2 },
   { key: "governance", label: "Governance", icon: Shield },
   { key: "policy", label: "Policy", icon: Settings2 },
+  // Platform Plane tabs
+  { key: "planes", label: "Planes", icon: Layers },
+  { key: "rbac", label: "RBAC", icon: Shield },
+  { key: "admin-audit", label: "Admin Audit", icon: Search },
+  { key: "environments", label: "Environments", icon: Globe },
+  { key: "support-safe", label: "Support Safe", icon: LifeBuoy },
+  { key: "tokens", label: "Tokens", icon: Key },
 ] as const;
 
 export type CloudTab = (typeof tabs)[number]["key"];

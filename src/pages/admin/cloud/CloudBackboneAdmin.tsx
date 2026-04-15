@@ -33,6 +33,13 @@ import { CloudFeatureFlagsAdmin } from "./CloudFeatureFlagsAdmin";
 import { CloudMaintenanceModeAdmin } from "./CloudMaintenanceModeAdmin";
 import { CloudObservabilityAdmin } from "./CloudObservabilityAdmin";
 import { CloudBootstrapAdmin } from "./CloudBootstrapAdmin";
+// Platform Plane tabs
+import { PlatformPlaneOverview } from "./PlatformPlaneOverview";
+import { AdminRBACConsole } from "./AdminRBACConsole";
+import { AdminAuditExplorer } from "./AdminAuditExplorer";
+import { EnvironmentSwitcher } from "./EnvironmentSwitcher";
+import { SupportConsoleSafe } from "./SupportConsoleSafe";
+import { AdminTokenManager } from "./AdminTokenManager";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -65,6 +72,13 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   sharing: CloudSharingAdmin,
   governance: CloudGovernanceAdmin,
   policy: CloudPolicyAdmin,
+  // Platform Plane tabs
+  planes: PlatformPlaneOverview,
+  rbac: AdminRBACConsole,
+  "admin-audit": AdminAuditExplorer,
+  environments: EnvironmentSwitcher,
+  "support-safe": SupportConsoleSafe,
+  tokens: AdminTokenManager,
 };
 
 export default function CloudBackboneAdmin() {
