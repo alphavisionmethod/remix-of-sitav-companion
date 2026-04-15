@@ -235,8 +235,8 @@ export function createDeviceMesh(): DeviceMeshService {
 
   async function loadPersistedState() {
     const saved = await loadServiceState(SERVICE_KEY);
-    if (saved?.peers) {
-      peers = saved.peers;
+    if (saved?.peers && Array.isArray(saved.peers)) {
+      peers = saved.peers as MeshPeer[];
       rebuildTopology();
     }
     // Also fetch fresh from DB

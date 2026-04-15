@@ -224,7 +224,7 @@ export function createContextGraph(): ContextGraphService {
       for (const [k, v] of Object.entries(saved.signalCache)) {
         signals.set(k, v as ContextSignal);
       }
-      snapshotCounter = saved.snapshotCounter ?? 0;
+      snapshotCounter = Number(saved.snapshotCounter ?? 0);
     }
 
     // Seed time signals
