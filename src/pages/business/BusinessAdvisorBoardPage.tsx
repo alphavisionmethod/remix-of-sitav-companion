@@ -176,7 +176,7 @@ const BusinessAdvisorBoardPage = () => {
         <TabsList className="bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] flex-wrap h-auto gap-0.5 p-1">
           <TabsTrigger value="boardroom" className="text-[10px]">Boardroom</TabsTrigger>
           <TabsTrigger value="insights" className="text-[10px]">
-            Insights {board.coordinatedRecommendations.length > 0 && `(${board.coordinatedRecommendations.length})`}
+            Insights {mergedRecommendations.length > 0 && `(${mergedRecommendations.length})`}
           </TabsTrigger>
           <TabsTrigger value="conversation" className="text-[10px]">Chat</TabsTrigger>
           <TabsTrigger value="scenarios" className="text-[10px]">Scenarios</TabsTrigger>
