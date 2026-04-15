@@ -7,7 +7,7 @@ import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
   Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
   BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale,
-  DollarSign, Receipt, RotateCcw
+  DollarSign, Receipt, RotateCcw, Terminal
 } from "lucide-react";
 
 const NAV_ITEMS = [
