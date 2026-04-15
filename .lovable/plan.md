@@ -1,82 +1,86 @@
 
 
-# Orchestration Authority Consolidation — Remaining Gaps
+# Runtime Truth Layer — `src/lib/runtime/`
 
-## Audit Results
+## What This Adds
 
-The 4-layer canonical spine is **100% complete** (40 files across intent/planning/execution/proof/shared/migration). The facade, hooks (4), CI scripts (3), and docs (2) are all in place.
+A single formal runtime truth layer that unifies scattered runtime-like code (surface detection, feature flags, service startup, reality classification, recovery, host bridges) into one canonical location. This layer answers: "What is running, where, in what mode, with what capabilities, and what happens when it fails?"
 
-**What is NOT done:**
+## Existing Code to Integrate (Not Duplicate)
 
-| Gap | Impact |
-|-----|--------|
-| Legacy consumers still import old orchestrators directly | Facade is bypassed — violates "one entry point" rule |
-| No compatibility wrappers on legacy files | Migration safety missing |
-| `planes/backend.ts` exports `CanonicalChainOrchestrator` directly | Backend plane exposes legacy path |
-| `sita-kernel.ts` imports `AgentOrchestrator` + `CanonicalChainOrchestrator` directly | Kernel bypasses facade |
-| `use-admin-data.ts` dynamically imports `agent-orchestrator` | Hook directly calls execution adapter |
-| `use-companion.ts` imports `FleetStatus` type from `agent-orchestrator` | Type coupling to legacy file |
-| Missing `orchestration-ids.ts` from spec | ID generation not centralized |
+| Existing Module | What It Does | Runtime Layer Treatment |
+|----------------|-------------|------------------------|
+| `services/surface-detection/` | Detects Electron/PWA/Capacitor/Mobile/Web | `runtime-detection.ts` re-exports and extends |
+| `dual-reality/reality-mode-registry.ts` | real/demo/sandbox modes | `runtime-truth-classification.ts` references, does not duplicate |
+| `dual-reality/surface-class-registry.ts` | admin_os/user_app surface classes | `simulated-surface-registry.ts` references |
+| `os-services/recovery-levels.ts` | 8-level repair escalation | `recovery-behavior-registry.ts` references |
+| `os-services/app-lifecycle.ts` | 12-state app lifecycle | `service-lifecycle-registry.ts` references |
+| `core-services/self-healing/fleet-health.ts` | Service health records | `service-failure-consequence-map.ts` references |
+| `scripts/generate-startup-order.ts` | Startup phase ordering | `service-startup-order.ts` replaces with importable TS |
+| `packages/contracts/runtime/` | SurfaceType, ActiveSurface contracts | All runtime files import from contracts |
 
-## Implementation Plan
+## New Files (26 files, 0 duplicates)
 
-### Task 1: Add `orchestration-ids.ts`
-
-Create `src/lib/orchestration/shared/orchestration-ids.ts` with centralized ID generation for envelope, correlation, execution, receipt, and proof chain IDs. Update envelope and proof builders to import from here.
-
-### Task 2: Add compatibility wrappers to 6 legacy orchestrator files
-
-Add deprecation headers and re-export wrappers to each legacy file so existing consumers don't break:
-
-- `src/lib/core-services/canonical-chain-orchestrator.ts` — add `@deprecated` + re-export `orchestrationFacade.processIntent` as compatibility shim
-- `src/lib/core-services/agent-orchestrator.ts` — add `@deprecated` header noting it's now an execution adapter
-- `src/lib/services/ai-workforce/workforce-orchestrator.ts` — add `@deprecated` header
-- `src/lib/services/council-orchestrator/index.ts` — add `@deprecated` header (intent support only)
-- `src/lib/services/founder-orchestrator/index.ts` — add `@deprecated` header (planning adapter only)
-- `src/lib/services/ecosystem-orchestrator/index.ts` — add `@deprecated` header (cross-device adapter only)
-
-Each wrapper preserves existing exports but adds a top-of-file deprecation notice with the canonical replacement path.
-
-### Task 3: Rewire `planes/backend.ts`
-
-Replace line 19:
-```typescript
-// Before:
-export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
-// After:
-export { OrchestrationFacade, orchestrationFacade } from "@/lib/orchestration";
-export type { ProcessIntentRequest } from "@/lib/orchestration";
-// Legacy compat re-export:
-export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
+```text
+src/lib/runtime/
+├─ index.ts                          — barrel export
+├─ runtime-detection.ts              — extends surface-detection with full RuntimeTarget enum
+├─ runtime-context.ts                — unified RuntimeContext (surface + mode + capabilities + trust)
+├─ runtime-flags.ts                  — typed runtime feature flags (not feature flags — runtime behavior switches)
+├─ runtime-assertions.ts             — runtime invariant checks (assert surface, assert mode, assert capability)
+├─ runtime-truth-classification.ts   — maps every route/feature to its truth tier (proven/simulated/presentational)
+├─ runtime-capability-matrix.ts      — what capabilities exist per runtime target (web/desktop/mobile/appliance)
+├─ runtime-feature-registry.ts       — registry of features with their runtime requirements
+├─ product-reality-tiers.ts          — tiered reality classification (T1 proven → T4 presentational)
+├─ runtime-message-registry.ts       — canonical message types that flow through the system
+├─ runtime-transport-map.ts          — maps message types to transport mechanisms (ws/http/ipc/local)
+├─ message-trust-classification.ts   — classifies messages by trust level (verified/standard/untrusted)
+├─ message-replay-policy.ts          — replay/idempotency rules per message type
+├─ message-failure-policy.ts         — failure handling per message type (retry/drop/dlq/escalate)
+├─ service-lifecycle-registry.ts     — canonical service lifecycle states (references os-services/app-lifecycle)
+├─ service-startup-order.ts          — importable startup ordering (replaces script-only version)
+├─ service-domain-map.ts             — maps every service to its owning domain
+├─ service-failure-consequence-map.ts — maps service failure to user-facing impact
+├─ system-command-registry.ts        — all system commands with authority requirements
+├─ host-bridge-registry.ts           — host bridges (Electron IPC, Capacitor, PWA service worker)
+├─ recovery-behavior-registry.ts     — recovery strategies per service/surface (references recovery-levels)
+├─ reality-classification-registry.ts — route-level reality classification entries
+├─ simulated-surface-registry.ts     — tracks which surfaces are simulated vs real
+├─ web/                              — web-specific runtime policies (empty dir, future)
+├─ desktop/                          — desktop/Electron-specific runtime policies (empty dir, future)
+├─ appliance/                        — appliance-specific runtime policies (empty dir, future)
+├─ mobile/                           — mobile-specific runtime policies (empty dir, future)
+└─ migration/                        — runtime migration utilities (empty dir, future)
 ```
 
-### Task 4: Rewire `sita-kernel.ts`
+## Wiring Strategy
 
-Add import of `orchestrationFacade` from `@/lib/orchestration`. Keep `AgentOrchestrator` import (it's used as an execution adapter internally, which is correct), but add a comment marking it as "execution adapter — subordinate to orchestration facade."
+1. **`runtime-detection.ts`** imports from `@/lib/services/surface-detection` and extends with `RuntimeTarget` enum covering all 7 targets (browser, electron, capacitor, pwa, node, deno, docker)
+2. **`runtime-context.ts`** composes: surface detection + reality mode + capability matrix + trust state into one `RuntimeContext` object
+3. **`service-startup-order.ts`** contains the same data as `scripts/generate-startup-order.ts` but as an importable TypeScript constant with dependency graph
+4. **`service-failure-consequence-map.ts`** references `FleetHealthService` types from self-healing
+5. **`recovery-behavior-registry.ts`** references `RecoveryLevel` from `os-services/recovery-levels.ts`
+6. **`reality-classification-registry.ts`** uses `RealityClassificationRecord` from `reality-records/canonical-records.ts`
+7. **`host-bridge-registry.ts`** references `SurfaceType` from contracts
+8. **All files** are pure TypeScript — no React, no side effects, no IO
 
-### Task 5: Rewire `use-admin-data.ts`
+## Integration Points
 
-Replace the dynamic `import("@/lib/core-services/agent-orchestrator")` with a comment noting it reads agent runtime state (read-only, acceptable as execution status inspection). No orchestration logic in the hook.
+- **`src/planes/os.ts`** — add re-export of runtime barrel
+- **`src/lib/orchestration/shared/orchestration-context.ts`** — import `RuntimeContext` from runtime layer
+- **Existing hooks** (`useSurfaceType`) — unchanged, runtime layer is lower-level
+- **Admin pages** — can inspect runtime registries for truth dashboards
 
-### Task 6: Update `src/lib/orchestration/index.ts` barrel
+## Build Verification
 
-Add export of `orchestration-ids.ts` types. Ensure all proof builders, shared types, and migration utilities are exported.
-
-### Task 7: Build verification
-
-Full `tsc --noEmit` to confirm 0 errors.
-
----
+Full `tsc --noEmit` after all files created.
 
 ## File Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Shared types | 1 (`orchestration-ids.ts`) | 0 |
-| Legacy wrappers | 0 | 6 (deprecation headers) |
-| Plane rewiring | 0 | 1 (`planes/backend.ts`) |
-| Kernel rewiring | 0 | 1 (`sita-kernel.ts`) |
-| Hook rewiring | 0 | 1 (`use-admin-data.ts`) |
-| Barrel update | 0 | 1 (`orchestration/index.ts`) |
-| **Total** | **1** | **10** |
+| Runtime layer | 22 source files | 0 |
+| Subdirectory stubs | 5 (web/desktop/appliance/mobile/migration `.gitkeep`) | 0 |
+| Plane wiring | 0 | 1 (`planes/os.ts`) |
+| **Total** | **27** | **1** |
 
