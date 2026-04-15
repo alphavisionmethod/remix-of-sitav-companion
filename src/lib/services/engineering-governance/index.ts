@@ -93,7 +93,7 @@ export interface SimulationResult {
 
 export interface CodeStandardRule {
   id: string;
-  category: "style" | "correctness" | "concurrency" | "memory" | "api_contract" | "architecture" | "performance" | "observability" | "error_handling" | "rollback" | "test_coverage";
+  category: "style" | "correctness" | "concurrency" | "memory" | "api_contract" | "architecture" | "performance" | "observability" | "error_handling" | "rollback" | "test_coverage" | "security";
   rule: string;
   description: string;
   severity: "warning" | "error" | "blocker";
