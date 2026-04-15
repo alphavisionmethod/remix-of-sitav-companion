@@ -1472,6 +1472,265 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_abuse_events: {
+        Row: {
+          action_taken: string | null
+          created_at: string
+          description: string
+          device_id: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          pattern_data: Json | null
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          action_taken?: string | null
+          created_at?: string
+          description?: string
+          device_id?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          pattern_data?: Json | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          action_taken?: string | null
+          created_at?: string
+          description?: string
+          device_id?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          pattern_data?: Json | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      cloud_account_closure_requests: {
+        Row: {
+          cancellation_deadline: string | null
+          created_at: string
+          export_completed: boolean
+          export_job_id: string | null
+          id: string
+          purge_completed_at: string | null
+          reason: string | null
+          secrets_destroyed: boolean
+          stage: string
+          tombstone_finalized: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancellation_deadline?: string | null
+          created_at?: string
+          export_completed?: boolean
+          export_job_id?: string | null
+          id?: string
+          purge_completed_at?: string | null
+          reason?: string | null
+          secrets_destroyed?: boolean
+          stage?: string
+          tombstone_finalized?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancellation_deadline?: string | null
+          created_at?: string
+          export_completed?: boolean
+          export_job_id?: string | null
+          id?: string
+          purge_completed_at?: string | null
+          reason?: string | null
+          secrets_destroyed?: boolean
+          stage?: string
+          tombstone_finalized?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_account_closure_requests_export_job_id_fkey"
+            columns: ["export_job_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_import_export_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_activity_journal: {
+        Row: {
+          created_at: string
+          details: Json | null
+          device_id: string | null
+          device_name: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          object_id: string | null
+          object_name: string | null
+          object_type: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          device_id?: string | null
+          device_name?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          object_id?: string | null
+          object_name?: string | null
+          object_type?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          device_id?: string | null
+          device_name?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          object_id?: string | null
+          object_name?: string | null
+          object_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_admin_role_assignments: {
+        Row: {
+          assigned_by: string | null
+          created_at: string
+          id: string
+          role_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          role_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          role_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_admin_role_assignments_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_admin_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_admin_roles: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          permissions: Json
+          role_key: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          permissions?: Json
+          role_key: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          permissions?: Json
+          role_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_archive_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          direction: string
+          error_message: string | null
+          id: string
+          object_id: string
+          object_type: string
+          source_tier: string | null
+          started_at: string | null
+          status: string
+          target_tier: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          direction?: string
+          error_message?: string | null
+          id?: string
+          object_id: string
+          object_type?: string
+          source_tier?: string | null
+          started_at?: string | null
+          status?: string
+          target_tier?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          direction?: string
+          error_message?: string | null
+          id?: string
+          object_id?: string
+          object_type?: string
+          source_tier?: string | null
+          started_at?: string | null
+          status?: string
+          target_tier?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cloud_audit_events: {
         Row: {
           action: string
@@ -1505,6 +1764,54 @@ export type Database = {
           severity?: string
           target_id?: string | null
           target_type?: string | null
+        }
+        Relationships: []
+      }
+      cloud_backup_snapshots: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          object_count: number | null
+          region: string | null
+          restore_tested_at: string | null
+          retention_days: number | null
+          size_bytes: number | null
+          snapshot_type: string
+          started_at: string | null
+          status: string
+          triggered_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          object_count?: number | null
+          region?: string | null
+          restore_tested_at?: string | null
+          retention_days?: number | null
+          size_bytes?: number | null
+          snapshot_type?: string
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          object_count?: number | null
+          region?: string | null
+          restore_tested_at?: string | null
+          retention_days?: number | null
+          size_bytes?: number | null
+          snapshot_type?: string
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1544,6 +1851,81 @@ export type Database = {
           storage_backend?: string | null
           storage_key?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_bootstrap_markers: {
+        Row: {
+          created_at: string
+          details: Json | null
+          device_id: string | null
+          id: string
+          marker_type: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          device_id?: string | null
+          id?: string
+          marker_type?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          device_id?: string | null
+          id?: string
+          marker_type?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_compliance_hooks: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          created_at: string
+          deactivated_at: string | null
+          hook_type: string
+          id: string
+          metadata: Json | null
+          reason: string | null
+          status: string
+          target_id: string | null
+          target_type: string
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          hook_type?: string
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          status?: string
+          target_id?: string | null
+          target_type?: string
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          hook_type?: string
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          status?: string
+          target_id?: string | null
+          target_type?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1878,6 +2260,231 @@ export type Database = {
           },
         ]
       }
+      cloud_import_export_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          destination: string | null
+          download_url: string | null
+          error_message: string | null
+          expires_at: string | null
+          id: string
+          job_type: string
+          processed_items: number | null
+          progress_pct: number | null
+          source: string | null
+          started_at: string | null
+          status: string
+          total_items: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          destination?: string | null
+          download_url?: string | null
+          error_message?: string | null
+          expires_at?: string | null
+          id?: string
+          job_type?: string
+          processed_items?: number | null
+          progress_pct?: number | null
+          source?: string | null
+          started_at?: string | null
+          status?: string
+          total_items?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          destination?: string | null
+          download_url?: string | null
+          error_message?: string | null
+          expires_at?: string | null
+          id?: string
+          job_type?: string
+          processed_items?: number | null
+          progress_pct?: number | null
+          source?: string | null
+          started_at?: string | null
+          status?: string
+          total_items?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_lifecycle_rules: {
+        Row: {
+          applies_to: string
+          condition_type: string
+          condition_value: number
+          created_at: string
+          enabled: boolean
+          id: string
+          last_run_at: string | null
+          rule_name: string
+          source_tier: string | null
+          target_tier: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applies_to?: string
+          condition_type?: string
+          condition_value?: number
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          rule_name?: string
+          source_tier?: string | null
+          target_tier?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applies_to?: string
+          condition_type?: string
+          condition_value?: number
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          rule_name?: string
+          source_tier?: string | null
+          target_tier?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_maintenance_modes: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          active: boolean
+          created_at: string
+          deactivated_at: string | null
+          description: string | null
+          display_name: string
+          id: string
+          mode_key: string
+          reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          active?: boolean
+          created_at?: string
+          deactivated_at?: string | null
+          description?: string | null
+          display_name?: string
+          id?: string
+          mode_key: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          active?: boolean
+          created_at?: string
+          deactivated_at?: string | null
+          description?: string | null
+          display_name?: string
+          id?: string
+          mode_key?: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_metrics_snapshots: {
+        Row: {
+          created_at: string
+          dimensions: Json | null
+          id: string
+          metric_key: string
+          metric_value: number
+          snapshot_at: string
+        }
+        Insert: {
+          created_at?: string
+          dimensions?: Json | null
+          id?: string
+          metric_key?: string
+          metric_value?: number
+          snapshot_at?: string
+        }
+        Update: {
+          created_at?: string
+          dimensions?: Json | null
+          id?: string
+          metric_key?: string
+          metric_value?: number
+          snapshot_at?: string
+        }
+        Relationships: []
+      }
+      cloud_namespace_registry: {
+        Row: {
+          conflict_strategy: string
+          created_at: string
+          data_class: string
+          display_name: string
+          encryption_class: string
+          exportable: boolean
+          id: string
+          namespace: string
+          owner_id: string | null
+          owner_type: string
+          retention_class: string
+          schema_version: number
+          searchable: boolean
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          conflict_strategy?: string
+          created_at?: string
+          data_class?: string
+          display_name?: string
+          encryption_class?: string
+          exportable?: boolean
+          id?: string
+          namespace: string
+          owner_id?: string | null
+          owner_type?: string
+          retention_class?: string
+          schema_version?: number
+          searchable?: boolean
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          conflict_strategy?: string
+          created_at?: string
+          data_class?: string
+          display_name?: string
+          encryption_class?: string
+          exportable?: boolean
+          id?: string
+          namespace?: string
+          owner_id?: string | null
+          owner_type?: string
+          retention_class?: string
+          schema_version?: number
+          searchable?: boolean
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cloud_plans: {
         Row: {
           created_at: string
@@ -1956,6 +2563,212 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_preview_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          created_at: string
+          dimensions: Json | null
+          error_message: string | null
+          file_id: string
+          id: string
+          input_mime: string | null
+          job_type: string
+          output_key: string | null
+          output_mime: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          dimensions?: Json | null
+          error_message?: string | null
+          file_id: string
+          id?: string
+          input_mime?: string | null
+          job_type?: string
+          output_key?: string | null
+          output_mime?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          dimensions?: Json | null
+          error_message?: string | null
+          file_id?: string
+          id?: string
+          input_mime?: string | null
+          job_type?: string
+          output_key?: string | null
+          output_mime?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_reconciliation_runs: {
+        Row: {
+          affected_users: number | null
+          broken_chains: number | null
+          completed_at: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          missing_blobs: number | null
+          orphaned_blobs: number | null
+          quota_drifts: number | null
+          repairs_applied: number | null
+          run_type: string
+          size_mismatches: number | null
+          stale_tombstones: number | null
+          started_at: string | null
+          status: string
+          triggered_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          affected_users?: number | null
+          broken_chains?: number | null
+          completed_at?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          missing_blobs?: number | null
+          orphaned_blobs?: number | null
+          quota_drifts?: number | null
+          repairs_applied?: number | null
+          run_type?: string
+          size_mismatches?: number | null
+          stale_tombstones?: number | null
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          affected_users?: number | null
+          broken_chains?: number | null
+          completed_at?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          missing_blobs?: number | null
+          orphaned_blobs?: number | null
+          quota_drifts?: number | null
+          repairs_applied?: number | null
+          run_type?: string
+          size_mismatches?: number | null
+          stale_tombstones?: number | null
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_search_index: {
+        Row: {
+          content_snippet: string | null
+          created_at: string
+          id: string
+          indexed_at: string
+          metadata: Json | null
+          mime_type: string | null
+          name: string
+          object_id: string
+          object_type: string
+          path: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_snippet?: string | null
+          created_at?: string
+          id?: string
+          indexed_at?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          name?: string
+          object_id: string
+          object_type?: string
+          path?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content_snippet?: string | null
+          created_at?: string
+          id?: string
+          indexed_at?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          name?: string
+          object_id?: string
+          object_type?: string
+          path?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_shared_workspaces: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          owner_user_id: string
+          settings: Json | null
+          tenant_id: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          owner_user_id: string
+          settings?: Json | null
+          tenant_id: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          owner_user_id?: string
+          settings?: Json | null
+          tenant_id?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_shared_workspaces_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cloud_shares: {
         Row: {
           created_at: string
@@ -1991,6 +2804,101 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      cloud_storage_providers: {
+        Row: {
+          bucket_name: string | null
+          capabilities: Json | null
+          config: Json | null
+          created_at: string
+          display_name: string
+          endpoint: string | null
+          id: string
+          provider_key: string
+          provider_type: string
+          region: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          bucket_name?: string | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string
+          display_name?: string
+          endpoint?: string | null
+          id?: string
+          provider_key: string
+          provider_type?: string
+          region?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          bucket_name?: string | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string
+          display_name?: string
+          endpoint?: string | null
+          id?: string
+          provider_key?: string
+          provider_type?: string
+          region?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cloud_storage_tiers: {
+        Row: {
+          cost_per_gb_cents: number
+          created_at: string
+          display_name: string
+          id: string
+          min_retention_days: number
+          provider_id: string | null
+          retrieval_latency_ms: number
+          status: string
+          tier_key: string
+          tier_order: number
+          updated_at: string
+        }
+        Insert: {
+          cost_per_gb_cents?: number
+          created_at?: string
+          display_name?: string
+          id?: string
+          min_retention_days?: number
+          provider_id?: string | null
+          retrieval_latency_ms?: number
+          status?: string
+          tier_key: string
+          tier_order?: number
+          updated_at?: string
+        }
+        Update: {
+          cost_per_gb_cents?: number
+          created_at?: string
+          display_name?: string
+          id?: string
+          min_retention_days?: number
+          provider_id?: string | null
+          retrieval_latency_ms?: number
+          status?: string
+          tier_key?: string
+          tier_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_storage_tiers_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_storage_providers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cloud_storage_usage: {
         Row: {
@@ -2034,6 +2942,48 @@ export type Database = {
           updated_at?: string
           used_bytes?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      cloud_support_sessions: {
+        Row: {
+          actions_taken: Json | null
+          created_at: string
+          ended_at: string | null
+          id: string
+          reason: string
+          redacted_fields: string[] | null
+          started_at: string
+          status: string
+          support_user_id: string
+          target_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          actions_taken?: Json | null
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          reason?: string
+          redacted_fields?: string[] | null
+          started_at?: string
+          status?: string
+          support_user_id: string
+          target_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          actions_taken?: Json | null
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          reason?: string
+          redacted_fields?: string[] | null
+          started_at?: string
+          status?: string
+          support_user_id?: string
+          target_user_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2198,6 +3148,222 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_tenant_memberships: {
+        Row: {
+          created_at: string
+          id: string
+          invited_by: string | null
+          joined_at: string | null
+          role: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          joined_at?: string | null
+          role?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          joined_at?: string | null
+          role?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_tenant_memberships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_tenant_plans: {
+        Row: {
+          created_at: string
+          id: string
+          max_members: number
+          plan_id: string | null
+          status: string
+          storage_limit_bytes: number
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_members?: number
+          plan_id?: string | null
+          status?: string
+          storage_limit_bytes?: number
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_members?: number
+          plan_id?: string | null
+          status?: string
+          storage_limit_bytes?: number
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_tenant_plans_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cloud_tenant_plans_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_tenant_policies: {
+        Row: {
+          category: string
+          created_at: string
+          display_name: string
+          enforced: boolean
+          id: string
+          policy_key: string
+          tenant_id: string
+          updated_at: string
+          value_json: Json
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          display_name?: string
+          enforced?: boolean
+          id?: string
+          policy_key?: string
+          tenant_id: string
+          updated_at?: string
+          value_json?: Json
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          display_name?: string
+          enforced?: boolean
+          id?: string
+          policy_key?: string
+          tenant_id?: string
+          updated_at?: string
+          value_json?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_tenant_policies_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_tenant_quotas: {
+        Row: {
+          created_at: string
+          file_count: number
+          id: string
+          last_reconciled_at: string | null
+          quota_bytes: number
+          tenant_id: string
+          updated_at: string
+          used_bytes: number
+        }
+        Insert: {
+          created_at?: string
+          file_count?: number
+          id?: string
+          last_reconciled_at?: string | null
+          quota_bytes?: number
+          tenant_id: string
+          updated_at?: string
+          used_bytes?: number
+        }
+        Update: {
+          created_at?: string
+          file_count?: number
+          id?: string
+          last_reconciled_at?: string | null
+          quota_bytes?: number
+          tenant_id?: string
+          updated_at?: string
+          used_bytes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_tenant_quotas_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_tenants: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          owner_user_id: string
+          region: string | null
+          residency: string | null
+          settings: Json | null
+          slug: string
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_user_id: string
+          region?: string | null
+          residency?: string | null
+          settings?: Json | null
+          slug?: string
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_user_id?: string
+          region?: string | null
+          residency?: string | null
+          settings?: Json | null
+          slug?: string
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cloud_trash: {
         Row: {
           deleted_at: string
@@ -2280,6 +3446,72 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cloud_worker_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          created_at: string
+          dead_letter: boolean
+          error_message: string | null
+          id: string
+          idempotency_key: string | null
+          job_type: string
+          locked_at: string | null
+          locked_by: string | null
+          max_attempts: number
+          payload: Json
+          priority: number
+          result: Json | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          dead_letter?: boolean
+          error_message?: string | null
+          id?: string
+          idempotency_key?: string | null
+          job_type?: string
+          locked_at?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          payload?: Json
+          priority?: number
+          result?: Json | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          created_at?: string
+          dead_letter?: boolean
+          error_message?: string | null
+          id?: string
+          idempotency_key?: string | null
+          job_type?: string
+          locked_at?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          payload?: Json
+          priority?: number
+          result?: Json | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       command_memory: {
         Row: {
@@ -6024,6 +7256,10 @@ export type Database = {
       }
       is_org_owner: {
         Args: { _org_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_tenant_member: {
+        Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
       }
     }

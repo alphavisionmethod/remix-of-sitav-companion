@@ -20,6 +20,10 @@ import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";
 import { SyncActivityJournal } from "@/components/sita/SyncActivityJournal";
 import { CloudFileBrowser } from "@/components/cloud/CloudFileBrowser";
 import { CloudTrashManager } from "@/components/cloud/CloudTrashManager";
+import { CloudActivityTimeline } from "@/components/cloud/CloudActivityTimeline";
+import { CloudDeviceSafety } from "@/components/cloud/CloudDeviceSafety";
+import { CloudImportExport } from "@/components/cloud/CloudImportExport";
+import { CloudNamespaceToggles } from "@/components/cloud/CloudNamespaceToggles";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [
@@ -95,18 +99,27 @@ export default function UserCloudSettings() {
 
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-4 md:grid-cols-7">
           <TabsTrigger value="files" className="flex items-center gap-1.5 text-xs">
             <Files className="h-3.5 w-3.5" /> Files
           </TabsTrigger>
           <TabsTrigger value="trash" className="flex items-center gap-1.5 text-xs">
             <Trash2 className="h-3.5 w-3.5" /> Trash
           </TabsTrigger>
+          <TabsTrigger value="activity" className="flex items-center gap-1.5 text-xs">
+            <Activity className="h-3.5 w-3.5" /> Activity
+          </TabsTrigger>
           <TabsTrigger value="sync" className="flex items-center gap-1.5 text-xs">
             <RefreshCw className="h-3.5 w-3.5" /> Sync
           </TabsTrigger>
+          <TabsTrigger value="safety" className="flex items-center gap-1.5 text-xs">
+            <Shield className="h-3.5 w-3.5" /> Safety
+          </TabsTrigger>
+          <TabsTrigger value="transfer" className="flex items-center gap-1.5 text-xs">
+            <Download className="h-3.5 w-3.5" /> Transfer
+          </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-1.5 text-xs">
-            <Shield className="h-3.5 w-3.5" /> Settings
+            <Lock className="h-3.5 w-3.5" /> Settings
           </TabsTrigger>
         </TabsList>
 
@@ -118,6 +131,11 @@ export default function UserCloudSettings() {
         {/* TRASH TAB */}
         <TabsContent value="trash" className="mt-4">
           <CloudTrashManager />
+        </TabsContent>
+
+        {/* ACTIVITY TAB */}
+        <TabsContent value="activity" className="mt-4">
+          <CloudActivityTimeline />
         </TabsContent>
 
         {/* SYNC TAB */}
@@ -264,8 +282,20 @@ export default function UserCloudSettings() {
           <SyncActivityJournal maxEntries={8} />
         </TabsContent>
 
+        {/* SAFETY TAB */}
+        <TabsContent value="safety" className="mt-4">
+          <CloudDeviceSafety />
+        </TabsContent>
+
+        {/* TRANSFER TAB */}
+        <TabsContent value="transfer" className="mt-4">
+          <CloudImportExport />
+        </TabsContent>
+
         {/* SETTINGS TAB */}
         <TabsContent value="settings" className="mt-4 space-y-4">
+          {/* Namespace Governance */}
+          <CloudNamespaceToggles />
           {/* Encryption */}
           <Card>
             <CardHeader className="pb-3">
