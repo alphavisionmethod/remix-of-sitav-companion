@@ -6,7 +6,7 @@ import {
   Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale,
   Building2, Server, Cog, DollarSign, LifeBuoy, FileCheck,
   Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket,
-  Key, Globe, Search
+  Key, Globe, Search, Network
 } from "lucide-react";
 
 const tabs = [
