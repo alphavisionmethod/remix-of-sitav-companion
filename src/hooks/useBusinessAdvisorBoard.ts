@@ -326,6 +326,17 @@ export function useBusinessAdvisorBoard() {
   const handleUpdateMilestone = useCallback((id: string, status: MilestoneStatus) => { planningEngine.updateMilestoneStatus(id, status); setPlanningSnapshot(planningEngine.getSnapshot()); toast.success("Milestone updated"); }, [planningEngine]);
   const handleGenerateStrategy = useCallback(() => { setStrategyDoc(planningEngine.generateStrategyDocument()); toast.success("Strategy document generated"); }, [planningEngine]);
 
+  // Part 5 handlers
+  const handleResolveSignal = useCallback((clientId: string, signalId: string) => {
+    clientEngine.resolveSignal(clientId, signalId);
+    toast.success("Signal resolved");
+  }, [clientEngine]);
+
+  const handleUpdateDecisionOutcome = useCallback((id: string, outcome: DecisionOutcome, actualOutcome: string, impact: number, lessons: string) => {
+    journalEngine.updateOutcome(id, outcome, actualOutcome, impact, lessons);
+    toast.success("Decision outcome updated");
+  }, [journalEngine]);
+
   return {
     // Advisors
     advisors: BUSINESS_ADVISORS,
@@ -403,5 +414,14 @@ export function useBusinessAdvisorBoard() {
     handleUpdateGoalProgress,
     handleUpdateMilestone,
     handleGenerateStrategy,
+
+    // Part 5: Client Intelligence + Performance + Decision Journal
+    clientSnapshot,
+    clientList,
+    perfSnapshot,
+    journalSnapshot,
+    journalDecisions,
+    handleResolveSignal,
+    handleUpdateDecisionOutcome,
   };
 }
