@@ -67,18 +67,30 @@ export const WelcomeTour = () => {
 
   useEffect(() => {
     if (!user?.id) return;
-    const dismissed = localStorage.getItem(`sita-tour-${user.id}`);
-    if (!dismissed) setShow(true);
+    const flag = localStorage.getItem(`sita-tour-${user.id}`);
+    // Only suppress if permanently dismissed
+    if (flag !== "never") setShow(true);
   }, [user?.id]);
 
-  const dismiss = () => {
+  const closeForNow = () => {
     setShow(false);
-    if (user?.id) localStorage.setItem(`sita-tour-${user.id}`, "done");
+    // No localStorage write — will show again next session
+  };
+
+  const neverShowAgain = () => {
+    setShow(false);
+    if (user?.id) localStorage.setItem(`sita-tour-${user.id}`, "never");
+  };
+
+  const finishTour = () => {
+    setShow(false);
+    // After completing the full tour, don't show again
+    if (user?.id) localStorage.setItem(`sita-tour-${user.id}`, "never");
   };
 
   const next = () => {
     if (step < TOUR_STEPS.length - 1) setStep(s => s + 1);
-    else dismiss();
+    else finishTour();
   };
   const prev = () => { if (step > 0) setStep(s => s - 1); };
 
@@ -114,7 +126,7 @@ export const WelcomeTour = () => {
             </div>
 
             {/* Close */}
-            <button onClick={dismiss} className="absolute top-4 right-4 rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+            <button onClick={closeForNow} className="absolute top-4 right-4 rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
               <X className="h-4 w-4" />
             </button>
 
@@ -167,12 +179,16 @@ export const WelcomeTour = () => {
               </button>
             </div>
 
-            {/* Skip */}
-            <p className="mt-4 text-center">
-              <button onClick={dismiss} className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors">
-                Skip tour
+            {/* Dismiss options */}
+            <div className="mt-4 flex items-center justify-center gap-4">
+              <button onClick={closeForNow} className="text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors">
+                Close for now
               </button>
-            </p>
+              <span className="text-muted-foreground/20 text-[10px]">·</span>
+              <button onClick={neverShowAgain} className="text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors">
+                Don't show again
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
