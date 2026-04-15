@@ -1,62 +1,50 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — useSimulationEngine Hook
-// Exposes scenario runner, dry-run executor, what-if analyzer,
-// chaos orchestrator, verification pipeline, and twin manager.
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useMemo } from "react";
-import { SimulationEngine, getSimulationEngine } from "@/lib/engines/simulation-engine";
+import { getSimulationEngine } from "@/lib/engines/simulation-engine";
 import type { ScenarioPack } from "@/packages/simulation-contracts/scenario-types";
 import type { DryRunRequest } from "@/packages/simulation-contracts/dry-run-types";
 import type { WhatIfScenario } from "@/packages/simulation-contracts/what-if-types";
 import type { ChaosScript } from "@/packages/simulation-contracts/chaos-types";
 import type { DigitalTwinModel } from "@/packages/simulation-contracts/digital-twin-types";
+import type { TradeoffOption } from "@/packages/simulation-contracts/what-if-types";
 
 export function useSimulationEngine() {
   const engine = useMemo(() => getSimulationEngine(), []);
 
   const runScenarioPack = useCallback((pack: ScenarioPack) =>
-    engine.runScenarioPack(pack), [engine]);
+    engine.scenarios.runScenarioPack(pack), [engine]);
 
   const executeDryRun = useCallback(<TInput, TOutput>(request: DryRunRequest<TInput>) =>
-    engine.executeDryRun<TInput, TOutput>(request), [engine]);
+    engine.dryRun.execute<TInput, TOutput>(request), [engine]);
 
   const analyzeWhatIf = useCallback((scenario: WhatIfScenario) =>
-    engine.analyzeWhatIf(scenario), [engine]);
+    engine.whatIf.project(scenario), [engine]);
 
-  const compareTradeoffs = useCallback((options: Array<{
-    option_id: string;
-    label: string;
-    scenario: WhatIfScenario;
-  }>) => engine.compareTradeoffs(options), [engine]);
+  const compareTradeoffs = useCallback((name: string, options: TradeoffOption[]) =>
+    engine.whatIf.compareTradeoffs(name, options), [engine]);
 
   const runChaos = useCallback((script: ChaosScript) =>
-    engine.runChaos(script), [engine]);
+    engine.chaos.runChaosScript(script), [engine]);
 
-  const registerTwin = useCallback((twin: DigitalTwinModel) =>
-    engine.registerTwin(twin), [engine]);
+  const registerTwin = useCallback(<T extends Record<string, unknown>>(twin: DigitalTwinModel<T>) =>
+    engine.twins.createTwin(twin), [engine]);
 
   const syncTwin = useCallback((twinId: string) =>
-    engine.syncTwin(twinId), [engine]);
+    engine.twins.syncReport(twinId), [engine]);
 
-  const getTwinReport = useCallback((twinId: string) =>
-    engine.getTwinReport(twinId), [engine]);
+  const getTwin = useCallback((twinId: string) =>
+    engine.twins.getTwin(twinId), [engine]);
 
-  const verifyPrediction = useCallback((params: {
-    prediction_id: string;
-    predicted: { metric: string; value: number; confidence: number };
-    actual: { metric: string; value: number; measured_at: string };
-  }) => engine.verifyPrediction(params), [engine]);
+  const verifyPrediction = useCallback((
+    predicted: Array<{ metric: string; value: number; confidence: number }>,
+    actual: Array<{ metric: string; value: number }>,
+  ) => engine.verification.verify(predicted, actual), [engine]);
 
   return {
-    runScenarioPack,
-    executeDryRun,
-    analyzeWhatIf,
-    compareTradeoffs,
-    runChaos,
-    registerTwin,
-    syncTwin,
-    getTwinReport,
-    verifyPrediction,
+    runScenarioPack, executeDryRun, analyzeWhatIf, compareTradeoffs,
+    runChaos, registerTwin, syncTwin, getTwin, verifyPrediction,
   };
 }
