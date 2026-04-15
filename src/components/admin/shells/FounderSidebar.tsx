@@ -7,7 +7,7 @@ import {
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
   PanelLeft, Settings, Sparkles, SlidersHorizontal, ShieldAlert, FileText,
-  Zap, Monitor, Radio, RotateCcw, Activity
+  Zap, Monitor, Radio, RotateCcw
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
 import { useState as useReactState } from "react";
