@@ -14,6 +14,12 @@ import { HumanFactorGuard, createHumanFactorGuard, type HumanActionRequest, type
 import { EventConsistencyEngine, createEventConsistencyEngine } from "./event-consistency-engine";
 import { UpdateSafetySystem, createUpdateSafetySystem } from "./update-safety-system";
 import { ChaosTestingFramework, createChaosTestingFramework } from "./chaos-testing-framework";
+import { TrustBoundaryModel, createTrustBoundaryModel, type TrustZone, type BoundaryCrossingEvent } from "./trust-boundary-model";
+import { DefensiveProgrammingEngine, createDefensiveProgrammingEngine } from "./defensive-programming-engine";
+import { FormalVerificationFramework, createFormalVerificationFramework } from "./formal-verification-framework";
+import { RedundancyFailoverEngine, createRedundancyFailoverEngine } from "./redundancy-failover-engine";
+import { MobileAgentHardening, createMobileAgentHardening } from "./mobile-agent-hardening";
+import { AdminFounderHardening, createAdminFounderHardening } from "./admin-founder-hardening";
 
 // ── Types ──────────────────────────────────────────────────────
 
@@ -29,11 +35,13 @@ export interface FabricPosture {
     events: number;
     updates: number;
     compliance: number;
+    redundancy: number;
   };
   activeThreats: number;
   activeQuarantines: number;
   emergencyMode: boolean;
   recommendations: string[];
+  redundancyStatus: { avgHealth: number; failedReplicas: number; degradedCapabilities: number };
 }
 
 export interface ActionEvaluation {
@@ -42,6 +50,7 @@ export interface ActionEvaluation {
   humanFactor: GuardDecision | null;
   aiEnforcement: AIActionDecision | null;
   resourceAction: EnforcementAction | null;
+  boundaryCrossing: BoundaryCrossingEvent | null;
   auditEntryId: string | null;
   blockers: string[];
   warnings: string[];
@@ -60,6 +69,12 @@ export class SecurityFabric {
   readonly events: EventConsistencyEngine;
   readonly updates: UpdateSafetySystem;
   readonly chaos: ChaosTestingFramework;
+  readonly boundaries: TrustBoundaryModel;
+  readonly defensive: DefensiveProgrammingEngine;
+  readonly verification: FormalVerificationFramework;
+  readonly redundancy: RedundancyFailoverEngine;
+  readonly mobileAgent: MobileAgentHardening;
+  readonly adminHardening: AdminFounderHardening;
 
   private initialized = false;
 
@@ -74,6 +89,12 @@ export class SecurityFabric {
     this.events = createEventConsistencyEngine();
     this.updates = createUpdateSafetySystem();
     this.chaos = createChaosTestingFramework();
+    this.boundaries = createTrustBoundaryModel();
+    this.defensive = createDefensiveProgrammingEngine();
+    this.verification = createFormalVerificationFramework();
+    this.redundancy = createRedundancyFailoverEngine();
+    this.mobileAgent = createMobileAgentHardening();
+    this.adminHardening = createAdminFounderHardening();
   }
 
   // ── Initialization ─────────────────────────────────────────
@@ -142,6 +163,66 @@ export class SecurityFabric {
       );
     });
 
+    // Wire boundary crossings into audit
+    this.boundaries.onCrossing((event) => {
+      if (event.blocked) {
+        this.audit.logSecurityEvent(
+          `boundary:blocked`,
+          { type: "system", id: "trust-boundary", displayName: "Trust Boundary Model", deviceId: null, sessionId: null, trustRing: 0, ipAddress: null },
+          { type: "zone-crossing", id: event.id, name: `${event.sourceZone}→${event.targetZone}`, domain: "security" },
+          "warn",
+          "denied",
+          { action: event.action, conditionsFailed: event.conditionsFailed },
+        );
+      }
+    });
+
+    // Wire defensive violations into audit
+    this.defensive.onViolation((violation) => {
+      this.audit.logSecurityEvent(
+        `defensive:${violation.type}`,
+        { type: "system", id: "defensive-engine", displayName: "Defensive Programming", deviceId: null, sessionId: null, trustRing: 0, ipAddress: null },
+        { type: "invariant", id: violation.id, name: violation.description, domain: violation.domain },
+        violation.severity === "critical" ? "critical" : violation.severity === "error" ? "error" : "warn",
+        "success",
+        violation.context,
+      );
+    });
+
+    // Wire redundancy failovers into audit
+    this.redundancy.onFailover((event) => {
+      this.audit.logSystemAction(
+        `failover:${event.serviceId}`,
+        { type: "service", id: event.serviceId, name: `Failover ${event.fromReplicaId}→${event.toReplicaId}`, domain: "system" },
+        event.successful ? "success" : "failure",
+        { reason: event.reason, durationMs: event.durationMs },
+      );
+    });
+
+    // Wire mobile/agent events into audit
+    this.mobileAgent.onEvent((event) => {
+      this.audit.logSecurityEvent(
+        `mobile:${event.type}`,
+        { type: "system", id: "mobile-hardening", displayName: "Mobile/Agent Hardening", deviceId: event.deviceId, sessionId: null, trustRing: 0, ipAddress: null },
+        { type: "device", id: event.deviceId, name: event.type, domain: "security" },
+        event.severity === "critical" ? "critical" : event.severity === "error" ? "error" : "info",
+        "success",
+        event.context,
+      );
+    });
+
+    // Wire admin hardening events into audit
+    this.adminHardening.onEvent((event) => {
+      this.audit.logSecurityEvent(
+        `admin:${event.type}`,
+        { type: "system", id: "admin-hardening", displayName: "Admin/Founder Hardening", deviceId: null, sessionId: null, trustRing: 0, ipAddress: null },
+        { type: "admin-action", id: event.id, name: event.type, domain: "admin" },
+        event.severity === "critical" ? "critical" : event.severity === "error" ? "error" : "info",
+        "success",
+        event.context,
+      );
+    });
+
     this.initialized = true;
   }
 
@@ -153,6 +234,7 @@ export class SecurityFabric {
     aiAction?: AIActionRequest;
     resourceReport?: { processId: string; resource: ResourceType; value: number };
     detectionContext?: DetectionContext;
+    boundaryCrossing?: { sourceZone: TrustZone; targetZone: TrustZone; action: string; actorId: string; satisfiedConditions: string[] };
   }): Promise<ActionEvaluation> {
     const blockers: string[] = [];
     const warnings: string[] = [];
@@ -160,6 +242,15 @@ export class SecurityFabric {
     let hfDecision: GuardDecision | null = null;
     let aiDecision: AIActionDecision | null = null;
     let resAction: EnforcementAction | null = null;
+    let crossingEvent: BoundaryCrossingEvent | null = null;
+
+    // Boundary crossing validation
+    if (params.boundaryCrossing) {
+      crossingEvent = this.boundaries.validateCrossing(params.boundaryCrossing);
+      if (crossingEvent.blocked) {
+        blockers.push(`Trust boundary: ${crossingEvent.reason}`);
+      }
+    }
 
     // Zero-trust validation
     if (params.request) {
@@ -232,12 +323,30 @@ export class SecurityFabric {
           domain: params.humanAction?.domain ?? params.aiAction?.context.domain ?? null,
         },
         outcome: allowed ? "success" : "denied",
-        evidence: { blockers, warnings, ztResult: ztDecision?.result, aiResult: aiDecision?.result, resAction },
+        evidence: { blockers, warnings, ztResult: ztDecision?.result, aiResult: aiDecision?.result, resAction, boundaryCrossing: crossingEvent?.verdict },
       });
       auditEntryId = entry.id;
     } catch { /* audit failure must not block evaluation */ }
 
-    return { allowed, zeroTrust: ztDecision, humanFactor: hfDecision, aiEnforcement: aiDecision, resourceAction: resAction, auditEntryId, blockers, warnings };
+    return { allowed, zeroTrust: ztDecision, humanFactor: hfDecision, aiEnforcement: aiDecision, resourceAction: resAction, boundaryCrossing: crossingEvent, auditEntryId, blockers, warnings };
+  }
+
+  // ── Boundary Crossing (convenience) ────────────────────────
+
+  validateBoundaryCrossing(sourceZone: TrustZone, targetZone: TrustZone, action: string, actorId: string, satisfiedConditions: string[]): BoundaryCrossingEvent {
+    return this.boundaries.validateCrossing({ sourceZone, targetZone, action, actorId, satisfiedConditions });
+  }
+
+  // ── Invariant Verification (convenience) ───────────────────
+
+  verifyInvariant(id: string): boolean {
+    return this.defensive.checkInvariant(id);
+  }
+
+  // ── Redundancy Status ──────────────────────────────────────
+
+  getRedundancyStatus() {
+    return this.redundancy.getMetrics();
   }
 
   // ── Posture ────────────────────────────────────────────────
@@ -248,19 +357,22 @@ export class SecurityFabric {
     const eventMetrics = this.events.getMetrics();
     const updateMetrics = this.updates.getMetrics();
     const emergency = this.humanGuard.getEmergencyMode();
+    const redundancyMetrics = this.redundancy.getMetrics();
 
     const intrusionScore = Math.max(0, 100 - (idsMetrics.signalsBySeverity.critical ?? 0) * 20 - (idsMetrics.signalsBySeverity.high ?? 0) * 10);
     const resourceScore = 100 - resourceMetrics.killedProcesses * 5 - resourceMetrics.throttledProcesses * 2;
     const eventScore = eventMetrics.deadLetterCount > 0 ? Math.max(0, 100 - eventMetrics.deadLetterCount * 5) : 100;
     const updateScore = updateMetrics.healthGatePassRate * 100;
+    const redundancyScore = redundancyMetrics.failedReplicas > 0 ? Math.max(0, 100 - redundancyMetrics.failedReplicas * 15) : redundancyMetrics.avgHealth;
 
     const scores = {
       intrusion: Math.max(0, intrusionScore),
-      trust: 90, // From device attestation metrics
+      trust: 90,
       resources: Math.max(0, resourceScore),
       events: Math.max(0, eventScore),
       updates: Math.max(0, updateScore),
       compliance: 95,
+      redundancy: Math.max(0, redundancyScore),
     };
 
     const avg = Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length;
@@ -275,6 +387,7 @@ export class SecurityFabric {
     if (scores.resources < 70) recommendations.push("Resource budgets under pressure — review process allocations");
     if (scores.events < 80) recommendations.push("Dead-letter queue growing — review failed event deliveries");
     if (scores.updates < 80) recommendations.push("Update health gate pass rate below threshold");
+    if (scores.redundancy < 80) recommendations.push("Service redundancy degraded — check replica health");
 
     return {
       overall,
@@ -284,6 +397,11 @@ export class SecurityFabric {
       activeQuarantines: idsMetrics.activeQuarantines,
       emergencyMode: emergency.active,
       recommendations,
+      redundancyStatus: {
+        avgHealth: redundancyMetrics.avgHealth,
+        failedReplicas: redundancyMetrics.failedReplicas,
+        degradedCapabilities: redundancyMetrics.degradedCount,
+      },
     };
   }
 

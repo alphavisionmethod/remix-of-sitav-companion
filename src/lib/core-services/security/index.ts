@@ -20,3 +20,11 @@ export * from "./chaos-testing-framework";
 
 // Batch 4 — Integration Fabric
 export * from "./security-fabric";
+
+// Batch 5 — Gap Fill: Trust, Verification, Redundancy, Hardening
+export * from "./trust-boundary-model";
+export * from "./defensive-programming-engine";
+export * from "./formal-verification-framework";
+export * from "./redundancy-failover-engine";
+export * from "./mobile-agent-hardening";
+export * from "./admin-founder-hardening";
