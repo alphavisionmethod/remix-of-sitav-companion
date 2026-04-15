@@ -1,124 +1,83 @@
 
 
-# Control Center — Advanced Overhaul
+# Security Architecture — Full Implementation Plan
 
-## Current State
-The Control Center pull-down (`ControlCenter.tsx`) is a 182-line panel with:
-- 8 toggle tiles: WiFi, Bluetooth, Dark/Light Mode, DND, AirPlay, Focus, Night Shift, Reduce Motion
-- 2 sliders: Volume, Brightness
-- No live data, no connection to real system state, no expandable sections
+## Current State Assessment
 
-This is extremely basic compared to what iOS/macOS Control Center offers. It needs to be a true command surface.
+The codebase already has **substantial security infrastructure** (~3,100 lines across kernel modules):
+- 5-ring sandbox engine, privilege enforcement, syscall dispatcher
+- 3-layer capability-permission system (POSIX DAC + Linux Caps + SITA Tokens)
+- Cryptographic subsystem (LUKS2, TPM, key hierarchy)
+- Code signing and boot chain verification
+- Stateful packet firewall with connection tracking
+- Crash resilience with process watchdog
+- Trust governor with score-based posture
+- Security posture engine with threat model
+- Self-healing immune controller
 
-## What Will Be Built
+**What's missing** are the cross-cutting enforcement engines, the runtime security fabric, and the unified admin UI that ties it all together.
 
-A premium, expandable Control Center with multiple sections, live system data, and deep integration with Settings (each tile links to its Settings section on long-press/click-through).
+## Implementation — 5 Batches
 
-```text
-┌──────────────────────────────────┐
-│ Control Center              [×]  │
-├──────────────────────────────────┤
-│ ┌─────┐ ┌─────┐ ┌─────┐ ┌────┐ │
-│ │WiFi │ │ BT  │ │ VPN │ │Air │ │  ← Connectivity cluster
-│ │ ● ON│ │ OFF│ │ OFF│ │Drop│ │    (expandable: show network
-│ └─────┘ └─────┘ └─────┘ └────┘ │     name, BT device, etc.)
-├──────────────────────────────────┤
-│ ┌─────┐ ┌─────┐ ┌─────┐ ┌────┐ │
-│ │Focus│ │ DND │ │Dark │ │Lock│ │  ← Mode cluster
-│ │ OFF │ │ OFF │ │ ON  │ │Scrn│ │
-│ └─────┘ └─────┘ └─────┘ └────┘ │
-├──────────────────────────────────┤
-│ 🔊 Volume ──────────●── 72%     │  ← Sliders
-│ ☀️ Brightness ────●────── 80%    │
-├──────────────────────────────────┤
-│ ♬ Now Playing                    │  ← Media widget
-│ "Morning Jazz" — Spotify  ▶ ▐▐  │
-├──────────────────────────────────┤
-│ 🔋 Battery 87% · 4h 12m left    │  ← System status
-│ 💾 Storage 42GB / 128GB used     │
-│ 📡 Network ↑ 2.1 MB/s ↓ 12 MB/s│
-├──────────────────────────────────┤
-│ 🌙 Night Shift  ⬚ Screen Mirror │  ← Quick extras
-│ 📱 Reduce Motion ⬚ Stage Mgr    │
-├──────────────────────────────────┤
-│ 🛡 System Health: 94 ● healthy   │  ← Live pulse
-│ ⚡ 2 active workflows · 0 alerts │
-├──────────────────────────────────┤
-│ [Open Settings]                  │
-└──────────────────────────────────┘
-```
+### Batch 1: Detection and Monitoring Layer
+**3 new files — the "eyes and ears" of the security system**
 
-## Detailed Sections
+| File | What | Lines |
+|---|---|---|
+| `src/lib/core-services/security/intrusion-detection-engine.ts` | IDS: syscall anomaly detection, impossible-state detection, rate-spike detection, trust-downgrade triggers, quarantine actions, alert emission | ~300 |
+| `src/lib/core-services/security/audit-trail-engine.ts` | Immutable append-only structured audit log with tamper-detection (hash chain), correlation IDs, before/after state, queryable history, export | ~250 |
+| `src/lib/core-services/security/device-attestation-service.ts` | Device trust enrollment, boot integrity verification, remote attestation, device revocation, trust-state binding | ~200 |
 
-### 1. Connectivity Cluster (expandable)
-- **WiFi** — shows connected network name, signal strength; tap to toggle, long-press opens Settings > WiFi
-- **Bluetooth** — shows connected device name; tap toggle, long-press opens Settings > Bluetooth
-- **VPN** — toggle with status indicator (Connected/Disconnected)
-- **AirDrop/Screen Mirror** — toggle with discovery mode
+### Batch 2: Enforcement and Governance Layer
+**4 new files — the "immune system" that enforces boundaries**
 
-### 2. Mode Cluster
-- **Focus Mode** — with active focus profile name (Work, Personal, Sleep)
-- **Do Not Disturb** — with scheduled time display
-- **Dark/Light Mode** — theme toggle with smooth transition
-- **Lock Screen** — instant lock action
-- **Stage Manager** — toggle window tiling mode
+| File | What | Lines |
+|---|---|---|
+| `src/lib/core-services/security/resource-governor.ts` | Per-app CPU/memory/FD/network budgets, enforcement actions (throttle/kill/alert), budget policies per trust ring, real-time metering | ~250 |
+| `src/lib/core-services/security/zero-trust-validator.ts` | Request-level authn/authz enforcement, mTLS verification, scope validation, input schema validation, rate limiting per identity/device/session, policy evaluation | ~280 |
+| `src/lib/core-services/security/ai-trust-enforcer.ts` | AI tool-call boundary enforcement, prompt input sanitization, capability scoping for AI actions, budget gate integration, model output validation, AI audit receipts | ~250 |
+| `src/lib/core-services/security/human-factor-guard.ts` | Step-up auth triggers, blast-radius calculation, confirmation ceremony requirements, anti-fatigue rules, safe-default enforcement, emergency mode definitions | ~200 |
 
-### 3. Sliders (enhanced)
-- **Volume** — with output device selector (Speakers, Headphones)
-- **Brightness** — with auto-brightness toggle
-- Both show exact percentage, smooth haptic-style interaction
+### Batch 3: Reliability and Resilience Layer
+**3 new files — ensuring the system survives failures**
 
-### 4. Now Playing Widget
-- Shows current media (if any) or "Nothing Playing"
-- Album art thumbnail, track name, artist
-- Play/Pause, Previous, Next, AirPlay output buttons
-- Progress bar
+| File | What | Lines |
+|---|---|---|
+| `src/lib/core-services/security/event-consistency-engine.ts` | At-least-once delivery, idempotency keys, ordering guarantees, deduplication, dead-letter queue, replay support, consumer lag detection, correlation propagation | ~280 |
+| `src/lib/core-services/security/update-safety-system.ts` | Pre-update validation (signatures, compatibility, space, battery), transactional apply with checkpoints, health gates, auto-rollback on threshold failure, A/B slot management | ~300 |
+| `src/lib/core-services/security/chaos-testing-framework.ts` | Failure injection scenarios (service crash, network drop, storage latency, auth degradation, event duplication), execution harness, result verification, graceful-degradation assertions | ~250 |
 
-### 5. System Status Strip
-- **Battery** — percentage, estimated time remaining, charging status
-- **Storage** — used/total with color bar
-- **Network** — live upload/download speed indicators
-- **Memory** — RAM usage percentage
+### Batch 4: Integration Wiring
+**2 files — connecting all subsystems into a unified security fabric**
 
-### 6. Quick Extras Grid
-- Night Shift, Reduce Motion, Screen Recording, Screenshot, Calculator, Timer
-- Each is a small tap-to-activate tile
+| File | What | Lines |
+|---|---|---|
+| `src/lib/core-services/security/security-fabric.ts` | Master orchestrator that wires all 10+ security subsystems together: trust governor + IDS + audit + resource governor + zero-trust + AI enforcer + sandbox + capability system. Provides `SecurityFabric` class with unified `evaluateAction()`, `reportAnomaly()`, `getPosture()` | ~300 |
+| `src/lib/core-services/security/index.ts` | Clean barrel export for all security modules | ~40 |
+| `src/hooks/use-security-fabric.ts` | React hook exposing SecurityFabric to UI components | ~80 |
 
-### 7. Live System Pulse (unique to SITA OS)
-- System health score from Mission Control data
-- Active workflow count
-- Open incident count (with red dot if > 0)
-- Tapping opens Mission Control
+### Batch 5: Security Command Center UI
+**1 major file — admin visualization surface**
 
-### 8. Settings Integration
-- Every tile has a "chevron" indicator — tapping opens that tile's detail, long-pressing opens the corresponding Settings section
-- Bottom "Open Settings" button launches the Settings window app
-- Consistent behavior: Control Center = quick toggle, Settings = deep configuration
+| File | What | Lines |
+|---|---|---|
+| `src/pages/admin/SecurityCommandCenter.tsx` | 8-tab admin dashboard: Trust Boundaries (ring visualization), Capability Audit (active tokens, revocations), Intrusion Detection (live alerts, quarantine), Audit Trail (searchable log viewer), Resource Governor (per-app budget meters), Zero-Trust Monitor (request validation stats), AI Safety Dashboard (tool-call logs, budget usage), Update Safety (rollout health, rollback history) | ~500 |
 
-## Settings Integration (NOT merging into Settings)
-The Control Center remains a separate overlay. It does NOT become part of Settings. Instead:
-- Each Control Center tile links to its matching Settings section via `openWindow("settings", { section: "wifi" })`
-- Settings sections remain the deep-dive; Control Center is the quick-access surface
+**Also modify:**
+- `src/pages/admin/index.tsx` — register SecurityCommandCenter route
+- Route registry — add `/admin/security-command`
 
-## Implementation
+## Architecture Principles Enforced
+- Every module is a standalone class with no circular dependencies
+- All modules emit structured audit events to the AuditTrailEngine
+- SecurityFabric is the single integration point — no module talks directly to another
+- Trust rings from the existing SandboxEngine are reused, not duplicated
+- Capability tokens from the existing CapabilityPermissionSystem are reused
+- All AI enforcement delegates to the existing AI gateway constraint
 
-### File: `src/components/sita/shell/ControlCenter.tsx` (full rewrite)
-- Expand from 182 lines to ~450 lines
-- Import `useOSRuntime` for live system data
-- Import `useMissionControlSummary` for health score
-- Use `useSettingsValue` for all persisted toggles
-- Add `useWindowManager` for opening Settings sections
-- Structured as composable sub-components: `ConnectivityCluster`, `ModeCluster`, `SliderSection`, `NowPlayingWidget`, `SystemStatusStrip`, `QuickExtrasGrid`, `SystemPulseBar`
-- Premium glassmorphic styling matching existing panel aesthetic
-- Smooth spring animations for tile state changes
-- Expandable tile detail views (tap WiFi tile to see available networks)
-
-### No other files need modification
-The Control Center is self-contained. It already has proper integration points in `ShellLayout.tsx` and `ShellLiveLayer.tsx`.
-
-### Files Modified
-
-| File | Action |
-|---|---|
-| `src/components/sita/shell/ControlCenter.tsx` | Full rewrite — 8 sections, live data, settings links |
+## Total Scope
+- **13 new files** created
+- **2 existing files** modified
+- **~3,280 lines** of new code
+- **0 database migrations** needed (all runtime/simulated architecture)
 
