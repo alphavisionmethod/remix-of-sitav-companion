@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — useBusinessAdvisorBoard Hook
-// Central orchestration for the Business Advisor Board
+// SITA OS — useBusinessAdvisorBoard Hook (Persistence-Wired)
+// Central orchestration with real backend persistence
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/lib/engines/business-advisor-personas";
@@ -19,13 +19,10 @@ import {
   getActionStats, getPendingApprovals,
   type BusinessAction,
 } from "@/lib/engines/business-action-pipeline";
-// Part 2 imports
 import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
-// Part 4 imports
 import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/lib/engines/advisor-tool-execution-engine";
 import { getBusinessRadarEngine } from "@/lib/engines/business-radar-engine";
 import { getStrategicPlanningEngine } from "@/lib/engines/strategic-planning-engine";
-// Part 5 imports
 import { getClientIntelligenceEngine } from "@/lib/engines/client-intelligence-engine";
 import { getAdvisorPerformanceEngine } from "@/lib/engines/advisor-performance-engine";
 import { getDecisionJournalEngine } from "@/lib/engines/decision-journal-engine";
@@ -37,6 +34,7 @@ import { getCrossAdvisorCoordinator } from "@/lib/engines/cross-advisor-coordina
 import { getConfidenceRiskScorer } from "@/lib/engines/confidence-risk-scorer";
 import { getContinuousProfitEngine } from "@/lib/engines/continuous-profit-engine";
 import { getAdvisorReflectionEngine } from "@/lib/engines/advisor-reflection-engine";
+import { BoardAPI, type BoardRecommendation, type BoardAction as PersistentAction, type AutonomyPolicy } from "@/lib/services/board-api-client";
 
 export interface AIRecommendation {
   advisorId: string;
@@ -46,6 +44,12 @@ export interface AIRecommendation {
   confidence: number;
   suggestedActions: string[];
   riskFlags: string[];
+  rationale?: string;
+  domain?: string;
+  category?: string;
+  contributingAdvisors?: string[];
+  confidenceProfile?: Record<string, number>;
+  dataGaps?: string[];
 }
 
 // ── Demo context for profitability engine ─────────────────────
@@ -98,13 +102,14 @@ const DEMO_CONTEXT = {
 };
 
 export function useBusinessAdvisorBoard() {
+  const queryClient = useQueryClient();
   const [trustState, setTrustState] = useState<TrustModeState>(createDefaultTrustState);
   const [actionQueue, setActionQueue] = useState<BusinessAction[]>([]);
   const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorPersona | null>(null);
   const [focusModeActive, setFocusModeActive] = useState(false);
   const [briefMode, setBriefMode] = useState<"brief" | "board">("board");
 
-  // ── Part 2 Engine singletons ─────────────────────────────────
+  // ── Engine singletons (local computation) ─────────────────
   const memoryEngine = useMemo(() => getAdvisorMemoryEngine(), []);
   const contextGraph = useMemo(() => getBusinessContextGraph(), []);
   const archetypeEngine = useMemo(() => getBusinessArchetypeEngine(), []);
@@ -113,19 +118,61 @@ export function useBusinessAdvisorBoard() {
   const profitEngine = useMemo(() => getContinuousProfitEngine(), []);
   const reflectionEngine = useMemo(() => getAdvisorReflectionEngine(), []);
 
-  // ── Profitability Brief ──────────────────────────────────────
   const profitabilityBrief = useMemo<ProfitabilityBrief>(
-    () => generateProfitabilityBrief(DEMO_CONTEXT),
-    []
+    () => generateProfitabilityBrief(DEMO_CONTEXT), []
   );
 
-  // ── Part 2 computed state ────────────────────────────────────
   const memorySnapshot = useMemo(() => memoryEngine.getMemorySnapshot(), [memoryEngine]);
   const businessContext = useMemo(() => contextGraph.getBusinessSnapshot(), [contextGraph]);
   const profitSummary = useMemo(() => profitEngine.getSummary(), [profitEngine]);
   const selectedArchetype = archetypeEngine.getSelectedArchetype();
 
-  // ── AI Recommendations (upgraded to deep intelligence) ───────
+  // ── PERSISTENT: Boardroom Summary ─────────────────────────
+  const boardSummary = useQuery({
+    queryKey: ["board-summary"],
+    queryFn: () => BoardAPI.getSummary(),
+    staleTime: 2 * 60 * 1000,
+    retry: 1,
+    meta: { silent: true },
+  });
+
+  // ── PERSISTENT: Recommendations from DB ───────────────────
+  const persistedRecs = useQuery({
+    queryKey: ["board-recommendations"],
+    queryFn: () => BoardAPI.listRecommendations("new", 50),
+    staleTime: 2 * 60 * 1000,
+    retry: 1,
+    meta: { silent: true },
+  });
+
+  // ── PERSISTENT: Health Scores ─────────────────────────────
+  const healthScores = useQuery({
+    queryKey: ["board-health"],
+    queryFn: () => BoardAPI.getHealth(),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+    meta: { silent: true },
+  });
+
+  // ── PERSISTENT: Profit Signals ────────────────────────────
+  const persistedProfitSignals = useQuery({
+    queryKey: ["board-profit-signals"],
+    queryFn: () => BoardAPI.listProfitSignals(),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+    meta: { silent: true },
+  });
+
+  // ── PERSISTENT: Autonomy Policies ─────────────────────────
+  const autonomyPolicies = useQuery({
+    queryKey: ["board-autonomy"],
+    queryFn: () => BoardAPI.getAutonomy(),
+    staleTime: 10 * 60 * 1000,
+    retry: 1,
+    meta: { silent: true },
+  });
+
+  // ── AI Recommendations (cognitive pipeline) ────────────────
   const aiRecommendations = useQuery({
     queryKey: ["business-advisor-deep-intelligence"],
     queryFn: async (): Promise<AIRecommendation[]> => {
@@ -142,10 +189,45 @@ export function useBusinessAdvisorBoard() {
         },
       });
       if (error) throw error;
+
+      // Invalidate persisted recs since new ones were generated
+      queryClient.invalidateQueries({ queryKey: ["board-recommendations"] });
+
       return data?.recommendations ?? [];
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
+  });
+
+  // ── Mutation: Update recommendation status ─────────────────
+  const updateRecMutation = useMutation({
+    mutationFn: ({ id, status, notes }: { id: string; status: string; notes?: string }) =>
+      BoardAPI.updateRecommendation(id, status, notes),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["board-recommendations"] });
+      queryClient.invalidateQueries({ queryKey: ["board-summary"] });
+    },
+  });
+
+  // ── Mutation: Create persisted action ──────────────────────
+  const createActionMutation = useMutation({
+    mutationFn: (payload: Partial<PersistentAction>) => BoardAPI.createAction(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["board-summary"] });
+    },
+  });
+
+  // ── Mutation: Store memory ─────────────────────────────────
+  const storeMemoryMutation = useMutation({
+    mutationFn: (payload: Record<string, unknown>) => BoardAPI.storeMemory(payload),
+  });
+
+  // ── Mutation: Autonomy update ──────────────────────────────
+  const upsertAutonomyMutation = useMutation({
+    mutationFn: (payload: Partial<AutonomyPolicy>) => BoardAPI.upsertAutonomy(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["board-autonomy"] });
+    },
   });
 
   // ── Coordinated recommendations ──────────────────────────────
@@ -167,33 +249,64 @@ export function useBusinessAdvisorBoard() {
     return Math.min(100, critical * 15 + pending * 10 + (profitSummary.unresolvedSignals > 5 ? 20 : 0));
   }, [aiRecommendations.data, actionQueue, profitSummary]);
 
+  // ── Realtime subscriptions ─────────────────────────────────
+  useEffect(() => {
+    const channel = supabase
+      .channel("board-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "advisor_board_recommendations" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["board-recommendations"] });
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "advisor_board_actions" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["board-summary"] });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [queryClient]);
+
   // ── Trust/Autonomy controls ──────────────────────────────────
   const updateDomainLevel = useCallback((domain: AutonomyDomain, level: AutonomyLevel) => {
     setTrustState(prev => setDomainLevel(prev, domain, level));
+    upsertAutonomyMutation.mutate({ domain, autonomy_level: level });
     toast.success(`${domain} autonomy set to Level ${level} — ${AUTONOMY_LEVELS[level].label}`);
-  }, []);
+  }, [upsertAutonomyMutation]);
 
   const updateGlobalLevel = useCallback((level: AutonomyLevel) => {
     setTrustState(prev => setGlobalLevel(prev, level));
+    upsertAutonomyMutation.mutate({ domain: "global", autonomy_level: level });
     toast.success(`Global autonomy set to Level ${level} — ${AUTONOMY_LEVELS[level].label}`);
-  }, []);
+  }, [upsertAutonomyMutation]);
 
   const toggleEmergencyPause = useCallback(() => {
+    const isPaused = trustState.emergencyPaused;
     setTrustState(prev =>
       prev.emergencyPaused ? resumeFromPause(prev) : emergencyPause(prev, "Manual emergency pause")
     );
-    toast[trustState.emergencyPaused ? "success" : "warning"](
-      trustState.emergencyPaused ? "Automation resumed" : "Emergency pause activated"
-    );
+    if (isPaused) {
+      BoardAPI.resume().catch(() => {});
+      toast.success("Automation resumed");
+    } else {
+      BoardAPI.emergencyStop().catch(() => {});
+      toast.warning("Emergency pause activated");
+    }
   }, [trustState.emergencyPaused]);
 
   // ── Action Pipeline ──────────────────────────────────────────
   const proposeAction = useCallback((params: Parameters<typeof createAction>[0]) => {
     const action = createAction(params);
     setActionQueue(prev => [action, ...prev]);
+    // Persist to backend
+    createActionMutation.mutate({
+      advisor_id: params.advisorId,
+      title: params.title,
+      description: params.description,
+      domain: params.domain,
+      risk_tier: params.riskLevel === "critical" ? "critical" : params.riskLevel,
+      confidence: params.confidence,
+    });
     toast.info(`New action proposed: ${action.title}`);
     return action;
-  }, []);
+  }, [createActionMutation]);
 
   const handleSimulate = useCallback((actionId: string) => {
     setActionQueue(prev => prev.map(a => a.id === actionId ? simulateAction(a) : a));
@@ -233,6 +346,13 @@ export function useBusinessAdvisorBoard() {
       ownerAction: "approved",
       confidenceAtTime: rec.confidence,
     });
+    // Record reflection to backend
+    BoardAPI.recordReflection({
+      advisor_id: rec.advisorId,
+      owner_action: "approved",
+      owner_feedback: `Converted to action: ${rec.title}`,
+    }).catch(() => {});
+
     return proposeAction({
       advisorId: rec.advisorId,
       advisorName: advisor?.displayName ?? rec.advisorId,
@@ -257,8 +377,16 @@ export function useBusinessAdvisorBoard() {
       source: "owner-input",
       tags: ["archetype"],
     });
+    // Persist to backend
+    storeMemoryMutation.mutate({
+      advisor_id: "system",
+      memory_layer: "long_term",
+      category: "business-type",
+      content: `Business archetype set to: ${archetype}`,
+      importance: 0.9,
+    });
     toast.success(`Business type set to ${archetype}`);
-  }, [archetypeEngine, memoryEngine]);
+  }, [archetypeEngine, memoryEngine, storeMemoryMutation]);
 
   // ── Memory operations ────────────────────────────────────────
   const correctMemory = useCallback((id: string, field: "content" | "confidence", newValue: unknown, reason: string) => {
@@ -268,6 +396,7 @@ export function useBusinessAdvisorBoard() {
 
   const archiveMemory = useCallback((id: string) => {
     memoryEngine.archiveMemory(id);
+    BoardAPI.archiveMemory(id).catch(() => {});
     toast.info("Memory archived");
   }, [memoryEngine]);
 
@@ -277,7 +406,6 @@ export function useBusinessAdvisorBoard() {
     [reflectionEngine]
   );
 
-  // ── Conversation advisor ────────────────────────────────────────
   const [conversationAdvisor, setConversationAdvisor] = useState<AdvisorPersona | null>(null);
 
   // ── Part 4 Engine singletons ─────────────────────────────────
@@ -315,6 +443,14 @@ export function useBusinessAdvisorBoard() {
     const advisor = BUSINESS_ADVISORS.find(a => a.id === advisorId);
     toolEngine.requestExecution({ toolId, advisorId, advisorName: advisor?.displayName ?? advisorId, parameters: params, confidence: 0.85, impactSummary: "Advisor-initiated action" });
     refreshToolState();
+    // Persist to backend
+    BoardAPI.recordToolExecution({
+      advisor_id: advisorId,
+      tool_category: "advisor",
+      tool_name: toolId,
+      operation: "execute",
+      parameters: params,
+    }).catch(() => {});
     toast.info("Tool execution requested");
   }, [toolEngine, refreshToolState]);
 
@@ -326,7 +462,6 @@ export function useBusinessAdvisorBoard() {
   const handleUpdateMilestone = useCallback((id: string, status: MilestoneStatus) => { planningEngine.updateMilestoneStatus(id, status); setPlanningSnapshot(planningEngine.getSnapshot()); toast.success("Milestone updated"); }, [planningEngine]);
   const handleGenerateStrategy = useCallback(() => { setStrategyDoc(planningEngine.generateStrategyDocument()); toast.success("Strategy document generated"); }, [planningEngine]);
 
-  // Part 5 handlers
   const handleResolveSignal = useCallback((clientId: string, signalId: string) => {
     clientEngine.resolveSignal(clientId, signalId);
     toast.success("Signal resolved");
@@ -423,5 +558,15 @@ export function useBusinessAdvisorBoard() {
     journalDecisions,
     handleResolveSignal,
     handleUpdateDecisionOutcome,
+
+    // NEW: Persistent Backend Data
+    boardSummaryData: boardSummary.data,
+    boardSummaryLoading: boardSummary.isLoading,
+    persistedRecommendations: persistedRecs.data?.recommendations ?? [],
+    healthScoresData: healthScores.data?.scores ?? [],
+    persistedProfitSignals: persistedProfitSignals.data?.signals ?? [],
+    autonomyPoliciesData: autonomyPolicies.data?.policies ?? [],
+    updateRecommendationStatus: (id: string, status: string, notes?: string) =>
+      updateRecMutation.mutate({ id, status, notes }),
   };
 }
