@@ -77,8 +77,8 @@ export function checkBudget(policy: AIBudgetPolicy, currentSpend: number, estima
 
   for (const threshold of sortedThresholds) {
     if (utilization >= threshold.percent) {
-      if (threshold.action === "block") action = "block";
-      else if (threshold.action === "throttle" && action !== "block") action = "throttle";
+      if (threshold.action === "block") { action = "block"; }
+      else if (threshold.action === "throttle" && action === "allow") { action = "throttle"; }
       break;
     }
   }
