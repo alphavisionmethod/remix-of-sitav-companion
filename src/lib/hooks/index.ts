@@ -2,8 +2,8 @@
 export * from "./use-meta-governance";
 export * from "./useAction";
 export * from "./useEngineEventsData";
-export * from "./useIntelligenceAPI";
-export * from "./useIntelligencePersistence";
+export { useIntelligenceAPI } from "./useIntelligenceAPI";
+export { useIntelligenceAssetPersistence, useQualityFloorPersistence, useComputeSnapshotPersistence, useOperatorTastePersistence } from "./useIntelligencePersistence";
 export * from "./useModeData";
 export * from "./useOSRuntime";
 export * from "./usePersistedEngine";
