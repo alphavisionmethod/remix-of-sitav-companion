@@ -97,6 +97,16 @@ const FCC10HumanOversightEscalation = lazy(() => import("@/pages/admin/FCC10Huma
 const FCC11IncidentResponseTimeline = lazy(() => import("@/pages/admin/FCC11IncidentResponseTimeline"));
 const FCC12KnowledgeMemorySystem = lazy(() => import("@/pages/admin/FCC12KnowledgeMemorySystem"));
 
+// ── SRE: Engineering Governance ──
+const SRE01ValidationCenter = lazy(() => import("@/pages/admin/SRE01ValidationCenter"));
+const SRE02BuilderCriticConsole = lazy(() => import("@/pages/admin/SRE02BuilderCriticConsole"));
+const SRE03SimulationLab = lazy(() => import("@/pages/admin/SRE03SimulationLab"));
+const SRE04CodeStandardsTestGen = lazy(() => import("@/pages/admin/SRE04CodeStandardsTestGen"));
+const SRE05ChaosTestingFramework = lazy(() => import("@/pages/admin/SRE05ChaosTestingFramework"));
+const SRE06AutoRollbackCenter = lazy(() => import("@/pages/admin/SRE06AutoRollbackCenter"));
+const SRE07VersionIntelligence = lazy(() => import("@/pages/admin/SRE07VersionIntelligence"));
+const SRE08SelfOptimizationBudgets = lazy(() => import("@/pages/admin/SRE08SelfOptimizationBudgets"));
+
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />,
@@ -189,5 +199,14 @@ export function getAdminRoutes() {
     <Route key="fcc10" path="/admin/founder/oversight" element={<FCC10HumanOversightEscalation />} />,
     <Route key="fcc11" path="/admin/founder/incidents" element={<FCC11IncidentResponseTimeline />} />,
     <Route key="fcc12" path="/admin/founder/knowledge" element={<FCC12KnowledgeMemorySystem />} />,
+    // ── SRE: Engineering Governance ──
+    <Route key="sre01" path="/admin/engineering/validation" element={<SRE01ValidationCenter />} />,
+    <Route key="sre02" path="/admin/engineering/builder-critic" element={<SRE02BuilderCriticConsole />} />,
+    <Route key="sre03" path="/admin/engineering/simulation" element={<SRE03SimulationLab />} />,
+    <Route key="sre04" path="/admin/engineering/standards" element={<SRE04CodeStandardsTestGen />} />,
+    <Route key="sre05" path="/admin/engineering/chaos" element={<SRE05ChaosTestingFramework />} />,
+    <Route key="sre06" path="/admin/engineering/rollback" element={<SRE06AutoRollbackCenter />} />,
+    <Route key="sre07" path="/admin/engineering/version-intel" element={<SRE07VersionIntelligence />} />,
+    <Route key="sre08" path="/admin/engineering/optimization" element={<SRE08SelfOptimizationBudgets />} />,
   ];
 }

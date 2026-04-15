@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/command";
 import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
-  Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
+  Layers, Link2, Lock, Rocket, Server, Shield, ShieldCheck, Target, TrendingUp, Zap,
   BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale,
   DollarSign, Receipt, RotateCcw, Terminal
 } from "lucide-react";
@@ -44,6 +44,15 @@ const NAV_ITEMS = [
   { label: "Human Oversight & Escalation", path: "/admin/founder/oversight", icon: Scale, group: "Founder Control" },
   { label: "Incident Response Timeline", path: "/admin/founder/incidents", icon: AlertTriangle, group: "Founder Control" },
   { label: "Knowledge & Memory System", path: "/admin/founder/knowledge", icon: Brain, group: "Founder Control" },
+  // Engineering Governance
+  { label: "Multi-Layer Validation Center", path: "/admin/engineering/validation", icon: ShieldCheck, group: "Engineering Governance" },
+  { label: "Builder/Critic Console", path: "/admin/engineering/builder-critic", icon: Scale, group: "Engineering Governance" },
+  { label: "Simulation Lab & Digital Twin", path: "/admin/engineering/simulation", icon: Zap, group: "Engineering Governance" },
+  { label: "Code Standards & Test Gen", path: "/admin/engineering/standards", icon: FileText, group: "Engineering Governance" },
+  { label: "Chaos Testing Framework", path: "/admin/engineering/chaos", icon: AlertTriangle, group: "Engineering Governance" },
+  { label: "Auto-Rollback Center", path: "/admin/engineering/rollback", icon: RotateCcw, group: "Engineering Governance" },
+  { label: "Version Intelligence", path: "/admin/engineering/version-intel", icon: GitBranch, group: "Engineering Governance" },
+  { label: "Self-Optimization & Budgets", path: "/admin/engineering/optimization", icon: TrendingUp, group: "Engineering Governance" },
   { label: "Workflow Replay", path: "/admin/workflow-replay", icon: Play, group: "Navigation" },
   { label: "Implementation Truth Center", path: "/admin/implementation-truth", icon: Eye, group: "Navigation" },
   { label: "ITC: Spec Registry", path: "/admin/implementation-truth/specs", icon: FileText, group: "Navigation" },
