@@ -85,7 +85,7 @@ export default function AdvisorBoardCatalog() {
                   </div>
                   <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
                     <Zap className="h-3 w-3" />
-                    <span>Specialties: {advisor.specialties?.slice(0, 3).join(", ") ?? "General"}</span>
+                    <span>Domains: {advisor.domainScope?.slice(0, 3).join(", ") ?? "General"}</span>
                   </div>
                 </CardContent>
               </Card>
