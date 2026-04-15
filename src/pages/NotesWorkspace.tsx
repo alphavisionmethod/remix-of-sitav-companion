@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Notes & Knowledge Workspace
 // Capture, organize, link to entities. Templates, meeting-note

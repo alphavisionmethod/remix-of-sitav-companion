@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Global OS Boardroom (Cinematic)
 // Synthesized executive review across Business, Finance, Concierge

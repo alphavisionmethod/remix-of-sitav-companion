@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Governance Dashboard
 // Unified view of all meta-governance panels: Trust Debt,
