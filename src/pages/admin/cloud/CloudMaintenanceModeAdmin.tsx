@@ -13,7 +13,7 @@ interface MaintenanceMode {
   mode_key: string;
   display_name: string;
   description: string | null;
-  is_active: boolean;
+  active: boolean;
   severity: string;
   activated_at: string | null;
   activated_by: string | null;
@@ -38,12 +38,12 @@ const SEVERITY_COLORS: Record<string, string> = {
 
 function getDemoModes(): MaintenanceMode[] {
   return [
-    { id: "mm1", mode_key: "pause-uploads", display_name: "Pause New Uploads", description: "Temporarily stop accepting new file uploads across all tenants", is_active: false, severity: "high", activated_at: null, activated_by: null, deactivated_at: null },
-    { id: "mm2", mode_key: "read-only", display_name: "Read-Only Mode", description: "Allow reads but block all write operations — safe maintenance window", is_active: false, severity: "critical", activated_at: null, activated_by: null, deactivated_at: null },
-    { id: "mm3", mode_key: "rebuild-indexes", display_name: "Rebuild Search Indexes", description: "Trigger a full rebuild of search and metadata indexes", is_active: false, severity: "medium", activated_at: null, activated_by: null, deactivated_at: null },
-    { id: "mm4", mode_key: "throttle-previews", display_name: "Throttle Preview Generation", description: "Reduce preview worker concurrency to lower system load", is_active: false, severity: "low", activated_at: null, activated_by: null, deactivated_at: null },
-    { id: "mm5", mode_key: "pause-sync-fanout", display_name: "Pause Sync Fanout", description: "Stop pushing sync updates to devices — useful during incidents", is_active: false, severity: "high", activated_at: null, activated_by: null, deactivated_at: null },
-    { id: "mm6", mode_key: "disable-enrollment", display_name: "Disable Device Enrollment", description: "Prevent new devices from joining — lock during security incident", is_active: false, severity: "critical", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm1", mode_key: "pause-uploads", display_name: "Pause New Uploads", description: "Temporarily stop accepting new file uploads across all tenants", active: false, severity: "high", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm2", mode_key: "read-only", display_name: "Read-Only Mode", description: "Allow reads but block all write operations — safe maintenance window", active: false, severity: "critical", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm3", mode_key: "rebuild-indexes", display_name: "Rebuild Search Indexes", description: "Trigger a full rebuild of search and metadata indexes", active: false, severity: "medium", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm4", mode_key: "throttle-previews", display_name: "Throttle Preview Generation", description: "Reduce preview worker concurrency to lower system load", active: false, severity: "low", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm5", mode_key: "pause-sync-fanout", display_name: "Pause Sync Fanout", description: "Stop pushing sync updates to devices — useful during incidents", active: false, severity: "high", activated_at: null, activated_by: null, deactivated_at: null },
+    { id: "mm6", mode_key: "disable-enrollment", display_name: "Disable Device Enrollment", description: "Prevent new devices from joining — lock during security incident", active: false, severity: "critical", activated_at: null, activated_by: null, deactivated_at: null },
   ];
 }
 
@@ -62,17 +62,17 @@ export function CloudMaintenanceModeAdmin() {
       .catch(() => { setModes(getDemoModes()); setLoading(false); });
   }, []);
 
-  const activeCount = modes.filter(m => m.is_active).length;
+  const activeCount = modes.filter(m => m.active).length;
 
   const toggleMode = (id: string) => {
     setModes(prev => prev.map(m => {
       if (m.id !== id) return m;
-      const next = !m.is_active;
-      return { ...m, is_active: next, activated_at: next ? new Date().toISOString() : m.activated_at, deactivated_at: next ? null : new Date().toISOString() };
+      const next = !m.active;
+      return { ...m, active: next, activated_at: next ? new Date().toISOString() : m.activated_at, deactivated_at: next ? null : new Date().toISOString() };
     }));
     const mode = modes.find(m => m.id === id);
-    toast[mode?.is_active ? "success" : "warning"](
-      `${mode?.display_name} ${mode?.is_active ? "deactivated" : "ACTIVATED"}`
+    toast[mode?.active ? "success" : "warning"](
+      `${mode?.display_name} ${mode?.active ? "deactivated" : "ACTIVATED"}`
     );
   };
 
@@ -113,32 +113,32 @@ export function CloudMaintenanceModeAdmin() {
           const Icon = MODE_ICONS[mode.mode_key] || PauseCircle;
           const sevStyle = SEVERITY_COLORS[mode.severity] || SEVERITY_COLORS.low;
           return (
-            <Card key={mode.id} className={cn(mode.is_active && "border-amber-500/30 bg-amber-500/5")}>
+            <Card key={mode.id} className={cn(mode.active && "border-amber-500/30 bg-amber-500/5")}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className={cn("h-10 w-10 rounded-lg flex items-center justify-center", mode.is_active ? "bg-amber-500/20" : "bg-muted/30")}>
-                      <Icon className={cn("h-5 w-5", mode.is_active ? "text-amber-400" : "text-muted-foreground")} />
+                    <div className={cn("h-10 w-10 rounded-lg flex items-center justify-center", mode.active ? "bg-amber-500/20" : "bg-muted/30")}>
+                      <Icon className={cn("h-5 w-5", mode.active ? "text-amber-400" : "text-muted-foreground")} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-medium">{mode.display_name}</p>
                         <Badge variant="outline" className={cn("text-xs", sevStyle)}>{mode.severity}</Badge>
-                        {mode.is_active && (
+                        {mode.active && (
                           <Badge className="text-xs bg-amber-500/20 text-amber-300 border-amber-500/30">
                             <Clock className="h-3 w-3 mr-1" /> Active
                           </Badge>
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">{mode.description}</p>
-                      {mode.is_active && mode.activated_at && (
+                      {mode.active && mode.activated_at && (
                         <p className="text-xs text-amber-400/70 mt-1">
                           Since {new Date(mode.activated_at).toLocaleString()}
                         </p>
                       )}
                     </div>
                   </div>
-                  <Switch checked={mode.is_active} onCheckedChange={() => toggleMode(mode.id)} />
+                  <Switch checked={mode.active} onCheckedChange={() => toggleMode(mode.id)} />
                 </div>
               </CardContent>
             </Card>
