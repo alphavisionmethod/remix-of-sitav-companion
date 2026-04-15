@@ -12,10 +12,10 @@ import { useMemo } from "react";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
 
-const { isDemo: isDemoMode } = useAuth();
 
 
 const FinancialHealthPulse = () => {
+  const { isDemo: isDemoMode } = useAuth();
 
   const health = useMemo(() => computeFinancialHealth({
     safeToSpendCents: 245000, monthlyIncomeCents: 850000, totalDebtCents: 4813000,

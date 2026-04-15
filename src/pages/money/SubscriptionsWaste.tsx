@@ -19,7 +19,6 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
-const { isDemo: isDemoMode } = useAuth();
 
 
 interface EnrichedSub { waste_flag: boolean; duplicate_of: string; usage_level: string; [key: string]: unknown; }
@@ -31,6 +30,7 @@ interface SubForm { service_name: string; amount: string; billing_cycle: string;
 const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "monthly", category: "", renewal_date: "", usage_level: "unknown", waste_flag: false, duplicate_of: "", notes: "" };
 
 const SubscriptionsWaste = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();

@@ -16,10 +16,10 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
-const { isDemo: isDemoMode } = useAuth();
 
 
 const ReservesSavings = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();

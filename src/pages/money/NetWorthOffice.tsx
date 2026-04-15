@@ -16,10 +16,10 @@ import { useMemo, useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
-const { isDemo: isDemoMode } = useAuth();
 
 
 const NetWorthOffice = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
   const { data: goals = [] } = useSavingsGoals();
