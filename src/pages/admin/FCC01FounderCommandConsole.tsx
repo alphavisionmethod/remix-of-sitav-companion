@@ -19,6 +19,7 @@ import {
   Play, RotateCcw, Target, TrendingUp
 } from "lucide-react";
 import { founderOrchestrator, type DirectiveRecord, type DirectiveDomain, type AgentClass } from "@/lib/services/founder-orchestrator";
+import { SimulationPreview } from "@/components/admin/shells/SimulationPreview";
 
 const DOMAIN_CONFIG: Record<DirectiveDomain, { icon: React.ElementType; color: string; label: string }> = {
   reliability: { icon: Shield, color: "text-trust-safe", label: "Reliability" },
