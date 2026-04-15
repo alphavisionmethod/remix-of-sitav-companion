@@ -1,6 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Ecosystem Orchestrator: OS + Cloud + App Coordination
-// Admin-only distributed command routing, dual authority, guarantees
+// @deprecated — CROSS-DEVICE CONTINUITY ADAPTER ONLY. Retained for
+// sync/presence/device-mesh coordination. MUST NOT own business
+// decision logic, boardroom recommendations, or action execution
+// outside device/surface continuity.
+// New orchestration consumers MUST use:
+//   import { orchestrationFacade } from "@/lib/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import {

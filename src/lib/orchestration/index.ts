@@ -11,6 +11,10 @@ export type { ProcessIntentRequest } from "./orchestration-facade";
 export type { OrchestrationLayer, OrchestrationDomain, OrchestrationPriority, OrchestrationStatus, OrchestrationClassEntry } from "./shared/orchestration-types";
 export { ORCHESTRATION_CLASSES, LAYER_ORDER, isLayerTransitionValid, getClassForLayer } from "./shared/orchestration-types";
 
+// ── Orchestration IDs ──
+export { generateOrchestrationId, generateIdSet, parseIdKind, validateOrchestrationId } from "./shared/orchestration-ids";
+export type { OrchestrationIdKind } from "./shared/orchestration-ids";
+
 export type { OrchestrationEnvelope, IntentLayerState, PlanningLayerState, ExecutionLayerState, ProofLayerState, PlannedStep, PolicySnapshot } from "./shared/orchestration-envelope";
 export { createOrchestrationEnvelope, advanceEnvelopeLayer } from "./shared/orchestration-envelope";
 

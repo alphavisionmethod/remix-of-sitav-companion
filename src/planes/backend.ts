@@ -16,6 +16,12 @@ export type { TrustEnrichedResponse } from "@/lib/ai/ai-capability-client";
 // ── Canonical Execution ──
 export { CANONICAL_EXECUTION_STAGES } from "@/lib/core-services/canonical-execution-path";
 export type { CanonicalStage, ExecutionPathRecord } from "@/lib/core-services/canonical-execution-path";
+
+// ── Canonical Orchestration Facade (4-layer authority) ──
+export { OrchestrationFacade, orchestrationFacade } from "@/lib/orchestration";
+export type { ProcessIntentRequest } from "@/lib/orchestration";
+
+// Legacy compat re-export (consumers should migrate to OrchestrationFacade)
 export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
 
 // ── Brain Core ──

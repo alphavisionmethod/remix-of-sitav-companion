@@ -1,6 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Council Orchestrator Service
-// Multi-advisor deliberation, consensus building, conflict resolution
+// @deprecated — INTENT SUPPORT ONLY. Retained as a multi-advisor
+// synthesis adapter subordinate to the canonical intent layer.
+// It may gather advisor positions and coordinate debate/synthesis
+// but MUST NOT execute, plan workflows, or write proof directly.
+// New orchestration consumers MUST use:
+//   import { orchestrationFacade } from "@/lib/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId } from "@/packages/contracts";

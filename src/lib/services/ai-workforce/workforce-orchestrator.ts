@@ -1,6 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Workforce Orchestrator
-// DB-backed role invocation, cost tracking, cache, approvals
+// @deprecated — EXECUTION ADAPTER ONLY. Retained for DB-backed
+// role invocation, cost tracking, cache, and approvals.
+// Subordinate to the canonical execution layer.
+// New orchestration consumers MUST use:
+//   import { orchestrationFacade } from "@/lib/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";

@@ -24,7 +24,10 @@ import { ProjectionService } from "./core-services/projection-service";
 import { VerificationEngine } from "./core-services/verification-engine";
 import { ExecutorService } from "./core-services/executor-service";
 import { CanonicalChainOrchestrator } from "./core-services/index";
+// Execution adapter — subordinate to canonical orchestration facade
 import { AgentOrchestrator } from "./core-services/agent-orchestrator";
+// Canonical 4-layer orchestration facade (single authority entry point)
+import { orchestrationFacade } from "./orchestration";
 import { LeaseManager } from "./core-services/lease-manager";
 import { ConstitutionCompiler } from "./core-services/constitution-compiler";
 import { ApiGateway } from "./core-services/api-gateway";
