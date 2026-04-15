@@ -40,6 +40,11 @@ import { AdvisorDebateView } from "@/components/business/advisor-board/AdvisorDe
 import { WeeklyExecutiveReport } from "@/components/business/advisor-board/WeeklyExecutiveReport";
 import { AdvisorNotificationSystem } from "@/components/business/advisor-board/AdvisorNotificationSystem";
 
+// Part 4 components
+import { AdvisorToolExecutionPanel } from "@/components/business/advisor-board/AdvisorToolExecutionPanel";
+import { BusinessRadarPanel } from "@/components/business/advisor-board/BusinessRadarPanel";
+import { StrategicPlanningStudio } from "@/components/business/advisor-board/StrategicPlanningStudio";
+
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
