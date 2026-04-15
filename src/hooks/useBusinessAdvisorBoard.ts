@@ -50,6 +50,50 @@ export interface AIRecommendation {
   contributingAdvisors?: string[];
   confidenceProfile?: Record<string, number>;
   dataGaps?: string[];
+  estimatedImpactCents?: number;
+  timeHorizon?: string;
+  actionPlan?: {
+    steps: Array<{ order: number; description: string; requiresApproval: boolean; estimatedMinutes: number; toolCategory: string }>;
+    totalSteps: number;
+    canAutoExecute: boolean;
+    riskTier: string;
+  };
+}
+
+export interface PipelineReceipt {
+  pipelineVersion: string;
+  layers: number;
+  signalsDetected: number;
+  signalsCritical: number;
+  recommendationsGenerated: number;
+  recommendationsPersisted: number;
+  disagreements: number;
+  activeAdvisors: number;
+  archetype: string;
+  hadRealData: boolean;
+  dataSources: string[];
+  modelsUsed: string[];
+  elapsedMs: number;
+  timestamp: string;
+}
+
+export interface AdvisorDisagreement {
+  topic: string;
+  advisorA: string;
+  positionA: string;
+  advisorB: string;
+  positionB: string;
+  resolution?: string;
+}
+
+export interface CognitivePipelineResult {
+  recommendations: AIRecommendation[];
+  boardSummary: string;
+  topPriority: string;
+  executiveSummary: string;
+  disagreements: AdvisorDisagreement[];
+  signals: Array<{ type: string; severity: string; domain: string; summary: string; priority: number }>;
+  receipt: PipelineReceipt;
 }
 
 // ── Demo context for profitability engine ─────────────────────
@@ -173,9 +217,9 @@ export function useBusinessAdvisorBoard() {
   });
 
   // ── AI Recommendations (cognitive pipeline) ────────────────
-  const aiRecommendations = useQuery({
+  const cognitivePipeline = useQuery({
     queryKey: ["business-advisor-deep-intelligence"],
-    queryFn: async (): Promise<AIRecommendation[]> => {
+    queryFn: async (): Promise<CognitivePipelineResult> => {
       const { data, error } = await supabase.functions.invoke("advisor-deep-intelligence", {
         body: {
           advisorIds: BUSINESS_ADVISORS.map(a => a.id),
@@ -189,15 +233,27 @@ export function useBusinessAdvisorBoard() {
         },
       });
       if (error) throw error;
-
-      // Invalidate persisted recs since new ones were generated
       queryClient.invalidateQueries({ queryKey: ["board-recommendations"] });
-
-      return data?.recommendations ?? [];
+      return {
+        recommendations: data?.recommendations ?? [],
+        boardSummary: data?.boardSummary ?? "",
+        topPriority: data?.topPriority ?? "",
+        executiveSummary: data?.executiveSummary ?? "",
+        disagreements: data?.disagreements ?? [],
+        signals: data?.signals ?? [],
+        receipt: data?.receipt ?? {},
+      };
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  const aiRecommendations = useMemo(() => ({
+    data: cognitivePipeline.data?.recommendations ?? [],
+    isLoading: cognitivePipeline.isLoading,
+    error: cognitivePipeline.error,
+    refetch: cognitivePipeline.refetch,
+  }), [cognitivePipeline]);
 
   // ── Mutation: Update recommendation status ─────────────────
   const updateRecMutation = useMutation({
@@ -479,10 +535,19 @@ export function useBusinessAdvisorBoard() {
     setSelectedAdvisor,
 
     // AI Intelligence
-    aiRecommendations: aiRecommendations.data ?? [],
+    aiRecommendations: aiRecommendations.data,
     aiLoading: aiRecommendations.isLoading,
     aiError: aiRecommendations.error,
     refetchAI: aiRecommendations.refetch,
+
+    // Cognitive Pipeline (Phase 3)
+    pipelineResult: cognitivePipeline.data ?? null,
+    boardSummary: cognitivePipeline.data?.boardSummary ?? "",
+    topPriority: cognitivePipeline.data?.topPriority ?? "",
+    executiveSummary: cognitivePipeline.data?.executiveSummary ?? "",
+    advisorDisagreements: cognitivePipeline.data?.disagreements ?? [],
+    businessSignals: cognitivePipeline.data?.signals ?? [],
+    pipelineReceipt: cognitivePipeline.data?.receipt ?? null,
 
     // Profitability
     profitabilityBrief,
