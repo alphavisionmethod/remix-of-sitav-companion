@@ -122,6 +122,9 @@ const CAI13MemoryGovernance = lazy(() => import("@/pages/admin/CAI13MemoryGovern
 const CAI14BoundaryControl = lazy(() => import("@/pages/admin/CAI14BoundaryControl"));
 const CAI15SignatureStudio = lazy(() => import("@/pages/admin/CAI15SignatureStudio"));
 
+// ── Communication Hub ──
+const CommunicationHub = lazy(() => import("@/pages/admin/CommunicationHub"));
+
 // ── FCC: Founder Command Control ──
 const FCC01FounderCommandConsole = lazy(() => import("@/pages/admin/FCC01FounderCommandConsole"));
 const FCC02TaskDecompositionGraph = lazy(() => import("@/pages/admin/FCC02TaskDecompositionGraph"));
@@ -229,6 +232,8 @@ export function getAdminRoutes() {
     <Route key="sys01" path="/admin/system-intelligence" element={gated("maintenance.view", <SYS01SystemIntelligence />)} />,
     <Route key="os01" path="/admin/os-platform" element={gated("maintenance.view", <OS01PlatformCommandCenter />)} />,
     <Route key="cloud01" path="/admin/cloud-backbone" element={gated("storage.view", <CloudBackboneAdmin />)} />,
+    // ── Communication Architecture Hub ──
+    <Route key="comm-hub" path="/admin/communication-hub" element={gated("maintenance.view", <CommunicationHub />)} />,
     // ── FCC: Founder Command Control (Internal Execution Plane) ──
     <Route key="fcc01" path="/admin/founder/command" element={gated("maintenance.emergency", <FCC01FounderCommandConsole />)} />,
     <Route key="fcc02" path="/admin/founder/tasks" element={gated("maintenance.run", <FCC02TaskDecompositionGraph />)} />,
