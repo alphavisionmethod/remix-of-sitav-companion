@@ -194,3 +194,39 @@ export {
   getPhaseItems, getP0Items, checkDependenciesMet, getReadinessScore,
 } from "./phased-rollout-plan";
 export type { RolloutPhase, RolloutPriority, RolloutItem } from "./phased-rollout-plan";
+
+// ── 24. Route Registry ──────────────────────────────────────
+export {
+  buildRouteEntry, ROUTE_FAMILIES, getRegistrySummary,
+} from "./route-registry";
+export type { RouteEntry } from "./route-registry";
+
+// ── 25. Canonical Route Registry (IA Taxonomy) ──────────────
+export {
+  USER_DOMAINS, ADMIN_DOMAINS,
+  USER_CANONICAL_ROUTES, ADMIN_CANONICAL_ROUTES,
+  CANONICAL_ROUTE_REGISTRY,
+  findCanonicalRoute, getCanonicalDomainRoutes,
+  getTopNavRoutes, getRedirectMap, getIASummary,
+} from "./canonical-route-registry";
+export type {
+  PageClass, ConsolidationStatus, CanonicalDomain,
+  UserDomain, AdminDomain, CanonicalRouteEntry,
+} from "./canonical-route-registry";
+
+// ── 26. Page Consolidation Map ──────────────────────────────
+export {
+  ADMIN_CONSOLIDATION, USER_CONSOLIDATION,
+  FULL_CONSOLIDATION_MAP,
+  getConsolidationSummary, findConsolidationEntry,
+  getEntriesNeedingRedirect,
+} from "./page-consolidation-map";
+export type { MergeAction, PageConsolidationEntry } from "./page-consolidation-map";
+
+// ── 27. IA Governance ───────────────────────────────────────
+export {
+  MAX_USER_TOP_LEVEL, MAX_ADMIN_TOP_LEVEL,
+  VALID_PAGE_CLASSES, PAGE_CLASS_SEMANTICS,
+  checkIAGovernance, assertIAGovernance,
+} from "./ia-governance";
+export type { IAViolation } from "./ia-governance";
