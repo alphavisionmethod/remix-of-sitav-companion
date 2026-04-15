@@ -167,6 +167,45 @@ const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPa
 
 export function getAdminRoutes() {
   return [
+    // ── Canonical IA Redirect Aliases ──
+    // Domain 1: Executive Overview
+    <Route key="ia-overview" path="/admin/overview" element={<Navigate to="/admin/dashboard" replace />} />,
+    // Domain 2: Users & Environments
+    <Route key="ia-users" path="/admin/users/environments" element={<Navigate to="/admin/mc/workspaces" replace />} />,
+    <Route key="ia-users-devices" path="/admin/users/devices" element={<Navigate to="/admin/mc/devices" replace />} />,
+    <Route key="ia-users-sessions" path="/admin/users/sessions" element={<Navigate to="/admin/security/sessions" replace />} />,
+    // Domain 3: AI Runtime
+    <Route key="ia-ai-runtime" path="/admin/ai-runtime" element={<Navigate to="/admin/ai-team/overview" replace />} />,
+    <Route key="ia-ai-runtime-advisors" path="/admin/ai-runtime/advisors" element={<Navigate to="/admin/advisor-board/catalog" replace />} />,
+    <Route key="ia-ai-runtime-workforce" path="/admin/ai-runtime/workforce" element={<Navigate to="/admin/ai-team/roles" replace />} />,
+    <Route key="ia-ai-runtime-models" path="/admin/ai-runtime/models" element={<Navigate to="/admin/ai-gateway/models" replace />} />,
+    <Route key="ia-ai-runtime-routing" path="/admin/ai-runtime/routing" element={<Navigate to="/admin/ai-gateway/routing" replace />} />,
+    <Route key="ia-ai-runtime-costs" path="/admin/ai-runtime/costs" element={<Navigate to="/admin/ai-team/cost" replace />} />,
+    // Domain 4: Integrations
+    <Route key="ia-integrations" path="/admin/integrations" element={<Navigate to="/admin/mc/sync-cloud" replace />} />,
+    <Route key="ia-integrations-health" path="/admin/integrations/health" element={<Navigate to="/admin/mc/sync-cloud" replace />} />,
+    // Domain 5: Trust & Security
+    <Route key="ia-trust-security" path="/admin/trust-security" element={<Navigate to="/admin/security/command-center" replace />} />,
+    <Route key="ia-trust-policies" path="/admin/trust-security/policies" element={<Navigate to="/admin/mc/policies" replace />} />,
+    <Route key="ia-trust-audit" path="/admin/trust-security/audit" element={<Navigate to="/admin/mc/logs" replace />} />,
+    // Domain 6: Health
+    <Route key="ia-health" path="/admin/health" element={<Navigate to="/admin/mc/system-health" replace />} />,
+    <Route key="ia-health-incidents" path="/admin/health/incidents" element={<Navigate to="/admin/mc/incidents" replace />} />,
+    <Route key="ia-health-fleet" path="/admin/health/fleet" element={<Navigate to="/admin/fleet-health" replace />} />,
+    // Domain 7: Releases
+    <Route key="ia-releases" path="/admin/releases" element={<Navigate to="/admin/mc/releases" replace />} />,
+    // Domain 8: Verification
+    <Route key="ia-verification" path="/admin/verification" element={<Navigate to="/admin/truth-indices" replace />} />,
+    <Route key="ia-verification-truth" path="/admin/verification/implementation-truth" element={<Navigate to="/admin/generated-truth" replace />} />,
+    <Route key="ia-verification-honesty" path="/admin/verification/launch-honesty" element={<Navigate to="/admin/ai-gateway/honesty" replace />} />,
+    // Domain 9: Config
+    <Route key="ia-config" path="/admin/config" element={<Navigate to="/admin/mc/policies" replace />} />,
+    <Route key="ia-config-flags" path="/admin/config/feature-flags" element={<Navigate to="/admin/mc/policies" replace />} />,
+    // Domain 10: Support
+    <Route key="ia-support" path="/admin/support" element={<Navigate to="/admin/mc/support" replace />} />,
+    <Route key="ia-support-diagnostics" path="/admin/support/diagnostics" element={<Navigate to="/admin/mc/system-health" replace />} />,
+
+    // ── Original Routes ──
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
     <Route key="a2" path="/admin/fleet-health" element={gated("maintenance.view", <FleetHealthPage />)} />,
     <Route key="a3" path="/admin/dashboard" element={<AdminDashboard />} />,
