@@ -177,5 +177,9 @@ export function getAdminRoutes() {
     <Route key="fcc02" path="/admin/founder/tasks" element={<FCC02TaskDecompositionGraph />} />,
     <Route key="fcc03" path="/admin/founder/cicd" element={<FCC03CICDPipelineBoard />} />,
     <Route key="fcc04" path="/admin/founder/runbooks" element={<FCC04RunbookCenter />} />,
+    <Route key="fcc05" path="/admin/founder/dashboard" element={<FCC05FounderDashboard />} />,
+    <Route key="fcc06" path="/admin/founder/programs" element={<FCC06ProgramManagementBoard />} />,
+    <Route key="fcc07" path="/admin/founder/cost" element={<FCC07PlatformCostCapacity />} />,
+    <Route key="fcc08" path="/admin/founder/sync-ops" element={<FCC08SyncStorageOps />} />,
   ];
 }
