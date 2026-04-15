@@ -27,9 +27,30 @@ export type PageClassification =
 // New files should NOT be created under these paths.
 // Use the canonical path from DIRECTORY_ORGANIZATION_MAP instead.
 const DEPRECATED_NEW_FILE_PATHS = [
-  "src/components/sita/",       // → src/runtimes/shell/ or src/features/
-  "src/components/admin-ai/",   // → src/admin/modules/ai/
-  "src/components/admin-os/",   // → src/admin/modules/runtime/
+  // Components → Features
+  "src/components/sita/",           // → src/runtimes/shell/ or src/features/
+  "src/components/admin-ai/",       // → src/admin/modules/ai/
+  "src/components/admin-os/",       // → src/admin/modules/runtime/
+  "src/components/admin/",          // → src/admin/
+  "src/components/cloud/",          // → src/features/cloud/
+  "src/components/autopilot/",      // → src/features/business/autopilot/
+  "src/components/simulation/",     // → src/features/simulation/
+  "src/components/reality/",        // → src/runtimes/reality/
+  "src/components/platform/",       // → src/platform/
+  "src/components/user-app/",       // → src/features/home/
+  "src/components/finance/",        // → src/features/money/
+  "src/components/investment/",     // → src/features/investment-office/
+  "src/components/mobile/",         // → src/runtimes/mobile/
+  "src/components/notifications/",  // → src/features/notifications/
+  "src/components/revenue-office/", // → src/features/revenue-office/
+  "src/components/advisors/",       // → src/features/advisors/
+  "src/components/business/",       // → src/features/business/
+  "src/components/concierge/",      // → src/features/concierge/
+  "src/components/files/",          // → src/features/files/
+  "src/components/governance/",     // → src/platform/governance/
+  "src/components/intelligence/",   // → src/features/intelligence/
+  "src/components/money/",          // → src/features/money/
+  "src/components/auth/",           // → src/features/auth/
 ];
 
 /**
