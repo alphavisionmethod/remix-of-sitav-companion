@@ -54,7 +54,32 @@ const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
 
-  const criticalRecs = board.aiRecommendations.filter(r => r.urgency === "critical" || r.urgency === "high");
+  // Merge persistent + in-memory recommendations; persistent takes priority
+  const mergedRecommendations = useMemo(() => {
+    const persistedMap = new Map(
+      (board.persistedRecommendations ?? []).map((r: any) => [r.title, r])
+    );
+    const merged = [...board.aiRecommendations];
+    for (const pr of board.persistedRecommendations ?? []) {
+      if (!merged.find(m => m.title === pr.title)) {
+        merged.push({
+          advisorId: pr.advisor_id,
+          title: pr.title,
+          summary: pr.summary,
+          urgency: pr.urgency_score > 80 ? "critical" : pr.urgency_score > 60 ? "high" : pr.urgency_score > 40 ? "medium" : "low",
+          confidence: pr.confidence_score / 100,
+          suggestedActions: [],
+          riskFlags: [],
+          rationale: pr.rationale,
+          domain: pr.domain,
+          category: pr.category,
+        });
+      }
+    }
+    return merged;
+  }, [board.aiRecommendations, board.persistedRecommendations]);
+
+  const criticalRecs = mergedRecommendations.filter(r => r.urgency === "critical" || r.urgency === "high");
 
   // Show Executive Reset if focus mode is active
   if (board.focusModeActive) {
