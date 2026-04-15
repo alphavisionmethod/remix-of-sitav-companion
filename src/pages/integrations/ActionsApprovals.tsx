@@ -123,6 +123,7 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 }
 
 export default function ActionsApprovals() {
+  const { isDemo: isDemoMode } = useAuth();
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 

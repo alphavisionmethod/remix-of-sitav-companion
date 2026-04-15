@@ -14,6 +14,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function IntegrationsCatalog() {
+  const { isDemo: isDemoMode } = useAuth();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();

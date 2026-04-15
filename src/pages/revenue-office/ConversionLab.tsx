@@ -44,6 +44,7 @@ const ADVISOR_CONVERSION_INSIGHTS = [
 ];
 
 export default function ConversionLab() {
+  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("experiments");
   const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : DEMO_EXPERIMENTS;
 

@@ -20,6 +20,7 @@ const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400",
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
 const ImportExportCenter = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);

@@ -17,6 +17,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function RelationshipCenter() {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: liveContacts, isLoading } = useCustomers();
   const [tab, setTab] = useState("contacts");
 

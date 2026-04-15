@@ -147,6 +147,7 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 // ── Advisor Council Grid ────────────────────────────────────────
 
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
+  const { isDemo: isDemoMode } = useAuth();
   const navigate = useNavigate();
 const modeConfig = MODES.find(m => m.id === mode)!;
   const filtered = isDemoMode
@@ -202,6 +203,7 @@ const modeConfig = MODES.find(m => m.id === mode)!;
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
+  const { isDemo: isDemoMode } = useAuth();
 if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
@@ -235,6 +237,7 @@ if (!isDemoMode) return null;
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
+  const { isDemo: isDemoMode } = useAuth();
 if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -283,6 +286,7 @@ if (!isDemoMode) return null;
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
+  const { isDemo: isDemoMode } = useAuth();
 if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
@@ -303,6 +307,7 @@ if (!isDemoMode) return null;
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
+  const { isDemo: isDemoMode } = useAuth();
 if (!isDemoMode) return null;
   
   const states: { state: ExecutionState; count: number }[] = [
@@ -332,6 +337,7 @@ if (!isDemoMode) return null;
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
+  const { isDemo: isDemoMode } = useAuth();
 if (!isDemoMode) return null;
   
   const recentProof = mockProofHistory.slice(0, 4);
@@ -451,6 +457,7 @@ const { data: dbMemory = [] } = useQuery({
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
+  const { isDemo: isDemoMode } = useAuth();
       return data || [];
     },
   });
@@ -499,6 +506,7 @@ const { data: dbMemory = [] } = useQuery({
 // ── Proof & History ─────────────────────────────────────────────
 
 const ProofHistory = () => {
+  const { isDemo: isDemoMode } = useAuth();
 return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -525,6 +533,7 @@ return (
         </div>
       ) : (
         <EmptyState icon={FileText} title="No proof history yet" description="Actions and verifications will appear here as advisors operate in live mode" />
+  const { isDemo: isDemoMode } = useAuth();
       )}
     </div>
   );
@@ -881,6 +890,7 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
         )}
         {messages.length > 0 && !isStreaming && (
           <SitaButton variant="ghost" size="sm" onClick={clear}>Clear</SitaButton>
+  const { isDemo: isDemoMode } = useAuth();
         )}
       </div>
     </div>

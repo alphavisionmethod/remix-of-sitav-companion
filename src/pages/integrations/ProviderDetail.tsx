@@ -14,6 +14,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function ProviderDetail() {
+  const { isDemo: isDemoMode } = useAuth();
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);

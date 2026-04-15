@@ -61,6 +61,7 @@ const SubscriptionsWaste = () => {
   const selected = subscriptions.find(s => s.id === selectedId);
 
   const annualized = (amount: number, cycle: string | null) => {
+  const { isDemo: isDemoMode } = useAuth();
     const m = cycle === "weekly" ? 52 : cycle === "quarterly" ? 4 : cycle === "annually" ? 1 : 12;
     return amount * m;
   };

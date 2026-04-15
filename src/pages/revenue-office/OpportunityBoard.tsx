@@ -22,6 +22,7 @@ const categoryColors: Record<string, string> = {
 const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
+  const { isDemo: isDemoMode } = useAuth();
   const opportunities = isDemoMode ? DEMO_opportunities : DEMO_opportunities;
   const [tab, setTab] = useState("ranked");
   const [watchlist, setWatchlist] = useState<Set<number>>(new Set());

@@ -14,6 +14,7 @@ const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "
 const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
+  const { isDemo: isDemoMode } = useAuth();
   const memoryEvents = isDemoMode ? DEMO_memoryEvents : DEMO_memoryEvents;
   const pinnedItems = DEMO_MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");

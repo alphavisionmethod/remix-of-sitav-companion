@@ -21,6 +21,7 @@ import {
 
 
 export default function CampaignOrchestrator() {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");
 

@@ -47,6 +47,7 @@ const UpcomingNeeds = () => {
   const overdueCount = OBLIGATIONS.filter(o => o.dueLabel.includes("Overdue")).length;
 
   const filterForView = () => {
+  const { isDemo: isDemoMode } = useAuth();
     switch (view) {
       case "today": return todayItems;
       case "3-day": return threeDayItems;

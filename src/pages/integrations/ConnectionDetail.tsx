@@ -12,6 +12,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function ConnectionDetail() {
+  const { isDemo: isDemoMode } = useAuth();
   const { connectionId } = useParams();
   const navigate = useNavigate();
 

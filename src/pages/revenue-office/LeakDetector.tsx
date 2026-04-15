@@ -16,6 +16,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function LeakDetector() {
+  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeakItems();
   const [tab, setTab] = useState("active");

@@ -19,6 +19,7 @@ import {
 
 
 const ApprovalsCenter = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
@@ -29,11 +30,13 @@ const ApprovalsCenter = () => {
   const decided = approvals.filter((a: Record<string, any>) => a.status !== "pending");
 
   const handleApprove = (id: string) => {
+  const { isDemo: isDemoMode } = useAuth();
     if (isDemoMode) return;
     approve(id, "Approved via Approvals Center");
   };
 
   const handleReject = (id: string) => {
+  const { isDemo: isDemoMode } = useAuth();
     if (isDemoMode) return;
     reject(id, rejectionReason || "Rejected via Approvals Center");
     setRejectionReason("");

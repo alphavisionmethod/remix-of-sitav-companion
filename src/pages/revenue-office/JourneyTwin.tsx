@@ -41,6 +41,7 @@ const statusColor = (s: string) => s === "active" ? "text-[hsl(var(--trust-safe)
 const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10" : s === "degraded" ? "bg-orange-400/10" : "bg-muted/20";
 
 export default function JourneyTwin() {
+  const { isDemo: isDemoMode } = useAuth();
   const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : DEMO_JOURNEY_STAGES;
   const [expanded, setExpanded] = useState<string | null>(null);
 

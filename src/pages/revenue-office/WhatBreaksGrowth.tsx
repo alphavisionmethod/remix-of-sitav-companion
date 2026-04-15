@@ -50,6 +50,7 @@ const DEPENDENCY_RISKS = [
 ];
 
 export default function WhatBreaksGrowth() {
+  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("fragility");
   const riskAreas = isDemoMode ? DEMO_riskAreas : DEMO_riskAreas;
   const totalRisks = riskAreas.reduce((a, r) => a + r.risks.length, 0);

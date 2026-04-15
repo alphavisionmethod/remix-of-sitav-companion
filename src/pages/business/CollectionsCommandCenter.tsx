@@ -103,6 +103,7 @@ const CollectionsCommandCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+  const { isDemo: isDemoMode } = useAuth();
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2">

@@ -41,6 +41,7 @@ const InboxCapture = () => {
   const [quickInput, setQuickInput] = useState("");
 
   const activeTab = (() => {
+  const { isDemo: isDemoMode } = useAuth();
     if (location.pathname.includes("/processed")) return "processed";
     if (location.pathname.includes("/review")) return "review";
     return "all";

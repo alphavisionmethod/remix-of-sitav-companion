@@ -22,6 +22,7 @@ import {
 
 
 export default function BookingCenter() {
+  const { isDemo: isDemoMode } = useAuth();
   const { data: liveBookings, isLoading } = useBookings();
   const [tab, setTab] = useState("upcoming");
 

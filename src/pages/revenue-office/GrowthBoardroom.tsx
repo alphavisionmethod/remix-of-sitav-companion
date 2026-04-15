@@ -29,6 +29,7 @@ const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 
 const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
+  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();
