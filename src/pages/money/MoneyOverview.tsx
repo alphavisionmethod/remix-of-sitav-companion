@@ -10,7 +10,7 @@ import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
-const { isDemo: isDemoMode } = useAuth();
+
 
 const MoneyOverview = () => {
   const { navigateTo } = useFinanceNavigation();
