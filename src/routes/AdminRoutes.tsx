@@ -13,6 +13,7 @@ const SEC01SessionSecrets = lazy(() => import("@/pages/admin/SEC01SessionSecrets
 const SEC02SecurityFoundation = lazy(() => import("@/pages/admin/SEC02SecurityFoundation"));
 const SYS01SystemIntelligence = lazy(() => import("@/pages/admin/SYS01SystemIntelligence"));
 const OS01PlatformCommandCenter = lazy(() => import("@/pages/admin/OS01PlatformCommandCenter"));
+const SecurityCommandCenter = lazy(() => import("@/pages/admin/SecurityCommandCenter"));
 const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 
 // ── MC: Mission Control Module Pages ──
@@ -229,6 +230,7 @@ export function getAdminRoutes() {
     // ── SEC: Session & Security ──
     <Route key="sec01" path="/admin/security/sessions" element={gated("audit.view", <SEC01SessionSecrets />)} />,
     <Route key="sec02" path="/admin/security/foundation" element={gated("audit.view", <SEC02SecurityFoundation />)} />,
+    <Route key="sec03" path="/admin/security/command-center" element={gated("audit.view", <SecurityCommandCenter />)} />,
     // ── SYS: System Intelligence ──
     <Route key="sys01" path="/admin/system-intelligence" element={gated("maintenance.view", <SYS01SystemIntelligence />)} />,
     <Route key="os01" path="/admin/os-platform" element={gated("maintenance.view", <OS01PlatformCommandCenter />)} />,
