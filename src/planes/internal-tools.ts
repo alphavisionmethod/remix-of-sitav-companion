@@ -26,12 +26,12 @@ export type {
 // ── Dual Reality ──
 export * as DualReality from "@/lib/dual-reality";
 
-// ── Reality Audit ──
-export * from "@/lib/reality-audit/reality-audit-registry";
+// ── Reality Audit (namespaced — overlaps with reality-records) ──
+export * as RealityAudit from "@/lib/reality-audit/reality-audit-registry";
 
-// ── Reality Records ──
-export * from "@/lib/reality-records/canonical-records";
-export * from "@/lib/reality-records/truth-vocabulary";
+// ── Reality Records (namespaced — overlaps with reality-audit) ──
+export * as RealityRecords from "@/lib/reality-records/canonical-records";
+export * as TruthVocabulary from "@/lib/reality-records/truth-vocabulary";
 
 // ── Demo Data ──
 export * as DemoData from "@/lib/demo-data";

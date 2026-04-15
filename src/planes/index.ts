@@ -12,3 +12,5 @@ export * as SharedPlane from "./shared";
 export * as AdminPlane from "./admin";
 export * as FounderPlane from "./founder";
 export * as MobilePlane from "./mobile";
+export * as ProductPlane from "./product";
+export * as InternalToolsPlane from "./internal-tools";
