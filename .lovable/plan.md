@@ -1,115 +1,98 @@
 
 
-# Unified Settings App — Consolidation Plan
+# Settings App — Comprehensive Gap Analysis & Enhancement Plan
 
-## Problem
-Settings is fragmented across three places:
-1. **SettingsWindow** (windowed OS app) — has WiFi, Bluetooth, Sound, Display, Keyboard, Device Mode, but missing integrations, AI controls, operating modes, etc.
-2. **SettingsPage** (route `/settings`) — has Integrations, Advisors/AI, Operating Modes, Connected Accounts, etc., but missing WiFi, Bluetooth, Sound, Display
-3. **7 separate sub-page files** in `src/pages/settings/` — Accessibility, Device, Google Accounts, Plan/Usage, Notifications, Trusted Devices, Cloud Settings
+## What's Already Working Well
+The unified SettingsWindow has 26 sections across 8 groups with Nova SDK styling. Core sections (WiFi, Bluetooth, Sound, Display, Keyboard, Appearance, Privacy, Notifications, System Updates) are fully functional with real `useSettingsValue` hooks.
 
-The user wants ONE unified Settings app (the windowed Nova SDK app), containing everything.
+## Gaps Found
 
-## Design
+### A. OS Settings Sections — Missing Depth
 
-Merge all settings into the **SettingsWindow** as the single source of truth. Add the missing sections from SettingsPage and sub-pages. The `/settings` route will open the windowed Settings app instead of rendering its own page.
+1. **Accessibility** — Uses local `useState` instead of `useSettingsValue` for highContrast, largeText, screenReader. Missing 6 SettingsSchema keys already defined: `accessibility.boldText`, `accessibility.reduceAutoPlayEffects`, `accessibility.fullKeyboardNav`, `accessibility.focusIndicators`, `accessibility.voiceOver`, `accessibility.zoom/zoomLevel`, `accessibility.stickyKeys`, `accessibility.cursorSize`, `accessibility.announcementVerbosity`, `accessibility.textSize`. The standalone `AccessibilitySettings.tsx` page has all of these wired — the Settings window version is a stripped-down copy.
 
-### SettingsWindow — Final Section List (26 sections, 8 groups)
+2. **Network/WiFi** — Only shows a single hardcoded "SITA-Network" with toggle. Missing: available networks list, signal strength, DNS settings (`network.dns`), proxy config (`network.proxy`), captive portal indicator, VPN connect/disconnect action, wifid service integration.
 
-```text
-Group: Account
-  - Profile (exists)
-  - Security (exists)
-  - Connected Accounts (from SettingsPage — Google, OAuth, providers)
+3. **Bluetooth** — Only 2 hardcoded devices. Missing: discovery scan button, device category icons, battery levels (btd tracks accessory batteries), forget/disconnect per device, audio routing indicator.
 
-Group: System
-  - General (exists)
-  - Appearance (exists)
-  - Display (exists)
-  - Accessibility (from AccessibilitySettings.tsx)
-  - Operating Modes (from SettingsPage — Focus, Travel, etc.)
-  - Device Mode (exists)
+4. **Sound** — Missing: input device selector, alert volume slider (`sound.alertVolume`), alert sound picker (`sound.alertSound`), mute toggle (`sound.mute`), input volume/gain.
 
-Group: Connectivity
-  - Network / Wi-Fi (exists)
-  - Bluetooth (exists)
-  - Cloud & Sync (exists)
-  - Integrations & APIs (from SettingsPage — connector status, sync)
+5. **Keyboard** — Missing: key repeat delay (`input.keyRepeatDelay`), trackpad speed (`input.trackpadSpeed`), natural scrolling (`input.naturalScrolling`), tap to click (`input.tapToClick`), keyboard shortcuts viewer.
 
-Group: Sound & Input
-  - Sound (exists)
-  - Keyboard (exists)
+6. **Cloud & Sync** — Basic toggle only. The full `UserCloudSettings.tsx` (445 lines) has selective sync per namespace, encryption levels, file browser, trash manager, activity timeline, device safety, import/export — none of this is in the Settings window.
 
-Group: AI & Intelligence
-  - Advisors & AI (from SettingsPage — autonomy, budget, confidence)
-  - Plan & Usage (from MyPlanUsage.tsx)
+7. **Display** — Missing: scaling slider (`display.scaling`), night shift intensity (`display.nightShiftIntensity`), True Tone toggle, auto-brightness toggle, refresh rate selector.
 
-Group: Notifications
-  - Notifications (exists, enhanced with NotificationPreferences.tsx push controls)
+8. **General** — Missing: date/time format, timezone (timed service exists), startup behavior, default browser.
 
-Group: Privacy & Trust
-  - Privacy (exists, enhanced with SettingsPage GDPR export/delete)
-  - Trust & Security (from SettingsPage — trust mode, compliance audit)
-  - Devices & Sessions (from SettingsPage + TrustedDeviceManager)
+### B. App-Level Settings — Missing or Shallow
 
-Group: Advanced
-  - Household (from SettingsPage)
-  - Business Rules (from SettingsPage)
-  - Workflows (from SettingsPage)
-  - Backup & Recovery (from SettingsPage)
-  - System Updates (from SettingsPage — update daemon)
-  - Support & Diagnostics (from SettingsPage)
-  - About (exists)
-```
+9. **Advisors & AI** — All values use local `useState`, not persisted. Missing: per-advisor enable/disable, model preference selector, AI gateway stats, token budget alerts, prompt history toggle.
 
-## Implementation Steps
+10. **Privacy** — Missing: per-app permission management (which apps have location/camera/mic), tracking prevention level, cookie policy, ad personalization toggle.
 
-### 1. Expand SettingsWindow with all missing sections
-Add 15 new content components to `SettingsWindow.tsx`, porting the logic from SettingsPage and sub-pages:
-- **ConnectedAccountsContent** — Google provider family, OAuth identity, all provider status
-- **AccessibilityContent** — high contrast, text size, reduce motion, screen reader
-- **OperatingModesContent** — 12 operating modes with mode switching
-- **IntegrationsContent** — connector registry status, sync status
-- **AdvisorsAIContent** — autonomy level, confidence threshold, budget, per-advisor controls
-- **PlanUsageContent** — compute budget, AI spend, fair use
-- **TrustSecurityContent** — trust mode, simulation preference, compliance audit
-- **DevicesSessionsContent** — trusted devices list, session management
-- **HouseholdContent** — family members, shared access
-- **BusinessRulesContent** — follow-up policy, lead scoring, pipeline
-- **WorkflowsContent** — active automations, trust gate
-- **BackupRecoveryContent** — backup status, restore points, export
-- **SystemUpdatesContent** — update daemon, channel selector, policy
-- **SupportDiagnosticsContent** — system health, diagnostics, quick help
-- **NotificationPrefsContent** — enhance existing with push permission controls
+11. **Trust & Security** — Missing: session timeout config, IP allowlisting, login history/audit log, security key management (FIDO2/WebAuthn).
 
-### 2. Update SECTIONS and GROUPS arrays
-Add entries for all 26 sections organized into 8 groups.
+12. **Devices & Sessions** — Missing: revoke session button, rename device, set trust level per device, last IP/location display.
 
-### 3. Redirect `/settings` route to the windowed app
-Modify the SettingsPage to simply launch the Settings window app (or render a minimal redirect/launcher that opens the window). The route still exists for deep-linking but opens the app.
+13. **Household** — All static/hardcoded. Missing: actual invite flow, permission level editor, shared spending limits, parental controls.
 
-### 4. Wire sidebar navigation entry
-Ensure clicking "Settings" in the sidebar opens the Settings window app, not the route page.
+14. **Business Rules** — All `onChange={() => {}}` no-ops. Not persisted.
 
-### Technical Details
-- All new sections use the Nova SDK UI components (`NovaCard`, `NovaToggle`, `NovaSlider`, `NovaSectionLabel`, etc.) matching the existing SettingsWindow style
-- Hooks like `useSettingsValue`, `useAuth`, `useGovernanceSimulator`, `useOSOrchestration`, `useUpdateDaemon` are imported as needed
-- Connector/integration data uses existing `useQuery` patterns from SettingsPage
-- The file will be split into multiple sub-files under `src/components/sita/shell/windows/settings/` for maintainability
-- No stubs or placeholders — all logic ported from existing working code
+15. **Workflows** — All static. Missing: create/edit/delete automation, trigger config, run history.
+
+16. **Backup & Recovery** — All static. Missing: actual backup trigger, restore action, backup schedule config, export format selector.
+
+### C. Mobile Settings — Missing Parity
+
+17. **MobileSettings** — Very sparse (6 toggles + 2 nav rows). Missing most of what the OS version has: appearance options, AI settings, cloud sync, accessibility, operating modes.
+
+### D. Cross-Cutting Gaps
+
+18. **Settings Search** — No search/filter in the sidebar to find settings quickly (26 sections is a lot to scroll).
+19. **Settings Persistence** — Many sections use local `useState` instead of `useSettingsValue`, meaning changes are lost on reload.
+20. **UserCloudSettings integration** — The rich 445-line cloud settings page is completely separate from the Settings window.
+
+---
+
+## Implementation Plan
+
+### Batch 1: Wire Real Persistence + Accessibility Parity
+- **AccessibilityContent**: Replace all `useState` with `useSettingsValue` for all 12 schema keys. Add Bold Text, VoiceOver, Zoom/Zoom Level, Sticky Keys, Cursor Size, Full Keyboard Nav, Focus Indicators, Announcement Verbosity, Text Size slider — matching the standalone page.
+- **AdvisorsAIContent**: Add settings schema keys for `ai.autonomyLevel`, `ai.confidenceThreshold`, `ai.budgetMode`, `ai.contradictionDisplay`. Wire with `useSettingsValue`.
+- **BusinessRulesContent / WorkflowsContent / HouseholdContent**: Wire onChange handlers to persist values via `useSettingsValue` or localStorage.
+- Extend `SettingsSchema` with ~12 new keys for AI, trust, and business settings.
+
+### Batch 2: Deepen OS Hardware Sections
+- **NetworkContent**: Add available networks list (simulated wifid scan), DNS/proxy config fields, VPN connect action, signal strength bars.
+- **BluetoothContent**: Add scan button, battery level per device, forget device, category-based icons (headphones/keyboard/mouse/speaker).
+- **SoundContent**: Add input device, alert volume, alert sound picker, mute toggle.
+- **KeyboardContent**: Add key repeat delay, trackpad speed, natural scrolling, tap to click toggles.
+- **DisplayContent**: Add scaling slider, night shift intensity, auto-brightness, refresh rate.
+
+### Batch 3: Enrich App-Level Sections
+- **CloudSyncContent**: Port selective sync namespaces, encryption display, and key actions from `UserCloudSettings.tsx` into Nova SDK components.
+- **PrivacyContent**: Add per-app permissions list, tracking prevention level chooser, ad personalization toggle.
+- **TrustSecurityContent**: Add session timeout config, login history preview, security key status.
+- **DevicesSessionsContent**: Add revoke session button, rename device, set trust level dropdown, last IP display.
+- **GeneralContent**: Add timezone (from timed), date format, startup behavior, default browser.
+
+### Batch 4: Settings Search + Mobile Parity
+- **Settings search bar**: Add a filter input at the top of the sidebar that fuzzy-matches section labels and highlights/scrolls to matching sections.
+- **MobileSettings**: Expand to match OS parity — add grouped sections for Appearance (accent color, wallpaper preview), AI (autonomy, budget mode), Connectivity (WiFi/BT status), Cloud (sync toggle + last sync), Accessibility (reduce motion, large text), Operating Mode selector. Use the existing `ToggleRow`/`NavRow` patterns.
 
 ### Files Modified/Created
+
 | File | Action |
 |---|---|
-| `src/components/sita/shell/windows/settings/AccountSections.tsx` | Create — Profile, Security, Connected Accounts |
-| `src/components/sita/shell/windows/settings/SystemSections.tsx` | Create — General, Appearance, Display, Accessibility, Operating Modes, Device Mode |
-| `src/components/sita/shell/windows/settings/ConnectivitySections.tsx` | Create — Network, Bluetooth, Cloud & Sync, Integrations |
-| `src/components/sita/shell/windows/settings/SoundInputSections.tsx` | Create — Sound, Keyboard |
-| `src/components/sita/shell/windows/settings/AISections.tsx` | Create — Advisors & AI, Plan & Usage |
-| `src/components/sita/shell/windows/settings/NotificationSections.tsx` | Create — Notifications with push controls |
-| `src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx` | Create — Privacy, Trust & Security, Devices & Sessions |
-| `src/components/sita/shell/windows/settings/AdvancedSections.tsx` | Create — Household, Business Rules, Workflows, Backup, Updates, Support, About |
-| `src/components/sita/shell/windows/SettingsWindow.tsx` | Rewrite — import from sub-files, expand SECTIONS/GROUPS/CONTENT maps |
-| `src/pages/SettingsPage.tsx` | Simplify — redirect/launcher that opens Settings window |
-| `src/routes/os-routes.tsx` | Update — simplify settings sub-routes |
+| `src/lib/nova-sdk/services/settings-service.ts` | Extend SettingsSchema with ~12 new keys |
+| `src/components/sita/shell/windows/settings/SystemSections.tsx` | Rewrite Accessibility, Display, General with full depth |
+| `src/components/sita/shell/windows/settings/ConnectivitySections.tsx` | Enhance Network, Bluetooth, CloudSync |
+| `src/components/sita/shell/windows/settings/SoundInputSections.tsx` | Enhance Sound, Keyboard with all missing controls |
+| `src/components/sita/shell/windows/settings/AISections.tsx` | Wire persistence, add per-advisor controls |
+| `src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx` | Enhance Privacy, Trust, Devices |
+| `src/components/sita/shell/windows/settings/AdvancedSections.tsx` | Wire onChange handlers, deepen Backup/Workflows |
+| `src/components/sita/shell/windows/settings/shared.tsx` | Add SettingsSearch component + extended SECTION_KEYS |
+| `src/components/sita/shell/windows/SettingsWindow.tsx` | Add search bar to sidebar |
+| `src/pages/mobile/MobileSettings.tsx` | Expand to grouped sections with OS parity |
 
