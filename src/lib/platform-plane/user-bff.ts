@@ -111,9 +111,8 @@ class UserBFF {
   async getSyncStatus(userId: string) {
     const { data: checkpoint } = await supabase
       .from("cloud_sync_checkpoints")
-      .select("created_at")
+      .select("id, user_id")
       .eq("user_id", userId)
-      .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
 
