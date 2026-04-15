@@ -37,6 +37,7 @@ const domainColors: Record<string, { bg: string; ring: string }> = {
   "/settings":       { bg: "from-gray-400 to-slate-500",      ring: "ring-gray-400/50" },
   "/owner":          { bg: "from-red-400 to-rose-500",        ring: "ring-red-400/50" },
   "/app-store":      { bg: "from-violet-400 to-purple-500",   ring: "ring-violet-400/50" },
+  "/intelligence":   { bg: "from-cyan-400 to-blue-500",       ring: "ring-cyan-400/50" },
 };
 
 const getColors = (url: string) => domainColors[url] || { bg: "from-gray-500 to-gray-700", ring: "ring-gray-400/40" };
