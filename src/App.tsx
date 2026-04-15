@@ -36,6 +36,7 @@ import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
 import { AdminShell } from "@/components/admin/shells/AdminShell";
 import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
+import { FounderControlShell } from "@/components/admin/shells/FounderControlShell";
 
 // Route families
 import { getOSRoutes } from "@/routes/os-routes";
@@ -86,7 +87,8 @@ const ConditionalAdminTools = () => {
   return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
 };
 
-const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
+const AdminShellLayout = () => <FounderControlShell />;
+const LegacyAdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
 const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
 
 // ═══════════════════════════════════════════════════════════════
