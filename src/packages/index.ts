@@ -26,6 +26,11 @@ export * from "./template-registry";
 export * from "./microinteraction-engine";
 // protocols — import directly from @/packages/protocols (collides with contracts)
 
+// ── New Control Domain Contracts ──
+// release-contracts — import directly from @/packages/release-contracts
+// graph-contracts — import directly from @/packages/graph-contracts
+// ai-contracts — import directly from @/packages/ai-contracts
+// simulation-contracts — import directly from @/packages/simulation-contracts
 
 // Colliding sibling packages — import directly from their paths:
 //   @/packages/advisor-config

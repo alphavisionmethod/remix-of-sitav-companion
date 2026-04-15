@@ -79,4 +79,11 @@ export { AdvisorReflectionEngine, getAdvisorReflectionEngine } from "./advisor-r
 export { EconomicIntelligenceEngine, economicIntelligence } from "./economic-intelligence-engine";
 export type { RevenueProjection, CostBreakdown, UnitEconomics, CashRunway, CostOptimization } from "./economic-intelligence-engine";
 
-
+// ── Control Domain Engines ──────────────────────────────────────
+export { ReleaseEngine, getReleaseEngine } from "./release-engine";
+export { GraphEngine, getGraphEngine } from "./graph-engine";
+export {
+  evaluatePromptSafety, routeModel, checkBudget, enforceToolPolicy,
+  evaluateActionGate, auditAIAction, getAuditLog, generateGovernanceReport,
+} from "./ai-governance-engine";
+export { SimulationEngine, getSimulationEngine } from "./simulation-engine";
