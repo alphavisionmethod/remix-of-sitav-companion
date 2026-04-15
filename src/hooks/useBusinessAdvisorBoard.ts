@@ -366,5 +366,25 @@ export function useBusinessAdvisorBoard() {
     reflectionSummary,
     conversationAdvisor,
     setConversationAdvisor,
+
+    // Part 4: Tool Execution + Radar + Planning
+    tools: ADVISOR_TOOLS,
+    toolExecutions,
+    toolStats: toolEngine.getStats(),
+    handleToolApprove,
+    handleToolExecute,
+    handleToolRollback,
+    handleToolCancel,
+    handleToolRequest,
+    radarSignals,
+    radarSnapshot,
+    handleRadarAcknowledge,
+    handleRadarAcknowledgeAll,
+    handleRadarGenerate,
+    planningSnapshot,
+    strategyDoc,
+    handleUpdateGoalProgress,
+    handleUpdateMilestone,
+    handleGenerateStrategy,
   };
 }
