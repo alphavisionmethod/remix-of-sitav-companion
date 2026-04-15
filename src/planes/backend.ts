@@ -54,11 +54,18 @@ export { MemoryService } from "@/lib/core-services/memory-service";
 // ── Verification Engine (re-export barrel) ──
 export { VerificationEngine } from "@/lib/core-services/verification-engine";
 
-// ── Self-Healing (re-export barrel) ──
-export * from "@/lib/core-services/self-healing";
+// ── Self-Healing ──
+export { ImmuneController } from "@/lib/core-services/self-healing";
+export { FleetHealthService } from "@/lib/core-services/self-healing";
 
-// ── Security (re-export barrel) ──
-export * from "@/lib/core-services/security";
+// ── Security ──
+export { IntrusionDetectionEngine } from "@/lib/core-services/security";
+export { AuditTrailEngine } from "@/lib/core-services/security";
+export { ResourceGovernor } from "@/lib/core-services/security";
+export { ZeroTrustValidator } from "@/lib/core-services/security";
+export { AITrustEnforcer } from "@/lib/core-services/security";
+export { EventConsistencyEngine } from "@/lib/core-services/security";
+export { UpdateSafetySystem } from "@/lib/core-services/security";
 
 // ── Search Fabric ──
 export type { SearchQuery, SearchResult, SearchFacets } from "@/lib/core-services/search-fabric";
@@ -76,8 +83,7 @@ export type { SimulationScenario, SimulationInput, SimulationResult } from "@/li
 export * from "@/lib/core-services/epistemic-firewall";
 
 // ── Conscience Gate ──
-// Explicit to avoid collisions
-export { ConscienceGate, getConscienceGate } from "@/lib/core-services/conscience-gate";
+export { conscienceGate } from "@/lib/core-services/conscience-gate";
 
 // ── Service Registry ──
 export * from "@/lib/core-services/service-registry";
