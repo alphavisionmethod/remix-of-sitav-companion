@@ -45,6 +45,11 @@ import { AdvisorToolExecutionPanel } from "@/components/business/advisor-board/A
 import { BusinessRadarPanel } from "@/components/business/advisor-board/BusinessRadarPanel";
 import { StrategicPlanningStudio } from "@/components/business/advisor-board/StrategicPlanningStudio";
 
+// Part 5 components
+import { ClientIntelligenceHub } from "@/components/business/advisor-board/ClientIntelligenceHub";
+import { AdvisorPerformancePanel } from "@/components/business/advisor-board/AdvisorPerformancePanel";
+import { DecisionJournalPanel } from "@/components/business/advisor-board/DecisionJournalPanel";
+
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();
   const [activeTab, setActiveTab] = useState("boardroom");
