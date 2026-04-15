@@ -25,6 +25,11 @@ import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
 import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/lib/engines/advisor-tool-execution-engine";
 import { getBusinessRadarEngine } from "@/lib/engines/business-radar-engine";
 import { getStrategicPlanningEngine } from "@/lib/engines/strategic-planning-engine";
+// Part 5 imports
+import { getClientIntelligenceEngine } from "@/lib/engines/client-intelligence-engine";
+import { getAdvisorPerformanceEngine } from "@/lib/engines/advisor-performance-engine";
+import { getDecisionJournalEngine } from "@/lib/engines/decision-journal-engine";
+import type { DecisionOutcome } from "@/lib/engines/decision-journal-engine";
 import type { MilestoneStatus } from "@/lib/engines/strategic-planning-engine";
 import { getBusinessContextGraph } from "@/lib/engines/business-context-graph";
 import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/lib/engines/business-archetype-engine";
@@ -280,12 +285,24 @@ export function useBusinessAdvisorBoard() {
   const radarEngine = useMemo(() => getBusinessRadarEngine(), []);
   const planningEngine = useMemo(() => getStrategicPlanningEngine(), []);
 
+  // ── Part 5 Engine singletons ─────────────────────────────────
+  const clientEngine = useMemo(() => getClientIntelligenceEngine(), []);
+  const perfEngine = useMemo(() => getAdvisorPerformanceEngine(), []);
+  const journalEngine = useMemo(() => getDecisionJournalEngine(), []);
+
   // Part 4 state
   const [toolExecutions, setToolExecutions] = useState(toolEngine.getAllExecutions());
   const [radarSignals, setRadarSignals] = useState(radarEngine.getSignals());
   const [radarSnapshot, setRadarSnapshot] = useState(radarEngine.getSnapshot());
   const [planningSnapshot, setPlanningSnapshot] = useState(planningEngine.getSnapshot());
   const [strategyDoc, setStrategyDoc] = useState(planningEngine.generateStrategyDocument());
+
+  // Part 5 state
+  const clientSnapshot = useMemo(() => clientEngine.getSnapshot(), [clientEngine]);
+  const clientList = useMemo(() => clientEngine.getClients(), [clientEngine]);
+  const perfSnapshot = useMemo(() => perfEngine.getSnapshot(), [perfEngine]);
+  const journalSnapshot = useMemo(() => journalEngine.getSnapshot(), [journalEngine]);
+  const journalDecisions = useMemo(() => journalEngine.getDecisions(), [journalEngine]);
 
   const refreshToolState = useCallback(() => setToolExecutions(toolEngine.getAllExecutions()), [toolEngine]);
   const refreshRadar = useCallback(() => { setRadarSignals(radarEngine.getSignals()); setRadarSnapshot(radarEngine.getSnapshot()); }, [radarEngine]);
