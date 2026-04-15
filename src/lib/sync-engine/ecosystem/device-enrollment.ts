@@ -282,14 +282,15 @@ class DeviceEnrollmentEngine {
   // ─── Hydration Plans ───────────────────────────────
 
   createHydrationPlan(deviceId: string, namespaces: string[]): HydrationPlan {
-    const phases: HydrationPhase[] = [
-      { order: 0, label: "Settings & Preferences", namespaces: namespaces.filter(n => n.startsWith("settings")), priority: "critical", sizeBytes: 51200, status: "pending" },
-      { order: 1, label: "Session & Continuity", namespaces: namespaces.filter(n => n.startsWith("session")), priority: "critical", sizeBytes: 204800, status: "pending" },
-      { order: 2, label: "Pinned Files", namespaces: ["files.pinned"], priority: "high", sizeBytes: 5242880, status: "pending" },
-      { order: 3, label: "Recent Documents", namespaces: namespaces.filter(n => n.startsWith("files.documents")), priority: "high", sizeBytes: 52428800, status: "pending" },
-      { order: 4, label: "Photos & Media", namespaces: namespaces.filter(n => n.startsWith("files.photos") || n.startsWith("files.videos")), priority: "normal", sizeBytes: 524288000, status: "pending" },
-      { order: 5, label: "App State", namespaces: namespaces.filter(n => n.startsWith("app.")), priority: "low", sizeBytes: 1048576, status: "pending" },
-    ].filter(p => p.namespaces.length > 0);
+    const allPhases: HydrationPhase[] = [
+      { order: 0, label: "Settings & Preferences", namespaces: namespaces.filter(n => n.startsWith("settings")), priority: "critical" as const, sizeBytes: 51200, status: "pending" as const },
+      { order: 1, label: "Session & Continuity", namespaces: namespaces.filter(n => n.startsWith("session")), priority: "critical" as const, sizeBytes: 204800, status: "pending" as const },
+      { order: 2, label: "Pinned Files", namespaces: ["files.pinned"], priority: "high" as const, sizeBytes: 5242880, status: "pending" as const },
+      { order: 3, label: "Recent Documents", namespaces: namespaces.filter(n => n.startsWith("files.documents")), priority: "high" as const, sizeBytes: 52428800, status: "pending" as const },
+      { order: 4, label: "Photos & Media", namespaces: namespaces.filter(n => n.startsWith("files.photos") || n.startsWith("files.videos")), priority: "normal" as const, sizeBytes: 524288000, status: "pending" as const },
+      { order: 5, label: "App State", namespaces: namespaces.filter(n => n.startsWith("app.")), priority: "low" as const, sizeBytes: 1048576, status: "pending" as const },
+    ];
+    const phases = allPhases.filter(p => p.namespaces.length > 0);
 
     const plan: HydrationPlan = {
       deviceId,
