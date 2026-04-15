@@ -129,6 +129,16 @@ const PLANE_MEMBERSHIP: Record<string, string> = {
   "src/lib/contracts/": "product",
   "src/lib/integrations/": "product",
 
+  // ── Backend: Services tree (200+ service subdirectories) ──
+  "src/lib/services/": "backend",
+  "src/lib/ai-gateway/": "backend",
+
+  // ── Backend: Release & degraded mode services ──
+  "src/lib/services/release-intelligence/": "backend",
+  "src/lib/services/degraded-mode/": "backend",
+  "src/lib/services/digest-journal/": "backend",
+};
+
 // Dependency rules: plane -> allowed import planes
 const ALLOWED_DEPS: Record<string, string[]> = {
   "shared": [],
