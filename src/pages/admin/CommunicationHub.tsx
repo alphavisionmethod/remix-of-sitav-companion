@@ -522,6 +522,314 @@ function AppsPanel() {
   );
 }
 
+// ── Sync Tab ──────────────────────────────────────────────────
+
+function SyncPanel() {
+  const { data: syncStatus } = useSyncStatus();
+  const { data: conflicts = [] } = useSyncConflicts();
+  const { trigger, pause, resume, resolveConflict } = useSyncControl();
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { label: "Status", value: (syncStatus as any)?.sync_status || "Healthy", icon: RefreshCw, color: "text-teal-400" },
+          { label: "Conflicts", value: conflicts.length, icon: AlertTriangle, color: conflicts.length > 0 ? "text-amber-400" : "text-emerald-400" },
+          { label: "Ledger", value: (syncStatus as any)?.ledger?.length ?? 0, icon: Database, color: "text-blue-400" },
+          { label: "Last Sync", value: "—", icon: Clock, color: "text-muted-foreground" },
+        ].map(item => (
+          <Card key={item.label} className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <item.icon className={`h-4 w-4 ${item.color}`} />
+                <span className="text-xs text-muted-foreground">{item.label}</span>
+              </div>
+              <p className="text-xl font-bold tracking-tight">{item.value}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Controls */}
+      <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <RefreshCw className="h-4 w-4 text-primary" />
+            Sync Controls
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" onClick={() => trigger.mutate(undefined)} disabled={trigger.isPending}
+              className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20">
+              <Play className="h-3.5 w-3.5 mr-1" /> {trigger.isPending ? "Syncing..." : "Trigger Sync"}
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => pause.mutate(undefined)} disabled={pause.isPending}
+              className="bg-white/[0.03] border-white/[0.06]">
+              <Pause className="h-3.5 w-3.5 mr-1" /> Pause
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => resume.mutate(undefined)} disabled={resume.isPending}
+              className="bg-white/[0.03] border-white/[0.06]">
+              <Play className="h-3.5 w-3.5 mr-1" /> Resume
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Conflicts */}
+      <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-amber-400" />
+              Sync Conflicts
+            </CardTitle>
+            <Badge variant="outline" className="bg-white/[0.03] border-white/[0.06]">{conflicts.length}</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[300px]">
+            {conflicts.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <CheckCircle2 className="h-8 w-8 mb-2 opacity-40" />
+                <p className="text-sm">No conflicts</p>
+                <p className="text-xs opacity-60">All data is in sync</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {conflicts.map((c: any) => (
+                  <div key={c.id} className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">{c.object_type || "Unknown"}</p>
+                        <p className="text-xs text-muted-foreground">{c.conflict_type || "merge"} • {new Date(c.created_at).toLocaleString()}</p>
+                      </div>
+                      <Button size="sm" variant="ghost" className="h-7 px-2 text-emerald-400 hover:bg-emerald-500/10"
+                        onClick={() => resolveConflict.mutate({ conflictId: c.id, resolution: "accept_remote" })}>
+                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Resolve
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ── Notifications Tab ─────────────────────────────────────────
+
+function NotificationsPanel() {
+  const { data: notifications = [], isLoading } = useNotifications();
+  const { markRead, takeAction } = useNotificationManager();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Controls */}
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">{notifications.length} notifications</p>
+        <div className="flex gap-2">
+          {selectedIds.length > 0 && (
+            <Button size="sm" variant="outline" className="bg-white/[0.03] border-white/[0.06]"
+              onClick={() => { markRead.mutate(selectedIds); setSelectedIds([]); }}>
+              <Eye className="h-3.5 w-3.5 mr-1" /> Mark {selectedIds.length} Read
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+        <CardContent className="p-0">
+          <ScrollArea className="h-[500px]">
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12 text-muted-foreground">
+                <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Loading...
+              </div>
+            ) : notifications.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <Bell className="h-8 w-8 mb-2 opacity-40" />
+                <p className="text-sm">No notifications</p>
+                <p className="text-xs opacity-60">You're all caught up</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-white/[0.04]">
+                {notifications.map((notif: any) => (
+                  <motion.div key={notif.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    className={`p-4 hover:bg-white/[0.02] transition-colors cursor-pointer ${!notif.read ? "border-l-2 border-l-primary" : ""} ${selectedIds.includes(notif.id) ? "bg-primary/5" : ""}`}
+                    onClick={() => toggleSelect(notif.id)}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge variant="outline" className="text-[10px] h-4 bg-white/[0.03] capitalize">{notif.channel || notif.type || "system"}</Badge>
+                          {!notif.read && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                        </div>
+                        <p className="text-sm font-medium">{notif.title || "Notification"}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{notif.body || notif.message || ""}</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-1">{new Date(notif.created_at).toLocaleString()}</p>
+                      </div>
+                      {notif.action_url && (
+                        <Button size="sm" variant="ghost" className="h-7 px-2 shrink-0 text-primary hover:bg-primary/10"
+                          onClick={(e) => { e.stopPropagation(); takeAction.mutate({ id: notif.id, action: "open" }); }}>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Button>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ── Updates Tab ───────────────────────────────────────────────
+
+function UpdatesPanel() {
+  const { data: history = [] } = useUpdateHistory();
+  const { install, rollback } = useUpdateControl();
+  const [targetDevice, setTargetDevice] = useState("");
+
+  return (
+    <div className="space-y-4">
+      {/* Install / Rollback */}
+      <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <Zap className="h-4 w-4 text-primary" />
+            Update Controls
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <Input placeholder="Target device ID" value={targetDevice} onChange={e => setTargetDevice(e.target.value)}
+            className="bg-black/20 border-white/[0.06] font-mono text-sm" />
+          <div className="flex gap-2">
+            <Button size="sm" onClick={() => { if (targetDevice) install.mutate({ deviceId: targetDevice }); }}
+              disabled={!targetDevice || install.isPending}
+              className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20">
+              <Zap className="h-3.5 w-3.5 mr-1" /> {install.isPending ? "Installing..." : "Install Update"}
+            </Button>
+            <Button size="sm" variant="destructive" onClick={() => { if (targetDevice) rollback.mutate(targetDevice); }}
+              disabled={!targetDevice || rollback.isPending}>
+              <RotateCcw className="h-3.5 w-3.5 mr-1" /> {rollback.isPending ? "Rolling back..." : "Rollback"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* History */}
+      <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <Clock className="h-4 w-4 text-primary" />
+              Update History
+            </CardTitle>
+            <Badge variant="outline" className="bg-white/[0.03] border-white/[0.06]">{history.length}</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[350px]">
+            {history.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <Zap className="h-8 w-8 mb-2 opacity-40" />
+                <p className="text-sm">No update history</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {history.map((entry: any) => (
+                  <div key={entry.id} className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium font-mono">{entry.command_text || entry.command_type}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{new Date(entry.created_at).toLocaleString()}</p>
+                      </div>
+                      <CommandStatusBadge status={entry.status} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ── Audit Tab ─────────────────────────────────────────────────
+
+function AuditPanel() {
+  const { data: events = [], isLoading } = useAuditTimeline();
+
+  const severityColor: Record<string, string> = {
+    low: "bg-blue-500/20 text-blue-400",
+    medium: "bg-amber-500/20 text-amber-400",
+    high: "bg-orange-500/20 text-orange-400",
+    critical: "bg-red-500/20 text-red-400",
+  };
+
+  return (
+    <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <Eye className="h-4 w-4 text-primary" />
+            Audit Trail
+          </CardTitle>
+          <Badge variant="outline" className="bg-white/[0.03] border-white/[0.06]">{events.length} events</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="h-[500px]">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12 text-muted-foreground">
+              <RefreshCw className="h-5 w-5 animate-spin mr-2" /> Loading...
+            </div>
+          ) : events.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+              <Eye className="h-8 w-8 mb-2 opacity-40" />
+              <p className="text-sm">No audit events</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {events.map((event: any) => (
+                <motion.div key={event.id} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }}
+                  className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium">{event.action}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="outline" className={`text-[10px] h-4 border-0 ${severityColor[event.severity] || severityColor.low}`}>
+                          {event.severity}
+                        </Badge>
+                        {event.plane && <Badge variant="outline" className="text-[10px] h-4 bg-white/[0.03]">{event.plane}</Badge>}
+                        {event.target_type && <Badge variant="outline" className="text-[10px] h-4 bg-white/[0.03]">{event.target_type}</Badge>}
+                      </div>
+                      {event.justification && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{event.justification}</p>}
+                    </div>
+                    <span className="text-[10px] text-muted-foreground/60 shrink-0">{new Date(event.created_at).toLocaleString()}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ── Timeline Tab ───────────────────────────────────────────────
 
 function TimelinePanel() {
@@ -554,7 +862,6 @@ function TimelinePanel() {
             </div>
           ) : (
             <div className="relative pl-6">
-              {/* Timeline line */}
               <div className="absolute left-2 top-2 bottom-2 w-px bg-white/[0.06]" />
               <div className="space-y-3">
                 {timeline.map((event: any, idx: number) => {
