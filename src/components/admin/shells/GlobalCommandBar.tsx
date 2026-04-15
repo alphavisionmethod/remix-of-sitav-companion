@@ -180,17 +180,29 @@ export function GlobalCommandBar() {
                   <X className="h-3.5 w-3.5 text-muted-foreground" />
                 </button>
               </div>
-              <div className="flex items-center gap-3 text-[11px] flex-wrap">
-                <span className={cn("font-medium", riskColor[plan.risk])}>Risk: {plan.risk}</span>
-                <span className="text-muted-foreground">·</span>
-                <span className="text-muted-foreground">{plan.estimatedCost}</span>
-                <span className="text-muted-foreground">·</span>
-                {plan.rollbackAvailable && <span className="text-emerald-400">Rollback Available</span>}
+              <div className="flex items-center gap-2 text-[11px] flex-wrap">
+                <Badge variant="outline" className="text-[9px] h-5 bg-primary/5 border-primary/20 text-primary">
+                  Confidence: 87%
+                </Badge>
+                <Badge variant="outline" className={cn("text-[9px] h-5",
+                  plan.risk === "low" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                  plan.risk === "medium" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                  "bg-red-500/10 text-red-400 border-red-500/20"
+                )}>
+                  Risk: {plan.risk}
+                </Badge>
+                <Badge variant="outline" className="text-[9px] h-5 text-muted-foreground">
+                  Impact: Service-level
+                </Badge>
+                {plan.rollbackAvailable && (
+                  <Badge variant="outline" className="text-[9px] h-5 text-emerald-400 border-emerald-500/20">
+                    Rollback Available
+                  </Badge>
+                )}
                 {plan.approvalsNeeded && (
-                  <>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-amber-400">Approval Required</span>
-                  </>
+                  <Badge variant="outline" className="text-[9px] h-5 text-amber-400 border-amber-500/20">
+                    Approval Required
+                  </Badge>
                 )}
               </div>
             </div>
@@ -220,7 +232,7 @@ export function GlobalCommandBar() {
             </div>
 
             {/* Actions */}
-            <div className="px-4 pb-4 flex items-center gap-2">
+            <div className="px-4 pb-4 flex items-center gap-2 flex-wrap">
               <Button size="sm" className="h-7 text-xs gap-1.5">
                 <Play className="h-3 w-3" /> Approve & Execute
               </Button>
@@ -229,6 +241,9 @@ export function GlobalCommandBar() {
               </Button>
               <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5">
                 <Pencil className="h-3 w-3" /> Edit Scope
+              </Button>
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5">
+                <AlertTriangle className="h-3 w-3" /> Ask Why
               </Button>
               <Button variant="ghost" size="sm" className="h-7 text-xs ml-auto" onClick={() => { setPlan(null); setQuery(""); }}>
                 Cancel
