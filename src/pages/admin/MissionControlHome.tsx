@@ -30,6 +30,8 @@ import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
 import { FullSystemAudit } from "@/components/admin/shells/FullSystemAudit";
 import { LiveSystemMap } from "@/components/admin/shells/LiveSystemMap";
 import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
+import { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
+import { ContinuousVerificationPanel } from "@/components/admin/shells/ContinuousVerificationPanel";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
