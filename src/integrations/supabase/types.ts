@@ -14,6 +14,129 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_action_audit: {
+        Row: {
+          action: string
+          actor_user_id: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          justification: string | null
+          metadata: Json | null
+          plane: string
+          session_id: string | null
+          severity: string
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          justification?: string | null
+          metadata?: Json | null
+          plane?: string
+          session_id?: string | null
+          severity?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          justification?: string | null
+          metadata?: Json | null
+          plane?: string
+          session_id?: string | null
+          severity?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
+      admin_role_permissions: {
+        Row: {
+          created_at: string
+          description: string
+          granted: boolean
+          id: string
+          permission: string
+          role_key: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          granted?: boolean
+          id?: string
+          permission: string
+          role_key: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          granted?: boolean
+          id?: string
+          permission?: string
+          role_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: string | null
+          last_activity_at: string
+          mfa_verified: boolean
+          revoke_reason: string | null
+          revoked_at: string | null
+          started_at: string
+          status: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          last_activity_at?: string
+          mfa_verified?: boolean
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          last_activity_at?: string
+          mfa_verified?: boolean
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_action_queue: {
         Row: {
           action_type: string
@@ -1050,6 +1173,48 @@ export type Database = {
           temperature?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      api_gateway_routes: {
+        Row: {
+          created_at: string
+          description: string
+          enabled: boolean
+          id: string
+          method: string
+          plane: string
+          rate_limit_per_minute: number
+          required_permission: string | null
+          required_token_class: string
+          route_pattern: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          enabled?: boolean
+          id?: string
+          method?: string
+          plane?: string
+          rate_limit_per_minute?: number
+          required_permission?: string | null
+          required_token_class?: string
+          route_pattern: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          enabled?: boolean
+          id?: string
+          method?: string
+          plane?: string
+          rate_limit_per_minute?: number
+          required_permission?: string | null
+          required_token_class?: string
+          route_pattern?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -4620,6 +4785,72 @@ export type Database = {
           },
         ]
       }
+      device_ownership: {
+        Row: {
+          capabilities: Json | null
+          created_at: string
+          device_id: string
+          device_name: string
+          device_type: string
+          environment: string
+          id: string
+          last_seen_at: string
+          owner_user_id: string
+          permissions: Json | null
+          platform: string
+          revoke_scope: string | null
+          revoked: boolean
+          revoked_at: string | null
+          revoked_by: string | null
+          selective_sync_config: Json | null
+          sync_enabled: boolean
+          trust_level: string
+          updated_at: string
+        }
+        Insert: {
+          capabilities?: Json | null
+          created_at?: string
+          device_id: string
+          device_name?: string
+          device_type?: string
+          environment?: string
+          id?: string
+          last_seen_at?: string
+          owner_user_id: string
+          permissions?: Json | null
+          platform?: string
+          revoke_scope?: string | null
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_by?: string | null
+          selective_sync_config?: Json | null
+          sync_enabled?: boolean
+          trust_level?: string
+          updated_at?: string
+        }
+        Update: {
+          capabilities?: Json | null
+          created_at?: string
+          device_id?: string
+          device_name?: string
+          device_type?: string
+          environment?: string
+          id?: string
+          last_seen_at?: string
+          owner_user_id?: string
+          permissions?: Json | null
+          platform?: string
+          revoke_scope?: string | null
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_by?: string | null
+          selective_sync_config?: Json | null
+          sync_enabled?: boolean
+          trust_level?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dual_authority_challenges: {
         Row: {
           action: string
@@ -4808,6 +5039,48 @@ export type Database = {
           source_layer?: string
           user_id?: string
           version?: number | null
+        }
+        Relationships: []
+      }
+      environment_configs: {
+        Row: {
+          api_base_url: string | null
+          config: Json | null
+          created_at: string
+          description: string
+          display_name: string
+          env_key: string
+          feature_flag_context: Json | null
+          id: string
+          is_current: boolean
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          api_base_url?: string | null
+          config?: Json | null
+          created_at?: string
+          description?: string
+          display_name: string
+          env_key: string
+          feature_flag_context?: Json | null
+          id?: string
+          is_current?: boolean
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          api_base_url?: string | null
+          config?: Json | null
+          created_at?: string
+          description?: string
+          display_name?: string
+          env_key?: string
+          feature_flag_context?: Json | null
+          id?: string
+          is_current?: boolean
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -6167,6 +6440,89 @@ export type Database = {
           },
         ]
       }
+      plane_service_assignments: {
+        Row: {
+          created_at: string
+          description: string
+          display_name: string
+          id: string
+          plane_id: string
+          service_key: string
+          service_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          display_name: string
+          id?: string
+          plane_id: string
+          service_key: string
+          service_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_name?: string
+          id?: string
+          plane_id?: string
+          service_key?: string
+          service_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plane_service_assignments_plane_id_fkey"
+            columns: ["plane_id"]
+            isOneToOne: false
+            referencedRelation: "platform_planes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_planes: {
+        Row: {
+          color: string
+          created_at: string
+          description: string
+          display_name: string
+          icon: string
+          id: string
+          plane_key: string
+          service_count: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description?: string
+          display_name: string
+          icon?: string
+          id?: string
+          plane_key: string
+          service_count?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string
+          display_name?: string
+          icon?: string
+          id?: string
+          plane_key?: string
+          service_count?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -6734,6 +7090,48 @@ export type Database = {
         }
         Relationships: []
       }
+      support_access_grants: {
+        Row: {
+          actions_performed: Json | null
+          created_at: string
+          expires_at: string
+          granted_at: string
+          granted_to_user_id: string
+          id: string
+          reason: string
+          revoked_at: string | null
+          scope: string
+          target_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          actions_performed?: Json | null
+          created_at?: string
+          expires_at?: string
+          granted_at?: string
+          granted_to_user_id: string
+          id?: string
+          reason: string
+          revoked_at?: string | null
+          scope?: string
+          target_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          actions_performed?: Json | null
+          created_at?: string
+          expires_at?: string
+          granted_at?: string
+          granted_to_user_id?: string
+          id?: string
+          reason?: string
+          revoked_at?: string | null
+          scope?: string
+          target_user_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       system_guarantees: {
         Row: {
           checked_at: string
@@ -6823,6 +7221,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           version?: string
+        }
+        Relationships: []
+      }
+      token_classes: {
+        Row: {
+          class_key: string
+          created_at: string
+          default_ttl_seconds: number
+          description: string
+          display_name: string
+          id: string
+          max_ttl_seconds: number
+          requires_mfa: boolean
+          scope_template: Json | null
+          updated_at: string
+        }
+        Insert: {
+          class_key: string
+          created_at?: string
+          default_ttl_seconds?: number
+          description?: string
+          display_name: string
+          id?: string
+          max_ttl_seconds?: number
+          requires_mfa?: boolean
+          scope_template?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          class_key?: string
+          created_at?: string
+          default_ttl_seconds?: number
+          description?: string
+          display_name?: string
+          id?: string
+          max_ttl_seconds?: number
+          requires_mfa?: boolean
+          scope_template?: Json | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -7243,6 +7680,10 @@ export type Database = {
       }
     }
     Functions: {
+      has_admin_permission: {
+        Args: { _permission: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
