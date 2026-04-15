@@ -9,8 +9,6 @@ import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/lib/demo-data/rev
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",

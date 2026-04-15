@@ -8,8 +8,6 @@ import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
 import { POST_TRADE_REVIEWS } from "@/lib/investment-office/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 interface Receipt {
   id: string;

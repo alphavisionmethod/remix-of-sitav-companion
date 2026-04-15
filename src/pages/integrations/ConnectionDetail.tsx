@@ -10,8 +10,6 @@ import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { getProviderById } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function ConnectionDetail() {
   const { connectionId } = useParams();

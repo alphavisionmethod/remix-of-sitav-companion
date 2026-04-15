@@ -20,10 +20,9 @@ import {
   Plane, Headphones, ArrowRight, Home, Stethoscope, FileText
 } from "lucide-react";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const ConciergeOverview = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();

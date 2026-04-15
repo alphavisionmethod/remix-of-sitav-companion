@@ -55,10 +55,9 @@ function useCalendarData(year: number, month: number) {
 // Moved to shared constants
 import { MONTH_NAMES, DAY_NAMES } from "@/lib/constants/ui-config";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const MonthGridCalendar = () => {
+  const { isDemo: isDemoMode } = useAuth();
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());

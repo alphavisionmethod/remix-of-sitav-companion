@@ -12,8 +12,6 @@ import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");

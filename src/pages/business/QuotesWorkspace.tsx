@@ -19,8 +19,6 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();

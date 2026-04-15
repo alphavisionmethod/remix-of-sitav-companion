@@ -17,8 +17,6 @@ import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },

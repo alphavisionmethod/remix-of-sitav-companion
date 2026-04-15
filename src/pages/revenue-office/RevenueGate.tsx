@@ -12,8 +12,6 @@ import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METR
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const CONNECTION_HEALTH = [
   { service: "CRM / Pipeline", status: "connected", health: 98 },

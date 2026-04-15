@@ -14,8 +14,6 @@ import {
 import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const FRAGILITY_MATRIX = [
   { system: "Lead Capture → Nurture", fragility: 32, bottleneck: "Form abandonment at 41%", resilience: "Backup: SMS opt-in added", status: "moderate" as const },

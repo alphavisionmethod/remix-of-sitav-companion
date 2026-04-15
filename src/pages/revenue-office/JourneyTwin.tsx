@@ -8,8 +8,6 @@ import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const AUTOMATION_OVERLAY = [
   { stage: "Awareness", automations: [{ name: "Lead Magnet Delivery", status: "active", coverage: 94 }, { name: "Welcome Email Sequence", status: "active", coverage: 87 }] },

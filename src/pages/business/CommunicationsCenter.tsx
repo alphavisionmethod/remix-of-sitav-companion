@@ -20,8 +20,6 @@ import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 

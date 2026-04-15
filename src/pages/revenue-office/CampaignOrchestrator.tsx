@@ -19,8 +19,6 @@ import {
   DEMO_DELIVERABILITY,
 } from "@/lib/demo-data/revenue-office";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 export default function CampaignOrchestrator() {
   const { data: liveCampaigns, isLoading } = useCampaigns();

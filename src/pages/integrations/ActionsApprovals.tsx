@@ -12,8 +12,6 @@ import { DEMO_ACTION_REQUESTS } from "@/lib/demo-data/integrations";
 import type { DemoActionRequest } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
-
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },
@@ -25,6 +23,7 @@ const statusConfig: Record<string, { color: string; icon: any; label: string }> 
 };
 
 function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest; onApprove?: () => void; onReject?: () => void }) {
+  const { isDemo: isDemoMode } = useAuth();
   const [showDryRun, setShowDryRun] = useState(false);
   const config = statusConfig[action.status];
   const StatusIcon = config.icon;
