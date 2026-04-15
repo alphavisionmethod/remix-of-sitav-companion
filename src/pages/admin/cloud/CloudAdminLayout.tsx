@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Smartphone, HardDrive, RefreshCw,
-  Shield, Wrench, Settings2, Cloud
+  Shield, Wrench, Settings2, Cloud, HeartPulse, Activity,
+  Share2, RotateCcw
 } from "lucide-react";
 
 const tabs = [
@@ -14,6 +14,10 @@ const tabs = [
   { key: "sync", label: "Sync Ops", icon: RefreshCw },
   { key: "audit", label: "Audit & Security", icon: Shield },
   { key: "jobs", label: "Jobs & Repair", icon: Wrench },
+  { key: "recovery", label: "Recovery", icon: RotateCcw },
+  { key: "monitoring", label: "Monitoring", icon: HeartPulse },
+  { key: "activity", label: "Activity", icon: Activity },
+  { key: "collaboration", label: "Collaboration", icon: Share2 },
   { key: "policy", label: "Policy & Config", icon: Settings2 },
 ] as const;
 
@@ -49,14 +53,14 @@ export function CloudAdminLayout({ activeTab, onTabChange, children }: CloudAdmi
               key={tab.key}
               onClick={() => onTabChange(tab.key)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
+                "flex items-center gap-1.5 px-2.5 py-2 rounded-md text-xs font-medium transition-all",
                 isActive
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-background/50"
               )}
             >
-              <Icon className="h-4 w-4" />
-              <span className="hidden sm:inline">{tab.label}</span>
+              <Icon className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">{tab.label}</span>
             </button>
           );
         })}

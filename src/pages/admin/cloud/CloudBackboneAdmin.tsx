@@ -11,6 +11,10 @@ import { CloudSyncAdmin } from "./CloudSyncAdmin";
 import { CloudAuditAdmin } from "./CloudAuditAdmin";
 import { CloudJobsAdmin } from "./CloudJobsAdmin";
 import { CloudPolicyAdmin } from "./CloudPolicyAdmin";
+import { CloudRecoveryAdmin } from "./CloudRecoveryAdmin";
+import { CloudMonitoringAdmin } from "./CloudMonitoringAdmin";
+import { CloudActivityAdmin } from "./CloudActivityAdmin";
+import { CloudCollaborationAdmin } from "./CloudCollaborationAdmin";
 
 const tabComponents: Record<CloudTab, React.ComponentType> = {
   dashboard: CloudDashboard,
@@ -20,6 +24,10 @@ const tabComponents: Record<CloudTab, React.ComponentType> = {
   sync: CloudSyncAdmin,
   audit: CloudAuditAdmin,
   jobs: CloudJobsAdmin,
+  recovery: CloudRecoveryAdmin,
+  monitoring: CloudMonitoringAdmin,
+  activity: CloudActivityAdmin,
+  collaboration: CloudCollaborationAdmin,
   policy: CloudPolicyAdmin,
 };
 
