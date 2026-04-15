@@ -3,7 +3,7 @@
 // Unified view of all API domains, commands, events, and channels
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +30,8 @@ import { useUnifiedTimeline, useAuditTimeline } from "@/hooks/use-os-api";
 import { useSyncStatus, useSyncConflicts, useSyncControl } from "@/hooks/use-os-api";
 import { useUpdateControl, useUpdateHistory } from "@/hooks/use-os-api";
 import { channelManager } from "@/lib/services/realtime-gateway/resilient-channel";
+import { useWsEventStream, useWsConnectionStatus, useWsEventRate } from "@/hooks/use-unified-ws";
+import type { WsEventEnvelope, WsEventScope } from "@/packages/contracts/core/ws-event-envelope";
 import type { CommandStatus } from "@/lib/api/os-api-client";
 
 // ── Status Helpers ─────────────────────────────────────────────
