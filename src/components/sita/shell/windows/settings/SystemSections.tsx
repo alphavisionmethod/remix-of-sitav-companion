@@ -697,7 +697,7 @@ export function WidgetsContent() {
         <HStack spacing="tight" align="center" className="justify-between">
           <VStack spacing="micro">
             <NovaText variant="label" className="!text-[11px] font-semibold">Desktop Widgets</NovaText>
-            <NovaText variant="caption" muted>{visibleCount} active of {totalCount} available</NovaText>
+            <NovaText variant="label" muted>{visibleCount} active of {totalCount} available</NovaText>
           </VStack>
           <HStack spacing="micro">
             <NovaBadge variant="info" className="!text-[9px]">{visibleCount} Active</NovaBadge>
@@ -766,7 +766,7 @@ export function WidgetsContent() {
                   </div>
                   <VStack spacing="micro" className="min-w-0">
                     <NovaText variant="label" className="!text-[10px] font-medium truncate">{w.label}</NovaText>
-                    <NovaText variant="caption" muted className="!text-[8px] truncate">{w.description}</NovaText>
+                    <NovaText variant="label" muted className="!text-[8px] truncate">{w.description}</NovaText>
                   </VStack>
                 </HStack>
                 <HStack spacing="micro" align="center">
@@ -796,7 +796,7 @@ export function WidgetsContent() {
 
       {filteredTypes.length === 0 && (
         <NovaCard>
-          <NovaText variant="caption" muted className="text-center py-4">No widgets match your search</NovaText>
+          <NovaText variant="label" muted className="text-center py-4">No widgets match your search</NovaText>
         </NovaCard>
       )}
 
@@ -805,7 +805,7 @@ export function WidgetsContent() {
         <HStack spacing="tight" align="center" className="justify-between">
           <VStack spacing="micro">
             <NovaText variant="label" className="!text-[10px] font-medium">Reset Widget Layout</NovaText>
-            <NovaText variant="caption" muted className="!text-[8px]">Restore default positions and visibility</NovaText>
+            <NovaText variant="label" muted className="!text-[8px]">Restore default positions and visibility</NovaText>
           </VStack>
           <NovaButton variant="secondary" className="!text-[10px]" onClick={() => { resetWidgets(); toast.success("Widgets reset to defaults"); }}>
             Reset
