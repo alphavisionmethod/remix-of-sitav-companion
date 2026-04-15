@@ -205,6 +205,7 @@ export function FounderSidebar({ collapsed, onToggle }: { collapsed: boolean; on
         </button>
         <GlossaryDrawer />
         <LearningYouPanel open={prefsOpen} onOpenChange={setPrefsOpen} />
+      </div>
     </div>
   );
 }
