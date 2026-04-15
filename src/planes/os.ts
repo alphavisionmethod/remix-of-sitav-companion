@@ -104,15 +104,15 @@ export type {
 // ── OS Services (Platform Daemons) ──
 export { accessibilityd } from "@/lib/os-services/accessibilityd";
 export { audiod } from "@/lib/os-services/audiod";
-export { automationd } from "@/lib/os-services/automationd";
-export { btd } from "@/lib/os-services/btd";
+export { AutomationDaemon, getAutomationDaemon } from "@/lib/os-services/automationd";
+export { BluetoothDaemon, getBluetoothDaemon } from "@/lib/os-services/btd";
 export { crashd } from "@/lib/os-services/crashd";
 export { deviced } from "@/lib/os-services/deviced";
 export { healthd } from "@/lib/os-services/healthd";
-export { powerd } from "@/lib/os-services/powerd";
+export { PowerDaemon, getPowerDaemon } from "@/lib/os-services/powerd";
 export { settingsd } from "@/lib/os-services/settingsd";
 export { timed } from "@/lib/os-services/timed";
-export { wifid } from "@/lib/os-services/wifid";
+export { WifiDaemon, getWifiDaemon } from "@/lib/os-services/wifid";
 
 // ── OS Services (Infrastructure) ──
 export { capabilityCatalog } from "@/lib/os-services/capability-catalog";
