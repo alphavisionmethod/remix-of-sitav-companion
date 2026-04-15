@@ -5,7 +5,6 @@
 // Now wired to real Supabase data via useGovernanceSummary.
 // ═══════════════════════════════════════════════════════════════
 
-import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";

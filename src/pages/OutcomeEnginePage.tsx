@@ -4,7 +4,6 @@
 // not features. "What are you trying to achieve?"
 // ═══════════════════════════════════════════════════════════════
 
-import { useAuth } from "@/contexts/AuthContext";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Target, TrendingUp, ArrowRight, Sparkles, Plus, RefreshCw } from "lucide-react";

@@ -4,7 +4,6 @@
 // execution chain timeline, trusted-device signing, and policy cards
 // ═══════════════════════════════════════════════════════════════
 
-import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight, Loader2, Shield } from "lucide-react";

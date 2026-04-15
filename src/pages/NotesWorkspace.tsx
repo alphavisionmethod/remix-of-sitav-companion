@@ -4,7 +4,6 @@
 // structure, task extraction, linked entity panels.
 // ═══════════════════════════════════════════════════════════════
 
-import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

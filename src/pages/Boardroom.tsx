@@ -3,7 +3,6 @@
 // Where advisor voices become one governed plan
 // ═══════════════════════════════════════════════════════════════
 
-import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaMetric } from "@/components/sita/SitaCard";
 import { PrepPack } from "@/components/sita/primitives/PrepPack";
 import { ScenarioComparison } from "@/components/sita/primitives/ScenarioComparison";
