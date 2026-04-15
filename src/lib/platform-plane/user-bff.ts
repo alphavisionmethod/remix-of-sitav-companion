@@ -129,7 +129,7 @@ class UserBFF {
 
     return {
       status: checkpoint ? "active" : "idle",
-      lastCheckpoint: checkpoint?.created_at ?? null,
+      lastCheckpoint: checkpoint ? new Date().toISOString() : null,
       pendingChanges: pendingChanges ?? 0,
       conflictCount: conflictCount ?? 0,
     };
