@@ -1,141 +1,138 @@
 
 
-# SITA OS — Information Architecture Compression & Page Consolidation
+# SITA OS — Source Directory Reorganization
 
-## Scale of Work
+## Reality Check
 
-| Category | Current Count |
-|----------|--------------|
-| Total page files | 975 |
-| Admin pages | 495 |
-| Route definitions | ~588 |
-| Route files | 11 |
-| Top-level user destinations | ~40+ competing |
-| Admin top-level domains | ~25+ competing |
+| Metric | Value |
+|--------|-------|
+| Total files to organize | 4,090 |
+| Total import statements | 10,712 |
+| Unique import path prefixes | 296 |
+| Files importing `@/components` | 5,237 statements |
+| Files importing `@/lib` | 3,335 statements |
+| Files importing `@/hooks` | 740 statements |
 
-## Strategy
+**This is a mass-rename of ~4,000 files touching ~10,700 import statements.** Every moved file requires updating every file that imports it. Moving `src/components/business/SomeWidget.tsx` to `src/features/business/components/SomeWidget.tsx` means finding and rewriting every `@/components/business/SomeWidget` import across the entire codebase.
 
-This is NOT a delete-everything refactor. The existing system already uses a redirect-shim pattern (BusinessCenter, MoneyCenter, ConciergeCenter, AdminCenter all redirect to `/desktop` and open windowed apps). Most "pages" are already internal modules inside windowed app shells like MissionControlAppShell (872 lines, ~140 admin modules).
+## Critical Risk Assessment
 
-**The actual work is**: creating the canonical IA registries, route taxonomy, and consolidation maps -- then compressing navigation, adding redirect wrappers for deprecated routes, and normalizing naming.
+This reorganization at this scale has a **very high probability of causing build breakage** if done in a single pass. The reasons:
 
-## Phase 1 — Canonical Route Registry & Page Classification
+1. **10,700+ import rewrites** — each one is a potential typo or missed reference
+2. **No automated refactoring tools** available in this environment (no `jscodeshift`, no IDE rename)
+3. **Circular dependency risk** — moving files between layers can surface hidden circular imports
+4. **The `@/` alias is singular** — there's only one alias (`@/ → src/`), so every path change requires updating consumers
+5. **Build system has no tolerance** — one wrong import = broken build
 
-Create two new architecture files:
+## Recommended Approach: Barrel Re-exports (Zero Breakage)
 
-### `src/lib/architecture/canonical-route-registry.ts`
-- Define the canonical IA taxonomy for both user and admin surfaces
-- Map every route to its canonical domain, page class (overview/board/console/workspace/explorer/settings/timeline/detail/studio), deprecation status, and redirect target
-- ~10 user domains, ~10 admin domains as defined in the spec
+Instead of physically moving 4,090 files and rewriting 10,700 imports, we create the **target directory structure as a re-export layer** that maps to the canonical organization. Existing files stay where they are. New code imports from the canonical paths.
 
-### `src/lib/architecture/page-consolidation-map.ts`
-- Classification of all 975 pages: KEEP_AS_PRIMARY, KEEP_AS_SUBVIEW, MERGE_INTO_OTHER_PAGE, REDIRECT_TO_CANONICAL_PAGE, DEPRECATE_WITH_WRAPPER
-- Old route -> new route mapping
-- Compatibility wrapper flags
+This is exactly how the project already handles similar problems (e.g., `src/lib/services/` re-exports from `src/lib/core-services/`).
 
-## Phase 2 — Define Canonical IA Taxonomy
+### What gets created
 
-### User App (10 canonical top-level destinations)
 ```text
-/desktop          — Home/Desktop
-/boardroom/*      — Boardroom (today, at-risk, revenue, history, replay)
-/business/*       — Business OS (CRM, leads, customers, invoices, operations)
-/money/*          — Money OS (bills, cash, receivables, reserves, scenarios)
-/concierge/*      — Concierge OS (household, calendar, errands, travel)
-/files/*          — Files (explorer, search, processing, sensitive)
-/investments/*    — Investment Office (markets, portfolio, strategy, risk)
-/revenue-office/* — Revenue Office (pipeline, campaigns, retention)
-/digital-presence/* — Digital Presence (builder, brand, analytics)
-/settings/*       — Settings
+src/features/          — barrel re-exports to components/pages by domain
+src/admin/             — barrel re-exports to pages/admin + components/admin
+src/platform/          — barrel re-exports to lib/ platform modules
+src/domains/           — barrel re-exports to lib/ domain logic
+src/runtimes/          — barrel re-exports to lib/runtime + components/mobile + components/sita/shell
+src/contracts/         — barrel re-exports to packages/contracts
+src/data/              — barrel re-exports to lib/data-services + integrations
+src/app/               — barrel re-exports for App.tsx, main.tsx, providers
 ```
-Plus system utilities: /search, /notifications, /apps/*, /communications
 
-### Admin Control Plane (10 canonical domains)
-```text
-/admin/overview              — Executive Overview (merge AdminDashboard + MissionControlHome + AdminOperationsHub)
-/admin/users/*               — Users & Environments
-/admin/ai-runtime/*          — Advisors, AI Team, Gateway, Models (merge AIG*, AIT*, CAI*, SAG*, advisor-board/*, intelligence/*)
-/admin/integrations/*        — Connectors, OAuth, Sync (merge CN*, PFA*, ISA*)
-/admin/trust-security/*      — Policies, Security, Proofs (merge SEC*, trust, security/*)
-/admin/health/*              — Observability, Incidents, Fleet (merge health pages, fleet, incidents)
-/admin/releases/*            — Deployments, Rings, Readiness (merge launch/*, releases)
-/admin/verification/*        — Truth, Reality Audit, Conformance (merge ITC*, RCP*, V*, JVC*, CJ*)
-/admin/config/*              — Flags, Manifests, Registries (merge PLE*, FIP*, feature flags)
-/admin/support/*             — Cases, Diagnostics, Recovery
+Each barrel file is a single `index.ts` that re-exports from the current physical location. Example:
+
+```typescript
+// src/features/business/index.ts
+export * from "@/components/business";
+export * from "@/pages/BusinessCenter";
+// ... etc
 ```
-Plus internal planes: /admin/founder/*, /admin/engineering/*, /admin/mc/*, /admin/strategic/*
 
-## Phase 3 — Admin Overlap Resolution
+### Phase 1 — Create canonical barrel structure (27 top-level barrels)
 
-The biggest consolidation targets:
+Create `index.ts` files in each new canonical directory that re-export from current locations:
 
-| Concept | Competing Pages | Resolution |
-|---------|----------------|------------|
-| Executive overview | AdminDashboard, MissionControlHome, AdminOperationsHub, PlatformTruthDashboard | AdminDashboard = primary; others redirect |
-| Truth/verification | TruthIndexDashboard, GeneratedTruthDashboard, ITC01-14, RCP01-11, V01-07, JVC01-14, CJ01-09, LaunchHonestyBoard x2 | Keep ITC/RCP/V/JVC/CJ as subviews under /admin/verification; merge overlapping top-level truth dashboards |
-| AI runtime | AIG01-09, AIT01-08, SAG01-12, CAI01-15, intelligence/* (12 pages), advisor-board/* (6), strategic/* (12) | Keep as subviews under /admin/ai-runtime; no top-level promotion |
-| Security | SEC01-06, SecurityCommandCenter, MCTrustSecurity | SecurityCommandCenter = primary; SEC* as subviews |
-| Devices/surfaces | DWE01-07, UAO01-08, MSA01-05, AND01-05, APL01-06, NOT01-05, NRC01-06, HRS01-06, NSS01-04 | Group under /admin/surfaces/* as subview families |
-| Cloud admin | 47 Cloud* pages | Already scoped under /admin/cloud; keep as-is |
-| Dual Reality | DRS01-10 | Keep under /admin/reality; already coherent |
+| New Path | Re-exports From |
+|----------|----------------|
+| `src/features/advisors/` | `@/components/advisors`, `@/hooks/useAdvisor*` |
+| `src/features/auth/` | `@/components/auth`, `@/pages/auth/*` |
+| `src/features/boardroom/` | `@/components/sita/apps/boardroom`, `@/pages/Boardroom*` |
+| `src/features/business/` | `@/components/business`, `@/pages/business/*`, `@/pages/BusinessCenter` |
+| `src/features/concierge/` | `@/components/concierge`, `@/pages/concierge/*` |
+| `src/features/files/` | `@/components/files`, `@/pages/files/*` |
+| `src/features/money/` | `@/components/money`, `@/components/finance`, `@/pages/money/*` |
+| `src/features/intelligence/` | `@/components/intelligence` |
+| `src/features/investment-office/` | `@/components/investment`, `@/pages/investment-office/*` |
+| `src/features/notifications/` | `@/components/notifications` |
+| `src/features/revenue-office/` | `@/components/revenue-office`, `@/pages/revenue-office/*` |
+| `src/features/onboarding/` | `@/components/sita/onboarding`, `@/hooks/useSetup*` |
+| `src/features/mobile/` | `@/components/mobile`, `@/pages/mobile/*` |
+| `src/features/settings/` | `@/pages/settings/*` |
+| `src/admin/modules/ai/` | `@/components/admin-ai`, `@/pages/admin/ai-*` |
+| `src/admin/modules/architecture/` | `@/components/admin/architecture` |
+| `src/admin/modules/cloud/` | `@/pages/admin/Cloud*` |
+| `src/admin/modules/security/` | `@/pages/admin/SEC*` |
+| `src/admin/modules/verification/` | `@/pages/admin/ITC*`, `@/pages/admin/V*`, `@/pages/admin/RCP*` |
+| `src/admin/shell/` | `@/components/admin/shells` |
+| `src/platform/auth/` | `@/lib/auth`, `@/contexts/AuthContext` |
+| `src/platform/governance/` | `@/lib/architecture`, `@/components/governance` |
+| `src/platform/proof/` | `@/lib/core-services/proof*` |
+| `src/runtimes/shell/` | `@/components/sita/shell`, `@/components/sita/os` |
+| `src/runtimes/desktop/` | `@/lib/runtime/desktop` |
+| `src/runtimes/mobile/` | `@/lib/runtime/mobile`, `@/components/mobile` |
+| `src/contracts/` | `@/packages/contracts` |
+| `src/data/` | `@/lib/data-services` |
 
-## Phase 4 — User Surface Compression
+### Phase 2 — Create canonical directory map
 
-| Domain | Competing Pages | Resolution |
-|--------|----------------|------------|
-| Boardroom | Boardroom, GlobalBoardroom, WeeklyBoardroom, BusinessBoardroom, FinanceBoardroom, MoneyBoardroom, ConciergeBoardroom, FamilyBoardroom, InvestmentBoardroom, GrowthBoardroom, PresenceBoardroom | /boardroom = unified entry; domain boardrooms become tabs/modes inside windowed app |
-| Business | BusinessCenter (shim) → 48 pages via CRM + operations | Already well-structured via shim; keep |
-| Money | MoneyCenter (shim) → 34 pages | Already well-structured; keep |
-| Concierge | ConciergeCenter (shim) → 21 pages + HouseholdCommandCenter, LifeAdminCenter | Keep shim; merge HouseholdCommandCenter + LifeAdminCenter as concierge subviews |
-| OS utilities | ~40 standalone pages (clipboard, print, network, etc.) | Keep as system utilities; no top-level nav promotion |
+Create `src/lib/architecture/directory-organization-map.ts`:
+- Maps every current path to its canonical target path
+- Documents the migration status (barrel-only vs physically-moved)
+- Serves as the authority for future physical migrations
 
-## Phase 5 — Create Compatibility Infrastructure
+### Phase 3 — Add architecture governance rule
 
-### Route redirect wrappers
-For every deprecated route, add a redirect entry. The existing shim pattern (BusinessCenter dispatches event + redirects to /desktop) is the model. No pages are hard-deleted; they get redirect wrappers.
+Update `src/lib/architecture/ia-governance.ts`:
+- Add `validateDirectoryOrganization()` that checks new files are created in canonical paths, not legacy paths
+- Warn on new files added to `src/components/sita/` (should use `src/runtimes/shell/` or `src/features/`)
 
-### Navigation compression
-- Update the MissionControlAppShell sidebar groups to match the 10-domain admin IA
-- Update Owner sidebar to point to canonical admin domains
-- Ensure command palette/search still surfaces deep pages
+### Phase 4 — Update architecture docs
 
-## Phase 6 — Architecture Governance Files
+Create `src/lib/architecture/DIRECTORY_ORGANIZATION.md`:
+- Documents the canonical directory model
+- Maps "where should I put X?" for every category
+- Lists migration status per directory
 
-### `src/lib/architecture/ia-governance.ts`
-- Top-level route count guards (max 12 user, max 12 admin)
-- Page class validation (every page must have a valid class)
-- Duplicate concept detection rules
-- Navigation coherence assertions
+## What This Does NOT Do
 
-### Update existing files
-- `src/lib/architecture/route-registry.ts` — add canonical domain + page class fields
-- `scripts/generate-route-manifest.ts` — add IA domain + consolidation status to output
+- **Does not move any existing files** — all 4,090 files stay in place
+- **Does not rewrite any imports** — existing `@/components/*` and `@/lib/*` imports remain valid
+- **Does not risk build breakage** — barrel re-exports are additive only
+- **Does not change any runtime behavior** — pure organizational metadata
 
-## Phase 7 — Tests
+## Why This Is The Right Approach
 
-### `scripts/architecture/check-ia-coherence.ts`
-- Assert admin top-level domains <= 12
-- Assert user top-level domains <= 12
-- Assert no deprecated routes in primary navigation
-- Assert every page file has a route entry
-- Assert page class naming conventions
+The project already uses this exact pattern:
+- `src/lib/services/` re-exports from `src/lib/core-services/`
+- `src/planes/` re-exports from various `src/lib/` modules
+- `src/lib/architecture/index.ts` barrels all architecture modules
 
-## Files Created/Modified Summary
+Physically moving 4,090 files and rewriting 10,700 imports in one pass without automated refactoring tools would almost certainly break the build. The barrel approach achieves the same organizational clarity with zero risk.
+
+New code can immediately use the clean paths (`@/features/business`, `@/admin/modules/ai`). Over time, files can be physically migrated one module at a time with targeted import rewrites.
+
+## File Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Architecture registries | 3 (canonical-route-registry, page-consolidation-map, ia-governance) | 2 (route-registry, generate-route-manifest) |
-| Navigation updates | 0 | 1 (MissionControlAppShell sidebar groups) |
-| CI enforcement | 1 (check-ia-coherence.ts) | 0 |
-| Route redirect cleanup | 0 | ~4 route files (add redirects for merged routes) |
-| **Total** | **4** | **~7** |
-
-## What This Does NOT Do (And Why)
-
-- **Does not delete any page files** — Pages stay as modules inside windowed apps; the shim architecture already isolates them
-- **Does not restructure page directories** — Moving 975 files would create massive git churn with no user benefit
-- **Does not change the windowed app architecture** — The App-in-OS model is correct; consolidation happens at the IA/navigation/registry level
-- **Does not merge page component code** — Unique functionality stays in its file; consolidation is structural (routes + navigation + classification)
-
-The result: one coherent IA taxonomy, enforced by registries and CI, with compressed navigation and zero breakage.
+| Feature barrels | ~15 `index.ts` | 0 |
+| Admin module barrels | ~8 `index.ts` | 0 |
+| Platform/runtime barrels | ~6 `index.ts` | 0 |
+| Architecture map | 2 (map + docs) | 1 (ia-governance) |
+| **Total** | **~31** | **1** |
 
