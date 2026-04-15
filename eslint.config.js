@@ -24,100 +24,77 @@ export default tseslint.config(
       "no-restricted-imports": ["warn", {
         "patterns": [
           // ── Backend plane: core-services ──
-          {
-            "group": ["@/lib/core-services/*"],
-            "message": "Use @/planes/backend barrel instead of direct core-services imports. See docs/architecture/MIGRATION-BLUEPRINT.md"
-          },
+          { "group": ["@/lib/core-services/*"], "message": "Use @/planes/backend barrel instead." },
           // ── OS plane: nova-sdk ──
-          {
-            "group": ["@/lib/nova-sdk/*"],
-            "message": "Use @/planes/os barrel instead of direct nova-sdk imports. See docs/architecture/MIGRATION-BLUEPRINT.md"
-          },
+          { "group": ["@/lib/nova-sdk/*"], "message": "Use @/planes/os barrel instead." },
           // ── Backend plane: platform-plane ──
-          {
-            "group": ["@/lib/platform-plane/*"],
-            "message": "Use @/planes/admin or @/planes/founder barrel instead of direct platform-plane imports."
-          },
+          { "group": ["@/lib/platform-plane/*"], "message": "Use @/planes/admin or @/planes/founder barrel instead." },
           // ── OS plane: os-services ──
-          {
-            "group": ["@/lib/os-services/*"],
-            "message": "Use @/planes/os barrel instead of direct os-services imports."
-          },
+          { "group": ["@/lib/os-services/*"], "message": "Use @/planes/os barrel instead." },
           // ── OS plane: os-security ──
-          {
-            "group": ["@/lib/os-security/*"],
-            "message": "Use @/planes/os barrel instead of direct os-security imports."
-          },
+          { "group": ["@/lib/os-security/*"], "message": "Use @/planes/os barrel instead." },
           // ── Backend plane: cloud-backbone ──
-          {
-            "group": ["@/lib/cloud-backbone/*"],
-            "message": "Use @/planes/backend barrel instead of direct cloud-backbone imports."
-          },
+          { "group": ["@/lib/cloud-backbone/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: persistence ──
-          {
-            "group": ["@/lib/persistence/*"],
-            "message": "Use @/planes/backend barrel instead of direct persistence imports."
-          },
+          { "group": ["@/lib/persistence/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: observability ──
-          {
-            "group": ["@/lib/observability/*"],
-            "message": "Use @/planes/backend barrel instead of direct observability imports."
-          },
+          { "group": ["@/lib/observability/*"], "message": "Use @/planes/backend barrel instead." },
           // ── OS plane: sync-engine ──
-          {
-            "group": ["@/lib/sync-engine/*"],
-            "message": "Use @/planes/os barrel instead of direct sync-engine imports."
-          },
+          { "group": ["@/lib/sync-engine/*"], "message": "Use @/planes/os barrel instead." },
           // ── Backend plane: sovereign-ai-gateway ──
-          {
-            "group": ["@/lib/sovereign-ai-gateway/*"],
-            "message": "Use @/planes/backend barrel instead of direct sovereign-ai-gateway imports."
-          },
+          { "group": ["@/lib/sovereign-ai-gateway/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: advisor-intelligence ──
-          {
-            "group": ["@/lib/advisor-intelligence/*"],
-            "message": "Use @/planes/backend barrel instead of direct advisor-intelligence imports."
-          },
+          { "group": ["@/lib/advisor-intelligence/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: strategic-intelligence ──
-          {
-            "group": ["@/lib/strategic-intelligence/*"],
-            "message": "Use @/planes/backend barrel instead of direct strategic-intelligence imports."
-          },
+          { "group": ["@/lib/strategic-intelligence/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: boardroom ──
-          {
-            "group": ["@/lib/boardroom/*"],
-            "message": "Use @/planes/backend barrel instead of direct boardroom imports."
-          },
+          { "group": ["@/lib/boardroom/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: domain-engines ──
-          {
-            "group": ["@/lib/domain-engines/*"],
-            "message": "Use @/planes/backend barrel instead of direct domain-engines imports."
-          },
+          { "group": ["@/lib/domain-engines/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: compute-governance ──
-          {
-            "group": ["@/lib/compute-governance/*"],
-            "message": "Use @/planes/backend barrel instead of direct compute-governance imports."
-          },
+          { "group": ["@/lib/compute-governance/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Backend plane: ai-engineering ──
-          {
-            "group": ["@/lib/ai-engineering/*"],
-            "message": "Use @/planes/backend barrel instead of direct ai-engineering imports."
-          },
+          { "group": ["@/lib/ai-engineering/*"], "message": "Use @/planes/backend barrel instead." },
           // ── Internal tools: simulation ──
-          {
-            "group": ["@/lib/simulation/*"],
-            "message": "Use internal-tools barrel or @/planes/shared instead of direct simulation imports."
-          },
+          { "group": ["@/lib/simulation/*"], "message": "Use internal-tools barrel instead." },
           // ── Internal tools: fip ──
-          {
-            "group": ["@/lib/fip/*"],
-            "message": "Use internal-tools barrel instead of direct fip imports."
-          },
+          { "group": ["@/lib/fip/*"], "message": "Use internal-tools barrel instead." },
           // ── Admin AI ──
-          {
-            "group": ["@/lib/admin-ai/*"],
-            "message": "Use @/planes/admin barrel instead of direct admin-ai imports."
-          },
+          { "group": ["@/lib/admin-ai/*"], "message": "Use @/planes/admin barrel instead." },
+          // ── Backend plane: intelligence-architecture ──
+          { "group": ["@/lib/intelligence-architecture/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: advisor-protocol ──
+          { "group": ["@/lib/advisor-protocol/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: detection ──
+          { "group": ["@/lib/detection/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: verification ──
+          { "group": ["@/lib/verification/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: no-hallucination ──
+          { "group": ["@/lib/no-hallucination/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: dual-reality ──
+          { "group": ["@/lib/dual-reality/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: shopify ──
+          { "group": ["@/lib/shopify/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: internal-agents ──
+          { "group": ["@/lib/internal-agents/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: platform-law ──
+          { "group": ["@/lib/platform-law/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: capabilities ──
+          { "group": ["@/lib/capabilities/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Backend plane: delivery-methodology ──
+          { "group": ["@/lib/delivery-methodology/*"], "message": "Use @/planes/backend barrel instead." },
+          // ── Internal tools: demo-data ──
+          { "group": ["@/lib/demo-data/*"], "message": "Demo data must not leak into production code." },
+          // ── Internal tools: mock-data ──
+          { "group": ["@/lib/mock-data/*"], "message": "Mock data must not leak into production code." },
+          // ── Internal tools: demo-scenarios ──
+          { "group": ["@/lib/demo-scenarios/*"], "message": "Demo scenarios must not leak into production code." },
+          // ── Internal tools: seed ──
+          { "group": ["@/lib/seed/*"], "message": "Seed data must not leak into production code." },
+          // ── Internal tools: reality-audit ──
+          { "group": ["@/lib/reality-audit/*"], "message": "Use internal-tools barrel instead." },
+          // ── Internal tools: reality-records ──
+          { "group": ["@/lib/reality-records/*"], "message": "Use internal-tools barrel instead." },
         ]
       }],
     },

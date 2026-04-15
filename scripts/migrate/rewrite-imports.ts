@@ -70,14 +70,21 @@ const IMPORT_MAP: Array<{ pattern: RegExp; replacement: string }> = [
   { pattern: /from\s+["']@\/lib\/detection(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/detection$1"' },
   { pattern: /from\s+["']@\/lib\/verification(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/verification$1"' },
   { pattern: /from\s+["']@\/lib\/shopify(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/shopify$1"' },
+  { pattern: /from\s+["']@\/lib\/sovereign-ai-gateway(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/ai-gateway$1"' },
+  { pattern: /from\s+["']@\/lib\/internal-agents(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/agents$1"' },
+  { pattern: /from\s+["']@\/lib\/platform-law(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/platform-law$1"' },
+  { pattern: /from\s+["']@\/lib\/capabilities(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/capabilities$1"' },
+  { pattern: /from\s+["']@\/lib\/delivery-methodology(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/delivery-methodology$1"' },
+  { pattern: /from\s+["']@\/lib\/dual-reality(\/[^"']*)?["']/g, replacement: 'from "@sita/backend/dual-reality$1"' },
 
   // ── Internal tools ──
   { pattern: /from\s+["']@\/lib\/simulation(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/simulations$1"' },
   { pattern: /from\s+["']@\/lib\/fip(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/fip$1"' },
-  { pattern: /from\s+["']@\/lib\/dual-reality(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/dual-reality$1"' },
   { pattern: /from\s+["']@\/lib\/reality-audit(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/reality-audit$1"' },
   { pattern: /from\s+["']@\/lib\/reality-records(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/reality-records$1"' },
   { pattern: /from\s+["']@\/lib\/demo-data(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/demo-data$1"' },
+  { pattern: /from\s+["']@\/lib\/demo-scenarios(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/demo-scenarios$1"' },
+  { pattern: /from\s+["']@\/lib\/mock-data(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/mock-data$1"' },
   { pattern: /from\s+["']@\/lib\/seed(\/[^"']*)?["']/g, replacement: 'from "@sita/internal-tools/seed$1"' },
 
   // ── Admin UI ──

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Plane Public API
+// SITA OS — Admin Plane Public API (Complete)
 // Operations, policy, support, security, rollout control.
 // May depend on: shared. Must NOT import from os/founder/mobile.
 // ═══════════════════════════════════════════════════════════════
@@ -28,3 +28,6 @@ export * from "@/lib/admin-ai";
 
 // ── Admin Route Truth ──
 export { loadManifest, validateRouteTruth, getRouteMismatches, getManifestStaleness, saveSnapshot } from "@/lib/services/admin-route-truth-service";
+
+// ── Compute Governance (admin visibility) ──
+export * from "@/lib/compute-governance";
