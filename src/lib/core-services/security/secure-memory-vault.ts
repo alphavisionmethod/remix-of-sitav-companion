@@ -39,7 +39,7 @@ async function encrypt(plaintext: string): Promise<{ encrypted: ArrayBuffer; iv:
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const encoded = new TextEncoder().encode(plaintext);
   const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
+    { name: "AES-GCM", iv: iv as unknown as BufferSource },
     key,
     encoded
   );
@@ -49,7 +49,7 @@ async function encrypt(plaintext: string): Promise<{ encrypted: ArrayBuffer; iv:
 async function decrypt(encrypted: ArrayBuffer, iv: Uint8Array): Promise<string> {
   const key = await ensureKey();
   const decrypted = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
+    { name: "AES-GCM", iv: iv as unknown as BufferSource },
     key,
     encrypted
   );

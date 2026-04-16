@@ -7,6 +7,9 @@ const { setupFSBridge } = require('./fs-bridge.cjs');
 const licenseGuard = require('./license-guard.cjs');
 const { createActivationWindow } = require('./license-ui.cjs');
 const { runFullIntegrityCheck } = require('./integrity-check.cjs');
+const { initRuntimeShield, getShieldStatus } = require('./runtime-shield.cjs');
+const { initDLPGuard, getDLPStatus } = require('./dlp-guard.cjs');
+const { initNetworkSentinel, getNetworkSentinelStatus } = require('./network-sentinel.cjs');
 
 let mainWindow;
 let tray;
@@ -335,6 +338,12 @@ app.whenReady().then(async () => {
   licenseGuard.startHeartbeat();
 
   createWindow();
+
+  // ── Advanced Security Layers ──────────────────────────────────
+  initRuntimeShield(mainWindow);
+  initDLPGuard(mainWindow, { userId: 'system' });
+  initNetworkSentinel(mainWindow);
+
   createTray();
 });
 
