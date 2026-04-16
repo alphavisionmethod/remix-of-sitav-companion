@@ -46,10 +46,12 @@ for (const p of declared) {
 }
 
 // Reverse: any binding prefix that matches no declared route?
+// Prefix-aware: a binding "/foo" is considered used if any declared route is "/foo" or starts with "/foo/".
 const unusedBindings: string[] = [];
 for (const b of ROUTE_CONTEXT_BINDINGS) {
-  const used = declared.some((p) => p.startsWith(b.identifier));
-  if (!used) unusedBindings.push(b.identifier);
+  const id = b.identifier;
+  const used = declared.some((p) => p === id || p.startsWith(id + "/") || p.startsWith(id));
+  if (!used) unusedBindings.push(id);
 }
 
 const report = {

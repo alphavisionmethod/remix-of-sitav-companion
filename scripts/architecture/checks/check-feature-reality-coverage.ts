@@ -18,6 +18,14 @@ import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-
 const issues: { featureId: string; reason: string }[] = [];
 const validContexts = new Set(BOUNDED_CONTEXT_REGISTRY.map((c) => c.contextId));
 
+const FEATURE_FLOOR = 50;
+if (FEATURE_REALITY_REGISTRY.length < FEATURE_FLOOR) {
+  issues.push({
+    featureId: "__registry__",
+    reason: `Feature registry has only ${FEATURE_REALITY_REGISTRY.length} entries; floor is ${FEATURE_FLOOR}.`,
+  });
+}
+
 for (const feature of FEATURE_REALITY_REGISTRY) {
   if (!validContexts.has(feature.contextId)) {
     issues.push({ featureId: feature.featureId, reason: `Unknown contextId: ${feature.contextId}` });

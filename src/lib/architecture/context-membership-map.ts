@@ -79,12 +79,8 @@ export const ROUTE_CONTEXT_BINDINGS: readonly MembershipBinding[] = [
   { kind: "route", identifier: "/my-activity",         contextId: "mission-control" },
   { kind: "route", identifier: "/command-history",     contextId: "mission-control" },
   { kind: "route", identifier: "/personalization",     contextId: "mission-control" },
-  // Setup / Identity
+  // Setup / Identity (only routes actually declared on disk)
   { kind: "route", identifier: "/settings",            contextId: "setup-identity" },
-  { kind: "route", identifier: "/auth",                contextId: "setup-identity" },
-  { kind: "route", identifier: "/login",               contextId: "setup-identity" },
-  { kind: "route", identifier: "/signup",              contextId: "setup-identity" },
-  { kind: "route", identifier: "/onboarding",          contextId: "setup-identity" },
   { kind: "route", identifier: "/first-boot",          contextId: "setup-identity" },
   { kind: "route", identifier: "/profile",             contextId: "setup-identity" },
   { kind: "route", identifier: "/recovery",            contextId: "setup-identity" },
@@ -96,8 +92,6 @@ export const ROUTE_CONTEXT_BINDINGS: readonly MembershipBinding[] = [
   { kind: "route", identifier: "/network",             contextId: "cloud-control-plane" },
   { kind: "route", identifier: "/update-center",       contextId: "cloud-control-plane" },
   // Integrations
-  { kind: "route", identifier: "/connectors",          contextId: "integrations" },
-  { kind: "route", identifier: "/integrations",        contextId: "integrations" },
   { kind: "route", identifier: "/app-store",           contextId: "integrations" },
   // Files / Runtime Kernel
   { kind: "route", identifier: "/files",               contextId: "runtime-kernel" },
@@ -114,12 +108,12 @@ export const ROUTE_CONTEXT_BINDINGS: readonly MembershipBinding[] = [
   { kind: "route", identifier: "/display-modes",       contextId: "runtime-kernel" },
   { kind: "route", identifier: "/planning-canvas",     contextId: "runtime-kernel" },
   { kind: "route", identifier: "/templates",           contextId: "runtime-kernel" },
+  { kind: "route", identifier: "/workspace",           contextId: "runtime-kernel" },
   // Admin
   { kind: "route", identifier: "/admin",               contextId: "admin" },
   { kind: "route", identifier: "/owner",               contextId: "admin" },
   { kind: "route", identifier: "/owner-mode",          contextId: "admin" },
   // Mobile
-  { kind: "route", identifier: "/m/",                  contextId: "mobile" },
   { kind: "route", identifier: "/mobile",              contextId: "mobile" },
 ];
 
