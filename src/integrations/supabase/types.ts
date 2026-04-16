@@ -1869,6 +1869,87 @@ export type Database = {
         }
         Relationships: []
       }
+      approval_decisions: {
+        Row: {
+          actor_user_id: string | null
+          conditions: Json | null
+          created_at: string
+          decided_at: string | null
+          decision: string
+          id: string
+          rationale: string | null
+          request_id: string
+          request_type: string
+          user_id: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          conditions?: Json | null
+          created_at?: string
+          decided_at?: string | null
+          decision?: string
+          id?: string
+          rationale?: string | null
+          request_id: string
+          request_type?: string
+          user_id: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          conditions?: Json | null
+          created_at?: string
+          decided_at?: string | null
+          decision?: string
+          id?: string
+          rationale?: string | null
+          request_id?: string
+          request_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      biometric_credentials: {
+        Row: {
+          created_at: string
+          credential_id: string
+          credential_type: string
+          device_id: string | null
+          display_name: string | null
+          id: string
+          last_used_at: string | null
+          public_key: string
+          sign_count: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          credential_type?: string
+          device_id?: string | null
+          display_name?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key: string
+          sign_count?: number
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          credential_type?: string
+          device_id?: string | null
+          display_name?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key?: string
+          sign_count?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       boardroom_decision_receipts: {
         Row: {
           approval_conditions: Json
@@ -4520,6 +4601,62 @@ export type Database = {
           },
         ]
       }
+      command_steps: {
+        Row: {
+          action: string
+          command_id: string
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          result: Json | null
+          retry_count: number
+          started_at: string | null
+          status: string
+          step_index: number
+          target: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          command_id: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          result?: Json | null
+          retry_count?: number
+          started_at?: string | null
+          status?: string
+          step_index?: number
+          target?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          command_id?: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          result?: Json | null
+          retry_count?: number
+          started_at?: string | null
+          status?: string
+          step_index?: number
+          target?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "command_steps_command_id_fkey"
+            columns: ["command_id"]
+            isOneToOne: false
+            referencedRelation: "os_commands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       communication_metrics: {
         Row: {
           created_at: string
@@ -4854,6 +4991,54 @@ export type Database = {
           records_synced?: number | null
           started_at?: string | null
           status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      connector_tokens: {
+        Row: {
+          connector_id: string | null
+          created_at: string
+          encrypted_token_ref: string
+          expires_at: string | null
+          id: string
+          issued_at: string
+          last_refreshed_at: string | null
+          provider: string
+          rotation_count: number
+          scopes: string[] | null
+          status: string
+          token_type: string
+          user_id: string
+        }
+        Insert: {
+          connector_id?: string | null
+          created_at?: string
+          encrypted_token_ref: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          last_refreshed_at?: string | null
+          provider: string
+          rotation_count?: number
+          scopes?: string[] | null
+          status?: string
+          token_type?: string
+          user_id: string
+        }
+        Update: {
+          connector_id?: string | null
+          created_at?: string
+          encrypted_token_ref?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          last_refreshed_at?: string | null
+          provider?: string
+          rotation_count?: number
+          scopes?: string[] | null
+          status?: string
+          token_type?: string
           user_id?: string
         }
         Relationships: []
@@ -5669,6 +5854,56 @@ export type Database = {
           },
         ]
       }
+      device_attestations: {
+        Row: {
+          attestation_type: string
+          created_at: string
+          device_id: string
+          evidence: Json | null
+          expires_at: string | null
+          id: string
+          key_fingerprint: string | null
+          status: string
+          user_id: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          attestation_type?: string
+          created_at?: string
+          device_id: string
+          evidence?: Json | null
+          expires_at?: string | null
+          id?: string
+          key_fingerprint?: string | null
+          status?: string
+          user_id: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          attestation_type?: string
+          created_at?: string
+          device_id?: string
+          evidence?: Json | null
+          expires_at?: string | null
+          id?: string
+          key_fingerprint?: string | null
+          status?: string
+          user_id?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_attestations_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       device_mesh_peers: {
         Row: {
           battery_level: number | null
@@ -6247,6 +6482,48 @@ export type Database = {
         }
         Relationships: []
       }
+      graph_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          id: string
+          metadata: Json | null
+          source_node_id: string
+          source_node_type: string
+          target_node_id: string
+          target_node_type: string
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          edge_type: string
+          id?: string
+          metadata?: Json | null
+          source_node_id: string
+          source_node_type: string
+          target_node_id: string
+          target_node_type: string
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          id?: string
+          metadata?: Json | null
+          source_node_id?: string
+          source_node_type?: string
+          target_node_id?: string
+          target_node_type?: string
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
       grocery_items: {
         Row: {
           category: string | null
@@ -6367,6 +6644,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      incidents: {
+        Row: {
+          affected_services: Json | null
+          created_at: string
+          description: string | null
+          id: string
+          owner_user_id: string | null
+          remediation_notes: string | null
+          resolved_at: string | null
+          severity: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_services?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_user_id?: string | null
+          remediation_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_services?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_user_id?: string | null
+          remediation_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       layer_health_snapshots: {
         Row: {
@@ -8615,6 +8937,48 @@ export type Database = {
           },
         ]
       }
+      runtime_agents: {
+        Row: {
+          agent_type: string
+          capabilities: Json | null
+          created_at: string
+          hostname: string | null
+          id: string
+          last_heartbeat_at: string | null
+          registered_at: string
+          status: string
+          updated_at: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          agent_type?: string
+          capabilities?: Json | null
+          created_at?: string
+          hostname?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          registered_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          agent_type?: string
+          capabilities?: Json | null
+          created_at?: string
+          hostname?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          registered_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       school_activities: {
         Row: {
           activity_type: string | null
@@ -8752,6 +9116,48 @@ export type Database = {
           total_spent?: number | null
           trusted?: boolean | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      simulations: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          duration_ms: number | null
+          id: string
+          input_payload: Json | null
+          model_used: string | null
+          result_artifacts: Json | null
+          scenario_type: string
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          input_payload?: Json | null
+          model_used?: string | null
+          result_artifacts?: Json | null
+          scenario_type: string
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          input_payload?: Json | null
+          model_used?: string | null
+          result_artifacts?: Json | null
+          scenario_type?: string
+          status?: string
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -8985,6 +9391,54 @@ export type Database = {
           updated_at?: string
           user_id?: string
           version?: string
+        }
+        Relationships: []
+      }
+      timeline_events: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_type: string
+          created_at: string
+          description: string | null
+          domain: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          receipt_id: string | null
+          subject_id: string | null
+          subject_type: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          receipt_id?: string | null
+          subject_id?: string | null
+          subject_type?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_type?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          receipt_id?: string | null
+          subject_id?: string | null
+          subject_type?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -9377,6 +9831,36 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      vapid_keys: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          id: string
+          private_key_ref: string
+          public_key: string
+          rotated_at: string | null
+          status: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          id?: string
+          private_key_ref: string
+          public_key: string
+          rotated_at?: string | null
+          status?: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          id?: string
+          private_key_ref?: string
+          public_key?: string
+          rotated_at?: string | null
+          status?: string
         }
         Relationships: []
       }
