@@ -65,6 +65,7 @@ export const EDGE_FUNCTION_OWNER_MAP: Record<string, OwnerTeam> = {
   "connector-transform": "connector-integrations",
   "cost-alert": "finance-engine",
   "crm-sync": "connector-integrations",
+  "db-truth-introspect": "platform-core",
   "device-telemetry": "cloud-infrastructure",
   "digital-twin-engine": "ai-engineering",
   "ecosystem-operations": "platform-core",

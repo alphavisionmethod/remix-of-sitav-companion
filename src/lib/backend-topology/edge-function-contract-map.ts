@@ -57,6 +57,7 @@ export const EDGE_FUNCTION_CONTRACT_MAP: Record<string, FunctionContract> = {
   "connector-transform": { inputSchema: "TransformInput", outputSchema: "TransformOutput", errorSchema: "StandardError" },
   "cost-alert": { inputSchema: "CostAlertInput", outputSchema: "CostAlertOutput", errorSchema: "StandardError" },
   "crm-sync": { inputSchema: "CrmSyncInput", outputSchema: "CrmSyncOutput", errorSchema: "StandardError" },
+  "db-truth-introspect": { inputSchema: "DbTruthIntrospectInput", outputSchema: "DbTruthIntrospectOutput", errorSchema: "StandardError" },
   "device-telemetry": { inputSchema: "TelemetryInput", outputSchema: "TelemetryAck", errorSchema: "StandardError" },
   "digital-twin-engine": { inputSchema: "DigitalTwinInput", outputSchema: "DigitalTwinOutput", errorSchema: "StandardError" },
   "ecosystem-operations": { inputSchema: "EcosystemOpsInput", outputSchema: "EcosystemOpsOutput", errorSchema: "StandardError" },

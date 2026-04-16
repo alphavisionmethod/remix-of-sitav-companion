@@ -482,6 +482,12 @@ export const EDGE_FUNCTION_REGISTRY: readonly EdgeFunctionEntry[] = [
     allowedCallers: ["kernel", "external-webhook"], callsInto: [],
     runtimeConsequence: "Observability gap", migrationStatus: "stable" },
 
+  { id: "ef.db-truth-introspect", name: "db-truth-introspect", path: "supabase/functions/db-truth-introspect/index.ts", runtime: "deno", status: "active", description: "Read-only DB schema/RLS/drift introspection — admin-only",
+    category: "DOMAIN_FUNCTION", boundedContext: "platform-services", owner: "platform-core", authModel: "jwt",
+    requestContract: "DbTruthIntrospectInput", responseContract: "DbTruthIntrospectOutput", sideEffectClass: "none",
+    allowedCallers: ["admin-bff", "frontend-admin"], callsInto: [],
+    runtimeConsequence: "DbTruthExplorer falls back to static registry view", migrationStatus: "stable" },
+
   { id: "ef.device-telemetry", name: "device-telemetry", path: "supabase/functions/device-telemetry/index.ts", runtime: "deno", status: "active", description: "Device telemetry ingestion",
     category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "os-kernel", owner: "cloud-infrastructure", authModel: "jwt",
     requestContract: "TelemetryInput", responseContract: "TelemetryAck", sideEffectClass: "low",

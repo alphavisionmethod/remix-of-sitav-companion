@@ -59,6 +59,7 @@ export const EDGE_FUNCTION_AUTH_MAP: Record<string, EdgeFunctionAuthEntry> = {
   "connector-transform": { auth: "jwt", requiresUserContext: true, adminOnly: false },
   "cost-alert": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "crm-sync": { auth: "jwt", requiresUserContext: true, adminOnly: false },
+  "db-truth-introspect": { auth: "jwt", requiresUserContext: true, adminOnly: true },
   "device-telemetry": { auth: "jwt", requiresUserContext: true, adminOnly: false },
   "digital-twin-engine": { auth: "jwt", requiresUserContext: true, adminOnly: false },
   "ecosystem-operations": { auth: "jwt", requiresUserContext: true, adminOnly: false },
