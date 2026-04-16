@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { CheckCircle2, AlertTriangle } from "lucide-react";
 import {
   FEATURE_REALITY_REGISTRY,
   ALL_SURFACES,
@@ -21,6 +22,7 @@ import {
   DEPLOYABILITY_REGISTRY,
 } from "@/lib/deploy/deployability-registry";
 import { SURFACE_CLAIM_MAP } from "@/lib/reality/surface-claim-map";
+import { CI_GATE_REGISTRY } from "@/lib/ci/ci-gate-registry";
 
 const STATE_VARIANT: Record<RealityState, "default" | "secondary" | "outline" | "destructive"> = {
   real: "default",
