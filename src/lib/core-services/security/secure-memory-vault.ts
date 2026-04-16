@@ -67,7 +67,7 @@ function secureDispose(entry: VaultEntry) {
     // Buffer may not be writable — best effort
   }
   // Overwrite IV
-  crypto.getRandomValues(entry.iv);
+  crypto.getRandomValues(entry.iv as unknown as Uint8Array<ArrayBuffer>);
   entry.destroyed = true;
 }
 
