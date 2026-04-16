@@ -15,7 +15,8 @@ export type CIGatePhase =
   | "phase-9-reality-deployability"
   | "phase-10-completeness"
   | "phase-12-mobile-deployability"
-  | "phase-13-web-deployability";
+  | "phase-13-web-deployability"
+  | "phase-14-desktop-deployability";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 

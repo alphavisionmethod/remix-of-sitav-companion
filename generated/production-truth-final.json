@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-04-16T00:00:00.000Z",
   "verdict": "ready",
-  "totals": { "totalGates": 24, "passedGates": 24, "blockerFails": 0, "warningFails": 0 },
+  "totals": { "totalGates": 25, "passedGates": 25, "blockerFails": 0, "warningFails": 0 },
   "byPhase": {
     "phase-1-bounded-context": { "total": 1, "passed": 1 },
     "phase-2-runtime-tier": { "total": 2, "passed": 2 },
@@ -14,11 +14,12 @@
     "phase-9-reality-deployability": { "total": 6, "passed": 6 },
     "phase-10-completeness": { "total": 4, "passed": 4 },
     "phase-12-mobile-deployability": { "total": 3, "passed": 3 },
-    "phase-13-web-deployability": { "total": 1, "passed": 1 }
+    "phase-13-web-deployability": { "total": 1, "passed": 1 },
+    "phase-14-desktop-deployability": { "total": 1, "passed": 1 }
   },
   "deployability": [
     { "surface": "web", "score": 99, "status": "ready" },
-    { "surface": "electron", "score": 95, "status": "ready" },
+    { "surface": "electron", "score": 98, "status": "ready" },
     { "surface": "appliance", "score": 92, "status": "ready" },
     { "surface": "ios", "score": 96, "status": "ready" },
     { "surface": "android", "score": 98, "status": "ready" },
@@ -33,8 +34,8 @@
   },
   "webReadiness": {
     "total": 13,
-    "ready": 12,
-    "partial": 1,
+    "ready": 13,
+    "partial": 0,
     "deferred": 0,
     "missing": 0,
     "swIframeGuard": true,
@@ -42,9 +43,21 @@
     "pushIconsResolved": true,
     "ok": true
   },
+  "desktopReadiness": {
+    "total": 11,
+    "ready": 10,
+    "partial": 1,
+    "deferred": 0,
+    "missing": 0,
+    "sandboxEnforced": true,
+    "bridgeMethodCount": 22,
+    "signingConfigPresent": true,
+    "fallbacksComplete": true,
+    "ok": true
+  },
   "acceptanceCriteria": {
     "all-gates-green": true,
-    "24-gates-registered": true,
+    "25-gates-registered": true,
     "edge-functions-claimed": true,
     "tables-claimed": true,
     "routes-owned": true,
@@ -52,7 +65,8 @@
     "page-state-floor-met": true,
     "mobile-store-readiness-ok": true,
     "mobile-build-pipeline-ok": true,
-    "web-deployability-ok": true
+    "web-deployability-ok": true,
+    "desktop-deployability-ok": true
   },
   "ok": true
 }

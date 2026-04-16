@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-04-16T00:00:00.000Z",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "totals": {
+    "items": 11,
+    "ready": 10,
+    "partial": 1,
+    "deferred": 0,
+    "missing": 0
+  },
+  "checks": {
+    "sandboxEnforced": true,
+    "contextIsolationEnforced": true,
+    "nodeIntegrationDisabled": true,
+    "bridgeMethodCount": 22,
+    "bridgeMethodExpected": 22,
+    "bridgeMissing": [],
+    "osxSignBlock": true,
+    "osxNotarizeBlock": true,
+    "windowsSignBlock": true,
+    "buildScriptExists": true,
+    "buildScriptExecutable": true,
+    "hasElectronDep": true,
+    "hasPackagerDep": true,
+    "hasUpdaterDep": true,
+    "mainPointsToElectron": true,
+    "fallbacksComplete": true,
+    "registryClean": true
+  },
+  "items": [
+    { "id": "desktop-runtime-contract", "title": "Electron runtime contract exists", "status": "ready", "blocker": true, "evidence": "src/lib/runtime/desktop/desktop-host-contract.ts — 12 privileges, deployment assumptions, exclusive vs shared features.", "remediation": null },
+    { "id": "desktop-preload-bridge-typed", "title": "Preload bridge is typed and minimal", "status": "ready", "blocker": true, "evidence": "electron/preload.cjs (22 methods) ↔ BRIDGE_METHOD_REGISTRY (22 entries) 1:1.", "remediation": null },
+    { "id": "desktop-bridge-isolation", "title": "Native privileges only flow through approved bridge", "status": "ready", "blocker": true, "evidence": "contextIsolation=true + sandbox=true + nodeIntegration=false in main.cjs.", "remediation": null },
+    { "id": "desktop-fs-bridge-permissioned", "title": "File-system bridge is explicit and permissioned", "status": "ready", "blocker": true, "evidence": "fs-bridge.cjs dialog-gated, allowlist, 50MB cap, sandboxed userData/backups.", "remediation": null },
+    { "id": "desktop-auto-updater", "title": "Auto-updater works or is clearly disabled", "status": "ready", "blocker": false, "evidence": "auto-updater.cjs graceful fallback, manual feed via SITA_UPDATE_URL.", "remediation": null },
+    { "id": "desktop-crash-reporting", "title": "Crash reporting works", "status": "ready", "blocker": true, "evidence": "crash-reporter.cjs captures unhandled/uncaught/render-process-gone.", "remediation": null },
+    { "id": "desktop-native-notifications", "title": "Native notifications work", "status": "ready", "blocker": false, "evidence": "Notification.isSupported() gate + send-notification IPC.", "remediation": null },
+    { "id": "desktop-os-shell-truthful", "title": "OS shell features are truthfully scoped", "status": "ready", "blocker": true, "evidence": "12 privileges enumerated, exclusive vs shared cleanly separated; Tier 2 (not honest OS).", "remediation": null },
+    { "id": "desktop-release-pipeline", "title": "Desktop-specific release/build pipeline exists", "status": "ready", "blocker": true, "evidence": "build-electron.sh + forge.config.cjs cross-platform via @electron/packager.", "remediation": null },
+    { "id": "desktop-fallbacks-handled", "title": "Unsupported web-only/native-only mismatches are handled", "status": "ready", "blocker": true, "evidence": "desktop-fallbacks.ts declares fallback for every desktop-exclusive capability.", "remediation": null },
+    { "id": "desktop-signing-notarization", "title": "App signing/notarization plan exists", "status": "partial", "blocker": false, "evidence": "forge.config.cjs declares osxSign, osxNotarize, windowsSign env-driven; requires real certs at release time.", "remediation": "Provision Apple Developer ID + Windows EV/OV certs; populate APPLE_* and CSC_* env vars in release CI." }
+  ],
+  "issues": []
+}

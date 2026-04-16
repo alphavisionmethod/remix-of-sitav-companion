@@ -257,6 +257,18 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "13-item Web Deployability Checklist: zero missing, partials must have remediation, SW iframe-guarded, CSP aligned, push icons resolved.",
     producesArtifact: "generated/web-deployability-report.json",
   },
+
+  // ── Phase 14 ── Desktop Host / Electron Deployability
+  {
+    id: "desktop-deployability",
+    phase: "phase-14-desktop-deployability",
+    title: "Desktop deployability (11-item Electron host checklist)",
+    script: "scripts/architecture/checks/check-desktop-deployability.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "11-item Desktop Host / Electron Checklist: sandbox enforced, preload bridge matches contract (22 methods), forge signing config present, fallbacks declared for every desktop-exclusive feature.",
+    producesArtifact: "generated/desktop-deployability-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
