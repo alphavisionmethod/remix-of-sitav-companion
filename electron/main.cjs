@@ -35,6 +35,9 @@ function createWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
       preload: path.join(__dirname, 'preload.cjs'),
     },
     backgroundColor: '#0a0a0a',

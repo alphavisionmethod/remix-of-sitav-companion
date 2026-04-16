@@ -22,6 +22,9 @@ function createActivationWindow() {
       webPreferences: {
         contextIsolation: true,
         nodeIntegration: false,
+        sandbox: true,
+        webSecurity: true,
+        allowRunningInsecureContent: false,
         preload: path.join(__dirname, 'license-preload.cjs'),
       },
     });
