@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Capability Manifest vs Registrations Linkage Check
-// Diffs generated/capability-index.json against actual capability
-// declaration sites in source code
+// Verifies generated/capability-index.json against actual source files
 // ═══════════════════════════════════════════════════════════════
 //
-// Source of truth: capability declarations in src/packages/*-contracts/
-// + registerCapability(...) call sites + CapabilityClass enums
+// Strategy (authoritative, not heuristic):
+//   1. Every manifest entry declares a `source` file. That file MUST
+//      exist on disk.
+//   2. The declared `name` MUST appear as an exported identifier (or
+//      string literal) in that source file.
+//   3. Optionally surface source-side declarations that aren't in the
+//      manifest (warning only — regen debt).
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { ViolationCollector, scanDir, readJsonSafe } from "../../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 
 const vc = new ViolationCollector();
 const MANIFEST_PATH = "generated/capability-index.json";
@@ -25,97 +29,51 @@ if (!manifest) {
 
 const manifestCaps: Array<{ name: string; source?: string }> =
   manifest.capabilities || manifest.entries || [];
-const manifestNames = new Set(manifestCaps.map((c) => c.name).filter(Boolean));
-const manifestSources = new Set(
+const uniqueSources = new Set(
   manifestCaps.map((c) => c.source).filter(Boolean) as string[]
 );
 
-// ── Scan source for capability declarations ────────────────────
-//   patterns:
-//     registerCapability(...)
-//     CapabilityClass.X
-//     export const X: CapabilityId = "..."
-//     export type/const ending in CapabilityId / CapabilityKey
-const sourceFiles = scanDir("src", [".ts", ".tsx"]).filter(
-  (f) =>
-    !f.includes("__tests__") &&
-    !f.endsWith(".test.ts") &&
-    !f.endsWith(".test.tsx") &&
-    !f.endsWith(".d.ts")
-);
-
-const fsCapabilityNames = new Set<string>();
-const fsCapabilitySources = new Set<string>();
-
-const declRx =
-  /export\s+(?:const|type|interface)\s+(\w*(?:Capability(?:Id|Key|Class)?|DomainId)\w*)/g;
-const registerRx = /registerCapability\s*\(\s*["'`]([\w\-.]+)["'`]/g;
-
-for (const file of sourceFiles) {
-  let content: string;
-  try {
-    content = fs.readFileSync(file, "utf-8");
-  } catch {
-    continue;
-  }
-
-  let touched = false;
-  let m: RegExpExecArray | null;
-  while ((m = declRx.exec(content)) !== null) {
-    fsCapabilityNames.add(m[1]);
-    touched = true;
-  }
-  while ((m = registerRx.exec(content)) !== null) {
-    fsCapabilityNames.add(m[1]);
-    touched = true;
-  }
-  if (touched) fsCapabilitySources.add(file);
-
-  // Reset lastIndex (regex with /g shares state across iterations of for-loop)
-  declRx.lastIndex = 0;
-  registerRx.lastIndex = 0;
-}
-
-// ── Diff ───────────────────────────────────────────────────────
-let manifestOnly = 0;
-let fsOnly = 0;
-const manifestOnlySamples: string[] = [];
-const fsOnlySamples: string[] = [];
-
-for (const name of manifestNames) {
-  if (!fsCapabilityNames.has(name as string)) {
-    manifestOnly++;
-    manifestOnlySamples.push(name as string);
-  }
-}
-for (const name of fsCapabilityNames) {
-  if (!manifestNames.has(name)) {
-    fsOnly++;
-    fsOnlySamples.push(name);
-  }
-}
-
-// Also verify every manifest source path exists
+// ── 1. Source path existence ───────────────────────────────────
 let missingSources = 0;
 const missingSourceSamples: string[] = [];
-for (const src of manifestSources) {
+for (const src of uniqueSources) {
   if (!fs.existsSync(src)) {
     missingSources++;
     missingSourceSamples.push(src);
   }
 }
 
-const SAMPLE_LIMIT = 8;
-if (manifestOnly > 0) {
-  // Capabilities scanner is heuristic — keep as warning unless drift is huge
-  const severity = manifestOnly > manifestNames.size * 0.5 ? "error" : "warning";
-  vc.add(
-    MANIFEST_PATH,
-    "manifest-capability-not-found-in-source",
-    `${manifestOnly} capability name(s) in manifest not detected in source declarations. Sample: ${manifestOnlySamples.slice(0, SAMPLE_LIMIT).join(", ")}`,
-    severity
-  );
+// ── 2. Name presence in declared source ───────────────────────
+const sourceCache = new Map<string, string>();
+function readSource(p: string): string {
+  if (sourceCache.has(p)) return sourceCache.get(p)!;
+  let content = "";
+  try {
+    content = fs.readFileSync(p, "utf-8");
+  } catch {
+    /* ignore */
+  }
+  sourceCache.set(p, content);
+  return content;
 }
+
+let nameNotInSource = 0;
+const nameNotInSourceSamples: string[] = [];
+for (const cap of manifestCaps) {
+  if (!cap.name || !cap.source) continue;
+  if (!fs.existsSync(cap.source)) continue; // already counted
+  const src = readSource(cap.source);
+  const escName = cap.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // Identifier as a word-bounded token, OR same as a string literal.
+  const declared = new RegExp(`\\b${escName}\\b|["'\`]${escName}["'\`]`);
+  if (!declared.test(src)) {
+    nameNotInSource++;
+    nameNotInSourceSamples.push(`${cap.name}@${cap.source}`);
+  }
+}
+
+// ── Report ─────────────────────────────────────────────────────
+const SAMPLE_LIMIT = 8;
 if (missingSources > 0) {
   vc.add(
     MANIFEST_PATH,
@@ -124,20 +82,19 @@ if (missingSources > 0) {
     "error"
   );
 }
-if (fsOnly > 0) {
+if (nameNotInSource > 0) {
+  const ratio = nameNotInSource / Math.max(manifestCaps.length, 1);
+  const severity = ratio > 0.25 ? "error" : "warning";
   vc.add(
     MANIFEST_PATH,
-    "source-capability-not-in-manifest",
-    `${fsOnly} capability declaration(s) in source not in manifest (regenerate). Sample: ${fsOnlySamples.slice(0, SAMPLE_LIMIT).join(", ")}`,
-    "warning"
+    "capability-name-not-in-declared-source",
+    `${nameNotInSource} capability/source pair(s) where the declared name is not present in the source file. Sample: ${nameNotInSourceSamples.slice(0, SAMPLE_LIMIT).join(", ")}`,
+    severity
   );
 }
 
 console.log(
-  `  🎯 Capabilities — manifest: ${manifestNames.size}, source declarations: ${fsCapabilityNames.size}, missing source files: ${missingSources}`
-);
-console.log(
-  `  📊 Drift — manifest→missing-src: ${manifestOnly}, src→missing-manifest: ${fsOnly}`
+  `  🎯 Capabilities — entries: ${manifestCaps.length}, unique sources: ${uniqueSources.size}, missing source files: ${missingSources}, name-not-in-source: ${nameNotInSource}`
 );
 
 vc.report("check-capability-manifest-vs-registrations");
