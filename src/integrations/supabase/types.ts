@@ -7071,6 +7071,65 @@ export type Database = {
         }
         Relationships: []
       }
+      mobile_push_tokens: {
+        Row: {
+          app_version: string | null
+          created_at: string
+          device_id: string | null
+          expires_at: string | null
+          id: string
+          last_seen_at: string
+          metadata: Json | null
+          os: string
+          rotated_from: string | null
+          status: string
+          token: string
+          transport: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_version?: string | null
+          created_at?: string
+          device_id?: string | null
+          expires_at?: string | null
+          id?: string
+          last_seen_at?: string
+          metadata?: Json | null
+          os: string
+          rotated_from?: string | null
+          status?: string
+          token: string
+          transport: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_version?: string | null
+          created_at?: string
+          device_id?: string | null
+          expires_at?: string | null
+          id?: string
+          last_seen_at?: string
+          metadata?: Json | null
+          os?: string
+          rotated_from?: string | null
+          status?: string
+          token?: string
+          transport?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mobile_push_tokens_rotated_from_fkey"
+            columns: ["rotated_from"]
+            isOneToOne: false
+            referencedRelation: "mobile_push_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_delivery_receipts: {
         Row: {
           channel: string | null

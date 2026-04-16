@@ -66,7 +66,8 @@ const final = {
   gates: verdicts,
   deployability: deployScores,
   acceptanceCriteria: {
-    "20-gates-green": totalGates === 20 && blockerFails === 0,
+    "all-gates-green": blockerFails === 0,
+    "22-gates-registered": totalGates >= 22,
     "edge-functions-claimed": existsSync("generated/edge-function-membership-report.json"),
     "tables-claimed": existsSync("generated/table-membership-report.json"),
     "routes-owned": (() => {

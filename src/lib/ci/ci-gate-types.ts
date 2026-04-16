@@ -13,7 +13,8 @@ export type CIGatePhase =
   | "phase-7-meta-arch"
   | "phase-8-ci-umbrella"
   | "phase-9-reality-deployability"
-  | "phase-10-completeness";
+  | "phase-10-completeness"
+  | "phase-12-mobile-deployability";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 

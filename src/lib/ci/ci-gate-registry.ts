@@ -214,6 +214,27 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "Every <Route path=> declared in src/routes/** is owned by a bounded context.",
     producesArtifact: "generated/route-registry-completeness-report.json",
   },
+
+  // ── Phase 12 ── Mobile Deployability (iOS + Android Store Readiness)
+  {
+    id: "mobile-store-readiness",
+    phase: "phase-12-mobile-deployability",
+    title: "Mobile store readiness (iOS + Android)",
+    script: "scripts/architecture/checks/check-mobile-store-readiness.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "iOS App Store + Google Play Store 36-item checklist: zero missing, partial items must have remediation.",
+    producesArtifact: "generated/mobile-store-readiness-report.json",
+  },
+  {
+    id: "mobile-min-os-floor",
+    phase: "phase-12-mobile-deployability",
+    title: "Mobile minimum OS floor",
+    script: "scripts/architecture/checks/check-mobile-store-readiness.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "iOS ≥ 16.0 and Android API ≥ 26 enforced via min-os-version-contract.",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
