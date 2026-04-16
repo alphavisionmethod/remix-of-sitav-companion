@@ -195,6 +195,12 @@ export const CLUSTER_DOMAIN_MAP: Record<string, AdminDomain> = {
 // fall behind on disk reality.
 //
 export const ADMIN_PAGE_CONSOLIDATION_MAP: PageConsolidationEntry[] = [
+  // ── Phase 3 canonical hub pages (PRIMARY_DOMAIN_ENTRY surfaces) ──
+  { component: "OverviewHome", currentRoute: "/admin/overview", targetDomain: "overview", targetRoute: "/admin/overview", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical hub composing 7 executive surfaces." },
+  { component: "AlertsHome", currentRoute: "/admin/alerts", targetDomain: "alerts", targetRoute: "/admin/alerts", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical triage hub." },
+  { component: "ApprovalsHome", currentRoute: "/admin/approvals", targetDomain: "approvals", targetRoute: "/admin/approvals", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical approvals hub." },
+  { component: "EnvironmentsHome", currentRoute: "/admin/environments", targetDomain: "environments", targetRoute: "/admin/environments", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical environments hub." },
+
   // ── Overview merges (the seven competing executive pages) ──
   {
     component: "AdminDashboard",
