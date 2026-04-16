@@ -10,25 +10,25 @@ import {
   validateFeatureMetadata,
   isHighRisk,
   type FeatureMetadata,
-} from "../src/packages/feature-governance/index";
+} from "../../../src/packages/feature-governance/index";
 
 import {
   validateOwnerBoundary,
   classifyOwnerBoundary,
   type OwnerBoundaryDeclaration,
   type OwnerValidationContext,
-} from "../src/packages/feature-governance/ownership";
+} from "../../../src/packages/feature-governance/ownership";
 
 import {
   CAPABILITY_CLASSES,
   validateCapabilityRegistration,
   type CapabilityRegistration,
-} from "../src/packages/feature-governance/capability-protocol";
+} from "../../../src/packages/feature-governance/capability-protocol";
 
 import {
   SCHEMA_FAMILIES_BY_RISK_TIER,
   type SchemaFamily,
-} from "../src/packages/feature-governance/contract-schema-protocol";
+} from "../../../src/packages/feature-governance/contract-schema-protocol";
 
 interface GovernanceCheckResult {
   featureId: string;
