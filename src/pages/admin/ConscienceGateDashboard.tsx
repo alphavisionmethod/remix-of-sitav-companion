@@ -3,7 +3,7 @@
 // Inspectable + Governable surface for the ConscienceGate OS primitive
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,24 @@ import {
 } from "lucide-react";
 import type { GateDecision, GateVerdict } from "@/lib/core-services/conscience-gate/conscience-gate";
 import { DEMO_CONSCIENCE_VERDICTS } from "@/lib/mock-data/conscience-gate";
+import { supabase } from "@/integrations/supabase/client";
 
-// ── Demo Data (imported from shared module) ────────────────────
-const DEMO_VERDICTS = DEMO_CONSCIENCE_VERDICTS;
+// Real-data path: ai_inference_receipts.verification_outcome stores live gate
+// decisions. Falls back to seed verdicts when no real receipts exist yet.
+function mapReceiptToVerdict(r: any): GateVerdict {
+  const outcome = (r.verification_outcome || "pass").toLowerCase();
+  const decision: GateDecision = ["pass", "caveat", "block", "refuse"].includes(outcome)
+    ? (outcome as GateDecision) : "pass";
+  return {
+    id: r.id,
+    decision,
+    reasonCodes: r.route_reason ? [r.route_reason] : [],
+    evidence: [],
+    cost: { promptTokens: r.input_tokens ?? 0, completionTokens: r.output_tokens ?? 0, estimatedUsd: (r.cost_estimate_cents ?? 0) / 100 },
+    timestamp: r.created_at,
+    capabilityId: r.capability_id ?? r.prompt_family ?? "unknown",
+  } as GateVerdict;
+}
 
 const DECISION_COLORS: Record<GateDecision, string> = {
   pass: "text-trust-verified bg-trust-verified/10",
@@ -40,13 +55,38 @@ const DECISION_ICONS: Record<GateDecision, React.ReactNode> = {
 export default function ConscienceGateDashboard() {
   const { isAdmin, loading } = useRequireAdmin();
   const [tab, setTab] = useState("verdicts");
+  const [liveVerdicts, setLiveVerdicts] = useState<GateVerdict[]>([]);
+  const [usingFallback, setUsingFallback] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("ai_inference_receipts")
+        .select("id, capability_id, prompt_family, route_reason, verification_outcome, input_tokens, output_tokens, cost_estimate_cents, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (cancelled) return;
+      if (error || !data || data.length === 0) {
+        setLiveVerdicts(DEMO_CONSCIENCE_VERDICTS);
+        setUsingFallback(true);
+      } else {
+        setLiveVerdicts(data.map(mapReceiptToVerdict));
+        setUsingFallback(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [isAdmin]);
+
+  const DEMO_VERDICTS = liveVerdicts.length > 0 ? liveVerdicts : DEMO_CONSCIENCE_VERDICTS;
 
   const stats = useMemo(() => {
     const counts: Record<GateDecision, number> = { pass: 0, caveat: 0, block: 0, refuse: 0 };
     DEMO_VERDICTS.forEach((v) => counts[v.decision]++);
     const total = DEMO_VERDICTS.length;
     return { counts, total, passRate: total ? Math.round((counts.pass / total) * 100) : 0 };
-  }, []);
+  }, [DEMO_VERDICTS]);
 
   if (loading || !isAdmin) return null;
 
