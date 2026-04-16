@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T23:05:40.645Z",
+  "generatedAt": "2026-04-16T23:07:47.009Z",
   "routeBindings": [
     {
       "kind": "route",
@@ -95,10 +95,10 @@
   "contextCount": 13,
   "stats": {
     "routesBound": 18,
-    "edgeFunctions": 78,
+    "edgeFunctions": 95,
     "services": 31,
     "tables": 40,
-    "duplicates": 12
+    "duplicates": 18
   },
   "issues": [
     {
@@ -133,6 +133,11 @@
     },
     {
       "kind": "edge-function",
+      "identifier": "simulation-engine-api",
+      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
+    },
+    {
+      "kind": "edge-function",
       "identifier": "brain-core",
       "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
     },
@@ -152,6 +157,11 @@
       "reason": "Assigned to multiple contexts: setup-identity, admin"
     },
     {
+      "kind": "edge-function",
+      "identifier": "provider-family-operations",
+      "reason": "Assigned to multiple contexts: integrations, runtime-kernel"
+    },
+    {
       "kind": "service",
       "identifier": "audit-service",
       "reason": "Assigned to multiple contexts: proof-trust, admin"
@@ -163,58 +173,23 @@
     },
     {
       "kind": "edge-function",
-      "identifier": "advisor-agent-loop",
-      "reason": "Function exists on disk but no bounded context claims it"
+      "identifier": "push-dispatch",
+      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
     },
     {
       "kind": "edge-function",
-      "identifier": "advisor-avatar-generate",
-      "reason": "Function exists on disk but no bounded context claims it"
+      "identifier": "push-track",
+      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
     },
     {
       "kind": "edge-function",
-      "identifier": "advisor-conversation",
-      "reason": "Function exists on disk but no bounded context claims it"
+      "identifier": "vapid-public-key",
+      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
     },
     {
       "kind": "edge-function",
-      "identifier": "advisor-knowledge-manage",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "api-gateway",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "app-store-api",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "chat-advisor",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "db-truth-introspect",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "digital-twin-engine",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "ecosystem-operations",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "event-processor",
-      "reason": "Function exists on disk but no bounded context claims it"
+      "identifier": "user-bff-gateway",
+      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
     }
   ],
   "ok": false
