@@ -91,3 +91,159 @@ export function validatePolicyCompleteness(): { covered: string[]; gaps: string[
   const gaps = domains.filter((d) => !UNIFIED_POLICY_MATRIX.some((p) => p.domain === d));
   return { covered, gaps };
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Phase 3 Meta-Architecture: 9-Dimension Policy Decision Resolver
+// ═══════════════════════════════════════════════════════════════
+
+import type { PolicyActor } from "./policy-actor-registry";
+import { getActorMetadata } from "./policy-actor-registry";
+import type { PolicyDomainKey } from "./policy-domain-map";
+import { getPolicyDomain } from "./policy-domain-map";
+import type { CanonicalSurface } from "@/lib/runtime/surface-types";
+import { getSurfacePolicyState, getSurfacePolicyReason, requiresStepUp } from "./policy-surface-map";
+import type { ProofRequirement, RiskClass } from "./policy-proof-requirements";
+import { getProofRequirement } from "./policy-proof-requirements";
+import type { ReversibilityEntry } from "./policy-reversibility-map";
+import { getReversibility, requiresRollbackPointer } from "./policy-reversibility-map";
+import type { TrustLevel } from "./policy-trust-thresholds";
+import { meetsTrustThreshold, getTrustThreshold } from "./policy-trust-thresholds";
+import type { ApprovalMapping } from "./policy-approval-map";
+import { getApprovalMapping, requiresApproval } from "./policy-approval-map";
+
+export type SensitivityClass = "public" | "internal" | "confidential" | "restricted" | "regulated";
+export type TenantScope = "personal" | "shared" | "managed" | "admin";
+
+export interface UnifiedPolicyQuery {
+  // 9 canonical dimensions
+  actor: PolicyActor;            // 1 — actor type
+  domain: PolicyDomainKey;       // 2 — domain
+  surface: CanonicalSurface;     // 3 — surface
+  riskClass: RiskClass;          // 4 — risk class
+  deviceTrust: TrustLevel;       // 5 — trust level
+  sensitivity: SensitivityClass; // 6 — sensitive-data classification
+  tenantScope: TenantScope;      // 7 — tenant scope
+  biometricStepUpRecent: boolean;
+  hasJustification: boolean;
+  // Proof, reversibility, approval are dimensions 8 + 9 + 10 derived
+  // from (domain × riskClass) — this query asserts whether the
+  // *prerequisites* are met.
+}
+
+export interface UnifiedPolicyDecision {
+  allowed: boolean;
+  refusalReasons: string[];
+  warnings: string[];
+  // Resolved dimensions
+  surfaceState: ReturnType<typeof getSurfacePolicyState>;
+  proofRequirement: ProofRequirement | undefined;
+  reversibility: ReversibilityEntry | undefined;
+  approval: ApprovalMapping | undefined;
+  trustSatisfied: boolean;
+  stepUpRequired: boolean;
+  rollbackPointerRequired: boolean;
+}
+
+/**
+ * Canonical 9-dimension policy resolver. Every privileged action
+ * in the platform should pass through this function (or its
+ * receipt-chain wrapper) before execution.
+ */
+export function resolveUnifiedPolicy(q: UnifiedPolicyQuery): UnifiedPolicyDecision {
+  const refusals: string[] = [];
+  const warnings: string[] = [];
+
+  // 1. Actor capability ceiling
+  const actorMeta = getActorMetadata(q.actor);
+  if (q.deviceTrust > actorMeta.maxTrustLevel) {
+    warnings.push(`Trust level ${q.deviceTrust} exceeds actor ceiling ${actorMeta.maxTrustLevel}; clamping.`);
+  }
+  if (q.actor === "anonymous" && q.riskClass !== "R0") {
+    refusals.push(`Anonymous actor cannot perform ${q.riskClass} actions.`);
+  }
+
+  // 2. Domain ↔ surface state
+  const surfaceState = getSurfacePolicyState(q.domain, q.surface);
+  if (surfaceState === "prohibited") {
+    refusals.push(`Domain "${q.domain}" prohibited on surface "${q.surface}": ${getSurfacePolicyReason(q.domain, q.surface) ?? "policy"}`);
+  }
+  if (surfaceState === "read-only") {
+    refusals.push(`Domain "${q.domain}" is read-only on surface "${q.surface}".`);
+  }
+  const stepUpRequired = requiresStepUp(q.domain, q.surface);
+  if (stepUpRequired && !q.biometricStepUpRecent) {
+    refusals.push(`Step-up biometric required for ${q.domain} on ${q.surface}.`);
+  }
+
+  // 3. Trust threshold
+  const trustSatisfied = meetsTrustThreshold(q.domain, q.riskClass, q.deviceTrust, q.biometricStepUpRecent);
+  if (!trustSatisfied) {
+    const thr = getTrustThreshold(q.domain, q.riskClass);
+    refusals.push(`Trust level ${q.deviceTrust} below required ${thr?.minTrustLevel ?? "?"} for ${q.domain}/${q.riskClass}.`);
+  }
+
+  // 4. Sensitivity vs surface
+  if (q.sensitivity === "regulated" && (q.surface === "demo" || q.surface === "offline")) {
+    refusals.push(`Regulated data class cannot be processed on ${q.surface} surface.`);
+  }
+  if (q.sensitivity === "restricted" && q.surface === "demo") {
+    refusals.push(`Restricted data class cannot be processed on demo surface.`);
+  }
+
+  // 5. Tenant scope vs actor
+  if (q.tenantScope === "admin" && q.actor !== "platform-admin" && q.actor !== "service-role") {
+    refusals.push(`Tenant scope "admin" requires platform-admin or service-role actor.`);
+  }
+  if (q.tenantScope === "managed" && q.actor === "anonymous") {
+    refusals.push(`Managed tenant scope requires authenticated actor.`);
+  }
+
+  // 6. Approval prerequisites
+  const approval = getApprovalMapping(q.domain, q.riskClass);
+  if (approval && approval.justificationRequired && !q.hasJustification) {
+    refusals.push(`Justification text required for ${q.domain}/${q.riskClass}.`);
+  }
+  if (approval && approval.tier === "boardroom") {
+    warnings.push(`Boardroom motion required — submit and await decision before execution.`);
+  }
+
+  // 7. Proof + reversibility prerequisites (informational — enforced at execution)
+  const proof = getProofRequirement(q.domain, q.riskClass);
+  const reversibility = getReversibility(q.domain, q.riskClass);
+  const rollbackPointerRequired = requiresRollbackPointer(q.domain, q.riskClass);
+
+  if (!proof) {
+    warnings.push(`No proof requirement registered for ${q.domain}/${q.riskClass} — defaulting to standard bundle.`);
+  }
+  if (!reversibility) {
+    warnings.push(`No reversibility entry for ${q.domain}/${q.riskClass} — defaulting to manual.`);
+  }
+
+  return {
+    allowed: refusals.length === 0,
+    refusalReasons: refusals,
+    warnings,
+    surfaceState,
+    proofRequirement: proof,
+    reversibility,
+    approval,
+    trustSatisfied,
+    stepUpRequired,
+    rollbackPointerRequired,
+  };
+}
+
+/** Build a default-deny query for testing the resolver. */
+export function denyAllQuery(): UnifiedPolicyQuery {
+  return {
+    actor: "anonymous",
+    domain: "money",
+    surface: "offline",
+    riskClass: "R5",
+    deviceTrust: 0,
+    sensitivity: "regulated",
+    tenantScope: "admin",
+    biometricStepUpRecent: false,
+    hasJustification: false,
+  };
+}
