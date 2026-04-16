@@ -245,6 +245,18 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "Capacitor deps installed, capacitor.config.ts parses, exportOptions.plist exists, build scripts present.",
     producesArtifact: "generated/mobile-build-pipeline-report.json",
   },
+
+  // ── Phase 13 ── Web Deployability (Production SPA Readiness)
+  {
+    id: "web-deployability",
+    phase: "phase-13-web-deployability",
+    title: "Web deployability (13-item production SPA checklist)",
+    script: "scripts/architecture/checks/check-web-deployability.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "13-item Web Deployability Checklist: zero missing, partials must have remediation, SW iframe-guarded, CSP aligned, push icons resolved.",
+    producesArtifact: "generated/web-deployability-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
