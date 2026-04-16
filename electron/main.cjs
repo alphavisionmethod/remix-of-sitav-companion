@@ -4,6 +4,9 @@ const os = require('os');
 const { initCrashReporter, setupCrashReporterIPC } = require('./crash-reporter.cjs');
 const { initAutoUpdater, setupAutoUpdaterIPC } = require('./auto-updater.cjs');
 const { setupFSBridge } = require('./fs-bridge.cjs');
+const licenseGuard = require('./license-guard.cjs');
+const { createActivationWindow } = require('./license-ui.cjs');
+const { runFullIntegrityCheck } = require('./integrity-check.cjs');
 
 let mainWindow;
 let tray;
@@ -286,10 +289,51 @@ function handleDeepLink(url) {
 
 // ── App Lifecycle ───────────────────────────────────────────────
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   setupIPC();
   setupDeepLinks();
   buildMenu();
+
+  // ── Integrity Check (Layer 3) ───────────────────────────────
+  const integrityResult = runFullIntegrityCheck();
+  if (!integrityResult.overall_passed) {
+    console.error('[main] ⚠️ Integrity check FAILED:', integrityResult);
+    // Continue in degraded mode — log to server on first heartbeat
+  }
+
+  // ── License Guard (Layers 4+5) ──────────────────────────────
+  // Register license IPC handlers
+  ipcMain.handle('license-activate', async (_, key) => {
+    try {
+      return await licenseGuard.activateLicense(key);
+    } catch (err) {
+      return { activated: false, error: err.message };
+    }
+  });
+  ipcMain.handle('license-info', () => licenseGuard.getLicenseInfo());
+  ipcMain.handle('license-deactivate', () => licenseGuard.deactivateLicense());
+
+  // Validate existing license or show activation UI
+  if (licenseGuard.isLicensed()) {
+    const validation = await licenseGuard.validateLicense();
+    if (!validation.valid && validation.reason !== 'offline_grace') {
+      const activated = await createActivationWindow();
+      if (!activated) {
+        app.quit();
+        return;
+      }
+    }
+  } else {
+    const activated = await createActivationWindow();
+    if (!activated) {
+      app.quit();
+      return;
+    }
+  }
+
+  // Start heartbeat (Layer 2)
+  licenseGuard.startHeartbeat();
+
   createWindow();
   createTray();
 });

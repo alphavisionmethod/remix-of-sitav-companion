@@ -6878,6 +6878,130 @@ export type Database = {
           },
         ]
       }
+      license_activations: {
+        Row: {
+          activated_at: string
+          created_at: string
+          device_fingerprint: string
+          device_name: string | null
+          id: string
+          is_active: boolean
+          last_heartbeat: string
+          license_id: string
+          platform: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string
+          created_at?: string
+          device_fingerprint: string
+          device_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_heartbeat?: string
+          license_id: string
+          platform?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string
+          created_at?: string
+          device_fingerprint?: string
+          device_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_heartbeat?: string
+          license_id?: string
+          platform?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_activations_license_id_fkey"
+            columns: ["license_id"]
+            isOneToOne: false
+            referencedRelation: "licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_audit_log: {
+        Row: {
+          created_at: string
+          details: Json | null
+          device_fingerprint: string | null
+          event: string
+          id: string
+          ip_address: string | null
+          license_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          device_fingerprint?: string | null
+          event: string
+          id?: string
+          ip_address?: string | null
+          license_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          device_fingerprint?: string | null
+          event?: string
+          id?: string
+          ip_address?: string | null
+          license_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_audit_log_license_id_fkey"
+            columns: ["license_id"]
+            isOneToOne: false
+            referencedRelation: "licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      licenses: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          issued_at: string
+          license_key: string
+          max_devices: number
+          product_tier: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          license_key: string
+          max_devices?: number
+          product_tier?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string
+          license_key?: string
+          max_devices?: number
+          product_tier?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       managed_apps: {
         Row: {
           app_key: string
