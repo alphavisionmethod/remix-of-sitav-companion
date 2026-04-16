@@ -94,7 +94,7 @@ export function AIResponsePanel({
       </CardHeader>
       <CardContent className="pt-0">
         <div className="prose prose-sm max-w-none dark:prose-invert">
-          <ReactMarkdown>{response.content}</ReactMarkdown>
+          <ReactMarkdown>{displayContent}</ReactMarkdown>
         </div>
 
         {/* Footer */}
