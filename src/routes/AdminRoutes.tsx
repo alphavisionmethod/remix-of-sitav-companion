@@ -175,6 +175,11 @@ const AlertsHome = lazy(() => import("@/pages/admin/alerts/AlertsHome"));
 const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome"));
 const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
 
+// ── Phase 7: Meta-Architecture Surfaces ──
+const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01ArchitectureAtlas"));
+const META02ControlPlaneCenter = lazy(() => import("@/pages/admin/META02ControlPlaneCenter"));
+const META03GoldenPathHealth = lazy(() => import("@/pages/admin/META03GoldenPathHealth"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
