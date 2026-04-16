@@ -1,96 +1,79 @@
 
 
-# Edge Function Topology Hardening — Implementation Audit
+# Database Architecture Truth — Phased Plan
 
-## Verdict: **~25% complete. Phase 1 only. Phases 2-6 NOT executed.**
+## Reality Check
+The DB truth layer is ~40% built. `src/lib/db/` (11 files), `supabase/{schema,policies,seed,docs}/`, 9 DB checks, 4 generators, and a `BackendTopologyDashboard` already exist. Major gaps:
 
-The user's claim of full implementation does not match disk reality. Below is the exact gap analysis against the 6-phase plan that was approved.
+| Gap | Current | Target |
+|---|---|---|
+| `schema-registry.ts` | 80 tables hand-coded | All 201 live tables, auto-regenerated |
+| `migration-registry.ts` | 7 sample entries | All 163 migrations classified |
+| `rls-policy-registry.ts` | 13 explicit | All 201 with pattern verdict |
+| Architecture docs | 0/5 of the required DB docs | 5 canonical docs |
+| Admin DB surfaces | 1 page (topology) | 5 dedicated views |
+| Persistence-critical domain audit | partial | full inventory + gap report |
+| CI validators | 9 checks, mostly count-only | 9 hardened + 4 new |
+| Per-domain `supabase/schema/*.sql` files | only READMEs | bounded-context split (synthesized from migrations) |
 
-## What IS Done (Phase 1 only)
+## Final 6 Phases (each independently deployable)
 
-| Item | Status |
-|---|---|
-| `BackendCategory` enum (6 strict classes) | ✅ in `edge-function-categories.ts` |
-| `EDGE_FUNCTION_BACKEND_CATEGORY` map | ✅ all 84 functions classified |
-| `docs/architecture/BACKEND_TOPOLOGY_MAP.md` | ✅ exists |
-| `generated/edge-function-classification-audit.json` | ✅ exists |
-| `check-backend-topology-classification-coverage.ts` | ✅ exists |
-| Audit verdicts assigned (incl. SPLIT_REQUIRED, WRAPPER_ONLY, DEPRECATE_AND_REDIRECT) | ✅ |
+### Phase 1 — Live Schema Truth Regeneration
+- Rewrite `scripts/db/generate/generate-schema-registry.ts` to read directly from `pg_tables` + `information_schema.columns` (via the Supabase tool plumbing) instead of hand-curated lists.
+- Regenerate `src/lib/db/schema-registry.ts` to cover all **201 tables** with: `domain`, `hasRls`, `tenancyColumn`, `schemaClass` (`write` / `read` / `log` / `config` / `system`), `sensitiveData` flag, `runtimeConsequence` ref.
+- Harden `check-schema-registry.ts`: fails when on-disk migrations contain `CREATE TABLE` statements absent from registry, or when registry contains phantom tables.
+- **Deployable**: pure metadata, zero runtime change.
 
-## What is NOT Done (critical gaps)
+### Phase 2 — Migration Truth Registry
+- Rewrite `generate-migration-registry.ts` to scan all 163 SQL files: detect category (`table-creation` / `rls-policy` / `function-trigger` / `index` / `enum` / `view` / `data` / `alter`), affected tables, destructive ops, owner from header comments.
+- Replace `migration-registry.ts` with the full 163-entry registry plus per-migration: `boundedContext`, `rollbackRisk`, `releaseConsequence`, `dataSensitivity`, `tenancyImpact`.
+- Harden `check-migration-ownership.ts`: fail when any migration lacks header comment + bounded context tag.
+- Add `MIGRATION_POLICY_AND_ROLLOUTS.md` defining naming, ownership comment template, and rollback policy.
 
-### Phase 2 — Strict Registry & Per-Function Metadata ❌
-- `edge-function-registry.ts` still uses the **old 4-field schema** (`name, path, runtime, status, description`). The required schema (`category, boundedContext, owner, authModel, requestContract, responseContract, sideEffectClass, allowedCallers, callsInto, runtimeConsequence, migrationStatus`) is NOT applied.
-- Registry has **74 entries on disk has 84** — **10 functions missing from registry**: `app-store-api`, `communications-api`, `connector-sync`, `digital-twin-engine`, `health-check`, `investment-portfolio-api`, `license-gateway`, `payment-kill-switch`, `simulation-engine-api`, `tasks-workflow-api`.
-- `check-backend-registry-completeness.ts` does NOT exist.
+### Phase 3 — RLS & Tenancy Truth
+- Regenerate `rls-policy-registry.ts` to cover all 201 tables by querying `pg_policies`, classifying each into one of the 12 existing `RlsPattern` values.
+- Expand `tenancy-boundary-map.ts` to declare for every tenant-scoped table: `tenantKey`, `adminException`, `serviceRoleException`, `crossTenantPolicy`.
+- Harden `check-rls-coverage.ts` and `check-rls-policy-registry.ts`: fail on any table whose live `pg_policies` count differs from registry expectation, or any `tenancyColumn` table without a registered policy of the right pattern.
+- Add `TENANCY_AND_RLS_MODEL.md` documenting the 12 patterns, the security definer function model (`has_role`, `is_org_member`, `is_tenant_member`, `has_admin_permission`), and the admin-exception path.
 
-### Phase 3 — Resolve Ambiguous Admin Plane ❌
-- `admin-api` is still **868 lines of full admin business logic** — NOT converted to a wrapper despite `WRAPPER_ONLY` verdict.
-- `admin-gateway` is still **101 lines of independent gateway logic** — NOT a wrapper.
-- `cloud-admin-api` reclassification not propagated to admin frontend callers.
-- `check-admin-bff-canonical.ts` does NOT exist.
+### Phase 4 — Persistence-Critical Domain Audit & Gap Closure
+- Generator script `generate-persistence-audit.ts` cross-references the 9 domains in section 7 of the prompt against `schema-registry.ts` and produces `generated/persistence-audit.json` listing presence/absence of: setup checkpoints, environment/device registry, prompt versions, model-routing config, feature flags, OAuth-token refresh state, workflow-runtime state, memory persistence, action/proof/reversal trail.
+- For each genuine gap (after audit shows what's truly missing — most of these likely already exist with different names), emit a SQL migration template under `supabase/migrations/` plus `app_role`-aware RLS scaffold; otherwise update registry mappings.
+- New script `check-persistence-coverage.ts` blocks deployment when any persistence-critical domain has 0 backing tables.
+- Add `PERSISTENCE_AND_RECOVERY_MODEL.md`.
 
-### Phase 4 — Resolve AI Runtime + Generic Gateways ❌
-- `main` is still **59 lines of catch-all routing** — NOT deprecated/redirected.
-- `api-gateway` is still **1,064 lines** — NOT demoted to a wrapper.
-- `intelligence-api` (981 lines) and `brain-core` (799 lines) still contain mixed responsibilities — orchestration not stripped from BFF.
-- Frontend AI clients (`invokeAICapability`, advisor hooks) NOT migrated to canonical entries.
-- `check-bff-purity.ts` does NOT exist.
+### Phase 5 — Admin DB Visibility Surfaces
+Five new admin pages wired into the existing 12-domain Admin Control Plane (under the **Health** and **Config** domains, not new top-level entries):
+1. `SchemaRegistryExplorer` — searchable 201-table grid: domain, RLS, tenancy column, owner, sensitive flag, dependency edges.
+2. `RlsCoverageDashboard` — live `pg_policies` vs registry diff, drift list, pattern coverage chart.
+3. `MigrationTimelineViewer` — 163-row timeline with category, rollback risk, bounded context, applied date.
+4. `TenancyAndOwnershipExplorer` — tenant-key inspector + ownership matrix.
+5. `DbDriftRadar` — live drift summary (schema vs registry, RLS vs registry, missing-from-migration tables).
 
-### Phase 5 — Runtime/System Boundary ❌
-- `ambient-os-operations` still flagged `SPLIT_REQUIRED` with no split performed.
-- `_shared/auth.ts` does NOT enforce caller-class restrictions (RUNTIME_SYSTEM rejecting PUBLIC_BFF callers).
-- `check-runtime-isolation.ts` and `check-connector-boundary.ts` do NOT exist.
+All five use a new read-only edge function `db-truth-introspect` (DOMAIN_FUNCTION, admin-bff caller only) that runs whitelisted introspection queries against `pg_tables`/`pg_policies`/`information_schema`.
 
-### Phase 6 — Tests, CI Wiring, Cleanup ❌
-- **Zero vitest suites** for the 8 required tests (category classification, BFF purity, domain boundedness, runtime isolation, connector boundary, auth model mapping, registry completeness, one-role-one-function). Search `src/__tests__` returned no matches.
-- Generated manifests (`service-manifest`, `integration-map`, `contract-manifest`, `runtime-conformance`, `admin-support-visibility`) NOT regenerated against new topology.
-- No legacy wrapper retirement (none were created).
+### Phase 6 — Docs, CI Wiring, Final Hardening
+- Write the 3 remaining docs: `DATABASE_ARCHITECTURE.md`, `SCHEMA_TRUTH_REGISTRY.md`, `DB_OWNERSHIP_MATRIX.md`.
+- Wire all DB checks into `scripts/validate-all.ts` aggregator (already partially wired) and Manifest Truth Framework's `manifest-schema-registry` authoritative entry.
+- Synthesize per-domain `supabase/schema/{auth,boardroom,business,finance,...}.sql` files from existing migrations for human readability (read-only artifacts; migrations remain source of truth).
+- 4 new vitest suites: schema-registry completeness, RLS-pattern integrity, migration-ownership integrity, persistence-domain coverage.
+- Final pass: `tsc --noEmit` clean, all DB checks green, all 5 new admin pages route-tested, app boots.
 
-## Required Plan to Reach 100% Deployment-Ready
+## Deliverables
+- 201-table schema registry, 163-migration registry, 201-table RLS registry — all auto-generated and CI-enforced
+- 5 architecture docs + 1 migration policy doc
+- 5 admin DB visibility pages + 1 read-only introspection edge function
+- 4 hardened CI checks + 4 new vitest suites
+- Per-domain `supabase/schema/*.sql` files synthesized from migrations
+- Persistence-critical domain audit with gap-closure migrations where needed
 
-### Step A — Close Phase 2 (deployable on its own)
-- Rewrite `edge-function-registry.ts` to the full 11-field schema for all **84** functions.
-- Add the 10 missing functions to the registry.
-- Backfill `category, boundedContext, owner, authModel, requestContract, responseContract, sideEffectClass, allowedCallers, callsInto, runtimeConsequence, migrationStatus` from the existing maps + audit JSON.
-- Create `check-backend-registry-completeness.ts` and wire to validate-all.
-- Update `useBackendTopologyHealth` + `/admin/backend-topology` to display new fields.
-
-### Step B — Execute Phase 3 (Admin plane consolidation)
-- Convert `supabase/functions/admin-api/index.ts` → 30-line forwarder to `admin-bff-gateway`.
-- Convert `supabase/functions/admin-gateway/index.ts` → 30-line forwarder to `admin-bff-gateway`.
-- Audit & move any unique logic from `admin-api`/`admin-gateway` into `admin-bff-gateway` first.
-- Reclassify `cloud-admin-api` callers (no code change in callers — still `cloud-admin-api`, just bounded-context label).
-- Add `check-admin-bff-canonical.ts`.
-
-### Step C — Execute Phase 4 (AI runtime + generic gateways)
-- Convert `main/index.ts` → deprecation 410 response with redirect headers.
-- Convert `api-gateway/index.ts` → forwarder to `user-bff-gateway` (preserve any non-overlapping routes by extracting to bounded domain functions first).
-- Audit `intelligence-api` and `brain-core`: extract orchestration code into `brain-core`, keep `intelligence-api` as pure aggregator.
-- Reconfirm `agent-executor` is sole executor (HARD RULE).
-- Update frontend callers in `src/lib/services/ai-gateway/` and advisor hooks.
-- Add `check-bff-purity.ts` (static AST scan: BFFs cannot import orchestration/runtime modules).
-
-### Step D — Execute Phase 5 (Runtime boundary)
-- Split `ambient-os-operations` into `ambient-orchestration` (ORCHESTRATION) + `ambient-os-operations` (RUNTIME_SYSTEM only).
-- Add caller-class header check to `_shared/auth.ts`: `requireCallerClass(req, allowed: BackendCategory[])`.
-- Add `check-runtime-isolation.ts`, `check-connector-boundary.ts`.
-
-### Step E — Execute Phase 6 (Tests + CI + manifests)
-- 8 vitest suites in `src/__tests__/backend-topology/` covering all required assertions.
-- Regenerate `service-manifest.json`, `integration-map.json`, `contract-manifest.json`, `runtime-conformance-manifest.json`, `admin-support-visibility-manifest.json`, `edge-function-governance-report.json`.
-- Wire all 4 new checks into `scripts/manifests/validate-all.ts` aggregator.
-- Final `tsc --noEmit` + full check suite green.
-
-## Order of Execution
-Steps A → B → C → D → E. Each step is independently deployable. Total work is the remaining ~75% of the original plan.
-
-## Non-Negotiable Rules (still in force)
-- No legacy function deleted until import-graph proves zero callers.
-- Wrappers must preserve request/response shape for migration safety.
-- Admin consolidation (12-domain IA) and Manifest Truth Framework remain intact at every step.
-- Each step ends with: tsc clean, all governance checks green, app boots.
+## Non-Negotiable Rules
+- Source of truth is migrations + live `pg_*`; registries are derived artifacts
+- Every change preserves Manifest Truth Framework + Backend Topology Hardening + Admin Control Plane consolidation
+- No hand-curated drift — generators replace stale data, never add to it
+- Each phase ends with: `tsc --noEmit` clean, all governance checks green, app boots, no regressions
+- New admin pages register in the existing 12-domain IA, never as top-level navigation entries
 
 ## Starting Point
-Step A (Phase 2 completion) — full 11-field registry rewrite with all 84 functions — in the next message.
+Phase 1 — Live Schema Truth Regeneration — in the next message after approval.
 
