@@ -6,7 +6,7 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
-const pages = [
+const pages: [string, () => Promise<any>][] = [
   ["ArchitectureBoundaryBoard", () => import("@/pages/admin/architecture/ArchitectureBoundaryBoard")],
   ["EpistemicFirewallBoard", () => import("@/pages/admin/architecture/EpistemicFirewallBoard")],
   ["GodTierIntegrationBoard", () => import("@/pages/admin/architecture/GodTierIntegrationBoard")],

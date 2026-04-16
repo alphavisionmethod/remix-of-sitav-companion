@@ -6,7 +6,7 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
-const pages = [
+const pages: [string, () => Promise<any>][] = [
   ["AutomationSubNav", () => import("@/pages/revenue-office/AutomationSubNav")],
   ["FormationShell", () => import("@/pages/revenue-office/onboarding/FormationShell")],
   ["LiveOfficeSidebar", () => import("@/pages/revenue-office/onboarding/LiveOfficeSidebar")],
