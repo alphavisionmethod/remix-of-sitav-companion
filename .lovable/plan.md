@@ -1,69 +1,66 @@
 
 
-# SITA OS — Backend Topology + DB Truth Layer Implementation
+# Implement 8 Missing Registry Files + Barrel Exports
 
-## Status: Both layers are **completely missing** — 0/19 files exist
+## Status: 8 of 16 files are truly missing
 
-Neither `src/lib/backend-topology/` nor `src/lib/db/` directories exist. The `supabase/` directory also lacks `schema/`, `policies/`, `seed/`, and `docs/` subdirectories.
+| File | Status |
+|------|--------|
+| `src/lib/runtime/product-reality-tiers.ts` | EXISTS |
+| `src/lib/runtime/runtime-capability-matrix.ts` | EXISTS |
+| `src/lib/runtime/runtime-message-registry.ts` | **MISSING** |
+| `src/lib/runtime/service-lifecycle-registry.ts` | **MISSING** |
+| `src/lib/storage/storage-topology-registry.ts` | **MISSING** |
+| `src/lib/surfaces/surface-runtime-registry.ts` | EXISTS |
+| `src/lib/devices/device-capability-registry.ts` | EXISTS |
+| `src/lib/devices/device-trust-registry.ts` | EXISTS |
+| `src/lib/security/runtime-trust-chain.ts` | **MISSING** |
+| `src/lib/deployment/deployment-unit-registry.ts` | EXISTS |
+| `src/lib/backend-topology/edge-function-registry.ts` | EXISTS |
+| `src/lib/db/schema-registry.ts` | EXISTS |
+| `src/lib/policy/unified-policy-matrix.ts` | **MISSING** |
+| `src/lib/control-plane/kill-switch-registry.ts` | **MISSING** |
+| `src/lib/support/runbook-registry.ts` | **MISSING** |
+| `src/lib/journeys/golden-path-registry.ts` | **MISSING** |
+
+Supabase directories (`schema/`, `policies/`, `seed/`, `docs/`) already exist with READMEs.
 
 ## What Will Be Created
 
-### Layer 6: Backend Topology (9 files + barrel)
+### 8 New Registry Files
 
-All files follow the established registry pattern (typed constants + query functions).
+1. **`src/lib/runtime/runtime-message-registry.ts`** — Typed system message catalog (boot, crash, lifecycle, security events) with severity, audience, and remediation. Imports from existing `product-reality-tiers.ts` types.
 
-| File | Purpose |
-|------|---------|
-| `edge-function-registry.ts` | Master registry of all 74 edge functions with name, path, runtime, status |
-| `edge-function-categories.ts` | Category classification (admin, advisor, agent, ai, cloud, connector, finance, notification, os, platform, user) |
-| `edge-function-bounded-contexts.ts` | Maps each function to its owning bounded context/domain |
-| `edge-function-auth-map.ts` | Auth requirements per function (JWT, anon, service-role, webhook-secret) |
-| `edge-function-contract-map.ts` | Input/output contract references per function |
-| `edge-function-owner-map.ts` | Team/domain ownership for each function |
-| `edge-function-runtime-consequence-map.ts` | Failure impact classification per function |
-| `edge-function-migration-map.ts` | Maps functions to DB tables they read/write |
-| `edge-function-topology-validator.ts` | Validation queries (orphan detection, missing auth, ownership gaps) |
-| `index.ts` | Barrel export |
+2. **`src/lib/runtime/service-lifecycle-registry.ts`** — Maps all ~45 canonical services with lifecycle states (boot-order, dependencies, restart policy, health-check interval). Cross-references `os-security` daemons and `core-services`.
 
-### Layer 7: DB Truth Layer (10 files + barrel)
+3. **`src/lib/storage/storage-topology-registry.ts`** + barrel `index.ts` — Maps storage backends (Supabase, IndexedDB, localStorage, NovaFS, cloud-storage bucket) with replication topology, encryption, and quota. New directory.
 
-| File | Purpose |
-|------|---------|
-| `schema-registry.ts` | Master registry of all 198 tables with domain, description, column count |
-| `table-ownership-map.ts` | Maps each table to owning domain/team |
-| `tenancy-boundary-map.ts` | Classifies tables by tenancy model (user_id, org_id, tenant_id, global, admin) |
-| `rls-policy-registry.ts` | Documents RLS policy patterns per table |
-| `migration-registry.ts` | Maps all 161 migrations with purpose classification |
-| `db-truth-registry.ts` | Canonical truth assertions (which tables are authoritative for which concepts) |
-| `db-runtime-consequence-map.ts` | Impact of table unavailability on system |
-| `db-dependency-map.ts` | Foreign key and logical dependency graph |
-| `db-audit-registry.ts` | Which tables have audit trail requirements |
-| `db-health-engine.ts` | Health queries and scoring functions |
-| `index.ts` | Barrel export |
+4. **`src/lib/security/runtime-trust-chain.ts`** + barrel `index.ts` — Trust chain validation for 7 trust zones (A-G from security-fabric memory). Links to `os-security/types.ts` role system and `device-trust-registry`. New directory.
 
-### Supabase Directory Structure (4 new directories with README files)
+5. **`src/lib/policy/unified-policy-matrix.ts`** + barrel `index.ts` — Cross-domain policy matrix unifying RLS policies, os-security policyd bundles, admin permissions, and advisor autonomy levels. New directory.
 
-| Directory | Content |
-|-----------|---------|
-| `supabase/schema/README.md` | Schema documentation reference |
-| `supabase/policies/README.md` | RLS policy documentation reference |
-| `supabase/seed/README.md` | Seed data documentation reference |
-| `supabase/docs/README.md` | Database documentation reference |
+6. **`src/lib/control-plane/kill-switch-registry.ts`** + barrel `index.ts` — Kill switch definitions for 10 subsystems (advisors, outbound comms, connectors, sync, payments, mobile push, model providers, workflow, simulations, automations). New directory.
 
-## Implementation Details
+7. **`src/lib/support/runbook-registry.ts`** + barrel `index.ts` — 10 runbook definitions (auth outage, provider outage, sync lag, stuck workflow, proof mismatch, drift, push failure, VMware boot, rollback, AI degradation). New directory.
 
-- All TypeScript files use `as const` readonly arrays/records with typed interfaces
-- Each file exports query/lookup functions (e.g., `getTablesByDomain()`, `getFunctionsByCategory()`)
-- The 74 edge functions and 198 tables are fully enumerated from verified data
-- No imports from UI layers — pure data/type files
-- Follows exact pattern established by `src/lib/surfaces/`, `src/lib/devices/`, `src/lib/deployment/`
+8. **`src/lib/journeys/golden-path-registry.ts`** + barrel `index.ts` — 11 golden path journey definitions (first boot, sign-in, restore, connect CRM, recover leads, approve outbound, review proof, mobile approval, admin intervention, workflow replay, release review). New directory.
 
-## Summary
+### 1 Barrel Export Addition
 
-| Action | Count |
-|--------|-------|
-| New TypeScript files | 22 (10 + barrel per layer) |
-| New Supabase directories | 4 (with README) |
-| Files modified | 0 |
-| Total new files | **26** |
+- **`src/lib/runtime/index.ts`** — New barrel re-exporting all runtime files (product-reality-tiers, runtime-capability-matrix, runtime-flags, runtime-assertions, simulated-surface-registry, feature-tier-registry, + new message-registry and service-lifecycle).
+
+### Wiring
+
+- All files use `as const` readonly registries with typed interfaces and query functions
+- Cross-imports only to existing typed contracts (`os-security/types`, `device-trust-registry`, `product-reality-tiers`)
+- Each new directory gets a barrel `index.ts`
+- No UI imports; pure data/type layer
+- Follows exact patterns from `src/lib/devices/`, `src/lib/deployment/`, `src/lib/surfaces/`
+
+### Total New Files: 14
+
+| Type | Count |
+|------|-------|
+| Registry files | 8 |
+| Barrel `index.ts` files | 6 (5 new dirs + runtime) |
 
