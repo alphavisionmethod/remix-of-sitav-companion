@@ -12,7 +12,7 @@ Source of truth for all canonical services, orchestration, trust evaluation, AI 
 | Path | Description |
 |------|-------------|
 | `src/lib/core-services/` | Canonical service implementations |
-| `src/lib/cloud-backbone/` | Cloud infrastructure services (10 services) |
+| `src/lib/cloud-backbone/` | Cloud infrastructure services (11 services) |
 | `src/lib/platform-plane/` | BFF, RBAC, safety, notification routing |
 | `src/lib/persistence/` | Supabase persistence adapters |
 | `src/lib/observability/` | Structured logging, tracing, SLOs, health |
