@@ -58,7 +58,7 @@ export default function StrategyDNA() {
         {DEMO_SUGGESTIONS.map((s, i) => (
           <div key={i} className="flex items-start gap-2 text-sm text-foreground">
             <span className="text-primary font-bold shrink-0">→</span>
-            <span>{s}</span>
+            <span>{s.suggestion}</span>
           </div>
         ))}
       </div>
