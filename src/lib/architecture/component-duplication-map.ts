@@ -1,16 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Component Duplication Map
-//
-// Declares the canonical winner for each true duplicate family
-// AND records false-positive name collisions (different APIs that
-// share a name but are not interchangeable).
+// Tracks every shared-name component cluster with explicit policy.
 // ═══════════════════════════════════════════════════════════════
 
 export type DuplicateStatus =
-  | "WRAPPED"             // legacy paths are thin re-exports of canonical
-  | "MIGRATING"           // dual implementations exist; consumers being moved
-  | "REMOVED"             // legacy paths deleted
-  | "FALSE_POSITIVE";     // shared name only — APIs are intentionally different
+  | "WRAPPED"          // legacy paths are thin re-exports of canonical
+  | "MIGRATING"        // canonical exists; consumers being moved (no forced wrap)
+  | "REMOVED"          // legacy paths deleted
+  | "FALSE_POSITIVE";  // shared name only — APIs intentionally different
 
 export interface DuplicateFamily {
   id: string;
@@ -18,108 +15,113 @@ export interface DuplicateFamily {
   canonical: string;
   wrappers: string[];
   status: DuplicateStatus;
-  /** When FALSE_POSITIVE: why these can't be merged */
   rationale?: string;
 }
 
-/**
- * Real consolidation work happens in `src/components/primitives/**`
- * (the canonical visual layer). Domain components keep their richer
- * APIs and are NOT force-merged — that would break consumers.
- *
- * This file's primary job is to:
- *   1. Track shared-name collisions so they don't grow.
- *   2. Identify true wrapper opportunities for future migration.
- */
 export const DUPLICATE_FAMILIES: DuplicateFamily[] = [
-  // ── True consolidations (canonical primitive layer) ─────────
-  {
-    id: "primitive-trust-badge",
-    description:
-      "Canonical TrustBadge primitive. Domain-specific richer variants " +
-      "(`sita/TrustBadge` 9-level, `sita/badges/TrustBadge` 3-level) coexist " +
-      "with their own vocabularies and remain valid until consumers opt in.",
-    canonical: "src/components/primitives/status/TrustBadge.tsx",
-    wrappers: [],
-    status: "MIGRATING",
-  },
+  // ── Canonical primitives (MIGRATING — legacy domain copies remain valid) ──
   {
     id: "primitive-status-badge",
-    description: "Canonical StatusBadge primitive. Replaces ad-hoc badge styling.",
+    description: "Canonical StatusBadge primitive.",
     canonical: "src/components/primitives/status/StatusBadge.tsx",
-    wrappers: [],
+    wrappers: ["src/components/sita/admin/StatusBadge.tsx"],
     status: "MIGRATING",
   },
   {
-    id: "primitive-base-card",
-    description:
-      "Canonical BaseCard primitive. Domain *Card components should " +
-      "compose this for consistent surface treatment.",
-    canonical: "src/components/primitives/display/BaseCard.tsx",
-    wrappers: [],
+    id: "primitive-trust-badge",
+    description: "Canonical TrustBadge primitive (4-state).",
+    canonical: "src/components/primitives/status/TrustBadge.tsx",
+    wrappers: [
+      "src/components/sita/TrustBadge.tsx",
+      "src/components/sita/badges/TrustBadge.tsx",
+    ],
     status: "MIGRATING",
+    rationale: "Legacy 9-level and 3-level vocabularies preserved until consumers opt in.",
+  },
+  {
+    id: "primitive-urgency-badge",
+    description: "Canonical UrgencyBadge primitive.",
+    canonical: "src/components/primitives/status/UrgencyBadge.tsx",
+    wrappers: ["src/components/sita/badges/UrgencyBadge.tsx"],
+    status: "MIGRATING",
+  },
+  {
+    id: "primitive-proof-badge",
+    description: "Canonical ProofBadge primitive.",
+    canonical: "src/components/primitives/status/ProofBadge.tsx",
+    wrappers: ["src/components/sita/badges/ProofBadge.tsx"],
+    status: "MIGRATING",
+  },
+  {
+    id: "primitive-freshness-badge",
+    description: "Canonical FreshnessBadge primitive.",
+    canonical: "src/components/primitives/status/FreshnessBadge.tsx",
+    wrappers: ["src/components/sita/badges/FreshnessBadge.tsx"],
+    status: "MIGRATING",
+  },
+  {
+    id: "primitive-mode-badge",
+    description: "Canonical ModeBadge primitive.",
+    canonical: "src/components/primitives/status/ModeBadge.tsx",
+    wrappers: ["src/components/sita/badges/ModeBadge.tsx"],
+    status: "MIGRATING",
+  },
+  {
+    id: "primitive-empty-state",
+    description: "Canonical EmptyState primitive.",
+    canonical: "src/components/primitives/feedback/EmptyState.tsx",
+    wrappers: ["src/components/sita/EmptyState.tsx"],
+    status: "MIGRATING",
+  },
+  {
+    id: "primitive-skeleton",
+    description: "Canonical Skeleton primitive (composes shadcn ui/skeleton).",
+    canonical: "src/components/primitives/feedback/Skeleton.tsx",
+    wrappers: ["src/components/ui/skeleton.tsx"],
+    status: "FALSE_POSITIVE",
+    rationale: "shadcn/ui skeleton is the underlying lib; primitive is the project-canonical wrapper.",
+  },
+  {
+    id: "primitive-drawer",
+    description: "Canonical Drawer primitive (composes shadcn ui/sheet).",
+    canonical: "src/components/primitives/overlays/Drawer.tsx",
+    wrappers: ["src/components/ui/drawer.tsx"],
+    status: "FALSE_POSITIVE",
+    rationale: "shadcn/ui drawer (vaul) is a different library; primitive uses Sheet for consistent grammar.",
   },
 
-  // ── Documented false positives (NOT to be merged) ───────────
-  {
-    id: "fp-trust-badge-vocabulary-split",
-    description:
-      "Two TrustBadge files share a name but have intentionally different " +
-      "trust vocabularies (9-level execution trust vs 3-level data trust).",
-    canonical: "src/components/sita/TrustBadge.tsx",
-    wrappers: ["src/components/sita/badges/TrustBadge.tsx"],
-    status: "FALSE_POSITIVE",
-    rationale:
-      "Different trust ontologies. Consolidation would lose semantic precision. " +
-      "Both should eventually compose `primitives/status/StatusBadge`.",
-  },
+  // ── Documented false positives (NOT to be merged) ─────────────
   {
     id: "fp-proof-card-data-shape",
-    description:
-      "ProofCard exists in `mobile/` (item-shaped API) and `sita/cards/` " +
-      "(chain-shaped API). Different consumers, different data models.",
+    description: "ProofCard exists in mobile/ (item-shaped) and sita/cards/ (chain-shaped).",
     canonical: "src/components/sita/cards/ProofCard.tsx",
     wrappers: ["src/components/mobile/ProofCard.tsx"],
     status: "FALSE_POSITIVE",
-    rationale:
-      "Mobile uses a flat ProofItem shape for list rows; desktop uses a " +
-      "chain-of-steps shape for full proof timelines. Wrapping would break both.",
+    rationale: "Different data models (flat ProofItem vs chain-of-steps). Wrapping would break both.",
   },
   {
     id: "fp-concierge-app-shell-scope",
-    description:
-      "ConciergeAppShell exists in `concierge/` (simple sidebar) and " +
-      "`sita/apps/concierge/` (full 19-page windowed app).",
+    description: "ConciergeAppShell — simple sidebar vs full 19-page windowed app.",
     canonical: "src/components/sita/apps/concierge/ConciergeAppShell.tsx",
     wrappers: ["src/components/concierge/ConciergeAppShell.tsx"],
     status: "FALSE_POSITIVE",
-    rationale:
-      "Different surface scopes. The simple shell is used in lightweight " +
-      "embeddings; the full shell powers the standalone app.",
+    rationale: "Different surface scopes; both intentionally maintained.",
   },
   {
     id: "fp-advisor-debate-view-domain-split",
-    description:
-      "AdvisorDebateView has a council-level version (`advisors/`) and a " +
-      "business-board version (`business/advisor-board/`).",
+    description: "AdvisorDebateView — council version vs business-board version.",
     canonical: "src/components/business/advisor-board/AdvisorDebateView.tsx",
     wrappers: ["src/components/advisors/AdvisorDebateView.tsx"],
     status: "FALSE_POSITIVE",
-    rationale:
-      "Different prop shapes (AdvisorConfig[] vs AIRecommendation[]). " +
-      "Consolidation requires a unified debate model first.",
+    rationale: "Different prop shapes (AdvisorConfig[] vs AIRecommendation[]).",
   },
   {
     id: "fp-sparkline-chart-styling",
-    description:
-      "SparklineChart exists in `sita/` (positive flag) and " +
-      "`business/advisor-board/` (color/fillOpacity props).",
+    description: "SparklineChart — sita (positive flag) vs business/advisor-board (color/fillOpacity).",
     canonical: "src/components/sita/SparklineChart.tsx",
     wrappers: ["src/components/business/advisor-board/SparklineChart.tsx"],
     status: "FALSE_POSITIVE",
-    rationale:
-      "Different visual treatments and prop APIs. Future work: extract a " +
-      "shared `primitives/charts/Sparkline` and let both forks compose it.",
+    rationale: "Different prop APIs; future work: extract shared primitives/charts/Sparkline.",
   },
 ];
 
@@ -141,8 +143,5 @@ export function allCanonicalPaths(): string[] {
 }
 
 export function allKnownNameCollisions(): string[] {
-  return DUPLICATE_FAMILIES.filter(f => f.status === "FALSE_POSITIVE").flatMap(f => [
-    f.canonical,
-    ...f.wrappers,
-  ]);
+  return DUPLICATE_FAMILIES.flatMap(f => [f.canonical, ...f.wrappers]);
 }
