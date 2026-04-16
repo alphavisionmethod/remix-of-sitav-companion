@@ -1,0 +1,713 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-04-16T22:40:52.321Z",
+  "totalPaths": 15,
+  "byCriticality": {
+    "P0": 10,
+    "P1": 5
+  },
+  "entries": [
+    {
+      "pathId": "GP-FIRST-BOOT",
+      "title": "First Boot — New Owner Provisioning",
+      "persona": "new-user",
+      "criticality": "P0",
+      "primaryContextId": "setup-identity",
+      "contextIds": [
+        "setup-identity",
+        "runtime-kernel"
+      ],
+      "ownerTeam": "identity-team",
+      "surfaces": [
+        "web",
+        "desktop"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-001",
+        "RB-009",
+        "RB-016"
+      ],
+      "completionReceipts": [
+        "receipt-onboarding-complete"
+      ],
+      "slaLatencyMsP95": 4500,
+      "requiredCoveragePct": 95,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-SIGN-IN",
+      "title": "Sign In — Returning Owner",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "setup-identity",
+      "contextIds": [
+        "setup-identity"
+      ],
+      "ownerTeam": "identity-team",
+      "surfaces": [
+        "web",
+        "desktop",
+        "mobile-pwa"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-001"
+      ],
+      "completionReceipts": [
+        "receipt-session-created"
+      ],
+      "slaLatencyMsP95": 1800,
+      "requiredCoveragePct": 99,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-RESTORE",
+      "title": "Restore Account State",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "cloud-control-plane",
+      "contextIds": [
+        "cloud-control-plane",
+        "setup-identity"
+      ],
+      "ownerTeam": "cloud-team",
+      "surfaces": [
+        "web",
+        "desktop"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [
+        "KS-RELEASE-ROLLOUT"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-014",
+        "RB-015"
+      ],
+      "completionReceipts": [
+        "receipt-restore-verified"
+      ],
+      "slaLatencyMsP95": 60000,
+      "requiredCoveragePct": 90,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-SETUP-CONTINUATION",
+      "title": "Resume Interrupted Setup",
+      "persona": "new-user",
+      "criticality": "P1",
+      "primaryContextId": "setup-identity",
+      "contextIds": [
+        "setup-identity"
+      ],
+      "ownerTeam": "identity-team",
+      "surfaces": [
+        "web",
+        "desktop"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-016"
+      ],
+      "completionReceipts": [
+        "receipt-onboarding-complete"
+      ],
+      "slaLatencyMsP95": 5000,
+      "requiredCoveragePct": 85,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-CONNECT-CRM",
+      "title": "Connect CRM Provider",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "integrations",
+      "contextIds": [
+        "integrations",
+        "business-os"
+      ],
+      "ownerTeam": "integration-team",
+      "surfaces": [
+        "web",
+        "desktop"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [
+        "KS-CONNECTORS",
+        "KS-OUTBOUND",
+        "KS-SYNC"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-004",
+        "RB-006"
+      ],
+      "completionReceipts": [
+        "receipt-crm-sync"
+      ],
+      "slaLatencyMsP95": 30000,
+      "requiredCoveragePct": 90,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-OAUTH-AND-SYNC",
+      "title": "OAuth Token Refresh and Scheduled Sync",
+      "persona": "operator",
+      "criticality": "P1",
+      "primaryContextId": "integrations",
+      "contextIds": [
+        "integrations"
+      ],
+      "ownerTeam": "integration-team",
+      "surfaces": [
+        "web",
+        "admin-console"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [
+        "KS-CONNECTORS",
+        "KS-SYNC"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-004",
+        "RB-006"
+      ],
+      "completionReceipts": [
+        "receipt-sync-completed"
+      ],
+      "slaLatencyMsP95": 45000,
+      "requiredCoveragePct": 85,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-RECOVER-STALE-LEADS",
+      "title": "Recover Stale Leads",
+      "persona": "advisor",
+      "criticality": "P1",
+      "primaryContextId": "business-os",
+      "contextIds": [
+        "business-os",
+        "boardroom"
+      ],
+      "ownerTeam": "business-team",
+      "surfaces": [
+        "web"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [
+        "KS-ADVISORS",
+        "KS-OUTBOUND"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-003"
+      ],
+      "completionReceipts": [
+        "receipt-action-executed"
+      ],
+      "slaLatencyMsP95": 120000,
+      "requiredCoveragePct": 80,
+      "runtimeProbeRequired": false
+    },
+    {
+      "pathId": "GP-APPROVE-OUTBOUND-FOLLOWUP",
+      "title": "Approve Outbound Follow-Up",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "boardroom",
+      "contextIds": [
+        "boardroom",
+        "finance-os"
+      ],
+      "ownerTeam": "boardroom-team",
+      "surfaces": [
+        "web",
+        "desktop",
+        "mobile-pwa"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [
+        "KS-OUTBOUND"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-003",
+        "RB-007"
+      ],
+      "completionReceipts": [
+        "receipt-outbound-shipped"
+      ],
+      "slaLatencyMsP95": 8000,
+      "requiredCoveragePct": 95,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-REVIEW-PROOF",
+      "title": "Review Proof Receipt",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "proof-trust",
+      "contextIds": [
+        "proof-trust",
+        "boardroom"
+      ],
+      "ownerTeam": "trust-team",
+      "surfaces": [
+        "web",
+        "desktop"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-013"
+      ],
+      "completionReceipts": [
+        "receipt-proof-verified"
+      ],
+      "slaLatencyMsP95": 3000,
+      "requiredCoveragePct": 95,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-WORKFLOW-REPLAY",
+      "title": "Workflow Replay",
+      "persona": "operator",
+      "criticality": "P1",
+      "primaryContextId": "runtime-kernel",
+      "contextIds": [
+        "runtime-kernel",
+        "boardroom"
+      ],
+      "ownerTeam": "kernel-team",
+      "surfaces": [
+        "admin-console"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-008"
+      ],
+      "completionReceipts": [
+        "receipt-workflow-replayed"
+      ],
+      "slaLatencyMsP95": 15000,
+      "requiredCoveragePct": 80,
+      "runtimeProbeRequired": false
+    },
+    {
+      "pathId": "GP-MOBILE-APPROVAL",
+      "title": "Mobile Approval",
+      "persona": "owner",
+      "criticality": "P0",
+      "primaryContextId": "mobile",
+      "contextIds": [
+        "mobile",
+        "boardroom"
+      ],
+      "ownerTeam": "mobile-team",
+      "surfaces": [
+        "mobile-pwa",
+        "ios",
+        "android"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [
+        "KS-MOBILE-PUSH"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-007",
+        "RB-011"
+      ],
+      "completionReceipts": [
+        "receipt-approval-decided"
+      ],
+      "slaLatencyMsP95": 6000,
+      "requiredCoveragePct": 90,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-PUSH-TO-APPROVAL",
+      "title": "Push To Approval",
+      "persona": "owner",
+      "criticality": "P1",
+      "primaryContextId": "mobile",
+      "contextIds": [
+        "mobile"
+      ],
+      "ownerTeam": "mobile-team",
+      "surfaces": [
+        "mobile-pwa",
+        "android",
+        "ios"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [
+        "KS-MOBILE-PUSH"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-011"
+      ],
+      "completionReceipts": [
+        "receipt-push-emitted"
+      ],
+      "slaLatencyMsP95": 5000,
+      "requiredCoveragePct": 80,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-OWNER-INTERVENTION",
+      "title": "Owner Intervention (Pause/Resume)",
+      "persona": "admin",
+      "criticality": "P0",
+      "primaryContextId": "admin",
+      "contextIds": [
+        "admin",
+        "runtime-kernel"
+      ],
+      "ownerTeam": "admin-team",
+      "surfaces": [
+        "admin-console"
+      ],
+      "steps": 3,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-012"
+      ],
+      "completionReceipts": [
+        "receipt-killswitch-disarmed"
+      ],
+      "slaLatencyMsP95": 10000,
+      "requiredCoveragePct": 95,
+      "runtimeProbeRequired": true
+    },
+    {
+      "pathId": "GP-LAUNCH-READINESS",
+      "title": "Launch Readiness Gate",
+      "persona": "admin",
+      "criticality": "P0",
+      "primaryContextId": "admin",
+      "contextIds": [
+        "admin",
+        "proof-trust"
+      ],
+      "ownerTeam": "admin-team",
+      "surfaces": [
+        "admin-console"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [],
+      "recoveryRunbookRefs": [
+        "RB-017"
+      ],
+      "completionReceipts": [
+        "receipt-readiness-exported"
+      ],
+      "slaLatencyMsP95": 30000,
+      "requiredCoveragePct": 90,
+      "runtimeProbeRequired": false
+    },
+    {
+      "pathId": "GP-ENV-RECOVERY",
+      "title": "Environment Recovery",
+      "persona": "admin",
+      "criticality": "P0",
+      "primaryContextId": "cloud-control-plane",
+      "contextIds": [
+        "cloud-control-plane",
+        "admin"
+      ],
+      "ownerTeam": "cloud-team",
+      "surfaces": [
+        "admin-console"
+      ],
+      "steps": 2,
+      "blockingKillSwitches": [
+        "KS-RELEASE-ROLLOUT"
+      ],
+      "recoveryRunbookRefs": [
+        "RB-009",
+        "RB-014"
+      ],
+      "completionReceipts": [
+        "receipt-release-rolled-back"
+      ],
+      "slaLatencyMsP95": 20000,
+      "requiredCoveragePct": 95,
+      "runtimeProbeRequired": true
+    }
+  ],
+  "ownership": [
+    {
+      "pathId": "GP-FIRST-BOOT",
+      "primaryContextId": "setup-identity",
+      "ownerTeam": "identity-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 4500,
+        "successRatePct": 95,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-SIGN-IN",
+      "primaryContextId": "setup-identity",
+      "ownerTeam": "identity-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 1800,
+        "successRatePct": 99,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-RESTORE",
+      "primaryContextId": "cloud-control-plane",
+      "ownerTeam": "cloud-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 60000,
+        "successRatePct": 90,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-SETUP-CONTINUATION",
+      "primaryContextId": "setup-identity",
+      "ownerTeam": "identity-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 5000,
+        "successRatePct": 85,
+        "weeklyExecutions": 200
+      }
+    },
+    {
+      "pathId": "GP-CONNECT-CRM",
+      "primaryContextId": "integrations",
+      "ownerTeam": "integration-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 30000,
+        "successRatePct": 90,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-OAUTH-AND-SYNC",
+      "primaryContextId": "integrations",
+      "ownerTeam": "integration-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 45000,
+        "successRatePct": 85,
+        "weeklyExecutions": 200
+      }
+    },
+    {
+      "pathId": "GP-RECOVER-STALE-LEADS",
+      "primaryContextId": "business-os",
+      "ownerTeam": "business-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 120000,
+        "successRatePct": 80,
+        "weeklyExecutions": 200
+      }
+    },
+    {
+      "pathId": "GP-APPROVE-OUTBOUND-FOLLOWUP",
+      "primaryContextId": "boardroom",
+      "ownerTeam": "boardroom-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 8000,
+        "successRatePct": 95,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-REVIEW-PROOF",
+      "primaryContextId": "proof-trust",
+      "ownerTeam": "trust-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 3000,
+        "successRatePct": 95,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-WORKFLOW-REPLAY",
+      "primaryContextId": "runtime-kernel",
+      "ownerTeam": "kernel-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 15000,
+        "successRatePct": 80,
+        "weeklyExecutions": 200
+      }
+    },
+    {
+      "pathId": "GP-MOBILE-APPROVAL",
+      "primaryContextId": "mobile",
+      "ownerTeam": "mobile-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 6000,
+        "successRatePct": 90,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-PUSH-TO-APPROVAL",
+      "primaryContextId": "mobile",
+      "ownerTeam": "mobile-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 5000,
+        "successRatePct": 80,
+        "weeklyExecutions": 200
+      }
+    },
+    {
+      "pathId": "GP-OWNER-INTERVENTION",
+      "primaryContextId": "admin",
+      "ownerTeam": "admin-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 10000,
+        "successRatePct": 95,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-LAUNCH-READINESS",
+      "primaryContextId": "admin",
+      "ownerTeam": "admin-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 30000,
+        "successRatePct": 90,
+        "weeklyExecutions": 1000
+      }
+    },
+    {
+      "pathId": "GP-ENV-RECOVERY",
+      "primaryContextId": "cloud-control-plane",
+      "ownerTeam": "cloud-team",
+      "escalationTarget": "admin",
+      "slo": {
+        "p95LatencyMs": 20000,
+        "successRatePct": 95,
+        "weeklyExecutions": 1000
+      }
+    }
+  ],
+  "verifications": [
+    {
+      "pathId": "GP-FIRST-BOOT",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-SIGN-IN",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-RESTORE",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-SETUP-CONTINUATION",
+      "criticality": "P1",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-CONNECT-CRM",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-OAUTH-AND-SYNC",
+      "criticality": "P1",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-RECOVER-STALE-LEADS",
+      "criticality": "P1",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-APPROVE-OUTBOUND-FOLLOWUP",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-REVIEW-PROOF",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": false,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-WORKFLOW-REPLAY",
+      "criticality": "P1",
+      "hasE2E": true,
+      "hasProbe": false,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-MOBILE-APPROVAL",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": false,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-PUSH-TO-APPROVAL",
+      "criticality": "P1",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-OWNER-INTERVENTION",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-LAUNCH-READINESS",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": false,
+      "hasReceiptCheck": true
+    },
+    {
+      "pathId": "GP-ENV-RECOVERY",
+      "criticality": "P0",
+      "hasE2E": true,
+      "hasProbe": true,
+      "hasReceiptCheck": true
+    }
+  ]
+}
