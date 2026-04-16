@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MANIFEST_REGISTRY, getManifestsByClass, getAuthoritativeManifests } from "@/lib/truth-manifests/manifest-registry";
-import { generateHealthSummary, type ManifestHealthSummary } from "@/lib/truth-manifests/manifest-health-engine";
+import { generateHealthSummary } from "@/lib/truth-manifests/manifest-health-engine";
+import type { ManifestHealthSummary } from "@/lib/truth-manifests/manifest-types";
 
 const ManifestTruthDashboard = () => {
   const [summary, setSummary] = useState<ManifestHealthSummary | null>(null);
