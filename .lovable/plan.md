@@ -1,104 +1,120 @@
 
 
-# SITA OS — Core Backend Truth Layer: 11 Missing Tables
+# SITA OS — FULL ADVANCED MASTER AUDIT v4.0 — Complete Rewrite Plan
 
-## Current State
+## What Changed Since v3.0
 
-The project already has **160 migrations** and **~180 tables**. Of the 40 canonical tables requested, **29 are already fully covered** by existing equivalents:
+The project has undergone massive infrastructure expansion. Every number in the audit is outdated:
 
-| Requested Concept | Existing Table(s) |
-|---|---|
-| users/profiles | `profiles`, `os_user_accounts` |
-| devices | `cloud_devices`, `cloud_device_sessions`, `device_mesh_peers`, `device_ownership` |
-| commands | `os_commands`, `os_command_events`, `ecosystem_commands` |
-| approval_requests | `ai_workforce_approval_queue`, `dual_authority_challenges` |
-| receipts | `boardroom_decision_receipts`, `ai_inference_receipts`, `notification_delivery_receipts` |
-| notifications | `notifications`, `platform_notifications` |
-| notification_deliveries | `notification_delivery_receipts` |
-| workspaces | `cloud_shared_workspaces` |
-| installed_apps | `managed_apps` |
-| app_permissions | `os_capabilities`, `os_role_capabilities`, `client_capability_matrix` |
-| files | `cloud_files`, `cloud_folders` |
-| file_versions | `cloud_file_versions` |
-| sync_objects | `cloud_sync_objects`, `cloud_sync_changes`, `cloud_sync_checkpoints` |
-| sync_conflicts | `cloud_conflicts` |
-| updates | `update_catalog`, `update_history`, `update_channels`, `update_staging` |
-| release_rings | `update_channels` |
-| release_artifacts | `release_compatibility_matrix` |
-| rollbacks | `rollback_events` |
-| policies | `os_policies`, `cloud_policies`, `cloud_tenant_policies` |
-| feature_flags | `cloud_feature_flags` |
-| ai_invocations | `ai_workforce_invocations`, `ai_inference_receipts` |
-| ai_action_receipts | `ai_workforce_outputs`, `ai_workforce_recommendations` |
-| graph_nodes | `context_graph_snapshots` |
-| observability_metrics | `cloud_metrics_snapshots`, `health_validation_results`, `layer_health_snapshots` |
-| audit_logs | `os_audit_events`, `cloud_audit_events`, `admin_action_audit` |
-| connector_accounts | `connector_oauth_flows` |
-| connector_sync_runs | `connector_sync_runs` |
-| recovery_snapshots | `cloud_backup_snapshots` |
-| support_cases | `support_cases`, `support_case_events` |
+| Metric | v3.0 (Old) | v4.0 (Current) | Delta |
+|--------|-----------|----------------|-------|
+| DB Tables | 33 | **198** | +165 |
+| Migrations | 129 | **161** | +32 |
+| RLS Policies | ~33 | **323** | +290 |
+| Edge Functions | 54 | **74** | +20 |
+| Pages | 806 | **983** | +177 |
+| Components | 512 | **875** | +363 |
+| Hooks | 112 | **158** | +46 |
+| Contexts | 17 | **27** | +10 |
+| Admin Pages | 380 | **503** | +123 |
+| Routes (in route files) | 830 | **577+** | Reorganized |
+| TypeScript Files | ~3,000 | **4,219** | +1,200 |
+| Generated Artifacts | 52 | **57** | +5 |
+| Scripts | ~50 | **234** | +184 |
+| Packages | ~10 | **33** | +23 |
+| Contract Files | 6 | **174** | +168 |
+| CI Workflows | 5 | **9** | +4 |
+| DB Functions | ~1 | **7** | +6 |
+| Views | 4 | **4** | 0 |
 
-## 11 Missing Tables to Create
+### New Architectural Layers (Not in v3)
+- **Surface Runtime Layer** — 8 files in `src/lib/surfaces/`
+- **Device Capability/Trust Layer** — 10 files in `src/lib/devices/`
+- **Deployment Unit Registry** — 12 files in `src/lib/deployment/`
+- **Domain Manifest System** — 10 files in `src/lib/domain-system/`
+- **Truth Manifests** — 11 files in `src/lib/truth-manifests/`
+- **Platform Law** — 2 files in `src/lib/platform-law/`
+- **OS Security Fabric** — 18 modules in `src/lib/os-security/`
+- **11 new canonical DB tables** (command_steps, device_attestations, approval_decisions, timeline_events, graph_edges, simulations, incidents, connector_tokens, vapid_keys, biometric_credentials, runtime_agents)
 
-These are the genuinely missing concepts with no existing equivalent:
+### Key Corrections
+- Profile auto-creation trigger **EXISTS** (handle_new_user) — was listed as missing
+- `has_role`, `has_admin_permission` functions **EXIST** — security posture stronger
+- RLS is 198/198 (100%) — was 33/33
+- 15 admin domain barrels created — organizational clarity improved
+- GDPR export edge function **EXISTS** (gdpr-export, gdpr-delete)
 
-### 1. `command_steps` — Multi-step execution tracking for commands
-- References `os_commands(id)`
-- Columns: id, command_id, step_index, action, target, status (pending/running/completed/failed/skipped), started_at, completed_at, result, error_message, retry_count, user_id, created_at
+## Plan: Generate Updated v4.0 Document
 
-### 2. `device_attestations` — Attestation evidence per device
-- References `cloud_devices(id)`
-- Columns: id, device_id, attestation_type (boot-integrity/app-integrity/biometric/remote-challenge), status (passed/failed/expired/pending), evidence, key_fingerprint, verified_by, verified_at, expires_at, user_id, created_at
+Single output file: `/mnt/documents/FULL_MASTER_AUDIT.md` (overwrite with v4.0)
 
-### 3. `approval_decisions` — Durable approve/deny/defer/escalate records
-- References `ai_workforce_approval_queue(id)` or generic request_id
-- Columns: id, request_id, request_type, decision (approved/denied/deferred/escalated), actor_user_id, rationale, conditions, decided_at, user_id, created_at
+### Sections to Fully Rewrite (all numbers, all tables, all scores updated)
 
-### 4. `timeline_events` — Normalized activity/history across all domains
-- Columns: id, user_id, event_type, actor_type (user/system/ai/connector), actor_id, subject_type, subject_id, action, description, metadata, receipt_id, domain, created_at
+**Every section 1-41 will be rewritten** with correct 2026-04-16 data. Key updates per section:
 
-### 5. `graph_edges` — Semantic graph relationships
-- References `context_graph_snapshots` concept
-- Columns: id, source_node_type, source_node_id, target_node_type, target_node_id, edge_type, weight, metadata, user_id, created_at, updated_at
+1. **Section 1 (Executive Summary)** — Update aggregate score from 38→~48, fix "33 tables" to "198 tables", update strengths/risks with new layers
+2. **Section 2 (Scoreboard)** — Recalculate all 14 indices; Security rises ~75, Execution rises ~52, Device rises ~15
+3. **Section 3 (Delta)** — Complete delta from v3→v4: 165 new tables, 20 new edge functions, 3 new architecture layers, barrel reorganization
+4. **Section 4 (Topology)** — All counts updated (983 pages, 875 components, 198 tables, 74 edge functions, 161 migrations, 33 packages, 4,219 files)
+5. **Section 5 (Build/Test)** — Update test count (198), CI workflows (9), script count (234)
+6. **Section 6 (Routes)** — Fix route count methodology (577+ in route files, not 830), update family analysis
+7. **Section 7 (Domain Matrix)** — Add surfaces, devices, deployment domains; upgrade persistence scores across all domains
+8. **Section 8 (Wiring)** — Admin→Backend Truth chain improves significantly (198 tables backing admin), reduce "broken" counts
+9. **Section 9 (Substrates)** — Add timeline_events, graph_edges, simulations substrates; update backing status
+10. **Section 10 (Services)** — Update to 65 lib directories; recount canonical vs speculative
+11. **Section 11 (Data Layer)** — Complete rewrite: 198 tables, 323 RLS policies, 7 DB functions, 4 views. Include new tables inventory
+12. **Section 12 (Edge Functions)** — 74 functions classified; include gdpr-export/delete, runtime-probes, self-healing
+13. **Section 13 (AI)** — Update with Lovable AI Gateway model list, secret status
+14. **Section 14 (Connectors)** — Add connector_tokens table; update Shopify status
+15. **Section 15 (Provider/Consent)** — Update with connector_oauth_flows table existence
+16. **Sections 16-17 (Demo/Mock)** — Update mock (27) and demo (31) counts
+17. **Section 18 (Journeys)** — Update persistence status with new tables backing more journeys
+18. **Section 19 (REX)** — Add approval_decisions table to loop; update status
+19. **Section 20 (Flagship)** — Recalculate all 5 loops with improved persistence scores
+20. **Sections 21-30** — Updated with new device/surface/deployment layers, GDPR endpoints exist, vapid_keys table exists
+21. **Section 31 (Contradictions)** — Fix Contradiction 15 (profile trigger EXISTS), update numbers throughout
+22. **Section 32 (Ownership)** — Add domain_ownership_registry table
+23. **Section 33 (Unknowns)** — Remove resolved unknowns, add new ones
+24. **Sections 34-38** — Recalculate blockers, gaps, remediation with updated state
+25. **Section 39-40 (Launch/Summary)** — Updated aggregate index, updated matrices
+26. **Section 41 (Directory Reorg)** — Merge existing content, add surfaces/devices/deployment sections
 
-### 6. `simulations` — Durable simulation jobs
-- Columns: id, user_id, scenario_type, title, input_payload, status (pending/running/completed/failed), result_artifacts, model_used, duration_ms, created_at, completed_at
+### New Sections to Add
 
-### 7. `incidents` — Incident tracking and remediation
-- Columns: id, user_id, severity (critical/high/medium/low), title, description, affected_services, status (open/investigating/mitigating/resolved/closed), owner_user_id, remediation_notes, resolved_at, created_at, updated_at
+27. **Section 42: Surface Runtime Truth Audit** — 8-file surface layer assessment, host-vs-simulated truth, widget capabilities, drag-snap behavior
+28. **Section 43: Device Capability/Trust Truth Audit** — 10-file device layer + 11 new backing tables (device_attestations, biometric_credentials, runtime_agents)
+29. **Section 44: Deployment Unit Truth Audit** — 12-file deployment layer assessment, release units, health probes, rollback behavior
+30. **Section 45: Contract & Package Architecture Audit** — 33 packages, 174 contract files, kernel/runtime/domain/graph contracts
+31. **Section 46: Database Function & Trigger Audit** — 7 functions, trigger assessment, security definer analysis
+32. **Section 47: 4-Plane Architecture Audit** — Product/Control/Shared Service/Internal Execution plane mapping
+33. **Section 48: Domain Manifest System Audit** — 10 domain manifest files, ownership registry, completeness scoring
+34. **New Matrix 16: New Table Coverage Matrix** — Maps all 198 tables to domains
+35. **New Matrix 17: Architecture Layer Completeness Matrix** — Surfaces, devices, deployment layers vs backing tables
 
-### 8. `connector_tokens` — Encrypted token lifecycle per connector
-- Columns: id, user_id, connector_id, provider, token_type (access/refresh), encrypted_token_ref, scopes, issued_at, expires_at, last_refreshed_at, rotation_count, status (active/expired/revoked), created_at
+### Score Adjustments (Evidence-Based)
 
-### 9. `vapid_keys` — Push key rotation state
-- Columns: id, public_key, private_key_ref, status (active/rotated/revoked), activated_at, rotated_at, created_at
+| Index | v3.0 | v4.0 | Reason |
+|-------|------|------|--------|
+| Runtime Truth | 32 | **40** | +165 tables, +20 edge functions, new layers |
+| Launch Honesty | 28 | **32** | Infrastructure improved but still no proven E2E |
+| AI Truth | 25 | **28** | Gateway models available, architecture stronger |
+| Connector Truth | 15 | **18** | connector_tokens table, more edge functions |
+| Demo Governance | 40 | **42** | Barrel reorganization improves governance |
+| Surface Portability | 30 | **38** | Surface runtime layer created |
+| Device Readiness | 8 | **18** | Device layer + attestation/biometric tables |
+| Observability | 35 | **40** | runtime-probes edge fn, metrics tables |
+| Economic Governance | 22 | **26** | cost-alert edge fn exists |
+| Security & Privacy | 65 | **78** | 198/198 RLS, gdpr-export/delete, has_role, vapid_keys |
+| UX Trust | 45 | **48** | More components, better organization |
+| Execution Readiness | 42 | **50** | approval_decisions, command_steps, timeline_events |
+| Ownership Clarity | 38 | **45** | domain_ownership_registry, barrel reorg |
+| Documentation | 30 | **42** | 38 arch docs, 12 infra docs, 57 generated |
+| **Weighted Aggregate** | **38** | **~48** | Significant infrastructure progress |
 
-### 10. `biometric_credentials` — WebAuthn/biometric enrollment
-- Columns: id, user_id, credential_id, credential_type (webauthn/fido2/platform), public_key, device_id, display_name, sign_count, last_used_at, status (active/revoked), created_at
+### Technical Approach
 
-### 11. `runtime_agents` — OS agent registration and heartbeat
-- Columns: id, user_id, agent_type (desktop/mobile/server/appliance), hostname, version, capabilities, status (online/offline/degraded), last_heartbeat_at, registered_at, created_at, updated_at
-
-## Migration Details
-
-One single migration file creating all 11 tables with:
-- RLS enabled on all tables
-- RLS policies: `TO authenticated USING (auth.uid() = user_id)` (except `vapid_keys` which is admin-only)
-- Proper foreign key references where applicable
-- Sensible defaults and NOT NULL constraints
-- `updated_at` trigger on tables with update patterns
-- Indexes on `user_id` and frequently queried columns
-
-## No Code Changes Required
-
-These are pure infrastructure/truth tables. The existing TypeScript registries in `src/lib/devices/`, `src/lib/surfaces/`, and `src/lib/deployment/` already define the architecture — these tables provide the database backing. The auto-generated `types.ts` will pick up the new tables automatically after migration.
-
-## Summary
-
-| Action | Count |
-|--------|-------|
-| Tables already exist | 29 concepts covered |
-| Tables to create | 11 |
-| Migrations to run | 1 |
-| Code files to modify | 0 |
+1. Generate complete markdown file via script to `/mnt/documents/FULL_MASTER_AUDIT.md`
+2. ~3,500-4,000 lines (up from 2,303) to accommodate new sections
+3. All evidence blocks updated with current file paths and counts
+4. Every table, matrix, and score recalculated from verified data
 
