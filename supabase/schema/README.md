@@ -9,7 +9,7 @@ The auto-generated TypeScript types are at `src/integrations/supabase/types.ts`.
 
 ## Registry
 
-The programmatic schema registry is at `src/lib/db/schema-registry.ts`, which maps all 198 tables with domain classification, RLS status, and tenancy boundaries.
+The programmatic schema registry is at `src/lib/db/schema-registry.ts`, which maps all 201 tables with domain classification, RLS status, and tenancy boundaries.
 
 ## Conventions
 

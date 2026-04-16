@@ -1,12 +1,12 @@
 # Production Truth Dashboard
 
-Generated: 2026-04-13T12:00:00.000Z
+Generated: 2026-04-16T00:00:00.000Z
 
 ## Artifact Health
 
 | Status | Count |
 |--------|-------|
-| ✅ Valid | 49 |
+| ✅ Valid | 94 |
 | ❌ Missing | 0 |
 | ⚠️ Invalid | 0 |
 

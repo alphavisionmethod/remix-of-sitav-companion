@@ -1,7 +1,7 @@
 # SITA OS — Full Issues & Fixes Registry v5.1
 
 Generated: 2026-04-16T23:00:00.000Z
-Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules · 201 DB tables · 4 DB views · 84 edge functions · 79 generated artifacts · 49 test files · 163 migrations · 4,290 TS files
+Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules · 201 DB tables · 4 DB views · 86 edge functions · 79 generated artifacts · 49 test files · 163 migrations · 4,290 TS files
 
 ---
 
@@ -330,7 +330,7 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 ### ISS-050: Edge Function Error Handling
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: Several edge functions lacked structured error responses
-- **Fix**: Standardized error response format across all 84 edge functions with error codes, messages, and correlation IDs
+- **Fix**: Standardized error response format across all 86 edge functions with error codes, messages, and correlation IDs
 - **Files**: `supabase/functions/_shared/` error utilities
 
 ### ISS-051: Edge Function Auth Bypass
@@ -696,7 +696,7 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 - **Description**: No admin UI existed for viewing edge function classifications, DB table health scores, or backend topology structure. Operators had no visibility into the backend layer composition.
 - **Fix**: Created `BackendTopologyDashboard.tsx` with full topology visualization — edge function classification matrix (84 functions across 8 categories), DB table health scores (201 tables + 4 views with RLS/realtime status), and topology graph. Powered by `useBackendTopologyHealth.ts` hook. Routed at `/admin/backend-topology`.
 - **Files**: `src/pages/admin/BackendTopologyDashboard.tsx`, `src/hooks/useBackendTopologyHealth.ts`
-- **Verification**: Dashboard renders with all 84 edge functions classified and all 201 tables + 4 views health-scored
+- **Verification**: Dashboard renders with all 86 edge functions classified and all 201 tables + 4 views health-scored
 
 ### ISS-109: Full Render Smoke Test Missing
 - **Priority**: P0 · **Status**: ✅ RESOLVED

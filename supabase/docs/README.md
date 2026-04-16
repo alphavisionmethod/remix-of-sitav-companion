@@ -4,11 +4,11 @@ This directory contains database documentation for SITA OS.
 
 ## Architecture
 
-- **198 tables** across 14 domains
-- **323 RLS policies** with 100% coverage
+- **201 tables** across 14 domains
+- **332 RLS policies** with 100% coverage
 - **7 database functions** (security definers for RBAC)
 - **4 views** for aggregated reporting
-- **161 migrations** tracking schema evolution
+- **164 migrations** tracking schema evolution
 
 ## Key References
 

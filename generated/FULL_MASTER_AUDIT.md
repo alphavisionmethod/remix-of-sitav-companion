@@ -2,7 +2,7 @@
 
 Generated: 2026-04-16T18:00:00.000Z
 Auditor: SITA OS Internal Truth Engine
-Codebase Snapshot: 983 pages · 911 components · 158 hooks · 1,548 lib modules · 27 contexts · 204 DB tables · 75 edge functions · 161 migrations · 79 generated artifacts · 225 scripts
+Codebase Snapshot: 983 pages · 897 components · 158 hooks · 1,548 lib modules · 27 contexts · 204 DB tables · 86 edge functions · 164 migrations · 79 generated artifacts · 225 scripts
 
 ---
 
@@ -440,8 +440,8 @@ suggestion → draft → simulated → approval-required → approved → execut
 | Frontend | React 18 + TypeScript 5 + Vite 5 |
 | Styling | Tailwind CSS v3 + 160 semantic tokens |
 | State | React Context (27 providers) + sessionStorage persistence |
-| Backend | Lovable Cloud (75 edge functions) |
-| Database | PostgreSQL (204 tables, 161 migrations) |
+| Backend | Lovable Cloud (86 edge functions) |
+| Database | PostgreSQL (204 tables, 164 migrations) |
 | Auth | Email/password + Google OAuth + magic link |
 | AI Gateway | Sovereign AI Gateway → Lovable AI models |
 | Validation | 79 generated artifacts + drift detection |

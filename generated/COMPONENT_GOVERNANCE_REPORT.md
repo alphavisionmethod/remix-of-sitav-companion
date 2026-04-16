@@ -13,7 +13,7 @@ Plus: `PRIVATE_HELPER`, `DEPRECATED_WRAPPER`, `UI_LIB` (shadcn).
 
 | Metric | Count |
 |---|---|
-| Total component files | 913 |
+| Total component files | 897 |
 | Primitives | 266 |
 | Domain components | 577 |
 | Surface compositions | 3 |
