@@ -168,8 +168,22 @@ const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPage"));
 const MobileParityDashboard = lazy(() => import("@/pages/admin/MobileParityDashboard"));
 
+// ── Phase 3: Canonical Domain Hubs ──
+const OverviewHome = lazy(() => import("@/pages/admin/overview/OverviewHome"));
+const AlertsHome = lazy(() => import("@/pages/admin/alerts/AlertsHome"));
+const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome"));
+const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
+
 export function getAdminRoutes() {
   return [
+    // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
+    <Route key="hub-overview" path="/admin/overview" element={<OverviewHome />} />,
+    <Route key="hub-alerts" path="/admin/alerts" element={<AlertsHome />} />,
+    <Route key="hub-approvals" path="/admin/approvals" element={gated("support.grant", <ApprovalsHome />)} />,
+    <Route key="hub-environments" path="/admin/environments" element={gated("users.view", <EnvironmentsHome />)} />,
+    // /admin → /admin/overview canonical entry
+    <Route key="hub-root" path="/admin" element={<Navigate to="/admin/overview" replace />} />,
+
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
     <Route key="a1b" path="/admin/runtime-tier-governance" element={gated("audit.view", <RuntimeTierGovernanceDashboard />)} />,
     <Route key="a2" path="/admin/fleet-health" element={gated("maintenance.view", <FleetHealthPage />)} />,
