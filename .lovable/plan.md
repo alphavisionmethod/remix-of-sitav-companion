@@ -1,72 +1,75 @@
 
 
-## DB Architecture Truth — Audit Verdict
+## DB Architecture Truth — Final Wiring Audit
 
-**Status: ~25% complete. Only Phase 1 done. Phases 2–6 are stubs or missing.**
-
-### What IS in place ✅
+### What IS Done ✅
 | Item | Status |
 |---|---|
-| `src/lib/db/schema-registry.ts` | ✅ all 201 tables (Phase 1 done) |
-| `src/lib/db/` 11 truth files exist | ✅ files present |
-| `supabase/{schema,policies,seed}/` directories | ✅ exist (README only) |
-| Generators: schema, migration, RLS, ownership | ✅ scripts exist |
-| `BackendTopologyDashboard` admin page | ✅ exists |
+| `schema-registry.ts` | ✅ 203 entries, all 201 live tables |
+| `migration-registry.ts` | ✅ 164 entries (all 163 migrations) |
+| `rls-policy-registry.ts` | ✅ 201 tables classified |
+| `tenancy-boundary-map.ts` | ✅ Full coverage with admin/service exceptions |
+| 6 architecture docs | ✅ All present |
+| `DbTruthExplorer` admin page | ✅ Built (167 lines, 5 tabs) |
+| `db-truth-introspect` edge function | ✅ Exists |
+| 11 per-domain SQL files | ✅ Synthesized |
+| Persistence audit + check | ✅ `generated/persistence-audit.json` |
+| 1 vitest suite | ✅ `db-truth-registries.test.ts` |
+| DB checks in `validate-all.ts` | ✅ 8 checks wired |
 
-### What is NOT done ❌
-| Phase | Gap |
-|---|---|
-| **Phase 2 — Migration Truth** | `migration-registry.ts` has only **7 sample entries** vs 163 migrations. Generator exists but registry not regenerated. `MIGRATION_POLICY_AND_ROLLOUTS.md` missing. |
-| **Phase 3 — RLS & Tenancy Truth** | `rls-policy-registry.ts` has only **13 hand-coded entries** vs 201 tables. `check-rls-coverage.ts` is a print-only stub (no enforcement). `TENANCY_AND_RLS_MODEL.md` missing. |
-| **Phase 4 — Persistence Audit** | `generate-persistence-audit.ts` MISSING. `check-persistence-coverage.ts` MISSING. `PERSISTENCE_AND_RECOVERY_MODEL.md` missing. |
-| **Phase 5 — Admin DB Surfaces** | All 5 pages MISSING (SchemaRegistryExplorer, RlsCoverageDashboard, MigrationTimelineViewer, TenancyAndOwnershipExplorer, DbDriftRadar). `db-truth-introspect` edge function MISSING. |
-| **Phase 6 — Docs, CI, Tests** | 5 of 6 required docs MISSING. 0 of 4 vitest suites in `src/__tests__/db/`. Per-domain `supabase/schema/*.sql` files MISSING (only README). |
+### What is BROKEN or MISSING ❌
 
-## Plan to Reach 100% (Steps A–E)
+1. **`/admin/db-truth-explorer` route NOT registered** in `src/routes/AdminRoutes.tsx` — page exists but is unreachable.
+2. **`db-truth-introspect` edge function uses fake query** — `.from("pg_tables")` via PostgREST won't reach system catalogs. Returns empty data. Needs an SQL RPC instead.
+3. **`check-persistence-coverage.ts` NOT wired** into `scripts/validate-all.ts` aggregator (file exists; gate not active).
+4. **3 missing per-domain SQL files**: `finance.sql`, `business-crm` ✅ exists but missing `user-experience.sql`, `admin-governance.sql`, `finance.sql` (registry has 14 domains, only 11 SQL files).
+5. **3 missing vitest suites** (plan called for 4): rls-pattern-integrity, migration-ownership-integrity, persistence-domain-coverage.
+6. **`check-backend-registry-completeness.ts` missing from `validate-all.ts`** db block.
+7. **Edge function `db-truth-introspect` not registered** in backend topology registry (`edge-function-registry.ts`) — would fail `check-edge-function-ownership`.
 
-### Step A — Close Phase 2 (Migration Truth)
-- Run `generate-migration-registry.ts` against all 163 SQL files, classify each by category (`table-creation`/`rls-policy`/`function-trigger`/`index`/`enum`/`view`/`data`/`alter`), extract affected tables, detect destructive ops.
-- Regenerate `migration-registry.ts` to full 163 entries with `boundedContext`, `rollbackRisk`, `releaseConsequence`, `dataSensitivity`, `tenancyImpact`.
-- Harden `check-migration-ownership.ts` to fail on missing header/owner.
-- Write `docs/architecture/MIGRATION_POLICY_AND_ROLLOUTS.md`.
+### Final Step F — Close Wiring Gaps (single message, deployment-ready)
 
-### Step B — Close Phase 3 (RLS & Tenancy Truth)
-- Regenerate `rls-policy-registry.ts` from live `pg_policies` covering all 201 tables, classified into the 12 `RlsPattern` values.
-- Expand `tenancy-boundary-map.ts` with `tenantKey`, `adminException`, `serviceRoleException`, `crossTenantPolicy` per table.
-- Replace stub `check-rls-coverage.ts` with real drift check vs live `pg_policies`.
-- Write `docs/architecture/TENANCY_AND_RLS_MODEL.md`.
+**F1. Register admin route**
+- Add lazy import + route entry in `src/routes/AdminRoutes.tsx` for `/admin/db-truth-explorer` under existing Backend Topology block, gated by `audit.view`.
 
-### Step C — Close Phase 4 (Persistence-Critical Domain Audit)
-- Create `scripts/db/generate/generate-persistence-audit.ts` cross-referencing the 9 persistence domains (setup checkpoints, devices, prompts, model config, feature flags, OAuth tokens, workflow runtime, memory, action/proof/reversal trail) against schema-registry.
-- Emit `generated/persistence-audit.json`.
-- Create `scripts/db/checks/check-persistence-coverage.ts` to fail when any persistence domain has 0 backing tables.
-- Write `docs/architecture/PERSISTENCE_AND_RECOVERY_MODEL.md`.
+**F2. Fix `db-truth-introspect` edge function**
+- Create one SQL RPC `public.get_db_truth_snapshot()` (SECURITY DEFINER, admin-only via `has_role`) returning JSON: tables, policies-per-table, sensitive flags, drift summary.
+- Migration: define the function with `has_role(auth.uid(), 'admin')` gate inside the function body; revoke from public, grant to authenticated.
+- Rewrite `supabase/functions/db-truth-introspect/index.ts` to call this single RPC and shape the response per `op` parameter.
+- Wire `db-truth-introspect` into `edge-function-registry.ts` + `edge-function-categories.ts` + `edge-function-auth-map.ts` + `edge-function-owner-map.ts` + `edge-function-bounded-contexts.ts` + `edge-function-contract-map.ts` + `edge-function-migration-map.ts` (DOMAIN_FUNCTION, owner: `platform-db`, callers: `admin-bff-gateway` only).
+- Update `DbTruthExplorer` to optionally fetch live drift via this function (cached `useQuery`, falls back to static registry on error).
 
-### Step D — Close Phase 5 (Admin DB Visibility)
-- Create read-only `db-truth-introspect` edge function (DOMAIN_FUNCTION, admin-bff caller only) running whitelisted queries against `pg_tables`/`pg_policies`/`information_schema`.
-- Build 5 admin pages, registered under existing **Health** and **Config** Admin Control Plane domains (no new top-level entries):
-  1. `SchemaRegistryExplorer` (Health)
-  2. `RlsCoverageDashboard` (Trust-Security)
-  3. `MigrationTimelineViewer` (Releases)
-  4. `TenancyAndOwnershipExplorer` (Trust-Security)
-  5. `DbDriftRadar` (Health)
+**F3. Wire CI gates**
+- Add to `scripts/validate-all.ts` `db` block: `scripts/db/checks/check-persistence-coverage.ts` and `scripts/runtime/edge-functions/check-backend-registry-completeness.ts`.
 
-### Step E — Close Phase 6 (Docs, CI, Tests, Per-Domain SQL)
-- Write 3 remaining docs: `DATABASE_ARCHITECTURE.md`, `SCHEMA_TRUTH_REGISTRY.md`, `DB_OWNERSHIP_MATRIX.md`.
-- Synthesize per-domain `supabase/schema/{auth,boardroom,business,finance,concierge,integrations,approvals,proofs,workflows,memory,setup,devices,policies,admin-config,telemetry}.sql` from existing migrations (read-only artifacts).
-- Add 4 vitest suites under `src/__tests__/db/`: schema-registry-completeness, rls-pattern-integrity, migration-ownership-integrity, persistence-domain-coverage.
-- Wire all DB checks into `scripts/manifests/validate-all.ts` aggregator and Manifest Truth Framework's `manifest-schema-registry`.
+**F4. Synthesize 3 missing per-domain SQL files**
+- Run/extend `scripts/db/generate/synthesize-domain-schemas.ts` to emit `finance.sql`, `user-experience.sql`, `admin-governance.sql` (and any other registry domains lacking a schema file).
 
-## Order of Execution
-A → B → C → D → E. Each step independently deployable. Total ~75% of original plan remaining.
+**F5. Add 3 missing vitest suites** under `src/__tests__/db/`:
+- `rls-pattern-integrity.test.ts` — every `tenancy_column != null` table has a non-`no_policies`, non-`public_read` pattern.
+- `migration-ownership-integrity.test.ts` — every migration has `boundedContext` mapped to a real domain in `schema-registry.ts`.
+- `persistence-domain-coverage.test.ts` — load `generated/persistence-audit.json`; assert `summary.missing === 0` and every domain has ≥ 1 backing table.
 
-## Non-Negotiable Rules
-- Source of truth = migrations + live `pg_*`; registries are derived.
-- Generators replace stale data, never append.
-- Admin pages register under existing 12-domain IA, never as top-level navigation.
-- Each step: `tsc --noEmit` clean, all checks green, app boots.
-- Manifest Truth Framework + Backend Topology Hardening + Admin Control Plane consolidation remain intact.
+**F6. Final verification**
+- `npx tsc --noEmit` clean.
+- Run `scripts/validate-all.ts db` block — all 10 checks green.
+- Run vitest on `src/__tests__/db/` — all 4 suites green.
+- Manually load `/admin/db-truth-explorer` to confirm render.
 
-## Starting Point
-Step A (Phase 2 — Migration Truth Registry) — full 163-entry regeneration — in the next message after approval.
+### Non-Negotiable Rules (still in force)
+- Source of truth = migrations + live `pg_*`; registries derived only.
+- `db-truth-introspect` is read-only, admin-gated, registered DOMAIN_FUNCTION, called only by admin-bff.
+- No new top-level admin nav — route lives under existing Backend Topology / Health domain.
+- Manifest Truth + Backend Topology + Admin Control Plane consolidation remain intact.
+
+### Deliverables After Step F
+- 1 admin route registered
+- 1 SQL migration (security definer RPC for safe introspection)
+- 1 hardened edge function + 7 registry entries
+- 2 new CI gates wired into aggregator
+- 3 synthesized per-domain SQL files
+- 3 vitest suites
+- Full `tsc` + db-check + vitest green
+
+This is the final batch. After Step F: 100% deployment-ready, zero stubs, zero unwired components.
 
