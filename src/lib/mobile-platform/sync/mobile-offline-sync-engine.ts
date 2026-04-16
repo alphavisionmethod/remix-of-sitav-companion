@@ -28,10 +28,10 @@ export class MobileOfflineSyncEngine {
         await mobileSyncQueue.updateStatus(mutation.id, "in-flight");
         try {
           const result = await this.executor(mutation);
-          if (result.ok) {
+          if (result.ok === true) {
             await mobileSyncQueue.updateStatus(mutation.id, "succeeded");
             await mobileSyncQueue.remove(mutation.id);
-          } else if (result.conflict) {
+          } else if (result.conflict === true) {
             await mobileSyncQueue.updateStatus(mutation.id, "conflict", result.error);
           } else {
             const policy = getOfflinePolicy(mutation.domain);
