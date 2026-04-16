@@ -9,14 +9,12 @@ import { probeRuntimeTier, type RuntimeTierProbe } from "./runtime-detection";
 import { getWebCapability } from "./web/web-capability-map";
 import { getApplianceCapability } from "./appliance/appliance-capabilities";
 import { probeDesktopCapabilities } from "./desktop/desktop-host-capabilities";
-import { getFeatureTier } from "./feature-tier-registry";
+import { getFeatureRuntimeTier } from "./feature-runtime-tier-registry";
 
 interface RuntimeTierContextValue {
   probe: RuntimeTierProbe;
   tier: RuntimeTier;
-  /** Resolve capability availability under the active tier. */
   resolveCapability: (capabilityId: string) => TierAvailability;
-  /** Resolve a feature's availability under the active tier. */
   resolveFeature: (featureId: string) => TierAvailability;
 }
 
@@ -34,10 +32,11 @@ export function RuntimeTierProvider({ children }: { children: ReactNode }) {
           return entry?.availability ?? "prohibited";
         }
         case "DESKTOP_HOST": {
-          const probed = probeDesktopCapabilities().find((c) => c.id === capabilityId);
-          if (!probed) return "prohibited";
-          if (probed.status === "available") return "supported";
-          if (probed.status === "fallback") return "fallback";
+          const probedMap = probeDesktopCapabilities();
+          const status = probedMap.get(capabilityId);
+          if (!status) return "prohibited";
+          if (status === "available") return "supported";
+          if (status === "degraded") return "fallback";
           return "prohibited";
         }
         case "APPLIANCE_RUNTIME": {
@@ -50,7 +49,7 @@ export function RuntimeTierProvider({ children }: { children: ReactNode }) {
     };
 
     const resolveFeature = (featureId: string): TierAvailability => {
-      const feature = getFeatureTier(featureId);
+      const feature = getFeatureRuntimeTier(featureId);
       if (!feature) return "prohibited";
       if (feature.supportedTiers.includes(tier)) return "supported";
       if (feature.simulatedTiers.includes(tier)) return "simulated";
@@ -65,7 +64,6 @@ export function RuntimeTierProvider({ children }: { children: ReactNode }) {
   return <RuntimeTierContext.Provider value={value}>{children}</RuntimeTierContext.Provider>;
 }
 
-/** Throw-safe hook — requires the provider to be mounted. */
 function useRuntimeTierContext(): RuntimeTierContextValue {
   const ctx = useContext(RuntimeTierContext);
   if (!ctx) {
@@ -88,7 +86,7 @@ export function useCapability(capabilityId: string): TierAvailability {
   return useRuntimeTierContext().resolveCapability(capabilityId);
 }
 
-export function useFeatureTier(featureId: string): TierAvailability {
+export function useFeatureRuntimeTier(featureId: string): TierAvailability {
   return useRuntimeTierContext().resolveFeature(featureId);
 }
 

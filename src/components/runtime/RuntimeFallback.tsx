@@ -1,6 +1,6 @@
 import { Info } from "lucide-react";
-import { useFeatureTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
-import { getFeatureTier } from "@/lib/runtime/feature-tier-registry";
+import { useFeatureRuntimeTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
+import { getFeatureRuntimeTier } from "@/lib/runtime/feature-runtime-tier-registry";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -19,8 +19,8 @@ interface RuntimeFallbackProps {
  */
 export function RuntimeFallback({ featureId, message, compact = false }: RuntimeFallbackProps) {
   const tier = useRuntimeTier();
-  const status = useFeatureTier(featureId);
-  const feature = getFeatureTier(featureId);
+  const status = useFeatureRuntimeTier(featureId);
+  const feature = getFeatureRuntimeTier(featureId);
 
   if (status === "supported") return null;
 

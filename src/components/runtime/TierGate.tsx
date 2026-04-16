@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
-import { useFeatureTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
+import { useFeatureRuntimeTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
 import type { RuntimeTier, TierAvailability } from "@/lib/runtime/runtime-tier-model";
-import { getFeatureTier } from "@/lib/runtime/feature-tier-registry";
+import { getFeatureRuntimeTier } from "@/lib/runtime/feature-runtime-tier-registry";
 import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
 
 interface TierGateProps {
@@ -34,8 +34,8 @@ export function TierGate({
   surfaceClass = "user_app",
 }: TierGateProps) {
   const activeTier = useRuntimeTier();
-  const status = useFeatureTier(featureId);
-  const feature = getFeatureTier(featureId);
+  const status = useFeatureRuntimeTier(featureId);
+  const feature = getFeatureRuntimeTier(featureId);
 
   const tierMatches = requireTier
     ? Array.isArray(requireTier)
