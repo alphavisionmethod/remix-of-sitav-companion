@@ -196,9 +196,9 @@ function main() {
 
     records.push(rec);
 
-    // Cluster by (family + base name root) for duplicate detection
-    if (family !== "other") {
-      const groupKey = `${family}:${name.toLowerCase().replace(/(card|badge|panel|shell|hero|summary|drawer|chip|pill)$/i, "")}`;
+    // Cluster by exact lowercase name (skip index/types/shared barrels)
+    if (!["index", "types", "shared", "constants"].includes(name.toLowerCase())) {
+      const groupKey = name.toLowerCase();
       if (!familyGroups.has(groupKey)) familyGroups.set(groupKey, []);
       familyGroups.get(groupKey)!.push(rec);
     }
