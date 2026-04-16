@@ -172,6 +172,48 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "Every claimed surface has build/sign/distribute/update/recover evidence.",
     producesArtifact: "generated/deployability-report.json",
   },
+
+  // ── Phase 10 ── Completeness (registry ↔ disk truth)
+  {
+    id: "edge-function-membership-completeness",
+    phase: "phase-10-completeness",
+    title: "Edge function membership completeness",
+    script: "scripts/architecture/checks/check-edge-function-membership-completeness.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description: "Every supabase/functions/<name>/ on disk is claimed by exactly one bounded context.",
+    producesArtifact: "generated/edge-function-membership-report.json",
+  },
+  {
+    id: "table-membership-completeness",
+    phase: "phase-10-completeness",
+    title: "Table membership completeness",
+    script: "scripts/architecture/checks/check-table-membership-completeness.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description: "Every public-schema table is claimed by exactly one bounded context.",
+    producesArtifact: "generated/table-membership-report.json",
+  },
+  {
+    id: "page-registry-completeness",
+    phase: "phase-10-completeness",
+    title: "Page registry completeness",
+    script: "scripts/architecture/checks/check-page-registry-completeness.ts",
+    owner: "reality-team",
+    severity: "blocker",
+    description: "Every critical page on disk is registered in page-state-registry.",
+    producesArtifact: "generated/page-registry-completeness-report.json",
+  },
+  {
+    id: "route-registry-completeness",
+    phase: "phase-10-completeness",
+    title: "Route registry completeness",
+    script: "scripts/architecture/checks/check-route-registry-completeness.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description: "Every <Route path=> declared in src/routes/** is owned by a bounded context.",
+    producesArtifact: "generated/route-registry-completeness-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
