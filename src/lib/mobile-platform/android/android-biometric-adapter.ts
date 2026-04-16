@@ -1,5 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Android Biometric Adapter (BiometricPrompt)
+// Uses Capacitor BiometricAuth plugin when present; WebAuthn probe
+// in web fallback; honest "not available" otherwise.
 // ═══════════════════════════════════════════════════════════════
 
 import type {
@@ -9,9 +11,13 @@ import type {
   BiometricAvailability,
   BiometricKind,
 } from "../contracts/biometric-contract";
+import { nativeBiometric } from "../native/native-biometric";
 
 export const androidBiometricAdapter: BiometricContract = {
   async availability(): Promise<BiometricAvailability> {
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.checkAvailability();
+    }
     if (typeof window === "undefined") return "hardware-missing";
     if (!window.PublicKeyCredential) return "hardware-missing";
     try {
@@ -21,16 +27,18 @@ export const androidBiometricAdapter: BiometricContract = {
       return "hardware-missing";
     }
   },
+
   async enrolledKinds(): Promise<ReadonlyArray<BiometricKind>> {
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.enrolledKinds();
+    }
     return ["fingerprint"];
   },
+
   async prompt(req: BiometricPromptRequest): Promise<BiometricPromptResult> {
-    const ok = window.confirm(`SITA: ${req.reason}`);
-    return {
-      success: ok,
-      kind: ok ? "fingerprint" : null,
-      authToken: ok ? `android-bio-${Date.now()}` : undefined,
-      failureReason: ok ? undefined : "user-cancelled",
-    };
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.prompt(req);
+    }
+    return { success: false, kind: null, failureReason: "native-unavailable" };
   },
 };

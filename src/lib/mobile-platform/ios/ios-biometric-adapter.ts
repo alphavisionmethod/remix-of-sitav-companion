@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — iOS Biometric Adapter
-// Uses WebAuthn in fallback; LocalAuthentication via Capacitor in native.
+// Uses Capacitor BiometricAuth plugin when present; WebAuthn probe
+// in web fallback; honest "not available" otherwise.
 // ═══════════════════════════════════════════════════════════════
 
 import type {
@@ -10,9 +11,13 @@ import type {
   BiometricAvailability,
   BiometricKind,
 } from "../contracts/biometric-contract";
+import { nativeBiometric } from "../native/native-biometric";
 
 export const iosBiometricAdapter: BiometricContract = {
   async availability(): Promise<BiometricAvailability> {
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.checkAvailability();
+    }
     if (typeof window === "undefined") return "hardware-missing";
     if (!window.PublicKeyCredential) return "hardware-missing";
     try {
@@ -22,16 +27,19 @@ export const iosBiometricAdapter: BiometricContract = {
       return "hardware-missing";
     }
   },
+
   async enrolledKinds(): Promise<ReadonlyArray<BiometricKind>> {
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.enrolledKinds();
+    }
     return ["face"];
   },
+
   async prompt(req: BiometricPromptRequest): Promise<BiometricPromptResult> {
-    const ok = window.confirm(`SITA: ${req.reason}`);
-    return {
-      success: ok,
-      kind: ok ? "face" : null,
-      authToken: ok ? `ios-bio-${Date.now()}` : undefined,
-      failureReason: ok ? undefined : "user-cancelled",
-    };
+    if (nativeBiometric.isAvailable()) {
+      return nativeBiometric.prompt(req);
+    }
+    // Web fallback — explicit, no native trust assumption.
+    return { success: false, kind: null, failureReason: "native-unavailable" };
   },
 };

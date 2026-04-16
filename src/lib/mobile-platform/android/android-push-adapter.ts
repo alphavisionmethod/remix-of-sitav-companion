@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Android Push Adapter (FCM)
-// FCM is roadmap until service-account credentials are provisioned.
+// Bridges to Capacitor PushNotifications when present. FCM is
+// roadmap until the service-account credentials are provisioned.
 // ═══════════════════════════════════════════════════════════════
 
 import type { PushPayload, PushDeliveryReceipt, PushRegistration } from "../contracts/push-contract";
 import { MOBILE_PLATFORM_FLAGS } from "../runtime/mobile-platform-flags";
+import { nativePush } from "../native/native-push";
 
 export interface AndroidPushAdapter {
   isEnabled(): boolean;
@@ -14,14 +16,19 @@ export interface AndroidPushAdapter {
 }
 
 export const androidPushAdapter: AndroidPushAdapter = {
-  isEnabled: () => !MOBILE_PLATFORM_FLAGS.fcmDisabled,
+  isEnabled: () => !MOBILE_PLATFORM_FLAGS.fcmDisabled && nativePush.isAvailable(),
+
   async register() {
     if (MOBILE_PLATFORM_FLAGS.fcmDisabled) return null;
-    return null;
+    if (!nativePush.isAvailable()) return null;
+    return nativePush.register();
   },
+
   async unregister() {
-    /* no-op until FCM is wired */
+    if (!nativePush.isAvailable()) return;
+    await nativePush.unregister();
   },
+
   async send(payload) {
     return {
       payloadId: payload.id,
