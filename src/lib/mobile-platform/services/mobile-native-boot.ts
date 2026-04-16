@@ -8,10 +8,26 @@
 import { nativeAppLifecycle } from "../native/native-app-lifecycle";
 import { resolveDeepLink } from "../navigation/mobile-deep-link-map";
 import { recordMobileDiagnostic } from "../analytics/mobile-diagnostics";
+import { envelopeMobileEvent } from "../analytics/mobile-analytics-partition";
 import { lifecycleAnalyticsEvent } from "../analytics/lifecycle-analytics";
+import { detectMobileRuntime } from "../runtime/mobile-runtime-detection";
 
 let booted = false;
 let cleanups: Array<() => void> = [];
+
+const SESSION_ID = `mobile-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+function diag(event: string, props: Record<string, unknown>) {
+  const probe = detectMobileRuntime();
+  recordMobileDiagnostic(
+    envelopeMobileEvent({
+      os: probe.os,
+      sessionId: SESSION_ID,
+      event,
+      properties: props,
+    }),
+  );
+}
 
 export async function bootMobileNative(opts: {
   onDeepLink?: (routePath: string) => void;
@@ -20,42 +36,37 @@ export async function bootMobileNative(opts: {
   booted = true;
 
   if (!nativeAppLifecycle.isAvailable()) {
-    recordMobileDiagnostic({
-      kind: "info",
-      area: "native-boot",
-      message: "Capacitor App plugin unavailable — running web fallback.",
-    });
+    diag("native-boot.skipped", { reason: "capacitor-unavailable" });
     return;
   }
 
+  const probe = detectMobileRuntime();
+
   const offState = await nativeAppLifecycle.subscribeStateChange((state) => {
-    lifecycleAnalyticsEvent({
-      phaseFrom: state.isActive ? "background" : "foreground",
-      phaseTo: state.isActive ? "foreground" : "background",
-      reason: "appStateChange",
-    });
+    recordMobileDiagnostic(
+      lifecycleAnalyticsEvent({
+        os: probe.os,
+        sessionId: SESSION_ID,
+        from: state.isActive ? "background" : "foreground",
+        to: state.isActive ? "foreground" : "background",
+        reason: "appStateChange",
+      }),
+    );
   });
   cleanups.push(offState);
 
   const offUrl = await nativeAppLifecycle.subscribeUrlOpen(({ url }) => {
     const res = resolveDeepLink(url);
     if (!res) {
-      recordMobileDiagnostic({
-        kind: "warn",
-        area: "deep-link",
-        message: `Unresolved deep-link: ${url}`,
-      });
+      diag("deep-link.unresolved", { url });
       return;
     }
+    diag("deep-link.resolved", { url, key: res.key, route: res.routePath });
     opts.onDeepLink?.(res.routePath);
   });
   cleanups.push(offUrl);
 
-  recordMobileDiagnostic({
-    kind: "info",
-    area: "native-boot",
-    message: "Mobile native bridge wired (Capacitor App).",
-  });
+  diag("native-boot.ready", { os: probe.os, host: probe.host });
 }
 
 export function isMobileNativeBooted() {
