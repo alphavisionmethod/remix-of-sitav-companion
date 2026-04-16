@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T23:05:13.741Z",
+  "generatedAt": "2026-04-16T23:05:40.645Z",
   "routeBindings": [
     {
       "kind": "route",
@@ -95,7 +95,7 @@
   "contextCount": 13,
   "stats": {
     "routesBound": 18,
-    "edgeFunctions": 73,
+    "edgeFunctions": 78,
     "services": 31,
     "tables": 40,
     "duplicates": 12
@@ -214,31 +214,6 @@
     {
       "kind": "edge-function",
       "identifier": "event-processor",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "file-ingestion",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "health-check",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "main",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "scheduler-dispatch",
-      "reason": "Function exists on disk but no bounded context claims it"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "support-gateway",
       "reason": "Function exists on disk but no bounded context claims it"
     }
   ],
