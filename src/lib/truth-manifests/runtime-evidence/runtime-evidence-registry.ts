@@ -26,6 +26,8 @@ import { collectKernelArchitectureEvidence } from "./collectors/kernel-architect
 import { collectUserspaceServicesEvidence } from "./collectors/userspace-services-collector";
 import { collectSyscallEvidence } from "./collectors/syscall-collector";
 import { collectRenderingPipelineEvidence } from "./collectors/rendering-pipeline-collector";
+import { collectRuntimeTierGovernanceEvidence } from "./collectors/runtime-tier-governance-collector";
+import { collectFeatureRuntimeTierEvidence } from "./collectors/feature-runtime-tier-collector";
 import { detectActiveRuntimeTier } from "@/lib/runtime/runtime-detection";
 
 /**
