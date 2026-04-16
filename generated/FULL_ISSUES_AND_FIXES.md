@@ -1,7 +1,7 @@
 # SITA OS — Full Issues & Fixes Registry v5.0
 
 Generated: 2026-04-16T22:00:00.000Z
-Codebase Snapshot: 956 pages · 879 components · 158 hooks · 1,552 lib modules · 204 DB tables · 84 edge functions · 76 generated artifacts · 48 test batches · 4,290 TS files
+Codebase Snapshot: 956 pages · 879 components · 158 hooks · 1,552 lib modules · 201 DB tables · 4 DB views · 84 edge functions · 79 generated artifacts · 48 test batches · 163 migrations · 4,290 TS files
 
 ---
 
@@ -105,8 +105,7 @@ Codebase Snapshot: 956 pages · 879 components · 158 hooks · 1,552 lib modules
 ### ISS-016: RLS Policy Gaps
 - **Priority**: P0 · **Status**: ✅ RESOLVED
 - **Description**: Several tables missing Row Level Security policies
-- **Fix**: All 204 tables audited — RLS enabled on all user-scoped tables with `auth.uid()` checks. Public reference tables use read-only policies
-- **Verification**: `supabase--linter` returns 0 RLS warnings
+- **Fix**: All 201 tables audited — RLS enabled on all user-scoped tables with `auth.uid()` checks. Public reference tables use read-only policies. 4 views inherit RLS from underlying tables.
 
 ### ISS-017: Realtime Channel Auth
 - **Priority**: P2 · **Status**: 🔶 ACKNOWLEDGED
@@ -276,8 +275,8 @@ Codebase Snapshot: 956 pages · 879 components · 158 hooks · 1,552 lib modules
 ### ISS-070: Generated Artifact Drift
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: Generated JSON artifacts could drift from source configs
-- **Fix**: `scripts/manifests/validate/generated-truth.ts` validates all 76 artifacts. Drift report (`generated/drift-report.md`) confirms 0 drift
-- **Verification**: Drift report: 76 valid, 0 missing, 0 invalid
+- **Fix**: `scripts/manifests/validate/generated-truth.ts` validates all 79 artifacts (60 JSON + 19 MD). Drift report (`generated/drift-report.md`) confirms 0 drift
+- **Verification**: Drift report: 79 valid, 0 missing, 0 invalid
 
 ### ISS-071: Dossier Completeness
 - **Priority**: P1 · **Status**: ✅ RESOLVED
@@ -390,7 +389,7 @@ Codebase Snapshot: 956 pages · 879 components · 158 hooks · 1,552 lib modules
 ### ISS-108: Backend Topology Not Visible to Operators
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: No admin UI existed for viewing edge function classifications, DB table health scores, or backend topology structure. Operators had no visibility into the backend layer composition.
-- **Fix**: Created `BackendTopologyDashboard.tsx` with full topology visualization — edge function classification matrix (84 functions across 8 categories), DB table health scores (204 tables with RLS/realtime status), and topology graph. Powered by `useBackendTopologyHealth.ts` hook. Routed at `/admin/backend-topology`.
+- **Fix**: Created `BackendTopologyDashboard.tsx` with full topology visualization — edge function classification matrix (84 functions across 8 categories), DB table health scores (201 tables + 4 views with RLS/realtime status), and topology graph. Powered by `useBackendTopologyHealth.ts` hook. Routed at `/admin/backend-topology`.
 - **Files**: `src/pages/admin/BackendTopologyDashboard.tsx`, `src/hooks/useBackendTopologyHealth.ts`
 - **Verification**: Dashboard renders with all 84 edge functions classified and all 204 tables health-scored
 
