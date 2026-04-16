@@ -123,6 +123,8 @@ export function usePushNotifications(): UsePushNotificationsReturn {
     permissionState,
     devices,
     isLoading,
+    tier,
+    unavailableReason,
     requestPermission,
     unregister,
     refresh,
