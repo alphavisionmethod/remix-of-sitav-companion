@@ -1,52 +1,106 @@
 
 
-## Phase 12.1 — Close Real Mobile Deployability Gaps
+## Phase 13 — Web Deployability Closure
 
-I re-audited the iOS + Android checklists against disk truth. The Phase 12 registries, services, contracts, adapters, build scripts, CI gate, admin dashboard, and DB migration are all **in place and honest**. But two real gaps would break an actual mobile build today:
+I audited all 13 items of the Web Deployability Checklist against disk truth. **11 are green, 2 have real problems, and there is no enforceable web-readiness registry / CI gate** parallel to what iOS and Android have.
 
 ### What's already green ✅
-| Area | Evidence |
+| Item | Evidence |
 |---|---|
-| iOS readiness registry | 18/18 items, 16 ready + 2 honestly deferred (APNs, signing) |
-| Android readiness registry | 18/18 items, 17 ready + 1 honestly deferred (FCM) |
-| iOS adapters | 8 files in `src/lib/mobile-platform/ios/` |
-| Android adapters | 8 files in `src/lib/mobile-platform/android/` |
-| Contracts | 13 contract files (permission, biometric, push, deep-link, lifecycle, sync, etc.) |
-| Push token lifecycle | Service + `mobile_push_tokens` table with RLS |
-| Notification-open router | Wired to deep-link map + auth/biometric guards |
-| Min-OS contract | iOS 16.0 / Android API 26 enforced |
-| CI gate | `check-mobile-store-readiness.ts` registered as Phase 12 (22/22 green) |
-| Admin dashboard | `/admin/mobile/store-readiness` rendering both 18-item lists |
-| Build scripts | `build-ios.sh` + `build-android.sh` with signing-env validation |
+| Production build | `vite.config.ts` with chunked vendor splits, `health.json` plugin, `dist/` output |
+| Auth/session in prod | `ProtectedRoute`, `onAuthStateChange` wiring confirmed |
+| Push on web (where supported) | `public/sw-push.js` + VAPID lifecycle service |
+| File handling browser-safe | `web-fallbacks.ts` declares user-mediated picker only |
+| Native gating | `WEB_RUNTIME_CONTRACT` honestly lists prohibited/simulation-only capabilities |
+| SPA deep-link routing | `BrowserRouter`, nginx `try_files $uri $uri/ /index.html` |
+| SEO/public assets | `robots.txt`, `sitemap.xml`, OG tags, canonical, manifest icons present |
+| CSP/security headers | Defined in `index.html` meta + `nginx/default.conf` + `deploy/nginx.conf` |
+| Error boundaries | `GlobalErrorBoundary` + `RouteErrorBoundary` both wired in `App.tsx`, plus `WindowErrorBoundary` for sub-windows |
+| Error monitoring | `initErrorMonitoring()` called from `App.tsx` |
+| Browser sandbox honesty | `web-runtime-contract.ts` declares simulation-only capabilities |
 
-### Real gaps blocking an actual native build ❌
+### Real problems found ❌
 
-**Gap A — Capacitor packages not installed (`package.json` has 0 `@capacitor/*` deps).**
-`capacitor.config.ts` imports `@capacitor/cli` types that don't resolve. Services (`native-push.ts`, `native-secure-storage.ts`) reference plugins that aren't in `node_modules`. `npx cap sync` would fail immediately.
+**Gap A — Service worker registers in Lovable preview iframe → cache pollution.**
+`src/main.tsx` calls `navigator.serviceWorker.register('/sw.js')` unconditionally. There is no iframe / preview-host guard, which directly violates the documented PWA constraint. SW caching `STATIC_ASSETS` inside the editor preview will serve stale builds and mask code changes.
 
-**Gap B — `scripts/release/ios/exportOptions.plist` referenced but missing.**
-`build-ios.sh` calls `xcodebuild -exportArchive -exportOptionsPlist scripts/release/ios/exportOptions.plist` — that file doesn't exist. The IPA export step would fail with "exportOptionsPlist not found."
+**Gap B — `sw-push.js` references `/pwa-192x192.png` and `/pwa-64x64.png` that don't exist** (icons are at `/icons/icon-192.png`). Push notification badges will 404 in production.
 
-### Phase 12.1 — Plan (~4 files, ~120 LOC)
+**Gap C — Two CSP policies disagree.** `index.html` meta CSP allows `connect-src ... https://fctupowhcljejygjfpty.supabase.co` (correct project) but `nginx/default.conf` allows `https://*.supabase.co` (wildcard, weaker) and **omits the project domain entirely** for some asset paths. Need to align the nginx CSP with the meta CSP and fix the project ref.
 
-**1. Install Capacitor dependencies**
-Add to `package.json`: `@capacitor/core`, `@capacitor/cli` (dev), `@capacitor/ios`, `@capacitor/android`, `@capacitor/push-notifications`, `@capacitor/app`, `@capacitor/preferences`, `@capacitor/device`, `@capacitor/network`. After install, `capacitor.config.ts` resolves cleanly and `npx cap sync` works post-export.
+**Gap D — No enforceable web-readiness registry / CI gate.** iOS and Android each have an 18-item registry + CI gate (`check-mobile-store-readiness`). Web has only the 5-stage `deployability-report.json` (build/sign/distribute/observe/rollback) which doesn't map to the 13-item checklist. Nothing fails CI if, e.g., the SW iframe guard regresses.
 
-**2. Create `scripts/release/ios/exportOptions.plist`**
-App Store distribution plist with `method=app-store`, `signingStyle=manual`, `teamID=$(IOS_TEAM_ID)` placeholder, `compileBitcode=false`, `uploadSymbols=true`. Standard Apple-compliant template.
+**Gap E — `sitemap.xml` and `robots.txt` use the placeholder domain `https://app.sita.os/`** — must either be parameterized or documented as "update before production." Currently they ship to prod with the wrong host.
 
-**3. Add a build-pipeline contract guard (`scripts/architecture/checks/check-mobile-build-pipeline.ts`)**
-New micro-gate that asserts: (a) Capacitor packages are present in `package.json`, (b) `exportOptions.plist` exists, (c) both build scripts exist and are executable, (d) `capacitor.config.ts` parses. Wires into the umbrella as the **23rd CI gate** under `phase-12-mobile-deployability`.
+**Gap F — `docs/refactor/env-schemas.md` is marked "aspirational future monorepo target."** No current single source documents the **actual** env vars needed for the live web deployment (only `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`).
 
-**4. Update generated artifacts**
-Regenerate `mobile-store-readiness-report.json`, `ci-umbrella-manifest.json` (gateCount: 23), and `production-truth-final.json` to reflect closure.
+---
 
-### Acceptance
+### Phase 13 — Plan (~9 files, ~450 LOC)
 
-- `npm install` resolves all `@capacitor/*` packages.
-- `xcodebuild -exportArchive` finds `exportOptions.plist`.
-- New `check-mobile-build-pipeline` gate passes.
-- CI Umbrella reports **23/23 green** with iOS/Android still honestly deferring only on Apple-membership and Firebase-provisioning gates.
+**13.1 — Fix SW registration guard (`src/main.tsx`)**
+Add iframe + preview-host check exactly as the PWA constraint requires. In preview/iframe contexts: unregister any existing SW. Only register `/sw.js` when on real production host.
 
-After this micro-phase, the iOS + Android checklists are not just registered as "ready" — the actual `npx cap sync` → `xcodebuild` → IPA / `gradle bundleRelease` → AAB pipelines will execute end-to-end once the user runs `npm install` post-export.
+**13.2 — Fix push icon paths (`public/sw-push.js`)**
+Replace `/pwa-192x192.png` → `/icons/icon-192.png` and `/pwa-64x64.png` → `/icons/icon-192.png` (only one size shipped). Verify against `public/icons/`.
+
+**13.3 — Align CSP across surfaces (`nginx/default.conf`, `deploy/nginx.conf`)**
+Replace wildcard `https://*.supabase.co` with the project-specific origin `https://fctupowhcljejygjfpty.supabase.co` and matching `wss://`. Add `https://ai.gateway.lovable.dev`. Add `font-src https://fonts.gstatic.com` and `style-src https://fonts.googleapis.com` to match index.html meta.
+
+**13.4 — Web Store / Web Deployability Readiness Registry**
+Create `src/lib/web-platform/release/web-deployability-readiness.ts` — a typed 13-item registry, one entry per checklist item, each `{ id, title, status: ready|partial|deferred|missing, evidence, blocker?, remediation? }`. Mirrors the iOS/Android pattern.
+
+Plus `src/lib/web-platform/release/index.ts` barrel and `src/lib/web-platform/release/web-runtime-min-contract.ts` (minimum supported browser baseline: Chrome 109, Safari 16, Firefox 115, Edge 109).
+
+**13.5 — CI gate `check-web-deployability.ts`**
+Fails if any item is `missing`. Fails if `partial` items lack remediation. Asserts:
+- `src/main.tsx` contains the iframe guard (regex check)
+- `public/sw-push.js` does not reference non-existent `/pwa-*.png` paths
+- `nginx/default.conf` CSP matches project Supabase origin
+- `public/manifest.webmanifest`, `robots.txt`, `sitemap.xml` exist
+
+Registers as the **24th CI gate** under new phase `phase-13-web-deployability` in `ci-gate-registry.ts` and `ci-gate-types.ts`.
+
+**13.6 — Admin dashboard `WEB01DeployabilityCenter.tsx`**
+Route `/admin/web/deployability`. Renders all 13 items green/amber/red with evidence links, mirroring `MOB01StoreReadinessCenter.tsx`.
+
+**13.7 — Sitemap/robots: parameterize domain**
+Add a build-time note (`<!-- DO NOT SHIP unless WEB_PUBLIC_HOST is set -->`) and a `scripts/release/web/rewrite-public-host.ts` that swaps `https://app.sita.os/` → real host from env var on build. Surfaced as a `partial` checklist item until env is set.
+
+**13.8 — Document real env vars**
+Create `docs/web/env-vars.md` listing the **actual** live web vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`, optional `VITE_PUBLIC_HOST`, `VITE_VAPID_PUBLIC_KEY`. Drops the "aspirational future monorepo" framing.
+
+**13.9 — Update aggregators**
+Regenerate `ci-umbrella-manifest.json` (gateCount: 24, +`phase-13-web-deployability`), `production-truth-final.json`, `META04ProductReality` tile. Generate `generated/web-deployability-report.json`.
+
+### Acceptance criteria
+- Service worker no longer registers in `id-preview--*.lovable.app` or any iframe.
+- `sw-push.js` icon paths resolve (no 404s in production push notifications).
+- Both `nginx/*.conf` files have CSP that matches `index.html` and the real Supabase project origin.
+- `web-deployability-report.json` shows 0 `missing`, only `partial` for items requiring real production host configuration.
+- `check-web-deployability` gate passes; CI Umbrella reads **24/24 green**.
+- `/admin/web/deployability` renders all 13 items live.
+- `META04ProductReality` shows 24-gate verdict.
+
+### Files
+| File | Role |
+|---|---|
+| `src/main.tsx` | Add iframe/preview SW guard |
+| `public/sw-push.js` | Fix icon paths |
+| `nginx/default.conf` | Align CSP |
+| `deploy/nginx.conf` | Align CSP |
+| `src/lib/web-platform/release/web-deployability-readiness.ts` | 13-item registry |
+| `src/lib/web-platform/release/web-runtime-min-contract.ts` | Min browser contract |
+| `src/lib/web-platform/release/index.ts` | Barrel |
+| `scripts/architecture/checks/check-web-deployability.ts` | CI gate 24 |
+| `scripts/release/web/rewrite-public-host.ts` | Sitemap/robots host rewriter |
+| `src/pages/admin/WEB01DeployabilityCenter.tsx` | Admin surface |
+| `src/lib/ci/ci-gate-registry.ts` + `ci-gate-types.ts` | +Phase 13 |
+| `src/routes/AdminRoutes.tsx` | Route wiring |
+| `generated/web-deployability-report.json` | Disk report |
+| `generated/ci-umbrella-manifest.json` | gateCount: 24 |
+| `generated/production-truth-final.json` | +phase-13 |
+| `docs/web/env-vars.md` | Real env documentation |
+
+After this, the Web Deployability Checklist is enforceable in CI — service worker behavior is correct in both preview and prod, CSP is consistent across hosts, push icons resolve, and a single dashboard tile reads `WEB: ready` against disk truth.
 
