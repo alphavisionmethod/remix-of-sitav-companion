@@ -14,3 +14,11 @@ export * from "./infra-runtime-classification-map";
 export * from "./infra-implementation-coverage-map";
 export * from "./runtime-message-registry";
 export * from "./service-lifecycle-registry";
+
+// ── 4-Tier Runtime Truth Model ──────────────────────────────
+export * from "./runtime-tier-model";
+export * from "./runtime-detection";
+export * from "./runtime-context";
+export * from "./feature-runtime-tier-registry";
+export * from "./launch-honesty-rules";
+export * from "./portability-rules";

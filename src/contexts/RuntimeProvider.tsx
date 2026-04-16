@@ -7,6 +7,7 @@ import { type ReactNode } from "react";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
 import { SitaOSProvider } from "@/contexts/SitaOSContext";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
+import { RuntimeTierProvider } from "@/lib/runtime/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
 
 /** Boots the orchestration pipeline inside the provider tree */
@@ -16,25 +17,29 @@ function PipelineBootstrap({ children }: { children: ReactNode }) {
 }
 
 /**
- * RuntimeProvider — single provider that boots all three runtime layers:
- * 1. SitaKernel (core services: trust, memory, receipts, workflows)
- * 2. SitaOS (15 orchestration services: attention, intent, continuity…)
- * 3. NovaSDK (app runtime: registry, bridge, events, filesystem)
- * 4. PipelineBootstrap (orchestration pipeline: signals → advisors → boards → boardroom)
+ * RuntimeProvider — single provider that boots all runtime layers:
+ * 1. RuntimeTierProvider (4-Tier runtime truth: web/desktop/appliance/simulated)
+ * 2. SitaKernel (core services: trust, memory, receipts, workflows)
+ * 3. SitaOS (15 orchestration services: attention, intent, continuity…)
+ * 4. NovaSDK (app runtime: registry, bridge, events, filesystem)
+ * 5. PipelineBootstrap (orchestration pipeline: signals → advisors → boards → boardroom)
  *
- * Order matters: Kernel → OS → SDK → Pipeline
+ * Order matters: TierProvider → Kernel → OS → SDK → Pipeline
+ * The TierProvider is the outermost so any inner layer can read the active tier.
  */
 export function RuntimeProvider({ children }: { children: ReactNode }) {
   return (
-    <SitaKernelProvider>
-      <SitaOSProvider>
-        <NovaSDKProvider>
-          <PipelineBootstrap>
-            {children}
-          </PipelineBootstrap>
-        </NovaSDKProvider>
-      </SitaOSProvider>
-    </SitaKernelProvider>
+    <RuntimeTierProvider>
+      <SitaKernelProvider>
+        <SitaOSProvider>
+          <NovaSDKProvider>
+            <PipelineBootstrap>
+              {children}
+            </PipelineBootstrap>
+          </NovaSDKProvider>
+        </SitaOSProvider>
+      </SitaKernelProvider>
+    </RuntimeTierProvider>
   );
 }
 
