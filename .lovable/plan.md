@@ -1,79 +1,72 @@
 
 
-# Database Architecture Truth — Phased Plan
+## DB Architecture Truth — Audit Verdict
 
-## Reality Check
-The DB truth layer is ~40% built. `src/lib/db/` (11 files), `supabase/{schema,policies,seed,docs}/`, 9 DB checks, 4 generators, and a `BackendTopologyDashboard` already exist. Major gaps:
+**Status: ~25% complete. Only Phase 1 done. Phases 2–6 are stubs or missing.**
 
-| Gap | Current | Target |
-|---|---|---|
-| `schema-registry.ts` | 80 tables hand-coded | All 201 live tables, auto-regenerated |
-| `migration-registry.ts` | 7 sample entries | All 163 migrations classified |
-| `rls-policy-registry.ts` | 13 explicit | All 201 with pattern verdict |
-| Architecture docs | 0/5 of the required DB docs | 5 canonical docs |
-| Admin DB surfaces | 1 page (topology) | 5 dedicated views |
-| Persistence-critical domain audit | partial | full inventory + gap report |
-| CI validators | 9 checks, mostly count-only | 9 hardened + 4 new |
-| Per-domain `supabase/schema/*.sql` files | only READMEs | bounded-context split (synthesized from migrations) |
+### What IS in place ✅
+| Item | Status |
+|---|---|
+| `src/lib/db/schema-registry.ts` | ✅ all 201 tables (Phase 1 done) |
+| `src/lib/db/` 11 truth files exist | ✅ files present |
+| `supabase/{schema,policies,seed}/` directories | ✅ exist (README only) |
+| Generators: schema, migration, RLS, ownership | ✅ scripts exist |
+| `BackendTopologyDashboard` admin page | ✅ exists |
 
-## Final 6 Phases (each independently deployable)
+### What is NOT done ❌
+| Phase | Gap |
+|---|---|
+| **Phase 2 — Migration Truth** | `migration-registry.ts` has only **7 sample entries** vs 163 migrations. Generator exists but registry not regenerated. `MIGRATION_POLICY_AND_ROLLOUTS.md` missing. |
+| **Phase 3 — RLS & Tenancy Truth** | `rls-policy-registry.ts` has only **13 hand-coded entries** vs 201 tables. `check-rls-coverage.ts` is a print-only stub (no enforcement). `TENANCY_AND_RLS_MODEL.md` missing. |
+| **Phase 4 — Persistence Audit** | `generate-persistence-audit.ts` MISSING. `check-persistence-coverage.ts` MISSING. `PERSISTENCE_AND_RECOVERY_MODEL.md` missing. |
+| **Phase 5 — Admin DB Surfaces** | All 5 pages MISSING (SchemaRegistryExplorer, RlsCoverageDashboard, MigrationTimelineViewer, TenancyAndOwnershipExplorer, DbDriftRadar). `db-truth-introspect` edge function MISSING. |
+| **Phase 6 — Docs, CI, Tests** | 5 of 6 required docs MISSING. 0 of 4 vitest suites in `src/__tests__/db/`. Per-domain `supabase/schema/*.sql` files MISSING (only README). |
 
-### Phase 1 — Live Schema Truth Regeneration
-- Rewrite `scripts/db/generate/generate-schema-registry.ts` to read directly from `pg_tables` + `information_schema.columns` (via the Supabase tool plumbing) instead of hand-curated lists.
-- Regenerate `src/lib/db/schema-registry.ts` to cover all **201 tables** with: `domain`, `hasRls`, `tenancyColumn`, `schemaClass` (`write` / `read` / `log` / `config` / `system`), `sensitiveData` flag, `runtimeConsequence` ref.
-- Harden `check-schema-registry.ts`: fails when on-disk migrations contain `CREATE TABLE` statements absent from registry, or when registry contains phantom tables.
-- **Deployable**: pure metadata, zero runtime change.
+## Plan to Reach 100% (Steps A–E)
 
-### Phase 2 — Migration Truth Registry
-- Rewrite `generate-migration-registry.ts` to scan all 163 SQL files: detect category (`table-creation` / `rls-policy` / `function-trigger` / `index` / `enum` / `view` / `data` / `alter`), affected tables, destructive ops, owner from header comments.
-- Replace `migration-registry.ts` with the full 163-entry registry plus per-migration: `boundedContext`, `rollbackRisk`, `releaseConsequence`, `dataSensitivity`, `tenancyImpact`.
-- Harden `check-migration-ownership.ts`: fail when any migration lacks header comment + bounded context tag.
-- Add `MIGRATION_POLICY_AND_ROLLOUTS.md` defining naming, ownership comment template, and rollback policy.
+### Step A — Close Phase 2 (Migration Truth)
+- Run `generate-migration-registry.ts` against all 163 SQL files, classify each by category (`table-creation`/`rls-policy`/`function-trigger`/`index`/`enum`/`view`/`data`/`alter`), extract affected tables, detect destructive ops.
+- Regenerate `migration-registry.ts` to full 163 entries with `boundedContext`, `rollbackRisk`, `releaseConsequence`, `dataSensitivity`, `tenancyImpact`.
+- Harden `check-migration-ownership.ts` to fail on missing header/owner.
+- Write `docs/architecture/MIGRATION_POLICY_AND_ROLLOUTS.md`.
 
-### Phase 3 — RLS & Tenancy Truth
-- Regenerate `rls-policy-registry.ts` to cover all 201 tables by querying `pg_policies`, classifying each into one of the 12 existing `RlsPattern` values.
-- Expand `tenancy-boundary-map.ts` to declare for every tenant-scoped table: `tenantKey`, `adminException`, `serviceRoleException`, `crossTenantPolicy`.
-- Harden `check-rls-coverage.ts` and `check-rls-policy-registry.ts`: fail on any table whose live `pg_policies` count differs from registry expectation, or any `tenancyColumn` table without a registered policy of the right pattern.
-- Add `TENANCY_AND_RLS_MODEL.md` documenting the 12 patterns, the security definer function model (`has_role`, `is_org_member`, `is_tenant_member`, `has_admin_permission`), and the admin-exception path.
+### Step B — Close Phase 3 (RLS & Tenancy Truth)
+- Regenerate `rls-policy-registry.ts` from live `pg_policies` covering all 201 tables, classified into the 12 `RlsPattern` values.
+- Expand `tenancy-boundary-map.ts` with `tenantKey`, `adminException`, `serviceRoleException`, `crossTenantPolicy` per table.
+- Replace stub `check-rls-coverage.ts` with real drift check vs live `pg_policies`.
+- Write `docs/architecture/TENANCY_AND_RLS_MODEL.md`.
 
-### Phase 4 — Persistence-Critical Domain Audit & Gap Closure
-- Generator script `generate-persistence-audit.ts` cross-references the 9 domains in section 7 of the prompt against `schema-registry.ts` and produces `generated/persistence-audit.json` listing presence/absence of: setup checkpoints, environment/device registry, prompt versions, model-routing config, feature flags, OAuth-token refresh state, workflow-runtime state, memory persistence, action/proof/reversal trail.
-- For each genuine gap (after audit shows what's truly missing — most of these likely already exist with different names), emit a SQL migration template under `supabase/migrations/` plus `app_role`-aware RLS scaffold; otherwise update registry mappings.
-- New script `check-persistence-coverage.ts` blocks deployment when any persistence-critical domain has 0 backing tables.
-- Add `PERSISTENCE_AND_RECOVERY_MODEL.md`.
+### Step C — Close Phase 4 (Persistence-Critical Domain Audit)
+- Create `scripts/db/generate/generate-persistence-audit.ts` cross-referencing the 9 persistence domains (setup checkpoints, devices, prompts, model config, feature flags, OAuth tokens, workflow runtime, memory, action/proof/reversal trail) against schema-registry.
+- Emit `generated/persistence-audit.json`.
+- Create `scripts/db/checks/check-persistence-coverage.ts` to fail when any persistence domain has 0 backing tables.
+- Write `docs/architecture/PERSISTENCE_AND_RECOVERY_MODEL.md`.
 
-### Phase 5 — Admin DB Visibility Surfaces
-Five new admin pages wired into the existing 12-domain Admin Control Plane (under the **Health** and **Config** domains, not new top-level entries):
-1. `SchemaRegistryExplorer` — searchable 201-table grid: domain, RLS, tenancy column, owner, sensitive flag, dependency edges.
-2. `RlsCoverageDashboard` — live `pg_policies` vs registry diff, drift list, pattern coverage chart.
-3. `MigrationTimelineViewer` — 163-row timeline with category, rollback risk, bounded context, applied date.
-4. `TenancyAndOwnershipExplorer` — tenant-key inspector + ownership matrix.
-5. `DbDriftRadar` — live drift summary (schema vs registry, RLS vs registry, missing-from-migration tables).
+### Step D — Close Phase 5 (Admin DB Visibility)
+- Create read-only `db-truth-introspect` edge function (DOMAIN_FUNCTION, admin-bff caller only) running whitelisted queries against `pg_tables`/`pg_policies`/`information_schema`.
+- Build 5 admin pages, registered under existing **Health** and **Config** Admin Control Plane domains (no new top-level entries):
+  1. `SchemaRegistryExplorer` (Health)
+  2. `RlsCoverageDashboard` (Trust-Security)
+  3. `MigrationTimelineViewer` (Releases)
+  4. `TenancyAndOwnershipExplorer` (Trust-Security)
+  5. `DbDriftRadar` (Health)
 
-All five use a new read-only edge function `db-truth-introspect` (DOMAIN_FUNCTION, admin-bff caller only) that runs whitelisted introspection queries against `pg_tables`/`pg_policies`/`information_schema`.
+### Step E — Close Phase 6 (Docs, CI, Tests, Per-Domain SQL)
+- Write 3 remaining docs: `DATABASE_ARCHITECTURE.md`, `SCHEMA_TRUTH_REGISTRY.md`, `DB_OWNERSHIP_MATRIX.md`.
+- Synthesize per-domain `supabase/schema/{auth,boardroom,business,finance,concierge,integrations,approvals,proofs,workflows,memory,setup,devices,policies,admin-config,telemetry}.sql` from existing migrations (read-only artifacts).
+- Add 4 vitest suites under `src/__tests__/db/`: schema-registry-completeness, rls-pattern-integrity, migration-ownership-integrity, persistence-domain-coverage.
+- Wire all DB checks into `scripts/manifests/validate-all.ts` aggregator and Manifest Truth Framework's `manifest-schema-registry`.
 
-### Phase 6 — Docs, CI Wiring, Final Hardening
-- Write the 3 remaining docs: `DATABASE_ARCHITECTURE.md`, `SCHEMA_TRUTH_REGISTRY.md`, `DB_OWNERSHIP_MATRIX.md`.
-- Wire all DB checks into `scripts/validate-all.ts` aggregator (already partially wired) and Manifest Truth Framework's `manifest-schema-registry` authoritative entry.
-- Synthesize per-domain `supabase/schema/{auth,boardroom,business,finance,...}.sql` files from existing migrations for human readability (read-only artifacts; migrations remain source of truth).
-- 4 new vitest suites: schema-registry completeness, RLS-pattern integrity, migration-ownership integrity, persistence-domain coverage.
-- Final pass: `tsc --noEmit` clean, all DB checks green, all 5 new admin pages route-tested, app boots.
-
-## Deliverables
-- 201-table schema registry, 163-migration registry, 201-table RLS registry — all auto-generated and CI-enforced
-- 5 architecture docs + 1 migration policy doc
-- 5 admin DB visibility pages + 1 read-only introspection edge function
-- 4 hardened CI checks + 4 new vitest suites
-- Per-domain `supabase/schema/*.sql` files synthesized from migrations
-- Persistence-critical domain audit with gap-closure migrations where needed
+## Order of Execution
+A → B → C → D → E. Each step independently deployable. Total ~75% of original plan remaining.
 
 ## Non-Negotiable Rules
-- Source of truth is migrations + live `pg_*`; registries are derived artifacts
-- Every change preserves Manifest Truth Framework + Backend Topology Hardening + Admin Control Plane consolidation
-- No hand-curated drift — generators replace stale data, never add to it
-- Each phase ends with: `tsc --noEmit` clean, all governance checks green, app boots, no regressions
-- New admin pages register in the existing 12-domain IA, never as top-level navigation entries
+- Source of truth = migrations + live `pg_*`; registries are derived.
+- Generators replace stale data, never append.
+- Admin pages register under existing 12-domain IA, never as top-level navigation.
+- Each step: `tsc --noEmit` clean, all checks green, app boots.
+- Manifest Truth Framework + Backend Topology Hardening + Admin Control Plane consolidation remain intact.
 
 ## Starting Point
-Phase 1 — Live Schema Truth Regeneration — in the next message after approval.
+Step A (Phase 2 — Migration Truth Registry) — full 163-entry regeneration — in the next message after approval.
 
