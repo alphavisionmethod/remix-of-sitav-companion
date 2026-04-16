@@ -235,6 +235,16 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     severity: "blocker",
     description: "iOS ≥ 16.0 and Android API ≥ 26 enforced via min-os-version-contract.",
   },
+  {
+    id: "mobile-build-pipeline",
+    phase: "phase-12-mobile-deployability",
+    title: "Mobile build pipeline (Capacitor + IPA + AAB)",
+    script: "scripts/architecture/checks/check-mobile-build-pipeline.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "Capacitor deps installed, capacitor.config.ts parses, exportOptions.plist exists, build scripts present.",
+    producesArtifact: "generated/mobile-build-pipeline-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {

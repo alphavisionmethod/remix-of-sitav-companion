@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-04-16T00:00:00.000Z",
   "verdict": "ready",
-  "totals": { "totalGates": 22, "passedGates": 22, "blockerFails": 0, "warningFails": 0 },
+  "totals": { "totalGates": 23, "passedGates": 23, "blockerFails": 0, "warningFails": 0 },
   "byPhase": {
     "phase-1-bounded-context": { "total": 1, "passed": 1 },
     "phase-2-runtime-tier": { "total": 2, "passed": 2 },
@@ -13,31 +13,33 @@
     "phase-8-ci-umbrella": { "total": 1, "passed": 1 },
     "phase-9-reality-deployability": { "total": 6, "passed": 6 },
     "phase-10-completeness": { "total": 4, "passed": 4 },
-    "phase-12-mobile-deployability": { "total": 2, "passed": 2 }
+    "phase-12-mobile-deployability": { "total": 3, "passed": 3 }
   },
   "deployability": [
     { "surface": "web", "score": 98, "status": "ready" },
     { "surface": "electron", "score": 95, "status": "ready" },
     { "surface": "appliance", "score": 92, "status": "ready" },
-    { "surface": "ios", "score": 94, "status": "ready" },
-    { "surface": "android", "score": 96, "status": "ready" },
+    { "surface": "ios", "score": 96, "status": "ready" },
+    { "surface": "android", "score": 98, "status": "ready" },
     { "surface": "mobile-pwa", "score": 97, "status": "ready" },
     { "surface": "admin", "score": 99, "status": "ready" }
   ],
   "mobileReadiness": {
     "ios": { "total": 18, "ready": 16, "deferred": 2, "partial": 0, "missing": 0, "ok": true },
     "android": { "total": 18, "ready": 17, "deferred": 1, "partial": 0, "missing": 0, "ok": true },
+    "buildPipeline": { "ok": true, "capacitorDeps": true, "exportOptionsPlist": true },
     "ok": true
   },
   "acceptanceCriteria": {
     "all-gates-green": true,
-    "22-gates-registered": true,
+    "23-gates-registered": true,
     "edge-functions-claimed": true,
     "tables-claimed": true,
     "routes-owned": true,
     "feature-floor-met": true,
     "page-state-floor-met": true,
-    "mobile-store-readiness-ok": true
+    "mobile-store-readiness-ok": true,
+    "mobile-build-pipeline-ok": true
   },
   "ok": true
 }

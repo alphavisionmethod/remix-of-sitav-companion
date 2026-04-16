@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-04-16T00:00:00.000Z",
-  "gateCount": 22,
+  "gateCount": 23,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -12,9 +12,9 @@
     "phase-8-ci-umbrella": 1,
     "phase-9-reality-deployability": 6,
     "phase-10-completeness": 4,
-    "phase-12-mobile-deployability": 2
+    "phase-12-mobile-deployability": 3
   },
-  "blockerCount": 22,
+  "blockerCount": 23,
   "warningCount": 0,
   "ok": true,
   "integrity": { "ok": true, "errorCount": 0, "warningCount": 0 }
