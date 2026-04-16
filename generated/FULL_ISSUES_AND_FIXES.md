@@ -32,8 +32,8 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 ### ISS-002: App Store Not Windowed
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: App Store renders as traditional page routes (`/app-store/*`) instead of windowed app
-- **Fix**: Created `AppStoreShell.tsx` with 17 internal modules, redirect shim, nav context. Backend wired via `app-store-api` edge function.
-- **Files**: `AppStoreShell.tsx`, `AppStoreCenter.tsx`, `AppStoreNavigationContext.tsx`
+- **Fix**: Created `AppStoreShell.tsx` with 17 internal modules, redirect shim, internal `activeModule` state navigation. Backend wired via `app-store-api` edge function.
+- **Files**: `AppStoreShell.tsx`, `AppStoreCenter.tsx`
 - **Verification**: App Store launches as windowed app with internal navigation
 
 ### ISS-003: Domain Module Count Violation
