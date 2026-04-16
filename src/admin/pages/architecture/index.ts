@@ -35,3 +35,9 @@ export { default as GodTierRuntimeBoard } from "@/pages/admin/architecture/GodTi
 export { default as MCArchitectureDashboard } from "@/pages/admin/modules/MCArchitectureDashboard";
 export { default as MCArchitectureTests } from "@/pages/admin/modules/MCArchitectureTests";
 export { default as MCPlatformAdaptation } from "@/pages/admin/modules/MCPlatformAdaptation";
+
+// ── Deployment & Runtime Truth ──
+export { default as DeploymentUnitExplorer } from "@/pages/admin/DeploymentUnitExplorer";
+export { default as IngressTopologyViewer } from "@/pages/admin/IngressTopologyViewer";
+export { default as DesktopHostCapabilityExplorer } from "@/pages/admin/DesktopHostCapabilityExplorer";
+export { default as RuntimeTruthCoverageDashboard } from "@/pages/admin/RuntimeTruthCoverageDashboard";
