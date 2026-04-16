@@ -1910,9 +1910,9 @@
 | `src/lib/mock-data/` (27 files) + `src/lib/demo-data/` (31 files) overlap | DUPLICATE | Merge into single demo layer |
 | `src/lib/engine/` (3 files) vs `src/lib/engines/` (60 files) | AMBIGUOUS | Merge or clarify |
 | `src/lib/ai/` (16 files) vs `src/lib/ai-engineering/` (12 files) vs `src/lib/ai-gateway/` (1 file) | AMBIGUOUS | Clarify ownership boundaries |
-| Investment Office has no edge function | FRONTEND_WITHOUT_BACKEND | Add backend or mark frontend-only |
+| Investment Office has no edge function | ✅ RESOLVED | `investment-portfolio-api` deployed |
 | VMware/appliance deploy scripts never tested | DOCS_ONLY | Test or archive |
-| Some admin pages render without real data backing | AMBIGUOUS | Audit per-page |
+| Some admin pages render without real data backing | ✅ RESOLVED | Backend APIs wired |
 | Electron files not tested in CI | NOT_DEPLOYMENT_READY | Add Electron build workflow |
 
 ## 22. Verification Results
@@ -1920,7 +1920,7 @@
 | Check | Status |
 |-------|--------|
 | TypeScript compilation (`tsc --noEmit`) | ✅ PASS (0 errors) |
-| All edge functions have index.ts | ✅ PASS (74/74) |
+| All edge functions have index.ts | ✅ PASS (75/75) |
 | All route targets exist | ✅ PASS |
 | All barrel exports resolve | ✅ PASS |
 | Platform-law-registry paths canonical | ✅ PASS (all updated) |
@@ -1928,8 +1928,11 @@
 | No stale `scripts/validation/` refs | ✅ PASS (0 found) |
 | No stale root `scripts/generate-*` refs | ✅ PASS (0 found) |
 | All DB tables have RLS | ✅ PASS (323 policies) |
+| Error monitoring wired | ✅ PASS (GlobalErrorBoundary + App.tsx) |
+| Payment kill-switch deployed | ✅ PASS (admin auth + audit) |
+| Backend gap closure (6 APIs) | ✅ PASS (all deployed) |
 
 ---
 
-*End of Master Deployment Audit — SITA OS*
-*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 22 contexts, 14 routes, 74 edge functions, 879 components, 202 scripts, 58 generated artifacts, 202 DB tables, 30 features, 33 packages, 73 lib modules*
+*End of Master Deployment Audit v4.0 — SITA OS*
+*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 75 edge functions, 911 components, 225 scripts, 79 generated artifacts, 204 DB tables, 30 features, 33 packages, 1548 lib modules*
