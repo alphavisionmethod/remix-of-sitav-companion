@@ -2,7 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { reportFatalError } from "@/lib/services/error-monitoring-service";
+
 interface Props {
   children: ReactNode;
 }
@@ -26,9 +26,6 @@ export class GlobalErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
     console.error("[SITA ErrorBoundary]", error, errorInfo);
-    reportFatalError(error, errorInfo.componentStack ?? undefined, {
-      boundary: "GlobalErrorBoundary",
-    });
   }
 
   handleReload = () => window.location.reload();
