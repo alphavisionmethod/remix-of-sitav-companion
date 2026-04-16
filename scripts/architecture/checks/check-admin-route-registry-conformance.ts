@@ -43,6 +43,19 @@ const regRe = /path:\s*"(\/admin[^"]*)"/g;
 while ((m = regRe.exec(registrySrc)) !== null) {
   registryPaths.add(m[1]);
 }
+// Also include programmatically-constructed DOMAIN_HUB_PATHS values
+// (the canonical 12-domain hub entries are spread into the registry
+// at runtime via DOMAIN_HUB_ENTRIES, so they are invisible to regex).
+const hubBlockMatch = registrySrc.match(/DOMAIN_HUB_PATHS[^=]*=\s*\{([^}]+)\}/s);
+if (hubBlockMatch) {
+  const hubRe = /"(\/admin\/[a-z-]+)"/g;
+  let hm: RegExpExecArray | null;
+  while ((hm = hubRe.exec(hubBlockMatch[1])) !== null) {
+    registryPaths.add(hm[1]);
+  }
+}
+// /admin → /admin/overview redirect is canonical and intentional.
+registryPaths.add("/admin");
 
 console.log(`  🛤️  ${mountedPaths.size} mounted admin routes, ${registryPaths.size} in registry`);
 
