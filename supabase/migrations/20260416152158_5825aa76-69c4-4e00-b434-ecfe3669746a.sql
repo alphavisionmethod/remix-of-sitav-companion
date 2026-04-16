@@ -1,0 +1,1 @@
+ALTER TABLE public.licenses ADD COLUMN IF NOT EXISTS key_signature text DEFAULT null;

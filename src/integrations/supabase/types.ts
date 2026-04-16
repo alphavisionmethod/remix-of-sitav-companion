@@ -6969,6 +6969,7 @@ export type Database = {
           expires_at: string | null
           id: string
           issued_at: string
+          key_signature: string | null
           license_key: string
           max_devices: number
           product_tier: string
@@ -6981,6 +6982,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           issued_at?: string
+          key_signature?: string | null
           license_key: string
           max_devices?: number
           product_tier?: string
@@ -6993,6 +6995,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           issued_at?: string
+          key_signature?: string | null
           license_key?: string
           max_devices?: number
           product_tier?: string
