@@ -82,11 +82,16 @@ for (const comp of fsComponents) {
 // Manifest-only is the dangerous direction (claims routes that don't exist)
 const SAMPLE_LIMIT = 8;
 if (inManifestOnly > 0) {
+  // Heuristic: some "missing components" are lazy-loaded via dynamic
+  // imports we don't statically resolve. Error only when drift exceeds
+  // 10% of the manifest.
+  const ratio = inManifestOnly / Math.max(manifestComponents.size, 1);
+  const severity = ratio > 0.1 ? "error" : "warning";
   vc.add(
     MANIFEST_PATH,
     "manifest-claims-missing-component",
     `${inManifestOnly} route(s) in manifest reference components not found on disk. Sample: ${inManifestNotFs.slice(0, SAMPLE_LIMIT).join(", ")}`,
-    inManifestOnly > 20 ? "error" : "warning"
+    severity
   );
 }
 
