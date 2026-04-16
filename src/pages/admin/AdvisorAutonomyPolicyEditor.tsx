@@ -49,7 +49,7 @@ export default function AdvisorAutonomyPolicyEditor() {
   const isEmergencyStopped = policies.some(p => p.emergency_stop);
 
   return (
-    <AdminShell activePath="/admin/advisor-board/autonomy" contextScope="Autonomy Policy Editor">
+    <AdminShell contextScope="Autonomy Policy Editor">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>

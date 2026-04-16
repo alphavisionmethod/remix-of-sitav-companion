@@ -19,7 +19,7 @@ export default function AdvisorActionApprovalAdmin() {
   const failed = actions.filter(a => a.status === "failed");
 
   return (
-    <AdminShell activePath="/admin/advisor-board/actions" contextScope="Action & Approval Admin">
+    <AdminShell contextScope="Action & Approval Admin">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">

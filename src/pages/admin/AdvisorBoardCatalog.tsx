@@ -93,7 +93,7 @@ export default function AdvisorBoardCatalog() {
   }, []);
 
   return (
-    <AdminShell activePath="/admin/advisor-board/catalog" contextScope="Advisor Board Catalog">
+    <AdminShell contextScope="Advisor Board Catalog">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>

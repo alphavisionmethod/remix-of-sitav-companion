@@ -66,7 +66,7 @@ const priorityColor = (p: string) =>
 
 export default function FL03FlagshipPrioritization() {
   return (
-    <AdminShell activePath="/admin/flagship/prioritization" contextScope="FL03 — Flagship Prioritization">
+    <AdminShell contextScope="FL03 — Flagship Prioritization">
       <FLSubNav />
 
       <div className="space-y-6">

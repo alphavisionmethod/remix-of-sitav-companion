@@ -37,7 +37,7 @@ export default function AdvisorRecommendationMonitor() {
   );
 
   return (
-    <AdminShell activePath="/admin/advisor-board/recommendations" contextScope="Recommendation Monitor">
+    <AdminShell contextScope="Recommendation Monitor">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
