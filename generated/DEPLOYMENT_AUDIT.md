@@ -1921,7 +1921,7 @@
 | Check | Status |
 |-------|--------|
 | TypeScript compilation (`tsc --noEmit`) | ✅ PASS (0 errors) |
-| All edge functions have index.ts | ✅ PASS (75/75) |
+| All edge functions have index.ts | ✅ PASS (86/86) |
 | All route targets exist | ✅ PASS |
 | All barrel exports resolve | ✅ PASS |
 | Platform-law-registry paths canonical | ✅ PASS (all updated) |
@@ -1936,4 +1936,4 @@
 ---
 
 *End of Master Deployment Audit v4.0 — SITA OS*
-*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 86 edge functions, 911 components, 225 scripts, 79 generated artifacts, 204 DB tables, 30 features, 33 packages, 1548 lib modules*
+*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 86 edge functions, 897 components, 248 scripts, 94 generated artifacts, 201 DB tables + 4 views, 332 RLS policies, 7 SECURITY DEFINER funcs, 164 migrations, 30 features, 34 packages, 1665 lib modules — total 5274+ source files*
