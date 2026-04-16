@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T00:00:00Z",
+  "activeWrappers": [],
+  "policy": {
+    "maxLifetimeSprints": 2,
+    "requireDeprecatedTag": true,
+    "requireRemovalDate": true,
+    "trackingDocument": "generated/remediation/REMEDIATION_WRAPPER_MAP.md"
+  }
+}
