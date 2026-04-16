@@ -51,7 +51,7 @@ function ItemRow({ item }: { item: ReadinessItem }) {
         </div>
         <p className="text-xs text-muted-foreground mt-1 truncate">{item.evidence}</p>
         {item.remediation && (
-          <p className="text-xs text-amber-500/90 mt-1">↳ {item.remediation}</p>
+          <p className="text-xs text-muted-foreground mt-1 italic">↳ {item.remediation}</p>
         )}
       </div>
     </div>

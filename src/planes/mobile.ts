@@ -19,3 +19,8 @@ export { notificationRouter } from "@/lib/platform-plane/notification-router";
 
 // ── Mobile Platform Layer (Phase 1: contracts, runtime, adapters, sync, security) ──
 export * from "@/lib/mobile-platform";
+
+// ── Mobile Release / Store Readiness (Phase 12) ──
+export * from "@/lib/mobile-platform/release";
+export { pushTokenLifecycle } from "@/lib/mobile-platform/services/push-token-lifecycle";
+export { notificationOpenRouter } from "@/lib/mobile-platform/services/notification-open-router";

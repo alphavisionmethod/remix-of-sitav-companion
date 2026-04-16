@@ -168,6 +168,7 @@ const GraphIntelligencePage = lazy(() => import("@/pages/admin/GraphIntelligence
 const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPage"));
 const MobileParityDashboard = lazy(() => import("@/pages/admin/MobileParityDashboard"));
+const MOB01StoreReadinessCenter = lazy(() => import("@/pages/admin/MOB01StoreReadinessCenter"));
 
 // ── Phase 3: Canonical Domain Hubs ──
 const OverviewHome = lazy(() => import("@/pages/admin/overview/OverviewHome"));
@@ -360,5 +361,6 @@ export function getAdminRoutes() {
     <Route key="bt02" path="/admin/db-truth-explorer" element={gated("audit.view", <DbTruthExplorer />)} />,
     // ── Mobile Platform Truth ──
     <Route key="mob01" path="/admin/mobile-parity" element={gated("audit.view", <MobileParityDashboard />)} />,
+    <Route key="mob02" path="/admin/mobile/store-readiness" element={gated("audit.view", <MOB01StoreReadinessCenter />)} />,
   ];
 }
