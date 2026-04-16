@@ -20,3 +20,4 @@ export { EvidenceChain } from "./EvidenceChain";
 export { ScenarioFork } from "./ScenarioFork";
 export { DecisionSeal } from "./DecisionSeal";
 export { SentimentPulse } from "./SentimentPulse";
+export { AIConfidenceDisclosure } from "./AIConfidenceDisclosure";
