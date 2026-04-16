@@ -1,0 +1,61 @@
+{
+  "generated": "2026-04-16",
+  "version": "1.0.0",
+  "impact_sources": [
+    {
+      "change": "scripts moved into domain subdirectories",
+      "affected_categories": ["imports", "registries", "tests", "admin_pages", "docs"],
+      "affected_file_count": 105
+    }
+  ],
+  "dependency_graph": {
+    "scripts/architecture/lib/utils.ts": {
+      "type": "shared_utility",
+      "consumers": 77,
+      "consumer_domains": [
+        "architecture/checks",
+        "architecture/reports",
+        "contracts/checks",
+        "db/checks",
+        "db/migrations",
+        "deployment/checks",
+        "release/vmware",
+        "release/rings",
+        "release/checks",
+        "security/checks",
+        "manifests/validate",
+        "support/diagnostics",
+        "codemods"
+      ]
+    },
+    "src/lib/platform-law/platform-law-registry.ts": {
+      "type": "canonical_registry",
+      "references_updated": 11,
+      "depends_on": "script canonical paths"
+    },
+    "src/lib/truth-manifests/manifest-registry.ts": {
+      "type": "canonical_registry",
+      "references_updated": 8,
+      "depends_on": "script canonical paths"
+    },
+    "admin_pages": {
+      "type": "ui_consumers",
+      "files": [
+        "ITC08ArchitectureCompliance.tsx",
+        "ITC09RouteInventory.tsx",
+        "ITC12ValidationPipeline.tsx"
+      ],
+      "references_updated": 4
+    },
+    "docs": {
+      "type": "documentation",
+      "files": [
+        "LAYER_SEPARATION.md",
+        "VMWARE_DEPLOYMENT_AND_OPS.md",
+        "self-hosted-deployment.md",
+        "vmware-deployment.md"
+      ],
+      "references_updated": 6
+    }
+  }
+}

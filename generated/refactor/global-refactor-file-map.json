@@ -1,0 +1,74 @@
+{
+  "generated": "2026-04-16",
+  "version": "1.0.0",
+  "total_files_changed": 105,
+  "categories": {
+    "import_path_fixes": {
+      "count": 77,
+      "domains": {
+        "architecture/checks": 34,
+        "architecture/reports": 1,
+        "contracts/checks": 12,
+        "db/checks": 1,
+        "db/migrations": 1,
+        "deployment/checks": 3,
+        "release/vmware": 9,
+        "release/rings": 1,
+        "release/checks": 2,
+        "security/checks": 2,
+        "manifests/validate": 5,
+        "support/diagnostics": 1,
+        "codemods": 1
+      }
+    },
+    "special_fixes": {
+      "count": 1,
+      "files": ["scripts/architecture/checks/check-feature-governance.ts"]
+    },
+    "test_rewrites": {
+      "count": 2,
+      "files": [
+        "src/__tests__/scripts-validation.test.ts",
+        "src/test/scripts-validation.test.ts"
+      ]
+    },
+    "registry_updates": {
+      "count": 2,
+      "files": [
+        "src/lib/platform-law/platform-law-registry.ts",
+        "src/lib/truth-manifests/manifest-registry.ts"
+      ]
+    },
+    "admin_page_updates": {
+      "count": 3,
+      "files": [
+        "src/pages/admin/implementation-truth/ITC08ArchitectureCompliance.tsx",
+        "src/pages/admin/implementation-truth/ITC09RouteInventory.tsx",
+        "src/pages/admin/implementation-truth/ITC12ValidationPipeline.tsx"
+      ]
+    },
+    "doc_updates": {
+      "count": 4,
+      "files": [
+        "docs/architecture/LAYER_SEPARATION.md",
+        "docs/architecture/VMWARE_DEPLOYMENT_AND_OPS.md",
+        "docs/self-hosted-deployment.md",
+        "docs/vmware-deployment.md"
+      ]
+    },
+    "empty_dir_readmes": {
+      "count": 16
+    },
+    "orphan_relocations": {
+      "count": 2,
+      "moves": [
+        { "from": "scripts/validation/lib/capability-quality-math.ts", "to": "scripts/manifests/lib/capability-quality-math.ts" },
+        { "from": "scripts/validation/lib/master-dossier-plan.ts", "to": "scripts/manifests/lib/master-dossier-plan.ts" }
+      ]
+    },
+    "orphan_removals": {
+      "count": 1,
+      "dirs": ["scripts/ops/"]
+    }
+  }
+}
