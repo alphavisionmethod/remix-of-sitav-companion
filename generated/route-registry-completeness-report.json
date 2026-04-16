@@ -1,20 +1,11 @@
 {
-  "generatedAt": "2026-04-16T23:22:41.023Z",
+  "generatedAt": "2026-04-16T23:27:57.455Z",
   "declaredCount": 597,
-  "bindingsCount": 90,
-  "unowned": [
-    "/workspace/data-grid"
-  ],
+  "bindingsCount": 84,
+  "unowned": [],
   "unusedBindings": [
     "/customers",
-    "/finance",
-    "/auth",
-    "/login",
-    "/signup",
-    "/onboarding",
-    "/connectors",
-    "/integrations",
-    "/m/"
+    "/finance"
   ],
-  "ok": false
+  "ok": true
 }
