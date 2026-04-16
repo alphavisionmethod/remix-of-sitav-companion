@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-04-16T23:09:54.332Z",
+  "hardLeaks": [
+    {
+      "file": "src/pages/admin/ConscienceGateDashboard.tsx",
+      "line": 21,
+      "match": "mock-data/",
+      "reason": "imports mock-data without any real-data hook/service in same file"
+    }
+  ],
+  "allowedFallbacks": [
+    {
+      "file": "src/pages/RevenueCallingPage.tsx",
+      "line": 27,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/RevenueCallingPage.tsx",
+      "line": 28,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/business/CollectionsCommandCenter.tsx",
+      "line": 16,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/business/RevenueAutopilot.tsx",
+      "line": 21,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/concierge/MonthGridCalendar.tsx",
+      "line": 9,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/money/InvestmentOffice.tsx",
+      "line": 28,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/owner/OwnerApprovalsPage.tsx",
+      "line": 18,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/owner/PricingEditor.tsx",
+      "line": 18,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/workspace/DocsWorkspace.tsx",
+      "line": 13,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/workspace/SheetsWorkspace.tsx",
+      "line": 18,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/workspace/SlidesWorkspace.tsx",
+      "line": 9,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    }
+  ],
+  "ok": false
+}
