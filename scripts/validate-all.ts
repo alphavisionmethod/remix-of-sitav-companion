@@ -117,6 +117,9 @@ const validators: Record<string, string[]> = {
     "scripts/db/checks/check-tenancy-boundary-map.ts",
     "scripts/db/checks/schema-compliance.ts",
     "scripts/db/checks/check-tenancy-firewall.ts",
+    "scripts/db/checks/check-persistence-coverage.ts",
+    "scripts/runtime/edge-functions/check-backend-registry-completeness.ts",
+    "scripts/runtime/edge-functions/check-edge-function-ownership.ts",
   ],
 
   // ── Deployment ──

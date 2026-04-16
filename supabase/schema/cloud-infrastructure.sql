@@ -3,7 +3,7 @@
 -- AUTO-GENERATED from supabase/migrations/. DO NOT EDIT.
 -- Regenerate via: npx tsx scripts/db/generate/synthesize-domain-schemas.ts
 -- Source migrations: 2
--- Last generated: 2026-04-16T21:25:36.058Z
+-- Last generated: 2026-04-16T21:35:49.933Z
 -- ═══════════════════════════════════════════════════════════════
 
 -- ── 20260415064703_3d3342c8-4dd3-41a3-a234-2d3c5a447a37.sql ──

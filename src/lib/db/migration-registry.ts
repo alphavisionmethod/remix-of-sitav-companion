@@ -2,8 +2,8 @@
 // SITA OS — Migration Registry (AUTO-GENERATED)
 // Source of truth: supabase/migrations/*.sql
 // Regenerate via: npx tsx scripts/db/generate/generate-migration-registry.ts
-// DO NOT hand-edit. Last generated: 2026-04-16T21:22:02.899Z
-// Total migrations: 163
+// DO NOT hand-edit. Last generated: 2026-04-16T21:36:58.045Z
+// Total migrations: 164
 // ═══════════════════════════════════════════════════════════════
 
 export type MigrationCategory =
@@ -196,50 +196,28 @@ export const MIGRATION_REGISTRY: readonly MigrationEntry[] = [
   { ordinal: 161, filename: "20260416010347_03ff1b0b-0dda-4dba-8fa6-eea0ecf22fd0.sql", timestamp: "20260416010347", category: "table-creation", boundedContext: "platform-core", rollbackRisk: "low", releaseConsequence: "additive", dataSensitivity: "high", tenancyImpact: "added", destructive: false, hasRls: true, tablesAffected: ["command_steps","device_attestations","approval_decisions","timeline_events","graph_edges","simulations","incidents","connector_tokens","vapid_keys","biometric_credentials","runtime_agents"], description: "table-creation: command_steps, device_attestations, approval_decisions +8" },
   { ordinal: 162, filename: "20260416151015_5a65a765-7d6c-4ae7-96f1-e0a908b64472.sql", timestamp: "20260416151015", category: "table-creation", boundedContext: "platform-core", rollbackRisk: "low", releaseConsequence: "additive", dataSensitivity: "high", tenancyImpact: "added", destructive: false, hasRls: true, tablesAffected: ["licenses","license_activations","license_audit_log"], description: "table-creation: licenses, license_activations, license_audit_log" },
   { ordinal: 163, filename: "20260416152158_5825aa76-69c4-4e00-b434-ecfe3669746a.sql", timestamp: "20260416152158", category: "schema-alteration", boundedContext: "platform-core", rollbackRisk: "high", releaseConsequence: "mutative", dataSensitivity: "high", tenancyImpact: "none", destructive: false, hasRls: false, tablesAffected: ["licenses"], description: "schema-alteration: licenses" },
+  { ordinal: 164, filename: "20260416213345_4d6b210c-a66a-411e-a7d8-8869b0ec205d.sql", timestamp: "20260416213345", category: "function-trigger", boundedContext: "platform-core", rollbackRisk: "low", releaseConsequence: "additive", dataSensitivity: "none", tenancyImpact: "none", destructive: false, hasRls: false, tablesAffected: [], description: "function-trigger migration" },
 ] as const;
 
 export function getMigrationsByCategory(category: MigrationCategory): readonly MigrationEntry[] {
   return MIGRATION_REGISTRY.filter(m => m.category === category);
 }
-
 export function getMigrationsForTable(table: string): readonly MigrationEntry[] {
   return MIGRATION_REGISTRY.filter(m => m.tablesAffected.includes(table));
 }
-
 export function getMigrationsByContext(boundedContext: string): readonly MigrationEntry[] {
   return MIGRATION_REGISTRY.filter(m => m.boundedContext === boundedContext);
 }
-
 export function getDestructiveMigrations(): readonly MigrationEntry[] {
   return MIGRATION_REGISTRY.filter(m => m.destructive);
 }
-
 export function getMigrationsByRollbackRisk(risk: RollbackRisk): readonly MigrationEntry[] {
   return MIGRATION_REGISTRY.filter(m => m.rollbackRisk === risk);
 }
-
-export function getMigrationCount(): number {
-  return MIGRATION_REGISTRY.length;
-}
+export function getMigrationCount(): number { return MIGRATION_REGISTRY.length; }
 
 export const MIGRATION_STATS = {
-  total: 163,
-  byCategory: {
-    "table-creation": 114,
-    "schema-alteration": 19,
-    "function-trigger": 5,
-    "destructive": 2,
-    "rls-policy": 16,
-    "extension": 2,
-    "seed-data": 4,
-    "view": 1,
-  },
-  byRollbackRisk: {
-    low: 123,
-    medium: 13,
-    high: 12,
-    critical: 15,
-  },
+  total: 164,
   destructive: 15,
   withRls: 114,
 } as const;

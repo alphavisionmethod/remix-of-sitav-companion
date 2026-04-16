@@ -1,7 +1,9 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-16T21:22:02.914Z",
-  "total": 163,
+  "generatedAt": "2026-04-16T21:36:58.046Z",
+  "totalMigrations": 164,
+  "destructive": 15,
+  "withRls": 114,
   "entries": [
     {
       "ordinal": 1,
@@ -3462,6 +3464,21 @@
         "licenses"
       ],
       "description": "schema-alteration: licenses"
+    },
+    {
+      "ordinal": 164,
+      "filename": "20260416213345_4d6b210c-a66a-411e-a7d8-8869b0ec205d.sql",
+      "timestamp": "20260416213345",
+      "category": "function-trigger",
+      "boundedContext": "platform-core",
+      "rollbackRisk": "low",
+      "releaseConsequence": "additive",
+      "dataSensitivity": "none",
+      "tenancyImpact": "none",
+      "destructive": false,
+      "hasRls": false,
+      "tablesAffected": [],
+      "description": "function-trigger migration"
     }
   ]
 }

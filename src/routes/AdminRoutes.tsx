@@ -59,6 +59,7 @@ const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthD
 const RuntimeTierGovernanceDashboard = lazy(() => import("@/pages/admin/RuntimeTierGovernanceDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
 const BackendTopologyDashboard = lazy(() => import("@/pages/admin/BackendTopologyDashboard"));
+const DbTruthExplorer = lazy(() => import("@/pages/admin/DbTruthExplorer"));
 
 const IntelligenceReuseOverview = lazy(() => import("@/pages/admin/intelligence/IntelligenceReuseOverview"));
 const IntelligenceAssetLibrary = lazy(() => import("@/pages/admin/intelligence/IntelligenceAssetLibrary"));
@@ -335,6 +336,7 @@ export function getAdminRoutes() {
     <Route key="cd04" path="/admin/simulation-center" element={gated("maintenance.view", <SimulationCenterPage />)} />,
     // ── Backend Topology & DB Health ──
     <Route key="bt01" path="/admin/backend-topology" element={gated("maintenance.view", <BackendTopologyDashboard />)} />,
+    <Route key="bt02" path="/admin/db-truth-explorer" element={gated("audit.view", <DbTruthExplorer />)} />,
     // ── Mobile Platform Truth ──
     <Route key="mob01" path="/admin/mobile-parity" element={gated("audit.view", <MobileParityDashboard />)} />,
   ];

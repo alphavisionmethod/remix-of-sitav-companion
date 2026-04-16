@@ -10055,6 +10055,7 @@ export type Database = {
       }
     }
     Functions: {
+      get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
         Returns: boolean

@@ -56,6 +56,7 @@ export const EDGE_FUNCTION_MIGRATION_MAP: Record<string, FunctionTableAccess> = 
   "connector-transform": { reads: [], writes: [] },
   "cost-alert": { reads: ["ai_workforce_invocations", "ai_workforce_budget_classes"], writes: [] },
   "crm-sync": { reads: ["connector_credentials", "leads", "customers"], writes: ["leads", "customers", "sync_logs"] },
+  "db-truth-introspect": { reads: [], writes: [] },
   "device-telemetry": { reads: ["cloud_devices"], writes: ["cloud_devices"] },
   "digital-twin-engine": { reads: [], writes: [] },
   "ecosystem-operations": { reads: [], writes: [] },

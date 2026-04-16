@@ -109,6 +109,7 @@ export const EDGE_FUNCTION_BACKEND_CATEGORY: Record<string, ClassificationVerdic
   "device-telemetry": "RUNTIME_SYSTEM_FUNCTION",
   "system-updates": "RUNTIME_SYSTEM_FUNCTION",
   "self-healing": "RUNTIME_SYSTEM_FUNCTION",
+  "db-truth-introspect": "DOMAIN_FUNCTION",
 
   // ── DOMAIN FUNCTIONS — finance ───────────────────────────────
   "cashflow-calculate": "DOMAIN_FUNCTION",

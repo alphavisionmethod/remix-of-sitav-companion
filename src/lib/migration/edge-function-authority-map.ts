@@ -92,6 +92,7 @@ export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[] = [
   { name: "admin-intelligence", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R2", corsRequired: true, description: "Admin intelligence aggregation" },
   { name: "admin-users", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R4", corsRequired: true, description: "Admin user management" },
   { name: "cloud-admin-api", category: "admin-api", authClass: "admin-required", owner: "cloud-control", riskTier: "R4", corsRequired: true, description: "Cloud control plane admin operations" },
+  { name: "db-truth-introspect", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R0", corsRequired: true, description: "Read-only DB schema/RLS/drift introspection for admin DbTruthExplorer" },
   { name: "payment-kill-switch", category: "admin-api", authClass: "admin-required", owner: "security", riskTier: "R5", corsRequired: true, description: "Emergency disable of payment processing" },
 
   // ── AI Gateway ────────────────────────────────────────────────────
