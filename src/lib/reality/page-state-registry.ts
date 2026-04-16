@@ -33,6 +33,8 @@ export const PAGE_STATE_REGISTRY: readonly PageStateRegistryEntry[] = [
   { route: "/business",                        pageClass: "dashboard",   file: "src/pages/BusinessCenter.tsx",                      verified: ["loading", "error", "degraded", "permission-denied"] },
   { route: "/concierge",                       pageClass: "dashboard",   file: "src/pages/ConciergeCenter.tsx",                     verified: ["loading", "error", "degraded", "permission-denied"] },
   { route: "/communications",                  pageClass: "dashboard",   file: "src/pages/CommunicationsPage.tsx",                  verified: ["loading", "error", "degraded", "permission-denied"] },
+  { route: "/money",                           pageClass: "dashboard",   file: "src/pages/MoneyCenter.tsx",                         verified: ["loading", "error", "degraded", "permission-denied"] },
+  { route: "/desktop",                         pageClass: "dashboard",   file: "src/pages/DesktopPage.tsx",                         verified: ["loading", "error", "degraded", "permission-denied"] },
 ];
 
 export function getPageStateContract(route: string): PageStateRegistryEntry | undefined {
