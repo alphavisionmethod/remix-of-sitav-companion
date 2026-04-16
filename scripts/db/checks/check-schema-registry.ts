@@ -104,7 +104,7 @@ for (const field of requiredFields) {
 }
 
 console.log(`  📊 Registry: ${registered.size} tables`);
-console.log(`  📋 Migrations declare: ${fromMigrations.size} tables`);
+console.log(`  📋 ${comparisonSource} declares: ${comparisonSet.size} tables`);
 console.log(`  ⚠️  Missing from registry: ${missing}`);
 console.log(`  ⚠️  Phantom entries: ${phantoms}`);
 
