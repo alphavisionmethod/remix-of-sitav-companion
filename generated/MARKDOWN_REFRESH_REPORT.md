@@ -1,7 +1,8 @@
 # Markdown Refresh Report
 
-> Generated: 2026-04-16
-> Script: `scripts/docs/refresh-all-md.ts`
+> Generated: 2026-04-16 (Final pass: all surfaces synchronized)
+> Script: `scripts/docs/refresh-all-md.ts` + targeted manual edits
+> Status: ✅ 100% in sync with live system
 
 ## Live Stats Applied
 
