@@ -1,76 +1,101 @@
 
+## Audit: Desktop Host / Electron Checklist (11 items)
 
-## Re-Audit: Web Deployability Checklist (13/13)
+I audited each item against disk truth. **9 are real, 2 have gaps, and there's no enforceable readiness registry / CI gate** parallel to iOS / Android / Web.
 
-I re-checked every item against disk truth. The Phase 13 closure is **mostly real** but 3 small gaps remain that would cause real production breakage.
-
-### What's actually green ✅ (10 of 13 fully correct)
+### What's actually green ✅
 
 | # | Item | Disk evidence |
 |---|---|---|
-| 1 | Production build | `vite.config.ts` chunked vendor splits + `health.json` plugin ✅ |
-| 2 | Env vars documented | `docs/web/env-vars.md` exists with full list ✅ |
-| 3 | Auth/session in prod | `ProtectedRoute` + `onAuthStateChange` in `App.tsx` ✅ |
-| 4 | PWA behavior | `manifest.webmanifest` valid, icons present ✅ |
-| 5 | SW iframe guard | `src/main.tsx` lines 10-37 — iframe + preview-host check confirmed ✅ |
-| 7 | Sandbox honesty | `web-runtime-contract.ts` declares prohibited capabilities ✅ |
-| 8 | File handling | `web-fallbacks.ts` user-mediated picker only ✅ |
-| 9 | Native gating | `WEB_RUNTIME_CONTRACT` enforced ✅ |
-| 10 | Deep-link routing | `BrowserRouter` + nginx `try_files` ✅ |
-| 12 | CSP headers | `index.html` meta + `nginx/default.conf` both pin project Supabase origin + ai.gateway ✅ |
-| 13 | Error boundaries | `GlobalErrorBoundary` + `RouteErrorBoundary` + `WindowErrorBoundary` ✅ |
+| 1 | Electron runtime contract | `src/lib/runtime/desktop/desktop-host-contract.ts` — 12 privileges, deployment assumptions, exclusive vs shared features ✅ |
+| 2 | Preload bridge typed & minimal | `electron/preload.cjs` (22 methods) ↔ `electron-bridge-contract.ts` (`BRIDGE_METHOD_REGISTRY`, 22 entries) ✅ |
+| 3 | Native privileges via approved bridge | `desktop-bridge-isolation` check forbids direct `electron/*` imports from `src/pages/**` and `src/components/**` ✅ |
+| 4 | FS bridge explicit + permissioned | `electron/fs-bridge.cjs` — dialog-gated, allowlist of extensions, 50MB read cap, sandboxed `userData/backups` ✅ |
+| 5 | Auto-updater works or clearly disabled | `electron/auto-updater.cjs` — graceful fallback when `electron-updater` missing, manual feed via `SITA_UPDATE_URL`, full lifecycle in `desktop-update-contract.ts` ✅ |
+| 6 | Crash reporting works | `electron/crash-reporter.cjs` — `crashReporter.start`, captures `unhandledRejection` / `uncaughtException` / renderer crashes, persists JSON dumps ✅ |
+| 7 | Native notifications | `Notification.isSupported()` gate + `send-notification` IPC ✅ |
+| 9 | Desktop release/build pipeline | `scripts/release/desktop/build-electron.sh` + `electron/forge.config.cjs` ✅ |
+| 11 | Signing/notarization plan | `forge.config.cjs` — `osxSign`, `osxNotarize`, `windowsSign`, env-driven (`APPLE_*`, `CSC_LINK`) ✅ |
 
-### Real residual gaps ❌
+### Real gaps ❌
 
-**Gap 1 — `public/sw.js` install handler will fail and abort SW activation.**
-`STATIC_ASSETS` includes `'/manifest.webmanifest'`, `'/favicon.ico'`, `'/icons/icon-192.png'`, `'/icons/icon-512.png'`. All exist ✅. But `cache.addAll()` is **atomic** — if any single fetch returns non-200 the whole install rejects and the SW never activates. Need a tolerant install (`Promise.allSettled` per asset) so a single transient 404 doesn't kill the SW.
+**Gap A — Item 8 "OS shell features truthfully scoped" has no enforced anti-overclaim check.**
+`desktop-host-contract.ts` honestly lists 12 privileges, and `DESKTOP_EXCLUSIVE_FEATURES` separates from shared ones, but **nothing fails CI if a renderer page claims a desktop-exclusive feature without the bridge present**. Need an assertion that `runtime-capability-matrix` desktop entries match the contract.
 
-**Gap 2 — `public/sw-push.js` is orphaned in production.**
-The push handler lives in `sw-push.js` but `main.tsx` registers `/sw.js`. The unified `sw.js` already contains its own push/notificationclick handlers (per the file I read earlier in this conversation). Two possibilities — both bad:
-- If `sw-push.js` is dead code: registry says "push works via `sw-push.js`" — that's a lie. Web push actually flows through `sw.js`. Evidence string in `web-deployability-readiness.ts` is wrong.
-- If a separate registration was intended: it never happens, so the file is dead weight shipped to production.
+**Gap B — Item 10 "web-only/native-only mismatches handled" — `desktop-fallbacks.ts` exists but is not asserted against the bridge surface.**
+Need a check that every `desktop-only` capability has a matching `web-fallback` declaration (or honest "no-op-on-web" entry).
 
-Need to either delete `sw-push.js` and update the registry evidence to point to `sw.js`, OR consolidate properly.
+**Gap C — Sandbox NOT enforced in `BrowserWindow` config.**
+`desktop-host-contract.ts` declares `sandbox: true` as a deployment assumption, and `desktop-security-boundaries.ts` claims it's "verified". But `electron/main.cjs` line 35-39 does **NOT** pass `sandbox: true` in `webPreferences`. This is a **truthfulness violation** — the contract lies. Fix: add `sandbox: true` to `webPreferences`.
 
-**Gap 3 — `web-seo-public-assets` is `partial` because robots.txt + sitemap.xml still hard-code `https://app.sita.os/`.**
-The rewriter `scripts/release/web/rewrite-public-host.ts` exists but is **not wired into the build**. It's a script the user must remember to run with `WEB_PUBLIC_HOST=...`. For "100% ready for deployment" this should either:
-- Run automatically in `npm run build` (preferred), or
-- Be replaced with a Vite plugin that rewrites `__WEB_PUBLIC_HOST__` tokens at build time.
+**Gap D — No readiness registry + CI gate parallel to iOS/Android/Web.**
+iOS has 18 items, Android 18, Web 13, all with typed registries + CI gates. Desktop has the contract files but **no `desktop-deployability-readiness.ts` and no `check-desktop-deployability` gate**. The CI Umbrella does not enforce the 11-item checklist as a single artifact.
 
-### Phase 13.1 — Plan (3 files, ~80 LOC)
+**Gap E — Existing `check-desktop-runtime-contract.ts` lives under `scripts/runtime/checks/` but is NOT registered in the CI Umbrella `ci-gate-registry.ts`.** It runs in isolation, not under the umbrella manifest, and it's only `warning` severity.
 
-**13.1.1 — Make SW install fault-tolerant (`public/sw.js`)**
-Change `cache.addAll(STATIC_ASSETS)` to `Promise.allSettled(STATIC_ASSETS.map(a => cache.add(a).catch(() => null)))`. Single 404 no longer aborts SW activation. Production SW activates reliably.
+**Gap F — `package.json` has no Electron dependency** (`electron`, `@electron/packager`, `electron-updater`). `build-electron.sh` does install on demand but there's no lockfile entry. Same pattern we just fixed for Capacitor in Phase 12.1.
 
-**13.1.2 — Resolve sw-push.js orphan**
-Delete `public/sw-push.js` (the unified `sw.js` already handles push correctly per my earlier read). Update `web-deployability-readiness.ts` evidence for `web-push-vapid` from "public/sw-push.js handles push" → "public/sw.js handles push + notificationclick + push-track callback". Update `check-web-deployability.ts` to assert `sw.js` push handler exists, not `sw-push.js`.
+---
 
-**13.1.3 — Auto-rewrite public host on build**
-Add a Vite plugin in `vite.config.ts` that, during `build`, reads `process.env.WEB_PUBLIC_HOST` (default `https://app.sita.os`) and rewrites `robots.txt`, `sitemap.xml`, and `manifest.webmanifest` in the `dist/` output. When `WEB_PUBLIC_HOST` is set in a real deployment env, prod assets ship with the right host automatically. Item 11 flips from `partial` → `ready` (with a note: still `partial` only if env var missing at build time, which is honest).
+## Phase 14 — Desktop Host / Electron Deployability Closure
 
-**13.1.4 — Regenerate report + manifest**
-- `generated/web-deployability-report.json` → 13 ready, 0 partial, 0 missing.
-- `generated/ci-umbrella-manifest.json` → unchanged (still 24 gates, all green).
-- `check-web-deployability.ts` now passes a stricter assertion set.
+### Plan (~6 files, ~350 LOC)
+
+**14.1 — Fix sandbox truthfulness gap (`electron/main.cjs`)**
+Add `sandbox: true` to `webPreferences` (line 35-39). Verify license-ui.cjs/license-preload.cjs windows likewise enable sandbox. This makes the contract honest.
+
+**14.2 — Install Electron dependencies in `package.json`**
+Add `electron`, `@electron/packager` (dev), `electron-updater`. After `npm install` post-export, `build-electron.sh` runs without on-demand install and `auto-updater.cjs`'s try-block resolves `electron-updater` cleanly.
+
+**14.3 — Create Desktop Deployability Readiness Registry**
+`src/lib/runtime/desktop/release/desktop-deployability-readiness.ts` — typed 11-item registry, one entry per checklist item, `{ id, title, status: ready|partial|deferred|missing, evidence, blocker?, remediation? }`. Mirrors iOS/Android/Web pattern.
+
+Plus `src/lib/runtime/desktop/release/index.ts` barrel.
+
+**14.4 — CI gate `check-desktop-deployability.ts`**
+Asserts:
+- `electron/main.cjs` contains `sandbox: true` (regex check)
+- `electron/preload.cjs` exposes exactly `BRIDGE_METHOD_COUNT` (22) methods
+- All 22 methods registered in `BRIDGE_METHOD_REGISTRY` exist in preload (cross-validation)
+- `electron/forge.config.cjs` exists with osxSign/osxNotarize/windowsSign blocks
+- `scripts/release/desktop/build-electron.sh` exists and is executable
+- `package.json` declares `electron` + `@electron/packager` deps
+- `package.json` `main` points to `electron/main.cjs`
+- `desktop-fallbacks.ts` declares fallback for every `DESKTOP_EXCLUSIVE_FEATURES` entry
+
+Registers as **CI gate 25** under new phase `phase-14-desktop-deployability` in `ci-gate-registry.ts` and `ci-gate-types.ts`. Generates `generated/desktop-deployability-report.json`.
+
+**14.5 — Wire admin dashboard `DSK01DeployabilityCenter.tsx`**
+Route `/admin/desktop/deployability`. Renders all 11 items green/amber/red with evidence links, mirroring `MOB01StoreReadinessCenter.tsx` and `WEB01DeployabilityCenter.tsx`.
+
+**14.6 — Update aggregators**
+- `generated/ci-umbrella-manifest.json` → gateCount: 25, +`phase-14-desktop-deployability`
+- `generated/production-truth-final.json` → +phase-14
+- `META04ProductReality` tile → 25-gate verdict
 
 ### Acceptance
 
-- `sw.js` install no longer aborts on a single asset 404.
-- No orphaned `sw-push.js` shipped to prod; registry evidence matches code.
-- `npm run build` with `WEB_PUBLIC_HOST=https://real.domain` produces `dist/robots.txt`, `dist/sitemap.xml`, and `dist/manifest.webmanifest` with the real host.
-- `web-deployability-report.json` shows **13 ready, 0 partial, 0 missing**.
-- CI Umbrella stays at **24/24 green** with web checklist now fully ready (no honest defers).
+- `electron/main.cjs` has `sandbox: true` enforced — contract no longer lies.
+- `package.json` resolves `electron`, `@electron/packager`, `electron-updater` after `npm install`.
+- `desktop-deployability-report.json` shows **11 ready, 0 missing**, with honest defers only on items requiring physical signing certificates.
+- New `check-desktop-deployability` gate passes.
+- CI Umbrella reads **25/25 green**.
+- `/admin/desktop/deployability` renders all 11 items.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `public/sw.js` | Tolerant install (allSettled) |
-| `public/sw-push.js` | **Delete** (consolidated into sw.js) |
-| `vite.config.ts` | Add public-host rewrite plugin |
-| `src/lib/web-platform/release/web-deployability-readiness.ts` | Fix push evidence; flip SEO to ready when env set |
-| `scripts/architecture/checks/check-web-deployability.ts` | Assert sw.js push handler, not sw-push.js |
-| `generated/web-deployability-report.json` | Regenerate: 13 ready / 0 partial |
+| `electron/main.cjs` | Add `sandbox: true` to webPreferences |
+| `package.json` | +electron, +@electron/packager, +electron-updater |
+| `src/lib/runtime/desktop/release/desktop-deployability-readiness.ts` | 11-item registry |
+| `src/lib/runtime/desktop/release/index.ts` | Barrel |
+| `scripts/architecture/checks/check-desktop-deployability.ts` | CI gate 25 |
+| `src/pages/admin/DSK01DeployabilityCenter.tsx` | Admin surface |
+| `src/lib/ci/ci-gate-registry.ts` + `ci-gate-types.ts` | +phase-14 |
+| `src/routes/AdminRoutes.tsx` | Route wiring |
+| `generated/desktop-deployability-report.json` | Disk report |
+| `generated/ci-umbrella-manifest.json` | gateCount: 25 |
+| `generated/production-truth-final.json` | +phase-14 |
 
-After this micro-phase, the Web Deployability Checklist is **truthfully 13/13 ready** — no orphan files, no atomic-install failure mode, no manual rewrite step before deploy.
-
+After this phase, the Desktop Host / Electron Checklist is enforceable in CI — sandbox is actually enforced (not just claimed), every preload method is contract-verified, every native-exclusive feature has a documented web fallback, and the umbrella reports a single truthful verdict.
