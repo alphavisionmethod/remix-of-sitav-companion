@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { classifyNetwork } from "@/lib/mobile-platform";
+import { sampleNetworkSnapshot } from "@/lib/mobile-platform";
 
 export const moneyMobileClient = {
   async listOpenItems() {
@@ -19,7 +19,7 @@ export const moneyMobileClient = {
   },
 
   async markAcknowledged(id: string): Promise<{ ok: boolean; reason?: string }> {
-    if (classifyNetwork() === "offline") {
+    if (sampleNetworkSnapshot().tier === "offline") {
       return { ok: false, reason: "Money actions require an online connection on mobile." };
     }
     const { error } = await supabase

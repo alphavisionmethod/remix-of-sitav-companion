@@ -11,8 +11,8 @@
 import { supabase } from "@/integrations/supabase/client";
 import {
   mobileSyncQueue,
-  classifyNetwork,
   shouldQueueMutation,
+  sampleNetworkSnapshot,
   getOfflinePolicy,
   type OfflineDomain,
 } from "@/lib/mobile-platform";
@@ -42,9 +42,9 @@ export function decideMutationTransport(
 ): { queue: boolean; reason?: MobileMutationResult["reason"] } {
   const policy = getOfflinePolicy(domain);
   if (forceQueue && policy.mutationsAllowed) return { queue: true, reason: "forced" };
-  const tier = classifyNetwork();
-  if (tier === "offline" && policy.mutationsAllowed) return { queue: true, reason: "offline" };
-  if (shouldQueueMutation(tier, domain) && policy.mutationsAllowed) return { queue: true, reason: "degraded" };
+  const snap = sampleNetworkSnapshot();
+  if (snap.tier === "offline" && policy.mutationsAllowed) return { queue: true, reason: "offline" };
+  if (shouldQueueMutation(snap) && policy.mutationsAllowed) return { queue: true, reason: "degraded" };
   return { queue: false };
 }
 

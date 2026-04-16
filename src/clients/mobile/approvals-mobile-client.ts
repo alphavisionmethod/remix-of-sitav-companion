@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { classifyNetwork } from "@/lib/mobile-platform";
+import { sampleNetworkSnapshot } from "@/lib/mobile-platform";
 
 export interface ApprovalDecisionInput {
   requestId: string;
@@ -27,8 +27,7 @@ export const approvalsMobileClient = {
   },
 
   async decide(input: ApprovalDecisionInput): Promise<{ ok: true } | { ok: false; reason: string }> {
-    const tier = classifyNetwork();
-    if (tier === "offline") {
+    if (sampleNetworkSnapshot().tier === "offline") {
       return { ok: false, reason: "Approvals require an online connection on mobile." };
     }
     if (!input.biometricToken) {
