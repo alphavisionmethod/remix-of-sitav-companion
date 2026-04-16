@@ -24,6 +24,7 @@ const PHASE_TITLES: Record<CIGatePhase, string> = {
   "phase-7-meta-arch": "7 — Meta-Architecture",
   "phase-8-ci-umbrella": "8 — CI Umbrella",
   "phase-9-reality-deployability": "9 — Reality & Deployability",
+  "phase-10-completeness": "10 — Completeness",
 };
 
 function GateCard({ gate }: { gate: CIGateEntry }) {

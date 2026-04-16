@@ -12,7 +12,8 @@ export type CIGatePhase =
   | "phase-6-golden-paths"
   | "phase-7-meta-arch"
   | "phase-8-ci-umbrella"
-  | "phase-9-reality-deployability";
+  | "phase-9-reality-deployability"
+  | "phase-10-completeness";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 
