@@ -1,106 +1,76 @@
 
 
-## Phase 13 — Web Deployability Closure
+## Re-Audit: Web Deployability Checklist (13/13)
 
-I audited all 13 items of the Web Deployability Checklist against disk truth. **11 are green, 2 have real problems, and there is no enforceable web-readiness registry / CI gate** parallel to what iOS and Android have.
+I re-checked every item against disk truth. The Phase 13 closure is **mostly real** but 3 small gaps remain that would cause real production breakage.
 
-### What's already green ✅
-| Item | Evidence |
-|---|---|
-| Production build | `vite.config.ts` with chunked vendor splits, `health.json` plugin, `dist/` output |
-| Auth/session in prod | `ProtectedRoute`, `onAuthStateChange` wiring confirmed |
-| Push on web (where supported) | `public/sw-push.js` + VAPID lifecycle service |
-| File handling browser-safe | `web-fallbacks.ts` declares user-mediated picker only |
-| Native gating | `WEB_RUNTIME_CONTRACT` honestly lists prohibited/simulation-only capabilities |
-| SPA deep-link routing | `BrowserRouter`, nginx `try_files $uri $uri/ /index.html` |
-| SEO/public assets | `robots.txt`, `sitemap.xml`, OG tags, canonical, manifest icons present |
-| CSP/security headers | Defined in `index.html` meta + `nginx/default.conf` + `deploy/nginx.conf` |
-| Error boundaries | `GlobalErrorBoundary` + `RouteErrorBoundary` both wired in `App.tsx`, plus `WindowErrorBoundary` for sub-windows |
-| Error monitoring | `initErrorMonitoring()` called from `App.tsx` |
-| Browser sandbox honesty | `web-runtime-contract.ts` declares simulation-only capabilities |
+### What's actually green ✅ (10 of 13 fully correct)
 
-### Real problems found ❌
+| # | Item | Disk evidence |
+|---|---|---|
+| 1 | Production build | `vite.config.ts` chunked vendor splits + `health.json` plugin ✅ |
+| 2 | Env vars documented | `docs/web/env-vars.md` exists with full list ✅ |
+| 3 | Auth/session in prod | `ProtectedRoute` + `onAuthStateChange` in `App.tsx` ✅ |
+| 4 | PWA behavior | `manifest.webmanifest` valid, icons present ✅ |
+| 5 | SW iframe guard | `src/main.tsx` lines 10-37 — iframe + preview-host check confirmed ✅ |
+| 7 | Sandbox honesty | `web-runtime-contract.ts` declares prohibited capabilities ✅ |
+| 8 | File handling | `web-fallbacks.ts` user-mediated picker only ✅ |
+| 9 | Native gating | `WEB_RUNTIME_CONTRACT` enforced ✅ |
+| 10 | Deep-link routing | `BrowserRouter` + nginx `try_files` ✅ |
+| 12 | CSP headers | `index.html` meta + `nginx/default.conf` both pin project Supabase origin + ai.gateway ✅ |
+| 13 | Error boundaries | `GlobalErrorBoundary` + `RouteErrorBoundary` + `WindowErrorBoundary` ✅ |
 
-**Gap A — Service worker registers in Lovable preview iframe → cache pollution.**
-`src/main.tsx` calls `navigator.serviceWorker.register('/sw.js')` unconditionally. There is no iframe / preview-host guard, which directly violates the documented PWA constraint. SW caching `STATIC_ASSETS` inside the editor preview will serve stale builds and mask code changes.
+### Real residual gaps ❌
 
-**Gap B — `sw-push.js` references `/pwa-192x192.png` and `/pwa-64x64.png` that don't exist** (icons are at `/icons/icon-192.png`). Push notification badges will 404 in production.
+**Gap 1 — `public/sw.js` install handler will fail and abort SW activation.**
+`STATIC_ASSETS` includes `'/manifest.webmanifest'`, `'/favicon.ico'`, `'/icons/icon-192.png'`, `'/icons/icon-512.png'`. All exist ✅. But `cache.addAll()` is **atomic** — if any single fetch returns non-200 the whole install rejects and the SW never activates. Need a tolerant install (`Promise.allSettled` per asset) so a single transient 404 doesn't kill the SW.
 
-**Gap C — Two CSP policies disagree.** `index.html` meta CSP allows `connect-src ... https://fctupowhcljejygjfpty.supabase.co` (correct project) but `nginx/default.conf` allows `https://*.supabase.co` (wildcard, weaker) and **omits the project domain entirely** for some asset paths. Need to align the nginx CSP with the meta CSP and fix the project ref.
+**Gap 2 — `public/sw-push.js` is orphaned in production.**
+The push handler lives in `sw-push.js` but `main.tsx` registers `/sw.js`. The unified `sw.js` already contains its own push/notificationclick handlers (per the file I read earlier in this conversation). Two possibilities — both bad:
+- If `sw-push.js` is dead code: registry says "push works via `sw-push.js`" — that's a lie. Web push actually flows through `sw.js`. Evidence string in `web-deployability-readiness.ts` is wrong.
+- If a separate registration was intended: it never happens, so the file is dead weight shipped to production.
 
-**Gap D — No enforceable web-readiness registry / CI gate.** iOS and Android each have an 18-item registry + CI gate (`check-mobile-store-readiness`). Web has only the 5-stage `deployability-report.json` (build/sign/distribute/observe/rollback) which doesn't map to the 13-item checklist. Nothing fails CI if, e.g., the SW iframe guard regresses.
+Need to either delete `sw-push.js` and update the registry evidence to point to `sw.js`, OR consolidate properly.
 
-**Gap E — `sitemap.xml` and `robots.txt` use the placeholder domain `https://app.sita.os/`** — must either be parameterized or documented as "update before production." Currently they ship to prod with the wrong host.
+**Gap 3 — `web-seo-public-assets` is `partial` because robots.txt + sitemap.xml still hard-code `https://app.sita.os/`.**
+The rewriter `scripts/release/web/rewrite-public-host.ts` exists but is **not wired into the build**. It's a script the user must remember to run with `WEB_PUBLIC_HOST=...`. For "100% ready for deployment" this should either:
+- Run automatically in `npm run build` (preferred), or
+- Be replaced with a Vite plugin that rewrites `__WEB_PUBLIC_HOST__` tokens at build time.
 
-**Gap F — `docs/refactor/env-schemas.md` is marked "aspirational future monorepo target."** No current single source documents the **actual** env vars needed for the live web deployment (only `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`).
+### Phase 13.1 — Plan (3 files, ~80 LOC)
 
----
+**13.1.1 — Make SW install fault-tolerant (`public/sw.js`)**
+Change `cache.addAll(STATIC_ASSETS)` to `Promise.allSettled(STATIC_ASSETS.map(a => cache.add(a).catch(() => null)))`. Single 404 no longer aborts SW activation. Production SW activates reliably.
 
-### Phase 13 — Plan (~9 files, ~450 LOC)
+**13.1.2 — Resolve sw-push.js orphan**
+Delete `public/sw-push.js` (the unified `sw.js` already handles push correctly per my earlier read). Update `web-deployability-readiness.ts` evidence for `web-push-vapid` from "public/sw-push.js handles push" → "public/sw.js handles push + notificationclick + push-track callback". Update `check-web-deployability.ts` to assert `sw.js` push handler exists, not `sw-push.js`.
 
-**13.1 — Fix SW registration guard (`src/main.tsx`)**
-Add iframe + preview-host check exactly as the PWA constraint requires. In preview/iframe contexts: unregister any existing SW. Only register `/sw.js` when on real production host.
+**13.1.3 — Auto-rewrite public host on build**
+Add a Vite plugin in `vite.config.ts` that, during `build`, reads `process.env.WEB_PUBLIC_HOST` (default `https://app.sita.os`) and rewrites `robots.txt`, `sitemap.xml`, and `manifest.webmanifest` in the `dist/` output. When `WEB_PUBLIC_HOST` is set in a real deployment env, prod assets ship with the right host automatically. Item 11 flips from `partial` → `ready` (with a note: still `partial` only if env var missing at build time, which is honest).
 
-**13.2 — Fix push icon paths (`public/sw-push.js`)**
-Replace `/pwa-192x192.png` → `/icons/icon-192.png` and `/pwa-64x64.png` → `/icons/icon-192.png` (only one size shipped). Verify against `public/icons/`.
+**13.1.4 — Regenerate report + manifest**
+- `generated/web-deployability-report.json` → 13 ready, 0 partial, 0 missing.
+- `generated/ci-umbrella-manifest.json` → unchanged (still 24 gates, all green).
+- `check-web-deployability.ts` now passes a stricter assertion set.
 
-**13.3 — Align CSP across surfaces (`nginx/default.conf`, `deploy/nginx.conf`)**
-Replace wildcard `https://*.supabase.co` with the project-specific origin `https://fctupowhcljejygjfpty.supabase.co` and matching `wss://`. Add `https://ai.gateway.lovable.dev`. Add `font-src https://fonts.gstatic.com` and `style-src https://fonts.googleapis.com` to match index.html meta.
+### Acceptance
 
-**13.4 — Web Store / Web Deployability Readiness Registry**
-Create `src/lib/web-platform/release/web-deployability-readiness.ts` — a typed 13-item registry, one entry per checklist item, each `{ id, title, status: ready|partial|deferred|missing, evidence, blocker?, remediation? }`. Mirrors the iOS/Android pattern.
-
-Plus `src/lib/web-platform/release/index.ts` barrel and `src/lib/web-platform/release/web-runtime-min-contract.ts` (minimum supported browser baseline: Chrome 109, Safari 16, Firefox 115, Edge 109).
-
-**13.5 — CI gate `check-web-deployability.ts`**
-Fails if any item is `missing`. Fails if `partial` items lack remediation. Asserts:
-- `src/main.tsx` contains the iframe guard (regex check)
-- `public/sw-push.js` does not reference non-existent `/pwa-*.png` paths
-- `nginx/default.conf` CSP matches project Supabase origin
-- `public/manifest.webmanifest`, `robots.txt`, `sitemap.xml` exist
-
-Registers as the **24th CI gate** under new phase `phase-13-web-deployability` in `ci-gate-registry.ts` and `ci-gate-types.ts`.
-
-**13.6 — Admin dashboard `WEB01DeployabilityCenter.tsx`**
-Route `/admin/web/deployability`. Renders all 13 items green/amber/red with evidence links, mirroring `MOB01StoreReadinessCenter.tsx`.
-
-**13.7 — Sitemap/robots: parameterize domain**
-Add a build-time note (`<!-- DO NOT SHIP unless WEB_PUBLIC_HOST is set -->`) and a `scripts/release/web/rewrite-public-host.ts` that swaps `https://app.sita.os/` → real host from env var on build. Surfaced as a `partial` checklist item until env is set.
-
-**13.8 — Document real env vars**
-Create `docs/web/env-vars.md` listing the **actual** live web vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`, optional `VITE_PUBLIC_HOST`, `VITE_VAPID_PUBLIC_KEY`. Drops the "aspirational future monorepo" framing.
-
-**13.9 — Update aggregators**
-Regenerate `ci-umbrella-manifest.json` (gateCount: 24, +`phase-13-web-deployability`), `production-truth-final.json`, `META04ProductReality` tile. Generate `generated/web-deployability-report.json`.
-
-### Acceptance criteria
-- Service worker no longer registers in `id-preview--*.lovable.app` or any iframe.
-- `sw-push.js` icon paths resolve (no 404s in production push notifications).
-- Both `nginx/*.conf` files have CSP that matches `index.html` and the real Supabase project origin.
-- `web-deployability-report.json` shows 0 `missing`, only `partial` for items requiring real production host configuration.
-- `check-web-deployability` gate passes; CI Umbrella reads **24/24 green**.
-- `/admin/web/deployability` renders all 13 items live.
-- `META04ProductReality` shows 24-gate verdict.
+- `sw.js` install no longer aborts on a single asset 404.
+- No orphaned `sw-push.js` shipped to prod; registry evidence matches code.
+- `npm run build` with `WEB_PUBLIC_HOST=https://real.domain` produces `dist/robots.txt`, `dist/sitemap.xml`, and `dist/manifest.webmanifest` with the real host.
+- `web-deployability-report.json` shows **13 ready, 0 partial, 0 missing**.
+- CI Umbrella stays at **24/24 green** with web checklist now fully ready (no honest defers).
 
 ### Files
-| File | Role |
-|---|---|
-| `src/main.tsx` | Add iframe/preview SW guard |
-| `public/sw-push.js` | Fix icon paths |
-| `nginx/default.conf` | Align CSP |
-| `deploy/nginx.conf` | Align CSP |
-| `src/lib/web-platform/release/web-deployability-readiness.ts` | 13-item registry |
-| `src/lib/web-platform/release/web-runtime-min-contract.ts` | Min browser contract |
-| `src/lib/web-platform/release/index.ts` | Barrel |
-| `scripts/architecture/checks/check-web-deployability.ts` | CI gate 24 |
-| `scripts/release/web/rewrite-public-host.ts` | Sitemap/robots host rewriter |
-| `src/pages/admin/WEB01DeployabilityCenter.tsx` | Admin surface |
-| `src/lib/ci/ci-gate-registry.ts` + `ci-gate-types.ts` | +Phase 13 |
-| `src/routes/AdminRoutes.tsx` | Route wiring |
-| `generated/web-deployability-report.json` | Disk report |
-| `generated/ci-umbrella-manifest.json` | gateCount: 24 |
-| `generated/production-truth-final.json` | +phase-13 |
-| `docs/web/env-vars.md` | Real env documentation |
 
-After this, the Web Deployability Checklist is enforceable in CI — service worker behavior is correct in both preview and prod, CSP is consistent across hosts, push icons resolve, and a single dashboard tile reads `WEB: ready` against disk truth.
+| File | Change |
+|---|---|
+| `public/sw.js` | Tolerant install (allSettled) |
+| `public/sw-push.js` | **Delete** (consolidated into sw.js) |
+| `vite.config.ts` | Add public-host rewrite plugin |
+| `src/lib/web-platform/release/web-deployability-readiness.ts` | Fix push evidence; flip SEO to ready when env set |
+| `scripts/architecture/checks/check-web-deployability.ts` | Assert sw.js push handler, not sw-push.js |
+| `generated/web-deployability-report.json` | Regenerate: 13 ready / 0 partial |
+
+After this micro-phase, the Web Deployability Checklist is **truthfully 13/13 ready** — no orphan files, no atomic-install failure mode, no manual rewrite step before deploy.
 
