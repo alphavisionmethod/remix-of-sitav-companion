@@ -67,6 +67,11 @@ const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 
 // ═══════════════════════════════════════════════════════════════
+// Initialize error monitoring at module load
+// ═══════════════════════════════════════════════════════════════
+initErrorMonitoring();
+
+// ═══════════════════════════════════════════════════════════════
 // Admin tools wrapper
 // ═══════════════════════════════════════════════════════════════
 const AdminCommandPaletteWrapper = forwardRef<HTMLDivElement>((_, ref) => <div ref={ref}><AdminCommandPalette /></div>);
