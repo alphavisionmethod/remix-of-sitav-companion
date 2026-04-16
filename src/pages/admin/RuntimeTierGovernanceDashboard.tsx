@@ -59,13 +59,13 @@ export default function RuntimeTierGovernanceDashboard() {
           <CardDescription>Detected at provider mount via runtime-detection.ts</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <Badge variant="default" className="text-base px-4 py-2">
               {activeTier}
             </Badge>
-            <div className="text-sm text-muted-foreground">
-              <div><span className="font-medium">Confidence:</span> {(probe.confidence * 100).toFixed(0)}%</div>
-              <div><span className="font-medium">Reason:</span> {probe.reason}</div>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <div><span className="font-medium">Detected:</span> {new Date(probe.detectedAt).toLocaleString()}</div>
+              <div><span className="font-medium">Appliance:</span> {probe.isAppliance ? "✅" : "—"} · <span className="font-medium">Desktop:</span> {probe.isDesktop ? "✅" : "—"} · <span className="font-medium">Web:</span> {probe.isWeb ? "✅" : "—"}</div>
             </div>
           </div>
         </CardContent>
@@ -109,22 +109,24 @@ export default function RuntimeTierGovernanceDashboard() {
         <TabsContent value="tiers" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {RUNTIME_TIERS.map((tier) => {
-              const Icon = TIER_ICON[tier.id];
-              const isActive = tier.id === activeTier;
+              const Icon = TIER_ICON[tier.tier];
+              const isActive = tier.tier === activeTier;
               return (
-                <Card key={tier.id} className={isActive ? "border-primary" : ""}>
+                <Card key={tier.tier} className={isActive ? "border-primary" : ""}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
                       <Icon className="h-5 w-5" />
-                      {tier.label}
+                      Tier {tier.ordinal} — {tier.label}
                       {isActive && <Badge variant="default" className="ml-auto">Active</Badge>}
                     </CardTitle>
                     <CardDescription>{tier.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2 text-sm">
                     <div><span className="font-medium">Host Authority:</span> {tier.hostAuthority}</div>
-                    <div><span className="font-medium">Honest OS:</span> {tier.honestOS ? "✅" : "❌"}</div>
-                    <div><span className="font-medium">Sandbox:</span> {tier.sandbox}</div>
+                    <div><span className="font-medium">Honest OS Authority:</span> {tier.honestOSAuthority ? "✅" : "❌"}</div>
+                    <div className="text-xs text-muted-foreground pt-1">
+                      <span className="font-medium">Examples:</span> {tier.exampleCapabilities.slice(0, 3).join(" · ")}
+                    </div>
                   </CardContent>
                 </Card>
               );
@@ -181,7 +183,7 @@ export default function RuntimeTierGovernanceDashboard() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                <AlertTriangle className="h-5 w-5 text-warning" />
                 Features Requiring Disclosure
               </CardTitle>
               <CardDescription>
