@@ -6,7 +6,7 @@
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-const SettingsCenter = lazy(() => import("@/pages/SettingsCenter"));
+const SettingsCenter = lazy(() => import("@/pages/SettingsPage"));
 const EnvironmentSwitcher = lazy(() => import("@/pages/EnvironmentSwitcher"));
 
 export function getSettingsRoutes() {

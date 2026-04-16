@@ -11,7 +11,7 @@ import { AdminPrimaryNav } from "./AdminPrimaryNav";
 import { AdminDomainNav, type AdminDomain } from "./AdminDomainNav";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
-import { RolloutStatusBanner } from "../RolloutStatusBanner";
+import { RolloutStatusBanner } from "./RolloutStatusBanner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
