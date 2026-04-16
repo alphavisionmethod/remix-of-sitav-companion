@@ -1,162 +1,80 @@
 
 
-## Audit Summary
+## Audit Plan: 100% Reality, Deployability & Production Truth
 
-**Already exists (will extend, not recreate):**
-- `src/lib/control-plane/kill-switch-registry.ts` (10 switches, 163 lines) + admin page `AR08KillSwitchCenter`
-- `src/lib/support/runbook-registry.ts` (10 runbooks, 189 lines) + admin page `FCC04RunbookCenter` at `/admin/founder/runbooks`
-- `src/lib/policy/unified-policy-matrix.ts` (cross-domain policy entries) + `PolicySimulator`, `PolicyDecisionLedger`
-- `src/lib/runtime/runtime-capability-matrix.ts` (17 capabilities × 4 surfaces) + `MSA03CapabilityPortability`, `NSS02CapabilityMatrix`
-- `src/lib/backend-topology/edge-function-bounded-contexts.ts` (86 fns mapped to 13 contexts)
-- `src/lib/architecture/owner-workflow-map.ts` + `route-registry.ts` + `canonical-service-registry.ts`
-- 50+ architecture validation scripts incl. `check-policy-coverage.ts`, `check-policy-mapping.ts`, `check-owner-workflow-map.ts`
+I need to inspect the current state of the platform against the 13-section checklist before proposing any new work. The previous 8 phases built the meta-architecture spine (bounded contexts, runtime tiers, permission matrix, kill switches, runbooks, golden paths, meta-arch admin, CI umbrella). This audit proves whether *runtime reality* matches that spine.
 
-**Genuinely missing (must be added):**
-1. No first-class **bounded-context registry** unifying frontend + backend (only edge-function map exists)
-2. No **golden-path journey registry** in `src/lib/journeys/` (folder empty)
-3. No **meta-architecture umbrella** (`src/lib/meta-architecture/`) tying all six systems together
-4. Existing kill-switch/runbook/policy registries are **not cross-linked** to bounded contexts or journeys
-5. No `docs/runbooks/*.md` per-subsystem files; no `docs/architecture/BOUNDED_CONTEXT_MAP.md`, `RUNTIME_CAPABILITY_MATRIX.md`, `KILL_SWITCH_REGISTRY.md`, `GOLDEN_PATH_JOURNEYS.md`
-6. No **registry-integrity validator** asserting cross-references resolve
-7. Missing admin surfaces: Bounded Context Explorer, Golden Path Explorer, Runtime Capability Explorer
-8. No CI generators for context/journey/capability manifests in `generated/`
+### Phase A — Reality Audit (read-only, in this plan)
 
-## Phased Implementation Plan
+I will inspect:
 
-### Phase 1 — Bounded Context Registry (foundation everything else binds to)
+1. **Surface contracts** — verify every claimed surface (web/iOS/Android/Electron/VMware/Admin) has a runtime contract file in `src/lib/runtime/` and a deployment manifest in `infra/deploy/`.
+2. **Bounded context coverage** — cross-check `bounded-context-registry` against routes, services, edge functions, and DB tables. Find orphans.
+3. **Frontend reality gates** — scan pages for: mock providers in prod, missing empty/error/degraded states, unwired CTAs, dead nav links, demo-only imports.
+4. **Mobile deployability** — verify Capacitor or PWA config, push transport wiring, deep-link resolver, offline sync engine.
+5. **VMware/ISO path** — verify ISO build script, OVA export, cloud-init, OTA agent, backup/restore scripts are real.
+6. **AI governance** — verify `invokeAICapability` is the only path; scan for direct provider SDK imports.
+7. **Integrations** — verify connector tokens table, OAuth flows, webhook receivers exist for every claimed integration.
+8. **Auth/permissions/proof/recovery** — verify granular permission gates on admin routes, RLS coverage, kill-switch enforcement points, runbook drill scripts.
+9. **Support/operations** — verify runbook coverage, on-call rotation manifest, incident command surface.
 
-**New code (`src/lib/architecture/`):**
-- `bounded-context-types.ts` — `BoundedContext`, `BoundedContextEntry` with all 18 metadata fields from spec
-- `bounded-context-registry.ts` — 13 canonical contexts (Business OS, Finance OS, Concierge OS, Investment Office, Boardroom, Mission Control, Setup/Identity, Cloud Control Plane, Integrations, Proof/Trust, Runtime/Kernel, Mobile, Admin) populated from real routes/services/edge-functions/tables
-- `context-owner-map.ts`, `context-dependency-map.ts`, `context-runtime-map.ts`, `context-surface-map.ts` — derived views
+### Phase B — Implementation Plan (executed after approval)
 
-**Wiring:**
-- Re-export from `src/lib/architecture/index.ts`
-- Update `edge-function-bounded-contexts.ts` to reference canonical context IDs
-- Add `boundedContextId` field to `canonical-service-registry.ts` entries
-- New script `scripts/architecture/checks/check-bounded-context-coverage.ts` — assert every route/service/edge-function/critical-table maps to a context
-- New manifest generator `scripts/manifests/generate/generate-bounded-context-manifest.ts` → `generated/bounded-context-manifest.json`
-- Doc: `docs/architecture/BOUNDED_CONTEXT_MAP.md`
+Based on audit findings, deliver in 4 sub-phases. Each ends with a CI gate and a manifest artifact.
 
-### Phase 2 — Runtime Capability Matrix (extend existing)
+**B1 — Reality Contracts & Surface Honesty (~800 LOC)**
+- Extend `src/lib/runtime/` with missing contracts: `mobile-runtime-contract.ts`, `appliance-runtime-contract.ts`, `admin-runtime-contract.ts`.
+- Create `src/lib/reality/feature-reality-registry.ts` — typed registry classifying every feature as `real | simulated | degraded | unsupported | roadmap`.
+- Create `src/lib/reality/surface-claim-map.ts` mapping each surface to honest capability claims.
+- CI gate: `check-feature-reality-coverage.ts` — fail if any feature in the route registry lacks a reality classification.
+- Doc: `docs/architecture/PRODUCT_REALITY_BASELINE.md`.
 
-**Extend existing files:**
-- Expand `runtime-capability-matrix.ts` from 4 surfaces to 8 (add iOS, Android, offline, demo, real as sub-dimensions of existing surfaces)
-- New `src/lib/runtime/feature-capability-registry.ts` — map app features (not just hardware capabilities) to surfaces with simulated/degraded/prohibited/roadmap states
-- New `src/lib/runtime/capability-fallbacks.ts` — fallback handlers per `(capability, surface)`
-- New `src/lib/runtime/capability-launch-honesty-map.ts` — bind to existing `launch-honesty-rules.ts`
-- New `src/lib/runtime/surface-types.ts` — canonical surface enum
+**B2 — Bounded Context Completeness (~600 LOC)**
+- Extend `bounded-context-registry.ts` to enforce every context declares: owner, APIs, read models, write models, external deps, deployment unit, test suite path.
+- Create `src/lib/architecture/context-membership-map.ts` — maps every route, service, edge function, and table to exactly one context.
+- CI gate: `check-context-membership.ts` — fail on orphans (route/service/function/table without context) or duplicates (assigned to >1).
+- Generated artifact: `generated/context-membership-manifest.json`.
 
-**Wiring:**
-- New `check-runtime-capability-completeness.ts`
-- Generator → `generated/runtime-capability-matrix.json` (extend existing generator)
-- Doc: `docs/architecture/RUNTIME_CAPABILITY_MATRIX.md`
+**B3 — Frontend Reality Gates (~900 LOC)**
+- Create `src/lib/reality/page-state-contract.ts` — typed contract requiring loading/empty/error/degraded states per page class.
+- Create `src/lib/reality/page-state-registry.ts` — registry of state coverage per route.
+- Build CI gate `check-page-state-coverage.ts` that scans `src/pages/**` for required state markers.
+- Build CI gate `check-cta-wiring.ts` — scans for `onClick={() => {}}`, `disabled` without reason, `TODO`, placeholder hrefs.
+- Build CI gate `check-mock-leak.ts` — fails if `useDemoData` / mock providers are imported by any production route in real mode.
+- Generated artifact: `generated/frontend-reality-report.json`.
 
-### Phase 3 — Unified Permission & Policy Matrix (extend existing)
+**B4 — Deployability & Operability Truth (~700 LOC)**
+- Verify and harden:
+  - `infra/deploy/mobile.yaml` push transport secrets are wired into `mobile-push-service.ts`.
+  - `scripts/release/iso/` end-to-end (build → autoinstall → OTA → backup → restore).
+  - `scripts/release/vmware/build-ova.sh` produces validated OVA.
+- Create `src/lib/deploy/deployability-registry.ts` — per-surface deployability score (build, sign, distribute, update, recover).
+- CI gate: `check-deployability-coverage.ts` — fails if any claimed surface scores < 100%.
+- Wire into Phase 8 CI Umbrella as a new gate group `deployability`.
 
-**Extend `src/lib/policy/`:**
-- Expand `unified-policy-matrix.ts` to add the 9 dimensions from spec (actor/domain/surface/trust/proof/reversibility/approval/sensitivity/tenant)
-- New `policy-actor-registry.ts`, `policy-domain-map.ts`, `policy-surface-map.ts`, `policy-proof-requirements.ts`, `policy-reversibility-map.ts`, `policy-trust-thresholds.ts`, `policy-approval-map.ts`
-- Re-export via `src/lib/policy/index.ts`
+### Phase C — Final Wiring
 
-**Wiring:**
-- Extend `check-policy-coverage.ts` to assert every privileged action has full matrix entry
-- Hook into existing trust governor and approval engine import sites
-- Doc: `docs/architecture/UNIFIED_PERMISSION_AND_POLICY_MATRIX.md`
+- Add 4 new gates to `ci-gate-registry.ts` (Phase 8 umbrella).
+- Add `META04ProductReality.tsx` admin page surfacing the live reality + deployability matrix at `/admin/meta/reality`.
+- Update `docs/architecture/META_ARCH_REGISTRY.md` to reference the reality plane.
+- Run full umbrella locally; require 0 errors before declaring deployment-ready.
 
-### Phase 4 — Kill Switch Registry (extend & cross-link)
+### Deliverables Summary
 
-**Extend existing `src/lib/control-plane/`:**
-- New `kill-switch-types.ts` (extract types from existing registry)
-- Expand `kill-switch-registry.ts` from 10 → 14+ switches (add: model providers, workflow classes, simulations, release rollout, appliance update channels, self-healing, provider-family ingestion)
-- New `kill-switch-enforcement-map.ts` — declarative enforcement points (which edge fn / service checks each switch)
-- New `kill-switch-dependency-map.ts` — switch-to-switch dependencies
-- New `kill-switch-runtime-consequence.ts` — what UI/runtime does on activation
+| Sub-phase | Files | LOC | New CI gates |
+|-----------|-------|-----|--------------|
+| B1 Reality contracts | 6 lib + 1 doc | ~800 | 1 |
+| B2 Context completeness | 2 lib + 1 script + 1 manifest | ~600 | 1 |
+| B3 Frontend gates | 2 lib + 3 scripts + 1 report | ~900 | 3 |
+| B4 Deployability | 1 lib + 1 script + script audits | ~700 | 1 |
+| C Final wiring | 1 admin page + registry updates | ~400 | — |
+| **Total** | **~17 files** | **~3400 LOC** | **6 gates** |
 
-**Wiring:**
-- Add runtime enforcement helper `useKillSwitchGate(switchId)` consumed by edge functions and services
-- New `check-kill-switch-coverage.ts` — assert high-risk subsystems have switches
-- Doc: `docs/architecture/KILL_SWITCH_REGISTRY.md`
+### Acceptance Criteria
 
-### Phase 5 — Production Runbooks (per-subsystem markdown + extend registry)
-
-**New files:**
-- `docs/runbooks/{auth-outage,provider-outage,sync-lag,stuck-workflow,proof-mismatch,generated-vs-runtime-drift,push-failure,vmware-boot-failure,release-rollback,ai-provider-degradation,connector-token-failure,setup-checkpoint-corruption,approval-queue-jam,db-restore-failure,rls-misconfig,desktop-host-bridge-failure,mobile-push-registration,runtime-probe-failure,support-escalation-failure}.md` (≈19 files)
-- `docs/architecture/RUNBOOK_INDEX.md`
-- New `src/lib/support/runbook-types.ts` (extract types)
-- New `src/lib/support/runbook-subsystem-map.ts` — link each subsystem to its runbook IDs
-- Expand `runbook-registry.ts` with `markdownRef` field pointing to docs file
-
-**Wiring:**
-- New `check-runbook-coverage.ts` — assert every kill switch has runbook ref, every critical incident class has runbook
-- Bind into `FCC04RunbookCenter` admin page (already exists, just needs richer data)
-
-### Phase 6 — Golden Path Journeys (entirely new)
-
-**New `src/lib/journeys/`:**
-- `golden-path-types.ts` — full metadata interface
-- `golden-path-registry.ts` — 15 journeys (first boot, sign in, restore, connect CRM, recover stale leads, approve outbound, review proof, mobile approval, owner intervention, setup continuation, push-to-approval, OAuth+sync, workflow replay, launch readiness, env recovery)
-- `journey-service-map.ts`, `journey-route-map.ts`, `journey-db-map.ts`, `journey-test-map.ts`, `journey-release-gate-map.ts`
-
-**Wiring:**
-- New `check-golden-path-coverage.ts`
-- Generator → `generated/golden-path-manifest.json`
-- Doc: `docs/architecture/GOLDEN_PATH_JOURNEYS.md`
-
-### Phase 7 — Meta-Architecture Umbrella + Admin Surfaces
-
-**New `src/lib/meta-architecture/`:**
-- `index.ts` re-exporting all six registries
-- `registry-integrity-validator.ts` — runtime assertion that cross-refs (context↔switch, switch↔runbook, journey↔context, etc.) resolve
-- `registry-dependency-map.ts` — graph of registry interconnections
-- `ownership-registry.ts` — unified owner/team map across all registries
-
-**New admin pages (in `src/pages/admin/`):**
-- `META01BoundedContextExplorer.tsx` — contexts, owners, APIs, services, tables, dependencies
-- `META02RuntimeCapabilityExplorer.tsx` — feature × surface matrix with launch-honesty
-- `META03GoldenPathExplorer.tsx` — journeys, screens, APIs, tables, tests, release gates, blocker state
-- (Reuse existing `AR08KillSwitchCenter`, `FCC04RunbookCenter`, `PolicyDecisionLedger`)
-
-**Wiring:**
-- Register new pages in `admin-route-registry.ts` under appropriate domains
-- Add to `AdminRoutes.tsx` with permission gates
-- New `scripts/architecture/checks/check-registry-integrity.ts` runs all six coverage checks + cross-link integrity
-- Add to CI pipeline via `package.json` script
-
-### Phase 8 — CI Validation, Generated Manifests, Drift Gates
-
-- Generators: `bounded-context-manifest.json`, `golden-path-manifest.json`, `runtime-capability-matrix.json` (extend), `kill-switch-manifest.json`, `runbook-index.json`, `meta-architecture-integrity.json`
-- New scripts in `scripts/architecture/checks/`:
-  - `check-bounded-context-coverage.ts`
-  - `check-runtime-capability-completeness.ts`
-  - `check-kill-switch-coverage.ts`
-  - `check-runbook-coverage.ts`
-  - `check-golden-path-coverage.ts`
-  - `check-registry-integrity.ts`
-- Wire all into existing `architecture-report.ts`
-- Update `package.json` with `meta:audit` command running all six
-
-## Technical Notes (for engineers)
-
-- All registries follow existing `readonly`/`as const` immutable pattern used by `kill-switch-registry.ts`
-- Use existing `ViolationCollector` from `scripts/architecture/lib/utils.ts` for new checks
-- Bounded context IDs become foreign keys: `KillSwitchEntry.boundedContextId`, `RunbookEntry.boundedContextId`, `GoldenPathEntry.primaryContextId`, `CanonicalService.boundedContextId`
-- Admin pages use `AdminControlPlaneShell` and follow registry-driven nav pattern
-- New routes added under domains: `Trust-Security` (kill-switches, policy), `Health` (runbooks, capability), `Verification` (bounded-context, golden-paths)
-- Permission gates use existing granular system: `system.kill_switch`, `policy.manage`, `architecture.view`, `runbook.view`
-- Zero stubs: every registry entry must point to a real file path verified to exist; coverage checks fail CI on dangling refs
-- Total new files: ~58 (6 docs/architecture + 19 docs/runbooks + 28 src/lib + 3 admin pages + 6 scripts + 2 generators)
-
-## Deliverables per Phase
-
-| Phase | Files | LoC est. | CI Check |
-|---|---|---|---|
-| 1. Bounded Contexts | 7 lib + 1 doc + 1 script + 1 generator | ~1200 | `check-bounded-context-coverage` |
-| 2. Capability Matrix | 4 lib (extend 1) + 1 doc + 1 script | ~800 | `check-runtime-capability-completeness` |
-| 3. Policy Matrix | 7 lib (extend 1) + 1 doc | ~900 | extend `check-policy-coverage` |
-| 4. Kill Switches | 4 lib (extend 1) + 1 doc + 1 script | ~700 | `check-kill-switch-coverage` |
-| 5. Runbooks | 19 md + 3 lib + 1 doc + 1 script | ~1500 | `check-runbook-coverage` |
-| 6. Golden Paths | 6 lib + 1 doc + 1 script + 1 generator | ~1100 | `check-golden-path-coverage` |
-| 7. Meta-Arch + Admin | 4 lib + 3 pages + route updates | ~1800 | `check-registry-integrity` |
-| 8. CI/Manifests | 6 generators + report integration | ~600 | `meta:audit` umbrella |
+- All 6 new CI gates pass with 0 errors.
+- Every surface, feature, route, service, function, and table is classified.
+- No production route imports demo/mock providers.
+- Every claimed deployment target has a verified build → sign → distribute → update → recover path.
+- Admin can see reality status live at `/admin/meta/reality`.
 
