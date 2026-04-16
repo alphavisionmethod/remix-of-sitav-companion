@@ -210,3 +210,34 @@ export {
   getOrganizationAudit,
 } from "./ia-governance";
 export type { PageClassification } from "./ia-governance";
+
+// ── 26. Admin Control Plane Consolidation (Phase 1) ─────────
+export {
+  ADMIN_DOMAINS, MAX_ADMIN_DOMAINS,
+  DOMAIN_HUB_PATHS, DOMAIN_LABELS, DOMAIN_DESCRIPTIONS,
+  ADMIN_ROUTE_REGISTRY,
+  getRouteEntry, getRoutesForDomain, getPrimaryNavEntries,
+  getSubnavForDomain, getDeprecatedAliases, getMergeTargets,
+  validateRegistry as validateAdminRegistry,
+} from "./admin-route-registry";
+export type {
+  AdminDomain, AdminPageClass, AdminNavVisibility, AdminRouteEntry,
+} from "./admin-route-registry";
+
+export {
+  ADMIN_PAGE_CONSOLIDATION_MAP, CLUSTER_DOMAIN_MAP,
+  inferEntryFromFilename,
+  getEntry as getConsolidationEntry,
+  getEntriesForDomain as getConsolidationEntriesForDomain,
+  getMergeOperations, getPagesNeedingWrappers,
+} from "./admin-page-consolidation-map";
+export type { PageConsolidationEntry } from "./admin-page-consolidation-map";
+
+export {
+  OWNER_WORKFLOWS,
+  getWorkflow, getAllWorkflows, getWorkflowEntries,
+  validateWorkflowMap,
+} from "./owner-workflow-map";
+export type {
+  OwnerWorkflowKey, OwnerWorkflowStep, OwnerWorkflow,
+} from "./owner-workflow-map";
