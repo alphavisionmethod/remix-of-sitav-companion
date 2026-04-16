@@ -1,81 +1,97 @@
 
+The user wants the Manifest Truth Framework implemented in phases, each deployment-ready. Looking at context, much of the foundational work already exists in `src/lib/truth-manifests/` (manifest-registry, source-map, validator-map, CI-gate-map, runtime-consequence-map) and `scripts/manifests/` (generate + validate scripts). I need to audit what exists, identify gaps, and propose phases that strengthen weak linkages, add real implementation/runtime backing, and wire CI gates.
 
-# Admin Control Plane Consolidation — Phased Plan
+Let me structure 6 phases that build on existing scaffolding:
+
+**Phase 1**: Audit & Registry Hardening — complete metadata for every entry, classify all generated artifacts, demote unenforced ones to informational.
+
+**Phase 2**: Real Source-Truth Linkage — wire validators to actual route files, imports, edge functions, DB migrations, runtime registrations.
+
+**Phase 3**: Runtime Evidence Layer — runtime probes feeding runtime-class manifests with live evidence (boot chain, service registry, capability registry).
+
+**Phase 4**: CI Gate Wiring — every critical/high-severity manifest fails CI on drift; aggregator gate; release blockers.
+
+**Phase 5**: Owner Admin Surfaces — Truth Dashboard, Drift Triage, Provenance Inspector under `/admin/verification`.
+
+**Phase 6**: Tests, Docs, Cleanup — 8 governance tests, MANIFEST_TRUTH_FRAMEWORK.md, OWNERSHIP_MATRIX, RUNTIME_CONSEQUENCES, retire stale generators.
+
+Each phase ends with: tsc clean, all checks green, app boots, no regressions to admin consolidation work.
+
+<lov-plan>
+
+# Manifest Truth Framework — Phased Plan
 
 ## Goal
-Collapse 507 admin pages / 136 routes / 22 SubNavs into **12 canonical owner-workflow domains** with zero functional loss, zero broken deep links, and a green build at every phase boundary.
+Turn 57+ generated artifacts from "documentation theater" into a runtime-backed, CI-enforced truth pipeline. Every authoritative manifest must declare owner, source of truth, generator, validator, CI gate, and runtime consequence — and be backed by real implementation evidence.
 
-## Final Information Architecture (12 domains)
-```
-/admin
-  overview · alerts · approvals · environments
-  ai-runtime · integrations · trust-security · health
-  releases · verification · config · support
-```
+## Foundation Already In Place
+- `src/lib/truth-manifests/` — registry + source/validator/CI-gate/consequence maps
+- `scripts/manifests/generate/` — registry + truth dashboard generators
+- `scripts/manifests/validate/` — authority, runtime-linkage, CI-gates, source-truth checks
 
-## Phase Sequencing (each phase is independently deployable)
+The phases below harden these scaffolds into enforceable truth.
 
-### Phase 1 — Audit & Truth Registries (read-only, zero risk)
-Build the foundation before moving any page.
-- `src/lib/architecture/admin-page-consolidation-map.ts` — every current admin page classified: `PRIMARY_DOMAIN_ENTRY | SECONDARY_SUBVIEW | DETAIL_EXPLORER | WORKFLOW_TOOL | SUPPORT_TOOL | DUPLICATE_MERGE_REQUIRED | DEPRECATE_WITH_REDIRECT`, with target domain + new route + unique-functionality notes.
-- `src/lib/architecture/admin-route-registry.ts` — single source of truth: route, owner domain, page class, nav visibility, breadcrumb chain, deprecated aliases.
-- `src/lib/architecture/owner-workflow-map.ts` — daily / weekly / support / release / trust-safety workflows with entry pages, key metrics, escalation paths.
-- Docs: `docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md`, `docs/architecture/OWNER_WORKFLOW_MAP.md`.
-- New governance checks: `check-admin-domain-budget.ts` (≤12), `check-admin-route-registry-conformance.ts`, `check-admin-page-classification-coverage.ts`. Wire into the existing aggregator.
-- **Deployable**: pure additive truth artifacts, no UI/route changes.
+## Phase Sequencing (each independently deployable)
 
-### Phase 2 — Canonical Shell + 12-Domain Nav
-- Promote `AdminControlPlaneShell` as the **only** admin shell. Wrap `AdminShell`, `OwnerWorkspaceShell`, `FounderControlShell` as deprecation-shimmed re-exports calling the canonical shell.
-- Rewrite `AdminPrimaryNav.tsx` to the 12 canonical domains driven by `admin-route-registry`.
-- Rebuild `AdminDomainNav` + `AdminBreadcrumbs` from the registry.
-- Rewire `AdminCommandPalette` to read **only** registry-listed routes.
-- **Deployable**: nav points to the new 12 entries, but every existing route still resolves to its current page.
+### Phase 1 — Registry Hardening & Honest Classification
+- Expand `manifest-registry.ts` to cover **every** file in `generated/` (currently partial). Classify each: `structural | contract | runtime | compliance | informational`.
+- Mark every entry that lacks a real validator as `authoritative: false` + `informational`. No more silent authority claims.
+- Add `manifest-types.ts` with the full `ManifestEntry` schema (owner, sourceOfTruth, generationInputs, validationInputs, ciGate, driftSeverity, runtimeConsequence, releaseConsequence, supportConsequence, consumers).
+- New check: `check-manifest-authority-completeness.ts` — fails if any `authoritative: true` entry is missing required metadata.
+- **Deployable**: pure metadata, zero behavior change.
 
-### Phase 3 — Domain Hubs (Overview, Alerts, Approvals, Environments)
-Create the four daily-workflow hubs. Each hub composes existing pages as **modules/tabs/explorers**, not new content.
-- `overview/OverviewHome` ← merges `AdminDashboard`, `AdminOperationsHub`, `MissionControlHome`, `SystemHealthDashboard`, `LaunchReadinessBoard`, `LaunchHonestyBoard`, `GeneratedTruthDashboard` as widgets.
-- `alerts/AlertsHome` ← unifies `AlertTriageBoard`, `NoSilentFailureAlerts`, AI/integration/degraded streams.
-- `approvals/ApprovalsHome` ← merges `AIApprovalDesk`, `AdvisorActionApprovalAdmin`, `HQApprovalQueue`, `AIT07ApprovalQueue`.
-- `environments/EnvironmentsHome` ← combines `UserManagement`, `TeamManagement`, cloud user/device pages, session/setup state.
-- Old routes redirect (or wrap) to new hubs via the registry.
+### Phase 2 — Real Source-Truth Linkage
+Wire validators to **actual implementation**, not other manifests.
+- `check-route-manifest-vs-filesystem.ts` — diff `generated/route-manifest.json` against scanned `src/pages/**` + router config.
+- `check-service-manifest-vs-imports.ts` — diff service manifest against import-graph scan.
+- `check-edge-function-manifest-vs-supabase.ts` — diff against `supabase/functions/*` inventory.
+- `check-db-manifest-vs-migrations.ts` — diff DB-sensitive manifests against `supabase/migrations/*` schema.
+- `check-capability-manifest-vs-registrations.ts` — diff capability index against actual `registerCapability()` calls.
+- Update each affected registry entry: `sourceOfTruth` becomes the real path, not the prior manifest.
 
-### Phase 4 — Domain Hubs (AI Runtime, Integrations, Trust/Security, Health)
-- `ai-runtime/*` ← merges all `AIG*`, `AIT*`, `SAG*`, advisor pages, prompt/model/provider pages.
-- `integrations/*` ← merges all `CN*`, `PFA*`, Google/cloud sync, OAuth pages.
-- `trust-security/*` ← merges security command, policy editors, identity, proofs, audit, sensitive actions.
-- `health/*` ← merges fleet health, observability, runtime continuity, self-healing, incidents, performance budgets.
-- Each old `*SubNav` collapses into its target domain’s sub-nav (driven by registry).
+### Phase 3 — Runtime Evidence Layer
+Runtime-class manifests must be backed by live probes, not static scans.
+- `src/lib/truth-manifests/runtime-evidence/` — collectors for boot chain, service registry, capability registry, shell-space, startup order.
+- `generate-runtime-conformance-from-evidence.ts` — generator reads runtime evidence (captured during boot) instead of static source.
+- `check-runtime-manifest-has-evidence.ts` — fails if any `type: 'runtime'` entry lacks an evidence collector.
+- Demote any runtime manifest without evidence to `informational` until backed.
 
-### Phase 5 — Domain Hubs (Releases, Verification, Config, Support)
-- `releases/*` ← launch readiness, deployment rings, rollback, VMware, mobile releases, artifacts.
-- `verification/*` ← implementation truth, launch honesty, reality audit, customer journeys, route conformance, manifest explorer.
-- `config/*` ← feature flags, templates, content, registries.
-- `support/*` ← cases, diagnostics, replay, recovery, maintenance mode, stuck-workflow repair.
-- Verification surfaces explicitly demoted from “executive landing page” status — they live under Verification only.
+### Phase 4 — CI Gate Wiring
+- `scripts/manifests/validate-all.ts` — aggregator that runs every manifest validator and exits non-zero on any `critical` or `high` drift.
+- `check-manifest-ci-gate-coverage.ts` — fails if any `driftSeverity: 'critical' | 'high'` entry has no CI gate.
+- Wire `validate-all.ts` into the existing release-readiness gate so drift blocks deploy.
+- Generate `generated/manifest-drift-report.json` on every run for the admin dashboard.
 
-### Phase 6 — Canonical Admin Component Family
-Build shared primitives so every hub uses the same grammar:
-`AdminSummaryCard`, `AdminAlertCard`, `AdminQueueTable`, `AdminExplorerPanel`, `AdminDiagnosticsPanel`, `AdminDetailDrawer`, `AdminActionBar`, `AdminHealthWidget`, `AdminProofRow`, `AdminIncidentCard`. Migrate hubs from Phase 3–5 onto these primitives.
+### Phase 5 — Owner Admin Surfaces (under `/admin/verification`)
+Three new pages composed via `DomainHubLayout` (registry-driven, consistent with admin consolidation):
+- **Manifest Truth Dashboard** — authoritative vs informational counts, drift state, missing validators, missing CI gates, owners, last validation timestamp.
+- **Manifest Drift Triage** — what drifted, runtime/release/support consequence, owner, remediation path.
+- **Manifest Provenance Inspector** — per-manifest: generation source, validation source, CI gate, last run, evidence trail.
+- All three read from `generated/manifest-truth-dashboard.json` and `generated/manifest-drift-report.json`.
+- Register in `admin-route-registry.ts` under `verification` domain.
 
-### Phase 7 — Tests, Manifests, Cleanup
-- Tests: top-level domain budget, registry conformance, owner-workflow navigation resolves, no duplicate primary concept, single shell hierarchy, deprecated-route redirect, command-palette coherence, e2e for each daily workflow.
-- Update truth manifests: `manifest-registry.ts`, route manifests, customer-journey route refs, `docs/architecture/ADMIN_*`.
-- Remove pages **only** after `admin-page-consolidation-map.ts` shows zero remaining inbound references.
+### Phase 6 — Governance Tests, Docs, Cleanup
+- 8 vitest suites: authority completeness, source-truth integrity, runtime linkage, CI gate coverage, DB schema linkage, edge function linkage, route linkage, import-graph linkage.
+- Docs: `MANIFEST_TRUTH_FRAMEWORK.md`, `MANIFEST_OWNERSHIP_MATRIX.md`, `MANIFEST_RUNTIME_CONSEQUENCES.md`.
+- Retire or merge stale generators flagged in Phase 1 (only after all consumers are migrated).
+- Final pass: every entry in `manifest-registry.ts` either fully enforced **or** explicitly informational.
 
 ## Deliverables
-- 12-domain canonical IA + shell + nav
-- `admin-page-consolidation-map.ts` covering all 507 pages
-- `admin-route-registry.ts` (single source of truth)
-- `owner-workflow-map.ts` + 2 architecture docs
-- 12 domain hubs with merged-but-preserved functionality
-- Canonical admin component family
-- 8 new governance checks + e2e tests
-- Redirects/wrappers for every legacy route — zero broken bookmarks
+- Complete `ManifestEntry` registry covering all generated artifacts
+- 5 source-truth validators (routes, services, edge fns, DB, capabilities)
+- Runtime evidence collectors + runtime-class regeneration
+- `validate-all.ts` aggregator wired into release gate
+- 3 admin surfaces under Verification domain
+- 8 governance tests + 3 architecture docs
+- Honest classification: no manifest claims authority it cannot prove
 
 ## Non-Negotiable Rules
-- No blind deletion. Every page is classified before it moves.
-- Every legacy route resolves (redirect or wrapper) until Phase 7 cleanup.
-- Each phase ends with: `tsc --noEmit` clean, all governance checks green, app boots, daily/support/release workflows resolve.
+- No manifest is authoritative without owner + validator + CI gate + source of truth
+- Runtime-class manifests must have runtime evidence — otherwise demoted
+- No validator may treat another manifest as source of truth (unless explicitly declared)
+- Every phase ends with: `tsc --noEmit` clean, all governance checks green, app boots
+- Admin consolidation work (12-domain IA) must remain intact
 
-Starting with **Phase 1** in the next message.
+## Starting Point
+Phase 1 — Registry Hardening & Honest Classification — in the next message.
 
