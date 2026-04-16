@@ -10,7 +10,7 @@ import { DB_SCHEMA_REGISTRY } from "@/lib/db/schema-registry";
  * migrations.
  */
 describe("Migration ownership integrity", () => {
-  const knownDomains = new Set(DB_SCHEMA_REGISTRY.map((t) => t.domain));
+  const knownDomains = new Set<string>(DB_SCHEMA_REGISTRY.map((t) => t.domain as string));
 
   it("has migrations to validate", () => {
     expect(MIGRATION_REGISTRY.length).toBeGreaterThan(100);
