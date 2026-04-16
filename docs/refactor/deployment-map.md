@@ -38,3 +38,20 @@ Each plane's code must compile independently:
 - Engines: import only from `src/packages/` and peer engines
 - Pages: import from `src/hooks/` and `src/lib/services/`
 - Edge functions: self-contained Deno modules
+
+## Runtime Tier Ownership (4-Tier Model)
+
+Every deployment artifact is owned by exactly one runtime tier:
+
+| Artifact | Path | Runtime Tier | Honest OS Authority |
+|----------|------|--------------|---------------------|
+| Product Web SPA | `dist/**` | `WEB_APP` | ❌ |
+| Electron Desktop Host | `electron/**` | `DESKTOP_HOST` | ❌ |
+| Bootable ISO Appliance | `scripts/release/appliance/**` | `APPLIANCE_RUNTIME` | ✅ |
+| Edge Functions | `supabase/functions/**` | cross-tier backend | n/a |
+| Database Schema | `supabase/migrations/**` | cross-tier backend | n/a |
+| Simulated OS Shell | `src/components/sita/shell/**` | `SIMULATED_OS_EXPERIENCE` | ❌ |
+
+Authoritative source: `generated/runtime-tier-deployment-map.json` (regenerate via `npx tsx scripts/runtime/generate-runtime-tier-deployment-map.ts`).
+
+Tier definitions: `docs/architecture/PRODUCT_REALITY_TIERS.md`. Governance: `npx tsx scripts/runtime/run-runtime-tier-governance.ts`.
