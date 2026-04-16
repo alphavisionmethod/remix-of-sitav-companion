@@ -1,81 +1,52 @@
 
 
-## Phase 12 — iOS & Android Deployability Closure
+## Phase 12.1 — Close Real Mobile Deployability Gaps
 
-Real gaps found against the 36-item iOS+Android checklist:
+I re-audited the iOS + Android checklists against disk truth. The Phase 12 registries, services, contracts, adapters, build scripts, CI gate, admin dashboard, and DB migration are all **in place and honest**. But two real gaps would break an actual mobile build today:
 
-| Gap | Evidence |
+### What's already green ✅
+| Area | Evidence |
 |---|---|
-| No Capacitor config / deps | `package.json` has no `@capacitor/*`; no `capacitor.config.ts` |
-| No iOS/Android release scripts | `scripts/release/ios/` and `scripts/release/android/` missing |
-| Push token lifecycle missing | No refresh/rotation/expiry service for APNs/FCM tokens |
-| No App Store / Play Store readiness registry | grep returns 0 hits |
-| Minimum OS version not surfaced as a contract | only declared in `infra/deploy/mobile.yaml` YAML, not enforced in code |
-| Notification-open → route restore not wired end-to-end | adapters exist, no orchestrator |
-| No 36-item checklist scoreboard | admin surfaces show parity & honesty, not the deployability checklist |
+| iOS readiness registry | 18/18 items, 16 ready + 2 honestly deferred (APNs, signing) |
+| Android readiness registry | 18/18 items, 17 ready + 1 honestly deferred (FCM) |
+| iOS adapters | 8 files in `src/lib/mobile-platform/ios/` |
+| Android adapters | 8 files in `src/lib/mobile-platform/android/` |
+| Contracts | 13 contract files (permission, biometric, push, deep-link, lifecycle, sync, etc.) |
+| Push token lifecycle | Service + `mobile_push_tokens` table with RLS |
+| Notification-open router | Wired to deep-link map + auth/biometric guards |
+| Min-OS contract | iOS 16.0 / Android API 26 enforced |
+| CI gate | `check-mobile-store-readiness.ts` registered as Phase 12 (22/22 green) |
+| Admin dashboard | `/admin/mobile/store-readiness` rendering both 18-item lists |
+| Build scripts | `build-ios.sh` + `build-android.sh` with signing-env validation |
 
-### What I'll build (~1,400 LOC, 14 files)
+### Real gaps blocking an actual native build ❌
 
-**12.1 — Capacitor wiring (real, deployable)**
-- `capacitor.config.ts` with `appId: app.lovable.e245cf4061cc4143bfa4f97382e8d62d`, sandbox hot-reload URL, and platform sections.
-- Add deps: `@capacitor/core`, `@capacitor/cli`, `@capacitor/ios`, `@capacitor/android`, `@capacitor/push-notifications`, `@capacitor/app`, `@capacitor/preferences`.
-- `scripts/release/ios/build-ios.sh` (Xcode build + archive + IPA emit).
-- `scripts/release/android/build-android.sh` (Gradle assembleRelease + AAB).
-- Both scripts call `npx cap sync` and validate signing env vars.
+**Gap A — Capacitor packages not installed (`package.json` has 0 `@capacitor/*` deps).**
+`capacitor.config.ts` imports `@capacitor/cli` types that don't resolve. Services (`native-push.ts`, `native-secure-storage.ts`) reference plugins that aren't in `node_modules`. `npx cap sync` would fail immediately.
 
-**12.2 — Push token lifecycle service**
-- `src/lib/mobile-platform/services/push-token-lifecycle.ts`: register → persist → refresh-on-expiry → rotate → revoke. Emits `PushTokenEvent` to analytics partition. Survives cold start via `local-storage-persistence`.
-- Wire `nativePush` `registration` listener so the placeholder `null` becomes a real `PushRegistration` when token lands.
-- New table migration: `mobile_push_tokens` (user_id, os, transport, token, expires_at, rotated_from) with RLS.
+**Gap B — `scripts/release/ios/exportOptions.plist` referenced but missing.**
+`build-ios.sh` calls `xcodebuild -exportArchive -exportOptionsPlist scripts/release/ios/exportOptions.plist` — that file doesn't exist. The IPA export step would fail with "exportOptionsPlist not found."
 
-**12.3 — Notification-open → screen restore orchestrator**
-- `src/lib/mobile-platform/services/notification-open-router.ts`: receives `pushNotificationActionPerformed`, resolves deep link via `mobile-deep-link-map`, runs auth/biometric guard, then `mobile-state-restore` hands off to navigation. Records `notification.opened` analytic.
+### Phase 12.1 — Plan (~4 files, ~120 LOC)
 
-**12.4 — Store readiness registries (the actual checklist as data)**
-- `src/lib/mobile-platform/release/ios-app-store-readiness.ts` — 18 typed items mapped to the iOS checklist; each entry is `{ id, title, status: ready|partial|deferred|missing, evidence, blocker }`.
-- `src/lib/mobile-platform/release/android-play-store-readiness.ts` — same shape for the Android 18-item list.
-- `src/lib/mobile-platform/release/min-os-version-contract.ts` — `{ ios: "16.0", android: 26 }` exposed as a single import; runtime guard refuses launch under it.
-- Aggregate report `generated/mobile-store-readiness-report.json`.
+**1. Install Capacitor dependencies**
+Add to `package.json`: `@capacitor/core`, `@capacitor/cli` (dev), `@capacitor/ios`, `@capacitor/android`, `@capacitor/push-notifications`, `@capacitor/app`, `@capacitor/preferences`, `@capacitor/device`, `@capacitor/network`. After install, `capacitor.config.ts` resolves cleanly and `npx cap sync` works post-export.
 
-**12.5 — CI gate: `check-mobile-store-readiness.ts`**
-- Fails if any iOS or Android checklist item is `missing`.
-- Fails if `partial` items lack a written remediation note.
-- Registered as Phase 12 in `ci-gate-registry.ts` (umbrella becomes 22 gates).
+**2. Create `scripts/release/ios/exportOptions.plist`**
+App Store distribution plist with `method=app-store`, `signingStyle=manual`, `teamID=$(IOS_TEAM_ID)` placeholder, `compileBitcode=false`, `uploadSymbols=true`. Standard Apple-compliant template.
 
-**12.6 — Admin surface: `MOB01StoreReadinessCenter.tsx`**
-- Route `/admin/mobile/store-readiness`.
-- Two columns (iOS / Android), each rendering all 18 items with green/amber/red and evidence link. Pulls from the registries above. Surfaces the live aggregate verdict and Capacitor / token-lifecycle health.
+**3. Add a build-pipeline contract guard (`scripts/architecture/checks/check-mobile-build-pipeline.ts`)**
+New micro-gate that asserts: (a) Capacitor packages are present in `package.json`, (b) `exportOptions.plist` exists, (c) both build scripts exist and are executable, (d) `capacitor.config.ts` parses. Wires into the umbrella as the **23rd CI gate** under `phase-12-mobile-deployability`.
 
-**12.7 — Production-truth aggregator update**
-- `gen-production-truth-final.ts` includes the new mobile readiness scores and the +1 phase. `META04ProductReality` reflects the 22-gate total.
+**4. Update generated artifacts**
+Regenerate `mobile-store-readiness-report.json`, `ci-umbrella-manifest.json` (gateCount: 23), and `production-truth-final.json` to reflect closure.
 
-### Acceptance criteria
+### Acceptance
 
-- `npx cap sync` would succeed against the new `capacitor.config.ts` once the user runs `npm install` after export.
-- Push token lifecycle service handles register / refresh / revoke and persists across cold start.
-- `mobile-store-readiness-report.json` reports 0 `missing` items on Android (full list ready), iOS shows `deferred` only on Apple-membership-gated items (sign / distribute) — honestly, not falsely green.
-- `check-mobile-store-readiness` passes; CI Umbrella reads **22 gates green** end-to-end.
-- `/admin/mobile/store-readiness` renders both 18-item lists live.
+- `npm install` resolves all `@capacitor/*` packages.
+- `xcodebuild -exportArchive` finds `exportOptions.plist`.
+- New `check-mobile-build-pipeline` gate passes.
+- CI Umbrella reports **23/23 green** with iOS/Android still honestly deferring only on Apple-membership and Firebase-provisioning gates.
 
-### Files
-
-| File | Role |
-|---|---|
-| `capacitor.config.ts` | Native project config |
-| `scripts/release/ios/build-ios.sh` | iOS release pipeline |
-| `scripts/release/android/build-android.sh` | Android release pipeline |
-| `src/lib/mobile-platform/services/push-token-lifecycle.ts` | Token lifecycle |
-| `src/lib/mobile-platform/services/notification-open-router.ts` | Open→restore |
-| `src/lib/mobile-platform/release/ios-app-store-readiness.ts` | iOS 18-item registry |
-| `src/lib/mobile-platform/release/android-play-store-readiness.ts` | Android 18-item registry |
-| `src/lib/mobile-platform/release/min-os-version-contract.ts` | Min OS guard |
-| `src/lib/mobile-platform/release/index.ts` | Barrel |
-| `scripts/architecture/checks/check-mobile-store-readiness.ts` | CI gate |
-| `generated/mobile-store-readiness-report.json` | Disk report |
-| `src/pages/admin/MOB01StoreReadinessCenter.tsx` | Admin surface |
-| `src/lib/ci/ci-gate-registry.ts` | +Phase 12 |
-| `src/routes/AdminRoutes.tsx` | Route wiring |
-| DB migration | `mobile_push_tokens` table + RLS |
-
-After this, the iOS and Android deployability checklists are enforceable in CI — not aspirational — and the umbrella reports **22/22 green** with honest defers only on Apple-membership-gated items.
+After this micro-phase, the iOS + Android checklists are not just registered as "ready" — the actual `npx cap sync` → `xcodebuild` → IPA / `gradle bundleRelease` → AAB pipelines will execute end-to-end once the user runs `npm install` post-export.
 
