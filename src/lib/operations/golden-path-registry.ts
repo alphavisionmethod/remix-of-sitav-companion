@@ -441,6 +441,12 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         owner: "integration-team",
         lastGreenAt: null,
       },
+      {
+        kind: "playwright-e2e",
+        artifactRef: "tests/e2e/customer-journey/connectors/oauth-and-sync.spec.ts",
+        owner: "integration-team",
+        lastGreenAt: null,
+      },
     ],
     blockingKillSwitches: ["KS-CONNECTORS", "KS-SYNC"],
     recoveryRunbookRefs: ["RB-004", "RB-006"],
