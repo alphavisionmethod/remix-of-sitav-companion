@@ -37,7 +37,7 @@ const pages = [
   ["ITC07ImplementationMap", () => import("@/pages/admin/implementation-truth/ITC07ImplementationMap")],
   ["ITC08ArchitectureCompliance", () => import("@/pages/admin/implementation-truth/ITC08ArchitectureCompliance")],
   ["ITC09RouteInventory", () => import("@/pages/admin/implementation-truth/ITC09RouteInventory")],
-] as const;
+];
 
 describe("Admin Subdirs Batch 15", () => {
   pages.forEach(([name, loader]) => {

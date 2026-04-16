@@ -37,7 +37,7 @@ const pages = [
   ["CloudMonitoringAdmin", () => import("@/pages/admin/cloud/CloudMonitoringAdmin")],
   ["CloudNamespacesAdmin", () => import("@/pages/admin/cloud/CloudNamespacesAdmin")],
   ["CloudObservabilityAdmin", () => import("@/pages/admin/cloud/CloudObservabilityAdmin")],
-] as const;
+];
 
 describe("Admin Subdirs Batch 14", () => {
   pages.forEach(([name, loader]) => {
