@@ -12,8 +12,22 @@ export {
   getRunbooksByOwner,
   getUntestedRunbooks,
   getRunbooksByStatus,
-  type RunbookSeverity,
-  type RunbookStatus,
-  type RunbookStep,
-  type RunbookEntry,
+  getRunbookForKillSwitch,
+  getRunbooksByBoundedContext,
+  getRunbookForSubsystem,
 } from "./runbook-registry";
+
+export type {
+  RunbookSeverity,
+  RunbookStatus,
+  RunbookStep,
+  RunbookEntry,
+  RunbookSubsystem,
+} from "./runbook-types";
+
+export {
+  RUNBOOK_SUBSYSTEM_REQUIREMENTS,
+  getMandatorySubsystems,
+  getCriticalIncidentSubsystems,
+  type RunbookSubsystemRequirement,
+} from "./runbook-subsystem-map";
