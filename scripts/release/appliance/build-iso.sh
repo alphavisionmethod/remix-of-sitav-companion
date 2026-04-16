@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
 # SITA OS — Bootable ISO Builder
+# Runtime Tier: APPLIANCE_RUNTIME (Tier 3)
+# Authority: appliance-runtime (HONEST OS authority for this tier)
+# Governed by: src/lib/runtime/appliance/appliance-runtime-contract.ts
+# Tier policy: docs/architecture/PRODUCT_REALITY_TIERS.md
+#
 # Creates a fully automated Ubuntu 24.04 installer ISO with
 # cloud-init autoinstall, Docker pre-configured, and the full
 # SITA OS stack ready to start on first boot.

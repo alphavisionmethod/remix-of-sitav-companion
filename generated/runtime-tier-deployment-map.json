@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-04-16T18:51:00.374Z",
+  "tierCount": 4,
+  "entryCount": 6,
+  "byTier": {
+    "WEB_APP": 1,
+    "DESKTOP_HOST": 1,
+    "APPLIANCE_RUNTIME": 1,
+    "SIMULATED_OS_EXPERIENCE": 1,
+    "CROSS_TIER": 2
+  },
+  "entries": [
+    {
+      "artifact": "Product Web SPA",
+      "pathGlob": "dist/**",
+      "tier": "WEB_APP",
+      "buildTarget": "vite build",
+      "runtime": "Browser (Chromium/Safari/Firefox)",
+      "deploymentTarget": "CDN / Lovable hosting",
+      "notes": "Browser-sandbox-bound. May render simulated OS UX (Tier 4) but never claims host authority."
+    },
+    {
+      "artifact": "Electron Desktop Host",
+      "pathGlob": "electron/**",
+      "tier": "DESKTOP_HOST",
+      "buildTarget": "@electron/packager",
+      "runtime": "Electron (Chromium + Node)",
+      "deploymentTarget": "GitHub Releases / DMG / EXE / AppImage",
+      "notes": "Wraps WEB_APP with desktop-host bridge (FS, native notifications, tray, auto-update)."
+    },
+    {
+      "artifact": "Bootable ISO Appliance",
+      "pathGlob": "scripts/release/appliance/build-iso.sh",
+      "tier": "APPLIANCE_RUNTIME",
+      "buildTarget": "build-iso.sh (Ubuntu 24.04 + cloud-init)",
+      "runtime": "Bare metal / VM / VMware ESXi",
+      "deploymentTarget": "ISO image (xorriso)",
+      "notes": "First-boot ceremony, OTA agent, recovery scripts. Only tier with honest 'managed runtime authority'."
+    },
+    {
+      "artifact": "Edge Functions",
+      "pathGlob": "supabase/functions/**",
+      "tier": "CROSS_TIER",
+      "buildTarget": "Deno deploy (auto via Lovable Cloud)",
+      "runtime": "Deno",
+      "deploymentTarget": "Supabase Edge Functions",
+      "notes": "Backend authority — consumed by all tiers via HTTPS."
+    },
+    {
+      "artifact": "Database Schema",
+      "pathGlob": "supabase/migrations/**",
+      "tier": "CROSS_TIER",
+      "buildTarget": "supabase migration",
+      "runtime": "PostgreSQL 15",
+      "deploymentTarget": "Lovable Cloud Postgres",
+      "notes": "Single source of persisted truth across all tiers."
+    },
+    {
+      "artifact": "Simulated OS Shell",
+      "pathGlob": "src/components/sita/shell/**",
+      "tier": "SIMULATED_OS_EXPERIENCE",
+      "buildTarget": "vite build (bundled with WEB_APP)",
+      "runtime": "Browser",
+      "deploymentTarget": "Bundled with Product Web SPA",
+      "notes": "Pure UX layer. Dock, lock screen, mission control. Never claims host privilege."
+    }
+  ]
+}

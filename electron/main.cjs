@@ -1,3 +1,10 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Electron Main Process
+// Runtime Tier: DESKTOP_HOST (Tier 2)
+// Authority: host-bridge (NOT honest OS authority)
+// Governed by: src/lib/runtime/desktop/desktop-host-contract.ts
+// Tier policy: docs/architecture/PRODUCT_REALITY_TIERS.md
+// ═══════════════════════════════════════════════════════════════
 const { app, BrowserWindow, Menu, Tray, ipcMain, nativeImage } = require('electron');
 const path = require('path');
 const os = require('os');

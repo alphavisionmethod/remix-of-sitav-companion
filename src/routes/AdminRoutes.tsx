@@ -56,6 +56,7 @@ const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
 const UserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
+const RuntimeTierGovernanceDashboard = lazy(() => import("@/pages/admin/RuntimeTierGovernanceDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
 const BackendTopologyDashboard = lazy(() => import("@/pages/admin/BackendTopologyDashboard"));
 
@@ -169,6 +170,7 @@ const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPa
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
+    <Route key="a1b" path="/admin/runtime-tier-governance" element={gated("audit.view", <RuntimeTierGovernanceDashboard />)} />,
     <Route key="a2" path="/admin/fleet-health" element={gated("maintenance.view", <FleetHealthPage />)} />,
     <Route key="a3" path="/admin/dashboard" element={<AdminDashboard />} />,
     <Route key="a4" path="/admin/team" element={gated("users.view", <TeamManagement />)} />,
