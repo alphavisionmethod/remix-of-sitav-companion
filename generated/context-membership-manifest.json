@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-04-16T23:05:13.741Z",
+  "routeBindings": [
+    {
+      "kind": "route",
+      "identifier": "/business",
+      "contextId": "business-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/money",
+      "contextId": "finance-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/finance",
+      "contextId": "finance-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/concierge",
+      "contextId": "concierge-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/communications",
+      "contextId": "concierge-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/investment",
+      "contextId": "investment-office"
+    },
+    {
+      "kind": "route",
+      "identifier": "/capital",
+      "contextId": "investment-office"
+    },
+    {
+      "kind": "route",
+      "identifier": "/boardroom",
+      "contextId": "boardroom"
+    },
+    {
+      "kind": "route",
+      "identifier": "/files",
+      "contextId": "runtime-kernel"
+    },
+    {
+      "kind": "route",
+      "identifier": "/apps",
+      "contextId": "runtime-kernel"
+    },
+    {
+      "kind": "route",
+      "identifier": "/settings",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/auth",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/login",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/signup",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/onboarding",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/admin",
+      "contextId": "admin"
+    },
+    {
+      "kind": "route",
+      "identifier": "/m/",
+      "contextId": "mobile"
+    },
+    {
+      "kind": "route",
+      "identifier": "/mobile",
+      "contextId": "mobile"
+    }
+  ],
+  "contextCount": 13,
+  "stats": {
+    "routesBound": 18,
+    "edgeFunctions": 73,
+    "services": 31,
+    "tables": 40,
+    "duplicates": 12
+  },
+  "issues": [
+    {
+      "kind": "edge-function",
+      "identifier": "business-board-api",
+      "reason": "Assigned to multiple contexts: business-os, boardroom"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "crm-sync",
+      "reason": "Assigned to multiple contexts: business-os, integrations"
+    },
+    {
+      "kind": "table",
+      "identifier": "crm_tasks",
+      "reason": "Assigned to multiple contexts: business-os, concierge-os"
+    },
+    {
+      "kind": "table",
+      "identifier": "advisor_board_recommendations",
+      "reason": "Assigned to multiple contexts: business-os, boardroom"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "investment-portfolio-api",
+      "reason": "Assigned to multiple contexts: finance-os, investment-office"
+    },
+    {
+      "kind": "table",
+      "identifier": "ai_inference_receipts",
+      "reason": "Assigned to multiple contexts: finance-os, proof-trust, runtime-kernel"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "brain-core",
+      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
+    },
+    {
+      "kind": "service",
+      "identifier": "advisor-orchestrator",
+      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
+    },
+    {
+      "kind": "table",
+      "identifier": "user_roles",
+      "reason": "Assigned to multiple contexts: setup-identity, admin"
+    },
+    {
+      "kind": "table",
+      "identifier": "admin_sessions",
+      "reason": "Assigned to multiple contexts: setup-identity, admin"
+    },
+    {
+      "kind": "service",
+      "identifier": "audit-service",
+      "reason": "Assigned to multiple contexts: proof-trust, admin"
+    },
+    {
+      "kind": "table",
+      "identifier": "admin_action_audit",
+      "reason": "Assigned to multiple contexts: proof-trust, admin"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "advisor-agent-loop",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "advisor-avatar-generate",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "advisor-conversation",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "advisor-knowledge-manage",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "api-gateway",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "app-store-api",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "chat-advisor",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "db-truth-introspect",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "digital-twin-engine",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "ecosystem-operations",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "event-processor",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "file-ingestion",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "health-check",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "main",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "scheduler-dispatch",
+      "reason": "Function exists on disk but no bounded context claims it"
+    },
+    {
+      "kind": "edge-function",
+      "identifier": "support-gateway",
+      "reason": "Function exists on disk but no bounded context claims it"
+    }
+  ],
+  "ok": false
+}
