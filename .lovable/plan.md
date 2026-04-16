@@ -1,152 +1,120 @@
 
 
-# SITA OS — Master Script System Refactor
+# SITA OS — Script System Completion & Wiring Plan
 
-## Current State (Verified)
+## Current State
 
-- **235 total scripts** across `scripts/`: 153 TypeScript, 22 shell, 44 PowerShell, 3 JS/MJS
-- **0 TypeScript build errors** (activePath issue already resolved)
-- Scripts spread across 12 top-level dirs + ~65 root-level files
-- No script registry, taxonomy, ownership, CI binding, or output mapping exists
-- Phase/prompt-era naming persists in 7 validation scripts
-- `validate-all.ts` and `generate-all.ts` use flat file paths with no classification
+**What's DONE (from previous rounds):**
+- 8/8 registry files in `scripts/registry/` — EXISTS
+- 5/5 architecture docs in `docs/architecture/SCRIPT_*` — EXISTS
+- 1 test file in `src/test/script-system/` — EXISTS
+- New domain scripts created: `scripts/runtime/{checks,edge-functions,generate}`, `scripts/manifests/{generate,validate,reports}`, `scripts/db/{checks,generate,backup}`, `scripts/support/{coverage,runbooks}`, `scripts/deployment/{checks,ingress,build}`, `scripts/architecture/checks/` (5 admin governance checks)
+- `validate-all.ts` and `generate-all.ts` rewritten as registry-driven
+- `scripts/legacy/` structure created
 
-## What Will Be Created/Changed
+**What's NOT DONE (31 missing subdirs, ~65 root scripts unmoved, ~58 validation scripts unmoved, ~53 architecture scripts unorganized, 0 package.json script commands):**
 
-### Phase 1: Fix Build Errors + Script Registry Foundation (8 files)
+### Missing Directory Structure (31 subdirs)
+All of these directories need creating with at least a README or real scripts moved in:
+- `scripts/architecture/{assertions,reports}`
+- `scripts/contracts/{migration,lib}`
+- `scripts/manifests/lib`
+- `scripts/runtime/{probes,lifecycle,capability,lib}`
+- `scripts/db/{migrations,restore,lib}`
+- `scripts/deployment/{deploy,local,lib}`
+- `scripts/release/{desktop,appliance,vmware,bundles,rings,supply-chain,checks,lib}`
+- `scripts/support/{diagnostics,drills,recovery,lib}`
+- `scripts/security/{checks,rotation,attestations,lib}`
 
-**New directory `scripts/registry/`** with 8 governance files:
+### Scripts Not Yet Moved (~176 scripts)
+- **65 root-level scripts** still in `scripts/` (e.g., `check-canonical-imports.ts`, `generate-route-manifest.ts`, `restore-backup.sh`, `consolidate-services.js`)
+- **58 validation scripts** still in `scripts/validation/` including 7 phase/prompt-era named scripts
+- **53 architecture root scripts** (assertions and checks sitting flat instead of in subdirs)
 
-1. **`script-registry.ts`** — Master registry of all 235 scripts with id, path, class, owner, permanence, inputs, outputs, CI binding, runtime consequence, canonical status
-2. **`script-taxonomy.ts`** — 11 canonical script classes: assert, check, validate, generate, bootstrap, migrate, emit, codemod, drill, restore, rotate
-3. **`script-owner-map.ts`** — Maps every script to one of 9 ownership domains (architecture, platform/runtime, contracts, deployment/release, db, security, supportability, admin/control-plane, migration/refactor)
-4. **`script-output-map.ts`** — Maps generators to their output artifacts in `generated/`
-5. **`script-ci-binding-map.ts`** — Maps scripts to CI phases: pr, nightly, manual, release-gate, deploy-gate, support-drill, local-only
-6. **`script-runtime-consequence-map.ts`** — Defines what breaks if each script is absent/broken
-7. **`script-language-policy.ts`** — Classifies all scripts by language and defines policy for new scripts
-8. **`script-classification-report.ts`** — Generates summary of unclassified, duplicate, deprecated, ownerless scripts
+### Missing Wiring
+- **package.json**: 0 canonical script commands (no `validate:*`, `generate:*`, `release:*`, `drill:*`)
+- **Security subdirs**: `checks/`, `rotation/`, `attestations/` — all missing (scripts sit flat in `scripts/security/`)
 
-### Phase 2: New Script Domains (50+ new script files)
+---
 
-**`scripts/runtime/`** — Runtime truth plane:
-- `checks/check-runtime-capability-matrix.ts`
-- `checks/check-runtime-tier-coverage.ts`
-- `checks/check-reality-classification-coverage.ts`
-- `checks/check-desktop-runtime-contract.ts`
-- `checks/check-mobile-runtime-contract.ts`
-- `checks/check-appliance-runtime-contract.ts`
-- `generate/generate-runtime-capability-matrix.ts`
-- `generate/generate-runtime-reality-map.ts`
-- `probes/ai-runtime-probe.ts` (moved from root)
-- `edge-functions/check-edge-function-topology.ts`
-- `edge-functions/check-edge-function-category-coverage.ts`
-- `edge-functions/check-edge-function-auth-map.ts`
-- `edge-functions/generate-edge-function-registry.ts`
+## Implementation Plan
 
-**`scripts/manifests/`** — Manifest truth plane:
-- `validate/check-manifest-authority.ts`
-- `validate/check-manifest-runtime-linkage.ts`
-- `validate/check-manifest-source-truth.ts`
-- `validate/check-manifest-ci-gates.ts`
-- `validate/check-manifest-owner-coverage.ts`
-- `generate/generate-manifest-registry.ts`
-- `generate/generate-manifest-truth-dashboard.ts`
-- `reports/generate-manifest-drift-report.ts`
+### Phase 1: Create All Missing Directories + Move Scripts
 
-**`scripts/db/`** — Database truth plane:
-- `checks/check-schema-registry.ts`
-- `checks/check-table-ownership.ts`
-- `checks/check-migration-ownership.ts`
-- `checks/check-rls-policy-registry.ts`
-- `checks/check-tenancy-boundary-map.ts`
-- `generate/generate-schema-registry.ts`
-- `generate/generate-table-ownership-map.ts`
-- `generate/generate-rls-policy-registry.ts`
-- `generate/generate-migration-registry.ts`
-- `backup/verify-backup-restore.ts`
+**1a. Architecture reorganization** — Move 25+ `.ps1` assertions into `scripts/architecture/assertions/`, move `architecture-report.ts` and `boundary-check.ts` to proper subdirs.
 
-**`scripts/support/`** — Supportability plane:
-- `coverage/check-runbook-coverage.ts`
-- `coverage/check-alert-runbook-linkage.ts`
-- `coverage/check-kill-switch-coverage.ts`
-- `coverage/check-golden-path-coverage.ts`
-- `runbooks/generate-runbook-index.ts`
-- `runbooks/generate-golden-path-registry.ts`
-- `diagnostics/` (move `ops-build-diagnostic-bundle.ts`)
-- `drills/` (move disaster-recovery-drill scripts)
-- `recovery/` (move restore-backup scripts)
+**1b. Root script redistribution** — Move all 65 root scripts to canonical homes:
+| Script Pattern | Target |
+|---|---|
+| `check-canonical-imports.ts`, `check-contract-*`, `check-import-boundaries.ts`, `check-package-exports.ts`, `check-duplicate-exports.ts` | `scripts/contracts/checks/` |
+| `check-single-brain.ts`, `check-runtime-usage.ts`, `check-edge-function-health.ts`, `check-scoring-boundaries.ts` | `scripts/runtime/checks/` |
+| `check-rls-coverage.ts`, `db-integrity-check.sh` | `scripts/db/checks/` |
+| `check-ia-coherence.ts`, `check-drift.ts`, `check-route-drift.ts`, `check-no-page-mocks.ts`, `check-inline-mocks.ts`, `check-feature-governance.ts`, `check-delegation-receipts.ts` | `scripts/architecture/checks/` |
+| `generate-route-manifest.ts`, `generate-service-manifest.ts`, `generate-contract-manifest.ts`, `generate-ownership-manifest.ts`, `generate-admin-support-visibility.ts`, `generate-advisor-registry.ts`, etc. (20+ generators) | `scripts/manifests/generate/` |
+| `generate-runtime-conformance.ts`, `generate-runtime-ports.ts` | `scripts/runtime/generate/` |
+| `generate-release-gate-thresholds.ts` | `scripts/release/checks/` |
+| `ai-runtime-probe.ts` | `scripts/runtime/probes/` |
+| `restore-backup.ps1`, `restore-backup.sh` | `scripts/support/recovery/` |
+| `deploy-vmware.sh`, `build-ova.sh` | `scripts/release/vmware/` |
+| `smoke-tests.sh`, `validate-deployment.sh` | `scripts/deployment/checks/` |
+| `consolidate-*.js` | `scripts/legacy/migration-tools/` |
+| `sync-registry-manifests.ts`, `ingest-journey-results.ts`, `validate-os-contracts.ts` | appropriate domain dirs |
 
-**New admin/architecture governance checks** (in `scripts/architecture/checks/`):
-- `check-admin-ia.ts`
-- `check-admin-top-level-domain-count.ts`
-- `check-admin-route-coherence.ts`
-- `check-admin-shell-consistency.ts`
-- `check-owner-workflow-map.ts`
+**1c. Validation script redistribution** — Move all 58 scripts from `scripts/validation/` to canonical domain homes. Rename 7 phase/prompt-era scripts:
+- `check-phase4-foundations.ts` → `check-runtime-foundations.ts`
+- `check-phase5-anti-patterns.ts` → `check-platform-anti-patterns.ts`
+- `check-phase5-import-boundaries.ts` → `check-contract-import-boundaries.ts`
+- `check-phase5-integration-map.ts` → `check-integration-map.ts`
+- `check-phase5-readiness.ts` → `check-platform-readiness.ts`
+- `check-phase5-route-contract-drift.ts` → `check-route-contract-drift.ts`
+- `check-prompt9-readiness.ts` → `check-release-readiness.ts`
 
-**`scripts/deployment/`** expansion:
-- `checks/check-deployment-unit-map.ts`
-- `checks/check-build-output-map.ts`
-- `checks/check-ingress-topology.ts`
-- `checks/check-release-unit-map.ts`
-- `build/generate-build-output-map.ts`
-- `ingress/generate-ingress-topology.ts`
+**1d. Security reorganization** — Move `rotate-secrets.sh` → `scripts/security/rotation/`, `security-check-*.ts` → `scripts/security/checks/`.
 
-### Phase 3: Reorganize Existing Scripts
+**1e. Release reorganization** — Move `build-electron.sh` → `desktop/`, `build-iso.sh` → `appliance/`, `build-ova.sh` + VMware generators → `vmware/`, `ring-promotion.ts` → `rings/`, `release-launch-truth-audit.ts` → `checks/`, supply-chain scripts → `supply-chain/`.
 
-Move ~65 root-level scripts into canonical subdirectories:
-- 16 `check-*` → `scripts/architecture/checks/` or `scripts/contracts/checks/`
-- 28 `generate-*` → `scripts/manifests/generate/` or `scripts/runtime/generate/`
-- `consolidate-*.js` → `scripts/legacy/migration-tools/`
-- `db-integrity-check.sh` → `scripts/db/checks/`
-- `restore-backup.*` → `scripts/support/recovery/`
-- `deploy-vmware.sh`, `build-ova.sh` → `scripts/release/vmware/`
-- `smoke-tests.sh` → `scripts/testing/`
+**1f. Support completion** — Move `ops-build-diagnostic-bundle.ts` → `diagnostics/`, disaster-recovery-drill scripts → `drills/`, restore scripts → `recovery/`.
 
-Reorganize `scripts/validation/` by concern:
-- Phase/prompt-era scripts renamed to permanent names
-- Scripts moved to their canonical domain (db, runtime, manifest, architecture, deployment, support)
+### Phase 2: Re-export Shims for Moved Scripts
 
-Create `scripts/legacy/` for archived scripts.
+For every moved script that is referenced in `validate-all.ts` or `generate-all.ts` by its old path, create a 1-line re-export shim at the old location OR update the reference. Since `validate-all.ts` and `generate-all.ts` already use explicit path arrays, we update those arrays to point to new locations.
 
-### Phase 4: Update Master Entrypoints
+### Phase 3: Update validate-all.ts and generate-all.ts
 
-- **`validate-all.ts`** — Rewrite to use registry-driven script discovery by class
-- **`generate-all.ts`** — Rewrite to use registry-driven generator discovery
-- **`package.json`** — Add canonical script commands:
-  - `validate:architecture`, `validate:contracts`, `validate:runtime`, `validate:db`, `validate:deployment`, `validate:release`, `validate:support`
-  - `generate:manifests`, `generate:runtime`, `generate:db`, `generate:deployment`
-  - `release:desktop`, `release:appliance`, `release:vmware`
-  - `drill:recovery`, `drill:backup-restore`
+Rewrite both entrypoints to reference the new canonical paths for all moved scripts. Every domain section gets updated paths.
 
-### Phase 5: Documentation
+### Phase 4: Add package.json Script Commands
 
-Create 5 architecture docs:
-- `docs/architecture/SCRIPT_SYSTEM_ARCHITECTURE.md`
-- `docs/architecture/SCRIPT_TAXONOMY_AND_EXECUTION_POLICY.md`
-- `docs/architecture/SCRIPT_LANGUAGE_POLICY.md`
-- `docs/architecture/SCRIPT_OUTPUT_AND_CI_BINDING_MAP.md`
-- `docs/architecture/SCRIPT_PERMANENCE_AND_LIFECYCLE_MODEL.md`
+Add ~20 canonical commands:
+```
+validate:architecture, validate:contracts, validate:runtime, validate:db,
+validate:deployment, validate:release, validate:support, validate:all,
+generate:manifests, generate:runtime, generate:db, generate:deployment, generate:all,
+release:desktop, release:appliance, release:vmware,
+drill:recovery, drill:backup-restore
+```
 
-### Phase 6: Script System Tests
+### Phase 5: Update Registry Files
 
-Create `src/test/script-system/` with 7 test files asserting:
-- Every script is registered
-- Every permanent script has an owner
-- No duplicated canonical concerns
-- Every validation/generation script has outputs or CI bindings
+Update `scripts/registry/script-registry.ts` to reference new canonical paths for all moved scripts. Update `script-owner-map.ts` classification rules to match new directory structure. Update `script-ci-binding-map.ts` bindings to reference new paths.
 
-## Key Constraints
+### Phase 6: Expand Test Suite
 
-- All existing imports from `scripts/architecture/lib/utils.ts` preserved — the `lib/` stays and all new scripts import from it
-- `validate-all.ts` and `generate-all.ts` updated to reference new paths
-- No script deleted without replacement identification
-- All new scripts are real executable validators/generators, not stubs
-- Total new files: ~95 (8 registry + 50+ domain scripts + 5 docs + 7 tests + ~25 reorganized/renamed)
+Split `src/test/script-system/script-system.test.ts` into 7 focused test files per the spec, each asserting the governance rules for its domain.
 
-## Technical Notes
+---
 
-- All scripts use the existing `ViolationCollector` pattern from `scripts/architecture/lib/utils.ts`
-- New domain `lib/` directories created where needed for shared utilities
-- Registry files are `as const` typed registries following the pattern in `src/lib/` canonical registries
-- Shell/PS1 scripts are not moved if they have no TS equivalent — they stay in their current domain but get registered
+## Summary
+
+| Work Item | Count |
+|---|---|
+| New directories to create | 31 |
+| Scripts to move/rename | ~176 |
+| Re-export shims or path updates | ~176 |
+| package.json commands to add | ~20 |
+| Registry files to update | 3 |
+| Test files to create | 6 (expanding 1→7) |
+| Total new/modified files | ~250 |
+
+All moves preserve behavior. No deletions without replacement. Phase/prompt naming eliminated from durable architecture.
 
