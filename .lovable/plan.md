@@ -1,122 +1,120 @@
 
+# SITA OS — Deployment Audit & Full Wiring Remediation Plan
 
-# SITA OS — Global Refactor Integration & Dependency Audit
+## Scope
 
-## Audit Findings
+Two deliverables:
+1. **DEPLOYMENT_AUDIT.md** — A comprehensive document mapping every folder and file in the project tree with classification, ownership, wiring status, and deployment readiness.
+2. **Full wiring remediation** — Fix all remaining issues found during the audit.
 
-### CRITICAL: 77 Broken Script Import Paths
+## Project Structure Summary (Verified)
 
-When scripts were moved from their original locations into canonical subdirectories, their relative import paths to `scripts/architecture/lib/utils.ts` were **not updated**. This means **77 scripts will fail at runtime**.
-
-Three categories of breakage:
-
-| Category | Count | Current Import | Correct Import |
-|----------|-------|---------------|----------------|
-| `scripts/architecture/checks/` files using `./lib/utils` | 16 | `./lib/utils` | `../lib/utils` |
-| `scripts/architecture/checks/` files using `../architecture/lib/utils` | 18 | `../architecture/lib/utils` | `../lib/utils` |
-| `scripts/architecture/reports/` using `./lib/utils` | 1 | `./lib/utils` | `../lib/utils` |
-| Other domains (contracts, db, deployment, release, security, manifests, support, codemods) using `../architecture/lib/utils` | 42 | `../architecture/lib/utils` | `../../architecture/lib/utils` |
-
-### Stale Test File: `src/__tests__/scripts-validation.test.ts`
-
-This test file references **all old paths** (e.g., `scripts/generate-service-manifest.ts`, `scripts/check-single-brain.ts`, `scripts/architecture/boundary-check.ts`, `scripts/architecture/architecture-report.ts`). Every single path is now wrong — the file will fail 60+ assertions. Must be rewritten to reference new canonical paths.
-
-### Stale Registry References
-
-- **`src/lib/platform-law/platform-law-registry.ts`**: 3 references to `scripts/validation/` paths that no longer exist
-- **`src/lib/truth-manifests/manifest-registry.ts`**: 8 references to `scripts/validation/` paths that no longer exist
-
-### Stale Admin Page References
-
-- `ITC08ArchitectureCompliance.tsx`: References `scripts/architecture/architecture-report.ts` (now at `scripts/architecture/reports/architecture-report.ts`)
-- `ITC09RouteInventory.tsx`: References `scripts/generate-route-manifest.ts` (now at `scripts/manifests/generate/generate-route-manifest.ts`)
-- `ITC12ValidationPipeline.tsx`: References `scripts/check-architecture-compliance.ts` and `scripts/generate-route-manifest.ts` (both moved)
-
-### Stale Doc References
-
-- `docs/architecture/LAYER_SEPARATION.md`: References `scripts/check-import-boundaries.ts` (now at `scripts/contracts/checks/check-import-boundaries.ts`)
-
-### Empty Directories (17)
-
-Directories created but never populated with scripts or READMEs:
-`scripts/contracts/{lib,migration}`, `scripts/db/{lib,restore}`, `scripts/deployment/{deploy,lib,local}`, `scripts/manifests/lib`, `scripts/release/{bundles,lib}`, `scripts/runtime/{capability,lib,lifecycle}`, `scripts/security/{attestations,lib}`, `scripts/support/lib`, `scripts/ops` (orphaned)
-
-### Orphaned Files
-
-- `scripts/validation/lib/capability-quality-math.ts` and `scripts/validation/lib/master-dossier-plan.ts` — left behind in old validation dir, no consumers found
-- `scripts/ops/` — empty directory, `ops-build-diagnostic-bundle.ts` already moved to `scripts/support/diagnostics/`
-
-### `check-feature-governance.ts` Broken Imports
-
-This file imports from `../src/packages/feature-governance/...` which is incorrect from its current location at `scripts/architecture/checks/`.
-
----
+The project contains:
+- **4,400+ source files** across 25+ top-level `src/` directories
+- **74 edge functions** in `supabase/functions/`
+- **140+ migrations** in `supabase/migrations/`
+- **235+ scripts** across 17 `scripts/` domains
+- **57 generated artifacts** in `generated/`
+- **280+ admin pages** in `src/pages/admin/`
+- **80+ user pages** in `src/pages/`
+- **140+ hooks** in `src/hooks/`
+- **22 contexts** in `src/contexts/`
+- **14 route families** in `src/routes/`
+- **6 Electron files** in `electron/`
+- **9 CI workflows** in `.github/workflows/`
+- **15 deploy artifacts** in `deploy/`
+- **33 packages** in `src/packages/`
+- **16+ canonical registries** across `src/lib/`
+- **8 script registry files** in `scripts/registry/`
+- **35 architecture docs** in `docs/architecture/`
+- **9 refactor docs** in `docs/refactor/`
 
 ## Implementation Plan
 
-### Phase 1: Fix All 77 Broken Import Paths
+### Phase 1: Generate DEPLOYMENT_AUDIT.md
 
-Automated sed-based fix across all script files:
+Create a comprehensive `/generated/DEPLOYMENT_AUDIT.md` document (~2000 lines) containing:
 
-- **35 files in `scripts/architecture/checks/`**: Change `./lib/utils` and `../architecture/lib/utils` to `../lib/utils`
-- **1 file in `scripts/architecture/reports/`**: Change `./lib/utils` to `../lib/utils`
-- **42 files in other domains**: Fix relative path depth:
-  - `scripts/contracts/checks/` (11 files): `../architecture/lib/utils` → `../../architecture/lib/utils`
-  - `scripts/db/checks/` (1 file): same fix
-  - `scripts/db/migrations/` (1 file): same fix
-  - `scripts/deployment/checks/` (3 files): same fix
-  - `scripts/release/vmware/` (9 files): same fix
-  - `scripts/release/rings/` (1 file): same fix
-  - `scripts/release/checks/` (2 files): same fix
-  - `scripts/security/checks/` (2 files): same fix
-  - `scripts/manifests/validate/` (5 files): same fix
-  - `scripts/support/coverage/` (1 file): same fix
-  - `scripts/support/diagnostics/` (1 file): same fix
-  - `scripts/codemods/` (1 file): same fix
-- **`check-feature-governance.ts`**: Fix `../src/packages/` to `../../src/packages/`
+**Section 1 — Root Configuration Files**
+Every root file (package.json, Dockerfile, docker-compose.yml, vite.config.ts, tsconfig.json, etc.) with purpose and deployment role.
 
-### Phase 2: Rewrite `src/__tests__/scripts-validation.test.ts`
+**Section 2 — Source Tree (`src/`)**
+Full directory tree with file counts per directory, organized by architectural layer:
+- Web/Public layer (pages, routes, layouts)
+- App/User layer (features, hooks, contexts, components)
+- OS/Services layer (nova-sdk, os-services, os-security, sync-engine)
+- Admin/Operator layer (admin pages, admin components, admin routes)
+- Kernel/Core layer (core-services, orchestration, persistence)
+- Domain/Capability layer (domain-engines, capabilities, packages)
+- Runtime truth layer (runtime, devices, surfaces, deployment, db registries)
+- Platform layer (platform-plane, platform-law, control-plane)
+- Intelligence layer (advisor-intelligence, strategic-intelligence, intelligence-architecture, boardroom, no-hallucination)
 
-Update all 60+ file paths to their new canonical locations. Update the test assertions to match the new `validate-all.ts` and `generate-all.ts` structures.
+**Section 3 — Backend (`supabase/`)**
+All 74 edge functions listed with category, auth requirement, and frontend consumer status.
+All 140+ migrations listed chronologically.
 
-### Phase 3: Fix Stale Registry References
+**Section 4 — Scripts (`scripts/`)**
+All 17 domains with script counts and canonical entrypoints.
 
-- **`src/lib/platform-law/platform-law-registry.ts`**: Update 3 `scripts/validation/` paths to canonical locations
-- **`src/lib/truth-manifests/manifest-registry.ts`**: Update 8 `scripts/validation/` paths to canonical locations
+**Section 5 — Generated Artifacts (`generated/`)**
+All 57+ artifacts with source generator, validator, and consumer mapping.
 
-### Phase 4: Fix Admin Page References
+**Section 6 — Infrastructure**
+Electron, deploy, nginx, Docker, CI workflows, infra docs.
 
-- `ITC08ArchitectureCompliance.tsx`: Update to `scripts/architecture/reports/architecture-report.ts`
-- `ITC09RouteInventory.tsx`: Update to `scripts/manifests/generate/generate-route-manifest.ts`
-- `ITC12ValidationPipeline.tsx`: Update both references to new paths
+**Section 7 — Deployment Readiness Matrix**
+Per-plane readiness assessment (Web SPA, Admin, Mobile, Desktop/Electron, Appliance/VMware, Backend/Edge Functions).
 
-### Phase 5: Fix Doc References
+**Section 8 — Frontend ↔ Backend Alignment Matrix**
+Major feature journeys mapped to page → hook → service → edge function → DB table chain.
 
-- `docs/architecture/LAYER_SEPARATION.md`: Update script path reference
+**Section 9 — Reality Classification Summary**
+What is real, simulated, prototype, docs-only across runtime claims.
 
-### Phase 6: Clean Up Empty Dirs & Orphans
+**Section 10 — Outstanding Issues & Recommendations**
+Remaining gaps, P0 blockers, and remediation priorities.
 
-- Add README.md files to 17 empty directories explaining their purpose
-- Move `scripts/validation/lib/*.ts` to `scripts/manifests/lib/` (or `scripts/architecture/lib/`)
-- Remove empty `scripts/ops/` directory
+### Phase 2: Scan for Remaining Stale References
 
-### Phase 7: Generate Change Impact Report
+Run grep-based scans for:
+- Any remaining `scripts/validation/` references (should be zero after prior fixes)
+- Any remaining old script paths in registries, docs, admin pages
+- Any broken barrel exports in `src/lib/` index files
+- Any route references to non-existent pages
 
-Create `generated/refactor/GLOBAL_REFACTOR_CHANGE_IMPACT.md` documenting all changes, and run verification to confirm zero broken imports remain.
+### Phase 3: Fix Any Discovered Issues
 
----
+Based on Phase 2 scan results, fix:
+- Stale import paths
+- Broken barrel exports
+- Missing index re-exports
+- Stale doc references
+- Any remaining `platform-law-registry.ts` or `manifest-registry.ts` path issues
 
-## Summary
+### Phase 4: Update GLOBAL_REFACTOR_VERIFICATION_RESULTS.md
 
-| Work Item | Count |
-|-----------|-------|
-| Broken import paths to fix | 77 |
-| Test file to rewrite | 1 |
-| Registry files to update | 2 |
-| Admin pages to update | 3 |
-| Doc files to update | 1 |
-| Empty dirs to populate with READMEs | 17 |
-| Orphaned files to relocate | 2 |
-| Orphaned dirs to remove | 1 |
-| Total files changed | ~105 |
+Regenerate the verification results with final pass confirmation.
 
+### Phase 5: Build Verification
+
+Run `npx tsc --noEmit` to confirm zero TypeScript errors after all fixes.
+
+## Technical Details
+
+- DEPLOYMENT_AUDIT.md will be generated as a single comprehensive markdown file at `generated/DEPLOYMENT_AUDIT.md`
+- The document uses consistent formatting: tables for matrices, tree diagrams for structure, status badges for readiness
+- File counts are derived from actual filesystem scans, not estimates
+- Edge function classification uses the existing `edge-function-categories.ts` and `edge-function-registry.ts` as sources of truth
+- Reality classification uses `product-reality-tiers.ts` and `reality-classification-registry.ts`
+- All fixes are non-breaking — no file moves, only path corrections in string references
+
+## Estimated Changes
+
+| Item | Count |
+|------|-------|
+| New files to create | 1 (DEPLOYMENT_AUDIT.md) |
+| Files to scan for stale refs | ~20 registries + docs |
+| Potential fixes | 5-15 remaining stale refs |
+| Files to update | 1-5 |
+| Build verification | 1 pass |
