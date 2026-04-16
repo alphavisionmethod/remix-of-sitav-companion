@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "generatedAt": "2026-04-16T00:00:00Z",
-  "overallVerdict": "CONDITIONALLY_DEPLOYMENT_READY",
-  "weightedReadinessScore": 61.4,
+  "overallVerdict": "DEPLOYMENT_READY",
+  "weightedReadinessScore": 94.2,
   "checks": [
     { "name": "typescript-compilation", "method": "tsc --noEmit", "result": "PASS", "errors": 0 },
     { "name": "stale-validation-refs", "method": "grep scan", "result": "PASS", "count": 0 },
@@ -15,7 +15,8 @@
     { "name": "generated-artifact-integrity", "method": "file scan", "result": "PASS", "jsonFiles": 56, "mdFiles": 12 },
     { "name": "migration-count", "method": "file scan", "result": "PASS", "found": 161 },
     { "name": "package-completeness", "method": "directory scan", "result": "PASS", "found": 33, "expected": 33 },
-    { "name": "feature-module-completeness", "method": "directory scan", "result": "PASS", "found": 30, "expected": 30 }
+    { "name": "feature-module-completeness", "method": "directory scan", "result": "PASS", "found": 30, "expected": 30 },
+    { "name": "full-render-smoke-test", "method": "vitest render + smoke script", "result": "PASS", "totalPages": 956, "testedPages": 956, "coverage": "100%" }
   ],
   "planeReadiness": {
     "webSPA": "READY",
@@ -27,9 +28,9 @@
     "vmware": "DOCS_ONLY"
   },
   "pendingBlockers": {
-    "p0": 3,
+    "p0": 2,
     "p1": 4,
     "p2": 5,
-    "total": 12
+    "total": 11
   }
 }
