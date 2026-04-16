@@ -1,120 +1,122 @@
 
 
-# SITA OS — Script System Completion & Wiring Plan
+# SITA OS — Global Refactor Integration & Dependency Audit
 
-## Current State
+## Audit Findings
 
-**What's DONE (from previous rounds):**
-- 8/8 registry files in `scripts/registry/` — EXISTS
-- 5/5 architecture docs in `docs/architecture/SCRIPT_*` — EXISTS
-- 1 test file in `src/test/script-system/` — EXISTS
-- New domain scripts created: `scripts/runtime/{checks,edge-functions,generate}`, `scripts/manifests/{generate,validate,reports}`, `scripts/db/{checks,generate,backup}`, `scripts/support/{coverage,runbooks}`, `scripts/deployment/{checks,ingress,build}`, `scripts/architecture/checks/` (5 admin governance checks)
-- `validate-all.ts` and `generate-all.ts` rewritten as registry-driven
-- `scripts/legacy/` structure created
+### CRITICAL: 77 Broken Script Import Paths
 
-**What's NOT DONE (31 missing subdirs, ~65 root scripts unmoved, ~58 validation scripts unmoved, ~53 architecture scripts unorganized, 0 package.json script commands):**
+When scripts were moved from their original locations into canonical subdirectories, their relative import paths to `scripts/architecture/lib/utils.ts` were **not updated**. This means **77 scripts will fail at runtime**.
 
-### Missing Directory Structure (31 subdirs)
-All of these directories need creating with at least a README or real scripts moved in:
-- `scripts/architecture/{assertions,reports}`
-- `scripts/contracts/{migration,lib}`
-- `scripts/manifests/lib`
-- `scripts/runtime/{probes,lifecycle,capability,lib}`
-- `scripts/db/{migrations,restore,lib}`
-- `scripts/deployment/{deploy,local,lib}`
-- `scripts/release/{desktop,appliance,vmware,bundles,rings,supply-chain,checks,lib}`
-- `scripts/support/{diagnostics,drills,recovery,lib}`
-- `scripts/security/{checks,rotation,attestations,lib}`
+Three categories of breakage:
 
-### Scripts Not Yet Moved (~176 scripts)
-- **65 root-level scripts** still in `scripts/` (e.g., `check-canonical-imports.ts`, `generate-route-manifest.ts`, `restore-backup.sh`, `consolidate-services.js`)
-- **58 validation scripts** still in `scripts/validation/` including 7 phase/prompt-era named scripts
-- **53 architecture root scripts** (assertions and checks sitting flat instead of in subdirs)
+| Category | Count | Current Import | Correct Import |
+|----------|-------|---------------|----------------|
+| `scripts/architecture/checks/` files using `./lib/utils` | 16 | `./lib/utils` | `../lib/utils` |
+| `scripts/architecture/checks/` files using `../architecture/lib/utils` | 18 | `../architecture/lib/utils` | `../lib/utils` |
+| `scripts/architecture/reports/` using `./lib/utils` | 1 | `./lib/utils` | `../lib/utils` |
+| Other domains (contracts, db, deployment, release, security, manifests, support, codemods) using `../architecture/lib/utils` | 42 | `../architecture/lib/utils` | `../../architecture/lib/utils` |
 
-### Missing Wiring
-- **package.json**: 0 canonical script commands (no `validate:*`, `generate:*`, `release:*`, `drill:*`)
-- **Security subdirs**: `checks/`, `rotation/`, `attestations/` — all missing (scripts sit flat in `scripts/security/`)
+### Stale Test File: `src/__tests__/scripts-validation.test.ts`
+
+This test file references **all old paths** (e.g., `scripts/generate-service-manifest.ts`, `scripts/check-single-brain.ts`, `scripts/architecture/boundary-check.ts`, `scripts/architecture/architecture-report.ts`). Every single path is now wrong — the file will fail 60+ assertions. Must be rewritten to reference new canonical paths.
+
+### Stale Registry References
+
+- **`src/lib/platform-law/platform-law-registry.ts`**: 3 references to `scripts/validation/` paths that no longer exist
+- **`src/lib/truth-manifests/manifest-registry.ts`**: 8 references to `scripts/validation/` paths that no longer exist
+
+### Stale Admin Page References
+
+- `ITC08ArchitectureCompliance.tsx`: References `scripts/architecture/architecture-report.ts` (now at `scripts/architecture/reports/architecture-report.ts`)
+- `ITC09RouteInventory.tsx`: References `scripts/generate-route-manifest.ts` (now at `scripts/manifests/generate/generate-route-manifest.ts`)
+- `ITC12ValidationPipeline.tsx`: References `scripts/check-architecture-compliance.ts` and `scripts/generate-route-manifest.ts` (both moved)
+
+### Stale Doc References
+
+- `docs/architecture/LAYER_SEPARATION.md`: References `scripts/check-import-boundaries.ts` (now at `scripts/contracts/checks/check-import-boundaries.ts`)
+
+### Empty Directories (17)
+
+Directories created but never populated with scripts or READMEs:
+`scripts/contracts/{lib,migration}`, `scripts/db/{lib,restore}`, `scripts/deployment/{deploy,lib,local}`, `scripts/manifests/lib`, `scripts/release/{bundles,lib}`, `scripts/runtime/{capability,lib,lifecycle}`, `scripts/security/{attestations,lib}`, `scripts/support/lib`, `scripts/ops` (orphaned)
+
+### Orphaned Files
+
+- `scripts/validation/lib/capability-quality-math.ts` and `scripts/validation/lib/master-dossier-plan.ts` — left behind in old validation dir, no consumers found
+- `scripts/ops/` — empty directory, `ops-build-diagnostic-bundle.ts` already moved to `scripts/support/diagnostics/`
+
+### `check-feature-governance.ts` Broken Imports
+
+This file imports from `../src/packages/feature-governance/...` which is incorrect from its current location at `scripts/architecture/checks/`.
 
 ---
 
 ## Implementation Plan
 
-### Phase 1: Create All Missing Directories + Move Scripts
+### Phase 1: Fix All 77 Broken Import Paths
 
-**1a. Architecture reorganization** — Move 25+ `.ps1` assertions into `scripts/architecture/assertions/`, move `architecture-report.ts` and `boundary-check.ts` to proper subdirs.
+Automated sed-based fix across all script files:
 
-**1b. Root script redistribution** — Move all 65 root scripts to canonical homes:
-| Script Pattern | Target |
-|---|---|
-| `check-canonical-imports.ts`, `check-contract-*`, `check-import-boundaries.ts`, `check-package-exports.ts`, `check-duplicate-exports.ts` | `scripts/contracts/checks/` |
-| `check-single-brain.ts`, `check-runtime-usage.ts`, `check-edge-function-health.ts`, `check-scoring-boundaries.ts` | `scripts/runtime/checks/` |
-| `check-rls-coverage.ts`, `db-integrity-check.sh` | `scripts/db/checks/` |
-| `check-ia-coherence.ts`, `check-drift.ts`, `check-route-drift.ts`, `check-no-page-mocks.ts`, `check-inline-mocks.ts`, `check-feature-governance.ts`, `check-delegation-receipts.ts` | `scripts/architecture/checks/` |
-| `generate-route-manifest.ts`, `generate-service-manifest.ts`, `generate-contract-manifest.ts`, `generate-ownership-manifest.ts`, `generate-admin-support-visibility.ts`, `generate-advisor-registry.ts`, etc. (20+ generators) | `scripts/manifests/generate/` |
-| `generate-runtime-conformance.ts`, `generate-runtime-ports.ts` | `scripts/runtime/generate/` |
-| `generate-release-gate-thresholds.ts` | `scripts/release/checks/` |
-| `ai-runtime-probe.ts` | `scripts/runtime/probes/` |
-| `restore-backup.ps1`, `restore-backup.sh` | `scripts/support/recovery/` |
-| `deploy-vmware.sh`, `build-ova.sh` | `scripts/release/vmware/` |
-| `smoke-tests.sh`, `validate-deployment.sh` | `scripts/deployment/checks/` |
-| `consolidate-*.js` | `scripts/legacy/migration-tools/` |
-| `sync-registry-manifests.ts`, `ingest-journey-results.ts`, `validate-os-contracts.ts` | appropriate domain dirs |
+- **35 files in `scripts/architecture/checks/`**: Change `./lib/utils` and `../architecture/lib/utils` to `../lib/utils`
+- **1 file in `scripts/architecture/reports/`**: Change `./lib/utils` to `../lib/utils`
+- **42 files in other domains**: Fix relative path depth:
+  - `scripts/contracts/checks/` (11 files): `../architecture/lib/utils` → `../../architecture/lib/utils`
+  - `scripts/db/checks/` (1 file): same fix
+  - `scripts/db/migrations/` (1 file): same fix
+  - `scripts/deployment/checks/` (3 files): same fix
+  - `scripts/release/vmware/` (9 files): same fix
+  - `scripts/release/rings/` (1 file): same fix
+  - `scripts/release/checks/` (2 files): same fix
+  - `scripts/security/checks/` (2 files): same fix
+  - `scripts/manifests/validate/` (5 files): same fix
+  - `scripts/support/coverage/` (1 file): same fix
+  - `scripts/support/diagnostics/` (1 file): same fix
+  - `scripts/codemods/` (1 file): same fix
+- **`check-feature-governance.ts`**: Fix `../src/packages/` to `../../src/packages/`
 
-**1c. Validation script redistribution** — Move all 58 scripts from `scripts/validation/` to canonical domain homes. Rename 7 phase/prompt-era scripts:
-- `check-phase4-foundations.ts` → `check-runtime-foundations.ts`
-- `check-phase5-anti-patterns.ts` → `check-platform-anti-patterns.ts`
-- `check-phase5-import-boundaries.ts` → `check-contract-import-boundaries.ts`
-- `check-phase5-integration-map.ts` → `check-integration-map.ts`
-- `check-phase5-readiness.ts` → `check-platform-readiness.ts`
-- `check-phase5-route-contract-drift.ts` → `check-route-contract-drift.ts`
-- `check-prompt9-readiness.ts` → `check-release-readiness.ts`
+### Phase 2: Rewrite `src/__tests__/scripts-validation.test.ts`
 
-**1d. Security reorganization** — Move `rotate-secrets.sh` → `scripts/security/rotation/`, `security-check-*.ts` → `scripts/security/checks/`.
+Update all 60+ file paths to their new canonical locations. Update the test assertions to match the new `validate-all.ts` and `generate-all.ts` structures.
 
-**1e. Release reorganization** — Move `build-electron.sh` → `desktop/`, `build-iso.sh` → `appliance/`, `build-ova.sh` + VMware generators → `vmware/`, `ring-promotion.ts` → `rings/`, `release-launch-truth-audit.ts` → `checks/`, supply-chain scripts → `supply-chain/`.
+### Phase 3: Fix Stale Registry References
 
-**1f. Support completion** — Move `ops-build-diagnostic-bundle.ts` → `diagnostics/`, disaster-recovery-drill scripts → `drills/`, restore scripts → `recovery/`.
+- **`src/lib/platform-law/platform-law-registry.ts`**: Update 3 `scripts/validation/` paths to canonical locations
+- **`src/lib/truth-manifests/manifest-registry.ts`**: Update 8 `scripts/validation/` paths to canonical locations
 
-### Phase 2: Re-export Shims for Moved Scripts
+### Phase 4: Fix Admin Page References
 
-For every moved script that is referenced in `validate-all.ts` or `generate-all.ts` by its old path, create a 1-line re-export shim at the old location OR update the reference. Since `validate-all.ts` and `generate-all.ts` already use explicit path arrays, we update those arrays to point to new locations.
+- `ITC08ArchitectureCompliance.tsx`: Update to `scripts/architecture/reports/architecture-report.ts`
+- `ITC09RouteInventory.tsx`: Update to `scripts/manifests/generate/generate-route-manifest.ts`
+- `ITC12ValidationPipeline.tsx`: Update both references to new paths
 
-### Phase 3: Update validate-all.ts and generate-all.ts
+### Phase 5: Fix Doc References
 
-Rewrite both entrypoints to reference the new canonical paths for all moved scripts. Every domain section gets updated paths.
+- `docs/architecture/LAYER_SEPARATION.md`: Update script path reference
 
-### Phase 4: Add package.json Script Commands
+### Phase 6: Clean Up Empty Dirs & Orphans
 
-Add ~20 canonical commands:
-```
-validate:architecture, validate:contracts, validate:runtime, validate:db,
-validate:deployment, validate:release, validate:support, validate:all,
-generate:manifests, generate:runtime, generate:db, generate:deployment, generate:all,
-release:desktop, release:appliance, release:vmware,
-drill:recovery, drill:backup-restore
-```
+- Add README.md files to 17 empty directories explaining their purpose
+- Move `scripts/validation/lib/*.ts` to `scripts/manifests/lib/` (or `scripts/architecture/lib/`)
+- Remove empty `scripts/ops/` directory
 
-### Phase 5: Update Registry Files
+### Phase 7: Generate Change Impact Report
 
-Update `scripts/registry/script-registry.ts` to reference new canonical paths for all moved scripts. Update `script-owner-map.ts` classification rules to match new directory structure. Update `script-ci-binding-map.ts` bindings to reference new paths.
-
-### Phase 6: Expand Test Suite
-
-Split `src/test/script-system/script-system.test.ts` into 7 focused test files per the spec, each asserting the governance rules for its domain.
+Create `generated/refactor/GLOBAL_REFACTOR_CHANGE_IMPACT.md` documenting all changes, and run verification to confirm zero broken imports remain.
 
 ---
 
 ## Summary
 
 | Work Item | Count |
-|---|---|
-| New directories to create | 31 |
-| Scripts to move/rename | ~176 |
-| Re-export shims or path updates | ~176 |
-| package.json commands to add | ~20 |
-| Registry files to update | 3 |
-| Test files to create | 6 (expanding 1→7) |
-| Total new/modified files | ~250 |
-
-All moves preserve behavior. No deletions without replacement. Phase/prompt naming eliminated from durable architecture.
+|-----------|-------|
+| Broken import paths to fix | 77 |
+| Test file to rewrite | 1 |
+| Registry files to update | 2 |
+| Admin pages to update | 3 |
+| Doc files to update | 1 |
+| Empty dirs to populate with READMEs | 17 |
+| Orphaned files to relocate | 2 |
+| Orphaned dirs to remove | 1 |
+| Total files changed | ~105 |
 
