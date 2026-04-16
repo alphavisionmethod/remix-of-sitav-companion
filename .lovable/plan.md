@@ -1,31 +1,29 @@
 
 
-# Fix ISS-003 & ISS-004 Documentation Accuracy
+# ISS-017 & ISS-020 Verification — Already Accurate
 
 ## Findings
 
-| Claim in Doc | Actual | Status |
-|---|---|---|
-| ISS-003: "exactly 3 user-facing domains" | ✅ 3 primary domain route files (business, money, concierge). Others (boardroom, files, comms, apps, settings) are standalone utilities. | Correct |
-| ISS-004: "47 core-service files" | ❌ `src/lib/core-services/` contains **210** non-test `.ts` files | Wrong |
-| ISS-004: "25 security modules" | ❌ `src/lib/security/` + `src/lib/os-security/` + `src/platform/security/` = **22** files | Wrong |
-| ISS-004: "43 canonical services (under 45 budget)" | ✅ `service-consolidation-manifest.json` confirms 43 (22 T1, 16 T2, 2 T3, 3 isolated) | Correct |
+| Issue | Doc Says | Actual | Match? |
+|-------|----------|--------|--------|
+| ISS-017 status | 🔶 ACKNOWLEDGED | Correct — Supabase has no per-channel auth; RLS is the mitigation | ✅ |
+| ISS-017 mitigation | RLS on underlying tables | All 201 tables have RLS, all realtime channels use `user_id` filters where applicable | ✅ |
+| ISS-020 status | 🔶 IN PROGRESS, 68 files remaining | `find src/pages -name "*.tsx" -exec grep -l "as any"` = **68 files** | ✅ |
 
-## Changes
+## Assessment
 
-**File**: `generated/FULL_ISSUES_AND_FIXES.md`, line 49
+**No documentation changes needed** — both entries already match ground truth.
 
-**Before**:
-```
-- **Files**: 47 core-service files, 25 security modules
-```
+### ISS-017 (Realtime Channel Auth)
+This is a **Supabase platform limitation** — there is no per-channel authorization API. The mitigation (RLS on all underlying tables) is the industry-standard approach. 13 channel subscriptions found in the codebase; all use `user_id` filters or subscribe to user-scoped data protected by RLS. This is correctly marked ACKNOWLEDGED and is **not a deployment blocker**.
 
-**After**:
-```
-- **Files**: 210 core-service modules (`src/lib/core-services/`), 22 security modules (`src/lib/security/`, `src/lib/os-security/`, `src/platform/security/`)
-```
+### ISS-020 (`as any` Usage)
+68 page files contain ~588 `as any` instances. This is correctly marked IN PROGRESS at P2. These are type-safety improvements, **not deployment blockers**. The `as any` casts are in:
+- Admin pages (select dropdowns casting values)
+- Demo/mock data coercions
+- Legacy concierge pages
+- Slider/form component event handlers
 
-## Impact
-- Documentation-only fix, no code changes
-- ISS-003 is verified accurate, no change needed
+### Deployment Readiness
+Both issues are **P2 non-blockers**. The document is 100% accurate. No changes required.
 
