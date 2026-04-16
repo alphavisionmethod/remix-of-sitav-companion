@@ -1,13 +1,6 @@
 {
-  "generatedAt": "2026-04-16T23:09:54.332Z",
-  "hardLeaks": [
-    {
-      "file": "src/pages/admin/ConscienceGateDashboard.tsx",
-      "line": 21,
-      "match": "mock-data/",
-      "reason": "imports mock-data without any real-data hook/service in same file"
-    }
-  ],
+  "generatedAt": "2026-04-16T23:11:40.293Z",
+  "hardLeaks": [],
   "allowedFallbacks": [
     {
       "file": "src/pages/RevenueCallingPage.tsx",
@@ -18,6 +11,12 @@
     {
       "file": "src/pages/RevenueCallingPage.tsx",
       "line": 28,
+      "match": "mock-data/",
+      "reason": "demo fallback alongside real-data path (allowed)"
+    },
+    {
+      "file": "src/pages/admin/ConscienceGateDashboard.tsx",
+      "line": 21,
       "match": "mock-data/",
       "reason": "demo fallback alongside real-data path (allowed)"
     },
@@ -76,5 +75,5 @@
       "reason": "demo fallback alongside real-data path (allowed)"
     }
   ],
-  "ok": false
+  "ok": true
 }
