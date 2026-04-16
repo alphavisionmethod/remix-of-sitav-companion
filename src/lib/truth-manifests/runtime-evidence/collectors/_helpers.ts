@@ -18,7 +18,7 @@ export function makeRecord(
     manifestId,
     capturedAt: new Date().toISOString(),
     runtimeTier: detectActiveRuntimeTier(),
-    ok: opts.ok ?? opts.errors == null || opts.errors.length === 0,
+    ok: opts.ok ?? (opts.errors == null || opts.errors.length === 0),
     itemCount: opts.itemCount,
     payload,
     warnings: opts.warnings ?? [],
