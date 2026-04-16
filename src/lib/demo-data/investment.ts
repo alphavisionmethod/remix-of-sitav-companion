@@ -35,9 +35,9 @@ export const DEMO_INV_PURPOSES_CAPITAL_TWIN = [
 ];
 
 export const DEMO_SHOCK_ZONES = [
-  { id: "sz-1", label: "Market Crash -30%", scenario: "Market crash -30%", severity: "critical" as const, portfolioImpact: -18, recoveryMonths: 14, hedged: true, exposure: 62, detail: "Broad equity selloff with credit spread widening" },
-  { id: "sz-2", label: "Inflation Spike 8%", scenario: "Inflation spike to 8%", severity: "warning" as const, portfolioImpact: -5, recoveryMonths: 6, hedged: false, exposure: 35, detail: "Persistent inflation erodes real returns" },
-  { id: "sz-3", label: "Rate Hike 200bp", scenario: "Interest rate hike 200bp", severity: "moderate" as const, portfolioImpact: -8, recoveryMonths: 9, hedged: true, exposure: 28, detail: "Aggressive tightening impacts duration-sensitive assets" },
+  { id: "sz-1", label: "Market Crash -30%", scenario: "Market crash -30%", severity: "high", portfolioImpact: -18, recoveryMonths: 14, hedged: true, exposure: 62, detail: "Broad equity selloff with credit spread widening" },
+  { id: "sz-2", label: "Inflation Spike 8%", scenario: "Inflation spike to 8%", severity: "moderate", portfolioImpact: -5, recoveryMonths: 6, hedged: false, exposure: 35, detail: "Persistent inflation erodes real returns" },
+  { id: "sz-3", label: "Rate Hike 200bp", scenario: "Interest rate hike 200bp", severity: "moderate", portfolioImpact: -8, recoveryMonths: 9, hedged: true, exposure: 28, detail: "Aggressive tightening impacts duration-sensitive assets" },
 ];
 
 export const DEMO_CATALYST_EVENTS = [
