@@ -59,3 +59,6 @@ export { default as MCSyncCloud } from "@/pages/admin/modules/MCSyncCloud";
 export { default as MCSystemHealth } from "@/pages/admin/modules/MCSystemHealth";
 export { default as MCUsersCenter } from "@/pages/admin/modules/MCUsersCenter";
 export { default as MCWorkspacesContinuity } from "@/pages/admin/modules/MCWorkspacesContinuity";
+
+// ── Backend Topology & DB Health ──
+export { default as BackendTopologyDashboard } from "@/pages/admin/BackendTopologyDashboard";
