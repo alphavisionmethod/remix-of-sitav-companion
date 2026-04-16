@@ -1,6 +1,6 @@
-# SITA OS — Remediation Implemented Changes v4.0
+# SITA OS — Remediation Implemented Changes
 
-> Generated: 2026-04-16 (Updated)
+> Generated: 2026-04-16
 
 ## Summary
 
@@ -11,10 +11,7 @@
 | Barrel export verifications | 10 |
 | Route resolution verifications | 14 |
 | Reality classification updates | 6 |
-| P0 blocker resolutions | 2 |
-| P1 backend gap closures | 6 |
-| Error boundary integration | 1 |
-| **Total resolved issues** | **96** |
+| **Total resolved issues** | **87** |
 
 ---
 
@@ -90,30 +87,6 @@ All 14 route families verified to resolve to existing page components:
 | VMware Appliance | Implied prototype | DOCS_ONLY | Documentation only |
 | IoT/Wearable | Implied prototype | DOCS_ONLY | Documentation only |
 
-### 5. P0 Blocker Resolutions (v4.0 — 2026-04-16)
-
-| Blocker | Resolution | Files Created/Modified |
-|---------|------------|----------------------|
-| Error monitoring missing | Created `error-monitoring-service.ts` — captures uncaught errors + unhandled rejections, batch reports via `support-gateway` | `src/lib/services/error-monitoring-service.ts`, `src/components/sita/GlobalErrorBoundary.tsx`, `src/App.tsx` |
-| Payment kill-switch missing | Created `payment-kill-switch` edge function — admin JWT verification, role check, audit logging, dual-approval support | `supabase/functions/payment-kill-switch/index.ts` |
-
-### 6. P1 Backend Gap Closures (v4.0 — 2026-04-16)
-
-| Gap | Resolution | Edge Function |
-|-----|------------|---------------|
-| Investment Office | Portfolio CRUD, positions, performance metrics | `investment-portfolio-api` |
-| Digital Twins | Twin lifecycle, snapshot simulation, state comparison | `digital-twin-engine` |
-| Simulation Engine | Scenario creation, parameter mutation, timeline projection | `simulation-engine-api` |
-| Communications | Message threads, send/receive, contact management | `communications-api` |
-| Tasks/Workflows | Task CRUD, workflow templates, status transitions | `tasks-workflow-api` |
-| App Store | Catalog listing, install/uninstall, ratings, featured apps | `app-store-api` |
-
-### 7. Namespace Clarification (v4.0)
-
-| Namespace | Clarification | File |
-|-----------|--------------|------|
-| `lib/engine/` vs `lib/engines/` | `engine/` = shell/compositor logic, `engines/` = domain-specific engines | `src/lib/engine/index.ts` updated with clarifying exports |
-
 ---
 
-*96 total issues resolved or verified. No regressions introduced. Build: 0 TS errors.*
+*All 87 issues resolved or verified. No regressions introduced.*

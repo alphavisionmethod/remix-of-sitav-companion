@@ -417,156 +417,21 @@ suggestion → draft → simulated → approval-required → approved → execut
 
 ---
 
-## Section 11 — Remediation Audit (v4.0 Addition)
-
-### 11.1 P0 Blocker Resolution
-
-| Blocker | Before v4.0 | After v4.0 | Proof |
-|---------|------------|------------|-------|
-| Error monitoring | 🔴 Missing | ✅ Resolved | `error-monitoring-service.ts` + `GlobalErrorBoundary` + `App.tsx` init |
-| Payment kill-switch | 🔴 Missing | ✅ Resolved | `payment-kill-switch` edge function with admin JWT + audit trail |
-| CI green artifacts | 🔴 Open | 🔴 Open | Requires external GitHub Actions infrastructure |
-
-### 11.2 P1 Backend Gap Resolution
-
-| Frontend Gap | Edge Function Created | Auth | Status |
-|-------------|----------------------|------|--------|
-| Investment Office | `investment-portfolio-api` | JWT | ✅ Deployed |
-| Digital Twins | `digital-twin-engine` | JWT | ✅ Deployed |
-| Simulation Engine | `simulation-engine-api` | JWT | ✅ Deployed |
-| Communications | `communications-api` | JWT | ✅ Deployed |
-| Tasks/Workflows | `tasks-workflow-api` | JWT | ✅ Deployed |
-| App Store | `app-store-api` | JWT | ✅ Deployed |
-
-### 11.3 Resolution Timeline
-
-| Date | Action | Items |
-|------|--------|-------|
-| 2026-04-16 | P0 remediation | Error monitoring, payment kill-switch |
-| 2026-04-16 | P1 backend gap closure | 6 new edge functions |
-| 2026-04-16 | Documentation v4.0 | All audit docs regenerated |
-| 2026-04-15 | Wiring fixes | 26 path corrections, 14 route verifications |
-| 2026-04-14 | Security gap fill | 6 security modules |
-| 2026-04-13 | Launch blockers | 8 proof infrastructure blockers resolved |
-
----
-
-## Section 12 — Frontend ↔ Backend Alignment (v4.0 Addition)
-
-### 12.1 Journey Wiring Matrix
-
-| Journey | Pages | Hooks | Edge Functions | Status |
-|---------|-------|-------|----------------|--------|
-| Auth + Dashboard | 3 | 2 | Supabase Auth | ✅ WIRED |
-| Business OS | 45+ | 5 | `business-board-api`, `crm-sync`, `invoice-generate` | ✅ WIRED |
-| Finance OS | 38+ | 3 | `cashflow-calculate`, `payment-process`, `tax-estimate` | ✅ WIRED |
-| Concierge OS | 30+ | 3 | `booking-manage`, `get-weather` | ✅ WIRED |
-| Investment Office | 15+ | 3 | `investment-portfolio-api` | ✅ WIRED |
-| Boardroom | 12+ | 3 | `brain-core`, `ai-gateway` | ✅ WIRED |
-| Mission Control | 140+ | 4 | `admin-api`, `admin-gateway`, `admin-bff-gateway` | ✅ WIRED |
-| App Store | 17 | 1 | `app-store-api` | ✅ WIRED |
-| AI Workforce | 5 | 2 | `admin-ai-workforce-run`, `check-ai-budget` | ✅ WIRED |
-| Advisor System | 3 | 2 | `advisor-agent-loop`, `chat-advisor` | ✅ WIRED |
-| Connectors | 1 | 1 | `connector-oauth`, `connector-proxy` | ✅ WIRED |
-| Files | 1 | 2 | `file-ingestion`, `cloud-storage-api` | ✅ WIRED |
-| Communications | 2 | 1 | `communications-api` | ✅ WIRED |
-| Tasks/Workflows | 2 | 1 | `tasks-workflow-api` | ✅ WIRED |
-| Digital Twins | 1 | 1 | `digital-twin-engine` | ✅ WIRED |
-| Simulation | 2 | 1 | `simulation-engine-api` | ✅ WIRED |
-| Notifications | 2 | 2 | `push-dispatch`, `push-track` | ✅ WIRED |
-| Payments | 1 | 1 | `payment-process`, `payment-kill-switch` | ✅ WIRED |
-| GDPR/Export | 1 | 0 | `gdpr-export`, `gdpr-delete` | ✅ WIRED |
-| Error Monitoring | 0 (global) | 0 | `support-gateway` | ✅ WIRED |
-
-**Alignment Score**: 20/20 major journeys fully wired (100%)
-
-### 12.2 Client-Only Pages (Intentional)
-
-| Page | Reason |
-|------|--------|
-| `ClipboardHistory.tsx` | OS utility — sessionStorage only |
-| `CommandHistory.tsx` | OS utility — sessionStorage only |
-| `NotFound.tsx` | Static 404 |
-| `EnvironmentSwitcher.tsx` | Dev utility — config toggle |
-
----
-
-## Section 13 — Feature Completeness Summary (v4.0 Addition)
-
-| Category | Total | ✅ Done | 🔶 WIP | 🔴 Open |
-|----------|-------|---------|--------|---------|
-| Core OS | 42 | 42 | 0 | 0 |
-| Business Domain | 38 | 38 | 0 | 0 |
-| Finance Domain | 32 | 32 | 0 | 0 |
-| Concierge Domain | 28 | 28 | 0 | 0 |
-| Intelligence/AI | 35 | 35 | 0 | 0 |
-| Admin/Mission Control | 40 | 38 | 2 | 0 |
-| Security | 24 | 24 | 0 | 0 |
-| Platform | 20 | 16 | 2 | 2 |
-| UX/Design | 14 | 12 | 2 | 0 |
-| Infrastructure | 10 | 6 | 2 | 2 |
-| **Total** | **283** | **271** | **8** | **4** |
-
-**Implementation Rate**: 95.8% (271/283)
-
----
-
-## Section 14 — Generated Artifact Registry (v4.0 Addition)
-
-### 14.1 Core Audit Documents (7)
-
-| Document | Version | Lines | Purpose |
-|----------|---------|-------|---------|
-| `FULL_MASTER_AUDIT.md` | v4.0 | 500+ | Master truth audit |
-| `FULL_ISSUES_AND_FIXES.md` | v4.0 | 377+ | Issue registry (155 tracked) |
-| `DEPLOYMENT_AUDIT.md` | v4.0 | 1935 | Deployment readiness |
-| `PROJECT_TREE.md` | v4.0 | 500+ | Full project file tree |
-| `FRONTEND_AUDIT.md` | v4.0 | 200+ | Frontend ↔ backend alignment |
-| `MISSING_APP_OS.md` | v4.0 | 100+ | Gap analysis |
-| `SITA_OS_Feature_Checklist.md` | v4.0 | 300+ | 283-item feature checklist |
-
-### 14.2 Remediation Documents (7)
-
-| Document | Version | Purpose |
-|----------|---------|---------|
-| `FULL_REMEDIATION_PLAN.md` | v4.0 | 28-item remediation groups |
-| `REMEDIATION_PENDING_BLOCKERS.md` | v4.0 | 6 remaining (was 12) |
-| `REMEDIATION_IMPLEMENTED_CHANGES.md` | v4.0 | 96 changes implemented |
-| `REMEDIATION_VERIFICATION_RESULTS.md` | v4.0 | 15-check verification matrix |
-| `REMEDIATION_SECONDARY_DISCOVERIES.md` | v4.0 | 14 discoveries (5 resolved) |
-| `REMEDIATION_DEPRECATED_PATHS.md` | v1.0 | 25 deprecated path mappings |
-| `REMEDIATION_WRAPPER_MAP.md` | v1.0 | Wrapper policy (none active) |
-
-### 14.3 Operational Documents (2)
-
-| Document | Version | Purpose |
-|----------|---------|---------|
-| `drift-report.md` | v4.0 | 79 artifacts, 0 drift |
-| `production-truth-dashboard.md` | v4.0 | Live readiness dashboard |
-
-### 14.4 JSON Manifests (63)
-
-All 63 JSON manifests validated via `generated-truth.ts`. 0 invalid, 0 missing.
-
----
-
 ## Appendix A — File Count Summary
 
 | Directory | Files |
 |-----------|-------|
-| `src/pages/` | 96 (user) + 616 (admin) = 712 page files |
-| `src/components/` | 879 |
+| `src/pages/` | 983 |
+| `src/components/` | 911 |
 | `src/hooks/` | 158 |
-| `src/lib/` | 1,547 |
-| `src/contexts/` | 27 (22 active + 5 test) |
-| `src/features/` | 30 directories |
-| `src/routes/` | 14 files |
-| `supabase/functions/` | 74 (+`_shared/`) |
+| `src/lib/` | 1,548 |
+| `src/contexts/` | 27 |
+| `supabase/functions/` | 75 |
 | `supabase/migrations/` | 161 |
-| `generated/` | 79 files (67 JSON + 12 MD) |
-| `scripts/` | 304 |
+| `generated/` | 79 |
+| `scripts/` | 225 |
 | `docs/architecture/` | 27 |
-| **Total tracked** | **4,263 TS/TSX files** |
+| **Total tracked** | **4,194** |
 
 ## Appendix B — Technology Stack
 
@@ -575,51 +440,15 @@ All 63 JSON manifests validated via `generated-truth.ts`. 0 invalid, 0 missing.
 | Frontend | React 18 + TypeScript 5 + Vite 5 |
 | Styling | Tailwind CSS v3 + 160 semantic tokens |
 | State | React Context (27 providers) + sessionStorage persistence |
-| Backend | Lovable Cloud (74 edge functions + `_shared/`) |
-| Database | PostgreSQL (204 tables, 161 migrations, 100% RLS) |
+| Backend | Lovable Cloud (75 edge functions) |
+| Database | PostgreSQL (204 tables, 161 migrations) |
 | Auth | Email/password + Google OAuth + magic link |
 | AI Gateway | Sovereign AI Gateway → Lovable AI models |
 | Validation | 79 generated artifacts + drift detection |
 | Error Monitoring | Global error boundary + batch reporting |
 | Payment Safety | Kill-switch edge function with dual-approval |
 
-## Appendix C — Deployment Plane Readiness
-
-| Plane | Status | Evidence |
-|-------|--------|----------|
-| Web SPA | ✅ READY | 0 TS errors, all routes resolve, all hooks wired |
-| Admin SPA | ✅ READY | Mission Control windowed, 503 pages accessible |
-| Backend/Edge Functions | ✅ READY | 74 functions deployed, all with JWT auth |
-| Database | ✅ READY | 204 tables, 100% RLS, 161 migrations |
-| Desktop/Electron | 🔶 PROTOTYPE | Build exists, no CI green proof |
-| Mobile | 🔶 PWA_ONLY | No native bridges, PWA functional |
-| VMware/Appliance | 📄 DOCS_ONLY | Documentation only, no runtime |
-
-## Appendix D — Audit Document Index
-
-| # | Document | Location | Version |
-|---|----------|----------|---------|
-| 1 | Full Master Audit | `generated/FULL_MASTER_AUDIT.md` | v4.0 |
-| 2 | Full Issues & Fixes | `generated/FULL_ISSUES_AND_FIXES.md` | v4.0 |
-| 3 | Deployment Audit | `generated/DEPLOYMENT_AUDIT.md` | v4.0 |
-| 4 | Project Tree | `generated/PROJECT_TREE.md` | v4.0 |
-| 5 | Frontend Audit | `generated/FRONTEND_AUDIT.md` | v4.0 |
-| 6 | Missing App/OS Analysis | `generated/MISSING_APP_OS.md` | v4.0 |
-| 7 | Feature Checklist | `generated/SITA_OS_Feature_Checklist.md` | v4.0 |
-| 8 | Drift Report | `generated/drift-report.md` | v4.0 |
-| 9 | Production Dashboard | `generated/production-truth-dashboard.md` | v4.0 |
-| 10 | Remediation Plan | `generated/remediation/FULL_REMEDIATION_PLAN.md` | v4.0 |
-| 11 | Pending Blockers | `generated/remediation/REMEDIATION_PENDING_BLOCKERS.md` | v4.0 |
-| 12 | Implemented Changes | `generated/remediation/REMEDIATION_IMPLEMENTED_CHANGES.md` | v4.0 |
-| 13 | Verification Results | `generated/remediation/REMEDIATION_VERIFICATION_RESULTS.md` | v4.0 |
-| 14 | Secondary Discoveries | `generated/remediation/REMEDIATION_SECONDARY_DISCOVERIES.md` | v4.0 |
-| 15 | Deprecated Paths | `generated/remediation/REMEDIATION_DEPRECATED_PATHS.md` | v1.0 |
-| 16 | Wrapper Map | `generated/remediation/REMEDIATION_WRAPPER_MAP.md` | v1.0 |
-| 17 | Secondary Refactor | `generated/deployment-readiness/SECONDARY_REFACTOR_DISCOVERIES.md` | v4.0 |
-| 18 | Refactor Verification | `generated/refactor/GLOBAL_REFACTOR_VERIFICATION_RESULTS.md` | v4.0 |
-
 ---
 
 *Generated by SITA OS Master Audit Engine v4.0*
 *All data sourced from live codebase analysis — no estimates or projections*
-*Last verified: 2026-04-16 — Build: 0 TypeScript errors*

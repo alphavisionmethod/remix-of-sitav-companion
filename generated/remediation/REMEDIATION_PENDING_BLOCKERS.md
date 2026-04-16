@@ -1,65 +1,58 @@
-# SITA OS — Remediation Pending Blockers v4.0
+# SITA OS — Remediation Pending Blockers
 
-> Generated: 2026-04-16 (Updated)
-> Previous P0: 3 items → Now: 1 item
-> Previous P1: 4 items → Now: 2 items (acknowledged, not blocking)
-
----
+> Generated: 2026-04-16 | Version: 4.1
 
 ## P0 — Launch Blockers
 
-| # | Blocker | Status | Required Action |
-|---|---------|--------|-----------------|
-| ~~1~~ | ~~No Error Monitoring~~ | ✅ **RESOLVED** | `error-monitoring-service.ts` created, `GlobalErrorBoundary` integrated, `App.tsx` initializes on mount |
-| ~~2~~ | ~~No Emergency Payment Kill Switch~~ | ✅ **RESOLVED** | `payment-kill-switch` edge function deployed with admin JWT auth, role verification, audit logging |
-| 3 | **No Proven Green CI Artifacts** | 🔴 OPEN | Requires GitHub Actions runners + secrets configuration. Cannot be resolved within codebase. |
+| # | Blocker | Status | Resolution |
+|---|---------|--------|------------|
+| 1 | ~~No Error Monitoring~~ | ✅ RESOLVED | `error-monitoring-service.ts` created, wired into App.tsx + GlobalErrorBoundary |
+| 2 | ~~No Payment Kill Switch~~ | ✅ RESOLVED | `payment-kill-switch` edge function created with admin auth + audit logging |
+| 3 | **No Proven Green CI Artifacts** | ⏳ PENDING | Requires GitHub Actions CI infrastructure (external) |
 
 ## P1 — Pre-GA Required
 
-| # | Blocker | Status | Required Action |
-|---|---------|--------|-----------------|
-| ~~4~~ | ~~Investment Office backend gap~~ | ✅ **RESOLVED** | `investment-portfolio-api` edge function deployed |
-| ~~5~~ | ~~Simulation Engine backend gap~~ | ✅ **RESOLVED** | `simulation-engine-api` edge function deployed |
-| ~~6~~ | ~~Communications backend gap~~ | ✅ **RESOLVED** | `communications-api` edge function deployed |
-| ~~7~~ | ~~Tasks/Workflows backend gap~~ | ✅ **RESOLVED** | `tasks-workflow-api` edge function deployed |
-| ~~8~~ | ~~App Store backend gap~~ | ✅ **RESOLVED** | `app-store-api` edge function deployed |
-| ~~9~~ | ~~Digital Twin backend gap~~ | ✅ **RESOLVED** | `digital-twin-engine` edge function deployed |
-| 10 | Electron CI pipeline | 🔶 ACKNOWLEDGED | Electron is PROTOTYPE classification — not blocking launch |
-| 11 | Service sprawl (478 → ~45) | 🔶 ACKNOWLEDGED | Functional via shim pattern — cosmetic consolidation post-GA |
+| # | Blocker | Status | Resolution |
+|---|---------|--------|------------|
+| 4 | ~~Investment Office backend gap~~ | ✅ RESOLVED | `investment-portfolio-api` edge function created |
+| 5 | **Service sprawl (478 → ~45)** | ⏳ PENDING | Requires staged consumer migration |
+| 6 | **Electron CI pipeline** | ⏳ PENDING | Requires Electron Forge + code signing (external) |
+| 7 | ~~Admin demo-data audit~~ | ✅ RESOLVED | Audited across all admin page families |
 
-## P2 — Technical Debt (Post-GA)
+## P2 — Technical Debt
 
-| # | Blocker | Status | Required Action |
-|---|---------|--------|-----------------|
-| 12 | Namespace merges (engine, hooks, journeys, ai-gateway) | 🔶 Planned | Staged merge with consumer updates |
-| 13 | Demo data consolidation (mock-data + demo-data) | 🔶 Planned | Merge into unified demo layer |
-| 14 | E2E test coverage expansion | 🔴 Open | Add Playwright tests for critical journeys |
-| 15 | Load/performance testing | 🔴 Open | Set up k6 or similar load testing |
-| 16 | `as any` cleanup (38 remaining) | 🔶 In Progress | Systematic replacement in admin pages |
+| # | Blocker | Status | Resolution |
+|---|---------|--------|------------|
+| 8 | Namespace merges | ⏳ DEFERRED | Staged merge post-GA |
+| 9 | Demo data consolidation | ⏳ DEFERRED | Post-GA cleanup |
+| 10 | ~~Error boundary coverage~~ | ✅ RESOLVED | GlobalErrorBoundary + RouteErrorBoundary wired |
+| 11 | E2E test coverage | ⏳ DEFERRED | Post-GA Playwright tests |
+| 12 | Load/performance testing | ⏳ DEFERRED | Post-GA k6 setup |
 
 ---
 
-## Blocker Resolution Summary
+## Summary
 
 ```
-P0 (Must fix before launch):     1 item  (was 3 — 2 resolved)
-P1 (Must fix before GA):         0 items (was 4 — all resolved or acknowledged)
-P2 (Technical debt, post-GA):    5 items
-Total pending:                   6 items (was 12)
-Total resolved:                  10 items
+P0 resolved:    2 of 3  (1 requires external CI)
+P1 resolved:    2 of 4  (2 require external infra)
+P2 resolved:    1 of 5  (4 deferred post-GA)
+Total resolved: 5 of 12
+Total pending:  7 (all require external infra or are post-GA)
 ```
 
+## New Edge Functions Created (This Round)
+
+| Function | Purpose |
+|----------|---------|
+| `payment-kill-switch` | Emergency payment disable with admin auth |
+| `investment-portfolio-api` | Portfolio CRUD, holdings, performance |
+| `digital-twin-engine` | Twin state management, snapshots |
+| `simulation-engine-api` | Scenario creation, projections |
+| `communications-api` | Message threads, contacts |
+| `tasks-workflow-api` | Task CRUD, workflow templates |
+| `app-store-api` | App catalog, installs, ratings |
+
 ---
 
-## Resolution Timeline
-
-| Date | Items Resolved |
-|------|---------------|
-| 2026-04-16 | Error monitoring (P0), Payment kill-switch (P0), 6 backend APIs (P1), Error boundary audit (P1) |
-| 2026-04-15 | Wiring fixes (Group A), reality classifications |
-| 2026-04-14 | Security module gap fill |
-| 2026-04-13 | Launch blockers BLK-001 through BLK-008 |
-
----
-
-*The sole remaining P0 blocker requires external infrastructure (GitHub Actions). All software-side blockers are resolved.*
+*Remaining blockers require external infrastructure (CI runners, Electron signing) or are deferred to post-GA.*
