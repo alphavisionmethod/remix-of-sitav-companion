@@ -185,6 +185,12 @@ export function getAdminRoutes() {
     // /admin → /admin/overview canonical entry
     <Route key="hub-root" path="/admin" element={<Navigate to="/admin/overview" replace />} />,
 
+    // ── Phase 7: Meta-Architecture Surfaces ──
+    <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,
+    <Route key="meta01" path="/admin/meta-arch/atlas" element={gated("audit.view", <META01ArchitectureAtlas />)} />,
+    <Route key="meta02" path="/admin/meta-arch/control-plane" element={gated("audit.view", <META02ControlPlaneCenter />)} />,
+    <Route key="meta03" path="/admin/meta-arch/golden-paths" element={gated("audit.view", <META03GoldenPathHealth />)} />,
+
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
     <Route key="a1b" path="/admin/runtime-tier-governance" element={gated("audit.view", <RuntimeTierGovernanceDashboard />)} />,
     <Route key="a2" path="/admin/fleet-health" element={gated("maintenance.view", <FleetHealthPage />)} />,
