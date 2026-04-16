@@ -95,7 +95,7 @@ export default function CI01CIUmbrellaCenter() {
         </SitaCard>
         <SitaCard>
           <div className="flex items-center gap-3">
-            <GitMerge className="h-5 w-5 text-amber-500" />
+            <GitMerge className="h-5 w-5 text-muted-foreground" />
             <div>
               <div className="text-2xl font-semibold text-foreground">{snapshot.totals.mergeBlocking}</div>
               <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Merge-blocking</div>
@@ -114,7 +114,7 @@ export default function CI01CIUmbrellaCenter() {
         <SitaCard>
           <div className="flex items-center gap-3">
             {integrity.ok ? (
-              <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+              <CheckCircle2 className="h-5 w-5 text-primary" />
             ) : (
               <AlertCircle className="h-5 w-5 text-destructive" />
             )}
