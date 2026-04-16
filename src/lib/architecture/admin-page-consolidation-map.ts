@@ -136,6 +136,8 @@ export const CLUSTER_DOMAIN_MAP: Record<string, AdminDomain> = {
 
   // ── Catch-all word prefixes (Phase 1 expansion) ──
   Admin: "overview", Alert: "alerts", Canonical: "verification",
+  Google: "integrations", Infra: "health", Ingress: "health",
+  Investor: "verification", Kernel: "verification", Mock: "verification",
   Change: "verification", Communication: "integrations",
   Compositor: "verification", Compute: "ai-runtime",
   Concierge: "ai-runtime", Conscience: "trust-security",
