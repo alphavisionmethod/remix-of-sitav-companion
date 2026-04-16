@@ -157,25 +157,25 @@ export const DEMO_THEMES = [
   { id: "th-3", label: "Healthcare Tech", icon: "❤️", conviction: 75, strength: 75, exposure: 8, crowding: 38, uncertainty: 22, trend: "expanding", instruments: ["LLY", "ISRG", "DXCM"], advisorView: "Demographic tailwinds with AI-enhanced diagnostics potential." },
 ];
 
-export const DEMO_AVAILABLE_PLATFORMS = [
-  { id: "pl-1", name: "Interactive Brokers", type: "brokerage" as const, status: "connected", accounts: 2, lastSync: "2026-04-15", chain: null },
-  { id: "pl-2", name: "Schwab", type: "brokerage" as const, status: "available", accounts: 0, lastSync: null, chain: null },
-  { id: "pl-3", name: "Coinbase", type: "exchange" as const, status: "available", accounts: 0, lastSync: null, chain: "ethereum" },
-  { id: "pl-4", name: "MetaMask", type: "wallet" as const, status: "available", accounts: 0, lastSync: null, chain: "ethereum" },
-  { id: "pl-5", name: "Polymarket", type: "event-market" as const, status: "available", accounts: 0, lastSync: null, chain: "polygon" },
-  { id: "pl-6", name: "OANDA", type: "forex" as const, status: "available", accounts: 0, lastSync: null, chain: null },
+export const DEMO_AVAILABLE_PLATFORMS: any[] = [
+  { id: "pl-1", name: "Interactive Brokers", type: "brokerage", icon: "🏦", status: "connected", accounts: 2, lastSync: "2026-04-15", chain: null, popular: true, region: "US", capabilities: ["Portfolio sync", "Trade execution", "Balance tracking", "Tax lot history"] },
+  { id: "pl-2", name: "Schwab", type: "brokerage", icon: "💼", status: "available", accounts: 0, lastSync: null, chain: null, popular: true, region: "US", capabilities: ["Portfolio sync", "Balance tracking"] },
+  { id: "pl-3", name: "Coinbase", type: "exchange", icon: "🪙", status: "available", accounts: 0, lastSync: null, chain: "ethereum", popular: true, region: "Global", capabilities: ["Crypto positions", "Real-time balances", "Order routing"] },
+  { id: "pl-4", name: "MetaMask", type: "wallet", icon: "🦊", status: "available", accounts: 0, lastSync: null, chain: "ethereum", popular: false, region: null, capabilities: ["Token balances", "DeFi positions", "On-chain activity"] },
+  { id: "pl-5", name: "Polymarket", type: "event-market", icon: "📊", status: "available", accounts: 0, lastSync: null, chain: "polygon", popular: false, region: "Global", capabilities: ["Event positions", "Probability tracking"] },
+  { id: "pl-6", name: "OANDA", type: "forex", icon: "💱", status: "available", accounts: 0, lastSync: null, chain: null, popular: false, region: "Global", capabilities: ["Forex positions", "Real-time rates"] },
 ];
 
 export const DEMO_SIZING_SCENARIOS = [
-  { id: "ss-1", asset: "AAPL", icon: "🍎", proposedSize: 5, violatesPolicy: false, scenario: "High conviction, low volatility", suggestedSize: 5, maxLoss: 2, reasoning: "Strong thesis with stable price action" },
-  { id: "ss-2", asset: "RIVN", icon: "🔥", proposedSize: 3, violatesPolicy: true, scenario: "Medium conviction, high volatility", suggestedSize: 2, maxLoss: 4, reasoning: "Good thesis but wide price swings" },
-  { id: "ss-3", asset: "SPCE", icon: "🎯", proposedSize: 1, violatesPolicy: false, scenario: "Speculative with catalyst", suggestedSize: 1, maxLoss: 1, reasoning: "Binary outcome, size for total loss" },
+  { id: "ss-1", asset: "AAPL", icon: "🍎", proposedSize: 5000, violatesPolicy: false, currentAllocation: 8.2, postAllocation: 9.1, violation: null, maxAllowed: 10, riskBudgetUsed: 55, concentrationImpact: "Sector weight increases to 32%", advisorSuggestion: "Size is within policy limits. Consider scaling in over 2 weeks to reduce timing risk.", scenario: "High conviction, low volatility", suggestedSize: 5000, maxLoss: 2, reasoning: "Strong thesis with stable price action" },
+  { id: "ss-2", asset: "RIVN", icon: "🔥", proposedSize: 3000, violatesPolicy: true, currentAllocation: 1.5, postAllocation: 2.8, violation: "Exceeds speculative sleeve limit of 2%", maxAllowed: 2, riskBudgetUsed: 78, concentrationImpact: "Speculative sleeve exceeds budget", advisorSuggestion: "Reduce to $1,500 to stay within speculative limits. High beta asset requires smaller sizing.", scenario: "Medium conviction, high volatility", suggestedSize: 1500, maxLoss: 4, reasoning: "Good thesis but wide price swings" },
+  { id: "ss-3", asset: "SPCE", icon: "🎯", proposedSize: 1000, violatesPolicy: false, currentAllocation: 0.5, postAllocation: 0.7, violation: null, maxAllowed: 1, riskBudgetUsed: 42, concentrationImpact: "Minimal impact on concentration", advisorSuggestion: "Size appropriate for binary outcome. Set hard stop at entry minus 50%.", scenario: "Speculative with catalyst", suggestedSize: 1000, maxLoss: 1, reasoning: "Binary outcome, size for total loss" },
 ];
 
 export const DEMO_ACTIVE_POSITIONS = [
-  { id: "ap-1", symbol: "AAPL", icon: "🍎", entryPrice: 178, currentPrice: 195, pnlPercent: 9.5, holdingDays: 45, reviewDue: true, shouldReview: true },
-  { id: "ap-2", symbol: "NVDA", icon: "⚡", entryPrice: 850, currentPrice: 920, pnlPercent: 8.2, holdingDays: 30, reviewDue: false, shouldReview: false },
-  { id: "ap-3", symbol: "MSFT", icon: "💻", entryPrice: 410, currentPrice: 435, pnlPercent: 6.1, holdingDays: 60, reviewDue: true, shouldReview: true },
+  { id: "ap-1", symbol: "AAPL", name: "Apple Inc", icon: "🍎", entryPrice: 178, currentPrice: 195, entryDate: "2026-03-01", pnlPercent: 9.5, holdingDays: 45, reviewDue: true, shouldReview: true, thesisStatus: "strengthened", thesisIntact: true, recommendation: "hold", whatChanged: ["Services revenue grew 18% YoY", "iPhone installed base hit new record", "AI features driving upgrade cycle"], advisorNote: "Thesis intact. Services growth accelerating. Hold position." },
+  { id: "ap-2", symbol: "NVDA", name: "NVIDIA", icon: "⚡", entryPrice: 850, currentPrice: 920, entryDate: "2026-03-15", pnlPercent: 8.2, holdingDays: 30, reviewDue: false, shouldReview: false, thesisStatus: "strengthened", thesisIntact: true, recommendation: "hold", whatChanged: ["Data center revenue exceeded expectations", "New Blackwell architecture shipping"], advisorNote: "Strong momentum. Consider trimming if position exceeds 7% target." },
+  { id: "ap-3", symbol: "MSFT", name: "Microsoft", icon: "💻", entryPrice: 410, currentPrice: 435, entryDate: "2026-02-15", pnlPercent: 6.1, holdingDays: 60, reviewDue: true, shouldReview: true, thesisStatus: "intact", thesisIntact: true, recommendation: "hold", whatChanged: ["Azure growth reaccelerated to 33%", "Copilot adoption growing but monetization unclear"], advisorNote: "Core thesis intact. Monitor Copilot monetization in next earnings." },
 ];
 
 export const DEMO_DNA_DIMENSIONS = [
