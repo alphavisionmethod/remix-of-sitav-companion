@@ -425,14 +425,14 @@ suggestion → draft → simulated → approval-required → approved → execut
 
 | Directory | Files |
 |-----------|-------|
-| `src/pages/` | 983 |
+| `src/pages/` | 1012 |
 | `src/components/` | 897 |
 | `src/hooks/` | 158 |
-| `src/lib/` | 1,548 |
+| `src/lib/` | 1,665 |
 | `src/contexts/` | 27 |
-| `supabase/functions/` | 75 |
-| `supabase/migrations/` | 161 |
-| `generated/` | 79 |
+| `supabase/functions/` | 86 |
+| `supabase/migrations/` | 164 |
+| `generated/` | 94 |
 | `scripts/` | 225 |
 | `docs/architecture/` | 27 |
 | **Total tracked** | **4,194** |

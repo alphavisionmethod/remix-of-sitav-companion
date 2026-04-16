@@ -383,7 +383,7 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 ### ISS-059: Edge Function Shared Module Duplication
 - **Priority**: P2 · **Status**: ✅ RESOLVED
 - **Description**: Multiple edge functions duplicated auth verification, CORS headers, and error formatting logic
-- **Fix**: Consolidated into `supabase/functions/_shared/` with reusable modules for auth, CORS, error formatting, and response builders. All 84 functions import from shared
+- **Fix**: Consolidated into `supabase/functions/_shared/` with reusable modules for auth, CORS, error formatting, and response builders. All 86 functions import from shared
 - **Files**: `supabase/functions/_shared/`
 
 ---
@@ -694,7 +694,7 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 ### ISS-108: Backend Topology Not Visible to Operators
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: No admin UI existed for viewing edge function classifications, DB table health scores, or backend topology structure. Operators had no visibility into the backend layer composition.
-- **Fix**: Created `BackendTopologyDashboard.tsx` with full topology visualization — edge function classification matrix (84 functions across 8 categories), DB table health scores (201 tables + 4 views with RLS/realtime status), and topology graph. Powered by `useBackendTopologyHealth.ts` hook. Routed at `/admin/backend-topology`.
+- **Fix**: Created `BackendTopologyDashboard.tsx` with full topology visualization — edge function classification matrix (86 functions across 8 categories), DB table health scores (201 tables + 4 views with RLS/realtime status), and topology graph. Powered by `useBackendTopologyHealth.ts` hook. Routed at `/admin/backend-topology`.
 - **Files**: `src/pages/admin/BackendTopologyDashboard.tsx`, `src/hooks/useBackendTopologyHealth.ts`
 - **Verification**: Dashboard renders with all 86 edge functions classified and all 201 tables + 4 views health-scored
 

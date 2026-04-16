@@ -45,7 +45,7 @@ Every edge function belongs to **exactly one** of these classes. No overlap, no 
 | `ambient-os-operations` | **SPLIT_REQUIRED** | Phase 5 | Split UX-orch from runtime control |
 | `os-command` | **RUNTIME_SYSTEM_FUNCTION** | Phase 5 | Lock with explicit allowedCallers (kernel only) |
 
-## Classification Counts (84 functions)
+## Classification Counts (86 functions)
 
 See `generated/edge-function-classification-audit.json` for full per-function detail.
 
