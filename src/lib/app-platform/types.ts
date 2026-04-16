@@ -80,6 +80,14 @@ export interface AppLifecycleReceipt {
   result: "success" | "failed" | "partial";
 }
 
+export interface AppQuickAction {
+  id: string;
+  label: string;
+  icon: string;
+  route?: string;
+  permissionRequired?: string;
+}
+
 export interface AppDefinition {
   id: string;
   name: string;
@@ -127,6 +135,9 @@ export interface AppDefinition {
   externalUrl?: string;
   badgeCount?: number;
   lastUsedAt?: string;
+
+  // Launcher v2.1.1 — Quick Actions
+  quickActions?: AppQuickAction[];
 }
 
 export interface AppBundle {
