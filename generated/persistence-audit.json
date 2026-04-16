@@ -1,0 +1,143 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T21:25:34.283Z",
+  "totalTablesScanned": 201,
+  "summary": {
+    "totalDomains": 9,
+    "covered": 9,
+    "thin": 0,
+    "missing": 0
+  },
+  "domains": [
+    {
+      "key": "setup_checkpoints",
+      "label": "Setup checkpoints / resume tokens",
+      "required": true,
+      "backingTables": [
+        "onboarding_sessions",
+        "cloud_sync_checkpoints",
+        "business_onboarding",
+        "onboarding_choices",
+        "onboarding_completion_markers",
+        "onboarding_hardware_detection",
+        "onboarding_restore_sources",
+        "onboarding_steps"
+      ],
+      "coverage": 8,
+      "status": "covered"
+    },
+    {
+      "key": "device_registry",
+      "label": "Environment / device registry",
+      "required": true,
+      "backingTables": [
+        "biometric_credentials",
+        "cloud_device_sessions",
+        "cloud_devices",
+        "device_attestations",
+        "device_mesh_peers",
+        "device_ownership"
+      ],
+      "coverage": 6,
+      "status": "covered"
+    },
+    {
+      "key": "prompt_versions",
+      "label": "Prompt versions / model routing",
+      "required": true,
+      "backingTables": [
+        "ai_workforce_roles",
+        "read_model_snapshots"
+      ],
+      "coverage": 2,
+      "status": "covered"
+    },
+    {
+      "key": "model_provider_config",
+      "label": "Model / provider config",
+      "required": true,
+      "backingTables": [
+        "ai_workforce_approval_queue",
+        "ai_workforce_budget_classes",
+        "ai_workforce_cached_outputs",
+        "ai_workforce_invocations",
+        "ai_workforce_launch_honesty",
+        "ai_workforce_outputs",
+        "ai_workforce_recommendation_scores",
+        "ai_workforce_recommendations",
+        "ai_workforce_role_health",
+        "ai_workforce_role_task_permissions",
+        "ai_workforce_roles",
+        "ai_workforce_task_types",
+        "cloud_storage_providers",
+        "read_model_snapshots",
+        "service_providers_list"
+      ],
+      "coverage": 15,
+      "status": "covered"
+    },
+    {
+      "key": "feature_flags",
+      "label": "Feature flags / kill switches",
+      "required": true,
+      "backingTables": [
+        "cloud_feature_flags",
+        "flagship_loops"
+      ],
+      "coverage": 2,
+      "status": "covered"
+    },
+    {
+      "key": "oauth_tokens",
+      "label": "OAuth tokens / connector state",
+      "required": true,
+      "backingTables": [
+        "connector_oauth_flows",
+        "connector_sync_runs",
+        "connector_tokens"
+      ],
+      "coverage": 3,
+      "status": "covered"
+    },
+    {
+      "key": "workflow_runtime",
+      "label": "Workflow runtime state",
+      "required": true,
+      "backingTables": [
+        "command_steps",
+        "runtime_agents"
+      ],
+      "coverage": 2,
+      "status": "covered"
+    },
+    {
+      "key": "memory_persistence",
+      "label": "Memory objects / corrections",
+      "required": true,
+      "backingTables": [
+        "advisor_board_memory",
+        "advisor_memories",
+        "command_memory"
+      ],
+      "coverage": 3,
+      "status": "covered"
+    },
+    {
+      "key": "action_proof_reversal",
+      "label": "Action / proof / reversal trail",
+      "required": true,
+      "backingTables": [
+        "admin_action_audit",
+        "ai_inference_receipts",
+        "boardroom_decision_receipts",
+        "cloud_audit_events",
+        "notification_delivery_receipts",
+        "os_audit_events",
+        "license_audit_log",
+        "timeline_events"
+      ],
+      "coverage": 8,
+      "status": "covered"
+    }
+  ]
+}
