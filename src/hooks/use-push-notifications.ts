@@ -1,9 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Push Notifications Hook
-// Manages push permission, registration, and device tokens
+// Mobile-runtime aware. Resolves transport (APNs / FCM / web) via
+// the mobile capability matrix and surfaces honest unavailable
+// reasons so UI never claims a transport it cannot use.
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   registerPushToken,
@@ -13,6 +15,9 @@ import {
   getPermissionState,
   type PushTokenRecord,
 } from "@/lib/services/push-notification/push-registration-service";
+import { useMobileRuntime, useMobileCapability } from "@/lib/mobile-platform";
+
+export type PushTransport = "apns" | "fcm" | "web" | "none";
 
 export interface UsePushNotificationsReturn {
   isSupported: boolean;
@@ -20,6 +25,10 @@ export interface UsePushNotificationsReturn {
   permissionState: NotificationPermission | "unsupported";
   devices: PushTokenRecord[];
   isLoading: boolean;
+  /** Selected transport for the current runtime, after capability + kill-switch resolution. */
+  transport: PushTransport;
+  /** Honest reason when no transport is usable. */
+  unavailableReason: string;
   requestPermission: () => Promise<boolean>;
   unregister: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -31,12 +40,31 @@ export function usePushNotifications(): UsePushNotificationsReturn {
   const [permissionState, setPermissionState] = useState<NotificationPermission | "unsupported">(getPermissionState());
   const [devices, setDevices] = useState<PushTokenRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isSupported = isPushSupported();
+
+  const { os, isFirstClassMobile } = useMobileRuntime();
+  const apnsStatus = useMobileCapability("push.apns");
+  const fcmStatus = useMobileCapability("push.fcm");
+  const webStatus = useMobileCapability("push.web");
+
+  const { transport, unavailableReason, isSupported } = useMemo(() => {
+    const webOk = isPushSupported() && webStatus !== "unsupported" && webStatus !== "roadmap";
+    if (isFirstClassMobile && os === "ios") {
+      if (apnsStatus === "supported") return { transport: "apns" as const, unavailableReason: "", isSupported: true };
+      if (webOk) return { transport: "web" as const, unavailableReason: "APNs deferred — using web push fallback.", isSupported: true };
+      return { transport: "none" as const, unavailableReason: "Push is not yet enabled on iOS for this build.", isSupported: false };
+    }
+    if (isFirstClassMobile && os === "android") {
+      if (fcmStatus === "supported") return { transport: "fcm" as const, unavailableReason: "", isSupported: true };
+      if (webOk) return { transport: "web" as const, unavailableReason: "FCM not yet provisioned — using web push fallback.", isSupported: true };
+      return { transport: "none" as const, unavailableReason: "Push is not yet enabled on Android for this build.", isSupported: false };
+    }
+    if (webOk) return { transport: "web" as const, unavailableReason: "", isSupported: true };
+    return { transport: "none" as const, unavailableReason: "Push is unsupported in this runtime.", isSupported: false };
+  }, [isFirstClassMobile, os, apnsStatus, fcmStatus, webStatus]);
 
   // Load existing tokens
   useEffect(() => {
     if (!user?.id || !isSupported) return;
-
     let cancelled = false;
     const load = async () => {
       const tokens = await getRegisteredTokens();
@@ -52,7 +80,6 @@ export function usePushNotifications(): UsePushNotificationsReturn {
   // Auto-register if permission already granted
   useEffect(() => {
     if (!user?.id || !isSupported || permissionState !== "granted" || isRegistered) return;
-
     registerPushToken().then((token) => {
       if (token) {
         setIsRegistered(true);
@@ -108,6 +135,8 @@ export function usePushNotifications(): UsePushNotificationsReturn {
     permissionState,
     devices,
     isLoading,
+    transport,
+    unavailableReason,
     requestPermission,
     unregister,
     refresh,

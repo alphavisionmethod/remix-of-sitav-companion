@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — useOfflineStore Hook
-// Provides cache-first data access with offline queue
+// Cache-first data access with offline queue.
+// On first-class mobile, additionally exposes the mobile-platform
+// sync queue depth so UI surfaces stay truthful per runtime tier.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from 'react';
@@ -12,8 +14,13 @@ import {
   startSyncManager,
   stopSyncManager,
 } from '@/lib/offline-db';
-import { supabase } from '@/integrations/supabase/client';
-import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromDynamicTable } from "@/lib/supabase-helpers";
+import {
+  mobileSyncQueue,
+  getMobileSyncHealth,
+  type OfflineMutation,
+} from "@/lib/mobile-platform";
+import { useMobileRuntime } from "@/lib/mobile-platform";
 
 interface UseOfflineStoreOptions {
   /** Cache key for this data */
@@ -29,8 +36,10 @@ export function useOfflineStore<T = unknown>({
   ttl = 5 * 60 * 1000,
   enableSync = true,
 }: UseOfflineStoreOptions) {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
   const [pendingCount, setPendingCount] = useState(0);
+  const [mobileQueueDepth, setMobileQueueDepth] = useState(0);
+  const { isFirstClassMobile } = useMobileRuntime();
 
   useEffect(() => {
     const onOnline = () => setIsOnline(true);
@@ -43,7 +52,7 @@ export function useOfflineStore<T = unknown>({
     };
   }, []);
 
-  // Update pending count periodically
+  // Update pending count periodically (web cache queue)
   useEffect(() => {
     const check = async () => {
       const pending = await getPendingActions();
@@ -54,7 +63,18 @@ export function useOfflineStore<T = unknown>({
     return () => clearInterval(interval);
   }, []);
 
-  // Start sync manager
+  // Subscribe to mobile sync queue when on a first-class mobile runtime
+  useEffect(() => {
+    if (!isFirstClassMobile) return;
+    const update = (q: ReadonlyArray<OfflineMutation>) => {
+      setMobileQueueDepth(q.filter((m) => m.status === "queued").length);
+    };
+    const unsub = mobileSyncQueue.subscribe(update);
+    setMobileQueueDepth(getMobileSyncHealth().totalQueued);
+    return () => { unsub(); };
+  }, [isFirstClassMobile]);
+
+  // Start sync manager (web cache queue)
   useEffect(() => {
     if (!enableSync) return;
 
@@ -76,12 +96,10 @@ export function useOfflineStore<T = unknown>({
   /** Get cached data, fetching from network if stale */
   const getCached = useCallback(
     async (fetcher: () => Promise<T>): Promise<T | null> => {
-      // Try cache first
       const cached = await cacheGet<T>(key);
       if (cached !== null) return cached;
 
-      // If online, fetch and cache
-      if (navigator.onLine) {
+      if (typeof navigator !== "undefined" && navigator.onLine) {
         try {
           const data = await fetcher();
           await cacheSet(key, data, ttl);
@@ -96,7 +114,6 @@ export function useOfflineStore<T = unknown>({
     [key, ttl]
   );
 
-  /** Cache data manually */
   const setCache = useCallback(
     async (data: T) => {
       await cacheSet(key, data, ttl);
@@ -104,7 +121,6 @@ export function useOfflineStore<T = unknown>({
     [key, ttl]
   );
 
-  /** Queue an offline mutation */
   const queueMutation = useCallback(
     async (
       table: string,
@@ -122,6 +138,10 @@ export function useOfflineStore<T = unknown>({
   return {
     isOnline,
     pendingCount,
+    /** Queue depth from the mobile-platform sync engine (0 on non-mobile). */
+    mobileQueueDepth,
+    /** True only when we are on a true mobile runtime tier. */
+    isFirstClassMobile,
     getCached,
     setCache,
     queueMutation,

@@ -51,6 +51,8 @@ export { mobileSyncQueue, SyncQueueManager } from "./sync/sync-queue-manager";
 export { resolveConflict } from "./sync/sync-conflict-policy";
 export { nextRetry } from "./sync/retry-policy";
 export { classifyNetwork, shouldQueueMutation, shouldShowOfflineBanner } from "./sync/degraded-network-policy";
+export { sampleNetworkSnapshot } from "./sync/network-sampler";
+export { localStorageQueuePersistence, LocalStorageQueuePersistence } from "./sync/local-storage-persistence";
 export { getMobileSyncHealth } from "./sync/mobile-sync-health";
 export { mobileOfflineSyncEngine, MobileOfflineSyncEngine } from "./sync/mobile-offline-sync-engine";
 

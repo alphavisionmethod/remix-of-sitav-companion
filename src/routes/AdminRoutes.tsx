@@ -166,6 +166,7 @@ const ReleaseEngineeringPage = lazy(() => import("@/pages/admin/ReleaseEngineeri
 const GraphIntelligencePage = lazy(() => import("@/pages/admin/GraphIntelligencePage"));
 const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPage"));
+const MobileParityDashboard = lazy(() => import("@/pages/admin/MobileParityDashboard"));
 
 export function getAdminRoutes() {
   return [
@@ -320,5 +321,7 @@ export function getAdminRoutes() {
     <Route key="cd04" path="/admin/simulation-center" element={gated("maintenance.view", <SimulationCenterPage />)} />,
     // ── Backend Topology & DB Health ──
     <Route key="bt01" path="/admin/backend-topology" element={gated("maintenance.view", <BackendTopologyDashboard />)} />,
+    // ── Mobile Platform Truth ──
+    <Route key="mob01" path="/admin/mobile-parity" element={gated("audit.view", <MobileParityDashboard />)} />,
   ];
 }
