@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
+import { useRuntimeTier } from "@/lib/runtime/runtime-context";
 
 interface UpdateState {
   checking: boolean;
@@ -30,7 +31,10 @@ export function useElectronBridge() {
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [deepLink, setDeepLink] = useState<DeepLinkPayload | null>(null);
   const [updateState, setUpdateState] = useState<UpdateState | null>(null);
-  const electron = isElectron();
+  // Runtime-tier truth: bridge methods are only honest in DESKTOP_HOST tier.
+  // Other tiers see no-ops with explicit `tier`/`isElectron` exposure.
+  const tier = useRuntimeTier();
+  const electron = isElectron() && tier === "DESKTOP_HOST";
 
   useEffect(() => {
     if (!electron) return;
@@ -101,6 +105,7 @@ export function useElectronBridge() {
 
   return {
     isElectron: electron,
+    tier,
     systemInfo,
     deepLink,
     updateState,
