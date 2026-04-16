@@ -20,13 +20,21 @@
 //   canonical chain orchestrator which ties services together.
 // ═══════════════════════════════════════════════════════════════
 
-// ── Re-export from src/lib/services/ (canonical backend layer) ──
-
-export * from "@/lib/services";
-
-// ── 7 OS services (already covered by line 25 export * from "@/lib/services") ──
-// brain-core, model-router, conscience-gate, inference-gateway,
-// mnemosyne, trust-governor, approval-engine — all accessible via the barrel above.
+// ── AUTHORITY HARDENING (Service Layer Constitution v1) ───────
+//
+// As of the Service Layer Consolidation refactor, this barrel
+// exports ONLY platform-canonical organs that physically live in
+// `src/lib/core-services/`. The previous `export * from "@/lib/services"`
+// created an authority inversion (L1 platform re-exporting L2 domain),
+// producing circular semantics and import ambiguity.
+//
+// Consumers that need both layers should import from the
+// composed facade instead:
+//
+//     import { ... } from "@/lib/service-facade";
+//
+// Domain-only consumers should import from `@/lib/services`.
+// ──────────────────────────────────────────────────────────────
 
 // ── Local orchestration & infrastructure (owned by core-services) ──
 
