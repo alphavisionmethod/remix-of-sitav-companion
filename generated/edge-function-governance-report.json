@@ -1,28 +1,29 @@
 {
-  "generatedAt": "2026-04-16T18:26:29.295Z",
+  "generatedAt": "2026-04-16T18:28:26.034Z",
   "mode": "standard",
   "totalFunctions": 84,
   "categoryCounts": {
     "admin-api": 8,
     "ai-gateway": 2,
-    "system-api": 11,
+    "system-api": 10,
     "domain-api": 48,
-    "internal": 7,
+    "internal": 8,
     "cron": 4,
     "public": 4
   },
   "authClassCounts": {
     "admin-required": 8,
-    "jwt-required": 61,
-    "service-role": 11,
+    "jwt-required": 59,
+    "service-role": 12,
+    "webhook-sig": 1,
     "public": 4
   },
   "riskTierCounts": {
     "R3": 11,
     "R4": 5,
-    "R2": 46,
+    "R2": 45,
     "R5": 3,
-    "R0": 10,
+    "R0": 11,
     "R1": 9
   },
   "checks": [
