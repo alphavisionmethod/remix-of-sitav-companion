@@ -56,7 +56,7 @@ export default function META04ProductReality() {
   const deployHealth = useMemo(() => deployabilityHealth(), []);
   const totalGates = CI_GATE_REGISTRY.length;
   const surfacesReady = deployScores.filter((s) => s.score >= 80).length;
-  const verdictReady = totalGates === 20 && surfacesReady === deployScores.length;
+  const verdictReady = totalGates >= 22 && surfacesReady === deployScores.length;
 
   return (
     <div className="container mx-auto p-6 space-y-6">
