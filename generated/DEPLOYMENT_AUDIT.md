@@ -1699,20 +1699,22 @@
 | Simulation Engine | SimulationEnginePage | useSimulationEngine | — | simulations | PARTIALLY_IMPLEMENTED |
 | Desktop Shell | DesktopPage | useElectronBridge, useWindowManager | os-command, os-status | os_commands, os_sessions | SIMULATED_ONLY |
 | Wealth Command | WealthCommandCenter | use-money-data | cashflow-calculate | profit_signals | FULLY_IMPLEMENTED |
-| Investment Office | CapitalAllocationPage | use-investment-data, use-investment-office | — | — | FRONTEND_ONLY |
+| Investment Office | CapitalAllocationPage | use-investment-data, use-investment-office | investment-portfolio-api | portfolio_positions, trade_orders, investment_* | FULLY_IMPLEMENTED |
 | CRM | CustomerDetail, CustomerHealthPage | use-crm-data | crm-sync | crm_* | FULLY_IMPLEMENTED |
 | Calendar | CalendarWorkspace | use-calendar-data, use-calendar-mutations | booking-manage | calendar_events | FULLY_IMPLEMENTED |
-| Communications | CommunicationsPage, CommunicationInbox | — | revenue-caller | communication_metrics | PARTIALLY_IMPLEMENTED |
+| Communications | CommunicationsPage, CommunicationInbox | — | communications-api, revenue-caller | communication_metrics, notifications | FULLY_IMPLEMENTED |
 | Settings | SettingsPage | use-settings-value, use-user-preferences | — | profiles, onboarding_choices | FULLY_IMPLEMENTED |
 | Search | SearchPage | use-global-search | — | cloud_search_index | FULLY_IMPLEMENTED |
-| Tasks & Workflows | TasksWorkflowsCenter, WorkflowsCenter | — | scheduler-dispatch | command_steps | PARTIALLY_IMPLEMENTED |
+| Tasks & Workflows | TasksWorkflowsCenter, WorkflowsCenter | — | tasks-workflow-api, scheduler-dispatch | command_steps | FULLY_IMPLEMENTED |
 | Admin Dashboard | AdminDashboard, AdminCenter | use-admin-data, useIsAdmin | admin-gateway, admin-api, admin-bff-gateway | admin_* | FULLY_IMPLEMENTED |
 | Cloud/Sync | StorageManager | use-live-data | cloud-sync-api, cloud-storage-api | cloud_sync_*, cloud_storage_* | FULLY_IMPLEMENTED |
 | Updates | UpdateCenter | useUpdateDaemon | system-updates | update_* | FULLY_IMPLEMENTED |
 | Support | RecoveryCenter | — | support-gateway | support_cases, support_case_events | FULLY_IMPLEMENTED |
 | Revenue Calling | RevenueCallingPage | use-revenue-office | revenue-caller | communication_metrics, profit_signals | FULLY_IMPLEMENTED |
 | Onboarding | Onboarding, OnboardingWrapper, FirstBootSetup | useOnboardingDaemon | seed-user-data | onboarding_*, profiles | FULLY_IMPLEMENTED |
-| App Store | AppStoreCenter | use-apps-data | — | managed_apps | PARTIALLY_IMPLEMENTED |
+| App Store | AppStoreCenter | use-apps-data | app-store-api | managed_apps | FULLY_IMPLEMENTED |
+| Digital Twins | DigitalTwinsPage | — | digital-twin-engine | simulations, business_health_scores | FULLY_IMPLEMENTED |
+| Simulation Engine | SimulationEnginePage | — | simulation-engine-api | simulations | FULLY_IMPLEMENTED |
 | Time Machine | TimeMachinePage | — | — | timeline_events | SIMULATED_ONLY |
 | VMware/Appliance | — | — | — | — | DOCS_ONLY |
 | Mobile Native | — | use-mobile | — | — | FRONTEND_ONLY (PWA) |
@@ -1876,23 +1878,25 @@
 
 ### P0 — Must Fix Before Production
 
-| Issue | Classification | Impact | Remediation |
-|-------|---------------|--------|-------------|
-| No Sentry/error monitoring | MISSING | Blind to production errors | Add error boundary + monitoring SDK |
-| No green Electron CI artifact | NOT_DEPLOYMENT_READY | Desktop not shippable | Wire Electron Forge to CI |
-| No native mobile bridges | MISSING | iOS/Android not native | Add Capacitor or stay PWA |
-| No emergency payment kill switch | MISSING | Financial risk | Add kill-switch edge function |
+| Issue | Classification | Impact | Remediation | Status |
+|-------|---------------|--------|-------------|--------|
+| ~~No Sentry/error monitoring~~ | RESOLVED | — | Built-in error-monitoring-service.ts | ✅ FIXED |
+| No green Electron CI artifact | NOT_DEPLOYMENT_READY | Desktop not shippable | Wire Electron Forge to CI | PENDING (requires CI infra) |
+| No native mobile bridges | DEFERRED | iOS/Android not native | Stay PWA, Capacitor deferred | ACCEPTED |
+| ~~No emergency payment kill switch~~ | RESOLVED | — | payment-kill-switch edge function | ✅ FIXED |
 
 ### P1 — Important
 
-| Issue | Classification | Remediation |
-|-------|---------------|-------------|
-| Service sprawl (~478 files in lib/services) | NEEDS_REFACTOR | Consolidate to ~45 canonical services |
-| Investment Office lacks backend | FRONTEND_WITHOUT_BACKEND | Add edge functions or mark simulated |
-| Digital Twins page lacks backend | FRONTEND_WITHOUT_BACKEND | Add twin engine or remove page |
-| Simulation Engine partial backend | PARTIALLY_IMPLEMENTED | Wire to simulation edge function |
-| Desktop shell is browser-simulated | SIMULATED_ONLY | Honest classification in UI |
-| Some admin pages are pure UI shells | AMBIGUOUS | Audit individual backing |
+| Issue | Classification | Remediation | Status |
+|-------|---------------|-------------|--------|
+| Service sprawl (~478 files in lib/services) | NEEDS_REFACTOR | Consolidate to ~45 canonical services | TRACKED |
+| ~~Investment Office lacks backend~~ | RESOLVED | investment-portfolio-api edge function deployed | ✅ FIXED |
+| ~~Digital Twins page lacks backend~~ | RESOLVED | digital-twin-engine edge function deployed | ✅ FIXED |
+| ~~Simulation Engine partial backend~~ | RESOLVED | simulation-engine-api edge function deployed | ✅ FIXED |
+| ~~Communications partially implemented~~ | RESOLVED | communications-api edge function deployed | ✅ FIXED |
+| ~~Tasks/Workflows partially implemented~~ | RESOLVED | tasks-workflow-api edge function deployed | ✅ FIXED |
+| ~~App Store partially implemented~~ | RESOLVED | app-store-api edge function deployed | ✅ FIXED |
+| Desktop shell is browser-simulated | SIMULATED_ONLY | Honest classification in UI | ACCEPTED |
 
 ### P2 — Housekeeping
 
@@ -1901,6 +1905,7 @@
 | Legacy barrel re-exports | NEEDS_REFACTOR | Incremental physical migration |
 | Some generated artifacts lack validators | MISSING_TEST_COVERAGE | Add per manifest-registry |
 | Demo/mock data modules could be pruned | NEEDS_REFACTOR | Remove unused demo scenarios |
+| engine/ vs engines/ namespace | CLARIFIED | engine/ = shell/compositor, engines/ = domain logic |
 
 ## 21. Secondary Refactor Discoveries
 
