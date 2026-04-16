@@ -10,39 +10,39 @@ import { execSync } from "child_process";
 const generators: Record<string, string[]> = {
   // ── Core manifests (no dependencies) ──
   "manifests:core": [
-    "scripts/generate-service-manifest.ts",
-    "scripts/generate-route-manifest.ts",
-    "scripts/generate-capability-index.ts",
-    "scripts/generate-prompt-index.ts",
-    "scripts/generate-connector-catalog.ts",
-    "scripts/generate-advisor-registry.ts",
-    "scripts/generate-internal-agent-registry.ts",
-    "scripts/generate-formula-registry.ts",
-    "scripts/generate-outcome-index.ts",
-    "scripts/generate-subject-manifest.ts",
-    "scripts/generate-startup-order.ts",
-    "scripts/generate-feature-integration-index.ts",
-    "scripts/generate-boardroom-template-index.ts",
+    "scripts/manifests/generate/generate-service-manifest.ts",
+    "scripts/manifests/generate/generate-route-manifest.ts",
+    "scripts/manifests/generate/generate-capability-index.ts",
+    "scripts/manifests/generate/generate-prompt-index.ts",
+    "scripts/manifests/generate/generate-connector-catalog.ts",
+    "scripts/manifests/generate/generate-advisor-registry.ts",
+    "scripts/manifests/generate/generate-internal-agent-registry.ts",
+    "scripts/manifests/generate/generate-formula-registry.ts",
+    "scripts/manifests/generate/generate-outcome-index.ts",
+    "scripts/manifests/generate/generate-subject-manifest.ts",
+    "scripts/manifests/generate/generate-startup-order.ts",
+    "scripts/manifests/generate/generate-feature-integration-index.ts",
+    "scripts/manifests/generate/generate-boardroom-template-index.ts",
   ],
 
   // ── Capability matrices (depends on core) ──
   "manifests:capabilities": [
-    "scripts/generate-capability-matrices.ts",
-    "scripts/generate-capability-family-index.ts",
-    "scripts/generate-capability-quality-metric.ts",
+    "scripts/manifests/generate/generate-capability-matrices.ts",
+    "scripts/manifests/generate/generate-capability-family-index.ts",
+    "scripts/manifests/generate/generate-capability-quality-metric.ts",
   ],
 
   // ── Contracts ──
   "contracts": [
-    "scripts/generate-contract-manifest.ts",
-    "scripts/generate-shell-space-registry.ts",
-    "scripts/generate-subscription-replacement-matrix.ts",
+    "scripts/manifests/generate/generate-contract-manifest.ts",
+    "scripts/manifests/generate/generate-shell-space-registry.ts",
+    "scripts/manifests/generate/generate-subscription-replacement-matrix.ts",
   ],
 
   // ── Runtime ──
   "runtime": [
-    "scripts/generate-runtime-conformance.ts",
-    "scripts/generate-runtime-ports.ts",
+    "scripts/runtime/generate/generate-runtime-conformance.ts",
+    "scripts/runtime/generate/generate-runtime-ports.ts",
     "scripts/runtime/generate/generate-runtime-capability-matrix.ts",
     "scripts/runtime/generate/generate-runtime-reality-map.ts",
     "scripts/runtime/edge-functions/generate-edge-function-registry.ts",
@@ -50,23 +50,23 @@ const generators: Record<string, string[]> = {
 
   // ── Operational ──
   "manifests:operational": [
-    "scripts/generate-service-consolidation.ts",
-    "scripts/generate-admin-support-visibility.ts",
-    "scripts/generate-operational-scorecards.ts",
-    "scripts/generate-ownership-manifest.ts",
+    "scripts/manifests/generate/generate-service-consolidation.ts",
+    "scripts/manifests/generate/generate-admin-support-visibility.ts",
+    "scripts/manifests/generate/generate-operational-scorecards.ts",
+    "scripts/manifests/generate/generate-ownership-manifest.ts",
   ],
 
   // ── Thresholds ──
   "manifests:thresholds": [
-    "scripts/generate-maturity-thresholds.ts",
-    "scripts/generate-release-gate-thresholds.ts",
-    "scripts/generate-surface-performance-budget.ts",
+    "scripts/manifests/generate/generate-maturity-thresholds.ts",
+    "scripts/release/checks/generate-release-gate-thresholds.ts",
+    "scripts/manifests/generate/generate-surface-performance-budget.ts",
   ],
 
   // ── Compliance & launch ──
   "architecture": [
-    "scripts/generate-architecture-compliance.ts",
-    "scripts/generate-launch-tier-index.ts",
+    "scripts/manifests/generate/generate-architecture-compliance.ts",
+    "scripts/manifests/generate/generate-launch-tier-index.ts",
   ],
 
   // ── DB truth ──
@@ -104,7 +104,7 @@ const generators: Record<string, string[]> = {
 
   // ── Validation summary (runs last, checks all above) ──
   "validation-summary": [
-    "scripts/generate-validation-summary.ts",
+    "scripts/manifests/generate/generate-validation-summary.ts",
   ],
 };
 

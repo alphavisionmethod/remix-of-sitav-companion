@@ -43,18 +43,41 @@ describe("Script Domain Coverage", () => {
     "scripts/runtime/checks",
     "scripts/runtime/generate",
     "scripts/runtime/edge-functions",
+    "scripts/runtime/probes",
+    "scripts/runtime/lifecycle",
+    "scripts/runtime/capability",
     "scripts/manifests/validate",
     "scripts/manifests/generate",
     "scripts/manifests/reports",
     "scripts/db/checks",
     "scripts/db/generate",
     "scripts/db/backup",
+    "scripts/db/restore",
+    "scripts/db/migrations",
     "scripts/support/coverage",
     "scripts/support/runbooks",
+    "scripts/support/diagnostics",
+    "scripts/support/drills",
+    "scripts/support/recovery",
     "scripts/deployment/checks",
     "scripts/deployment/build",
     "scripts/deployment/ingress",
+    "scripts/deployment/deploy",
+    "scripts/deployment/local",
     "scripts/architecture/checks",
+    "scripts/architecture/assertions",
+    "scripts/architecture/reports",
+    "scripts/contracts/checks",
+    "scripts/contracts/generate",
+    "scripts/release/desktop",
+    "scripts/release/appliance",
+    "scripts/release/vmware",
+    "scripts/release/rings",
+    "scripts/release/supply-chain",
+    "scripts/release/checks",
+    "scripts/security/checks",
+    "scripts/security/rotation",
+    "scripts/security/attestations",
     "scripts/legacy",
   ];
 
@@ -65,11 +88,32 @@ describe("Script Domain Coverage", () => {
   }
 });
 
-describe("No Orphaned Scripts", () => {
-  it("all scripts in scripts/ are classifiable", () => {
+describe("No Orphaned Root Scripts", () => {
+  it("only generate-all.ts and validate-all.ts remain at root", () => {
+    const rootScripts = fs.readdirSync("scripts")
+      .filter(f => /\.(ts|js|mjs|sh|ps1)$/.test(f) && !f.startsWith("tsconfig"));
+    const allowed = ["generate-all.ts", "validate-all.ts"];
+    for (const s of rootScripts) {
+      expect(allowed).toContain(s);
+    }
+  });
+});
+
+describe("Phase/Prompt Naming Eliminated", () => {
+  it("no phase/prompt-era script names in durable architecture", () => {
+    const allScripts = scanScripts("scripts");
+    const violations = allScripts.filter(s =>
+      !s.includes("legacy/") && !s.includes("archived-phase-scripts/") &&
+      (s.includes("phase4") || s.includes("phase5") || s.includes("prompt9"))
+    );
+    expect(violations).toEqual([]);
+  });
+});
+
+describe("All Scripts Classifiable", () => {
+  it("all scripts in scripts/ are under a known subdirectory", () => {
     const scripts = scanScripts("scripts");
     expect(scripts.length).toBeGreaterThan(100);
-    // Every script should be in a known subdirectory or at root
     for (const s of scripts) {
       const rel = s.replace(/\\/g, "/");
       expect(rel.startsWith("scripts/")).toBe(true);
@@ -78,21 +122,25 @@ describe("No Orphaned Scripts", () => {
 });
 
 describe("Master Entrypoints", () => {
-  it("generate-all.ts has domain-based registry", () => {
+  it("generate-all.ts uses canonical paths", () => {
     const content = fs.readFileSync("scripts/generate-all.ts", "utf-8");
-    expect(content).toContain("generators");
-    expect(content).toContain("manifests:core");
-    expect(content).toContain("runtime");
-    expect(content).toContain("db");
+    expect(content).toContain("scripts/manifests/generate/");
+    expect(content).toContain("scripts/runtime/generate/");
+    expect(content).toContain("scripts/db/generate/");
+    expect(content).toContain("scripts/deployment/");
+    expect(content).not.toContain('"scripts/generate-service-manifest.ts"');
   });
 
-  it("validate-all.ts has domain-based registry", () => {
+  it("validate-all.ts uses canonical paths", () => {
     const content = fs.readFileSync("scripts/validate-all.ts", "utf-8");
-    expect(content).toContain("validators");
-    expect(content).toContain("architecture");
-    expect(content).toContain("runtime");
-    expect(content).toContain("db");
-    expect(content).toContain("support");
+    expect(content).toContain("scripts/architecture/checks/");
+    expect(content).toContain("scripts/contracts/checks/");
+    expect(content).toContain("scripts/runtime/checks/");
+    expect(content).toContain("scripts/db/checks/");
+    expect(content).toContain("scripts/deployment/checks/");
+    expect(content).toContain("scripts/security/checks/");
+    expect(content).not.toContain('"scripts/check-canonical-imports.ts"');
+    expect(content).not.toContain("scripts/validation/");
   });
 });
 
@@ -112,4 +160,23 @@ describe("Architecture Docs", () => {
       expect(content.length).toBeGreaterThan(200);
     });
   }
+});
+
+describe("Package.json Script Commands", () => {
+  it("has canonical validate/generate/drill commands", () => {
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+    const scripts = pkg.scripts || {};
+    const required = [
+      "validate:all", "validate:architecture", "validate:contracts",
+      "validate:runtime", "validate:db", "validate:deployment",
+      "validate:manifests", "validate:support", "validate:release",
+      "validate:security",
+      "generate:all", "generate:manifests", "generate:runtime",
+      "generate:db", "generate:deployment",
+      "drill:recovery", "drill:backup-restore",
+    ];
+    for (const cmd of required) {
+      expect(scripts[cmd]).toBeDefined();
+    }
+  });
 });
