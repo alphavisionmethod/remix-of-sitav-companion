@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Capability Quality Metric Validator
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const metrics = readJsonSafe<any>("generated/capability-quality-metric.json");
 if (!metrics) { console.error("❌ generated/capability-quality-metric.json not found"); process.exit(1); }

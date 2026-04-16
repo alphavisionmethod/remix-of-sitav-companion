@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — VMware Supply Chain Index
 import * as fs from "fs";
-import { readJsonSafe, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const index = envelope("1.0.0", {
   tiers: ["pilot", "production"],

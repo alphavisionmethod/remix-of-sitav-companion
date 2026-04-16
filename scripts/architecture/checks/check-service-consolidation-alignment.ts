@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Service Consolidation Alignment Check
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe, discoverServiceDirs } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, discoverServiceDirs } from "../lib/utils";
 const vc = new ViolationCollector();
 const consolidation = readJsonSafe<any>("generated/service-consolidation-manifest.json");
 if (!consolidation) { console.log("⚠️ service-consolidation-manifest.json not found — skipping"); process.exit(0); }

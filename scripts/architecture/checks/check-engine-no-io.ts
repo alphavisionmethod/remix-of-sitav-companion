@@ -5,7 +5,7 @@
 // @/integrations/supabase or perform direct network calls
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const files = scanDir("src/lib/engines", [".ts"]);

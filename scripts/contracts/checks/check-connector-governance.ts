@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Connector Governance Validator
-import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const catalog = readJsonSafe<any>("generated/connector-catalog.json");
 if (!catalog) { console.error("❌ connector-catalog.json not found"); process.exit(1); }

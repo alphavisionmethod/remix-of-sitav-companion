@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Deprecated Contract Imports Check
-import { ViolationCollector, scanDir, readFileContent, matchImports } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent, matchImports } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const DEPRECATED_IMPORTS = [
   /from\s+["']@\/lib\/types["']/,

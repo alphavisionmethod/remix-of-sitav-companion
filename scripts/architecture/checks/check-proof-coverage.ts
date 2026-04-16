@@ -4,7 +4,7 @@
 // Validates every mutation has a proof/receipt binding
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const capIndex = loadCapabilityIndex();

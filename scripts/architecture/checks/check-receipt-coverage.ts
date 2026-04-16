@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Receipt Coverage Validator
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex } from "../lib/utils";
 const vc = new ViolationCollector();
 const receiptMatrix = readJsonSafe<any>("generated/capability-receipt-matrix.json");
 const capIndex = loadCapabilityIndex();

@@ -4,7 +4,7 @@
 // Validates connector-catalog.json matches source connector configs
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const catalog = readJsonSafe<any>("generated/connector-catalog.json");

@@ -2,7 +2,7 @@
 // SITA OS — VMware Supply Chain Artifacts Generator
 import * as fs from "fs";
 import * as crypto from "crypto";
-import { scanDir, readFileContent, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { scanDir, readFileContent, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const supplyChainDir = "generated/vmware-supply-chain";
 if (!fs.existsSync(supplyChainDir)) fs.mkdirSync(supplyChainDir, { recursive: true });

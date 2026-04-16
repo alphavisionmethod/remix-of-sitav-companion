@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Service Registry Sync Check
-import { ViolationCollector, loadServiceManifest, discoverServiceDirs } from "../architecture/lib/utils";
+import { ViolationCollector, loadServiceManifest, discoverServiceDirs } from "../lib/utils";
 const vc = new ViolationCollector();
 const manifest = loadServiceManifest();
 const diskServices = new Set(discoverServiceDirs());

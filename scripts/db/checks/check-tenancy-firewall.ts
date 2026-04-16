@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Tenant Isolation Enforcement
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const TENANT_VIOLATIONS = [
   { pattern: /\.from\(\s*["'][^"']+["']\s*\)(?!.*\.eq\(.*tenant)(?!.*\.eq\(.*user_id)(?!.*\.eq\(.*owner)/s, name: "missing-tenant-filter" },

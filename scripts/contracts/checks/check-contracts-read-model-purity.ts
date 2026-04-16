@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Read Model Purity Check
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const readModelFiles = scanDir("src/packages", [".ts"]).filter(f => f.includes("read-model") || f.includes("readmodel") || f.includes("projection"));
 const WRITE_PATTERNS = [/\.insert\(/, /\.update\(/, /\.delete\(/, /\.upsert\(/, /mutation/i, /\.mutate\(/];

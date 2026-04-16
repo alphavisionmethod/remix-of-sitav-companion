@@ -4,7 +4,7 @@
 // Validates capability family groupings are complete and consistent
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex, classifyServiceDomain } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex, classifyServiceDomain } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const capIndex = loadCapabilityIndex();

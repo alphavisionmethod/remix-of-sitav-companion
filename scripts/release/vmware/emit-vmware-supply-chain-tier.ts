@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { readJsonSafe, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const manifest = readJsonSafe<any>("generated/service-manifest.json");
 const services = manifest?.services || [];

@@ -209,6 +209,6 @@ auth, notification-service, google-provider-family, life-simulation
 | `src/lib/architecture/route-registry.ts` | Route→layer/domain/risk tagged registry |
 | `src/lib/architecture/service-ownership-manifest.ts` | Service ownership, duplicates, budget |
 | `scripts/architecture/check-layer-boundaries.ts` | CI boundary violation scanner (9 rules) |
-| `scripts/check-import-boundaries.ts` | Domain isolation + contract boundary checker |
+| `scripts/contracts/checks/check-import-boundaries.ts` | Domain isolation + contract boundary checker |
 | `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx` | Visual boundary dashboard for operators |
 | `docs/architecture/LAYER_SEPARATION.md` | This file — structural truth source |

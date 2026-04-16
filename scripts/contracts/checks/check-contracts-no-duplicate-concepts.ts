@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — No Duplicate Contract Concepts
 // Ignore pure redirect stubs
-import { ViolationCollector, scanDir, extractExports } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, extractExports } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const contractDirs = ["src/packages/contracts", "src/packages/business-contracts", "src/packages/finance-contracts", "src/packages/concierge-contracts"];
 const exportMap = new Map<string, string[]>();

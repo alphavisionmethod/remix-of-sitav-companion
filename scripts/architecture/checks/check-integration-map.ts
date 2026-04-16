@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Phase 5 Integration Map Completeness
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../lib/utils";
 const vc = new ViolationCollector();
 const featureIndex = readJsonSafe<any>("generated/feature-integration-index.json");
 if (!featureIndex) { console.error("❌ feature-integration-index.json not found"); process.exit(1); }

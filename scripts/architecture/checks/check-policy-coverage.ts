@@ -4,7 +4,7 @@
 // Validates every capability has a policy binding
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const capIndex = loadCapabilityIndex();

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Enhanced Generated Truth Validator (all 52 artifacts)
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const GENERATED_FILES = [
   "generated/service-manifest.json", "generated/route-manifest.json", "generated/capability-index.json",

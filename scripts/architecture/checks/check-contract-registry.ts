@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe, scanDir, extractExports } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, scanDir, extractExports } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const manifest = readJsonSafe<any>("generated/contract-manifest.json");

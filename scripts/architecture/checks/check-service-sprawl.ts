@@ -6,7 +6,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { ViolationCollector, discoverServiceDirs, scanDir, loadServiceManifest, classifyServiceDomain } from "./lib/utils";
+import { ViolationCollector, discoverServiceDirs, scanDir, loadServiceManifest, classifyServiceDomain } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const SPRAWL_THRESHOLD = 250;

@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { ViolationCollector, scanDir, readFileContent, extractExports } from "./lib/utils";
+import { ViolationCollector, scanDir, readFileContent, extractExports } from "../lib/utils";
 
 const vc = new ViolationCollector();
 

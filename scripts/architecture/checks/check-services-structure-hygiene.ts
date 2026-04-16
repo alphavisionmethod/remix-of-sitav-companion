@@ -2,7 +2,7 @@
 // SITA OS — Service Structure Hygiene Check
 import * as fs from "fs";
 import * as path from "path";
-import { ViolationCollector, discoverServiceDirs } from "../architecture/lib/utils";
+import { ViolationCollector, discoverServiceDirs } from "../lib/utils";
 const vc = new ViolationCollector();
 const services = discoverServiceDirs();
 for (const svc of services) {

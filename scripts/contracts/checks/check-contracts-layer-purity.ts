@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Contracts Layer Purity Check
 // Apps should not import truth contracts directly
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const appFiles = [...scanDir("src/pages", [".ts", ".tsx"]), ...scanDir("src/components", [".ts", ".tsx"])];
 const FORBIDDEN = [

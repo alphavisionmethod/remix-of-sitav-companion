@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Phase 5 Readiness Gate
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../lib/utils";
 const vc = new ViolationCollector();
 const PHASE5_GATES = [
   { file: "generated/capability-quality-metric.json", minScore: 30, desc: "Quality metrics" },

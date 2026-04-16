@@ -4,7 +4,7 @@
 // Ensures UI pages don't import backend internals directly
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const UI_DIRS = ["src/pages", "src/components"];

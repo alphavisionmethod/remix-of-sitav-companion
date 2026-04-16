@@ -4,7 +4,7 @@
 // Ensures all contract packages import nothing from src/lib/ or UI
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const CONTRACT_DIRS = [

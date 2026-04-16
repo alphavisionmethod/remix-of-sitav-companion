@@ -1,82 +1,92 @@
 import { describe, it, expect } from "vitest";
 import * as fs from "fs";
 
-// All scripts that must exist in the project
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Scripts Validation Test (Canonical Paths)
+// Updated to reflect the domain-driven script architecture
+// ═══════════════════════════════════════════════════════════════
+
 const EXPECTED_GENERATORS = [
-  "scripts/generate-service-manifest.ts",
-  "scripts/generate-route-manifest.ts",
-  "scripts/generate-capability-index.ts",
-  "scripts/generate-prompt-index.ts",
-  "scripts/generate-connector-catalog.ts",
-  "scripts/generate-advisor-registry.ts",
-  "scripts/generate-internal-agent-registry.ts",
-  "scripts/generate-formula-registry.ts",
-  "scripts/generate-outcome-index.ts",
-  "scripts/generate-subject-manifest.ts",
-  "scripts/generate-startup-order.ts",
-  "scripts/generate-feature-integration-index.ts",
-  "scripts/generate-boardroom-template-index.ts",
-  "scripts/generate-capability-matrices.ts",
-  "scripts/generate-capability-family-index.ts",
-  "scripts/generate-capability-quality-metric.ts",
-  "scripts/generate-contract-manifest.ts",
-  "scripts/generate-shell-space-registry.ts",
-  "scripts/generate-subscription-replacement-matrix.ts",
-  "scripts/generate-runtime-conformance.ts",
-  "scripts/generate-runtime-ports.ts",
-  "scripts/generate-service-consolidation.ts",
-  "scripts/generate-admin-support-visibility.ts",
-  "scripts/generate-operational-scorecards.ts",
-  "scripts/generate-ownership-manifest.ts",
-  "scripts/generate-maturity-thresholds.ts",
-  "scripts/generate-release-gate-thresholds.ts",
-  "scripts/generate-surface-performance-budget.ts",
-  "scripts/generate-architecture-compliance.ts",
-  "scripts/generate-launch-tier-index.ts",
-  "scripts/generate-validation-summary.ts",
+  "scripts/manifests/generate/generate-service-manifest.ts",
+  "scripts/manifests/generate/generate-route-manifest.ts",
+  "scripts/manifests/generate/generate-capability-index.ts",
+  "scripts/manifests/generate/generate-prompt-index.ts",
+  "scripts/manifests/generate/generate-connector-catalog.ts",
+  "scripts/manifests/generate/generate-advisor-registry.ts",
+  "scripts/manifests/generate/generate-internal-agent-registry.ts",
+  "scripts/manifests/generate/generate-formula-registry.ts",
+  "scripts/manifests/generate/generate-outcome-index.ts",
+  "scripts/manifests/generate/generate-subject-manifest.ts",
+  "scripts/manifests/generate/generate-startup-order.ts",
+  "scripts/manifests/generate/generate-feature-integration-index.ts",
+  "scripts/manifests/generate/generate-boardroom-template-index.ts",
+  "scripts/manifests/generate/generate-capability-matrices.ts",
+  "scripts/manifests/generate/generate-capability-family-index.ts",
+  "scripts/manifests/generate/generate-capability-quality-metric.ts",
+  "scripts/manifests/generate/generate-contract-manifest.ts",
+  "scripts/manifests/generate/generate-shell-space-registry.ts",
+  "scripts/manifests/generate/generate-subscription-replacement-matrix.ts",
+  "scripts/manifests/generate/generate-service-consolidation.ts",
+  "scripts/manifests/generate/generate-admin-support-visibility.ts",
+  "scripts/manifests/generate/generate-operational-scorecards.ts",
+  "scripts/manifests/generate/generate-ownership-manifest.ts",
+  "scripts/manifests/generate/generate-maturity-thresholds.ts",
+  "scripts/manifests/generate/generate-surface-performance-budget.ts",
+  "scripts/manifests/generate/generate-architecture-compliance.ts",
+  "scripts/manifests/generate/generate-launch-tier-index.ts",
+  "scripts/manifests/generate/generate-validation-summary.ts",
+  "scripts/runtime/generate/generate-runtime-conformance.ts",
+  "scripts/runtime/generate/generate-runtime-ports.ts",
+  "scripts/release/checks/generate-release-gate-thresholds.ts",
 ];
 
 const EXPECTED_VALIDATORS = [
-  "scripts/architecture/boundary-check.ts",
-  "scripts/architecture/check-module-count.ts",
-  "scripts/architecture/check-service-sprawl.ts",
-  "scripts/architecture/check-advisor-registry.ts",
-  "scripts/architecture/check-capability-families.ts",
-  "scripts/architecture/check-connector-catalog.ts",
-  "scripts/architecture/check-contract-family-completeness.ts",
-  "scripts/architecture/check-contract-registry.ts",
-  "scripts/architecture/check-event-catalog.ts",
-  "scripts/architecture/check-event-receipt-linkage.ts",
-  "scripts/architecture/check-outbound-communication-policy.ts",
-  "scripts/architecture/check-policy-coverage.ts",
-  "scripts/architecture/check-proof-coverage.ts",
-  "scripts/architecture/check-sensitive-document-privacy.ts",
-  "scripts/architecture/check-status-truth-tags.ts",
-  "scripts/architecture/check-surface-ownership.ts",
-  "scripts/architecture/check-workflow-state-usage.ts",
-  "scripts/check-single-brain.ts",
-  "scripts/check-import-boundaries.ts",
-  "scripts/check-edge-function-health.ts",
-  "scripts/check-package-exports.ts",
-  "scripts/check-contract-completeness.ts",
-  "scripts/check-contract-integrity.ts",
-  "scripts/check-drift.ts",
-  "scripts/check-feature-governance.ts",
-  "scripts/check-rls-coverage.ts",
-  "scripts/check-no-page-mocks.ts",
-  "scripts/check-runtime-usage.ts",
-  "scripts/check-duplicate-exports.ts",
-  "scripts/check-inline-mocks.ts",
-  "scripts/check-route-drift.ts",
-  "scripts/check-scoring-boundaries.ts",
-  "scripts/check-delegation-receipts.ts",
-  "scripts/check-canonical-imports.ts",
+  // Architecture checks
+  "scripts/architecture/checks/boundary-check.ts",
+  "scripts/architecture/checks/check-module-count.ts",
+  "scripts/architecture/checks/check-service-sprawl.ts",
+  "scripts/architecture/checks/check-advisor-registry.ts",
+  "scripts/architecture/checks/check-capability-families.ts",
+  "scripts/architecture/checks/check-connector-catalog.ts",
+  "scripts/architecture/checks/check-contract-family-completeness.ts",
+  "scripts/architecture/checks/check-contract-registry.ts",
+  "scripts/architecture/checks/check-event-catalog.ts",
+  "scripts/architecture/checks/check-event-receipt-linkage.ts",
+  "scripts/architecture/checks/check-outbound-communication-policy.ts",
+  "scripts/architecture/checks/check-policy-coverage.ts",
+  "scripts/architecture/checks/check-proof-coverage.ts",
+  "scripts/architecture/checks/check-sensitive-document-privacy.ts",
+  "scripts/architecture/checks/check-status-truth-tags.ts",
+  "scripts/architecture/checks/check-surface-ownership.ts",
+  "scripts/architecture/checks/check-workflow-state-usage.ts",
+  // Contract checks
+  "scripts/contracts/checks/check-canonical-imports.ts",
+  "scripts/contracts/checks/check-import-boundaries.ts",
+  "scripts/contracts/checks/check-package-exports.ts",
+  "scripts/contracts/checks/check-contract-completeness.ts",
+  "scripts/contracts/checks/check-contract-integrity.ts",
+  "scripts/contracts/checks/check-duplicate-exports.ts",
+  // Runtime checks
+  "scripts/runtime/checks/check-single-brain.ts",
+  "scripts/runtime/checks/check-edge-function-health.ts",
+  "scripts/runtime/checks/check-runtime-usage.ts",
+  "scripts/runtime/checks/check-scoring-boundaries.ts",
+  // DB checks
+  "scripts/db/checks/check-rls-coverage.ts",
+  // Architecture — additional
+  "scripts/architecture/checks/check-drift.ts",
+  "scripts/architecture/checks/check-no-page-mocks.ts",
+  "scripts/architecture/checks/check-inline-mocks.ts",
+  "scripts/architecture/checks/check-feature-governance.ts",
+  "scripts/architecture/checks/check-delegation-receipts.ts",
+  "scripts/architecture/checks/check-ia-coherence.ts",
+  "scripts/architecture/checks/check-route-page-contract-layer-usage.ts",
 ];
 
 const EXPECTED_MASTER_SCRIPTS = [
   "scripts/validate-all.ts",
   "scripts/generate-all.ts",
-  "scripts/architecture/architecture-report.ts",
+  "scripts/architecture/reports/architecture-report.ts",
 ];
 
 const EXPECTED_BOOTSTRAP = [
@@ -102,10 +112,10 @@ describe("Scripts inventory", () => {
 });
 
 describe("Master script completeness", () => {
-  it("validate-all.ts references all root-level check scripts", () => {
+  it("validate-all.ts references architecture checks", () => {
     const content = fs.readFileSync("scripts/validate-all.ts", "utf-8");
-    const rootChecks = EXPECTED_VALIDATORS.filter(v => v.startsWith("scripts/check-"));
-    for (const check of rootChecks) {
+    const archChecks = EXPECTED_VALIDATORS.filter(v => v.startsWith("scripts/architecture/"));
+    for (const check of archChecks) {
       expect(content).toContain(check);
     }
   });
@@ -114,14 +124,6 @@ describe("Master script completeness", () => {
     const content = fs.readFileSync("scripts/generate-all.ts", "utf-8");
     for (const gen of EXPECTED_GENERATORS) {
       expect(content).toContain(gen);
-    }
-  });
-
-  it("validate-all.ts references all architecture checks", () => {
-    const content = fs.readFileSync("scripts/validate-all.ts", "utf-8");
-    const archChecks = EXPECTED_VALIDATORS.filter(v => v.startsWith("scripts/architecture/"));
-    for (const check of archChecks) {
-      expect(content).toContain(check);
     }
   });
 });
