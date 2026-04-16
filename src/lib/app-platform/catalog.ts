@@ -181,6 +181,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "Nova SDK", "NovaFS", "Notifications"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["notes", "writing", "sdk"], receipts: [],
+    quickActions: [{ id: "new-note", label: "New Note", icon: "Plus" }],
   },
 
   {
@@ -251,6 +252,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "Nova SDK", "Notifications"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["mail", "email", "inbox"], receipts: [],
+    quickActions: [{ id: "compose", label: "Compose", icon: "PenLine" }, { id: "inbox", label: "Open Inbox", icon: "Inbox" }],
   },
   {
     id: "maps-app", name: "Maps", publisher: "SITA OS", icon: "🗺️", iconBg: "from-green-500 to-teal-600",
@@ -392,6 +394,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "File associations", "Secure file handoff"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["terminal", "shell", "cli"], receipts: [],
+    quickActions: [{ id: "new-tab", label: "New Tab", icon: "Plus" }],
   },
   {
     id: "files-app", name: "SITA Files", publisher: "SITA OS", icon: "📁", iconBg: "from-blue-500 to-blue-400",
@@ -427,6 +430,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "Shell notifications", "Calendar integration"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["calendar", "schedule", "events"], receipts: [],
+    quickActions: [{ id: "new-event", label: "New Event", icon: "CalendarPlus" }],
   },
   {
     id: "weather", name: "SITA Weather", publisher: "SITA OS", icon: "🌤️", iconBg: "from-sky-400 to-blue-500",
