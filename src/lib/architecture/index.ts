@@ -241,3 +241,49 @@ export {
 export type {
   OwnerWorkflowKey, OwnerWorkflowStep, OwnerWorkflow,
 } from "./owner-workflow-map";
+
+// ── 27. Bounded Context Registry (Meta-Architecture Phase 1) ───
+export {
+  BOUNDED_CONTEXT_REGISTRY,
+  getBoundedContext,
+  getContextsByOwner,
+  getContextForEdgeFunction,
+  getContextForTable,
+  getContextForService,
+  getContextsForKillSwitch,
+  getContextsForRunbook,
+  getContextsForJourney,
+  getAllContextIds,
+  getContextSummary,
+} from "./bounded-context-registry";
+export type {
+  BoundedContextEntry,
+  BoundedContextId,
+  BoundedContextOwner,
+  BoundedContextRouteBinding,
+  BoundedContextDependencyEdge,
+  RuntimeTier as BoundedContextRuntimeTier,
+  DeploymentUnit as BoundedContextDeploymentUnit,
+} from "./bounded-context-types";
+
+export {
+  CONTEXT_OWNER_MAP, OWNER_TO_CONTEXTS,
+  getOwnerForContext, getContextsForOwner,
+} from "./context-owner-map";
+
+export {
+  CONTEXT_DEPENDENCY_EDGES,
+  getDependenciesFrom, getDependenciesTo,
+  getDependencyGraph, detectCircularDependencies,
+} from "./context-dependency-map";
+
+export {
+  CONTEXT_RUNTIME_TIERS, CONTEXT_DEPLOYMENT_UNIT,
+  getContextsForRuntimeTier, getContextsForDeploymentUnit,
+  isContextSupportedOnTier,
+} from "./context-runtime-map";
+
+export {
+  CONTEXT_PRIMARY_SURFACE,
+  getPrimarySurface, getContextsByPrimarySurface,
+} from "./context-surface-map";
