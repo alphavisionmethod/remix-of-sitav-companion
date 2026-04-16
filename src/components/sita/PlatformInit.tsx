@@ -56,5 +56,20 @@ export function PlatformInit() {
     };
   }, []);
 
+  // Boot Session Threat Detector + Secure Vault + AI Canary
+  useEffect(() => {
+    initSessionThreatDetector();
+    console.log("[PlatformInit] Session threat detector initialized");
+
+    initSecureVault().then(() => {
+      console.log("[PlatformInit] Secure memory vault initialized");
+    }).catch((err) =>
+      console.error("[PlatformInit] Vault init failed:", err)
+    );
+
+    generateCanaryToken();
+    console.log("[PlatformInit] AI canary token generated");
+  }, []);
+
   return null;
 }
