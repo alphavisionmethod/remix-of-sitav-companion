@@ -66,7 +66,7 @@ export const EDGE_FUNCTION_BOUNDED_CONTEXTS: Record<string, BoundedContext> = {
   "connector-transform": "connector-fabric",
   "cost-alert": "finance-engine",
   "crm-sync": "connector-fabric",
-  "device-telemetry": "cloud-infrastructure",
+  "device-telemetry": "os-kernel",
   "digital-twin-engine": "intelligence-pipeline",
   "ecosystem-operations": "platform-services",
   "event-processor": "platform-services",
