@@ -1,30 +1,37 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Breadcrumbs
-// Auto-generates breadcrumb trail from current pathname
+// SITA OS — Admin Breadcrumbs (Phase 2 — Registry-aware)
+// Prefers the canonical breadcrumb chain from admin-route-registry,
+// falls back to humanised path-segment labels for unmapped routes.
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  getRouteEntry,
+  DOMAIN_HUB_PATHS,
+  DOMAIN_LABELS,
+  type AdminDomain,
+} from "@/lib/architecture/admin-route-registry";
+import { resolveActiveDomain } from "./AdminPrimaryNav";
 
-// ── Human-readable labels for known path segments ──────────────
+// ── Fallback labels for path segments not represented in the registry ──
 const SEGMENT_LABELS: Record<string, string> = {
   admin: "Admin",
   dashboard: "Dashboard",
   "ai-gateway": "AI Gateway",
-  providers: "Provider Registry",
-  models: "Model Registry",
-  routing: "Routing Matrix",
-  budget: "Budget Center",
-  receipts: "Receipts Explorer",
-  "launch-truth": "Launch Truth",
+  providers: "Providers",
+  models: "Models",
+  routing: "Routing",
+  budget: "Budget",
+  receipts: "Receipts",
   intelligence: "Intelligence",
-  reuse: "Reuse Overview",
-  assets: "Asset Library",
-  efficiency: "Efficiency Scoreboard",
-  escalation: "Escalation Control",
-  patterns: "Pattern Learning",
+  reuse: "Reuse",
+  assets: "Assets",
+  efficiency: "Efficiency",
+  escalation: "Escalation",
+  patterns: "Patterns",
   architecture: "Architecture",
   governance: "Governance",
   "platform-law": "Platform Law",
@@ -35,9 +42,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   security: "Security",
   "reality-audit": "Reality Audit",
   "session-secrets": "Session Secrets",
-  fleet: "Fleet",
   "fleet-health": "Fleet Health",
-  cloud: "Cloud",
   "cloud-backbone": "Cloud Backbone",
   "os-platform": "OS Platform",
   support: "Support",
@@ -47,19 +52,19 @@ const SEGMENT_LABELS: Record<string, string> = {
   users: "Users",
   workspaces: "Workspaces",
   "sync-cloud": "Sync & Cloud",
-  jobs: "Jobs & Maintenance",
+  jobs: "Jobs",
   "trust-security": "Trust & Security",
   releases: "Releases",
   "ai-control": "AI Control",
   incidents: "Incidents",
-  policies: "Policies & Flags",
-  costs: "Costs & AI Budgets",
-  logs: "Logs & Audit",
-  knowledge: "Knowledge Base",
+  policies: "Policies",
+  costs: "Costs",
+  logs: "Logs",
+  knowledge: "Knowledge",
   "system-health": "System Health",
   "authority-matrix": "Authority Matrix",
   "control-receipts": "Control Receipts",
-  emergency: "Emergency Authority",
+  emergency: "Emergency",
   "platform-adaptation": "Platform Adaptation",
   "state-authority": "State Authority",
   "feature-ownership": "Feature Ownership",
@@ -69,42 +74,88 @@ const SEGMENT_LABELS: Record<string, string> = {
   "event-routing": "Event Routing",
   "architecture-tests": "Architecture Tests",
   founder: "Founder",
-  command: "Command Console",
-  tasks: "Task Decomposition",
-  cicd: "CI/CD Pipeline",
+  command: "Command",
+  tasks: "Tasks",
+  cicd: "CI/CD",
   runbooks: "Runbooks",
-  programs: "Program Management",
-  cost: "Platform Cost",
-  "sync-ops": "Sync/Storage Ops",
-  oversight: "Human Oversight",
+  programs: "Programs",
+  cost: "Cost",
+  "sync-ops": "Sync Ops",
+  oversight: "Oversight",
   engineering: "Engineering",
-  validation: "Validation Center",
-  "builder-critic": "Builder-Critic Console",
-  simulation: "Simulation Lab",
-  standards: "Code Standards",
-  chaos: "Chaos Testing",
-  rollback: "Auto Rollback",
-  "version-intel": "Version Intelligence",
-  optimization: "Self-Optimization",
-  "advisor-board": "Advisor Board",
+  validation: "Validation",
+  "builder-critic": "Builder/Critic",
+  simulation: "Simulation",
+  standards: "Standards",
+  chaos: "Chaos",
+  rollback: "Rollback",
+  "version-intel": "Version Intel",
+  optimization: "Optimization",
+  "advisor-board": "Advisors",
   catalog: "Catalog",
   recommendations: "Recommendations",
   actions: "Actions",
-  memory: "Memory Inspector",
-  autonomy: "Autonomy Policy",
+  memory: "Memory",
+  autonomy: "Autonomy",
   profitability: "Profitability",
   "ai-tokens": "AI Tokens",
   "generated-truth": "Generated Truth",
-  ecosystem: "Ecosystem Command",
+  ecosystem: "Ecosystem",
   "system-intelligence": "System Intelligence",
-  "communication-hub": "Communication Hub",
+  "communication-hub": "Communications",
   "release-engineering": "Release Engineering",
   "graph-intelligence": "Graph Intelligence",
   "ai-governance": "AI Governance",
   "simulation-center": "Simulation Center",
-  communications: "Communications",
-  apps: "App Management",
+  apps: "Apps",
   settings: "Settings",
+  approvals: "Approvals",
+  alerts: "Alerts",
+  environments: "Environments",
+  health: "Health",
+  config: "Config",
+  overview: "Overview",
+  "ai-runtime": "AI Runtime",
+  "ai-team": "AI Team",
+  "approval-queue": "Approval Queue",
+  "launch-truth": "Launch Truth",
+  diagnostics: "Diagnostics",
+  honesty: "Honesty",
+  cai: "CAI",
+  graph: "Graph",
+  intent: "Intent",
+  attention: "Attention",
+  continuity: "Continuity",
+  "trust-actions": "Trust Actions",
+  "chief-of-staff": "Chief of Staff",
+  timing: "Timing",
+  relationships: "Relationships",
+  digest: "Digest",
+  modes: "Modes",
+  interface: "Interface",
+  opportunities: "Opportunities",
+  boundaries: "Boundaries",
+  signature: "Signature",
+  strategic: "Strategic",
+  capital: "Capital",
+  "cost-confidence": "Cost/Confidence",
+  "quality-floor": "Quality Floor",
+  insurance: "Insurance",
+  market: "Market",
+  "time-to-truth": "Time to Truth",
+  "reasoning-replay": "Reasoning Replay",
+  decay: "Decay",
+  portfolio: "Portfolio",
+  benchmark: "Benchmark",
+  "value-risk": "Value/Risk",
+  "operator-taste": "Operator Taste",
+  "mobile-parity": "Mobile Parity",
+  team: "Teams",
+  system: "System",
+  "backend-topology": "Backend Topology",
+  "truth-indices": "Truth Indices",
+  "runtime-tier-governance": "Runtime Tier",
+  "intelligence-efficiency": "Intelligence Efficiency",
 };
 
 interface Crumb {
@@ -113,24 +164,57 @@ interface Crumb {
   isLast: boolean;
 }
 
+function humanise(seg: string): string {
+  return SEGMENT_LABELS[seg] ?? seg.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export function AdminBreadcrumbs() {
   const { pathname } = useLocation();
 
   const crumbs = useMemo<Crumb[]>(() => {
+    if (!pathname.startsWith("/admin")) return [];
+    const entry = getRouteEntry(pathname);
+
+    // Preferred path: registry-provided canonical chain.
+    if (entry) {
+      const domain = entry.domain as AdminDomain;
+      const chain = entry.breadcrumb;
+      const result: Crumb[] = [];
+      // First: domain hub link
+      result.push({
+        label: chain[0] ?? DOMAIN_LABELS[domain],
+        path: DOMAIN_HUB_PATHS[domain],
+        isLast: chain.length === 1 && pathname === DOMAIN_HUB_PATHS[domain],
+      });
+      // Remaining segments anchor to the actual route path on the last node.
+      for (let i = 1; i < chain.length; i++) {
+        result.push({
+          label: chain[i],
+          path: i === chain.length - 1 ? entry.path : DOMAIN_HUB_PATHS[domain],
+          isLast: i === chain.length - 1,
+        });
+      }
+      return result;
+    }
+
+    // Fallback: humanised segments + inferred domain root.
     const segments = pathname.split("/").filter(Boolean);
     if (segments.length === 0) return [];
-
-    const result: Crumb[] = [];
-    let accumulated = "";
-
+    const inferredDomain = resolveActiveDomain(pathname);
+    const result: Crumb[] = [
+      {
+        label: DOMAIN_LABELS[inferredDomain],
+        path: DOMAIN_HUB_PATHS[inferredDomain],
+        isLast: false,
+      },
+    ];
+    let acc = "";
     for (let i = 0; i < segments.length; i++) {
-      accumulated += `/${segments[i]}`;
-      const label = SEGMENT_LABELS[segments[i]] ?? segments[i].replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-      // Skip "admin" as first crumb — use home icon instead
-      if (i === 0 && segments[i] === "admin") continue;
+      acc += `/${segments[i]}`;
+      if (segments[i] === "admin") continue;
       result.push({
-        label,
-        path: accumulated,
+        label: humanise(segments[i]),
+        path: acc,
         isLast: i === segments.length - 1,
       });
     }
@@ -138,26 +222,24 @@ export function AdminBreadcrumbs() {
   }, [pathname]);
 
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[11px]">
+    <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[11px] flex-wrap">
       <Link
-        to="/admin/dashboard"
+        to="/admin/overview"
         className="text-muted-foreground hover:text-foreground transition-colors"
         aria-label="Admin Home"
       >
         <Home className="h-3 w-3" />
       </Link>
 
-      {crumbs.map((crumb) => (
-        <span key={crumb.path} className="flex items-center gap-1">
+      {crumbs.map((crumb, idx) => (
+        <span key={`${crumb.path}-${idx}`} className="flex items-center gap-1">
           <ChevronRight className="h-3 w-3 text-muted-foreground/40" />
           {crumb.isLast ? (
             <span className="text-foreground font-medium">{crumb.label}</span>
           ) : (
             <Link
               to={crumb.path}
-              className={cn(
-                "text-muted-foreground hover:text-foreground transition-colors"
-              )}
+              className={cn("text-muted-foreground hover:text-foreground transition-colors")}
             >
               {crumb.label}
             </Link>
