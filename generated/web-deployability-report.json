@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T00:00:00.000Z",
+  "generatedAt": "2026-04-16T23:48:53.247Z",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
@@ -20,19 +20,110 @@
     "registryClean": true
   },
   "items": [
-    { "id": "web-prod-build", "title": "Production web build passes", "status": "ready", "blocker": false, "evidence": "vite.config.ts with chunked vendor splits + health.json plugin; dist/ output verified.", "remediation": null },
-    { "id": "web-env-vars", "title": "Environment variables fully documented", "status": "ready", "blocker": false, "evidence": "docs/web/env-vars.md enumerates VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, VITE_SUPABASE_PROJECT_ID, VITE_PUBLIC_HOST, VITE_VAPID_PUBLIC_KEY.", "remediation": null },
-    { "id": "web-auth-session", "title": "Auth/session works in production", "status": "ready", "blocker": false, "evidence": "ProtectedRoute + onAuthStateChange wired in App.tsx; Supabase client persists session in localStorage.", "remediation": null },
-    { "id": "web-pwa-behavior", "title": "PWA behavior is correct (manifest + install)", "status": "ready", "blocker": false, "evidence": "public/manifest.webmanifest with name/short_name/icons/display=standalone; iframe-guarded SW registration.", "remediation": null },
-    { "id": "web-sw-guard", "title": "Service worker behavior is correct (preview/iframe guarded)", "status": "ready", "blocker": true, "evidence": "src/main.tsx checks isInIframe + isPreviewHost before navigator.serviceWorker.register('/sw.js').", "remediation": null },
-    { "id": "web-push-vapid", "title": "Push on web works where supported (VAPID)", "status": "ready", "blocker": false, "evidence": "public/sw-push.js handles push + notificationclick; VAPID public key flows through services/push-token-lifecycle.ts.", "remediation": null },
-    { "id": "web-sandbox-honesty", "title": "Browser sandbox constraints handled honestly", "status": "ready", "blocker": false, "evidence": "src/lib/web-platform/web-runtime-contract.ts declares prohibited / simulation-only capabilities.", "remediation": null },
-    { "id": "web-file-handling", "title": "File handling works in browser-safe ways (user-mediated picker only)", "status": "ready", "blocker": false, "evidence": "src/lib/web-platform/web-fallbacks.ts — no silent disk access; File System Access API or <input type=file>.", "remediation": null },
-    { "id": "web-native-gating", "title": "No native-only feature is exposed without gating", "status": "ready", "blocker": false, "evidence": "WEB_RUNTIME_CONTRACT enumerates platformProhibited capabilities; UI guards via webCapability().", "remediation": null },
-    { "id": "web-deep-links", "title": "Web routing works with deep links and refreshes", "status": "ready", "blocker": false, "evidence": "BrowserRouter in App.tsx; nginx try_files $uri $uri/ /index.html SPA fallback in nginx/default.conf.", "remediation": null },
-    { "id": "web-seo-public-assets", "title": "SEO/public assets valid (robots, sitemap, OG, canonical)", "status": "partial", "blocker": false, "evidence": "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present.", "remediation": "Run scripts/release/web/rewrite-public-host.ts with WEB_PUBLIC_HOST=<real domain> on build to replace https://app.sita.os/ placeholder." },
-    { "id": "web-csp-headers", "title": "CSP / security headers defined and consistent across hosts", "status": "ready", "blocker": true, "evidence": "index.html meta CSP + nginx/default.conf + deploy/nginx.conf all pin https://fctupowhcljejygjfpty.supabase.co + ai.gateway.lovable.dev.", "remediation": null },
-    { "id": "web-error-boundaries", "title": "Error boundaries deployed and tested", "status": "ready", "blocker": true, "evidence": "GlobalErrorBoundary + RouteErrorBoundary + WindowErrorBoundary wired in App.tsx; initErrorMonitoring() global capture.", "remediation": null }
+    {
+      "id": "web-prod-build",
+      "title": "Production web build passes",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "vite.config.ts with chunked vendor splits + health.json plugin; dist/ output verified.",
+      "remediation": null
+    },
+    {
+      "id": "web-env-vars",
+      "title": "Environment variables fully documented",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "docs/web/env-vars.md enumerates VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, VITE_SUPABASE_PROJECT_ID, VITE_PUBLIC_HOST, VITE_VAPID_PUBLIC_KEY.",
+      "remediation": null
+    },
+    {
+      "id": "web-auth-session",
+      "title": "Auth/session works in production",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "ProtectedRoute + onAuthStateChange wired in App.tsx; Supabase client persists session in localStorage.",
+      "remediation": null
+    },
+    {
+      "id": "web-pwa-behavior",
+      "title": "PWA behavior is correct (manifest + install)",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "public/manifest.webmanifest with name/short_name/icons/display=standalone; iframe-guarded SW registration.",
+      "remediation": null
+    },
+    {
+      "id": "web-sw-guard",
+      "title": "Service worker behavior is correct (preview/iframe guarded)",
+      "status": "ready",
+      "blocker": true,
+      "evidence": "src/main.tsx checks isInIframe + isPreviewHost before navigator.serviceWorker.register('/sw.js').",
+      "remediation": null
+    },
+    {
+      "id": "web-push-vapid",
+      "title": "Push on web works where supported (VAPID)",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "public/sw-push.js handles push + notificationclick; VAPID public key flows through services/push-token-lifecycle.ts.",
+      "remediation": null
+    },
+    {
+      "id": "web-sandbox-honesty",
+      "title": "Browser sandbox constraints handled honestly",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "src/lib/web-platform/web-runtime-contract.ts declares prohibited / simulation-only capabilities.",
+      "remediation": null
+    },
+    {
+      "id": "web-file-handling",
+      "title": "File handling works in browser-safe ways (user-mediated picker only)",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "src/lib/web-platform/web-fallbacks.ts — no silent disk access; File System Access API or <input type=file>.",
+      "remediation": null
+    },
+    {
+      "id": "web-native-gating",
+      "title": "No native-only feature is exposed without gating",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "WEB_RUNTIME_CONTRACT enumerates platformProhibited capabilities; UI guards via webCapability().",
+      "remediation": null
+    },
+    {
+      "id": "web-deep-links",
+      "title": "Web routing works with deep links and refreshes",
+      "status": "ready",
+      "blocker": false,
+      "evidence": "BrowserRouter in App.tsx; nginx try_files $uri $uri/ /index.html SPA fallback in nginx/default.conf.",
+      "remediation": null
+    },
+    {
+      "id": "web-seo-public-assets",
+      "title": "SEO/public assets valid (robots, sitemap, OG, canonical)",
+      "status": "partial",
+      "blocker": false,
+      "evidence": "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present.",
+      "remediation": "Run scripts/release/web/rewrite-public-host.ts with WEB_PUBLIC_HOST=<real domain> on build to replace https://app.sita.os/ placeholder."
+    },
+    {
+      "id": "web-csp-headers",
+      "title": "CSP / security headers defined and consistent across hosts",
+      "status": "ready",
+      "blocker": true,
+      "evidence": "index.html meta CSP + nginx/default.conf + deploy/nginx.conf all pin https://fctupowhcljejygjfpty.supabase.co + ai.gateway.lovable.dev.",
+      "remediation": null
+    },
+    {
+      "id": "web-error-boundaries",
+      "title": "Error boundaries deployed and tested",
+      "status": "ready",
+      "blocker": true,
+      "evidence": "GlobalErrorBoundary + RouteErrorBoundary + WindowErrorBoundary wired in App.tsx; initErrorMonitoring() global capture.",
+      "remediation": null
+    }
   ],
   "issues": []
 }
