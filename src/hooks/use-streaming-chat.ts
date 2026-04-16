@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { scanAIOutput } from "@/lib/core-services/security/ai-output-firewall";
 
 export interface StreamMessage {
   role: "user" | "assistant";
@@ -137,6 +138,25 @@ export function useStreamingChat() {
             const content = parsed.choices?.[0]?.delta?.content as string | undefined;
             if (content) upsertAssistant(content);
           } catch { /* ignore */ }
+        }
+      }
+
+      // ── AI Output Firewall scan ──────────────────────────────
+      if (assistantSoFar) {
+        const scanResult = scanAIOutput(assistantSoFar);
+        if (!scanResult.passed) {
+          console.warn("[AIFirewall] Response failed scan:", scanResult.violations);
+        }
+        if (scanResult.sanitizedOutput !== assistantSoFar) {
+          // Replace with sanitized version
+          const sanitized = scanResult.sanitizedOutput;
+          setMessages(prev => {
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant") {
+              return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: sanitized } : m);
+            }
+            return prev;
+          });
         }
       }
     } catch (e) {

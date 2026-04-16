@@ -13,6 +13,9 @@ import { useEffect } from "react";
 import { createCloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
 import { bootOSSecurity, isOSSecurityBooted } from "@/lib/os-security";
 import { syncd } from "@/lib/sync-engine";
+import { initSessionThreatDetector } from "@/lib/core-services/security/session-threat-detector";
+import { initSecureVault } from "@/lib/core-services/security/secure-memory-vault";
+import { generateCanaryToken } from "@/lib/core-services/security/ai-output-firewall";
 
 /**
  * Invisible component that initializes platform-level hooks.
@@ -51,6 +54,21 @@ export function PlatformInit() {
       syncd.stop();
       console.log("[PlatformInit] syncd stopped");
     };
+  }, []);
+
+  // Boot Session Threat Detector + Secure Vault + AI Canary
+  useEffect(() => {
+    initSessionThreatDetector();
+    console.log("[PlatformInit] Session threat detector initialized");
+
+    initSecureVault().then(() => {
+      console.log("[PlatformInit] Secure memory vault initialized");
+    }).catch((err) =>
+      console.error("[PlatformInit] Vault init failed:", err)
+    );
+
+    generateCanaryToken();
+    console.log("[PlatformInit] AI canary token generated");
   }, []);
 
   return null;
