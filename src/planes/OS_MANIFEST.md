@@ -12,7 +12,7 @@ Execution runtime, kernel simulation, SDK, shell, security daemons, device servi
 |------|-------------|
 | `src/lib/nova-sdk/` | App SDK: manifest, registry, UI components, services, kernel, extensions |
 | `src/lib/os-services/` | Platform daemons (33 services): healthd, powerd, crashd, audiod, etc. |
-| `src/lib/os-security/` | Security subsystem (17 modules): authd, policyd, sessiond, secretsd, etc. |
+| `src/lib/os-security/` | Security subsystem (18 modules): authd, policyd, sessiond, secretsd, etc. |
 | `src/lib/sync-engine/` | Sync state machine, conflict resolution, transport |
 | `src/components/sita/shell/` | OS shell UI |
 | `src/components/sita/os/` | OS system UI |
