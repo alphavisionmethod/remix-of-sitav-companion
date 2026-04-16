@@ -1,6 +1,6 @@
 # SITA OS — Component Governance Report
 
-_Generated: 2026-04-16T17:54:31.559Z_
+_Generated: 2026-04-16T17:55:58.726Z_
 
 ## Constitution: 3 Classes
 1. **PRIMITIVE** — Visual building blocks (no domain logic).
