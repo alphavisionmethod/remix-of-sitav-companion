@@ -79,4 +79,19 @@ export { MOBILE_FEATURE_CLASSIFICATION } from "./migration/mobile-feature-classi
 export { MOBILE_RUNTIME_CONFLICTS } from "./migration/mobile-runtime-conflict-map";
 export { MOBILE_DEPRECATIONS } from "./migration/mobile-deprecation-map";
 
-export const MOBILE_PLATFORM_LAYER_VERSION = "1.0.0" as const;
+// Native bridge (Capacitor)
+export {
+  isCapacitorAvailable,
+  getCapacitorPlatform,
+  invokeCapacitorPlugin,
+  nativeSecureStorage,
+  nativeBiometric,
+  nativeAppLifecycle,
+  nativePush,
+} from "./native";
+
+// High-level services
+export { mobilePushRegistration, bootMobileNative, isMobileNativeBooted } from "./services";
+export type { PushRegistrationOutcome } from "./services";
+
+export const MOBILE_PLATFORM_LAYER_VERSION = "1.1.0" as const;
