@@ -24,6 +24,39 @@ function healthJsonPlugin() {
   };
 }
 
+// Phase 13.1 — Auto-rewrite public host placeholder in dist/ on build.
+// Reads $WEB_PUBLIC_HOST (default keeps placeholder so partial→ready flips honestly).
+function publicHostRewritePlugin() {
+  const PLACEHOLDER = "https://app.sita.os";
+  const target = (process.env.WEB_PUBLIC_HOST || "").replace(/\/$/, "");
+  return {
+    name: "rewrite-public-host",
+    closeBundle() {
+      if (!target) {
+        console.log("[rewrite-public-host] WEB_PUBLIC_HOST not set — keeping placeholder");
+        return;
+      }
+      const distDir = path.resolve(__dirname, "dist");
+      if (!fs.existsSync(distDir)) return;
+      const targets = ["robots.txt", "sitemap.xml", "manifest.webmanifest", "index.html"];
+      let total = 0;
+      for (const rel of targets) {
+        const p = path.join(distDir, rel);
+        if (!fs.existsSync(p)) continue;
+        const before = fs.readFileSync(p, "utf8");
+        const after = before.split(PLACEHOLDER).join(target);
+        if (before !== after) {
+          fs.writeFileSync(p, after);
+          const count = before.split(PLACEHOLDER).length - 1;
+          total += count;
+          console.log(`[rewrite-public-host] ${rel}: ${count} replacement(s)`);
+        }
+      }
+      console.log(`[rewrite-public-host] Done — ${total} total replacement(s) → ${target}`);
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   base: process.env.ELECTRON_BUILD ? './' : '/',
@@ -34,7 +67,7 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger(), healthJsonPlugin()].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger(), healthJsonPlugin(), publicHostRewritePlugin()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

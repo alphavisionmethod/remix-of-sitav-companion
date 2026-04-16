@@ -9,8 +9,18 @@ const API_CACHE = 'sita-api-v1';
 // ── Install & Activate ───────────────────────────────────────
 
 self.addEventListener('install', (event) => {
+  // Tolerant install: a single asset 404 must NOT abort SW activation.
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.allSettled(
+        STATIC_ASSETS.map((asset) =>
+          cache.add(asset).catch((err) => {
+            console.warn(`[sw] Failed to cache ${asset}:`, err);
+            return null;
+          })
+        )
+      )
+    )
   );
   self.skipWaiting();
 });
