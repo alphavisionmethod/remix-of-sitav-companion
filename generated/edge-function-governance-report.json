@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-04-16T18:26:29.295Z",
+  "mode": "standard",
+  "totalFunctions": 84,
+  "categoryCounts": {
+    "admin-api": 8,
+    "ai-gateway": 2,
+    "system-api": 11,
+    "domain-api": 48,
+    "internal": 7,
+    "cron": 4,
+    "public": 4
+  },
+  "authClassCounts": {
+    "admin-required": 8,
+    "jwt-required": 61,
+    "service-role": 11,
+    "public": 4
+  },
+  "riskTierCounts": {
+    "R3": 11,
+    "R4": 5,
+    "R2": 46,
+    "R5": 3,
+    "R0": 10,
+    "R1": 9
+  },
+  "checks": [
+    {
+      "name": "Ownership map",
+      "status": "PASS",
+      "required": true
+    },
+    {
+      "name": "CORS coverage",
+      "status": "PASS",
+      "required": true
+    },
+    {
+      "name": "Auth alignment",
+      "status": "FAIL",
+      "required": true
+    },
+    {
+      "name": "Test coverage",
+      "status": "PASS",
+      "required": false
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "overallStatus": "RED"
+  }
+}
