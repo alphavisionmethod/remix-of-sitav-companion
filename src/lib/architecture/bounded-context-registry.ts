@@ -147,6 +147,8 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     edgeFunctions: [
       "intelligence-api", "personal-brain", "agent-intelligence",
       "advisor-deep-intelligence", "advisor-weekly-report",
+      "advisor-agent-loop", "advisor-avatar-generate", "advisor-conversation",
+      "advisor-knowledge-manage", "chat-advisor",
     ],
     services: ["intelligence-service", "alert-service"],
     tables: ["advisor_action_queue", "advisor_agents"],
@@ -249,7 +251,7 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     readModels: [],
     writeModels: ["ai_inference_receipts", "approval_decisions"],
     externalDependencies: [],
-    edgeFunctions: ["verification-recorder", "gdpr-export", "gdpr-delete"],
+    edgeFunctions: ["verification-recorder", "gdpr-export", "gdpr-delete", "health-check", "support-gateway"],
     services: ["audit-service", "ai-receipt-service", "epistemic-firewall"],
     tables: ["ai_inference_receipts", "admin_action_audit", "approval_decisions"],
     tests: ["src/features/proof/__tests__"],
@@ -281,6 +283,10 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
       "self-healing", "system-updates", "device-telemetry", "runtime-probes",
       "agent-executor", "agent-heartbeat", "agent-scheduler", "agent-signal",
       "ai-gateway", "ai-health", "check-ai-budget", "brain-core",
+      "file-ingestion", "main", "scheduler-dispatch",
+      "app-store-api", "digital-twin-engine", "ecosystem-operations",
+      "event-processor", "simulation-engine-api", "push-dispatch", "push-track",
+      "vapid-public-key", "provider-family-operations", "user-bff-gateway",
     ],
     services: ["ai-gateway", "ai-budget-service", "advisor-orchestrator", "health-monitor"],
     tables: ["ai_inference_receipts", "ai_workforce_invocations"],
@@ -333,7 +339,8 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     externalDependencies: [],
     edgeFunctions: [
       "admin-api", "admin-bff-gateway", "admin-gateway", "admin-users",
-      "admin-intelligence", "admin-ai-workforce-run",
+      "admin-intelligence", "admin-ai-workforce-run", "api-gateway",
+      "db-truth-introspect",
     ],
     services: ["admin-orchestrator", "audit-service"],
     tables: [

@@ -180,8 +180,9 @@ const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01Architect
 const META02ControlPlaneCenter = lazy(() => import("@/pages/admin/META02ControlPlaneCenter"));
 const META03GoldenPathHealth = lazy(() => import("@/pages/admin/META03GoldenPathHealth"));
 
-// ── Phase 8: CI Manifests Umbrella ──
+// ── Phase 8/9: CI Umbrella + Product Reality ──
 const CI01CIUmbrellaCenter = lazy(() => import("@/pages/admin/CI01CIUmbrellaCenter"));
+const META04ProductReality = lazy(() => import("@/pages/admin/META04ProductReality"));
 
 export function getAdminRoutes() {
   return [
@@ -198,9 +199,9 @@ export function getAdminRoutes() {
     <Route key="meta01" path="/admin/meta-arch/atlas" element={gated("audit.view", <META01ArchitectureAtlas />)} />,
     <Route key="meta02" path="/admin/meta-arch/control-plane" element={gated("audit.view", <META02ControlPlaneCenter />)} />,
     <Route key="meta03" path="/admin/meta-arch/golden-paths" element={gated("audit.view", <META03GoldenPathHealth />)} />,
+    <Route key="meta04" path="/admin/meta/reality" element={gated("audit.view", <META04ProductReality />)} />,
 
-    // ── Phase 8: CI Manifests Umbrella ──
-    <Route key="ci-root" path="/admin/ci" element={<Navigate to="/admin/ci/umbrella" replace />} />,
+    // ── Phase 8: CI Umbrella ──
     <Route key="ci01" path="/admin/ci/umbrella" element={gated("audit.view", <CI01CIUmbrellaCenter />)} />,
 
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
