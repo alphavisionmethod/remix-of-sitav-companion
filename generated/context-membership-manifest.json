@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T23:07:47.009Z",
+  "generatedAt": "2026-04-16T23:08:46.883Z",
   "routeBindings": [
     {
       "kind": "route",
@@ -95,102 +95,11 @@
   "contextCount": 13,
   "stats": {
     "routesBound": 18,
-    "edgeFunctions": 95,
-    "services": 31,
-    "tables": 40,
-    "duplicates": 18
+    "edgeFunctions": 85,
+    "services": 29,
+    "tables": 33,
+    "duplicates": 0
   },
-  "issues": [
-    {
-      "kind": "edge-function",
-      "identifier": "business-board-api",
-      "reason": "Assigned to multiple contexts: business-os, boardroom"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "crm-sync",
-      "reason": "Assigned to multiple contexts: business-os, integrations"
-    },
-    {
-      "kind": "table",
-      "identifier": "crm_tasks",
-      "reason": "Assigned to multiple contexts: business-os, concierge-os"
-    },
-    {
-      "kind": "table",
-      "identifier": "advisor_board_recommendations",
-      "reason": "Assigned to multiple contexts: business-os, boardroom"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "investment-portfolio-api",
-      "reason": "Assigned to multiple contexts: finance-os, investment-office"
-    },
-    {
-      "kind": "table",
-      "identifier": "ai_inference_receipts",
-      "reason": "Assigned to multiple contexts: finance-os, proof-trust, runtime-kernel"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "simulation-engine-api",
-      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "brain-core",
-      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
-    },
-    {
-      "kind": "service",
-      "identifier": "advisor-orchestrator",
-      "reason": "Assigned to multiple contexts: boardroom, runtime-kernel"
-    },
-    {
-      "kind": "table",
-      "identifier": "user_roles",
-      "reason": "Assigned to multiple contexts: setup-identity, admin"
-    },
-    {
-      "kind": "table",
-      "identifier": "admin_sessions",
-      "reason": "Assigned to multiple contexts: setup-identity, admin"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "provider-family-operations",
-      "reason": "Assigned to multiple contexts: integrations, runtime-kernel"
-    },
-    {
-      "kind": "service",
-      "identifier": "audit-service",
-      "reason": "Assigned to multiple contexts: proof-trust, admin"
-    },
-    {
-      "kind": "table",
-      "identifier": "admin_action_audit",
-      "reason": "Assigned to multiple contexts: proof-trust, admin"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "push-dispatch",
-      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "push-track",
-      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "vapid-public-key",
-      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
-    },
-    {
-      "kind": "edge-function",
-      "identifier": "user-bff-gateway",
-      "reason": "Assigned to multiple contexts: runtime-kernel, mobile"
-    }
-  ],
-  "ok": false
+  "issues": [],
+  "ok": true
 }
