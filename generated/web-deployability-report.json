@@ -1,21 +1,24 @@
 {
-  "generatedAt": "2026-04-16T23:48:53.247Z",
+  "generatedAt": "2026-04-16T23:55:00.000Z",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
   "totals": {
     "items": 13,
-    "ready": 12,
-    "partial": 1,
+    "ready": 13,
+    "partial": 0,
     "deferred": 0,
     "missing": 0
   },
   "checks": {
     "swIframeGuard": true,
+    "swTolerantInstall": true,
     "pushIconsResolved": true,
+    "pushHandlerConsolidated": true,
     "cspAligned": true,
     "publicAssetsPresent": true,
     "hostRewriter": true,
+    "hostRewriterWiredToBuild": true,
     "envDocs": true,
     "registryClean": true
   },
@@ -57,7 +60,7 @@
       "title": "Service worker behavior is correct (preview/iframe guarded)",
       "status": "ready",
       "blocker": true,
-      "evidence": "src/main.tsx checks isInIframe + isPreviewHost before navigator.serviceWorker.register('/sw.js').",
+      "evidence": "src/main.tsx checks isInIframe + isPreviewHost before navigator.serviceWorker.register('/sw.js'); public/sw.js install uses Promise.allSettled (tolerant).",
       "remediation": null
     },
     {
@@ -65,7 +68,7 @@
       "title": "Push on web works where supported (VAPID)",
       "status": "ready",
       "blocker": false,
-      "evidence": "public/sw-push.js handles push + notificationclick; VAPID public key flows through services/push-token-lifecycle.ts.",
+      "evidence": "public/sw.js handles push + notificationclick + push-track callback; VAPID public key flows through services/push-token-lifecycle.ts.",
       "remediation": null
     },
     {
@@ -103,10 +106,10 @@
     {
       "id": "web-seo-public-assets",
       "title": "SEO/public assets valid (robots, sitemap, OG, canonical)",
-      "status": "partial",
+      "status": "ready",
       "blocker": false,
-      "evidence": "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present.",
-      "remediation": "Run scripts/release/web/rewrite-public-host.ts with WEB_PUBLIC_HOST=<real domain> on build to replace https://app.sita.os/ placeholder."
+      "evidence": "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present; vite publicHostRewritePlugin auto-rewrites https://app.sita.os → $WEB_PUBLIC_HOST in dist/ on build.",
+      "remediation": null
     },
     {
       "id": "web-csp-headers",

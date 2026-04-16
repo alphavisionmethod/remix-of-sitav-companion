@@ -55,7 +55,7 @@ export const WEB_DEPLOYABILITY_READINESS: ReadonlyArray<WebReadinessItem> = [
     id: "web-push-vapid",
     title: "Push on web works where supported (VAPID)",
     status: "ready",
-    evidence: "public/sw-push.js handles push + notificationclick; VAPID public key flows through services/push-token-lifecycle.ts.",
+    evidence: "public/sw.js handles push + notificationclick + push-track callback; VAPID public key flows through services/push-token-lifecycle.ts.",
     blocker: false,
   },
   {
@@ -89,10 +89,9 @@ export const WEB_DEPLOYABILITY_READINESS: ReadonlyArray<WebReadinessItem> = [
   {
     id: "web-seo-public-assets",
     title: "SEO/public assets valid (robots, sitemap, OG, canonical)",
-    status: "partial",
-    evidence: "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present.",
+    status: "ready",
+    evidence: "public/robots.txt + public/sitemap.xml + index.html OG/Twitter/canonical tags present; vite publicHostRewritePlugin auto-rewrites https://app.sita.os → $WEB_PUBLIC_HOST in dist/ on build.",
     blocker: false,
-    remediation: "Run scripts/release/web/rewrite-public-host.ts with WEB_PUBLIC_HOST=<real domain> on build to replace https://app.sita.os/ placeholder.",
   },
   {
     id: "web-csp-headers",

@@ -49,17 +49,29 @@ if (!existsSync("src/main.tsx")) {
   }
 }
 
-// ── 3. sw-push.js does NOT reference broken /pwa-*.png paths ──
+// ── 3. Push handler lives in unified sw.js (sw-push.js consolidated) ──
 if (existsSync("public/sw-push.js")) {
-  const sw = readFileSync("public/sw-push.js", "utf8");
+  issues.push({ severity: "error", area: "push-icons", message: "public/sw-push.js still exists — should be consolidated into public/sw.js" });
+}
+if (!existsSync("public/sw.js")) {
+  issues.push({ severity: "error", area: "push-icons", message: "public/sw.js not found" });
+} else {
+  const sw = readFileSync("public/sw.js", "utf8");
   if (/\/pwa-\d+x\d+\.png/.test(sw)) {
-    issues.push({ severity: "error", area: "push-icons", message: "public/sw-push.js still references non-existent /pwa-*.png paths" });
+    issues.push({ severity: "error", area: "push-icons", message: "public/sw.js still references non-existent /pwa-*.png paths" });
   }
   if (!sw.includes("/icons/icon-192.png")) {
-    issues.push({ severity: "warning", area: "push-icons", message: "public/sw-push.js does not reference /icons/icon-192.png" });
+    issues.push({ severity: "warning", area: "push-icons", message: "public/sw.js does not reference /icons/icon-192.png" });
   }
-} else {
-  issues.push({ severity: "error", area: "push-icons", message: "public/sw-push.js not found" });
+  if (!/addEventListener\(['"]push['"]/.test(sw)) {
+    issues.push({ severity: "error", area: "push-icons", message: "public/sw.js missing 'push' event handler" });
+  }
+  if (!/addEventListener\(['"]notificationclick['"]/.test(sw)) {
+    issues.push({ severity: "error", area: "push-icons", message: "public/sw.js missing 'notificationclick' handler" });
+  }
+  if (!/Promise\.allSettled/.test(sw)) {
+    issues.push({ severity: "error", area: "push-icons", message: "public/sw.js install handler must use Promise.allSettled (tolerant install)" });
+  }
 }
 
 // ── 4. CSP alignment in nginx/default.conf ─────────────────────
