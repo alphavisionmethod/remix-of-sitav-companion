@@ -80,18 +80,21 @@ export const CANONICAL_PRIMITIVES = {
  */
 export const VALID_SUFFIXES = [
   "Card", "Badge", "Pill", "Chip",
-  "Panel", "Drawer", "Sheet", "Dialog",
+  "Panel", "Drawer", "Sheet", "Dialog", "Modal",
   "Shell", "Layout", "Wrapper",
   "Hero", "Summary", "Inspector", "Console",
   "Board", "Workspace",
   "Timeline", "List", "Table", "Tile", "Row",
   "EmptyState", "Skeleton",
-  "Header", "Footer", "Section", "Bar", "Menu",
+  "Header", "Footer", "Section", "Sections", "Bar", "Strip", "Menu",
   "Form", "Field", "Input", "Button", "Link",
   "Provider", "Context", "Boundary",
-  "View", "Page", "Surface",
+  "View", "Page", "Surface", "Window", "Theater",
   "Avatar", "Icon", "Logo", "Image",
-  "Chart", "Graph", "Map",
+  "Chart", "Graph", "Map", "Grid", "Tree",
+  "Indicator", "Banner", "Disclosure", "Scorecard", "Preview",
+  "Stepper", "Progress", "Status", "State",
+  "Group", "Stack", "Flex", "Box", "Container",
 ] as const;
 
 /**
