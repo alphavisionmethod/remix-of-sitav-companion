@@ -33,7 +33,7 @@ const pages = [
   ["SitaInsightCallout", () => import("@/pages/revenue-office/onboarding/screens/SitaInsightCallout")],
   ["TeamScreen", () => import("@/pages/revenue-office/onboarding/screens/TeamScreen")],
   ["URLIntakeScreen", () => import("@/pages/revenue-office/onboarding/screens/URLIntakeScreen")],
-] as const;
+];
 
 describe("Revenue-Office Pages Remaining", () => {
   pages.forEach(([name, loader]) => {
