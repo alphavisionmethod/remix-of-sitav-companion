@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — DB Schema Registry
-// Master registry of all database tables with domain classification
+// SITA OS — DB Schema Registry (AUTO-GENERATED)
+// Source of truth: live pg_tables + pg_policies (regenerate via
+//   npx tsx scripts/db/generate/generate-schema-registry.ts)
+// DO NOT hand-edit. Edit the generator or run a migration instead.
 // ═══════════════════════════════════════════════════════════════
 
 export type DbDomain =
@@ -19,154 +21,268 @@ export type DbDomain =
   | "compliance"
   | "user-experience";
 
+export type SchemaClass = "write" | "read" | "log" | "config" | "system";
+
 export interface TableRegistryEntry {
   readonly name: string;
   readonly domain: DbDomain;
-  readonly description: string;
+  readonly schemaClass: SchemaClass;
   readonly hasRls: boolean;
+  readonly policyCount: number;
   readonly tenancyColumn: string | null;
+  readonly sensitiveData: boolean;
+  /** Plain-English description of the table's role */
+  readonly description?: string;
 }
 
 export const DB_SCHEMA_REGISTRY: readonly TableRegistryEntry[] = [
-  // auth-identity
-  { name: "profiles", domain: "auth-identity", description: "User profile data", hasRls: true, tenancyColumn: "user_id" },
-  { name: "user_roles", domain: "auth-identity", description: "Role assignments (RBAC)", hasRls: true, tenancyColumn: "user_id" },
-  { name: "biometric_credentials", domain: "auth-identity", description: "WebAuthn/biometric credentials", hasRls: true, tenancyColumn: "user_id" },
-  { name: "os_user_accounts", domain: "auth-identity", description: "OS-level user accounts", hasRls: true, tenancyColumn: "user_id" },
-  { name: "user_memory", domain: "auth-identity", description: "Per-user memory/preferences", hasRls: true, tenancyColumn: "user_id" },
+  // ── admin-governance ──
+  { name: "action_safety_classifications", domain: "admin-governance", schemaClass: "config", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "admin_action_audit", domain: "admin-governance", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "actor_user_id", sensitiveData: false },
+  { name: "admin_action_confirmations", domain: "admin-governance", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: "actor_user_id", sensitiveData: false },
+  { name: "admin_role_permissions", domain: "admin-governance", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "admin_safety_actions", domain: "admin-governance", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "admin_sessions", domain: "admin-governance", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_admin_role_assignments", domain: "admin-governance", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_admin_roles", domain: "admin-governance", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
 
-  // admin-governance
-  { name: "admin_action_audit", domain: "admin-governance", description: "Admin action audit trail", hasRls: true, tenancyColumn: "actor_user_id" },
-  { name: "admin_action_confirmations", domain: "admin-governance", description: "Dual-approval action confirmations", hasRls: true, tenancyColumn: "actor_user_id" },
-  { name: "admin_role_permissions", domain: "admin-governance", description: "Admin role-permission matrix", hasRls: true, tenancyColumn: null },
-  { name: "admin_safety_actions", domain: "admin-governance", description: "Safety-classified admin actions", hasRls: true, tenancyColumn: null },
-  { name: "admin_sessions", domain: "admin-governance", description: "Admin session management", hasRls: true, tenancyColumn: "user_id" },
-  { name: "action_safety_classifications", domain: "admin-governance", description: "Action safety classifications", hasRls: true, tenancyColumn: "user_id" },
+  // ── advisor-intelligence ──
+  { name: "advisor_action_queue", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_agents", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_autonomy_policies", domain: "advisor-intelligence", schemaClass: "config", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_board_actions", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_board_memory", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_board_recommendations", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_board_reflections", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_board_tool_executions", domain: "advisor-intelligence", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_feedback", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_knowledge", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_memories", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "advisor_profiles", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "simulations", domain: "advisor-intelligence", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // advisor-intelligence
-  { name: "advisor_agents", domain: "advisor-intelligence", description: "Advisor agent configurations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_action_queue", domain: "advisor-intelligence", description: "Advisor action queue", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_autonomy_policies", domain: "advisor-intelligence", description: "Advisor autonomy policies", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_board_actions", domain: "advisor-intelligence", description: "Board-level advisor actions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_board_memory", domain: "advisor-intelligence", description: "Advisor board memory", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_board_recommendations", domain: "advisor-intelligence", description: "Board recommendations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_board_reflections", domain: "advisor-intelligence", description: "Board reflections/learnings", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_board_tool_executions", domain: "advisor-intelligence", description: "Tool execution records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_feedback", domain: "advisor-intelligence", description: "User feedback on advisors", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_knowledge", domain: "advisor-intelligence", description: "Advisor knowledge base", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_memories", domain: "advisor-intelligence", description: "Advisor working memory", hasRls: true, tenancyColumn: "user_id" },
-  { name: "advisor_profiles", domain: "advisor-intelligence", description: "Advisor visual profiles", hasRls: true, tenancyColumn: "user_id" },
+  // ── ai-workforce ──
+  { name: "ai_inference_receipts", domain: "ai-workforce", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_approval_queue", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_budget_classes", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_cached_outputs", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_invocations", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_launch_honesty", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_outputs", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_recommendation_scores", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_recommendations", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_role_health", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_role_task_permissions", domain: "ai-workforce", schemaClass: "config", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_roles", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ai_workforce_task_types", domain: "ai-workforce", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // ai-workforce
-  { name: "ai_inference_receipts", domain: "ai-workforce", description: "AI inference cost/usage receipts", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_approval_queue", domain: "ai-workforce", description: "AI workforce approval queue", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_budget_classes", domain: "ai-workforce", description: "AI budget class definitions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_cached_outputs", domain: "ai-workforce", description: "Cached AI outputs", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_invocations", domain: "ai-workforce", description: "AI invocation records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_launch_honesty", domain: "ai-workforce", description: "Launch honesty audits", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_outputs", domain: "ai-workforce", description: "AI workforce outputs", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_recommendation_scores", domain: "ai-workforce", description: "Recommendation scoring", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_recommendations", domain: "ai-workforce", description: "AI recommendations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_role_health", domain: "ai-workforce", description: "Role health metrics", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_role_task_permissions", domain: "ai-workforce", description: "Role-task permission matrix", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_roles", domain: "ai-workforce", description: "AI workforce role definitions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "ai_workforce_task_types", domain: "ai-workforce", description: "AI task type definitions", hasRls: true, tenancyColumn: "user_id" },
+  // ── auth-identity ──
+  { name: "biometric_credentials", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: true },
+  { name: "onboarding_sessions", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "org_members", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "organizations", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: null, sensitiveData: false },
+  { name: "profiles", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "user_roles", domain: "auth-identity", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // boardroom
-  { name: "boardroom_decision_receipts", domain: "boardroom", description: "Decision receipts with proof", hasRls: true, tenancyColumn: "user_id" },
-  { name: "boardroom_evidence", domain: "boardroom", description: "Evidence for boardroom items", hasRls: true, tenancyColumn: "user_id" },
-  { name: "boardroom_items", domain: "boardroom", description: "Boardroom agenda items", hasRls: true, tenancyColumn: "user_id" },
-  { name: "boardroom_recommendations", domain: "boardroom", description: "Boardroom recommendations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "boardroom_sessions", domain: "boardroom", description: "Boardroom sessions", hasRls: true, tenancyColumn: "user_id" },
+  // ── boardroom ──
+  { name: "boardroom_decision_receipts", domain: "boardroom", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "boardroom_evidence", domain: "boardroom", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "boardroom_items", domain: "boardroom", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "boardroom_recommendations", domain: "boardroom", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "boardroom_sessions", domain: "boardroom", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // business-crm
-  { name: "business_health_scores", domain: "business-crm", description: "Business health scoring", hasRls: true, tenancyColumn: "user_id" },
-  { name: "customers", domain: "business-crm", description: "Customer records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "deals", domain: "business-crm", description: "Deal/opportunity tracking", hasRls: true, tenancyColumn: "user_id" },
-  { name: "leads", domain: "business-crm", description: "Lead records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "opportunities", domain: "business-crm", description: "Sales opportunities", hasRls: true, tenancyColumn: "user_id" },
-  { name: "quotes", domain: "business-crm", description: "Quote documents", hasRls: true, tenancyColumn: "user_id" },
-  { name: "communications", domain: "business-crm", description: "Communication records", hasRls: true, tenancyColumn: "user_id" },
+  // ── business-crm ──
+  { name: "appointments", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "client_capability_matrix", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "crm_automations", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_communications", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_companies", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_contact_company", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_contacts", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_import_jobs", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_merge_log", domain: "business-crm", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_notes", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_opportunities", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_pipeline_stages", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_segments", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_tags", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "crm_tasks", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "lead_inbox_items", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "leads", domain: "business-crm", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // cloud-infrastructure
-  { name: "cloud_admin_role_assignments", domain: "cloud-infrastructure", description: "Cloud admin role assignments", hasRls: true, tenancyColumn: "user_id" },
-  { name: "cloud_admin_roles", domain: "cloud-infrastructure", description: "Cloud admin role definitions", hasRls: true, tenancyColumn: null },
-  { name: "cloud_devices", domain: "cloud-infrastructure", description: "Registered cloud devices", hasRls: true, tenancyColumn: "user_id" },
-  { name: "cloud_sync_queue", domain: "cloud-infrastructure", description: "Cloud sync queue", hasRls: true, tenancyColumn: "user_id" },
-  { name: "cloud_tenant_memberships", domain: "cloud-infrastructure", description: "Tenant membership records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "cloud_tenants", domain: "cloud-infrastructure", description: "Tenant definitions", hasRls: true, tenancyColumn: "owner_id" },
-  { name: "cloud_workers", domain: "cloud-infrastructure", description: "Cloud worker registrations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "device_attestations", domain: "cloud-infrastructure", description: "Device attestation records", hasRls: true, tenancyColumn: "user_id" },
+  // ── cloud-infrastructure ──
+  { name: "cloud_abuse_events", domain: "cloud-infrastructure", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_account_closure_requests", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_activity_journal", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_archive_jobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_audit_events", domain: "cloud-infrastructure", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "actor_user_id", sensitiveData: false },
+  { name: "cloud_backup_snapshots", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_blobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_bootstrap_markers", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_compliance_hooks", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_conflicts", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_device_sessions", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_devices", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_feature_flags", domain: "cloud-infrastructure", schemaClass: "config", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_file_versions", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_files", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_folders", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_import_export_jobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_lifecycle_rules", domain: "cloud-infrastructure", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_maintenance_modes", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_metrics_snapshots", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_namespace_registry", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_plans", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_policies", domain: "cloud-infrastructure", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_preview_jobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_reconciliation_runs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_search_index", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_shared_workspaces", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "tenant_id", sensitiveData: false },
+  { name: "cloud_shares", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_storage_providers", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_storage_tiers", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_storage_usage", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_support_sessions", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_sync_changes", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_sync_checkpoints", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_sync_jobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_sync_objects", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_tenant_memberships", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_tenant_plans", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "tenant_id", sensitiveData: false },
+  { name: "cloud_tenant_policies", domain: "cloud-infrastructure", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: "tenant_id", sensitiveData: false },
+  { name: "cloud_tenant_quotas", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "tenant_id", sensitiveData: false },
+  { name: "cloud_tenants", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: null, sensitiveData: false },
+  { name: "cloud_trash", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_user_plans", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "cloud_worker_jobs", domain: "cloud-infrastructure", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
 
-  // connector-fabric
-  { name: "connector_configs", domain: "connector-fabric", description: "Connector configurations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "connector_credentials", domain: "connector-fabric", description: "Connector credentials (encrypted)", hasRls: true, tenancyColumn: "user_id" },
-  { name: "connector_tokens", domain: "connector-fabric", description: "OAuth/API tokens for connectors", hasRls: true, tenancyColumn: "user_id" },
-  { name: "sync_logs", domain: "connector-fabric", description: "Sync operation logs", hasRls: true, tenancyColumn: "user_id" },
+  // ── compliance ──
+  { name: "incidents", domain: "compliance", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "license_audit_log", domain: "compliance", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
 
-  // finance
-  { name: "bills", domain: "finance", description: "Bill/expense records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "budgets", domain: "finance", description: "Budget allocations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "financial_documents", domain: "finance", description: "Financial document storage", hasRls: true, tenancyColumn: "user_id" },
-  { name: "invoices", domain: "finance", description: "Invoice records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "reserves", domain: "finance", description: "Financial reserves", hasRls: true, tenancyColumn: "user_id" },
-  { name: "subscriptions", domain: "finance", description: "Subscription tracking", hasRls: true, tenancyColumn: "user_id" },
+  // ── connector-fabric ──
+  { name: "connector_oauth_flows", domain: "connector-fabric", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: true },
+  { name: "connector_sync_runs", domain: "connector-fabric", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "connector_tokens", domain: "connector-fabric", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: true },
 
-  // notification
-  { name: "push_subscriptions", domain: "notification", description: "Web push subscriptions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "vapid_keys", domain: "notification", description: "VAPID keys for push", hasRls: true, tenancyColumn: "user_id" },
+  // ── notification ──
+  { name: "notification_delivery_receipts", domain: "notification", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "notification_preferences", domain: "notification", schemaClass: "config", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "notifications", domain: "notification", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "platform_notifications", domain: "notification", schemaClass: "write", hasRls: true, policyCount: 5, tenancyColumn: null, sensitiveData: false },
+  { name: "vapid_keys", domain: "notification", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: true },
 
-  // os-kernel
-  { name: "capabilities", domain: "os-kernel", description: "OS capability definitions", hasRls: true, tenancyColumn: null },
-  { name: "command_steps", domain: "os-kernel", description: "Command execution steps", hasRls: true, tenancyColumn: "user_id" },
-  { name: "execution_envelopes", domain: "os-kernel", description: "Execution envelope records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "incidents", domain: "os-kernel", description: "Incident records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "projections", domain: "os-kernel", description: "Read-model projections", hasRls: true, tenancyColumn: "user_id" },
-  { name: "receipts", domain: "os-kernel", description: "Operation receipts", hasRls: true, tenancyColumn: "user_id" },
-  { name: "runtime_agents", domain: "os-kernel", description: "Runtime agent registrations", hasRls: true, tenancyColumn: "user_id" },
-  { name: "trust_state", domain: "os-kernel", description: "Trust state records", hasRls: true, tenancyColumn: "user_id" },
+  // ── os-kernel ──
+  { name: "command_memory", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "command_routing_decisions", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "command_steps", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "device_attestations", domain: "os-kernel", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: true },
+  { name: "device_mesh_peers", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "device_ownership", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 5, tenancyColumn: null, sensitiveData: false },
+  { name: "os_audit_events", domain: "os-kernel", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_auth_methods", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_capabilities", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_command_events", domain: "os-kernel", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_commands", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_elevation_tokens", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: true },
+  { name: "os_keyrings", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_policies", domain: "os-kernel", schemaClass: "config", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_role_capabilities", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_secrets_metadata", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: true },
+  { name: "os_service_identities", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_sessions", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "os_user_accounts", domain: "os-kernel", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "runtime_agents", domain: "os-kernel", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // platform-core
-  { name: "api_gateway_routes", domain: "platform-core", description: "API gateway route definitions", hasRls: true, tenancyColumn: null },
-  { name: "approval_decisions", domain: "platform-core", description: "Approval decision records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "graph_edges", domain: "platform-core", description: "Entity relationship graph edges", hasRls: true, tenancyColumn: "user_id" },
-  { name: "organizations", domain: "platform-core", description: "Organization records", hasRls: true, tenancyColumn: "owner_id" },
-  { name: "org_members", domain: "platform-core", description: "Organization membership", hasRls: true, tenancyColumn: "user_id" },
-  { name: "policies", domain: "platform-core", description: "Platform policy definitions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "simulations", domain: "platform-core", description: "Simulation runs", hasRls: true, tenancyColumn: "user_id" },
-  { name: "tasks", domain: "platform-core", description: "Task tracking", hasRls: true, tenancyColumn: "user_id" },
-  { name: "timeline_events", domain: "platform-core", description: "Timeline event records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "workflows", domain: "platform-core", description: "Workflow definitions", hasRls: true, tenancyColumn: "user_id" },
-  { name: "workflow_runs", domain: "platform-core", description: "Workflow execution runs", hasRls: true, tenancyColumn: "user_id" },
-  { name: "workflow_steps", domain: "platform-core", description: "Workflow step definitions", hasRls: true, tenancyColumn: "user_id" },
+  // ── platform-core ──
+  { name: "api_gateway_routes", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "approval_decisions", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "business_health_scores", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "calendar_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "concierge_automations", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "concierge_errands", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "concierge_recurring_obligations", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "config_change_history", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: "actor_user_id", sensitiveData: false },
+  { name: "context_graph_snapshots", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "domain_ownership_registry", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "dual_authority_challenges", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ecosystem_commands", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ecosystem_contracts", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "ecosystem_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "environment_configs", domain: "platform-core", schemaClass: "config", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "flagship_loops", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "founder_directives", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "gift_tracker", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "graph_edges", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "grocery_items", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "grocery_lists", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "health_validation_results", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "layer_health_snapshots", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "license_activations", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: null, sensitiveData: false },
+  { name: "licenses", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "managed_apps", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "outcome_verifications", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "plane_service_assignments", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "platform_planes", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "platform_runbooks", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "profit_signals", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "read_model_snapshots", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "recommendation_execution_bindings", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "recommendation_execution_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "recommendation_learning_signals", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "recommendation_outcome_verifications", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "release_compatibility_matrix", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "remediation_programs", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "remediation_tasks", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "rollback_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "school_activities", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "service_identity_registry", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
+  { name: "service_providers_list", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "support_access_grants", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: null, sensitiveData: false },
+  { name: "support_case_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 4, tenancyColumn: "actor_user_id", sensitiveData: false },
+  { name: "support_cases", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 5, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "system_guarantees", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "system_slots", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "timeline_events", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "token_classes", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: true },
+  { name: "travel_plans", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "update_boot_attempts", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "update_catalog", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "update_channels", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "update_history", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "update_preflight_results", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "update_staging", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
 
-  // compliance
-  { name: "audit_logs", domain: "compliance", description: "System audit logs (append-only)", hasRls: true, tenancyColumn: "user_id" },
-  { name: "proof_records", domain: "compliance", description: "Proof/evidence records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "tenant_firewall_logs", domain: "compliance", description: "Tenant firewall audit logs", hasRls: true, tenancyColumn: "user_id" },
+  // ── user-experience ──
+  { name: "business_onboarding", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "communication_metrics", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "concierge_documents", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
+  { name: "onboarding_choices", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "onboarding_completion_markers", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "onboarding_hardware_detection", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "onboarding_restore_sources", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
+  { name: "onboarding_steps", domain: "user-experience", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: null, sensitiveData: false },
 
-  // user-experience
-  { name: "appointments", domain: "user-experience", description: "Appointment scheduling", hasRls: true, tenancyColumn: "user_id" },
-  { name: "bookings", domain: "user-experience", description: "Booking records", hasRls: true, tenancyColumn: "user_id" },
-  { name: "events", domain: "user-experience", description: "Calendar events", hasRls: true, tenancyColumn: "user_id" },
 ] as const;
 
-export function getTablesByDomain(domain: DbDomain): readonly TableRegistryEntry[] {
-  return DB_SCHEMA_REGISTRY.filter(t => t.domain === domain);
+export const TOTAL_TABLES = DB_SCHEMA_REGISTRY.length;
+export const TABLES_BY_DOMAIN: Record<DbDomain, TableRegistryEntry[]> =
+  DB_SCHEMA_REGISTRY.reduce((acc, e) => {
+    (acc[e.domain] ||= []).push(e);
+    return acc;
+  }, {} as Record<DbDomain, TableRegistryEntry[]>);
+
+export const RLS_COVERAGE_PCT = Math.round(
+  (DB_SCHEMA_REGISTRY.filter(e => e.hasRls).length / TOTAL_TABLES) * 100
+);
+
+export const TENANT_SCOPED_TABLES = DB_SCHEMA_REGISTRY.filter(e => e.tenancyColumn !== null);
+export const SENSITIVE_TABLES = DB_SCHEMA_REGISTRY.filter(e => e.sensitiveData);
+
+export function getTableEntry(name: string): TableRegistryEntry | undefined {
+  return DB_SCHEMA_REGISTRY.find(e => e.name === name);
 }
 
-export function getTable(name: string): TableRegistryEntry | undefined {
-  return DB_SCHEMA_REGISTRY.find(t => t.name === name);
-}
-
-export function getDomainCounts(): Record<DbDomain, number> {
-  const counts = {} as Record<DbDomain, number>;
-  for (const t of DB_SCHEMA_REGISTRY) {
-    counts[t.domain] = (counts[t.domain] || 0) + 1;
-  }
-  return counts;
-}
-
-export function getTablesWithoutRls(): readonly TableRegistryEntry[] {
-  return DB_SCHEMA_REGISTRY.filter(t => !t.hasRls);
+export function getTablesByDomain(domain: DbDomain): TableRegistryEntry[] {
+  return TABLES_BY_DOMAIN[domain] || [];
 }
