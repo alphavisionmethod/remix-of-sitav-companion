@@ -57,6 +57,7 @@ const UserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
+const BackendTopologyDashboard = lazy(() => import("@/pages/admin/BackendTopologyDashboard"));
 
 const IntelligenceReuseOverview = lazy(() => import("@/pages/admin/intelligence/IntelligenceReuseOverview"));
 const IntelligenceAssetLibrary = lazy(() => import("@/pages/admin/intelligence/IntelligenceAssetLibrary"));
@@ -315,5 +316,7 @@ export function getAdminRoutes() {
     <Route key="cd02" path="/admin/graph-intelligence" element={gated("audit.view", <GraphIntelligencePage />)} />,
     <Route key="cd03" path="/admin/ai-governance" element={gated("policy.view", <AIGovernancePage />)} />,
     <Route key="cd04" path="/admin/simulation-center" element={gated("maintenance.view", <SimulationCenterPage />)} />,
+    // ── Backend Topology & DB Health ──
+    <Route key="bt01" path="/admin/backend-topology" element={gated("maintenance.view", <BackendTopologyDashboard />)} />,
   ];
 }
