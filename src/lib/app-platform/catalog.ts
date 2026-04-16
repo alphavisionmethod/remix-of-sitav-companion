@@ -430,6 +430,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "Shell notifications", "Calendar integration"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["calendar", "schedule", "events"], receipts: [],
+    quickActions: [{ id: "new-event", label: "New Event", icon: "CalendarPlus" }],
   },
   {
     id: "weather", name: "SITA Weather", publisher: "SITA OS", icon: "🌤️", iconBg: "from-sky-400 to-blue-500",
