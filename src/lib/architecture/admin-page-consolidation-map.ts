@@ -341,26 +341,44 @@ export const ADMIN_PAGE_CONSOLIDATION_MAP: PageConsolidationEntry[] = [
 // orphaned, nothing is silently deleted.
 //
 export function inferEntryFromFilename(component: string): PageConsolidationEntry {
-  const prefix = component.match(/^([A-Z]+)/)?.[1] ?? "";
-  const targetDomain: AdminDomain =
-    CLUSTER_DOMAIN_MAP[prefix] ??
-    CLUSTER_DOMAIN_MAP[component.split(/(?=[A-Z])/)[0] ?? ""] ??
-    "support";
+  const acroFull = component.match(/^([A-Z]+)/)?.[1] ?? "";
+  const candidates: string[] = [];
+  for (let len = acroFull.length; len >= 2; len--) candidates.push(acroFull.slice(0, len));
+  const words = component.split(/(?=[A-Z][a-z])/).filter(Boolean);
+  for (let i = words.length; i >= 1; i--) candidates.push(words.slice(0, i).join(""));
+  if (words[0]) candidates.push(words[0]);
+
+  let matchedPrefix = "";
+  let targetDomain: AdminDomain = "support";
+  for (const c of candidates) {
+    if (CLUSTER_DOMAIN_MAP[c]) { matchedPrefix = c; targetDomain = CLUSTER_DOMAIN_MAP[c]; break; }
+  }
   const slug = component
     .replace(/^[A-Z]+\d*/, "")
-    .replace(/Page$/, "")
-    .replace(/Dashboard$/, "")
-    .replace(/Center$/, "")
-    .replace(/([A-Z])/g, "-$1")
-    .toLowerCase()
-    .replace(/^-/, "") || "index";
+    .replace(/Page$/, "").replace(/Dashboard$/, "").replace(/Center$/, "")
+    .replace(/([A-Z])/g, "-$1").toLowerCase().replace(/^-/, "") || "index";
   return {
-    component,
-    targetDomain,
+    component, targetDomain,
     targetRoute: `/admin/${targetDomain}/${slug}`,
     pageClass: "DETAIL_EXPLORER",
-    notes: `Auto-classified from filename prefix "${prefix}".`,
+    notes: matchedPrefix
+      ? `Auto-classified from prefix "${matchedPrefix}".`
+      : `Defaulted to "support" — extend CLUSTER_DOMAIN_MAP for "${component}".`,
   };
+}
+
+/** True when the component is recognized by curated map or by prefix inference. */
+export function isClassifiable(component: string): boolean {
+  if (ADMIN_PAGE_CONSOLIDATION_MAP.some((e) => e.component === component)) return true;
+  const acroFull = component.match(/^([A-Z]+)/)?.[1] ?? "";
+  for (let len = acroFull.length; len >= 2; len--) {
+    if (CLUSTER_DOMAIN_MAP[acroFull.slice(0, len)]) return true;
+  }
+  const words = component.split(/(?=[A-Z][a-z])/).filter(Boolean);
+  for (let i = words.length; i >= 1; i--) {
+    if (CLUSTER_DOMAIN_MAP[words.slice(0, i).join("")]) return true;
+  }
+  return false;
 }
 
 // ─── Lookup helpers ──────────────────────────────────────────────
