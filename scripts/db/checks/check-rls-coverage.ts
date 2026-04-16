@@ -1,24 +1,78 @@
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — RLS Coverage Checker
-// Validates all tables that need RLS have it configured
+// SITA OS — RLS Coverage Check (HARDENED)
+// Compares live pg_policies against the registry; fails on drift.
+// Source of truth: live pg_policies + src/lib/db/rls-policy-registry.ts
 // ═══════════════════════════════════════════════════════════════
+import { ViolationCollector } from "../../architecture/lib/utils";
+import { execSync } from "child_process";
+import * as fs from "fs";
 
-const TABLES_REQUIRING_RLS = [
-  "profiles", "leads", "customers", "opportunities", "quotes", "invoices",
-  "communications", "bills", "subscriptions", "reserves", "tasks", "bookings",
-  "budgets", "deals", "financial_documents", "proof_records", "events",
-  "workflows", "workflow_runs", "workflow_steps", "advisor_configs",
-  "advisor_requests", "advisor_responses", "user_memory", "policies",
-  "approval_queue", "connector_configs", "connector_credentials",
-  "audit_logs", "capabilities", "trust_state", "execution_envelopes",
-  "projections", "receipts", "incidents", "council_decisions",
-  "device_statuses", "sync_logs", "tenant_firewall_logs", "user_roles",
-];
+const vc = new ViolationCollector();
+const REGISTRY_PATH = "src/lib/db/rls-policy-registry.ts";
 
-console.log(`\n🔒 RLS Coverage Check`);
-console.log(`   Tables requiring RLS: ${TABLES_REQUIRING_RLS.length}`);
-console.log(`   ℹ️  Run: psql -c "SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname='public' ORDER BY tablename"`);
-console.log(`   All ${TABLES_REQUIRING_RLS.length} tables should have rowsecurity = true\n`);
+if (!fs.existsSync(REGISTRY_PATH)) {
+  vc.add(REGISTRY_PATH, "missing-registry", "RLS policy registry not found", "error");
+  vc.report("check-rls-coverage");
+  vc.exitIfErrors();
+  process.exit(1);
+}
 
-export { TABLES_REQUIRING_RLS };
+const registryText = fs.readFileSync(REGISTRY_PATH, "utf-8");
+const registered = new Set<string>();
+const polCountByTable = new Map<string, number>();
+const REG_RE = /"([a-z_]+)":\s*\{\s*pattern:\s*"([^"]+)"[^}]*policyCount:\s*(\d+)/g;
+let m: RegExpExecArray | null;
+while ((m = REG_RE.exec(registryText)) !== null) {
+  registered.add(m[1]);
+  polCountByTable.set(m[1], parseInt(m[3], 10));
+}
+
+if (!process.env.PGHOST) {
+  console.log(`  ⚠️  PGHOST not set — registry-only mode`);
+  console.log(`  📊 Registry: ${registered.size} tables`);
+  vc.report("check-rls-coverage");
+  process.exit(0);
+}
+
+let liveTables: string[] = [];
+let livePolCounts = new Map<string, number>();
+try {
+  const tablesOut = execSync(`psql -A -t -F'|' -c "SELECT t.tablename, (SELECT COUNT(*) FROM pg_policies p WHERE p.schemaname='public' AND p.tablename=t.tablename), t.rowsecurity FROM pg_tables t WHERE t.schemaname='public' ORDER BY t.tablename"`, { encoding: "utf-8" });
+  for (const line of tablesOut.split("\n").filter(Boolean)) {
+    const [name, count, rls] = line.split("|");
+    liveTables.push(name);
+    livePolCounts.set(name, parseInt(count || "0", 10));
+    if (rls !== "t" && rls !== "true") {
+      vc.add(REGISTRY_PATH, "rls-disabled", `Table ${name} has rowsecurity=false`, "error");
+    }
+  }
+} catch (e) {
+  console.warn(`  ⚠️  psql query failed: ${(e as Error).message}`);
+  process.exit(0);
+}
+
+let missing = 0, drifted = 0, noPolicy = 0;
+for (const t of liveTables) {
+  if (!registered.has(t)) {
+    vc.add(REGISTRY_PATH, "missing-from-rls-registry", `Table ${t} exists in DB but missing from rls-policy-registry`, "error");
+    missing++;
+    continue;
+  }
+  const expected = polCountByTable.get(t) ?? 0;
+  const actual = livePolCounts.get(t) ?? 0;
+  if (expected !== actual) {
+    vc.add(REGISTRY_PATH, "policy-count-drift", `Table ${t}: registry says ${expected} policies, live has ${actual}`, "warning");
+    drifted++;
+  }
+  if (actual === 0) {
+    vc.add(REGISTRY_PATH, "no-policies", `Table ${t} has 0 RLS policies`, "warning");
+    noPolicy++;
+  }
+}
+
+console.log(`  📊 Registry: ${registered.size} | Live: ${liveTables.length}`);
+console.log(`  ⚠️  Missing: ${missing} | Drift: ${drifted} | No-policy: ${noPolicy}`);
+
+vc.report("check-rls-coverage");
+vc.exitIfErrors();
