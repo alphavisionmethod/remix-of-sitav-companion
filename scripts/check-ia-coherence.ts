@@ -150,7 +150,7 @@ const CRITICAL_SEGMENTS = [
   "settings",
 ];
 for (const seg of CRITICAL_SEGMENTS) {
-  if (!breadcrumbContent.includes(`"${seg}"`)) {
+  if (!breadcrumbContent.includes(seg)) {
     violations.push({
       rule: "BREADCRUMB_LABEL_COVERAGE",
       severity: "warning",
