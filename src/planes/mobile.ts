@@ -16,3 +16,6 @@ export * from "@/lib/core-services/device-presence-service";
 
 // ── Notification Router ──
 export { notificationRouter } from "@/lib/platform-plane/notification-router";
+
+// ── Mobile Platform Layer (Phase 1: contracts, runtime, adapters, sync, security) ──
+export * from "@/lib/mobile-platform";
