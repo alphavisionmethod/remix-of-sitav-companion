@@ -41,7 +41,7 @@ Automated backups via `scripts/release/iso/sita-backup.sh`:
 - **Volumes**: Docker volume snapshots for `sita-*` volumes
 - **Config**: Version-controlled env files backup
 - **Retention**: 30-day rolling retention with automatic cleanup
-- **Restore**: `scripts/restore-backup.sh` for database recovery
+- **Restore**: `scripts/release/iso/restore-backup.sh` for database recovery
 
 Managed by `sita-backup.service` + `sita-backup.timer` (systemd).
 
@@ -50,7 +50,7 @@ Managed by `sita-backup.service` + `sita-backup.timer` (systemd).
 For air-gapped or appliance deployments:
 - Autoinstall profiles in `scripts/release/iso/autoinstall/`
 - Device profiles in `scripts/release/iso/profiles/`
-- OVA export via `scripts/build-ova.sh`
+- OVA export via `scripts/release/vmware/build-ova.sh`
 
 ## Monitoring
 

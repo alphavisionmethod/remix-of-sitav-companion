@@ -70,7 +70,7 @@ cp .env.example .env
 # Edit .env with your secrets
 
 # 2. Build and deploy
-./scripts/deploy-vmware.sh
+./scripts/release/vmware/deploy-vmware.sh
 
 # 3. Verify
 curl http://localhost:8080/health.json
@@ -119,7 +119,7 @@ Automated backups via `scripts/release/iso/sita-backup.sh`:
 For air-gapped appliance deployments:
 
 ```bash
-./scripts/build-ova.sh
+./scripts/release/vmware/build-ova.sh
 # Creates sita-os-1.0.0.tar.gz with all images + deploy script
 ```
 
