@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-16T17:46:55.534Z",
+  "groups": {
+    "dup-001": {
+      "canonical": "src/components/concierge/ConciergeAppShell.tsx",
+      "members": [
+        "src/components/concierge/ConciergeAppShell.tsx",
+        "src/components/sita/apps/concierge/ConciergeAppShell.tsx"
+      ],
+      "family": "shell"
+    },
+    "dup-002": {
+      "canonical": "src/components/mobile/ProofCard.tsx",
+      "members": [
+        "src/components/mobile/ProofCard.tsx",
+        "src/components/sita/cards/ProofCard.tsx"
+      ],
+      "family": "card"
+    },
+    "dup-003": {
+      "canonical": "src/components/sita/TrustBadge.tsx",
+      "members": [
+        "src/components/sita/TrustBadge.tsx",
+        "src/components/sita/badges/TrustBadge.tsx"
+      ],
+      "family": "badge"
+    }
+  }
+}
