@@ -27,7 +27,7 @@ for (const p of [REG_PATH, FALLBACK_PATH, SURFACE_PATH, CONTEXT_PATH]) {
   }
 }
 
-if (vc.hasErrors()) {
+if (vc.errors.length > 0) {
   vc.report("check-runtime-capability-completeness");
   vc.exitIfErrors();
 }
