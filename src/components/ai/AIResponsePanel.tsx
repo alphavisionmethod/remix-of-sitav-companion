@@ -69,7 +69,9 @@ export function AIResponsePanel({
     );
   }
 
-  // Success
+  // Success — run AI output firewall
+  const firewallResult = scanAIOutput(response.content);
+  const displayContent = firewallResult.sanitizedOutput;
   const stale = isStale(response.timestamp, staleAfterMinutes);
 
   return (
