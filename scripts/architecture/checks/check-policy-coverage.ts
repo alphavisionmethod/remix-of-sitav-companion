@@ -140,9 +140,9 @@ for (const d of uniqueDomains) {
 }
 
 // 4. Surface overrides reference canonical surfaces
-const canonicalSurfaces = new Set(
-  Array.from(surfaceTypeSrc.matchAll(/CANONICAL_SURFACES[\s\S]*?\[([^\]]*)\]/))
-    .flatMap((m) => Array.from(m[1].matchAll(/"([a-z]+)"/g)).map((x) => x[1])),
+const canonicalBlock = surfaceTypeSrc.match(/CANONICAL_SURFACES[\s\S]*?\[([^\]]*)\]/);
+const canonicalSurfaces = new Set<string>(
+  canonicalBlock ? Array.from(canonicalBlock[1].matchAll(/"([a-z]+)"/g)).map((x) => x[1]) : [],
 );
 const surfaceRefs = Array.from(surfacePolicySrc.matchAll(/surface:\s*"([a-z]+)"/g)).map((m) => m[1]);
 for (const ref of surfaceRefs) {
