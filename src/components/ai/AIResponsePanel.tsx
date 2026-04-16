@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { scanAIOutput } from "@/lib/core-services/security/ai-output-firewall";
 import { AIStateBadge } from "./AIStateBadge";
 import { AIDegradedState } from "./AIDegradedState";
 import { AIReceiptLink } from "./AIReceiptLink";
