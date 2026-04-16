@@ -4,11 +4,11 @@
 
 ## P0 — Launch Blockers (Cannot be auto-fixed)
 
-| # | Blocker | Why It Cannot Be Auto-Fixed | Required Action |
-|---|---------|----------------------------|-----------------|
-| 1 | **No Sentry/Error Monitoring** | Requires external Sentry DSN and account setup | Create Sentry project, add DSN secret, integrate `@sentry/react` SDK, add ErrorBoundary wrapper |
-| 2 | **No Emergency Payment Kill Switch** | Requires business logic decision on kill-switch scope | Create `payment-kill-switch` edge function, add admin toggle UI, wire to payment-process function |
-| 3 | **No Proven Green CI Artifacts** | Requires CI infrastructure (GitHub Actions runners, secrets) | Configure CI secrets, run full pipeline, capture green build artifact |
+| # | Blocker | Why It Cannot Be Auto-Fixed | Required Action | Status |
+|---|---------|----------------------------|-----------------|--------|
+| 1 | **No Sentry/Error Monitoring** | ~~Requires external Sentry DSN~~ | ✅ Built-in error monitoring service added | **RESOLVED** |
+| 2 | **No Emergency Payment Kill Switch** | ~~Requires business logic decision~~ | ✅ `payment-kill-switch` edge function deployed | **RESOLVED** |
+| 3 | **No Proven Green CI Artifacts** | Requires CI infrastructure (GitHub Actions runners, secrets) | Configure CI secrets, run full pipeline, capture green build artifact | PENDING |
 
 ## P1 — Pre-GA Required
 
@@ -34,10 +34,11 @@
 ## Blocker Resolution Priority
 
 ```
-P0 (Must fix before launch):     3 items
+P0 (Must fix before launch):     1 item remaining (CI green artifacts)
+P0 RESOLVED:                     2 items (error monitoring, payment kill switch)
 P1 (Must fix before GA):         4 items  
 P2 (Technical debt, post-GA):    5 items
-Total pending:                   12 items
+Total pending:                   10 items
 ```
 
 ---

@@ -28,6 +28,7 @@ import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
+import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
 import { Suspense, lazy, forwardRef, useState, useEffect, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PlatformInit } from "@/components/sita/PlatformInit";
@@ -64,6 +65,11 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+
+// ═══════════════════════════════════════════════════════════════
+// Initialize error monitoring at module load
+// ═══════════════════════════════════════════════════════════════
+initErrorMonitoring();
 
 // ═══════════════════════════════════════════════════════════════
 // Admin tools wrapper
