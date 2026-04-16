@@ -1,129 +1,129 @@
 # SITA OS — Component Governance Report
 
-**Generated:** 2026-04-16  
-**Status:** ✅ DEPLOYMENT READY  
-**Governance Score:** 6/6 gates GREEN
+_Generated: 2026-04-16T18:14:42.089Z_
 
----
+## Constitution: 3 Classes
+1. **PRIMITIVE** — Visual building blocks (no domain logic).
+2. **DOMAIN** — Semantic components for a specific domain.
+3. **SURFACE** — Full assembled page surfaces.
 
-## Executive Summary
+Plus: `PRIVATE_HELPER`, `DEPRECATED_WRAPPER`, `UI_LIB` (shadcn).
 
-The SITA OS component layer (913 components across `src/components/**`) is now under
-a **strict 3-class constitution** — Primitive · Domain · Surface — with continuous
-enforcement via 5 governance scripts wired into a unified runner.
+## Inventory
 
-| Metric | Value |
+| Metric | Count |
 |---|---|
-| Total components scanned | **913** |
-| Canonical primitives | **16** |
-| Domain components | **577** |
-| Tracked duplicate families | **13** (all classified) |
-| Undeclared name collisions | **0** |
-| Governance violations | **0** |
-| TypeScript errors | **0** |
-| Production build | **✅ 52.64s** |
+| Total component files | 913 |
+| Primitives | 266 |
+| Domain components | 577 |
+| Surface compositions | 3 |
+| Deprecated wrappers | 18 |
+| Duplicate families detected | 13 |
+| Components in duplicate groups | 27 |
 
----
+## Classification Breakdown
+- **DOMAIN**: 577
+- **PRIMITIVE**: 266
+- **DEPRECATED_WRAPPER**: 18
+- **SURFACE**: 3
+- **UI_LIB**: 49
 
-## The 3-Class Constitution
+## Top Families
+- `other`: 669
+- `card`: 67
+- `panel`: 64
+- `badge`: 35
+- `shell`: 24
+- `board`: 12
+- `timeline`: 10
+- `drawer`: 10
+- `overlay`: 10
+- `table`: 3
+- `hero`: 3
+- `summary`: 3
 
-| Class | Path | Rule |
-|---|---|---|
-| **PRIMITIVE** | `src/components/primitives/**` | No services/hooks/domain/pages/Supabase imports |
-| **DOMAIN** | `src/components/domain/**`, legacy domain folders | No page/route imports |
-| **SURFACE** | `src/components/surfaces/**`, page-composing shells | Composes domain + primitives only |
-| **PRIVATE_HELPER** | colocated with single consumer | Not exported as a system component |
-| **DEPRECATED_WRAPPER** | thin re-exports of canonical | Verified by `check-deprecated-wrappers.ts` |
-| **UI_LIB** | `src/components/ui/**` (shadcn) | Lowest layer; cannot import services |
+## Top Duplicate Families
+- `badge`: 13 components
+- `other`: 8 components
+- `shell`: 2 components
+- `card`: 2 components
+- `drawer`: 2 components
 
----
+## Duplicate Groups (Top 10)
 
-## Canonical Primitives (16)
+### dup-001 (other)
+- **Canonical**: `src/components/advisors/AdvisorDebateView.tsx`
+- **Members** (2):
+  - ✅ `src/components/advisors/AdvisorDebateView.tsx`
+  - 🔁 `src/components/business/advisor-board/AdvisorDebateView.tsx`
 
-```
-primitives/display/    BaseCard, Hero, Summary, Panel, StatTile
-primitives/status/     StatusBadge, TrustBadge, UrgencyBadge,
-                       ProofBadge, FreshnessBadge, ModeBadge
-primitives/feedback/   EmptyState, Skeleton
-primitives/overlays/   Drawer
-primitives/timelines/  TimelineRow
-```
 
-These are the **only** authorized authors of low-level visual grammar.
+### dup-002 (other)
+- **Canonical**: `src/components/sita/SparklineChart.tsx`
+- **Members** (2):
+  - 🔁 `src/components/business/advisor-board/SparklineChart.tsx`
+  - ✅ `src/components/sita/SparklineChart.tsx`
 
----
 
-## Duplicate Family Resolution (13 groups)
+### dup-003 (shell)
+- **Canonical**: `src/components/concierge/ConciergeAppShell.tsx`
+- **Members** (2):
+  - ✅ `src/components/concierge/ConciergeAppShell.tsx`
+  - 🔁 `src/components/sita/apps/concierge/ConciergeAppShell.tsx`
 
-| Status | Count | Meaning |
-|---|---|---|
-| `MIGRATING` | 8 | Canonical exists; legacy variants kept until consumers opt in |
-| `FALSE_POSITIVE` | 5 | Same name, intentionally different APIs (documented) |
 
-### Documented False Positives (intentionally retained)
+### dup-004 (card)
+- **Canonical**: `src/components/mobile/ProofCard.tsx`
+- **Members** (2):
+  - ✅ `src/components/mobile/ProofCard.tsx`
+  - 🔁 `src/components/sita/cards/ProofCard.tsx`
 
-1. **`ProofCard`** — `mobile/` (flat) vs `sita/cards/` (chain). Different data models.
-2. **`ConciergeAppShell`** — simple sidebar vs full 19-page windowed app.
-3. **`AdvisorDebateView`** — `AdvisorConfig[]` vs `AIRecommendation[]` props.
-4. **`SparklineChart`** — different prop APIs.
-5. **`ui/skeleton` & `ui/drawer`** — shadcn lowest layer; primitives wrap them.
 
----
+### dup-005 (other)
+- **Canonical**: `src/components/sita/EmptyState.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/feedback/EmptyState.tsx`
+  - ✅ `src/components/sita/EmptyState.tsx`
 
-## Governance Pipeline — 6/6 GREEN
 
-```bash
-npx tsx scripts/architecture/run-component-governance.ts
-```
+### dup-006 (other)
+- **Canonical**: `src/components/ui/skeleton.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/feedback/Skeleton.tsx`
+  - ✅ `src/components/ui/skeleton.tsx`
 
-| # | Gate | Result |
-|---|---|---|
-| 1 | Audit components → regenerate registry | ✅ |
-| 2 | Classification check (3-class + suffix grammar) | ✅ |
-| 3 | Primitive purity (no domain/service imports) | ✅ |
-| 4 | Domain purity (no page/route imports) | ✅ |
-| 5 | Duplicate families (no undeclared collisions) | ✅ |
-| 6 | Deprecated wrappers (thin re-exports only) | ✅ |
 
----
+### dup-007 (drawer)
+- **Canonical**: `src/components/ui/drawer.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/overlays/Drawer.tsx`
+  - ✅ `src/components/ui/drawer.tsx`
 
-## Generated Artifacts
 
-| File | Purpose |
-|---|---|
-| `generated/component-registry.json` | Inventory of 913 components |
-| `generated/component-duplication-map.json` | 13 duplicate groups |
-| `src/lib/architecture/component-registry.ts` | Typed registry + suffix grammar |
-| `src/lib/architecture/component-duplication-map.ts` | Typed duplicate family policy |
+### dup-008 (badge)
+- **Canonical**: `src/components/sita/badges/FreshnessBadge.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/status/FreshnessBadge.tsx`
+  - ✅ `src/components/sita/badges/FreshnessBadge.tsx`
 
----
 
-## Governance Documents
+### dup-009 (badge)
+- **Canonical**: `src/components/sita/badges/ModeBadge.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/status/ModeBadge.tsx`
+  - ✅ `src/components/sita/badges/ModeBadge.tsx`
 
-| Doc | Defines |
-|---|---|
-| `docs/architecture/COMPONENT_CONSTITUTION.md` | 3-class rules, anti-patterns |
-| `docs/architecture/COMPONENT_NAMING_POLICY.md` | Suffix grammar |
 
----
+### dup-010 (badge)
+- **Canonical**: `src/components/sita/badges/ProofBadge.tsx`
+- **Members** (2):
+  - 🔁 `src/components/primitives/status/ProofBadge.tsx`
+  - ✅ `src/components/sita/badges/ProofBadge.tsx`
 
-## Verification Matrix
 
-| Check | Command | Result |
-|---|---|---|
-| Component governance | `npx tsx scripts/architecture/run-component-governance.ts` | ✅ 6/6 |
-| TypeScript compilation | `bunx tsc --noEmit` | ✅ 0 errors |
-| Production build | `bun run build` | ✅ 52.64s |
-| Bundle output | `dist/assets/index-*.js` | ✅ 5.13 MB (1.30 MB gzip) |
-
----
-
-## Deployment Readiness
-
-✅ **Zero breaking changes** — all 913 components compile/render identically.  
-✅ **Zero deletions** — all legacy paths preserved.  
-✅ **Continuous enforcement** — 6 governance gates prevent regression.  
-✅ **Machine-readable truth** — registry + duplication map are the authority.  
-✅ **Documented false positives** — 5 same-name pairs intentionally preserved with rationale.
-
-The component layer is **production-ready** and **future-drift-resistant**.
+## Governance Files
+- `generated/component-registry.json` — full machine-readable registry
+- `generated/component-duplication-map.json` — duplicate family map
+- `docs/architecture/COMPONENT_CONSTITUTION.md` — class rules
+- `docs/architecture/COMPONENT_NAMING_POLICY.md` — naming grammar
+- `src/components/primitives/` — canonical primitive layer
