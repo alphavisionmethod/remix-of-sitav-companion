@@ -1,1058 +1,1843 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-04-16T21:13:59.213Z",
-  "totalTables": 210,
-  "tablesWithUserId": 208,
+  "version": "2.0.0",
+  "generatedAt": "2026-04-16T21:14:25.350Z",
+  "source": "live-pg",
+  "totalTables": 201,
+  "rlsEnabled": 201,
+  "rlsCoveragePct": 100,
+  "tenantScoped": 160,
+  "sensitive": 8,
+  "byDomain": {
+    "admin-governance": 8,
+    "advisor-intelligence": 13,
+    "ai-workforce": 13,
+    "auth-identity": 6,
+    "boardroom": 5,
+    "business-crm": 17,
+    "cloud-infrastructure": 44,
+    "compliance": 1,
+    "connector-fabric": 3,
+    "notification": 5,
+    "os-kernel": 20,
+    "platform-core": 58,
+    "user-experience": 8
+  },
+  "byClass": {
+    "write": 150,
+    "read": 0,
+    "log": 21,
+    "config": 12,
+    "system": 18
+  },
   "tables": [
     {
       "name": "action_safety_classifications",
-      "hasUserId": true,
-      "columnCount": 17
+      "domain": "admin-governance",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
       "name": "admin_action_audit",
-      "hasUserId": true,
-      "columnCount": 20
+      "domain": "admin-governance",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "actor_user_id",
+      "sensitiveData": false
     },
     {
       "name": "admin_action_confirmations",
-      "hasUserId": true,
-      "columnCount": 19
+      "domain": "admin-governance",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": "actor_user_id",
+      "sensitiveData": false
     },
     {
       "name": "admin_role_permissions",
-      "hasUserId": true,
-      "columnCount": 20
+      "domain": "admin-governance",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
     },
     {
       "name": "admin_safety_actions",
-      "hasUserId": true,
-      "columnCount": 17
+      "domain": "admin-governance",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
     },
     {
       "name": "admin_sessions",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "advisor_action_queue",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_agents",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_autonomy_policies",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "advisor_board_actions",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_board_memory",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_board_recommendations",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_board_reflections",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "advisor_board_tool_executions",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "advisor_feedback",
-      "hasUserId": true,
-      "columnCount": 22
-    },
-    {
-      "name": "advisor_knowledge",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "advisor_memories",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "advisor_profiles",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "ai_inference_receipts",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "ai_workforce_approval_queue",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "ai_workforce_budget_classes",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "ai_workforce_cached_outputs",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "ai_workforce_invocations",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "ai_workforce_launch_honesty",
-      "hasUserId": true,
-      "columnCount": 13
-    },
-    {
-      "name": "ai_workforce_outputs",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "ai_workforce_recommendation_scores",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "ai_workforce_recommendations",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "ai_workforce_role_health",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "ai_workforce_role_task_permissions",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "ai_workforce_roles",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "ai_workforce_task_types",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "api_gateway_routes",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "appointments",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "approval_decisions",
-      "hasUserId": true,
-      "columnCount": 14
-    },
-    {
-      "name": "biometric_credentials",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "boardroom_decision_receipts",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "boardroom_evidence",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "boardroom_items",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "boardroom_recommendations",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "boardroom_sessions",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "business_health_scores",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "business_onboarding",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "calendar_events",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "client_capability_matrix",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_abuse_events",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "cloud_account_closure_requests",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_activity_journal",
-      "hasUserId": true,
-      "columnCount": 18
+      "domain": "admin-governance",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
       "name": "cloud_admin_role_assignments",
-      "hasUserId": true,
-      "columnCount": 18
+      "domain": "admin-governance",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
       "name": "cloud_admin_roles",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_archive_jobs",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_audit_events",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_backup_snapshots",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_blobs",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_bootstrap_markers",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_compliance_hooks",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_conflicts",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_device_sessions",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_devices",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_feature_flags",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "cloud_file_versions",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_files",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_folders",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_import_export_jobs",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_lifecycle_rules",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_maintenance_modes",
-      "hasUserId": false,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_metrics_snapshots",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "cloud_namespace_registry",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_plans",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_policies",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_preview_jobs",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_reconciliation_runs",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_search_index",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_shared_workspaces",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_shares",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_storage_providers",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_storage_tiers",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_storage_usage",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_support_sessions",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "cloud_sync_changes",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_sync_checkpoints",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_sync_jobs",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "cloud_sync_objects",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "cloud_tenant_memberships",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "cloud_tenant_plans",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "cloud_tenant_policies",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_tenant_quotas",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_tenants",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_trash",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "cloud_user_plans",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "cloud_worker_jobs",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "command_memory",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "command_routing_decisions",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "command_steps",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "communication_metrics",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "concierge_automations",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "concierge_documents",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "concierge_errands",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "concierge_recurring_obligations",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "config_change_history",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "connector_oauth_flows",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "connector_sync_runs",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "connector_tokens",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "context_graph_snapshots",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "crm_automations",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "crm_communications",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "crm_companies",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "crm_contact_company",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "crm_contacts",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "crm_import_jobs",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "crm_merge_log",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "crm_notes",
-      "hasUserId": true,
-      "columnCount": 12
-    },
-    {
-      "name": "crm_opportunities",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "crm_pipeline_stages",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "crm_segments",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "crm_tags",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "crm_tasks",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "device_attestations",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "device_mesh_peers",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "device_ownership",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "domain_ownership_registry",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "dual_authority_challenges",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "ecosystem_commands",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "ecosystem_contracts",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "ecosystem_events",
-      "hasUserId": true,
-      "columnCount": 22
-    },
-    {
-      "name": "environment_configs",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "flagship_loops",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "founder_directives",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "gift_tracker",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "graph_edges",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "grocery_items",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "grocery_lists",
-      "hasUserId": true,
-      "columnCount": 21
-    },
-    {
-      "name": "health_validation_results",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "incidents",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "layer_health_snapshots",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "lead_inbox_items",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "leads",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "license_activations",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "license_audit_log",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "licenses",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "managed_apps",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "notification_delivery_receipts",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "notification_preferences",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "notifications",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "onboarding_choices",
-      "hasUserId": false,
-      "columnCount": 14
-    },
-    {
-      "name": "onboarding_completion_markers",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "onboarding_hardware_detection",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "onboarding_restore_sources",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "onboarding_sessions",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "onboarding_steps",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "org_members",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "organizations",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "os_audit_events",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "os_auth_methods",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "os_capabilities",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "os_command_events",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "os_commands",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "os_elevation_tokens",
-      "hasUserId": true,
-      "columnCount": 24
-    },
-    {
-      "name": "os_keyrings",
-      "hasUserId": true,
-      "columnCount": 22
-    },
-    {
-      "name": "os_policies",
-      "hasUserId": true,
-      "columnCount": 23
-    },
-    {
-      "name": "os_role_capabilities",
-      "hasUserId": true,
-      "columnCount": 22
-    },
-    {
-      "name": "os_secrets_metadata",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "os_service_identities",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "os_sessions",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "os_user_accounts",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "outcome_verifications",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "plane_service_assignments",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "platform_notifications",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "platform_planes",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "platform_runbooks",
-      "hasUserId": true,
-      "columnCount": 20
-    },
-    {
-      "name": "profiles",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "profit_signals",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "read_model_snapshots",
-      "hasUserId": true,
-      "columnCount": 13
-    },
-    {
-      "name": "recommendation_execution_bindings",
-      "hasUserId": true,
-      "columnCount": 12
-    },
-    {
-      "name": "recommendation_execution_events",
-      "hasUserId": true,
-      "columnCount": 12
-    },
-    {
-      "name": "recommendation_learning_signals",
-      "hasUserId": true,
-      "columnCount": 14
-    },
-    {
-      "name": "recommendation_outcome_verifications",
-      "hasUserId": true,
-      "columnCount": 16
-    },
-    {
-      "name": "release_compatibility_matrix",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "remediation_programs",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "remediation_tasks",
-      "hasUserId": true,
-      "columnCount": 15
-    },
-    {
-      "name": "rollback_events",
-      "hasUserId": true,
-      "columnCount": 17
-    },
-    {
-      "name": "runtime_agents",
-      "hasUserId": true,
-      "columnCount": 18
-    },
-    {
-      "name": "school_activities",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "service_identity_registry",
-      "hasUserId": true,
-      "columnCount": 19
-    },
-    {
-      "name": "service_providers_list",
-      "hasUserId": true,
-      "columnCount": 18
+      "domain": "admin-governance",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_action_queue",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_agents",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_autonomy_policies",
+      "domain": "advisor-intelligence",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_board_actions",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_board_memory",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_board_recommendations",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_board_reflections",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_board_tool_executions",
+      "domain": "advisor-intelligence",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_feedback",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_knowledge",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_memories",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "advisor_profiles",
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
       "name": "simulations",
-      "hasUserId": true,
-      "columnCount": 18
+      "domain": "advisor-intelligence",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "support_access_grants",
-      "hasUserId": true,
-      "columnCount": 17
+      "name": "ai_inference_receipts",
+      "domain": "ai-workforce",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "support_case_events",
-      "hasUserId": true,
-      "columnCount": 18
+      "name": "ai_workforce_approval_queue",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "support_cases",
-      "hasUserId": true,
-      "columnCount": 20
+      "name": "ai_workforce_budget_classes",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "system_guarantees",
-      "hasUserId": true,
-      "columnCount": 18
+      "name": "ai_workforce_cached_outputs",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "system_slots",
-      "hasUserId": true,
-      "columnCount": 20
+      "name": "ai_workforce_invocations",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "timeline_events",
-      "hasUserId": true,
-      "columnCount": 18
+      "name": "ai_workforce_launch_honesty",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "token_classes",
-      "hasUserId": true,
-      "columnCount": 19
+      "name": "ai_workforce_outputs",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "travel_plans",
-      "hasUserId": true,
-      "columnCount": 16
+      "name": "ai_workforce_recommendation_scores",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_boot_attempts",
-      "hasUserId": true,
-      "columnCount": 17
+      "name": "ai_workforce_recommendations",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_catalog",
-      "hasUserId": true,
-      "columnCount": 17
+      "name": "ai_workforce_role_health",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_channels",
-      "hasUserId": true,
-      "columnCount": 14
+      "name": "ai_workforce_role_task_permissions",
+      "domain": "ai-workforce",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_history",
-      "hasUserId": true,
-      "columnCount": 15
+      "name": "ai_workforce_roles",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_preflight_results",
-      "hasUserId": true,
-      "columnCount": 16
+      "name": "ai_workforce_task_types",
+      "domain": "ai-workforce",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "update_staging",
-      "hasUserId": true,
-      "columnCount": 22
+      "name": "biometric_credentials",
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
+    },
+    {
+      "name": "onboarding_sessions",
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "org_members",
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "organizations",
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "profiles",
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
       "name": "user_roles",
-      "hasUserId": true,
-      "columnCount": 18
+      "domain": "auth-identity",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "boardroom_decision_receipts",
+      "domain": "boardroom",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "boardroom_evidence",
+      "domain": "boardroom",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "boardroom_items",
+      "domain": "boardroom",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "boardroom_recommendations",
+      "domain": "boardroom",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "boardroom_sessions",
+      "domain": "boardroom",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "appointments",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "client_capability_matrix",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_automations",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_communications",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_companies",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_contact_company",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_contacts",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_import_jobs",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_merge_log",
+      "domain": "business-crm",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_notes",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_opportunities",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_pipeline_stages",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_segments",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_tags",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "crm_tasks",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "lead_inbox_items",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "leads",
+      "domain": "business-crm",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_abuse_events",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_account_closure_requests",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_activity_journal",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_archive_jobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_audit_events",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "actor_user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_backup_snapshots",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_blobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_bootstrap_markers",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_compliance_hooks",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_conflicts",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_device_sessions",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_devices",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_feature_flags",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_file_versions",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_files",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_folders",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_import_export_jobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_lifecycle_rules",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_maintenance_modes",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_metrics_snapshots",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_namespace_registry",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_plans",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_policies",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_preview_jobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_reconciliation_runs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_search_index",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_shared_workspaces",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "tenant_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_shares",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_storage_providers",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_storage_tiers",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_storage_usage",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_support_sessions",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_sync_changes",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_sync_checkpoints",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_sync_jobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_sync_objects",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_tenant_memberships",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_tenant_plans",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "tenant_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_tenant_policies",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "tenant_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_tenant_quotas",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "tenant_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_tenants",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_trash",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_user_plans",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "cloud_worker_jobs",
+      "domain": "cloud-infrastructure",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "incidents",
+      "domain": "compliance",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "connector_oauth_flows",
+      "domain": "connector-fabric",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
+    },
+    {
+      "name": "connector_sync_runs",
+      "domain": "connector-fabric",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "connector_tokens",
+      "domain": "connector-fabric",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
+    },
+    {
+      "name": "notification_delivery_receipts",
+      "domain": "notification",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "notification_preferences",
+      "domain": "notification",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "notifications",
+      "domain": "notification",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "platform_notifications",
+      "domain": "notification",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 5,
+      "tenancyColumn": null,
+      "sensitiveData": false
     },
     {
       "name": "vapid_keys",
-      "hasUserId": true,
-      "columnCount": 17
+      "domain": "notification",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": true
     },
     {
-      "name": "v_outcome_verification_summary",
-      "hasUserId": true,
-      "columnCount": 14
+      "name": "command_memory",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "v_recommendation_closure_summary",
-      "hasUserId": true,
-      "columnCount": 11
+      "name": "command_routing_decisions",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "v_recommendation_execution_pipeline",
-      "hasUserId": true,
-      "columnCount": 6
+      "name": "command_steps",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "v_remediation_program_summary",
-      "hasUserId": true,
-      "columnCount": 5
+      "name": "device_attestations",
+      "domain": "os-kernel",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
     },
     {
-      "name": "has_admin_permission",
-      "hasUserId": true,
-      "columnCount": 0
+      "name": "device_mesh_peers",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "has_role",
-      "hasUserId": true,
-      "columnCount": 0
+      "name": "device_ownership",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 5,
+      "tenancyColumn": null,
+      "sensitiveData": false
     },
     {
-      "name": "is_org_member",
-      "hasUserId": true,
-      "columnCount": 0
+      "name": "os_audit_events",
+      "domain": "os-kernel",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "is_org_owner",
-      "hasUserId": true,
-      "columnCount": 0
+      "name": "os_auth_methods",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
     },
     {
-      "name": "is_tenant_member",
-      "hasUserId": true,
-      "columnCount": 0
+      "name": "os_capabilities",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_command_events",
+      "domain": "os-kernel",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_commands",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_elevation_tokens",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
+    },
+    {
+      "name": "os_keyrings",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_policies",
+      "domain": "os-kernel",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_role_capabilities",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_secrets_metadata",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": true
+    },
+    {
+      "name": "os_service_identities",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_sessions",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "os_user_accounts",
+      "domain": "os-kernel",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "runtime_agents",
+      "domain": "os-kernel",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "api_gateway_routes",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "approval_decisions",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "business_health_scores",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "calendar_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "concierge_automations",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "concierge_errands",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "concierge_recurring_obligations",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "config_change_history",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "actor_user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "context_graph_snapshots",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "domain_ownership_registry",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "dual_authority_challenges",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "ecosystem_commands",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "ecosystem_contracts",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "ecosystem_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "environment_configs",
+      "domain": "platform-core",
+      "schemaClass": "config",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "flagship_loops",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "founder_directives",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "gift_tracker",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "graph_edges",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "grocery_items",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "grocery_lists",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "health_validation_results",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "layer_health_snapshots",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "license_activations",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "license_audit_log",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "licenses",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "managed_apps",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "outcome_verifications",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "plane_service_assignments",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "platform_planes",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "platform_runbooks",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "profit_signals",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "read_model_snapshots",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "recommendation_execution_bindings",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "recommendation_execution_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "recommendation_learning_signals",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "recommendation_outcome_verifications",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "release_compatibility_matrix",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "remediation_programs",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "remediation_tasks",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "rollback_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "school_activities",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "service_identity_registry",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "service_providers_list",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "support_access_grants",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 3,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "support_case_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 4,
+      "tenancyColumn": "actor_user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "support_cases",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 5,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "system_guarantees",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "system_slots",
+      "domain": "platform-core",
+      "schemaClass": "system",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "timeline_events",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "token_classes",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": null,
+      "sensitiveData": true
+    },
+    {
+      "name": "travel_plans",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "update_boot_attempts",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "update_catalog",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "update_channels",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "update_history",
+      "domain": "platform-core",
+      "schemaClass": "log",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "update_preflight_results",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "update_staging",
+      "domain": "platform-core",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "business_onboarding",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "communication_metrics",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 2,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "concierge_documents",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": "user_id",
+      "sensitiveData": false
+    },
+    {
+      "name": "onboarding_choices",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "onboarding_completion_markers",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "onboarding_hardware_detection",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "onboarding_restore_sources",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
+    },
+    {
+      "name": "onboarding_steps",
+      "domain": "user-experience",
+      "schemaClass": "write",
+      "hasRls": true,
+      "policyCount": 1,
+      "tenancyColumn": null,
+      "sensitiveData": false
     }
   ]
 }

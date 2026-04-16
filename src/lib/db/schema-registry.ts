@@ -1,25 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — DB Schema Registry (AUTO-GENERATED)
+// SITA OS — DB Schema Registry (AUTO-GENERATED from live-pg)
 // Source of truth: live pg_tables + pg_policies (regenerate via
 //   npx tsx scripts/db/generate/generate-schema-registry.ts)
 // DO NOT hand-edit. Edit the generator or run a migration instead.
+// Last generated: 2026-04-16T21:14:25.348Z
 // ═══════════════════════════════════════════════════════════════
 
 export type DbDomain =
-  | "auth-identity"
-  | "admin-governance"
-  | "advisor-intelligence"
-  | "ai-workforce"
-  | "boardroom"
-  | "business-crm"
-  | "cloud-infrastructure"
-  | "connector-fabric"
-  | "finance"
-  | "notification"
-  | "os-kernel"
-  | "platform-core"
-  | "compliance"
-  | "user-experience";
+  | "auth-identity" | "admin-governance" | "advisor-intelligence" | "ai-workforce"
+  | "boardroom" | "business-crm" | "cloud-infrastructure" | "connector-fabric"
+  | "finance" | "notification" | "os-kernel" | "platform-core"
+  | "compliance" | "user-experience";
 
 export type SchemaClass = "write" | "read" | "log" | "config" | "system";
 
@@ -31,7 +22,6 @@ export interface TableRegistryEntry {
   readonly policyCount: number;
   readonly tenancyColumn: string | null;
   readonly sensitiveData: boolean;
-  /** Plain-English description of the table's role */
   readonly description?: string;
 }
 
@@ -158,7 +148,6 @@ export const DB_SCHEMA_REGISTRY: readonly TableRegistryEntry[] = [
 
   // ── compliance ──
   { name: "incidents", domain: "compliance", schemaClass: "log", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
-  { name: "license_audit_log", domain: "compliance", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
 
   // ── connector-fabric ──
   { name: "connector_oauth_flows", domain: "connector-fabric", schemaClass: "write", hasRls: true, policyCount: 2, tenancyColumn: "user_id", sensitiveData: true },
@@ -219,6 +208,7 @@ export const DB_SCHEMA_REGISTRY: readonly TableRegistryEntry[] = [
   { name: "health_validation_results", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
   { name: "layer_health_snapshots", domain: "platform-core", schemaClass: "system", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
   { name: "license_activations", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: null, sensitiveData: false },
+  { name: "license_audit_log", domain: "platform-core", schemaClass: "log", hasRls: true, policyCount: 2, tenancyColumn: null, sensitiveData: false },
   { name: "licenses", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 3, tenancyColumn: "user_id", sensitiveData: false },
   { name: "managed_apps", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 4, tenancyColumn: "user_id", sensitiveData: false },
   { name: "outcome_verifications", domain: "platform-core", schemaClass: "write", hasRls: true, policyCount: 1, tenancyColumn: "user_id", sensitiveData: false },
