@@ -17,6 +17,9 @@ export type ManifestAuthority =
   | "derived"        // Generated from authoritative sources — drift = warning
   | "informational"; // For human consumption only — drift = low priority
 
+/** Drift severity — how loud failure must be */
+export type DriftSeverity = "low" | "medium" | "high" | "critical";
+
 /** Freshness requirement */
 export type FreshnessPolicy =
   | "real-time"      // Must be regenerated on every build
@@ -48,12 +51,22 @@ export interface ManifestRegistryEntry {
   authority: ManifestAuthority;
   owner: ManifestOwnerDomain;
   description: string;
+  /** Real authoritative inputs — must NOT be other generated manifests unless explicitly derived */
   sourceInputs: string[];
+  /** Path to the script that generates this artifact */
   validator: string | null;
+  /** CI gate / workflow name that fails on drift */
   ciGate: string | null;
   freshnessPolicy: FreshnessPolicy;
+  /** What breaks at runtime if this manifest is wrong */
   runtimeConsequence: string;
+  /** What breaks at release/deploy if this manifest is wrong */
   releaseConsequence: string;
+  /** What support sees / cannot diagnose if this manifest is wrong */
+  supportConsequence?: string;
+  /** Severity of drift — drives CI gate behavior */
+  driftSeverity?: DriftSeverity;
+  /** Surfaces / scripts / docs that consume this artifact */
   consumers: string[];
   tags: string[];
 }
