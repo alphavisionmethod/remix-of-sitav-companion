@@ -57,4 +57,9 @@ contextBridge.exposeInMainWorld('electron', {
   getCrashReports: () => ipcRenderer.invoke('get-crash-reports'),
   clearCrashReports: () => ipcRenderer.invoke('clear-crash-reports'),
   reportRendererError: (error) => ipcRenderer.send('renderer-error', error),
+
+  // ── License ────────────────────────────────────────────────
+  getLicenseInfo: () => ipcRenderer.invoke('license-info'),
+  activateLicense: (key) => ipcRenderer.invoke('license-activate', key),
+  deactivateLicense: () => ipcRenderer.invoke('license-deactivate'),
 });

@@ -35,6 +35,10 @@ export type { OnboardingSession, OnboardingStep, ProtectionDefaults } from "./on
 export { ElevationEngine, getElevationEngine } from "./elevation-engine";
 export type { ElevationResult } from "./elevation-engine";
 
+// ── License Manager ──────────────────────────────────────────
+export { useLicenseStatus, isFeatureAllowed } from "./license-manager";
+export type { LicenseInfo, LicenseStatus } from "./license-manager";
+
 // ── Notification Daemon ──────────────────────────────────────
 export { NotifyDaemon, getNotifyDaemon } from "./notifyd";
 export type { SecurityNotification, SecurityEventType } from "./notifyd";
