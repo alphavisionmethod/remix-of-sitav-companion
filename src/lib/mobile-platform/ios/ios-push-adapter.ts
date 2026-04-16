@@ -1,11 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — iOS Push Adapter
-// APNs deferred — adapter exists for contract honesty; calls return
-// "unsupported" until Apple Developer membership is provisioned.
+// Bridges to Capacitor PushNotifications when present. APNs is
+// deferred (no Apple Developer membership) — register() returns null
+// honestly until the flag flips.
 // ═══════════════════════════════════════════════════════════════
 
 import type { PushPayload, PushDeliveryReceipt, PushRegistration } from "../contracts/push-contract";
 import { MOBILE_PLATFORM_FLAGS } from "../runtime/mobile-platform-flags";
+import { nativePush } from "../native/native-push";
 
 export interface IOSPushAdapter {
   isEnabled(): boolean;
@@ -15,14 +17,19 @@ export interface IOSPushAdapter {
 }
 
 export const iosPushAdapter: IOSPushAdapter = {
-  isEnabled: () => !MOBILE_PLATFORM_FLAGS.apnsDisabled,
+  isEnabled: () => !MOBILE_PLATFORM_FLAGS.apnsDisabled && nativePush.isAvailable(),
+
   async register() {
     if (MOBILE_PLATFORM_FLAGS.apnsDisabled) return null;
-    return null;
+    if (!nativePush.isAvailable()) return null;
+    return nativePush.register();
   },
+
   async unregister() {
-    /* no-op until APNs is wired */
+    if (!nativePush.isAvailable()) return;
+    await nativePush.unregister();
   },
+
   async send(payload) {
     return {
       payloadId: payload.id,
