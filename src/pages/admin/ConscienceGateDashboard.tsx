@@ -3,7 +3,7 @@
 // Inspectable + Governable surface for the ConscienceGate OS primitive
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,38 @@ import {
 } from "lucide-react";
 import type { GateDecision, GateVerdict } from "@/lib/core-services/conscience-gate/conscience-gate";
 import { DEMO_CONSCIENCE_VERDICTS } from "@/lib/mock-data/conscience-gate";
+import { supabase } from "@/integrations/supabase/client";
 
-// ── Demo Data (imported from shared module) ────────────────────
-const DEMO_VERDICTS = DEMO_CONSCIENCE_VERDICTS;
+// Local row type used by this dashboard — keeps a stable `id` for table keys.
+type DashboardVerdict = GateVerdict & { id: string };
+
+function withDashboardId(v: GateVerdict, idx: number): DashboardVerdict {
+  return { ...v, id: (v as any).id ?? `${v.correlationId ?? "demo"}-${idx}` };
+}
+
+// Real-data path: ai_inference_receipts.verification_outcome stores live gate
+// decisions. Falls back to seed verdicts when no real receipts exist yet.
+function mapReceiptToVerdict(r: any): DashboardVerdict {
+  const outcome = (r.verification_outcome || "pass").toLowerCase();
+  const decision: GateDecision = ["pass", "caveat", "block", "refuse"].includes(outcome)
+    ? (outcome as GateDecision) : "pass";
+  return {
+    id: r.id,
+    decision,
+    taskType: r.capability_id ?? r.prompt_family ?? "ai-task",
+    riskClass: "R2" as any,
+    evidenceState: "sufficient" as any,
+    budgetState: "ok" as any,
+    routingHints: { tier: "standard" } as any,
+    retrievalRequired: false,
+    critiqueRequired: false,
+    approvalRequired: decision === "block" || decision === "refuse",
+    deterministicRequired: false,
+    reasons: r.route_reason ? [r.route_reason] : [],
+    timestamp: r.created_at,
+    correlationId: r.id,
+  };
+}
 
 const DECISION_COLORS: Record<GateDecision, string> = {
   pass: "text-trust-verified bg-trust-verified/10",
@@ -40,13 +69,40 @@ const DECISION_ICONS: Record<GateDecision, React.ReactNode> = {
 export default function ConscienceGateDashboard() {
   const { isAdmin, loading } = useRequireAdmin();
   const [tab, setTab] = useState("verdicts");
+  const [liveVerdicts, setLiveVerdicts] = useState<DashboardVerdict[]>([]);
+  const [usingFallback, setUsingFallback] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("ai_inference_receipts")
+        .select("id, capability_id, prompt_family, route_reason, verification_outcome, input_tokens, output_tokens, cost_estimate_cents, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (cancelled) return;
+      if (error || !data || data.length === 0) {
+        setLiveVerdicts(DEMO_CONSCIENCE_VERDICTS.map(withDashboardId));
+        setUsingFallback(true);
+      } else {
+        setLiveVerdicts(data.map(mapReceiptToVerdict));
+        setUsingFallback(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [isAdmin]);
+
+  const DEMO_VERDICTS: DashboardVerdict[] = liveVerdicts.length > 0
+    ? liveVerdicts
+    : DEMO_CONSCIENCE_VERDICTS.map(withDashboardId);
 
   const stats = useMemo(() => {
     const counts: Record<GateDecision, number> = { pass: 0, caveat: 0, block: 0, refuse: 0 };
     DEMO_VERDICTS.forEach((v) => counts[v.decision]++);
     const total = DEMO_VERDICTS.length;
     return { counts, total, passRate: total ? Math.round((counts.pass / total) * 100) : 0 };
-  }, []);
+  }, [DEMO_VERDICTS]);
 
   if (loading || !isAdmin) return null;
 

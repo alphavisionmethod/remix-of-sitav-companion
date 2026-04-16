@@ -23,9 +23,9 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     readModels: ["v_recommendation_closure_summary"],
     writeModels: ["leads", "lead_inbox_items", "crm_pipeline_stages", "crm_tasks"],
     externalDependencies: ["salesforce", "hubspot", "pipedrive"],
-    edgeFunctions: ["business-board-api", "crm-sync", "business-advisor-intelligence"],
+    edgeFunctions: ["business-advisor-intelligence"],
     services: ["customer-service", "lead-service", "pipeline-service"],
-    tables: ["leads", "lead_inbox_items", "crm_pipeline_stages", "crm_tasks", "advisor_board_recommendations"],
+    tables: ["leads", "lead_inbox_items", "crm_pipeline_stages", "crm_tasks"],
     tests: ["src/features/business/__tests__"],
     deploymentUnit: "user-spa",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa"],
@@ -47,11 +47,11 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     externalDependencies: ["stripe", "plaid", "quickbooks"],
     edgeFunctions: [
       "cashflow-calculate", "invoice-generate", "payment-process", "tax-estimate",
-      "msa-operations", "investment-portfolio-api", "cost-alert", "payment-kill-switch",
+      "msa-operations", "cost-alert", "payment-kill-switch",
       "revenue-caller",
     ],
     services: ["finance-engine", "invoice-service", "payment-service"],
-    tables: ["ai_inference_receipts"],
+    tables: [],
     tests: ["src/features/finance/__tests__"],
     deploymentUnit: "user-spa",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa"],
@@ -69,11 +69,11 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     sourceOfTruth: ["src/features/concierge", "supabase/functions/booking-manage"],
     canonicalApis: ["booking-manage", "communications-api", "tasks-workflow-api", "get-weather"],
     readModels: [],
-    writeModels: ["appointments", "crm_tasks", "remediation_tasks"],
+    writeModels: ["appointments", "remediation_tasks"],
     externalDependencies: ["google-calendar", "weather-api"],
     edgeFunctions: ["booking-manage", "communications-api", "tasks-workflow-api", "get-weather"],
     services: ["concierge-orchestrator", "booking-service"],
-    tables: ["appointments", "crm_tasks", "remediation_tasks"],
+    tables: ["appointments", "remediation_tasks"],
     tests: ["src/features/concierge/__tests__"],
     deploymentUnit: "user-spa",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa"],
@@ -94,6 +94,7 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     writeModels: [],
     externalDependencies: ["market-data-api"],
     edgeFunctions: ["investment-portfolio-api"],
+    // owner of investment-portfolio-api (was duplicated with finance-os)
     services: ["portfolio-service"],
     tables: [],
     tests: ["src/features/investment/__tests__"],
@@ -125,6 +126,8 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
       "advisor_board_recommendations", "advisor_board_actions",
       "advisor_board_memory", "advisor_board_reflections", "advisor_board_tool_executions",
     ],
+    // owner of business-board-api, simulation-engine-api, brain-core, advisor-orchestrator
+    // (were duplicated with business-os and runtime-kernel)
     tests: ["src/features/boardroom/__tests__"],
     deploymentUnit: "user-spa",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa"],
@@ -169,11 +172,11 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     sourceOfTruth: ["src/features/auth", "supabase/functions/seed-user-data"],
     canonicalApis: ["seed-user-data", "license-gateway"],
     readModels: [],
-    writeModels: ["profiles", "user_roles", "biometric_credentials"],
+    writeModels: ["profiles", "biometric_credentials"],
     externalDependencies: ["supabase-auth", "google-oauth"],
     edgeFunctions: ["seed-user-data", "license-gateway"],
     services: ["auth-service", "onboarding-service"],
-    tables: ["profiles", "user_roles", "biometric_credentials", "admin_sessions"],
+    tables: ["profiles", "biometric_credentials"],
     tests: ["src/features/auth/__tests__"],
     deploymentUnit: "user-spa",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa", "ios", "android", "appliance"],
@@ -230,6 +233,8 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
       "connector-operations", "connector-proxy", "connector-sync", "connector-transform",
       "crm-sync", "provider-family-operations",
     ],
+    // owner of crm-sync and provider-family-operations
+    // (were duplicated with business-os and runtime-kernel)
     services: ["connector-service", "webhook-service", "sync-service"],
     tables: ["connector_oauth_flows", "connector_sync_runs"],
     tests: ["src/features/integrations/__tests__"],
@@ -252,8 +257,10 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
     writeModels: ["ai_inference_receipts", "approval_decisions"],
     externalDependencies: [],
     edgeFunctions: ["verification-recorder", "gdpr-export", "gdpr-delete", "health-check", "support-gateway"],
-    services: ["audit-service", "ai-receipt-service", "epistemic-firewall"],
-    tables: ["ai_inference_receipts", "admin_action_audit", "approval_decisions"],
+    services: ["ai-receipt-service", "epistemic-firewall"],
+    tables: ["ai_inference_receipts", "approval_decisions"],
+    // owner of ai_inference_receipts (canonical receipt store)
+    // audit-service moved to admin; admin_action_audit moved to admin
     tests: ["src/features/proof/__tests__"],
     deploymentUnit: "edge-function-cluster",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa", "appliance"],
@@ -282,14 +289,18 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
       "os-command", "os-status", "os-agent-channel", "ambient-os-operations",
       "self-healing", "system-updates", "device-telemetry", "runtime-probes",
       "agent-executor", "agent-heartbeat", "agent-scheduler", "agent-signal",
-      "ai-gateway", "ai-health", "check-ai-budget", "brain-core",
+      "ai-gateway", "ai-health", "check-ai-budget",
       "file-ingestion", "main", "scheduler-dispatch",
       "app-store-api", "digital-twin-engine", "ecosystem-operations",
-      "event-processor", "simulation-engine-api", "push-dispatch", "push-track",
-      "vapid-public-key", "provider-family-operations", "user-bff-gateway",
+      "event-processor",
     ],
-    services: ["ai-gateway", "ai-budget-service", "advisor-orchestrator", "health-monitor"],
-    tables: ["ai_inference_receipts", "ai_workforce_invocations"],
+    services: ["ai-gateway", "ai-budget-service", "health-monitor"],
+    tables: ["ai_workforce_invocations"],
+    // brain-core, simulation-engine-api → boardroom
+    // push-dispatch, push-track, vapid-public-key, user-bff-gateway → mobile
+    // provider-family-operations → integrations
+    // ai_inference_receipts → proof-trust
+    // advisor-orchestrator → boardroom
     tests: ["src/lib/runtime/__tests__"],
     deploymentUnit: "edge-function-cluster",
     runtimeTiersSupported: ["web", "desktop", "mobile-pwa", "appliance", "ios", "android"],
@@ -347,6 +358,8 @@ export const BOUNDED_CONTEXT_REGISTRY: readonly BoundedContextEntry[] = [
       "admin_action_audit", "admin_action_confirmations", "admin_role_permissions",
       "admin_safety_actions", "admin_sessions", "user_roles",
     ],
+    // owner of audit-service, admin_action_audit, admin_sessions, user_roles
+    // (were duplicated with proof-trust and setup-identity)
     tests: ["src/pages/admin/__tests__"],
     deploymentUnit: "admin-spa",
     runtimeTiersSupported: ["web", "desktop"],
