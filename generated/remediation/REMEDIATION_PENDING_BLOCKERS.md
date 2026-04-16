@@ -52,6 +52,8 @@ Total pending:  7 (all require external infra or are post-GA)
 | `communications-api` | Message threads, contacts |
 | `tasks-workflow-api` | Task CRUD, workflow templates |
 | `app-store-api` | App catalog, installs, ratings |
+| `connector-sync` | Connector data synchronization (admin) |
+| `health-check` | Lightweight uptime ping endpoint |
 
 ---
 
