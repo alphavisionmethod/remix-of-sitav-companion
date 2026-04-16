@@ -28,3 +28,8 @@ export * from "./formal-verification-framework";
 export * from "./redundancy-failover-engine";
 export * from "./mobile-agent-hardening";
 export * from "./admin-founder-hardening";
+
+// Batch 6 — Advanced Hardening (Anti-Hack & AI Leak Prevention)
+export * from "./ai-output-firewall";
+export * from "./session-threat-detector";
+export * from "./secure-memory-vault";

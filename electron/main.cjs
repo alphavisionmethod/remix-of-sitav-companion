@@ -7,6 +7,9 @@ const { setupFSBridge } = require('./fs-bridge.cjs');
 const licenseGuard = require('./license-guard.cjs');
 const { createActivationWindow } = require('./license-ui.cjs');
 const { runFullIntegrityCheck } = require('./integrity-check.cjs');
+const { initRuntimeShield, getShieldStatus } = require('./runtime-shield.cjs');
+const { initDLPGuard, getDLPStatus } = require('./dlp-guard.cjs');
+const { initNetworkSentinel, getNetworkSentinelStatus } = require('./network-sentinel.cjs');
 
 let mainWindow;
 let tray;
@@ -236,6 +239,11 @@ function setupIPC() {
 
   // Crash reporter IPC
   setupCrashReporterIPC();
+
+  // Security status IPC
+  ipcMain.handle('get-dlp-status', () => getDLPStatus());
+  ipcMain.handle('get-network-sentinel-status', () => getNetworkSentinelStatus());
+  ipcMain.handle('get-shield-status', () => getShieldStatus());
 }
 
 // ── Deep Link Protocol ──────────────────────────────────────────
@@ -335,6 +343,12 @@ app.whenReady().then(async () => {
   licenseGuard.startHeartbeat();
 
   createWindow();
+
+  // ── Advanced Security Layers ──────────────────────────────────
+  initRuntimeShield(mainWindow);
+  initDLPGuard(mainWindow, { userId: 'system' });
+  initNetworkSentinel(mainWindow);
+
   createTray();
 });
 

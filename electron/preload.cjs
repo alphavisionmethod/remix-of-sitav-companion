@@ -62,4 +62,9 @@ contextBridge.exposeInMainWorld('electron', {
   getLicenseInfo: () => ipcRenderer.invoke('license-info'),
   activateLicense: (key) => ipcRenderer.invoke('license-activate', key),
   deactivateLicense: () => ipcRenderer.invoke('license-deactivate'),
+
+  // ── Security Status ──────────────────────────────────────────
+  getDLPStatus: () => ipcRenderer.invoke('get-dlp-status'),
+  getNetworkSentinelStatus: () => ipcRenderer.invoke('get-network-sentinel-status'),
+  getShieldStatus: () => ipcRenderer.invoke('get-shield-status'),
 });
