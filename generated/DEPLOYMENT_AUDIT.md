@@ -1431,7 +1431,7 @@
 | 57 | `validation-summary.json` | JSON manifest |
 | 58 | `visual-regression-baseline.json` | JSON manifest |
 
-## 13. Database Tables (198 tables)
+## 13. Database Tables (201 tables)
 
 | # | Table | Domain | RLS |
 |---|-------|--------|-----|
@@ -1927,7 +1927,7 @@
 | Manifest-registry paths clean | ✅ PASS |
 | No stale `scripts/validation/` refs | ✅ PASS (0 found) |
 | No stale root `scripts/generate-*` refs | ✅ PASS (0 found) |
-| All DB tables have RLS | ✅ PASS (323 policies) |
+| All DB tables have RLS | ✅ PASS (332 policies) |
 | Error monitoring wired | ✅ PASS (GlobalErrorBoundary + App.tsx) |
 | Payment kill-switch deployed | ✅ PASS (admin auth + audit) |
 | Backend gap closure (6 APIs) | ✅ PASS (all deployed) |
@@ -1935,4 +1935,4 @@
 ---
 
 *End of Master Deployment Audit v4.0 — SITA OS*
-*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 75 edge functions, 911 components, 225 scripts, 79 generated artifacts, 204 DB tables, 30 features, 33 packages, 1548 lib modules*
+*Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 86 edge functions, 911 components, 225 scripts, 79 generated artifacts, 204 DB tables, 30 features, 33 packages, 1548 lib modules*

@@ -1,3 +1,6 @@
+> ⚠️ **Status: Future Monorepo Target — Aspirational Reference**
+> This document describes a post-Lovable monorepo migration design. The current platform remains a **single Vite SPA + Lovable Cloud** deployment. Treat as reference architecture, not current state.
+
 # SITA OS — Move Map (Old → New Path Mapping)
 
 > Complete inventory of every source directory and its migration target.

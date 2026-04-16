@@ -4,7 +4,7 @@ This directory contains documentation for Row-Level Security policies.
 
 ## Coverage
 
-All 198 tables have RLS enabled with 323 total policies.
+All 201 tables have RLS enabled with 332 total policies.
 
 ## Policy Patterns
 
