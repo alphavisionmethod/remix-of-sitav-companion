@@ -47,7 +47,7 @@ function getComponent(mod: any) {
 describe("Admin Pages Batch 2", () => {
   pages.forEach(([name, loader]) => {
     it(`${name} renders without crashing`, async () => {
-      const mod = await loader();
+      const mod: any = await loader();
       const Component = getComponent(mod);
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
