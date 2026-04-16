@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { scanAIOutput } from "@/lib/core-services/security/ai-output-firewall";
 
 export interface StreamMessage {
   role: "user" | "assistant";
