@@ -1,0 +1,1058 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T21:13:59.213Z",
+  "totalTables": 210,
+  "tablesWithUserId": 208,
+  "tables": [
+    {
+      "name": "action_safety_classifications",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "admin_action_audit",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "admin_action_confirmations",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "admin_role_permissions",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "admin_safety_actions",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "admin_sessions",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "advisor_action_queue",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_agents",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_autonomy_policies",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "advisor_board_actions",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_board_memory",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_board_recommendations",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_board_reflections",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "advisor_board_tool_executions",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "advisor_feedback",
+      "hasUserId": true,
+      "columnCount": 22
+    },
+    {
+      "name": "advisor_knowledge",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "advisor_memories",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "advisor_profiles",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "ai_inference_receipts",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "ai_workforce_approval_queue",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "ai_workforce_budget_classes",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "ai_workforce_cached_outputs",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "ai_workforce_invocations",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "ai_workforce_launch_honesty",
+      "hasUserId": true,
+      "columnCount": 13
+    },
+    {
+      "name": "ai_workforce_outputs",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "ai_workforce_recommendation_scores",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "ai_workforce_recommendations",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "ai_workforce_role_health",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "ai_workforce_role_task_permissions",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "ai_workforce_roles",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "ai_workforce_task_types",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "api_gateway_routes",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "appointments",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "approval_decisions",
+      "hasUserId": true,
+      "columnCount": 14
+    },
+    {
+      "name": "biometric_credentials",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "boardroom_decision_receipts",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "boardroom_evidence",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "boardroom_items",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "boardroom_recommendations",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "boardroom_sessions",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "business_health_scores",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "business_onboarding",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "calendar_events",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "client_capability_matrix",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_abuse_events",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "cloud_account_closure_requests",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_activity_journal",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_admin_role_assignments",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_admin_roles",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_archive_jobs",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_audit_events",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_backup_snapshots",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_blobs",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_bootstrap_markers",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_compliance_hooks",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_conflicts",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_device_sessions",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_devices",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_feature_flags",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "cloud_file_versions",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_files",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_folders",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_import_export_jobs",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_lifecycle_rules",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_maintenance_modes",
+      "hasUserId": false,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_metrics_snapshots",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "cloud_namespace_registry",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_plans",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_policies",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_preview_jobs",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_reconciliation_runs",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_search_index",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_shared_workspaces",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_shares",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_storage_providers",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_storage_tiers",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_storage_usage",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_support_sessions",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "cloud_sync_changes",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_sync_checkpoints",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_sync_jobs",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "cloud_sync_objects",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "cloud_tenant_memberships",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "cloud_tenant_plans",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "cloud_tenant_policies",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_tenant_quotas",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_tenants",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_trash",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "cloud_user_plans",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "cloud_worker_jobs",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "command_memory",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "command_routing_decisions",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "command_steps",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "communication_metrics",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "concierge_automations",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "concierge_documents",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "concierge_errands",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "concierge_recurring_obligations",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "config_change_history",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "connector_oauth_flows",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "connector_sync_runs",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "connector_tokens",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "context_graph_snapshots",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "crm_automations",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "crm_communications",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "crm_companies",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "crm_contact_company",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "crm_contacts",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "crm_import_jobs",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "crm_merge_log",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "crm_notes",
+      "hasUserId": true,
+      "columnCount": 12
+    },
+    {
+      "name": "crm_opportunities",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "crm_pipeline_stages",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "crm_segments",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "crm_tags",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "crm_tasks",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "device_attestations",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "device_mesh_peers",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "device_ownership",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "domain_ownership_registry",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "dual_authority_challenges",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "ecosystem_commands",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "ecosystem_contracts",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "ecosystem_events",
+      "hasUserId": true,
+      "columnCount": 22
+    },
+    {
+      "name": "environment_configs",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "flagship_loops",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "founder_directives",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "gift_tracker",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "graph_edges",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "grocery_items",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "grocery_lists",
+      "hasUserId": true,
+      "columnCount": 21
+    },
+    {
+      "name": "health_validation_results",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "incidents",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "layer_health_snapshots",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "lead_inbox_items",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "leads",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "license_activations",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "license_audit_log",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "licenses",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "managed_apps",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "notification_delivery_receipts",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "notification_preferences",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "notifications",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "onboarding_choices",
+      "hasUserId": false,
+      "columnCount": 14
+    },
+    {
+      "name": "onboarding_completion_markers",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "onboarding_hardware_detection",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "onboarding_restore_sources",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "onboarding_sessions",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "onboarding_steps",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "org_members",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "organizations",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "os_audit_events",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "os_auth_methods",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "os_capabilities",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "os_command_events",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "os_commands",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "os_elevation_tokens",
+      "hasUserId": true,
+      "columnCount": 24
+    },
+    {
+      "name": "os_keyrings",
+      "hasUserId": true,
+      "columnCount": 22
+    },
+    {
+      "name": "os_policies",
+      "hasUserId": true,
+      "columnCount": 23
+    },
+    {
+      "name": "os_role_capabilities",
+      "hasUserId": true,
+      "columnCount": 22
+    },
+    {
+      "name": "os_secrets_metadata",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "os_service_identities",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "os_sessions",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "os_user_accounts",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "outcome_verifications",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "plane_service_assignments",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "platform_notifications",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "platform_planes",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "platform_runbooks",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "profiles",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "profit_signals",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "read_model_snapshots",
+      "hasUserId": true,
+      "columnCount": 13
+    },
+    {
+      "name": "recommendation_execution_bindings",
+      "hasUserId": true,
+      "columnCount": 12
+    },
+    {
+      "name": "recommendation_execution_events",
+      "hasUserId": true,
+      "columnCount": 12
+    },
+    {
+      "name": "recommendation_learning_signals",
+      "hasUserId": true,
+      "columnCount": 14
+    },
+    {
+      "name": "recommendation_outcome_verifications",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "release_compatibility_matrix",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "remediation_programs",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "remediation_tasks",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "rollback_events",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "runtime_agents",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "school_activities",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "service_identity_registry",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "service_providers_list",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "simulations",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "support_access_grants",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "support_case_events",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "support_cases",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "system_guarantees",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "system_slots",
+      "hasUserId": true,
+      "columnCount": 20
+    },
+    {
+      "name": "timeline_events",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "token_classes",
+      "hasUserId": true,
+      "columnCount": 19
+    },
+    {
+      "name": "travel_plans",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "update_boot_attempts",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "update_catalog",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "update_channels",
+      "hasUserId": true,
+      "columnCount": 14
+    },
+    {
+      "name": "update_history",
+      "hasUserId": true,
+      "columnCount": 15
+    },
+    {
+      "name": "update_preflight_results",
+      "hasUserId": true,
+      "columnCount": 16
+    },
+    {
+      "name": "update_staging",
+      "hasUserId": true,
+      "columnCount": 22
+    },
+    {
+      "name": "user_roles",
+      "hasUserId": true,
+      "columnCount": 18
+    },
+    {
+      "name": "vapid_keys",
+      "hasUserId": true,
+      "columnCount": 17
+    },
+    {
+      "name": "v_outcome_verification_summary",
+      "hasUserId": true,
+      "columnCount": 14
+    },
+    {
+      "name": "v_recommendation_closure_summary",
+      "hasUserId": true,
+      "columnCount": 11
+    },
+    {
+      "name": "v_recommendation_execution_pipeline",
+      "hasUserId": true,
+      "columnCount": 6
+    },
+    {
+      "name": "v_remediation_program_summary",
+      "hasUserId": true,
+      "columnCount": 5
+    },
+    {
+      "name": "has_admin_permission",
+      "hasUserId": true,
+      "columnCount": 0
+    },
+    {
+      "name": "has_role",
+      "hasUserId": true,
+      "columnCount": 0
+    },
+    {
+      "name": "is_org_member",
+      "hasUserId": true,
+      "columnCount": 0
+    },
+    {
+      "name": "is_org_owner",
+      "hasUserId": true,
+      "columnCount": 0
+    },
+    {
+      "name": "is_tenant_member",
+      "hasUserId": true,
+      "columnCount": 0
+    }
+  ]
+}
