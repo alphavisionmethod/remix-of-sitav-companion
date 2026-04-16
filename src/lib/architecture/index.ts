@@ -253,8 +253,9 @@ export {
   getContextsForKillSwitch,
   getContextsForRunbook,
   getContextsForJourney,
-  getAllContextIds,
-  getContextSummary,
+  totalEdgeFunctions,
+  totalTables,
+  totalServices,
 } from "./bounded-context-registry";
 export type {
   BoundedContextEntry,
