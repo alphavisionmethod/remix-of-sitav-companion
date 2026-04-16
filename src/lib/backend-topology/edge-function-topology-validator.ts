@@ -47,9 +47,9 @@ export function validateTopology(): TopologyValidationResult {
   if (noTableMap.length > 0) warnings.push(`Functions without table access map: ${noTableMap.join(", ")}`);
 
   // Check for entries in maps that aren't in registry
-  const registrySet = new Set(allNames);
-  const categoryOrphans = Object.keys(EDGE_FUNCTION_CATEGORIES).filter((n: string) => !registrySet.has(n));
-  const authOrphans = Object.keys(EDGE_FUNCTION_AUTH_MAP).filter((n: string) => !registrySet.has(n));
+  const registrySet = new Set<string>(allNames);
+  const categoryOrphans = Object.keys(EDGE_FUNCTION_CATEGORIES).filter(n => !registrySet.has(n));
+  const authOrphans = Object.keys(EDGE_FUNCTION_AUTH_MAP).filter(n => !registrySet.has(n));
 
   if (categoryOrphans.length > 0) errors.push(`Category map has unknown functions: ${categoryOrphans.join(", ")}`);
   if (authOrphans.length > 0) errors.push(`Auth map has unknown functions: ${authOrphans.join(", ")}`);
