@@ -30,100 +30,69 @@ const goldenPathIds = new Set(GOLDEN_PATH_REGISTRY.map((p) => p.pathId));
 for (const p of GOLDEN_PATH_REGISTRY) {
   const id = p.pathId;
 
+  const file = "src/lib/operations/golden-path-registry.ts";
+
   // Primary context
   if (!validContextIds.has(p.primaryContextId as any)) {
-    vc.add(
-      "golden-path-registry.ts",
-      `${id}: primaryContextId "${p.primaryContextId}" does not exist in bounded-context-registry`
-    );
+    vc.add(file, "context-ref", `${id}: primaryContextId "${p.primaryContextId}" does not exist`);
   }
 
   // Context list
   for (const ctx of p.contextIds) {
     if (!validContextIds.has(ctx as any)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: contextIds includes unknown "${ctx}"`
-      );
+      vc.add(file, "context-ref", `${id}: contextIds includes unknown "${ctx}"`);
     }
   }
   if (!p.contextIds.includes(p.primaryContextId)) {
-    vc.add(
-      "golden-path-registry.ts",
-      `${id}: contextIds must include primaryContextId "${p.primaryContextId}"`
-    );
+    vc.add(file, "context-ref", `${id}: contextIds must include primaryContextId "${p.primaryContextId}"`);
   }
 
   // Path-level kill switches
   for (const sw of p.blockingKillSwitches) {
     if (!validSwitchIds.has(sw)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: blockingKillSwitches references unknown switch "${sw}"`
-      );
+      vc.add(file, "killswitch-ref", `${id}: blockingKillSwitches references unknown "${sw}"`);
     }
   }
 
   // Path-level runbooks
   for (const rb of p.recoveryRunbookRefs) {
     if (!validRunbookIds.has(rb)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: recoveryRunbookRefs references unknown runbook "${rb}"`
-      );
+      vc.add(file, "runbook-ref", `${id}: recoveryRunbookRefs references unknown "${rb}"`);
     }
   }
 
   // Steps
   if (p.steps.length === 0) {
-    vc.add("golden-path-registry.ts", `${id}: must declare at least one step`);
+    vc.add(file, "step-required", `${id}: must declare at least one step`);
   }
   const seenOrders = new Set<number>();
   const seenStepIds = new Set<string>();
   let lastOrder = 0;
   for (const step of p.steps) {
     if (seenStepIds.has(step.stepId)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: duplicate stepId "${step.stepId}"`
-      );
+      vc.add(file, "step-unique", `${id}: duplicate stepId "${step.stepId}"`);
     }
     seenStepIds.add(step.stepId);
     if (seenOrders.has(step.order)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: duplicate step order ${step.order}`
-      );
+      vc.add(file, "step-order", `${id}: duplicate step order ${step.order}`);
     }
     seenOrders.add(step.order);
     if (step.order <= lastOrder) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}: step order is not strictly increasing at "${step.stepId}"`
-      );
+      vc.add(file, "step-order", `${id}: step order not strictly increasing at "${step.stepId}"`);
     }
     lastOrder = step.order;
 
     if (!validContextIds.has(step.contextId as any)) {
-      vc.add(
-        "golden-path-registry.ts",
-        `${id}.${step.stepId}: contextId "${step.contextId}" does not exist`
-      );
+      vc.add(file, "context-ref", `${id}.${step.stepId}: contextId "${step.contextId}" does not exist`);
     }
     for (const sw of step.blockingKillSwitches) {
       if (!validSwitchIds.has(sw)) {
-        vc.add(
-          "golden-path-registry.ts",
-          `${id}.${step.stepId}: blockingKillSwitches references unknown "${sw}"`
-        );
+        vc.add(file, "killswitch-ref", `${id}.${step.stepId}: unknown switch "${sw}"`);
       }
     }
     for (const rb of step.recoveryRunbookRefs) {
       if (!validRunbookIds.has(rb)) {
-        vc.add(
-          "golden-path-registry.ts",
-          `${id}.${step.stepId}: recoveryRunbookRefs references unknown "${rb}"`
-        );
+        vc.add(file, "runbook-ref", `${id}.${step.stepId}: unknown runbook "${rb}"`);
       }
     }
   }
@@ -134,7 +103,8 @@ for (const ctx of BOUNDED_CONTEXT_REGISTRY) {
   for (const journeyId of ctx.criticalJourneys) {
     if (!goldenPathIds.has(journeyId as any)) {
       vc.add(
-        "bounded-context-registry.ts",
+        "src/lib/architecture/bounded-context-registry.ts",
+        "golden-path-ref",
         `${ctx.contextId}: criticalJourneys references unknown Golden Path "${journeyId}"`
       );
     }
@@ -144,21 +114,18 @@ for (const ctx of BOUNDED_CONTEXT_REGISTRY) {
 // ── Verification coverage ────────────────────────────────────
 for (const m of getMissingVerifications()) {
   vc.add(
-    "golden-path-verification-map.ts",
+    "src/lib/operations/golden-path-verification-map.ts",
+    "verification-coverage",
     `${m.pathId}: ${m.reasons.join(", ")}`
   );
 }
 
 // ── Report ───────────────────────────────────────────────────
-const violations = vc.violations;
-if (violations.length > 0) {
-  console.error(`❌ check-golden-path-coverage: ${violations.length} violation(s)`);
-  for (const v of violations) {
-    console.error(`  • [${v.file}] ${v.message}`);
-  }
-  process.exit(1);
+vc.report("check-golden-path-coverage");
+if (vc.errors.length === 0) {
+  console.log(
+    `   ${GOLDEN_PATH_REGISTRY.length} Golden Paths, ` +
+      `${GOLDEN_PATH_REGISTRY.reduce((n, p) => n + p.steps.length, 0)} step(s) verified`
+  );
 }
-console.log(
-  `✅ check-golden-path-coverage: ${GOLDEN_PATH_REGISTRY.length} Golden Paths, ` +
-    `${GOLDEN_PATH_REGISTRY.reduce((n, p) => n + p.steps.length, 0)} step(s) verified`
-);
+vc.exitIfErrors();
