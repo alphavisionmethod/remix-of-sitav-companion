@@ -1,58 +1,28 @@
 
 
-# Fix: FULL_ISSUES_AND_FIXES.md — Sync to Ground Truth
+# Fix ISS-003–006 Documentation Accuracy
 
-## Problems Found
+## Verification Results
 
-| Item | Document Says | Actual | Fix |
-|------|--------------|--------|-----|
-| Test batches | 48 | 49 | Update header to 49 |
-| `as any` in ISS-020 | "127 instances, 89 resolved, 38 remaining" | 128 instances remain | Update to reflect actual count — most are unresolved |
-| `as any` in ISS-091 | "38 remaining" | 128 remaining | Correct to 128 |
-| Issue numbering gaps | ISS-007–009, 018–019, 027–029, 038–039, 044–049, 053–059, 063–069, 073–079, 084–090, 097 all missing | 50+ issue numbers skipped | Fill gaps with "Reserved" or renumber. Filling with domain-relevant issues is better for a "100% advanced" document. |
-| Total issues count | 160 | Only ~45 issues actually listed in doc | Either renumber to sequential (removing gaps) or add missing ISS entries |
-| ISS-108 verification | "all 204 tables" | 201 tables + 4 views | Fix to "201 tables + 4 views" (already correct in header, inconsistent in ISS-108 body) |
+All four issues are **genuinely resolved** in the codebase:
 
-## Plan
+| Issue | Claim | Verified |
+|-------|-------|----------|
+| ISS-003: Domain count | Exactly 3 user domains | ✅ 3 domain route files (business, money, concierge). Investment/Boardroom/Files are standalone windowed apps. |
+| ISS-004: Service sprawl | 43 services under 45 budget | ✅ `service-consolidation-manifest.json` confirms 43 (22 T1 + 16 T2 + 2 T3 + 3 isolated) |
+| ISS-005: Direct SDK calls | 0 direct AI SDK imports | ✅ `grep` returns 0 matches for openai/anthropic imports in app code |
+| ISS-006: Layer violations | 0 boundary violations | ✅ `LAYER_SEPARATION.md` exists, architecture compliance report shows 0 violations |
 
-### 1. Fix Header Metrics
-- Test batches: 48 → 49
+## One Fix Needed
 
-### 2. Fix ISS-020 (`as any` count)
-- Change from "127 instances found, 89 resolved, 38 remaining" to accurate: "128 instances of `as any` remain in page files. Systematic replacement ongoing, prioritized by page traffic."
-- Status stays 🔶 IN PROGRESS
+**ISS-004 file count inaccuracy**: Document says "47 kernel files, 19 security modules" but actual security file count is **25** (22 in `core-services/security`, 2 in `lib/security`, 1 in `platform/security`). The 47 kernel files figure is correct (verified: 47 top-level `.ts` files in `core-services/`).
 
-### 3. Fix ISS-091 (`as any` remaining)
-- Update from "38 remaining" to "128 remaining `as any` casts across page files"
-
-### 4. Fix ISS-108 Body Text
-- Change "all 204 tables" to "all 201 tables + 4 views"
-
-### 5. Fill Issue Numbering Gaps
-Add reserved/placeholder blocks for the ~50 skipped issue numbers organized by section domain. These will be marked as either "Reserved" (for future use) or documented as minor issues already resolved during development. This makes the document truly comprehensive at 160 entries.
-
-Sections to fill:
-- ISS-007–009: Architecture (3 entries)
-- ISS-018–019: Security (2 entries)  
-- ISS-027–029: Frontend (3 entries)
-- ISS-038–039: Data/Backend (2 entries)
-- ISS-044–049: Performance (6 entries)
-- ISS-053–059: Edge Functions (7 entries)
-- ISS-063–069: Orchestration (7 entries)
-- ISS-073–079: Documentation (7 entries)
-- ISS-084–090: App Shell (7 entries)
-- ISS-097: Remediation (1 entry)
-
-Each gap entry will document a real resolved concern from the codebase (not fabricated). I will scan the codebase for real issues in each domain to populate these authentically.
-
-### 6. Recount Executive Summary
-Recount all issues after gap-fill to ensure totals are accurate.
-
-## Files Modified
-- `generated/FULL_ISSUES_AND_FIXES.md` — gap fill + metric corrections
+### Change
+In `generated/FULL_ISSUES_AND_FIXES.md` line 49:
+- **Before**: `- **Files**: 47 kernel files, 19 security modules`
+- **After**: `- **Files**: 47 core-service files, 25 security modules`
 
 ## Impact
-- Document-only, no code changes
-- Eliminates all discrepancies between doc and codebase
-- Every issue number from ISS-001 to ISS-110 will have an entry
+- Single line fix in documentation
+- No code changes needed — all implementations are solid
 
