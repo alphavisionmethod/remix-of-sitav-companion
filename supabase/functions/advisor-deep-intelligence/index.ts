@@ -695,6 +695,10 @@ serve(async (req) => {
   const pipelineStart = Date.now();
 
   try {
+    // ── JWT AUTH (canonical) ───────────────────────────────────────
+    const auth = await requireAuth(req);
+    if (auth instanceof Response) return auth;
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 

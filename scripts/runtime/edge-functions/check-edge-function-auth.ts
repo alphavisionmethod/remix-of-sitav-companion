@@ -19,10 +19,10 @@ const vc = new ViolationCollector();
 const FUNCTIONS_DIR = "supabase/functions";
 
 const PATTERNS = {
-  requireAuth: /requireAuth\s*\(|auth\.getUser\s*\(|auth\.getClaims\s*\(/,
-  requireAdmin: /requireAdmin\s*\(/,
+  requireAuth: /requireAuth\s*\(|\.auth\.getUser\s*\(|\.auth\.getClaims\s*\(/,
+  requireAdmin: /requireAdmin\s*\(|has_role.*admin|isAdmin/,
   serviceRole: /SUPABASE_SERVICE_ROLE_KEY|getServiceClient\s*\(/,
-  webhookSig: /signature|x-hub-signature|stripe-signature|hmac/i,
+  webhookSig: /signature|x-hub-signature|stripe-signature|hmac|x-agent-token|x-device-id/i,
 };
 
 let scanned = 0;

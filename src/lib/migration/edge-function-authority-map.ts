@@ -163,7 +163,7 @@ export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[] = [
   { name: "license-gateway", category: "system-api", authClass: "jwt-required", owner: "platform", riskTier: "R2", corsRequired: true, description: "License validation gateway" },
   { name: "support-gateway", category: "system-api", authClass: "jwt-required", owner: "support", riskTier: "R1", corsRequired: true, description: "Support escalation gateway" },
   { name: "user-bff-gateway", category: "system-api", authClass: "jwt-required", owner: "platform", riskTier: "R2", corsRequired: true, description: "User-facing BFF gateway" },
-  { name: "main", category: "system-api", authClass: "jwt-required", owner: "platform", riskTier: "R2", corsRequired: true, description: "Main system entry function" },
+  { name: "main", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R0", corsRequired: true, description: "Main routing dispatcher — downstream functions enforce auth", authJustification: "Pure dispatcher; downstream functions own auth" },
   { name: "os-command", category: "domain-api", authClass: "jwt-required", owner: "platform", riskTier: "R2", corsRequired: true, description: "OS command execution" },
   { name: "os-status", category: "system-api", authClass: "jwt-required", owner: "platform", riskTier: "R0", corsRequired: true, description: "OS status surface" },
   { name: "self-healing", category: "system-api", authClass: "jwt-required", owner: "platform", riskTier: "R2", corsRequired: true, description: "Self-healing orchestrator" },
@@ -171,7 +171,7 @@ export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[] = [
   { name: "verification-recorder", category: "internal", authClass: "service-role", owner: "compliance", riskTier: "R2", corsRequired: true, description: "Record verification proofs", authJustification: "Internal verification pipeline" },
 
   // ── Realtime / Channels ──────────────────────────────────────────
-  { name: "os-agent-channel", category: "internal", authClass: "jwt-required", owner: "agents", riskTier: "R2", corsRequired: true, description: "OS agent realtime channel" },
+  { name: "os-agent-channel", category: "internal", authClass: "webhook-sig", owner: "agents", riskTier: "R2", corsRequired: true, description: "OS agent realtime channel (device-token authenticated)", authJustification: "Authenticates via x-agent-token header issued at device registration" },
 
   // ── Push & Notifications ─────────────────────────────────────────
   { name: "push-dispatch", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R1", corsRequired: true, description: "Dispatch push notifications", authJustification: "Triggered by db events / cron" },
