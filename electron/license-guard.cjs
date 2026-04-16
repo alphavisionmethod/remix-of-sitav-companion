@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — License Guard: Hardware Fingerprinting & Validation
 // Defense Layer 4+5: Hardware-bound server-validated licensing
+// + HMAC-SHA256 signed activation token verification
 // ═══════════════════════════════════════════════════════════════
 
 const crypto = require('crypto');
@@ -33,7 +34,6 @@ function generateDeviceFingerprint() {
     os.arch(),
   ];
 
-  // Try to get disk serial (platform-specific, best-effort)
   try {
     if (os.platform() === 'linux') {
       const serial = execSync('cat /etc/machine-id 2>/dev/null || echo "no-id"', { encoding: 'utf-8' }).trim();
@@ -97,6 +97,35 @@ function clearStoredLicense() {
   } catch { /* ignore */ }
 }
 
+// ── HMAC Token Verification (Client-Side) ───────────────────────
+
+/**
+ * Verifies the HMAC-signed activation token payload integrity.
+ * The actual HMAC secret is server-side only — the client stores
+ * and sends back the token+signature pair for server verification.
+ * Client-side we validate the token structure is intact.
+ */
+function validateTokenStructure(token, signature) {
+  if (!token || !signature) return { valid: false, reason: 'missing_token' };
+  if (typeof token !== 'string' || typeof signature !== 'string') {
+    return { valid: false, reason: 'invalid_format' };
+  }
+  try {
+    const payload = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
+    if (!payload.lid || !payload.dfp || !payload.tier || !payload.iat) {
+      return { valid: false, reason: 'incomplete_payload' };
+    }
+    // Check token age (reject tokens older than 90 days without server refresh)
+    const tokenAge = Math.floor(Date.now() / 1000) - payload.iat;
+    if (tokenAge > 90 * 86400) {
+      return { valid: false, reason: 'token_expired_local' };
+    }
+    return { valid: true, payload };
+  } catch {
+    return { valid: false, reason: 'parse_error' };
+  }
+}
+
 // ── Server Communication ────────────────────────────────────────
 
 async function callLicenseGateway(action, payload) {
@@ -152,14 +181,27 @@ async function activateLicense(licenseKey) {
   });
 
   if (result.activated) {
-    saveLicense({
+    const licenseData = {
       license_key: licenseKey,
       device_fingerprint: fingerprint,
       activation_token: result.activation_token,
+      token_signature: result.token_signature || null,
+      hmac_signed: result.hmac_signed || false,
       activated_at: new Date().toISOString(),
       last_validated: new Date().toISOString(),
       product_tier: result.product_tier || 'standard',
-    });
+    };
+
+    // Validate HMAC token structure if present
+    if (result.token_signature) {
+      const check = validateTokenStructure(result.activation_token, result.token_signature);
+      if (!check.valid) {
+        console.warn('[license-guard] HMAC token validation failed:', check.reason);
+        return { activated: false, error: 'Server returned invalid HMAC token' };
+      }
+    }
+
+    saveLicense(licenseData);
   }
 
   return result;
@@ -175,7 +217,16 @@ async function validateLicense() {
     return { valid: false, reason: 'fingerprint_mismatch' };
   }
 
-  // Check offline grace period
+  // If HMAC token exists, validate structure locally first
+  if (stored.token_signature) {
+    const localCheck = validateTokenStructure(stored.activation_token, stored.token_signature);
+    if (!localCheck.valid) {
+      console.warn('[license-guard] Local HMAC check failed:', localCheck.reason);
+      clearStoredLicense();
+      return { valid: false, reason: `hmac_${localCheck.reason}` };
+    }
+  }
+
   const lastValidated = new Date(stored.last_validated);
   const hoursSince = (Date.now() - lastValidated.getTime()) / (1000 * 60 * 60);
 
@@ -183,6 +234,8 @@ async function validateLicense() {
     const result = await callLicenseGateway('validate', {
       license_key: stored.license_key,
       device_fingerprint: fingerprint,
+      activation_token: stored.activation_token,
+      token_signature: stored.token_signature,
     });
 
     if (result.valid) {
@@ -192,7 +245,6 @@ async function validateLicense() {
 
     return result;
   } catch {
-    // Offline — check grace period
     if (hoursSince < OFFLINE_GRACE_HOURS) {
       return { valid: true, reason: 'offline_grace', hours_remaining: OFFLINE_GRACE_HOURS - hoursSince };
     }
@@ -210,13 +262,14 @@ async function sendHeartbeat() {
     const result = await callLicenseGateway('heartbeat', {
       license_key: stored.license_key,
       device_fingerprint: fingerprint,
+      activation_token: stored.activation_token,
+      token_signature: stored.token_signature,
     });
 
     if (result.valid) {
       stored.last_validated = new Date().toISOString();
       saveLicense(stored);
     } else {
-      // License revoked or exceeded — emit event
       console.warn('[license-guard] Heartbeat failed:', result.reason);
     }
 
@@ -230,7 +283,6 @@ async function sendHeartbeat() {
 function startHeartbeat() {
   stopHeartbeat();
   heartbeatTimer = setInterval(() => sendHeartbeat(), HEARTBEAT_INTERVAL_MS);
-  // First heartbeat after 1 minute
   setTimeout(() => sendHeartbeat(), 60_000);
 }
 
@@ -265,6 +317,7 @@ function getLicenseInfo() {
     product_tier: stored.product_tier,
     activated_at: stored.activated_at,
     last_validated: stored.last_validated,
+    hmac_signed: stored.hmac_signed || false,
   };
 }
 
@@ -286,4 +339,5 @@ module.exports = {
   isLicensed,
   loadStoredLicense,
   clearStoredLicense,
+  validateTokenStructure,
 };
