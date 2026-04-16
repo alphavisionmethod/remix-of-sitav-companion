@@ -1,195 +1,157 @@
 
 
-# SITA OS — Final User Experience System Implementation
+# SITA OS — Domain Manifest System: Ownership, Workflows, Shell Integration & Truth Visibility
 
-## What Already Exists (Strong Foundation)
+## Current State
 
-The codebase already has significant UX infrastructure:
+**Strong foundations already exist:**
+- `domain-runtime-service.ts`: 15 domains with runtime truth scoring (tables, RLS, edge functions, demo providers)
+- `DomainId` type in `_contract-scaffold.ts`: `"business" | "finance" | "concierge" | "platform" | "cross-domain"`
+- Rich contracts: `business-contracts/` (42 files), `finance-contracts/` (11+ files), `concierge-contracts/` (35 files)
+- Rich service layers: `business-os/` (27 services), `finance-os/` (38 services), `concierge-os/` (21 services)
+- Domain atmospheres, empty states, advisor rosters, boardroom packet compilers per domain
+- Feature barrels per domain in `src/features/`
+- `canonical-service-registry.ts` with ~45 services mapped
 
-- **PremiumEmptyState** (9 variants, domain-aware, animated)
-- **Contextual empty states** per domain (10 domains configured)
-- **PageTruthBanner** (demo/live/partial/connecting/degraded)
-- **RealityStateBadge** (6 state classes)
-- **ErrorBoundary** (3 levels: Global, Route, Window)
-- **SectionSkeleton / PageSkeleton / LoadingState** components
-- **UX Trust Score** calculator (8 checks)
-- **OfflineBanner** with connectivity quality indicators
-- **useReducedMotion** hook (used in 80+ files)
-- **useSessionRestore** for continuity
-- **useAction** hook with toast feedback
-- **Cognitive load tracking** in attention OS
-- **Domain atmospheres** (4 domains with tone/density/radius)
-- **4-surface material hierarchy** (tokens)
-- **TrustBadge** (9 trust levels)
-- **Focus management** registered in surface registry
+**What's missing — the "Domain Manifest" layer:**
 
-## What's Missing
-
-| Gap | Impact |
-|-----|--------|
-| No unified UX Principles engine (codified principles are scattered) | High |
-| No microcopy system (error/AI/action copy is ad-hoc per component) | High |
-| No `DataFreshnessBadge` component (referenced in trust score but missing) | High |
-| No `UndoableAction` component/hook (referenced but not implemented) | High |
-| No `InformationLayerSurface` progressive disclosure wrapper | Medium |
-| No `CognitiveLoadGuard` (attention OS tracks load but doesn't throttle UI) | Medium |
-| No `AIConfidenceDisclosure` component (AI surfaces lack standardized confidence display) | High |
-| No `DegradedServiceBanner` (per-service degradation, not just offline) | Medium |
-| No `ContextOrientationBar` ("where am I / what changed / what can I do") | High |
-| No `RecoveryPrompt` for interrupted flows (draft/upload/navigation) | Medium |
-| Empty states not wired to all pages consistently | Medium |
-| No `ActionConsequencePreview` for destructive/irreversible actions | Medium |
+| Gap | Description |
+|-----|-------------|
+| No unified Domain Manifest type | No single structure declaring a domain's entities, workflows, integrations, truth model |
+| No workflow registry per domain | Services exist but canonical workflows (create→review→approve→execute) aren't declared |
+| No shell integration contracts | Domains don't declare their launcher, command palette, search, and notification hooks |
+| No cross-domain event map | No explicit registry of what events flow between domains |
+| No domain health dashboard | Admin has runtime truth but not a unified domain completeness view |
 
 ## Implementation Plan
 
-### 1. UX Principles Engine (`src/lib/ux-trust/ux-principles.ts`)
+### 1. Domain Manifest Contract (`src/lib/domain-system/domain-manifest.ts`)
 
-Codified UX principles as a typed registry that components can query at runtime to enforce behavior contracts. Maps each of the 7 core principles (Premium, Calm, Context, Explainability, Honesty, Density, Trust) to concrete behavioral rules with component-level enforcement helpers.
+The core type every domain declares against:
 
-### 2. Microcopy System (`src/lib/ux-trust/microcopy-system.ts`)
+```typescript
+interface DomainManifest {
+  id: DomainId;
+  name: string;
+  description: string;
+  owner: string; // canonical service owner
+  entities: DomainEntity[];        // what data it owns
+  workflows: DomainWorkflow[];     // what workflows it enables
+  shellIntegration: ShellHooks;    // launcher, search, commands, notifications
+  crossDomainEvents: CrossDomainEvent[]; // events it emits/consumes
+  truthModel: DomainTruthModel;    // real vs simulated, freshness rules
+  aiIntegration: DomainAIConfig;   // advisor IDs, capability keys
+  fileIntegration: DomainFileConfig; // file types, storage paths
+  boardroomEscalation: EscalationConfig; // what gets escalated and when
+}
+```
 
-Centralized copy engine for:
-- **Error copy**: structured templates (what failed, what works, what to do next)
-- **AI copy**: confidence-graded language ("Suggestion", "High-confidence recommendation", "Uncertain estimate")
-- **Action copy**: consequence-aware button labels
-- **State copy**: loading/degraded/stale templates
-- **Empty state copy**: already exists, wire into this system
+With sub-types for entities (id, name, dbTable, permissions, statusStates), workflows (steps, approvals, notifications, receipts), shell hooks (launcher metadata, command palette commands, search providers, notification triggers), and truth model (freshness thresholds, simulated surfaces, data source classification).
 
-Each template takes context parameters and returns human-readable, premium-toned copy.
+### 2. Three Domain Manifests (Business, Finance, Concierge)
 
-### 3. DataFreshnessBadge Component (`src/components/sita/primitives/DataFreshnessBadge.tsx`)
+**`src/lib/domain-system/manifests/business-manifest.ts`**
+- 12 entities (Lead, Customer, Deal, Invoice, Quote, Proposal, Contact, Account, Booking, ServiceOrder, Communication, Website)
+- 8 workflows (Lead-to-Customer, Quote-to-Invoice, Deal Pipeline, Collection Sequence, Callback Queue, Revenue Recovery, Website Publish, Outreach Campaign)
+- Shell: 6 command palette commands, 4 search providers, launcher with badges from pipeline/callback counts
+- Cross-domain: `invoice.paid → finance.receivable.update`, `booking.created → concierge.calendar.block`
+- AI: business advisors (revenue, operations, growth), capability keys
+- Boardroom: auto-escalates deals > $50k, revenue anomalies, collection failures
 
-Displays data age with automatic staleness detection:
-- Fresh (< 5min): green dot, "Just now" / "2 min ago"
-- Aging (5-30min): amber, "12 min ago"
-- Stale (30min+): red, "2 hours old — may be outdated"
-- Unknown: gray, "Age unknown"
+**`src/lib/domain-system/manifests/finance-manifest.ts`**
+- 14 entities (Transaction, Bill, Budget, Envelope, SinkingFund, Subscription, Asset, Portfolio, Receivable, DebtObligation, CapitalBucket, InvestmentThesis, Scenario, Reserve)
+- 10 workflows (Bill Pay, Budget Allocation, Subscription Review, Reserve Fund, Capital Allocation, Investment Review, Debt Payoff, Scenario Simulation, Reconciliation, Tax Prep)
+- Shell: 8 commands, 5 search providers, badges from bills-due/renewal-risk counts
+- Cross-domain: `bill.paid → business.invoice.reconcile`, `anomaly.detected → boardroom.escalate`
+- Truth: finance uses strict freshness (< 1hr for balances), deterministic calculation flag
+- Boardroom: auto-escalates spend anomalies, reserve warnings, investment decisions
 
-Configurable thresholds per domain (finance = stricter, concierge = relaxed).
+**`src/lib/domain-system/manifests/concierge-manifest.ts`**
+- 15 entities (Schedule, Errand, Trip, Reservation, HouseholdTask, GroceryList, EventPlan, GiftPlan, SchoolActivity, Provider, FamilyMember, PackingPlan, PrepSequence, MaintenanceItem, Responsibility)
+- 7 workflows (Trip Planning, Errand Bundling, Event Coordination, Household Maintenance, School Prep, Provider Booking, Gift Coordination)
+- Shell: 5 commands, 3 search providers, badges from overdue errands/upcoming events
+- Cross-domain: `travel.booked → finance.projection.update → business.calendar.block`
+- Truth: relaxed freshness (< 4hr acceptable), heavy demo/simulated surface
 
-### 4. AIConfidenceDisclosure Component (`src/components/sita/primitives/AIConfidenceDisclosure.tsx`)
+### 3. Platform & Cross-Domain Manifests
 
-Standardized AI output framing:
-- Shows confidence level (High/Medium/Low/Unknown)
-- Labels output as "Suggestion" vs "Recommendation" vs "Analysis"
-- Shows data source summary when available
-- Shows "Human review recommended" when confidence < threshold
-- Shows "This result is simulated" when in demo mode
-- Integrates with existing TrustBadge and PageTruthBanner
+**`src/lib/domain-system/manifests/platform-manifest.ts`**
+- Covers: Auth, Approvals, Workflows, Notifications, Connectors, AI Gateway, Analytics, Files, Storage
+- Declares platform-level shell integration (global search, system notifications, file picker)
 
-### 5. UndoableAction Hook + Toast (`src/hooks/use-undoable-action.ts`)
+**`src/lib/domain-system/manifests/cross-domain-manifest.ts`**
+- Declares all cross-domain event flows as a typed registry
+- Maps 15+ canonical cross-domain events with source→target→consequence
 
-Production undo pattern:
-- Wraps destructive mutations with a configurable delay (default 5s)
-- Shows toast with undo button and countdown
-- On undo: cancels the pending mutation, restores optimistic state
-- On timeout: executes the real mutation
-- Integrates with `useAction` for kernel-routed mutations
+### 4. Domain Manifest Registry (`src/lib/domain-system/domain-registry.ts`)
 
-### 6. ContextOrientationBar (`src/components/sita/surfaces/ContextOrientationBar.tsx`)
+Unified queryable registry:
+- `getDomainManifest(id)` — returns full manifest
+- `getAllDomains()` — returns all manifests
+- `getDomainEntities(id)` — entities for a domain
+- `getDomainWorkflows(id)` — workflows for a domain
+- `getShellCommands(id?)` — all or per-domain command palette entries
+- `getCrossDomainEvents()` — full event flow map
+- `getDomainTruthModel(id)` — truth/freshness rules
+- `getDomainCompleteness(id)` — scored completeness (entities/workflows/shell/truth all declared)
 
-Persistent orientation strip answering core cognitive questions:
-- **Where am I**: breadcrumb with domain icon + page name
-- **What changed**: "3 items updated since last visit" badge
-- **Data state**: Fresh/Stale/Demo badge (uses DataFreshnessBadge)
-- **What can I do**: top 2-3 contextual quick actions
-- Auto-hides in focus/calm mode, always visible in analyst mode
+### 5. Domain Completeness Engine (`src/lib/domain-system/domain-completeness.ts`)
 
-### 7. InformationLayerSurface (`src/components/sita/surfaces/InformationLayerSurface.tsx`)
+Scores each domain manifest against the 4.1 principles:
+- Has real ownership (owner declared, service exists) — 15pts
+- Has canonical data model (entities declared with DB tables) — 20pts
+- Has real workflow layer (workflows with steps, not just display) — 20pts
+- Has shell integration (launcher + commands + search + notifications) — 15pts
+- Has truth/trust visibility (freshness rules, simulated flags, data classification) — 15pts
+- Has cross-domain events (emits/consumes declared) — 10pts
+- Has AI integration (advisors declared) — 5pts
 
-3-layer progressive disclosure wrapper:
-- **Layer 1** (always visible): title, state, importance, top metrics, main actions
-- **Layer 2** (expandable): sub-status, signals, recent changes, confidence
-- **Layer 3** (drill-down): logs, history, provenance, receipts, raw details
+### 6. Admin Dashboard (`src/pages/admin/DomainManifestDashboard.tsx`)
 
-Animates between layers with framer-motion. Each layer has semantic ARIA labeling.
+- Shows all domains with completeness scores
+- Drill into entities, workflows, shell hooks, cross-domain events
+- Color-coded by completeness (green > 80, amber > 50, red < 50)
+- Shows truth model per domain (freshness, simulated surfaces)
+- Links to existing domain-runtime-service truth scores
 
-### 8. CognitiveLoadGuard (`src/components/sita/CognitiveLoadGuard.tsx`)
+### 7. Shell Wiring: Command Palette + Search Integration
 
-Reads from attention OS cognitive load score:
-- When load > 75%: suppresses non-critical notifications, reduces widget density
-- When load > 90%: shows "Focus mode suggested" prompt
-- Wraps sections that should auto-collapse under high load
-- Respects user override ("Show anyway")
+**`src/lib/domain-system/shell-command-provider.ts`**
+- Aggregates all domain shell commands into a single provider
+- Used by command palette to show domain-contextual commands
+- Permission-filtered
 
-### 9. DegradedServiceBanner (`src/components/sita/DegradedServiceBanner.tsx`)
+### 8. Documentation
 
-Per-service degradation communication:
-- Shows which specific service is degraded (not just "offline")
-- Shows what functionality is limited
-- Shows what still works
-- Offers retry or fallback
-- Auto-dismisses when service recovers
-- Stacks gracefully when multiple services degrade
-
-### 10. ActionConsequencePreview (`src/components/sita/surfaces/ActionConsequencePreview.tsx`)
-
-For destructive/irreversible actions:
-- Shows what will happen
-- Shows what is reversible vs permanent
-- Shows affected items count
-- Shows related downstream effects
-- Requires explicit confirmation with consequence acknowledgment
-- Integrates with ApprovalGate for high-trust actions
-
-### 11. RecoveryPrompt (`src/components/sita/RecoveryPrompt.tsx`)
-
-Detects interrupted flows and offers to resume:
-- Unsaved drafts (reads from useDraftAutosave)
-- Interrupted file uploads
-- Abandoned multi-step workflows
-- Last session restore prompt
-- Shows "Continue where you left off" or "Start fresh"
-- Non-intrusive: appears as a dismissible card, not a modal
-
-### 12. Enhanced UX Trust Score (`src/lib/ux-trust/ux-trust-score.ts`)
-
-Extend existing 8-check scorer with new checks:
-- HasDataFreshnessBadge ✓ (now real component)
-- HasUndoToast ✓ (now real hook)
-- HasAIConfidenceDisclosure (new)
-- HasContextOrientation (new)
-- HasRecoveryPrompt (new)
-- HasCognitiveLoadGuard (new)
-- HasActionConsequencePreview (new)
-- HasDegradedServiceBanner (new)
-
-Total: 16 checks, weighted by user-impact severity.
-
-### 13. Wiring: Update Key Pages
-
-Wire new components into existing surfaces:
-- **ShellLayout.tsx**: Add ContextOrientationBar, CognitiveLoadGuard wrapper, RecoveryPrompt
-- **DomainAppShell**: Add DataFreshnessBadge to domain headers
-- **AI surfaces** (AdvisorChat, LiveAdvisorCard, AIResponsePanel): Add AIConfidenceDisclosure
-- **Destructive actions** (delete flows, approval gates): Add ActionConsequencePreview
-- **All domain dashboards**: Ensure PremiumEmptyState is used consistently
-
-### 14. Architecture Doc (`docs/architecture/UX_EXPERIENCE_SYSTEM.md`)
-
-Comprehensive documentation of the entire UX system: principles, components, copy system, trust scoring, and integration patterns.
+**`docs/architecture/DOMAIN_MANIFEST_SYSTEM.md`**
+- Explains the manifest model, how to add a domain, completeness scoring, cross-domain event patterns
 
 ## Files Summary
 
-| Category | New Files | Modified Files |
-|----------|-----------|----------------|
-| UX Principles + Microcopy | 2 | 0 |
-| New Primitives/Components | 7 | 0 |
-| New Hook | 1 | 0 |
-| Enhanced Trust Score | 0 | 1 |
-| Wiring into shell/pages | 0 | 4 |
-| Documentation | 1 | 0 |
-| Barrel updates | 0 | 2 |
-| **Total** | **~11** | **~7** |
+| File | Action |
+|------|--------|
+| `src/lib/domain-system/domain-manifest.ts` | Create — Core types |
+| `src/lib/domain-system/manifests/business-manifest.ts` | Create — Business domain manifest |
+| `src/lib/domain-system/manifests/finance-manifest.ts` | Create — Finance domain manifest |
+| `src/lib/domain-system/manifests/concierge-manifest.ts` | Create — Concierge domain manifest |
+| `src/lib/domain-system/manifests/platform-manifest.ts` | Create — Platform domain manifest |
+| `src/lib/domain-system/manifests/cross-domain-manifest.ts` | Create — Cross-domain event registry |
+| `src/lib/domain-system/domain-registry.ts` | Create — Unified queryable registry |
+| `src/lib/domain-system/domain-completeness.ts` | Create — Completeness scoring engine |
+| `src/lib/domain-system/shell-command-provider.ts` | Create — Shell integration aggregator |
+| `src/lib/domain-system/index.ts` | Create — Barrel |
+| `src/pages/admin/DomainManifestDashboard.tsx` | Create — Admin visibility |
+| `src/admin/pages/architecture/index.ts` | Edit — Add dashboard export |
+| `docs/architecture/DOMAIN_MANIFEST_SYSTEM.md` | Create — Documentation |
+
+**Total: 11 new files, 1 modified file**
 
 ## Implementation Order
 
-1. Microcopy system + UX principles (foundation for all copy)
-2. DataFreshnessBadge + AIConfidenceDisclosure (primitive components)
-3. UndoableAction hook (action infrastructure)
-4. ContextOrientationBar + InformationLayerSurface (layout components)
-5. CognitiveLoadGuard + DegradedServiceBanner + ActionConsequencePreview + RecoveryPrompt
-6. Enhanced UX Trust Score
-7. Wiring into shell and key pages
-8. Documentation
+1. Core types (`domain-manifest.ts`)
+2. All 5 domain manifests (parallel)
+3. Registry + completeness engine
+4. Shell command provider
+5. Admin dashboard + barrel + wiring
+6. Documentation
 
