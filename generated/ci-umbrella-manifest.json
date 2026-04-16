@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-16T23:13:49.240Z",
-  "gateCount": 16,
+  "generatedAt": "2026-04-16T23:28:41.447Z",
+  "gateCount": 20,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -10,10 +10,11 @@
     "phase-6-golden-paths": 1,
     "phase-7-meta-arch": 1,
     "phase-8-ci-umbrella": 1,
-    "phase-9-reality-deployability": 6
+    "phase-9-reality-deployability": 6,
+    "phase-10-completeness": 4
   },
   "bySeverity": {
-    "blocker": 15,
+    "blocker": 19,
     "warning": 1
   },
   "registry": [
@@ -165,11 +166,51 @@
       "severity": "blocker",
       "description": "Every claimed surface has build/sign/distribute/update/recover evidence.",
       "producesArtifact": "generated/deployability-report.json"
+    },
+    {
+      "id": "edge-function-membership-completeness",
+      "phase": "phase-10-completeness",
+      "title": "Edge function membership completeness",
+      "script": "scripts/architecture/checks/check-edge-function-membership-completeness.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Every supabase/functions/<name>/ on disk is claimed by exactly one bounded context.",
+      "producesArtifact": "generated/edge-function-membership-report.json"
+    },
+    {
+      "id": "table-membership-completeness",
+      "phase": "phase-10-completeness",
+      "title": "Table membership completeness",
+      "script": "scripts/architecture/checks/check-table-membership-completeness.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Every public-schema table is claimed by exactly one bounded context.",
+      "producesArtifact": "generated/table-membership-report.json"
+    },
+    {
+      "id": "page-registry-completeness",
+      "phase": "phase-10-completeness",
+      "title": "Page registry completeness",
+      "script": "scripts/architecture/checks/check-page-registry-completeness.ts",
+      "owner": "reality-team",
+      "severity": "blocker",
+      "description": "Every critical page on disk is registered in page-state-registry.",
+      "producesArtifact": "generated/page-registry-completeness-report.json"
+    },
+    {
+      "id": "route-registry-completeness",
+      "phase": "phase-10-completeness",
+      "title": "Route registry completeness",
+      "script": "scripts/architecture/checks/check-route-registry-completeness.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Every <Route path=> declared in src/routes/** is owned by a bounded context.",
+      "producesArtifact": "generated/route-registry-completeness-report.json"
     }
   ],
   "integrity": {
-    "checkedAt": "2026-04-16T23:13:49.239Z",
-    "gateCount": 16,
+    "checkedAt": "2026-04-16T23:28:41.448Z",
+    "gateCount": 20,
     "issues": [],
     "errorCount": 0,
     "warningCount": 0,
