@@ -140,6 +140,25 @@ export function useStreamingChat() {
           } catch { /* ignore */ }
         }
       }
+
+      // ── AI Output Firewall scan ──────────────────────────────
+      if (assistantSoFar) {
+        const scanResult = scanAIOutput(assistantSoFar);
+        if (!scanResult.passed) {
+          console.warn("[AIFirewall] Response failed scan:", scanResult.violations);
+        }
+        if (scanResult.sanitizedOutput !== assistantSoFar) {
+          // Replace with sanitized version
+          const sanitized = scanResult.sanitizedOutput;
+          setMessages(prev => {
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant") {
+              return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: sanitized } : m);
+            }
+            return prev;
+          });
+        }
+      }
     } catch (e) {
       if ((e as Error).name !== "AbortError") {
         setError(e instanceof Error ? e.message : "Stream failed");
