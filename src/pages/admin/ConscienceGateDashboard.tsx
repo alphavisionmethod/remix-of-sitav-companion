@@ -21,21 +21,35 @@ import type { GateDecision, GateVerdict } from "@/lib/core-services/conscience-g
 import { DEMO_CONSCIENCE_VERDICTS } from "@/lib/mock-data/conscience-gate";
 import { supabase } from "@/integrations/supabase/client";
 
+// Local row type used by this dashboard — keeps a stable `id` for table keys.
+type DashboardVerdict = GateVerdict & { id: string };
+
+function withDashboardId(v: GateVerdict, idx: number): DashboardVerdict {
+  return { ...v, id: (v as any).id ?? `${v.correlationId ?? "demo"}-${idx}` };
+}
+
 // Real-data path: ai_inference_receipts.verification_outcome stores live gate
 // decisions. Falls back to seed verdicts when no real receipts exist yet.
-function mapReceiptToVerdict(r: any): GateVerdict {
+function mapReceiptToVerdict(r: any): DashboardVerdict {
   const outcome = (r.verification_outcome || "pass").toLowerCase();
   const decision: GateDecision = ["pass", "caveat", "block", "refuse"].includes(outcome)
     ? (outcome as GateDecision) : "pass";
   return {
     id: r.id,
     decision,
-    reasonCodes: r.route_reason ? [r.route_reason] : [],
-    evidence: [],
-    cost: { promptTokens: r.input_tokens ?? 0, completionTokens: r.output_tokens ?? 0, estimatedUsd: (r.cost_estimate_cents ?? 0) / 100 },
+    taskType: r.capability_id ?? r.prompt_family ?? "ai-task",
+    riskClass: "R2" as any,
+    evidenceState: "sufficient" as any,
+    budgetState: "ok" as any,
+    routingHints: { tier: "standard" } as any,
+    retrievalRequired: false,
+    critiqueRequired: false,
+    approvalRequired: decision === "block" || decision === "refuse",
+    deterministicRequired: false,
+    reasons: r.route_reason ? [r.route_reason] : [],
     timestamp: r.created_at,
-    capabilityId: r.capability_id ?? r.prompt_family ?? "unknown",
-  } as GateVerdict;
+    correlationId: r.id,
+  };
 }
 
 const DECISION_COLORS: Record<GateDecision, string> = {
