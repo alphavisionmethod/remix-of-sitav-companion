@@ -41,7 +41,7 @@ Total resolved: 5 of 12
 Total pending:  7 (all require external infra or are post-GA)
 ```
 
-## New Edge Functions Created (This Round)
+## New Edge Functions Created (This Round & Final)
 
 | Function | Purpose |
 |----------|---------|
