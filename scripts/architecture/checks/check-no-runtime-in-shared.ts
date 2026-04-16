@@ -4,7 +4,7 @@
 // Ensures src/packages/ files are pure types with no runtime imports
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const PACKAGE_DIRS = [

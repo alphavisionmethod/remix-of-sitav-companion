@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — VMware Deployment Readiness Check
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const VMWARE_ARTIFACTS = [
   "generated/vmware-appliance/production/catalog.json",

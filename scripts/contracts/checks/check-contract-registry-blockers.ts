@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Contract Registry Blockers Check
 import * as fs from "fs";
-import { ViolationCollector, scanDir, extractExports, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, extractExports, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const contractDirs = ["src/packages/contracts", "src/packages/business-contracts", "src/packages/finance-contracts", "src/packages/concierge-contracts"];
 const allExports = new Map<string, string[]>();

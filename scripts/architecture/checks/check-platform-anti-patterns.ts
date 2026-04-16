@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Phase 5 Anti-Pattern Detection
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 const vc = new ViolationCollector();
 const ANTI_PATTERNS = [
   { pattern: /any\s*\)/, name: "explicit-any", detail: "Explicit 'any' type cast" },

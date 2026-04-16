@@ -4,7 +4,7 @@
 // Ensures no PII or secrets leak into generated artifacts
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 

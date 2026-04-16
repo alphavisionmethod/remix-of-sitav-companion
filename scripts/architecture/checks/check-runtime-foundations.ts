@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Phase 4 Foundations Check
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../lib/utils";
 const vc = new ViolationCollector();
 const PHASE4_REQUIREMENTS = [
   { file: "generated/service-manifest.json", desc: "Service manifest" },

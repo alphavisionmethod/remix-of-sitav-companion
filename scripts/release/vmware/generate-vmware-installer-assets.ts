@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — VMware Installer Assets Generator
 import * as fs from "fs";
-import { writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const TIERS = ["pilot", "production"];
 for (const tier of TIERS) {

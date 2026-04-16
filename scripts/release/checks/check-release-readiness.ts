@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Prompt 9 Conformance Check
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const promptIndex = readJsonSafe<any>("generated/prompt-index.json");
 if (!promptIndex) { console.error("❌ prompt-index.json not found"); process.exit(1); }

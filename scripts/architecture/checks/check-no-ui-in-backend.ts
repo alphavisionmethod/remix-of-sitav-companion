@@ -4,7 +4,7 @@
 // Ensures backend services don't import React/UI components
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const BACKEND_DIRS = ["src/lib/services", "src/lib/core-services"];

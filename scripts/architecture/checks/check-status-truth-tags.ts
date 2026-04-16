@@ -4,7 +4,7 @@
 // Validates status tags in service-manifest are canonical
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, loadServiceManifest } from "./lib/utils";
+import { ViolationCollector, loadServiceManifest } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const manifest = loadServiceManifest();

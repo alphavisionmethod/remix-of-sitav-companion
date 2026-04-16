@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Route/Contract Drift Detection
-import { ViolationCollector, readJsonSafe, loadRouteManifest } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, loadRouteManifest } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const routeManifest = loadRouteManifest();
 const contractManifest = readJsonSafe<any>("generated/contract-manifest.json");

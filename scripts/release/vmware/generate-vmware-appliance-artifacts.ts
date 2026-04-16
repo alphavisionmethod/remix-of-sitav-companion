@@ -6,7 +6,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { readJsonSafe, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const TIERS = ["pilot", "production"];
 const ROLES = {

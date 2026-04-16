@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Memory Governance Validator
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const memoryFiles = scanDir("src/lib/services/memory", [".ts"]);
 if (memoryFiles.length === 0) { console.log("⚠️ No memory service found — skipping"); process.exit(0); }

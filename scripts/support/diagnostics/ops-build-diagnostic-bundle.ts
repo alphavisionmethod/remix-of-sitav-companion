@@ -6,7 +6,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { readJsonSafe, writeJsonOutput, envelope, discoverServiceDirs, loadServiceManifest } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope, discoverServiceDirs, loadServiceManifest } from "../../architecture/lib/utils";
 
 const BUNDLE_DIR = "generated/diagnostic-bundle";
 if (!fs.existsSync(BUNDLE_DIR)) fs.mkdirSync(BUNDLE_DIR, { recursive: true });

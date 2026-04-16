@@ -4,7 +4,7 @@
 // Validates every route has an owning service
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, readJsonSafe, loadRouteManifest, loadServiceManifest } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, loadRouteManifest, loadServiceManifest } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const routeManifest = loadRouteManifest();

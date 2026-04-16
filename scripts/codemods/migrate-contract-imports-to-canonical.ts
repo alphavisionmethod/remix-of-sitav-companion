@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { scanDir, readFileContent } from "../architecture/lib/utils";
+import { scanDir, readFileContent } from "../../architecture/lib/utils";
 
 const dryRun = !process.argv.includes("--apply");
 

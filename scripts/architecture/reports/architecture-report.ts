@@ -7,7 +7,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
-import { writeJsonOutput, envelope } from "./lib/utils";
+import { writeJsonOutput, envelope } from "../lib/utils";
 
 const ARCH_CHECKS = [
   "scripts/architecture/boundary-check.ts",

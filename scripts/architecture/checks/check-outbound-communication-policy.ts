@@ -4,7 +4,7 @@
 // No raw fetch/HTTP in domain code — must go through connectors
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 

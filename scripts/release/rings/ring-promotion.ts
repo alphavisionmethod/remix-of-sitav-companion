@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { readJsonSafe, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const args = process.argv.slice(2);
 const targetRing = args.find((_, i) => args[i - 1] === "--ring") || "canary";

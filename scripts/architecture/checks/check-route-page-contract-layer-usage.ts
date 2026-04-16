@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Route/Page Contract Layer Usage
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 const vc = new ViolationCollector();
 const pageFiles = scanDir("src/pages", [".tsx", ".ts"]);
 for (const file of pageFiles) {

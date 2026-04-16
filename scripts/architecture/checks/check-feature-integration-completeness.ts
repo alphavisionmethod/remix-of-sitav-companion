@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Feature Integration Completeness Check
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex, loadRouteManifest } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex, loadRouteManifest } from "../lib/utils";
 const vc = new ViolationCollector();
 const featureIndex = readJsonSafe<any>("generated/feature-integration-index.json");
 const capIndex = loadCapabilityIndex();

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Policy Mapping Completeness
-import { ViolationCollector, readJsonSafe, loadCapabilityIndex, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe, loadCapabilityIndex, scanDir, readFileContent } from "../lib/utils";
 const vc = new ViolationCollector();
 const capIndex = loadCapabilityIndex();
 if (!capIndex) { console.error("❌ capability-index.json not found"); process.exit(1); }

@@ -4,7 +4,7 @@
 // Scans for localStorage role checks, client-side admin gates
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 
 const vc = new ViolationCollector();
 

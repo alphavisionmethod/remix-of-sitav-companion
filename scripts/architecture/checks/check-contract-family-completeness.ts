@@ -6,7 +6,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { ViolationCollector, scanDirShallow, extractExports } from "./lib/utils";
+import { ViolationCollector, scanDirShallow, extractExports } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const CONTRACT_DIRS = ["src/packages/contracts", "src/packages/business-contracts", "src/packages/finance-contracts", "src/packages/concierge-contracts"];

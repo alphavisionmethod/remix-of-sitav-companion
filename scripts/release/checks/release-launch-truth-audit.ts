@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { readJsonSafe, writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { readJsonSafe, writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const AUDIT_GATES = [
   { file: "generated/service-manifest.json", name: "Service Manifest", required: true },

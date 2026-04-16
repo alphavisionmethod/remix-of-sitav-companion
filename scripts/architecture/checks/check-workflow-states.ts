@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Workflow State Completeness Check
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 const vc = new ViolationCollector();
 const REQUIRED_STATES = ["idle", "active", "success", "failed", "error"];
 const workflowFiles = scanDir("src/lib/services", [".ts"]).filter(f => f.includes("workflow") || f.includes("state-machine") || f.includes("orchestrat"));

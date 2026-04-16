@@ -7,7 +7,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
-import { writeJsonOutput, envelope } from "../architecture/lib/utils";
+import { writeJsonOutput, envelope } from "../../architecture/lib/utils";
 
 const TIERS = ["pilot", "production"];
 

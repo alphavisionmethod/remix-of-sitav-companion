@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Terraform/VMware Readiness Check
 import * as fs from "fs";
-import { ViolationCollector } from "../architecture/lib/utils";
+import { ViolationCollector } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const TF_DIRS = ["infra/terraform", "terraform", "deploy/terraform"];
 let tfDir: string | null = null;

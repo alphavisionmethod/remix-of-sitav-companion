@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, readJsonSafe, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 const registry = readJsonSafe<any>("generated/advisor-registry.json");

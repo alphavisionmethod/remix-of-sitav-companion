@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Phase 5 Import Boundaries Check
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const BOUNDARY_RULES = [
   { from: "src/pages", forbidden: /from\s+["']@\/lib\/services\/[^"']+\/(?!index)[^"']+["']/, rule: "page-deep-service-import" },

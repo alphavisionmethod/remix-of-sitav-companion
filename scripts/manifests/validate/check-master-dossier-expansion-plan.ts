@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — Master Dossier Expansion Plan Tracker
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const expansion = readJsonSafe<any>("generated/master-dossier-expansion-status.json");
 if (!expansion) { console.log("⚠️ master-dossier-expansion-status.json not found — skipping"); process.exit(0); }

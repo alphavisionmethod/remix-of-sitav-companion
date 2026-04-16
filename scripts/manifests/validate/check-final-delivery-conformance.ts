@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Final Delivery Conformance Check (all 52 artifacts)
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const REQUIRED_ARTIFACTS = [
   "generated/service-manifest.json", "generated/route-manifest.json", "generated/capability-index.json",

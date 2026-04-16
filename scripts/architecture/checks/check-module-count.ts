@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
-import { ViolationCollector, discoverServiceDirs, classifyServiceDomain, loadServiceManifest } from "./lib/utils";
+import { ViolationCollector, discoverServiceDirs, classifyServiceDomain, loadServiceManifest } from "../lib/utils";
 
 const vc = new ViolationCollector();
 

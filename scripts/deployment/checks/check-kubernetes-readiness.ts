@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Kubernetes Readiness Check
 import * as fs from "fs";
-import { ViolationCollector } from "../architecture/lib/utils";
+import { ViolationCollector } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const K8S_DIRS = ["infra/kubernetes", "infra/k8s", "k8s", "deploy/k8s"];
 let foundDir: string | null = null;

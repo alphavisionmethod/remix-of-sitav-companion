@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Data Migration Validation
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const MIGRATION_DIR = "supabase/migrations";
 if (!fs.existsSync(MIGRATION_DIR)) { console.log("⚠️ No migrations directory — skipping"); process.exit(0); }

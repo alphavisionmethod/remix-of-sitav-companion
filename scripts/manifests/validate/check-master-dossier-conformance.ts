@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SITA OS — Master Dossier Conformance Check
 import * as fs from "fs";
-import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
+import { ViolationCollector, readJsonSafe } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const dossier = readJsonSafe<any>("generated/master-dossier-conformance.json");
 if (!dossier) { console.log("⚠️ master-dossier-conformance.json not found — skipping"); process.exit(0); }

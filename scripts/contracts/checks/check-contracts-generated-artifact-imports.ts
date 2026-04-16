@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SITA OS — No Generated Artifact Imports in Contracts
-import { ViolationCollector, scanDir, readFileContent } from "../architecture/lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../../architecture/lib/utils";
 const vc = new ViolationCollector();
 const contractFiles = scanDir("src/packages", [".ts"]);
 for (const file of contractFiles) {

@@ -4,7 +4,7 @@
 // Validates workflow state machine usage across services
 // ═══════════════════════════════════════════════════════════════
 
-import { ViolationCollector, scanDir, readFileContent } from "./lib/utils";
+import { ViolationCollector, scanDir, readFileContent } from "../lib/utils";
 
 const vc = new ViolationCollector();
 
