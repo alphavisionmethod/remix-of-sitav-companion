@@ -164,11 +164,15 @@ export default function META02ControlPlaneCenter() {
                 {dependents.length === 0 ? (
                   <span className="text-muted-foreground">none</span>
                 ) : (
-                  <div className="flex flex-wrap gap-1">
-                    {dependents.map((d) => (
-                      <Badge key={d} variant="outline" className="text-[10px] font-mono">{d}</Badge>
+                  <ul className="space-y-1">
+                    {dependents.map((d, idx) => (
+                      <li key={idx} className="text-[10px] text-muted-foreground">
+                        <Badge variant="outline" className="text-[9px] font-mono mr-2">{d.fromSwitchId}</Badge>
+                        <span className="font-mono">{d.relation}</span>
+                        <span className="ml-2">{d.rationale}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 )}
               </CrossLinkSection>
 

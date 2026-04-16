@@ -185,9 +185,9 @@ export default function META03GoldenPathHealth() {
                     <span className="text-muted-foreground">e2e:</span>
                     <span className="text-foreground">{verification.hasE2E ? "✓" : "—"}</span>
                     <span className="text-muted-foreground">runtime probe:</span>
-                    <span className="text-foreground">{verification.hasRuntimeProbe ? "✓" : "—"}</span>
+                    <span className="text-foreground">{verification.hasProbe ? "✓" : "—"}</span>
                     <span className="text-muted-foreground">receipt:</span>
-                    <span className="text-foreground">{verification.hasReceipt ? "✓" : "—"}</span>
+                    <span className="text-foreground">{verification.hasReceiptCheck ? "✓" : "—"}</span>
                   </div>
                 </Section>
               )}
