@@ -28,11 +28,15 @@ for (const file of platformFiles) {
 }
 
 // ── L5 UI clients must not reach into core-services internals ──
+// Note: `import type { ... }` is compile-time only (erased at runtime) and is
+// allowed for shared type contracts. Only runtime value imports are forbidden.
 const clientFiles = scanDir("src/lib/data-services", [".ts"]);
 for (const file of clientFiles) {
   const content = readFileContent(file);
-  if (/from\s+["']@\/lib\/core-services\/[^"']+["']/.test(content)) {
-    vc.add(file, "client-imports-platform-internal", "L5 UI clients must not import deep core-services paths", "warning");
+  // Match runtime imports only — exclude `import type` and `from "..." with type modifier`
+  const runtimeImportRegex = /^\s*import\s+(?!type\s)[^;]*from\s+["']@\/lib\/core-services\/[^"']+["']/m;
+  if (runtimeImportRegex.test(content)) {
+    vc.add(file, "client-imports-platform-internal", "L5 UI clients must not import deep core-services paths at runtime (type-only imports are allowed)", "warning");
   }
 }
 
