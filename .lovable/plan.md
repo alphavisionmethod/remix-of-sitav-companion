@@ -1,90 +1,111 @@
 
 
-# SITA OS — Component Governance & UI Consolidation
+The user wants Product Reality Tiering enforcement. Let me audit existing runtime infrastructure first to understand what's already there before planning.
 
-## Scope
-Audit, classify, and consolidate 862+ components into a strict 3-class constitution: **Primitive · Domain · Surface**. Eliminate duplication families (cards, badges, shells, panels) without breaking existing imports.
+Key findings from prior audits:
+- `src/lib/runtime/product-reality-tiers.ts` already exists (per check-runtime-tier-coverage.ts)
+- `src/lib/runtime/runtime-capability-matrix.ts` already exists
+- `src/lib/runtime/desktop/` exists with DesktopHostContract, ElectronBridgeContract per memory
+- `electron/` exists with main.cjs, preload.cjs, fs-bridge.cjs
+- 4-Plane model already in place via plane-registry.ts
+- Service governance pattern established (5-layer) — mirror it for runtime tiers
+- Appliance scripts: `scripts/release/appliance/` exists
+- Generators exist: `generate-runtime-capability-matrix.ts`, `generate-runtime-reality-map.ts`
 
-## Phased Execution
+Strategy: Mirror the proven governance pattern (authority map + duplicate map + checks + report) used for Components/Services/Edge Functions. Classification-in-place, zero behavioral changes, additive contracts + enforcement.
 
-### Phase 1 — Audit & Registry (Foundation, no breaking changes)
-1. Build `src/lib/architecture/component-registry.ts` — auto-generated inventory of all 862 components with: path, classification, domain, usage count, duplicate-group ID.
-2. Build `src/lib/architecture/component-duplication-map.ts` — explicit duplicate families with canonical winner per group.
-3. Add `scripts/architecture/audit-components.ts` to scan, classify, and emit the registry.
-4. Author governance docs:
-   - `docs/architecture/COMPONENT_CONSTITUTION.md` (3-class rules)
-   - `docs/architecture/COMPONENT_NAMING_POLICY.md` (suffix grammar: Card/Badge/Panel/Shell/Drawer/Hero/Summary/Inspector)
+# SITA OS — Product Reality Tier Governance & Runtime Truth Enforcement
 
-### Phase 2 — Canonical Primitives
-Establish the only allowed style-primitive layer at `src/components/primitives/`:
-- `primitives/display/` — BaseCard, Hero, Summary, Panel, StatTile
-- `primitives/status/` — StatusBadge, TrustBadge, UrgencyBadge, ProofBadge, FreshnessBadge, ModeBadge (variants, not files)
-- `primitives/feedback/` — EmptyState, Skeleton, Spinner
-- `primitives/overlays/` — Drawer, Sheet, Dialog
-- `primitives/timelines/` — TimelineRow
-- `primitives/index.ts` barrel
+## Current State (Audited)
 
-All primitives compose existing `ui/*` (shadcn) — no logic, no domain imports.
-
-### Phase 3 — Domain Component Consolidation
-Collapse the highest-risk duplicate families first:
-
-| Family | Action |
+| Asset | Status |
 |---|---|
-| **Cards** (~40 variants: Advisor, Proof, Recommendation, Recovery, CashPressure, Action, Queue, Hero, Summary, Status, Comparison, Intervention) | Canonicalize via `domain/<area>/*Card.tsx` composing `primitives/display/BaseCard` with `variant` prop |
-| **Badges** (Trust/Truth/Status/State/Freshness/Urgency/Execution/Domain/Mode/Proof/LaunchHonesty) | Collapse to 6 primitive badges with variants |
-| **Shells** (App/Business/Concierge/Finance/MissionControl/Boardroom/Admin/Owner/Founder/PublicLayout/ConciergePageWrapper) | Reduce to 5 canonical shells: PrimaryAppShell, AdminShell, DomainAppShell, PublicShell, DesktopShell |
-| **Panels & Summaries** | Distinguish Panel (interactive) vs Summary (read-only) vs Inspector (drilldown) |
-| **Advisors** (AdvisorCard, LiveAdvisorCard, AdvisorProfileCard, AdvisorAgentCard, DomainAdvisorCard) | One `domain/advisors/AdvisorCard` with variants: compact/profile/live/admin/mobile |
+| `src/lib/runtime/product-reality-tiers.ts` | Exists (5 reality tiers) |
+| `src/lib/runtime/runtime-capability-matrix.ts` | Exists (web/desktop/mobile/appliance) |
+| `src/lib/runtime/desktop/` | DesktopHostContract + ElectronBridgeContract exist |
+| `electron/` (main/preload/fs-bridge) | Exists, hardened with 7-layer security |
+| `scripts/release/appliance/` | ISO/OVA build probes exist |
+| Generated artifacts | `runtime-capability-matrix.json`, `runtime-reality-map.json` exist |
+| **Missing** | Tier contract per Tier 1-4 model, feature→tier registry, runtime guards in UI, enforcement checks |
 
-### Phase 4 — Compatibility Wrappers (Zero Breakage)
-Every legacy path becomes a thin re-export:
-```ts
-// src/components/sita/cards/ProofCard.tsx
-export { ProofCard } from "@/components/domain/proofs/ProofCard";
-```
-Add `@deprecated` JSDoc pointing to canonical path. No behavior change.
+The infrastructure is partially present but lacks the **canonical 4-Tier model** (Web/Desktop/Appliance/Simulated-OS), per-feature classification, runtime-honest UI gating, and CI enforcement.
 
-### Phase 5 — Import Migration (Automated)
-- Sweep `src/pages/**`, `src/components/**`, route surfaces, nav shells.
-- Update barrel exports in `cards/index.ts`, `badges/index.ts`, `primitives/index.ts`, `shell/index.ts`.
-- Verify build green after each batch.
+## Phased Plan (8 phases, all deployment-ready)
 
-### Phase 6 — Governance Tests (Prevent Regression)
-Add to `scripts/architecture/`:
-- `check-component-classification.ts` — every export classified
-- `check-primitive-purity.ts` — primitives import no domain/services/hooks
-- `check-domain-purity.ts` — domain imports no page/route modules
-- `check-duplicate-families.ts` — fails if unregistered duplicates appear
-- `check-deprecated-wrappers.ts` — wrappers must be thin re-exports only
-- Wire into existing `ia-governance.ts` script suite
+### Phase 1 — Canonical 4-Tier Contract & Folder Scaffold
+Create the canonical runtime contract aligned with the Tier 1-4 spec:
+- `src/lib/runtime/product-reality-tiers.ts` — extend with `WEB_APP | DESKTOP_HOST | APPLIANCE_RUNTIME | SIMULATED_OS_EXPERIENCE` (preserve existing 5-tier reality classification as a parallel concern)
+- `src/lib/runtime/web/` — `web-runtime-contract.ts`, `web-capability-map.ts`, `web-fallbacks.ts`
+- `src/lib/runtime/appliance/` — `appliance-runtime-contract.ts`, `appliance-capabilities.ts`, `first-boot-contract.ts`, `recovery-contract.ts`, `appliance-fallbacks.ts`
+- `src/lib/runtime/simulation/` — `simulated-os-contract.ts`, `shell-simulation-capabilities.ts`, `surface-simulation-rules.ts`
+- `src/lib/runtime/desktop/` — augment with `desktop-fallbacks.ts` (existing contracts preserved)
+- `src/lib/runtime/launch-honesty-rules.ts`, `runtime-assertions.ts`, `runtime-detection.ts`, `runtime-flags.ts`, `portability-rules.ts`
+- `docs/architecture/PRODUCT_REALITY_TIERS.md` — canonical doc
 
-### Phase 7 — Page-Local Demotion
-Components used by exactly one page → move to that page's local folder (not exported as system components). Reduces false-sharing footprint.
+### Phase 2 — Runtime Detection & Context Provider
+- `src/lib/runtime/runtime-detection.ts` — detects current tier (web vs Electron via `window.electron`, vs appliance via env probe)
+- `src/lib/runtime/runtime-context.ts` + `RuntimeTierProvider` React context — exposes `useRuntimeTier()`, `useCapability(id)`, `useTierFallback(featureId)`
+- Wire provider in `RuntimeProvider.tsx`
 
-### Phase 8 — Verification & Documentation
-- Run `tsc --noEmit` + `bun run build` → zero errors
-- Update `PROJECT_TREE.md` with new component taxonomy
-- Update `FULL_ISSUES_AND_FIXES.md` with ISS-097 (Component Governance) marked RESOLVED
-- Emit final `generated/COMPONENT_GOVERNANCE_REPORT.md` with before/after counts
+### Phase 3 — Feature Tier Registry (Authority Map)
+- `src/lib/runtime/feature-tier-registry.ts` — every major feature declares `{ id, name, ownerDomain, supportedTiers[], simulatedTiers[], prohibitedTiers[], roadmapTiers[], fallback, launchHonesty }`
+- Seed with the 50+ critical features (boardroom, business, money, files, app launcher, dock, lock screen, mission control, OTA, first-boot, native FS, push, etc.)
+- `src/lib/migration/runtime-feature-classification-map.ts` — classification of runtime-sensitive files (mirrors service-authority-map pattern)
+- `src/lib/migration/runtime-conflict-map.ts` — known cross-tier conflicts + resolution
 
-## Safety Guarantees
-- **No deletion** until zero dependents remain (verified by registry).
-- **All legacy import paths** preserved via wrappers through Phase 5.
-- **Build must stay green** after every phase.
-- **Behavior preserved** — refactor is structural, not functional.
+### Phase 4 — Runtime Capability Matrix Hardening
+- Refactor `runtime-capability-matrix.ts` to align with 4-tier model
+- Add explicit per-capability rows: `{ capabilityId, web: 'supported|simulated|fallback|prohibited', desktop: ..., appliance: ..., simulated: ... }`
+- Wire to feature-tier-registry as the source of truth
+
+### Phase 5 — Runtime-Aware UI Gating
+- Add `<TierGate tier="desktop" fallback={...}>` component
+- Add `<RuntimeFallback featureId="..." />` honest-degradation component (explains *why* unavailable, not silent hide)
+- Sweep critical surfaces (file picker, native notifications, OTA panel, system menu bar, lock screen, control center) to consume `useCapability()` instead of assuming
+- Update `useElectronBridge`, `useOSAPI`, `useOSOrchestration`, `usePushNotifications`, `useSessionRestore`, `useNativeShellData` to read tier truth
+
+### Phase 6 — Governance Checks (CI-ready)
+Mirror the service governance pattern in `scripts/runtime/checks/`:
+1. `check-feature-tier-classification.ts` — every registered feature must have supported/prohibited tiers declared
+2. `check-runtime-capability-enforcement.ts` — runtime-sensitive APIs must have capability gates
+3. `check-launch-honesty.ts` — components must not claim unsupported capabilities (regex scan for forbidden patterns)
+4. `check-desktop-bridge-isolation.ts` — Electron-only imports must not appear in web-only paths
+5. `check-appliance-isolation.ts` — `src/lib/runtime/appliance/**` cannot be imported from `src/pages/**` web routes
+6. `check-simulated-os-truth.ts` — simulated shell components must declare simulation status
+7. Aggregator: `scripts/runtime/run-runtime-tier-governance.ts` → emits `generated/runtime-tier-governance-report.json`
+
+### Phase 7 — Deployment Artifact Separation
+- Tag `scripts/release/appliance/**` as appliance-tier-only (header comments + manifest entry)
+- Tag `electron/**` build scripts as desktop-tier
+- Update `docs/refactor/deployment-map.md` with tier ownership
+- Add `generated/runtime-tier-deployment-map.json`
+
+### Phase 8 — Manifest Integration & Verification
+- Register new manifests in `src/lib/truth-manifests/manifest-registry.ts`:
+  - `manifest-runtime-tier-registry`
+  - `manifest-runtime-tier-governance-report`
+  - `manifest-feature-tier-classification`
+- Generate `generated/RUNTIME_TIER_GOVERNANCE_REPORT.md`
+- Update `generated/COMPONENT_GOVERNANCE_REPORT.md` cross-link section
+- Run `tsc --noEmit` + `bun run build` + all governance checks → zero errors, all green
+- Regression-verify Component + Service + Edge Function governance still pass
+
+## What This Does NOT Do (Intentionally)
+
+- **No file moves** for working OS/shell/electron code — classification-in-place
+- **No behavioral changes** to existing surfaces (only adds honest fallbacks and gating where missing)
+- **No removal** of existing 5-tier reality classification (`real-executable-substrate` etc.) — runs in parallel as a separate concern (architectural reality vs runtime tier)
+- **No marketing changes** to kernel abstraction — kernel stays `simulated for experience` per memory
+- **No new appliance build pipeline** — only governance over what exists
 
 ## Deliverables
-- Component registry + duplication map (machine-readable truth)
-- 6 governance test scripts wired into CI
-- 2 governance docs (Constitution + Naming Policy)
-- Canonical `primitives/` + `domain/` + `surfaces/` directory structure
-- ~40% reduction in unique component file count via wrapper consolidation
-- Zero breaking changes for consumers
 
-## Out of Scope
-- Visual redesign (grammar stays identical)
-- New features
-- DB / edge function changes
-- shadcn `ui/*` modifications (those remain the lowest layer)
+- 4-Tier canonical contract + folder scaffold (web/desktop/appliance/simulation)
+- Runtime detection + context provider + `useRuntimeTier`/`useCapability` hooks
+- Feature Tier Registry (50+ features classified)
+- Runtime conflict map + classification map
+- 6 enforcement checks + aggregator + JSON/MD reports
+- TierGate + RuntimeFallback honest-degradation components
+- Updated truth manifests in registry
+- Zero breaking changes, green build, all prior governance regressions pass
 
