@@ -46,7 +46,7 @@ Codebase Snapshot: 956 pages · 879 components · 151 hooks · 1,552 lib modules
 - **Priority**: P1 · **Status**: ✅ RESOLVED
 - **Description**: Core services approaching ~45 service budget ceiling
 - **Fix**: Service consolidation manifest (`generated/service-consolidation-manifest.json`) tracks canonical vs shim services. Shim architecture maintains backward-compatible re-exports from `services/` while canonical logic lives in `core-services/`
-- **Files**: 47 kernel files, 19 security modules
+- **Files**: 47 core-service files, 25 security modules
 - **Verification**: `service-manifest.json` lists 43 canonical services (under 45 budget)
 
 ### ISS-005: Direct Provider SDK Calls
