@@ -1,98 +1,152 @@
 
 
-# SITA OS — Complete File Classification & Structural Audit Document
+# SITA OS — Master Script System Refactor
 
-## What Exists (Verified)
+## Current State (Verified)
 
-All 16 canonical registry files: **EXISTS** (0 missing).
-All 6 architecture layers (backend-topology, db, surfaces, devices, deployment, runtime): **EXISTS** with barrel exports.
-All supabase subdirectories (migrations, schema, policies, seed, docs): **EXISTS**.
-All 8 planes (admin, backend, founder, internal-tools, mobile, os, product, shared): **EXISTS** with manifests.
+- **235 total scripts** across `scripts/`: 153 TypeScript, 22 shell, 44 PowerShell, 3 JS/MJS
+- **0 TypeScript build errors** (activePath issue already resolved)
+- Scripts spread across 12 top-level dirs + ~65 root-level files
+- No script registry, taxonomy, ownership, CI binding, or output mapping exists
+- Phase/prompt-era naming persists in 7 validation scripts
+- `validate-all.ts` and `generate-all.ts` use flat file paths with no classification
 
-## What Will Be Generated
+## What Will Be Created/Changed
 
-A single exhaustive document at `/mnt/documents/SITA_FULL_FILE_CLASSIFICATION.md` (~5,000+ lines) containing:
+### Phase 1: Fix Build Errors + Script Registry Foundation (8 files)
 
-### Section 1: Complete File Classification Matrix
-Every file group classified by:
-- **Layer**: Web, App, OS, Admin, Kernel, Domain, Shared, Internal
-- **Bounded Context**: Business OS, Finance OS, Concierge OS, Investment, Boardroom, Identity, Runtime, Admin, Mobile, etc.
-- **Runtime Relevance**: web | desktop | appliance | mobile | shared
-- **Reality Classification**: real-executable | architectural-simulation | testing-abstraction | concept-scaffolding | standard-app-code
-- **Deployment Relevance**: build-only | runtime | deploy-artifact | docs/validation | support/recovery
+**New directory `scripts/registry/`** with 8 governance files:
 
-Coverage: ~67 lib dirs, 26 page dirs, 29 component dirs, 35 feature dirs, 6 runtime dirs, 9 platform dirs, 34 packages, 74 edge functions, 57 generated artifacts, 234 scripts, 6 electron files, 23 deploy files, 19 infra files, 11 security docs, 9 CI workflows, 161 migrations.
+1. **`script-registry.ts`** — Master registry of all 235 scripts with id, path, class, owner, permanence, inputs, outputs, CI binding, runtime consequence, canonical status
+2. **`script-taxonomy.ts`** — 11 canonical script classes: assert, check, validate, generate, bootstrap, migrate, emit, codemod, drill, restore, rotate
+3. **`script-owner-map.ts`** — Maps every script to one of 9 ownership domains (architecture, platform/runtime, contracts, deployment/release, db, security, supportability, admin/control-plane, migration/refactor)
+4. **`script-output-map.ts`** — Maps generators to their output artifacts in `generated/`
+5. **`script-ci-binding-map.ts`** — Maps scripts to CI phases: pr, nightly, manual, release-gate, deploy-gate, support-drill, local-only
+6. **`script-runtime-consequence-map.ts`** — Defines what breaks if each script is absent/broken
+7. **`script-language-policy.ts`** — Classifies all scripts by language and defines policy for new scripts
+8. **`script-classification-report.ts`** — Generates summary of unclassified, duplicate, deprecated, ownerless scripts
 
-### Section 2: Duplicate Service Family Detection
-22 confirmed core-services ↔ services duplicates mapped with canonical target:
-- `approval-engine`, `executor-service`, `event-bus`, `policy-engine`, `receipt-service`, `memory-service`, `model-router`, `workflow-engine`, `trust-governor`, `identity-auth`, `brain-core`, `finance-os`, `ai-gateway`, `flagship-loops`, `inference-gateway`, `integration-hub`, `launch-readiness`, `frontend`, `verification-engine`, `handoff`, `conscience-gate`, `google-provider-family`
-- Canonical home: `core-services/` (services/ entries become re-export shims)
-- 196 remaining services/ entries that have NO core-services counterpart → classify as domain services, projection services, or consolidation candidates
+### Phase 2: New Script Domains (50+ new script files)
 
-### Section 3: Duplicate Component Family Detection
-- `src/components/admin/` vs `src/components/admin-os/` vs `src/components/sita/admin/`
-- `src/components/business/` vs `src/components/sita/apps/business/`
-- `src/components/finance/` vs `src/components/money/` vs `src/components/sita/apps/finance/`
-- `src/components/investment/` vs `src/components/sita/apps/investment/`
-- `src/components/concierge/` vs `src/components/sita/apps/concierge/`
-- Cards/badges/primitives overlap detection across `src/components/cards/`, `src/components/sita/cards/`, `src/components/sita/badges/`, `src/components/sita/primitives/`
+**`scripts/runtime/`** — Runtime truth plane:
+- `checks/check-runtime-capability-matrix.ts`
+- `checks/check-runtime-tier-coverage.ts`
+- `checks/check-reality-classification-coverage.ts`
+- `checks/check-desktop-runtime-contract.ts`
+- `checks/check-mobile-runtime-contract.ts`
+- `checks/check-appliance-runtime-contract.ts`
+- `generate/generate-runtime-capability-matrix.ts`
+- `generate/generate-runtime-reality-map.ts`
+- `probes/ai-runtime-probe.ts` (moved from root)
+- `edge-functions/check-edge-function-topology.ts`
+- `edge-functions/check-edge-function-category-coverage.ts`
+- `edge-functions/check-edge-function-auth-map.ts`
+- `edge-functions/generate-edge-function-registry.ts`
 
-### Section 4: Admin Route Sprawl Analysis
-503 admin pages across 16 subdirectories → propose canonical 7-domain structure:
-1. Architecture & Governance (architecture, platform-law, fip)
-2. Intelligence & AI (intelligence, sag)
-3. Launch & Verification (launch, verification, implementation-truth)
-4. Security & Audit (security, reality-audit)
-5. Strategic & Modules (strategic, modules)
-6. Cloud & Infrastructure (cloud)
-7. Customer Journey & Frontend (customer-journey, frontend)
+**`scripts/manifests/`** — Manifest truth plane:
+- `validate/check-manifest-authority.ts`
+- `validate/check-manifest-runtime-linkage.ts`
+- `validate/check-manifest-source-truth.ts`
+- `validate/check-manifest-ci-gates.ts`
+- `validate/check-manifest-owner-coverage.ts`
+- `generate/generate-manifest-registry.ts`
+- `generate/generate-manifest-truth-dashboard.ts`
+- `reports/generate-manifest-drift-report.ts`
 
-### Section 5: Edge Function Topology Classification
-All 74 functions classified into:
-- **User BFF** (5): user-bff-gateway, main, get-weather, vapid-public-key, personal-brain
-- **Admin BFF** (5): admin-bff-gateway, admin-api, admin-gateway, admin-users, admin-intelligence
-- **Domain Functions** (20): business-*, cashflow-*, invoice-*, tax-*, revenue-*, crm-*, booking-*
-- **AI/Agent Functions** (15): ai-gateway, advisor-*, agent-*, brain-core, chat-advisor, check-ai-budget, intelligence-api, business-advisor-intelligence
-- **Connector Functions** (8): connector-batch, connector-discover, connector-health, connector-oauth, connector-operations, connector-proxy, connector-transform, provider-family-operations
-- **System/Runtime** (10): os-agent-channel, os-command, os-status, runtime-probes, self-healing, system-updates, event-processor, scheduler-dispatch
-- **Cloud Infrastructure** (7): cloud-admin-api, cloud-device-api, cloud-lifecycle-api, cloud-storage-api, cloud-sync-api, cloud-tenant-api, cloud-worker-api
-- **Compliance/Support** (4): gdpr-delete, gdpr-export, support-gateway, verification-recorder
+**`scripts/db/`** — Database truth plane:
+- `checks/check-schema-registry.ts`
+- `checks/check-table-ownership.ts`
+- `checks/check-migration-ownership.ts`
+- `checks/check-rls-policy-registry.ts`
+- `checks/check-tenancy-boundary-map.ts`
+- `generate/generate-schema-registry.ts`
+- `generate/generate-table-ownership-map.ts`
+- `generate/generate-rls-policy-registry.ts`
+- `generate/generate-migration-registry.ts`
+- `backup/verify-backup-restore.ts`
 
-### Section 6: DB Visibility Verification
-- 198 tables with 323 RLS policies → all mapped in `src/lib/db/schema-registry.ts`
-- 161 migrations in `supabase/migrations/` → tracked in `src/lib/db/migration-registry.ts`
-- `supabase/schema/`, `supabase/policies/`, `supabase/seed/`, `supabase/docs/` all present with READMEs
+**`scripts/support/`** — Supportability plane:
+- `coverage/check-runbook-coverage.ts`
+- `coverage/check-alert-runbook-linkage.ts`
+- `coverage/check-kill-switch-coverage.ts`
+- `coverage/check-golden-path-coverage.ts`
+- `runbooks/generate-runbook-index.ts`
+- `runbooks/generate-golden-path-registry.ts`
+- `diagnostics/` (move `ops-build-diagnostic-bundle.ts`)
+- `drills/` (move disaster-recovery-drill scripts)
+- `recovery/` (move restore-backup scripts)
 
-### Section 7: Missing Runtime Truth Files
-All verified present:
-- `runtime-message-registry.ts`, `service-lifecycle-registry.ts`, `runtime-capability-matrix.ts`, `product-reality-tiers.ts`, `feature-tier-registry.ts`, `simulated-surface-registry.ts`, `runtime-flags.ts`, `runtime-assertions.ts`, `reality-classification-registry.ts`, `infra-runtime-classification-map.ts`, `infra-implementation-coverage-map.ts`
+**New admin/architecture governance checks** (in `scripts/architecture/checks/`):
+- `check-admin-ia.ts`
+- `check-admin-top-level-domain-count.ts`
+- `check-admin-route-coherence.ts`
+- `check-admin-shell-consistency.ts`
+- `check-owner-workflow-map.ts`
 
-### Section 8: Mobile Platform Contract Status
-- 25 mobile pages in `src/pages/mobile/`
-- `src/components/mobile/` present
-- `src/features/mobile/` present
-- `src/runtimes/mobile/index.ts` present
-- `src/planes/MOBILE_MANIFEST.md` present
-- `infra/deploy/mobile.yaml` (Flutter deployment manifest) present
-- **Gap**: No actual Flutter/native code — mobile is PWA/responsive web only. Native bridges are `SIMULATED_ONLY`.
+**`scripts/deployment/`** expansion:
+- `checks/check-deployment-unit-map.ts`
+- `checks/check-build-output-map.ts`
+- `checks/check-ingress-topology.ts`
+- `checks/check-release-unit-map.ts`
+- `build/generate-build-output-map.ts`
+- `ingress/generate-ingress-topology.ts`
 
-### Section 9: Kill-Switch / Runbook / Journey Registry
-All present and verified:
-- `src/lib/control-plane/kill-switch-registry.ts` — 10 subsystem kill switches
-- `src/lib/support/runbook-registry.ts` — 10 runbook definitions
-- `src/lib/journeys/golden-path-registry.ts` — 11 golden path journeys
+### Phase 3: Reorganize Existing Scripts
 
-### Section 10: Consolidation Recommendations
-Specific merge/deprecate/wrap actions for:
-- 22 duplicate service families
-- 6 duplicate component families
-- `owner` vs `owner-mode` page merge
-- `mission` vs `mission-control` page merge
-- Admin 503→~120 page consolidation roadmap
+Move ~65 root-level scripts into canonical subdirectories:
+- 16 `check-*` → `scripts/architecture/checks/` or `scripts/contracts/checks/`
+- 28 `generate-*` → `scripts/manifests/generate/` or `scripts/runtime/generate/`
+- `consolidate-*.js` → `scripts/legacy/migration-tools/`
+- `db-integrity-check.sh` → `scripts/db/checks/`
+- `restore-backup.*` → `scripts/support/recovery/`
+- `deploy-vmware.sh`, `build-ova.sh` → `scripts/release/vmware/`
+- `smoke-tests.sh` → `scripts/testing/`
 
-## Technical Approach
-Generate via Python script to `/mnt/documents/SITA_FULL_FILE_CLASSIFICATION.md`. All data sourced from verified filesystem scans. Every finding references actual file paths.
+Reorganize `scripts/validation/` by concern:
+- Phase/prompt-era scripts renamed to permanent names
+- Scripts moved to their canonical domain (db, runtime, manifest, architecture, deployment, support)
 
-## File Count
-Single document, ~5,000 lines, covering every file group in the repository.
+Create `scripts/legacy/` for archived scripts.
+
+### Phase 4: Update Master Entrypoints
+
+- **`validate-all.ts`** — Rewrite to use registry-driven script discovery by class
+- **`generate-all.ts`** — Rewrite to use registry-driven generator discovery
+- **`package.json`** — Add canonical script commands:
+  - `validate:architecture`, `validate:contracts`, `validate:runtime`, `validate:db`, `validate:deployment`, `validate:release`, `validate:support`
+  - `generate:manifests`, `generate:runtime`, `generate:db`, `generate:deployment`
+  - `release:desktop`, `release:appliance`, `release:vmware`
+  - `drill:recovery`, `drill:backup-restore`
+
+### Phase 5: Documentation
+
+Create 5 architecture docs:
+- `docs/architecture/SCRIPT_SYSTEM_ARCHITECTURE.md`
+- `docs/architecture/SCRIPT_TAXONOMY_AND_EXECUTION_POLICY.md`
+- `docs/architecture/SCRIPT_LANGUAGE_POLICY.md`
+- `docs/architecture/SCRIPT_OUTPUT_AND_CI_BINDING_MAP.md`
+- `docs/architecture/SCRIPT_PERMANENCE_AND_LIFECYCLE_MODEL.md`
+
+### Phase 6: Script System Tests
+
+Create `src/test/script-system/` with 7 test files asserting:
+- Every script is registered
+- Every permanent script has an owner
+- No duplicated canonical concerns
+- Every validation/generation script has outputs or CI bindings
+
+## Key Constraints
+
+- All existing imports from `scripts/architecture/lib/utils.ts` preserved — the `lib/` stays and all new scripts import from it
+- `validate-all.ts` and `generate-all.ts` updated to reference new paths
+- No script deleted without replacement identification
+- All new scripts are real executable validators/generators, not stubs
+- Total new files: ~95 (8 registry + 50+ domain scripts + 5 docs + 7 tests + ~25 reorganized/renamed)
+
+## Technical Notes
+
+- All scripts use the existing `ViolationCollector` pattern from `scripts/architecture/lib/utils.ts`
+- New domain `lib/` directories created where needed for shared utilities
+- Registry files are `as const` typed registries following the pattern in `src/lib/` canonical registries
+- Shell/PS1 scripts are not moved if they have no TS equivalent — they stay in their current domain but get registered
 
