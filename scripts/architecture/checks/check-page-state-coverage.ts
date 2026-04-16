@@ -8,11 +8,19 @@
 import { existsSync } from "node:fs";
 import {
   PAGE_STATE_REGISTRY,
+  PAGE_STATE_REGISTRY_FLOOR,
   findUncoveredStates,
   pageStateCoverageStats,
 } from "../../../src/lib/reality/page-state-registry";
 
 const issues: string[] = [];
+
+// 0. Floor: enough critical+admin pages registered
+if (PAGE_STATE_REGISTRY.length < PAGE_STATE_REGISTRY_FLOOR) {
+  issues.push(
+    `Page state registry has only ${PAGE_STATE_REGISTRY.length} entries; floor is ${PAGE_STATE_REGISTRY_FLOOR}.`,
+  );
+}
 
 // 1. Each registered page file exists
 for (const entry of PAGE_STATE_REGISTRY) {
