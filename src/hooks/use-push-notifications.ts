@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useFeatureRuntimeTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
 import {
   registerPushToken,
   unregisterAllTokens,
@@ -20,6 +21,10 @@ export interface UsePushNotificationsReturn {
   permissionState: NotificationPermission | "unsupported";
   devices: PushTokenRecord[];
   isLoading: boolean;
+  /** Active runtime tier — exposed for honest UI gating. */
+  tier: ReturnType<typeof useRuntimeTier>;
+  /** Tier-honest reason if push is not available here ("" when supported). */
+  unavailableReason: string;
   requestPermission: () => Promise<boolean>;
   unregister: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -27,11 +32,21 @@ export interface UsePushNotificationsReturn {
 
 export function usePushNotifications(): UsePushNotificationsReturn {
   const { user } = useAuth();
+  const tier = useRuntimeTier();
+  const tierStatus = useFeatureRuntimeTier("notifications-push");
   const [isRegistered, setIsRegistered] = useState(false);
   const [permissionState, setPermissionState] = useState<NotificationPermission | "unsupported">(getPermissionState());
   const [devices, setDevices] = useState<PushTokenRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isSupported = isPushSupported();
+  // Push is honestly supported only when both the browser API exists AND
+  // the active runtime tier permits it (prohibited on APPLIANCE_RUNTIME).
+  const tierAllows = tierStatus === "supported" || tierStatus === "fallback";
+  const isSupported = isPushSupported() && tierAllows;
+  const unavailableReason = !tierAllows
+    ? `Push is unavailable on ${tier}. Use in-app notifications instead.`
+    : !isPushSupported()
+    ? "Your browser does not support push notifications."
+    : "";
 
   // Load existing tokens
   useEffect(() => {
@@ -108,6 +123,8 @@ export function usePushNotifications(): UsePushNotificationsReturn {
     permissionState,
     devices,
     isLoading,
+    tier,
+    unavailableReason,
     requestPermission,
     unregister,
     refresh,

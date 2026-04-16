@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T18:46:28.106Z",
+  "generatedAt": "2026-04-16T18:53:45.013Z",
   "totalChecks": 6,
   "passed": 6,
   "failed": 0,
@@ -26,7 +26,7 @@
       "script": "scripts/runtime/checks/check-launch-honesty.ts",
       "passed": true,
       "exitCode": 0,
-      "stdout": "📣 Scanned 1900 files, 0 claims flagged for review\n✅ check-launch-honesty: All checks passed",
+      "stdout": "📣 Scanned 1901 files, 0 claims flagged for review\n✅ check-launch-honesty: All checks passed",
       "stderr": ""
     },
     {
@@ -34,7 +34,7 @@
       "script": "scripts/runtime/checks/check-desktop-bridge-isolation.ts",
       "passed": true,
       "exitCode": 0,
-      "stdout": "🔒 1937 files scanned, 0 desktop-bridge leaks\n✅ check-desktop-bridge-isolation: All checks passed",
+      "stdout": "🔒 1938 files scanned, 0 desktop-bridge leaks\n✅ check-desktop-bridge-isolation: All checks passed",
       "stderr": ""
     },
     {
