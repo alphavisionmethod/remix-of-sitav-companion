@@ -6,7 +6,7 @@
 import { ReactNode, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronUp, Layers } from "lucide-react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 type LayerLevel = 1 | 2 | 3;
 
