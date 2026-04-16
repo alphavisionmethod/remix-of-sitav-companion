@@ -145,7 +145,7 @@ SitaKernelProvider (trust, memory, receipts, workflows)
 
 | Check | Result |
 |-------|--------|
-| Total edge functions | 75 |
+| Total edge functions | 86 |
 | JWT-verified (user-facing) | ✅ All |
 | Public endpoints documented | ✅ |
 | Admin endpoints elevated auth | ✅ |
@@ -153,6 +153,7 @@ SitaKernelProvider (trust, memory, receipts, workflows)
 | Error response standardization | ✅ Structured codes + correlation IDs |
 | Shared utilities | `supabase/functions/_shared/` |
 | Payment kill-switch | ✅ Admin-only with dual-approval |
+| DB Truth Introspection | ✅ `db-truth-introspect` (admin-only, SECURITY DEFINER RPC) |
 
 ---
 
@@ -162,13 +163,14 @@ SitaKernelProvider (trust, memory, receipts, workflows)
 
 | Metric | Count |
 |--------|-------|
-| Page components | 983 |
-| Shared components | 911 |
+| Page components | 1012 |
+| Shared components | 897 |
 | Custom hooks | 158 |
 | Context providers | 27 |
 | Route definitions | 598 |
 | CSS design tokens | 160 |
 | `as any` in pages | 127 (38 remaining in legacy admin) |
+| Lib modules | 1665 |
 
 ### 3.2 Design System
 
@@ -232,9 +234,9 @@ SitaKernelProvider (trust, memory, receipts, workflows)
 | Proof infrastructure | ai_inference_receipts, notification_delivery_receipts, connector_sync_runs, connector_oauth_flows, outcome_verifications | ✅ |
 | API gateway | api_gateway_routes, client_capability_matrix | ✅ |
 | Appointments | appointments | ✅ |
-| **Total** | **204** | **All active** |
+| **Total** | **201 tables + 4 views** | **All active · 100% RLS** |
 
-### 4.2 Edge Functions (75 deployed)
+### 4.2 Edge Functions (86 deployed)
 
 | Category | Functions | Status |
 |----------|-----------|--------|
@@ -247,14 +249,16 @@ SitaKernelProvider (trust, memory, receipts, workflows)
 | CRM | crm-sync | ✅ |
 | Booking | booking-manage | ✅ |
 | Operations | ambient-os-operations, cost-alert | ✅ |
-| **P0/P1 Remediation** | payment-kill-switch, investment-portfolio-api, digital-twin-engine, simulation-engine-api, communications-api, tasks-workflow-api, app-store-api | ✅ NEW |
-| Other | 30+ specialized functions | ✅ |
+| **P0/P1 Remediation** | payment-kill-switch, investment-portfolio-api, digital-twin-engine, simulation-engine-api, communications-api, tasks-workflow-api, app-store-api | ✅ |
+| **DB Truth Plane** | db-truth-introspect (admin-only, SECURITY DEFINER) | ✅ NEW |
+| Other | 35+ specialized functions | ✅ |
 
 ### 4.3 Migrations
 
-- **Total migrations**: 161
-- **Schema version**: Current
+- **Total migrations**: 164
+- **Schema version**: Current (v5.0 — DB Truth Plane)
 - **Rollback capability**: All migrations are additive (no destructive changes)
+- **Latest**: `get_db_truth_snapshot` SECURITY DEFINER RPC for safe schema introspection
 
 ---
 
@@ -422,7 +426,7 @@ suggestion → draft → simulated → approval-required → approved → execut
 | Directory | Files |
 |-----------|-------|
 | `src/pages/` | 983 |
-| `src/components/` | 911 |
+| `src/components/` | 897 |
 | `src/hooks/` | 158 |
 | `src/lib/` | 1,548 |
 | `src/contexts/` | 27 |
