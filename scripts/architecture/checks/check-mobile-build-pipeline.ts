@@ -1,0 +1,116 @@
+/* eslint-disable no-console */
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Mobile Build Pipeline Contract Gate
+// Phase 12.1 — asserts the iOS + Android native build pipelines
+// are wired end-to-end (deps, plist, scripts, capacitor config).
+// ═══════════════════════════════════════════════════════════════
+
+import { existsSync, readFileSync, statSync, mkdirSync, writeFileSync } from "node:fs";
+
+interface PipelineIssue {
+  severity: "error" | "warning";
+  area: string;
+  message: string;
+}
+
+const REQUIRED_CAPACITOR_DEPS = [
+  "@capacitor/core",
+  "@capacitor/ios",
+  "@capacitor/android",
+  "@capacitor/push-notifications",
+  "@capacitor/app",
+  "@capacitor/preferences",
+  "@capacitor/device",
+  "@capacitor/network",
+];
+const REQUIRED_CAPACITOR_DEV_DEPS = ["@capacitor/cli"];
+
+const issues: PipelineIssue[] = [];
+
+// ── 1. package.json: Capacitor deps present ────────────────────
+let pkg: any = {};
+try {
+  pkg = JSON.parse(readFileSync("package.json", "utf8"));
+} catch {
+  issues.push({ severity: "error", area: "package.json", message: "Cannot read package.json" });
+}
+const allDeps = { ...(pkg.dependencies ?? {}), ...(pkg.devDependencies ?? {}) };
+for (const d of REQUIRED_CAPACITOR_DEPS) {
+  if (!allDeps[d]) {
+    issues.push({ severity: "error", area: "deps", message: `Missing dependency: ${d}` });
+  }
+}
+for (const d of REQUIRED_CAPACITOR_DEV_DEPS) {
+  if (!allDeps[d]) {
+    issues.push({ severity: "error", area: "deps", message: `Missing devDependency: ${d}` });
+  }
+}
+
+// ── 2. capacitor.config.ts parses ──────────────────────────────
+if (!existsSync("capacitor.config.ts")) {
+  issues.push({ severity: "error", area: "capacitor", message: "capacitor.config.ts not found" });
+} else {
+  const cfg = readFileSync("capacitor.config.ts", "utf8");
+  if (!cfg.includes("appId:")) {
+    issues.push({ severity: "error", area: "capacitor", message: "capacitor.config.ts missing appId" });
+  }
+  if (!cfg.includes("webDir:")) {
+    issues.push({ severity: "error", area: "capacitor", message: "capacitor.config.ts missing webDir" });
+  }
+}
+
+// ── 3. iOS exportOptions.plist exists ──────────────────────────
+const PLIST = "scripts/release/ios/exportOptions.plist";
+if (!existsSync(PLIST)) {
+  issues.push({ severity: "error", area: "ios", message: `${PLIST} missing — xcodebuild -exportArchive will fail` });
+} else {
+  const plist = readFileSync(PLIST, "utf8");
+  if (!plist.includes("<key>method</key>") || !plist.includes("app-store")) {
+    issues.push({ severity: "error", area: "ios", message: "exportOptions.plist missing method=app-store" });
+  }
+}
+
+// ── 4. Build scripts present ───────────────────────────────────
+const BUILD_SCRIPTS = ["scripts/release/ios/build-ios.sh", "scripts/release/android/build-android.sh"];
+for (const s of BUILD_SCRIPTS) {
+  if (!existsSync(s)) {
+    issues.push({ severity: "error", area: "scripts", message: `Build script missing: ${s}` });
+    continue;
+  }
+  try {
+    statSync(s);
+  } catch {
+    issues.push({ severity: "warning", area: "scripts", message: `Cannot stat ${s}` });
+  }
+}
+
+// ── Emit report ────────────────────────────────────────────────
+const errorCount = issues.filter((i) => i.severity === "error").length;
+const warningCount = issues.filter((i) => i.severity === "warning").length;
+const ok = errorCount === 0;
+
+const report = {
+  generatedAt: new Date().toISOString(),
+  ok,
+  errorCount,
+  warningCount,
+  checks: {
+    capacitorDeps: REQUIRED_CAPACITOR_DEPS.every((d) => !!allDeps[d]),
+    capacitorCli: REQUIRED_CAPACITOR_DEV_DEPS.every((d) => !!allDeps[d]),
+    capacitorConfig: existsSync("capacitor.config.ts"),
+    exportOptionsPlist: existsSync(PLIST),
+    iosBuildScript: existsSync("scripts/release/ios/build-ios.sh"),
+    androidBuildScript: existsSync("scripts/release/android/build-android.sh"),
+  },
+  issues,
+};
+
+mkdirSync("generated", { recursive: true });
+writeFileSync("generated/mobile-build-pipeline-report.json", JSON.stringify(report, null, 2));
+
+if (!ok) {
+  console.error(`✘ Mobile build pipeline: ${errorCount} errors`);
+  for (const i of issues) console.error(`  [${i.severity}] ${i.area}: ${i.message}`);
+  process.exit(1);
+}
+console.log(`✓ Mobile build pipeline: deps + plist + scripts + capacitor.config OK`);
