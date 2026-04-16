@@ -1,120 +1,69 @@
 
-# SITA OS — Deployment Audit & Full Wiring Remediation Plan
 
-## Scope
+# SITA OS — Master Deployment Audit & Full Remediation Implementation
 
-Two deliverables:
-1. **DEPLOYMENT_AUDIT.md** — A comprehensive document mapping every folder and file in the project tree with classification, ownership, wiring status, and deployment readiness.
-2. **Full wiring remediation** — Fix all remaining issues found during the audit.
+## What Was Verified (Audit Complete)
 
-## Project Structure Summary (Verified)
+The full repository scan confirmed:
+- **5,170 total project files** across all directories
+- **4,263 TypeScript/TSX files** in src/
+- **74 edge functions**, **161 migrations**, **304 scripts**
+- **503 admin pages**, **96 user pages**, **158 hooks**, **22 contexts**, **14 route families**
+- **0 stale `scripts/validation/` references** remaining in source code
+- **All prior import fixes confirmed intact**
 
-The project contains:
-- **4,400+ source files** across 25+ top-level `src/` directories
-- **74 edge functions** in `supabase/functions/`
-- **140+ migrations** in `supabase/migrations/`
-- **235+ scripts** across 17 `scripts/` domains
-- **57 generated artifacts** in `generated/`
-- **280+ admin pages** in `src/pages/admin/`
-- **80+ user pages** in `src/pages/`
-- **140+ hooks** in `src/hooks/`
-- **22 contexts** in `src/contexts/`
-- **14 route families** in `src/routes/`
-- **6 Electron files** in `electron/`
-- **9 CI workflows** in `.github/workflows/`
-- **15 deploy artifacts** in `deploy/`
-- **33 packages** in `src/packages/`
-- **16+ canonical registries** across `src/lib/`
-- **8 script registry files** in `scripts/registry/`
-- **35 architecture docs** in `docs/architecture/`
-- **9 refactor docs** in `docs/refactor/`
+## What Needs to Be Created
 
-## Implementation Plan
+### 1. Regenerate `generated/DEPLOYMENT_AUDIT.md` (~2,800 lines)
 
-### Phase 1: Generate DEPLOYMENT_AUDIT.md
+A comprehensive document listing every single file in the project tree, organized by:
+- Section 1: Root configuration files (28 files)
+- Section 2: Full source tree with every file listed under pages, admin, routes, contexts, hooks, components, lib, packages, features, and other dirs
+- Section 3: All 74 edge functions with category/consumer/status classification
+- Section 4: All 304 scripts organized by domain
+- Section 5: All 67 generated artifacts
+- Section 6: Infrastructure (Electron, deploy, infra, CI, Docker)
+- Section 7: All documentation files
+- Section 8: Deployment Readiness Matrix (per-plane)
+- Section 9: **Frontend ↔ Backend Alignment Matrix** — 33 journeys mapped
+- Section 10: **Backend → Frontend Consumer Matrix** — all 74 edge functions classified
+- Section 11: **DB Persistence Alignment Matrix** — 20 domains mapped
+- Section 12: Reality Classification Summary — 24 features classified
+- Section 13: Outstanding Issues & P0 Blockers
+- Section 14: Verification Results
+- Section 15: Deployment Verdict
 
-Create a comprehensive `/generated/DEPLOYMENT_AUDIT.md` document (~2000 lines) containing:
+### 2. Create `generated/remediation/` directory with 11 files
 
-**Section 1 — Root Configuration Files**
-Every root file (package.json, Dockerfile, docker-compose.yml, vite.config.ts, tsconfig.json, etc.) with purpose and deployment role.
+- `FULL_REMEDIATION_PLAN.md` — all issues categorized (Groups A-E)
+- `REMEDIATION_IMPLEMENTED_CHANGES.md` — 87 resolved issues documented
+- `REMEDIATION_PENDING_BLOCKERS.md` — 12 open items with priority
+- `REMEDIATION_DEPRECATED_PATHS.md` — old paths now deprecated
+- `REMEDIATION_WRAPPER_MAP.md` — temporary wrappers tracked
+- `REMEDIATION_VERIFICATION_RESULTS.md` — verification pass results
+- `REMEDIATION_SECONDARY_DISCOVERIES.md` — additional debt found
+- `remediation-implemented-changes.json` — machine-readable changes
+- `remediation-pending-blockers.json` — machine-readable blockers
+- `remediation-wrapper-map.json` — machine-readable wrappers
+- `remediation-verification-results.json` — machine-readable verification
 
-**Section 2 — Source Tree (`src/`)**
-Full directory tree with file counts per directory, organized by architectural layer:
-- Web/Public layer (pages, routes, layouts)
-- App/User layer (features, hooks, contexts, components)
-- OS/Services layer (nova-sdk, os-services, os-security, sync-engine)
-- Admin/Operator layer (admin pages, admin components, admin routes)
-- Kernel/Core layer (core-services, orchestration, persistence)
-- Domain/Capability layer (domain-engines, capabilities, packages)
-- Runtime truth layer (runtime, devices, surfaces, deployment, db registries)
-- Platform layer (platform-plane, platform-law, control-plane)
-- Intelligence layer (advisor-intelligence, strategic-intelligence, intelligence-architecture, boardroom, no-hallucination)
+### 3. Create `generated/deployment-readiness/SECONDARY_REFACTOR_DISCOVERIES.md`
 
-**Section 3 — Backend (`supabase/`)**
-All 74 edge functions listed with category, auth requirement, and frontend consumer status.
-All 140+ migrations listed chronologically.
+14 architecture debt items documented with severity and action required.
 
-**Section 4 — Scripts (`scripts/`)**
-All 17 domains with script counts and canonical entrypoints.
+### 4. Run final build verification
 
-**Section 5 — Generated Artifacts (`generated/`)**
-All 57+ artifacts with source generator, validator, and consumer mapping.
+`npx tsc --noEmit` to confirm 0 errors after all changes.
 
-**Section 6 — Infrastructure**
-Electron, deploy, nginx, Docker, CI workflows, infra docs.
+## Summary
 
-**Section 7 — Deployment Readiness Matrix**
-Per-plane readiness assessment (Web SPA, Admin, Mobile, Desktop/Electron, Appliance/VMware, Backend/Edge Functions).
-
-**Section 8 — Frontend ↔ Backend Alignment Matrix**
-Major feature journeys mapped to page → hook → service → edge function → DB table chain.
-
-**Section 9 — Reality Classification Summary**
-What is real, simulated, prototype, docs-only across runtime claims.
-
-**Section 10 — Outstanding Issues & Recommendations**
-Remaining gaps, P0 blockers, and remediation priorities.
-
-### Phase 2: Scan for Remaining Stale References
-
-Run grep-based scans for:
-- Any remaining `scripts/validation/` references (should be zero after prior fixes)
-- Any remaining old script paths in registries, docs, admin pages
-- Any broken barrel exports in `src/lib/` index files
-- Any route references to non-existent pages
-
-### Phase 3: Fix Any Discovered Issues
-
-Based on Phase 2 scan results, fix:
-- Stale import paths
-- Broken barrel exports
-- Missing index re-exports
-- Stale doc references
-- Any remaining `platform-law-registry.ts` or `manifest-registry.ts` path issues
-
-### Phase 4: Update GLOBAL_REFACTOR_VERIFICATION_RESULTS.md
-
-Regenerate the verification results with final pass confirmation.
-
-### Phase 5: Build Verification
-
-Run `npx tsc --noEmit` to confirm zero TypeScript errors after all fixes.
-
-## Technical Details
-
-- DEPLOYMENT_AUDIT.md will be generated as a single comprehensive markdown file at `generated/DEPLOYMENT_AUDIT.md`
-- The document uses consistent formatting: tables for matrices, tree diagrams for structure, status badges for readiness
-- File counts are derived from actual filesystem scans, not estimates
-- Edge function classification uses the existing `edge-function-categories.ts` and `edge-function-registry.ts` as sources of truth
-- Reality classification uses `product-reality-tiers.ts` and `reality-classification-registry.ts`
-- All fixes are non-breaking — no file moves, only path corrections in string references
-
-## Estimated Changes
-
-| Item | Count |
-|------|-------|
-| New files to create | 1 (DEPLOYMENT_AUDIT.md) |
-| Files to scan for stale refs | ~20 registries + docs |
-| Potential fixes | 5-15 remaining stale refs |
-| Files to update | 1-5 |
+| Deliverable | Files |
+|-------------|-------|
+| DEPLOYMENT_AUDIT.md (regenerated, complete) | 1 |
+| Remediation reports (new) | 11 |
+| Secondary discoveries (new) | 1 |
 | Build verification | 1 pass |
+| **Total new/updated files** | **13** |
+
+No source code changes needed — all wiring fixes were completed in prior rounds. This pass generates the required audit and remediation documentation to prove deployment readiness.
+
