@@ -95,6 +95,18 @@ export const RUNTIME_EVIDENCE_COLLECTORS: readonly RuntimeEvidenceCollectorRegis
     description: "Captures rendering pipeline state (compositor, wayland, drivers)",
     collector: collectRenderingPipelineEvidence,
   },
+  {
+    id: "collector.runtime-tier-governance",
+    manifestId: "manifest-runtime-tier-governance-report",
+    description: "Publishes live tier-governance summary (active tier + loaded definitions)",
+    collector: collectRuntimeTierGovernanceEvidence,
+  },
+  {
+    id: "collector.feature-runtime-tier",
+    manifestId: "manifest-feature-runtime-tier-registry",
+    description: "Counts feature tier classifications loaded in the active runtime",
+    collector: collectFeatureRuntimeTierEvidence,
+  },
 ] as const;
 
 /** Lookup a collector registration by its id. */
