@@ -1,0 +1,91 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T00:00:00Z",
+  "totalPending": 12,
+  "blockers": [
+    {
+      "id": "B1",
+      "priority": "P0",
+      "title": "No Sentry/Error Monitoring",
+      "reason": "Requires external Sentry DSN and account setup",
+      "action": "Create Sentry project, add DSN secret, integrate @sentry/react SDK"
+    },
+    {
+      "id": "B2",
+      "priority": "P0",
+      "title": "No Emergency Payment Kill Switch",
+      "reason": "Requires business logic decision on scope",
+      "action": "Create payment-kill-switch edge function with admin toggle"
+    },
+    {
+      "id": "B3",
+      "priority": "P0",
+      "title": "No Proven Green CI Artifacts",
+      "reason": "Requires CI infrastructure setup",
+      "action": "Configure CI secrets, run full pipeline"
+    },
+    {
+      "id": "B4",
+      "priority": "P1",
+      "title": "Investment Office Backend Gap",
+      "reason": "41 pages need dedicated edge functions",
+      "action": "Create investment-portfolio-api edge function"
+    },
+    {
+      "id": "B5",
+      "priority": "P1",
+      "title": "Service Sprawl (478 files)",
+      "reason": "Requires careful 400+ consumer migration",
+      "action": "Execute consolidation plan"
+    },
+    {
+      "id": "B6",
+      "priority": "P1",
+      "title": "Electron CI Pipeline",
+      "reason": "Requires Electron Forge + code signing",
+      "action": "Add build-electron.yml workflow"
+    },
+    {
+      "id": "B7",
+      "priority": "P1",
+      "title": "Admin Demo-Data Audit",
+      "reason": "503 pages need per-page inspection",
+      "action": "Manual audit for mock vs real data"
+    },
+    {
+      "id": "B8",
+      "priority": "P2",
+      "title": "Namespace Merges",
+      "reason": "Risk of breaking imports",
+      "action": "Staged merge of engine, hooks, journeys, ai-gateway"
+    },
+    {
+      "id": "B9",
+      "priority": "P2",
+      "title": "Demo Data Consolidation",
+      "reason": "58 files need deduplication",
+      "action": "Merge mock-data + demo-data"
+    },
+    {
+      "id": "B10",
+      "priority": "P2",
+      "title": "Error Boundary Coverage",
+      "reason": "Per-route audit needed",
+      "action": "Add ErrorBoundary to each route family"
+    },
+    {
+      "id": "B11",
+      "priority": "P2",
+      "title": "E2E Test Coverage",
+      "reason": "Test authoring required",
+      "action": "Add Playwright tests for critical journeys"
+    },
+    {
+      "id": "B12",
+      "priority": "P2",
+      "title": "Load/Performance Testing",
+      "reason": "Infrastructure required",
+      "action": "Set up load testing suite"
+    }
+  ]
+}

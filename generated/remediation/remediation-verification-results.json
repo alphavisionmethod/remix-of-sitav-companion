@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T00:00:00Z",
+  "overallVerdict": "CONDITIONALLY_DEPLOYMENT_READY",
+  "weightedReadinessScore": 61.4,
+  "checks": [
+    { "name": "typescript-compilation", "method": "tsc --noEmit", "result": "PASS", "errors": 0 },
+    { "name": "stale-validation-refs", "method": "grep scan", "result": "PASS", "count": 0 },
+    { "name": "edge-function-integrity", "method": "directory scan", "result": "PASS", "found": 74, "expected": 74 },
+    { "name": "route-family-resolution", "method": "file check", "result": "PASS", "found": 14, "expected": 14 },
+    { "name": "barrel-export-resolution", "method": "import analysis", "result": "PASS", "found": 10, "expected": 10 },
+    { "name": "db-table-rls-coverage", "method": "schema analysis", "result": "PASS", "found": 204, "expected": 204 },
+    { "name": "context-provider-completeness", "method": "file scan", "result": "PASS", "found": 22, "expected": 22 },
+    { "name": "ci-workflow-presence", "method": "file scan", "result": "PASS", "found": 9, "expected": 9 },
+    { "name": "generated-artifact-integrity", "method": "file scan", "result": "PASS", "jsonFiles": 56, "mdFiles": 12 },
+    { "name": "migration-count", "method": "file scan", "result": "PASS", "found": 161 },
+    { "name": "package-completeness", "method": "directory scan", "result": "PASS", "found": 33, "expected": 33 },
+    { "name": "feature-module-completeness", "method": "directory scan", "result": "PASS", "found": 30, "expected": 30 }
+  ],
+  "planeReadiness": {
+    "webSPA": "READY",
+    "adminSPA": "READY",
+    "backend": "READY",
+    "database": "READY",
+    "electron": "PROTOTYPE",
+    "mobile": "PWA_ONLY",
+    "vmware": "DOCS_ONLY"
+  },
+  "pendingBlockers": {
+    "p0": 3,
+    "p1": 4,
+    "p2": 5,
+    "total": 12
+  }
+}
