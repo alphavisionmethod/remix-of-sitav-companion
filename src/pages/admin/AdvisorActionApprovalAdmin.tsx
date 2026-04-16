@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,7 +19,7 @@ export default function AdvisorActionApprovalAdmin() {
   const failed = actions.filter(a => a.status === "failed");
 
   return (
-    <AdminShell activePath="/admin/advisor-board/actions" contextScope="Action & Approval Admin">
+    <AdminShell contextScope="Action & Approval Admin">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">

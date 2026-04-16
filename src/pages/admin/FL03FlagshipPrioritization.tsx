@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import FLSubNav from "@/components/admin/FLSubNav";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -66,7 +66,7 @@ const priorityColor = (p: string) =>
 
 export default function FL03FlagshipPrioritization() {
   return (
-    <AdminShell activePath="/admin/flagship/prioritization" contextScope="FL03 — Flagship Prioritization">
+    <AdminShell contextScope="FL03 — Flagship Prioritization">
       <FLSubNav />
 
       <div className="space-y-6">

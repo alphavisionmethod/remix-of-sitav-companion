@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -93,7 +93,7 @@ export default function AdvisorBoardCatalog() {
   }, []);
 
   return (
-    <AdminShell activePath="/admin/advisor-board/catalog" contextScope="Advisor Board Catalog">
+    <AdminShell contextScope="Advisor Board Catalog">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>

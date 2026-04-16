@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ export default function AdvisorRecommendationMonitor() {
   );
 
   return (
-    <AdminShell activePath="/admin/advisor-board/recommendations" contextScope="Recommendation Monitor">
+    <AdminShell contextScope="Recommendation Monitor">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">

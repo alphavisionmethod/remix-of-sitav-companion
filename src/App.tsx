@@ -46,6 +46,9 @@ import { getAdvisorRoutes } from "@/routes/advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
+import { getCommunicationsRoutes } from "@/routes/communications-routes";
+import { getAppsRoutes } from "@/routes/apps-routes";
+import { getSettingsRoutes } from "@/routes/settings-routes";
 
 // ═══════════════════════════════════════════════════════════════
 // Minimal lazy-loaded pages not covered by route families
@@ -254,6 +257,9 @@ const App = () => (
                         {getBoardroomRoutes()}
                         {getAdvisorRoutes()}
                         {getExperimentalRoutes()}
+                        {getCommunicationsRoutes()}
+                        {getAppsRoutes()}
+                        {getSettingsRoutes()}
 
                         {/* Owner workspace */}
                         {getOwnerRoutes()}

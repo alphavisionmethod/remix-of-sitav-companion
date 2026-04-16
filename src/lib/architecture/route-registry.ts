@@ -31,7 +31,7 @@ function assignShell(layer: Layer, path: string): string {
   if (layer === LAYERS.WEB) return "PublicLayout";
   if (layer === LAYERS.ADMIN_OPERATOR) {
     if (path.startsWith("/owner/")) return "OwnerWorkspaceShell";
-    return "AdminShell";
+    return "AdminControlPlaneShell";
   }
   return "ShellLayout";
 }

@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -26,7 +26,7 @@ export default function AdvisorAgentDashboard() {
   };
 
   return (
-    <AdminShell activePath="/admin/advisor-agents" contextScope="Advisor Agent Dashboard">
+    <AdminShell contextScope="Advisor Agent Dashboard">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

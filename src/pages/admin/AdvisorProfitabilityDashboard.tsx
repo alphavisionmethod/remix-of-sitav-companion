@@ -1,4 +1,4 @@
-import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,7 +23,7 @@ export default function AdvisorProfitabilityDashboard() {
   const resolvedImpact = resolved.reduce((s, sig) => s + (sig.actual_impact_cents ?? 0), 0);
 
   return (
-    <AdminShell activePath="/admin/advisor-board/profitability" contextScope="Profitability Dashboard">
+    <AdminShell contextScope="Profitability Dashboard">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
