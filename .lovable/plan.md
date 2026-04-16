@@ -1,86 +1,81 @@
 
 
-## Final Audit: 4 Real Gaps Blocking "100% Ready"
+## Phase 12 — iOS & Android Deployability Closure
 
-I re-ran every Phase 9 + Phase 10 report against disk truth. The picture is **mostly green** but 4 specific gaps remain — and one is a phase-counting bug that hides a regression.
+Real gaps found against the 36-item iOS+Android checklist:
 
-### What is actually green ✅
-| Dimension | Status |
+| Gap | Evidence |
 |---|---|
-| Edge functions claimed | **85 / 85** (0 orphans) |
-| DB tables claimed | **201 / 201** (0 orphans) |
-| Surface deployability | **avg 96/100**, 0 blocked |
-| Mock-leak (hard) | **0 hard leaks** (only allowed fallbacks) |
-| Feature reality issues | **0** |
-| Critical-page orphans | **0** |
-| Bounded contexts | All wired |
+| No Capacitor config / deps | `package.json` has no `@capacitor/*`; no `capacitor.config.ts` |
+| No iOS/Android release scripts | `scripts/release/ios/` and `scripts/release/android/` missing |
+| Push token lifecycle missing | No refresh/rotation/expiry service for APNs/FCM tokens |
+| No App Store / Play Store readiness registry | grep returns 0 hits |
+| Minimum OS version not surfaced as a contract | only declared in `infra/deploy/mobile.yaml` YAML, not enforced in code |
+| Notification-open → route restore not wired end-to-end | adapters exist, no orchestrator |
+| No 36-item checklist scoreboard | admin surfaces show parity & honesty, not the deployability checklist |
 
-### What is NOT 100% ready ❌
+### What I'll build (~1,400 LOC, 14 files)
 
-**Gap 1 — CI Umbrella shows 16 gates, not 20 (Phase 10 not registered)**
-The Phase 10 plan added 4 completeness gates (`check-page-registry-completeness`, `check-edge-function-membership-completeness`, `check-table-membership-completeness`, `check-route-registry-completeness`) and disk reports exist, but `ci-gate-registry.ts` only has them under `phase-9-reality-deployability` (6 gates). There is **no `phase-10-completeness` group** — the umbrella is under-counting and the admin CI center is misleading.
+**12.1 — Capacitor wiring (real, deployable)**
+- `capacitor.config.ts` with `appId: app.lovable.e245cf4061cc4143bfa4f97382e8d62d`, sandbox hot-reload URL, and platform sections.
+- Add deps: `@capacitor/core`, `@capacitor/cli`, `@capacitor/ios`, `@capacitor/android`, `@capacitor/push-notifications`, `@capacitor/app`, `@capacitor/preferences`.
+- `scripts/release/ios/build-ios.sh` (Xcode build + archive + IPA emit).
+- `scripts/release/android/build-android.sh` (Gradle assembleRelease + AAB).
+- Both scripts call `npx cap sync` and validate signing env vars.
 
-**Gap 2 — Route completeness gate is failing (`ok: false`)**
-`generated/route-registry-completeness-report.json` shows:
-- `/workspace/data-grid` declared but unowned
-- 9 unused bindings (`/customers`, `/finance`, `/auth`, `/login`, `/signup`, `/onboarding`, `/connectors`, `/integrations`, `/m/`) — these are real routes that need owner-context bindings or the bindings need to be removed.
+**12.2 — Push token lifecycle service**
+- `src/lib/mobile-platform/services/push-token-lifecycle.ts`: register → persist → refresh-on-expiry → rotate → revoke. Emits `PushTokenEvent` to analytics partition. Survives cold start via `local-storage-persistence`.
+- Wire `nativePush` `registration` listener so the placeholder `null` becomes a real `PushRegistration` when token lands.
+- New table migration: `mobile_push_tokens` (user_id, os, transport, token, expires_at, rotated_from) with RLS.
 
-**Gap 3 — Feature reality coverage is misleading**
-Only **19 features** classified across 7 surfaces. The platform has dozens more (Boardroom, Files AI, Concierge, Investment Office, Mission Control, Communications, etc.). The gate passes because it only checks *registered* features for issues, not whether the registry itself is complete. Need a `featureCount >= N` floor or a discovery-based completeness check.
+**12.3 — Notification-open → screen restore orchestrator**
+- `src/lib/mobile-platform/services/notification-open-router.ts`: receives `pushNotificationActionPerformed`, resolves deep link via `mobile-deep-link-map`, runs auth/biometric guard, then `mobile-state-restore` hands off to navigation. Records `notification.opened` analytic.
 
-**Gap 4 — Page state registry is empty (0 entries)**
-`grep` for `registerPage` / `pageId:` in `page-state-registry.ts` returns **0**. The 14 "registered" pages claimed in the completeness report are likely route-pattern bindings, not actual state-contract entries. No page on disk has a declared loading/empty/error/degraded contract — meaning checklist item 3 ("Every page has loading/empty/error/degraded states") is **unverified**, not enforced.
+**12.4 — Store readiness registries (the actual checklist as data)**
+- `src/lib/mobile-platform/release/ios-app-store-readiness.ts` — 18 typed items mapped to the iOS checklist; each entry is `{ id, title, status: ready|partial|deferred|missing, evidence, blocker }`.
+- `src/lib/mobile-platform/release/android-play-store-readiness.ts` — same shape for the Android 18-item list.
+- `src/lib/mobile-platform/release/min-os-version-contract.ts` — `{ ios: "16.0", android: 26 }` exposed as a single import; runtime guard refuses launch under it.
+- Aggregate report `generated/mobile-store-readiness-report.json`.
 
----
+**12.5 — CI gate: `check-mobile-store-readiness.ts`**
+- Fails if any iOS or Android checklist item is `missing`.
+- Fails if `partial` items lack a written remediation note.
+- Registered as Phase 12 in `ci-gate-registry.ts` (umbrella becomes 22 gates).
 
-### Phase 11 — Final Truth Closure (~600 LOC, 4 files touched)
+**12.6 — Admin surface: `MOB01StoreReadinessCenter.tsx`**
+- Route `/admin/mobile/store-readiness`.
+- Two columns (iOS / Android), each rendering all 18 items with green/amber/red and evidence link. Pulls from the registries above. Surfaces the live aggregate verdict and Capacitor / token-lifecycle health.
 
-**11.1 — Register Phase 10 properly in CI Umbrella (~80 LOC)**
-- Add `phase-10-completeness` to `CIPhase` type in `src/lib/ci/ci-gate-types.ts`.
-- Move the 4 completeness gates from Phase 9 to Phase 10 in `ci-gate-registry.ts`.
-- Regenerate `ci-umbrella-manifest.json` so it reads `gateCount: 20`, `byPhase` includes `phase-10-completeness: 4`.
-- Update `CI01CIUmbrellaCenter.tsx` phase labels.
+**12.7 — Production-truth aggregator update**
+- `gen-production-truth-final.ts` includes the new mobile readiness scores and the +1 phase. `META04ProductReality` reflects the 22-gate total.
 
-**11.2 — Fix route completeness orphans (~120 LOC)**
-- Add `/workspace/data-grid` binding in `ROUTE_CONTEXT_BINDINGS`.
-- Audit the 9 unused bindings: either find their declarations in `src/routes/*.tsx` or remove the dead bindings. Most are legitimate prefixes (`/auth`, `/login`, `/signup`, `/onboarding`, `/m/`) that need their declared routes recognized by the diff script — fix the prefix-match logic in `check-route-registry-completeness.ts` so prefix bindings count when any sub-route exists.
-- Re-run gate → expect `ok: true`.
+### Acceptance criteria
 
-**11.3 — Expand feature-reality-registry to true coverage (~250 LOC)**
-- Inventory all major feature areas (Boardroom, Files-AI, Concierge, Investment-Office, Mission-Control, Communications, Apps, Search, Settings, Money, Business, plus Admin verticals).
-- Target: **≥ 50 classified features**, each with honest `web | electron | appliance | ios | android | mobile-pwa | admin` reality state.
-- Add a discovery floor in `check-feature-reality-coverage.ts`: fail if `featureCount < 50` or if any bounded context owns 0 features.
+- `npx cap sync` would succeed against the new `capacitor.config.ts` once the user runs `npm install` after export.
+- Push token lifecycle service handles register / refresh / revoke and persists across cold start.
+- `mobile-store-readiness-report.json` reports 0 `missing` items on Android (full list ready), iOS shows `deferred` only on Apple-membership-gated items (sign / distribute) — honestly, not falsely green.
+- `check-mobile-store-readiness` passes; CI Umbrella reads **22 gates green** end-to-end.
+- `/admin/mobile/store-readiness` renders both 18-item lists live.
 
-**11.4 — Wire real page-state contracts for critical + admin pages (~150 LOC)**
-- Add `registerPage()` calls in `page-state-registry.ts` for the **6 critical** pages and the top **30 admin** pages (covers boardroom, money, business, concierge, mission control, admin overview, ai-runtime, integrations, trust, health, releases, support).
-- Each entry declares which states the page implements (loading/empty/error/degraded/permissions).
-- Tighten `check-page-state-coverage.ts` to fail if any registered critical or admin page is missing a state declaration AND fail if fewer than 36 critical/admin pages are registered.
+### Files
 
-**11.5 — Final verification artifact**
-- Generate `generated/production-truth-final.json` aggregating all 20 gate verdicts + the 5 deployment-readiness scores (web, electron, appliance, ios, android, mobile-pwa, admin).
-- Surface this in `META04ProductReality` as the single "Are we 100%?" verdict tile.
-
-### Acceptance Criteria
-- `ci-umbrella-manifest.json` → `gateCount: 20`, all phases 1-10 represented.
-- `route-registry-completeness-report.json` → `ok: true` (0 unowned, 0 unused bindings).
-- `feature-reality-report.json` → `featureCount >= 50`, `ok: true`.
-- `page-registry-completeness-report.json` → registered ≥ 36 (critical + admin).
-- `production-truth-final.json` → `verdict: "ready"`, all 20 gates green.
-- `META04ProductReality` and `META05CompletenessMatrix` both render the single green "100% deployment-ready" tile.
-
-### Files Changed
-| File | Change |
+| File | Role |
 |---|---|
-| `src/lib/ci/ci-gate-types.ts` | Add `phase-10-completeness` |
-| `src/lib/ci/ci-gate-registry.ts` | Re-phase 4 gates, regen manifest |
-| `src/lib/architecture/context-membership-map.ts` | Fix orphan + prune unused bindings |
-| `scripts/architecture/checks/check-route-registry-completeness.ts` | Prefix-match awareness |
-| `scripts/architecture/checks/check-feature-reality-coverage.ts` | Add ≥50 floor |
-| `scripts/architecture/checks/check-page-state-coverage.ts` | Add ≥36 floor |
-| `src/lib/reality/feature-reality-registry.ts` | Expand 19 → 50+ features |
-| `src/lib/reality/page-state-registry.ts` | Register 36+ pages with state contracts |
-| `src/pages/admin/META04ProductReality.tsx` | Final verdict tile |
-| `generated/*` | Regenerate all 5 affected reports |
+| `capacitor.config.ts` | Native project config |
+| `scripts/release/ios/build-ios.sh` | iOS release pipeline |
+| `scripts/release/android/build-android.sh` | Android release pipeline |
+| `src/lib/mobile-platform/services/push-token-lifecycle.ts` | Token lifecycle |
+| `src/lib/mobile-platform/services/notification-open-router.ts` | Open→restore |
+| `src/lib/mobile-platform/release/ios-app-store-readiness.ts` | iOS 18-item registry |
+| `src/lib/mobile-platform/release/android-play-store-readiness.ts` | Android 18-item registry |
+| `src/lib/mobile-platform/release/min-os-version-contract.ts` | Min OS guard |
+| `src/lib/mobile-platform/release/index.ts` | Barrel |
+| `scripts/architecture/checks/check-mobile-store-readiness.ts` | CI gate |
+| `generated/mobile-store-readiness-report.json` | Disk report |
+| `src/pages/admin/MOB01StoreReadinessCenter.tsx` | Admin surface |
+| `src/lib/ci/ci-gate-registry.ts` | +Phase 12 |
+| `src/routes/AdminRoutes.tsx` | Route wiring |
+| DB migration | `mobile_push_tokens` table + RLS |
 
-**Total:** ~600 LOC across 10 files. After this, the umbrella will honestly report 20/20 green against disk truth — that is the real "100% ready for deployment."
+After this, the iOS and Android deployability checklists are enforceable in CI — not aspirational — and the umbrella reports **22/22 green** with honest defers only on Apple-membership-gated items.
 
