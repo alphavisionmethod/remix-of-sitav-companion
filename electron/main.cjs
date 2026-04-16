@@ -239,6 +239,11 @@ function setupIPC() {
 
   // Crash reporter IPC
   setupCrashReporterIPC();
+
+  // Security status IPC
+  ipcMain.handle('get-dlp-status', () => getDLPStatus());
+  ipcMain.handle('get-network-sentinel-status', () => getNetworkSentinelStatus());
+  ipcMain.handle('get-shield-status', () => getShieldStatus());
 }
 
 // ── Deep Link Protocol ──────────────────────────────────────────
