@@ -62,3 +62,8 @@ export { default as ITC11PromptTraceability } from "@/pages/admin/implementation
 export { default as ITC12ValidationPipeline } from "@/pages/admin/implementation-truth/ITC12ValidationPipeline";
 export { default as ITC13LaunchTruthGate } from "@/pages/admin/implementation-truth/ITC13LaunchTruthGate";
 export { default as ITC14ManifestExplorer } from "@/pages/admin/implementation-truth/ITC14ManifestExplorer";
+
+// ── Manifest Truth & Drift ──
+export { default as ManifestTruthDashboard } from "@/pages/admin/ManifestTruthDashboard";
+export { default as ManifestDriftTriage } from "@/pages/admin/ManifestDriftTriage";
+export { default as InfraRealityClassificationBoard } from "@/pages/admin/InfraRealityClassificationBoard";
