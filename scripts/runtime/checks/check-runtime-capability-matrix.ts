@@ -14,7 +14,7 @@ if (!fs.existsSync(matrixPath)) {
   vc.add(matrixPath, "missing-matrix", "Runtime capability matrix file not found");
 } else {
   const content = fs.readFileSync(matrixPath, "utf-8");
-  const requiredRuntimes = ["web", "desktop", "mobile", "appliance"];
+  const requiredRuntimes = ["web", "desktop", "mobilePwa", "appliance"];
   for (const rt of requiredRuntimes) {
     if (!content.includes(rt)) {
       vc.add(matrixPath, "missing-runtime", `Runtime "${rt}" not found in capability matrix`, "warning");
@@ -22,6 +22,7 @@ if (!fs.existsSync(matrixPath)) {
   }
   const capabilityCount = (content.match(/capabilityId/g) || []).length;
   console.log(`  🔧 ${capabilityCount} capability entries found in matrix`);
+  console.log(`  ℹ  Phase 2: also run check-runtime-capability-completeness.ts for 8-surface feature coverage`);
 }
 
 // Check generated artifact exists
