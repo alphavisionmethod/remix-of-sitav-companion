@@ -69,7 +69,7 @@ const DECISION_ICONS: Record<GateDecision, React.ReactNode> = {
 export default function ConscienceGateDashboard() {
   const { isAdmin, loading } = useRequireAdmin();
   const [tab, setTab] = useState("verdicts");
-  const [liveVerdicts, setLiveVerdicts] = useState<GateVerdict[]>([]);
+  const [liveVerdicts, setLiveVerdicts] = useState<DashboardVerdict[]>([]);
   const [usingFallback, setUsingFallback] = useState(false);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function ConscienceGateDashboard() {
         .limit(50);
       if (cancelled) return;
       if (error || !data || data.length === 0) {
-        setLiveVerdicts(DEMO_CONSCIENCE_VERDICTS);
+        setLiveVerdicts(DEMO_CONSCIENCE_VERDICTS.map(withDashboardId));
         setUsingFallback(true);
       } else {
         setLiveVerdicts(data.map(mapReceiptToVerdict));
@@ -93,7 +93,9 @@ export default function ConscienceGateDashboard() {
     return () => { cancelled = true; };
   }, [isAdmin]);
 
-  const DEMO_VERDICTS = liveVerdicts.length > 0 ? liveVerdicts : DEMO_CONSCIENCE_VERDICTS;
+  const DEMO_VERDICTS: DashboardVerdict[] = liveVerdicts.length > 0
+    ? liveVerdicts
+    : DEMO_CONSCIENCE_VERDICTS.map(withDashboardId);
 
   const stats = useMemo(() => {
     const counts: Record<GateDecision, number> = { pass: 0, caveat: 0, block: 0, refuse: 0 };
