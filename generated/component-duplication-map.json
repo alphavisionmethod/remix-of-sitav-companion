@@ -1,7 +1,23 @@
 {
-  "generatedAt": "2026-04-16T17:46:55.534Z",
+  "generatedAt": "2026-04-16T17:51:45.782Z",
   "groups": {
     "dup-001": {
+      "canonical": "src/components/advisors/AdvisorDebateView.tsx",
+      "members": [
+        "src/components/advisors/AdvisorDebateView.tsx",
+        "src/components/business/advisor-board/AdvisorDebateView.tsx"
+      ],
+      "family": "other"
+    },
+    "dup-002": {
+      "canonical": "src/components/sita/SparklineChart.tsx",
+      "members": [
+        "src/components/business/advisor-board/SparklineChart.tsx",
+        "src/components/sita/SparklineChart.tsx"
+      ],
+      "family": "other"
+    },
+    "dup-003": {
       "canonical": "src/components/concierge/ConciergeAppShell.tsx",
       "members": [
         "src/components/concierge/ConciergeAppShell.tsx",
@@ -9,7 +25,7 @@
       ],
       "family": "shell"
     },
-    "dup-002": {
+    "dup-004": {
       "canonical": "src/components/mobile/ProofCard.tsx",
       "members": [
         "src/components/mobile/ProofCard.tsx",
@@ -17,11 +33,76 @@
       ],
       "family": "card"
     },
-    "dup-003": {
+    "dup-005": {
+      "canonical": "src/components/sita/EmptyState.tsx",
+      "members": [
+        "src/components/primitives/feedback/EmptyState.tsx",
+        "src/components/sita/EmptyState.tsx"
+      ],
+      "family": "other"
+    },
+    "dup-006": {
+      "canonical": "src/components/ui/skeleton.tsx",
+      "members": [
+        "src/components/primitives/feedback/Skeleton.tsx",
+        "src/components/ui/skeleton.tsx"
+      ],
+      "family": "other"
+    },
+    "dup-007": {
+      "canonical": "src/components/ui/drawer.tsx",
+      "members": [
+        "src/components/primitives/overlays/Drawer.tsx",
+        "src/components/ui/drawer.tsx"
+      ],
+      "family": "drawer"
+    },
+    "dup-008": {
+      "canonical": "src/components/sita/badges/FreshnessBadge.tsx",
+      "members": [
+        "src/components/primitives/status/FreshnessBadge.tsx",
+        "src/components/sita/badges/FreshnessBadge.tsx"
+      ],
+      "family": "badge"
+    },
+    "dup-009": {
+      "canonical": "src/components/sita/badges/ModeBadge.tsx",
+      "members": [
+        "src/components/primitives/status/ModeBadge.tsx",
+        "src/components/sita/badges/ModeBadge.tsx"
+      ],
+      "family": "badge"
+    },
+    "dup-010": {
+      "canonical": "src/components/sita/badges/ProofBadge.tsx",
+      "members": [
+        "src/components/primitives/status/ProofBadge.tsx",
+        "src/components/sita/badges/ProofBadge.tsx"
+      ],
+      "family": "badge"
+    },
+    "dup-011": {
+      "canonical": "src/components/sita/admin/StatusBadge.tsx",
+      "members": [
+        "src/components/primitives/status/StatusBadge.tsx",
+        "src/components/sita/admin/StatusBadge.tsx"
+      ],
+      "family": "badge"
+    },
+    "dup-012": {
       "canonical": "src/components/sita/TrustBadge.tsx",
       "members": [
+        "src/components/primitives/status/TrustBadge.tsx",
         "src/components/sita/TrustBadge.tsx",
         "src/components/sita/badges/TrustBadge.tsx"
+      ],
+      "family": "badge"
+    },
+    "dup-013": {
+      "canonical": "src/components/sita/badges/UrgencyBadge.tsx",
+      "members": [
+        "src/components/primitives/status/UrgencyBadge.tsx",
+        "src/components/sita/badges/UrgencyBadge.tsx"
       ],
       "family": "badge"
     }
