@@ -41,54 +41,98 @@ export interface PageConsolidationEntry {
 }
 
 // ─── Cluster prefix → target domain ──────────────────────────────
+//
+// Order matters for inference: prefixes are matched longest-first,
+// so "AIT" wins over "AI". Both acronym-style prefixes (AIG, MCAIC)
+// and word-style prefixes (Advisor, Founder) are supported.
+//
 export const CLUSTER_DOMAIN_MAP: Record<string, AdminDomain> = {
-  // AI Runtime cluster
-  AIG: "ai-runtime",
-  AIT: "ai-runtime",
-  SAG: "ai-runtime",
+  // ── AI Runtime cluster ──
+  AIG: "ai-runtime", AIT: "ai-runtime", AITS: "ai-runtime",
+  AIA: "ai-runtime", AIC: "ai-runtime", AID: "ai-runtime",
+  AIE: "ai-runtime", AIF: "ai-runtime", AIH: "ai-runtime",
+  AIL: "ai-runtime", AIM: "ai-runtime", AIR: "ai-runtime",
+  AIS: "ai-runtime", AI: "ai-runtime",
+  SAG: "ai-runtime", SAGB: "ai-runtime", SAGC: "ai-runtime",
+  SAGE: "ai-runtime", SAGF: "ai-runtime", SAGM: "ai-runtime",
+  SAGO: "ai-runtime", SAGP: "ai-runtime", SAGR: "ai-runtime",
   CAI: "ai-runtime",
-  AI: "ai-runtime",
-  Advisor: "ai-runtime",
-  Intelligence: "ai-runtime",
-  Strategic: "ai-runtime",
-  // Integrations cluster
-  CN: "integrations",
-  PFA: "integrations",
-  Connector: "integrations",
-  Cloud: "integrations",
-  // Trust / Security
-  SEC: "trust-security",
-  Security: "trust-security",
-  Trust: "trust-security",
-  Policy: "trust-security",
-  // Health
-  Fleet: "health",
-  Backend: "health",
-  Health: "health",
-  System: "health",
-  // Releases
-  AND: "releases",
-  APL: "releases",
-  Mobile: "releases",
-  Release: "releases",
-  Launch: "releases",
-  // Verification
-  AR: "verification",
-  Architecture: "verification",
-  Verification: "verification",
-  Reality: "verification",
-  Implementation: "verification",
-  // Approvals
-  HQ: "approvals",
+  REX: "ai-runtime",
+  Advisor: "ai-runtime", Intelligence: "ai-runtime",
+  Strategic: "ai-runtime", Brain: "ai-runtime",
+  Prompt: "ai-runtime", Model: "ai-runtime",
+
+  // ── Integrations cluster ──
+  CN: "integrations", PFA: "integrations",
+  ITC: "integrations", JVC: "integrations",
+  Connector: "integrations", Cloud: "integrations",
+  Integration: "integrations", Provider: "integrations",
+  ECO: "integrations", OS: "integrations",
+
+  // ── Trust / Security ──
+  SEC: "trust-security", PLE: "trust-security",
+  PLT: "trust-security", MSA: "trust-security",
+  Security: "trust-security", Trust: "trust-security",
+  Policy: "trust-security", Audit: "trust-security",
+  Identity: "trust-security",
+
+  // ── Health ──
+  FL: "health", FE: "health", DRS: "health", DWE: "health",
+  SERV: "health", RCP: "health", NRC: "health", NSS: "health",
+  HRS: "health", MCS: "health",
+  Fleet: "health", Backend: "health", Health: "health",
+  Observability: "health", Performance: "health",
+
+  // ── Releases ──
+  AND: "releases", APL: "releases", LAUNCH: "releases",
+  LT: "releases", UAO: "releases", ISA: "releases",
+  Mobile: "releases", Release: "releases", Launch: "releases",
+  Deployment: "releases", VMware: "releases", Appliance: "releases",
+
+  // ── Verification ──
+  AR: "verification", FIPB: "verification", FIPC: "verification",
+  FIPD: "verification", FIPE: "verification", FIPG: "verification",
+  FIPI: "verification", FIPM: "verification", FIPO: "verification",
+  FIPP: "verification", FIPR: "verification", FIPS: "verification",
+  CJ: "verification", SYS: "verification",
+  Architecture: "verification", Verification: "verification",
+  Reality: "verification", Implementation: "verification",
+  Truth: "verification", Customer: "verification",
+  Action: "verification", Generated: "verification",
+  Backend2: "verification",
+
+  // ── Approvals ──
+  HQA: "approvals",
   Approval: "approvals",
-  // Environments
-  Team: "environments",
-  User: "environments",
-  Environment: "environments",
-  // Support
-  Support: "support",
-  Founder: "support",
-  Builder: "support",
+
+  // ── Environments ──
+  Team: "environments", User: "environments",
+  Environment: "environments", System: "environments",
+
+  // ── AI Runtime overlap with Mission Control ──
+  // Mission Control (MC*) sub-modules cover many domains; default to health
+  // and override individual MC* prefixes here.
+  MCA: "verification",   // MCArchitecture*
+  MCAIC: "ai-runtime",   // MCAIControl
+  MCC: "verification",   // MCCommandRouting
+  MCD: "environments",   // MCDevicesCenter
+  MCE: "trust-security", // MCEmergency, MCEventRouting
+  MCF: "verification",   // MCFeatureOwnership, MCFailureRecovery
+  MCI: "alerts",         // MCIncidents
+  MCJ: "health",         // MCJobsMaintenance
+  MCK: "config",         // MCKnowledge
+  MCL: "support",        // MCLogsAudit
+  MCP: "trust-security", // MCPolicies, MCPlatformAdaptation
+  MCR: "releases",       // MCReleasesUpdates
+  MCT: "trust-security", // MCTrustSecurity
+  MCU: "environments",   // MCUsersCenter
+  MCW: "health",         // MCWorkspacesContinuity
+
+  // ── Founder & Engineering surfaces → support ──
+  FCC: "support",
+  SRE: "support",
+  Founder: "support", Builder: "support", Support: "support",
+  Engineering: "support", NOT: "support",
 };
 
 // ─── Curated page classifications ────────────────────────────────
