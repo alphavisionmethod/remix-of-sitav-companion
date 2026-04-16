@@ -41,3 +41,4 @@ export { default as DeploymentUnitExplorer } from "@/pages/admin/DeploymentUnitE
 export { default as IngressTopologyViewer } from "@/pages/admin/IngressTopologyViewer";
 export { default as DesktopHostCapabilityExplorer } from "@/pages/admin/DesktopHostCapabilityExplorer";
 export { default as RuntimeTruthCoverageDashboard } from "@/pages/admin/RuntimeTruthCoverageDashboard";
+export { default as DomainManifestDashboard } from "@/pages/admin/DomainManifestDashboard";
