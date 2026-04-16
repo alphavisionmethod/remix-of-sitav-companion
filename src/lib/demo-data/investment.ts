@@ -191,20 +191,20 @@ export const DEMO_SUGGESTIONS = [
 ];
 
 export const DEMO_JOURNAL_ENTRIES = [
-  { id: "je-1", date: "2026-04-15", symbol: "PORTFOLIO", title: "Q1 Review", content: "Portfolio outperformed benchmark by 2.3%.", confidence: 85, convictionType: "analytical", stressLevel: "low", fomoFlag: false, mood: "confident", tags: ["quarterly", "review"] },
-  { id: "je-2", date: "2026-04-10", symbol: "AAPL", title: "Added to AAPL", content: "Services revenue growth thesis intact.", confidence: 78, convictionType: "thesis-driven", stressLevel: "low", fomoFlag: false, mood: "analytical", tags: ["trade", "thesis"] },
-  { id: "je-3", date: "2026-04-05", symbol: "TSLA", title: "Exited TSLA", content: "Competition thesis changed fundamentally.", confidence: 70, convictionType: "risk-management", stressLevel: "medium", fomoFlag: true, mood: "cautious", tags: ["exit", "thesis-change"] },
+  { id: "je-1", date: "2026-04-15", symbol: "PORTFOLIO", title: "Q1 Review", content: "Portfolio outperformed benchmark by 2.3%.", confidence: 85, convictionType: "analytical", stressLevel: "low", fomoFlag: false, mood: "confident", tags: ["quarterly", "review"], urgency: "low", emotionNote: "Feeling disciplined and measured about results" },
+  { id: "je-2", date: "2026-04-10", symbol: "AAPL", title: "Added to AAPL", content: "Services revenue growth thesis intact.", confidence: 78, convictionType: "thesis-driven", stressLevel: "low", fomoFlag: false, mood: "analytical", tags: ["trade", "thesis"], urgency: "medium", emotionNote: "Confident in thesis, no emotional pressure" },
+  { id: "je-3", date: "2026-04-05", symbol: "TSLA", title: "Exited TSLA", content: "Competition thesis changed fundamentally.", confidence: 70, convictionType: "risk-management", stressLevel: "medium", fomoFlag: true, mood: "cautious", tags: ["exit", "thesis-change"], urgency: "high", emotionNote: "Some FOMO about missing potential recovery" },
 ];
 
 export const DEMO_PAST_DECISIONS = [
-  { id: "ptd-1", action: "Sold TSLA", symbol: "TSLA", date: "2026-03-15", outcome: "good", entryPrice: 245, currentPrice: 215, returnSince: -8, wasRight: true, thesisAtTime: "Competition eroding moat", marketConditionsAtTime: "Volatile", advisorViewsAtTime: "Split — 2 sell, 1 hold", disciplineFollowed: true, whatChangedAfter: "Stock fell further 12%", lessonLearned: "Trust thesis changes early" },
-  { id: "ptd-2", action: "Added BND", symbol: "BND", date: "2026-02-20", outcome: "good", entryPrice: 70, currentPrice: 72, returnSince: 2.1, wasRight: true, thesisAtTime: "Lock high yields before cuts", marketConditionsAtTime: "Rate plateau", advisorViewsAtTime: "Unanimous buy", disciplineFollowed: true, whatChangedAfter: "Rates started declining", lessonLearned: "Lock in yields when available" },
+  { id: "ptd-1", action: "Sold TSLA", symbol: "TSLA", date: "2026-03-15", outcome: "good", entryPrice: 245, currentPrice: 215, returnSince: -8, wasRight: true, thesisAtTime: "Competition eroding moat", marketConditionsAtTime: ["Rising competition from BYD", "Margin compression trend", "CEO distraction risk"], advisorViewsAtTime: [{ name: "Growth Advisor", view: "Sell — thesis broken" }, { name: "Risk Advisor", view: "Sell — position risk elevated" }], disciplineFollowed: true, whatChangedAfter: "Stock fell further 12%", lessonLearned: "Trust thesis changes early" },
+  { id: "ptd-2", action: "Added BND", symbol: "BND", date: "2026-02-20", outcome: "good", entryPrice: 70, currentPrice: 72, returnSince: 2.1, wasRight: true, thesisAtTime: "Lock high yields before cuts", marketConditionsAtTime: ["Fed signaling pause", "Yield curve normalizing", "Inflation declining"], advisorViewsAtTime: [{ name: "Income Advisor", view: "Buy — lock yields" }, { name: "Macro Advisor", view: "Buy — rate cycle turning" }], disciplineFollowed: true, whatChangedAfter: "Rates started declining", lessonLearned: "Lock in yields when available" },
 ];
 
 export const DEMO_TRADES = [
-  { id: "tr-1", symbol: "AAPL", name: "Apple Inc", icon: "🍎", action: "buy", quantity: 20, price: 178, date: "2026-04-10", status: "executed" },
-  { id: "tr-2", symbol: "TSLA", name: "Tesla Inc", icon: "⚡", action: "sell", quantity: 15, price: 215, date: "2026-04-08", status: "executed" },
-  { id: "tr-3", symbol: "BND", name: "Vanguard Bond ETF", icon: "🛡️", action: "buy", quantity: 50, price: 72, date: "2026-04-05", status: "executed" },
+  { id: "tr-1", symbol: "AAPL", name: "Apple Inc", icon: "🍎", action: "buy", quantity: 20, price: 178, date: "2026-04-10", status: "executed", fragility: 25, invalidations: ["Services revenue decline >10%", "iPhone unit sales drop 2 consecutive quarters"], hiddenRisks: ["China regulatory risk", "App Store antitrust ruling"], waitingLogic: "Thesis requires 2 quarters of services growth confirmation" },
+  { id: "tr-2", symbol: "TSLA", name: "Tesla Inc", icon: "⚡", action: "sell", quantity: 15, price: 215, date: "2026-04-08", status: "executed", fragility: 72, invalidations: ["Competition closes technology gap", "Margin compression below 15%"], hiddenRisks: ["CEO key-person risk", "Regulatory credits declining"], waitingLogic: "Exited — thesis no longer valid" },
+  { id: "tr-3", symbol: "BND", name: "Vanguard Bond ETF", icon: "🛡️", action: "buy", quantity: 50, price: 72, date: "2026-04-05", status: "executed", fragility: 15, invalidations: ["Inflation reaccelerates above 5%", "Fed reverses course to hiking"], hiddenRisks: ["Duration risk if rates spike", "Credit spread widening"], waitingLogic: "Hold through rate cycle — income thesis" },
 ];
 
 // ── Re-export investment service functions (facade layer) ──
