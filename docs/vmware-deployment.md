@@ -147,7 +147,7 @@ sudo systemctl enable --now sita-backup.timer
 
 Backups include database (`pg_dump`), Docker volumes, and configuration files. 30-day retention with automatic cleanup.
 
-To restore: `scripts/restore-backup.sh <backup-file>`
+To restore: `scripts/release/iso/restore-backup.sh <backup-file>`
 
 ---
 

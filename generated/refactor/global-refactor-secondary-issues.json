@@ -1,0 +1,37 @@
+{
+  "generated": "2026-04-16",
+  "version": "1.0.0",
+  "critical_issues": [],
+  "informational_issues": [
+    {
+      "id": "SEC-001",
+      "severity": "info",
+      "file": "docs/architecture/MIGRATION-BLUEPRINT.md",
+      "description": "Contains aspirational paths (infra/deploy/) not yet implemented",
+      "action": "none — blueprint doc"
+    },
+    {
+      "id": "SEC-002",
+      "severity": "low",
+      "file": "scripts/deployment/checks/validate-deployment.sh",
+      "description": "Uses fallback path chains for backward compatibility",
+      "action": "simplify to canonical-only in future pass"
+    },
+    {
+      "id": "SEC-003",
+      "severity": "low",
+      "files": ["ITC08ArchitectureCompliance.tsx", "ITC09RouteInventory.tsx"],
+      "description": "Hardcoded colors instead of design tokens",
+      "action": "design-system compliance pass"
+    },
+    {
+      "id": "SEC-004",
+      "severity": "low",
+      "files": ["src/__tests__/scripts-validation.test.ts", "src/test/scripts-validation.test.ts"],
+      "description": "Duplicate test files covering same domain",
+      "action": "consolidate into single canonical test"
+    }
+  ],
+  "total_critical": 0,
+  "total_informational": 4
+}

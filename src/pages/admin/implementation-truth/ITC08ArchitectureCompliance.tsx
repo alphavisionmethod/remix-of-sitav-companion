@@ -68,7 +68,7 @@ export default function ITC08ArchitectureCompliance() {
             <AlertTriangle className="h-8 w-8 text-orange-500 mx-auto mb-3" />
             <div className="text-sm font-medium text-foreground mb-1">No Architecture Report Found</div>
             <div className="text-[11px] text-muted-foreground">
-              Run <code className="bg-muted px-1 py-0.5 rounded text-[10px]">npx tsx scripts/architecture/architecture-report.ts</code> to generate the compliance report.
+              Run <code className="bg-muted px-1 py-0.5 rounded text-[10px]">Run <code className="bg-muted px-1 py-0.5 rounded text-[10px]">npx tsx scripts/architecture/reports/architecture-report.ts</code> to generate the compliance report.</code> to generate the compliance report.
             </div>
           </CardContent>
         </Card>

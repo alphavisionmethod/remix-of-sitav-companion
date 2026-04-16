@@ -206,9 +206,9 @@ export default function ITC12ValidationPipeline() {
         <CardContent>
           <div className="space-y-2 text-[11px] text-muted-foreground font-mono bg-muted/30 p-3 rounded-md">
             <div># Regenerate architecture compliance report</div>
-            <div className="text-foreground">npx ts-node scripts/check-architecture-compliance.ts</div>
+            <div className="text-foreground">npx tsx scripts/architecture/reports/architecture-report.ts</div>
             <div className="mt-2"># Regenerate route manifest</div>
-            <div className="text-foreground">npx ts-node scripts/generate-route-manifest.ts</div>
+            <div className="text-foreground">npx tsx scripts/manifests/generate/generate-route-manifest.ts</div>
             <div className="mt-2"># Seed canonical specs (from ITC02)</div>
             <div className="text-foreground">Navigate to ITC02 → Click "Seed Canonical Specs"</div>
           </div>
