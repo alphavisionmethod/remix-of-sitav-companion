@@ -62,7 +62,7 @@ export function resolveActiveDomain(pathname: string): AdminDomain {
   }
   // Legacy path inference — keeps deep links highlighting the right tab
   // until Phase 7 cleans them up. Order matters: longest prefix first.
-  const legacy: Array<[string, AdminDomain]> = [
+  const legacy: ReadonlyArray<readonly [string, AdminDomain]> = ([
     ["/admin/ai-team", "ai-runtime"],
     ["/admin/ai-gateway", "ai-runtime"],
     ["/admin/ai-tokens", "ai-runtime"],
@@ -129,7 +129,7 @@ export function resolveActiveDomain(pathname: string): AdminDomain {
     ["/admin/ecosystem", "overview"],
     ["/admin/os-platform", "overview"],
     ["/admin/communication-hub", "overview"],
-  ].sort((a, b) => b[0].length - a[0].length);
+  ] as const).slice().sort((a, b) => b[0].length - a[0].length);
 
   for (const [prefix, domain] of legacy) {
     if (pathname.startsWith(prefix)) return domain;

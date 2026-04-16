@@ -1,14 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Control Plane Shell
-// Top-level layout wrapper for all /admin/* routes.
-// Composes: PrimaryNav (top) + DomainNav (sidebar) + Breadcrumbs + content
+// SITA OS — Admin Control Plane Shell (Phase 2 — Registry Driven)
+// Composes: PrimaryNav (top) + DomainNav (sidebar) + Breadcrumbs
+// + content. The active canonical domain is resolved entirely from
+// `admin-route-registry`, eliminating the prior duplicated path map.
 // ═══════════════════════════════════════════════════════════════
 
 import { ReactNode, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { AdminPrimaryNav } from "./AdminPrimaryNav";
-import { AdminDomainNav, type AdminDomain } from "./AdminDomainNav";
+import { AdminPrimaryNav, resolveActiveDomain } from "./AdminPrimaryNav";
+import { AdminDomainNav } from "./AdminDomainNav";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
@@ -22,57 +23,6 @@ import {
   PanelLeft,
 } from "lucide-react";
 
-// ── Domain inference from pathname ─────────────────────────────
-const DOMAIN_PATH_MAP: Record<string, AdminDomain> = {
-  "intelligence": "intelligence",
-  "ai-gateway": "intelligence",
-  "ai-workforce": "intelligence",
-  "advisor-board": "intelligence",
-  "architecture": "governance",
-  "governance": "governance",
-  "platform-law": "governance",
-  "fip": "governance",
-  "mc/architecture": "governance",
-  "launch": "launch",
-  "verification": "launch",
-  "implementation-truth": "launch",
-  "security": "security",
-  "reality-audit": "security",
-  "sec": "security",
-  "fleet": "operations",
-  "cloud": "operations",
-  "os-platform": "operations",
-  "connector": "operations",
-  "sync": "operations",
-  "mc/devices": "operations",
-  "mc/storage": "operations",
-  "mc/sync": "operations",
-  "mc/jobs": "operations",
-  "mc/releases": "operations",
-  "mc/system-health": "operations",
-  "support": "support",
-  "mc/support": "support",
-  "mc/incidents": "support",
-  "mc/knowledge": "support",
-  "founder": "strategic",
-  "engineering": "strategic",
-  "strategic": "strategic",
-  "eco": "home",
-  "dashboard": "home",
-  "communication": "operations",
-};
-
-function inferDomain(pathname: string): AdminDomain {
-  const rel = pathname.replace("/admin/", "").replace("/admin", "");
-  // Check longest matches first
-  const sorted = Object.keys(DOMAIN_PATH_MAP).sort((a, b) => b.length - a.length);
-  for (const prefix of sorted) {
-    if (rel.startsWith(prefix)) return DOMAIN_PATH_MAP[prefix];
-  }
-  return "home";
-}
-
-// ── Layout density ─────────────────────────────────────────────
 type LayoutDensity = "default" | "dense" | "comfortable";
 const DENSITY_CLASSES: Record<LayoutDensity, string> = {
   default: "space-y-4",
@@ -80,7 +30,6 @@ const DENSITY_CLASSES: Record<LayoutDensity, string> = {
   comfortable: "space-y-6",
 };
 
-// ── Props ──────────────────────────────────────────────────────
 export interface AdminControlPlaneShellProps {
   children: ReactNode;
   contextScope?: string;
@@ -98,11 +47,14 @@ export function AdminControlPlaneShell({
   const [density, setDensity] = useState<LayoutDensity>("default");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const activeDomain = useMemo(() => inferDomain(location.pathname), [location.pathname]);
+  const activeDomain = useMemo(
+    () => resolveActiveDomain(location.pathname),
+    [location.pathname],
+  );
 
   const cycleDensity = () =>
     setDensity((d) =>
-      d === "dense" ? "comfortable" : d === "comfortable" ? "default" : "dense"
+      d === "dense" ? "comfortable" : d === "comfortable" ? "default" : "dense",
     );
 
   return (
@@ -118,10 +70,10 @@ export function AdminControlPlaneShell({
         </div>
       )}
 
-      {/* ── Primary top nav ────────────────────────────────── */}
+      {/* ── Primary top nav (12 canonical domains) ────────── */}
       <AdminPrimaryNav activeDomain={activeDomain} />
 
-      {/* ── Utility bar (trust ribbon + density toggle) ───── */}
+      {/* ── Utility bar ────────────────────────────────────── */}
       <div className="border-b border-border/50 px-6 py-1.5 flex items-center justify-between bg-card/30">
         <div className="flex items-center gap-3">
           <TrustRibbon />
@@ -161,28 +113,23 @@ export function AdminControlPlaneShell({
         </div>
       </div>
 
-      {/* ── Main body: sidebar + content ───────────────────── */}
+      {/* ── Main body: domain sidebar + content ─────────────── */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Domain sidebar */}
         <AdminDomainNav
           activeDomain={activeDomain}
           collapsed={sidebarCollapsed}
           currentPath={location.pathname}
         />
 
-        {/* Content area */}
         <main className="flex-1 overflow-y-auto">
-          {/* Rollout banner */}
           <div className="px-6 pt-3">
             <RolloutStatusBanner />
           </div>
 
-          {/* Breadcrumbs */}
           <div className="px-6 pt-2 pb-1">
             <AdminBreadcrumbs />
           </div>
 
-          {/* Page content */}
           <div className={cn("px-6 pb-6 pt-1", DENSITY_CLASSES[density])}>
             {children}
           </div>
