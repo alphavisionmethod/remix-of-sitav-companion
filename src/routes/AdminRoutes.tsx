@@ -175,6 +175,11 @@ const AlertsHome = lazy(() => import("@/pages/admin/alerts/AlertsHome"));
 const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome"));
 const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
 
+// ── Phase 7: Meta-Architecture Surfaces ──
+const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01ArchitectureAtlas"));
+const META02ControlPlaneCenter = lazy(() => import("@/pages/admin/META02ControlPlaneCenter"));
+const META03GoldenPathHealth = lazy(() => import("@/pages/admin/META03GoldenPathHealth"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -184,6 +189,12 @@ export function getAdminRoutes() {
     <Route key="hub-environments" path="/admin/environments" element={gated("users.view", <EnvironmentsHome />)} />,
     // /admin → /admin/overview canonical entry
     <Route key="hub-root" path="/admin" element={<Navigate to="/admin/overview" replace />} />,
+
+    // ── Phase 7: Meta-Architecture Surfaces ──
+    <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,
+    <Route key="meta01" path="/admin/meta-arch/atlas" element={gated("audit.view", <META01ArchitectureAtlas />)} />,
+    <Route key="meta02" path="/admin/meta-arch/control-plane" element={gated("audit.view", <META02ControlPlaneCenter />)} />,
+    <Route key="meta03" path="/admin/meta-arch/golden-paths" element={gated("audit.view", <META03GoldenPathHealth />)} />,
 
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
     <Route key="a1b" path="/admin/runtime-tier-governance" element={gated("audit.view", <RuntimeTierGovernanceDashboard />)} />,
