@@ -3,7 +3,7 @@
 > Generated: 2026-04-16T13:15:52Z
 > Total source files: 4263
 > User pages: 96 | Admin pages: 503 | Hooks: 158
-> Edge functions: 74 | Components: 879 | Scripts: 202
+> Edge functions: 80 | Components: 879 | Scripts: 202
 > Contexts: 22 | Routes: 14 | Generated: 58
 > Features: 30 | Packages: 33 | Lib modules: 73
 
@@ -1864,6 +1864,14 @@
 | Auth/Identity | REAL | profiles, user_roles, has_role SECURITY DEFINER |
 | GDPR Compliance | REAL | gdpr-export, gdpr-delete edge functions |
 | Revenue Calling | REAL | revenue-caller edge function, comm metrics |
+| Investment Office | REAL | investment-portfolio-api edge function, DB tables |
+| Digital Twins | REAL | digital-twin-engine edge function, simulations table |
+| Simulation Engine | REAL | simulation-engine-api edge function, simulations table |
+| Communications | REAL | communications-api edge function, notifications/metrics tables |
+| Tasks & Workflows | REAL | tasks-workflow-api edge function, command_steps table |
+| App Store | REAL | app-store-api edge function, managed_apps table |
+| Error Monitoring | REAL | error-monitoring-service.ts, GlobalErrorBoundary |
+| Payment Kill Switch | REAL | payment-kill-switch edge function, admin audit |
 | Desktop OS Shell | SIMULATED | Compositor/WM in browser, no real OS |
 | Electron Desktop | PROTOTYPE | 6 Electron files, no CI build |
 | Mobile Native | DEFERRED | PWA only, no Capacitor/native bridges |
@@ -1871,8 +1879,6 @@
 | IoT/Wearable | DOCS_ONLY | Admin pages exist, no runtime code |
 | Nova Kernel | SIMULATED | Simulated scheduler/memory/FS in browser |
 | Time Machine | SIMULATED | Timeline visualization, no real time travel |
-| Simulation Engine | PARTIALLY_IMPLEMENTED | UI exists, limited backend |
-| Digital Twins | FRONTEND_ONLY | Page exists, no backend twin engine |
 
 ## 20. Outstanding Issues & P0 Blockers
 
