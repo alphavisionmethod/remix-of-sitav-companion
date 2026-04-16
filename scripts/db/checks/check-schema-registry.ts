@@ -39,40 +39,58 @@ if (!registry.includes("DB_SCHEMA_REGISTRY")) {
   vc.add(REGISTRY_PATH, "no-export", "Registry missing DB_SCHEMA_REGISTRY export", "error");
 }
 
-// Scan migrations for CREATE TABLE public.X
-const MIG_DIR = "supabase/migrations";
-const fromMigrations = new Set<string>();
-const dropped = new Set<string>();
-if (fs.existsSync(MIG_DIR)) {
-  for (const f of fs.readdirSync(MIG_DIR).sort()) {
-    if (!f.endsWith(".sql")) continue;
-    const sql = fs.readFileSync(path.join(MIG_DIR, f), "utf-8");
-    const createRe = /CREATE TABLE (?:IF NOT EXISTS )?public\.(\w+)/gi;
-    let cm;
-    while ((cm = createRe.exec(sql)) !== null) fromMigrations.add(cm[1]);
-    const dropRe = /DROP TABLE (?:IF EXISTS )?public\.(\w+)/gi;
-    let dm;
-    while ((dm = dropRe.exec(sql)) !== null) dropped.add(dm[1]);
+// Prefer live DB as source of truth (matches generator); fall back to migrations.
+import { execSync } from "child_process";
+let live: Set<string> | null = null;
+try {
+  if (process.env.PGHOST) {
+    const out = execSync(`psql -A -t -c "SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename"`, { encoding: "utf-8", stdio: ["ignore", "pipe", "pipe"] });
+    const names = out.split("\n").map(s => s.trim()).filter(Boolean);
+    if (names.length) live = new Set(names);
   }
-}
-// Account for renames/drops by removing dropped tables from the expected set
-for (const d of dropped) fromMigrations.delete(d);
+} catch { /* fall back to migrations */ }
 
-// Check 1: every migration table is in registry
+let comparisonSet: Set<string>;
+let comparisonSource: string;
+if (live) {
+  comparisonSet = live;
+  comparisonSource = "live-pg";
+} else {
+  // Fallback: scan migrations for CREATE TABLE minus DROP TABLE
+  const MIG_DIR = "supabase/migrations";
+  const fromMigrations = new Set<string>();
+  const dropped = new Set<string>();
+  if (fs.existsSync(MIG_DIR)) {
+    for (const f of fs.readdirSync(MIG_DIR).sort()) {
+      if (!f.endsWith(".sql")) continue;
+      const sql = fs.readFileSync(path.join(MIG_DIR, f), "utf-8");
+      const createRe = /CREATE TABLE (?:IF NOT EXISTS )?public\.(\w+)/gi;
+      let cm;
+      while ((cm = createRe.exec(sql)) !== null) fromMigrations.add(cm[1]);
+      const dropRe = /DROP TABLE (?:IF EXISTS )?public\.(\w+)/gi;
+      let dm;
+      while ((dm = dropRe.exec(sql)) !== null) dropped.add(dm[1]);
+    }
+  }
+  for (const d of dropped) fromMigrations.delete(d);
+  comparisonSet = fromMigrations;
+  comparisonSource = "migrations";
+}
+
+// Check 1: every comparison-set table is in registry
 let missing = 0;
-for (const t of fromMigrations) {
+for (const t of comparisonSet) {
   if (!registered.has(t)) {
-    vc.add(REGISTRY_PATH, "missing-from-registry", `Table ${t} created in migrations but missing from schema-registry.ts (regenerate via generate-schema-registry.ts)`, "error");
+    vc.add(REGISTRY_PATH, "missing-from-registry", `Table ${t} exists (${comparisonSource}) but missing from schema-registry.ts (regenerate via generate-schema-registry.ts)`, "error");
     missing++;
   }
 }
 
-// Check 2: every registry entry should have a backing migration
+// Check 2: every registry entry should map to a real table
 let phantoms = 0;
 for (const t of registered) {
-  if (!fromMigrations.has(t)) {
-    // Could be a system/auth table created outside our migrations — warn only
-    vc.add(REGISTRY_PATH, "phantom-registry-entry", `Table ${t} in registry but no CREATE TABLE found in migrations`, "warning");
+  if (!comparisonSet.has(t)) {
+    vc.add(REGISTRY_PATH, "phantom-registry-entry", `Table ${t} in registry but not found in ${comparisonSource}`, "warning");
     phantoms++;
   }
 }
