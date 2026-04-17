@@ -1,148 +1,93 @@
 
 
-## Plan — `SITA OS — FULL ADVANCED ISSUES, FIXES & INTEGRATION REGISTER v2`
+The user wants me to re-verify the audit document is complete. Let me do a fresh sweep to confirm nothing is missing from `generated/FULL_ISSUES_AND_FIXES.md` v2.0.
 
-### Verified live snapshot (just gathered, parallel checks)
+I'll check:
+1. Current document coverage vs live state
+2. Any new gaps introduced since last write
+3. Anything I missed in prior audit (cron jobs, edge function logs, secret state, etc.)
 
-| Plane | Metric | Value |
-|---|---|---|
-| Frontend pages | **1,040** |
-| Components / Hooks | **922 / 169** |
-| Lib modules | **1,835** |
-| Edge functions | **128** |
-| DB tables / policies | **303 / 652** |
-| Tables w/ RLS, no policy | **0** ✅ (was 1 — `connector_oauth_tokens` resolved) |
-| Migrations | **189** |
-| Scripts | **363** |
-| Generated artifacts | **120** |
-| Unit tests | **244** |
-| E2E specs | **56** (under `tests/e2e/`, not `e2e/`) |
-| Phase 32 verdict | **real · 13/13 · deployable: true** |
-| Supabase linter | **1 WARN** (public bucket listing — `app-assets`) |
-| i18n locales | **5** (en, es, fr, de, ar) |
-| Secrets configured | 11 (Sentry DSN **not set**, Apple/Windows signing **not set**, FCM **not set**) |
+From the edge function logs in context: scheduler-dispatch, webhook-process, ai-health, health-cron, workflow-stuck-detector, connector-token-refresh are all booting/shutting down cleanly — no errors in runtime. Good signal.
 
-### Document target
+Let me verify what's in the current document and cross-check against fresh evidence.
 
-Replace `generated/FULL_ISSUES_AND_FIXES.md` (currently 761 lines, v5.1, fix-history-heavy) with:
+## Plan — Re-Audit & Top-Up `FULL_ISSUES_AND_FIXES.md` v2.1
 
-**`generated/FULL_ISSUES_AND_FIXES.md` v2.0 — "Issues, Fixes & Integration Register"**
+### Verification sweep (read-only checks I'll run)
 
-Truth-only, outstanding-only — per documentation-governance memory. **No resolved-issue log. No historical "✅ FIXED" entries.** Only what blocks 100% deployment of OS, app, mobile, desktop, appliance.
+1. Read current `generated/FULL_ISSUES_AND_FIXES.md` to confirm v2.0 contents
+2. Re-run Supabase linter for fresh findings
+3. Re-run security scan for any net-new findings
+4. Re-count: pages, components, edge functions, tables, policies, migrations, scripts, generated artifacts, tests
+5. Re-check secrets list for any newly-set/missing secrets
+6. Scan for new categories I may have missed:
+   - pg_cron job presence (audit-log retention scheduled?)
+   - Edge function runtime errors in last 24h
+   - Orphan generated artifacts (>30 days stale)
+   - Storage buckets inventory + policy coverage
+   - Auth provider config (only Google enabled?)
+   - Realtime publication membership (which tables stream?)
+   - Database extension list (pgvector, pg_cron, pg_net presence)
+   - Webhook secret rotation policy
+   - Service worker version pinning
+   - CSP / security headers in `nginx/default.conf`
+   - Mobile app store assets (icons, splash, screenshots)
+   - Translation completeness (en vs es/fr/de/ar key parity)
+   - DSAR/account-delete UI surface in Settings (function exists, button wired?)
 
-### Document structure (~700 lines, 12 sections)
+### Net-new categories likely missing from v2.0
 
-1. **Header & Live Snapshot** — table above + Phase 32 verdict cited verbatim
-2. **Audit Methodology** — truth-only model, evidence-anchored, no historical fixes
-3. **Section A — P0 Deployment Blockers (Open)** — must be closed before GA
-4. **Section B — P1 Scale & Hardening Gaps (Open)**
-5. **Section C — P2 Quality & Coverage Gaps (Open)**
-6. **Section D — P3 Polish & Future Work (Tracked)**
-7. **Section E — Per-Surface Deployment Readiness Matrix** (Web SPA, Electron, Appliance ISO, iOS, Android, PWA, Edge Functions, DB)
-8. **Section F — Wiring Gaps Register** — frontend-backend-DB join points still incomplete
-9. **Section G — Integration Register** — every external system + status (Stripe, Twilio, Shopify, APNs, FCM, Sentry, OAuth providers)
-10. **Section H — Secret & Configuration Gaps** — what's missing from the secret store for full deployment
-11. **Section I — Evidence Index** — every claim → `generated/*.json`
-12. **Section J — Deployment Decision** — go/no-go per surface
+Based on the edge logs and memory snapshot, candidates to add:
 
-### Outstanding issues to enumerate (verified, open only)
+**P0 candidates (newly surfaced)**
+- `OPN-P0-06` — pg_cron extension status unverified; `trim_kill_switch_audit_log` SQL helper exists but not scheduled
+- `OPN-P0-07` — DSAR `data-export` and `account-delete` edge functions deployed but **no UI surface in Settings** to invoke them (compliance gap)
 
-**P0 — true production blockers (5)**
+**P1 candidates**
+- `OPN-P1-09` — Translation key parity not verified across 5 locales (machine-translated locales may have stale/missing keys)
+- `OPN-P1-10` — CSP / security headers in `nginx/default.conf` not audited for prod hardening
+- `OPN-P1-11` — Realtime publication membership not documented (which tables stream to clients)
+- `OPN-P1-12` — Auth provider catalog: only Google + email; LinkedIn/Microsoft/Apple Sign-In missing for B2B
 
-| ID | Issue | Evidence | Surface |
-|---|---|---|---|
-| OPN-P0-01 | `app-assets` public bucket allows anonymous listing (Supabase WARN 0025) | linter | Storage |
-| OPN-P0-02 | Sentry DSN secret not set — SDK wired but inert (`src/lib/observability/sentry.ts` no-ops) | secrets list | Observability |
-| OPN-P0-03 | Hosted CI run artifacts unproven — only local execution evidence in `generated/*` | release-pipeline-report | CI/CD |
-| OPN-P0-04 | Apple Developer signing chain not configured (4 env vars missing: `APPLE_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`) | desktop-signing-status | Electron / iOS |
-| OPN-P0-05 | Windows code-signing chain not configured (`CSC_LINK`, `CSC_KEY_PASSWORD` missing) | desktop-signing-status | Electron Win |
+**P2 candidates**
+- `OPN-P2-08` — Database extension inventory (pgvector? pg_net? pg_cron?) not asserted in CI
+- `OPN-P2-09` — Storage bucket inventory + per-bucket policy coverage report missing
+- `OPN-P2-10` — Mobile store assets (1024 icon, splash screens, store screenshots) not generated
+- `OPN-P2-11` — Service worker version pinning / cache-busting strategy unverified
 
-**P1 — scale & hardening (8)**
+**P3 candidates**
+- `OPN-P3-06` — Edge function cold-start metrics (logs show 30-200ms boots — within budget but unmonitored)
+- `OPN-P3-07` — No SLO/SLA dashboard for the 5 flagship loops
+- `OPN-P3-08` — Disaster recovery runbook exists but no quarterly drill schedule
 
-| ID | Issue | Evidence | Surface |
-|---|---|---|---|
-| OPN-P1-01 | 41 Investment Office pages share generic `business-api` (no dedicated domain APIs) | edge-function-membership | Backend |
-| OPN-P1-02 | Namespace duplication: `src/lib/engine/` vs `src/lib/engines/` | filesystem | Lib |
-| OPN-P1-03 | 15 admin pages exceed FounderControlShell module budget | component-governance | Admin |
-| OPN-P1-04 | Apple APNs push transport not wired (deferred per memory) | push-notification audit | Mobile iOS |
-| OPN-P1-05 | Android FCM push transport not wired (no FCM secret) | secrets list | Mobile Android |
-| OPN-P1-06 | OAuth provider catalogue limited — GitHub/Discord/Facebook unsupported in Lovable Cloud | auth-config | Auth |
-| OPN-P1-07 | Real-time multi-user co-presence channels not implemented for Boardroom | feature-integration-index | Boardroom |
-| OPN-P1-08 | Backup verification cron job missing (no edge function asserts restore-ability) | edge-function topology | Infra |
+### Document update target
 
-**P2 — quality & coverage (7)**
+**`generated/FULL_ISSUES_AND_FIXES.md` v2.1** — append/update only
 
-| ID | Issue | Evidence | Surface |
-|---|---|---|---|
-| OPN-P2-01 | E2E coverage exists (56 specs) but **no a11y harness** (`@axe-core/playwright`) wired | tests/e2e | Quality |
-| OPN-P2-02 | No Lighthouse / perf budget CI gate (`.lighthouserc` absent) | repo scan | Performance |
-| OPN-P2-03 | No Storybook for the 922 components — UX drift risk | repo scan | Design system |
-| OPN-P2-04 | `as any` cleanup pending (ISS-091, 68 page-level instances) | type-audit | Type safety |
-| OPN-P2-05 | No vector search / pgvector edge function despite AI-heavy product | edge-function topology | AI/RAG |
-| OPN-P2-06 | Audit log retention TTL job (`trim_kill_switch_audit_log`) exists but no scheduled trigger (pg_cron not wired) | db-functions | Compliance |
-| OPN-P2-07 | Generated artifact freshness — several reports >24h old | mtime scan | Governance |
-
-**P3 — polish (5)**
-
-| ID | Issue | Surface |
-|---|---|---|
-| OPN-P3-01 | Visual regression tests (Percy/Chromatic) absent | Design |
-| OPN-P3-02 | OpenAPI / contract docs missing for 128 edge functions | Docs |
-| OPN-P3-03 | SBOM generation not in CI | Supply chain |
-| OPN-P3-04 | Synthetic monitoring (uptime probes for 5 flagship paths) absent | Observability |
-| OPN-P3-05 | Cost-attribution dashboard (AI invocations → tenant → budget) not built | FinOps |
-
-### Per-surface deployment readiness matrix (Section E)
-
-| Surface | Status | Blockers | Go/No-Go |
-|---|---|---|---|
-| Web SPA (Tier 1) | ✅ ready | none | **GO** |
-| PWA installable | ✅ ready | manifest + sw present | **GO** |
-| Edge Functions backend | ✅ ready | none | **GO** |
-| Database | ⚠️ near-ready | OPN-P0-01 (bucket listing) | **CONDITIONAL** |
-| Observability | ⚠️ wired-inert | OPN-P0-02 (Sentry DSN) | **CONDITIONAL** |
-| Electron Desktop (Tier 2) | 🔴 blocked | OPN-P0-04, OPN-P0-05 | **NO-GO** |
-| Appliance ISO (Tier 3) | ✅ ready | none (deployability-report ok) | **GO** |
-| iOS App Store | 🔴 blocked | OPN-P0-04 + OPN-P1-04 | **NO-GO** |
-| Android Play Store | 🔴 blocked | OPN-P1-05 (FCM) | **NO-GO** |
-| Hosted CI/CD | 🔴 unproven | OPN-P0-03 | **NO-GO** |
-
-### Wiring Gaps Register (Section F) — incomplete frontend↔backend joins
-
-- Investment Office (41 pages → generic `business-api` instead of dedicated domain functions)
-- Co-presence: no `presence` channel wiring in Boardroom multi-user flow
-- DSAR/account-delete: edge functions exist, no Settings UI surface yet
-- Sentry release tagging: code reads `VITE_SENTRY_RELEASE` but no CI step injects it
-
-### Integration Register (Section G)
-
-| Integration | Status | Gap |
-|---|---|---|
-| Lovable AI Gateway | ✅ live | none |
-| Anthropic / OpenAI | ✅ keys set | gateway-only (no direct SDK use) |
-| Twilio SMS | ✅ keys set | flow-tested? unverified |
-| Shopify | ✅ tokens set | E2E proof missing |
-| Stripe payments | ⚠️ scaffold | not enabled in payments tool |
-| Web Push (VAPID) | ✅ live | — |
-| Apple APNs | 🔴 deferred | Apple Dev account required |
-| Android FCM | 🔴 missing | Firebase service-account key required |
-| Sentry | ⚠️ wired-inert | DSN missing |
-| Hosted CI | 🔴 unproven | no green run artifact |
+Keep all 12 sections from v2.0. Update:
+- Header version → v2.1
+- Live snapshot → re-verified counts
+- Section A → add OPN-P0-06, OPN-P0-07 if confirmed
+- Section B → add OPN-P1-09 through OPN-P1-12 if confirmed
+- Section C → add OPN-P2-08 through OPN-P2-11 if confirmed
+- Section D → add OPN-P3-06 through OPN-P3-08
+- Section E (per-surface matrix) → recompute with new blockers
+- Section H (secrets) → add any newly-identified missing secrets
+- Section I (evidence index) → add evidence paths for new IDs
 
 ### Files
 
 | Action | Path |
 |---|---|
-| **Overwrite** | `generated/FULL_ISSUES_AND_FIXES.md` (v2.0, ~700 lines) |
+| **Overwrite** | `generated/FULL_ISSUES_AND_FIXES.md` (v2.1) |
 
 ### Acceptance
 
-- Document opens with verified live counts matching the snapshot table
-- Zero "RESOLVED" entries — only outstanding gaps
-- Each open issue has: ID, priority, surface, evidence path, remediation
-- Per-surface go/no-go matrix appears in Section E
-- Integration register lists every external system + readiness
-- Phase 32 verdict (`real / 13-of-13 / deployable: true`) cited verbatim
-- The 1 Supabase WARN appears as OPN-P0-01 with linter rule `0025_public_bucket_allows_listing`
-- The recently-resolved RLS gap (`connector_oauth_tokens`) is **not mentioned** (truth-only)
+- All v2.0 entries preserved (no regressions)
+- Net-new gaps from re-audit added with IDs OPN-P0-06+, OPN-P1-09+, OPN-P2-08+, OPN-P3-06+
+- Every new entry: ID, priority, surface, evidence path, remediation
+- Live snapshot re-verified within the last execution
+- Per-surface go/no-go matrix updated
+- Document remains truth-only (no resolved log)
+- Phase 32 verdict re-cited from latest `its-real-gate-report.json`
 
