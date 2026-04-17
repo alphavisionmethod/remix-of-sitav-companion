@@ -1,6 +1,7 @@
 import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
+import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
 
 /** Helper to wrap a page element with a permission gate */
 function gated(permission: string, element: React.ReactNode) {
@@ -175,11 +176,25 @@ const APP01ApplianceDeployabilityCenter = lazy(() => import("@/pages/admin/APP01
 const BAP01BackendApiDeployabilityCenter = lazy(() => import("@/pages/admin/BAP01BackendApiDeployabilityCenter"));
 const EFH01EdgeFunctionHealthCenter = lazy(() => import("@/pages/admin/EFH01EdgeFunctionHealthCenter"));
 
-// ── Phase 3: Canonical Domain Hubs ──
+// ── Phase 3 + Phase 25: Canonical Domain Hubs (12-domain IA) ──
 const OverviewHome = lazy(() => import("@/pages/admin/overview/OverviewHome"));
 const AlertsHome = lazy(() => import("@/pages/admin/alerts/AlertsHome"));
 const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome"));
 const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
+const ReleasesHome = lazy(() => import("@/pages/admin/releases/ReleasesHome"));
+const SupportHome = lazy(() => import("@/pages/admin/support/SupportHome"));
+const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
+const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
+const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
+const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
+const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
+const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
+
+// ── Phase 25: Workflow step pages (real or aliased) ──
+const LaunchReadinessBoard = lazy(() => import("@/pages/admin/LaunchReadinessBoard"));
+const LaunchHonestyBoard = lazy(() => import("@/pages/admin/LaunchHonestyBoard"));
+const AdminDeploymentRings = lazy(() => import("@/pages/admin/AdminDeploymentRings"));
+const AuditComplianceWorkspace = lazy(() => import("@/pages/admin/AuditComplianceWorkspace"));
 
 // ── Phase 7: Meta-Architecture Surfaces ──
 const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01ArchitectureAtlas"));
@@ -198,8 +213,39 @@ export function getAdminRoutes() {
     <Route key="hub-alerts" path="/admin/alerts" element={<AlertsHome />} />,
     <Route key="hub-approvals" path="/admin/approvals" element={gated("support.grant", <ApprovalsHome />)} />,
     <Route key="hub-environments" path="/admin/environments" element={gated("users.view", <EnvironmentsHome />)} />,
+    <Route key="hub-releases" path="/admin/releases" element={gated("audit.view", <ReleasesHome />)} />,
+    <Route key="hub-support" path="/admin/support" element={gated("support.view", <SupportHome />)} />,
+    <Route key="hub-health" path="/admin/health" element={gated("maintenance.view", <HealthHome />)} />,
+    <Route key="hub-trustsec" path="/admin/trust-security" element={gated("audit.view", <TrustSecurityHome />)} />,
+    <Route key="hub-verification" path="/admin/verification" element={gated("audit.view", <VerificationHome />)} />,
+    <Route key="hub-airuntime" path="/admin/ai-runtime" element={gated("flags.view", <AIRuntimeHome />)} />,
+    <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
+    <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → /admin/overview canonical entry
     <Route key="hub-root" path="/admin" element={<Navigate to="/admin/overview" replace />} />,
+
+    // ── Phase 25: Workflow step routes (every OwnerWorkflow step resolves) ──
+    <Route key="ws-daily-incidents" path="/admin/health/incidents" element={gated("maintenance.view", <MCIncidents />)} />,
+    <Route key="ws-daily-launchready" path="/admin/releases/launch-readiness" element={gated("audit.view", <LaunchReadinessBoard />)} />,
+    <Route key="ws-weekly-truth" path="/admin/overview/generated-truth" element={<Navigate to="/admin/generated-truth" replace />} />,
+    <Route key="ws-weekly-aieff" path="/admin/ai-runtime/intelligence/efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
+    <Route key="ws-weekly-honesty" path="/admin/verification/launch-honesty" element={gated("audit.view", <LaunchHonestyBoard />)} />,
+    <Route key="ws-weekly-costs" path="/admin/ai-runtime/costs" element={<Navigate to="/admin/ai-team/cost" replace />} />,
+    <Route key="ws-support-users" path="/admin/environments/users" element={<Navigate to="/admin/users" replace />} />,
+    <Route key="ws-support-devices" path="/admin/environments/devices" element={<Navigate to="/admin/mc/devices" replace />} />,
+    <Route key="ws-support-intstate" path="/admin/environments/integration-state" element={gated("users.view", <WorkflowStepStub domain="integrations" heading="Integration State" intent="Inspect integration state for the selected environment." />)} />,
+    <Route key="ws-support-wfstate" path="/admin/environments/workflow-state" element={gated("users.view", <WorkflowStepStub domain="environments" heading="Workflow State" intent="Inspect workflow status for the selected environment." />)} />,
+    <Route key="ws-support-cases" path="/admin/support/cases" element={<Navigate to="/admin/mc/support" replace />} />,
+    <Route key="ws-support-replay" path="/admin/support/replay" element={gated("support.view", <WorkflowStepStub domain="support" heading="Session Replay" intent="Replay an environment session for diagnosis." />)} />,
+    <Route key="ws-support-recovery" path="/admin/support/recovery" element={gated("support.view", <MCFailureRecovery />)} />,
+    <Route key="ws-rel-mobile" path="/admin/releases/mobile-parity" element={<Navigate to="/admin/mobile-parity" replace />} />,
+    <Route key="ws-rel-rings" path="/admin/releases/deployment-rings" element={gated("flags.rollout", <AdminDeploymentRings />)} />,
+    <Route key="ws-rel-rollback" path="/admin/releases/rollback" element={<Navigate to="/admin/engineering/rollback" replace />} />,
+    <Route key="ws-ts-policies" path="/admin/trust-security/policies" element={<Navigate to="/admin/mc/policies" replace />} />,
+    <Route key="ws-ts-proofs" path="/admin/trust-security/proofs" element={<Navigate to="/admin/mc/control-receipts" replace />} />,
+    <Route key="ws-ts-perms" path="/admin/trust-security/permissions" element={<Navigate to="/admin/mc/authority-matrix" replace />} />,
+    <Route key="ws-ts-sensitive" path="/admin/trust-security/sensitive-actions" element={<Navigate to="/admin/mc/state-authority" replace />} />,
+    <Route key="ws-ts-audit" path="/admin/trust-security/audit" element={gated("audit.view", <AuditComplianceWorkspace />)} />,
 
     // ── Phase 7: Meta-Architecture Surfaces ──
     <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,
