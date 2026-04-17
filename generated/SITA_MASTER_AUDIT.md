@@ -62,7 +62,7 @@ Every claim cites a `generated/*.json` artifact, a `pg_catalog` query, or a file
 | FE-001 | 41 Investment Office pages share generic `business-api` (no dedicated domain APIs) | P1 |
 | FE-002 | 15 admin pages exceed FounderControlShell module budget | P1 |
 | FE-003 | E2E coverage limited to files-upload-roundtrip; 4 of 5 flagship loops lack browser-driven tests | P2 |
-| FE-004 | Residual `as any` casts (ISS-091) | P2 |
+| ~~FE-004~~ | ~~Residual `as any` casts (ISS-091)~~ ✅ RESOLVED 2026-04-17 — `src/pages` count = 0; CI gate enforces threshold = 0 | — |
 
 **Evidence:** `generated/page-registry-completeness-report.json`, `generated/feature-reality-report.json`
 
@@ -240,7 +240,7 @@ Every claim cites a `generated/*.json` artifact, a `pg_catalog` query, or a file
 | ID | Risk | Owner | Remediation Path |
 |---|---|---|---|
 | P2-001 | E2E coverage: only files-upload-roundtrip exists | QA | Add Playwright specs for remaining 4 flagship loops |
-| P2-002 | Residual `as any` (ISS-091) | Codebase | Type-tighten; enforce via ESLint rule |
+| ~~P2-002~~ | ~~Residual `as any` (ISS-091)~~ ✅ RESOLVED 2026-04-17 | Codebase | All 135 page-level instances eliminated; CI gate `check-platform-anti-patterns.ts` blocks regressions at threshold = 0 |
 | P2-003 | Generated artifact freshness >24h on several reports | Governance | Schedule nightly regeneration job |
 
 ---
