@@ -11,7 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle2, AlertTriangle, AlertCircle, Route as RouteIcon, ShieldAlert, BookOpen } from "lucide-react";
+import {
+  CheckCircle2, AlertTriangle, AlertCircle, Route as RouteIcon, ShieldAlert, BookOpen,
+  Layout, Cloud, Cog, Database, Lock, FileCheck2, FlaskConical, GitBranch, LifeBuoy,
+} from "lucide-react";
 import { GOLDEN_PATH_REGISTRY } from "@/lib/operations/golden-path-registry";
 import { evaluateGoldenPaths, summarizeEvaluation } from "@/lib/operations/golden-path-evaluator";
 import { getVerificationSummary } from "@/lib/operations/golden-path-verification-map";
@@ -192,13 +195,60 @@ export default function META03GoldenPathHealth() {
                 </Section>
               )}
 
-              <div className="flex gap-2 pt-2">
+              {/* ── Phase 29 — 11-Dimension Reality Map ─────── */}
+              <Section icon={<GitBranch className="h-3.5 w-3.5 text-primary" />} title="Reality Map (11 dimensions)">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 text-[10px] mb-3">
+                  <DimensionTile icon={<FileCheck2 className="h-3 w-3" />} label="Release gates" value={selectedPath.releaseGateRefs.length} />
+                  <DimensionTile icon={<LifeBuoy className="h-3 w-3" />} label="Support fallback" value={selectedPath.supportFallbackUrl ? 1 : 0} />
+                  <DimensionTile icon={<BookOpen className="h-3 w-3" />} label="Recovery runbooks" value={selectedPath.recoveryRunbookRefs.length} />
+                </div>
+                {selectedPath.releaseGateRefs.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {selectedPath.releaseGateRefs.map((g) => (
+                      <Badge key={g} variant="outline" className="text-[10px] font-mono">{g}</Badge>
+                    ))}
+                  </div>
+                )}
+                <ScrollArea className="h-[220px] pr-2">
+                  <ul className="space-y-2">
+                    {selectedPath.steps.map((s) => (
+                      <li key={s.stepId} className="border border-border/30 rounded-md p-2 space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium text-foreground">{s.order}. {s.title}</span>
+                          <span className="font-mono text-[9px] text-muted-foreground">{s.stepId}</span>
+                        </div>
+                        <div className="grid grid-cols-1 gap-1 text-[10px]">
+                          <DimRow icon={<Layout className="h-3 w-3" />} label="Screen" values={s.screenComponentRef ? [s.screenComponentRef] : []} />
+                          <DimRow icon={<RouteIcon className="h-3 w-3" />} label="Route" values={[s.routePattern]} />
+                          <DimRow icon={<Cloud className="h-3 w-3" />} label="Edge fns" values={s.edgeFunctionRefs} />
+                          <DimRow icon={<Cog className="h-3 w-3" />} label="Services" values={s.serviceRefs} />
+                          <DimRow icon={<Database className="h-3 w-3" />} label="Tables" values={s.tableRefs} />
+                          <DimRow icon={<Lock className="h-3 w-3" />} label="Policies" values={s.policyRefs} />
+                          <DimRow icon={<FileCheck2 className="h-3 w-3" />} label="Receipts" values={s.expectedReceipts} />
+                          <DimRow icon={<FlaskConical className="h-3 w-3" />} label="Verifications" values={s.verifications} />
+                          <DimRow icon={<BookOpen className="h-3 w-3" />} label="Runbooks" values={s.recoveryRunbookRefs} />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollArea>
+              </Section>
+
+              <div className="flex flex-wrap gap-2 pt-2">
                 <Button asChild size="sm" variant="outline">
                   <Link to="/admin/meta-arch/control-plane">Inspect related switches →</Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
                   <Link to="/admin/founder/runbooks">Open runbook library →</Link>
                 </Button>
+                {selectedPath.supportFallbackUrl && (
+                  <Button asChild size="sm" variant="default">
+                    <Link to={selectedPath.supportFallbackUrl}>
+                      <LifeBuoy className="h-3.5 w-3.5 mr-1.5" />
+                      Open support fallback →
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           )}
@@ -239,6 +289,31 @@ function Section({ icon, title, children }: { icon: React.ReactNode; title: stri
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{title}</span>
       </div>
       <div className="text-xs">{children}</div>
+    </div>
+  );
+}
+
+function DimensionTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
+  const ok = value > 0;
+  return (
+    <div className={`flex items-center gap-1.5 px-2 py-1 rounded border ${ok ? "border-emerald-500/30 bg-emerald-500/5" : "border-border/40"}`}>
+      {icon}
+      <span className="text-muted-foreground">{label}:</span>
+      <span className={ok ? "text-emerald-500 font-medium" : "text-muted-foreground"}>{value}</span>
+    </div>
+  );
+}
+
+function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: readonly string[] }) {
+  return (
+    <div className="flex items-start gap-1.5">
+      <span className="flex items-center gap-1 text-muted-foreground shrink-0 w-[90px]">
+        {icon}
+        {label}:
+      </span>
+      <span className="text-foreground/80 font-mono text-[9px] break-all">
+        {values.length === 0 ? <span className="text-muted-foreground/60">—</span> : values.join(", ")}
+      </span>
     </div>
   );
 }
