@@ -333,3 +333,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     </OSWindowProvider>
   );
 };
+
+/** Internal: mounts global keyboard shortcuts inside the WindowManagerContext. */
+function ShellShortcutsMount({ onSearchOpen }: { onSearchOpen: () => void }) {
+  useGlobalShortcuts({ onSearchOpen });
+  return null;
+}
