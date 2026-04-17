@@ -199,10 +199,21 @@ export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
                   </div>
                 )}
                 {f.status === "done" && (
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <CheckCircle className="h-3 w-3 text-trust-safe" />
                     <span className="text-[10px] text-foreground font-medium">{f.classification}</span>
                     <span className="text-[10px] text-muted-foreground">· {f.sensitivity}</span>
+                    {f.signedUrl && (
+                      <a
+                        href={f.signedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="ml-auto inline-flex items-center gap-1 text-[10px] font-medium text-primary hover:underline"
+                      >
+                        <ExternalLink className="h-3 w-3" /> Open
+                      </a>
+                    )}
                   </div>
                 )}
                 {f.status === "error" && (
