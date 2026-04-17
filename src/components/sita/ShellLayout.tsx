@@ -47,6 +47,11 @@ import { SecurePrompt } from "./shell/SecurePrompt";
 import { AppLaunchBridge } from "./app-platform/AppLaunchBridge";
 import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { useDemoModeRuntimeEnforcement } from "@/hooks/useDemoModeRuntimeEnforcement";
+import { AboutDialog } from "./shell/AboutDialog";
+import { ShortcutsDialog } from "./shell/ShortcutsDialog";
+import { LockScreenOverlay } from "./shell/LockScreenOverlay";
+import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
+import { initZoomFromStorage } from "@/lib/system-menu/menu-actions";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
