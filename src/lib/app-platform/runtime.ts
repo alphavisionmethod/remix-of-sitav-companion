@@ -14,18 +14,6 @@ export interface RuntimeCapabilities {
   surface: "desktop" | "mobile" | "pwa" | "electron";
 }
 
-declare global {
-  interface Window {
-    electron?: { platform?: string };
-    sitaApps?: {
-      launchNativeApp?: (id: string) => Promise<unknown>;
-      checkNativeAppAvailability?: (id: string) => Promise<{ available: boolean }>;
-      openExternalUrl?: (url: string) => Promise<unknown>;
-      getHostCapabilities?: () => Promise<{ platform: string; canLaunchNative: boolean }>;
-    };
-  }
-}
-
 export function probeRuntime(): RuntimeCapabilities {
   if (typeof window === "undefined") {
     return {
