@@ -12,7 +12,7 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-ADVISORS",
     layer: "edge-function",
-    enforcedAt: "supabase/functions/advisor-chat/index.ts",
+    enforcedAt: "supabase/functions/chat-advisor/index.ts",
     symbol: "checkKillSwitchOrReject",
     blocks: "Advisor chat completions and recommendation generation",
   },
@@ -20,14 +20,14 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-ADVISORS",
     layer: "domain-service",
     enforcedAt: "src/services/advisor-orchestrator.ts",
-    symbol: "advisorOrchestratorService.invoke",
+    symbol: "advisorOrchestratorService",
     blocks: "Synchronous advisor invocations from UI",
   },
   {
     switchId: "KS-ADVISORS",
     layer: "scheduler",
-    enforcedAt: "supabase/functions/advisor-orchestrate/index.ts",
-    symbol: "scheduleAdvisorPass",
+    enforcedAt: "supabase/functions/advisor-agent-loop/index.ts",
+    symbol: "Deno.serve",
     blocks: "Background advisor reflection and autonomous action loops",
   },
 
@@ -35,15 +35,15 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-OUTBOUND",
     layer: "edge-function",
-    enforcedAt: "supabase/functions/send-notification/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    enforcedAt: "supabase/functions/push-dispatch/index.ts",
+    symbol: "checkAnyKillSwitchOrReject",
     blocks: "All outbound emails, SMS, and in-app pushes",
   },
   {
     switchId: "KS-OUTBOUND",
     layer: "domain-service",
     enforcedAt: "src/services/communication-service.ts",
-    symbol: "communicationService.send",
+    symbol: "communicationService",
     blocks: "Pre-flight message dispatch from product surfaces",
   },
 
@@ -51,15 +51,15 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-CONNECTORS",
     layer: "connector",
-    enforcedAt: "supabase/functions/connector-auth-callback/index.ts",
-    symbol: "guardConnectorOperation",
+    enforcedAt: "supabase/functions/connector-oauth/index.ts",
+    symbol: "Deno.serve",
     blocks: "OAuth callbacks and connector token refresh",
   },
   {
     switchId: "KS-CONNECTORS",
     layer: "edge-function",
     enforcedAt: "supabase/functions/connector-sync/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    symbol: "checkAnyKillSwitchOrReject",
     blocks: "Inbound and outbound connector sync runs",
   },
 
@@ -68,14 +68,14 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-SYNC",
     layer: "edge-function",
     enforcedAt: "supabase/functions/connector-sync/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    symbol: "checkAnyKillSwitchOrReject",
     blocks: "All bi-directional sync runs across providers",
   },
   {
     switchId: "KS-SYNC",
     layer: "scheduler",
     enforcedAt: "src/services/sync-service.ts",
-    symbol: "syncService.scheduleNext",
+    symbol: "syncService",
     blocks: "Scheduled sync cadence",
   },
 
@@ -90,15 +90,15 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-PAYMENTS",
     layer: "ui-gate",
-    enforcedAt: "src/features/finance/components/PaymentActionButton.tsx",
-    symbol: "useKillSwitchGate('KS-PAYMENTS')",
-    blocks: "Pay / refund buttons in finance UI",
+    enforcedAt: "src/pages/admin/AR08KillSwitchCenter.tsx",
+    symbol: "useAction",
+    blocks: "Pay / refund operator gates surfaced in admin",
   },
   {
     switchId: "KS-PAYMENTS",
     layer: "edge-function",
     enforcedAt: "supabase/functions/payment-kill-switch/index.ts",
-    symbol: "default",
+    symbol: "Deno.serve",
     blocks: "Dedicated emergency payment circuit-breaker endpoint",
   },
 
@@ -106,8 +106,8 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-MOBILE-PUSH",
     layer: "edge-function",
-    enforcedAt: "supabase/functions/send-push-notification/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    enforcedAt: "supabase/functions/push-dispatch/index.ts",
+    symbol: "checkAnyKillSwitchOrReject",
     blocks: "VAPID web push and mobile push delivery",
   },
 
@@ -116,7 +116,7 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-MODEL-PROVIDERS",
     layer: "ai-gateway",
     enforcedAt: "supabase/functions/ai-gateway/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    symbol: "Deno.serve",
     blocks: "All outbound LLM/model API calls",
   },
   {
@@ -131,15 +131,15 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-WORKFLOW",
     layer: "edge-function",
-    enforcedAt: "supabase/functions/agent-executor/index.ts",
+    enforcedAt: "supabase/functions/workflow-execute/index.ts",
     symbol: "checkKillSwitchOrReject",
     blocks: "Workflow execution and state transitions",
   },
   {
     switchId: "KS-WORKFLOW",
     layer: "scheduler",
-    enforcedAt: "src/services/advisor-action-engine.ts",
-    symbol: "advisorActionEngine.tick",
+    enforcedAt: "supabase/functions/scheduler-dispatch/index.ts",
+    symbol: "checkKillSwitchOrReject",
     blocks: "Background workflow tick loops",
   },
 
@@ -148,7 +148,7 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-SIMULATIONS",
     layer: "edge-function",
     enforcedAt: "supabase/functions/run-simulation/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    symbol: "Deno.serve",
     blocks: "Scenario simulations and what-if engines",
   },
 
@@ -156,7 +156,7 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-AUTOMATIONS",
     layer: "scheduler",
-    enforcedAt: "supabase/functions/run-automation/index.ts",
+    enforcedAt: "supabase/functions/scheduler-dispatch/index.ts",
     symbol: "checkKillSwitchOrReject",
     blocks: "All scheduled automations and cron triggers",
   },
@@ -199,8 +199,8 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-PROVIDER-INGESTION",
     layer: "connector",
-    enforcedAt: "supabase/functions/connector-webhook/index.ts",
-    symbol: "checkKillSwitchOrReject",
+    enforcedAt: "supabase/functions/connector-sync/index.ts",
+    symbol: "checkAnyKillSwitchOrReject",
     blocks: "Inbound webhook ingestion from provider families",
   },
 ] as const;
