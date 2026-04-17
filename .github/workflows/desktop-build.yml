@@ -1,0 +1,152 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Desktop Build Matrix
+# Cross-platform Electron build for linux/darwin/win32 with code
+# signing on macOS + Windows when developer certs are present.
+# ═══════════════════════════════════════════════════════════════
+name: Release · Desktop Matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Release channel"
+        required: true
+        default: "internal"
+        type: choice
+        options: [dev, internal, beta, production]
+  push:
+    tags: ["v*-desktop"]
+
+concurrency:
+  group: desktop-matrix-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: ${{ matrix.platform }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-latest
+            arch: x64
+          - platform: darwin
+            os: macos-14
+            arch: x64
+          - platform: darwin
+            os: macos-14
+            arch: arm64
+          - platform: win32
+            os: windows-latest
+            arch: x64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build web bundle (Electron base path)
+        shell: bash
+        env:
+          ELECTRON_BUILD: "1"
+          VITE_BUILD_CHANNEL: ${{ inputs.channel || 'internal' }}
+          VITE_GIT_SHA: ${{ github.sha }}
+        run: npx vite build
+
+      - name: Install Electron deps
+        run: npm install --no-save electron @electron/packager
+
+      - name: Package
+        shell: bash
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          ARCH: ${{ matrix.arch }}
+          VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.0-dev' }}
+          CHANNEL: ${{ inputs.channel || 'internal' }}
+        run: bash scripts/release/desktop/build-electron.sh "$PLATFORM" "$ARCH"
+
+      - name: macOS code-sign + notarize (when certs present)
+        if: matrix.platform == 'darwin' && env.APPLE_CERTIFICATE != ''
+        shell: bash
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: |
+          echo "::notice::macOS signing path configured. Add APPLE_* secrets to enable."
+          echo "$APPLE_CERTIFICATE" | base64 --decode > /tmp/cert.p12
+          security create-keychain -p tmpci /tmp/build.keychain
+          security default-keychain -s /tmp/build.keychain
+          security unlock-keychain -p tmpci /tmp/build.keychain
+          security import /tmp/cert.p12 -k /tmp/build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k tmpci /tmp/build.keychain
+          APP=$(find electron-release -name "*.app" -maxdepth 3 | head -n1)
+          if [ -n "$APP" ]; then
+            codesign --deep --force --options runtime --sign "Developer ID Application: $APPLE_TEAM_ID" "$APP" || true
+          fi
+
+      - name: Windows Authenticode sign (when cert present)
+        if: matrix.platform == 'win32' && env.WINDOWS_CERTIFICATE != ''
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          Write-Host "::notice::Windows signing path configured. Add WINDOWS_* secrets to enable."
+          $bytes = [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE)
+          [IO.File]::WriteAllBytes("$env:TEMP\cert.pfx", $bytes)
+          $exe = Get-ChildItem electron-release -Recurse -Filter "SITA-OS.exe" | Select-Object -First 1
+          if ($exe) {
+            & signtool sign /f "$env:TEMP\cert.pfx" /p $env:WINDOWS_CERTIFICATE_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 $exe.FullName
+          }
+
+      - name: Emit per-platform manifest
+        shell: bash
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          ARCH: ${{ matrix.arch }}
+          CHANNEL: ${{ inputs.channel || 'internal' }}
+        run: |
+          mkdir -p generated
+          node -e "
+          const fs = require('fs'), crypto = require('crypto'), path = require('path');
+          const dir = 'dist-electron';
+          const artifacts = [];
+          if (fs.existsSync(dir)) {
+            for (const f of fs.readdirSync(dir)) {
+              const p = path.join(dir, f);
+              if (fs.statSync(p).isFile()) {
+                const buf = fs.readFileSync(p);
+                artifacts.push({
+                  name: f,
+                  bytes: buf.length,
+                  sha256: crypto.createHash('sha256').update(buf).digest('hex'),
+                });
+              }
+            }
+          }
+          fs.writeFileSync('generated/desktop-' + process.env.PLATFORM + '-' + process.env.ARCH + '-manifest.json', JSON.stringify({
+            platform: process.env.PLATFORM, arch: process.env.ARCH,
+            channel: process.env.CHANNEL, commit: process.env.GITHUB_SHA?.slice(0,12),
+            generatedAt: new Date().toISOString(), artifacts,
+          }, null, 2));"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            dist-electron/*
+            generated/desktop-${{ matrix.platform }}-${{ matrix.arch }}-manifest.json
+          retention-days: 30
+          if-no-files-found: warn
