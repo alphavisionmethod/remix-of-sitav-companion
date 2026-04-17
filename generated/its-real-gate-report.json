@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-04-17T15:16:43.309Z",
+  "phase": "phase-32-its-real-gate",
+  "checklist": 27,
+  "title": "Final \"It's Real\" Gate",
+  "verdict": "real",
+  "ok": true,
+  "deployable": true,
+  "clauses": [
+    {
+      "id": 1,
+      "name": "feature-runtime-classified",
+      "description": "Every major feature is runtime-classified",
+      "report": "generated/feature-reality-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "feature-reality-report.ok=true; classifies all 7 surfaces honestly"
+    },
+    {
+      "id": 2,
+      "name": "routes-real-and-wired",
+      "description": "Every route is real and wired",
+      "report": "generated/route-registry-completeness-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "route-registry-completeness-report.ok=true (every <Route> path owned)"
+    },
+    {
+      "id": 3,
+      "name": "apis-owned-and-tested",
+      "description": "Every API is owned and tested",
+      "report": "generated/edge-function-membership-report.json",
+      "alsoReports": [
+        "generated/edge-function-health-replay-report.json"
+      ],
+      "ok": true,
+      "evidence": "edge-function-membership.ok=true + edge-function-health-replay.ok=true (every active fn has owner+contract+replay)"
+    },
+    {
+      "id": 4,
+      "name": "db-domains-visible-and-governed",
+      "description": "Every DB-critical domain is visible and governed",
+      "report": "generated/db-reality-report.json",
+      "alsoReports": [
+        "generated/table-membership-report.json"
+      ],
+      "ok": true,
+      "evidence": "db-reality.ok=true + table-membership.ok=true (RLS, ownership, backups)"
+    },
+    {
+      "id": 5,
+      "name": "privileged-actions-have-trust-policy-proof",
+      "description": "Every privileged action has trust/policy/proof",
+      "report": "generated/auth-policy-reality-report.json",
+      "alsoReports": [
+        "generated/policy-resolver-coverage.json"
+      ],
+      "ok": true,
+      "evidence": "auth-policy-reality.ok=true + policy-resolver-coverage.ok=true (MFA + WebAuthn + resolveUnifiedPolicy on R3+ surfaces)"
+    },
+    {
+      "id": 6,
+      "name": "mobile-runtime-explicit",
+      "description": "Every mobile runtime concern is explicit",
+      "report": "generated/mobile-store-readiness-report.json",
+      "alsoReports": [
+        "generated/mobile-build-pipeline-report.json"
+      ],
+      "ok": true,
+      "evidence": "mobile-store-readiness.ok=true + mobile-build-pipeline.ok=true (iOS≥16, Android API≥26, IPA+AAB pipelines)"
+    },
+    {
+      "id": 7,
+      "name": "admin-workflows-coherent",
+      "description": "Every admin workflow is coherent",
+      "report": "generated/owner-workflow-reality-report.json",
+      "alsoReports": [
+        "generated/admin-support-visibility-manifest.json"
+      ],
+      "ok": true,
+      "evidence": "owner-workflow-reality.ok=true + admin-support-visibility-manifest present (5 workflows × ≥4 mounted steps)"
+    },
+    {
+      "id": 8,
+      "name": "manifests-truth-linked",
+      "description": "Every manifest is truth-linked",
+      "report": "generated/manifest-theater-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "manifest-theater-report.ok=true (zero orphans, zero phantoms, zero missing validators)"
+    },
+    {
+      "id": 9,
+      "name": "failure-modes-have-runbooks",
+      "description": "Every critical failure mode has a runbook",
+      "report": "generated/runbook-operability-report.json",
+      "alsoReports": [
+        "generated/kill-switch-enforcement-report.json"
+      ],
+      "ok": true,
+      "evidence": "runbook-operability.ok=true + kill-switch-enforcement.ok=true (every kill switch + outage has a runbook)"
+    },
+    {
+      "id": 10,
+      "name": "golden-paths-end-to-end-mapped",
+      "description": "Every golden path has route/API/service/DB/test mapping",
+      "report": "generated/golden-path-reality-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "golden-path-reality.ok=true (15/15 paths × 11 dimensions covered, 0 phantom artifacts)"
+    },
+    {
+      "id": 11,
+      "name": "release-pipelines-exist-and-pass",
+      "description": "Release pipelines exist and pass",
+      "report": "generated/test-and-release-truth-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "test-and-release-truth: checklist24.ok=true (14/14) + checklist25.ok=true (16/16) + summary deployable"
+    },
+    {
+      "id": 12,
+      "name": "support-can-diagnose-and-recover",
+      "description": "Support can diagnose and recover real issues",
+      "report": "generated/observability-truth-report.json",
+      "alsoReports": [],
+      "ok": true,
+      "evidence": "observability-truth-report.summary.ok=true (10/10 truthful: logs, metrics, tracing, errors, incidents, health, mobile diag, probes, live support bundle, live dashboards)"
+    },
+    {
+      "id": 13,
+      "name": "no-claims-rely-on-theater",
+      "description": "No critical feature claim relies on theater, mock assumptions, or vague architecture",
+      "report": "generated/manifest-theater-report.json",
+      "alsoReports": [
+        "generated/mock-leak-report.json"
+      ],
+      "ok": true,
+      "evidence": "manifest-theater.ok=true + mock-leak.ok=true (no orphans/phantoms; no production route imports a demo/mock provider)"
+    }
+  ],
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "ok": true,
+    "deployable": true
+  },
+  "failures": []
+}

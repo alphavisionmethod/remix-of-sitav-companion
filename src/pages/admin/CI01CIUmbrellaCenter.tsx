@@ -40,6 +40,7 @@ const PHASE_TITLES: Record<CIGatePhase, string> = {
   "phase-24-domain-reality": "24 — Domain OS Reality",
   "phase-25-owner-workflow-reality": "25 — Owner Workflow Reality",
   "phase-26-manifest-truth": "26 — Manifest Truth",
+  "phase-32-its-real-gate": '32 — Final "It\'s Real" Gate',
 };
 
 function GateCard({ gate }: { gate: CIGateEntry }) {

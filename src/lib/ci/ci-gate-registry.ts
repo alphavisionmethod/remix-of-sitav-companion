@@ -421,6 +421,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Bidirectional truth: every generated/*.json on disk must be registered in MANIFEST_REGISTRY, every registry entry must point to a real file on disk, and every authoritative entry must have an existing validator script. Eliminates manifest theater (orphans + phantoms).",
     producesArtifact: "generated/manifest-theater-report.json",
   },
+
+  // ── Phase 32 ── Final "It's Real" Gate (Checklist 27)
+  {
+    id: "its-real-gate",
+    phase: "phase-32-its-real-gate",
+    title: 'Final "It\'s Real" Gate (Checklist 27: 13-clause aggregator)',
+    script: "scripts/architecture/checks/check-its-real-gate.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      'Aggregates the 13 upstream truth reports (feature reality, route completeness, edge function membership+health, db reality, table membership, auth/policy/trust, mobile store+build, owner workflows, manifest theater, runbook operability, kill switches, golden paths, test+release truth, observability truth, mock leak) into a single verdict. Emits verdict="real" only when all 13 clauses are green. Last gate in the launch pipeline.',
+    producesArtifact: "generated/its-real-gate-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {

@@ -28,7 +28,8 @@ export type CIGatePhase =
   | "phase-23-workflow-reality"
   | "phase-24-domain-reality"
   | "phase-25-owner-workflow-reality"
-  | "phase-26-manifest-truth";
+  | "phase-26-manifest-truth"
+  | "phase-32-its-real-gate";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 
