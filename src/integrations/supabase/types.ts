@@ -7965,6 +7965,39 @@ export type Database = {
         }
         Relationships: []
       }
+      flagship_loop_completions: {
+        Row: {
+          emitted_at: string
+          evidence: Json
+          id: string
+          latency_ms: number | null
+          loop_key: string
+          outcome: string
+          step_key: string
+          user_id: string
+        }
+        Insert: {
+          emitted_at?: string
+          evidence?: Json
+          id?: string
+          latency_ms?: number | null
+          loop_key: string
+          outcome?: string
+          step_key: string
+          user_id: string
+        }
+        Update: {
+          emitted_at?: string
+          evidence?: Json
+          id?: string
+          latency_ms?: number | null
+          loop_key?: string
+          outcome?: string
+          step_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flagship_loops: {
         Row: {
           blocker_count: number
