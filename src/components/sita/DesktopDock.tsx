@@ -164,11 +164,11 @@ function DockIcon({ app, scale, magnetX, isRunning, isBouncing, isSuggestion, ba
 
 export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false, onOpenLauncher }: DesktopDockProps) => {
   const navigate = useNavigate();
-  const { apps } = useAppPlatform();
+  const { apps, pinToDock, unpinFromDock } = useAppPlatform();
   const { getBadge } = useAppBadges();
   const { recordLaunch, getRecentFlow, getContextualSuggestions } = useAppSurfacing();
   const dockContext = useDockContext();
-  const [pinnedIds, setPinnedIds] = useState<string[]>(loadPinnedOrder);
+  const [pinnedOrder, setPinnedOrder] = useState<string[]>(loadPinnedOrder);
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ app: AppDefinition; x: number; y: number; section: "core" | "active" | "suggestion" } | null>(null);
   const [bouncingApp, setBouncingApp] = useState<string | null>(null);
@@ -176,6 +176,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   const [dockVisible, setDockVisible] = useState(true);
   const [flowVisible, setFlowVisible] = useState(false);
   const [cursorX, setCursorX] = useState<number | null>(null);
+  const [dropActive, setDropActive] = useState(false);
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const previewTimer = useRef<ReturnType<typeof setTimeout>>();
@@ -185,7 +186,22 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   const lastCursorTime = useRef(0);
 
   // Persist pinned order
-  useEffect(() => { savePinnedOrder(pinnedIds); }, [pinnedIds]);
+  useEffect(() => { savePinnedOrder(pinnedOrder); }, [pinnedOrder]);
+
+  // ── Bootstrap default pins on first launch (only if NO app is pinned anywhere) ──
+  const bootstrappedRef = useRef(false);
+  useEffect(() => {
+    if (bootstrappedRef.current) return;
+    if (apps.length === 0) return;
+    const anyPinned = apps.some(a => a.pinnedToDock);
+    if (!anyPinned) {
+      DEFAULT_PINNED_IDS.forEach(id => {
+        const app = apps.find(a => a.id === id);
+        if (app && app.installStatus === "installed") pinToDock(id);
+      });
+    }
+    bootstrappedRef.current = true;
+  }, [apps, pinToDock]);
 
   // Auto-hide when maximized windows
   useEffect(() => {
@@ -204,28 +220,32 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     [windowManager?.windows]
   );
 
+  // Core pinned = apps with pinnedToDock=true, ordered by pinnedOrder (unknown ids appended)
   const corePinned = useMemo(() => {
-    return pinnedIds
-      .map(id => apps.find(a => a.id === id))
-      .filter(Boolean)
-      .slice(0, MAX_CORE) as AppDefinition[];
-  }, [apps, pinnedIds]);
+    const pinnedApps = apps.filter(a => a.pinnedToDock);
+    const byId = new Map(pinnedApps.map(a => [a.id, a]));
+    const ordered: AppDefinition[] = [];
+    pinnedOrder.forEach(id => { const app = byId.get(id); if (app) { ordered.push(app); byId.delete(id); } });
+    byId.forEach(app => ordered.push(app));
+    return ordered.slice(0, MAX_CORE);
+  }, [apps, pinnedOrder]);
+
+  const pinnedIdSet = useMemo(() => new Set(corePinned.map(a => a.id)), [corePinned]);
 
   const activeApps = useMemo(() => {
-    const coreIds = new Set(pinnedIds);
     return Array.from(openWindowIds)
-      .filter(id => !coreIds.has(id))
+      .filter(id => !pinnedIdSet.has(id))
       .map(id => apps.find(a => a.id === id))
       .filter(Boolean) as AppDefinition[];
-  }, [openWindowIds, pinnedIds, apps]);
+  }, [openWindowIds, pinnedIdSet, apps]);
 
   const smartSuggestions = useMemo(() => {
-    const usedIds = new Set([...pinnedIds, ...activeApps.map(a => a.id)]);
-    const remaining = MAX_DOCK_ITEMS - pinnedIds.length - activeApps.length - 1;
+    const usedIds = new Set([...pinnedIdSet, ...activeApps.map(a => a.id)]);
+    const remaining = MAX_DOCK_ITEMS - pinnedIdSet.size - activeApps.length - 1;
     if (remaining <= 0) return [];
     const suggestionIds = getContextualSuggestions(dockContext, usedIds, Math.min(remaining, 3));
     return suggestionIds.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
-  }, [pinnedIds, activeApps, dockContext, getContextualSuggestions, apps]);
+  }, [pinnedIdSet, activeApps, dockContext, getContextualSuggestions, apps]);
 
   const allDockApps = useMemo(() =>
     [...corePinned, ...activeApps, ...smartSuggestions],
@@ -254,20 +274,18 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     setContextMenu({ app, x: e.clientX, y: e.clientY, section });
   }, []);
 
-  // Pin / Unpin
+  // Pin / Unpin — bridge to platform context (single source of truth)
   const pinApp = useCallback((appId: string) => {
-    setPinnedIds(prev => {
-      if (prev.includes(appId) || prev.length >= MAX_CORE) return prev;
-      return [...prev, appId];
-    });
-  }, []);
+    if (pinnedIdSet.has(appId) || pinnedIdSet.size >= MAX_CORE) return;
+    pinToDock(appId);
+    setPinnedOrder(prev => prev.includes(appId) ? prev : [...prev, appId].slice(0, MAX_CORE));
+  }, [pinToDock, pinnedIdSet]);
 
   const unpinApp = useCallback((appId: string) => {
-    setPinnedIds(prev => {
-      const next = prev.filter(id => id !== appId);
-      return next.length > 0 ? next : prev; // keep at least one
-    });
-  }, []);
+    if (pinnedIdSet.size <= 1) return; // keep at least one pinned
+    unpinFromDock(appId);
+    setPinnedOrder(prev => prev.filter(id => id !== appId));
+  }, [unpinFromDock, pinnedIdSet]);
 
   // Gaussian magnification + magnetic translation
   const getIconTransform = useCallback((globalIdx: number): { scale: number; magnetX: number } => {
@@ -303,8 +321,41 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
 
   // Reorder handler for pinned apps
   const handleReorder = useCallback((newOrder: AppDefinition[]) => {
-    setPinnedIds(newOrder.map(a => a.id));
+    setPinnedOrder(newOrder.map(a => a.id));
   }, []);
+
+  // ── Drag-and-drop: accept apps dropped from launcher ──
+  const handleDockDragOver = useCallback((e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes("application/x-sita-app")) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      setDropActive(true);
+    }
+  }, []);
+
+  const handleDockDragLeave = useCallback((e: React.DragEvent) => {
+    // Only clear if leaving the dock entirely
+    if (e.currentTarget === e.target) setDropActive(false);
+  }, []);
+
+  const handleDockDrop = useCallback((e: React.DragEvent) => {
+    const appId = e.dataTransfer.getData("application/x-sita-app");
+    setDropActive(false);
+    if (!appId) return;
+    e.preventDefault();
+    const app = apps.find(a => a.id === appId);
+    if (!app) return;
+    if (pinnedIdSet.has(appId)) {
+      SoundEngine.click();
+      return; // already pinned
+    }
+    if (pinnedIdSet.size >= MAX_CORE) {
+      // Dock is full — bounce the launcher button instead of silently failing
+      return;
+    }
+    pinApp(appId);
+    SoundEngine.click();
+  }, [apps, pinApp, pinnedIdSet]);
 
   if (allDockApps.length === 0) return null;
 
@@ -325,12 +376,17 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
           className={cn(
-            "flex items-end gap-1 rounded-[20px] border border-[hsl(0_0%_100%/0.25)] backdrop-blur-[40px] px-3 py-2 relative",
-            "transition-colors duration-500",
+            "flex items-end gap-1 rounded-[20px] border backdrop-blur-[40px] px-3 py-2 relative",
+            "transition-all duration-300",
+            dropActive
+              ? "border-[hsl(210_80%_60%/0.65)] ring-2 ring-[hsl(210_80%_60%/0.35)] scale-[1.02]"
+              : "border-[hsl(0_0%_100%/0.25)]",
             MOOD_TINTS[mood] || MOOD_TINTS.serene
           )}
           style={{
-            boxShadow: "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
+            boxShadow: dropActive
+              ? "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(210 80% 50% / 0.35), inset 0 1px 0 hsl(0 0% 100% / 0.18), inset 0 -1px 0 hsl(0 0% 0% / 0.1)"
+              : "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
             background: `linear-gradient(180deg, hsl(0 0% 100% / 0.14) 0%, hsl(0 0% 100% / 0.06) 100%)`,
           }}
           onMouseEnter={showFlow}
@@ -344,6 +400,10 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             lastCursorTime.current = now;
             setCursorX(e.clientX);
           }}
+          onDragOver={handleDockDragOver}
+          onDragLeave={handleDockDragLeave}
+          onDrop={handleDockDrop}
+          data-testid="desktop-dock"
         >
           {/* ── Core Pinned Section (draggable) ── */}
           <Reorder.Group
