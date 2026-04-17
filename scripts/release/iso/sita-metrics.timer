@@ -1,0 +1,14 @@
+[Unit]
+Description=SITA OS Metrics & Diagnostics Agent Timer (every 5 minutes)
+Documentation=https://docs.sita.os/runbooks/appliance-diagnostics
+Requires=sita-metrics.service
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=1min
+Persistent=true
+Unit=sita-metrics.service
+
+[Install]
+WantedBy=timers.target

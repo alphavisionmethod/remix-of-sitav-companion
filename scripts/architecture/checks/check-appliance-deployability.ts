@@ -59,10 +59,13 @@ if (!buildOvaOk) issues.push({ severity: "error", area: "build", message: `${bui
 else if (!buildOvaExec) issues.push({ severity: "warning", area: "build", message: `${buildOva} not executable` });
 
 // ── 3. Runtime scripts exist and are executable ────────────────
+// NOTE: missing executable bit is an ERROR (not warning) — systemd ExecStart
+// fails silently and the appliance ships broken. Phase 15.3 truth-closure.
 const runtimeScripts = [
   "scripts/release/iso/sita-first-boot.sh",
   "scripts/release/iso/sita-ota-agent.sh",
   "scripts/release/iso/sita-backup.sh",
+  "scripts/release/iso/sita-metrics-agent.sh",
 ];
 const scriptStatus: Record<string, { exists: boolean; executable: boolean }> = {};
 for (const s of runtimeScripts) {
@@ -70,7 +73,7 @@ for (const s of runtimeScripts) {
   const exe = exists && isExecutable(s);
   scriptStatus[s] = { exists, executable: exe };
   if (!exists) issues.push({ severity: "error", area: "runtime-scripts", message: `${s} missing` });
-  else if (!exe) issues.push({ severity: "warning", area: "runtime-scripts", message: `${s} not executable` });
+  else if (!exe) issues.push({ severity: "error", area: "runtime-scripts", message: `${s} not executable (systemd ExecStart will fail)` });
 }
 
 // ── 4. systemd units present ───────────────────────────────────
@@ -80,6 +83,8 @@ const systemdUnits = [
   "scripts/release/iso/sita-ota.timer",
   "scripts/release/iso/sita-backup.service",
   "scripts/release/iso/sita-backup.timer",
+  "scripts/release/iso/sita-metrics.service",
+  "scripts/release/iso/sita-metrics.timer",
 ];
 const systemdMissing: string[] = [];
 for (const u of systemdUnits) {

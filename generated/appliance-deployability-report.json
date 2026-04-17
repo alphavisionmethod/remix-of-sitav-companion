@@ -5,8 +5,8 @@
   "warningCount": 0,
   "totals": {
     "items": 12,
-    "ready": 11,
-    "partial": 1,
+    "ready": 12,
+    "partial": 0,
     "deferred": 0,
     "missing": 0
   },
@@ -18,10 +18,11 @@
     "runtimeScripts": {
       "scripts/release/iso/sita-first-boot.sh": { "exists": true, "executable": true },
       "scripts/release/iso/sita-ota-agent.sh": { "exists": true, "executable": true },
-      "scripts/release/iso/sita-backup.sh": { "exists": true, "executable": true }
+      "scripts/release/iso/sita-backup.sh": { "exists": true, "executable": true },
+      "scripts/release/iso/sita-metrics-agent.sh": { "exists": true, "executable": true }
     },
-    "systemdUnitsPresent": 5,
-    "systemdUnitsTotal": 5,
+    "systemdUnitsPresent": 7,
+    "systemdUnitsTotal": 7,
     "systemdMissing": [],
     "autoinstallPresent": 3,
     "autoinstallTotal": 3,
