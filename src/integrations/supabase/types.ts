@@ -2470,6 +2470,48 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_kill_switches: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          created_at: string
+          deactivated_at: string | null
+          enabled: boolean
+          id: string
+          reason: string | null
+          scope: string
+          scope_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          enabled?: boolean
+          id?: string
+          reason?: string | null
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          enabled?: boolean
+          id?: string
+          reason?: string | null
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       biometric_credentials: {
         Row: {
           created_at: string
@@ -7681,6 +7723,63 @@ export type Database = {
         }
         Relationships: []
       }
+      job_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: string
+          job_id: string
+          output: Json | null
+          retries: number
+          started_at: string
+          status: string
+          user_id: string
+          workflow_run_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id: string
+          output?: Json | null
+          retries?: number
+          started_at?: string
+          status?: string
+          user_id: string
+          workflow_run_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id?: string
+          output?: Json | null
+          retries?: number
+          started_at?: string
+          status?: string
+          user_id?: string
+          workflow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_executions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "scheduled_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_executions_workflow_run_id_fkey"
+            columns: ["workflow_run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       layer_health_snapshots: {
         Row: {
           captured_at: string
@@ -10156,6 +10255,71 @@ export type Database = {
         }
         Relationships: []
       }
+      scheduled_jobs: {
+        Row: {
+          consecutive_failures: number
+          created_at: string
+          display_name: string
+          enabled: boolean
+          id: string
+          job_class: string
+          job_key: string
+          kill_switch_class: string | null
+          last_run_at: string | null
+          next_run_at: string | null
+          payload: Json
+          policy_family: string | null
+          schedule_cron: string
+          updated_at: string
+          user_id: string
+          workflow_id: string | null
+        }
+        Insert: {
+          consecutive_failures?: number
+          created_at?: string
+          display_name: string
+          enabled?: boolean
+          id?: string
+          job_class?: string
+          job_key: string
+          kill_switch_class?: string | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          payload?: Json
+          policy_family?: string | null
+          schedule_cron: string
+          updated_at?: string
+          user_id: string
+          workflow_id?: string | null
+        }
+        Update: {
+          consecutive_failures?: number
+          created_at?: string
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          job_class?: string
+          job_key?: string
+          kill_switch_class?: string | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          payload?: Json
+          policy_family?: string | null
+          schedule_cron?: string
+          updated_at?: string
+          user_id?: string
+          workflow_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_jobs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       school_activities: {
         Row: {
           activity_type: string | null
@@ -11257,6 +11421,289 @@ export type Database = {
           signature?: string | null
           signature_valid?: boolean | null
           status?: string
+        }
+        Relationships: []
+      }
+      workflow_receipts: {
+        Row: {
+          action: string
+          created_at: string
+          evidence: Json
+          hash: string
+          id: string
+          run_id: string
+          step_id: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          evidence?: Json
+          hash: string
+          id?: string
+          run_id: string
+          step_id?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          evidence?: Json
+          hash?: string
+          id?: string
+          run_id?: string
+          step_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_receipts_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_receipts_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_runs: {
+        Row: {
+          completed_at: string | null
+          context: Json
+          correlation_id: string | null
+          created_at: string
+          current_step: number
+          error: string | null
+          force_terminated_by: string | null
+          id: string
+          last_progress_at: string
+          next_retry_at: string | null
+          replayed_from: string | null
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+          workflow_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          context?: Json
+          correlation_id?: string | null
+          created_at?: string
+          current_step?: number
+          error?: string | null
+          force_terminated_by?: string | null
+          id?: string
+          last_progress_at?: string
+          next_retry_at?: string | null
+          replayed_from?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          workflow_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          context?: Json
+          correlation_id?: string | null
+          created_at?: string
+          current_step?: number
+          error?: string | null
+          force_terminated_by?: string | null
+          id?: string
+          last_progress_at?: string
+          next_retry_at?: string | null
+          replayed_from?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_runs_replayed_from_fkey"
+            columns: ["replayed_from"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_runs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_state_transitions: {
+        Row: {
+          actor: string
+          from_state: string | null
+          id: string
+          reason: string | null
+          run_id: string
+          to_state: string
+          ts: string
+          user_id: string
+        }
+        Insert: {
+          actor?: string
+          from_state?: string | null
+          id?: string
+          reason?: string | null
+          run_id: string
+          to_state: string
+          ts?: string
+          user_id: string
+        }
+        Update: {
+          actor?: string
+          from_state?: string | null
+          id?: string
+          reason?: string | null
+          run_id?: string
+          to_state?: string
+          ts?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_state_transitions_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_steps: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: string
+          input: Json
+          output: Json | null
+          receipt_id: string | null
+          retries: number
+          run_id: string
+          started_at: string | null
+          status: string
+          step_id: string
+          step_index: number
+          step_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          input?: Json
+          output?: Json | null
+          receipt_id?: string | null
+          retries?: number
+          run_id: string
+          started_at?: string | null
+          status?: string
+          step_id: string
+          step_index: number
+          step_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          input?: Json
+          output?: Json | null
+          receipt_id?: string | null
+          retries?: number
+          run_id?: string
+          started_at?: string | null
+          status?: string
+          step_id?: string
+          step_index?: number
+          step_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_steps_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflows: {
+        Row: {
+          approval_required: boolean
+          created_at: string
+          domain: string
+          enabled: boolean
+          id: string
+          kill_switch_class: string | null
+          metadata: Json
+          name: string
+          policy_family: string | null
+          retry_policy: Json
+          steps: Json
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          approval_required?: boolean
+          created_at?: string
+          domain?: string
+          enabled?: boolean
+          id?: string
+          kill_switch_class?: string | null
+          metadata?: Json
+          name: string
+          policy_family?: string | null
+          retry_policy?: Json
+          steps?: Json
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          approval_required?: boolean
+          created_at?: string
+          domain?: string
+          enabled?: boolean
+          id?: string
+          kill_switch_class?: string | null
+          metadata?: Json
+          name?: string
+          policy_family?: string | null
+          retry_policy?: Json
+          steps?: Json
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string
+          user_id?: string
+          version?: number
         }
         Relationships: []
       }
