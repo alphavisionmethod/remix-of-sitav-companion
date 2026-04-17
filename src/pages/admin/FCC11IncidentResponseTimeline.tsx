@@ -281,7 +281,7 @@ export default function FCC11IncidentResponseTimeline() {
                             affectedServices: selectedIncident.affectedServices,
                             severity: selectedIncident.severity === "P1" || selectedIncident.severity === "P2" ? "high" : "medium",
                           });
-                          const linkedEntries = linked
+                          const linkedEntries = linked.all
                             .map((id) => RUNBOOK_REGISTRY.find((r) => r.runbookId === id))
                             .filter((r): r is typeof RUNBOOK_REGISTRY[number] => Boolean(r));
                           if (linkedEntries.length === 0) return null;
