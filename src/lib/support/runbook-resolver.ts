@@ -5,7 +5,8 @@
 // procedures so operators never see an alert without a runbook.
 // ═══════════════════════════════════════════════════════════════
 
-import { RUNBOOK_REGISTRY, getRunbookForSubsystem, type RunbookEntry, type RunbookSubsystem, type RunbookSeverity } from "./runbook-registry";
+import { RUNBOOK_REGISTRY, getRunbookForSubsystem, type RunbookEntry, type RunbookSeverity } from "./runbook-registry";
+import type { RunbookSubsystem } from "./runbook-types";
 
 /**
  * Severity-based fallback chain. If subsystem can't be matched, we still
