@@ -318,6 +318,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Secure Elevation Prompt (trusted path) */}
       <SecurePrompt />
+
+      {/* System menu dialogs + lock screen */}
+      <AboutDialog />
+      <ShortcutsDialog />
+      <LockScreenOverlay />
+
+      {/* Global keyboard shortcuts (must live inside WindowManagerContext) */}
+      <ShellShortcutsMount onSearchOpen={handleCommandOpen} />
     </SidebarProvider>
     </FilePickerProvider>
     </SecurePromptProvider>
