@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — sita-updated: A/B atomic update agent
+#
+# Flow:
+#   1. Read current slot from /etc/sita/slot
+#   2. Hit update server, fetch signed manifest
+#   3. If newer version, download to inactive slot
+#   4. Verify signature + dm-verity root hash
+#   5. Mark inactive slot as next-boot via systemd-boot
+#   6. Reboot signal (operator confirms)
+#
+# Exit codes: 0 = staged, 2 = no update, >2 = error
+# ═══════════════════════════════════════════════════════════════════════
+set -euo pipefail
+
+CHANNEL="${SITA_CHANNEL:-$(cat /etc/sita/channel 2>/dev/null || echo stable)}"
+SERVER="${SITA_UPDATE_SERVER:-https://updates.sita.os}"
+CURRENT_SLOT="$(cat /etc/sita/slot 2>/dev/null || echo a)"
+INACTIVE_SLOT="$([ "${CURRENT_SLOT}" = "a" ] && echo b || echo a)"
+DEVICE_ID="$(cat /var/lib/sita/proof/device-id 2>/dev/null || echo unknown)"
+CURRENT_VER="$(grep -oP 'VERSION_ID="\K[^"]+' /etc/os-release || echo 0.0.0)"
+PUBKEY=/etc/sita/keys/release-public.pem
+
+log()  { logger -t sita-updated -s "$*"; }
+die()  { log "FAIL: $*"; exit 3; }
+
+[[ "${1:-}" = "--check-and-stage" ]] || die "usage: sita-updated --check-and-stage"
+
+log "channel=${CHANNEL} current=${CURRENT_VER} slot=${CURRENT_SLOT}"
+
+MANIFEST="/tmp/sita-update.manifest.json"
+SIG="/tmp/sita-update.manifest.sig"
+
+curl --fail --silent --max-time 30 \
+  -H "X-SITA-Device: ${DEVICE_ID}" \
+  -H "X-SITA-Channel: ${CHANNEL}" \
+  -H "X-SITA-Current: ${CURRENT_VER}" \
+  "${SERVER}/manifest/${CHANNEL}/latest.json" -o "${MANIFEST}" \
+  || die "manifest fetch failed"
+
+curl --fail --silent --max-time 10 \
+  "${SERVER}/manifest/${CHANNEL}/latest.json.sig" -o "${SIG}" \
+  || die "signature fetch failed"
+
+# Verify signature
+openssl dgst -sha256 -verify "${PUBKEY}" -signature "${SIG}" "${MANIFEST}" \
+  >/dev/null 2>&1 || die "signature invalid — refusing"
+
+NEW_VER=$(jq -r .version "${MANIFEST}")
+if [[ "${NEW_VER}" = "${CURRENT_VER}" ]]; then
+  log "already on latest (${NEW_VER})"
+  exit 2
+fi
+
+log "staging ${NEW_VER} → slot ${INACTIVE_SLOT}"
+SQUASHFS_URL=$(jq -r .artifacts.rootfs.url "${MANIFEST}")
+EXPECT_HASH=$(jq -r .artifacts.rootfs.sha256 "${MANIFEST}")
+EXPECT_VERITY=$(jq -r .artifacts.verity.roothash "${MANIFEST}")
+
+TARGET_PART="/dev/disk/by-partlabel/sita_root_${INACTIVE_SLOT}"
+VERITY_PART="/dev/disk/by-partlabel/sita_verity_${INACTIVE_SLOT}"
+
+curl --fail -L --max-time 600 "${SQUASHFS_URL}" \
+  | tee >(sha256sum > /tmp/sita-rootfs.sha256.actual) \
+  > "${TARGET_PART}" \
+  || die "rootfs download failed"
+
+ACTUAL_HASH=$(awk '{print $1}' /tmp/sita-rootfs.sha256.actual)
+[[ "${ACTUAL_HASH}" = "${EXPECT_HASH}" ]] || die "rootfs hash mismatch"
+
+curl --fail -L --max-time 60 "$(jq -r .artifacts.verity.url "${MANIFEST}")" \
+  > "${VERITY_PART}" || die "verity tree download failed"
+
+# Update boot entry
+cat > "/boot/efi/loader/entries/sita-${INACTIVE_SLOT}.conf" <<EOF
+title   SITA OS ${NEW_VER} (slot ${INACTIVE_SLOT})
+linux   /sita/${NEW_VER}/vmlinuz
+initrd  /sita/${NEW_VER}/initrd.img
+options verity.roothash=${EXPECT_VERITY} verity.datadev=PARTLABEL=sita_root_${INACTIVE_SLOT} verity.hashdev=PARTLABEL=sita_verity_${INACTIVE_SLOT} ro slot=${INACTIVE_SLOT}
+EOF
+
+# Mark inactive slot as next-boot only (one-shot)
+bootctl set-oneshot "sita-${INACTIVE_SLOT}.conf" || die "bootctl failed"
+
+mkdir -p /var/lib/sita/updates
+cat > /var/lib/sita/updates/staged.json <<EOF
+{
+  "version": "${NEW_VER}",
+  "slot": "${INACTIVE_SLOT}",
+  "staged_at": "$(date -Iseconds)",
+  "rootfs_sha256": "${EXPECT_HASH}",
+  "verity_roothash": "${EXPECT_VERITY}"
+}
+EOF
+
+log "OK ${NEW_VER} staged to slot ${INACTIVE_SLOT} — reboot to apply"
+exit 0
