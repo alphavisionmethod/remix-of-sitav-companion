@@ -1,87 +1,101 @@
 
 
-The user wants ISS-020 (`as any` usage in pages) fully resolved — replace all page-level `as any` casts with proper types so it can be marked DONE in the audit doc.
+The user wants me to scan every file for stubs/placeholders and replace with "most advanced code, fully wired." This is an extremely broad request on a 4,290+ TS file codebase. I need to scope this properly before proposing work.
 
-Let me first scope the actual surface so the plan is accurate.
-<lov-tool-use id="toolu_vrtx_01UuDsBFX44AdcReKs4ygXRZ" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && grep -rEn \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"---FILES---\\\" && grep -rlE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l\", \"user_facing_description\": \"Counting remaining `as any` usages in pages\"}">
-</lov-tool-use>
+Let me think about what's realistic:
 
-<lov-tool-use id="toolu_vrtx_01E7VCVV4EWGHCLnGRDbKPE7" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"===INSTANCE COUNT===\\\" && grep -rEn \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"===FILE COUNT===\\\" && grep -rlE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"===TOP FILES===\\\" && grep -rcE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | grep -v \\\":0$\\\" | sort -t: -k2 -nr | head -25\", \"user_facing_description\": \"Auditing the real scope of remaining `as any` casts in pages\"}">
-</lov-tool-use>
+1. **The codebase is already audited.** We have `generated/FULL_ISSUES_AND_FIXES.md` v2.1 listing every known gap, and Phase 32 "It's Real" gate returned `real / 13-of-13 / deployable: true`.
 
-<lov-tool-use id="toolu_vrtx_01MXFQUqkKgGpQdLr4ygDDH9" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"=== CommunicationHub ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/CommunicationHub.tsx & \\\\\\ncd /dev-server && echo \\\"=== ErrandsLogistics ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/concierge/ErrandsLogistics.tsx & \\\\\\ncd /dev-server && echo \\\"=== PLE02LawRegistry ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/platform-law/PLE02LawRegistry.tsx & \\\\\\ncd /dev-server && echo \\\"=== ITC04WiringGraph ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/implementation-truth/ITC04WiringGraph.tsx & \\\\\\ncd /dev-server && echo \\\"=== ConscienceGateDashboard ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/ConscienceGateDashboard.tsx & \\\\\\nwait\", \"user_facing_description\": \"Inspecting top offenders to understand the cast patterns\"}">
-</lov-tool-use>
-I have enough context. Let me check the ConscienceGateDashboard details to understand the cleanest fix pattern, then present the plan.
-<lov-tool-use id="toolu_vrtx_01E7qWHBFj69pzcGW1zHN81M" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/admin/ConscienceGateDashboard.tsx\", \"lines\": \"1-60\"}">
-</lov-tool-use>
+2. **"Stubs and placeholders" has a specific meaning here.** From the audit:
+   - `WorkflowStepStub.tsx` is an intentional, registered fallback surface (not a stub-to-fix).
+   - The CTA wiring scanner already exists (`scripts/architecture/checks/check-cta-wiring.ts`) and detects: `onClick={() => {}}`, `href="#"`, TODO/FIXME, `alert(...)` stubs.
+   - The anti-pattern checker covers `as any`, console.log, etc.
 
-<lov-tool-use id="toolu_vrtx_012hE4x4VQ3prpYMPd1f1H4W" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/admin/CommunicationHub.tsx\", \"lines\": \"1-60\"}">
-</lov-tool-use>
-I have what I need. Now let me present a focused, deployment-ready plan to eliminate ISS-020.
+3. **A blanket "rewrite every file with advanced code" is destructive.** It would:
+   - Break the 13/13 green gate
+   - Violate the Component Constitution and Service Constitution
+   - Touch 4,290 files with no acceptance criteria
+   - Risk the 100% RLS coverage and trust framework
 
-<lov-plan>
+The right move is to **run the existing stub/placeholder scanners, get the actual list of offenders, and fix them in priority order with concrete acceptance criteria** — not a vibes-driven mass rewrite.
 
-## Plan — Eliminate ISS-020 (`as any` in pages) — Production-Grade Cleanup
+## Plan — Stub & Placeholder Eradication Sweep (evidence-first)
 
-### Current truth (just verified)
+### Phase 1 — Run the existing scanners, get real numbers
 
-| Metric | Value |
+Run in parallel and capture counts:
+- `scripts/architecture/checks/check-cta-wiring.ts` → empty `onClick`, `href="#"`, TODO/FIXME, `alert()`
+- `scripts/architecture/checks/check-platform-anti-patterns.ts` → `as any`, console.log, dead code
+- `grep -rE "TODO|FIXME|XXX|HACK|PLACEHOLDER|stub|mock data" src/ --include="*.ts" --include="*.tsx"`
+- `grep -rE "throw new Error\\([\"']Not implemented" src/`
+- `grep -rE "return null;\\s*//\\s*(stub|todo)" src/`
+- `grep -rE "Lorem ipsum|placeholder text|coming soon" src/`
+
+### Phase 2 — Categorize hits
+
+| Category | Action |
 |---|---|
-| Page files containing `as any` | **72** (was 68 — drift since v5.1) |
-| Total `as any` instances in pages | **135** |
-| Top offender | `src/pages/admin/CommunicationHub.tsx` (12) |
-| Concentration | Top 15 files account for ~70 of 135 instances |
+| **Real stubs** (empty handlers, `Not implemented`, lorem ipsum) | Wire to canonical service via Executor; emit receipt |
+| **Intentional fallbacks** (`WorkflowStepStub`, `EmptyState`) | Leave; document in registry |
+| **Demo/seed data** in Demo mode pages | Leave; gated by `truthState="demo"` banner |
+| **TODO comments** | Convert to GitHub issues or remove if stale |
+| **Placeholder copy** in low-priority pages | Replace with real copy from domain dictionary |
 
-### Root-cause patterns (3 categories cover ~95% of casts)
+### Phase 3 — Fix in priority order
 
-1. **Untyped JSON columns from Supabase** (e.g. `(status as any)?.health`, `(posture as any)?.devices`) — generated `Database` types return `Json` for `jsonb` fields. Fix: declare explicit interface + safe accessor.
-2. **Domain type widening for demo/seed data** (e.g. `"R2" as any` for `RiskClass`, `"sufficient" as any` for `EvidenceState`) — actual literal unions exist in `@/lib/core-services/conscience-gate/conscience-gate`. Fix: import + use the literal types directly (no cast needed).
-3. **shadcn `<select>` value handlers** (e.g. `setCatFilter(e.target.value as any)`) — Fix: cast at the typed boundary using the existing union (e.g. `as Severity`) or use `Select` from `@/components/ui/select` with typed `onValueChange`.
+Priority = **risk tier × surface traffic**:
 
-### Strategy — surgical, batch by pattern, zero behavior change
+1. **P0 — Trust-bearing surfaces with stubs** (Boardroom, Approvals, Money, Auth) — must be 100% wired
+2. **P1 — Flagship Loop pages** (5 loops × ~6 pages each = 30 pages)
+3. **P2 — Domain hub indexes** (Business/Money/Concierge/Files top-level)
+4. **P3 — Admin/Verification consoles**
+5. **P4 — Tail pages** (one-off settings, rare drill-downs)
 
-**Batch 1 — Top 5 files (40 instances, ~30%)**
-- `src/pages/admin/CommunicationHub.tsx` — define `SystemStatus`, `SecurityPosture`, `SyncStatus` interfaces; remove all 12 casts
-- `src/pages/concierge/ErrandsLogistics.tsx` — extend `Errand` view-model with `status`, `dueDate`, `bundleId`; remove all 10 casts
-- `src/pages/admin/platform-law/PLE02LawRegistry.tsx` — type `BadgeVariant` union for `sevColor`; type select `onChange` with literal unions; remove all 5
-- `src/pages/admin/implementation-truth/ITC04WiringGraph.tsx` — replace `"R2" as any` etc. with the proper imported literal types from `conscience-gate`; type `edge` extras via interface extension; remove all 5
-- `src/pages/admin/ConscienceGateDashboard.tsx` — use `RiskClass`, `EvidenceState`, `BudgetState`, `RoutingHints` from canonical type module; replace `as any` with the literal unions; remove all 5
+### Phase 4 — Wiring rules (no behavior drift)
 
-**Batch 2 — Mid-tier (28 instances across 10 files)**
-- `PLT05ViolationTriage`, `AIG04BudgetCenter`, `CampaignOrchestrator`, `CRMPipeline`, `CRMNotes`, `PLE04CIGateMonitor`, `HQApprovalQueue`, `FCC01FounderCommandConsole`, `AIEngineeringBoard`, `Boardroom`
-- Pattern: introduce one local view-model interface per page + use existing domain unions for badge variants and select handlers.
+- Every CTA fix routes through `Executor` (the single chokepoint per HARD RULE)
+- Every new handler emits a receipt to `boardroom_decision_receipts` or `inference_receipts` per risk tier
+- No new `as any`; no new console.log; no direct provider SDK calls
+- All AI usage through `invokeAICapability`
+- Update `generated/FULL_ISSUES_AND_FIXES.md` only after `tsc --noEmit` is green and the relevant scanner returns `0`
 
-**Batch 3 — Tail (~67 instances across 57 files, ≤2 per file)**
-- Mechanical sweep: replace `(x as any).field` with typed accessor `(x as Record<string, unknown>).field` only when the JSON shape is genuinely opaque, otherwise add a one-line `interface` at the top of the file.
-- Replace `e.target.value as any` in `<select>` handlers with the correct literal union or `Select` `onValueChange`.
+### Phase 5 — CI hardening
 
-### Guardrails
+After cleanup, tighten the scanners:
+- `check-cta-wiring.ts` → upgrade from warning to **error** on `src/pages/**` and `src/components/business/**`, `src/components/money/**`, `src/components/concierge/**`
+- Add `check-stubs-and-placeholders.ts` as a new dedicated gate
 
-- **No behavior changes.** Pure type tightening — runtime identical.
-- **No `unknown` shotgun.** Each cast becomes a real interface or imported domain type.
-- **Build must stay green.** Validate with TS noEmit after each batch.
-- **Re-add a CI check** in `scripts/architecture/checks/check-platform-anti-patterns.ts`: lower the `as any` threshold from `>3` per file to `>0` for `src/pages/**` once Batch 3 lands.
-- **Update `generated/FULL_ISSUES_AND_FIXES.md`**: flip ISS-020 / OPN-P2-04 status from "IN PROGRESS" to "RESOLVED" only after `grep -rE "\bas any\b" src/pages | wc -l` returns `0`.
+### What I need from you before starting
 
-### Files touched
+I cannot responsibly rewrite 4,290 files in one pass. I need you to choose the scope:
 
-- ~72 page files under `src/pages/**` (additive interfaces, removed casts only)
-- 1 governance check: `scripts/architecture/checks/check-platform-anti-patterns.ts` (tighten rule)
-- 1 doc: `generated/FULL_ISSUES_AND_FIXES.md` (mark ISS-020 / OPN-P2-04 resolved)
+**Option A — Audit-only (recommended first step, 1 batch):**
+Run all scanners, produce `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` with every hit categorized and prioritized. **No code changes.** Then you decide what to fix.
+
+**Option B — P0+P1 only (~60 pages, 3-5 batches):**
+Fix every stub in trust-bearing surfaces and Flagship Loop pages. Leave P2-P4 in the register for later.
+
+**Option C — Full sweep (P0-P4, ~15-25 batches over many turns):**
+Eradicate every real stub across the entire `src/pages/**` and trust-bearing components. Multi-day effort. High risk of regression without per-batch QA.
+
+### Files touched (final, after acceptance)
+
+- 1 new generator: `scripts/architecture/audits/audit-stubs-placeholders.ts`
+- 1 new register: `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md`
+- N page/component files (depends on Option chosen)
+- 2 CI checks tightened: `check-cta-wiring.ts`, new `check-stubs-and-placeholders.ts`
+- 1 doc update: `generated/FULL_ISSUES_AND_FIXES.md`
 
 ### Acceptance criteria
 
 | Check | Target |
 |---|---|
-| `grep -rE "\bas any\b" src/pages \| wc -l` | **0** |
-| `tsc --noEmit` | **0 errors** |
-| Phase 32 "It's Real" gate | **stays 13/13 green** |
-| Anti-pattern check on `src/pages/**` | **0 violations** at threshold `>0` |
-| ISS-020 / OPN-P2-04 in `FULL_ISSUES_AND_FIXES.md` | **removed from open register** |
+| Scanner produces evidence register | ✅ |
+| Every fix has receipt + Executor path | ✅ |
+| `tsc --noEmit` | 0 errors |
+| Phase 32 "It's Real" gate | stays 13/13 green |
+| `as any` in pages | stays 0 |
+| New CI gate `check-stubs-and-placeholders` | passes |
 
-### Out of scope (explicit)
-
-- `src/lib/**`, `src/components/**`, `src/hooks/**` `as any` casts (separate effort, not part of ISS-020)
-- Behavior changes, refactors, or feature additions
-- Rewriting Supabase generated types
+**Pick A, B, or C and I'll execute.** Default recommendation: **Option A first** so we work from evidence, not assumption.
 
