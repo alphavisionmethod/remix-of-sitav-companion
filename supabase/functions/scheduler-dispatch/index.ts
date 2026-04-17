@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 Deno.serve(async (req) => {
@@ -39,12 +40,16 @@ Deno.serve(async (req) => {
 
     const now = new Date().toISOString();
 
-    // 1. Check global kill switch + KS-WORKFLOW + KS-AUTOMATIONS
+    // 1. Phase 27 — KS-AUTOMATIONS canonical kill-switch enforcement
+    const killed = await checkKillSwitchOrReject("KS-AUTOMATIONS", supabase);
+    if (killed) return killed;
+
+    // Legacy KS-WORKFLOW + global broad check (preserved for ops visibility receipt)
     const { data: globalKill } = await supabase
       .from("automation_kill_switches")
       .select("*")
       .eq("enabled", true)
-      .or("scope.eq.global,scope_id.eq.KS-WORKFLOW,scope_id.eq.KS-AUTOMATIONS")
+      .or("scope.eq.global,scope_id.eq.KS-WORKFLOW")
       .limit(1);
 
     if (globalKill && globalKill.length > 0) {

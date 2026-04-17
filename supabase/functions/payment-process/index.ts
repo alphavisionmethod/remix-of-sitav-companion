@@ -5,6 +5,7 @@ import { z, zodValidate } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 import { withTrace } from "../_shared/tracing.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 const ActionSchema = z.discriminatedUnion("action", [
   z.object({
@@ -41,6 +42,10 @@ Deno.serve(async (req) => {
     if (auth instanceof Response) return auth;
     const { user, supabase } = auth;
     state.setUser(user.id);
+
+    // Phase 27 — KS-PAYMENTS kill-switch enforcement (severe, dual-approval)
+    const killed = await checkKillSwitchOrReject("KS-PAYMENTS", supabase);
+    if (killed) return killed;
 
     const rl = checkRateLimit(`payment:${user.id}`, 30);
     if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);

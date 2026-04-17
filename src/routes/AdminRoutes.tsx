@@ -206,6 +206,9 @@ const CI01CIUmbrellaCenter = lazy(() => import("@/pages/admin/CI01CIUmbrellaCent
 const META04ProductReality = lazy(() => import("@/pages/admin/META04ProductReality"));
 const META05CompletenessMatrix = lazy(() => import("@/pages/admin/META05CompletenessMatrix"));
 
+// ── Phase 27: Kill-Switch & Safety Center (canonical mount) ──
+const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCenter"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -418,5 +421,7 @@ export function getAdminRoutes() {
     <Route key="app01" path="/admin/appliance/deployability" element={gated("audit.view", <APP01ApplianceDeployabilityCenter />)} />,
     <Route key="bap01" path="/admin/backend-api/deployability" element={gated("audit.view", <BAP01BackendApiDeployabilityCenter />)} />,
     <Route key="efh01" path="/admin/edge-functions/health" element={gated("maintenance.view", <EFH01EdgeFunctionHealthCenter />)} />,
+    // ── Phase 27: Kill-Switch & Safety Center ──
+    <Route key="ar08-kill-switches" path="/admin/automation/kill-switches" element={gated("flags.view", <AR08KillSwitchCenter />)} />,
   ];
 }

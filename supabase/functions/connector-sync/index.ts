@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { checkAnyKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -79,6 +80,13 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    // Phase 27 — KS-CONNECTORS + KS-SYNC enforcement
+    const killed = await checkAnyKillSwitchOrReject(
+      ["KS-CONNECTORS", "KS-SYNC"],
+      svc,
+    );
+    if (killed) return killed;
 
     const body = await req.json();
     const { action, connector_id, account_id, resource_type } = body;
