@@ -6,6 +6,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 const InitiateSchema = z.object({
@@ -61,6 +62,10 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    // Phase 27 — Kill-switch enforcement (KS-CONNECTORS)
+    const killed = await checkKillSwitchOrReject("KS-CONNECTORS", serviceClient);
+    if (killed) return killed;
 
     switch (action) {
       case "initiate":

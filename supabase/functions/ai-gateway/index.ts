@@ -5,6 +5,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 import { withTrace } from "../_shared/tracing.ts";
 import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
@@ -76,6 +77,11 @@ serve(async (req) => {
       return corsError("Unauthorized", 401);
     }
     state.setUser(user.id);
+
+    // Phase 27 — Kill-switch enforcement (KS-MODEL-PROVIDERS)
+    const serviceClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const killed = await checkKillSwitchOrReject("KS-MODEL-PROVIDERS", serviceClient);
+    if (killed) return killed;
 
     const body = await req.json();
 
