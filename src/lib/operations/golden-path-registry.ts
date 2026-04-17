@@ -6,6 +6,9 @@
 //   • Policy decisions (Phase 3 — via expectedMutations)
 //   • Kill switches (Phase 4)
 //   • Runbooks (Phase 5)
+//   • Phase 29 — 11-Dimension Reality Map:
+//       screens · routes · edge functions · services · tables ·
+//       policies · proofs · runbooks · gates · owner · support
 // ═══════════════════════════════════════════════════════════════
 
 import type {
@@ -56,6 +59,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-009"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["edge-device-runtime", "web-surface"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "personalize-profile",
@@ -70,6 +78,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-016"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["auth-service"],
+        tableRefs: ["profiles", "onboarding_sessions"],
+        policyRefs: ["profiles.user_self_access", "profiles.user_self_update"],
       },
       {
         stepId: "trust-calibrate",
@@ -84,6 +97,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-016"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["auth-service", "policy-engine"],
+        tableRefs: ["profiles", "user_roles"],
+        policyRefs: ["user_roles.admin_only_write"],
       },
     ],
     verifications: [
@@ -107,6 +125,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 95,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-37-MANIFEST-TRUTH"],
+    supportFallbackUrl: "/admin/support?path=GP-FIRST-BOOT",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -136,6 +156,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-001"],
+        screenComponentRef: "src/pages/auth/Login.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["web-surface"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "submit-credentials",
@@ -150,6 +175,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-001"],
+        screenComponentRef: "src/pages/auth/Login.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["auth-service"],
+        tableRefs: ["profiles", "biometric_credentials"],
+        policyRefs: ["profiles.user_self_access"],
       },
       {
         stepId: "land-dashboard",
@@ -164,12 +194,17 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: [],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["user-bff-gateway"],
+        serviceRefs: ["web-surface", "api-gateway"],
+        tableRefs: ["profiles"],
+        policyRefs: ["profiles.user_self_access"],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
-        artifactRef: "tests/e2e/customer-journey/auth/sign-in.spec.ts",
+        artifactRef: "tests/e2e/customer-journey/auth/sign-in-primary.spec.ts",
         owner: "identity-team",
         lastGreenAt: null,
       },
@@ -181,6 +216,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 99,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-AUTH-RELIABILITY"],
+    supportFallbackUrl: "/admin/support?path=GP-SIGN-IN",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -210,6 +247,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: ["KS-RELEASE-ROLLOUT"],
         recoveryRunbookRefs: ["RB-014"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["api-gateway", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
       {
         stepId: "restore-apply",
@@ -224,6 +266,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-014"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["audit-ledger", "event-bus"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
       {
         stepId: "restore-verify",
@@ -238,12 +285,23 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-014", "RB-015"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["verification-engine", "audit-ledger"],
+        tableRefs: ["ai_inference_receipts"],
+        policyRefs: [],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
         artifactRef: "tests/e2e/customer-journey/settings/restore.spec.ts",
+        owner: "cloud-team",
+        lastGreenAt: null,
+      },
+      {
+        kind: "runtime-probe",
+        artifactRef: "src/lib/runtime/probes/restore-probe.ts",
         owner: "cloud-team",
         lastGreenAt: null,
       },
@@ -255,6 +313,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 90,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-DR-RECOVERY"],
+    supportFallbackUrl: "/admin/support?path=GP-RESTORE",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -284,6 +344,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-016"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["auth-service"],
+        tableRefs: ["onboarding_sessions"],
+        policyRefs: [],
       },
       {
         stepId: "complete-remaining",
@@ -298,6 +363,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-016"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["auth-service"],
+        tableRefs: ["onboarding_sessions", "profiles"],
+        policyRefs: ["profiles.user_self_update"],
       },
     ],
     verifications: [
@@ -315,6 +385,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 85,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH"],
+    supportFallbackUrl: "/admin/support?path=GP-SETUP-CONTINUATION",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -344,6 +416,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: ["KS-CONNECTORS"],
         recoveryRunbookRefs: ["RB-004"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["user-bff-gateway"],
+        serviceRefs: ["connector-control-plane", "api-gateway"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "oauth-handshake",
@@ -358,6 +435,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: ["KS-CONNECTORS", "KS-OUTBOUND"],
         recoveryRunbookRefs: ["RB-004"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["user-bff-gateway"],
+        serviceRefs: ["connector-control-plane", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
       {
         stepId: "first-sync",
@@ -372,6 +454,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: ["KS-SYNC"],
         recoveryRunbookRefs: ["RB-006"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-board-api"],
+        serviceRefs: ["business-os", "connector-control-plane"],
+        tableRefs: ["accounts"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -389,6 +476,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 90,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-CONNECTOR-HEALTH"],
+    supportFallbackUrl: "/admin/support?path=GP-CONNECT-CRM",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -418,6 +507,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: ["KS-CONNECTORS"],
         recoveryRunbookRefs: ["RB-004"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["connector-control-plane", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
       {
         stepId: "scheduled-sync",
@@ -432,6 +526,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: ["KS-SYNC"],
         recoveryRunbookRefs: ["RB-006"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["agent-scheduler"],
+        serviceRefs: ["connector-control-plane", "workflow-engine"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -455,6 +554,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 85,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-CONNECTOR-HEALTH"],
+    supportFallbackUrl: "/admin/support?path=GP-OAUTH-AND-SYNC",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -484,6 +585,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["runtime-probe"],
         blockingKillSwitches: ["KS-ADVISORS"],
         recoveryRunbookRefs: [],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-advisor-intelligence"],
+        serviceRefs: ["business-os", "advisor-registry"],
+        tableRefs: ["accounts", "advisor_action_queue"],
+        policyRefs: [],
       },
       {
         stepId: "advisor-recommend",
@@ -498,6 +604,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted"],
         blockingKillSwitches: ["KS-ADVISORS"],
         recoveryRunbookRefs: [],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-advisor-intelligence", "ai-gateway"],
+        serviceRefs: ["advisor-registry", "council-orchestrator"],
+        tableRefs: ["advisor_board_recommendations", "ai_inference_receipts"],
+        policyRefs: [],
       },
       {
         stepId: "approve-and-ship",
@@ -512,6 +623,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: ["KS-OUTBOUND"],
         recoveryRunbookRefs: ["RB-003"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["agent-executor"],
+        serviceRefs: ["executor-service", "audit-ledger"],
+        tableRefs: ["advisor_board_actions", "advisor_action_queue"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -529,6 +645,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 80,
     runtimeProbeRequired: false,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH"],
+    supportFallbackUrl: "/admin/support?path=GP-RECOVER-STALE-LEADS",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -558,6 +676,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-007"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-board-api", "user-bff-gateway"],
+        serviceRefs: ["approval-service", "audit-ledger"],
+        tableRefs: ["ai_workforce_approval_queue"],
+        policyRefs: [],
       },
       {
         stepId: "approve-item",
@@ -572,6 +695,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-007"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-board-api"],
+        serviceRefs: ["approval-service", "audit-ledger"],
+        tableRefs: ["ai_workforce_approval_queue", "admin_action_audit"],
+        policyRefs: [],
       },
       {
         stepId: "ship-outbound",
@@ -586,6 +714,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: ["KS-OUTBOUND"],
         recoveryRunbookRefs: ["RB-003", "RB-007"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["agent-executor"],
+        serviceRefs: ["executor-service", "notification-service"],
+        tableRefs: ["advisor_board_actions"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -603,6 +736,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 95,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-APPROVAL-INTEGRITY"],
+    supportFallbackUrl: "/admin/support?path=GP-APPROVE-OUTBOUND-FOLLOWUP",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -632,6 +767,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "manifest-evidence"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-013"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["user-bff-gateway"],
+        serviceRefs: ["audit-ledger", "verification-engine"],
+        tableRefs: ["ai_inference_receipts"],
+        policyRefs: [],
       },
       {
         stepId: "verify-chain",
@@ -646,6 +786,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-013"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["verification-engine"],
+        tableRefs: ["ai_inference_receipts"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -663,6 +808,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 95,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-PROOF-CHAIN"],
+    supportFallbackUrl: "/admin/support?path=GP-REVIEW-PROOF",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -692,6 +839,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-008"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "workflow-engine"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "replay-from-checkpoint",
@@ -706,12 +858,23 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-008"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["agent-executor"],
+        serviceRefs: ["workflow-engine", "executor-service"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
         artifactRef: "tests/e2e/customer-journey/admin/workflow-replay.spec.ts",
+        owner: "kernel-team",
+        lastGreenAt: null,
+      },
+      {
+        kind: "runtime-probe",
+        artifactRef: "src/lib/runtime/probes/workflow-replay-probe.ts",
         owner: "kernel-team",
         lastGreenAt: null,
       },
@@ -723,6 +886,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 80,
     runtimeProbeRequired: false,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH"],
+    supportFallbackUrl: "/admin/support?path=GP-WORKFLOW-REPLAY",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -752,6 +917,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: ["KS-MOBILE-PUSH"],
         recoveryRunbookRefs: ["RB-011"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["mobile-surface", "notification-service"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "approve-mobile",
@@ -766,12 +936,23 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-007"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["business-board-api"],
+        serviceRefs: ["approval-service", "audit-ledger"],
+        tableRefs: ["ai_workforce_approval_queue"],
+        policyRefs: [],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
         artifactRef: "tests/e2e/customer-journey/boardroom/mobile-approval.spec.ts",
+        owner: "mobile-team",
+        lastGreenAt: null,
+      },
+      {
+        kind: "runtime-probe",
+        artifactRef: "src/lib/runtime/probes/mobile-approval-probe.ts",
         owner: "mobile-team",
         lastGreenAt: null,
       },
@@ -783,6 +964,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 90,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-MOBILE-PUSH"],
+    supportFallbackUrl: "/admin/support?path=GP-MOBILE-APPROVAL",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -812,6 +995,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "runtime-probe"],
         blockingKillSwitches: ["KS-MOBILE-PUSH"],
         recoveryRunbookRefs: ["RB-011"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["communications-api"],
+        serviceRefs: ["notification-service"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "open-deep-link",
@@ -826,6 +1014,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-011"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: [],
+        serviceRefs: ["mobile-surface"],
+        tableRefs: [],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -843,6 +1036,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 80,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-MOBILE-PUSH"],
+    supportFallbackUrl: "/admin/support?path=GP-PUSH-TO-APPROVAL",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -872,6 +1067,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-012"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "audit-ledger"],
+        tableRefs: ["admin_action_audit", "admin_action_confirmations"],
+        policyRefs: [],
       },
       {
         stepId: "verify-impact",
@@ -886,6 +1086,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: [],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "disarm-switch",
@@ -900,6 +1105,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-012"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
     ],
     verifications: [
@@ -917,6 +1127,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 95,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-KILL-SWITCH-COVERAGE"],
+    supportFallbackUrl: "/admin/support?path=GP-OWNER-INTERVENTION",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -946,6 +1158,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-017"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "verification-engine"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "export-report",
@@ -960,12 +1177,17 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["receipt-emitted", "manifest-evidence"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: [],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["sovereign-exporter", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
-        artifactRef: "tests/e2e/customer-journey/admin/launch-readiness.spec.ts",
+        artifactRef: "tests/e2e/customer-journey/admin/launch-truth-open-primary.spec.ts",
         owner: "admin-team",
         lastGreenAt: null,
       },
@@ -977,6 +1199,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 90,
     runtimeProbeRequired: false,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-37-MANIFEST-TRUTH"],
+    supportFallbackUrl: "/admin/support?path=GP-LAUNCH-READINESS",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1006,6 +1230,11 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["runtime-probe"],
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-009"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "self-healing-engine"],
+        tableRefs: [],
+        policyRefs: [],
       },
       {
         stepId: "rollback",
@@ -1020,12 +1249,23 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         verifications: ["playwright-e2e", "receipt-emitted"],
         blockingKillSwitches: ["KS-RELEASE-ROLLOUT"],
         recoveryRunbookRefs: ["RB-009"],
+        screenComponentRef: "src/pages/Index.tsx",
+        edgeFunctionRefs: ["admin-bff-gateway"],
+        serviceRefs: ["admin-service", "audit-ledger"],
+        tableRefs: ["admin_action_audit"],
+        policyRefs: [],
       },
     ],
     verifications: [
       {
         kind: "playwright-e2e",
         artifactRef: "tests/e2e/customer-journey/admin/env-recovery.spec.ts",
+        owner: "cloud-team",
+        lastGreenAt: null,
+      },
+      {
+        kind: "runtime-probe",
+        artifactRef: "src/lib/runtime/probes/env-recovery-probe.ts",
         owner: "cloud-team",
         lastGreenAt: null,
       },
@@ -1037,6 +1277,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
     requiredCoveragePct: 95,
     runtimeProbeRequired: true,
     lastCertifiedAt: null,
+    releaseGateRefs: ["GATE-23-GOLDEN-PATH", "GATE-DR-RECOVERY"],
+    supportFallbackUrl: "/admin/support?path=GP-ENV-RECOVERY",
   },
 ] as const;
 
