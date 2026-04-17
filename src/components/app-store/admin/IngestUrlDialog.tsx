@@ -119,7 +119,10 @@ export function IngestUrlDialog({ open, onOpenChange }: Props) {
               <div className="flex flex-wrap gap-2 text-xs">
                 <span className="px-2 py-0.5 rounded bg-muted">app_id: <code>{webResult.app_id_suggestion}</code></span>
                 {webResult.theme_color && (
-                  <span className="px-2 py-0.5 rounded flex items-center gap-1" style={{ backgroundColor: webResult.theme_color, color: "#fff" }}>
+                  <span
+                    className="px-2 py-0.5 rounded flex items-center gap-1 text-primary-foreground"
+                    style={{ backgroundColor: webResult.theme_color }}
+                  >
                     {webResult.theme_color}
                   </span>
                 )}
