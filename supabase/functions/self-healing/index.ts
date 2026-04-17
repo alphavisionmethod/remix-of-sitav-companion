@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 serve(async (req) => {
@@ -41,6 +42,10 @@ serve(async (req) => {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Phase 27 — Kill-switch enforcement (KS-SELF-HEALING)
+    const killed = await checkKillSwitchOrReject("KS-SELF-HEALING", supabase);
+    if (killed) return killed;
 
     const checks: Array<{ name: string; status: string; details?: string; autoFixed?: boolean }> = [];
 
