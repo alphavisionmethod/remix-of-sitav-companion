@@ -212,6 +212,9 @@ const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCent
 // ── C-014: Data Retention Dashboard ──
 const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDashboard"));
 
+// ── C-020: User Seed Health Dashboard ──
+const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
