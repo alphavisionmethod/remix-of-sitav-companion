@@ -28,10 +28,34 @@ interface OSWindowContextType {
 
 const OSWindowContext = createContext<OSWindowContextType | null>(null);
 
-// ── Cascade offset for new windows ──────────────────────────
+// ── Cascade + sizing constants ──────────────────────────────
 const CASCADE_OFFSET = 30;
-const DEFAULT_SIZE = { width: 800, height: 600 };
-const BASE_POSITION = { x: 120, y: 80 };
+const MENU_BAR_HEIGHT = 28;
+const DOCK_RESERVED = 60; // breathing room for dock at bottom
+const VIEWPORT_MARGIN = 24; // gap from screen edges so the window "fits" the desktop
+
+// Default window size adapts to viewport so smaller-than-fullscreen
+// windows always fully fit the available desktop area.
+function computeDefaultSize(): { width: number; height: number } {
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  const availW = vw - VIEWPORT_MARGIN * 2;
+  const availH = vh - MENU_BAR_HEIGHT - DOCK_RESERVED - VIEWPORT_MARGIN;
+  return {
+    width: Math.max(640, Math.min(1100, availW)),
+    height: Math.max(480, Math.min(720, availH)),
+  };
+}
+
+function computeBasePosition(size: { width: number; height: number }) {
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  // Center initial window on screen
+  return {
+    x: Math.max(VIEWPORT_MARGIN, Math.round((vw - size.width) / 2)),
+    y: Math.max(MENU_BAR_HEIGHT + VIEWPORT_MARGIN, Math.round((vh - size.height) / 2 - 20)),
+  };
+}
 
 export function OSWindowProvider({ children }: { children: ReactNode }) {
   const [openWindows, setOpenWindows] = useState<OSWindow[]>([]);
@@ -49,11 +73,23 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
           );
         }
 
-        // Cascade position based on current window count
+        // Resolve size (caller-provided or viewport-fit default), clamp to viewport
+        const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
+        const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+        const maxW = vw - VIEWPORT_MARGIN * 2;
+        const maxH = vh - MENU_BAR_HEIGHT - DOCK_RESERVED - VIEWPORT_MARGIN;
+        const requested = size ?? computeDefaultSize();
+        const resolvedSize = {
+          width: Math.min(requested.width, maxW),
+          height: Math.min(requested.height, maxH),
+        };
+
+        // Cascade from a centered base position
+        const base = computeBasePosition(resolvedSize);
         const cascadeIndex = prev.length;
         const position = {
-          x: BASE_POSITION.x + cascadeIndex * CASCADE_OFFSET,
-          y: BASE_POSITION.y + cascadeIndex * CASCADE_OFFSET,
+          x: Math.max(VIEWPORT_MARGIN, Math.min(base.x + cascadeIndex * CASCADE_OFFSET, vw - resolvedSize.width - VIEWPORT_MARGIN)),
+          y: Math.max(MENU_BAR_HEIGHT + 8, Math.min(base.y + cascadeIndex * CASCADE_OFFSET, vh - resolvedSize.height - DOCK_RESERVED)),
         };
 
         const newWindow: OSWindow = {
@@ -64,7 +100,7 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
           isMaximized: false,
           zIndex: nextZ,
           position,
-          size: size ?? DEFAULT_SIZE,
+          size: resolvedSize,
         };
 
         setNextZ((z) => z + 1);
