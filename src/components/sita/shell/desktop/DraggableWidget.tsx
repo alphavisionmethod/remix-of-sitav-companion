@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
 
 interface DraggableWidgetProps {
   id: string;
@@ -147,25 +148,30 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onClickCapture={onClickCapture}
+      onContextMenu={(e) => e.stopPropagation()}
       className={cn(
         "group transition-shadow duration-200 touch-none select-none cursor-grab active:cursor-grabbing",
         dragging && "z-50 shadow-[0_0_30px_rgba(114,92,255,0.3)]",
         className
       )}
     >
-      {/* Remove button — stops propagation so it never starts a drag */}
-      <button
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => { e.stopPropagation(); onRemove(id); }}
-        className={cn(
-          "absolute -top-2.5 -right-2.5 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 border border-white/[0.15] text-white/40 hover:text-white hover:bg-red-500/90 hover:border-red-400/50 transition-all shadow-lg",
-          dragging ? "opacity-0 pointer-events-none" : "opacity-60 group-hover:opacity-100 scale-100"
-        )}
-        title="Remove widget"
-      >
-        <X className="h-3.5 w-3.5" />
-      </button>
-      {children}
+      <SurfaceContextMenu surface="widget" widgetId={id}>
+        <div className="relative">
+          {/* Remove button — stops propagation so it never starts a drag */}
+          <button
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); onRemove(id); }}
+            className={cn(
+              "absolute -top-2.5 -right-2.5 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 border border-white/[0.15] text-white/40 hover:text-white hover:bg-red-500/90 hover:border-red-400/50 transition-all shadow-lg",
+              dragging ? "opacity-0 pointer-events-none" : "opacity-60 group-hover:opacity-100 scale-100"
+            )}
+            title="Remove widget"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+          {children}
+        </div>
+      </SurfaceContextMenu>
     </div>
   );
 }
