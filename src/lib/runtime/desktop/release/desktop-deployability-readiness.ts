@@ -101,10 +101,10 @@ export const DESKTOP_DEPLOYABILITY_READINESS: ReadonlyArray<DesktopReadinessItem
     title: "App signing/notarization plan exists",
     status: "partial",
     evidence:
-      "electron/forge.config.cjs declares osxSign, osxNotarize, windowsSign blocks driven by env (APPLE_IDENTITY, APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID, CSC_LINK, CSC_KEY_PASSWORD). Signing is wired but requires real certificates at release time.",
+      "electron/forge.config.cjs declares osxSign + osxNotarize + windowsSign blocks driven by env (APPLE_IDENTITY, APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID, CSC_LINK, CSC_KEY_PASSWORD). electron/entitlements.plist scaffolded with hardened-runtime entitlements. scripts/release/desktop/verify-signing-credentials.ts emits generated/desktop-signing-status.json — flips to 'ready' when env vars present in release CI. Provisioning runbook: docs/runbooks/DESKTOP_SIGNING_PROVISIONING.md.",
     blocker: false,
     remediation:
-      "Provision Apple Developer ID Application certificate + Windows EV/OV code signing certificate; populate APPLE_* and CSC_* env vars in release CI.",
+      "Run docs/runbooks/DESKTOP_SIGNING_PROVISIONING.md to provision Apple Developer ID + Windows EV/OV cert; populate APPLE_* and CSC_* env vars in release CI; verifier auto-flips item to 'ready'.",
   },
 ];
 
