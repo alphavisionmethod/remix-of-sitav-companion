@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
+import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window
@@ -178,7 +179,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
         win.isMaximized && "!rounded-none"
       )}
       style={{
-        zIndex: win.zIndex,
+        zIndex: win.isPinned ? 9000 + win.zIndex : win.zIndex,
         willChange: isDragging ? "transform" : "auto",
         ...(win.isMaximized
           ? {
@@ -196,57 +197,63 @@ export function AppWindow({ window: win }: AppWindowProps) {
       }}
       onMouseDown={() => focusWindow(win.id)}
     >
-      {/* ── Title bar ──────────────────────────────────────── */}
-      <div
-        className={cn(
-          "flex items-center h-10 px-3 gap-2 select-none shrink-0 touch-none",
-          "border-b border-white/[0.06]",
-          "bg-background/40",
-          !win.isMaximized && "cursor-grab",
-          isDragging && "cursor-grabbing"
-        )}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onDoubleClick={() => maximizeWindow(win.id)}
-      >
-        {/* Traffic lights */}
-        <div className="flex items-center gap-1.5 group">
-          <TrafficLight
-            color="bg-[hsl(0_72%_51%)]"
-            hoverColor="text-[hsl(0_0%_15%)]"
-            icon={X}
-            onClick={() => closeWindow(win.id)}
-            label="Close"
-          />
-          <TrafficLight
-            color="bg-[hsl(45_93%_47%)]"
-            hoverColor="text-[hsl(0_0%_15%)]"
-            icon={Minus}
-            onClick={() => minimizeWindow(win.id)}
-            label="Minimize"
-          />
-          <TrafficLight
-            color="bg-[hsl(142_71%_45%)]"
-            hoverColor="text-[hsl(0_0%_15%)]"
-            icon={win.isMaximized ? Square : Maximize2}
-            onClick={() => maximizeWindow(win.id)}
-            label="Maximize"
-          />
+      {/* ── Title bar (right-click → window menu) ──────────── */}
+      <SurfaceContextMenu surface="app-window" window={win}>
+        <div
+          className={cn(
+            "flex items-center h-10 px-3 gap-2 select-none shrink-0 touch-none",
+            "border-b border-white/[0.06]",
+            "bg-background/40",
+            !win.isMaximized && "cursor-grab",
+            isDragging && "cursor-grabbing"
+          )}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onDoubleClick={() => maximizeWindow(win.id)}
+        >
+          {/* Traffic lights */}
+          <div className="flex items-center gap-1.5 group">
+            <TrafficLight
+              color="bg-[hsl(0_72%_51%)]"
+              hoverColor="text-[hsl(0_0%_15%)]"
+              icon={X}
+              onClick={() => closeWindow(win.id)}
+              label="Close"
+            />
+            <TrafficLight
+              color="bg-[hsl(45_93%_47%)]"
+              hoverColor="text-[hsl(0_0%_15%)]"
+              icon={Minus}
+              onClick={() => minimizeWindow(win.id)}
+              label="Minimize"
+            />
+            <TrafficLight
+              color="bg-[hsl(142_71%_45%)]"
+              hoverColor="text-[hsl(0_0%_15%)]"
+              icon={win.isMaximized ? Square : Maximize2}
+              onClick={() => maximizeWindow(win.id)}
+              label="Maximize"
+            />
+          </div>
+
+          {/* Title */}
+          <span className="flex-1 text-center text-[13px] font-medium text-foreground/70 truncate pointer-events-none">
+            {win.title}
+            {win.isPinned && <span className="ml-2 text-[10px] text-primary">📌</span>}
+          </span>
+
+          {/* Spacer to balance traffic lights */}
+          <div className="w-[52px]" />
         </div>
+      </SurfaceContextMenu>
 
-        {/* Title */}
-        <span className="flex-1 text-center text-[13px] font-medium text-foreground/70 truncate pointer-events-none">
-          {win.title}
-        </span>
-
-        {/* Spacer to balance traffic lights */}
-        <div className="w-[52px]" />
-      </div>
-
-      {/* ── Window body ────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto">
+      {/* ── Window body (stops ctx propagation so desktop menu doesn't open) ── */}
+      <div
+        className="flex-1 overflow-y-auto"
+        onContextMenu={(e) => e.stopPropagation()}
+      >
         {win.component}
       </div>
     </motion.div>

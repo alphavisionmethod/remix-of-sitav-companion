@@ -16,6 +16,7 @@ import { useDesktopWidgets } from "@/hooks/useDesktopWidgets";
 import { useWallpaper } from "@/hooks/use-wallpaper";
 import { DraggableWidget } from "./desktop/DraggableWidget";
 import { WidgetPicker } from "./desktop/WidgetPicker";
+import { SurfaceContextMenu } from "./SurfaceContextMenu";
 import {
   DesktopClockWidget,
   DesktopNotificationsWidget,
@@ -224,17 +225,17 @@ export function DesktopSurface({
       ? "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]"
       : wallpaperTheme.gradient || "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]";
 
-  // Right-click context menu handler
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setPickerOpen(true);
-  };
-
   return (
-    <div ref={desktopRef} className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()} onContextMenu={handleContextMenu}>
-      {/* Layer 0: Deep gradient base */}
-      <div className={cn("absolute inset-0 z-0 bg-gradient-to-br", baseGradient)} />
-
+    <div ref={desktopRef} className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()}>
+      <SurfaceContextMenu
+        surface="desktop"
+        onAddWidget={() => setPickerOpen(true)}
+      >
+        <div className="absolute inset-0 z-0">
+          {/* Layer 0: Deep gradient base (inside trigger so right-click on empty desktop works) */}
+          <div className={cn("absolute inset-0 bg-gradient-to-br", baseGradient)} />
+        </div>
+      </SurfaceContextMenu>
       {/* Layer 0.5: Wallpaper overlay */}
       {wallpaperTheme.overlay && wallpaperId !== "sita-hero" && (
         <div className="absolute inset-0 z-[0]" style={{ background: wallpaperTheme.overlay }} />

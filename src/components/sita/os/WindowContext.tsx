@@ -5,12 +5,15 @@ import React, { createContext, useContext, useState, useCallback, type ReactNode
 // Manages OS-level window state: open, close, minimize, maximize, focus
 // ═══════════════════════════════════════════════════════════════
 
+export type SnapDirection = "left" | "right" | "top" | "bottom" | "center" | "full";
+
 export interface OSWindow {
   id: string;
   title: string;
   component: ReactNode;
   isMinimized: boolean;
   isMaximized: boolean;
+  isPinned?: boolean;
   zIndex: number;
   position: { x: number; y: number };
   size: { width: number; height: number };
@@ -24,6 +27,8 @@ interface OSWindowContextType {
   maximizeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   updateWindowPosition: (id: string, position: { x: number; y: number }) => void;
+  snapWindow: (id: string, dir: SnapDirection) => void;
+  togglePinned: (id: string) => void;
 }
 
 const OSWindowContext = createContext<OSWindowContextType | null>(null);
@@ -146,6 +151,48 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const snapWindow = useCallback((id: string, dir: SnapDirection) => {
+    const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
+    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+    const availW = vw;
+    const availH = vh - MENU_BAR_HEIGHT - DOCK_RESERVED;
+    const top = MENU_BAR_HEIGHT;
+
+    const layout = (() => {
+      switch (dir) {
+        case "left":   return { x: 0, y: top, width: Math.floor(availW / 2), height: availH };
+        case "right":  return { x: Math.floor(availW / 2), y: top, width: Math.floor(availW / 2), height: availH };
+        case "top":    return { x: 0, y: top, width: availW, height: Math.floor(availH / 2) };
+        case "bottom": return { x: 0, y: top + Math.floor(availH / 2), width: availW, height: Math.floor(availH / 2) };
+        case "center": {
+          const w = Math.min(900, availW - 80);
+          const h = Math.min(640, availH - 60);
+          return { x: Math.round((vw - w) / 2), y: Math.round((availH - h) / 2 + top), width: w, height: h };
+        }
+        case "full":   return { x: 0, y: top, width: availW, height: availH };
+      }
+    })();
+
+    setOpenWindows((prev) =>
+      prev.map((w) =>
+        w.id === id
+          ? {
+              ...w,
+              isMaximized: dir === "full",
+              position: { x: layout.x, y: layout.y },
+              size: { width: layout.width, height: layout.height },
+            }
+          : w,
+      ),
+    );
+  }, []);
+
+  const togglePinned = useCallback((id: string) => {
+    setOpenWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isPinned: !w.isPinned } : w)),
+    );
+  }, []);
+
   return (
     <OSWindowContext.Provider
       value={{
@@ -156,6 +203,8 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
         maximizeWindow,
         focusWindow,
         updateWindowPosition,
+        snapWindow,
+        togglePinned,
       }}
     >
       {children}
