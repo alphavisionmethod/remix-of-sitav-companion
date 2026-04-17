@@ -212,6 +212,9 @@ const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCent
 // ── C-014: Data Retention Dashboard ──
 const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDashboard"));
 
+// ── C-020: User Seed Health Dashboard ──
+const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -253,6 +256,7 @@ export function getAdminRoutes() {
     <Route key="ws-ts-sensitive" path="/admin/trust-security/sensitive-actions" element={<Navigate to="/admin/mc/state-authority" replace />} />,
     <Route key="ws-ts-audit" path="/admin/trust-security/audit" element={gated("audit.view", <AuditComplianceWorkspace />)} />,
     <Route key="ws-ts-retention" path="/admin/data-retention" element={gated("audit.view", <DataRetentionDashboard />)} />,
+    <Route key="ws-onboarding-seed-health" path="/admin/user-seed-health" element={gated("audit.view", <UserSeedHealth />)} />,
 
     // ── Phase 7: Meta-Architecture Surfaces ──
     <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,

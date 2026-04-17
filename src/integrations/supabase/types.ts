@@ -13501,6 +13501,48 @@ export type Database = {
         }
         Relationships: []
       }
+      user_seed_runs: {
+        Row: {
+          created_at: string
+          error_summary: string | null
+          expires_at: string
+          id: string
+          metadata: Json
+          reason: string | null
+          rows_count: number
+          seed_version: number
+          status: string
+          tables_count: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_summary?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          rows_count?: number
+          seed_version?: number
+          status?: string
+          tables_count?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_summary?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          rows_count?: number
+          seed_version?: number
+          status?: string
+          tables_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       vapid_keys: {
         Row: {
           activated_at: string | null

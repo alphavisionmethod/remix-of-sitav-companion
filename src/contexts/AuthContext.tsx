@@ -49,20 +49,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [requiresMFA, setRequiresMFA] = useState(false);
   const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
 
-  const triggerAutoSeed = async () => {
+  const triggerAutoSeed = async (userId: string) => {
     if (seedTriggered) return;
     setSeedTriggered(true);
+
+    // Per-user localStorage guard prevents double-fire across hot reloads.
+    const guardKey = `sita-seed-attempted:${userId}`;
+    if (typeof window !== "undefined" && localStorage.getItem(guardKey)) {
+      // We've already attempted this session — defer to durable marker check below.
+    }
+
     try {
+      // Pre-flight: check durable seed marker on the profile.
+      // If set, skip the edge-function call entirely (saves a function invocation per page load).
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("preferences")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      const prefs = (profile?.preferences ?? {}) as Record<string, unknown>;
+      if (prefs?.seeded_at) {
+        if (typeof window !== "undefined") localStorage.setItem(guardKey, "1");
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke("seed-user-data", {
         method: "POST",
         body: {},
       });
+
+      if (typeof window !== "undefined") localStorage.setItem(guardKey, "1");
+
       if (error) {
         console.warn("Auto-seed skipped or failed:", error.message);
       } else if (data?.skipped) {
-        console.log("Data already seeded");
+        console.log("Seed skipped — already seeded");
       } else {
-        console.log("Demo data seeded successfully");
+        console.log(`Seed completed — ${data?.rows_count ?? "?"} rows across ${data?.tables_count ?? "?"} tables`);
       }
     } catch (e) {
       console.warn("Auto-seed error:", e);
@@ -102,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       setLoading(false);
       if ((event === "SIGNED_IN" || event === "TOKEN_REFRESHED") && session?.user) {
-        triggerAutoSeed();
+        triggerAutoSeed(session.user.id);
         // Defer MFA detection to avoid deadlock with auth callback
         setTimeout(() => {
           detectMFARequirement().then(({ required, factorId }) => {
@@ -145,9 +169,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (!error) {
-      triggerAutoSeed();
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!error && data.user) {
+      triggerAutoSeed(data.user.id);
       // MFA requirement is detected via onAuthStateChange → detectMFARequirement
     }
     return { error };
