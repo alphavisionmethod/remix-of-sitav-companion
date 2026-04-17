@@ -1,37 +1,60 @@
 
 
-## Fix: Drag-anywhere widgets + keep them inside the desktop
+## Fix C-002: Profile Auto-Creation on Signup — make it actually work
 
-Two precise changes to `src/components/sita/shell/desktop/DraggableWidget.tsx` plus an initial-position clamp.
+### What's actually broken (live verification)
 
-### 1. Drag from anywhere on the widget (remove the dots handle)
+1. **Trigger exists but is silently broken.** `pg_trigger` confirms `on_auth_user_created` is bound to `auth.users` and enabled. But `pg_get_functiondef('public.handle_new_user')` shows the function reads `NEW.raw_user_metadata` — that column does **not** exist on `auth.users`. The real column is `raw_user_meta_data` (with underscores). Postgres raises an error inside the SECURITY DEFINER trigger, the signup transaction rolls back the trigger side-effect, and the row is never inserted. `SELECT count(*) FROM public.profiles` returns **0**, confirming no profile has ever been created.
+2. **No `useProfile` hook.** Search across `src/**/*.{ts,tsx}` returns zero matches. Each consumer (`UserProfilePage`, `AccountSections`, `NotificationSettingsPage`, etc.) re-implements its own `from('profiles').select(...).eq('user_id', user.id)` ad-hoc query. This means even when the trigger is fixed, there is no canonical, cached, refresh-aware profile signal in the React tree.
+3. **No backfill.** Any user that signed up before today has no profile row. Even after fixing the trigger, those users stay broken.
 
-Move the pointer handlers (`onPointerDown` / `Move` / `Up`) from the small top pill onto the **wrapper `<div>`** itself. Delete the `GripHorizontal` pill entirely. Use a **5px movement threshold** to distinguish a click from a drag — if the pointer moves <5px before release, the underlying child receives the click normally (so quick-action icons still launch apps); past 5px, we enter drag mode and suppress the click.
+### The fix (3 atomic pieces)
 
-The remove (`X`) button keeps its own `stopPropagation` so clicking it never starts a drag.
+#### 1. Migration — correct trigger function + backfill
 
-### 2. Keep widgets inside the desktop (no top overflow)
+Single new SQL migration that does:
 
-The quick-actions widget overflows because its initial `y: 40` plus the dragged-up offset of the now-removed top handle pushed it above the visible area. Two fixes:
+- `CREATE OR REPLACE FUNCTION public.handle_new_user()` — replace `NEW.raw_user_metadata` → `NEW.raw_user_meta_data` in **both** the `full_name` and `avatar_url` reads. Keep `SECURITY DEFINER`, `SET search_path = public`, `ON CONFLICT (user_id) DO NOTHING`. Also fall back to `name` and `picture` keys (Google OAuth uses `name`/`picture`, email uses `full_name`/`avatar_url`).
+- Recreate `on_auth_user_created` trigger as `AFTER INSERT ON auth.users FOR EACH ROW` (idempotent: `DROP TRIGGER IF EXISTS … ; CREATE TRIGGER …`).
+- **Backfill** existing users: `INSERT INTO public.profiles (user_id, display_name, avatar_url) SELECT u.id, COALESCE(u.raw_user_meta_data->>'full_name', u.raw_user_meta_data->>'name', split_part(u.email,'@',1)), COALESCE(u.raw_user_meta_data->>'avatar_url', u.raw_user_meta_data->>'picture') FROM auth.users u LEFT JOIN public.profiles p ON p.user_id = u.id WHERE p.user_id IS NULL;`
 
-- **Remove the `-top-4` handle**, so the widget no longer renders above its declared `y` position.
-- On mount and on window resize, **clamp** `posRef` against `dragConstraints` bounds (same math already used during drag) and call `onMove` if the position had to be corrected. This ensures any widget — including ones loaded from persisted positions on a smaller viewport — snaps inside the desktop.
+#### 2. New `useProfile` React hook — canonical profile signal
 
-### 3. Cursor + affordance
+Create `src/hooks/use-profile.ts`:
 
-Set `cursor-grab` / `active:cursor-grabbing` on the wrapper, plus `touch-none select-none` so dragging works on touch and never selects text. The remove `X` stays visible on hover in the top-right corner as today.
+- Uses TanStack Query (already in the project), key `["profile", user?.id]`, `enabled: !!user && !isDemo`.
+- Reads `display_name, avatar_url, bio, preferences` via `.maybeSingle()` (per project convention — never `.single()`).
+- Returns `{ profile, isLoading, error, refresh, updateProfile }`. `updateProfile(patch)` performs an optimistic `UPDATE` then invalidates the query.
+- For demo users, returns a synthetic profile derived from `DEMO_USER` so personalization still renders.
+- **Self-heal fallback**: if the row is missing for a real authenticated user (older account that somehow still escaped backfill, or race during signup), the hook performs a one-time `INSERT … ON CONFLICT DO NOTHING` using the user's email-derived name, then refetches. This makes the system resilient even if the trigger fails for any future reason.
+
+#### 3. Wire it into `AuthContext` consumers
+
+- Refactor `UserProfilePage.tsx` to use `useProfile` for the read (keep its existing `useActionFn`-based save path).
+- Refactor `AccountSections.tsx` to use `useProfile` (replace the local `useEffect` fetch).
+- Leave the BFF/server-side files (`user-bff.ts`, `support-workflow.ts`, `admin-bff.ts`, mnemosyne assemblers) alone — they already use `.maybeSingle()` correctly and run server-side, not in React.
+
+### Verification (post-deploy)
+
+- Trigger function definition contains `raw_user_meta_data` (with underscores) — verifiable via `pg_get_functiondef`.
+- After signup of a fresh test user, `SELECT count(*) FROM public.profiles WHERE user_id = '<new>'` returns 1.
+- Backfill: `SELECT count(*) FROM auth.users u LEFT JOIN public.profiles p ON p.user_id = u.id WHERE p.user_id IS NULL` returns 0.
+- `UserProfilePage` and Settings → Account both display the new user's display name without manual refresh.
+- 0 TypeScript errors; existing `AuthContext.test.tsx` still passes.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `src/components/sita/shell/desktop/DraggableWidget.tsx` | Wrapper-level pointer handlers, 5px click/drag threshold, delete top dots pill, mount + resize clamping |
+| `supabase/migrations/<new>.sql` | NEW — fix trigger function (correct column name, OAuth fallbacks), recreate trigger, backfill existing users |
+| `src/hooks/use-profile.ts` | NEW — canonical TanStack-Query profile hook with self-heal |
+| `src/pages/UserProfilePage.tsx` | Replace inline profile fetch with `useProfile` |
+| `src/components/sita/shell/windows/settings/AccountSections.tsx` | Replace inline profile fetch with `useProfile` |
 
 ### Acceptance
 
-- Clicking and holding **anywhere** on a widget body drags it
-- Tapping a quick-action icon (no movement) still launches the app
-- The top "dots" pill is gone
-- The quick-actions widget never sits above the desktop top edge, even on first load or after viewport resize
-- `X` remove button still works without triggering a drag
+- Profile row is auto-created for every new signup (real bug fix, not just structural)
+- All historical users backfilled to have a profile row
+- One canonical `useProfile` hook used by personalized UI surfaces
+- C-002 moves from 🔴 BLOCKED → ✅ RESOLVED, fully wired and deployment-ready
 
