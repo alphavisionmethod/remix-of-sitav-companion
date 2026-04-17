@@ -5,6 +5,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 import { withTrace } from "../_shared/tracing.ts";
 import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
@@ -218,69 +219,61 @@ serve(async (req) => {
       }
     }
 
-    // 3. Check budget policies
+    // 3. Check budget policies (canonical, strict — fail-closed at gateway)
     const estimatedCost = estimateCostUsd(model, (maxTokens ?? 1000) * 2);
-    const { data: budgetCheck } = await serviceClient.rpc("check_ai_budget_policies", {
-      p_user_id: user.id,
-      p_capability_key: capabilityId,
-      p_estimated_cost_usd: estimatedCost,
-    });
-
-    const budgetResult = budgetCheck as Record<string, unknown> | null;
+    const budgetResult = await checkAIBudget(
+      serviceClient,
+      user.id,
+      capabilityId,
+      estimatedCost,
+      { strict: true },
+    );
     let budgetDowngrade = false;
 
-    if (budgetResult) {
-      // Block
-      if (budgetResult.should_block) {
-        // Log blocked event
-        await serviceClient.from("ai_usage_ledger").insert({
-          user_id: user.id,
-          capability_key: capabilityId,
-          mode: "real",
-          request_class: taskClass,
-          status: "blocked_budget",
-          estimated_cost_usd: estimatedCost,
-          error_code: "budget_exceeded",
-          error_summary: budgetResult.reason as string,
-        });
+    if (budgetResult.shouldBlock) {
+      await serviceClient.from("ai_usage_ledger").insert({
+        user_id: user.id,
+        capability_key: capabilityId,
+        mode: "real",
+        request_class: taskClass,
+        status: "blocked_budget",
+        estimated_cost_usd: estimatedCost,
+        error_code: "budget_exceeded",
+        error_summary: budgetResult.reason,
+      });
 
-        return corsResponse({
-          status: "degraded",
-          reason: "budget_exceeded",
-          message: `AI budget exceeded: ${budgetResult.reason}`,
-          policyKey: budgetResult.policy_key,
-          launchLevel: "unavailable",
-        }, 429);
-      }
+      return corsResponse({
+        status: "degraded",
+        reason: budgetResult.reason,
+        message: `AI budget exceeded: ${budgetResult.reason}`,
+        policyKey: budgetResult.policyKey,
+        launchLevel: "unavailable",
+      }, 429);
+    }
 
-      // Downgrade
-      if (budgetResult.should_downgrade) {
-        budgetDowngrade = true;
-        if (fallbackModel) {
-          model = fallbackModel;
-        } else {
-          model = TASK_CLASS_MODELS["fallback_degraded"];
-        }
-      }
+    if (budgetResult.shouldDowngrade) {
+      budgetDowngrade = true;
+      model =
+        budgetResult.fallbackModelId ??
+        fallbackModel ??
+        TASK_CLASS_MODELS["fallback_degraded"];
+    }
 
-      // Premium blocked
-      if (budgetResult.premium_blocked && taskClass === "premium_synthesis") {
-        model = TASK_CLASS_MODELS["balanced_assistant"];
-        budgetDowngrade = true;
-      }
+    if (budgetResult.premiumBlocked && taskClass === "premium_synthesis") {
+      model = TASK_CLASS_MODELS["balanced_assistant"];
+      budgetDowngrade = true;
+    }
 
-      // Record alert if threshold breached
-      if (budgetResult.alert_state) {
-        await serviceClient.from("ai_budget_alerts").insert({
-          user_id: user.id,
-          scope_type: "user",
-          scope_ref: user.id,
-          threshold_percent: budgetResult.pct as number,
-          observed_cost_usd: estimatedCost,
-          period_class: "daily",
-          alert_state: budgetResult.alert_state as string,
-        });
-      }
+    if (budgetResult.alertState && budgetResult.alertState !== "ok") {
+      await serviceClient.from("ai_budget_alerts").insert({
+        user_id: user.id,
+        scope_type: "user",
+        scope_ref: user.id,
+        threshold_percent: budgetResult.pct,
+        observed_cost_usd: estimatedCost,
+        period_class: "daily",
+        alert_state: budgetResult.alertState,
+      });
     }
 
     // 4. Call Lovable AI Gateway
