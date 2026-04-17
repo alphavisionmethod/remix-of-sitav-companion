@@ -44,10 +44,14 @@ import { ShellLiveLayer } from "./shell/ShellLiveLayer";
 import { SecurePromptProvider } from "./shell/SecurePromptProvider";
 import { FilePickerProvider } from "./shell/FilePickerService";
 import { SecurePrompt } from "./shell/SecurePrompt";
+import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
+import { useDemoModeRuntimeEnforcement } from "@/hooks/useDemoModeRuntimeEnforcement";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
 export const ShellLayout = ({ children }: { children: ReactNode }) => {
+  // Runtime mode enforcement — tags <body>, window globals, analytics
+  useDemoModeRuntimeEnforcement();
   const [chatOpen, setChatOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
@@ -241,6 +245,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       />
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
+
+        {/* Persistent honesty banner — only renders in demo mode */}
+        <DemoGovernanceBanner />
 
         {isDesktopRoute ? (
           <Suspense fallback={null}>
