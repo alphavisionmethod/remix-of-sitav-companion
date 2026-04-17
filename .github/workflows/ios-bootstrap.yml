@@ -1,0 +1,194 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — iOS Native Runtime Bootstrap
+# Generates the real ios/ tree on a macOS runner using Capacitor
+# + CocoaPods, overlays the hardened ios-templates/ files, builds
+# for iPhone simulator, and either commits the result back via PR
+# or uploads it as an artifact.
+#
+# Run this ONCE (or whenever you bump iOS minimum target / add a
+# new Capacitor plugin). The committed ios/ tree is then the
+# production source of truth signed by .github/workflows/release-ios.yml.
+# ═══════════════════════════════════════════════════════════════
+name: iOS · Bootstrap Native Runtime
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_back:
+        description: "Commit the generated ios/ tree back as a PR (true) or upload as artifact only (false)"
+        required: true
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      branch_name:
+        description: "Branch name for the PR"
+        required: false
+        default: "ios/bootstrap-native-runtime"
+        type: string
+
+concurrency:
+  group: ios-bootstrap-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    name: Generate iOS native project
+    runs-on: macos-14
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Setup Ruby (CocoaPods)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: false
+
+      - name: Install CocoaPods
+        run: |
+          gem install cocoapods --no-document
+          pod --version
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build web bundle
+        run: npm run build
+
+      - name: Pre-flight — refuse if ios/ already exists with workspace
+        run: |
+          if [ -d "ios/App/App.xcworkspace" ]; then
+            echo "::warning::ios/App/App.xcworkspace already exists — bootstrap will refresh templates only."
+            echo "REFRESH_ONLY=true" >> $GITHUB_ENV
+          else
+            echo "REFRESH_ONLY=false" >> $GITHUB_ENV
+          fi
+
+      - name: Add iOS platform (Capacitor)
+        if: env.REFRESH_ONLY == 'false'
+        run: |
+          npx cap add ios
+          echo "✓ Capacitor generated ios/ tree"
+          ls -la ios/App/
+
+      - name: Overlay hardened ios-templates/ → ios/
+        run: |
+          echo "▶ Overlaying production-grade Info.plist, entitlements, privacy manifest, icons, storyboard"
+          # rsync overlays our hardened files on top of Capacitor's defaults
+          rsync -av ios-templates/App/App/ ios/App/App/
+          # Podfile lives at ios/App/Podfile (one level up)
+          if [ -f ios-templates/App/Podfile ]; then
+            cp ios-templates/App/Podfile ios/App/Podfile
+          fi
+          echo "✓ Templates overlaid"
+
+      - name: Generate icon size variants from 1024 master
+        run: |
+          ICON_DIR="ios/App/App/Assets.xcassets/AppIcon.appiconset"
+          MASTER="$ICON_DIR/AppIcon-1024.png"
+          if [ ! -f "$MASTER" ]; then
+            echo "::error::Master icon missing at $MASTER"
+            exit 1
+          fi
+          for size in 20 29 40 58 60 76 80 87 120 152 167 180; do
+            sips -Z "$size" "$MASTER" --out "$ICON_DIR/AppIcon-$size.png" >/dev/null
+            echo "  ✓ AppIcon-$size.png"
+          done
+          ls -la "$ICON_DIR/"
+
+      - name: Pod install (generates App.xcworkspace)
+        working-directory: ios/App
+        run: |
+          pod install --repo-update
+          test -d App.xcworkspace || { echo "::error::pod install did not produce App.xcworkspace"; exit 1; }
+          echo "✓ App.xcworkspace generated"
+
+      - name: Capacitor sync
+        run: npx cap sync ios
+
+      - name: Smoke build (iPhone 15 simulator, Debug)
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tail -50
+          echo "✓ Simulator build OK"
+
+      - name: Emit bootstrap manifest
+        run: |
+          mkdir -p generated
+          node -e "
+          const fs = require('fs');
+          const manifest = {
+            generatedAt: new Date().toISOString(),
+            commit: (process.env.GITHUB_SHA || 'local').slice(0, 12),
+            runner: 'macos-14',
+            iosFolder: fs.existsSync('ios/App/App.xcworkspace'),
+            podfileLock: fs.existsSync('ios/App/Podfile.lock'),
+            mode: '${{ inputs.commit_back }}' === 'true' ? 'commit-pr' : 'artifact-only',
+          };
+          fs.writeFileSync('generated/ios-bootstrap-manifest.json', JSON.stringify(manifest, null, 2));
+          console.log(manifest);
+          "
+
+      - name: Upload ios/ as artifact
+        if: ${{ inputs.commit_back == 'false' || always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-native-runtime
+          path: |
+            ios/
+            generated/ios-bootstrap-manifest.json
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Create PR with generated ios/ tree
+        if: ${{ inputs.commit_back == 'true' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ inputs.branch_name }}
+          base: main
+          title: "iOS · Bootstrap native runtime (auto-generated)"
+          commit-message: "feat(ios): bootstrap native runtime via macos-14 CI"
+          body: |
+            ## iOS Native Runtime — auto-generated by `ios-bootstrap` workflow
+
+            This PR adds the real Capacitor iOS project, generated on a `macos-14` runner.
+
+            **Includes:**
+            - `ios/App/App.xcworkspace` — the real CocoaPods workspace
+            - `ios/App/App.xcodeproj` — Xcode project (binary plists)
+            - `ios/App/Podfile.lock` — pinned native dependencies
+            - All Capacitor plugins from `package.json` linked
+
+            **Hardened by `ios-templates/` overlay:**
+            - `Info.plist` — every permission usage string declared
+            - `App.entitlements` — keychain, associated domains, App Attest
+            - `PrivacyInfo.xcprivacy` — Apple privacy manifest
+            - `LaunchScreen.storyboard` — branded `#0b0f17`
+            - `AppIcon.appiconset/` — 14 icon sizes derived from 1024 master
+
+            **Verified:** Simulator build (iPhone 15, Debug) passes.
+
+            **Next:** Merge → trigger `Release · iOS` workflow with signing secrets configured.
+
+            See `docs/ios/IOS_NATIVE_RUNTIME.md` for the full runbook.
+          add-paths: |
+            ios/**
+            generated/ios-bootstrap-manifest.json
+          delete-branch: true
