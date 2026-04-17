@@ -151,7 +151,7 @@ export default function DataRetentionDashboard() {
             value={totals.runs.toLocaleString()}
           />
           <SummaryCard
-            icon={<ShieldCheck className="h-5 w-5 text-emerald-500" />}
+            icon={<ShieldCheck className="h-5 w-5 text-primary" />}
             label="Rows purged (30d)"
             value={totals.rowsPurged.toLocaleString()}
           />
