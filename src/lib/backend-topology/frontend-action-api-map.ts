@@ -63,22 +63,23 @@ export const FRONTEND_ACTION_API_MAP: ReadonlyArray<FrontendActionEntry> = [
   { id: "files.list", title: "List files", surface: "user", criticality: "P1", kind: "supabase-table", target: "user_files" },
 
   // ── Communications ───────────────────────────────────────────
-  { id: "comms.send-email", title: "Send transactional email", surface: "user", criticality: "P1", kind: "edge-function", target: "communications-send" },
-  { id: "comms.send-sms", title: "Send SMS", surface: "user", criticality: "P1", kind: "edge-function", target: "communications-send" },
+  { id: "comms.send-email", title: "Send transactional email", surface: "user", criticality: "P1", kind: "edge-function", target: "communications-api" },
+  { id: "comms.send-sms", title: "Send SMS", surface: "user", criticality: "P1", kind: "edge-function", target: "communications-api" },
 
   // ── Push notifications ───────────────────────────────────────
-  { id: "push.subscribe", title: "Subscribe to push", surface: "user", criticality: "P1", kind: "edge-function", target: "push-subscribe" },
-  { id: "push.send", title: "Send push notification", surface: "system", criticality: "P1", kind: "edge-function", target: "push-send" },
+  { id: "push.subscribe", title: "Subscribe to push", surface: "user", criticality: "P1", kind: "supabase-table", target: "push_subscriptions" },
+  { id: "push.dispatch", title: "Dispatch push notification", surface: "system", criticality: "P1", kind: "edge-function", target: "push-dispatch" },
+  { id: "push.track", title: "Track push delivery", surface: "system", criticality: "P2", kind: "edge-function", target: "push-track" },
 
   // ── Connectors ───────────────────────────────────────────────
-  { id: "connectors.oauth-start", title: "Start connector OAuth", surface: "user", criticality: "P0", kind: "edge-function", target: "connector-oauth-start" },
-  { id: "connectors.oauth-callback", title: "OAuth callback", surface: "system", criticality: "P0", kind: "edge-function", target: "connector-oauth-callback" },
+  { id: "connectors.oauth", title: "Connector OAuth flow", surface: "user", criticality: "P0", kind: "edge-function", target: "connector-oauth" },
+  { id: "connectors.discover", title: "Discover connector data", surface: "user", criticality: "P1", kind: "edge-function", target: "connector-discover" },
   { id: "connectors.sync", title: "Trigger connector sync", surface: "user", criticality: "P1", kind: "edge-function", target: "connector-sync" },
+  { id: "connectors.health", title: "Check connector health", surface: "user", criticality: "P2", kind: "edge-function", target: "connector-health" },
 
-  // ── Stripe / Billing ─────────────────────────────────────────
-  { id: "billing.checkout", title: "Stripe checkout session", surface: "user", criticality: "P0", kind: "edge-function", target: "stripe-checkout" },
-  { id: "billing.portal", title: "Stripe customer portal", surface: "user", criticality: "P0", kind: "edge-function", target: "stripe-portal" },
-  { id: "billing.webhook", title: "Stripe webhook ingest", surface: "system", criticality: "P0", kind: "edge-function", target: "stripe-webhook" },
+  // ── Payments ─────────────────────────────────────────────────
+  { id: "payments.process", title: "Process payment", surface: "user", criticality: "P0", kind: "edge-function", target: "payment-process" },
+  { id: "payments.kill-switch", title: "Payment kill-switch", surface: "admin", criticality: "P0", kind: "edge-function", target: "payment-kill-switch" },
 
   // ── Realtime channels ────────────────────────────────────────
   { id: "realtime.notifications", title: "Realtime notifications", surface: "user", criticality: "P1", kind: "realtime-channel", target: "notifications" },
