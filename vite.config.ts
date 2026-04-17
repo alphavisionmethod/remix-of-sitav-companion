@@ -81,7 +81,7 @@ export default defineConfig(({ mode }) => ({
       release: { name: process.env.VITE_APP_RELEASE || undefined },
       sourcemaps: { assets: "./dist/**" },
       disable: !process.env.SENTRY_AUTH_TOKEN,
-    }) : false,
+    }) : null,
   ].filter(Boolean),
   resolve: {
     alias: {
