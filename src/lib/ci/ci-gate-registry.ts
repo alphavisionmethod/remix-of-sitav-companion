@@ -408,6 +408,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Every OwnerWorkflow entry and steps[].route must resolve to a mounted admin route (real page, alias redirect, or registry redirect). All 5 workflow keys (daily, weekly, support, release, trust-safety) must be present with ≥4 steps each, and every workflow domain must appear in ADMIN_DOMAINS.",
     producesArtifact: "generated/owner-workflow-reality-report.json",
   },
+
+  // ── Phase 26 ── Manifest Truth (Checklist 20: theater elimination)
+  {
+    id: "manifest-theater-elimination",
+    phase: "phase-26-manifest-truth",
+    title: "Manifest theater elimination (Checklist 20: bidirectional registry ↔ disk)",
+    script: "scripts/manifests/validate/check-manifest-source-truth.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Bidirectional truth: every generated/*.json on disk must be registered in MANIFEST_REGISTRY, every registry entry must point to a real file on disk, and every authoritative entry must have an existing validator script. Eliminates manifest theater (orphans + phantoms).",
+    producesArtifact: "generated/manifest-theater-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
