@@ -164,11 +164,11 @@ function DockIcon({ app, scale, magnetX, isRunning, isBouncing, isSuggestion, ba
 
 export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false, onOpenLauncher }: DesktopDockProps) => {
   const navigate = useNavigate();
-  const { apps } = useAppPlatform();
+  const { apps, pinToDock, unpinFromDock } = useAppPlatform();
   const { getBadge } = useAppBadges();
   const { recordLaunch, getRecentFlow, getContextualSuggestions } = useAppSurfacing();
   const dockContext = useDockContext();
-  const [pinnedIds, setPinnedIds] = useState<string[]>(loadPinnedOrder);
+  const [pinnedOrder, setPinnedOrder] = useState<string[]>(loadPinnedOrder);
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ app: AppDefinition; x: number; y: number; section: "core" | "active" | "suggestion" } | null>(null);
   const [bouncingApp, setBouncingApp] = useState<string | null>(null);
@@ -176,6 +176,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   const [dockVisible, setDockVisible] = useState(true);
   const [flowVisible, setFlowVisible] = useState(false);
   const [cursorX, setCursorX] = useState<number | null>(null);
+  const [dropActive, setDropActive] = useState(false);
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const previewTimer = useRef<ReturnType<typeof setTimeout>>();
