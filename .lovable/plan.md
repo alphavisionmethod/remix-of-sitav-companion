@@ -1,104 +1,100 @@
 
 
-## Plan: Wire the macOS-style top menu bar (SystemMenuBar) end-to-end
+## Plan: Native-style right-click context menus per surface
 
-The top bar is `src/components/sita/shell/SystemMenuBar.tsx`. Right-side icons (Search, Control Center, Notifications, Trust, Avatar, Wifi, Clock) are already wired. The **brand** ("SITA Desktop"), the **5 menu buttons** (File, Edit, View, Window, Help), and the apostrophe-style left logo do **nothing** when clicked — just toggle a local `activeMenu` flag with no dropdown rendered.
+### Problem
+`DesktopSurface.tsx` line 228 — `handleContextMenu` calls `setPickerOpen(true)` and is bound on the root `<div className="fixed inset-0">`. Because right-clicks bubble up from everywhere (app windows, widgets, dock), **every right-click anywhere opens the Widget Gallery**. There are no app-window or widget context menus at all.
 
-### What each entry will do (final menu spec)
+### Solution: surface-aware context menus
+Build a small dispatcher that picks the right menu based on what was right-clicked. Three menus initially (mirrors the user's reference images):
 
-**🍎 SITA brand menu** (click logo or "SITA")
-- About SITA OS — opens About dialog (version, build, runtime, copyright)
-- System Settings… — `openWindow("settings")` (⌘,)
-- App Store — dispatch `sita-open-app-store`
-- Mission Control — dispatch `sita-open-mission-control`
+**1. Desktop menu** (right-click empty desktop — Mac/Windows reference image #2, #3)
+- View ▸ Icon size (S/M/L), Show widget grid
+- Sort by ▸ Name, Type, Recently added
+- Refresh desktop
 - ─
-- Lock Screen — dispatch `sita-lock-screen` (⌃⌘Q)
-- Sign Out… — confirm → `signOut()` from AuthContext
-- Restart Shell — `window.location.reload()`
-
-**Desktop (active app) menu** (click "Desktop" / activeApp label)
-- About this app — info dialog about current app
-- Preferences… — opens settings scoped to active app (⌘,)
-- Hide window — minimizes focused window (⌘H)
-- Quit — closes focused window (⌘Q)
-
-**File**
-- New Window — `openWindow("files")` (⌘N)
-- Open Search… — calls `onSearchOpen()` (⌘K)
-- Open File… — opens FilePickerService (⌘O)
+- New Folder
+- New File ▸ Document, Spreadsheet, Note
 - ─
-- Save — dispatch `sita-save-active` (⌘S) — handled by active app if listening
-- Export… — dispatch `sita-export-active`
+- Add Widget… (opens WidgetPicker — replaces current behavior)
+- Change Wallpaper…
 - ─
-- Close Window — closes focused window (⌘W)
-
-**Edit**
-- Undo / Redo — `document.execCommand` fallback + dispatch `sita-undo`/`sita-redo` (⌘Z / ⇧⌘Z)
-- Cut / Copy / Paste — `document.execCommand` (⌘X / ⌘C / ⌘V)
-- Select All — (⌘A)
+- Open in Terminal
+- Common Apps ▸ (dynamic submenu from installed apps — Calculator, Notes, Files, Mail, Browser, etc., per image #1)
 - ─
-- Find in App — dispatch `sita-find-in-app` (⌘F)
+- Display Settings
+- Personalize
 
-**View**
-- Toggle Sidebar — dispatch `sita-toggle-sidebar` (⌃⌘S)
-- Toggle Dock Auto-Hide — dispatch `sita-toggle-dock`
-- Show Widgets Gallery — dispatch `sita-open-widget-picker` (already wired upstream)
-- Enter Full Screen — `document.documentElement.requestFullscreen()` / exit (⌃⌘F)
+**2. App Window menu** (right-click on a window's titlebar or chrome — Windows reference image #1 spirit)
+- Restore  *(disabled if not maximized)*
+- Move  *(enters keyboard-move mode)*
+- Size  *(enters keyboard-resize mode)*
+- Minimize  ⌘M
+- Maximize / Zoom  *(toggles)*
 - ─
-- Theme: Light / Dark / System — sets theme
-- Zoom In / Out / Actual Size (⌘+ / ⌘− / ⌘0) — adjusts root font-size
-
-**Window**
-- Minimize — minimize focused window (⌘M)
-- Zoom (Maximize toggle) — maximize focused window
+- Always on Top  ☑ *(checkbox)*
+- Snap ▸ Left half, Right half, Top half, Bottom half, Center, Full
 - ─
-- Bring All to Front — focus all windows in order
-- Cascade Windows — repositions open windows in cascade
-- Close All — closes every open window
+- Reload App
+- App Info…
 - ─
-- Dynamic list of currently open windows (click → focus) with checkmark on focused one
+- Close  ⌘W
 
-**Help**
-- SITA Help… — `openWindow("help")` or opens help center route
-- Keyboard Shortcuts — opens shortcuts modal (⌘/)
-- Documentation — `window.open("https://docs.lovable.dev")`
-- Report an Issue — `openWindow("support")` or mailto
+**3. Widget menu** (right-click a desktop widget — already partially exists via the X button, formalize it)
+- Refresh
+- Resize ▸ S / M / L
+- Pin to position  ☑
 - ─
-- What's New — opens release notes / changelog
-- About SITA OS — same as brand About
+- Widget Settings…
+- Remove Widget
 
-### Implementation approach
+### Architecture
+```
+src/lib/context-menu/
+  menu-registry.ts        — surface → menu spec map
+  desktop-menu.tsx        — Desktop menu spec
+  app-window-menu.tsx     — App window menu spec
+  widget-menu.tsx         — Widget menu spec
+  common-apps-submenu.tsx — Dynamic installed-apps submenu
+src/components/sita/shell/SurfaceContextMenu.tsx
+  — Wraps Radix `<ContextMenu>` (already in repo at src/components/ui/context-menu.tsx)
+  — Renders the spec; consumers pass surface="desktop"|"app-window"|"widget" + context data
+```
 
-1. **Refactor `SystemMenuBar.tsx`** to render a real dropdown menu under each clicked label (Radix `DropdownMenu` already in repo). Click toggles open; hover-to-switch when one is already open (true macOS behavior — current code half-supports this).
-2. **Make brand + activeApp label clickable** as menu triggers (Apple menu + App menu).
-3. **Create `src/lib/system-menu/menu-actions.ts`** — pure action functions (`openSettings()`, `lockScreen()`, `cascadeWindows()`, `closeAllWindows()`, `toggleFullscreen()`, `setTheme()`, etc.) so menus stay declarative.
-4. **Create `src/components/sita/shell/AboutDialog.tsx`** — small modal for "About SITA OS".
-5. **Add `useGlobalShortcuts` hook** mounted in `ShellLayout` for the keyboard shortcuts (⌘N, ⌘W, ⌘M, ⌘K, ⌘,, ⌘/, ⌃⌘F, ⌃⌘Q, ⌘+, ⌘−, ⌘0). Skip when typing in inputs.
-6. **Wire WindowManager actions**: pass `useWindowManagerContext()` into the menu so Window menu can list/focus/close/cascade real windows.
-7. **Wire AuthContext** (`signOut`) and `useTheme` (already in repo) for the Sign Out and Theme items.
-8. **Dispatch app-level events** (`sita-save-active`, `sita-find-in-app`, `sita-toggle-sidebar`, `sita-toggle-dock`, `sita-lock-screen`) so any current/future app can opt in by listening — no dead buttons (each comes with at least a fallback toast "Not available for this view" so we never silently no-op).
+### Wiring changes
+1. **`DesktopSurface.tsx`** — replace the bare `onContextMenu={() => setPickerOpen(true)}` with `<SurfaceContextMenu surface="desktop">…</SurfaceContextMenu>` wrapping the desktop layer **only** (not app windows). Right-click on empty desktop → Desktop menu. "Add Widget…" item still opens the picker.
+2. **`AppWindow.tsx`** — wrap the titlebar + chrome border with `<SurfaceContextMenu surface="app-window" window={win}>` so right-click on the title bar shows the window menu. Body content stops propagation so apps can have their own (e.g., Files explorer) menus inside.
+3. **`DraggableWidget.tsx`** — wrap children with `<SurfaceContextMenu surface="widget" widgetId={id}>`; right-click a widget shows the Widget menu.
+4. **Stop bubbling** — every menu calls `e.stopPropagation()` so a right-click on a window doesn't also fire the desktop menu.
+
+### Behavior notes
+- All three menus use the same Radix `ContextMenu` primitive → consistent glassmorphic styling (already themed in `context-menu.tsx`).
+- Snap submenu uses existing `useOSWindowContext()` actions (`maximizeWindow` exists; we'll add lightweight `snapWindow(id, "left"|"right"|...)` to `WindowContext.tsx`).
+- "Common Apps" submenu queries `useInstalledApps()` and dispatches `sita-open-app` with the app id.
+- "Always on Top" stored on the OSWindow as `isPinned: boolean`; if true, gets a fixed high z-index.
+- Disabled states are real (e.g., Restore is disabled unless `isMaximized`).
 
 ### Files
 
-**New (3)**
-- `src/lib/system-menu/menu-actions.ts` — action layer
-- `src/lib/system-menu/menu-spec.tsx` — declarative menu tree (icons, shortcuts, handlers)
-- `src/components/sita/shell/AboutDialog.tsx` — About modal
-- `src/hooks/useGlobalShortcuts.ts` — keyboard wiring
+**New (5)**
+- `src/lib/context-menu/desktop-menu.tsx`
+- `src/lib/context-menu/app-window-menu.tsx`
+- `src/lib/context-menu/widget-menu.tsx`
+- `src/lib/context-menu/common-apps-submenu.tsx`
+- `src/components/sita/shell/SurfaceContextMenu.tsx`
 
-**Edited (2)**
-- `src/components/sita/shell/SystemMenuBar.tsx` — render real dropdowns + brand/app menus
-- `src/components/sita/ShellLayout.tsx` — mount `useGlobalShortcuts` + `AboutDialog` portal + lock-screen overlay listener
+**Edited (4)**
+- `src/components/sita/shell/DesktopSurface.tsx` — swap raw handler for `SurfaceContextMenu`
+- `src/components/sita/os/AppWindow.tsx` — wrap titlebar in window menu, stop ctx propagation on body
+- `src/components/sita/shell/desktop/DraggableWidget.tsx` — wrap with widget menu, stop propagation
+- `src/components/sita/os/WindowContext.tsx` — add `snapWindow()` + `isPinned` (Always on Top)
 
 ### Acceptance
-
-- Every button in the top bar opens a dropdown or fires its action (no dead clicks)
-- All 5 menus + Apple menu + App menu fully populated and functional
-- Window menu lists every currently-open window and can focus/close them
-- Keyboard shortcuts work globally and don't conflict with input typing
-- Dark/Light/System theme toggle persists across reloads
-- Sign Out actually signs the user out; Lock Screen overlays a lock UI
-- Cascade / Close All visibly reposition / close real windows
-- Fullscreen, About dialog, and Documentation link all work
+- Right-click on empty desktop → Desktop menu (with Add Widget, wallpaper, Common Apps, etc.)
+- Right-click on an app window's titlebar → App-window menu (Min/Max/Close/Snap/Always-on-top all functional)
+- Right-click on a desktop widget → Widget menu (Resize/Remove/Settings)
+- Right-click inside an app's body → does **not** open desktop or window menu (apps free to add their own)
+- Snap-Left / Snap-Right resize to half-screen instantly
+- "Always on Top" keeps that window above siblings even when others are focused
 - 0 TS errors
 
