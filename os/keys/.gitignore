@@ -1,0 +1,5 @@
+# Intentionally ignore everything in this directory except documentation.
+# Real signing keys must NEVER be committed.
+*
+!.gitignore
+!README.md
