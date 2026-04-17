@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "ok": true,
+  "totalPaths": 15,
+  "dimensionsRequired": 11,
+  "dimensions": [
+    "screenComponentRef",
+    "routePattern",
+    "edgeFunctionRefs",
+    "serviceRefs",
+    "tableRefs",
+    "policyRefs",
+    "expectedReceipts",
+    "verifications",
+    "recoveryRunbookRefs",
+    "releaseGateRefs",
+    "supportFallbackUrl"
+  ],
+  "dimensionsCovered": {
+    "GP-FIRST-BOOT": 11,
+    "GP-SIGN-IN": 11,
+    "GP-RESTORE": 11,
+    "GP-SETUP-CONTINUATION": 11,
+    "GP-CONNECT-CRM": 11,
+    "GP-OAUTH-AND-SYNC": 11,
+    "GP-RECOVER-STALE-LEADS": 11,
+    "GP-APPROVE-OUTBOUND-FOLLOWUP": 11,
+    "GP-REVIEW-PROOF": 11,
+    "GP-WORKFLOW-REPLAY": 11,
+    "GP-MOBILE-APPROVAL": 11,
+    "GP-PUSH-TO-APPROVAL": 11,
+    "GP-OWNER-INTERVENTION": 11,
+    "GP-LAUNCH-READINESS": 11,
+    "GP-ENV-RECOVERY": 11
+  },
+  "phantomArtifacts": [],
+  "fullyCoveredCount": 15
+}
