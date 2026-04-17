@@ -1,89 +1,99 @@
 
 
-## Re-Audit Verdict — Checklists 19 & 20: 8/10 Truthful, 2 Real Gaps
+## Re-Audit — Checklist 21: 8/14 Truthful, 4 Concrete Gaps
 
-Phase 26 is **mostly real**. Live disk evidence:
+Live disk evidence confirms registry/metadata layers are real, but **runtime enforcement is theoretical** and the admin surface is not mounted.
+
+### What IS truthful (✅)
+
+| # | Item | Evidence |
+|---|---|---|
+| 1 | Kill-switch registry exists | `src/lib/control-plane/kill-switch-registry.ts` — 14 switches |
+| 2 | Switch for advisors | `KS-ADVISORS` |
+| 3 | Switch for outbound comms | `KS-OUTBOUND` |
+| 4 | Switch for connectors | `KS-CONNECTORS` |
+| 5 | Switch for sync | `KS-SYNC` |
+| 6 | Switch for mobile push | `KS-MOBILE-PUSH` |
+| 7 | Switch for model providers | `KS-MODEL-PROVIDERS` |
+| 8 | Switch for workflows | `KS-WORKFLOW` |
+| 9 | Switch for simulations | `KS-SIMULATIONS` |
+| 10 | Switch for payments | `KS-PAYMENTS` |
+| 11 | Switch for runtime automations | `KS-AUTOMATIONS` |
+| 12 | Blast-radius metadata | `affectedServices[]`, `affectedTables[]`, `affectedEdgeFunctions[]`, `impactLevel`, `userFacingImpact`, `rollbackProcedure` on every entry |
+| 13 | Runbooks link to switches | 10/14 switches have `runbookRef` resolving to a real runbook (`RB-002`, `RB-003`, `RB-005`, etc.); runbook docs include `Kill switch` field pointing back |
+| 14 | CI gate exists | `scripts/architecture/checks/check-kill-switch-coverage.ts` validates registry/enforcement/runbook integrity |
+
+### What is NOT truthful (❌) — 4 concrete gaps
 
 | # | Item | Status | Evidence |
 |---|---|---|---|
-| **Checklist 19** | | | |
-| 1 | 4 product reality tiers exist | ✅ | `runtime-tier-model.ts` declares all 4 |
-| 2 | Features classified by tier | ✅ | 48 entries in `feature-runtime-tier-registry.ts` |
-| 3 | Launch honesty fed by real data | ✅ | 10 `*LaunchHonesty*.tsx` pages read live registries |
-| 4 | Simulated vs real explicit | ✅ | `TierGate` + `simulated-surface-registry.ts` |
-| 5 | Unsupported capabilities surfaced | ✅ | `DegradedStatePanel` + `capability-fallbacks.ts` |
-| 6 | Runtime capability matrix exists | ✅ | `runtime-capability-matrix.json` exists & registered |
-| 7 | Release/readiness validates runtime truth | ✅ | Registry conformance enforced |
-| **Checklist 20** | | | |
-| 1-7 | Per-entry metadata complete | ✅ | All 110 entries have `sourceInputs`, `validator`, `ciGate`, `owner`, `runtimeConsequence` |
-| 8 | Runtime manifests backed by evidence | ✅ | 7 manifests use `runtime-evidence/collectors/*` |
-| 9-12 | Route/Service/Function/Schema match | ✅ | Per-domain drift checks present |
-| 13 | Drift CI-blocking | ✅ | Gate 37 registered with `consequence: "blocks-deploy"` |
-| 14 | **Manifest theater eliminated** | ⚠️ | **3 honest drifts found below** |
+| A | Kill switches **visible in admin** | ❌ | `AR08KillSwitchCenter.tsx` exists but `grep` shows **zero hits** for `AR08KillSwitchCenter` or `/admin/automation/kill-switches` in `AdminRoutes.tsx` and `admin-route-registry.ts` — page is unreachable |
+| B | Kill switches **enforced in edge functions** | ❌ | Zero edge functions in `supabase/functions/` import `checkKillSwitchOrReject`. `payment-process/index.ts` has 0 occurrences of "kill". Enforcement map declares 13 edge-function points that don't exist as code |
+| C | Kill switches **enforced in domain services** | ❌ | `src/services/advisor-orchestrator.ts`, `src/services/communication-service.ts`, `src/services/sync-service.ts` are listed in enforcement map but contain no `checkKillSwitch*` calls (would need verification but registry is clearly stale-pointing) |
+| D | No shared edge helper | ❌ | `supabase/functions/_shared/` has `auth.ts`, `policy.ts`, `rate-limit.ts` etc. but **no `kill-switch.ts`** — edge functions have nothing to import |
 
-### Concrete Gaps (3 items)
-
-1. **One orphan on disk** — `generated/manifest-theater-report.json` itself is not in the registry. The Phase-26 gate hard-codes a `SELF_EMITTED` skip, but the artifact still exists on disk and operators can't audit it via the manifest dashboard. Either register it (preferred — it's a real, owned, gate-produced artifact) or document the self-exclusion in the registry as `kind: "self-emitted"`.
-
-2. **One missing validator** — registry declares `validator: "scripts/manifests/validate/check-manifest-schema-integrity.ts"` for at least one entry, but the file does not exist on disk (`ls scripts/manifests/validate/` shows no schema validator). Phase-26 gate would currently FAIL on `missing-validator` if any of those entries are `authority: "authoritative"`.
-
-3. **Stale baseline counts** — `generated/manifest-theater-report.json` claims `registry: 110, onDiskJson: 98, orphanOnDisk: 0, missingValidators: 0`. Live counts are `registry: 110, onDiskJson: 99, orphanOnDisk: 1, missingValidators: 1`. The committed baseline lies; rerunning the gate will fail.
+**Net: registry & UI page exist as code, but the admin surface is not mounted and runtime enforcement is documented theatre — the enforcement map points at files that don't actually call the gate.**
 
 ---
 
-## Phase 26.1 — Manifest Truth Final Closure
+## Phase 27 — Kill-Switch Runtime Enforcement Closure
 
-### 26.1.A — Register `manifest-theater-report.json` (fixes #1)
-Append entry to `src/lib/truth-manifests/manifest-registry.ts`:
-```ts
-{
-  id: "manifest-theater-report",
-  path: "generated/manifest-theater-report.json",
-  class: "compliance",
-  authority: "derived",
-  owner: "platform-architecture",
-  sourceInputs: ["src/lib/truth-manifests/manifest-registry.ts", "generated/**/*.json"],
-  validator: "scripts/manifests/validate/check-manifest-source-truth.ts",
-  ciGate: "manifest-theater-elimination",
-  runtimeConsequence: "Reveals manifest theater (orphans, phantoms, missing validators).",
-  releaseConsequence: "Blocks deploy when registry/disk drift exists.",
-  driftSeverity: "high",
-  tags: ["manifest", "ci", "phase-26"],
-}
-```
-Then remove the `SELF_EMITTED` skip in `check-manifest-source-truth.ts` since the entry is now legitimate.
+### 27.A — Create shared edge enforcement helper (fixes #D)
+NEW `supabase/functions/_shared/kill-switch.ts`:
+- Exports `checkKillSwitchOrReject(switchId, supabaseClient)` that queries the `automation_kill_switches` table (or equivalent) for armed state, returns 503 with structured negative receipt `{ code: "KILL_SWITCH_ACTIVE", switchId, consequence }` when active.
+- Exports `killSwitchResponse(switchId, consequence)` for ergonomic 503 returns with corsHeaders.
 
-### 26.1.B — Create the missing validator OR remove the reference (fixes #2)
-Audit which registry entry references `check-manifest-schema-integrity.ts`. Two valid resolutions:
-- **Preferred:** Create `scripts/manifests/validate/check-manifest-schema-integrity.ts` as a thin validator that asserts every registry entry has required fields (`id`, `path`, `class`, `authority`, `owner`, `sourceInputs`, `runtimeConsequence`).
-- **Alternative:** Repoint the affected entries' `validator` field to an existing validator (e.g., `check-manifest-completeness.ts`).
+### 27.B — Wire enforcement into the 6 critical edge functions (fixes #B)
+Add `await checkKillSwitchOrReject("KS-...")` as the first action after auth in:
+- `supabase/functions/payment-process/index.ts` → `KS-PAYMENTS` (severe, dual-approval)
+- `supabase/functions/advisor-chat/index.ts` (or `advisor-agent-loop`) → `KS-ADVISORS`
+- `supabase/functions/connector-sync/index.ts` → `KS-CONNECTORS` + `KS-SYNC`
+- `supabase/functions/send-notification/index.ts` → `KS-OUTBOUND`
+- `supabase/functions/workflow-execute/index.ts` → `KS-WORKFLOW`
+- `supabase/functions/scheduler-dispatch/index.ts` → `KS-AUTOMATIONS`
 
-### 26.1.C — Refresh the committed baseline (fixes #3)
-Regenerate `generated/manifest-theater-report.json` so committed numbers match live truth:
-```json
-{
-  "totals": { "registry": 111, "onDiskJson": 99, "orphanOnDisk": 0, "phantomEntries": 0, "missingValidators": 0 },
-  "ok": true
-}
-```
-(After 26.1.A registry grows to 111 and orphan goes to 0; after 26.1.B missing-validator goes to 0.)
+Each returns a structured 503 with cors headers and emits an audit log entry.
+
+### 27.C — Mount AR08 in admin shell + register route (fixes #A)
+- Append to `src/lib/admin/admin-route-registry.ts`: `{ path: "/admin/automation/kill-switches", page: "AR08KillSwitchCenter", domain: "ai-runtime", title: "Kill Switches" }`
+- Append `<Route path="/admin/automation/kill-switches" element={<AR08KillSwitchCenter />} />` to `AdminRoutes.tsx` (lazy-imported)
+- Verify `ARSubNav` and `UniversalCommandSurface` already point here (they do — confirmed)
+
+### 27.D — Make enforcement map self-validating (fixes #C)
+Extend `scripts/architecture/checks/check-kill-switch-coverage.ts` to:
+- For every `EnforcementPoint` with `layer: "edge-function"` or `"domain-service"`, **assert that `enforcedAt` file actually exists AND contains the `symbol` string** (e.g., `checkKillSwitchOrReject`).
+- Fail the gate on dangling enforcement (e.g., file doesn't exist or symbol absent).
+- This converts the enforcement map from documentation to an executable contract.
+
+### 27.E — Emit baseline & register manifest
+- NEW `generated/kill-switch-enforcement-report.json` capturing: `switches: 14`, `enforcementPoints: N`, `enforcedFilesVerified: N`, `dangling: 0`, `ok: true`.
+- Append to `MANIFEST_REGISTRY` (`class: "compliance"`, `authority: "derived"`, `validator: "scripts/architecture/checks/check-kill-switch-coverage.ts"`, `ciGate: "kill-switch-coverage"`, `owner: "platform-architecture"`).
+- Bumps registry from 111 → 112 entries; re-running Phase 26 gate stays green.
 
 ### Files
 
 | Layer | Change |
 |---|---|
-| `src/lib/truth-manifests/manifest-registry.ts` | APPEND `manifest-theater-report` entry (110 → 111) |
-| `scripts/manifests/validate/check-manifest-source-truth.ts` | Remove `SELF_EMITTED` skip (no longer needed) |
-| `scripts/manifests/validate/check-manifest-schema-integrity.ts` | NEW — registry shape validator |
-| `generated/manifest-theater-report.json` | Refresh totals to match live disk |
+| `supabase/functions/_shared/kill-switch.ts` | NEW — edge enforcement helper |
+| `supabase/functions/payment-process/index.ts` | Add `KS-PAYMENTS` gate |
+| `supabase/functions/advisor-chat/index.ts` | Add `KS-ADVISORS` gate |
+| `supabase/functions/connector-sync/index.ts` | Add `KS-CONNECTORS` + `KS-SYNC` gate |
+| `supabase/functions/send-notification/index.ts` | Add `KS-OUTBOUND` gate |
+| `supabase/functions/workflow-execute/index.ts` | Add `KS-WORKFLOW` gate |
+| `supabase/functions/scheduler-dispatch/index.ts` | Add `KS-AUTOMATIONS` gate |
+| `src/lib/admin/admin-route-registry.ts` | Register AR08 route |
+| `src/AdminRoutes.tsx` | Mount AR08 |
+| `scripts/architecture/checks/check-kill-switch-coverage.ts` | Add enforcement-point file/symbol verification |
+| `src/lib/truth-manifests/manifest-registry.ts` | Register enforcement report (111 → 112) |
+| `generated/kill-switch-enforcement-report.json` | NEW baseline |
 
 ### Acceptance
 
-- `comm -23 disk.txt registry.txt` returns **empty** (zero orphans, including the report itself)
-- `comm -13 disk.txt registry.txt` returns **empty** (zero phantoms — already true)
-- Every `validator:` path in registry resolves to an existing file (zero missing-validators)
-- `generated/manifest-theater-report.json` shows `registry: 111, orphanOnDisk: 0, phantomEntries: 0, missingValidators: 0, ok: true`
-- Gate 37 (`manifest-theater-elimination`) passes when re-run
-- Checklist 19 truthfully **7/7 — fully deployable**
-- Checklist 20 truthfully **14/14 — fully deployable**
+- `/admin/automation/kill-switches` reachable — page renders 14 switches with arm/disarm + dual-approval flow
+- `grep -rn "checkKillSwitchOrReject\|killSwitchResponse" supabase/functions/ | wc -l` ≥ 6 (one per critical function)
+- Calling `payment-process` while `KS-PAYMENTS = active` returns 503 with `{ code: "KILL_SWITCH_ACTIVE" }` body
+- `npx tsx scripts/architecture/checks/check-kill-switch-coverage.ts` passes with **0 dangling enforcement points**
+- `generated/kill-switch-enforcement-report.json` exists with `ok: true`, `dangling: 0`
+- Manifest registry shows 112 entries; Gate 37 still green
+- Checklist 21 truthfully **14/14 — fully deployable**
 
