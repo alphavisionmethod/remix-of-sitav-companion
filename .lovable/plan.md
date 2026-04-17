@@ -1,72 +1,100 @@
 
 
-## Fix C-005: Notification → Realtime → Toast Chain — what's actually broken
+## Fix C-006: File Upload Not Wired to Storage Bucket — what's actually broken
 
-### Live findings
+### Live findings (much worse than the brief suggests)
 
-1. ✅ Hook `useRealtimeNotifications` already exists at `src/hooks/use-realtime-notifications.ts` — fully implemented with sonner toasts, urgency styling, Electron bridge fallback, and React Query invalidation. **Better than the example fix in the brief.**
-2. ✅ It IS already wired — in `src/components/sita/ShellLayout.tsx:204` (not `PlatformInit`, but functionally identical: ShellLayout renders inside the authenticated tree).
-3. ✅ `notifications` table IS in the `supabase_realtime` publication.
-4. 🔴 **The actual bug**: `pg_class.relreplident = 'd'` (DEFAULT) on `public.notifications`. Supabase Realtime `postgres_changes` requires **`REPLICA IDENTITY FULL`** to deliver the complete `payload.new` row reliably for `INSERT` events with filters like `user_id=eq.<uuid>`. With DEFAULT identity, the filter can silently drop events because the replica stream may not include all columns needed to evaluate the filter on the wire — this is the classic "realtime is enabled but no toast appears" symptom.
-5. ✅ Notification bell UI exists (`NotificationInbox.tsx` with `data-testid="notification-bell"`) and listens to the same query key (`["notifications"]`) that the hook invalidates — so once realtime fires, the bell badge updates too.
+I queried the live database and inspected the code. The brief understates the problem. There are **3 cascading bugs** that combine to silently break the entire FilesAll/Overview pipeline:
 
-### The fix (one migration + one tiny resilience tweak)
+1. 🔴 **`FileUploader.tsx` uploads to a bucket that doesn't exist.** Line 54: `supabase.storage.from("documents").upload(...)`. The actual bucket is `user-files`. Every upload fails immediately with a 404. Verified: `SELECT id FROM storage.buckets` returns only `user-files`.
 
-#### 1. Database migration — set REPLICA IDENTITY FULL
+2. 🔴 **The entire `file_metadata` table doesn't exist.** Verified: `SELECT EXISTS (… table_name='file_metadata')` returns **false**. Yet `files-data-service.ts` (lines 14, 22, 30, 38, 46, 54), `file-ingestion` edge function (line 132), `FilesOverview.tsx` (line 42), and the FilesAll hook all read/write `file_metadata`. Every query returns `error` and fallback mock data is shown — explaining why the page "looks fine" but is 100% mock.
 
-Single SQL migration:
+3. 🔴 **Two parallel, incompatible file systems coexist.** The Explorer page (`FilesExplorer.tsx`) uses `cloud_files` (real, exists, has data flow via `file-explorer-service.ts`). FilesAll/Overview/Processing use the broken `file_metadata` path. They never see each other's files.
 
-```sql
-ALTER TABLE public.notifications REPLICA IDENTITY FULL;
-```
+4. ✅ Bucket `user-files` exists, is private, has correct RLS policies (`auth.uid()::text = (storage.foldername(name))[1]` pattern via 4 policies for SELECT/INSERT/UPDATE/DELETE).
+5. ✅ `cloud_files` table exists with proper schema and is wired correctly in the Explorer.
+6. ✅ `file-ingestion` edge function logic (AI classification + notification) is sound — it just writes to a non-existent table.
 
-This is the real root cause. After this, `postgres_changes` INSERT events with the `user_id=eq.<uuid>` filter will fire reliably and `payload.new` will contain `title`, `body`, `urgency`, `action_url` — exactly what the existing hook reads.
+### The fix (one migration + 3 surgical code edits)
 
-Also confirm (idempotent, no-op if already present) that the table is in the publication:
+#### 1. Migration — create `file_metadata` table with RLS
+
+A single new SQL migration that creates the missing table the entire `file_metadata` pipeline depends on:
 
 ```sql
-DO $$ BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_publication_tables
-    WHERE pubname = 'supabase_realtime' AND tablename = 'notifications'
-  ) THEN
-    ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
-  END IF;
-END $$;
+CREATE TABLE public.file_metadata (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  storage_path text NOT NULL,
+  filename text NOT NULL,
+  mime_type text,
+  size_bytes bigint,
+  classification text DEFAULT 'general',
+  sensitivity text DEFAULT 'internal',
+  status text DEFAULT 'classified',
+  extracted_data jsonb DEFAULT '{}'::jsonb,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  updated_at timestamptz DEFAULT now() NOT NULL
+);
+
+CREATE INDEX idx_file_metadata_user ON public.file_metadata(user_id, created_at DESC);
+CREATE INDEX idx_file_metadata_status ON public.file_metadata(user_id, status);
+
+ALTER TABLE public.file_metadata ENABLE ROW LEVEL SECURITY;
+
+-- 4 policies: SELECT/INSERT/UPDATE/DELETE, all `auth.uid() = user_id`, TO authenticated
+-- Plus admin override via has_role(auth.uid(),'admin')
+
+CREATE TRIGGER file_metadata_updated_at
+BEFORE UPDATE ON public.file_metadata
+FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 ```
 
-#### 2. Hook resilience — unique channel name + auth-token attach
+Also create `file_settings` (referenced at `files-data-service.ts:68/76`, also missing — same pattern, simpler shape: `user_id, settings jsonb, created_at, updated_at`).
 
-Two small hardening tweaks to `src/hooks/use-realtime-notifications.ts`:
+#### 2. `src/components/sita/FileUploader.tsx` — fix bucket name
 
-- Make the channel name user-scoped (`realtime-notifications-${user.id}`) so a stale channel from a previous user never collides on fast logout/login.
-- Call `supabase.realtime.setAuth(session.access_token)` before subscribing — required when RLS is on `notifications` (which it is). Without this, the realtime socket can be unauthenticated against RLS and silently drop filtered events for the user.
-- Log the subscribe status so future debugging is trivial (`SUBSCRIBED` / `CHANNEL_ERROR` / `TIMED_OUT`).
+Change line 54 from `.from("documents")` to `.from("user-files")`. One-line bugfix that turns every upload from a guaranteed 404 into a successful upload that lands in the correct, RLS-protected bucket under `<user-id>/...`.
 
-No UI changes needed — toast, bell, query invalidation, and Electron bridge are already correct.
+#### 3. `src/components/sita/FileUploader.tsx` — surface real signed-URL after upload
 
-### Verification steps (post-deploy)
+After the edge function returns metadata, call `supabase.storage.from("user-files").createSignedUrl(storagePath, 3600)` and store it on the local `UploadedFile` so the user can immediately preview/download. Also expose a small "Open" link next to the green checkmark when `status === "done"`.
 
-1. `SELECT relreplident FROM pg_class WHERE relname='notifications' AND relnamespace='public'::regnamespace;` returns `f` (FULL).
-2. Sign in as a real user, then in another tab insert a row:
-   ```sql
-   INSERT INTO public.notifications (user_id, title, body, urgency)
-   VALUES ('<my-uid>', 'Realtime test', 'You should see a toast', 'high');
-   ```
-   A toast appears within ~2s and the bell badge increments.
-3. Repeat for `urgency: 'critical'` → red toast with 10s duration.
-4. Browser console shows `[realtime-notifications] status: SUBSCRIBED`.
+#### 4. `src/pages/files/FilesAll.tsx` — invalidate query on upload completion
+
+The page reads `useAllFiles()` (cached query key `["all-files"]`) but never refreshes after upload. Add a `useQueryClient().invalidateQueries({ queryKey: ["all-files"] })` and `["files-overview"]` and `["file-kpis"]` invalidation when `FileUploader` reports a successful upload. Done by:
+- Add an optional `onUploaded?: (entry) => void` callback prop to `FileUploader`.
+- In `FilesAll.tsx` and `FilesOverview.tsx`, pass an `onUploaded` that invalidates the relevant query keys.
+
+This makes the user-visible loop **real**: upload → file appears in storage → metadata row inserted → FilesAll list refreshes → KPI tiles update → notification toasts (already wired via C-005 fix).
+
+### Verification (post-deploy)
+
+1. `SELECT EXISTS (… table_name='file_metadata')` returns `true`.
+2. As a logged-in user, drop a PDF on the `FileUploader` zone in `/files/all`:
+   - `SELECT * FROM storage.objects WHERE bucket_id='user-files' AND name LIKE '<my-uid>/%'` shows the new object.
+   - `SELECT * FROM file_metadata WHERE user_id='<my-uid>' ORDER BY created_at DESC LIMIT 1` shows the new row with `classification`, `sensitivity` populated.
+   - The file appears in the FilesAll list **without manual refresh**.
+   - A toast "File classified: …" appears (via realtime notifications fix from C-005).
+3. The "Open" link on the upload card returns a working signed URL.
+4. Flagship-loop receipts (`flagship_loop_completions` from C-004) show new `file_upload` and `ai_classify` step rows for the user.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `supabase/migrations/<new>.sql` | NEW — `ALTER TABLE notifications REPLICA IDENTITY FULL` + idempotent publication check |
-| `src/hooks/use-realtime-notifications.ts` | Per-user channel name, `setAuth` before subscribe, status log |
+| `supabase/migrations/<new>.sql` | NEW — create `file_metadata` + `file_settings` tables, indexes, RLS, updated_at trigger |
+| `src/components/sita/FileUploader.tsx` | Fix bucket name `documents` → `user-files`; add signed-URL fetch + Open link; add `onUploaded` callback |
+| `src/pages/files/FilesAll.tsx` | Pass `onUploaded` that invalidates `["all-files"]` |
+| `src/pages/files/FilesOverview.tsx` | Pass `onUploaded` that invalidates `["files-overview"]` and `["file-kpis", user.id]` |
 
 ### Acceptance
 
-- Inserting a row into `notifications` for the current user produces a visible toast within 2s
-- Bell badge auto-updates without manual refresh (already wired via `["notifications"]` invalidation)
-- C-005 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
+- Uploads land in the correct, RLS-protected `user-files` bucket
+- Metadata row is persisted in `file_metadata` (no more silent fallback to mocks)
+- FilesAll, FilesOverview, FilesProcessing, FilesSearch all show real user files
+- Upload → AI classify → notification → list refresh loop is end-to-end real
+- Existing `cloud_files`-based Explorer continues to work unchanged (no regression)
+- C-006 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
 
