@@ -395,6 +395,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "5 core domains (business-os, finance-os, concierge-os, investment-office, boardroom) each have a manifest, a row in domain_ownership_registry, all manifest dbTables in the live schema, a canonical routes file, an e2e spec, at least one edge fn, and (for boardroom) a proof-writing edge fn.",
     producesArtifact: "generated/domain-reality-report.json",
   },
+
+  // ── Phase 25 ── Owner Workflow Reality (Checklist 18)
+  {
+    id: "owner-workflow-reality",
+    phase: "phase-25-owner-workflow-reality",
+    title: "Owner workflow reality (Checklist 18: every workflow entry + step mounted)",
+    script: "scripts/architecture/checks/check-owner-workflow-map.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Every OwnerWorkflow entry and steps[].route must resolve to a mounted admin route (real page, alias redirect, or registry redirect). All 5 workflow keys (daily, weekly, support, release, trust-safety) must be present with ≥4 steps each, and every workflow domain must appear in ADMIN_DOMAINS.",
+    producesArtifact: "generated/owner-workflow-reality-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {

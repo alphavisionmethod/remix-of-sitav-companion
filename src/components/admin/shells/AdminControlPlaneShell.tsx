@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { AdminPrimaryNav, resolveActiveDomain } from "./AdminPrimaryNav";
 import { AdminDomainNav } from "./AdminDomainNav";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
+import { OwnerWorkflowSwitcher } from "./OwnerWorkflowSwitcher";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
 import { Badge } from "@/components/ui/badge";
@@ -69,6 +70,9 @@ export function AdminControlPlaneShell({
           </span>
         </div>
       )}
+
+      {/* ── Owner workflow switcher (Daily/Weekly/Support/…) ── */}
+      <OwnerWorkflowSwitcher />
 
       {/* ── Primary top nav (12 canonical domains) ────────── */}
       <AdminPrimaryNav activeDomain={activeDomain} />
