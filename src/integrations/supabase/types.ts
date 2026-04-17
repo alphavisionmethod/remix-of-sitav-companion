@@ -2586,6 +2586,141 @@ export type Database = {
         }
         Relationships: []
       }
+      app_launch_events: {
+        Row: {
+          app_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          launch_context: Json | null
+          launch_result: string
+          surface: string
+          user_id: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          launch_context?: Json | null
+          launch_result?: string
+          surface?: string
+          user_id: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          launch_context?: Json | null
+          launch_result?: string
+          surface?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      app_permissions_overrides: {
+        Row: {
+          app_id: string
+          created_at: string
+          granted: boolean
+          id: string
+          permission_key: string
+          permission_value: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          granted?: boolean
+          id?: string
+          permission_key: string
+          permission_value?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          granted?: boolean
+          id?: string
+          permission_key?: string
+          permission_value?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      app_sources: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          signature_info: Json | null
+          source_type: string
+          source_url: string | null
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          signature_info?: Json | null
+          source_type?: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          signature_info?: Json | null
+          source_type?: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      app_versions: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          is_latest: boolean
+          manifest_json: Json | null
+          published_at: string
+          release_notes: string | null
+          version: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          is_latest?: boolean
+          manifest_json?: Json | null
+          published_at?: string
+          release_notes?: string | null
+          version: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          is_latest?: boolean
+          manifest_json?: Json | null
+          published_at?: string
+          release_notes?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           appointment_date: string | null
@@ -2679,6 +2814,117 @@ export type Database = {
           request_id?: string
           request_type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      apps: {
+        Row: {
+          app_id: string
+          app_type: string
+          banner_url: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          enabled: boolean
+          featured: boolean
+          icon_url: string | null
+          id: string
+          installability: string
+          latest_version: string
+          launch_strategy: string
+          launch_target: Json
+          manifest_json: Json | null
+          name: string
+          offline_support: string
+          permissions_required: Json | null
+          pinned_default: boolean
+          publisher: string | null
+          requires_auth: boolean
+          requires_shell: boolean
+          screenshots: Json | null
+          short_name: string | null
+          slug: string
+          sort_order: number
+          supported_surfaces: string[] | null
+          tags: string[] | null
+          trust_level: string
+          update_channel: string
+          updated_at: string
+          verification_status: string
+          version: string
+          window_defaults: Json | null
+        }
+        Insert: {
+          app_id: string
+          app_type: string
+          banner_url?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          featured?: boolean
+          icon_url?: string | null
+          id?: string
+          installability?: string
+          latest_version?: string
+          launch_strategy: string
+          launch_target?: Json
+          manifest_json?: Json | null
+          name: string
+          offline_support?: string
+          permissions_required?: Json | null
+          pinned_default?: boolean
+          publisher?: string | null
+          requires_auth?: boolean
+          requires_shell?: boolean
+          screenshots?: Json | null
+          short_name?: string | null
+          slug: string
+          sort_order?: number
+          supported_surfaces?: string[] | null
+          tags?: string[] | null
+          trust_level?: string
+          update_channel?: string
+          updated_at?: string
+          verification_status?: string
+          version?: string
+          window_defaults?: Json | null
+        }
+        Update: {
+          app_id?: string
+          app_type?: string
+          banner_url?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          featured?: boolean
+          icon_url?: string | null
+          id?: string
+          installability?: string
+          latest_version?: string
+          launch_strategy?: string
+          launch_target?: Json
+          manifest_json?: Json | null
+          name?: string
+          offline_support?: string
+          permissions_required?: Json | null
+          pinned_default?: boolean
+          publisher?: string | null
+          requires_auth?: boolean
+          requires_shell?: boolean
+          screenshots?: Json | null
+          short_name?: string | null
+          slug?: string
+          sort_order?: number
+          supported_surfaces?: string[] | null
+          tags?: string[] | null
+          trust_level?: string
+          update_channel?: string
+          updated_at?: string
+          verification_status?: string
+          version?: string
+          window_defaults?: Json | null
         }
         Relationships: []
       }
@@ -8805,6 +9051,63 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      installed_apps: {
+        Row: {
+          app_id: string
+          config_json: Json | null
+          enabled: boolean
+          favorite: boolean
+          id: string
+          install_status: string
+          installed_at: string
+          last_launched_at: string | null
+          launch_count: number
+          permissions_granted: Json | null
+          pinned: boolean
+          pinned_order: number
+          source_channel: string
+          updated_at: string
+          user_id: string
+          version_installed: string | null
+        }
+        Insert: {
+          app_id: string
+          config_json?: Json | null
+          enabled?: boolean
+          favorite?: boolean
+          id?: string
+          install_status?: string
+          installed_at?: string
+          last_launched_at?: string | null
+          launch_count?: number
+          permissions_granted?: Json | null
+          pinned?: boolean
+          pinned_order?: number
+          source_channel?: string
+          updated_at?: string
+          user_id: string
+          version_installed?: string | null
+        }
+        Update: {
+          app_id?: string
+          config_json?: Json | null
+          enabled?: boolean
+          favorite?: boolean
+          id?: string
+          install_status?: string
+          installed_at?: string
+          last_launched_at?: string | null
+          launch_count?: number
+          permissions_granted?: Json | null
+          pinned?: boolean
+          pinned_order?: number
+          source_channel?: string
+          updated_at?: string
+          user_id?: string
+          version_installed?: string | null
         }
         Relationships: []
       }
