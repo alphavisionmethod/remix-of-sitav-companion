@@ -30,6 +30,7 @@ const PHASE_TITLES: Record<CIGatePhase, string> = {
   "phase-14-desktop-deployability": "14 — Desktop Deployability",
   "phase-15-appliance-deployability": "15 — Appliance Deployability",
   "phase-16-backend-api-deployability": "16 — Backend / API Deployability",
+  "phase-17-edge-function-health-replay": "17 — Edge Function Health & Replay",
 };
 
 function GateCard({ gate }: { gate: CIGateEntry }) {
