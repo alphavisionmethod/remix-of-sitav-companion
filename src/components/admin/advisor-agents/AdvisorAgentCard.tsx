@@ -48,6 +48,7 @@ export function AdvisorAgentCard({ agent, onToggle, onAutonomyChange, onInvoke, 
           <div className="flex items-center gap-2">
             <DomainIcon className="h-5 w-5 text-primary" />
             <CardTitle className="text-base">{agent.display_name}</CardTitle>
+            <LaunchHonestyBadge honestyClass={MATURITY_TO_HONESTY[agent.maturity] ?? "planned"} compact />
           </div>
           <div className="flex items-center gap-2">
             <Badge variant={agent.is_active ? "default" : "secondary"} className="text-xs">
