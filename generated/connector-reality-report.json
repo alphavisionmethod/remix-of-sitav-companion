@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-17T02:20:00.000Z",
-  "gate": "Gate 33 — Connector Reality",
+  "generatedAt": "2026-04-17T02:27:15.756Z",
+  "gate": "Gate 33 — Connector Reality (Phase 22 + 22.1)",
   "requiredTables": [
     "connector_registry",
     "connector_accounts",
@@ -19,6 +19,12 @@
     "supabase/functions/seed-connector-registry/index.ts"
   ],
   "catalogTotal": 12,
+  "reconnectAssertions": {
+    "reconnectAction": true,
+    "reconnectButton": true,
+    "fakeFailureFn": true,
+    "fakeEngageFn": true
+  },
   "errors": [],
   "warnings": [],
   "ok": true
