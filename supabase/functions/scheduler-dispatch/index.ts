@@ -40,12 +40,16 @@ Deno.serve(async (req) => {
 
     const now = new Date().toISOString();
 
-    // 1. Check global kill switch + KS-WORKFLOW + KS-AUTOMATIONS
+    // 1. Phase 27 — KS-AUTOMATIONS canonical kill-switch enforcement
+    const killed = await checkKillSwitchOrReject("KS-AUTOMATIONS", supabase);
+    if (killed) return killed;
+
+    // Legacy KS-WORKFLOW + global broad check (preserved for ops visibility receipt)
     const { data: globalKill } = await supabase
       .from("automation_kill_switches")
       .select("*")
       .eq("enabled", true)
-      .or("scope.eq.global,scope_id.eq.KS-WORKFLOW,scope_id.eq.KS-AUTOMATIONS")
+      .or("scope.eq.global,scope_id.eq.KS-WORKFLOW")
       .limit(1);
 
     if (globalKill && globalKill.length > 0) {
