@@ -104,7 +104,7 @@ export async function generateSupportBundle(): Promise<
     const hb = await serviceHeartbeat.runHeartbeat([]);
     if (hb && Array.isArray(hb.results)) {
       for (const r of hb.results) {
-        if (r.status !== "ok" && !degradedServices.find((d) => d.startsWith(r.serviceId))) {
+        if (r.status !== "healthy" && !degradedServices.find((d) => d.startsWith(r.serviceId))) {
           degradedServices.push(`${r.serviceId}:${r.status}`);
         }
       }
@@ -113,14 +113,15 @@ export async function generateSupportBundle(): Promise<
     /* heartbeat optional */
   }
 
-  // 4) Cost governance → anomalies (entries marked over budget)
+  // 4) Cost governance → anomalies (top spend buckets as a proxy signal)
   let costAnomalies: string[] = [];
   try {
-    const cost = getCostSummary();
-    if (cost && Array.isArray(cost.overBudget)) {
-      costAnomalies = cost.overBudget.map((c: { key: string; ratio: number }) =>
-        `${c.key}:${(c.ratio * 100).toFixed(0)}%`
-      );
+    const cost = await getCostSummary();
+    if (cost && cost.byModel) {
+      const sorted = Object.entries(cost.byModel)
+        .sort(([, a], [, b]) => Number(b) - Number(a))
+        .slice(0, 3);
+      costAnomalies = sorted.map(([k, v]) => `${k}:${Number(v)}c`);
     }
   } catch {
     costAnomalies = [];
@@ -131,14 +132,14 @@ export async function generateSupportBundle(): Promise<
   const logExcerpt = logBuf
     .filter((e) => e.level === "error" || e.level === "warn")
     .slice(-25)
-    .map((e) => ({ ts: e.ts ?? new Date().toISOString(), level: e.level, message: redact(String(e.message ?? "")) }));
+    .map((e) => ({ ts: e.timestamp, level: e.level, message: redact(String(e.message ?? "")) }));
 
   // 6) Tracer → recent completed spans
   const completed = tracer.getCompletedSpans(50);
   const traceExcerpt = completed.slice(-25).map((s) => ({
     traceId: s.traceId,
-    name: s.name,
-    durationMs: s.endTime && s.startTime ? s.endTime - s.startTime : undefined,
+    name: s.operation,
+    durationMs: s.duration ?? (s.endTime && s.startTime ? s.endTime - s.startTime : undefined),
     status: s.status,
   }));
 
