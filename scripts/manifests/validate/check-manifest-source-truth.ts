@@ -34,16 +34,12 @@ const onDiskMd = fs.existsSync(generatedDir)
       .map((f) => `${generatedDir}/${f}`)
   : [];
 
-// Skip the report this gate itself emits to avoid bootstrap chicken/egg
-const SELF_EMITTED = new Set(["generated/manifest-theater-report.json"]);
-
 // ── 2. Build registry index ───────────────────────────────────────
 const registeredPaths = new Set(MANIFEST_REGISTRY.map((m) => m.path));
 
 // ── 3. Find orphans (on disk, not registered) ─────────────────────
 const orphanOnDisk: string[] = [];
 for (const p of [...onDiskJson, ...onDiskMd]) {
-  if (SELF_EMITTED.has(p)) continue;
   if (!registeredPaths.has(p)) {
     orphanOnDisk.push(p);
     vc.add(p, "orphan-artifact", `Generated artifact "${p}" is not registered in MANIFEST_REGISTRY`);
