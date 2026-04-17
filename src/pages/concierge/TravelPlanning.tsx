@@ -38,7 +38,7 @@ const TravelPlanning = () => {
       id: `prep-${si}-${ii}`,
       label: item,
       meta: section.dueIn,
-      urgency: (si === 0 ? "high" : si === 1 ? "normal" : "low") as any,
+      urgency: ((si === 0 ? "high" : si === 1 ? "normal" : "low") as "high" | "normal" | "low"),
     }))
   ).slice(0, 8);
 

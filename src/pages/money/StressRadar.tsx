@@ -56,7 +56,7 @@ const StressRadar = () => {
       id: s.id,
       label: s.title,
       meta: s.impactCents > 0 ? `$${(s.impactCents / 100).toLocaleString()}` : undefined,
-      urgency: (s.severity === "critical" ? "critical" : s.severity === "high" ? "high" : "normal") as any,
+      urgency: ((s.severity === "critical" ? "critical" : s.severity === "high" ? "high" : "normal") as "critical" | "high" | "normal"),
     }));
 
   return (

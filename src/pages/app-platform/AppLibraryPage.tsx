@@ -81,7 +81,7 @@ const AppLibraryPage = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
+          <select value={sortBy} onChange={e => setSortBy(e.target.value as typeof sortBy)}
             className="rounded-lg bg-secondary px-3 py-1.5 text-xs text-foreground border border-border">
             <option value="name">Sort: Name</option>
             <option value="recent">Sort: Recent</option>

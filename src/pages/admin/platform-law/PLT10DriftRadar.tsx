@@ -172,7 +172,7 @@ const PLT10DriftRadar = () => {
 
       {/* Filter */}
       <div className="flex flex-wrap gap-2">
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as typeof typeFilter)}>
           <option value="all">All Drift Types</option>
           {DRIFT_TYPES.map(dt => <option key={dt} value={dt}>{dt.replace(/_/g, " ")}</option>)}
         </select>

@@ -114,7 +114,7 @@ const CRMAutomations = () => {
     const a = automations.find(w => w.id === id);
     if (!a) return;
     const newStatus = a.status === "active" ? "paused" : "active";
-    updateAutomation.mutate({ id, updates: { status: newStatus } as any }, {
+    updateAutomation.mutate({ id, updates: { status: newStatus } }, {
       onSuccess: () => toast.success(`${a.title} ${newStatus === "active" ? "activated" : "paused"}`),
     });
   };
@@ -136,7 +136,7 @@ const CRMAutomations = () => {
       target_entity: builderForm.target_entity,
       delay_minutes: builderForm.delay_minutes,
       status: "draft",
-    } as any, {
+    }, {
       onSuccess: () => {
         toast.success("Workflow created");
         setShowBuilder(false);

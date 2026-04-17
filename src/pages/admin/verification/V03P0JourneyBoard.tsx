@@ -130,7 +130,7 @@ export default function V03JourneyManifestRegistry() {
             {IMPORTANCE_ORDER.map((imp) => (
               <Badge
                 key={imp}
-                variant={IMPORTANCE_COLORS[imp] as any}
+                variant={IMPORTANCE_COLORS[imp] as "destructive" | "default" | "secondary" | "outline"}
                 className="text-xs cursor-pointer"
                 onClick={() => setImportanceFilter(importanceFilter === imp ? "all" : imp)}
               >
@@ -195,7 +195,7 @@ export default function V03JourneyManifestRegistry() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-sm">{journey.displayName}</span>
-                        <Badge variant={IMPORTANCE_COLORS[journey.launchImportance] as any} className="text-[10px]">
+                        <Badge variant={IMPORTANCE_COLORS[journey.launchImportance] as "destructive" | "default" | "secondary" | "outline"} className="text-[10px]">
                           {journey.launchImportance.replace(/_/g, " ")}
                         </Badge>
                         <Badge variant="outline" className="text-[10px]">{journey.persona}</Badge>

@@ -43,7 +43,7 @@ const FinancialHealthPulse = () => {
     id: `action-${i}`,
     label: item.title,
     meta: `+${item.potentialImpact} pts`,
-    urgency: (item.priority === "high" ? "critical" : item.priority === "medium" ? "high" : "normal") as any,
+    urgency: ((item.priority === "high" ? "critical" : item.priority === "medium" ? "high" : "normal") as "critical" | "high" | "normal"),
   }));
 
   return (
