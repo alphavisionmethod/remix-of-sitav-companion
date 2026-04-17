@@ -78,6 +78,18 @@ export interface GoldenPathStep {
   readonly blockingKillSwitches: readonly string[];
   /** Optional runbook IDs that recover this step on failure. */
   readonly recoveryRunbookRefs: readonly string[];
+
+  // ── Phase 29: 11-Dimension Reality Map ──────────────────────
+  /** React component file backing this screen, e.g. "src/pages/Login.tsx". */
+  readonly screenComponentRef?: string;
+  /** Edge function names invoked by this step (resolves in EDGE_FUNCTION_REGISTRY). */
+  readonly edgeFunctionRefs: readonly string[];
+  /** Canonical service IDs touched (resolves in CANONICAL_SERVICES). */
+  readonly serviceRefs: readonly string[];
+  /** DB table names mutated/read (resolves in DB_SCHEMA_REGISTRY). */
+  readonly tableRefs: readonly string[];
+  /** RLS policy refs in form "table.policy_key" — informational; not all migrations are indexed. */
+  readonly policyRefs: readonly string[];
 }
 
 /** Verification artifact bound to a Golden Path. */
@@ -124,6 +136,12 @@ export interface GoldenPathEntry {
   readonly runtimeProbeRequired: boolean;
   /** Last full-path certification timestamp (ISO). */
   readonly lastCertifiedAt: string | null;
+
+  // ── Phase 29: Path-level Reality Map fields ─────────────────
+  /** Launch readiness gate IDs that must be green before this path can ship. */
+  readonly releaseGateRefs: readonly string[];
+  /** Deep-link operators follow when a path fails (FCC04 / runbook center). */
+  readonly supportFallbackUrl: string;
 }
 
 /** Ownership binding: who owns the path end-to-end. */
