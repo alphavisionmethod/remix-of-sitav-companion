@@ -56,6 +56,11 @@ export function useRejectApprovalItem() {
         .update({ status: "rejected", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
+      await emitLoopCompletion({
+        loop_key: "admin-truth-recommendation-approval",
+        step_key: "approval_decision",
+        evidence: { approval_id: id, decision: "rejected" },
+      });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["approval-queue"] });
