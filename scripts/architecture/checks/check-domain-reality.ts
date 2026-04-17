@@ -135,6 +135,11 @@ async function main() {
         : (d.clientSdkApiAllowed ? "client-sdk-over-rls (canonical API surface)" : "none"),
     };
 
+    // 5. proof writer (boardroom only — boardroom-session must exist)
+    if (d.proofRequired) {
+      checks.proofWriter = { ok: edgeFns.includes("boardroom-session"), detail: "boardroom-session" };
+    }
+
     // 6. dbTables existence — strict, against the LIVE snapshot
     let dbTables: string[] = [];
     let missingTables: string[] = [];
