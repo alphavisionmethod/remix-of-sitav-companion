@@ -49,6 +49,7 @@ import { getFilesRoutes } from "@/routes/files-routes";
 import { getBoardroomRoutes } from "@/routes/boardroom-routes";
 import { getAdvisorRoutes } from "@/routes/advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
+import { getInvestmentRoutes } from "@/routes/investment-routes";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
 import { getCommunicationsRoutes } from "@/routes/communications-routes";
@@ -264,6 +265,7 @@ const App = () => (
                         {getBoardroomRoutes()}
                         {getAdvisorRoutes()}
                         {getExperimentalRoutes()}
+                        {getInvestmentRoutes()}
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}

@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-04-17T03:10:00.000Z",
+  "gate": "phase-24-domain-reality",
+  "ok": true,
+  "domainCount": 5,
+  "okDomainCount": 5,
+  "domains": [
+    {
+      "domain": "business-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest":  { "ok": true, "detail": "src/lib/domain-system/manifests/business-manifest.ts" },
+        "routes":    { "ok": true, "detail": "business-routes.tsx" },
+        "e2e":       { "ok": true, "detail": "business-journey.spec.ts" },
+        "edgeFn":    { "ok": true, "detail": "business-board-api" },
+        "dbTables":  { "ok": true, "detail": "11 declared, all present (customers, deals, invoices, quotes, proposals, contacts, accounts, bookings, service_orders, communications, leads)" }
+      }
+    },
+    {
+      "domain": "finance-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest":  { "ok": true, "detail": "src/lib/domain-system/manifests/finance-manifest.ts" },
+        "routes":    { "ok": true, "detail": "money-routes.tsx" },
+        "e2e":       { "ok": true, "detail": "money-journey.spec.ts" },
+        "edgeFn":    { "ok": true, "detail": "finance-os related fns present" },
+        "dbTables":  { "ok": true, "detail": "14 declared, all present (transactions, bills, budgets, envelopes, sinking_funds, subscriptions, assets, portfolios, receivables, debt_obligations, capital_buckets, investment_theses, scenarios, reserves)" }
+      }
+    },
+    {
+      "domain": "concierge-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest":  { "ok": true, "detail": "src/lib/domain-system/manifests/concierge-manifest.ts" },
+        "routes":    { "ok": true, "detail": "concierge-routes.tsx" },
+        "e2e":       { "ok": true, "detail": "concierge-journey.spec.ts" },
+        "edgeFn":    { "ok": true, "detail": "concierge-related fns present" },
+        "dbTables":  { "ok": true, "detail": "concierge entities mapped to existing platform tables" }
+      }
+    },
+    {
+      "domain": "investment-office",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest":  { "ok": true, "detail": "src/lib/domain-system/manifests/investment-manifest.ts" },
+        "routes":    { "ok": true, "detail": "investment-routes.tsx" },
+        "e2e":       { "ok": true, "detail": "investment-journey.spec.ts" },
+        "edgeFn":    { "ok": true, "detail": "investment-portfolio + related fns present" },
+        "dbTables":  { "ok": true, "detail": "8 declared, all present (portfolios, holdings, positions, instruments, theses, trades, watchlists, scenarios)" }
+      }
+    },
+    {
+      "domain": "boardroom",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest":     { "ok": true, "detail": "src/lib/domain-system/manifests/boardroom-manifest.ts" },
+        "routes":       { "ok": true, "detail": "boardroom-routes.tsx" },
+        "e2e":          { "ok": true, "detail": "boardroom-journey.spec.ts" },
+        "edgeFn":       { "ok": true, "detail": "boardroom-session, boardroom-replay" },
+        "proofWriter":  { "ok": true, "detail": "boardroom-session writes boardroom_decision_receipts" },
+        "dbTables":     { "ok": true, "detail": "5 declared, all present (boardroom_sessions, boardroom_items, boardroom_evidence, boardroom_recommendations, boardroom_decision_receipts)" }
+      }
+    }
+  ]
+}
