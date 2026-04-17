@@ -271,8 +271,8 @@ Deno.serve(async (req) => {
       const { data: cached } = await supabaseAdmin
         .from("ai_workforce_cached_outputs")
         .select("*")
-        .eq("scope_hash", scopeHash)
-        .gt("fresh_until", new Date().toISOString())
+        .eq("cache_key", scopeHash)
+        .gt("expires_at", new Date().toISOString())
         .maybeSingle();
       if (cached) cachedOutput = cached;
     }
@@ -509,19 +509,19 @@ Provide your structured analysis with findings and recommendations.`;
         }, { onConflict: "cache_key" });
     }
 
-    // STEP 16: Log to AI usage ledger
-    await supabaseAdmin.from("ai_usage_ledger").insert({
+    // STEP 16: Log to AI inference receipts (canonical sovereign-gateway ledger)
+    await supabaseAdmin.from("ai_inference_receipts").insert({
       user_id: user.id,
-      capability_key: `workforce.${role_key}.${task_key}`,
+      capability_id: `workforce.${role_key}.${task_key}`,
       provider: "lovable_ai_gateway",
       model: modelUsed,
       input_tokens: Math.floor(aiResult.tokens_used * 0.6),
       output_tokens: Math.floor(aiResult.tokens_used * 0.4),
-      total_tokens: aiResult.tokens_used,
-      estimated_cost_usd: costCents / 100,
+      cost_estimate_cents: costCents,
       latency_ms: aiResult.latency_ms,
       status: fallbackOccurred ? "fallback" : "success",
-    }).catch(console.error);
+      route_reason: fallbackOccurred ? "primary_failed_fallback" : "primary_success",
+    }).catch((e: unknown) => console.error("[ai-workforce-run] inference receipt failed:", e));
 
     return new Response(JSON.stringify({
       status: fallbackOccurred ? "fallback_success" : "success",
