@@ -67,7 +67,7 @@
 | **Edge Functions** | ✅ DEPLOYABLE | 128 Deno functions, auto-deploy via Lovable Cloud | None |
 | **iOS** | ❌ NOT DEPLOYABLE | No Xcode project, no Swift, no Capacitor/RN bridge | Missing native runtime |
 | **Android** | ❌ NOT DEPLOYABLE | No Gradle, no Kotlin, no Capacitor/RN bridge | Missing native runtime |
-| **Electron/Desktop** | 🟡 PARTIALLY DEPLOYABLE | 6 files in `electron/`, Forge config, but no proven build | Needs E2E validation |
+| **Electron/Desktop** | 🟡 PARTIALLY DEPLOYABLE | 15 files in `electron/`, Forge config, but no proven build | Needs E2E validation |
 | **VMware/ISO** | 🔵 SIMULATED ONLY | Docs exist (`docs/vmware-deployment.md`), deploy scripts, but no ISO build pipeline | Missing build tooling |
 | **PWA** | 🟡 PARTIALLY DEPLOYABLE | Responsive design, service worker hooks, push subscription | Missing manifest.json verification |
 
@@ -866,7 +866,7 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Context | Pages | Components | Services | Edge Functions | DB Tables | Contracts | Status |
 |---------|-------|------------|----------|----------------|-----------|-----------|--------|
-| admin-plane | 503 (admin/) | admin/, admin-ai/, admin-os/ | core-services | 6 admin-* functions | admin_* (6 tables) | contracts/admin/ | ⚠️ Sprawling |
+| admin-plane | 538 (admin/) | admin/, admin-ai/, admin-os/ | core-services | 6 admin-* functions | admin_* (6 tables) | contracts/admin/ | ⚠️ Sprawling |
 | advisor-council | advisors/ pages | advisors/ | advisor-intelligence/ | 7 advisor-* functions | advisor_* (12 tables) | contracts/advisor/ | ✅ Aligned |
 | agent-runtime | N/A (embedded) | N/A | internal-agents/ | 5 agent-* functions | advisor_agents, advisor_action_queue | N/A | ✅ Aligned |
 | ai-gateway | admin AIG pages | ai/ | ai-gateway/, sovereign-ai-gateway/ | 3 ai-* functions | ai_* (13 tables) | ai-contracts/ | ✅ Aligned |
@@ -1022,7 +1022,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | 12 | P2 | Manifest truth-linkage (121 artifacts; theater report green) | No CI enforcement | 121/121 truth-linked via manifest-theater-report; CI gate `check-manifest-theater` enforces | Add CI validation |
 | 13 | P2 | Duplicate directories (7 pairs) | Confusion and drift | finance+money, admin×3, etc. | Merge duplicates |
 | 14 | P2 | No code coverage tracking | Unknown test coverage | No coverage config | Add vitest coverage |
-| 15 | P2 | OS security simulated only | Policies not enforced at runtime | 17 modules, all TypeScript types | Wire to feature flags |
+| 15 | P2 | OS security simulated only | Policies not enforced at runtime | 18 modules, all TypeScript types | Wire to feature flags |
 
 ### 7.3 Structurally Sound Areas
 
