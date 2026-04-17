@@ -4,9 +4,42 @@
 // Asserts the workflow + automation runtime is fully wired.
 // ═══════════════════════════════════════════════════════════════
 import * as fs from "fs";
+import * as path from "path";
 import { ViolationCollector } from "../lib/utils";
 
 const vc = new ViolationCollector();
+
+// ── Phase 23.1: Embedded bypass scan ──
+const BYPASS_ALLOWED = new Set([
+  "supabase/functions/workflow-execute/index.ts",
+  "supabase/functions/workflow-repair/index.ts",
+  "supabase/functions/workflow-replay/index.ts",
+  "supabase/functions/workflow-stuck-detector/index.ts",
+]);
+function walkTs(dir: string, out: string[] = []): string[] {
+  if (!fs.existsSync(dir)) return out;
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) {
+      if (["node_modules", ".git", "dist"].includes(e.name)) continue;
+      walkTs(p, out);
+    } else if (/\.(ts|tsx)$/.test(e.name)) out.push(p);
+  }
+  return out;
+}
+const BYPASS_RE = /from\s*\(\s*["']workflow_runs["']\s*\)\s*\.\s*insert/;
+const bypassFiles = [...walkTs("src"), ...walkTs("supabase/functions")];
+const bypassViolations: string[] = [];
+for (const f of bypassFiles) {
+  const norm = f.replace(/\\/g, "/");
+  if (BYPASS_ALLOWED.has(norm)) continue;
+  if (f.includes(".test.") || f.includes("__tests__")) continue;
+  const src = fs.readFileSync(f, "utf-8");
+  if (BYPASS_RE.test(src)) {
+    bypassViolations.push(norm);
+    vc.add(norm, "workflow-bypass", "Direct insert into workflow_runs outside canonical runner");
+  }
+}
 
 const REQUIRED_TABLES = [
   "workflows",
