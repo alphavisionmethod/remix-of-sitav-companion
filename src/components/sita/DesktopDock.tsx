@@ -186,7 +186,22 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   const lastCursorTime = useRef(0);
 
   // Persist pinned order
-  useEffect(() => { savePinnedOrder(pinnedIds); }, [pinnedIds]);
+  useEffect(() => { savePinnedOrder(pinnedOrder); }, [pinnedOrder]);
+
+  // ── Bootstrap default pins on first launch (only if NO app is pinned anywhere) ──
+  const bootstrappedRef = useRef(false);
+  useEffect(() => {
+    if (bootstrappedRef.current) return;
+    if (apps.length === 0) return;
+    const anyPinned = apps.some(a => a.pinnedToDock);
+    if (!anyPinned) {
+      DEFAULT_PINNED_IDS.forEach(id => {
+        const app = apps.find(a => a.id === id);
+        if (app && app.installStatus === "installed") pinToDock(id);
+      });
+    }
+    bootstrappedRef.current = true;
+  }, [apps, pinToDock]);
 
   // Auto-hide when maximized windows
   useEffect(() => {
@@ -205,28 +220,32 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     [windowManager?.windows]
   );
 
+  // Core pinned = apps with pinnedToDock=true, ordered by pinnedOrder (unknown ids appended)
   const corePinned = useMemo(() => {
-    return pinnedIds
-      .map(id => apps.find(a => a.id === id))
-      .filter(Boolean)
-      .slice(0, MAX_CORE) as AppDefinition[];
-  }, [apps, pinnedIds]);
+    const pinnedApps = apps.filter(a => a.pinnedToDock);
+    const byId = new Map(pinnedApps.map(a => [a.id, a]));
+    const ordered: AppDefinition[] = [];
+    pinnedOrder.forEach(id => { const app = byId.get(id); if (app) { ordered.push(app); byId.delete(id); } });
+    byId.forEach(app => ordered.push(app));
+    return ordered.slice(0, MAX_CORE);
+  }, [apps, pinnedOrder]);
+
+  const pinnedIdSet = useMemo(() => new Set(corePinned.map(a => a.id)), [corePinned]);
 
   const activeApps = useMemo(() => {
-    const coreIds = new Set(pinnedIds);
     return Array.from(openWindowIds)
-      .filter(id => !coreIds.has(id))
+      .filter(id => !pinnedIdSet.has(id))
       .map(id => apps.find(a => a.id === id))
       .filter(Boolean) as AppDefinition[];
-  }, [openWindowIds, pinnedIds, apps]);
+  }, [openWindowIds, pinnedIdSet, apps]);
 
   const smartSuggestions = useMemo(() => {
-    const usedIds = new Set([...pinnedIds, ...activeApps.map(a => a.id)]);
-    const remaining = MAX_DOCK_ITEMS - pinnedIds.length - activeApps.length - 1;
+    const usedIds = new Set([...pinnedIdSet, ...activeApps.map(a => a.id)]);
+    const remaining = MAX_DOCK_ITEMS - pinnedIdSet.size - activeApps.length - 1;
     if (remaining <= 0) return [];
     const suggestionIds = getContextualSuggestions(dockContext, usedIds, Math.min(remaining, 3));
     return suggestionIds.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
-  }, [pinnedIds, activeApps, dockContext, getContextualSuggestions, apps]);
+  }, [pinnedIdSet, activeApps, dockContext, getContextualSuggestions, apps]);
 
   const allDockApps = useMemo(() =>
     [...corePinned, ...activeApps, ...smartSuggestions],
