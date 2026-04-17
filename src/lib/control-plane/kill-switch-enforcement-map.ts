@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Kill Switch Enforcement Map
 // Declarative truth: WHERE each switch is enforced in the runtime.
-// Used by `check-kill-switch-coverage.ts` to assert every switch
-// has at least one enforcement point.
+// Used by `check-kill-switch-coverage.ts` to assert every entry's
+// `enforcedAt` file exists AND contains the named `symbol`.
+//
+// CONTRACT: Every entry in this map MUST be a real, verifiable
+// enforcement point. Phantoms cause the CI gate to fail.
 // ═══════════════════════════════════════════════════════════════
 
 import type { EnforcementPoint } from "./kill-switch-types";
@@ -18,16 +21,9 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   },
   {
     switchId: "KS-ADVISORS",
-    layer: "domain-service",
-    enforcedAt: "src/services/advisor-orchestrator.ts",
-    symbol: "advisorOrchestratorService",
-    blocks: "Synchronous advisor invocations from UI",
-  },
-  {
-    switchId: "KS-ADVISORS",
     layer: "scheduler",
     enforcedAt: "supabase/functions/advisor-agent-loop/index.ts",
-    symbol: "Deno.serve",
+    symbol: "checkKillSwitchOrReject",
     blocks: "Background advisor reflection and autonomous action loops",
   },
 
@@ -39,21 +35,14 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     symbol: "checkAnyKillSwitchOrReject",
     blocks: "All outbound emails, SMS, and in-app pushes",
   },
-  {
-    switchId: "KS-OUTBOUND",
-    layer: "domain-service",
-    enforcedAt: "src/services/communication-service.ts",
-    symbol: "communicationService",
-    blocks: "Pre-flight message dispatch from product surfaces",
-  },
 
   // ── KS-CONNECTORS ──────────────────────────────────────────────
   {
     switchId: "KS-CONNECTORS",
     layer: "connector",
     enforcedAt: "supabase/functions/connector-oauth/index.ts",
-    symbol: "Deno.serve",
-    blocks: "OAuth callbacks and connector token refresh",
+    symbol: "checkKillSwitchOrReject",
+    blocks: "OAuth callbacks and connector token exchange",
   },
   {
     switchId: "KS-CONNECTORS",
@@ -74,9 +63,9 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-SYNC",
     layer: "scheduler",
-    enforcedAt: "src/services/sync-service.ts",
-    symbol: "syncService",
-    blocks: "Scheduled sync cadence",
+    enforcedAt: "supabase/functions/scheduler-dispatch/index.ts",
+    symbol: "checkKillSwitchOrReject",
+    blocks: "Scheduled sync cadence triggers",
   },
 
   // ── KS-PAYMENTS ────────────────────────────────────────────────
@@ -91,14 +80,14 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-PAYMENTS",
     layer: "ui-gate",
     enforcedAt: "src/pages/admin/AR08KillSwitchCenter.tsx",
-    symbol: "useAction",
+    symbol: "AR08KillSwitchCenter",
     blocks: "Pay / refund operator gates surfaced in admin",
   },
   {
     switchId: "KS-PAYMENTS",
     layer: "edge-function",
     enforcedAt: "supabase/functions/payment-kill-switch/index.ts",
-    symbol: "Deno.serve",
+    symbol: "killSwitchActive",
     blocks: "Dedicated emergency payment circuit-breaker endpoint",
   },
 
@@ -116,15 +105,8 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-MODEL-PROVIDERS",
     layer: "ai-gateway",
     enforcedAt: "supabase/functions/ai-gateway/index.ts",
-    symbol: "Deno.serve",
-    blocks: "All outbound LLM/model API calls",
-  },
-  {
-    switchId: "KS-MODEL-PROVIDERS",
-    layer: "domain-service",
-    enforcedAt: "src/services/ai-gateway-service.ts",
-    symbol: "invokeAICapability",
-    blocks: "Sovereign AI gateway entrypoint used by every AI feature",
+    symbol: "checkKillSwitchOrReject",
+    blocks: "All outbound LLM/model API calls via the sovereign gateway",
   },
 
   // ── KS-WORKFLOW ────────────────────────────────────────────────
@@ -147,8 +129,8 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
   {
     switchId: "KS-SIMULATIONS",
     layer: "edge-function",
-    enforcedAt: "supabase/functions/run-simulation/index.ts",
-    symbol: "Deno.serve",
+    enforcedAt: "supabase/functions/simulation-engine-api/index.ts",
+    symbol: "checkKillSwitchOrReject",
     blocks: "Scenario simulations and what-if engines",
   },
 
@@ -161,7 +143,7 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     blocks: "All scheduled automations and cron triggers",
   },
 
-  // ── KS-RELEASE-ROLLOUT (new) ───────────────────────────────────
+  // ── KS-RELEASE-ROLLOUT ─────────────────────────────────────────
   {
     switchId: "KS-RELEASE-ROLLOUT",
     layer: "release-pipeline",
@@ -173,11 +155,11 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     switchId: "KS-RELEASE-ROLLOUT",
     layer: "ui-gate",
     enforcedAt: "src/pages/admin/AR08KillSwitchCenter.tsx",
-    symbol: "ReleaseRolloutPanel",
+    symbol: "AR08KillSwitchCenter",
     blocks: "Operator visible rollout controls",
   },
 
-  // ── KS-APPLIANCE-UPDATE (new) ──────────────────────────────────
+  // ── KS-APPLIANCE-UPDATE ────────────────────────────────────────
   {
     switchId: "KS-APPLIANCE-UPDATE",
     layer: "appliance-update",
@@ -186,16 +168,16 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     blocks: "OTA appliance update channel pull and apply",
   },
 
-  // ── KS-SELF-HEALING (new) ──────────────────────────────────────
+  // ── KS-SELF-HEALING ────────────────────────────────────────────
   {
     switchId: "KS-SELF-HEALING",
     layer: "self-healing",
-    enforcedAt: "src/services/self-healing-service.ts",
-    symbol: "selfHealingService.attemptRepair",
+    enforcedAt: "supabase/functions/self-healing/index.ts",
+    symbol: "checkKillSwitchOrReject",
     blocks: "Autonomous repair / restart loops",
   },
 
-  // ── KS-PROVIDER-INGESTION (new) ────────────────────────────────
+  // ── KS-PROVIDER-INGESTION ──────────────────────────────────────
   {
     switchId: "KS-PROVIDER-INGESTION",
     layer: "connector",

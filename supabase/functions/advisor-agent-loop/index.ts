@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Agent Loop
@@ -179,6 +181,10 @@ serve(async (req) => {
 
     // Load advisor configs for user
     const serviceClient = createClient(supabaseUrl, serviceRoleKey);
+
+    // Phase 27 — Kill-switch enforcement (KS-ADVISORS)
+    const advisorKilled = await checkKillSwitchOrReject("KS-ADVISORS", serviceClient);
+    if (advisorKilled) return advisorKilled;
 
     const agentQuery = serviceClient
       .from("advisor_agents")

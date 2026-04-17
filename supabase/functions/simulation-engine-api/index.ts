@@ -7,12 +7,18 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
 
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+
 serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
   const auth = await requireAuth(req);
   if (auth instanceof Response) return auth;
+
+  // Phase 27 — Kill-switch enforcement (KS-SIMULATIONS)
+  const killed = await checkKillSwitchOrReject("KS-SIMULATIONS", auth.supabase);
+  if (killed) return killed;
 
   try {
     const body = req.method === "GET" ? { action: "list-scenarios" } : await req.json();
