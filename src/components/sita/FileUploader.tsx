@@ -33,7 +33,7 @@ const ALLOWED_TYPES = [
 ];
 const MAX_SIZE = 20 * 1024 * 1024; // 20MB
 
-export const FileUploader = () => {
+export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
   const { user } = useAuth();
   const emitLoop = useLoopEmitter("files-ai-assist");
   const [files, setFiles] = useState<UploadedFile[]>([]);
