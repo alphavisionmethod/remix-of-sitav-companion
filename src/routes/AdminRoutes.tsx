@@ -175,11 +175,28 @@ const APP01ApplianceDeployabilityCenter = lazy(() => import("@/pages/admin/APP01
 const BAP01BackendApiDeployabilityCenter = lazy(() => import("@/pages/admin/BAP01BackendApiDeployabilityCenter"));
 const EFH01EdgeFunctionHealthCenter = lazy(() => import("@/pages/admin/EFH01EdgeFunctionHealthCenter"));
 
-// ── Phase 3: Canonical Domain Hubs ──
+// ── Phase 3 + Phase 25: Canonical Domain Hubs (12-domain IA) ──
 const OverviewHome = lazy(() => import("@/pages/admin/overview/OverviewHome"));
 const AlertsHome = lazy(() => import("@/pages/admin/alerts/AlertsHome"));
 const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome"));
 const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
+const ReleasesHome = lazy(() => import("@/pages/admin/releases/ReleasesHome"));
+const SupportHome = lazy(() => import("@/pages/admin/support/SupportHome"));
+const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
+const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
+const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
+const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
+const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
+const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
+
+// ── Phase 25: Workflow step pages (real or aliased) ──
+const LaunchReadinessBoard = lazy(() => import("@/pages/admin/LaunchReadinessBoard"));
+const LaunchHonestyBoard = lazy(() => import("@/pages/admin/LaunchHonestyBoard"));
+const AdminDeploymentRings = lazy(() => import("@/pages/admin/AdminDeploymentRings"));
+const MCSupport = lazy(() => import("@/pages/admin/modules/MCSupport"));
+const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
+const AuditComplianceWorkspace = lazy(() => import("@/pages/admin/AuditComplianceWorkspace"));
+import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
 
 // ── Phase 7: Meta-Architecture Surfaces ──
 const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01ArchitectureAtlas"));
