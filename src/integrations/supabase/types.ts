@@ -11132,6 +11132,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "recommendation_execution_bindings_approval_queue_item_id_fkey"
+            columns: ["approval_queue_item_id"]
+            isOneToOne: false
+            referencedRelation: "approval_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_execution_bindings_approval_queue_item_id_fkey"
+            columns: ["approval_queue_item_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_pending_approvals"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "recommendation_execution_bindings_linked_program_id_fkey"
             columns: ["linked_program_id"]
             isOneToOne: false
@@ -13695,6 +13709,49 @@ export type Database = {
       }
     }
     Views: {
+      approval_queue: {
+        Row: {
+          action_summary: string | null
+          action_type: string | null
+          cost_implications: string | null
+          created_at: string | null
+          decided_at: string | null
+          decision_reason: string | null
+          description: string | null
+          domain: string | null
+          escalated: boolean | null
+          evidence: Json | null
+          id: string | null
+          launch_implications: string | null
+          priority: string | null
+          proposed_action: Json | null
+          recommendation_id: string | null
+          remediation_binding_id: string | null
+          resolved_at: string | null
+          reviewed_by: string | null
+          risk_level: string | null
+          status: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_approval_queue_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_approval_queue_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["recommendation_id"]
+          },
+        ]
+      }
       uptime_status: {
         Row: {
           current_status: string | null
@@ -13795,6 +13852,50 @@ export type Database = {
           user_id: string | null
         }
         Relationships: []
+      }
+      v_user_pending_approvals: {
+        Row: {
+          cost_implications: string | null
+          created_at: string | null
+          decision_at: string | null
+          escalated: boolean | null
+          evidence_links: Json | null
+          id: string | null
+          launch_implications: string | null
+          priority: string | null
+          rec_confidence: number | null
+          rec_domain: string | null
+          rec_evidence: Json | null
+          rec_execution_required: boolean | null
+          rec_flagship_loop_key: string | null
+          rec_lifecycle_status: string | null
+          rec_role_key: string | null
+          rec_severity: string | null
+          rec_task_key: string | null
+          recommendation_id: string | null
+          reviewer_comments: string | null
+          reviewer_user_id: string | null
+          status: string | null
+          summary: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_approval_queue_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_approval_queue_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["recommendation_id"]
+          },
+        ]
       }
     }
     Functions: {

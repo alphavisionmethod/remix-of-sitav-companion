@@ -360,13 +360,46 @@ export function useApprovals() {
     queryFn: async () => {
       if (isDemoMode) return mockApprovals;
       if (!user) return [];
+      // Read from canonical table directly (no phantom approval_queue)
       const { data, error } = await (supabase as any)
-        .from("approval_queue")
-        .select("*")
+        .from("ai_workforce_approval_queue")
+        .select("*, ai_workforce_recommendations(domain, severity, confidence, role_key, execution_required, flagship_loop_key, evidence)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-      if (error) return [];
-      return data || [];
+      if (error) {
+        console.error("[useApprovals] fetch failed:", error);
+        return [];
+      }
+      // Map to the legacy shape the UI expects
+      return (data ?? []).map((row: Record<string, any>) => {
+        const rec = row.ai_workforce_recommendations || {};
+        const priority: string = row.priority || "normal";
+        const risk_level =
+          priority === "urgent" || priority === "high" ? "high"
+          : priority === "low" ? "low" : "medium";
+        return {
+          id: row.id,
+          action_summary: row.title,
+          status: row.status,
+          created_at: row.created_at,
+          decided_at: row.decision_at,
+          decision_reason: row.reviewer_comments,
+          domain: rec.domain || "general",
+          action_type: rec.role_key || "system",
+          risk_level,
+          priority,
+          recommendation_id: row.recommendation_id,
+          execution_required: !!rec.execution_required,
+          flagship_loop_key: rec.flagship_loop_key,
+          evidence: row.evidence_links,
+          cost_implications: row.cost_implications,
+          launch_implications: row.launch_implications,
+          proposed_action: {
+            confidence: rec.confidence ?? 0.7,
+            actions: [{ type: rec.role_key || "system", description: row.summary }],
+          },
+        };
+      });
     },
     refetchInterval: isDemoMode ? undefined : 15000,
   });

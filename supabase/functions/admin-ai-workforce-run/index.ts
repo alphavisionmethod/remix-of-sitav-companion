@@ -403,52 +403,60 @@ Provide your structured analysis with findings and recommendations.`;
       })
       .select().single();
 
-    // STEP 12: Persist recommendations
+    // STEP 12: Persist recommendations (canonical schema)
     let recsCreated = 0;
     let approvalItemsCreated = 0;
-    if (hasRecommendations && output) {
+    if (hasRecommendations) {
       for (const rec of parsed.recommendations) {
-        const { data: recRow } = await supabaseAdmin
+        const sev = rec.severity || "medium";
+        const isHighRisk = rec.risk_tier === "critical" || rec.risk_tier === "elevated" || sev === "critical" || sev === "high";
+
+        const { data: recRow, error: recErr } = await supabaseAdmin
           .from("ai_workforce_recommendations")
           .insert({
             user_id: user.id,
             invocation_id: invocation.id,
-            output_id: output.id,
-            role_id: role.id,
-            recommendation_type: rec.recommendation_type || role.domain_family,
+            role_key: role_key,
+            task_key: task_key,
+            domain: (role as Record<string, unknown>).domain_family || "general",
             title: rec.title,
             summary: rec.summary,
-            severity: rec.severity || "medium",
-            risk_tier: rec.risk_tier || "standard",
-            estimated_impact: rec.estimated_impact || null,
-            estimated_effort: rec.estimated_effort || null,
-            budget_impact_class: resolvedBudgetClass,
-            launch_impact_class: role.launch_honesty_class,
-            evidence_refs: [],
+            severity: sev,
+            confidence: typeof parsed.confidence === "number" ? parsed.confidence : 0.7,
+            evidence: [{ source: "ai_workforce_run", invocation_id: invocation.id, finding: rec.estimated_impact || null }],
+            execution_required: isHighRisk,
+            outcome_verification_required: isHighRisk,
+            flagship_loop_key: "admin-truth-recommendation-approval",
             status: "new",
+            lifecycle_status: "new",
           })
-          .select().single();
+          .select("id, title, summary, flagship_loop_key")
+          .single();
 
+        if (recErr) {
+          console.error("[ai-workforce-run] recommendation insert failed:", recErr);
+          continue;
+        }
         recsCreated++;
 
-        // Route high-risk to approval queue
-        if (recRow && (rec.risk_tier === "critical" || rec.risk_tier === "elevated" || rec.severity === "critical")) {
-          await supabaseAdmin.from("ai_workforce_approval_queue").insert({
+        // Route high-risk recommendations to the user approval queue (canonical columns only)
+        if (recRow && isHighRisk) {
+          const { error: queueErr } = await supabaseAdmin.from("ai_workforce_approval_queue").insert({
             user_id: user.id,
             recommendation_id: recRow.id,
-            invocation_id: invocation.id,
-            queue_type: "recommendation",
             title: rec.title,
             summary: rec.summary,
-            risk_tier: rec.risk_tier || "elevated",
-            severity: rec.severity,
-            impacted_domain: role.domain_family,
-            budget_impact_class: resolvedBudgetClass,
-            evidence_summary: rec.estimated_impact || null,
-            evidence_refs: [],
-            status: "new",
+            priority: sev === "critical" ? "urgent" : "high",
+            status: "pending",
+            evidence_links: [{ source: "ai_workforce_run", invocation_id: invocation.id }],
+            cost_implications: rec.estimated_impact || null,
+            launch_implications: (role as Record<string, unknown>).launch_honesty_class as string || null,
           });
-          approvalItemsCreated++;
+          if (queueErr) {
+            console.error("[ai-workforce-run] approval queue insert failed:", queueErr);
+          } else {
+            approvalItemsCreated++;
+          }
         }
       }
     }
