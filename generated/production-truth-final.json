@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-04-17T00:26:26.979Z",
+  "generatedAt": "2026-04-17T00:35:02.245552Z",
   "verdict": "ready",
   "totals": {
     "totalGates": 27,
     "passedGates": 27,
     "blockerFails": 0,
-    "warningFails": 0
+    "warningFails": 0,
+    "phaseCount": 1
   },
   "byPhase": {
     "phase-1-bounded-context": {
@@ -294,5 +295,23 @@
     "feature-floor-met": true,
     "page-state-floor-met": true
   },
-  "ok": true
+  "ok": true,
+  "phases": [
+    {
+      "phase": "phase-17-edge-function-health-replay",
+      "title": "Edge Function Checklist (10 items) \u2014 Health & Replay Closure",
+      "status": "ready",
+      "ready": 10,
+      "partial": 0,
+      "missing": 0,
+      "evidence": {
+        "replayMap": "src/lib/backend-topology/edge-function-replay-map.ts (23 required entries: 12 ORCHESTRATION + 11 CONNECTOR_WEBHOOK)",
+        "healthSource": "src/lib/backend-topology/edge-function-health-source.ts (useEdgeFunctionHealth)",
+        "dashboard": "/admin/edge-functions/health (EFH01EdgeFunctionHealthCenter)",
+        "ciGate": "scripts/architecture/checks/check-edge-function-health-replay.ts (CI gate 28)",
+        "report": "generated/edge-function-health-replay-report.json"
+      },
+      "ok": true
+    }
+  ]
 }
