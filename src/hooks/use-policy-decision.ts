@@ -10,13 +10,14 @@ import {
   type UnifiedPolicyQuery,
   type UnifiedPolicyDecision,
 } from "@/lib/policy/unified-policy-matrix";
+import type { TrustLevel } from "@/lib/policy/policy-trust-thresholds";
 
 export interface PolicyDecisionInput {
   domain: UnifiedPolicyQuery["domain"];
   riskClass: UnifiedPolicyQuery["riskClass"];
   actor?: UnifiedPolicyQuery["actor"];
   surface?: UnifiedPolicyQuery["surface"];
-  deviceTrust?: number;
+  deviceTrust?: TrustLevel;
   sensitivity?: UnifiedPolicyQuery["sensitivity"];
   tenantScope?: UnifiedPolicyQuery["tenantScope"];
   biometricStepUpRecent?: boolean;
