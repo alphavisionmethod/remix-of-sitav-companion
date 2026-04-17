@@ -1,0 +1,34 @@
+[Unit]
+Description=SITA OS Metrics & Diagnostics Agent
+Documentation=https://docs.sita.os/runbooks/appliance-diagnostics
+After=network-online.target docker.service sita-os.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sita/sita-metrics-agent.sh
+WorkingDirectory=/opt/sita
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sita-metrics
+
+# Hardening
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/sita /var/log /var/backups/sita
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+# Resource limits
+TimeoutStartSec=120
+MemoryMax=256M
+CPUQuota=20%
+
+[Install]
+WantedBy=multi-user.target

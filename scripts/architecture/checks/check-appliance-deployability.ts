@@ -59,10 +59,13 @@ if (!buildOvaOk) issues.push({ severity: "error", area: "build", message: `${bui
 else if (!buildOvaExec) issues.push({ severity: "warning", area: "build", message: `${buildOva} not executable` });
 
 // ── 3. Runtime scripts exist and are executable ────────────────
+// NOTE: missing executable bit is an ERROR (not warning) — systemd ExecStart
+// fails silently and the appliance ships broken. Phase 15.3 truth-closure.
 const runtimeScripts = [
   "scripts/release/iso/sita-first-boot.sh",
   "scripts/release/iso/sita-ota-agent.sh",
   "scripts/release/iso/sita-backup.sh",
+  "scripts/release/iso/sita-metrics-agent.sh",
 ];
 const scriptStatus: Record<string, { exists: boolean; executable: boolean }> = {};
 for (const s of runtimeScripts) {
@@ -70,7 +73,7 @@ for (const s of runtimeScripts) {
   const exe = exists && isExecutable(s);
   scriptStatus[s] = { exists, executable: exe };
   if (!exists) issues.push({ severity: "error", area: "runtime-scripts", message: `${s} missing` });
-  else if (!exe) issues.push({ severity: "warning", area: "runtime-scripts", message: `${s} not executable` });
+  else if (!exe) issues.push({ severity: "error", area: "runtime-scripts", message: `${s} not executable (systemd ExecStart will fail)` });
 }
 
 // ── 4. systemd units present ───────────────────────────────────
@@ -80,6 +83,8 @@ const systemdUnits = [
   "scripts/release/iso/sita-ota.timer",
   "scripts/release/iso/sita-backup.service",
   "scripts/release/iso/sita-backup.timer",
+  "scripts/release/iso/sita-metrics.service",
+  "scripts/release/iso/sita-metrics.timer",
 ];
 const systemdMissing: string[] = [];
 for (const u of systemdUnits) {
@@ -166,7 +171,15 @@ if (!existsSync(startupOrder)) {
 } else {
   try {
     const json = JSON.parse(readFileSync(startupOrder, "utf8"));
-    startupOrderPhases = Array.isArray(json.phases) ? json.phases.length : (typeof json.phaseCount === "number" ? json.phaseCount : 0);
+    // Support shapes: { phases: [...] }, { phases: number }, { phaseCount: number }, or derive from services[].phase
+    if (Array.isArray(json.phases)) startupOrderPhases = json.phases.length;
+    else if (typeof json.phases === "number") startupOrderPhases = json.phases;
+    else if (typeof json.phaseCount === "number") startupOrderPhases = json.phaseCount;
+    else if (Array.isArray(json.services)) {
+      startupOrderPhases = new Set(
+        json.services.map((s: { phase?: number }) => s.phase).filter((p: unknown) => typeof p === "number"),
+      ).size;
+    }
     startupOrderServices = Array.isArray(json.services) ? json.services.length : (typeof json.serviceCount === "number" ? json.serviceCount : 0);
     if (startupOrderPhases < 1) {
       issues.push({ severity: "error", area: "startup-order", message: "startup-order.json has 0 phases" });
@@ -183,8 +196,10 @@ if (!existsSync(recoveryContract)) {
   issues.push({ severity: "error", area: "recovery", message: `${recoveryContract} missing` });
 } else {
   const rc = readFileSync(recoveryContract, "utf8");
-  const m = rc.match(/actionId\s*:/g);
-  recoveryActionCount = m ? m.length : 0;
+  // Recovery actions are array entries with `id: "kebab-case"` (also accept legacy `actionId:`)
+  const idMatches = rc.match(/^\s{2,}id\s*:\s*"[a-z0-9-]+"/gm) ?? [];
+  const legacyMatches = rc.match(/actionId\s*:/g) ?? [];
+  recoveryActionCount = idMatches.length + legacyMatches.length;
   if (recoveryActionCount < 1) {
     issues.push({
       severity: "error",
