@@ -1,90 +1,71 @@
 
 
-## Fix C-015: Budget Gate Not Enforced at Runtime — actual state
+## Fix C-018: Empty-state honesty across surfaces — what's actually broken
 
-### Live findings (deeper than the brief)
+### Live findings
 
-I queried the live DB and read every gateway/edge function:
+The empty-state infrastructure is already mature: 113 files use `EmptyState`/`PremiumEmptyState`/`ConciergeEmptyState`, and a `page-state-registry` + CI gate already enforce loading/empty/error/permission contracts on 36 routes. But there are 6 concrete leaks where users with no data see blank or broken layouts:
 
-1. 🔴 **`check_ai_budget_policies` RPC does NOT exist in the DB.** The gateway, `check-ai-budget`, `_shared/ai-budget-check.ts`, `personal-brain`, and `admin-ai-workforce-run` all call it via `serviceClient.rpc(...)` — every call returns an error and silently fails open through the `catch` blocks. **Today, budget enforcement is a no-op for every AI invocation.**
+| # | Surface | File | Leak |
+|---|---|---|---|
+| 1 | Approval Chamber → Pending tab | `ApprovalChamber.tsx` L442 | Inline raw `<div>` empty state, not canonical |
+| 2 | Approval Chamber → Resolved tab | `ApprovalChamber.tsx` L456 | Same — inline raw `<div>` |
+| 3 | Approvals Center → Pending | `ApprovalsCenter.tsx` L93 | Bespoke `SitaCard` empty state, not canonical |
+| 4 | Files Overview (the surface in the brief) | `FilesOverview.tsx` L123–134 | **No empty state at all** — when zero files, silently renders empty `Classified Files` heading with nothing below |
+| 5 | Daily Pulse → Approvals card | `DailyPulse.tsx` L234 | Inline grey text "No pending approvals." |
+| 6 | Revenue Forecast Monte Carlo | `RevenueForecast.tsx` L471 | Inline raw `<div>` placeholder |
 
-2. 🔴 **Tables the gateway writes to don't exist either**: `ai_usage_ledger`, `ai_receipt_records`, `ai_fallback_events`, `ai_budget_alerts`. Every insert silently 404s. There is no usage truth being persisted.
-
-3. ✅ **`ai_workforce_budget_classes` exists** with the right shape: `class_key`, `max_calls_per_hour`, `max_cost_cents_per_call`, `max_tokens_per_call`, `allowed_models`, `priority_order` — and is per-user.
-
-4. ✅ **`ai_workforce_role_task_permissions`** has `budget_class_key`, `role_key`, `task_key`, `requires_approval`.
-
-5. ✅ **`ai_workforce_invocations`** has `cost_cents`, `tokens_in/out`, `model_used`, `status`, `created_at` — the complete observation table for hourly windowing.
-
-6. ✅ **`ai_inference_receipts`** exists and IS being written (legacy receipt path works). Good audit trail already.
+Plus 2 governance gaps:
+- `/files`, `/approvals`, `/approval-chamber`, `/notifications`, `/inbox`, `/daily-pulse` are **missing from `page-state-registry`** — no CI guarantee these surfaces declare `empty` state
+- No lint guard preventing future regressions of inline empty-state patterns
 
 ### The fix — 3 surgical changes
 
-**1. DB migration: create `check_ai_budget_policies` RPC + the missing usage tables**
+**1. Replace 6 inline empty states with canonical primitives**
 
-Create the RPC with the exact return shape every caller already expects (`allowed`, `should_block`, `should_downgrade`, `reason`, `policy_key`, `pct`, `alert_state`, `premium_blocked`, `fallback_model_id`):
+| File | Replace with |
+|---|---|
+| `ApprovalChamber.tsx` (pending) | `<EmptyState variant="contextual" icon={ShieldCheck} title="All clear" description="…" />` |
+| `ApprovalChamber.tsx` (resolved) | `<EmptyState variant="card" icon={CheckCircle} ... />` |
+| `ApprovalsCenter.tsx` | `<EmptyState variant="contextual" icon={CheckCircle} title="All caught up" description="…" />` |
+| `FilesOverview.tsx` | After `classifiedFiles` is computed, when empty render `<PremiumEmptyState variant="first-use" icon={FolderOpen} title="No files yet" description="Upload your first file…" actions={[{label:"Upload", onClick: ...}]} domain="files" />` |
+| `DailyPulse.tsx` | Replace inline "No pending approvals." with compact `<EmptyState variant="card" icon={CheckCircle} title="All clear" description="No pending approvals." />` |
+| `RevenueForecast.tsx` | `<EmptyState variant="card" icon={Gauge} title="No simulation yet" description="Run a Monte Carlo…" actionLabel="Run simulation" onAction={…} />` |
 
-```sql
-CREATE OR REPLACE FUNCTION public.check_ai_budget_policies(
-  p_user_id uuid, p_capability_key text, p_estimated_cost_usd numeric
-) RETURNS jsonb
-LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = public
-AS $$ ... $$;
-```
+**2. Extend page-state registry + CI floor**
 
-Logic:
-- Resolve `role_key` and `budget_class_key` from `ai_workforce_role_task_permissions` (best match by capability or default class).
-- Pull `ai_workforce_budget_classes` row for that user + class.
-- Count invocations in last 1h from `ai_workforce_invocations` for the same role.
-- Sum `cost_cents` in last 24h for daily budget pct.
-- Return:
-  - `should_block=true` if hourly count ≥ `max_calls_per_hour` → reason `hourly_call_limit_exceeded`
-  - `should_block=true` if `p_estimated_cost_usd*100 > max_cost_cents_per_call` → reason `per_call_cost_exceeded`
-  - `should_downgrade=true` + `fallback_model_id` if pct ≥ 80% of daily envelope
-  - `premium_blocked=true` if class is non-premium and capability requested premium synthesis
-  - `alert_state` = `warning` (≥60%), `critical` (≥85%), `ok` otherwise; `pct` numeric
-  - Sane defaults if no class found: `{ allowed: true, reason: "no_policy" }`
+Add 6 routes to `src/lib/reality/page-state-registry.ts` with `verified: ["loading","empty","error","permission-denied"]`:
+- `/files` → `FilesCenter.tsx` (data-list)
+- `/approvals` → `ApprovalsCenter.tsx` (data-list)
+- `/approval-chamber` → `ApprovalChamber.tsx` (data-list)
+- `/notifications` → `NotificationCenter.tsx` (data-list)
+- `/inbox` → `InboxCapture.tsx` (data-list)
+- `/daily-pulse` → `DailyPulse.tsx` (dashboard)
 
-Also create the 4 missing tables that the gateway already writes to (so receipts stop silently dropping):
-- `ai_usage_ledger` (id, user_id, capability_key, mode, request_class, status, prompt_tokens, completion_tokens, total_tokens, estimated_cost_usd, latency_ms, error_code, error_summary, created_at, expires_at default 365d)
-- `ai_receipt_records` (id, user_id, capability_key, mode, decision_class, degraded_reason, usage_ledger_id, created_at, expires_at default 365d)
-- `ai_fallback_events` (id, user_id, capability_key, fallback_reason, result_state, created_at)
-- `ai_budget_alerts` (id, user_id, scope_type, scope_ref, threshold_percent, observed_cost_usd, period_class, alert_state, created_at)
+Bump `PAGE_STATE_REGISTRY_FLOOR` from 36 → 42 so CI fails if anyone removes them.
 
-All with: RLS enabled, owner-scoped SELECT policy, service-role-only INSERT (deny client writes), indexes on `(user_id, created_at desc)`, and `expires_at` indexes for the cleanup function (auto-extends C-014 coverage).
+**3. Add lint guard to prevent regressions**
 
-**2. Edge function: harden `_shared/ai-budget-check.ts` so failures are loud**
-
-Change the fail-open behavior to be observable:
-- Keep allow-on-error semantics for legacy callers but emit a `console.warn` with structured `{capability_key, estimated_cost_usd, error}` so the issue is visible in edge function logs (and in the new error_events for C-014).
-- Add a `strict: true` option (used by `ai-gateway` and `admin-ai-workforce-run`) that returns `{ allowed: false, reason: 'enforcement_unavailable' }` instead — fail-closed for the choke point.
-- Wire `ai-gateway/index.ts` and `admin-ai-workforce-run/index.ts` to use `strict: true`.
-
-**3. Add seed defaults so new users get a real envelope**
-
-Migration adds a one-time backfill: for every user with at least one row in `ai_workforce_invocations` but no rows in `ai_workforce_budget_classes`, insert 3 default classes (`utility`, `balanced`, `premium`) with sane caps (e.g. 60/30/10 calls/h, 5/25/100 cents/call). Also create a trigger on `auth.users` insert to seed these for new signups (mirrors `handle_new_user`).
+New `eslint-plugin-local` rule `no-inline-empty-state` (or simpler: a `scripts/architecture/checks/check-no-inline-empty-states.ts` that greps for the inline pattern `flex flex-col items-center justify-center py-1\d.*text-center` outside `src/components/sita/EmptyState*.tsx` / `src/components/primitives/feedback/EmptyState.tsx` / `src/components/concierge/ConciergeEmptyState.tsx`). Wire into existing `scripts/architecture/checks/` runner.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `supabase/migrations/<ts>_ai_budget_enforcement.sql` | NEW — `check_ai_budget_policies` RPC, 4 missing usage/receipt/fallback/alert tables with RLS + indexes, default-class seeder function + trigger, one-time backfill |
-| `supabase/functions/_shared/ai-budget-check.ts` | Add `strict` option; structured warn-logging |
-| `supabase/functions/ai-gateway/index.ts` | Switch to shared `checkAIBudget(serviceClient, ..., { strict: true })`; remove duplicate inline RPC call |
-| `supabase/functions/admin-ai-workforce-run/index.ts` | Same switch — strict mode, no more silent skip |
-| `supabase/functions/check-ai-budget/index.ts` | Use shared helper; cleaner error semantics |
-| `supabase/functions/personal-brain/index.ts` | Same switch (currently calls RPC inline) |
-| `tests/integration/ai-budget-gate.test.ts` | NEW — set `max_calls_per_hour=2`, fire 3 calls, expect 3rd→429 with `hourly_call_limit_exceeded` |
+| `src/pages/ApprovalChamber.tsx` | Replace 2 inline empty states with `EmptyState` primitive |
+| `src/pages/ApprovalsCenter.tsx` | Replace 1 inline empty state with `EmptyState` primitive |
+| `src/pages/files/FilesOverview.tsx` | Add empty state for zero `classifiedFiles` |
+| `src/pages/DailyPulse.tsx` | Replace inline "No pending approvals" with `EmptyState` |
+| `src/pages/business/RevenueForecast.tsx` | Replace inline Monte Carlo placeholder with `EmptyState` |
+| `src/lib/reality/page-state-registry.ts` | +6 routes, bump floor 36→42 |
+| `scripts/architecture/checks/check-no-inline-empty-states.ts` | NEW — CI gate against inline empty-state patterns |
 
 ### Acceptance
 
-- `check_ai_budget_policies` RPC exists and returns the documented shape; admin can SELECT it.
-- Setting `max_calls_per_hour=2` for a user → 3rd ai-gateway call within an hour returns **429** with `reason: "hourly_call_limit_exceeded"` and `policy_key` set.
-- A call exceeding `max_cost_cents_per_call` returns 429 with `reason: "per_call_cost_exceeded"`.
-- At 80% daily spend, gateway downgrades to `fallback_model_id` and writes an `ai_budget_alerts` row with `alert_state="warning"`.
-- `ai_usage_ledger`, `ai_receipt_records`, `ai_fallback_events` rows are now created (visible in DB) — receipts stop silently dropping.
-- New users automatically get 3 default budget classes via trigger.
-- Edge logs now show structured budget warnings instead of silent fail-open.
-- 0 TS errors, 0 silent error→allow fallbacks at the gateway choke points.
-- C-015 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready.
+- New live user with zero data sees an honest, branded empty state on every major surface: Dashboard (Daily Pulse), Files, Boardroom, Approvals (Center + Chamber), Notifications
+- Zero raw inline `<div className="flex flex-col items-center ... text-center">…</div>` empty states remain in `src/pages/**`
+- Page-state registry floor enforces empty-state coverage on 6 additional surfaces
+- New CI gate fails any future PR that introduces an inline empty state
+- 0 TS errors, 0 visual regressions in demo mode (existing copy preserved)
+- C-018 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
 
