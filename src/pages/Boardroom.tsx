@@ -800,7 +800,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<Brain className="h-5 w-5" />}
+          icon={Brain}
           title="Confidence Radar"
           description="Live advisor confidence appears once REX recommendations are generated."
         />
@@ -858,7 +858,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         })()
       ) : !isDemoMode && (
         <EmptyState
-          icon={<Scale className="h-5 w-5" />}
+          icon={Scale}
           title="Disagreement Theater"
           description="Side-by-side advisor positions appear when a boardroom item has 2+ advisor summaries."
         />
@@ -878,7 +878,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<MessageSquare className="h-5 w-5" />}
+          icon={MessageSquare}
           title="Voting Card"
           description="Live advisor voting appears when a boardroom item enters the vote stage."
         />
@@ -898,7 +898,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<Activity className="h-5 w-5" />}
+          icon={Activity}
           title="Sentiment Pulse"
           description="Cross-domain sentiment will appear once signals are aggregated."
         />
@@ -930,7 +930,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<Database className="h-5 w-5" />}
+          icon={Database}
           title="Evidence Chain"
           description="Source-to-conclusion lineage appears when a decision is sealed with proof_trail."
         />
@@ -952,7 +952,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<GitCompare className="h-5 w-5" />}
+          icon={GitCompare}
           title="Scenario Fork"
           description="Side-by-side scenario simulations appear when a boardroom item has simulation_state populated."
         />
@@ -977,7 +977,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         />
       ) : (
         <EmptyState
-          icon={<Lock className="h-5 w-5" />}
+          icon={Lock}
           title="Decision Seal"
           description="The most recent sealed decision appears here once an approval ceremony completes."
         />
@@ -1002,7 +1002,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         </div>
       ) : (
         <EmptyState
-          icon={<Target className="h-5 w-5" />}
+          icon={Target}
           title="Confidence Ladder"
           description="Per-recommendation confidence levels appear when REX produces recommendations."
         />
