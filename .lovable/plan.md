@@ -1,71 +1,62 @@
 
 
-## Fix C-018: Empty-state honesty across surfaces — what's actually broken
+## Fix C-020: No Seed Data for New Users — actual state
 
 ### Live findings
 
-The empty-state infrastructure is already mature: 113 files use `EmptyState`/`PremiumEmptyState`/`ConciergeEmptyState`, and a `page-state-registry` + CI gate already enforce loading/empty/error/permission contracts on 36 routes. But there are 6 concrete leaks where users with no data see blank or broken layouts:
+1. ✅ `supabase/functions/seed-user-data/index.ts` exists and is comprehensive (22 tables, ~80 rows). Idempotent: skips when `leads` count > 0.
+2. ⚠️ `AuthContext.triggerAutoSeed()` fires on every `SIGNED_IN`/`TOKEN_REFRESHED` — burns a function call on every page reload (session-flag only protects in-memory).
+3. 🔴 Skip-detection uses **only `leads` count** — if a user deletes their leads, the function re-seeds **all 22 tables** → silent duplicate fixtures everywhere.
+4. 🔴 **No persisted "seeded" marker** on the profile — frontend has no cheap way to skip.
+5. 🔴 Demo session bypass: `signInAsDemo()` never calls the seeder, so demo users see whatever was seeded for the canonical demo UID `00000000-…`.
+6. 🔴 No telemetry: no audit row when seed runs, fails, or skips. Hard to verify "did this user actually get seeded?"
 
-| # | Surface | File | Leak |
-|---|---|---|---|
-| 1 | Approval Chamber → Pending tab | `ApprovalChamber.tsx` L442 | Inline raw `<div>` empty state, not canonical |
-| 2 | Approval Chamber → Resolved tab | `ApprovalChamber.tsx` L456 | Same — inline raw `<div>` |
-| 3 | Approvals Center → Pending | `ApprovalsCenter.tsx` L93 | Bespoke `SitaCard` empty state, not canonical |
-| 4 | Files Overview (the surface in the brief) | `FilesOverview.tsx` L123–134 | **No empty state at all** — when zero files, silently renders empty `Classified Files` heading with nothing below |
-| 5 | Daily Pulse → Approvals card | `DailyPulse.tsx` L234 | Inline grey text "No pending approvals." |
-| 6 | Revenue Forecast Monte Carlo | `RevenueForecast.tsx` L471 | Inline raw `<div>` placeholder |
+### The fix — 4 surgical changes
 
-Plus 2 governance gaps:
-- `/files`, `/approvals`, `/approval-chamber`, `/notifications`, `/inbox`, `/daily-pulse` are **missing from `page-state-registry`** — no CI guarantee these surfaces declare `empty` state
-- No lint guard preventing future regressions of inline empty-state patterns
+**1. Persist a durable `seeded_at` marker on `profiles.preferences`**
 
-### The fix — 3 surgical changes
+In the edge function, after a successful seed, write:
+```ts
+await admin.from("profiles").update({
+  preferences: { ...(prev.preferences ?? {}), seeded_at: iso, seed_version: 1 }
+}).eq("user_id", uid);
+```
+Switch the skip check to: `preferences.seeded_at` set → return `{ skipped: true, reason: "already_seeded" }`. Replaces the brittle `leads count > 0` check.
 
-**1. Replace 6 inline empty states with canonical primitives**
+**2. Add seed receipts table for verifiability (extends C-014 audit fabric)**
 
-| File | Replace with |
-|---|---|
-| `ApprovalChamber.tsx` (pending) | `<EmptyState variant="contextual" icon={ShieldCheck} title="All clear" description="…" />` |
-| `ApprovalChamber.tsx` (resolved) | `<EmptyState variant="card" icon={CheckCircle} ... />` |
-| `ApprovalsCenter.tsx` | `<EmptyState variant="contextual" icon={CheckCircle} title="All caught up" description="…" />` |
-| `FilesOverview.tsx` | After `classifiedFiles` is computed, when empty render `<PremiumEmptyState variant="first-use" icon={FolderOpen} title="No files yet" description="Upload your first file…" actions={[{label:"Upload", onClick: ...}]} domain="files" />` |
-| `DailyPulse.tsx` | Replace inline "No pending approvals." with compact `<EmptyState variant="card" icon={CheckCircle} title="All clear" description="No pending approvals." />` |
-| `RevenueForecast.tsx` | `<EmptyState variant="card" icon={Gauge} title="No simulation yet" description="Run a Monte Carlo…" actionLabel="Run simulation" onAction={…} />` |
+New table `user_seed_runs` (id, user_id, status `seeded|skipped|failed`, seed_version, tables_count, rows_count, error_summary, created_at, expires_at +180d). RLS: owner SELECT, service-role INSERT only. Indexed on `(user_id, created_at desc)`. Function inserts a row on every run.
 
-**2. Extend page-state registry + CI floor**
+**3. Frontend gate: only invoke when profile says it's needed**
 
-Add 6 routes to `src/lib/reality/page-state-registry.ts` with `verified: ["loading","empty","error","permission-denied"]`:
-- `/files` → `FilesCenter.tsx` (data-list)
-- `/approvals` → `ApprovalsCenter.tsx` (data-list)
-- `/approval-chamber` → `ApprovalChamber.tsx` (data-list)
-- `/notifications` → `NotificationCenter.tsx` (data-list)
-- `/inbox` → `InboxCapture.tsx` (data-list)
-- `/daily-pulse` → `DailyPulse.tsx` (dashboard)
+In `AuthContext.triggerAutoSeed`:
+- Pull `profiles.preferences` for the current user first.
+- If `preferences.seeded_at` is set → bail without invoking (saves an edge-function call per load).
+- Otherwise invoke the function; on success, the function persists the marker, and the next reload won't re-invoke.
+- Also gate by `localStorage.setItem('sita-seed-attempted', user.id)` to prevent double-fire across hot reloads in the same session.
 
-Bump `PAGE_STATE_REGISTRY_FLOOR` from 36 → 42 so CI fails if anyone removes them.
+**4. Demo-mode parity — surface the same fixtures**
 
-**3. Add lint guard to prevent regressions**
-
-New `eslint-plugin-local` rule `no-inline-empty-state` (or simpler: a `scripts/architecture/checks/check-no-inline-empty-states.ts` that greps for the inline pattern `flex flex-col items-center justify-center py-1\d.*text-center` outside `src/components/sita/EmptyState*.tsx` / `src/components/primitives/feedback/EmptyState.tsx` / `src/components/concierge/ConciergeEmptyState.tsx`). Wire into existing `scripts/architecture/checks/` runner.
+Demo session uses the canonical UID `00000000-0000-0000-0000-000000000000`. Add a one-time migration that calls the seed routine for that UID server-side (idempotent; survives any DB reset). Then demo users see the same realistic fixtures as fresh signups.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `src/pages/ApprovalChamber.tsx` | Replace 2 inline empty states with `EmptyState` primitive |
-| `src/pages/ApprovalsCenter.tsx` | Replace 1 inline empty state with `EmptyState` primitive |
-| `src/pages/files/FilesOverview.tsx` | Add empty state for zero `classifiedFiles` |
-| `src/pages/DailyPulse.tsx` | Replace inline "No pending approvals" with `EmptyState` |
-| `src/pages/business/RevenueForecast.tsx` | Replace inline Monte Carlo placeholder with `EmptyState` |
-| `src/lib/reality/page-state-registry.ts` | +6 routes, bump floor 36→42 |
-| `scripts/architecture/checks/check-no-inline-empty-states.ts` | NEW — CI gate against inline empty-state patterns |
+| `supabase/migrations/<ts>_user_seed_receipts.sql` | NEW — `user_seed_runs` table with RLS + indexes; one-time `INSERT` for the demo UID's seed marker on `profiles` so demo users get fixtures via the next demo seed run |
+| `supabase/functions/seed-user-data/index.ts` | Replace leads-count check with `preferences.seeded_at` check; persist marker on success; insert `user_seed_runs` row on every run (seeded/skipped/failed); honor `seed_version` for future re-seeds |
+| `src/contexts/AuthContext.tsx` | Pre-flight read of `profiles.preferences.seeded_at`; skip invoke if already seeded; persist `localStorage` "attempted" guard scoped to user id |
+| `src/pages/admin/UserSeedHealth.tsx` | NEW — admin view showing last 100 seed runs, status breakdown, retry button (calls seed function with `force: true`) |
+| `src/routes/AdminRoutes.tsx` | Register `/admin/user-seed-health` |
 
 ### Acceptance
 
-- New live user with zero data sees an honest, branded empty state on every major surface: Dashboard (Daily Pulse), Files, Boardroom, Approvals (Center + Chamber), Notifications
-- Zero raw inline `<div className="flex flex-col items-center ... text-center">…</div>` empty states remain in `src/pages/**`
-- Page-state registry floor enforces empty-state coverage on 6 additional surfaces
-- New CI gate fails any future PR that introduces an inline empty state
-- 0 TS errors, 0 visual regressions in demo mode (existing copy preserved)
-- C-018 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
+- New signup → first page load triggers seed → profile gets `preferences.seeded_at` → 22 tables populated → notifications/leads/invoices/etc. show real fixtures
+- Second page load → frontend reads `seeded_at` → does NOT invoke the function (verified in network tab: 0 calls)
+- Manually deleting `leads` does NOT trigger a re-seed (marker still set)
+- Demo user (`signInAsDemo`) sees realistic fixtures from the canonical demo UID seed
+- Every seed attempt writes one row to `user_seed_runs` (status `seeded`, `skipped`, or `failed`)
+- Admin dashboard at `/admin/user-seed-health` shows the receipts
+- 0 TS errors, 0 silent failures
+- C-020 moves ❌ ABSENT → ✅ RESOLVED, deployment-ready
 
