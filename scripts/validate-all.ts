@@ -170,6 +170,11 @@ const validators: Record<string, string[]> = {
     "scripts/security/checks/security-check-role-leakage.ts",
     "scripts/security/checks/security-check-tenant-isolation.ts",
   ],
+
+  // ── Observability (Phase 31 / Checklist 26) ──
+  "observability": [
+    "scripts/architecture/checks/check-observability-reality.ts",
+  ],
 };
 
 // Parse CLI args for domain filtering

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-04-17T14:48:34.809Z",
+  "generator": "scripts/architecture/checks/check-observability-reality.ts",
+  "checklist": 26,
+  "summary": {
+    "items": 10,
+    "truthful": 10,
+    "ok": true,
+    "deployable": true
+  },
+  "checks": [
+    {
+      "id": 1,
+      "item": "Structured logs",
+      "truthful": true,
+      "evidence": [
+        "src/lib/observability/structured-logger.ts",
+        "export const logger",
+        "getLogBuffer",
+        "LogEntry"
+      ]
+    },
+    {
+      "id": 2,
+      "item": "Metrics",
+      "truthful": true,
+      "evidence": [
+        "telemetry-collector.ts",
+        "cost-governance.ts"
+      ]
+    },
+    {
+      "id": 3,
+      "item": "Tracing where needed",
+      "truthful": true,
+      "evidence": [
+        "distributed-tracing.ts",
+        "apm.ts",
+        "request-context.ts"
+      ]
+    },
+    {
+      "id": 4,
+      "item": "Error capture (boot order honored)",
+      "truthful": true,
+      "evidence": [
+        "sentry.ts",
+        "error-monitoring-service.ts",
+        "main.tsx boot:6/6"
+      ]
+    },
+    {
+      "id": 5,
+      "item": "Incident classification + lifecycle",
+      "truthful": true,
+      "evidence": [
+        "incident-classification.service.ts",
+        "incident-management/index.ts"
+      ]
+    },
+    {
+      "id": 6,
+      "item": "Function/service health (6 obs edge fns deployed)",
+      "truthful": true,
+      "evidence": [
+        "health-probes.ts",
+        "service-registry/heartbeat.ts",
+        "supabase/functions/health-cron/",
+        "supabase/functions/alert-ingest/",
+        "supabase/functions/alert-route/",
+        "supabase/functions/alert-actions/",
+        "supabase/functions/error-ingest/",
+        "supabase/functions/trace-ingest/"
+      ]
+    },
+    {
+      "id": 7,
+      "item": "Mobile diagnostics",
+      "truthful": true,
+      "evidence": [
+        "mobile-diagnostics.ts",
+        "recordMobileDiagnostic",
+        "peekMobileDiagnostics"
+      ]
+    },
+    {
+      "id": 8,
+      "item": "Runtime probes",
+      "truthful": true,
+      "evidence": [
+        "runAllProbes",
+        "getOverallHealth",
+        "probeSupabase",
+        "probeAuth",
+        "probeStorage"
+      ]
+    },
+    {
+      "id": 9,
+      "item": "Support bundle generation (live sources, no hardcoded 94)",
+      "truthful": true,
+      "evidence": [
+        "diagnostic-bundle.service.ts",
+        "usesLive=true",
+        "noFakeScore=true",
+        "exports: generateSupportBundle"
+      ]
+    },
+    {
+      "id": 10,
+      "item": "Health dashboards reflect real telemetry",
+      "truthful": true,
+      "evidence": [
+        "CloudObservabilityAdmin.useObservability=true",
+        "CloudObservabilityAdmin.no-getDemoMetrics=true",
+        "SystemHealthDashboard.present=true"
+      ]
+    }
+  ],
+  "manifestEntry": "manifest-observability-truth"
+}
