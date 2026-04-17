@@ -112,7 +112,7 @@ export default function DailyPulse() {
 
   const moneyKpis = useMemo(() => [
     { label: "Files in Library", value: String(fileCount) },
-    { label: "Pending Review", value: String(pendingApprovals.filter(a => (a as { severity?: string }).severity === "high").length) },
+    { label: "Pending Review", value: String(pendingApprovals.filter(a => a.priority === "high").length) },
   ], [fileCount, pendingApprovals]);
 
   const conciergeKpis = useMemo(() => [
@@ -122,13 +122,13 @@ export default function DailyPulse() {
 
   const urgentItems = [
     ...pendingApprovals.slice(0, 3).map(a => ({
-      id: (a as { id: string }).id,
-      label: (a as { title: string }).title || "Pending approval",
-      urgency: ((a as { severity?: string }).severity === "high" ? "high" : "medium") as "high" | "medium",
+      id: a.id,
+      label: a.title || "Pending approval",
+      urgency: (a.priority === "high" ? "high" : "normal") as "high" | "normal",
     })),
-    ...recentNotifications.filter(n => (n as { severity?: string }).severity === "high").slice(0, 2).map(n => ({
-      id: (n as { id: string }).id,
-      label: (n as { title: string }).title || "Notification",
+    ...recentNotifications.filter(n => n.urgency === "high").slice(0, 2).map(n => ({
+      id: n.id,
+      label: n.title || "Notification",
       urgency: "high" as const,
     })),
   ];
@@ -218,19 +218,16 @@ export default function DailyPulse() {
         </button>
         {approvalsOpen && pendingApprovals.length > 0 && (
           <div className="border-t border-[hsl(0_0%_100%/0.06)] divide-y divide-[hsl(0_0%_100%/0.06)]">
-            {pendingApprovals.map(a => {
-              const item = a as { id: string; title?: string; severity?: string };
-              return (
-                <div key={item.id} className="flex items-center justify-between px-4 py-3">
-                  <p className="text-sm text-[hsl(0_0%_80%)]">{item.title || "Pending approval"}</p>
-                  <span className={cn("text-[10px] font-medium px-2 py-0.5 rounded-full", {
-                    "bg-[hsl(0_70%_50%/0.1)] text-[hsl(0_70%_60%)]": item.severity === "high",
-                    "bg-[hsl(38_85%_58%/0.1)] text-[hsl(38_85%_58%)]": item.severity === "medium",
-                    "bg-[hsl(0_0%_100%/0.06)] text-[hsl(0_0%_50%)]": !item.severity || item.severity === "low",
-                  })}>{item.severity || "normal"}</span>
-                </div>
-              );
-            })}
+            {pendingApprovals.map(a => (
+              <div key={a.id} className="flex items-center justify-between px-4 py-3">
+                <p className="text-sm text-[hsl(0_0%_80%)]">{a.title || "Pending approval"}</p>
+                <span className={cn("text-[10px] font-medium px-2 py-0.5 rounded-full", {
+                  "bg-[hsl(0_70%_50%/0.1)] text-[hsl(0_70%_60%)]": a.priority === "high",
+                  "bg-[hsl(38_85%_58%/0.1)] text-[hsl(38_85%_58%)]": a.priority === "medium",
+                  "bg-[hsl(0_0%_100%/0.06)] text-[hsl(0_0%_50%)]": !a.priority || a.priority === "low",
+                })}>{a.priority || "normal"}</span>
+              </div>
+            ))}
           </div>
         )}
         {approvalsOpen && pendingApprovals.length === 0 && (
