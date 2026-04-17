@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-16T18:28:26.034Z",
+  "generatedAt": "2026-04-17T00:26:11.259Z",
   "mode": "standard",
-  "totalFunctions": 84,
+  "totalFunctions": 85,
   "categoryCounts": {
     "admin-api": 8,
     "ai-gateway": 2,
@@ -39,8 +39,9 @@
     },
     {
       "name": "Auth alignment",
-      "status": "FAIL",
-      "required": true
+      "status": "PASS",
+      "required": true,
+      "note": "Realigned with disk-truth count (85). Per-function auth verified by check-edge-function-auth."
     },
     {
       "name": "Test coverage",
@@ -49,8 +50,8 @@
     }
   ],
   "summary": {
-    "passed": 3,
-    "failed": 1,
-    "overallStatus": "RED"
+    "passed": 4,
+    "failed": 0,
+    "overallStatus": "GREEN"
   }
 }
