@@ -199,6 +199,14 @@ export function DesktopSurface({
   const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  // Allow other shell surfaces (Dock, Launcher, keyboard shortcuts) to open the
+  // Widget Gallery via a window-level event. Single source of truth for "Widgets".
+  useEffect(() => {
+    const handler = () => setPickerOpen(true);
+    window.addEventListener("sita-open-widget-picker", handler);
+    return () => window.removeEventListener("sita-open-widget-picker", handler);
+  }, []);
+
   // Legacy window manager
   const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
