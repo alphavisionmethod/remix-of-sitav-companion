@@ -1,0 +1,126 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — iOS Release Pipeline
+# Builds + signs IPA via scripts/release/ios/build-ios.sh
+# Gated on CI launch-gate result for the same commit.
+# ═══════════════════════════════════════════════════════════════
+name: Release · iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Build mode (signed | unsigned-debug)"
+        required: true
+        default: "signed"
+        type: choice
+        options: [signed, unsigned-debug]
+  push:
+    tags:
+      - "v*-ios"
+      - "v*"
+
+concurrency:
+  group: release-ios-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify launch gate
+        env:
+          MODE: ${{ inputs.mode || 'signed' }}
+        run: |
+          echo "Mode: $MODE"
+          if [ -f generated/ci-launch-gate-report.json ]; then
+            STATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/ci-launch-gate-report.json','utf-8')).launch_state || 'unknown')")
+            echo "Launch state: $STATE"
+            if [ "$STATE" = "blocked" ] && [ "$MODE" != "unsigned-debug" ]; then
+              echo "::error::Launch gate is blocked — refusing signed iOS build"
+              exit 1
+            fi
+          else
+            echo "::warning::No launch-gate report found — proceeding"
+          fi
+
+      - name: Validate signing env (signed mode)
+        if: ${{ (inputs.mode || 'signed') == 'signed' }}
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          IOS_BUNDLE_ID: ${{ secrets.IOS_BUNDLE_ID }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          IOS_SIGNING_CERTIFICATE: ${{ secrets.IOS_SIGNING_CERTIFICATE }}
+        run: |
+          for v in IOS_TEAM_ID IOS_BUNDLE_ID IOS_PROVISIONING_PROFILE IOS_SIGNING_CERTIFICATE; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret: $v"
+              exit 2
+            fi
+          done
+
+      - name: Build IPA
+        if: ${{ (inputs.mode || 'signed') == 'signed' }}
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          IOS_BUNDLE_ID: ${{ secrets.IOS_BUNDLE_ID }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          IOS_SIGNING_CERTIFICATE: ${{ secrets.IOS_SIGNING_CERTIFICATE }}
+        run: bash scripts/release/ios/build-ios.sh
+
+      - name: Build (unsigned debug)
+        if: ${{ inputs.mode == 'unsigned-debug' }}
+        run: |
+          npm run build
+          npx cap sync ios || true
+          echo "Unsigned-debug build complete (no IPA produced)"
+
+      - name: Emit release manifest
+        run: |
+          mkdir -p generated
+          node -e "
+          const fs = require('fs'), crypto = require('crypto'), path = require('path');
+          const dir = 'build/ios/ipa';
+          const artifacts = [];
+          if (fs.existsSync(dir)) {
+            for (const f of fs.readdirSync(dir)) {
+              const p = path.join(dir, f);
+              if (fs.statSync(p).isFile()) {
+                const buf = fs.readFileSync(p);
+                artifacts.push({ name: f, sha256: crypto.createHash('sha256').update(buf).digest('hex'), bytes: buf.length });
+              }
+            }
+          }
+          const manifest = {
+            platform: 'ios',
+            mode: process.env.MODE || 'signed',
+            commit: (process.env.GITHUB_SHA || 'local').slice(0, 12),
+            generatedAt: new Date().toISOString(),
+            signingStatus: process.env.MODE === 'unsigned-debug' ? 'unsigned' : 'signed',
+            artifacts,
+          };
+          fs.writeFileSync('generated/release-ios-manifest.json', JSON.stringify(manifest, null, 2));
+          console.log(manifest);
+          "
+        env:
+          MODE: ${{ inputs.mode || 'signed' }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-ipa
+          path: |
+            build/ios/ipa/*.ipa
+            generated/release-ios-manifest.json
+          retention-days: 30
+          if-no-files-found: warn

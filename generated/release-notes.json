@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "range": "seed",
+  "fromTag": null,
+  "toTag": "HEAD",
+  "totalCommits": 0,
+  "byCategory": {},
+  "commits": [],
+  "_seed": "Replaced on first run of scripts/release/generate-release-notes.ts"
+}

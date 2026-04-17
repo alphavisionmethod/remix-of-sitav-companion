@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "commit": "",
+  "shortCommit": "",
+  "branch": "",
+  "tag": "",
+  "totalArtifacts": 0,
+  "totalBytes": 0,
+  "byPlatform": {},
+  "artifacts": [],
+  "_seed": "Replaced on first run of scripts/release/generate-build-artifact-manifest.ts"
+}

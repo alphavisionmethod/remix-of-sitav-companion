@@ -1,0 +1,124 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Android Release Pipeline
+# Builds + signs AAB via scripts/release/android/build-android.sh
+# ═══════════════════════════════════════════════════════════════
+name: Release · Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Build mode (signed | unsigned-debug)"
+        required: true
+        default: "signed"
+        type: choice
+        options: [signed, unsigned-debug]
+  push:
+    tags:
+      - "v*-android"
+      - "v*"
+
+concurrency:
+  group: release-android-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-android:
+    name: Build Android AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - run: npm ci
+
+      - name: Verify launch gate
+        env:
+          MODE: ${{ inputs.mode || 'signed' }}
+        run: |
+          if [ -f generated/ci-launch-gate-report.json ]; then
+            STATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/ci-launch-gate-report.json','utf-8')).launch_state || 'unknown')")
+            echo "Launch state: $STATE"
+            if [ "$STATE" = "blocked" ] && [ "$MODE" != "unsigned-debug" ]; then
+              echo "::error::Launch gate is blocked — refusing signed Android build"
+              exit 1
+            fi
+          fi
+
+      - name: Validate signing env (signed mode)
+        if: ${{ (inputs.mode || 'signed') == 'signed' }}
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ secrets.ANDROID_KEYSTORE_PATH }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+        run: |
+          for v in ANDROID_KEYSTORE_PATH ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD ANDROID_PACKAGE_NAME; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret: $v"
+              exit 2
+            fi
+          done
+
+      - name: Build AAB (signed)
+        if: ${{ (inputs.mode || 'signed') == 'signed' }}
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ secrets.ANDROID_KEYSTORE_PATH }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+        run: bash scripts/release/android/build-android.sh
+
+      - name: Build (unsigned debug)
+        if: ${{ inputs.mode == 'unsigned-debug' }}
+        run: |
+          npm run build
+          npx cap sync android || true
+          echo "Unsigned-debug build complete (no signed AAB produced)"
+
+      - name: Emit release manifest
+        env:
+          MODE: ${{ inputs.mode || 'signed' }}
+        run: |
+          mkdir -p generated
+          node -e "
+          const fs = require('fs'), crypto = require('crypto');
+          const aab = 'android/app/build/outputs/bundle/release/app-release.aab';
+          const artifacts = [];
+          if (fs.existsSync(aab)) {
+            const buf = fs.readFileSync(aab);
+            artifacts.push({ name: 'app-release.aab', sha256: crypto.createHash('sha256').update(buf).digest('hex'), bytes: buf.length });
+          }
+          const manifest = {
+            platform: 'android',
+            mode: process.env.MODE || 'signed',
+            commit: (process.env.GITHUB_SHA || 'local').slice(0, 12),
+            generatedAt: new Date().toISOString(),
+            signingStatus: process.env.MODE === 'unsigned-debug' ? 'unsigned' : 'signed',
+            artifacts,
+          };
+          fs.writeFileSync('generated/release-android-manifest.json', JSON.stringify(manifest, null, 2));
+          console.log(manifest);
+          "
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-aab
+          path: |
+            android/app/build/outputs/bundle/release/*.aab
+            generated/release-android-manifest.json
+          retention-days: 30
+          if-no-files-found: warn
