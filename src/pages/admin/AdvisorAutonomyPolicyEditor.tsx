@@ -1,3 +1,4 @@
+import { usePolicyDecision } from "@/hooks/use-policy-decision";
 import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ const DOMAINS = ["global", "revenue", "finance", "operations", "clients", "team"
 const LEVEL_LABELS = ["Observe Only", "Suggest", "Draft", "Auto-Low-Risk", "Auto-Medium", "Full Auto"];
 
 export default function AdvisorAutonomyPolicyEditor() {
+  const __policy = usePolicyDecision({ domain: "admin", riskClass: "R4", actor: "platform-admin" }); void __policy;
   const queryClient = useQueryClient();
   const policiesQuery = useQuery({ queryKey: ["admin-autonomy"], queryFn: () => BoardAPI.getAutonomy() });
   const policies = policiesQuery.data?.policies ?? [];

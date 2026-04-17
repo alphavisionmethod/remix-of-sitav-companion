@@ -1,3 +1,4 @@
+import { usePolicyDecision } from "@/hooks/use-policy-decision";
 import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { AdvisorActionQueue } from "@/components/admin/advisor-agents/AdvisorAct
 import { toast } from "sonner";
 
 export default function AdvisorAgentDashboard() {
+  const __policy = usePolicyDecision({ domain: "admin", riskClass: "R4", actor: "platform-admin" }); void __policy;
   const {
     agents, actions, isLoading, seedAgents, seedingAgents,
     toggleAgent, updateAutonomy, approveAction, rejectAction,

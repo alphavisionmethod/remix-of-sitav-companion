@@ -1,3 +1,4 @@
+import { usePolicyDecision } from "@/hooks/use-policy-decision";
 import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BoardAPI } from "@/lib/services/board-api-client";
 
 export default function AdvisorActionApprovalAdmin() {
+  const __policy = usePolicyDecision({ domain: "admin", riskClass: "R4", actor: "platform-admin" }); void __policy;
   const actionsQuery = useQuery({ queryKey: ["admin-actions"], queryFn: () => BoardAPI.listActions(100) });
   const toolsQuery = useQuery({ queryKey: ["admin-tools"], queryFn: () => BoardAPI.listToolExecutions(100) });
 
