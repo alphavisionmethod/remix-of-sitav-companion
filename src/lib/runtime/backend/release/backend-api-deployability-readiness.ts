@@ -138,6 +138,22 @@ export const BACKEND_API_DEPLOYABILITY_READINESS: ReadonlyArray<BackendApiReadin
       "src/lib/backend-topology/edge-function-policy-map.ts — every function has explicit rateLimit + idempotency + auditLog policy. All sideEffectClass=high functions declare strict rate-limit + required audit-log; webhooks declare required idempotency.",
     blocker: true,
   },
+  {
+    id: "backend.health-visibility",
+    title: "Per-function health/metrics visible in admin",
+    status: "ready",
+    evidence:
+      "src/lib/backend-topology/edge-function-health-source.ts (useEdgeFunctionHealth) + /admin/edge-functions/health (EFH01EdgeFunctionHealthCenter) covers all 85 functions with invocations/errorRate/p95/health-band, sourced from db-truth-introspect edge_function_metrics aggregator.",
+    blocker: true,
+  },
+  {
+    id: "backend.replay-paths",
+    title: "Failure/replay paths declared per orchestration & connector function",
+    status: "ready",
+    evidence:
+      "src/lib/backend-topology/edge-function-replay-map.ts declares replay kind + mechanism + on-disk evidence for every ORCHESTRATION_FUNCTION (12) and CONNECTOR_WEBHOOK_FUNCTION (11). CI gate 28 (check-edge-function-health-replay) enforces presence and webhook kind constraint.",
+    blocker: true,
+  },
 ];
 
 export interface BackendApiReadinessSummary {
