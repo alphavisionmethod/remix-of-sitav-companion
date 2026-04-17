@@ -163,7 +163,10 @@ export default function AdvisorBoardCatalog() {
                           {advisor.emoji}
                         </div>
                         <div>
-                          <CardTitle className="text-sm">{advisor.displayName}</CardTitle>
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-sm">{advisor.displayName}</CardTitle>
+                            <LaunchHonestyBadge honestyClass={honestyFor(advisor.id, honestyMap)} compact />
+                          </div>
                           <p className="text-[10px] text-muted-foreground">{advisor.role}</p>
                         </div>
                       </div>
