@@ -8,6 +8,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { emitAlert } from "../_shared/alert-emitter.ts";
 
 // In-memory kill-switch state (persisted to DB when available)
 let killSwitchActive = false;
@@ -81,6 +82,29 @@ serve(async (req) => {
     });
 
     console.log(`[PaymentKillSwitch] ${action} by ${auth.user.email}`);
+
+    // Phase 20.1.B — Real alert emission on kill-switch activation/deactivation
+    if (action === "activate") {
+      await emitAlert({
+        source: "kill-switch",
+        severity: "critical",
+        subsystem: "payments",
+        title: "Payment kill-switch ACTIVATED",
+        description: `All payment processing has been halted by ${auth.user.email ?? auth.user.id}.`,
+        fingerprint: "kill-switch:payments:active",
+        metadata: { actor: auth.user.id, activated_at: activatedAt },
+      });
+    } else if (action === "deactivate") {
+      await emitAlert({
+        source: "kill-switch",
+        severity: "high",
+        subsystem: "payments",
+        title: "Payment kill-switch DEACTIVATED",
+        description: `Payment processing resumed by ${auth.user.email ?? auth.user.id}.`,
+        fingerprint: `kill-switch:payments:deactivate:${Date.now()}`,
+        metadata: { actor: auth.user.id },
+      });
+    }
 
     return corsResponse({
       success: true,

@@ -21,7 +21,7 @@ import { useCountUpFormatted } from "@/hooks/useCountUp";
 import {
   Activity, Wifi, AlertTriangle, Cpu, Zap, Clock, Eye, BarChart3,
   TrendingUp, TrendingDown, Database, Radio, Shield, RefreshCw,
-  Server, CheckCircle,
+  Server, CheckCircle, GitBranch, Bell,
 } from "lucide-react";
 import type { ServiceReliabilityView } from "@/packages/contracts";
 import type { DriftDetection, VerificationOutcome } from "@/packages/reality-contracts";
@@ -33,6 +33,9 @@ import { LaunchTruthIndicator } from "@/components/admin-os/LaunchTruthIndicator
 import { RealityModeIndicator } from "@/components/admin-os/RealityModeIndicator";
 import { SystemStatusBar } from "@/components/admin-os/SystemStatusBar";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { TracesPanel } from "@/components/observability/TracesPanel";
+import { UptimePanel } from "@/components/observability/UptimePanel";
+import { AlertsLivePanel } from "@/components/observability/AlertsLivePanel";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
@@ -97,9 +100,12 @@ export default function ObservabilityPage() {
       <TrustRibbon />
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="bg-muted/30 border border-border/40 h-9 p-0.5">
+        <TabsList className="bg-muted/30 border border-border/40 h-9 p-0.5 flex-wrap">
           {[
             { value: "overview", label: "Service Reliability", icon: Server },
+            { value: "uptime", label: "Uptime", icon: Activity },
+            { value: "traces", label: "Traces", icon: GitBranch },
+            { value: "alerts", label: "Alerts", icon: Bell },
             { value: "slos", label: "SLO Dashboard", icon: Shield },
             { value: "connectors", label: "Connector Latency", icon: Wifi },
             { value: "events", label: "Event Stream", icon: Radio },
@@ -114,38 +120,57 @@ export default function ObservabilityPage() {
 
         <div className="mt-5">
           <TabsContent value="overview">
-            <div className="space-y-2">
-              {services.map((svc, i) => (
-                <motion.div key={svc.name} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
-                  className="rounded-xl border border-border bg-card/80 p-4"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className={cn("h-2.5 w-2.5 rounded-full", svc.uptime >= 99.95 ? "bg-trust-safe" : svc.uptime >= 99.9 ? "bg-accent" : "bg-destructive")} />
-                      <span className="text-xs font-semibold text-foreground">{svc.name}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <StatusBadge status={svc.status} size="xs" />
-                      <Badge variant="outline" className="text-[9px]">{svc.uptime}% uptime</Badge>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-4 gap-3">
-                    {[
-                      { label: "P50", value: `${svc.latencyP50}ms` },
-                      { label: "P99", value: `${svc.latencyP99}ms`, accent: svc.latencyP99 > 400 },
-                      { label: "Error Rate", value: `${(svc.errorRate * 100).toFixed(1)}%`, accent: svc.errorRate > 0.05 },
-                      { label: "Throughput", value: `${svc.throughput}/hr` },
-                    ].map(m => (
-                      <div key={m.label} className="text-center">
-                        <p className={cn("font-display text-sm font-bold", m.accent ? "text-accent" : "text-foreground")}>{m.value}</p>
-                        <p className="text-[9px] text-muted-foreground">{m.label}</p>
+            <div className="space-y-4">
+              <AlertsLivePanel />
+              <div className="space-y-2">
+                {services.map((svc, i) => (
+                  <motion.div key={svc.name} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
+                    className="rounded-xl border border-border bg-card/80 p-4"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={cn("h-2.5 w-2.5 rounded-full", svc.uptime >= 99.95 ? "bg-trust-safe" : svc.uptime >= 99.9 ? "bg-accent" : "bg-destructive")} />
+                        <span className="text-xs font-semibold text-foreground">{svc.name}</span>
                       </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+                      <div className="flex items-center gap-2">
+                        <StatusBadge status={svc.status} size="xs" />
+                        <Badge variant="outline" className="text-[9px]">{svc.uptime}% uptime</Badge>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-3">
+                      {[
+                        { label: "P50", value: `${svc.latencyP50}ms` },
+                        { label: "P99", value: `${svc.latencyP99}ms`, accent: svc.latencyP99 > 400 },
+                        { label: "Error Rate", value: `${(svc.errorRate * 100).toFixed(1)}%`, accent: svc.errorRate > 0.05 },
+                        { label: "Throughput", value: `${svc.throughput}/hr` },
+                      ].map(m => (
+                        <div key={m.label} className="text-center">
+                          <p className={cn("font-display text-sm font-bold", m.accent ? "text-accent" : "text-foreground")}>{m.value}</p>
+                          <p className="text-[9px] text-muted-foreground">{m.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </TabsContent>
+
+          {/* Phase 20.1.C — Real uptime data from uptime_heartbeats */}
+          <TabsContent value="uptime">
+            <UptimePanel />
+          </TabsContent>
+
+          {/* Phase 20.1.C — Real APM traces from trace_spans */}
+          <TabsContent value="traces">
+            <TracesPanel />
+          </TabsContent>
+
+          {/* Phase 20.1.C — Live alerts from public.alerts */}
+          <TabsContent value="alerts">
+            <AlertsLivePanel />
+          </TabsContent>
+
 
           {/* SLO Dashboard — powered by ObservabilityEngine */}
           <TabsContent value="slos">

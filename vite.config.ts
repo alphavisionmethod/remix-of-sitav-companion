@@ -4,6 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { execSync } from "child_process";
 import fs from "fs";
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 function healthJsonPlugin() {
   return {
@@ -67,7 +68,21 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger(), healthJsonPlugin(), publicHostRewritePlugin()].filter(Boolean),
+  plugins: [
+    react(),
+    mode === "development" && componentTagger(),
+    healthJsonPlugin(),
+    publicHostRewritePlugin(),
+    // Phase 20.1.D — Sentry sourcemap upload (gated on build secret)
+    process.env.SENTRY_AUTH_TOKEN ? sentryVitePlugin({
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      release: { name: process.env.VITE_APP_RELEASE || undefined },
+      sourcemaps: { assets: "./dist/**" },
+      disable: !process.env.SENTRY_AUTH_TOKEN,
+    }) : null,
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -77,7 +92,9 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: "es2020",
     cssCodeSplit: true,
-    sourcemap: false,
+    // Phase 20.1.D — emit hidden sourcemaps when uploading to Sentry,
+    // never bundle them into the public dist otherwise.
+    sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {

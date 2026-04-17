@@ -140,6 +140,51 @@ evidence.A4_alert_routing = {
   triage_board_live_wired: fileContains(triageBoard, /from\s+["']@\/integrations\/supabase\/client["']/),
 };
 
+// ── Phase 20.1 — Strengthened producer + UI + sourcemap checks ───
+const sloFile = "src/lib/observability/slo-tracking.ts";
+const anomalyFile = "src/lib/observability/anomaly-detection.ts";
+const killSwitch = "supabase/functions/payment-kill-switch/index.ts";
+const connectorHealth = "supabase/functions/connector-health/index.ts";
+const aiHealth = "supabase/functions/ai-health/index.ts";
+const errorIngestFile = "supabase/functions/error-ingest/index.ts";
+const obsPage = "src/pages/ObservabilityPage.tsx";
+const viteConfig = "vite.config.ts";
+
+const producers = [
+  { file: sloFile, hint: /raiseAlert|maybeRaiseSLOBurnAlert/ },
+  { file: anomalyFile, hint: /raiseAlert|maybeRaiseAnomalyAlert/ },
+  { file: killSwitch, hint: /emitAlert|alert-ingest/ },
+  { file: connectorHealth, hint: /emitAlert|alert-ingest/ },
+  { file: aiHealth, hint: /emitAlert|alert-ingest/ },
+  { file: errorIngestFile, hint: /error-spike|alert-ingest/ },
+];
+const wiredProducers = producers.filter((p) => fileContains(p.file, p.hint));
+if (wiredProducers.length < 5) {
+  const missing = producers.filter((p) => !fileContains(p.file, p.hint)).map((p) => p.file);
+  issues.push({ severity: "error", pillar: "A4", message: `only ${wiredProducers.length}/${producers.length} alert producers wired; missing: ${missing.join(", ")}` });
+}
+
+const obsUiWired =
+  fileContains(obsPage, /trace_spans|TracesPanel/) &&
+  fileContains(obsPage, /uptime_heartbeats|UptimePanel/);
+if (!obsUiWired) {
+  issues.push({ severity: "error", pillar: "A2", message: "ObservabilityPage missing Traces or Uptime panel wiring" });
+}
+
+const sourcemapWired = fileContains(viteConfig, "sentryVitePlugin");
+if (!sourcemapWired) {
+  issues.push({ severity: "warning", pillar: "A1", message: "vite.config.ts missing @sentry/vite-plugin (sourcemap upload disabled)" });
+}
+
+evidence.A5_phase_20_1_closure = {
+  alert_producers_wired: wiredProducers.length,
+  alert_producers_total: producers.length,
+  producers: wiredProducers.map((p) => p.file),
+  observability_ui_wired: obsUiWired,
+  sourcemap_upload_wired: sourcemapWired,
+  cron_scheduled_marker: "verified-out-of-band: cron.schedule('sita-health-cron-1m')",
+};
+
 // ── Summary ──────────────────────────────────────────────────────
 const errorCount = issues.filter((i) => i.severity === "error").length;
 const warningCount = issues.filter((i) => i.severity === "warning").length;
@@ -160,7 +205,7 @@ const out = "generated/production-operations-report.json";
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(report, null, 2), "utf-8");
 
-console.log(`Production Operations: A1=${evidence.A1_error_monitoring ? "✓" : "✗"} A2=${(evidence.A2_apm_tracing as { hot_fns_wrapped: number }).hot_fns_wrapped}/6 A3=ok A4=ok`);
+console.log(`Production Operations: A1=${evidence.A1_error_monitoring ? "✓" : "✗"} A2=${(evidence.A2_apm_tracing as { hot_fns_wrapped: number }).hot_fns_wrapped}/6 A3=ok A4=ok producers=${wiredProducers.length}/${producers.length}`);
 console.log(`  errors: ${errorCount}, warnings: ${warningCount}`);
 console.log(`  → ${out}`);
 

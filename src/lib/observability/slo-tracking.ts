@@ -192,3 +192,48 @@ export function getErrorBudgetAlertSeverity(percentRemaining: number): AlertSeve
   if (percentRemaining <= 75) return "info";
   return null;
 }
+
+// ── Real alert emission (Phase 20.1.B) ─────────────────────
+// When an SLO crosses a burn-rate threshold, raise a real alert
+// into the central `alerts` table via the alert-ingest edge fn.
+// Best-effort: never throws, never blocks SLO computation.
+
+import { raiseAlert } from "@/lib/services/alerting/alert-client";
+
+const RAISED_RECENTLY = new Map<string, number>();
+const REPEAT_WINDOW_MS = 10 * 60_000; // 10min de-dup at producer
+
+/** Raise an SLO-burn alert if this status warrants one and we haven't recently. */
+export async function maybeRaiseSLOBurnAlert(status: SLOStatus): Promise<void> {
+  const sev = getErrorBudgetAlertSeverity(status.errorBudgetPercent);
+  // Only escalate to real alerts at warning+ AND when burn rate is materially elevated
+  if (!sev || sev === "info") return;
+  if (status.burnRate < 0.5) return;
+
+  const fingerprint = `slo-burn:${status.slo.id}`;
+  const last = RAISED_RECENTLY.get(fingerprint) ?? 0;
+  if (Date.now() - last < REPEAT_WINDOW_MS) return;
+  RAISED_RECENTLY.set(fingerprint, Date.now());
+
+  const alertSeverity = sev === "critical" ? "critical" : "high";
+  try {
+    await raiseAlert({
+      source: "slo-burn",
+      severity: alertSeverity,
+      subsystem: status.slo.service,
+      title: `SLO at risk: ${status.slo.name}`,
+      description: `${status.slo.name} burning error budget. ${status.errorBudgetPercent.toFixed(1)}% remaining (burn rate ${status.burnRate.toFixed(2)}x).`,
+      fingerprint,
+      metadata: {
+        slo_id: status.slo.id,
+        current_value: status.currentValue,
+        target: status.slo.target,
+        budget_remaining_pct: status.errorBudgetPercent,
+        burn_rate: status.burnRate,
+        trend: status.trend,
+      },
+    });
+  } catch {
+    // best-effort
+  }
+}

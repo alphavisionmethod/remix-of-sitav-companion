@@ -173,6 +173,44 @@ Deno.serve(async (req) => {
     }
   }
 
+  // Phase 20.1.B — Spike detection: if any fingerprint has crossed
+  // 10 occurrences in the last 5 minutes, raise an error-spike alert.
+  try {
+    const fingerprints = Array.from(new Set(errors.map((e) => fingerprintFor(e))));
+    for (const fp of fingerprints) {
+      const { data: spikeRow } = await admin
+        .from("error_events")
+        .select("id, count, message, route, severity")
+        .eq("fingerprint", fp)
+        .gte("last_seen_at", since)
+        .maybeSingle();
+      if (spikeRow && (spikeRow.count as number) >= 10) {
+        await admin.functions.invoke("alert-ingest", {
+          body: {
+            alerts: [
+              {
+                source: "error-spike",
+                severity: "high",
+                subsystem: "frontend",
+                fingerprint: `error-spike:${fp}`,
+                title: `Error spike: ${(spikeRow.count as number)}× in 5min`,
+                description: String(spikeRow.message ?? "").slice(0, 240),
+                metadata: {
+                  fingerprint: fp,
+                  count: spikeRow.count,
+                  route: spikeRow.route,
+                  severity: spikeRow.severity,
+                },
+              },
+            ],
+          },
+        });
+      }
+    }
+  } catch {
+    // best-effort
+  }
+
   return new Response(JSON.stringify({ ok: true, inserted, merged, ids }), {
     status: 200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },

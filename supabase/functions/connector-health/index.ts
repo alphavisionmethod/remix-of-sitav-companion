@@ -8,6 +8,7 @@ import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cor
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { emitAlert } from "../_shared/alert-emitter.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 const logger = new EdgeLogger("connector-health");
@@ -71,6 +72,31 @@ Deno.serve(async (req) => {
     const down = results.filter((r: any) => r.status === "down").length;
 
     logger.info("Connector health results", { up, degraded, down });
+
+    // Phase 20.1.B — Raise alerts for any down or degraded connectors
+    for (const c of results) {
+      if (c.status === "down") {
+        await emitAlert({
+          source: "connector",
+          severity: "high",
+          subsystem: c.service ?? "connector",
+          title: `Connector down: ${c.service ?? c.id}`,
+          description: `Connector ${c.service ?? c.id} is reporting status=down.`,
+          fingerprint: `connector:${c.id}:down`,
+          metadata: { connector_id: c.id, service: c.service, last_sync: c.last_sync },
+        });
+      } else if (c.status === "degraded") {
+        await emitAlert({
+          source: "connector",
+          severity: "medium",
+          subsystem: c.service ?? "connector",
+          title: `Connector degraded: ${c.service ?? c.id}`,
+          description: `Connector ${c.service ?? c.id} has not synced in ${c.stale_hours}h.`,
+          fingerprint: `connector:${c.id}:degraded`,
+          metadata: { connector_id: c.id, service: c.service, stale_hours: c.stale_hours },
+        });
+      }
+    }
 
     return corsResponse({
       timestamp: new Date().toISOString(),
