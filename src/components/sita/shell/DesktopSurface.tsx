@@ -199,6 +199,14 @@ export function DesktopSurface({
   const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  // Allow other shell surfaces (Dock, Launcher, keyboard shortcuts) to open the
+  // Widget Gallery via a window-level event. Single source of truth for "Widgets".
+  useEffect(() => {
+    const handler = () => setPickerOpen(true);
+    window.addEventListener("sita-open-widget-picker", handler);
+    return () => window.removeEventListener("sita-open-widget-picker", handler);
+  }, []);
+
   // Legacy window manager
   const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
@@ -257,17 +265,22 @@ export function DesktopSurface({
           </DraggableWidget>
         ))}
 
-        {/* Add Widget FAB */}
+        {/* Add Widget FAB — labeled "Widgets" so the affordance is unmistakable */}
         {!hasAnyWindows && (
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
             onClick={() => setPickerOpen(true)}
-            className="fixed bottom-24 left-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.05] backdrop-blur-xl text-white/40 hover:text-white/80 hover:bg-white/[0.1] transition-all shadow-lg"
-            title="Edit Widgets"
+            className="group fixed bottom-24 left-6 z-20 flex items-center gap-2 h-10 pl-2.5 pr-3.5 rounded-full border border-white/[0.12] bg-white/[0.06] backdrop-blur-xl text-white/60 hover:text-white hover:bg-white/[0.12] hover:border-white/[0.22] transition-all shadow-lg"
+            title="Widgets — add or remove desktop widgets"
+            aria-label="Open widget gallery to add or remove desktop widgets"
+            data-testid="desktop-add-widget-fab"
           >
-            <Plus className="h-5 w-5" />
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.08] group-hover:bg-white/[0.14] transition-colors">
+              <Plus className="h-4 w-4" />
+            </span>
+            <span className="text-[12px] font-medium tracking-wide">Widgets</span>
           </motion.button>
         )}
       </div>

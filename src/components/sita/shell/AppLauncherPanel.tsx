@@ -10,7 +10,7 @@ import {
   Search, X, Power, Globe, MessageSquare, Briefcase,
   DollarSign, Music, Settings, Wrench, Home, Shield,
   BookOpen, Gamepad2, FolderOpen, Cpu, Pin, PinOff,
-  Lock, Download, ChevronRight, Sparkles, Star,
+  Lock, Download, ChevronRight, Sparkles, Star, LayoutDashboard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
@@ -372,7 +372,32 @@ export function AppLauncherPanel({ open, onClose, onLaunchApp }: AppLauncherPane
             {/* ── Right Panel: Pinned → Recent → Quick Actions ── */}
             <div className="flex-1 flex flex-col min-w-0">
               <div className="flex-1 overflow-y-auto px-3 pb-2">
-                {/* Pinned Section */}
+                {/* Desktop Widgets shortcut — opens the Widget Gallery */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    SoundEngine.click();
+                    window.dispatchEvent(new CustomEvent("sita-open-widget-picker"));
+                    onClose();
+                  }}
+                  className="mt-3 w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl bg-[hsl(210_80%_55%/0.10)] border border-[hsl(210_80%_55%/0.18)] hover:bg-[hsl(210_80%_55%/0.18)] hover:border-[hsl(210_80%_55%/0.28)] transition-all duration-150 group"
+                  data-testid="launcher-widgets-shortcut"
+                  aria-label="Open Desktop Widget Gallery — add or remove widgets"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(210_80%_55%)] to-[hsl(265_60%_55%)] flex items-center justify-center text-[hsl(0_0%_100%)] shadow-sm">
+                    <LayoutDashboard className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="text-[12px] font-medium text-[hsl(0_0%_100%/0.9)] truncate">
+                      Widgets
+                    </div>
+                    <div className="text-[10px] text-[hsl(0_0%_100%/0.5)] truncate">
+                      Add or remove desktop widgets
+                    </div>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[hsl(0_0%_100%/0.35)] group-hover:text-[hsl(0_0%_100%/0.7)] transition-colors flex-shrink-0" />
+                </button>
+
                 {viewModel.pinnedSection.apps.length > 0 && !query.trim() && (
                   <div className="pt-3 pb-2">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(0_0%_100%/0.35)] px-1">

@@ -9,7 +9,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, LayoutDashboard } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import { useAppSurfacing } from "@/hooks/useAppSurfacing";
@@ -462,8 +462,42 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             })}
           </AnimatePresence>
 
-          {/* ── Separator → Launcher ── */}
+          {/* ── Separator → Widgets + Launcher ── */}
           <DockSeparator />
+
+          {/* ── Widgets Button — opens the Desktop Widget Gallery ── */}
+          <div className="relative flex flex-col items-center">
+            <AnimatePresence>
+              {tooltip === "__widgets" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 2, scale: 0.98 }}
+                  transition={{ duration: 0.12 }}
+                  className="absolute -top-9 whitespace-nowrap rounded-lg bg-[hsl(0_0%_0%/0.75)] backdrop-blur-md px-2.5 py-1 text-[10px] font-medium text-[hsl(0_0%_100%/0.95)] shadow-lg z-10 pointer-events-none"
+                >
+                  Widgets — add or remove
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <motion.button
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.88, y: 2 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              onClick={() => {
+                SoundEngine.click();
+                window.dispatchEvent(new CustomEvent("sita-open-widget-picker"));
+              }}
+              onMouseEnter={() => setTooltip("__widgets")}
+              onMouseLeave={() => setTooltip(null)}
+              className="w-11 h-11 rounded-xl bg-[hsl(0_0%_100%/0.06)] border border-[hsl(0_0%_100%/0.10)] flex items-center justify-center text-[hsl(0_0%_100%/0.5)] hover:text-[hsl(0_0%_100%/0.9)] hover:bg-[hsl(0_0%_100%/0.14)] transition-all duration-150"
+              aria-label="Open Widget Gallery — add or remove desktop widgets"
+              data-testid="dock-widgets-button"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+            </motion.button>
+            <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
+          </div>
 
           {/* ── + Launcher Button ── */}
           <div className="relative flex flex-col items-center">
