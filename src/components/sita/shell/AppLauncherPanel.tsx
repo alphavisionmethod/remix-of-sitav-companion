@@ -536,50 +536,52 @@ function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunc
   const handleDragEnd = useCallback(() => setIsDragging(false), []);
 
   const gridButton = (
-    <motion.button
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: Math.min(index * 0.02, 0.3), duration: 0.15 }}
-      whileHover={{ scale: 1.06, y: -2 }}
-      whileTap={{ scale: 0.92 }}
-      onClick={() => onClick(item)}
-      onContextMenu={handleContextMenu}
+    <div
       draggable={isInstalled}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      className={cn(
-        "flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-[hsl(0_0%_100%/0.06)] transition-all min-h-[44px] min-w-[44px]",
-        isLocked && "opacity-40",
-        isDragging && "opacity-40 scale-95",
-        isInstalled && "cursor-grab active:cursor-grabbing"
-      )}
-      aria-label={`${item.app.name}${item.cta !== "open" ? `, ${item.cta}` : ""}${isInstalled ? ", drag to dock to pin, right-click for options" : ""}`}
+      className={cn(isDragging && "opacity-40 scale-95", isInstalled && "cursor-grab active:cursor-grabbing")}
     >
-      <div className="relative">
-        <div className={cn(
-          "w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md",
-          item.app.iconBg,
-          item.firstLaunch && "ring-2 ring-[hsl(210_80%_55%/0.4)] animate-pulse"
-        )}>
-          {item.app.icon}
-          {isLocked && (
-            <div className="absolute inset-0 rounded-2xl bg-[hsl(0_0%_0%/0.4)] flex items-center justify-center">
-              <Lock className="w-4 h-4 text-[hsl(0_0%_100%/0.6)]" />
-            </div>
+      <motion.button
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: Math.min(index * 0.02, 0.3), duration: 0.15 }}
+        whileHover={{ scale: 1.06, y: -2 }}
+        whileTap={{ scale: 0.92 }}
+        onClick={() => onClick(item)}
+        onContextMenu={handleContextMenu}
+        className={cn(
+          "flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-[hsl(0_0%_100%/0.06)] transition-all min-h-[44px] min-w-[44px]",
+          isLocked && "opacity-40",
+        )}
+        aria-label={`${item.app.name}${item.cta !== "open" ? `, ${item.cta}` : ""}${isInstalled ? ", drag to dock to pin, right-click for options" : ""}`}
+      >
+        <div className="relative">
+          <div className={cn(
+            "w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md",
+            item.app.iconBg,
+            item.firstLaunch && "ring-2 ring-[hsl(210_80%_55%/0.4)] animate-pulse"
+          )}>
+            {item.app.icon}
+            {isLocked && (
+              <div className="absolute inset-0 rounded-2xl bg-[hsl(0_0%_0%/0.4)] flex items-center justify-center">
+                <Lock className="w-4 h-4 text-[hsl(0_0%_100%/0.6)]" />
+              </div>
+            )}
+          </div>
+          <AppBadge item={item} />
+          {item.isPinned && (
+            <span className="absolute -top-1 -left-1 w-3.5 h-3.5 rounded-full bg-[hsl(45_90%_55%/0.9)] flex items-center justify-center shadow-sm" title="Pinned to dock">
+              <Pin className="w-2 h-2 text-[hsl(0_0%_10%)]" />
+            </span>
           )}
         </div>
-        <AppBadge item={item} />
-        {item.isPinned && (
-          <span className="absolute -top-1 -left-1 w-3.5 h-3.5 rounded-full bg-[hsl(45_90%_55%/0.9)] flex items-center justify-center shadow-sm" title="Pinned to dock">
-            <Pin className="w-2 h-2 text-[hsl(0_0%_10%)]" />
-          </span>
-        )}
-      </div>
-      <span className="text-[10px] text-[hsl(0_0%_100%/0.65)] truncate w-full text-center">
-        {item.app.name}
-      </span>
-      {item.cta !== "open" && <CTABadge cta={item.cta} />}
-    </motion.button>
+        <span className="text-[10px] text-[hsl(0_0%_100%/0.65)] truncate w-full text-center">
+          {item.app.name}
+        </span>
+        {item.cta !== "open" && <CTABadge cta={item.cta} />}
+      </motion.button>
+    </div>
   );
 
   // Floating context menu (rendered into the document via fixed positioning)
