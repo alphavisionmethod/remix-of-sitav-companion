@@ -105,6 +105,7 @@ const validators: Record<string, string[]> = {
     "scripts/runtime/edge-functions/check-edge-function-topology.ts",
     "scripts/runtime/edge-functions/check-edge-function-category-coverage.ts",
     "scripts/runtime/edge-functions/check-edge-function-auth-map.ts",
+    "scripts/architecture/checks/check-service-layer-boundaries.ts",
   ],
 
   // ── DB ──
