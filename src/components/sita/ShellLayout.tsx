@@ -139,6 +139,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("sita-open-app-store", handler);
   }, [doLaunchApp]);
 
+  // Generic open-app launcher (used by SystemMenuBar items like New Window, Help, Settings)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const id = (e as CustomEvent).detail?.appId;
+      if (id) doLaunchApp(id);
+    };
+    window.addEventListener("sita-open-app", handler);
+    return () => window.removeEventListener("sita-open-app", handler);
+  }, [doLaunchApp]);
+
+  // Restore persisted shell zoom on mount
+  useEffect(() => { initZoomFromStorage(); }, []);
+
   // Hooks
   useAdaptiveInterface();
   useZeroLatency();
