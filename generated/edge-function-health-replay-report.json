@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-04-17T00:34:43.307Z",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "coverage": {
+    "requiredCount": 23,
+    "coveredCount": 23,
+    "missing": [],
+    "invalidNotApplicable": [],
+    "byKind": {
+      "job-dead-letter": 8,
+      "command-replay": 4,
+      "workflow-replay": 4,
+      "webhook-redelivery": 2,
+      "idempotent-retry": 13,
+      "not-applicable": 0
+    },
+    "ok": true
+  },
+  "issues": []
+}
