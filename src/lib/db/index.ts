@@ -13,3 +13,4 @@ export * from "./db-runtime-consequence-map";
 export * from "./db-dependency-map";
 export * from "./db-audit-registry";
 export * from "./db-health-engine";
+export * from "./table-writer-reader-map";

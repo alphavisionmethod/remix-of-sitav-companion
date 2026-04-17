@@ -8,6 +8,7 @@ import { DB_SCHEMA_REGISTRY } from "@/lib/db/schema-registry";
 import { RLS_POLICY_REGISTRY, RLS_STATS } from "@/lib/db/rls-policy-registry";
 import { TENANCY_BOUNDARY_MAP, TENANCY_STATS } from "@/lib/db/tenancy-boundary-map";
 import { MIGRATION_REGISTRY, MIGRATION_STATS } from "@/lib/db/migration-registry";
+import { TABLE_WRITER_READER_MAP, tableWriterReaderStats } from "@/lib/db/table-writer-reader-map";
 
 export default function DbTruthExplorer() {
   const [search, setSearch] = useState("");
@@ -57,10 +58,11 @@ export default function DbTruthExplorer() {
       <Input placeholder="Search tables, migrations, domains..." value={search} onChange={e => setSearch(e.target.value)} />
 
       <Tabs defaultValue="schema">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="schema">Schema ({filteredTables.length})</TabsTrigger>
           <TabsTrigger value="rls">RLS Coverage</TabsTrigger>
           <TabsTrigger value="tenancy">Tenancy</TabsTrigger>
+          <TabsTrigger value="writers">Writers/Readers</TabsTrigger>
           <TabsTrigger value="migrations">Migrations ({filteredMigrations.length})</TabsTrigger>
           <TabsTrigger value="drift">Drift Radar ({driftRows.length})</TabsTrigger>
         </TabsList>
@@ -112,6 +114,49 @@ export default function DbTruthExplorer() {
                 </div>
               ))}
             </div>
+          </CardContent></Card>
+        </TabsContent>
+
+        <TabsContent value="writers">
+          <Card><CardHeader><CardTitle>Table Writers / Readers (Phase 18)</CardTitle></CardHeader><CardContent className="p-0">
+            {(() => {
+              const stats = tableWriterReaderStats();
+              const rows = Object.values(TABLE_WRITER_READER_MAP)
+                .filter((e) => !search || e.table.includes(search.toLowerCase()) || e.domain.includes(search.toLowerCase()))
+                .sort((a, b) => (b.crossDomainWriters.length - a.crossDomainWriters.length) || a.table.localeCompare(b.table));
+              return (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4">
+                    <div className="p-3 border rounded"><div className="text-xs text-muted-foreground">Tables w/ writers</div><div className="text-xl font-bold">{stats.tablesWithWriters}</div></div>
+                    <div className="p-3 border rounded"><div className="text-xs text-muted-foreground">Tables w/ readers</div><div className="text-xl font-bold">{stats.tablesWithReaders}</div></div>
+                    <div className="p-3 border rounded"><div className="text-xs text-muted-foreground">No declared I/O</div><div className="text-xl font-bold">{stats.tablesWithoutAnyIO}</div></div>
+                    <div className="p-3 border rounded"><div className="text-xs text-muted-foreground">Cross-domain writers</div><div className="text-xl font-bold">{stats.crossDomainViolations}</div></div>
+                  </div>
+                  <ScrollArea className="h-[520px]">
+                    <table className="w-full text-sm">
+                      <thead className="sticky top-0 bg-background border-b">
+                        <tr className="text-left"><th className="p-2">Table</th><th className="p-2">Owner</th><th className="p-2">Writers</th><th className="p-2">Readers</th><th className="p-2">Cross-Domain</th></tr>
+                      </thead>
+                      <tbody>
+                        {rows.map((e) => (
+                          <tr key={e.table} className="border-b hover:bg-muted/50 align-top">
+                            <td className="p-2 font-mono text-xs">{e.table}</td>
+                            <td className="p-2"><Badge variant="outline">{e.ownerTeam}</Badge></td>
+                            <td className="p-2 text-xs">{e.writers.length === 0 ? <span className="text-muted-foreground">—</span> : e.writers.map((w) => (
+                              <Badge key={w} variant={e.crossDomainWriters.includes(w) ? "destructive" : "secondary"} className="mr-1 mb-1 font-mono text-[10px]">{w}</Badge>
+                            ))}</td>
+                            <td className="p-2 text-xs">{e.readers.length === 0 ? <span className="text-muted-foreground">—</span> : e.readers.slice(0, 4).map((r) => (
+                              <Badge key={r} variant="outline" className="mr-1 mb-1 font-mono text-[10px]">{r}</Badge>
+                            ))}{e.readers.length > 4 ? <span className="text-muted-foreground">+{e.readers.length - 4}</span> : null}</td>
+                            <td className="p-2">{e.crossDomainWriters.length > 0 ? <Badge variant="destructive">{e.crossDomainWriters.length}</Badge> : <Badge variant="outline">0</Badge>}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </ScrollArea>
+                </>
+              );
+            })()}
           </CardContent></Card>
         </TabsContent>
 

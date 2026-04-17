@@ -19,7 +19,8 @@ export type CIGatePhase =
   | "phase-14-desktop-deployability"
   | "phase-15-appliance-deployability"
   | "phase-16-backend-api-deployability"
-  | "phase-17-edge-function-health-replay";
+  | "phase-17-edge-function-health-replay"
+  | "phase-18-db-reality";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 

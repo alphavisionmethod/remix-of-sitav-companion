@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-17T00:34:49.327Z",
-  "gateCount": 28,
+  "generatedAt": "2026-04-17T00:44:40.354Z",
+  "gateCount": 29,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -17,10 +17,11 @@
     "phase-14-desktop-deployability": 1,
     "phase-15-appliance-deployability": 1,
     "phase-16-backend-api-deployability": 1,
-    "phase-17-edge-function-health-replay": 1
+    "phase-17-edge-function-health-replay": 1,
+    "phase-18-db-reality": 1
   },
   "bySeverity": {
-    "blocker": 27,
+    "blocker": 28,
     "warning": 1
   },
   "registry": [
@@ -291,11 +292,21 @@
       "severity": "blocker",
       "description": "Every ORCHESTRATION_FUNCTION + CONNECTOR_WEBHOOK_FUNCTION declares a real, code-backed failure/replay path. Health adapter + admin dashboard wired and observable.",
       "producesArtifact": "generated/edge-function-health-replay-report.json"
+    },
+    {
+      "id": "db-reality",
+      "phase": "phase-18-db-reality",
+      "title": "Database / migration reality (17-item DB Reality Checklist)",
+      "script": "scripts/architecture/checks/check-db-reality.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Every table has owner/writers/readers/tenancy/sensitivity. Every active edge function declares table I/O. Cross-domain writers blocked. Backup manifest fresh and restore drill green.",
+      "producesArtifact": "generated/db-reality-report.json"
     }
   ],
   "integrity": {
-    "checkedAt": "2026-04-17T00:34:49.328Z",
-    "gateCount": 28,
+    "checkedAt": "2026-04-17T00:44:40.354Z",
+    "gateCount": 29,
     "issues": [],
     "errorCount": 0,
     "warningCount": 0,

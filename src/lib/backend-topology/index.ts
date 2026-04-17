@@ -16,3 +16,4 @@ export * from "./frontend-action-api-map";
 export * from "./edge-function-policy-map";
 export * from "./edge-function-replay-map";
 export * from "./edge-function-health-source";
+export * from "./edge-function-table-io-map";
