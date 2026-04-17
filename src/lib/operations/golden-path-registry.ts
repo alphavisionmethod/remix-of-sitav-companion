@@ -60,7 +60,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-009"],
         screenComponentRef: "src/pages/LandingPage.tsx",
-        edgeFunctionRefs: [],
+        edgeFunctionRefs: ["user-bff-gateway"],
         serviceRefs: ["edge-device-runtime", "web-surface"],
         tableRefs: [],
         policyRefs: [],
@@ -251,7 +251,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["api-gateway", "audit-ledger"],
         tableRefs: ["admin_action_audit"],
-        policyRefs: [],
+        policyRefs: ["profiles.user_self_access"],
       },
       {
         stepId: "restore-apply",
@@ -345,7 +345,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         blockingKillSwitches: [],
         recoveryRunbookRefs: ["RB-016"],
         screenComponentRef: "src/pages/LandingPage.tsx",
-        edgeFunctionRefs: [],
+        edgeFunctionRefs: ["user-bff-gateway"],
         serviceRefs: ["auth-service"],
         tableRefs: ["onboarding_sessions"],
         policyRefs: [],
@@ -420,7 +420,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["user-bff-gateway"],
         serviceRefs: ["connector-control-plane", "api-gateway"],
         tableRefs: [],
-        policyRefs: [],
+        policyRefs: ["crm_companies.user_self_access"],
       },
       {
         stepId: "oauth-handshake",
@@ -511,7 +511,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["connector-control-plane", "audit-ledger"],
         tableRefs: ["admin_action_audit"],
-        policyRefs: [],
+        policyRefs: ["connector_tokens.user_self_access"],
       },
       {
         stepId: "scheduled-sync",
@@ -589,7 +589,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["business-advisor-intelligence"],
         serviceRefs: ["business-os", "advisor-registry"],
         tableRefs: ["crm_companies", "advisor_action_queue"],
-        policyRefs: [],
+        policyRefs: ["crm_companies.user_self_access"],
       },
       {
         stepId: "advisor-recommend",
@@ -680,7 +680,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["business-board-api", "user-bff-gateway"],
         serviceRefs: ["approval-service", "audit-ledger"],
         tableRefs: ["ai_workforce_approval_queue"],
-        policyRefs: [],
+        policyRefs: ["approval_decisions.user_self_access"],
       },
       {
         stepId: "approve-item",
@@ -771,7 +771,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["user-bff-gateway"],
         serviceRefs: ["audit-ledger", "verification-engine"],
         tableRefs: ["ai_inference_receipts"],
-        policyRefs: [],
+        policyRefs: ["proof_receipts.user_self_access"],
       },
       {
         stepId: "verify-chain",
@@ -843,7 +843,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["admin-service", "workflow-engine"],
         tableRefs: [],
-        policyRefs: [],
+        policyRefs: ["workflow_runs.user_self_access"],
       },
       {
         stepId: "replay-from-checkpoint",
@@ -921,7 +921,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: [],
         serviceRefs: ["mobile-surface", "notification-service"],
         tableRefs: [],
-        policyRefs: [],
+        policyRefs: ["approval_decisions.user_self_access"],
       },
       {
         stepId: "approve-mobile",
@@ -998,8 +998,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         screenComponentRef: "src/pages/LandingPage.tsx",
         edgeFunctionRefs: ["communications-api"],
         serviceRefs: ["notification-service"],
-        tableRefs: [],
-        policyRefs: [],
+        tableRefs: ["push_subscriptions"],
+        policyRefs: ["push_subscriptions.user_self_access"],
       },
       {
         stepId: "open-deep-link",
@@ -1071,7 +1071,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["admin-service", "audit-ledger"],
         tableRefs: ["admin_action_audit", "admin_action_confirmations"],
-        policyRefs: [],
+        policyRefs: ["kill_switches.admin_only_write"],
       },
       {
         stepId: "verify-impact",
@@ -1162,7 +1162,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["admin-service", "verification-engine"],
         tableRefs: [],
-        policyRefs: [],
+        policyRefs: ["launch_readiness_runs.admin_only_write"],
       },
       {
         stepId: "export-report",
@@ -1234,7 +1234,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         edgeFunctionRefs: ["admin-bff-gateway"],
         serviceRefs: ["admin-service", "self-healing-engine"],
         tableRefs: [],
-        policyRefs: [],
+        policyRefs: ["admin_action_audit.admin_only_write"],
       },
       {
         stepId: "rollback",
