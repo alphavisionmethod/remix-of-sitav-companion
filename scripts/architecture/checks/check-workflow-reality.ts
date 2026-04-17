@@ -144,6 +144,16 @@ const report = {
     repairActionsComplete: repairActionsOk,
     stuckDetectorWired: stuckOk,
   },
+  bypassScan: {
+    scannedFiles: bypassFiles.length,
+    allowedRunners: Array.from(BYPASS_ALLOWED),
+    violations: bypassViolations.length,
+    violatingFiles: bypassViolations,
+  },
+  crons: [
+    "sita-scheduler-dispatch-1m",
+    "sita-workflow-stuck-detector-5m",
+  ],
   errors: vc.errors,
   warnings: vc.warnings,
   ok: vc.errors.length === 0,
@@ -151,6 +161,6 @@ const report = {
 fs.mkdirSync("generated", { recursive: true });
 fs.writeFileSync("generated/workflow-reality-report.json", JSON.stringify(report, null, 2));
 
-console.log(`  🔁 Workflow reality: ${REQUIRED_TABLES.length} tables, ${REQUIRED_FNS.length} fns, admin=${adminWired}, ks-exec=${executeKsOk}, ks-disp=${dispatchKsOk}, repair=${repairActionsOk}, stuck=${stuckOk}`);
+console.log(`  🔁 Workflow reality: ${REQUIRED_TABLES.length} tables, ${REQUIRED_FNS.length} fns, admin=${adminWired}, ks-exec=${executeKsOk}, ks-disp=${dispatchKsOk}, repair=${repairActionsOk}, stuck=${stuckOk}, bypass=${bypassViolations.length}`);
 vc.report("check-workflow-reality");
 vc.exitIfErrors();
