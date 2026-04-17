@@ -361,6 +361,18 @@ serve(async (req) => {
 
     const { agent_id, action, use_ai } = parsed.data;
 
+    // Phase 19.C — Unified policy gate (R3 system orchestration)
+    const policyDecision = resolveUnifiedPolicy({
+      actor: "automation",
+      domain: "system",
+      riskClass: "R3",
+      deviceTrust: 3,
+      hasJustification: true,
+    });
+    if (!policyDecision.allowed) {
+      return negativeReceiptResponse(policyDecision, { fn: "agent-executor", agent_id, action });
+    }
+
     // ── Gather diagnostic data ──
     const handler = AGENT_HANDLERS[agent_id];
     let diagnosticData: Record<string, unknown>;
