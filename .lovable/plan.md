@@ -1,93 +1,87 @@
 
 
-The user wants me to re-verify the audit document is complete. Let me do a fresh sweep to confirm nothing is missing from `generated/FULL_ISSUES_AND_FIXES.md` v2.0.
+The user wants ISS-020 (`as any` usage in pages) fully resolved — replace all page-level `as any` casts with proper types so it can be marked DONE in the audit doc.
 
-I'll check:
-1. Current document coverage vs live state
-2. Any new gaps introduced since last write
-3. Anything I missed in prior audit (cron jobs, edge function logs, secret state, etc.)
+Let me first scope the actual surface so the plan is accurate.
+<lov-tool-use id="toolu_vrtx_01UuDsBFX44AdcReKs4ygXRZ" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && grep -rEn \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"---FILES---\\\" && grep -rlE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l\", \"user_facing_description\": \"Counting remaining `as any` usages in pages\"}">
+</lov-tool-use>
 
-From the edge function logs in context: scheduler-dispatch, webhook-process, ai-health, health-cron, workflow-stuck-detector, connector-token-refresh are all booting/shutting down cleanly — no errors in runtime. Good signal.
+<lov-tool-use id="toolu_vrtx_01E7VCVV4EWGHCLnGRDbKPE7" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"===INSTANCE COUNT===\\\" && grep -rEn \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"===FILE COUNT===\\\" && grep -rlE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | wc -l && echo \\\"===TOP FILES===\\\" && grep -rcE \\\"\\\\bas any\\\\b\\\" src/pages --include=\\\"*.tsx\\\" --include=\\\"*.ts\\\" | grep -v \\\":0$\\\" | sort -t: -k2 -nr | head -25\", \"user_facing_description\": \"Auditing the real scope of remaining `as any` casts in pages\"}">
+</lov-tool-use>
 
-Let me verify what's in the current document and cross-check against fresh evidence.
+<lov-tool-use id="toolu_vrtx_01MXFQUqkKgGpQdLr4ygDDH9" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"=== CommunicationHub ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/CommunicationHub.tsx & \\\\\\ncd /dev-server && echo \\\"=== ErrandsLogistics ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/concierge/ErrandsLogistics.tsx & \\\\\\ncd /dev-server && echo \\\"=== PLE02LawRegistry ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/platform-law/PLE02LawRegistry.tsx & \\\\\\ncd /dev-server && echo \\\"=== ITC04WiringGraph ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/implementation-truth/ITC04WiringGraph.tsx & \\\\\\ncd /dev-server && echo \\\"=== ConscienceGateDashboard ===\\\" && grep -nE \\\"\\\\bas any\\\\b\\\" src/pages/admin/ConscienceGateDashboard.tsx & \\\\\\nwait\", \"user_facing_description\": \"Inspecting top offenders to understand the cast patterns\"}">
+</lov-tool-use>
+I have enough context. Let me check the ConscienceGateDashboard details to understand the cleanest fix pattern, then present the plan.
+<lov-tool-use id="toolu_vrtx_01E7qWHBFj69pzcGW1zHN81M" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/admin/ConscienceGateDashboard.tsx\", \"lines\": \"1-60\"}">
+</lov-tool-use>
 
-## Plan — Re-Audit & Top-Up `FULL_ISSUES_AND_FIXES.md` v2.1
+<lov-tool-use id="toolu_vrtx_012hE4x4VQ3prpYMPd1f1H4W" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/admin/CommunicationHub.tsx\", \"lines\": \"1-60\"}">
+</lov-tool-use>
+I have what I need. Now let me present a focused, deployment-ready plan to eliminate ISS-020.
 
-### Verification sweep (read-only checks I'll run)
+<lov-plan>
 
-1. Read current `generated/FULL_ISSUES_AND_FIXES.md` to confirm v2.0 contents
-2. Re-run Supabase linter for fresh findings
-3. Re-run security scan for any net-new findings
-4. Re-count: pages, components, edge functions, tables, policies, migrations, scripts, generated artifacts, tests
-5. Re-check secrets list for any newly-set/missing secrets
-6. Scan for new categories I may have missed:
-   - pg_cron job presence (audit-log retention scheduled?)
-   - Edge function runtime errors in last 24h
-   - Orphan generated artifacts (>30 days stale)
-   - Storage buckets inventory + policy coverage
-   - Auth provider config (only Google enabled?)
-   - Realtime publication membership (which tables stream?)
-   - Database extension list (pgvector, pg_cron, pg_net presence)
-   - Webhook secret rotation policy
-   - Service worker version pinning
-   - CSP / security headers in `nginx/default.conf`
-   - Mobile app store assets (icons, splash, screenshots)
-   - Translation completeness (en vs es/fr/de/ar key parity)
-   - DSAR/account-delete UI surface in Settings (function exists, button wired?)
+## Plan — Eliminate ISS-020 (`as any` in pages) — Production-Grade Cleanup
 
-### Net-new categories likely missing from v2.0
+### Current truth (just verified)
 
-Based on the edge logs and memory snapshot, candidates to add:
-
-**P0 candidates (newly surfaced)**
-- `OPN-P0-06` — pg_cron extension status unverified; `trim_kill_switch_audit_log` SQL helper exists but not scheduled
-- `OPN-P0-07` — DSAR `data-export` and `account-delete` edge functions deployed but **no UI surface in Settings** to invoke them (compliance gap)
-
-**P1 candidates**
-- `OPN-P1-09` — Translation key parity not verified across 5 locales (machine-translated locales may have stale/missing keys)
-- `OPN-P1-10` — CSP / security headers in `nginx/default.conf` not audited for prod hardening
-- `OPN-P1-11` — Realtime publication membership not documented (which tables stream to clients)
-- `OPN-P1-12` — Auth provider catalog: only Google + email; LinkedIn/Microsoft/Apple Sign-In missing for B2B
-
-**P2 candidates**
-- `OPN-P2-08` — Database extension inventory (pgvector? pg_net? pg_cron?) not asserted in CI
-- `OPN-P2-09` — Storage bucket inventory + per-bucket policy coverage report missing
-- `OPN-P2-10` — Mobile store assets (1024 icon, splash screens, store screenshots) not generated
-- `OPN-P2-11` — Service worker version pinning / cache-busting strategy unverified
-
-**P3 candidates**
-- `OPN-P3-06` — Edge function cold-start metrics (logs show 30-200ms boots — within budget but unmonitored)
-- `OPN-P3-07` — No SLO/SLA dashboard for the 5 flagship loops
-- `OPN-P3-08` — Disaster recovery runbook exists but no quarterly drill schedule
-
-### Document update target
-
-**`generated/FULL_ISSUES_AND_FIXES.md` v2.1** — append/update only
-
-Keep all 12 sections from v2.0. Update:
-- Header version → v2.1
-- Live snapshot → re-verified counts
-- Section A → add OPN-P0-06, OPN-P0-07 if confirmed
-- Section B → add OPN-P1-09 through OPN-P1-12 if confirmed
-- Section C → add OPN-P2-08 through OPN-P2-11 if confirmed
-- Section D → add OPN-P3-06 through OPN-P3-08
-- Section E (per-surface matrix) → recompute with new blockers
-- Section H (secrets) → add any newly-identified missing secrets
-- Section I (evidence index) → add evidence paths for new IDs
-
-### Files
-
-| Action | Path |
+| Metric | Value |
 |---|---|
-| **Overwrite** | `generated/FULL_ISSUES_AND_FIXES.md` (v2.1) |
+| Page files containing `as any` | **72** (was 68 — drift since v5.1) |
+| Total `as any` instances in pages | **135** |
+| Top offender | `src/pages/admin/CommunicationHub.tsx` (12) |
+| Concentration | Top 15 files account for ~70 of 135 instances |
 
-### Acceptance
+### Root-cause patterns (3 categories cover ~95% of casts)
 
-- All v2.0 entries preserved (no regressions)
-- Net-new gaps from re-audit added with IDs OPN-P0-06+, OPN-P1-09+, OPN-P2-08+, OPN-P3-06+
-- Every new entry: ID, priority, surface, evidence path, remediation
-- Live snapshot re-verified within the last execution
-- Per-surface go/no-go matrix updated
-- Document remains truth-only (no resolved log)
-- Phase 32 verdict re-cited from latest `its-real-gate-report.json`
+1. **Untyped JSON columns from Supabase** (e.g. `(status as any)?.health`, `(posture as any)?.devices`) — generated `Database` types return `Json` for `jsonb` fields. Fix: declare explicit interface + safe accessor.
+2. **Domain type widening for demo/seed data** (e.g. `"R2" as any` for `RiskClass`, `"sufficient" as any` for `EvidenceState`) — actual literal unions exist in `@/lib/core-services/conscience-gate/conscience-gate`. Fix: import + use the literal types directly (no cast needed).
+3. **shadcn `<select>` value handlers** (e.g. `setCatFilter(e.target.value as any)`) — Fix: cast at the typed boundary using the existing union (e.g. `as Severity`) or use `Select` from `@/components/ui/select` with typed `onValueChange`.
+
+### Strategy — surgical, batch by pattern, zero behavior change
+
+**Batch 1 — Top 5 files (40 instances, ~30%)**
+- `src/pages/admin/CommunicationHub.tsx` — define `SystemStatus`, `SecurityPosture`, `SyncStatus` interfaces; remove all 12 casts
+- `src/pages/concierge/ErrandsLogistics.tsx` — extend `Errand` view-model with `status`, `dueDate`, `bundleId`; remove all 10 casts
+- `src/pages/admin/platform-law/PLE02LawRegistry.tsx` — type `BadgeVariant` union for `sevColor`; type select `onChange` with literal unions; remove all 5
+- `src/pages/admin/implementation-truth/ITC04WiringGraph.tsx` — replace `"R2" as any` etc. with the proper imported literal types from `conscience-gate`; type `edge` extras via interface extension; remove all 5
+- `src/pages/admin/ConscienceGateDashboard.tsx` — use `RiskClass`, `EvidenceState`, `BudgetState`, `RoutingHints` from canonical type module; replace `as any` with the literal unions; remove all 5
+
+**Batch 2 — Mid-tier (28 instances across 10 files)**
+- `PLT05ViolationTriage`, `AIG04BudgetCenter`, `CampaignOrchestrator`, `CRMPipeline`, `CRMNotes`, `PLE04CIGateMonitor`, `HQApprovalQueue`, `FCC01FounderCommandConsole`, `AIEngineeringBoard`, `Boardroom`
+- Pattern: introduce one local view-model interface per page + use existing domain unions for badge variants and select handlers.
+
+**Batch 3 — Tail (~67 instances across 57 files, ≤2 per file)**
+- Mechanical sweep: replace `(x as any).field` with typed accessor `(x as Record<string, unknown>).field` only when the JSON shape is genuinely opaque, otherwise add a one-line `interface` at the top of the file.
+- Replace `e.target.value as any` in `<select>` handlers with the correct literal union or `Select` `onValueChange`.
+
+### Guardrails
+
+- **No behavior changes.** Pure type tightening — runtime identical.
+- **No `unknown` shotgun.** Each cast becomes a real interface or imported domain type.
+- **Build must stay green.** Validate with TS noEmit after each batch.
+- **Re-add a CI check** in `scripts/architecture/checks/check-platform-anti-patterns.ts`: lower the `as any` threshold from `>3` per file to `>0` for `src/pages/**` once Batch 3 lands.
+- **Update `generated/FULL_ISSUES_AND_FIXES.md`**: flip ISS-020 / OPN-P2-04 status from "IN PROGRESS" to "RESOLVED" only after `grep -rE "\bas any\b" src/pages | wc -l` returns `0`.
+
+### Files touched
+
+- ~72 page files under `src/pages/**` (additive interfaces, removed casts only)
+- 1 governance check: `scripts/architecture/checks/check-platform-anti-patterns.ts` (tighten rule)
+- 1 doc: `generated/FULL_ISSUES_AND_FIXES.md` (mark ISS-020 / OPN-P2-04 resolved)
+
+### Acceptance criteria
+
+| Check | Target |
+|---|---|
+| `grep -rE "\bas any\b" src/pages \| wc -l` | **0** |
+| `tsc --noEmit` | **0 errors** |
+| Phase 32 "It's Real" gate | **stays 13/13 green** |
+| Anti-pattern check on `src/pages/**` | **0 violations** at threshold `>0` |
+| ISS-020 / OPN-P2-04 in `FULL_ISSUES_AND_FIXES.md` | **removed from open register** |
+
+### Out of scope (explicit)
+
+- `src/lib/**`, `src/components/**`, `src/hooks/**` `as any` casts (separate effort, not part of ISS-020)
+- Behavior changes, refactors, or feature additions
+- Rewriting Supabase generated types
 
