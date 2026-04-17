@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "generatedAt": "2026-04-16T22:40:52.321Z",
+  "version": "2.1.0",
+  "generatedAt": "2026-04-17T14:13:45.348Z",
   "totalPaths": 15,
   "byCriticality": {
     "P0": 10,
@@ -34,7 +34,12 @@
       ],
       "slaLatencyMsP95": 4500,
       "requiredCoveragePct": 95,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-37-MANIFEST-TRUTH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-FIRST-BOOT"
     },
     {
       "pathId": "GP-SIGN-IN",
@@ -61,7 +66,12 @@
       ],
       "slaLatencyMsP95": 1800,
       "requiredCoveragePct": 99,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-AUTH-RELIABILITY"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-SIGN-IN"
     },
     {
       "pathId": "GP-RESTORE",
@@ -91,7 +101,12 @@
       ],
       "slaLatencyMsP95": 60000,
       "requiredCoveragePct": 90,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-DR-RECOVERY"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-RESTORE"
     },
     {
       "pathId": "GP-SETUP-CONTINUATION",
@@ -117,7 +132,11 @@
       ],
       "slaLatencyMsP95": 5000,
       "requiredCoveragePct": 85,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-SETUP-CONTINUATION"
     },
     {
       "pathId": "GP-CONNECT-CRM",
@@ -149,7 +168,12 @@
       ],
       "slaLatencyMsP95": 30000,
       "requiredCoveragePct": 90,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-CONNECTOR-HEALTH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-CONNECT-CRM"
     },
     {
       "pathId": "GP-OAUTH-AND-SYNC",
@@ -179,7 +203,12 @@
       ],
       "slaLatencyMsP95": 45000,
       "requiredCoveragePct": 85,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-CONNECTOR-HEALTH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-OAUTH-AND-SYNC"
     },
     {
       "pathId": "GP-RECOVER-STALE-LEADS",
@@ -208,7 +237,11 @@
       ],
       "slaLatencyMsP95": 120000,
       "requiredCoveragePct": 80,
-      "runtimeProbeRequired": false
+      "runtimeProbeRequired": false,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-RECOVER-STALE-LEADS"
     },
     {
       "pathId": "GP-APPROVE-OUTBOUND-FOLLOWUP",
@@ -239,7 +272,12 @@
       ],
       "slaLatencyMsP95": 8000,
       "requiredCoveragePct": 95,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-APPROVAL-INTEGRITY"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-APPROVE-OUTBOUND-FOLLOWUP"
     },
     {
       "pathId": "GP-REVIEW-PROOF",
@@ -266,7 +304,12 @@
       ],
       "slaLatencyMsP95": 3000,
       "requiredCoveragePct": 95,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-PROOF-CHAIN"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-REVIEW-PROOF"
     },
     {
       "pathId": "GP-WORKFLOW-REPLAY",
@@ -292,7 +335,11 @@
       ],
       "slaLatencyMsP95": 15000,
       "requiredCoveragePct": 80,
-      "runtimeProbeRequired": false
+      "runtimeProbeRequired": false,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-WORKFLOW-REPLAY"
     },
     {
       "pathId": "GP-MOBILE-APPROVAL",
@@ -323,7 +370,12 @@
       ],
       "slaLatencyMsP95": 6000,
       "requiredCoveragePct": 90,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-MOBILE-PUSH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-MOBILE-APPROVAL"
     },
     {
       "pathId": "GP-PUSH-TO-APPROVAL",
@@ -352,7 +404,12 @@
       ],
       "slaLatencyMsP95": 5000,
       "requiredCoveragePct": 80,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-MOBILE-PUSH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-PUSH-TO-APPROVAL"
     },
     {
       "pathId": "GP-OWNER-INTERVENTION",
@@ -378,7 +435,12 @@
       ],
       "slaLatencyMsP95": 10000,
       "requiredCoveragePct": 95,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-KILL-SWITCH-COVERAGE"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-OWNER-INTERVENTION"
     },
     {
       "pathId": "GP-LAUNCH-READINESS",
@@ -404,7 +466,12 @@
       ],
       "slaLatencyMsP95": 30000,
       "requiredCoveragePct": 90,
-      "runtimeProbeRequired": false
+      "runtimeProbeRequired": false,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-37-MANIFEST-TRUTH"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-LAUNCH-READINESS"
     },
     {
       "pathId": "GP-ENV-RECOVERY",
@@ -433,7 +500,12 @@
       ],
       "slaLatencyMsP95": 20000,
       "requiredCoveragePct": 95,
-      "runtimeProbeRequired": true
+      "runtimeProbeRequired": true,
+      "releaseGateRefs": [
+        "GATE-23-GOLDEN-PATH",
+        "GATE-DR-RECOVERY"
+      ],
+      "supportFallbackUrl": "/admin/support?path=GP-ENV-RECOVERY"
     }
   ],
   "ownership": [
@@ -671,14 +743,14 @@
       "pathId": "GP-WORKFLOW-REPLAY",
       "criticality": "P1",
       "hasE2E": true,
-      "hasProbe": false,
+      "hasProbe": true,
       "hasReceiptCheck": true
     },
     {
       "pathId": "GP-MOBILE-APPROVAL",
       "criticality": "P0",
       "hasE2E": true,
-      "hasProbe": false,
+      "hasProbe": true,
       "hasReceiptCheck": true
     },
     {
