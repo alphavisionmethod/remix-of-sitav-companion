@@ -13,7 +13,7 @@ import { RefreshCw, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Heartbeat {
-  recorded_at: string;
+  ts: string;
   source: string;
   subsystem: string;
   status: string;
@@ -50,12 +50,12 @@ export function UptimePanel() {
     const since = new Date(Date.now() - WINDOWS.d30).toISOString();
     const { data, error } = await supabase
       .from("uptime_heartbeats")
-      .select("recorded_at,source,subsystem,status,latency_ms")
-      .gte("recorded_at", since)
-      .order("recorded_at", { ascending: false })
+      .select("ts,source,subsystem,status,latency_ms")
+      .gte("ts", since)
+      .order("ts", { ascending: false })
       .limit(5000);
     if (error) setErr(error.message);
-    setRows((data as Heartbeat[]) ?? []);
+    setRows((data as unknown as Heartbeat[]) ?? []);
     setLoading(false);
   }
 
@@ -76,17 +76,17 @@ export function UptimePanel() {
     const now = Date.now();
     for (const [subsystem, arr] of bySubsystem) {
       const sorted = [...arr].sort(
-        (a, b) => new Date(b.recorded_at).getTime() - new Date(a.recorded_at).getTime(),
+        (a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime(),
       );
       const inWindow = (ms: number) =>
-        sorted.filter((r) => now - new Date(r.recorded_at).getTime() <= ms);
+        sorted.filter((r) => now - new Date(r.ts).getTime() <= ms);
       const last60 = inWindow(60 * 60_000);
       // 60 buckets of 1 minute
       const recent = Array.from({ length: 60 }, (_, i) => {
         const bucketStart = now - (60 - i) * 60_000;
         const bucketEnd = bucketStart + 60_000;
         const inBucket = last60.filter((r) => {
-          const t = new Date(r.recorded_at).getTime();
+          const t = new Date(r.ts).getTime();
           return t >= bucketStart && t < bucketEnd;
         });
         if (inBucket.length === 0) return { ts: bucketStart, ok: true };

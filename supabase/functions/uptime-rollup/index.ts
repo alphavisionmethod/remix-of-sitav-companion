@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const { count } = await admin
       .from("uptime_heartbeats")
       .delete({ count: "exact" })
-      .lt("recorded_at", cutoff);
+      .lt("ts", cutoff);
     pruned = count ?? 0;
   } catch {
     // best-effort
