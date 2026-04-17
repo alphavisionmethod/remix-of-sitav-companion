@@ -209,6 +209,9 @@ const META05CompletenessMatrix = lazy(() => import("@/pages/admin/META05Complete
 // ── Phase 27: Kill-Switch & Safety Center (canonical mount) ──
 const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCenter"));
 
+// ── C-014: Data Retention Dashboard ──
+const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDashboard"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
