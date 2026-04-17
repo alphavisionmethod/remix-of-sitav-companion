@@ -376,12 +376,17 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
           className={cn(
-            "flex items-end gap-1 rounded-[20px] border border-[hsl(0_0%_100%/0.25)] backdrop-blur-[40px] px-3 py-2 relative",
-            "transition-colors duration-500",
+            "flex items-end gap-1 rounded-[20px] border backdrop-blur-[40px] px-3 py-2 relative",
+            "transition-all duration-300",
+            dropActive
+              ? "border-[hsl(210_80%_60%/0.65)] ring-2 ring-[hsl(210_80%_60%/0.35)] scale-[1.02]"
+              : "border-[hsl(0_0%_100%/0.25)]",
             MOOD_TINTS[mood] || MOOD_TINTS.serene
           )}
           style={{
-            boxShadow: "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
+            boxShadow: dropActive
+              ? "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(210 80% 50% / 0.35), inset 0 1px 0 hsl(0 0% 100% / 0.18), inset 0 -1px 0 hsl(0 0% 0% / 0.1)"
+              : "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
             background: `linear-gradient(180deg, hsl(0 0% 100% / 0.14) 0%, hsl(0 0% 100% / 0.06) 100%)`,
           }}
           onMouseEnter={showFlow}
@@ -395,6 +400,10 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             lastCursorTime.current = now;
             setCursorX(e.clientX);
           }}
+          onDragOver={handleDockDragOver}
+          onDragLeave={handleDockDragLeave}
+          onDrop={handleDockDrop}
+          data-testid="desktop-dock"
         >
           {/* ── Core Pinned Section (draggable) ── */}
           <Reorder.Group
