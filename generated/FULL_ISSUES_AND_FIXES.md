@@ -149,9 +149,11 @@ These must close before General Availability of the corresponding surface.
 - **Evidence:** No `.storybook/` directory.
 - **Remediation:** `npx storybook@latest init --type vite`; require stories for every new shared component.
 
-### OPN-P2-04 · `as any` cleanup pending — 135 page-level instances
-- **Evidence:** `grep -rn "as any" src/pages | wc -l` → **135** (revised up from prior 68).
-- **Remediation:** Track via ISS-091; replace with proper types or `unknown` + zod parsing.
+### ~~OPN-P2-04 · `as any` cleanup pending — 135 page-level instances~~ ✅ RESOLVED
+- **Status:** RESOLVED (2026-04-17). All 135 instances across 72 page files eliminated.
+- **Verification:** `grep -rEn "\bas any\b" src/pages --include="*.tsx" --include="*.ts" \| wc -l` → **0**
+- **Enforcement:** `scripts/architecture/checks/check-platform-anti-patterns.ts` now fails CI on any `as any` in `src/pages/**` (threshold = 0, severity = error).
+- **Approach:** Replaced casts with explicit view-model interfaces, canonical domain unions (`RiskTier`, `EvidenceState`, `BudgetState`, `RoutingHints` from `@/lib/core-services/conscience-gate`), typed select handlers, and the centralized `dbAny` helper in `@/lib/supabase-helpers` for genuinely opaque table access.
 
 ### OPN-P2-05 · No vector search / pgvector capability despite AI-heavy product
 - **Evidence:** `pg_extension` shows pg_cron, pg_net, pgcrypto, uuid-ossp — **no `vector`**.
