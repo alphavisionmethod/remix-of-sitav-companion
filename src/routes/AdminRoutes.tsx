@@ -193,10 +193,7 @@ const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 const LaunchReadinessBoard = lazy(() => import("@/pages/admin/LaunchReadinessBoard"));
 const LaunchHonestyBoard = lazy(() => import("@/pages/admin/LaunchHonestyBoard"));
 const AdminDeploymentRings = lazy(() => import("@/pages/admin/AdminDeploymentRings"));
-const MCSupport = lazy(() => import("@/pages/admin/modules/MCSupport"));
-const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
 const AuditComplianceWorkspace = lazy(() => import("@/pages/admin/AuditComplianceWorkspace"));
-import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
 
 // ── Phase 7: Meta-Architecture Surfaces ──
 const META01ArchitectureAtlas = lazy(() => import("@/pages/admin/META01ArchitectureAtlas"));
