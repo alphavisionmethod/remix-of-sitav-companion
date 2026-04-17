@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-04-17T02:42:00.000Z",
+  "gate": "Gate 34 — Workflow Reality (Phase 23)",
+  "requiredTables": [
+    "workflows",
+    "workflow_runs",
+    "workflow_steps",
+    "workflow_state_transitions",
+    "workflow_receipts",
+    "scheduled_jobs",
+    "job_executions",
+    "automation_kill_switches"
+  ],
+  "requiredFunctions": [
+    "supabase/functions/workflow-execute/index.ts",
+    "supabase/functions/workflow-repair/index.ts",
+    "supabase/functions/workflow-stuck-detector/index.ts",
+    "supabase/functions/workflow-replay/index.ts",
+    "supabase/functions/scheduler-dispatch/index.ts"
+  ],
+  "tableEvidence": {
+    "workflows": true,
+    "workflow_runs": true,
+    "workflow_steps": true,
+    "workflow_state_transitions": true,
+    "workflow_receipts": true,
+    "scheduled_jobs": true,
+    "job_executions": true,
+    "automation_kill_switches": true
+  },
+  "assertions": {
+    "adminWiredToReal": true,
+    "executeKillSwitchEnforced": true,
+    "dispatchKillSwitchEnforced": true,
+    "repairActionsComplete": true,
+    "stuckDetectorWired": true
+  },
+  "crons": [
+    "sita-scheduler-dispatch-1m",
+    "sita-workflow-stuck-detector-5m"
+  ],
+  "errors": [],
+  "warnings": [],
+  "ok": true
+}
