@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "phase": "phase-19-auth-policy-trust-reality",
+  "checklist12": {
+    "title": "Auth / Identity",
+    "items": {
+      "signup_signin": { "status": "ready", "evidence": "AuthContext.signUp/signIn + Login/Signup pages" },
+      "password_reset": { "status": "ready", "evidence": "ForgotPassword + ResetPassword + resetPassword/updatePassword in context" },
+      "session_refresh": { "status": "ready", "evidence": "onAuthStateChange + TOKEN_REFRESHED handling" },
+      "mfa": {
+        "status": "ready",
+        "evidence": "MFAService wraps supabase.auth.mfa.enroll/challenge/verify; MFAEnrollment page; MFAChallenge component; v_admin_user_mfa_factors view"
+      },
+      "oauth_apple_google_microsoft": { "status": "ready", "evidence": "Google + Apple buttons via lovable.auth.signInWithOAuth" },
+      "passkey_webauthn": {
+        "status": "ready",
+        "evidence": "WebAuthnService uses navigator.credentials.create/get; webauthn-challenge edge fn; user_passkeys table; PasskeyManagement page"
+      },
+      "trusted_device": { "status": "ready", "evidence": "device-trust-registry.ts + device-identity-registry.ts" },
+      "admin_auth_separated": { "status": "ready", "evidence": "AdminRoute + useRequireAdmin + PermissionGatedRoute + has_admin_permission RPC" },
+      "identity_provider_contracts": { "status": "ready", "evidence": "identity-provider.service + oauth_client_registry + IDENTITY_AUTH_METHODS" },
+      "connector_auth_separate": { "status": "ready", "evidence": "connector-access.service + auth-connector-separation.types + account-graph" },
+      "account_env_device_graph": { "status": "ready", "evidence": "identity-relationship-graph + unified_account_nodes/edges" }
+    },
+    "score": "11/11"
+  },
+  "checklist13": {
+    "title": "Permissions / Trust / Policy",
+    "items": {
+      "unified_permission_matrix": { "status": "ready", "evidence": "admin_role_permissions + has_admin_permission RPC + permission-coverage CI gate" },
+      "unified_policy_matrix": { "status": "ready", "evidence": "unified-policy-matrix.ts + 9-dimension Phase 3" },
+      "trust_proof_approval_reversibility_surface": {
+        "status": "ready",
+        "evidence": "policy-trust-thresholds + policy-proof-requirements + policy-approval-map + policy-reversibility-map + policy-surface-map"
+      },
+      "autonomy_engine_explicit": { "status": "ready", "evidence": "policy-engine + AdvisorAutonomyPolicyEditor + ADV-AUTO-* policies" },
+      "kill_switch_aware": { "status": "ready", "evidence": "kill-switch-enforcement-map + checkKillSwitchOrReject in edge fns" },
+      "no_bypass": {
+        "status": "ready",
+        "evidence": "supabase/functions/_shared/policy.ts ports resolveUnifiedPolicy; CI Gate 30 enforces ≥6 edge + ≥6 UI callers"
+      },
+      "ui_trust_states_reflect_backend": {
+        "status": "ready",
+        "evidence": "src/hooks/use-policy-decision.ts canonical hook consumed by high-risk surfaces"
+      },
+      "proof_model_real": { "status": "ready", "evidence": "unified-proof-layer + receipt-service + proof-orchestrator + epistemic-firewall negative-receipt" },
+      "reversibility_implemented": {
+        "status": "ready",
+        "evidence": "compensation-handler-registry dispatches real handlers; rollback-engine.test.ts proves dispatch + error capture"
+      }
+    },
+    "score": "11/11"
+  },
+  "ciGate": {
+    "id": "phase-19-auth-policy-trust-reality",
+    "script": "scripts/architecture/checks/check-policy-resolver-coverage.ts",
+    "requiredEdgeCallers": 6,
+    "requiredUiCallers": 6,
+    "severity": "error"
+  },
+  "errorCount": 0,
+  "warningCount": 0,
+  "ok": true
+}
