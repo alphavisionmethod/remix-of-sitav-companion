@@ -5494,6 +5494,104 @@ export type Database = {
           },
         ]
       }
+      connector_accounts: {
+        Row: {
+          account_email: string | null
+          connected_at: string
+          connector_type: string
+          created_at: string
+          demo_mode: boolean
+          disconnected_at: string | null
+          display_name: string | null
+          id: string
+          last_health_at: string | null
+          last_health_status: string | null
+          metadata: Json
+          registry_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_email?: string | null
+          connected_at?: string
+          connector_type: string
+          created_at?: string
+          demo_mode?: boolean
+          disconnected_at?: string | null
+          display_name?: string | null
+          id?: string
+          last_health_at?: string | null
+          last_health_status?: string | null
+          metadata?: Json
+          registry_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_email?: string | null
+          connected_at?: string
+          connector_type?: string
+          created_at?: string
+          demo_mode?: boolean
+          disconnected_at?: string | null
+          display_name?: string | null
+          id?: string
+          last_health_at?: string | null
+          last_health_status?: string | null
+          metadata?: Json
+          registry_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_accounts_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "connector_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connector_configs: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+          last_sync_at: string | null
+          service: string
+          status: string
+          sync_interval_min: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          service: string
+          status?: string
+          sync_interval_min?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          service?: string
+          status?: string
+          sync_interval_min?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       connector_oauth_flows: {
         Row: {
           completed_at: string | null
@@ -5524,13 +5622,212 @@ export type Database = {
         }
         Relationships: []
       }
+      connector_oauth_tokens: {
+        Row: {
+          access_token: string | null
+          account_id: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          last_refreshed_at: string | null
+          provider: string
+          reauth_required: boolean
+          refresh_token: string | null
+          rotation_count: number
+          scopes_granted: string[]
+          token_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          account_id: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_refreshed_at?: string | null
+          provider: string
+          reauth_required?: boolean
+          refresh_token?: string | null
+          rotation_count?: number
+          scopes_granted?: string[]
+          token_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          account_id?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_refreshed_at?: string | null
+          provider?: string
+          reauth_required?: boolean
+          refresh_token?: string | null
+          rotation_count?: number
+          scopes_granted?: string[]
+          token_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_oauth_tokens_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connector_receipts: {
+        Row: {
+          account_id: string | null
+          connector_type: string
+          created_at: string
+          details: Json
+          event_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          connector_type: string
+          created_at?: string
+          details?: Json
+          event_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          connector_type?: string
+          created_at?: string
+          details?: Json
+          event_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      connector_registry: {
+        Row: {
+          auth_method: string
+          connector_class: string
+          connector_id: string
+          created_at: string
+          default_scopes: string[]
+          display_name: string
+          icon_url: string | null
+          id: string
+          launch_stage: string
+          metadata: Json
+          provider: string
+          read_supported: boolean
+          refresh_supported: boolean
+          sync_supported: boolean
+          updated_at: string
+          webhook_supported: boolean
+          write_supported: boolean
+        }
+        Insert: {
+          auth_method?: string
+          connector_class?: string
+          connector_id: string
+          created_at?: string
+          default_scopes?: string[]
+          display_name: string
+          icon_url?: string | null
+          id?: string
+          launch_stage?: string
+          metadata?: Json
+          provider: string
+          read_supported?: boolean
+          refresh_supported?: boolean
+          sync_supported?: boolean
+          updated_at?: string
+          webhook_supported?: boolean
+          write_supported?: boolean
+        }
+        Update: {
+          auth_method?: string
+          connector_class?: string
+          connector_id?: string
+          created_at?: string
+          default_scopes?: string[]
+          display_name?: string
+          icon_url?: string | null
+          id?: string
+          launch_stage?: string
+          metadata?: Json
+          provider?: string
+          read_supported?: boolean
+          refresh_supported?: boolean
+          sync_supported?: boolean
+          updated_at?: string
+          webhook_supported?: boolean
+          write_supported?: boolean
+        }
+        Relationships: []
+      }
+      connector_sync_cursors: {
+        Row: {
+          account_id: string
+          created_at: string
+          cursor: string | null
+          etag: string | null
+          id: string
+          last_synced_at: string | null
+          resource_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          cursor?: string | null
+          etag?: string | null
+          id?: string
+          last_synced_at?: string | null
+          resource_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          cursor?: string | null
+          etag?: string | null
+          id?: string
+          last_synced_at?: string | null
+          resource_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_sync_cursors_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connector_sync_runs: {
         Row: {
           completed_at: string | null
           connector: string
           created_at: string | null
+          cursor: string | null
+          dead_letter: boolean
+          direction: string | null
+          error: string | null
           id: string
+          last_cursor: string | null
           records_synced: number | null
+          resource_type: string | null
           started_at: string | null
           status: string | null
           user_id: string
@@ -5539,8 +5836,14 @@ export type Database = {
           completed_at?: string | null
           connector: string
           created_at?: string | null
+          cursor?: string | null
+          dead_letter?: boolean
+          direction?: string | null
+          error?: string | null
           id?: string
+          last_cursor?: string | null
           records_synced?: number | null
+          resource_type?: string | null
           started_at?: string | null
           status?: string | null
           user_id: string
@@ -5549,8 +5852,14 @@ export type Database = {
           completed_at?: string | null
           connector?: string
           created_at?: string | null
+          cursor?: string | null
+          dead_letter?: boolean
+          direction?: string | null
+          error?: string | null
           id?: string
+          last_cursor?: string | null
           records_synced?: number | null
+          resource_type?: string | null
           started_at?: string | null
           status?: string | null
           user_id?: string
@@ -5601,6 +5910,51 @@ export type Database = {
           scopes?: string[] | null
           status?: string
           token_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      consent_scope_records: {
+        Row: {
+          consent_type: string
+          created_at: string
+          granted: boolean
+          granted_at: string
+          id: string
+          metadata: Json
+          provider_family: string
+          revoked_at: string | null
+          scope_category: string
+          scope_label: string | null
+          scope_value: string
+          user_id: string
+        }
+        Insert: {
+          consent_type?: string
+          created_at?: string
+          granted?: boolean
+          granted_at?: string
+          id?: string
+          metadata?: Json
+          provider_family: string
+          revoked_at?: string | null
+          scope_category?: string
+          scope_label?: string | null
+          scope_value: string
+          user_id: string
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          granted?: boolean
+          granted_at?: string
+          id?: string
+          metadata?: Json
+          provider_family?: string
+          revoked_at?: string | null
+          scope_category?: string
+          scope_label?: string | null
+          scope_value?: string
           user_id?: string
         }
         Relationships: []
@@ -10852,6 +11206,57 @@ export type Database = {
           expires_at?: string
           id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_events: {
+        Row: {
+          created_at: string
+          dead_letter: boolean
+          event_type: string | null
+          external_id: string | null
+          id: string
+          last_error: string | null
+          payload: Json
+          processed_at: string | null
+          provider: string
+          received_at: string
+          retry_count: number
+          signature: string | null
+          signature_valid: boolean | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          dead_letter?: boolean
+          event_type?: string | null
+          external_id?: string | null
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          processed_at?: string | null
+          provider: string
+          received_at?: string
+          retry_count?: number
+          signature?: string | null
+          signature_valid?: boolean | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          dead_letter?: boolean
+          event_type?: string | null
+          external_id?: string | null
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          processed_at?: string | null
+          provider?: string
+          received_at?: string
+          retry_count?: number
+          signature?: string | null
+          signature_valid?: boolean | null
+          status?: string
         }
         Relationships: []
       }
