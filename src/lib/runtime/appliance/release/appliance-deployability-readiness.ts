@@ -109,10 +109,10 @@ export const APPLIANCE_DEPLOYABILITY_READINESS: ReadonlyArray<ApplianceReadiness
     title: "Appliance claims are not ahead of implementation reality",
     status: "partial",
     evidence:
-      "appliance-runtime-contract.ts honestly lists bespoke-kernel, tpm-attestation, hardware-secure-enclave as roadmapCapabilities (NOT honestCapabilities). CI gate asserts no capability marked appliance:'native' is also in roadmapCapabilities. ESXi/vSphere import smoke-test still requires real hardware.",
+      "appliance-runtime-contract.ts honestly lists bespoke-kernel, tpm-attestation, hardware-secure-enclave as roadmapCapabilities (NOT honestCapabilities). CI gate asserts no capability marked appliance:'native' is also in roadmapCapabilities. scripts/release/vmware/verify-esxi-readiness.ts emits generated/appliance-esxi-status.json — flips to 'ready' when ESXI_* + TPM_* env vars present in release CI. Provisioning runbook: docs/runbooks/APPLIANCE_ESXI_TPM_PROVISIONING.md.",
     blocker: false,
     remediation:
-      "Provision a real ESXi/vSphere lab and run an end-to-end OVA import smoke test on each release; add TPM hardware attestation when target hardware certification lands.",
+      "Run docs/runbooks/APPLIANCE_ESXI_TPM_PROVISIONING.md to provision ESXi/vSphere lab + TPM 2.0 hardware; populate ESXI_* and TPM_* env vars; run verifier; once ready, move tpm-attestation from roadmapCapabilities to honestCapabilities.",
   },
 ];
 
