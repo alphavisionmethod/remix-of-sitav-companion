@@ -420,9 +420,10 @@ const ProofSummaryBoard = () => {
 const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPacket; onRegenerate: () => void; variant?: string }) => {
   const meta = META[packet.type];
   const genTime = new Date(packet.generatedAt);
+  const { isDemo } = useAuth();
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6">
+    <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6" data-testid="boardroom-summary">
       <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
@@ -434,6 +435,15 @@ const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPack
           </div>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
+          <span
+            data-testid="boardroom-mode-label"
+            className={cn(
+              "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+              isDemo ? "bg-accent/10 text-accent" : "bg-trust-safe/10 text-trust-safe"
+            )}
+          >
+            {isDemo ? "Demo" : "Live"}
+          </span>
           <ConfidencePill value={packet.confidence} />
           {variant && (
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold text-primary capitalize">
@@ -447,7 +457,8 @@ const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPack
           <span className="text-[10px] text-muted-foreground flex items-center gap-1 font-mono">
             <Hash className="h-3 w-3" />{packet.packetId}
           </span>
-          <button onClick={onRegenerate} className="rounded-lg bg-card border border-border p-1.5 hover:bg-secondary transition-colors" title="Regenerate">
+          <BoardroomSeedSampleButton />
+          <button onClick={onRegenerate} data-testid="boardroom-refresh" className="rounded-lg bg-card border border-border p-1.5 hover:bg-secondary transition-colors" title="Regenerate">
             <RefreshCw className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
         </div>
