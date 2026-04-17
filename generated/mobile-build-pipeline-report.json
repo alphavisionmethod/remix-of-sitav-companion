@@ -1,20 +1,24 @@
 {
-  "generatedAt": "2026-04-16T00:00:00.000Z",
+  "generatedAt": "2026-04-17T23:10:19.710Z",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 0,
+  "warningCount": 1,
   "checks": {
     "capacitorDeps": true,
     "capacitorCli": true,
     "capacitorConfig": true,
     "exportOptionsPlist": true,
     "iosBuildScript": true,
-    "androidBuildScript": true
+    "androidBuildScript": true,
+    "iosTemplatesReady": true,
+    "iosBootstrapWorkflow": true,
+    "nativeIosProjectGenerated": false
   },
-  "issues": [],
-  "notes": [
-    "All 8 runtime @capacitor/* packages installed; @capacitor/cli present as devDependency.",
-    "scripts/release/ios/exportOptions.plist resolved — xcodebuild -exportArchive will succeed.",
-    "build-ios.sh + build-android.sh present and signing-env-validated."
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "ios",
+      "message": "ios/App/App.xcworkspace not present — run 'iOS · Bootstrap Native Runtime' workflow on macos-14 to generate it"
+    }
   ]
 }
