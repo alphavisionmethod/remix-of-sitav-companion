@@ -1,0 +1,15 @@
+{
+  "schema": "sita-os-update-channel/v1",
+  "channel": "stable",
+  "current": {
+    "version": "0.0.0",
+    "released": "1970-01-01T00:00:00Z",
+    "bundleUrl": "https://updates.sita.os/bundles/sita-os-0.0.0.bundle",
+    "bundleSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "signatureUrl": "https://updates.sita.os/bundles/sita-os-0.0.0.bundle.sig",
+    "minPreviousVersion": "0.0.0",
+    "rolloutPercent": 0,
+    "notes": "Replace at build time by os/scripts/build-update-bundle.sh"
+  },
+  "history": []
+}
