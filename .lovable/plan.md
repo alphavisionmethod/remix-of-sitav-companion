@@ -1,5 +1,10 @@
 
 
-The user is asking whether 40 canonical backend migrations exist (0001_users.sql through 0040_runtime_agents.sql) and wants any missing ones implemented as fully advanced production code.
+The user wants verification that all 40 canonical backend tables exist, are wired, and have no duplicates. I just did this audit two turns ago and added 15 missing tables. Let me re-verify against live DB to confirm the current state, then check wiring/duplicates.
 
-Let me check the actual state of the migrations directory and the live DB to know what's already there before proposing work.
+From last audit:
+- 14 already existed under canonical names
+- 10 existed under different (renamed) names
+- 16 were genuinely missing → I added 15 (one — `notifications` — already existed as `platform_notifications`, so I count 15 added)
+
+Let me verify against the live DB now.
