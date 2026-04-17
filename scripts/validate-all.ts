@@ -175,6 +175,11 @@ const validators: Record<string, string[]> = {
   "observability": [
     "scripts/architecture/checks/check-observability-reality.ts",
   ],
+
+  // ── Governance (Phase 32 / Checklist 27 — final aggregator, runs LAST) ──
+  "governance": [
+    "scripts/architecture/checks/check-its-real-gate.ts",
+  ],
 };
 
 // Parse CLI args for domain filtering

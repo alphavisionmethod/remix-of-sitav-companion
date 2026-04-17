@@ -5,8 +5,6 @@
 
 import type { ManifestRegistryEntry } from "./manifest-types";
 
-// Note: When adding the closing bracket entry, also update MANIFEST_COUNT consumers.
-// Latest entry: manifest-its-real-gate (Phase 32 / Checklist 27).
 export const MANIFEST_REGISTRY: readonly ManifestRegistryEntry[] = [
   // ── Architecture / Structural ──────────────────────────────
   { id: "manifest-route", path: "generated/route-manifest.json", filename: "route-manifest.json", class: "structural", authority: "authoritative", owner: "architecture", description: "All registered routes with ownership and tier", sourceInputs: ["src/pages/", "src/routes/"], validator: "scripts/manifests/validate/check-route-manifest-vs-filesystem.ts", ciGate: "route-integrity", freshnessPolicy: "on-change", runtimeConsequence: "Routes may 404 or miss protection", releaseConsequence: "Unregistered routes deployed", supportConsequence: "Cannot trace which route a user is on", driftSeverity: "high", consumers: ["admin/ManifestTruthDashboard", "scripts/validation"], tags: ["routes", "structure"] },
