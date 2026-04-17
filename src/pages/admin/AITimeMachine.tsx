@@ -5,6 +5,7 @@ import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCirc
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_TIMELINE as DEMO_TIMELINE } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config: Zap, rollback: RotateCcw };
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };
@@ -94,10 +95,12 @@ const AITimeMachine = () => {
               </div>
             );
           })() : (
-            <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-              <History className="h-8 w-8 text-muted-foreground/30 mb-3" />
-              <p className="text-sm text-muted-foreground">Select an event to see details</p>
-            </div>
+            <EmptyState
+              variant="card"
+              icon={History}
+              title="No event selected"
+              description="Select an event to see its details."
+            />
           )}
         </div>
       </div>

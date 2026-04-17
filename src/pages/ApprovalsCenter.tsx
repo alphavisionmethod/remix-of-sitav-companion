@@ -9,6 +9,7 @@ import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 import {
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
@@ -91,11 +92,12 @@ const ApprovalsCenter = () => {
       <SitaSectionHeader title={`Pending Approvals (${pending.length})`} subtitle="These actions need your review before SITA can execute them" />
 
       {pending.length === 0 ? (
-        <SitaCard hover={false} className="p-8 text-center">
-          <CheckCircle className="h-10 w-10 text-trust-verified mx-auto mb-3" />
-          <p className="text-sm font-medium text-foreground">All caught up!</p>
-          <p className="text-xs text-muted-foreground mt-1">No pending approvals right now.</p>
-        </SitaCard>
+        <EmptyState
+          variant="contextual"
+          icon={CheckCircle}
+          title="All caught up"
+          description="No pending approvals right now. SITA-recommended actions awaiting your review will appear here."
+        />
       ) : (
         <div className="space-y-3">
           {pending.map((approval: any, i: number) => {

@@ -27,6 +27,7 @@ import { toast } from "sonner";
 // ── Types (re-use demo-data interface) ────────────────────────
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 const isDemoMode = true; // Safe default for demo mode
 
@@ -440,11 +441,12 @@ const ApprovalChamber = () => {
 
         <TabsContent value="pending" className="space-y-4 mt-4">
           {pending.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <ShieldCheck className="h-10 w-10 text-[hsl(var(--trust-safe))]/40 mb-3" />
-              <p className="text-sm font-semibold text-foreground">All Clear</p>
-              <p className="text-xs text-muted-foreground mt-1">No pending approvals. Your system is running within governed boundaries.</p>
-            </div>
+            <EmptyState
+              variant="contextual"
+              icon={ShieldCheck}
+              title="All clear"
+              description="No pending approvals. Your system is running within governed boundaries."
+            />
           ) : (
             pending.map(item => (
               <ApprovalCard key={item.id} item={item} onAction={handleAction} />
@@ -454,11 +456,12 @@ const ApprovalChamber = () => {
 
         <TabsContent value="resolved" className="space-y-4 mt-4">
           {resolved.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <CheckCircle className="h-10 w-10 text-muted-foreground/30 mb-3" />
-              <p className="text-sm font-semibold text-foreground">No Resolved Items</p>
-              <p className="text-xs text-muted-foreground mt-1">Resolved approvals will appear here with their receipts and verification status.</p>
-            </div>
+            <EmptyState
+              variant="card"
+              icon={CheckCircle}
+              title="No resolved items"
+              description="Resolved approvals will appear here with their receipts and verification status."
+            />
           ) : (
             resolved.map(item => (
               <div key={item.id} className={cn(

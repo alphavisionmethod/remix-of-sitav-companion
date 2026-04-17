@@ -5,6 +5,7 @@ import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shie
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
@@ -99,10 +100,12 @@ const AIRootCauseGraph = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-              <Network className="h-8 w-8 text-muted-foreground/30 mb-3" />
-              <p className="text-sm text-muted-foreground">Select a node to see connections</p>
-            </div>
+            <EmptyState
+              variant="card"
+              icon={Network}
+              title="No node selected"
+              description="Select a node to see its connections."
+            />
           )}
         </div>
       </div>
