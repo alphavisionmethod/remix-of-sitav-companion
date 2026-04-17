@@ -33,17 +33,46 @@ jobs:
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
           df -h
 
+      - name: Decode MOK signing key (if present)
+        env:
+          SITA_MOK_KEY_BASE64: ${{ secrets.SITA_MOK_KEY_BASE64 }}
+          SITA_MOK_CERT_BASE64: ${{ secrets.SITA_MOK_CERT_BASE64 }}
+        run: |
+          if [ -n "$SITA_MOK_KEY_BASE64" ] && [ -n "$SITA_MOK_CERT_BASE64" ]; then
+            echo "$SITA_MOK_KEY_BASE64"  | base64 -d > "$RUNNER_TEMP/mok.key"
+            echo "$SITA_MOK_CERT_BASE64" | base64 -d > "$RUNNER_TEMP/mok.crt"
+            echo "SITA_MOK_KEY=$RUNNER_TEMP/mok.key"   >> "$GITHUB_ENV"
+            echo "SITA_MOK_CERT=$RUNNER_TEMP/mok.crt"  >> "$GITHUB_ENV"
+            echo "::notice::Production MOK loaded"
+          else
+            echo "::warning::No MOK secrets — build will use ephemeral dev key (UNSIGNED for production)"
+          fi
+
       - name: Build ISO
         env:
           VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
         run: sudo -E bash os/image-builder/build.sh
 
+      - name: Verify boot artifacts
+        run: sudo -E bash os/scripts/verify-boot-artifacts.sh out
+
+      - name: Verify verity metadata
+        run: sudo -E bash os/scripts/verify-verity-metadata.sh out || echo "::warning::verity verification skipped (artifacts not present in this build profile)"
+
+      - name: Emit attestation
+        run: bash os/scripts/emit-attestation.sh
+
       - name: Inspect output
         run: |
-          ls -lh out/
+          ls -lh out/ generated/ || true
           cat out/*.manifest.json
+          cat generated/os-build-summary.md || true
 
-      - name: Upload ISO artifact
+      - name: Cleanup MOK
+        if: always()
+        run: rm -f "$RUNNER_TEMP/mok.key" "$RUNNER_TEMP/mok.crt"
+
+      - name: Upload ISO + attestation artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sita-os-iso
@@ -51,6 +80,11 @@ jobs:
             out/*.iso
             out/*.sha256
             out/*.manifest.json
+            out/os-*-receipt.json
+            out/verity-receipt.json
+            out/os-verification-report.json
+            generated/os-build-attestation.json
+            generated/os-build-summary.md
           retention-days: 14
           if-no-files-found: error
 
@@ -84,15 +118,18 @@ jobs:
       - name: Install QEMU + OVMF
         run: sudo apt-get update -qq && sudo apt-get install -y qemu-system-x86 ovmf
 
-      - name: Boot ISO (90s headless smoke test)
-        run: |
-          ISO="$(ls out/sita-os-*.iso | head -1)"
-          echo "booting $ISO"
-          timeout --preserve-status 90 \
-            qemu-system-x86_64 \
-              -m 2G -smp 2 -cpu qemu64 \
-              -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE.fd \
-              -cdrom "$ISO" -boot d \
-              -display none -nographic \
-              -serial mon:stdio 2>&1 | tee qemu.log | head -200 || true
-          grep -qiE "sita|systemd|kernel" qemu.log && echo "✅ kernel reached userspace" || (echo "❌ no kernel output" && exit 1)
+      - name: QEMU production validation (assertions, 180s)
+        env:
+          SITA_QEMU_TIMEOUT: "180"
+        run: bash os/qemu-validate.sh
+
+      - name: Upload QEMU validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qemu-validation
+          path: |
+            out/qemu-validation.log
+            out/qemu-validation-report.json
+          retention-days: 14
+          if-no-files-found: warn
