@@ -44,6 +44,7 @@ import { ShellLiveLayer } from "./shell/ShellLiveLayer";
 import { SecurePromptProvider } from "./shell/SecurePromptProvider";
 import { FilePickerProvider } from "./shell/FilePickerService";
 import { SecurePrompt } from "./shell/SecurePrompt";
+import { AppLaunchBridge } from "./app-platform/AppLaunchBridge";
 import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { useDemoModeRuntimeEnforcement } from "@/hooks/useDemoModeRuntimeEnforcement";
 
