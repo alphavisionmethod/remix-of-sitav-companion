@@ -182,6 +182,10 @@ serve(async (req) => {
     // Load advisor configs for user
     const serviceClient = createClient(supabaseUrl, serviceRoleKey);
 
+    // Phase 27 — Kill-switch enforcement (KS-ADVISORS)
+    const advisorKilled = await checkKillSwitchOrReject("KS-ADVISORS", serviceClient);
+    if (advisorKilled) return advisorKilled;
+
     const agentQuery = serviceClient
       .from("advisor_agents")
       .select("*")
