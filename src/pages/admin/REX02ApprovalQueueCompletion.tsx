@@ -14,22 +14,22 @@ function useApprovalQueueStats() {
     queryKey: ["rex02-approval-queue-stats"],
     queryFn: async () => {
       const { data, error } = await fromTable("ai_workforce_approval_queue")
-        .select("status, risk_tier, created_at, resolved_at, updated_at");
+        .select("id, title, status, priority, created_at, decision_at, updated_at, summary");
       if (error) throw error;
-      const items = data || [];
-      const pending = items.filter((i: Record<string, any>) => i.status === "pending");
-      const highRiskPending = pending.filter((i: Record<string, any>) => i.risk_tier === "critical" || i.risk_tier === "elevated");
-      const resolved = items.filter((i: Record<string, any>) => i.resolved_at);
+      const items = (data || []) as Array<Record<string, any>>;
+      const pending = items.filter((i) => i.status === "pending");
+      const highRiskPending = pending.filter((i) => i.priority === "urgent" || i.priority === "high");
+      const resolved = items.filter((i) => !!i.decision_at);
       const avgLatencyMs = resolved.length > 0
-        ? resolved.reduce((acc: number,  i: Record<string, any>) => {
+        ? resolved.reduce((acc: number, i) => {
             const created = new Date(i.created_at).getTime();
-            const resolvedAt = new Date(i.resolved_at).getTime();
+            const resolvedAt = new Date(i.decision_at).getTime();
             return acc + (resolvedAt - created);
           }, 0) / resolved.length
         : 0;
-      const aging = pending.filter((i: Record<string, any>) => {
+      const aging = pending.filter((i) => {
         const age = Date.now() - new Date(i.created_at).getTime();
-        return age > 24 * 60 * 60 * 1000; // older than 24h
+        return age > 24 * 60 * 60 * 1000;
       });
       return {
         total: items.length,
@@ -88,13 +88,13 @@ export default function REX02ApprovalQueueCompletion() {
               {(stats?.items || []).map((item: Record<string, any>) => (
                 <div key={item.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
                   <div>
-                    <p className="text-sm font-medium text-foreground">{item.action_type || "Unknown action"}</p>
+                    <p className="text-sm font-medium text-foreground">{item.title || "Untitled"}</p>
                     <p className="text-xs text-muted-foreground">
                       {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
                     </p>
                   </div>
-                  <Badge variant={item.risk_tier === "critical" ? "destructive" : "outline"}>
-                    {item.risk_tier || "standard"}
+                  <Badge variant={item.priority === "urgent" ? "destructive" : "outline"}>
+                    {item.priority || "normal"}
                   </Badge>
                 </div>
               ))}

@@ -206,6 +206,8 @@ export function useEventEmitter() {
 }
 
 // ── Approval Queue Hook ─────────────────────────────────────────────────────
+// Canonical: reads from `ai_workforce_approval_queue` directly.
+// Uses bindExecution() on approve so the full REX chain runs.
 export function useApprovalQueue() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -214,13 +216,14 @@ export function useApprovalQueue() {
     queryKey: ["approval-queue", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await fromTable("approval_queue")
+      const { data, error } = await (supabase as any)
+        .from("ai_workforce_approval_queue")
         .select("*")
         .eq("user_id", user.id)
         .eq("status", "pending")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
     enabled: !!user,
     refetchInterval: 30000,
@@ -228,19 +231,59 @@ export function useApprovalQueue() {
 
   const decide = useMutation({
     mutationFn: async ({ id, status, reason }: { id: string; status: "approved" | "rejected"; reason?: string }) => {
-      const { error } = await fromTable("approval_queue")
+      const { data: updated, error } = await (supabase as any)
+        .from("ai_workforce_approval_queue")
         .update({
           status,
-          decided_at: new Date().toISOString(),
-          decision_reason: reason || null,
-        } as never)
-        .eq("id", id);
+          decision_at: new Date().toISOString(),
+          reviewer_comments: reason || null,
+          reviewer_user_id: user?.id ?? null,
+        })
+        .eq("id", id)
+        .select("id, recommendation_id")
+        .maybeSingle();
       if (error) throw error;
+
+      // Advance the linked recommendation lifecycle + run execution chain on approve
+      if (updated?.recommendation_id) {
+        if (status === "approved") {
+          const { data: rec } = await (supabase as any)
+            .from("ai_workforce_recommendations")
+            .select("id, execution_required")
+            .eq("id", updated.recommendation_id)
+            .maybeSingle();
+          if (rec?.execution_required) {
+            try {
+              const { bindExecution } = await import("@/lib/services/rex/recommendation-engine");
+              await bindExecution(rec.id, id, { bindingType: "remediation_task" });
+            } catch (e) {
+              console.error("[useApprovalQueue] bindExecution failed:", e);
+            }
+          } else {
+            await (supabase as any)
+              .from("ai_workforce_recommendations")
+              .update({ lifecycle_status: "approved", approval_decision_at: new Date().toISOString(), approved_by_user_id: user?.id })
+              .eq("id", updated.recommendation_id);
+          }
+        } else {
+          await (supabase as any)
+            .from("ai_workforce_recommendations")
+            .update({ lifecycle_status: "rejected", approval_decision_at: new Date().toISOString(), rejected_by_user_id: user?.id })
+            .eq("id", updated.recommendation_id);
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["approval-queue"] });
+      queryClient.invalidateQueries({ queryKey: ["approvals"] });
+      queryClient.invalidateQueries({ queryKey: ["pending-approvals"] });
     },
   });
 
-  return { pendingApprovals, isLoading, approve: (id: string, reason?: string) => decide.mutate({ id, status: "approved", reason }), reject: (id: string, reason?: string) => decide.mutate({ id, status: "rejected", reason }) };
+  return {
+    pendingApprovals,
+    isLoading,
+    approve: (id: string, reason?: string) => decide.mutate({ id, status: "approved", reason }),
+    reject: (id: string, reason?: string) => decide.mutate({ id, status: "rejected", reason }),
+  };
 }
