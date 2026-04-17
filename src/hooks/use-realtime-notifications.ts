@@ -22,48 +22,69 @@ export function useRealtimeNotifications() {
   useEffect(() => {
     if (!user?.id) return;
 
-    const channel = supabase
-      .channel("realtime-notifications")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "notifications",
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          const n = payload.new as { title: string; body?: string; urgency?: string; domain?: string; action_url?: string };
-          const style = URGENCY_STYLES[n.urgency || "low"] || URGENCY_STYLES.low;
+    let cancelled = false;
+    let channel: ReturnType<typeof supabase.channel> | null = null;
 
-          // Web toast notification
-          toast[style.type](`${style.icon} ${n.title}`, {
-            description: n.body || undefined,
-            action: n.action_url
-              ? { label: "View", onClick: () => window.location.assign(n.action_url!) }
-              : undefined,
-            duration: n.urgency === "critical" ? 10000 : 5000,
-          });
-
-          // Native Electron notification
-          if (isElectron()) {
-            try {
-              window.electron?.sendNotification?.(
-                `${style.icon} ${n.title}`,
-                n.body || ""
-              );
-            } catch {
-              // Electron bridge not available
-            }
-          }
-
-          qc.invalidateQueries({ queryKey: ["notifications"] });
+    (async () => {
+      // Ensure the realtime socket is authenticated so RLS-filtered events reach us
+      try {
+        const { data } = await supabase.auth.getSession();
+        const token = data.session?.access_token;
+        if (token) {
+          supabase.realtime.setAuth(token);
         }
-      )
-      .subscribe();
+      } catch (err) {
+        console.warn("[realtime-notifications] setAuth failed", err);
+      }
+
+      if (cancelled) return;
+
+      channel = supabase
+        .channel(`realtime-notifications-${user.id}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const n = payload.new as { title: string; body?: string; urgency?: string; domain?: string; action_url?: string };
+            const style = URGENCY_STYLES[n.urgency || "low"] || URGENCY_STYLES.low;
+
+            // Web toast notification
+            toast[style.type](`${style.icon} ${n.title}`, {
+              description: n.body || undefined,
+              action: n.action_url
+                ? { label: "View", onClick: () => window.location.assign(n.action_url!) }
+                : undefined,
+              duration: n.urgency === "critical" ? 10000 : 5000,
+            });
+
+            // Native Electron notification
+            if (isElectron()) {
+              try {
+                window.electron?.sendNotification?.(
+                  `${style.icon} ${n.title}`,
+                  n.body || ""
+                );
+              } catch {
+                // Electron bridge not available
+              }
+            }
+
+            qc.invalidateQueries({ queryKey: ["notifications"] });
+          }
+        )
+        .subscribe((status) => {
+          console.log("[realtime-notifications] status:", status);
+        });
+    })();
 
     return () => {
-      supabase.removeChannel(channel);
+      cancelled = true;
+      if (channel) supabase.removeChannel(channel);
     };
   }, [user?.id, qc]);
 }
