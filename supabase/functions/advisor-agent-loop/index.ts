@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Agent Loop
