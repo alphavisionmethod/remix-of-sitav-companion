@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +16,9 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Siren, Clock, AlertTriangle, CheckCircle2, XCircle, Activity, Users,
   Server, Zap, RotateCcw, FileText, MessageSquare, ToggleRight, ToggleLeft,
-  ChevronRight, Shield, Target, Play, Pause, TrendingDown, Eye, Bell
+  ChevronRight, Shield, Target, Play, Pause, TrendingDown, Eye, Bell, BookOpen,
 } from "lucide-react";
+import { RUNBOOK_REGISTRY, resolveRunbooksForIncident } from "@/lib/support";
 
 // ── Severity Definitions ──
 type Severity = "P1" | "P2" | "P3" | "P4";
