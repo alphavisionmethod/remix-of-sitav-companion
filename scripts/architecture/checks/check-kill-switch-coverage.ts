@@ -12,7 +12,11 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import { ViolationCollector } from "../lib/utils";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { KILL_SWITCH_REGISTRY } from "../../../src/lib/control-plane/kill-switch-registry";
 import { KILL_SWITCH_ENFORCEMENT_MAP } from "../../../src/lib/control-plane/kill-switch-enforcement-map";
 import { KILL_SWITCH_DEPENDENCY_MAP } from "../../../src/lib/control-plane/kill-switch-dependency-map";
