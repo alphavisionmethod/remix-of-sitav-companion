@@ -68,3 +68,11 @@ contextBridge.exposeInMainWorld('electron', {
   getNetworkSentinelStatus: () => ipcRenderer.invoke('get-network-sentinel-status'),
   getShieldStatus: () => ipcRenderer.invoke('get-shield-status'),
 });
+
+// ── App Platform — native app launch bridge ──────────────────
+contextBridge.exposeInMainWorld('sitaApps', {
+  launchNativeApp: (appId) => ipcRenderer.invoke('sita-apps:launch-native', appId),
+  checkNativeAppAvailability: (appId) => ipcRenderer.invoke('sita-apps:check-native', appId),
+  openExternalUrl: (url) => ipcRenderer.invoke('sita-apps:open-external', url),
+  getHostCapabilities: () => ipcRenderer.invoke('sita-apps:host-capabilities'),
+});
