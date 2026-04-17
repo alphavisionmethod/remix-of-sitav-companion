@@ -998,8 +998,8 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         screenComponentRef: "src/pages/LandingPage.tsx",
         edgeFunctionRefs: ["communications-api"],
         serviceRefs: ["notification-service"],
-        tableRefs: ["push_subscriptions"],
-        policyRefs: ["push_subscriptions.user_self_access"],
+        tableRefs: ["mobile_push_tokens"],
+        policyRefs: ["mobile_push_tokens.user_self_access"],
       },
       {
         stepId: "open-deep-link",
