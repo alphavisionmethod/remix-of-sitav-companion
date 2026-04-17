@@ -4,6 +4,7 @@ import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cor
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { withTrace } from "../_shared/tracing.ts";
 
 const GATEWAY_BASE = "https://connector-gateway.lovable.dev";
 
@@ -36,6 +37,7 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
+  return withTrace(req, "connector-proxy", "proxy", async (_logger, _state) => {
   // Parse body once — Deno Request.json() can only be called once
   let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
@@ -160,4 +162,5 @@ serve(async (req) => {
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
+  });
 });

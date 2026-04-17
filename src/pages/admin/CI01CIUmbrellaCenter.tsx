@@ -33,6 +33,7 @@ const PHASE_TITLES: Record<CIGatePhase, string> = {
   "phase-17-edge-function-health-replay": "17 — Edge Function Health & Replay",
   "phase-18-db-reality": "18 — DB / Migration Reality",
   "phase-19-auth-policy-trust-reality": "19 — Auth / Policy / Trust Reality",
+  "phase-20-production-operations": "20 — Production Operations",
 };
 
 function GateCard({ gate }: { gate: CIGateEntry }) {

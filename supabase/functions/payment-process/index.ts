@@ -4,6 +4,7 @@ import { requireAuth } from "../_shared/auth.ts";
 import { z, zodValidate } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { withTrace } from "../_shared/tracing.ts";
 
 const ActionSchema = z.discriminatedUnion("action", [
   z.object({
@@ -34,10 +35,12 @@ Deno.serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
+  return withTrace(req, "payment-process", "action", async (_logger, state) => {
   try {
     const auth = await requireAuth(req);
     if (auth instanceof Response) return auth;
     const { user, supabase } = auth;
+    state.setUser(user.id);
 
     const rl = checkRateLimit(`payment:${user.id}`, 30);
     if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
@@ -145,4 +148,5 @@ Deno.serve(async (req) => {
   } catch (e) {
     return corsError(e.message || "Internal error", 500);
   }
+  });
 });

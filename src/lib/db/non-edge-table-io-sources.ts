@@ -38,6 +38,28 @@ const sys = (owner: string): TableIOSource => ({ kind: "system-internal", owner 
 const view = (rationale: string): TableIOSource => ({ kind: "view-only", rationale });
 
 export const NON_EDGE_TABLE_IO: Record<string, NonEdgeTableIO> = {
+  // ── Phase 20 — production-operations observability tables ────
+  error_events: {
+    writers: [sys("error-ingest edge fn"), sys("_shared/error-sink (edge fns)")],
+    readers: [clientRead("ErrorEventsExplorer"), sys("alert-ingest threshold scanner")],
+  },
+  trace_spans: {
+    writers: [sys("trace-ingest edge fn"), sys("_shared/tracing.withTrace")],
+    readers: [clientRead("ObservabilityPage Traces tab"), sys("support-diagnostics bundler")],
+  },
+  uptime_heartbeats: {
+    writers: [sys("health-beat edge fn"), sys("health-cron pg_cron job")],
+    readers: [clientRead("ObservabilityPage Uptime tab"), view("uptime_status rolling view")],
+  },
+  alerts: {
+    writers: [sys("alert-ingest edge fn"), sys("alert-actions edge fn (ack/resolve)")],
+    readers: [clientRead("AlertTriageBoard"), sys("alert-route fan-out"), sys("incident-management linker")],
+  },
+  alert_routes: {
+    writers: [sys("admin migrations / runtime config")],
+    readers: [sys("alert-route edge fn")],
+  },
+
   // ── admin-governance ─────────────────────────────────────────
   action_safety_classifications: { writers: [sys("admin-governance migrations")], readers: [clientRead("AdminSafetyMatrix"), sys("policy-evaluator")] },
   admin_role_permissions: { writers: [sys("admin-governance seed")], readers: [clientRead("AdminRolesPage"), sys("has_admin_permission RPC")] },

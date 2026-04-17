@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, AlertTriangle, Zap, Clock, Target, Server, BarChart3, Bell, CheckCircle, RefreshCw, Play, Gauge, Database, ArrowRight, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_ADMIN_ALERTS as DEMO_ALERTS, DEMO_RUNBOOKS, DEMO_SLOS } from "@/lib/demo-data/admin-platform";
+import { DEMO_RUNBOOKS, DEMO_SLOS } from "@/lib/demo-data/admin-platform";
+import { supabase } from "@/integrations/supabase/client";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -72,6 +73,30 @@ const OperationsCommandCenter = () => {
     },
   });
 
+  // Phase 20.D — live alerts from public.alerts
+  const { data: liveAlerts = [] } = useQuery({
+    queryKey: ["ops-live-alerts"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("alerts")
+        .select("id, title, source, severity, status, last_seen_at, runbook_id")
+        .in("status", ["active", "acknowledged", "suppressed"])
+        .order("last_seen_at", { ascending: false })
+        .limit(25);
+      return (data ?? []).map((a) => ({
+        id: a.id,
+        title: a.title,
+        source: a.source,
+        severity: (a.severity === "critical" || a.severity === "high") ? "high" :
+                  a.severity === "medium" ? "medium" : "low",
+        status: a.status,
+        time: new Date(a.last_seen_at as string).toLocaleTimeString(),
+        runbook: !!a.runbook_id,
+      }));
+    },
+    refetchInterval: 15000,
+  });
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
 <div className="flex items-center justify-between">
@@ -88,7 +113,7 @@ const OperationsCommandCenter = () => {
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
             { label: "Services Healthy", value: `${DEMO_SERVICES.filter(s => s.status === "healthy").length}/${DEMO_SERVICES.length}`, icon: Server, color: "text-emerald-500" },
-            { label: "Active Alerts", value: String(DEMO_ALERTS.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
+            { label: "Active Alerts", value: String(liveAlerts.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
             { label: "Open Incidents", value: String(incidentCount ?? DEMO_INCIDENTS.length), icon: AlertTriangle, color: "text-red-500" },
             { label: "SLO Budget OK", value: `${DEMO_SLOS.filter(s => s.burnRate < 1).length}/${DEMO_SLOS.length}`, icon: Target, color: "text-emerald-500" },
             { label: "Queue Pressure", value: DEMO_QUEUES.some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: DEMO_QUEUES.some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
@@ -137,7 +162,10 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="alerts" className="mt-4 space-y-2">
-            {DEMO_ALERTS.map(a => (
+            {liveAlerts.length === 0 && (
+              <Card><CardContent className="p-6 text-center text-xs text-muted-foreground">No active alerts.</CardContent></Card>
+            )}
+            {liveAlerts.map(a => (
               <Card key={a.id} className="hover:bg-muted/30 transition-colors">
                 <CardContent className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">

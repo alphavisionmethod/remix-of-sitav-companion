@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "gate": "production-operations",
+  "phase": "phase-20-production-operations",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "evidence": {
+    "A1_error_monitoring": {
+      "sentry_init_present": true,
+      "sentry_init_called": true,
+      "native_error_ingest_present": true,
+      "error_service_targets_ingest": true,
+      "error_explorer_present": true
+    },
+    "A2_apm_tracing": {
+      "request_context_present": true,
+      "apm_present": true,
+      "trace_shared_present": true,
+      "trace_ingest_present": true,
+      "fetch_interceptor_installed": true,
+      "span_exporter_started": true,
+      "hot_fns_wrapped": 6,
+      "hot_fns_total": 6,
+      "wrapped": [
+        "supabase/functions/agent-executor/index.ts",
+        "supabase/functions/admin-bff-gateway/index.ts",
+        "supabase/functions/user-bff-gateway/index.ts",
+        "supabase/functions/ai-gateway/index.ts",
+        "supabase/functions/payment-process/index.ts",
+        "supabase/functions/connector-proxy/index.ts"
+      ]
+    },
+    "A3_uptime": {
+      "health_check_real_probes": true,
+      "ready_present": true,
+      "live_present": true,
+      "beat_present": true,
+      "cron_present": true,
+      "uptime_lib_present": true,
+      "client_heartbeat_started": true
+    },
+    "A4_alert_routing": {
+      "ingest_present": true,
+      "route_present": true,
+      "actions_present": true,
+      "client_present": true,
+      "triage_board_demo_free": true,
+      "triage_board_live_wired": true
+    }
+  }
+}
