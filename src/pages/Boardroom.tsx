@@ -920,12 +920,12 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       ) : hasReceipt && Array.isArray(latestReceipt?.proof_trail) && latestReceipt.proof_trail.length > 0 ? (
         <EvidenceChain
           title={latestReceipt?.approved_motion || "Decision Evidence Chain"}
-          nodes={(latestReceipt.proof_trail as any[]).slice(0, 8).map((p: any, i: number) => ({
+          nodes={(latestReceipt.proof_trail as Array<Record<string, unknown>>).slice(0, 8).map((p, i) => ({
             id: String(p.id || i),
-            label: p.label || p.title || `Step ${i + 1}`,
-            type: (p.type || "source") as any,
+            label: String(p.label || p.title || `Step ${i + 1}`),
+            type: ((p.type as EvidenceNode["type"]) || "source"),
             confidence: Math.round((Number(p.confidence) || 0.85) * 100),
-            detail: p.detail || p.summary,
+            detail: (p.detail as string | undefined) || (p.summary as string | undefined),
           }))}
         />
       ) : (
@@ -973,7 +973,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           decidedBy="Owner"
           timestamp={latestReceipt?.created_at ? new Date(latestReceipt.created_at).toLocaleString() : "—"}
           receiptHash={`0x${String(latestReceipt?.id || "").replace(/-/g, "").slice(0, 16)}`}
-          status={(latestReceipt?.status === "sealed" ? "sealed" : "sealed") as any}
+          status="sealed"
         />
       ) : (
         <EmptyState

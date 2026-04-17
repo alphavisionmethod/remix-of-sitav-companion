@@ -445,16 +445,16 @@ function HQ03DecisionHistory() {
   const { data: resolved = [] } = useQuery({
     queryKey: ["hq-resolved"],
     queryFn: async () => {
-      const { data, error } = await db.from("ai_workforce_approval_queue")
+      const { data, error } = await supabase.from("ai_workforce_approval_queue")
         .select("*, ai_workforce_recommendations(domain, severity, role_key)")
         .in("status", ["approved", "rejected", "deferred", "executed", "expired"])
         .order("decision_at", { ascending: false, nullsFirst: false })
         .limit(100);
       if (error) return [];
-      return ((data ?? []) as Array<Record<string, any>>).map((row): QueueItem => {
-        const rec = row.ai_workforce_recommendations || {};
+      return ((data ?? []) as Array<Record<string, unknown>>).map((row): QueueItem => {
+        const rec = (row.ai_workforce_recommendations as Record<string, unknown> | null) || {};
         return {
-          ...(row as any),
+          ...(row as unknown as QueueItem),
           summary: row.summary,
           description: row.summary,
           role_key: rec.role_key || "system",
