@@ -66,7 +66,7 @@ export function WebAppWindow({ appId, name, url, iconUrl, publisher, onClose }: 
 
         {loadState === "blocked" ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
-            <ShieldAlert className="h-10 w-10 text-amber-400" />
+            <ShieldAlert className="h-10 w-10 text-warning" />
             <div>
               <p className="text-sm font-semibold text-foreground">{name} can't be embedded</p>
               <p className="mt-1 max-w-md text-xs text-muted-foreground">
