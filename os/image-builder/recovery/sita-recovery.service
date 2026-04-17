@@ -1,0 +1,18 @@
+[Unit]
+Description=SITA OS Recovery Console
+DefaultDependencies=no
+After=systemd-tmpfiles-setup.service
+Before=shutdown.target
+
+[Service]
+Type=idle
+ExecStart=/usr/sbin/sita-recovery menu
+StandardInput=tty
+StandardOutput=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+Restart=on-failure
+
+[Install]
+WantedBy=sita-recovery.target
