@@ -109,7 +109,7 @@ export function IngestUrlDialog({ open, onOpenChange }: Props) {
                   <p className="font-semibold truncate">{webResult.title ?? "Untitled"}</p>
                   <p className="text-xs text-muted-foreground truncate">{webResult.publisher ?? webResult.canonical_url}</p>
                 </div>
-                <CheckCircle2 className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
               </div>
 
               {webResult.description && (
@@ -128,7 +128,7 @@ export function IngestUrlDialog({ open, onOpenChange }: Props) {
                 )}
                 <span className="px-2 py-0.5 rounded bg-muted">{webResult.icons.length} icon(s)</span>
                 {webResult.manifest_url && (
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600">PWA manifest</span>
+                  <span className="px-2 py-0.5 rounded bg-primary/15 text-primary">PWA manifest</span>
                 )}
               </div>
 
