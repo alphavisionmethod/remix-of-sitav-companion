@@ -60,15 +60,36 @@ for (const [fn, verdict] of Object.entries(EDGE_FUNCTION_BACKEND_CATEGORY)) {
   }
 }
 
-// ── Item 16: cross-domain writers ─────────────────────────────
-const crossDomainOffenders: { table: string; writers: readonly string[] }[] = [];
+// ── Item 16: cross-domain writers (must be exempted) ──────────
+const crossDomainOffenders: { table: string; writers: readonly string[]; unexempted: readonly string[] }[] = [];
+let unexemptedTotal = 0;
 for (const entry of Object.values(TABLE_WRITER_READER_MAP)) {
   if (entry.crossDomainWriters.length > 0) {
-    crossDomainOffenders.push({ table: entry.table, writers: entry.crossDomainWriters });
+    crossDomainOffenders.push({
+      table: entry.table,
+      writers: entry.crossDomainWriters,
+      unexempted: entry.unexemptedCrossDomainWriters,
+    });
+    if (entry.unexemptedCrossDomainWriters.length > 0) {
+      unexemptedTotal += entry.unexemptedCrossDomainWriters.length;
+      add(
+        "error",
+        "unexempted-cross-domain-writer",
+        `Table ${entry.table} (owner=${entry.ownerTeam}) has UNEXEMPTED cross-domain writers: ${entry.unexemptedCrossDomainWriters.join(", ")} — register in CROSS_DOMAIN_WRITE_EXEMPTIONS`,
+      );
+    }
+  }
+}
+
+// ── Items 3.b/3.c: every table has at least one writer or reader ──
+const tablesWithoutAnyIO: string[] = [];
+for (const entry of Object.values(TABLE_WRITER_READER_MAP)) {
+  if (!entry.hasAnyIO) {
+    tablesWithoutAnyIO.push(entry.table);
     add(
-      "warning",
-      "cross-domain-writer",
-      `Table ${entry.table} (owner=${entry.ownerTeam}) is written by cross-domain functions: ${entry.crossDomainWriters.join(", ")}`,
+      "error",
+      "table-no-io",
+      `Table ${entry.table} (owner=${entry.ownerTeam}) has no declared writer or reader — add to EDGE_FUNCTION_TABLE_IO or NON_EDGE_TABLE_IO`,
     );
   }
 }
@@ -157,6 +178,7 @@ const report = {
     tablesWithReaders: stats.tablesWithReaders,
     tablesWithoutAnyIO: stats.tablesWithoutAnyIO,
     crossDomainViolations: stats.crossDomainViolations,
+    unexemptedCrossDomainWriters: unexemptedTotal,
     backup: {
       ok: backupOk,
       ageDays: backupAgeDays === Infinity ? null : backupAgeDays,
@@ -171,6 +193,7 @@ const report = {
   issues,
   crossDomainOffenders,
   missingFromIO,
+  tablesWithoutAnyIO,
 };
 
 mkdirSync(dirname(REPORT), { recursive: true });
@@ -178,6 +201,7 @@ writeFileSync(REPORT, JSON.stringify(report, null, 2));
 
 console.log(`DB Reality: ${totalTables} tables · ${ioStats.total} fn-io entries`);
 console.log(`  errors=${errorCount} warnings=${warningCount}`);
+console.log(`  tables-without-io=${stats.tablesWithoutAnyIO} unexempted-cross-domain=${unexemptedTotal}`);
 console.log(`  backup-ok=${backupOk} (${backupAgeDays === Infinity ? "n/a" : `${backupAgeDays}d old`})`);
 console.log(`  restore-drill-ok=${restoreOk}`);
 console.log(`  → ${REPORT}`);

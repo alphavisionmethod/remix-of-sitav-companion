@@ -19,15 +19,29 @@ import {
   getWritersFor,
 } from "../backend-topology/edge-function-table-io-map";
 import { EDGE_FUNCTION_OWNER_MAP, type OwnerTeam } from "../backend-topology/edge-function-owner-map";
+import { NON_EDGE_TABLE_IO, type TableIOSource } from "./non-edge-table-io-sources";
+import {
+  isExemptedCrossDomainWriter,
+} from "./cross-domain-write-exemptions";
 
 export interface TableWriterReaderEntry {
   readonly table: string;
   readonly domain: DbDomain;
   readonly ownerTeam: OwnershipTeam;
+  /** Edge-function writers (function names). */
   readonly writers: readonly string[];
+  /** Edge-function readers (function names). */
   readonly readers: readonly string[];
+  /** Non-edge writers (client-sdk / rpc / trigger / system / view). */
+  readonly nonEdgeWriters: readonly TableIOSource[];
+  /** Non-edge readers. */
+  readonly nonEdgeReaders: readonly TableIOSource[];
   /** Writer functions whose owner-team is NOT aligned with the table's owner team. */
   readonly crossDomainWriters: readonly string[];
+  /** Cross-domain writers without an exemption — release blocker. */
+  readonly unexemptedCrossDomainWriters: readonly string[];
+  /** True when at least one writer or reader (edge OR non-edge) is declared. */
+  readonly hasAnyIO: boolean;
 }
 
 /** Map function-owner team → table-owner team for cross-domain comparison. */
@@ -67,6 +81,9 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
       const writers = getWritersFor(t.name);
       const readers = getReadersFor(t.name);
       const ownerTeam = DOMAIN_TO_OWNER[t.domain];
+      const nonEdge = NON_EDGE_TABLE_IO[t.name];
+      const nonEdgeWriters = nonEdge?.writers ?? [];
+      const nonEdgeReaders = nonEdge?.readers ?? [];
       const crossDomainWriters = SHARED_TABLES.has(t.name)
         ? []
         : writers.filter((fn) => {
@@ -77,6 +94,14 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
             const expectedTableOwner = FUNCTION_OWNER_TO_TABLE_OWNER[fnOwner];
             return expectedTableOwner !== ownerTeam;
           });
+      const unexemptedCrossDomainWriters = crossDomainWriters.filter(
+        (fn) => !isExemptedCrossDomainWriter(t.name, fn),
+      );
+      const hasAnyIO =
+        writers.length > 0 ||
+        readers.length > 0 ||
+        nonEdgeWriters.length > 0 ||
+        nonEdgeReaders.length > 0;
       return [
         t.name,
         {
@@ -85,7 +110,11 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
           ownerTeam,
           writers,
           readers,
+          nonEdgeWriters,
+          nonEdgeReaders,
           crossDomainWriters,
+          unexemptedCrossDomainWriters,
+          hasAnyIO,
         } as TableWriterReaderEntry,
       ];
     }),
@@ -99,10 +128,14 @@ export function tableWriterReaderStats() {
   const entries = Object.values(TABLE_WRITER_READER_MAP);
   return {
     totalTables: entries.length,
-    tablesWithWriters: entries.filter((e) => e.writers.length > 0).length,
-    tablesWithReaders: entries.filter((e) => e.readers.length > 0).length,
-    tablesWithoutAnyIO: entries.filter((e) => e.writers.length === 0 && e.readers.length === 0).length,
+    tablesWithWriters: entries.filter((e) => e.writers.length > 0 || e.nonEdgeWriters.length > 0).length,
+    tablesWithReaders: entries.filter((e) => e.readers.length > 0 || e.nonEdgeReaders.length > 0).length,
+    tablesWithoutAnyIO: entries.filter((e) => !e.hasAnyIO).length,
     crossDomainViolations: entries.reduce((acc, e) => acc + e.crossDomainWriters.length, 0),
     tablesWithCrossDomainWriters: entries.filter((e) => e.crossDomainWriters.length > 0).length,
+    unexemptedCrossDomainWriters: entries.reduce(
+      (acc, e) => acc + e.unexemptedCrossDomainWriters.length,
+      0,
+    ),
   };
 }
