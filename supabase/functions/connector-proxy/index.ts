@@ -143,6 +143,23 @@ serve(async (req) => {
     const data = await response.json();
 
     if (!response.ok) {
+      // Phase 22.1.C — record failure for auto-fallback policy
+      try {
+        const svc = createClient(
+          Deno.env.get("SUPABASE_URL")!,
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+        );
+        const { data: acct } = await svc
+          .from("connector_accounts")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("connector_type", connector)
+          .maybeSingle();
+        if (acct?.id) {
+          await recordProxyFailure(svc, user.id, acct.id, connector, `gateway_${response.status}`);
+        }
+      } catch (_) { /* best effort */ }
+
       return new Response(
         JSON.stringify({ error: `Gateway error [${response.status}]`, details: data }),
         { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
