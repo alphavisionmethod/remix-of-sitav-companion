@@ -28,7 +28,7 @@ export interface DomainScoped {
 }
 
 /** Canonical domain identifier */
-export type DomainId = "business" | "finance" | "concierge" | "platform" | "cross-domain";
+export type DomainId = "business" | "finance" | "concierge" | "platform" | "cross-domain" | "investment" | "boardroom";
 
 /** Canonical user role */
 export type UserRole = "owner" | "admin" | "member" | "viewer" | "guest";

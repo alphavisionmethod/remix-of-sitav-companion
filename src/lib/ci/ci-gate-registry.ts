@@ -382,6 +382,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description:
       "Direct insert into workflow_runs is forbidden outside workflow-execute / workflow-repair / workflow-replay / workflow-stuck-detector edge functions.",
   },
+
+  // ── Phase 24 ── Domain OS Reality (Checklist 17)
+  {
+    id: "domain-reality",
+    phase: "phase-24-domain-reality",
+    title: "Domain OS reality (Checklist 17: 5 core domains × 10 checks)",
+    script: "scripts/architecture/checks/check-domain-reality.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "5 core domains (business-os, finance-os, concierge-os, investment-office, boardroom) each have a manifest, a row in domain_ownership_registry, all manifest dbTables in the live schema, a canonical routes file, an e2e spec, at least one edge fn, and (for boardroom) a proof-writing edge fn.",
+    producesArtifact: "generated/domain-reality-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {

@@ -9,6 +9,8 @@ import { businessManifest } from "./manifests/business-manifest";
 import { financeManifest } from "./manifests/finance-manifest";
 import { conciergeManifest } from "./manifests/concierge-manifest";
 import { platformManifest } from "./manifests/platform-manifest";
+import { investmentManifest } from "./manifests/investment-manifest";
+import { boardroomManifest } from "./manifests/boardroom-manifest";
 import { crossDomainEventFlows, type CrossDomainEventFlow } from "./manifests/cross-domain-manifest";
 import { scoreDomainCompleteness, type DomainCompletenessScore } from "./domain-completeness";
 
@@ -17,6 +19,8 @@ const manifests: Record<string, DomainManifest> = {
   finance: financeManifest,
   concierge: conciergeManifest,
   platform: platformManifest,
+  investment: investmentManifest,
+  boardroom: boardroomManifest,
 };
 
 export function getDomainManifest(id: DomainId): DomainManifest | undefined {
