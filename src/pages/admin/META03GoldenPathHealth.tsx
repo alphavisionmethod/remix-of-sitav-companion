@@ -304,7 +304,7 @@ function DimensionTile({ icon, label, value }: { icon: React.ReactNode; label: s
   );
 }
 
-function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: readonly string[] }) {
+function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: ReadonlyArray<string> }) {
   return (
     <div className="flex items-start gap-1.5">
       <span className="flex items-center gap-1 text-muted-foreground shrink-0 w-[90px]">
