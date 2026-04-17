@@ -94,7 +94,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-pending-approvals"],
     enabled: isAdmin,
     queryFn: async () => {
-      const { count, error } = await db.from("approval_queue")
+      const { count, error } = await db.from("ai_workforce_approval_queue")
         .select("*", { count: "exact", head: true })
         .eq("status", "pending");
       if (error) throw error;

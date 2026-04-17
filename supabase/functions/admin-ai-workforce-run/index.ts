@@ -249,13 +249,12 @@ Deno.serve(async (req) => {
 
     if (budgetCheck?.should_block) {
       await supabaseAdmin.from("ai_workforce_invocations").insert({
-        user_id: user.id, role_key, task_type: task_key,
-        budget_class: resolvedBudgetClass, status: "blocked_budget",
+        user_id: user.id, role_key, task_key,
+        budget_posture: budget_posture || "normal",
+        status: "blocked_budget",
         mode, scope_type, scope_ref, scope_payload,
-        requested_budget_posture: budget_posture,
-        resolved_routing_class: resolvedRoutingClass,
-        invoked_by_user_id: user.id,
-        cost_cents: 0, tokens_used: 0, latency_ms: 0, fallback_occurred: false,
+        cost_cents: 0, tokens_in: 0, tokens_out: 0, duration_ms: 0,
+        error_message: budgetCheck.reason || "Budget policy blocked invocation",
       });
 
       return new Response(JSON.stringify({
@@ -279,21 +278,15 @@ Deno.serve(async (req) => {
     }
 
     // STEP 7: Create invocation record
-    const startedAt = new Date().toISOString();
     const { data: invocation, error: invErr } = await supabaseAdmin
       .from("ai_workforce_invocations")
       .insert({
-        user_id: user.id, role_key, task_type: task_key,
-        budget_class: resolvedBudgetClass,
+        user_id: user.id, role_key, task_key,
+        budget_posture: budget_posture || "normal",
         status: cachedOutput ? "success" : "running",
         mode, scope_type, scope_ref, scope_payload,
-        requested_budget_posture: budget_posture,
-        resolved_routing_class: resolvedRoutingClass,
-        used_cached_output: !!cachedOutput,
-        cached_output_ref: cachedOutput?.id || null,
-        invoked_by_user_id: user.id,
-        started_at: startedAt,
-        cost_cents: 0, tokens_used: 0, latency_ms: 0, fallback_occurred: false,
+        model_used: cachedOutput?.model_used ?? null,
+        cost_cents: 0, tokens_in: 0, tokens_out: 0, duration_ms: 0,
       })
       .select().single();
 
@@ -306,16 +299,16 @@ Deno.serve(async (req) => {
     // STEP 8: Return cached if fresh
     if (cachedOutput) {
       await supabaseAdmin.from("ai_workforce_cached_outputs")
-        .update({ reuse_count: (cachedOutput.reuse_count || 0) + 1 })
+        .update({ hit_count: (cachedOutput.hit_count || 0) + 1 })
         .eq("id", cachedOutput.id);
 
       await supabaseAdmin.from("ai_workforce_invocations")
-        .update({ status: "success", completed_at: new Date().toISOString(), cost_cents: 0 })
+        .update({ status: "success", cost_cents: 0, duration_ms: 0 })
         .eq("id", invocation.id);
 
       return new Response(JSON.stringify({
         status: "success", invocation_id: invocation.id,
-        cached: true, cache_reuse_count: (cachedOutput.reuse_count || 0) + 1,
+        cached: true, cache_hit_count: (cachedOutput.hit_count || 0) + 1,
         output: { summary: "Cached result returned", type: "cached" },
         recommendations_count: 0, approval_items_created: 0,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -349,21 +342,21 @@ Provide your structured analysis with findings and recommendations.`;
         await supabaseAdmin.from("ai_workforce_invocations")
           .update({
             status: "failed",
-            completed_at: new Date().toISOString(),
-            error_summary: (fallbackErr as Error).message,
-            fallback_occurred: true,
+            error_message: (fallbackErr as Error).message,
           })
           .eq("id", invocation.id);
 
-        // Update role health
+        // Update role health (canonical columns only)
         await supabaseAdmin.from("ai_workforce_role_health")
           .upsert({
-            user_id: user.id, role_id: role.id,
-            health_state: "degraded",
-            health_reason: (fallbackErr as Error).message,
-            last_failure_at: new Date().toISOString(),
-            last_used_at: new Date().toISOString(),
-          }, { onConflict: "role_id" });
+            user_id: user.id,
+            role_key,
+            health_status: "degraded",
+            last_error: (fallbackErr as Error).message,
+            last_invocation_at: new Date().toISOString(),
+            failed_invocations: 1,
+            total_invocations: 1,
+          }, { onConflict: "user_id,role_key" });
 
         return new Response(JSON.stringify({
           status: "failed",
@@ -385,21 +378,24 @@ Provide your structured analysis with findings and recommendations.`;
     const costCents = estimateCostCents(modelUsed, aiResult.tokens_used);
     const hasRecommendations = parsed.recommendations && parsed.recommendations.length > 0;
 
-    // STEP 11: Persist output
+    // STEP 11: Persist output (canonical columns: invocation_id, output_type, content, quality_score)
     const { data: output } = await supabaseAdmin
       .from("ai_workforce_outputs")
       .insert({
         user_id: user.id,
         invocation_id: invocation.id,
-        output_type: (task as Record<string, unknown>).task_family || "summary",
-        title: `${role.display_name}: ${task.display_name}`,
-        summary_text: parsed.summary,
-        structured_payload: parsed,
-        confidence_class: parsed.confidence >= 0.8 ? "high" : parsed.confidence >= 0.5 ? "medium" : "low",
-        launch_honesty_class: role.launch_honesty_class || "internal_only",
-        contains_recommendations: hasRecommendations,
-        contains_proposed_actions: hasRecommendations,
-        contains_sensitive_suggestions: false,
+        output_type: (task as Record<string, unknown>).task_family as string || "summary",
+        content: {
+          title: `${role.display_name}: ${task.display_name}`,
+          summary: parsed.summary,
+          findings: parsed.findings ?? [],
+          recommendations: parsed.recommendations ?? [],
+          confidence: parsed.confidence ?? 0.5,
+          launch_honesty_class: (role as Record<string, unknown>).launch_honesty_class || "internal_only",
+          contains_recommendations: hasRecommendations,
+        },
+        quality_score: typeof parsed.confidence === "number" ? Math.round(parsed.confidence * 100) / 100 : null,
+        flagged: false,
       })
       .select().single();
 
