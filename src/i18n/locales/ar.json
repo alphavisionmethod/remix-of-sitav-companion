@@ -1,0 +1,134 @@
+{
+  "setup": {
+    "boot": {
+      "preparing": "جارٍ تحضير بيئتك",
+      "subtitle": "نظامك يتشكل حولك",
+      "verified": "تم التحقق من النظام",
+      "personalizing": "جارٍ تخصيص تجربتك",
+      "activating": "جارٍ تفعيل بيئتك",
+      "arriving": "جاهز تقريبًا",
+      "ready": "بيئتك جاهزة",
+      "hardwareDetect": "اكتشاف قدرات النظام",
+      "secureInit": "إنشاء أساس آمن",
+      "workspacePrep": "تحضير مساحة العمل",
+      "trustedServices": "بدء الخدمات الموثوقة",
+      "finalizing": "إنهاء بيئتك"
+    },
+    "secureInit": {
+      "title": "تأمين نظامك",
+      "subtitle": "بناء أساس محمي لبياناتك",
+      "encryption": "حماية التخزين",
+      "integrity": "سلامة النظام",
+      "privacy": "خط الخصوصية الأساسي",
+      "recovery": "جاهزية الاسترداد",
+      "complete": "تم تأمين النظام",
+      "deviceProtection": "حماية الجهاز",
+      "privacyBaseline": "خط الخصوصية الأساسي",
+      "recoveryReadiness": "جاهزية الاسترداد"
+    },
+    "language": {
+      "title": "اللغة والمنطقة",
+      "subtitle": "اختر لغتك وتفضيلاتك الإقليمية",
+      "language": "اللغة",
+      "region": "المنطقة",
+      "timezone": "المنطقة الزمنية",
+      "dateFormat": "تنسيق التاريخ",
+      "currency": "العملة"
+    },
+    "trust": {
+      "title": "اختر كيف تساعدك SITA",
+      "subtitle": "أنت تتحكم بما يمكن لـ SITA اقتراحه ومحاكاته والتعامل معه",
+      "observeOnly": "المراقبة فقط",
+      "observeDesc": "SITA تراقب ولا تتصرف أبدًا",
+      "suggest": "اقتراح",
+      "suggestDesc": "SITA توصي وأنت تقرر",
+      "simulate": "محاكاة قبل التنفيذ",
+      "simulateDesc": "SITA تعرض النتائج مسبقًا وتسأل قبل المتابعة",
+      "askBefore": "السؤال قبل التصرف",
+      "askBeforeDesc": "SITA تحضّر الإجراءات وتنفذ فقط بعد الموافقة",
+      "handleRoutine": "التعامل مع المهام الروتينية",
+      "handleRoutineDesc": "SITA تدير المهام المتكررة وتشير إلى الاستثناءات",
+      "fineTune": "ضبط الأذونات",
+      "spendingThreshold": "حد الإنفاق",
+      "financialApprovals": "الموافقات المالية",
+      "calendarApprovals": "موافقات التقويم",
+      "communicationApprovals": "موافقات الاتصالات",
+      "reminderFrequency": "تكرار التذكير",
+      "escalationBehavior": "سلوك التصعيد",
+      "familyPermissions": "أذونات العائلة",
+      "businessPermissions": "أذونات الأعمال",
+      "proofPreview": {
+        "title": "كيف تثبت SITA كل إجراء",
+        "detected": "تم اكتشاف نمط",
+        "detectedDesc": "تلاحظ SITA رسومًا متكررة بقيمة 14.99$ لخدمة غير مستخدمة",
+        "suggested": "تم تحضير الاقتراح",
+        "suggestedDesc": "\"إلغاء هذا الاشتراك\" — مع توفير متوقع 179.88$/سنويًا",
+        "drafted": "تم تحضير الإجراء",
+        "draftedDesc": "طلب الإلغاء جاهز ولم يُرسل بعد",
+        "approved": "موافقتك",
+        "approvedDesc": "راجع واضغط \"موافقة\" — أو رفض",
+        "executed": "تم تنفيذ الإجراء",
+        "executedDesc": "تم تأكيد الإلغاء. الإيصال محفوظ في سجل الإثبات.",
+        "auditTitle": "معاينة سجل الإثبات",
+        "auditDesc": "كل إجراء تنفذه SITA يُسجَّل بشكل دائم مع السياق الكامل"
+      }
+    },
+    "privacy": {
+      "title": "الخصوصية والشفافية",
+      "subtitle": "تحكم بما يمكن لـ SITA مراقبته والوصول إليه"
+    },
+    "identity": {
+      "title": "أخبر SITA عن نفسك",
+      "subtitle": "ساعد SITA على فهم كيفية دعمك بشكل أفضل"
+    },
+    "advisor": {
+      "title": "اختر مستشاريك",
+      "subtitle": "فعّل المجالات التي تريد فيها دعمًا ذكيًا"
+    },
+    "connections": {
+      "title": "اربط عالمك",
+      "subtitle": "اربط الحسابات والخدمات لإطلاق إمكانات SITA الكاملة"
+    },
+    "certificate": {
+      "title": "تم بناء الثقة",
+      "subtitle": "بيئتك مخصصة ومؤمَّنة وجاهزة"
+    },
+    "common": {
+      "continue": "متابعة",
+      "back": "رجوع",
+      "skip": "تخطي الآن",
+      "skipLater": "يمكنك إعداد هذا لاحقًا في الإعدادات",
+      "retry": "إعادة المحاولة",
+      "startOver": "البدء من جديد",
+      "advancedDetails": "تفاصيل متقدمة",
+      "fewMoments": "لحظات قليلة",
+      "finishLater": "الإنهاء لاحقًا في الإعدادات"
+    },
+    "progress": {
+      "preparing": "جارٍ التحضير",
+      "securing": "جارٍ التأمين",
+      "connecting": "جارٍ الاتصال",
+      "personalizing": "جارٍ التخصيص",
+      "activating": "جارٍ التفعيل",
+      "arriving": "جارٍ الوصول"
+    },
+    "recovery": {
+      "neverBlame": "هذا ليس خطأك",
+      "progressSaved": "تم حفظ تقدمك",
+      "continueReduced": "المتابعة بقدرة مخفضة",
+      "retryAction": "إعادة المحاولة",
+      "networkLost": "انقطع الاتصال",
+      "networkLostDesc": "تقدم الإعداد محفوظ. أعد الاتصال للمتابعة.",
+      "storageIssue": "التخزين يحتاج إلى انتباه",
+      "storageIssueDesc": "اكتشفنا مشكلة في تخزينك. لنحلها معًا.",
+      "secureBootIssue": "إشعار التحقق الأمني",
+      "secureBootIssueDesc": "قد تكون بعض ميزات الأمان محدودة على هذا الجهاز."
+    },
+    "accessibility": {
+      "largeText": "نص كبير",
+      "highContrast": "تباين عالٍ",
+      "reducedMotion": "حركة مخفضة",
+      "screenReader": "محسّن لقارئ الشاشة"
+    }
+  }
+}

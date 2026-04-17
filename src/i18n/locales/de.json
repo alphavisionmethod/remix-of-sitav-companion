@@ -1,0 +1,134 @@
+{
+  "setup": {
+    "boot": {
+      "preparing": "Ihre Umgebung wird vorbereitet",
+      "subtitle": "Ihr System formt sich um Sie",
+      "verified": "System verifiziert",
+      "personalizing": "Ihre Erfahrung wird personalisiert",
+      "activating": "Ihre Umgebung wird aktiviert",
+      "arriving": "Fast bereit",
+      "ready": "Ihre Umgebung ist bereit",
+      "hardwareDetect": "Systemfähigkeiten werden erkannt",
+      "secureInit": "Sichere Grundlage wird hergestellt",
+      "workspacePrep": "Ihr Arbeitsbereich wird vorbereitet",
+      "trustedServices": "Vertrauenswürdige Dienste werden gestartet",
+      "finalizing": "Ihre Umgebung wird abgeschlossen"
+    },
+    "secureInit": {
+      "title": "Sicherung Ihres Systems",
+      "subtitle": "Eine geschützte Grundlage für Ihre Daten",
+      "encryption": "Speicherschutz",
+      "integrity": "Systemintegrität",
+      "privacy": "Datenschutz-Baseline",
+      "recovery": "Wiederherstellungsbereitschaft",
+      "complete": "System gesichert",
+      "deviceProtection": "Geräteschutz",
+      "privacyBaseline": "Datenschutz-Baseline",
+      "recoveryReadiness": "Wiederherstellungsbereitschaft"
+    },
+    "language": {
+      "title": "Sprache & Region",
+      "subtitle": "Wählen Sie Ihre Sprache und regionalen Einstellungen",
+      "language": "Sprache",
+      "region": "Region",
+      "timezone": "Zeitzone",
+      "dateFormat": "Datumsformat",
+      "currency": "Währung"
+    },
+    "trust": {
+      "title": "Wählen Sie, wie SITA helfen soll",
+      "subtitle": "Sie steuern, was SITA vorschlagen, simulieren und übernehmen darf",
+      "observeOnly": "Nur beobachten",
+      "observeDesc": "SITA beobachtet, handelt nie",
+      "suggest": "Vorschlagen",
+      "suggestDesc": "SITA empfiehlt, Sie entscheiden",
+      "simulate": "Vor der Aktion simulieren",
+      "simulateDesc": "SITA zeigt Ergebnisse vorab, fragt vor dem Fortfahren",
+      "askBefore": "Vor dem Handeln fragen",
+      "askBeforeDesc": "SITA bereitet Aktionen vor, führt nur nach Genehmigung aus",
+      "handleRoutine": "Routineaufgaben übernehmen",
+      "handleRoutineDesc": "SITA verwaltet wiederkehrende Aufgaben, markiert Ausnahmen",
+      "fineTune": "Berechtigungen feinjustieren",
+      "spendingThreshold": "Ausgabengrenze",
+      "financialApprovals": "Finanzielle Genehmigungen",
+      "calendarApprovals": "Kalendergenehmigungen",
+      "communicationApprovals": "Kommunikationsgenehmigungen",
+      "reminderFrequency": "Erinnerungshäufigkeit",
+      "escalationBehavior": "Eskalationsverhalten",
+      "familyPermissions": "Familienberechtigungen",
+      "businessPermissions": "Geschäftsberechtigungen",
+      "proofPreview": {
+        "title": "Wie SITA jede Aktion belegt",
+        "detected": "Muster erkannt",
+        "detectedDesc": "SITA bemerkt eine wiederkehrende $14,99-Belastung für einen ungenutzten Dienst",
+        "suggested": "Vorschlag vorbereitet",
+        "suggestedDesc": "\"Dieses Abo kündigen\" — projizierte Ersparnis $179,88/Jahr",
+        "drafted": "Aktion entworfen",
+        "draftedDesc": "Kündigungsanfrage vorbereitet, noch nicht gesendet",
+        "approved": "Ihre Genehmigung",
+        "approvedDesc": "Prüfen und auf \"Genehmigen\" tippen — oder verwerfen",
+        "executed": "Aktion ausgeführt",
+        "executedDesc": "Kündigung bestätigt. Beleg in Ihrem Nachweis-Log gespeichert.",
+        "auditTitle": "Vorschau Nachweis-Log",
+        "auditDesc": "Jede SITA-Aktion wird dauerhaft mit vollem Kontext aufgezeichnet"
+      }
+    },
+    "privacy": {
+      "title": "Datenschutz & Transparenz",
+      "subtitle": "Steuern Sie, was SITA beobachten und worauf zugreifen darf"
+    },
+    "identity": {
+      "title": "Erzählen Sie SITA von sich",
+      "subtitle": "Helfen Sie SITA zu verstehen, wie es Sie am besten unterstützen kann"
+    },
+    "advisor": {
+      "title": "Wählen Sie Ihre Berater",
+      "subtitle": "Aktivieren Sie die Bereiche, in denen Sie intelligente Unterstützung wünschen"
+    },
+    "connections": {
+      "title": "Verbinden Sie Ihre Welt",
+      "subtitle": "Verknüpfen Sie Konten und Dienste, um SITAs volles Potenzial freizuschalten"
+    },
+    "certificate": {
+      "title": "Vertrauen hergestellt",
+      "subtitle": "Ihre Umgebung ist personalisiert, gesichert und bereit"
+    },
+    "common": {
+      "continue": "Weiter",
+      "back": "Zurück",
+      "skip": "Vorerst überspringen",
+      "skipLater": "Sie können dies später in den Einstellungen festlegen",
+      "retry": "Erneut versuchen",
+      "startOver": "Neu beginnen",
+      "advancedDetails": "Erweiterte Details",
+      "fewMoments": "Einen Moment",
+      "finishLater": "Später in den Einstellungen abschließen"
+    },
+    "progress": {
+      "preparing": "Vorbereiten",
+      "securing": "Sichern",
+      "connecting": "Verbinden",
+      "personalizing": "Personalisieren",
+      "activating": "Aktivieren",
+      "arriving": "Ankommen"
+    },
+    "recovery": {
+      "neverBlame": "Das ist nicht Ihre Schuld",
+      "progressSaved": "Ihr Fortschritt wurde gespeichert",
+      "continueReduced": "Mit reduzierter Funktionalität fortfahren",
+      "retryAction": "Erneut versuchen",
+      "networkLost": "Verbindung unterbrochen",
+      "networkLostDesc": "Ihr Setup-Fortschritt ist gespeichert. Verbinden Sie sich erneut, um fortzufahren.",
+      "storageIssue": "Speicher benötigt Aufmerksamkeit",
+      "storageIssueDesc": "Wir haben ein Problem mit Ihrem Speicher erkannt. Lösen wir es gemeinsam.",
+      "secureBootIssue": "Hinweis zur Sicherheitsverifikation",
+      "secureBootIssueDesc": "Einige Sicherheitsfunktionen können auf diesem Gerät eingeschränkt sein."
+    },
+    "accessibility": {
+      "largeText": "Großer Text",
+      "highContrast": "Hoher Kontrast",
+      "reducedMotion": "Reduzierte Bewegung",
+      "screenReader": "Für Screenreader optimiert"
+    }
+  }
+}
