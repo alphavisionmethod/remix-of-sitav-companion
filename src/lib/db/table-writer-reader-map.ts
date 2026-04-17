@@ -81,6 +81,9 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
       const writers = getWritersFor(t.name);
       const readers = getReadersFor(t.name);
       const ownerTeam = DOMAIN_TO_OWNER[t.domain];
+      const nonEdge = NON_EDGE_TABLE_IO[t.name];
+      const nonEdgeWriters = nonEdge?.writers ?? [];
+      const nonEdgeReaders = nonEdge?.readers ?? [];
       const crossDomainWriters = SHARED_TABLES.has(t.name)
         ? []
         : writers.filter((fn) => {
@@ -91,6 +94,14 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
             const expectedTableOwner = FUNCTION_OWNER_TO_TABLE_OWNER[fnOwner];
             return expectedTableOwner !== ownerTeam;
           });
+      const unexemptedCrossDomainWriters = crossDomainWriters.filter(
+        (fn) => !isExemptedCrossDomainWriter(t.name, fn),
+      );
+      const hasAnyIO =
+        writers.length > 0 ||
+        readers.length > 0 ||
+        nonEdgeWriters.length > 0 ||
+        nonEdgeReaders.length > 0;
       return [
         t.name,
         {
@@ -99,7 +110,11 @@ export const TABLE_WRITER_READER_MAP: Record<string, TableWriterReaderEntry> =
           ownerTeam,
           writers,
           readers,
+          nonEdgeWriters,
+          nonEdgeReaders,
           crossDomainWriters,
+          unexemptedCrossDomainWriters,
+          hasAnyIO,
         } as TableWriterReaderEntry,
       ];
     }),
@@ -113,10 +128,14 @@ export function tableWriterReaderStats() {
   const entries = Object.values(TABLE_WRITER_READER_MAP);
   return {
     totalTables: entries.length,
-    tablesWithWriters: entries.filter((e) => e.writers.length > 0).length,
-    tablesWithReaders: entries.filter((e) => e.readers.length > 0).length,
-    tablesWithoutAnyIO: entries.filter((e) => e.writers.length === 0 && e.readers.length === 0).length,
+    tablesWithWriters: entries.filter((e) => e.writers.length > 0 || e.nonEdgeWriters.length > 0).length,
+    tablesWithReaders: entries.filter((e) => e.readers.length > 0 || e.nonEdgeReaders.length > 0).length,
+    tablesWithoutAnyIO: entries.filter((e) => !e.hasAnyIO).length,
     crossDomainViolations: entries.reduce((acc, e) => acc + e.crossDomainWriters.length, 0),
     tablesWithCrossDomainWriters: entries.filter((e) => e.crossDomainWriters.length > 0).length,
+    unexemptedCrossDomainWriters: entries.reduce(
+      (acc, e) => acc + e.unexemptedCrossDomainWriters.length,
+      0,
+    ),
   };
 }
