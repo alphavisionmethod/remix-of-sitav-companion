@@ -1,101 +1,73 @@
 
 
-The user wants me to scan every file for stubs/placeholders and replace with "most advanced code, fully wired." This is an extremely broad request on a 4,290+ TS file codebase. I need to scope this properly before proposing work.
+The user wants me to update the audit/truth files (SITA_MASTER_AUDIT.md, FULL_ISSUES_AND_FIXES.md, PROJECT_TREE.md, SITA_OS_Feature_Checklist.md, SITA_FULL_FILE_CLASSIFICATION.md) to reflect the current state after the recent ISS-020 cleanup and the stubs/placeholders audit register.
 
-Let me think about what's realistic:
+Let me check what's actually current.
 
-1. **The codebase is already audited.** We have `generated/FULL_ISSUES_AND_FIXES.md` v2.1 listing every known gap, and Phase 32 "It's Real" gate returned `real / 13-of-13 / deployable: true`.
+I need to:
+1. Re-verify live counts (TS files, pages, components, edge functions, DB tables, RLS coverage)
+2. Re-run the stubs/placeholders scanner to get fresh numbers
+3. Re-run the `as any` count in pages (should be 0)
+4. Re-check Phase 32 "It's Real" gate verdict
+5. Update each doc with the new truth + cross-link to `STUBS_AND_PLACEHOLDERS_REGISTER.md`
 
-2. **"Stubs and placeholders" has a specific meaning here.** From the audit:
-   - `WorkflowStepStub.tsx` is an intentional, registered fallback surface (not a stub-to-fix).
-   - The CTA wiring scanner already exists (`scripts/architecture/checks/check-cta-wiring.ts`) and detects: `onClick={() => {}}`, `href="#"`, TODO/FIXME, `alert(...)` stubs.
-   - The anti-pattern checker covers `as any`, console.log, etc.
+## Plan — Refresh All Audit Documents to Current Truth
 
-3. **A blanket "rewrite every file with advanced code" is destructive.** It would:
-   - Break the 13/13 green gate
-   - Violate the Component Constitution and Service Constitution
-   - Touch 4,290 files with no acceptance criteria
-   - Risk the 100% RLS coverage and trust framework
+### Inputs (re-verify in execute mode)
 
-The right move is to **run the existing stub/placeholder scanners, get the actual list of offenders, and fix them in priority order with concrete acceptance criteria** — not a vibes-driven mass rewrite.
-
-## Plan — Stub & Placeholder Eradication Sweep (evidence-first)
-
-### Phase 1 — Run the existing scanners, get real numbers
-
-Run in parallel and capture counts:
-- `scripts/architecture/checks/check-cta-wiring.ts` → empty `onClick`, `href="#"`, TODO/FIXME, `alert()`
-- `scripts/architecture/checks/check-platform-anti-patterns.ts` → `as any`, console.log, dead code
-- `grep -rE "TODO|FIXME|XXX|HACK|PLACEHOLDER|stub|mock data" src/ --include="*.ts" --include="*.tsx"`
-- `grep -rE "throw new Error\\([\"']Not implemented" src/`
-- `grep -rE "return null;\\s*//\\s*(stub|todo)" src/`
-- `grep -rE "Lorem ipsum|placeholder text|coming soon" src/`
-
-### Phase 2 — Categorize hits
-
-| Category | Action |
+| Source | Command |
 |---|---|
-| **Real stubs** (empty handlers, `Not implemented`, lorem ipsum) | Wire to canonical service via Executor; emit receipt |
-| **Intentional fallbacks** (`WorkflowStepStub`, `EmptyState`) | Leave; document in registry |
-| **Demo/seed data** in Demo mode pages | Leave; gated by `truthState="demo"` banner |
-| **TODO comments** | Convert to GitHub issues or remove if stale |
-| **Placeholder copy** in low-priority pages | Replace with real copy from domain dictionary |
+| TS files | `find src/ -name '*.ts' -o -name '*.tsx' \| wc -l` |
+| Total pages | `find src/pages -name '*.tsx' \| wc -l` |
+| Components | `find src/components -name '*.tsx' \| wc -l` |
+| Edge functions | `ls supabase/functions \| wc -l` |
+| DB tables / policies | `supabase--read_query` against `information_schema` |
+| `as any` in pages | `grep -rE "\bas any\b" src/pages \| wc -l` (target: 0) |
+| Stubs register | re-run `audit-stubs-placeholders.ts` |
+| Phase 32 verdict | read `generated/its-real-gate-report.json` |
 
-### Phase 3 — Fix in priority order
+### Files to update
 
-Priority = **risk tier × surface traffic**:
+1. **`generated/SITA_MASTER_AUDIT.md` → v6.1**
+   - Refresh Part I topology table with live counts
+   - Add ISS-020 RESOLVED entry with date
+   - Add new "Stubs & Placeholders Sweep" section citing the 76-hit register (P0:5, P1:0, P2:12, P3:30, P4:29)
+   - Update Truth Score if metrics moved
 
-1. **P0 — Trust-bearing surfaces with stubs** (Boardroom, Approvals, Money, Auth) — must be 100% wired
-2. **P1 — Flagship Loop pages** (5 loops × ~6 pages each = 30 pages)
-3. **P2 — Domain hub indexes** (Business/Money/Concierge/Files top-level)
-4. **P3 — Admin/Verification consoles**
-5. **P4 — Tail pages** (one-off settings, rare drill-downs)
+2. **`generated/FULL_ISSUES_AND_FIXES.md` → v2.2**
+   - Confirm ISS-020 / OPN-P2-04 already marked RESOLVED
+   - Add new entries for the 5 P0 stub hits as `OPN-P0-NN` (one per actionable hit)
+   - Add 12 P2 stub hits as `OPN-P2-NN`
+   - Cross-link to `STUBS_AND_PLACEHOLDERS_REGISTER.md`
+   - Refresh resolution rate
 
-### Phase 4 — Wiring rules (no behavior drift)
+3. **`generated/PROJECT_TREE.md`**
+   - Refresh file/page/component/table counts
+   - Add `scripts/architecture/audits/audit-stubs-placeholders.ts` to script inventory
+   - Add `STUBS_AND_PLACEHOLDERS_REGISTER.md` to generated artifacts inventory
 
-- Every CTA fix routes through `Executor` (the single chokepoint per HARD RULE)
-- Every new handler emits a receipt to `boardroom_decision_receipts` or `inference_receipts` per risk tier
-- No new `as any`; no new console.log; no direct provider SDK calls
-- All AI usage through `invokeAICapability`
-- Update `generated/FULL_ISSUES_AND_FIXES.md` only after `tsc --noEmit` is green and the relevant scanner returns `0`
+4. **`generated/SITA_OS_Feature_Checklist.md`**
+   - Mark ISS-020 / type-safety item as ✅ RESOLVED
+   - Add "Stubs & Placeholders Audit" as a new tracked item (status: AUDITED, remediation pending per slice)
 
-### Phase 5 — CI hardening
+5. **`generated/SITA_FULL_FILE_CLASSIFICATION.md`**
+   - Refresh file count to current live number
+   - Note the 76 files flagged in the stubs register with their classification tier
 
-After cleanup, tighten the scanners:
-- `check-cta-wiring.ts` → upgrade from warning to **error** on `src/pages/**` and `src/components/business/**`, `src/components/money/**`, `src/components/concierge/**`
-- Add `check-stubs-and-placeholders.ts` as a new dedicated gate
+### Guardrails
 
-### What I need from you before starting
+- **No source code changes** in this batch — docs only
+- **No invented numbers** — every metric re-verified against live filesystem / DB before writing
+- **Truth-only** — outstanding gaps stay open; resolved items get a one-line resolution note with date, no celebration log
+- Phase 32 verdict cited verbatim from `its-real-gate-report.json`
 
-I cannot responsibly rewrite 4,290 files in one pass. I need you to choose the scope:
-
-**Option A — Audit-only (recommended first step, 1 batch):**
-Run all scanners, produce `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` with every hit categorized and prioritized. **No code changes.** Then you decide what to fix.
-
-**Option B — P0+P1 only (~60 pages, 3-5 batches):**
-Fix every stub in trust-bearing surfaces and Flagship Loop pages. Leave P2-P4 in the register for later.
-
-**Option C — Full sweep (P0-P4, ~15-25 batches over many turns):**
-Eradicate every real stub across the entire `src/pages/**` and trust-bearing components. Multi-day effort. High risk of regression without per-batch QA.
-
-### Files touched (final, after acceptance)
-
-- 1 new generator: `scripts/architecture/audits/audit-stubs-placeholders.ts`
-- 1 new register: `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md`
-- N page/component files (depends on Option chosen)
-- 2 CI checks tightened: `check-cta-wiring.ts`, new `check-stubs-and-placeholders.ts`
-- 1 doc update: `generated/FULL_ISSUES_AND_FIXES.md`
-
-### Acceptance criteria
+### Acceptance
 
 | Check | Target |
 |---|---|
-| Scanner produces evidence register | ✅ |
-| Every fix has receipt + Executor path | ✅ |
-| `tsc --noEmit` | 0 errors |
-| Phase 32 "It's Real" gate | stays 13/13 green |
-| `as any` in pages | stays 0 |
-| New CI gate `check-stubs-and-placeholders` | passes |
-
-**Pick A, B, or C and I'll execute.** Default recommendation: **Option A first** so we work from evidence, not assumption.
+| All 5 docs reflect live counts | ✅ |
+| ISS-020 marked RESOLVED across all docs | ✅ |
+| Stubs register cross-linked from MASTER + ISSUES | ✅ |
+| No metric appears without a verification command or source path | ✅ |
+| Phase 32 verdict re-cited from latest report | ✅ |
 
