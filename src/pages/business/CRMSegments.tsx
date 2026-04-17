@@ -8,6 +8,7 @@ import { Filter, Plus, Users, AlertTriangle, Clock, Star, TrendingUp, X, Search,
 import { isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { supabase } from "@/integrations/supabase/client";
+import { dbAny } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 

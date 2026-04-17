@@ -30,10 +30,10 @@ export default function JVC07FormVerificationCenter() {
     if (!runs) return {};
     const map: Record<string, { pass: number; fail: number; total: number }> = {};
     formSurfaces.forEach(f => {
-      const matching = (runs as Array<{ route_key?: string; journey_key?: string }>).filter(r => r.route_key === f.routeKey);
+      const matching = (runs as Array<{ route_key?: string; journey_key?: string; passed?: boolean }>).filter(r => r.route_key === f.routeKey);
       map[f.routeKey] = {
-        pass: matching.filter(r => r.passed).length,
-        fail: matching.filter(r => !r.passed).length,
+        pass: matching.filter(r => r.passed === true).length,
+        fail: matching.filter(r => r.passed === false).length,
         total: matching.length,
       };
     });

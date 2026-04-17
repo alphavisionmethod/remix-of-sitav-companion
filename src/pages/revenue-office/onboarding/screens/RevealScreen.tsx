@@ -19,8 +19,10 @@ const REVENUE_ESTIMATES: Record<string, number> = {
   onboarding: 3800,
 };
 
-export default function RevealScreen({ state, onBack, ...props }: ScreenProps & { markComplete?: (state: any) => Promise<void> }) {
-  const markComplete = (props as { markComplete?: () => void }).markComplete;
+type RevealScreenProps = ScreenProps & { markComplete?: (state: ScreenProps["state"]) => Promise<void> };
+
+export default function RevealScreen({ state, onBack, ...props }: RevealScreenProps) {
+  const markComplete = (props as { markComplete?: (state: ScreenProps["state"]) => Promise<void> }).markComplete;
   const navigate = useNavigate();
   const [phase, setPhase] = useState<"building" | "revealing" | "ready">("building");
   const [revealedCount, setRevealedCount] = useState(0);

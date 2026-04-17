@@ -29,7 +29,7 @@ export default function JVC11JourneyReplay() {
   // Simulate run data for selected journey
   const journeyRuns = useMemo(() => {
     if (!runs || !selectedJourney) return [];
-    return (runs as Array<{ journey_key?: string }>).filter(r => r.journey_key === selectedJourney).slice(0, 5);
+    return (runs as Array<{ journey_key?: string; status?: string }>).filter(r => r.journey_key === selectedJourney).slice(0, 5);
   }, [runs, selectedJourney]);
 
   const latestRun = journeyRuns[0];
