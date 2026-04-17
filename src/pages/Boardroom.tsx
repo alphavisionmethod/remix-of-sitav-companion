@@ -623,7 +623,18 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
   const isDemoMode = isDemo;
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
-  const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
+  const {
+    pendingApprovals,
+    activeGoals,
+    overdueTasks,
+    recentProofs,
+    notifications,
+    recommendations,
+    boardroomItems,
+    decisionReceipts,
+    unreadNotifications,
+    newRecommendations,
+  } = useBoardroomData();
 
   if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
 
@@ -643,12 +654,21 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     return section;
   });
 
+  // ── Live-data presence flags (drives War Room visibility in live mode) ──
+  const hasDisagreementData = boardroomItems.some(
+    (i: any) => Array.isArray(i.advisor_summaries) && i.advisor_summaries.length >= 2
+  );
+  const hasReceipt = decisionReceipts.length > 0;
+  const hasRecommendations = recommendations.length > 0;
+  const hasApprovals = pendingApprovals.length > 0;
+  const latestReceipt: any = decisionReceipts[0];
+
   // Build PrepPack data from real DB queries
   const prepPriorities = pendingApprovals.slice(0, 4).map((a: Record<string, any>) => ({
-    title: a.title,
-    detail: a.description || `${a.risk_level} risk · ${a.domain || "general"}`,
+    title: a.title || a.summary || "Untitled approval",
+    detail: a.summary || a.description || `${a.priority || "normal"} priority · ${a.domain || "general"}`,
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
-    urgency: (a.risk_level === "high" ? "critical" : a.risk_level === "medium" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
+    urgency: (a.priority === "high" || a.priority === "critical" ? "critical" : a.priority === "normal" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
   const prepCarryovers = overdueTasks.slice(0, 4).map((t: Record<string, any>) => ({
@@ -658,18 +678,20 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     urgency: (t.priority === "high" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
-  const prepDecisions = pendingApprovals.filter((a: Record<string, any>) => a.risk_level !== "high").slice(0, 2).map((a: Record<string, any>) => ({
-    title: a.title,
-    detail: a.description || "Ready for decision",
+  const prepDecisions = pendingApprovals.filter((a: Record<string, any>) => a.priority !== "high" && a.priority !== "critical").slice(0, 2).map((a: Record<string, any>) => ({
+    title: a.title || a.summary || "Pending decision",
+    detail: a.summary || a.description || "Ready for decision",
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
     urgency: "medium" as const,
   }));
 
   const whatChanged = [
+    unreadNotifications > 0 ? `${unreadNotifications} unread notification${unreadNotifications === 1 ? "" : "s"}` : null,
+    newRecommendations > 0 ? `${newRecommendations} new REX recommendation${newRecommendations === 1 ? "" : "s"}` : null,
     activeGoals.length > 0 ? `${activeGoals.length} active goals tracked` : null,
-    pendingApprovals.length > 0 ? `${pendingApprovals.length} approvals pending` : null,
+    hasApprovals ? `${pendingApprovals.length} approval${pendingApprovals.length === 1 ? "" : "s"} pending` : null,
     overdueTasks.length > 0 ? `${overdueTasks.length} overdue tasks need attention` : null,
-    recentProofs.length > 0 ? `${recentProofs.filter((p: Record<string, any>) => p.verification_status === "verified").length} proofs verified` : null,
+    decisionReceipts.length > 0 ? `${decisionReceipts.length} sealed decision${decisionReceipts.length === 1 ? "" : "s"}` : null,
   ].filter(Boolean) as string[];
 
   return (
