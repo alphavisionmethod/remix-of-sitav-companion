@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Incident Management Service
+// SITA OS — Incident Management Service (Phase 28.C)
 // Full incident lifecycle: declare → triage → investigate →
-// mitigate → resolve → postmortem
+// mitigate → resolve → postmortem. Auto-attaches recovery runbooks
+// from the canonical RUNBOOK_REGISTRY when an incident is declared.
 // ═══════════════════════════════════════════════════════════════
 
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { resolveRunbooksForIncident } from "@/lib/support/runbook-resolver";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type IncidentSeverity = "critical" | "high" | "medium" | "low";
 export type IncidentStatus = "declared" | "triaging" | "investigating" | "mitigating" | "resolved" | "postmortem" | "closed";
@@ -38,6 +40,9 @@ export interface Incident {
   priority: number;
   impactScope: string;
   affectedServices: string[];
+  /** Phase 28.C — runbooks linked to this incident (auto-resolved). */
+  runbookIds: string[];
+  primaryRunbookId?: string;
   timeline: TimelineEntry[];
   tags: string[];
   relatedIncidents: string[];

@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Alert Client (Phase 20.D)
-// Typed front-end client for raising alerts into the central
-// `alerts` table via the alert-ingest edge function.
+// SITA OS — Alert Client (Phase 20.D + Phase 28.B)
+// Typed front-end client for raising alerts. Auto-resolves a
+// `runbookId` from `subsystem` / `source` / `severity` when the
+// caller does not supply one, so every alert ships with a recovery
+// pointer.
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { resolveRunbookForAlert, describeResolution } from "@/lib/support/runbook-resolver";
 
 export type AlertSeverity = "critical" | "high" | "medium" | "low" | "info";
 
@@ -15,6 +18,7 @@ export interface RaiseAlertInput {
   title: string;
   description?: string;
   fingerprint?: string;
+  /** Optional explicit override; auto-resolved from subsystem if omitted. */
   runbookId?: string;
   metadata?: Record<string, unknown>;
   relatedIncidentId?: string;
@@ -27,8 +31,22 @@ function defaultFingerprint(input: RaiseAlertInput): string {
 /**
  * Raise (or increment) an alert. Idempotent for the same fingerprint
  * within the rolling window enforced by the edge function.
+ *
+ * If `runbookId` is not provided, auto-resolves via the runbook resolver
+ * so operators can always navigate from alert → recovery procedure.
  */
-export async function raiseAlert(input: RaiseAlertInput): Promise<{ ok: boolean; alertId?: string; error?: string }> {
+export async function raiseAlert(input: RaiseAlertInput): Promise<{ ok: boolean; alertId?: string; error?: string; runbookId?: string | null }> {
+  // Phase 28.B — auto-resolve runbook if not explicitly passed
+  let resolvedRunbookId: string | null = input.runbookId ?? null;
+  let resolutionMatched: "subsystem" | "source" | "severity" | "none" | "explicit" = input.runbookId ? "explicit" : "none";
+
+  if (!resolvedRunbookId) {
+    const sev = input.severity === "info" ? null : input.severity;
+    const desc = describeResolution({ subsystem: input.subsystem, source: input.source, severity: sev });
+    resolvedRunbookId = desc.runbookId;
+    resolutionMatched = desc.matchedBy;
+  }
+
   try {
     const { data, error } = await supabase.functions.invoke("alert-ingest", {
       body: {
@@ -40,18 +58,21 @@ export async function raiseAlert(input: RaiseAlertInput): Promise<{ ok: boolean;
             title: input.title,
             description: input.description ?? "",
             fingerprint: input.fingerprint ?? defaultFingerprint(input),
-            runbook_id: input.runbookId ?? null,
-            metadata: input.metadata ?? {},
+            runbook_id: resolvedRunbookId,
+            metadata: {
+              ...(input.metadata ?? {}),
+              _runbookResolution: resolutionMatched,
+            },
             related_incident_id: input.relatedIncidentId ?? null,
           },
         ],
       },
     });
-    if (error) return { ok: false, error: error.message };
+    if (error) return { ok: false, error: error.message, runbookId: resolvedRunbookId };
     const id = (data as { ids?: string[] } | null)?.ids?.[0];
-    return { ok: true, alertId: id };
+    return { ok: true, alertId: id, runbookId: resolvedRunbookId };
   } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : String(err) };
+    return { ok: false, error: err instanceof Error ? err.message : String(err), runbookId: resolvedRunbookId };
   }
 }
 
