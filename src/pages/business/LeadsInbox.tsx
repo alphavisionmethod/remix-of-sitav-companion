@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SitaButton } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";

@@ -5,6 +5,7 @@ import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shie
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
