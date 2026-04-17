@@ -103,7 +103,7 @@ const UserProfilePage = () => {
 
   const initials = (profile.display_name || user?.email || "U").slice(0, 2).toUpperCase();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="p-6 max-w-3xl mx-auto space-y-6">
         <div className="h-8 w-48 bg-muted animate-pulse rounded" />
