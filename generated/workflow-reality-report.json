@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T02:42:00.000Z",
+  "generatedAt": "2026-04-17T03:15:00.000Z",
   "gate": "Gate 34 — Workflow Reality (Phase 23)",
   "requiredTables": [
     "workflows",
@@ -34,6 +34,19 @@
     "dispatchKillSwitchEnforced": true,
     "repairActionsComplete": true,
     "stuckDetectorWired": true
+  },
+  "bypassScan": {
+    "scannedFiles": 0,
+    "allowedRunners": [
+      "supabase/functions/workflow-execute/index.ts",
+      "supabase/functions/workflow-repair/index.ts",
+      "supabase/functions/workflow-replay/index.ts",
+      "supabase/functions/workflow-stuck-detector/index.ts"
+    ],
+    "violations": 0,
+    "violatingFiles": [],
+    "phase": "23.1",
+    "note": "event-processor rewired to invoke workflow-execute (no direct workflow_runs.insert)"
   },
   "crons": [
     "sita-scheduler-dispatch-1m",
