@@ -7725,41 +7725,62 @@ export type Database = {
       }
       job_executions: {
         Row: {
+          attempt_number: number
           completed_at: string | null
           created_at: string
+          duration_ms: number | null
           error: string | null
+          error_message: string | null
           id: string
           job_id: string
+          mode: string
           output: Json | null
+          policy_decision: string
           retries: number
+          retryable: boolean
           started_at: string
           status: string
+          triggered_by: string
           user_id: string
           workflow_run_id: string | null
         }
         Insert: {
+          attempt_number?: number
           completed_at?: string | null
           created_at?: string
+          duration_ms?: number | null
           error?: string | null
+          error_message?: string | null
           id?: string
           job_id: string
+          mode?: string
           output?: Json | null
+          policy_decision?: string
           retries?: number
+          retryable?: boolean
           started_at?: string
           status?: string
+          triggered_by?: string
           user_id: string
           workflow_run_id?: string | null
         }
         Update: {
+          attempt_number?: number
           completed_at?: string | null
           created_at?: string
+          duration_ms?: number | null
           error?: string | null
+          error_message?: string | null
           id?: string
           job_id?: string
+          mode?: string
           output?: Json | null
+          policy_decision?: string
           retries?: number
+          retryable?: boolean
           started_at?: string
           status?: string
+          triggered_by?: string
           user_id?: string
           workflow_run_id?: string | null
         }
@@ -10259,17 +10280,28 @@ export type Database = {
         Row: {
           consecutive_failures: number
           created_at: string
+          cron_expression: string | null
+          description: string | null
           display_name: string
+          domain: string | null
           enabled: boolean
+          fail_count: number
           id: string
           job_class: string
           job_key: string
           kill_switch_class: string | null
           last_run_at: string | null
+          last_run_status: string | null
+          max_retries: number
+          metadata: Json
+          name: string | null
           next_run_at: string | null
           payload: Json
           policy_family: string | null
+          run_count: number
           schedule_cron: string
+          state: string
+          target_function: string
           updated_at: string
           user_id: string
           workflow_id: string | null
@@ -10277,17 +10309,28 @@ export type Database = {
         Insert: {
           consecutive_failures?: number
           created_at?: string
+          cron_expression?: string | null
+          description?: string | null
           display_name: string
+          domain?: string | null
           enabled?: boolean
+          fail_count?: number
           id?: string
           job_class?: string
           job_key: string
           kill_switch_class?: string | null
           last_run_at?: string | null
+          last_run_status?: string | null
+          max_retries?: number
+          metadata?: Json
+          name?: string | null
           next_run_at?: string | null
           payload?: Json
           policy_family?: string | null
+          run_count?: number
           schedule_cron: string
+          state?: string
+          target_function?: string
           updated_at?: string
           user_id: string
           workflow_id?: string | null
@@ -10295,17 +10338,28 @@ export type Database = {
         Update: {
           consecutive_failures?: number
           created_at?: string
+          cron_expression?: string | null
+          description?: string | null
           display_name?: string
+          domain?: string | null
           enabled?: boolean
+          fail_count?: number
           id?: string
           job_class?: string
           job_key?: string
           kill_switch_class?: string | null
           last_run_at?: string | null
+          last_run_status?: string | null
+          max_retries?: number
+          metadata?: Json
+          name?: string | null
           next_run_at?: string | null
           payload?: Json
           policy_family?: string | null
+          run_count?: number
           schedule_cron?: string
+          state?: string
+          target_function?: string
           updated_at?: string
           user_id?: string
           workflow_id?: string | null
