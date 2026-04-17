@@ -1,5 +1,6 @@
 import { HeroCard, SummaryCard, StatusCard, AdvisorCard, TimelineCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { UniversalIntakeBox, WorkflowSuggestionCard, ConnectorStatusCard } from "@/components/sita/FilesComponents";
@@ -123,15 +124,25 @@ const FilesOverview = () => {
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
           <h4 className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_50%)]")}>Classified Files</h4>
-          {classifiedFiles.map((f, i) => (
-            <StatusCard
-              key={i}
-              label={f.name}
-              status={f.sensitivity === "restricted" ? "down" : f.sensitivity === "confidential" ? "degraded" : "healthy"}
-              lastChecked={`${f.classification} · ${f.sensitivity}`}
-              icon={<FileText className="h-3.5 w-3.5" />}
+          {classifiedFiles.length === 0 ? (
+            <PremiumEmptyState
+              variant="first-use"
+              icon={FolderOpen}
+              title="No files yet"
+              description="Upload your first file or connect a source. SITA will classify it, detect sensitivity, extract obligations, and link it into your workflows."
+              domain="files"
             />
-          ))}
+          ) : (
+            classifiedFiles.map((f, i) => (
+              <StatusCard
+                key={i}
+                label={f.name}
+                status={f.sensitivity === "restricted" ? "down" : f.sensitivity === "confidential" ? "degraded" : "healthy"}
+                lastChecked={`${f.classification} · ${f.sensitivity}`}
+                icon={<FileText className="h-3.5 w-3.5" />}
+              />
+            ))
+          )}
 
           <h4 className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_50%)] mt-4")}>Workflow Suggestions</h4>
           <WorkflowSuggestionCard title="Create bill reminder for Apex Corp contract" reason="Auto-renew clause detected" domain="Business · Money" affectsWho="Business operations" confidence={91} needsApproval />

@@ -11,6 +11,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/components/sita/SitaComponents";
 import {
@@ -475,7 +476,7 @@ const RevenueForecast = () => {
             title="No simulation yet"
             description="Run a Monte Carlo simulation to see the probability distribution. Models twin churn risk, playbook confidence intervals, and market variance."
             actionLabel="Run simulation"
-            onAction={runMonteCarlo}
+            onAction={handleRunMonteCarlo}
           />
         )}
       </SitaCard>

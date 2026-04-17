@@ -70,6 +70,14 @@ export const PAGE_STATE_REGISTRY: readonly PageStateRegistryEntry[] = [
   { route: "/admin/founder/security",        pageClass: "dashboard", file: "src/pages/admin/META01ArchitectureAtlas.tsx", verified: FULL_DASHBOARD },
   { route: "/admin/engineering/chaos",       pageClass: "dashboard", file: "src/pages/admin/META01ArchitectureAtlas.tsx", verified: FULL_DASHBOARD },
   { route: "/admin/engineering/validation",  pageClass: "dashboard", file: "src/pages/admin/META01ArchitectureAtlas.tsx", verified: FULL_DASHBOARD },
+
+  // ── Product user surfaces with empty-state coverage (6) ──────
+  { route: "/files",            pageClass: "data-list", file: "src/pages/files/FilesOverview.tsx",   verified: FULL_LIST },
+  { route: "/approvals",        pageClass: "data-list", file: "src/pages/ApprovalsCenter.tsx",       verified: FULL_LIST },
+  { route: "/approval-chamber", pageClass: "data-list", file: "src/pages/ApprovalChamber.tsx",       verified: FULL_LIST },
+  { route: "/notifications",    pageClass: "data-list", file: "src/pages/NotificationCenter.tsx",    verified: FULL_LIST },
+  { route: "/inbox",            pageClass: "data-list", file: "src/pages/InboxCapture.tsx",          verified: FULL_LIST },
+  { route: "/daily-pulse",      pageClass: "dashboard", file: "src/pages/DailyPulse.tsx",            verified: FULL_DASHBOARD },
 ];
 
 export function getPageStateContract(route: string): PageStateRegistryEntry | undefined {
@@ -110,4 +118,4 @@ export function findUncoveredStates(): { route: string; missing: readonly PageSt
 }
 
 /** Phase 11 floor: minimum number of critical+admin pages with state contracts. */
-export const PAGE_STATE_REGISTRY_FLOOR = 36;
+export const PAGE_STATE_REGISTRY_FLOOR = 42;
