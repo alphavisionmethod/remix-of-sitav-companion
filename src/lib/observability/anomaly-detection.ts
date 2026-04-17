@@ -183,3 +183,60 @@ export function detectTrend(values: number[], minLength = 5): TrendResult {
 
   return { direction, slope: normalizedSlope, confidence: Math.max(0, r2) };
 }
+
+// ── Real alert emission (Phase 20.1.B) ─────────────────────
+// When a statistical anomaly is detected, raise a real alert
+// into the central `alerts` table via the alert-ingest edge fn.
+// Best-effort: never throws, de-duplicates per-metric for 10min.
+
+import { raiseAlert } from "@/lib/services/alerting/alert-client";
+
+const ANOMALY_DEDUP = new Map<string, number>();
+const ANOMALY_REPEAT_WINDOW_MS = 10 * 60_000;
+
+function severityToAlertSeverity(
+  s: AnomalyDetection["severity"],
+): "critical" | "high" | "medium" | "low" {
+  switch (s) {
+    case "critical": return "critical";
+    case "high": return "high";
+    case "medium": return "medium";
+    default: return "low";
+  }
+}
+
+/** Raise an anomaly alert (de-duped per metric within a 10-minute window). */
+export async function maybeRaiseAnomalyAlert(
+  anomaly: AnomalyDetection,
+  subsystem = "telemetry",
+): Promise<void> {
+  if (!anomaly.isAnomaly) return;
+  // Skip low-severity noise to avoid alert fatigue
+  if (anomaly.severity === "low") return;
+
+  const fingerprint = `anomaly:${subsystem}:${anomaly.metric}`;
+  const last = ANOMALY_DEDUP.get(fingerprint) ?? 0;
+  if (Date.now() - last < ANOMALY_REPEAT_WINDOW_MS) return;
+  ANOMALY_DEDUP.set(fingerprint, Date.now());
+
+  try {
+    await raiseAlert({
+      source: "anomaly",
+      severity: severityToAlertSeverity(anomaly.severity),
+      subsystem,
+      title: `Anomaly: ${anomaly.metric} ${anomaly.direction} expected`,
+      description: `${anomaly.metric} = ${anomaly.value.toFixed(2)} (expected ~${anomaly.expected.toFixed(2)}, ${anomaly.deviation.toFixed(2)}σ ${anomaly.direction}).`,
+      fingerprint,
+      metadata: {
+        metric: anomaly.metric,
+        value: anomaly.value,
+        expected: anomaly.expected,
+        deviation_sigma: anomaly.deviation,
+        direction: anomaly.direction,
+        context: anomaly.context ?? null,
+      },
+    });
+  } catch {
+    // best-effort
+  }
+}

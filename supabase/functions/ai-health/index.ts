@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { emitAlert } from "../_shared/alert-emitter.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Runtime Health Check (Full 8-Check Matrix)
@@ -266,6 +267,36 @@ serve(async (req) => {
     }
 
     result.verification_matrix = matrix;
+
+    // Phase 20.1.B — Raise alert when AI provider is unhealthy/degraded
+    if (result.status === "unavailable") {
+      await emitAlert({
+        source: "ai-provider",
+        severity: "high",
+        subsystem: "lovable-ai-gateway",
+        title: "AI provider unavailable",
+        description: result.error_details ?? "AI gateway critical checks failed.",
+        fingerprint: "ai-provider:lovable-ai-gateway:unavailable",
+        metadata: {
+          active_provider: result.active_provider,
+          active_model: result.active_model,
+          checks: result.checks,
+        },
+      });
+    } else if (result.status === "degraded") {
+      await emitAlert({
+        source: "ai-provider",
+        severity: "medium",
+        subsystem: "lovable-ai-gateway",
+        title: "AI provider degraded",
+        description: result.error_details ?? "AI gateway is operating in a degraded state.",
+        fingerprint: "ai-provider:lovable-ai-gateway:degraded",
+        metadata: {
+          active_provider: result.active_provider,
+          checks: result.checks,
+        },
+      });
+    }
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
