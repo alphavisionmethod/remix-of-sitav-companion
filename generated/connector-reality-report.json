@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-17T02:20:00.000Z",
+  "gate": "Gate 33 — Connector Reality",
+  "requiredTables": [
+    "connector_registry",
+    "connector_accounts",
+    "connector_oauth_tokens",
+    "connector_receipts",
+    "connector_configs",
+    "consent_scope_records",
+    "webhook_events",
+    "connector_sync_cursors"
+  ],
+  "requiredFunctions": [
+    "supabase/functions/webhook-ingest/index.ts",
+    "supabase/functions/webhook-process/index.ts",
+    "supabase/functions/webhook-replay/index.ts",
+    "supabase/functions/connector-token-refresh/index.ts",
+    "supabase/functions/seed-connector-registry/index.ts"
+  ],
+  "catalogTotal": 12,
+  "errors": [],
+  "warnings": [],
+  "ok": true
+}
