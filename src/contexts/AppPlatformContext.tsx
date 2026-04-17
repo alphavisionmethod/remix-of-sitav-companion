@@ -17,31 +17,25 @@ import type {
   AppLifecycleReceipt, AppPermission,
 } from "@/lib/app-platform/types";
 
-// ── Persisted row shape ─────────────────────────────────────────
+// ── Persisted row shape (matches public.installed_apps) ────────
 
 interface InstalledAppRow {
   id: string;
   user_id: string;
   app_id: string;
   install_status: string;
-  install_scope: string;
-  sandbox_level: string;
-  source_origin: string;
-  package_type: string;
-  update_mode: string;
-  permissions_granted: AppPermission[];
-  dock_pinned: boolean;
-  notification_enabled: boolean;
-  startup_behavior: string;
+  enabled: boolean;
+  pinned: boolean;
+  favorite: boolean;
+  pinned_order: number;
+  launch_count: number;
+  last_launched_at: string | null;
+  version_installed: string | null;
+  permissions_granted: AppPermission[] | null;
+  config_json: Record<string, unknown> | null;
+  source_channel: string;
   installed_at: string;
   updated_at: string;
-}
-
-interface DefaultAssocRow {
-  id: string;
-  user_id: string;
-  role: string;
-  app_id: string;
 }
 
 // ── Local state map ─────────────────────────────────────────────
