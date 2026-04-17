@@ -1031,6 +1031,113 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_registry: {
+        Row: {
+          advisor_id: string
+          autonomy_level: string
+          blocked_actions: Json
+          capabilities: Json
+          confidence_threshold: number | null
+          council: string
+          created_at: string
+          default_model: string | null
+          display_name: string
+          domain: string
+          maturity: string
+          metadata: Json
+          prompt_family_id: string | null
+          required_inputs: Json
+          risk_tier: string
+          updated_at: string
+        }
+        Insert: {
+          advisor_id: string
+          autonomy_level?: string
+          blocked_actions?: Json
+          capabilities?: Json
+          confidence_threshold?: number | null
+          council?: string
+          created_at?: string
+          default_model?: string | null
+          display_name: string
+          domain: string
+          maturity?: string
+          metadata?: Json
+          prompt_family_id?: string | null
+          required_inputs?: Json
+          risk_tier?: string
+          updated_at?: string
+        }
+        Update: {
+          advisor_id?: string
+          autonomy_level?: string
+          blocked_actions?: Json
+          capabilities?: Json
+          confidence_threshold?: number | null
+          council?: string
+          created_at?: string
+          default_model?: string | null
+          display_name?: string
+          domain?: string
+          maturity?: string
+          metadata?: Json
+          prompt_family_id?: string | null
+          required_inputs?: Json
+          risk_tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_capability_routing: {
+        Row: {
+          budget_class: string
+          capability_key: string
+          created_at: string
+          description: string | null
+          display_name: string
+          fallback_chain: Json
+          is_active: boolean
+          primary_model: string
+          risk_tier: string
+          task_class: string
+          updated_at: string
+        }
+        Insert: {
+          budget_class?: string
+          capability_key: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          fallback_chain?: Json
+          is_active?: boolean
+          primary_model: string
+          risk_tier?: string
+          task_class?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_class?: string
+          capability_key?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          fallback_chain?: Json
+          is_active?: boolean
+          primary_model?: string
+          risk_tier?: string
+          task_class?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_capability_routing_primary_model_fkey"
+            columns: ["primary_model"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["model_id"]
+          },
+        ]
+      }
       ai_inference_receipts: {
         Row: {
           capability_id: string | null
@@ -1081,6 +1188,347 @@ export type Database = {
           verification_outcome?: string | null
         }
         Relationships: []
+      }
+      ai_model_registry: {
+        Row: {
+          context_length: number
+          cost_per_1k_in_cents: number | null
+          cost_per_1k_out_cents: number | null
+          cost_tier: string
+          created_at: string
+          deprecated_at: string | null
+          display_name: string
+          is_deprecated: boolean
+          latency_tier: string
+          max_tokens_in: number | null
+          max_tokens_out: number | null
+          model_class: string
+          model_id: string
+          provider_key: string
+          quality_tier: string
+          recommended_use_cases: Json
+          structured_output_support: boolean
+          tool_calling_support: boolean
+          updated_at: string
+        }
+        Insert: {
+          context_length?: number
+          cost_per_1k_in_cents?: number | null
+          cost_per_1k_out_cents?: number | null
+          cost_tier?: string
+          created_at?: string
+          deprecated_at?: string | null
+          display_name: string
+          is_deprecated?: boolean
+          latency_tier?: string
+          max_tokens_in?: number | null
+          max_tokens_out?: number | null
+          model_class?: string
+          model_id: string
+          provider_key: string
+          quality_tier?: string
+          recommended_use_cases?: Json
+          structured_output_support?: boolean
+          tool_calling_support?: boolean
+          updated_at?: string
+        }
+        Update: {
+          context_length?: number
+          cost_per_1k_in_cents?: number | null
+          cost_per_1k_out_cents?: number | null
+          cost_tier?: string
+          created_at?: string
+          deprecated_at?: string | null
+          display_name?: string
+          is_deprecated?: boolean
+          latency_tier?: string
+          max_tokens_in?: number | null
+          max_tokens_out?: number | null
+          model_class?: string
+          model_id?: string
+          provider_key?: string
+          quality_tier?: string
+          recommended_use_cases?: Json
+          structured_output_support?: boolean
+          tool_calling_support?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_model_registry_provider_key_fkey"
+            columns: ["provider_key"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["provider_key"]
+          },
+        ]
+      }
+      ai_prompt_families: {
+        Row: {
+          capability_keys: string[]
+          created_at: string
+          current_version_id: string | null
+          description: string | null
+          display_name: string
+          family_id: string
+          owner_domain: string
+          updated_at: string
+        }
+        Insert: {
+          capability_keys?: string[]
+          created_at?: string
+          current_version_id?: string | null
+          description?: string | null
+          display_name: string
+          family_id: string
+          owner_domain?: string
+          updated_at?: string
+        }
+        Update: {
+          capability_keys?: string[]
+          created_at?: string
+          current_version_id?: string | null
+          description?: string | null
+          display_name?: string
+          family_id?: string
+          owner_domain?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_prompt_invocations: {
+        Row: {
+          advisor_id: string | null
+          capability_key: string | null
+          family_id: string
+          id: string
+          invocation_id: string | null
+          ts: string
+          user_id: string
+          version_id: string | null
+        }
+        Insert: {
+          advisor_id?: string | null
+          capability_key?: string | null
+          family_id: string
+          id?: string
+          invocation_id?: string | null
+          ts?: string
+          user_id: string
+          version_id?: string | null
+        }
+        Update: {
+          advisor_id?: string | null
+          capability_key?: string | null
+          family_id?: string
+          id?: string
+          invocation_id?: string | null
+          ts?: string
+          user_id?: string
+          version_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_prompt_versions: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          created_by: string | null
+          deprecated_at: string | null
+          family_id: string
+          hash: string
+          id: string
+          status: string
+          system_prompt: string
+          template: string
+          updated_at: string
+          variables: Json
+          version: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          deprecated_at?: string | null
+          family_id: string
+          hash: string
+          id?: string
+          status?: string
+          system_prompt?: string
+          template?: string
+          updated_at?: string
+          variables?: Json
+          version: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          deprecated_at?: string | null
+          family_id?: string
+          hash?: string
+          id?: string
+          status?: string
+          system_prompt?: string
+          template?: string
+          updated_at?: string
+          variables?: Json
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_prompt_versions_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "ai_prompt_families"
+            referencedColumns: ["family_id"]
+          },
+        ]
+      }
+      ai_provider_health: {
+        Row: {
+          created_at: string
+          error_rate_pct: number | null
+          failure_count: number
+          id: string
+          last_error: string | null
+          last_probed_at: string
+          latency_ms_p50: number | null
+          latency_ms_p95: number | null
+          provider_key: string
+          status: string
+          success_count: number
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          created_at?: string
+          error_rate_pct?: number | null
+          failure_count?: number
+          id?: string
+          last_error?: string | null
+          last_probed_at?: string
+          latency_ms_p50?: number | null
+          latency_ms_p95?: number | null
+          provider_key: string
+          status?: string
+          success_count?: number
+          window_end?: string
+          window_start?: string
+        }
+        Update: {
+          created_at?: string
+          error_rate_pct?: number | null
+          failure_count?: number
+          id?: string
+          last_error?: string | null
+          last_probed_at?: string
+          latency_ms_p50?: number | null
+          latency_ms_p95?: number | null
+          provider_key?: string
+          status?: string
+          success_count?: number
+          window_end?: string
+          window_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_provider_health_provider_key_fkey"
+            columns: ["provider_key"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["provider_key"]
+          },
+        ]
+      }
+      ai_provider_registry: {
+        Row: {
+          auth_kind: string
+          base_url: string | null
+          created_at: string
+          deprecated_at: string | null
+          display_name: string
+          is_active: boolean
+          metadata: Json
+          provider_key: string
+          region: string | null
+          sla_tier: string
+          updated_at: string
+        }
+        Insert: {
+          auth_kind?: string
+          base_url?: string | null
+          created_at?: string
+          deprecated_at?: string | null
+          display_name: string
+          is_active?: boolean
+          metadata?: Json
+          provider_key: string
+          region?: string | null
+          sla_tier?: string
+          updated_at?: string
+        }
+        Update: {
+          auth_kind?: string
+          base_url?: string | null
+          created_at?: string
+          deprecated_at?: string | null
+          display_name?: string
+          is_active?: boolean
+          metadata?: Json
+          provider_key?: string
+          region?: string | null
+          sla_tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_routing_policies: {
+        Row: {
+          capability_id: string
+          created_at: string
+          enabled: boolean
+          fallback_models: string[]
+          id: string
+          max_cost_cents: number
+          primary_model: string
+          rationale: string | null
+          risk_tier: string
+          updated_at: string
+        }
+        Insert: {
+          capability_id: string
+          created_at?: string
+          enabled?: boolean
+          fallback_models?: string[]
+          id?: string
+          max_cost_cents?: number
+          primary_model: string
+          rationale?: string | null
+          risk_tier?: string
+          updated_at?: string
+        }
+        Update: {
+          capability_id?: string
+          created_at?: string
+          enabled?: boolean
+          fallback_models?: string[]
+          id?: string
+          max_cost_cents?: number
+          primary_model?: string
+          rationale?: string | null
+          risk_tier?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_routing_policies_primary_model_fkey"
+            columns: ["primary_model"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["model_id"]
+          },
+        ]
       }
       ai_workforce_approval_queue: {
         Row: {
