@@ -113,54 +113,36 @@ serve(async (req) => {
 
           if (!conditionsMet) continue;
 
-          // Create workflow run
-          const { data: run } = await supabase.from("workflow_runs").insert({
-            user_id: event.user_id,
-            workflow_id: workflow.id,
-            status: "running",
-            current_step: 0,
-            context: { trigger_event: event.type, trigger_payload: event.payload },
-          }).select("id").single();
-
-          if (run) {
-            // Create step records for tracking
-            const steps = workflow.steps as Array<{ action: string; config?: Record<string, unknown> }>;
-            for (let i = 0; i < steps.length; i++) {
-              await supabase.from("workflow_steps").insert({
-                user_id: event.user_id,
-                run_id: run.id,
-                step_index: i,
-                action: steps[i].action,
-                status: i === 0 ? "running" : "pending",
-                input: steps[i].config || {},
-              });
-            }
-
-            // Execute first step (simple actions only — complex ones go to Brain Core)
-            const firstStep = steps[0];
-            if (firstStep) {
-              const stepResult = await executeStep(supabase, event.user_id, firstStep, event.payload);
-
-              // Update first step
-              await supabase.from("workflow_steps")
-                .update({ status: "completed", result: stepResult, completed_at: new Date().toISOString() })
-                .eq("run_id", run.id)
-                .eq("step_index", 0);
-
-              // If only one step, mark run complete
-              if (steps.length === 1) {
-                await supabase.from("workflow_runs")
-                  .update({ status: "completed", completed_at: new Date().toISOString() })
-                  .eq("id", run.id);
-              } else {
-                // Advance to next step
-                await supabase.from("workflow_runs")
-                  .update({ current_step: 1 })
-                  .eq("id", run.id);
+          // ── Phase 23.1: Route through canonical workflow-execute runner ──
+          // No direct workflow_runs/workflow_steps inserts here — that bypasses
+          // kill-switches, state transitions, receipts, and stuck-detector.
+          try {
+            const { data: invokeData, error: invokeError } = await supabase.functions.invoke(
+              "workflow-execute",
+              {
+                body: {
+                  workflow_id: workflow.id,
+                  user_id: event.user_id,
+                  trigger: {
+                    type: "event",
+                    event_type: event.type,
+                    event_id: event.id,
+                    payload: event.payload,
+                  },
+                },
               }
-            }
+            );
 
-            workflowsTriggered++;
+            if (invokeError) {
+              console.error(`workflow-execute invoke failed for workflow ${workflow.id}:`, invokeError);
+            } else if (invokeData?.rejected) {
+              // Kill-switch or policy rejected the run — surface in results
+              console.warn(`workflow ${workflow.id} rejected by canonical runner:`, invokeData.reason);
+            } else {
+              workflowsTriggered++;
+            }
+          } catch (invokeErr) {
+            console.error(`workflow-execute invocation threw for workflow ${workflow.id}:`, invokeErr);
           }
         }
       }
