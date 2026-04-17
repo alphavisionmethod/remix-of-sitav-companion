@@ -69,10 +69,11 @@ export default function AIG04BudgetCenter() {
   const { data: publicSafeCount = 0 } = useQuery({
     queryKey: ["ai-public-safe-count"],
     queryFn: async () => {
-      // ai_launch_honesty table not in generated types — use rpc-safe fromTable helper
-      const { count } = await (supabase.from as unknown as (t: string) => ReturnType<typeof supabase.from>)("ai_launch_honesty")
-        .select("*", { count: "exact", head: true })
-        .eq("public_claim_allowed", true);
+      // ai_launch_honesty is a runtime-only table not present in generated Database types.
+      // Cast the client at the call boundary to a generic SupabaseClient to allow the lookup.
+      type AnyTableClient = { from: (t: string) => { select: (s: string, o?: { count?: "exact"; head?: boolean }) => { eq: (col: string, val: boolean) => Promise<{ count: number | null }> } } };
+      const client = supabase as unknown as AnyTableClient;
+      const { count } = await client.from("ai_launch_honesty").select("*", { count: "exact", head: true }).eq("public_claim_allowed", true);
       return count ?? 0;
     },
   });
