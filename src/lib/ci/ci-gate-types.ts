@@ -23,7 +23,9 @@ export type CIGatePhase =
   | "phase-18-db-reality"
   | "phase-19-auth-policy-trust-reality"
   | "phase-20-production-operations"
-  | "phase-21-ai-advisor-reality";
+  | "phase-21-ai-advisor-reality"
+  | "phase-22-connector-reality"
+  | "phase-23-workflow-reality";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 
