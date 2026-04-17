@@ -1,9 +1,9 @@
 # SITA OS — FULL ADVANCED ISSUES, FIXES & INTEGRATION REGISTER
 
-**Version:** v2.1 (truth-only · re-audited)
+**Version:** v2.2 (truth-only · re-audited 2026-04-17)
 **Generated:** 2026-04-17
 **Model:** Outstanding-only — no resolved-issue log per documentation-governance memory
-**Source of truth:** `generated/its-real-gate-report.json` (Phase 32) + live DB/filesystem probes
+**Source of truth:** `generated/its-real-gate-report.json` (Phase 32) + live DB/filesystem probes + `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md`
 
 ---
 
@@ -13,13 +13,15 @@
 |---|---|---|---|
 | Frontend | Pages | **1,040** | `find src/pages -name "*.tsx"` |
 | Frontend | Components | **922** | `find src/components -name "*.tsx"` |
-| Frontend | Hooks | **169** | `find src/hooks` |
-| Frontend | Lib modules | **1,835** | `find src/lib` |
-| Backend | Edge Functions | **127** | `ls supabase/functions/*/index.ts` |
-| Database | Tables (public) | **303** | `pg_tables` |
+| Frontend | Total TS/TSX | **4,690** | `find src -name '*.ts' -o -name '*.tsx'` |
+| Frontend | `as any` in pages | **0** ✅ (ISS-020 RESOLVED) | `grep -rE '\bas any\b' src/pages` |
+| Backend | Edge Functions | **127** | `ls supabase/functions/` |
+| Database | Tables (public) | **303** | `information_schema.tables` |
+| Database | Views (public) | **8** | `information_schema.views` |
 | Database | RLS Policies | **652** | `pg_policies` |
-| Database | Tables w/ RLS, no policy | **0** ✅ | `get_db_truth_snapshot('drift')` |
+| Database | Tables w/ RLS, no policy | **0** ✅ | `pg_policies` distinct tablename = 303/303 |
 | Database | Migrations | **189** | `ls supabase/migrations/*.sql` |
+| Stubs Sweep | Actionable hits | **76** (P0:5 · P1:0 · P2:12 · P3:30 · P4:29) | `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` |
 | Database | Extensions | pg_cron 1.6.4, pg_net 0.20, pgcrypto 1.3, uuid-ossp 1.1 | `pg_extension` |
 | Database | Realtime tables | **6** (advisor_board_actions, advisor_board_recommendations, lead_inbox_items, notifications, os_command_events, os_commands) | `pg_publication_tables` |
 | Storage | Buckets | 2 (`user-files` private, `app-assets` **public**) | `storage.buckets` |
