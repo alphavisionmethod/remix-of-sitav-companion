@@ -15,12 +15,14 @@ import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/demo-dat
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 
 
 
 const ConnectorHub = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const emitConnectorLoop = useLoopEmitter("connected-services-sync");
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -287,6 +289,7 @@ const ConnectorHub = () => {
                       await supabase.functions.invoke("connector-batch", {
                         body: { action: "submit", connector_type: selected.service, operations: [{ type: "sync", payload: {} }] },
                       });
+                      emitConnectorLoop("sync_run", { evidence: { connector: selected.service } });
                       toast.success(`Sync triggered for ${selected.service}`);
                       queryClient.invalidateQueries({ queryKey: ["sync_logs"] });
                       queryClient.invalidateQueries({ queryKey: ["connector_configs"] });
