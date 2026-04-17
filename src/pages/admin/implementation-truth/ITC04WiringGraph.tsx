@@ -3,13 +3,21 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { useSpecRegistry, useWiringEdges, useUpsertWiringEdge, useDeleteWiringEdge, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
+import { useSpecRegistry, useWiringEdges, useUpsertWiringEdge, useDeleteWiringEdge, type SpecRegistryEntry, type WiringEdge } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GitBranch, ArrowRight, CheckCircle2, XCircle, AlertTriangle, Plus, Trash2 } from "lucide-react";
+
+type EdgeStatus = WiringEdge["edge_status"];
+type SyntheticEdge = { source_type: string; source_name: string; target_type: string; target_name: string; edge_status: EdgeStatus };
+type DisplayEdge = WiringEdge | SyntheticEdge;
+
+function isPersistedEdge(e: DisplayEdge): e is WiringEdge {
+  return "id" in e && typeof e.id === "string";
+}
 
 function StatusIcon({ status }: { status: string }) {
   if (status === "connected") return <CheckCircle2 className="h-3 w-3 text-green-500" />;
@@ -39,8 +47,8 @@ function NodeBadge({ type, name }: { type: string; name: string }) {
   );
 }
 
-function buildSyntheticChain(spec: SpecRegistryEntry) {
-  const chain: { source_type: string; source_name: string; target_type: string; target_name: string; edge_status: string }[] = [];
+function buildSyntheticChain(spec: SpecRegistryEntry): SyntheticEdge[] {
+  const chain: SyntheticEdge[] = [];
   spec.required_routes.forEach(r => chain.push({ source_type: "spec", source_name: spec.spec_id, target_type: "route", target_name: r, edge_status: "connected" }));
   spec.required_components.forEach((c, i) => {
     const route = spec.required_routes[Math.min(i, spec.required_routes.length - 1)] || spec.spec_id;
@@ -62,7 +70,7 @@ function buildSyntheticChain(spec: SpecRegistryEntry) {
 }
 
 const EDGE_TYPES = ["spec", "route", "component", "hook", "contract", "service", "event", "projection", "proof", "endpoint", "shell"];
-const EDGE_STATUSES = ["connected", "broken", "missing"];
+const EDGE_STATUSES: EdgeStatus[] = ["connected", "broken", "missing"];
 
 export default function ITC04WiringGraph() {
   const { data: specs } = useSpecRegistry();
@@ -88,7 +96,7 @@ export default function ITC04WiringGraph() {
       source_name: newEdge.source_name,
       target_type: newEdge.target_type,
       target_name: newEdge.target_name,
-      edge_status: newEdge.edge_status as any,
+      edge_status: newEdge.edge_status as EdgeStatus,
       evidence: newEdge.evidence || null,
     });
     setNewEdge({ source_type: "route", source_name: "", target_type: "component", target_name: "", edge_status: "connected", evidence: "" });
@@ -188,10 +196,10 @@ export default function ITC04WiringGraph() {
                     <div className="flex items-center gap-1"><StatusIcon status={edge.edge_status} /><ArrowRight className="h-3 w-3 text-muted-foreground" /></div>
                     <NodeBadge type={edge.target_type} name={edge.target_name} />
                     {edge.edge_status !== "connected" && <Badge variant={edge.edge_status === "broken" ? "secondary" : "destructive"} className="text-[7px] h-4">{edge.edge_status}</Badge>}
-                    {"evidence" in edge && (edge as any).evidence && <span className="text-[8px] text-muted-foreground italic ml-2">{String((edge as any).evidence)}</span>}
-                    {"verified_at" in edge && (edge as any).verified_at && <span className="text-[8px] text-muted-foreground ml-1">✓ {new Date(String((edge as any).verified_at)).toLocaleDateString()}</span>}
-                    {"id" in edge && edge.id && !(edge as any).id?.startsWith("e") && (
-                      <Button variant="ghost" size="icon" className="h-5 w-5 ml-auto" onClick={() => deleteEdge.mutate({ id: (edge as any).id, spec_id: selectedSpec })}>
+                    {isPersistedEdge(edge) && edge.evidence && <span className="text-[8px] text-muted-foreground italic ml-2">{edge.evidence}</span>}
+                    {isPersistedEdge(edge) && edge.verified_at && <span className="text-[8px] text-muted-foreground ml-1">✓ {new Date(edge.verified_at).toLocaleDateString()}</span>}
+                    {isPersistedEdge(edge) && !edge.id.startsWith("e") && (
+                      <Button variant="ghost" size="icon" className="h-5 w-5 ml-auto" onClick={() => deleteEdge.mutate({ id: edge.id, spec_id: selectedSpec })}>
                         <Trash2 className="h-3 w-3 text-destructive" />
                       </Button>
                     )}
