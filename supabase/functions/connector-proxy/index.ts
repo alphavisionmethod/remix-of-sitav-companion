@@ -8,6 +8,75 @@ import { withTrace } from "../_shared/tracing.ts";
 
 const GATEWAY_BASE = "https://connector-gateway.lovable.dev";
 
+// Phase 22.1.C — auto-fallback policy: 3 failures in 10 min → degraded
+const FAILURE_WINDOW_MS = 10 * 60 * 1000;
+const FAILURE_THRESHOLD = 3;
+
+async function recordProxyFailure(
+  svc: ReturnType<typeof createClient>,
+  userId: string,
+  accountId: string,
+  connectorType: string,
+  reason: string,
+): Promise<void> {
+  const cutoff = new Date(Date.now() - FAILURE_WINDOW_MS).toISOString();
+
+  // Insert this failure receipt
+  await svc.from("connector_receipts").insert({
+    user_id: userId,
+    account_id: accountId,
+    event_type: "proxy_failure",
+    connector_type: connectorType,
+    details: { reason, at: new Date().toISOString() },
+  });
+
+  // Count recent failures
+  const { count } = await svc
+    .from("connector_receipts")
+    .select("id", { count: "exact", head: true })
+    .eq("account_id", accountId)
+    .eq("event_type", "proxy_failure")
+    .gte("created_at", cutoff);
+
+  if ((count ?? 0) >= FAILURE_THRESHOLD) {
+    // Engage degraded mode
+    await svc
+      .from("connector_accounts")
+      .update({ status: "degraded", demo_mode: true })
+      .eq("id", accountId);
+
+    await svc.from("connector_receipts").insert({
+      user_id: userId,
+      account_id: accountId,
+      event_type: "fallback_engaged",
+      connector_type: connectorType,
+      details: {
+        reason: `${FAILURE_THRESHOLD} failures in ${FAILURE_WINDOW_MS / 60000}min`,
+        policy: "auto_3x10min",
+      },
+    });
+
+    // Best-effort alert
+    try {
+      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/alert-ingest`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+        },
+        body: JSON.stringify({
+          source: "connector-proxy",
+          subsystem: "connectors",
+          severity: "warning",
+          title: `Connector ${connectorType} degraded`,
+          fingerprint: `connector-degraded:${accountId}`,
+          description: `Auto-engaged fallback after ${FAILURE_THRESHOLD} failures in 10min.`,
+        }),
+      });
+    } catch (_) { /* best effort */ }
+  }
+}
+
 // Connector ID → env var name mapping
 const CONNECTOR_KEYS: Record<string, string> = {
   slack: "SLACK_API_KEY",
