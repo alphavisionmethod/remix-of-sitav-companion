@@ -11,7 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle2, AlertTriangle, AlertCircle, Route as RouteIcon, ShieldAlert, BookOpen } from "lucide-react";
+import {
+  CheckCircle2, AlertTriangle, AlertCircle, Route as RouteIcon, ShieldAlert, BookOpen,
+  Layout, Cloud, Cog, Database, Lock, FileCheck2, FlaskConical, GitBranch, LifeBuoy,
+} from "lucide-react";
 import { GOLDEN_PATH_REGISTRY } from "@/lib/operations/golden-path-registry";
 import { evaluateGoldenPaths, summarizeEvaluation } from "@/lib/operations/golden-path-evaluator";
 import { getVerificationSummary } from "@/lib/operations/golden-path-verification-map";
