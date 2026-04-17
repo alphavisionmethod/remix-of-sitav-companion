@@ -359,6 +359,29 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Real DB-backed AI registries (provider/model/health/routing/prompts); advisor_registry ≥4 entries with promptFamilyId + defaultModel; R3+ capabilities reject raw inline system prompts; admin prompt explorer wired.",
     producesArtifact: "generated/ai-advisor-reality-report.json",
   },
+
+  // ── Phase 23 ── Workflow & Automation Reality (Checklist 16)
+  {
+    id: "workflow-reality",
+    phase: "phase-23-workflow-reality",
+    title: "Workflow & Automation reality (Checklist 16: tables, runner, repair, kill switches)",
+    script: "scripts/architecture/checks/check-workflow-reality.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "8 workflow/automation tables exist with RLS; workflow-execute, workflow-repair, workflow-stuck-detector, workflow-replay deployed; admin page queries real workflow_runs (no DEMO_RUNS); KS-WORKFLOW + KS-AUTOMATIONS enforced in execute and dispatch.",
+    producesArtifact: "generated/workflow-reality-report.json",
+  },
+  {
+    id: "no-workflow-bypass",
+    phase: "phase-23-workflow-reality",
+    title: "No workflow bypass (only canonical runner writes workflow_runs)",
+    script: "scripts/architecture/checks/check-no-workflow-bypass.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Direct insert into workflow_runs is forbidden outside workflow-execute / workflow-repair / workflow-replay / workflow-stuck-detector edge functions.",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
