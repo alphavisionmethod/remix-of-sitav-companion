@@ -285,14 +285,14 @@ async function updateConfigJson(
   try {
     const { supabase } = await import("@/integrations/supabase/client");
     const sb = supabase as unknown as { from: (t: string) => any };
-    const { data: row } = await sb()
+    const { data: row } = await sb
       .from("installed_apps")
       .select("config_json")
       .eq("user_id", userId)
       .eq("app_id", appId)
       .maybeSingle();
     const merged = { ...(row?.config_json ?? {}), ...patch };
-    await sb()
+    await sb
       .from("installed_apps")
       .update({ config_json: merged })
       .eq("user_id", userId)
