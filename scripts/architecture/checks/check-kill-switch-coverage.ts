@@ -10,6 +10,8 @@
 //   • Every runbookRef points to a real runbook ID
 // ═══════════════════════════════════════════════════════════════
 
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { ViolationCollector } from "../lib/utils";
 import { KILL_SWITCH_REGISTRY } from "../../../src/lib/control-plane/kill-switch-registry";
 import { KILL_SWITCH_ENFORCEMENT_MAP } from "../../../src/lib/control-plane/kill-switch-enforcement-map";
@@ -17,6 +19,8 @@ import { KILL_SWITCH_DEPENDENCY_MAP } from "../../../src/lib/control-plane/kill-
 import { KILL_SWITCH_CONSEQUENCE_MAP } from "../../../src/lib/control-plane/kill-switch-runtime-consequence";
 import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
 import { RUNBOOK_REGISTRY } from "../../../src/lib/support/runbook-registry";
+
+const REPO_ROOT = path.resolve(__dirname, "../../..");
 
 const vc = new ViolationCollector();
 
@@ -137,7 +141,7 @@ for (const edge of KILL_SWITCH_DEPENDENCY_MAP) {
   }
 }
 
-// ── Enforcement points resolve ────────────────────────────────
+// ── Enforcement points resolve to switch IDs ──────────────────
 for (const point of KILL_SWITCH_ENFORCEMENT_MAP) {
   if (!validSwitchIds.has(point.switchId)) {
     vc.add(
@@ -149,8 +153,63 @@ for (const point of KILL_SWITCH_ENFORCEMENT_MAP) {
   }
 }
 
+// ── Phase 27.D — Enforcement points must point at REAL files with REAL symbols ──
+const VERIFIABLE_LAYERS = new Set([
+  "edge-function",
+  "domain-service",
+  "ai-gateway",
+  "scheduler",
+  "connector",
+  "ui-gate",
+  "self-healing",
+]);
+let enforcedFilesVerified = 0;
+let enforcedFilesMissing = 0;
+let symbolMatches = 0;
+let symbolMissing = 0;
+
+for (const point of KILL_SWITCH_ENFORCEMENT_MAP) {
+  if (!VERIFIABLE_LAYERS.has(point.layer)) continue;
+  const abs = path.join(REPO_ROOT, point.enforcedAt);
+  if (!fs.existsSync(abs)) {
+    enforcedFilesMissing++;
+    vc.add(
+      "kill-switch-enforcement-map.ts",
+      "enforcement-file-missing",
+      `Switch ${point.switchId} → enforcedAt "${point.enforcedAt}" does not exist on disk`,
+      "error",
+    );
+    continue;
+  }
+  enforcedFilesVerified++;
+  try {
+    const content = fs.readFileSync(abs, "utf8");
+    if (!content.includes(point.symbol)) {
+      symbolMissing++;
+      vc.add(
+        "kill-switch-enforcement-map.ts",
+        "enforcement-symbol-missing",
+        `Switch ${point.switchId} → file ${point.enforcedAt} does not contain symbol "${point.symbol}"`,
+        "error",
+      );
+    } else {
+      symbolMatches++;
+    }
+  } catch (e) {
+    vc.add(
+      "kill-switch-enforcement-map.ts",
+      "enforcement-read-failed",
+      `Cannot read ${point.enforcedAt}: ${(e as Error).message}`,
+      "error",
+    );
+  }
+}
+
 console.log(
   `  📊 ${KILL_SWITCH_REGISTRY.length} switches, ${KILL_SWITCH_ENFORCEMENT_MAP.length} enforcement points, ${KILL_SWITCH_DEPENDENCY_MAP.length} dependency edges, ${KILL_SWITCH_CONSEQUENCE_MAP.length} consequences`,
+);
+console.log(
+  `  ✅ Enforcement verification: ${enforcedFilesVerified} files exist, ${enforcedFilesMissing} missing, ${symbolMatches} symbols matched, ${symbolMissing} symbols missing`,
 );
 vc.report("check-kill-switch-coverage");
 vc.exitIfErrors();
