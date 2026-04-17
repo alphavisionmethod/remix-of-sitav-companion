@@ -8441,8 +8441,10 @@ export type Database = {
           description: string | null
           id: string
           owner_user_id: string | null
+          primary_runbook_id: string | null
           remediation_notes: string | null
           resolved_at: string | null
+          runbook_ids: string[]
           severity: string
           status: string
           title: string
@@ -8455,8 +8457,10 @@ export type Database = {
           description?: string | null
           id?: string
           owner_user_id?: string | null
+          primary_runbook_id?: string | null
           remediation_notes?: string | null
           resolved_at?: string | null
+          runbook_ids?: string[]
           severity?: string
           status?: string
           title: string
@@ -8469,8 +8473,10 @@ export type Database = {
           description?: string | null
           id?: string
           owner_user_id?: string | null
+          primary_runbook_id?: string | null
           remediation_notes?: string | null
           resolved_at?: string | null
+          runbook_ids?: string[]
           severity?: string
           status?: string
           title?: string
@@ -11577,6 +11583,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      runbook_drill_results: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          executed_at: string
+          id: string
+          mode: string
+          notes: string | null
+          passed: boolean
+          runbook_id: string
+          step_outcomes: Json
+          triggered_by: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          executed_at?: string
+          id?: string
+          mode?: string
+          notes?: string | null
+          passed?: boolean
+          runbook_id: string
+          step_outcomes?: Json
+          triggered_by?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          executed_at?: string
+          id?: string
+          mode?: string
+          notes?: string | null
+          passed?: boolean
+          runbook_id?: string
+          step_outcomes?: Json
+          triggered_by?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       runtime_agents: {
         Row: {

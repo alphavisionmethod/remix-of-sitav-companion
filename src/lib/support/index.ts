@@ -31,3 +31,19 @@ export {
   getCriticalIncidentSubsystems,
   type RunbookSubsystemRequirement,
 } from "./runbook-subsystem-map";
+
+export {
+  resolveRunbookForAlert,
+  resolveRunbooksForIncident,
+  describeResolution,
+  type ResolveAlertInput,
+  type ResolveIncidentInput,
+} from "./runbook-resolver";
+
+export {
+  getLastDrillForRunbook,
+  getDrillSummaries,
+  triggerRunbookDrill,
+  type RunbookDrillResult,
+  type DrillSummary,
+} from "./runbook-drill-status";

@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Incident Management Service
+// SITA OS — Incident Management Service (Phase 28.C)
 // Full incident lifecycle: declare → triage → investigate →
-// mitigate → resolve → postmortem
+// mitigate → resolve → postmortem. Auto-attaches recovery runbooks
+// from the canonical RUNBOOK_REGISTRY when an incident is declared.
 // ═══════════════════════════════════════════════════════════════
 
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { resolveRunbooksForIncident } from "@/lib/support/runbook-resolver";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type IncidentSeverity = "critical" | "high" | "medium" | "low";
 export type IncidentStatus = "declared" | "triaging" | "investigating" | "mitigating" | "resolved" | "postmortem" | "closed";
@@ -38,6 +40,9 @@ export interface Incident {
   priority: number;
   impactScope: string;
   affectedServices: string[];
+  /** Phase 28.C — runbooks linked to this incident (auto-resolved). */
+  runbookIds: string[];
+  primaryRunbookId?: string;
   timeline: TimelineEntry[];
   tags: string[];
   relatedIncidents: string[];
@@ -88,6 +93,9 @@ export class IncidentManagementService {
 
   declareIncident(severity: IncidentSeverity, title: string, description: string, opts?: { impactScope?: string; affectedServices?: string[]; tags?: string[] }): Incident {
     const now = Date.now();
+    const affectedServices = opts?.affectedServices ?? [];
+    // Phase 28.C — auto-attach recovery runbooks
+    const { primary, all } = resolveRunbooksForIncident({ affectedServices, severity });
     const incident: Incident = {
       id: `inc_${now}_${Math.random().toString(36).slice(2, 8)}`,
       title,
@@ -96,13 +104,15 @@ export class IncidentManagementService {
       status: "declared",
       priority: severity === "critical" ? 1 : severity === "high" ? 2 : severity === "medium" ? 3 : 4,
       impactScope: opts?.impactScope ?? "unknown",
-      affectedServices: opts?.affectedServices ?? [],
+      affectedServices,
+      runbookIds: all,
+      primaryRunbookId: primary ?? undefined,
       timeline: [{
         id: `tl_${now}`,
         timestamp: now,
         author: "system",
         type: "status-change",
-        content: `Incident declared: ${title} (${severity})`,
+        content: `Incident declared: ${title} (${severity})${primary ? ` — runbook ${primary} attached` : ""}`,
       }],
       tags: opts?.tags ?? [],
       relatedIncidents: [],
@@ -265,8 +275,8 @@ export class IncidentManagementService {
   getDemoIncidents(): Incident[] {
     const now = Date.now();
     return [
-      { id: "inc_demo_1", title: "Event bus latency spike", description: "P95 latency exceeded 500ms on event-bus for 12 minutes", severity: "high" as const, status: "resolved" as const, assignee: "ops-team", priority: 2, impactScope: "all-services", affectedServices: ["event-bus", "brain-core", "projections"], timeline: [], tags: ["performance", "event-bus"], relatedIncidents: [], declaredAt: now - 3600000 * 4, acknowledgedAt: now - 3600000 * 3.9, resolvedAt: now - 3600000 * 3, resolution: "Scaled event-bus replicas from 3 to 5", resolvedBy: "ops-team", ttaMs: 360000, ttrMs: 3600000 },
-      { id: "inc_demo_2", title: "Auth service certificate expiry warning", description: "TLS certificate expires in 72 hours", severity: "medium" as const, status: "investigating" as const, assignee: "security-team", priority: 3, impactScope: "auth-service", affectedServices: ["auth", "api-gateway"], timeline: [], tags: ["security", "certificate"], relatedIncidents: [], declaredAt: now - 3600000, acknowledgedAt: now - 3500000, ttaMs: 100000 },
+      { id: "inc_demo_1", title: "Event bus latency spike", description: "P95 latency exceeded 500ms on event-bus for 12 minutes", severity: "high" as const, status: "resolved" as const, assignee: "ops-team", priority: 2, impactScope: "all-services", affectedServices: ["event-bus", "brain-core", "projections"], runbookIds: ["RB-019"], primaryRunbookId: "RB-019", timeline: [], tags: ["performance", "event-bus"], relatedIncidents: [], declaredAt: now - 3600000 * 4, acknowledgedAt: now - 3600000 * 3.9, resolvedAt: now - 3600000 * 3, resolution: "Scaled event-bus replicas from 3 to 5", resolvedBy: "ops-team", ttaMs: 360000, ttrMs: 3600000 },
+      { id: "inc_demo_2", title: "Auth service certificate expiry warning", description: "TLS certificate expires in 72 hours", severity: "medium" as const, status: "investigating" as const, assignee: "security-team", priority: 3, impactScope: "auth-service", affectedServices: ["auth", "api-gateway"], runbookIds: ["RB-001"], primaryRunbookId: "RB-001", timeline: [], tags: ["security", "certificate"], relatedIncidents: [], declaredAt: now - 3600000, acknowledgedAt: now - 3500000, ttaMs: 100000 },
     ];
   }
 

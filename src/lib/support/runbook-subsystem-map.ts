@@ -51,8 +51,8 @@ export const RUNBOOK_SUBSYSTEM_REQUIREMENTS: readonly RunbookSubsystemRequiremen
     description: "Runtime capability probe failures" },
   { subsystem: "support-escalation", displayName: "Support Escalation", mandatory: true, criticalIncidentClass: false,
     description: "Failed support escalation paths" },
-  { subsystem: "ingress", displayName: "Ingress / Edge", mandatory: false, criticalIncidentClass: false,
-    description: "Ingress and edge routing failures" },
+  { subsystem: "ingress", displayName: "Ingress / Edge", mandatory: true, criticalIncidentClass: true,
+    description: "Ingress and edge routing failures (Nginx/Traefik/Kong)" },
 ] as const;
 
 export function getMandatorySubsystems(): readonly RunbookSubsystem[] {

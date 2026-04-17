@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "ok": true,
+  "data": {
+    "totalRunbooks": 19,
+    "subsystemsRequired": 19,
+    "subsystemsCovered": 19,
+    "mandatorySubsystemsCovered": 18,
+    "criticalIncidentSubsystems": 6,
+    "criticalRunbooksWithRecentDrill": 0,
+    "criticalRunbooksRequiringDrill": 6,
+    "alertsAutoResolveCoverage": {
+      "subsystemsMapped": 18,
+      "sourceAliasesMapped": 35,
+      "severityFallbacksDeclared": 4
+    },
+    "incidentsAutoLinkCoverage": {
+      "supports": true,
+      "fields": ["runbook_ids", "primary_runbook_id"]
+    },
+    "drillHarness": {
+      "edgeFunction": "runbook-drill",
+      "table": "runbook_drill_results",
+      "modesSupported": ["dry-run", "live"],
+      "liveModeGated": true
+    },
+    "uiSurfaces": {
+      "FCC04RunbookCenter": "registry-backed",
+      "FCC11IncidentResponseTimeline": "linked-runbook-rendered",
+      "AR08KillSwitchCenter": "runbook-cross-link"
+    },
+    "dangling": 0,
+    "violations": []
+  }
+}
