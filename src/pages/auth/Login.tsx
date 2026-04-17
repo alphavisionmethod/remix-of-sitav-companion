@@ -25,6 +25,27 @@ const Login = () => {
   const [showLockScreen, setShowLockScreen] = useState(!!savedEmail);
   const [showBoot, setShowBoot] = useState(!!savedEmail);
 
+  // Phase 19.1.B — MFA challenge step renders before completing sign-in
+  if (requiresMFA && mfaFactorId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <div className="w-full max-w-md">
+          <MFAChallenge
+            factorId={mfaFactorId}
+            onSuccess={() => {
+              toast.success("Multi-factor verification complete");
+              navigate("/");
+            }}
+            onCancel={async () => {
+              await cancelMFA();
+              toast.info("Sign-in cancelled");
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   // Boot sequence for returning users
   if (showBoot && savedEmail) {
     return <FirstBootScreen onComplete={() => setShowBoot(false)} />;
