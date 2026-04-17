@@ -14,6 +14,7 @@ import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { OwnerWorkflowSwitcher } from "./OwnerWorkflowSwitcher";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
+import { EmergencyBanner } from "@/components/admin/kill-switches/EmergencyBanner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,6 +61,9 @@ export function AdminControlPlaneShell({
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* ── Active kill switch emergency banner ──────────── */}
+      <EmergencyBanner />
+
       {/* ── Degraded-state banner ──────────────────────────── */}
       {showDegradedBanner && (
         <div className="bg-destructive/5 border-b border-destructive/20 px-4 py-2 flex items-center gap-2 text-[11px] text-destructive">

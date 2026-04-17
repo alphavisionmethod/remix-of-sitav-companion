@@ -208,6 +208,7 @@ const META05CompletenessMatrix = lazy(() => import("@/pages/admin/META05Complete
 
 // ── Phase 27: Kill-Switch & Safety Center (canonical mount) ──
 const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCenter"));
+const AdminRunbookViewerPage = lazy(() => import("@/pages/admin/AdminRunbookViewerPage"));
 
 // ── C-014: Data Retention Dashboard ──
 const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDashboard"));
@@ -359,6 +360,7 @@ export function getAdminRoutes() {
     <Route key="fcc02" path="/admin/founder/tasks" element={gated("maintenance.run", <FCC02TaskDecompositionGraph />)} />,
     <Route key="fcc03" path="/admin/founder/cicd" element={gated("maintenance.run", <FCC03CICDPipelineBoard />)} />,
     <Route key="fcc04" path="/admin/founder/runbooks" element={gated("maintenance.view", <FCC04RunbookCenter />)} />,
+    <Route key="runbook-viewer" path="/admin/support/runbooks/:id" element={gated("maintenance.view", <AdminRunbookViewerPage />)} />,
     <Route key="fcc05" path="/admin/founder/dashboard" element={gated("maintenance.view", <FCC05FounderDashboard />)} />,
     <Route key="fcc06" path="/admin/founder/programs" element={gated("maintenance.run", <FCC06ProgramManagementBoard />)} />,
     <Route key="fcc07" path="/admin/founder/cost" element={gated("maintenance.view", <FCC07PlatformCostCapacity />)} />,
