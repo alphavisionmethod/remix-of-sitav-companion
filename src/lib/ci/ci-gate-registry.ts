@@ -307,6 +307,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Every ORCHESTRATION_FUNCTION + CONNECTOR_WEBHOOK_FUNCTION declares a real, code-backed failure/replay path. Health adapter + admin dashboard wired and observable.",
     producesArtifact: "generated/edge-function-health-replay-report.json",
   },
+
+  // ── Phase 18 ── Database / Migration Reality
+  {
+    id: "db-reality",
+    phase: "phase-18-db-reality",
+    title: "Database / migration reality (17-item DB Reality Checklist)",
+    script: "scripts/architecture/checks/check-db-reality.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Every table has owner/writers/readers/tenancy/sensitivity. Every active edge function declares table I/O. Cross-domain writers blocked. Backup manifest fresh and restore drill green.",
+    producesArtifact: "generated/db-reality-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
