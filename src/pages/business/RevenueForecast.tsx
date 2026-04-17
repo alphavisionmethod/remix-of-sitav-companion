@@ -469,11 +469,14 @@ const RevenueForecast = () => {
         )}
 
         {!showMonteCarlo && !mcRunning && (
-          <div className="flex flex-col items-center justify-center py-10 text-center">
-            <Gauge className="h-10 w-10 text-muted-foreground/30 mb-3" />
-            <p className="text-sm text-muted-foreground">Run a Monte Carlo simulation to see the probability distribution</p>
-            <p className="text-xs text-muted-foreground/70 mt-1">Models twin churn risk, playbook confidence intervals, and market variance</p>
-          </div>
+          <EmptyState
+            variant="card"
+            icon={Gauge}
+            title="No simulation yet"
+            description="Run a Monte Carlo simulation to see the probability distribution. Models twin churn risk, playbook confidence intervals, and market variance."
+            actionLabel="Run simulation"
+            onAction={runMonteCarlo}
+          />
         )}
       </SitaCard>
 

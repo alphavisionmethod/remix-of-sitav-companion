@@ -12,6 +12,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { HeroCard, SummaryCard, QueueCard, AdvisorCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { motion } from "framer-motion";
 import {
@@ -231,8 +232,13 @@ export default function DailyPulse() {
           </div>
         )}
         {approvalsOpen && pendingApprovals.length === 0 && (
-          <div className="border-t border-[hsl(0_0%_100%/0.06)] px-4 py-6 text-center text-xs text-[hsl(0_0%_50%)]">
-            No pending approvals.
+          <div className="border-t border-[hsl(0_0%_100%/0.06)] p-4">
+            <EmptyState
+              variant="card"
+              icon={CheckCircle}
+              title="All clear"
+              description="No pending approvals."
+            />
           </div>
         )}
       </motion.div>
