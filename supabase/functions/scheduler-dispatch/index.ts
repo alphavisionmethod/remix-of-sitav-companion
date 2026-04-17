@@ -39,15 +39,25 @@ Deno.serve(async (req) => {
 
     const now = new Date().toISOString();
 
-    // 1. Check global kill switch
+    // 1. Check global kill switch + KS-WORKFLOW + KS-AUTOMATIONS
     const { data: globalKill } = await supabase
       .from("automation_kill_switches")
       .select("*")
-      .eq("scope", "global")
       .eq("enabled", true)
+      .or("scope.eq.global,scope_id.eq.KS-WORKFLOW,scope_id.eq.KS-AUTOMATIONS")
       .limit(1);
 
     if (globalKill && globalKill.length > 0) {
+      // Write a fallback receipt so the skip is auditable
+      try {
+        await supabase.from("workflow_receipts").insert({
+          user_id: globalKill[0].user_id,
+          run_id: globalKill[0].id, // best-effort: link to switch row id
+          action: "scheduler_skipped_kill_switch",
+          hash: crypto.randomUUID(),
+          evidence: { switch: globalKill[0], at: new Date().toISOString() },
+        });
+      } catch { /* receipts are best-effort here */ }
       return new Response(JSON.stringify({
         status: "killed",
         reason: globalKill[0].reason || "Global kill switch active",

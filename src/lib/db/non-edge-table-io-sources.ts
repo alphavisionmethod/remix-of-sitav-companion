@@ -246,6 +246,40 @@ export const NON_EDGE_TABLE_IO: Record<string, NonEdgeTableIO> = {
   onboarding_hardware_detection: { writers: [clientWrite("OnboardingHardwareDetect")], readers: [clientRead("OnboardingFlow")] },
   onboarding_restore_sources: { writers: [clientWrite("OnboardingRestoreFlow")], readers: [clientRead("OnboardingRestoreFlow")] },
   onboarding_steps: { writers: [sys("onboarding-steps seed")], readers: [clientRead("OnboardingFlow")] },
+
+  // ── Phase 23 — workflow & automation runtime tables ───────────
+  workflows: {
+    writers: [clientWrite("workflow definitions UI"), sys("workflow-execute edge fn")],
+    readers: [sys("workflow-execute edge fn"), clientRead("admin AR01AutomationOverview")],
+  },
+  workflow_runs: {
+    writers: [sys("workflow-execute edge fn"), sys("workflow-repair edge fn"), sys("workflow-replay edge fn"), sys("workflow-stuck-detector edge fn")],
+    readers: [clientRead("admin WorkflowReplayAudit"), sys("workflow-stuck-detector edge fn")],
+  },
+  workflow_steps: {
+    writers: [sys("workflow-execute edge fn")],
+    readers: [clientRead("admin WorkflowReplayAudit")],
+  },
+  workflow_state_transitions: {
+    writers: [sys("workflow-execute edge fn"), sys("workflow-repair edge fn"), sys("workflow-replay edge fn"), sys("workflow-stuck-detector edge fn")],
+    readers: [clientRead("admin WorkflowReplayAudit")],
+  },
+  workflow_receipts: {
+    writers: [sys("workflow-execute edge fn"), sys("workflow-repair edge fn"), sys("workflow-stuck-detector edge fn")],
+    readers: [clientRead("admin WorkflowReplayAudit")],
+  },
+  scheduled_jobs: {
+    writers: [clientWrite("admin scheduled jobs UI"), sys("scheduler-dispatch edge fn")],
+    readers: [sys("scheduler-dispatch edge fn"), clientRead("admin AR01AutomationOverview")],
+  },
+  job_executions: {
+    writers: [sys("scheduler-dispatch edge fn")],
+    readers: [clientRead("admin AR01AutomationOverview")],
+  },
+  automation_kill_switches: {
+    writers: [clientWrite("admin kill switch toggle"), sys("workflow-execute edge fn")],
+    readers: [sys("scheduler-dispatch edge fn"), sys("workflow-execute edge fn"), clientRead("admin AR01AutomationOverview")],
+  },
 };
 
 export function getNonEdgeIO(table: string): NonEdgeTableIO | undefined {
