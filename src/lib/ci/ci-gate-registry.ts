@@ -350,7 +350,7 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
   // ── Phase 21 ── AI / Advisor Reality
   {
     id: "ai-advisor-reality",
-    phase: "phase-21-ai-advisor-reality" as CIGateEntry["phase"],
+    phase: "phase-21-ai-advisor-reality",
     title: "AI / Advisor reality (Checklist 14: registry, prompts, routing, providers)",
     script: "scripts/architecture/checks/check-ai-advisor-reality.ts",
     owner: "ai-platform-team",

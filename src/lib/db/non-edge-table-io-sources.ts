@@ -60,6 +60,44 @@ export const NON_EDGE_TABLE_IO: Record<string, NonEdgeTableIO> = {
     readers: [sys("alert-route edge fn")],
   },
 
+  // ── Phase 21 — AI/Advisor Reality registries ────────────────
+  ai_provider_registry: {
+    writers: [sys("admin migrations / seed"), clientWrite("AIG01ProviderRegistry")],
+    readers: [clientRead("AIG01ProviderRegistry"), sys("ai-gateway"), sys("ai-health")],
+  },
+  ai_model_registry: {
+    writers: [sys("admin migrations / seed"), clientWrite("AIG02ModelRegistry")],
+    readers: [clientRead("AIG02ModelRegistry"), sys("ai-gateway")],
+  },
+  ai_provider_health: {
+    writers: [sys("ai-health edge fn"), sys("sita-ai-health-2m cron")],
+    readers: [clientRead("AIG01ProviderRegistry"), sys("alert-ingest")],
+  },
+  ai_routing_policies: {
+    writers: [sys("routing-policy-update"), clientWrite("AIG03RoutingMatrix")],
+    readers: [sys("ai-gateway"), clientRead("AIG03RoutingMatrix")],
+  },
+  ai_capability_routing: {
+    writers: [sys("routing-policy-update"), clientWrite("AIG03RoutingMatrix")],
+    readers: [sys("ai-gateway"), clientRead("AIG03RoutingMatrix")],
+  },
+  ai_prompt_families: {
+    writers: [sys("prompt-versioning"), clientWrite("AIPromptFamiliesExplorer")],
+    readers: [clientRead("AIPromptFamiliesExplorer"), sys("ai-gateway")],
+  },
+  ai_prompt_versions: {
+    writers: [sys("prompt-versioning")],
+    readers: [clientRead("AIPromptFamiliesExplorer"), sys("ai-gateway")],
+  },
+  ai_prompt_invocations: {
+    writers: [sys("ai-gateway")],
+    readers: [clientRead("AIPromptFamiliesExplorer"), sys("admin telemetry")],
+  },
+  advisor_registry: {
+    writers: [sys("seed-advisor-registry"), clientWrite("AdvisorBoardCatalog admin")],
+    readers: [clientRead("AdvisorBoardCatalog"), clientRead("AdvisorAgentDashboard"), sys("ai-gateway")],
+  },
+
   // ── admin-governance ─────────────────────────────────────────
   action_safety_classifications: { writers: [sys("admin-governance migrations")], readers: [clientRead("AdminSafetyMatrix"), sys("policy-evaluator")] },
   admin_role_permissions: { writers: [sys("admin-governance seed")], readers: [clientRead("AdminRolesPage"), sys("has_admin_permission RPC")] },
