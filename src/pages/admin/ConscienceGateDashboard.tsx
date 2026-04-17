@@ -17,20 +17,53 @@ import {
   ShieldCheck, Eye, AlertTriangle, XCircle, CheckCircle2,
   RefreshCw, Brain, DollarSign, Activity, Zap,
 } from "lucide-react";
-import type { GateDecision, GateVerdict } from "@/lib/core-services/conscience-gate/conscience-gate";
+import type { GateDecision, GateVerdict, EvidenceState, BudgetState, RoutingHints } from "@/lib/core-services/conscience-gate/conscience-gate";
 import { DEMO_CONSCIENCE_VERDICTS } from "@/lib/mock-data/conscience-gate";
 import { supabase } from "@/integrations/supabase/client";
 
 // Local row type used by this dashboard — keeps a stable `id` for table keys.
 type DashboardVerdict = GateVerdict & { id: string };
 
+// Receipt row shape from ai_inference_receipts (only fields we read here)
+interface InferenceReceiptRow {
+  id: string;
+  capability_id: string | null;
+  prompt_family: string | null;
+  route_reason: string | null;
+  verification_outcome: string | null;
+  input_tokens: number | null;
+  output_tokens: number | null;
+  cost_estimate_cents: number | null;
+  created_at: string;
+}
+
+const DEFAULT_EVIDENCE: EvidenceState = {
+  sufficient: true,
+  sourcesAvailable: 1,
+  sourcesRequired: 1,
+  missingTypes: [],
+};
+const DEFAULT_BUDGET: BudgetState = {
+  allowed: true,
+  estimatedCostCents: 0,
+  budgetClass: "standard",
+  remainingBudgetCents: 0,
+  shouldDowngrade: false,
+};
+const DEFAULT_ROUTING: RoutingHints = {
+  maxLatencyMs: 5000,
+  routingClass: "standard",
+  deterministicPath: false,
+};
+
 function withDashboardId(v: GateVerdict, idx: number): DashboardVerdict {
-  return { ...v, id: (v as any).id ?? `${v.correlationId ?? "demo"}-${idx}` };
+  const stableId = (v as Partial<DashboardVerdict>).id ?? `${v.correlationId ?? "demo"}-${idx}`;
+  return { ...v, id: stableId };
 }
 
 // Real-data path: ai_inference_receipts.verification_outcome stores live gate
 // decisions. Falls back to seed verdicts when no real receipts exist yet.
-function mapReceiptToVerdict(r: any): DashboardVerdict {
+function mapReceiptToVerdict(r: InferenceReceiptRow): DashboardVerdict {
   const outcome = (r.verification_outcome || "pass").toLowerCase();
   const decision: GateDecision = ["pass", "caveat", "block", "refuse"].includes(outcome)
     ? (outcome as GateDecision) : "pass";
@@ -38,10 +71,10 @@ function mapReceiptToVerdict(r: any): DashboardVerdict {
     id: r.id,
     decision,
     taskType: r.capability_id ?? r.prompt_family ?? "ai-task",
-    riskClass: "R2" as any,
-    evidenceState: "sufficient" as any,
-    budgetState: "ok" as any,
-    routingHints: { tier: "standard" } as any,
+    riskClass: "standard",
+    evidenceState: DEFAULT_EVIDENCE,
+    budgetState: { ...DEFAULT_BUDGET, estimatedCostCents: r.cost_estimate_cents ?? 0 },
+    routingHints: DEFAULT_ROUTING,
     retrievalRequired: false,
     critiqueRequired: false,
     approvalRequired: decision === "block" || decision === "refuse",

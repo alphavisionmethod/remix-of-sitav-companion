@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { MapPin, Clock, Zap, CheckCircle2, Trash2 } from "lucide-react";
 
+export type ErrandStatus = "pending" | "in_progress" | "done" | "snoozed";
+
 export interface ErrandItem {
   id: string;
   title: string;
@@ -9,6 +11,9 @@ export interface ErrandItem {
   estimatedMinutes?: number;
   priority: "high" | "medium" | "low";
   combinable?: boolean;
+  bundleId?: string;
+  status?: ErrandStatus;
+  dueDate?: string;
 }
 
 export interface ErrandBundle {

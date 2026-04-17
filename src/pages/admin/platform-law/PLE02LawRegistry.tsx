@@ -33,7 +33,8 @@ const PLE02LawRegistry = () => {
     });
   }, [search, catFilter, sevFilter, modeFilter, packFilter]);
 
-  const sevColor: Record<string, string> = { critical: "destructive", high: "default", medium: "secondary", low: "outline" };
+  type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
+  const sevColor: Record<LawSeverity, BadgeVariant> = { critical: "destructive", high: "default", medium: "secondary", low: "outline" };
   const modeColor: Record<string, string> = { block: "text-red-400 bg-red-500/10", warn: "text-amber-400 bg-amber-500/10", log: "text-blue-400 bg-blue-500/10", disabled: "text-muted-foreground bg-muted" };
   const machineCheckable = getMachineCheckableLaws();
 
@@ -95,15 +96,15 @@ const PLE02LawRegistry = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search laws..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-9" />
         </div>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={catFilter} onChange={e => setCatFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={catFilter} onChange={e => setCatFilter(e.target.value as LawCategory | "all")}>
           <option value="all">All Categories</option>
           {CATEGORIES.filter(c => PLATFORM_LAWS.some(l => l.category === c)).map(c => <option key={c} value={c}>{c}</option>)}
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sevFilter} onChange={e => setSevFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sevFilter} onChange={e => setSevFilter(e.target.value as LawSeverity | "all")}>
           <option value="all">All Severities</option>
           {SEVERITIES.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={modeFilter} onChange={e => setModeFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={modeFilter} onChange={e => setModeFilter(e.target.value as EnforcementMode | "all")}>
           <option value="all">All Modes</option>
           {MODES.map(m => <option key={m} value={m}>{m}</option>)}
         </select>
@@ -136,7 +137,7 @@ const PLE02LawRegistry = () => {
                     </TableCell>
                     <TableCell><Badge variant="outline" className="text-[10px]">{law.ruleType}</Badge></TableCell>
                     <TableCell className="text-[10px] text-muted-foreground">{law.scopeType}</TableCell>
-                    <TableCell><Badge variant={sevColor[law.severity] as any} className="text-[10px]">{law.severity}</Badge></TableCell>
+                    <TableCell><Badge variant={sevColor[law.severity]} className="text-[10px]">{law.severity}</Badge></TableCell>
                     <TableCell><span className={`text-xs px-2 py-0.5 rounded ${modeColor[law.enforcementMode]}`}>{law.enforcementMode}</span></TableCell>
                     <TableCell>{law.machineCheckable ? <Cpu className="h-3.5 w-3.5 text-emerald-400" /> : <span className="text-muted-foreground text-xs">—</span>}</TableCell>
                     <TableCell className="text-right">
@@ -166,7 +167,7 @@ const PLE02LawRegistry = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div><span className="text-muted-foreground text-xs">Rule #</span><div className="font-mono">{selected.ruleNumber}</div></div>
               <div><span className="text-muted-foreground text-xs">Category</span><div>{selected.category}</div></div>
-              <div><span className="text-muted-foreground text-xs">Severity</span><div><Badge variant={sevColor[selected.severity] as any}>{selected.severity}</Badge></div></div>
+              <div><span className="text-muted-foreground text-xs">Severity</span><div><Badge variant={sevColor[selected.severity]}>{selected.severity}</Badge></div></div>
               <div><span className="text-muted-foreground text-xs">Mode</span><div><span className={`px-2 py-0.5 rounded ${modeColor[selected.enforcementMode]}`}>{selected.enforcementMode}</span></div></div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

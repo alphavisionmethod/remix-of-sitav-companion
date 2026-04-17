@@ -40,7 +40,7 @@ const ErrandsLogistics = () => {
   const bundles: ErrandBundle[] = useMemo(() => {
     const groups: Record<string, typeof allErrands> = {};
     for (const e of allErrands) {
-      const key = (e as any).bundleId || "Unbundled";
+      const key = e.bundleId || "Unbundled";
       (groups[key] ??= []).push(e);
     }
     return Object.entries(groups).map(([label, errands]) => ({
@@ -55,20 +55,20 @@ const ErrandsLogistics = () => {
   // Derive timeline from errands sorted by due_date
   const timeline: TimelineStop[] = useMemo(() =>
     [...allErrands]
-      .sort((a, b) => ((a as any).dueDate ?? "").localeCompare((b as any).dueDate ?? ""))
+      .sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""))
       .map((e, i) => ({
         id: e.id,
-        time: (e as any).dueDate
-          ? new Date((e as any).dueDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })
+        time: e.dueDate
+          ? new Date(e.dueDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })
           : `#${i + 1}`,
         title: e.title,
         location: e.location,
-        status: ((e as any).status === "done" ? "done" : i === 0 ? "current" : "upcoming") as TimelineStop["status"],
+        status: (e.status === "done" ? "done" : i === 0 ? "current" : "upcoming") as TimelineStop["status"],
       })),
     [allErrands],
   );
 
-  const pendingErrands = allErrands.filter((e) => (e as any).status !== "done");
+  const pendingErrands = allErrands.filter((e) => e.status !== "done");
   const totalErrands = pendingErrands.length;
   const highPriority = pendingErrands.filter((e) => e.priority === "high").length;
   const combinableCount = pendingErrands.filter((e) => e.combinable).length;
@@ -77,7 +77,7 @@ const ErrandsLogistics = () => {
   const handleToggleDone = (errandId: string) => {
     const errand = allErrands.find((e) => e.id === errandId);
     if (!errand) return;
-    const newStatus = (errand as any).status === "done" ? "pending" : "done";
+    const newStatus = errand.status === "done" ? "pending" : "done";
     updateErrand.mutate({ id: errandId, status: newStatus }, {
       onError: () => toast.error("Failed to update errand"),
     });
@@ -89,7 +89,7 @@ const ErrandsLogistics = () => {
     });
   };
 
-  const quickWinErrands = allErrands.filter((e) => !e.location && (e as any).status !== "done");
+  const quickWinErrands = allErrands.filter((e) => !e.location && e.status !== "done");
 
   if (isLoading) {
     return (
@@ -170,11 +170,11 @@ const ErrandsLogistics = () => {
                 <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3.5 micro-hover-lift" key={e.id} >
                   <div className="flex items-center gap-3">
                     <button onClick={() => handleToggleDone(e.id)} className="shrink-0">
-                      <CheckCircle className={`h-4 w-4 ${(e as any).status === "done" ? "text-chart-2" : "text-muted-foreground/30"}`} />
+                      <CheckCircle className={`h-4 w-4 ${e.status === "done" ? "text-chart-2" : "text-muted-foreground/30"}`} />
                     </button>
                     <div className={`h-2 w-2 rounded-full shrink-0 ${e.priority === "high" ? "bg-destructive" : e.priority === "medium" ? "bg-amber-500" : "bg-chart-2"}`} />
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${(e as any).status === "done" ? "line-through text-muted-foreground" : "text-foreground"}`}>{e.title}</p>
+                      <p className={`text-sm font-medium truncate ${e.status === "done" ? "line-through text-muted-foreground" : "text-foreground"}`}>{e.title}</p>
                       <p className="text-xs text-muted-foreground">{e.location || "Home / Online"}{e.estimatedMinutes ? ` · ~${e.estimatedMinutes}m` : ""}</p>
                     </div>
                     {e.combinable && <span className="text-[9px] bg-accent/10 text-accent rounded-full px-1.5 py-0.5">combinable</span>}
