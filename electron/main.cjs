@@ -17,6 +17,7 @@ const { runFullIntegrityCheck } = require('./integrity-check.cjs');
 const { initRuntimeShield, getShieldStatus } = require('./runtime-shield.cjs');
 const { initDLPGuard, getDLPStatus } = require('./dlp-guard.cjs');
 const { initNetworkSentinel, getNetworkSentinelStatus } = require('./network-sentinel.cjs');
+const { registerSitaAppsBridge } = require('./sita-apps-bridge.cjs');
 
 let mainWindow;
 let tray;
@@ -254,6 +255,9 @@ function setupIPC() {
   ipcMain.handle('get-dlp-status', () => getDLPStatus());
   ipcMain.handle('get-network-sentinel-status', () => getNetworkSentinelStatus());
   ipcMain.handle('get-shield-status', () => getShieldStatus());
+
+  // ── App Platform — Native app launch bridge ──
+  registerSitaAppsBridge();
 }
 
 // ── Deep Link Protocol ──────────────────────────────────────────

@@ -44,6 +44,7 @@ import { ShellLiveLayer } from "./shell/ShellLiveLayer";
 import { SecurePromptProvider } from "./shell/SecurePromptProvider";
 import { FilePickerProvider } from "./shell/FilePickerService";
 import { SecurePrompt } from "./shell/SecurePrompt";
+import { AppLaunchBridge } from "./app-platform/AppLaunchBridge";
 import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { useDemoModeRuntimeEnforcement } from "@/hooks/useDemoModeRuntimeEnforcement";
 
@@ -243,6 +244,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         launcherOpen={launcherOpen} setLauncherOpen={setLauncherOpen}
         handleLaunchApp={handleLaunchApp} doLaunchApp={doLaunchApp}
       />
+
+      {/* App Platform — global webview/native launch bridge */}
+      <AppLaunchBridge />
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
 

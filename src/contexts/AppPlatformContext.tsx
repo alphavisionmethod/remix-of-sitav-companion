@@ -17,31 +17,25 @@ import type {
   AppLifecycleReceipt, AppPermission,
 } from "@/lib/app-platform/types";
 
-// ── Persisted row shape ─────────────────────────────────────────
+// ── Persisted row shape (matches public.installed_apps) ────────
 
 interface InstalledAppRow {
   id: string;
   user_id: string;
   app_id: string;
   install_status: string;
-  install_scope: string;
-  sandbox_level: string;
-  source_origin: string;
-  package_type: string;
-  update_mode: string;
-  permissions_granted: AppPermission[];
-  dock_pinned: boolean;
-  notification_enabled: boolean;
-  startup_behavior: string;
+  enabled: boolean;
+  pinned: boolean;
+  favorite: boolean;
+  pinned_order: number;
+  launch_count: number;
+  last_launched_at: string | null;
+  version_installed: string | null;
+  permissions_granted: AppPermission[] | null;
+  config_json: Record<string, unknown> | null;
+  source_channel: string;
   installed_at: string;
   updated_at: string;
-}
-
-interface DefaultAssocRow {
-  id: string;
-  user_id: string;
-  role: string;
-  app_id: string;
 }
 
 // ── Local state map ─────────────────────────────────────────────
@@ -193,7 +187,7 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
     const hydrate = async () => {
       setIsLoading(true);
       try {
-        // Load installed apps
+        // Load installed apps (new schema: installed_apps)
         const { data: rows } = await (supabase as any)
           .from("installed_apps")
           .select("*")
@@ -202,35 +196,22 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
         if (!cancelled && rows && (rows as unknown as any[]).length > 0) {
           const loaded: Record<string, AppUserState> = {};
           for (const r of rows as unknown as InstalledAppRow[]) {
+            const cfg = (r.config_json || {}) as Record<string, unknown>;
             loaded[r.app_id] = {
-              installStatus: r.install_status as AppInstallStatus,
-              installScope: r.install_scope as AppInstallScope,
-              sandboxLevel: r.sandbox_level as AppSandboxLevel,
-              sourceOrigin: r.source_origin as AppSourceOrigin,
-              packageType: r.package_type as AppPackageType,
-              updateMode: r.update_mode as AppUpdateMode,
+              installStatus: (r.install_status === "installed" ? "installed" : r.install_status) as AppInstallStatus,
+              installScope: (cfg.installScope as AppInstallScope) ?? "user",
+              sandboxLevel: (cfg.sandboxLevel as AppSandboxLevel) ?? "standard",
+              sourceOrigin: (cfg.sourceOrigin as AppSourceOrigin) ?? (r.source_channel as AppSourceOrigin) ?? "sita-store",
+              packageType: (cfg.packageType as AppPackageType) ?? "native-application",
+              updateMode: (cfg.updateMode as AppUpdateMode) ?? "store-managed",
               permissionsGranted: (r.permissions_granted || []) as AppPermission[],
-              dockPinned: r.dock_pinned,
-              notificationEnabled: r.notification_enabled,
-              startupBehavior: r.startup_behavior as "none" | "background" | "visible",
+              dockPinned: !!r.pinned,
+              notificationEnabled: (cfg.notificationEnabled as boolean) ?? true,
+              startupBehavior: ((cfg.startupBehavior as string) ?? "none") as "none" | "background" | "visible",
               installedAt: r.installed_at,
             };
           }
           setStateMap(prev => ({ ...prev, ...loaded }));
-        }
-
-        // Load default associations
-        const { data: assocRows } = await (supabase as any)
-          .from("app_default_associations")
-          .select("*")
-          .eq("user_id", userId);
-
-        if (!cancelled && assocRows && (assocRows as unknown as any[]).length > 0) {
-          const loaded: Record<string, string> = {};
-          for (const r of assocRows as unknown as DefaultAssocRow[]) {
-            loaded[r.role] = r.app_id;
-          }
-          setDefaultApps(prev => ({ ...prev, ...loaded }));
         }
       } catch (err) {
         console.warn("[AppPlatform] hydration error:", err);
@@ -252,21 +233,24 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const persistApp = useCallback(async (appId: string, state: AppUserState) => {
     if (!userId) return;
     try {
-      await ( supabase as any).from("installed_apps" as any).upsert({
+      await (supabase as any).from("installed_apps").upsert({
         user_id: userId,
         app_id: appId,
-        install_status: state.installStatus,
-        install_scope: state.installScope,
-        sandbox_level: state.sandboxLevel,
-        source_origin: state.sourceOrigin,
-        package_type: state.packageType,
-        update_mode: state.updateMode,
+        install_status: state.installStatus === "installed" ? "installed" : "installed",
+        pinned: state.dockPinned,
         permissions_granted: state.permissionsGranted,
-        dock_pinned: state.dockPinned,
-        notification_enabled: state.notificationEnabled,
-        startup_behavior: state.startupBehavior,
+        source_channel: state.sourceOrigin,
+        config_json: {
+          installScope: state.installScope,
+          sandboxLevel: state.sandboxLevel,
+          sourceOrigin: state.sourceOrigin,
+          packageType: state.packageType,
+          updateMode: state.updateMode,
+          notificationEnabled: state.notificationEnabled,
+          startupBehavior: state.startupBehavior,
+        },
         installed_at: state.installedAt,
-      } as any, { onConflict: "user_id,app_id" } as any);
+      }, { onConflict: "user_id,app_id" });
     } catch (err) {
       console.warn("[AppPlatform] persist error:", err);
     }
@@ -275,7 +259,7 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const removePersistedApp = useCallback(async (appId: string) => {
     if (!userId) return;
     try {
-      await ( supabase as any).from("installed_apps" as any)
+      await (supabase as any).from("installed_apps")
         .delete()
         .eq("user_id", userId)
         .eq("app_id", appId);
@@ -284,18 +268,10 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
     }
   }, [userId]);
 
-  const persistDefault = useCallback(async (role: string, appId: string) => {
-    if (!userId) return;
-    try {
-      await ( supabase as any).from("app_default_associations" as any).upsert({
-        user_id: userId,
-        role,
-        app_id: appId,
-      } as any, { onConflict: "user_id,role" } as any);
-    } catch (err) {
-      console.warn("[AppPlatform] persist default error:", err);
-    }
-  }, [userId]);
+  // Default app associations are kept client-side only (no DB table yet).
+  const persistDefault = useCallback(async (_role: string, _appId: string) => {
+    return;
+  }, []);
 
   // ── Actions ─────────────────────────────────────────────────
 
