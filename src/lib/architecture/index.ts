@@ -288,3 +288,19 @@ export {
   CONTEXT_PRIMARY_SURFACE,
   getPrimarySurface, getContextsByPrimarySurface,
 } from "./context-surface-map";
+
+// ── 28. System Layer Registry (Canonical 3-Layer Stack) ─────
+export {
+  SYSTEM_LAYER_REGISTRY,
+  L3_PLATFORM_SERVICES,
+  getLayerEntry,
+  getEntriesForLayer,
+  getL3Service,
+  canImportFrom,
+  validateSystemStack,
+} from "./system-layer-registry";
+export type {
+  SystemLayer,
+  SystemLayerEntry,
+  L3PlatformService,
+} from "./system-layer-registry";
