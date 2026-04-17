@@ -1,42 +1,92 @@
 
 
-## Re-Audit — Checklist 21: 14/14 ✅ FULLY DEPLOYABLE
+## Re-Audit — Checklist 22: 11/16 Truthful, 5 Concrete Gaps
 
-Every item verified against live disk, live DB, and live edge function source.
+Live disk shows the runbook **catalogue** is real (19 runbooks, 21 markdown docs, CI gate green: `19 runbooks, 18/19 subsystems covered ✅`), but the **operator-facing wiring** has theater.
 
-### Verification Matrix
+### What IS truthful (✅)
 
-| # | Checklist Item | Status | Live Evidence |
+| # | Item | Evidence |
+|---|---|---|
+| 1 | Runbook index exists | `src/lib/support/runbook-registry.ts` — 19 entries; `docs/architecture/RUNBOOK_INDEX.md`; `scripts/support/runbooks/generate-runbook-index.ts` |
+| 2.1–2.13 | All 13 required runbooks exist | `auth-outage.md` (RB-001), `provider-outage.md` (RB-002), `sync-lag.md` (RB-003), `stuck-workflow.md` (RB-004), `proof-mismatch.md` (RB-005), `generated-vs-runtime-drift.md` (RB-006), `push-failure.md` (RB-007), `vmware-boot-failure.md` (RB-008), `release-rollback.md` (RB-009), `ai-provider-degradation.md` (RB-010), `connector-token-failure.md` (RB-011), `db-restore-failure.md` (RB-012), `setup-checkpoint-corruption.md` (RB-012) — all 13 ✅ + 6 bonus runbooks |
+| 14a | Alerts schema has `runbook_id` field | `alert-client.ts` accepts `runbookId`; `alerts` table column `runbook_id` exists |
+| 15a | Support hub exposes Runbook tab | `SupportHome.tsx` registers `FCC04RunbookCenter` as a hub module |
+| 16a | CI gate validates runbook coverage | `check-runbook-coverage.ts` returns `19 runbooks, 18/19 subsystems covered ✅` |
+
+### What is NOT truthful (❌) — 5 gaps
+
+| # | Item | Status | Evidence |
 |---|---|---|---|
-| 1 | Kill-switch registry exists | ✅ | `src/lib/control-plane/kill-switch-registry.ts` — 14 switches with full metadata |
-| 2.1 | Switch for **advisors** | ✅ | `KS-ADVISORS` → enforced in `chat-advisor` + `advisor-agent-loop` |
-| 2.2 | Switch for **outbound communication** | ✅ | `KS-OUTBOUND` → enforced in `push-dispatch` |
-| 2.3 | Switch for **connector families** | ✅ | `KS-CONNECTORS` → enforced in `connector-sync` + `connector-oauth` |
-| 2.4 | Switch for **runtime automations** | ✅ | `KS-AUTOMATIONS` → enforced in `scheduler-dispatch` |
-| 2.5 | Switch for **sync** | ✅ | `KS-SYNC` → enforced in `connector-sync` + `scheduler-dispatch` |
-| 2.6 | Switch for **mobile pushes** | ✅ | `KS-MOBILE-PUSH` → enforced in `push-dispatch` |
-| 2.7 | Switch for **model providers** | ✅ | `KS-MODEL-PROVIDERS` → enforced in `ai-gateway` |
-| 2.8 | Switch for **workflow classes** | ✅ | `KS-WORKFLOW` → enforced in `workflow-execute` + `scheduler-dispatch` |
-| 2.9 | Switch for **simulations** | ✅ | `KS-SIMULATIONS` → enforced in `simulation-engine-api` |
-| 2.10 | Switch for **payments** | ✅ | `KS-PAYMENTS` (severe, dual-approval) → `payment-process` + `payment-kill-switch` |
-| 3 | Kill switches **visible in admin** | ✅ | `AR08KillSwitchCenter` lazy-imported (line 210) and mounted at `/admin/automation/kill-switches` (line 425) in `src/routes/AdminRoutes.tsx`, gated by `flags.view` |
-| 4 | Blast-radius metadata | ✅ | Every switch declares `impactLevel`, `affectedServices[]`, `affectedTables[]`, `affectedEdgeFunctions[]`, `userFacingImpact`, `rollbackProcedure` |
-| 5 | **Actually enforced in runtime** | ✅ | 12 edge functions contain `checkKillSwitchOrReject` / `checkAnyKillSwitchOrReject` / `killSwitchActive`. Helper at `supabase/functions/_shared/kill-switch.ts` queries live `automation_kill_switches` table (confirmed exists) and returns 503 `KILL_SWITCH_ACTIVE` |
-| 6 | Runbooks link to kill switches | ✅ | 12/14 switches have `runbookRef` (RB-002, 003, 004, 005, 006, 007, 008, 009, 010); `simulations` and `automations` correctly null per low-impact policy |
+| A | **FCC04RunbookCenter reads canonical registry** | ❌ | `FCC04RunbookCenter.tsx:36` defines `DEMO_RUNBOOKS` and `:138` falls back to demo on empty DB. Zero references to `RUNBOOK_REGISTRY` from `src/lib/support`. Operators see fake runbooks, not the 19 real ones in `docs/runbooks/` |
+| B | **Alerts auto-link to runbooks** | ❌ | `raiseAlert()` accepts `runbookId` as an optional param but nowhere in the codebase do alert call-sites pass it. There is no `subsystem → runbookId` resolver wired into alert raising. Result: all alerts ship with `runbook_id = null` |
+| C | **Incidents link to runbooks** | ❌ | `incident-management/index.ts` `Incident` interface has zero `runbookRef` / `runbookIds[]` field. Incidents cannot reference recovery procedure |
+| D | **Recovery steps tested where possible** | ❌ | All 19 runbooks have `lastTestedAt: null` (19/19). No drill harness exists. The `status: "draft"` flag on RB-008 is also unmitigated |
+| E | **One mandatory subsystem uncovered** | ⚠️ | CI gate shows `18/19 subsystems covered` — one mandatory subsystem in `runbook-subsystem-map.ts` lacks a runbook. Need to identify + cover it |
 
-### Bonus — System-Level Integrity
+---
 
-- **CI Gate `kill-switch-coverage`**: `generated/kill-switch-enforcement-report.json` shows `ok: true`, `dangling: 0`, `enforcedFilesVerified: 19`, `symbolMatches: 19`, `requiredHighRiskCovered: 9/9`, `runbookLinksResolved: 12/12`, `violations: []`
-- **Manifest registered**: Phase-26 framework tracks the report; Gate 37 stays green
-- **DB layer real**: `public.automation_kill_switches` table confirmed via `psql \dt` — not a mock
-- **Bonus switches beyond checklist**: `KS-RELEASE-ROLLOUT`, `KS-APPLIANCE-UPDATE`, `KS-SELF-HEALING`, `KS-PROVIDER-INGESTION` add coverage for 4 additional high-risk subsystems (14 total vs. 10 required)
+## Phase 28 — Runbook Operationalization Closure
 
-### Verdict
+### 28.A — Make FCC04RunbookCenter read the canonical registry (fixes #A)
+- Refactor `FCC04RunbookCenter.tsx` to import `RUNBOOK_REGISTRY` from `@/lib/support` as the **primary source**.
+- Render the 19 real runbooks (id, title, severity, subsystem, kill-switch link, markdown ref, steps, lastTestedAt).
+- Add a "Run Drill" button per runbook that calls a new `runbook-drill` edge function (28.D).
+- Add a markdown viewer panel that fetches `markdownRef` content for the selected runbook.
+- Keep `founderOrchestrator` DB-backed runbooks as a secondary "User-defined" tab. Remove the DEMO_RUNBOOKS fallback entirely.
 
-**Checklist 21 = 14/14, fully deployable. No gaps. No theater. No remediation needed.**
+### 28.B — Wire alerts → runbooks automatically (fixes #B)
+- NEW `src/lib/support/runbook-resolver.ts` exporting `resolveRunbookForAlert({ subsystem, severity }): string | null` that consults `getRunbookForSubsystem` and falls back to severity-based defaults.
+- Update `raiseAlert()` in `alert-client.ts`: if caller does not pass `runbookId`, auto-resolve from `subsystem`. Emit telemetry on resolution miss.
+- Add a typed `subsystem` enum aligned with `RunbookSubsystem` to keep the link integral.
 
-The previous Phase 27 closure work is intact and verified end-to-end:
-- Registry → live DB table → shared helper → 12 enforcing edge functions → admin UI mounted → CI gate green → manifest registered → runbooks linked.
+### 28.C — Wire incidents → runbooks (fixes #C)
+- Extend `Incident` interface in `incident-management/index.ts` with `runbookIds: string[]` and `primaryRunbookId?: string`.
+- Add migration to add `runbook_ids text[]` and `primary_runbook_id text` to the `incidents` table.
+- Update `declareIncident()` to auto-attach runbooks via `resolveRunbookForAlert` over `affectedServices` → owning subsystem.
+- Update `FCC11IncidentResponseTimeline` to show linked runbooks with deep-links to FCC04.
 
-No changes required. System is production-ready for Checklist 21.
+### 28.D — Add runbook drill harness (fixes #D)
+- NEW edge function `supabase/functions/runbook-drill/index.ts` that accepts `{ runbookId }` and executes a **dry-run** (validate steps, simulate timeouts, no side-effects), writing a `runbook_drill_results` row.
+- NEW migration: `runbook_drill_results` table (`runbook_id`, `executed_at`, `mode: 'dry-run' | 'live'`, `step_outcomes jsonb`, `passed bool`, `notes`).
+- NEW `src/lib/support/runbook-drill-status.ts` reading drill results and exposing `getLastDrillForRunbook(id)` so FCC04 shows real `lastTestedAt`.
+- Bonus: nightly scheduled drill via `scheduler-dispatch` for the 5 critical runbooks (RB-001, RB-009, RB-014, RB-015, RB-005).
+
+### 28.E — Cover the missing mandatory subsystem (fixes #E)
+- Identify which of the 19 mandatory subsystems lacks a runbook (CI says `18/19`). Inspect `runbook-subsystem-map.ts` vs. registry coverage and either:
+  - Add the missing markdown + registry entry, OR
+  - Demote the subsystem `mandatory: false` if it is truly out of scope (with justification).
+
+### 28.F — Manifest + CI integration
+- NEW `generated/runbook-operability-report.json` capturing: `totalRunbooks`, `subsystemsCovered`, `alertsAutoResolveRate`, `incidentsWithRunbookRefs`, `runbooksWithRecentDrill`, `dangling: 0`, `ok: true`.
+- Register in `MANIFEST_REGISTRY` (112 → 113 entries).
+- Extend `check-runbook-coverage.ts` to also assert: every `criticalIncidentClass: true` subsystem has a runbook with a drill in last 30 days; every alert source documented in `alert-source-registry` resolves to a subsystem.
+
+### Files
+
+| Layer | Change |
+|---|---|
+| `src/pages/admin/FCC04RunbookCenter.tsx` | REWRITE to read `RUNBOOK_REGISTRY` |
+| `src/lib/support/runbook-resolver.ts` | NEW resolver |
+| `src/lib/services/alerting/alert-client.ts` | Auto-resolve runbookId |
+| `src/lib/services/incident-management/index.ts` | Add runbookIds field + auto-attach |
+| `src/pages/admin/FCC11IncidentResponseTimeline.tsx` | Show linked runbooks |
+| `supabase/functions/runbook-drill/index.ts` | NEW drill harness |
+| `supabase/migrations/<ts>_runbook_drills.sql` | NEW drill results table + incidents columns |
+| `src/lib/support/runbook-drill-status.ts` | NEW drill status API |
+| `src/lib/support/runbook-registry.ts` | Add coverage for missing mandatory subsystem |
+| `scripts/architecture/checks/check-runbook-coverage.ts` | Add drill-recency + alert-source assertions |
+| `src/lib/truth-manifests/manifest-registry.ts` | Register operability report (112 → 113) |
+| `generated/runbook-operability-report.json` | NEW baseline |
+
+### Acceptance
+
+- `/admin/support` → Runbooks tab shows the 19 real runbooks from `RUNBOOK_REGISTRY` (no demo content)
+- `raiseAlert({ subsystem: "ai-providers", severity: "high", ... })` auto-attaches `runbook_id = "RB-002"` without explicit pass-through
+- New incidents declared with `affectedServices: ["ai-gateway"]` show `runbookIds: ["RB-002", "RB-010"]` in timeline
+- Calling `runbook-drill` for RB-001 in dry-run mode produces a `runbook_drill_results` row and updates `lastTestedAt` displayed in FCC04
+- `check-runbook-coverage.ts` reports `19/19 subsystems covered` and `criticalRunbooksWithRecentDrill ≥ 5`
+- `generated/runbook-operability-report.json` exists with `ok: true`
+- Manifest registry shows 113 entries; Gate 37 stays green
+- Checklist 22 truthfully **16/16 — fully deployable**
 
