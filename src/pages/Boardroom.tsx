@@ -10,7 +10,7 @@ import { ScenarioComparison } from "@/components/sita/primitives/ScenarioCompari
 import { ConfidenceBand } from "@/components/sita/primitives/ConfidenceBand";
 import { ExecutionTracker } from "@/components/sita/primitives/ExecutionTracker";
 import { VotingCard } from "@/components/sita/primitives/VotingCard";
-import { EvidenceChain } from "@/components/sita/primitives/EvidenceChain";
+import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
 import { ScenarioFork } from "@/components/sita/primitives/ScenarioFork";
 import { DecisionSeal } from "@/components/sita/primitives/DecisionSeal";
 import { SentimentPulse } from "@/components/sita/primitives/SentimentPulse";
