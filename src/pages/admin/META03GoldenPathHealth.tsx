@@ -292,3 +292,28 @@ function Section({ icon, title, children }: { icon: React.ReactNode; title: stri
     </div>
   );
 }
+
+function DimensionTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
+  const ok = value > 0;
+  return (
+    <div className={`flex items-center gap-1.5 px-2 py-1 rounded border ${ok ? "border-emerald-500/30 bg-emerald-500/5" : "border-border/40"}`}>
+      {icon}
+      <span className="text-muted-foreground">{label}:</span>
+      <span className={ok ? "text-emerald-500 font-medium" : "text-muted-foreground"}>{value}</span>
+    </div>
+  );
+}
+
+function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: readonly string[] }) {
+  return (
+    <div className="flex items-start gap-1.5">
+      <span className="flex items-center gap-1 text-muted-foreground shrink-0 w-[90px]">
+        {icon}
+        {label}:
+      </span>
+      <span className="text-foreground/80 font-mono text-[9px] break-all">
+        {values.length === 0 ? <span className="text-muted-foreground/60">—</span> : values.join(", ")}
+      </span>
+    </div>
+  );
+}
