@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-17T00:16:00.952Z",
-  "ok": false,
-  "errorCount": 2,
+  "generatedAt": "2026-04-17T00:16:42.067Z",
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
   "totals": {
     "items": 12,
@@ -43,9 +43,9 @@
     "matrixApplianceOk": true,
     "matrixRowsMissingAppliance": 0,
     "roadmapOverclaims": [],
-    "startupOrderPhases": 0,
+    "startupOrderPhases": 6,
     "startupOrderServices": 13,
-    "recoveryActionCount": 0,
+    "recoveryActionCount": 4,
     "registryClean": true
   },
   "items": [
@@ -135,16 +135,5 @@
       "remediation": "Run docs/runbooks/APPLIANCE_ESXI_TPM_PROVISIONING.md to provision ESXi/vSphere lab + TPM 2.0 hardware; populate ESXI_* and TPM_* env vars; run verifier; once ready, move tpm-attestation from roadmapCapabilities to honestCapabilities."
     }
   ],
-  "issues": [
-    {
-      "severity": "error",
-      "area": "startup-order",
-      "message": "startup-order.json has 0 phases"
-    },
-    {
-      "severity": "error",
-      "area": "recovery",
-      "message": "recovery-contract.ts declares 0 recovery actions"
-    }
-  ]
+  "issues": []
 }
