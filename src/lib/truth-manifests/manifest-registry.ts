@@ -5,6 +5,8 @@
 
 import type { ManifestRegistryEntry } from "./manifest-types";
 
+// Note: When adding the closing bracket entry, also update MANIFEST_COUNT consumers.
+// Latest entry: manifest-its-real-gate (Phase 32 / Checklist 27).
 export const MANIFEST_REGISTRY: readonly ManifestRegistryEntry[] = [
   // ── Architecture / Structural ──────────────────────────────
   { id: "manifest-route", path: "generated/route-manifest.json", filename: "route-manifest.json", class: "structural", authority: "authoritative", owner: "architecture", description: "All registered routes with ownership and tier", sourceInputs: ["src/pages/", "src/routes/"], validator: "scripts/manifests/validate/check-route-manifest-vs-filesystem.ts", ciGate: "route-integrity", freshnessPolicy: "on-change", runtimeConsequence: "Routes may 404 or miss protection", releaseConsequence: "Unregistered routes deployed", supportConsequence: "Cannot trace which route a user is on", driftSeverity: "high", consumers: ["admin/ManifestTruthDashboard", "scripts/validation"], tags: ["routes", "structure"] },
@@ -177,6 +179,10 @@ export const MANIFEST_REGISTRY: readonly ManifestRegistryEntry[] = [
 export function getManifestEntry(id: string): ManifestRegistryEntry | undefined {
   return MANIFEST_REGISTRY.find((m) => m.id === id);
 }
+
+  // ── Phase 32 ── Final "It's Real" Gate (Checklist 27) ────────
+  { id: "manifest-its-real-gate", path: "generated/its-real-gate-report.json", filename: "its-real-gate-report.json", class: "compliance", authority: "authoritative", owner: "governance", description: 'Final "It\'s Real" Gate verdict (Checklist 27): aggregates the 13 upstream truth reports into one deployable/not-deployable decision. Verdict is "real" only when all 13 clauses (feature classification, route wiring, API ownership+tests, DB governance, privileged-action trust+policy+proof, mobile runtime explicitness, admin workflow coherence, manifest truth-linkage, runbook coverage, golden-path mapping, release pipelines, support diagnosability, no theater) resolve green.', sourceInputs: ["generated/feature-reality-report.json", "generated/route-registry-completeness-report.json", "generated/edge-function-membership-report.json", "generated/edge-function-health-replay-report.json", "generated/db-reality-report.json", "generated/table-membership-report.json", "generated/auth-policy-reality-report.json", "generated/policy-resolver-coverage.json", "generated/mobile-store-readiness-report.json", "generated/mobile-build-pipeline-report.json", "generated/admin-support-visibility-manifest.json", "generated/owner-workflow-reality-report.json", "generated/manifest-theater-report.json", "generated/runbook-operability-report.json", "generated/kill-switch-enforcement-report.json", "generated/golden-path-reality-report.json", "generated/test-and-release-truth-report.json", "generated/observability-truth-report.json", "generated/mock-leak-report.json"], validator: "scripts/architecture/checks/check-its-real-gate.ts", ciGate: "its-real-gate", freshnessPolicy: "on-change", runtimeConsequence: "Platform may be claimed 'real' while one or more reality dimensions silently regress", releaseConsequence: "Blocks deploy when any of the 13 reality clauses is not green; this is the final launch-gate veto", supportConsequence: "Operators lose the single authoritative source for 'is the platform really real right now?'", driftSeverity: "critical", consumers: ["admin/ManifestTruthDashboard", ".github/workflows/ci.yml launch-gate", "scripts/validate-all.ts"], tags: ["truth", "launch", "phase-32", "checklist-27", "aggregator"] },
+];
 
 /** Get all manifests by class */
 export function getManifestsByClass(cls: ManifestRegistryEntry["class"]): ManifestRegistryEntry[] {
