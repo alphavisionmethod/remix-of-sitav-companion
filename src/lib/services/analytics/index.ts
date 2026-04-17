@@ -13,7 +13,13 @@ export class AnalyticsService {
   private events: AnalyticsEvent[] = [];
   private metrics: AnalyticsMetric[] = [];
 
-  trackEvent(event: Omit<AnalyticsEvent, 'timestamp'>): void { this.events.push({ ...event, timestamp: new Date().toISOString() }); }
+  trackEvent(event: Omit<AnalyticsEvent, 'timestamp'>): void {
+    // Tag every event with the active runtime mode so demo activity
+    // never contaminates live analytics dashboards.
+    const mode = (typeof window !== "undefined" && (window as any).__SITA_RUNTIME_MODE__ === "live") ? "live" : "demo";
+    const properties = "mode" in (event.properties ?? {}) ? event.properties : { ...event.properties, mode };
+    this.events.push({ ...event, properties, timestamp: new Date().toISOString() });
+  }
   recordMetric(metric: Omit<AnalyticsMetric, 'recordedAt'>): void { this.metrics.push({ ...metric, recordedAt: new Date().toISOString() }); }
 
   query(q: AnalyticsQuery): AnalyticsResult {
