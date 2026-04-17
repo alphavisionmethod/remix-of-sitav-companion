@@ -34,6 +34,30 @@ import { useWsEventStream, useWsConnectionStatus, useWsEventRate } from "@/hooks
 import type { WsEventEnvelope, WsEventScope } from "@/packages/contracts/core/ws-event-envelope";
 import type { CommandStatus } from "@/lib/api/os-api-client";
 
+// ── Local view-model interfaces (jsonb columns return as Json from DB) ──
+interface SystemStatusVM {
+  health?: string;
+  devices?: number | string;
+  active_commands?: number | string;
+  incidents?: number | string;
+}
+interface SubsystemHealthVM { name: string; status: string }
+interface SystemHealthVM { subsystems?: SubsystemHealthVM[] }
+interface SecurityDeviceVM { id: string; device_name?: string; trust_level: string }
+interface SecurityPostureVM {
+  posture?: string;
+  pending_approvals?: number;
+  devices?: SecurityDeviceVM[];
+}
+interface SyncStatusVM { sync_status?: string; ledger?: unknown[] }
+interface NewPolicyVM {
+  policy_key: string;
+  display_name: string;
+  description: string;
+  scope: string;
+  domain: string;
+}
+
 // ── Status Helpers ─────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<string, { color: string; icon: typeof CheckCircle2; label: string }> = {
