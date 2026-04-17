@@ -92,6 +92,98 @@
 | 15 | Golden Path Journeys | 78/100 | 2% | 1.56 | golden-path-reality-report.ok=true (15/15 paths × 11 dimensions covered, 0 phantom artifacts) |
 | | **Weighted Aggregate** | | **100%** | **72.3/100** | Up from 62.3/100 in v6.0 — driven by Phase 32 gate, RLS expansion, ISS-020 closure, manifest truth-link coverage |
 
+### 1.4 Phase 32 — "It's Real" Gate Verdict (Live Citation)
+
+> Source of truth: `generated/its-real-gate-report.json` (verdict re-read 2026-04-17 20:18:50 UTC)
+
+| Field | Value |
+|---|---|
+| Verdict | **`real`** |
+| Deployable | **`true`** |
+| Clauses passing | **13 / 13** |
+| Clauses failing | 0 |
+| Schema version | 1.0.0 |
+| Aggregator script | `scripts/architecture/check-its-real-gate.ts` |
+
+**13 clauses (all `ok: true`):**
+
+| # | Clause | Backing Report |
+|---:|---|---|
+| 1 | Every major feature is runtime-classified | `feature-reality-report.json` (7/7 surfaces honest) |
+| 2 | Every route is real and wired | `route-registry-completeness-report.json` |
+| 3 | Every API is owned and tested | `edge-function-membership-report.json` + `edge-function-health-replay-report.json` |
+| 4 | Every DB-critical domain is visible and governed | `db-reality-report.json` + `table-membership-report.json` |
+| 5 | Every privileged action has trust/policy/proof | `auth-policy-reality-report.json` + `policy-resolver-coverage.json` |
+| 6 | Every mobile runtime concern is explicit | `mobile-store-readiness-report.json` + `mobile-build-pipeline-report.json` |
+| 7 | Every admin workflow is coherent | `owner-workflow-reality-report.json` + `admin-support-visibility-manifest.json` |
+| 8 | Every manifest is truth-linked | `manifest-theater-report.json` (0 orphans, 0 phantoms, 0 missing validators) |
+| 9 | Every critical failure mode has a runbook | `runbook-operability-report.json` + `kill-switch-enforcement-report.json` |
+| 10 | Every golden path has route/API/service/DB/test mapping | `golden-path-reality-report.json` (15×11) |
+| 11 | Release pipelines exist and pass | `test-and-release-truth-report.json` (14/14 + 16/16) |
+| 12 | Support can diagnose and recover real issues | `observability-truth-report.json` (10/10) |
+| 13 | No claim relies on theater | `manifest-theater-report.json` + `mock-leak-report.json` |
+
+### 1.5 Stubs & Placeholders Sweep (Live Register)
+
+> Source of truth: `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` (regenerated 2026-04-17 22:15:51 UTC)
+> Scanner: `scripts/architecture/audits/audit-stubs-placeholders.ts`
+
+| Metric | Value |
+|---|---:|
+| Source files scanned | 4,690 |
+| Total raw hits | 85 |
+| Intentional / excluded | 9 |
+| **Actionable hits** | **76** |
+
+| Priority | Count | Surface |
+|---|---:|---|
+| **P0** Trust-bearing (Boardroom, Money, Approvals, Auth) | 5 | Must be 100% wired before deploy |
+| **P1** Flagship Loop pages | 0 | — |
+| **P2** Domain pages (non-admin) | 12 | User-facing surfaces |
+| **P3** Admin pages + components | 30 | Operator surfaces |
+| **P4** Lib/hooks/utilities | 29 | Background plumbing |
+
+| Category | Count |
+|---|---:|
+| Inline mock data | 70 |
+| Empty handler | 3 |
+| Coming-soon toast | 3 |
+
+**P0 inventory (5 hits, all in Boardroom):**
+- `src/components/sita/apps/boardroom/BoardroomApprovalView.tsx` lines 28, 34, 39 — `MOCK_APPROVALS`, `MOCK_SEALED`, `MOCK_RECEIPTS`
+- `src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx` line 25 — `MOCK_DISCUSSIONS`
+- `src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx` line 120 — `mockChain`
+
+These are the eradication queue head; every other priority slice is dependent on them resolving first.
+
+### 1.6 ISS-020 Resolution (Type-Safety in Pages)
+
+| Field | Value |
+|---|---|
+| Issue | ISS-020 / OPN-P2-04 — `as any` usage in `src/pages/**` |
+| Status | ✅ **RESOLVED** (2026-04-17) |
+| Live count | `grep -rE "\bas any\b" src/pages \| wc -l` = **0** |
+| CI gate | `scripts/architecture/check-platform-anti-patterns.ts` (threshold = 0 for the pages layer) |
+| Cross-link | `generated/FULL_ISSUES_AND_FIXES.md` v2.2 — `OPN-P2-04` marked RESOLVED |
+
+### 1.7 SITA Stack Layer 3 — Platform Services
+
+> Source of truth: `docs/architecture/SITA_SYSTEM_STACK.md` + `src/lib/architecture/system-layer-registry.ts`
+> CI: `validateSystemStack()` returns `{ ok: true }` only when all 8 services + 2 stack roots are mounted.
+
+| Service | Registry | Doc |
+|---|---|---|
+| Auth | `src/lib/platform/auth/auth-runtime.ts` + `session-registry.ts` | `AUTH_AND_IDENTITY_RUNTIME.md` |
+| Policies | `src/lib/policy/unified-policy-matrix.ts` + `policy-enforcement-map.ts` | `UNIFIED_PERMISSION_AND_POLICY_MATRIX.md` |
+| Proof | `src/lib/platform/proof/proof-registry.ts` + `proof-requirement-map.ts` | `PROOF_AND_AUDIT_MODEL.md` |
+| Execution | `src/lib/platform/execution/execution-registry.ts` + `execution-policy-map.ts` | `EXECUTION_MODEL.md` |
+| Eventing | `src/lib/runtime/runtime-message-registry.ts` + `event-classification-map.ts` | `RUNTIME_MESSAGING_ARCHITECTURE.md` |
+| Observability | `src/lib/platform/observability/observability-registry.ts` | `OBSERVABILITY_AND_INCIDENT_MODEL.md` |
+| Sync | `src/lib/platform/sync/sync-topology-registry.ts` | `SYNC_AND_CONTINUITY_MODEL.md` |
+| Notifications | `src/lib/platform/notifications/notification-topology.ts` | `NOTIFICATION_RUNTIME_MODEL.md` |
+
+**Import direction:** L1 (UX) ➜ L2, L3 · L2 (Domain) ➜ L2, L3 · L3 (Platform) ➜ L3 only. Forbidden imports enforced by `scripts/architecture/check-layer-boundaries.ts`.
+
 ---
 
 ## Part II: Production Readiness Master Audit Sheet
