@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — Package Manifest (Phase 1)
+# Minimal, no snapd, no telemetry, no bloat.
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── Kernel + boot ─────────────────────────────────────────────────────
+linux-image-generic
+linux-headers-generic
+initramfs-tools
+casper
+systemd-boot
+grub-efi-amd64
+grub-pc-bin
+shim-signed
+
+# ── Core system ───────────────────────────────────────────────────────
+systemd
+systemd-sysv
+udev
+dbus
+sudo
+ca-certificates
+locales
+tzdata
+less
+nano
+vim-tiny
+curl
+wget
+gnupg
+
+# ── Networking ────────────────────────────────────────────────────────
+network-manager
+systemd-resolved
+iproute2
+iputils-ping
+openssh-client
+wpasupplicant
+wireless-tools
+
+# ── Filesystems + crypto ──────────────────────────────────────────────
+e2fsprogs
+dosfstools
+btrfs-progs
+cryptsetup
+cryptsetup-initramfs
+lvm2
+parted
+gdisk
+
+# ── Security ──────────────────────────────────────────────────────────
+apparmor
+apparmor-utils
+tpm2-tools
+keyutils
+
+# ── Display + desktop runtime (Electron host) ─────────────────────────
+xserver-xorg
+xserver-xorg-video-all
+xinit
+plymouth
+plymouth-themes
+mesa-utils
+libgl1
+libgles2
+libgbm1
+libdrm2
+libnss3
+libatk1.0-0
+libatk-bridge2.0-0
+libcups2
+libxcomposite1
+libxdamage1
+libxrandr2
+libxkbcommon0
+libxss1
+libasound2
+fonts-inter
+fonts-noto-core
+
+# ── Audio ─────────────────────────────────────────────────────────────
+pipewire
+pipewire-pulse
+wireplumber
+
+# ── Build / runtime tools ─────────────────────────────────────────────
+nodejs
+npm
+
+# ── SITA helpers ──────────────────────────────────────────────────────
+jq
+rsync
+util-linux

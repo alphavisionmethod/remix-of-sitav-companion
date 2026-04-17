@@ -1,0 +1,13 @@
+PRETTY_NAME="SITA OS 0.1.0-dev"
+NAME="SITA OS"
+VERSION_ID="0.1.0-dev"
+VERSION="0.1.0-dev (Phase 1 — Bootable)"
+VERSION_CODENAME=phase1
+ID=sita
+ID_LIKE=ubuntu
+HOME_URL="https://sita.dev/"
+SUPPORT_URL="https://sita.dev/support"
+BUG_REPORT_URL="https://sita.dev/issues"
+PRIVACY_POLICY_URL="https://sita.dev/privacy"
+LOGO=sita
+ANSI_COLOR="1;36"

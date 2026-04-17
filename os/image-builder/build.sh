@@ -1,0 +1,281 @@
+#!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — ISO Image Builder (Phase 1: bootable dev ISO)
+#
+# Produces: out/sita-os-${VERSION}-${ARCH}.iso  (live + installer hybrid)
+# Base:     Ubuntu 24.04 LTS (Noble Numbat) minbase + SITA runtime overlay
+# Runs on:  Linux x86_64 (host or CI). NO macOS, NO special hardware.
+# Usage:    sudo bash os/image-builder/build.sh           # full build
+#           VERSION=1.0.0 sudo bash os/image-builder/build.sh
+# ═══════════════════════════════════════════════════════════════════════
+set -euo pipefail
+
+# ── Configuration ──────────────────────────────────────────────────────
+VERSION="${VERSION:-0.1.0-dev}"
+ARCH="${ARCH:-amd64}"
+SUITE="${SUITE:-noble}"
+MIRROR="${MIRROR:-http://archive.ubuntu.com/ubuntu/}"
+BUILD_DIR="${BUILD_DIR:-$(pwd)/build/iso-${VERSION}}"
+OUT_DIR="${OUT_DIR:-$(pwd)/out}"
+ROOT_DIR="${BUILD_DIR}/chroot"
+ISO_DIR="${BUILD_DIR}/iso"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+ISO_NAME="sita-os-${VERSION}-${ARCH}.iso"
+ISO_LABEL="SITA_OS_${VERSION//./_}"
+ISO_PATH="${OUT_DIR}/${ISO_NAME}"
+
+# ── Pretty logging ─────────────────────────────────────────────────────
+log()  { printf "\033[1;36m[sita-build]\033[0m %s\n" "$*"; }
+ok()   { printf "\033[1;32m[ ok ]\033[0m %s\n" "$*"; }
+warn() { printf "\033[1;33m[warn]\033[0m %s\n" "$*" >&2; }
+die()  { printf "\033[1;31m[fail]\033[0m %s\n" "$*" >&2; exit 1; }
+
+# ── Pre-flight ─────────────────────────────────────────────────────────
+require_root() {
+  [[ "${EUID}" -eq 0 ]] || die "must run as root (use sudo)"
+}
+
+require_host_packages() {
+  local pkgs=(
+    debootstrap squashfs-tools xorriso isolinux syslinux-common
+    grub-pc-bin grub-efi-amd64-bin grub-common mtools dosfstools
+    rsync curl ca-certificates
+  )
+  local missing=()
+  for p in "${pkgs[@]}"; do
+    dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p")
+  done
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    log "installing host build deps: ${missing[*]}"
+    apt-get update -qq
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${missing[@]}"
+  fi
+}
+
+# ── Stage 1: bootstrap minimal Ubuntu rootfs ───────────────────────────
+stage_debootstrap() {
+  log "stage 1 — debootstrap ${SUITE}/${ARCH}"
+  mkdir -p "${ROOT_DIR}"
+  if [[ ! -f "${ROOT_DIR}/etc/os-release" ]]; then
+    debootstrap --arch="${ARCH}" --variant=minbase \
+      --components=main,universe \
+      --include=ca-certificates,gnupg,locales \
+      "${SUITE}" "${ROOT_DIR}" "${MIRROR}"
+    ok "base rootfs created"
+  else
+    ok "base rootfs cached, skipping debootstrap"
+  fi
+}
+
+# ── Stage 2: install SITA runtime + packages inside chroot ─────────────
+stage_install_packages() {
+  log "stage 2 — installing SITA runtime + packages"
+
+  # Bind mounts for chroot networking
+  mount --bind /dev "${ROOT_DIR}/dev"   2>/dev/null || true
+  mount --bind /proc "${ROOT_DIR}/proc" 2>/dev/null || true
+  mount --bind /sys "${ROOT_DIR}/sys"   2>/dev/null || true
+
+  # Copy SITA assets into chroot
+  install -m 0755 -d "${ROOT_DIR}/opt/sita" "${ROOT_DIR}/etc/sita"
+  cp -r "${SCRIPT_DIR}/branding"     "${ROOT_DIR}/opt/sita/branding"
+  cp     "${SCRIPT_DIR}/first-boot.sh"          "${ROOT_DIR}/opt/sita/first-boot.sh"
+  cp     "${SCRIPT_DIR}/sita-runtime.service"   "${ROOT_DIR}/etc/systemd/system/sita-runtime.service"
+  cp     "${SCRIPT_DIR}/sita-firstboot.service" "${ROOT_DIR}/etc/systemd/system/sita-firstboot.service"
+  install -m 0644 "${SCRIPT_DIR}/branding/os-release" "${ROOT_DIR}/etc/os-release"
+  install -m 0644 "${SCRIPT_DIR}/packages.list"        "${ROOT_DIR}/tmp/packages.list"
+
+  # Run package install + service enable inside chroot
+  cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'
+#!/usr/bin/env bash
+set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
+export LANG=C.UTF-8
+
+echo "deb http://archive.ubuntu.com/ubuntu noble main universe restricted multiverse"          >  /etc/apt/sources.list
+echo "deb http://archive.ubuntu.com/ubuntu noble-updates main universe restricted multiverse"  >> /etc/apt/sources.list
+echo "deb http://archive.ubuntu.com/ubuntu noble-security main universe restricted multiverse" >> /etc/apt/sources.list
+
+apt-get update -qq
+mapfile -t pkgs < <(grep -vE '^\s*(#|$)' /tmp/packages.list)
+apt-get install -y --no-install-recommends "${pkgs[@]}"
+
+# Locale
+locale-gen en_US.UTF-8 >/dev/null
+update-locale LANG=en_US.UTF-8
+
+# Hostname + machine-id placeholder (regenerated at first boot)
+echo "sita-os" > /etc/hostname
+: > /etc/machine-id
+
+# Enable SITA services
+systemctl enable sita-firstboot.service
+systemctl enable sita-runtime.service
+systemctl enable systemd-networkd
+systemctl enable systemd-resolved
+systemctl set-default graphical.target
+
+# Default user (replaced during install / first-boot)
+useradd -m -s /bin/bash -G sudo,audio,video,plugdev sita || true
+echo 'sita:sita' | chpasswd
+echo 'sita ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-sita
+
+# Cleanup
+apt-get clean
+rm -rf /var/lib/apt/lists/* /tmp/install.sh /tmp/packages.list
+CHROOT
+  chmod +x "${ROOT_DIR}/tmp/install.sh"
+  chroot "${ROOT_DIR}" /tmp/install.sh
+
+  # Unmount binds
+  umount "${ROOT_DIR}/dev"  2>/dev/null || true
+  umount "${ROOT_DIR}/proc" 2>/dev/null || true
+  umount "${ROOT_DIR}/sys"  2>/dev/null || true
+
+  ok "rootfs configured"
+}
+
+# ── Stage 3: build squashfs + kernel/initrd ────────────────────────────
+stage_build_squashfs() {
+  log "stage 3 — building squashfs filesystem"
+  install -d "${ISO_DIR}/casper" "${ISO_DIR}/boot/grub" "${ISO_DIR}/EFI/BOOT" "${ISO_DIR}/.disk"
+
+  # Copy kernel + initrd out of chroot
+  local kernel initrd
+  kernel="$(ls "${ROOT_DIR}/boot/vmlinuz-"* 2>/dev/null | sort -V | tail -1)"
+  initrd="$(ls "${ROOT_DIR}/boot/initrd.img-"* 2>/dev/null | sort -V | tail -1)"
+  [[ -n "${kernel}" && -n "${initrd}" ]] || die "kernel/initrd missing in chroot"
+  cp "${kernel}" "${ISO_DIR}/casper/vmlinuz"
+  cp "${initrd}" "${ISO_DIR}/casper/initrd"
+
+  # Build squashfs
+  mksquashfs "${ROOT_DIR}" "${ISO_DIR}/casper/filesystem.squashfs" \
+    -comp xz -e boot -noappend
+  printf "%s" "$(du -sx --block-size=1 "${ROOT_DIR}" | cut -f1)" > "${ISO_DIR}/casper/filesystem.size"
+  ok "squashfs $(du -h "${ISO_DIR}/casper/filesystem.squashfs" | cut -f1)"
+}
+
+# ── Stage 4: bootloader (BIOS + UEFI) ──────────────────────────────────
+stage_bootloader() {
+  log "stage 4 — installing bootloader (BIOS + UEFI)"
+
+  # GRUB config (shared)
+  cat > "${ISO_DIR}/boot/grub/grub.cfg" <<EOF
+set default="0"
+set timeout=5
+insmod all_video
+set gfxpayload=keep
+
+menuentry "SITA OS ${VERSION} — Live" {
+  linux  /casper/vmlinuz boot=casper quiet splash sita.mode=live ---
+  initrd /casper/initrd
+}
+menuentry "SITA OS ${VERSION} — Install to disk" {
+  linux  /casper/vmlinuz boot=casper only-ubiquity quiet splash sita.mode=install ---
+  initrd /casper/initrd
+}
+menuentry "SITA OS ${VERSION} — Safe mode" {
+  linux  /casper/vmlinuz boot=casper nomodeset sita.mode=safe ---
+  initrd /casper/initrd
+}
+menuentry "Memory test" { linux16 /boot/memtest86+.bin }
+EOF
+
+  # Disk metadata
+  cat > "${ISO_DIR}/.disk/info" <<EOF
+SITA OS ${VERSION} "${SUITE}" - Release ${ARCH} ($(date -u +%Y%m%d))
+EOF
+  echo "casper" > "${ISO_DIR}/.disk/casper-uuid"
+
+  # UEFI: build EFI image (FAT) holding grubx64.efi
+  local efi_img="${ISO_DIR}/boot/grub/efi.img"
+  dd if=/dev/zero of="${efi_img}" bs=1M count=10 status=none
+  mkfs.vfat -n SITAEFI "${efi_img}" >/dev/null
+  mmd  -i "${efi_img}" ::/EFI ::/EFI/BOOT
+  grub-mkstandalone --format=x86_64-efi --output=/tmp/bootx64.efi \
+    --locales="" --fonts="" \
+    "boot/grub/grub.cfg=${ISO_DIR}/boot/grub/grub.cfg"
+  mcopy -i "${efi_img}" /tmp/bootx64.efi ::/EFI/BOOT/BOOTX64.EFI
+  cp /tmp/bootx64.efi "${ISO_DIR}/EFI/BOOT/BOOTX64.EFI"
+
+  # BIOS: standalone grub core image
+  grub-mkstandalone --format=i386-pc --output=/tmp/core.img \
+    --install-modules="linux normal iso9660 biosdisk memdisk search tar ls" \
+    --modules="linux normal iso9660 biosdisk search" \
+    --locales="" --fonts="" \
+    "boot/grub/grub.cfg=${ISO_DIR}/boot/grub/grub.cfg"
+  cat /usr/lib/grub/i386-pc/cdboot.img /tmp/core.img > "${ISO_DIR}/boot/grub/bios.img"
+
+  ok "bootloader staged"
+}
+
+# ── Stage 5: assemble hybrid ISO ───────────────────────────────────────
+stage_make_iso() {
+  log "stage 5 — assembling hybrid ISO"
+  install -d "${OUT_DIR}"
+  xorriso -as mkisofs \
+    -iso-level 3 \
+    -full-iso9660-filenames \
+    -volid "${ISO_LABEL}" \
+    -eltorito-boot boot/grub/bios.img \
+      -no-emul-boot -boot-load-size 4 -boot-info-table \
+      --eltorito-catalog boot/grub/boot.cat \
+      --grub2-boot-info --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+    -eltorito-alt-boot \
+      -e boot/grub/efi.img -no-emul-boot \
+      -append_partition 2 0xef "${ISO_DIR}/boot/grub/efi.img" \
+    -output "${ISO_PATH}" \
+    -graft-points \
+      "${ISO_DIR}" \
+      /boot/grub/bios.img="${ISO_DIR}/boot/grub/bios.img" \
+      /EFI/BOOT/BOOTX64.EFI="${ISO_DIR}/EFI/BOOT/BOOTX64.EFI"
+
+  ok "ISO created: ${ISO_PATH} ($(du -h "${ISO_PATH}" | cut -f1))"
+}
+
+# ── Stage 6: post-build artifacts (checksum + manifest) ────────────────
+stage_artifacts() {
+  log "stage 6 — generating SHA256 + build manifest"
+  ( cd "${OUT_DIR}" && sha256sum "${ISO_NAME}" > "${ISO_NAME}.sha256" )
+  cat > "${OUT_DIR}/${ISO_NAME}.manifest.json" <<EOF
+{
+  "name": "sita-os",
+  "version": "${VERSION}",
+  "architecture": "${ARCH}",
+  "base": "ubuntu-${SUITE}",
+  "iso": "${ISO_NAME}",
+  "iso_size_bytes": $(stat -c%s "${ISO_PATH}"),
+  "iso_sha256": "$(cut -d' ' -f1 < "${OUT_DIR}/${ISO_NAME}.sha256")",
+  "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "builder": "$(hostname)",
+  "stage_status": {
+    "debootstrap": "ok",
+    "packages": "ok",
+    "squashfs": "ok",
+    "bootloader": "ok",
+    "iso_assembly": "ok"
+  },
+  "trust_baseline": "dev-unsigned",
+  "next_phase": "phase-2-dm-verity-and-signed-kernel"
+}
+EOF
+  ok "artifacts: ${ISO_NAME}, ${ISO_NAME}.sha256, ${ISO_NAME}.manifest.json"
+}
+
+# ── Main ───────────────────────────────────────────────────────────────
+main() {
+  log "SITA OS image build — v${VERSION} (${ARCH})"
+  require_root
+  require_host_packages
+  stage_debootstrap
+  stage_install_packages
+  stage_build_squashfs
+  stage_bootloader
+  stage_make_iso
+  stage_artifacts
+  log "✅ done — boot it: bash os/qemu-test.sh"
+}
+
+trap 'umount "${ROOT_DIR}/dev" "${ROOT_DIR}/proc" "${ROOT_DIR}/sys" 2>/dev/null || true' EXIT
+main "$@"
