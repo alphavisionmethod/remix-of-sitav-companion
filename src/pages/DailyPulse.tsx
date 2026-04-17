@@ -50,21 +50,21 @@ function usePulseLiveData(userId: string | undefined) {
     staleTime: 30_000,
     queryFn: async () => {
       const [notif, approvals, files, recs] = await Promise.all([
-        supabase.from("notifications").select("id, title, severity, created_at")
+        fromTable("notifications").select("id, title, urgency, created_at")
           .eq("user_id", userId!).order("created_at", { ascending: false }).limit(10),
-        supabase.from("approval_queue").select("id, title, status, severity, created_at")
+        fromTable("ai_workforce_approval_queue").select("id, title, status, priority, created_at")
           .eq("user_id", userId!).eq("status", "pending").order("created_at", { ascending: false }).limit(10),
-        supabase.from("file_metadata").select("id, classification", { count: "exact", head: true })
+        fromTable("cloud_files").select("id", { count: "exact", head: true })
           .eq("user_id", userId!),
-        supabase.from("ai_workforce_recommendations")
+        fromTable("ai_workforce_recommendations")
           .select("id, title, severity, status, created_at")
           .eq("user_id", userId!).eq("status", "pending").order("created_at", { ascending: false }).limit(5),
       ]);
       return {
-        notifications: notif.data ?? [],
-        approvals: approvals.data ?? [],
-        fileCount: files.count ?? 0,
-        recommendations: recs.data ?? [],
+        notifications: (notif.data ?? []) as Array<{ id: string; title: string; urgency?: string }>,
+        approvals: (approvals.data ?? []) as Array<{ id: string; title: string; priority?: string }>,
+        fileCount: (files.count ?? 0) as number,
+        recommendations: (recs.data ?? []) as Array<{ id: string; title: string; severity?: string }>,
       };
     },
   });
