@@ -30,7 +30,7 @@ describe("db-app-adapter", () => {
       id: "i1", user_id: "u1", app_id: "sita.business", install_status: "installed",
       enabled: true, pinned: true, favorite: false, pinned_order: 0, launch_count: 5,
       last_launched_at: null, version_installed: "0.9.0",
-      permissions_granted: [], config_json: {}, source_channel: "system_default",
+      permissions_granted: {}, config_json: {}, source_channel: "system_default",
       installed_at: new Date().toISOString(), updated_at: new Date().toISOString(),
     };
     const def = dbToAppDefinition(baseCatalog, installed);
