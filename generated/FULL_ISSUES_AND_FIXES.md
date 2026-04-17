@@ -1,9 +1,9 @@
 # SITA OS — FULL ADVANCED ISSUES, FIXES & INTEGRATION REGISTER
 
-**Version:** v2.1 (truth-only · re-audited)
+**Version:** v2.2 (truth-only · re-audited 2026-04-17)
 **Generated:** 2026-04-17
 **Model:** Outstanding-only — no resolved-issue log per documentation-governance memory
-**Source of truth:** `generated/its-real-gate-report.json` (Phase 32) + live DB/filesystem probes
+**Source of truth:** `generated/its-real-gate-report.json` (Phase 32) + live DB/filesystem probes + `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md`
 
 ---
 
@@ -13,13 +13,15 @@
 |---|---|---|---|
 | Frontend | Pages | **1,040** | `find src/pages -name "*.tsx"` |
 | Frontend | Components | **922** | `find src/components -name "*.tsx"` |
-| Frontend | Hooks | **169** | `find src/hooks` |
-| Frontend | Lib modules | **1,835** | `find src/lib` |
-| Backend | Edge Functions | **127** | `ls supabase/functions/*/index.ts` |
-| Database | Tables (public) | **303** | `pg_tables` |
+| Frontend | Total TS/TSX | **4,690** | `find src -name '*.ts' -o -name '*.tsx'` |
+| Frontend | `as any` in pages | **0** ✅ (ISS-020 RESOLVED) | `grep -rE '\bas any\b' src/pages` |
+| Backend | Edge Functions | **127** | `ls supabase/functions/` |
+| Database | Tables (public) | **303** | `information_schema.tables` |
+| Database | Views (public) | **8** | `information_schema.views` |
 | Database | RLS Policies | **652** | `pg_policies` |
-| Database | Tables w/ RLS, no policy | **0** ✅ | `get_db_truth_snapshot('drift')` |
+| Database | Tables w/ RLS, no policy | **0** ✅ | `pg_policies` distinct tablename = 303/303 |
 | Database | Migrations | **189** | `ls supabase/migrations/*.sql` |
+| Stubs Sweep | Actionable hits | **76** (P0:5 · P1:0 · P2:12 · P3:30 · P4:29) | `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` |
 | Database | Extensions | pg_cron 1.6.4, pg_net 0.20, pgcrypto 1.3, uuid-ossp 1.1 | `pg_extension` |
 | Database | Realtime tables | **6** (advisor_board_actions, advisor_board_recommendations, lead_inbox_items, notifications, os_command_events, os_commands) | `pg_publication_tables` |
 | Storage | Buckets | 2 (`user-files` private, `app-assets` **public**) | `storage.buckets` |
@@ -80,7 +82,17 @@ These must close before General Availability of the corresponding surface.
 - **Risk:** Windows builds emit unsigned EXE/MSI → SmartScreen warnings.
 - **Remediation:** Acquire EV or OV code-signing cert, store as `.pfx`, set `CSC_LINK` + `CSC_KEY_PASSWORD` in CI.
 
+### OPN-P0-06 · Boardroom trust-bearing surfaces still render mock data
+- **Surface:** Boardroom (trust-bearing — must be 100% wired before GA)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P0 section — 5 inline-mock declarations across 3 components:
+  - `src/components/sita/apps/boardroom/BoardroomApprovalView.tsx` lines 28, 34, 39 (`MOCK_APPROVALS`, `MOCK_SEALED`, `MOCK_RECEIPTS`)
+  - `src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx` line 25 (`MOCK_DISCUSSIONS`)
+  - `src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx` line 120 (`mockChain = buildDefaultChain("simulation")`)
+- **Risk:** Boardroom is a P0 trust surface; rendering mock approvals / receipts / discussions violates the "no claims rely on theater" clause of the Phase 32 gate.
+- **Remediation:** Wire each surface to its canonical service (`boardroom_approvals`, `boardroom_receipts`, `boardroom_discussions`) via `Executor`; emit `boardroom_decision_receipts`; gate empty-state with `PremiumEmptyState`.
+
 ---
+
 
 ## 4. Section B — P1 Scale & Hardening Gaps (Open)
 
@@ -150,10 +162,25 @@ These must close before General Availability of the corresponding surface.
 - **Remediation:** `npx storybook@latest init --type vite`; require stories for every new shared component.
 
 ### ~~OPN-P2-04 · `as any` cleanup pending — 135 page-level instances~~ ✅ RESOLVED
-- **Status:** RESOLVED (2026-04-17). All 135 instances across 72 page files eliminated.
+- **Status:** RESOLVED (2026-04-17) — also closes ISS-020. All 135 instances across 72 page files eliminated.
 - **Verification:** `grep -rEn "\bas any\b" src/pages --include="*.tsx" --include="*.ts" \| wc -l` → **0**
 - **Enforcement:** `scripts/architecture/checks/check-platform-anti-patterns.ts` now fails CI on any `as any` in `src/pages/**` (threshold = 0, severity = error).
 - **Approach:** Replaced casts with explicit view-model interfaces, canonical domain unions (`RiskTier`, `EvidenceState`, `BudgetState`, `RoutingHints` from `@/lib/core-services/conscience-gate`), typed select handlers, and the centralized `dbAny` helper in `@/lib/supabase-helpers` for genuinely opaque table access.
+
+### OPN-P2-12 · 12 user-facing pages render inline mock data (Stubs Sweep P2)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P2 section. Affected files (12 hits):
+  `src/pages/CommandHistory.tsx:22`, `src/pages/DownloadsCenter.tsx:12`, `src/pages/EnvironmentSwitcher.tsx:23`, `src/pages/PersonalLifeWorkspace.tsx:28,36,43,50`, `src/pages/PlanningCanvas.tsx:22`, `src/pages/WeeklyBoardroom.tsx:6`, `src/pages/mobile/MobileDeviceTrust.tsx:27`, `src/pages/settings/DeviceSettings.tsx:6`, `src/pages/settings/TrustedDeviceManager.tsx:6`.
+- **Risk:** Pages claim live data in production; user sees fabricated rows.
+- **Remediation:** Replace each `MOCK_*` block with a canonical `useQuery` hook against the owning service; gate first-render with `PremiumEmptyState` when zero rows.
+
+### OPN-P2-13 · 30 admin pages/components render inline mock data (Stubs Sweep P3)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P3 section. Hot-spots: `BCPDRDashboard.tsx` (4), `ComplianceDashboard.tsx` (multiple), `CABWorkflow.tsx`, `CRMContactDetail.tsx` (2× empty `onClick={() => {}}`).
+- **Remediation:** Per-component wiring to canonical services; replace empty handlers with Executor-routed actions.
+
+### OPN-P2-14 · 29 lib/hook utilities ship `MOCK_*` defaults (Stubs Sweep P4)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P4 section.
+- **Remediation:** Move mocks to `__fixtures__/` or test files; production paths must read from canonical sources only.
+
 
 ### OPN-P2-05 · No vector search / pgvector capability despite AI-heavy product
 - **Evidence:** `pg_extension` shows pg_cron, pg_net, pgcrypto, uuid-ossp — **no `vector`**.

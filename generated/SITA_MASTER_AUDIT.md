@@ -1,31 +1,29 @@
 # SITA OS — FULL ADVANCED MASTER PRODUCTION TRUTH AUDIT
 
-**Version:** 6.0 (Truth-Only)
+**Version:** 6.1 (Truth-Only · re-verified)
 **Generated:** 2026-04-17
 **Phase:** 32 — "It's Real" Gate
-**Verdict:** `real` · 13/13 clauses · `deployable: true`
+**Verdict:** `real` · 13/13 clauses · `deployable: true` (verbatim from `generated/its-real-gate-report.json`)
 **Audit Mode:** Outstanding-gaps-only · No resolved-issue log · Evidence-anchored
 
 ---
 
-## 0. Live Snapshot (Verified)
+## 0. Live Snapshot (Verified 2026-04-17)
 
 | Plane | Metric | Value | Evidence |
 |---|---|---|---|
-| Frontend | Pages | **1,044** | `src/pages/**` filesystem scan |
-| Frontend | Components | **922** | `src/components/**` filesystem scan |
-| Frontend | Hooks | **168** | `src/hooks/**` filesystem scan |
-| Frontend | Total TS/TSX files | **4,689** | `src/**/*.{ts,tsx}` |
-| Backend | Edge Functions | **126** | `supabase/functions/*/index.ts` |
-| Database | Tables (public) | **301** | `pg_catalog.pg_tables` |
-| Database | RLS Policies | **643** | `pg_catalog.pg_policies` |
-| Database | Tables w/ ≥1 policy | **300 / 301** | 1 gap → `connector_oauth_tokens` |
-| Database | Migrations | **188** | `supabase/migrations/*.sql` |
-| Governance | CI Check Scripts | **108** | `scripts/architecture/checks/**` |
-| Governance | Generated Artifacts | **119** | `generated/*.json` |
-| Governance | Total scripts | **297** | `scripts/**/*.{ts,cjs,mjs}` |
+| Frontend | Pages | **1,040** | `find src/pages -name '*.tsx'` |
+| Frontend | Components | **922** | `find src/components -name '*.tsx'` |
+| Frontend | Total TS/TSX files | **4,690** | `find src -name '*.ts' -o -name '*.tsx'` |
+| Frontend | `as any` casts in `src/pages/**` | **0** ✅ | `grep -rE '\bas any\b' src/pages` (ISS-020 RESOLVED) |
+| Backend | Edge Functions | **127** | `ls supabase/functions/` |
+| Database | Tables (public) | **303** | `information_schema.tables` |
+| Database | Views (public) | **8** | `information_schema.views` |
+| Database | RLS Policies | **652** | `pg_policies` |
+| Database | Tables w/ ≥1 policy | **303 / 303** ✅ 100% | `pg_policies` distinct tablename |
+| Database | Migrations | **189** | `ls supabase/migrations/*.sql` |
+| Stubs Sweep | Actionable hits | **76** (P0:5 · P1:0 · P2:12 · P3:30 · P4:29) | `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` |
 | Phase 32 | It's Real Gate | **real / 13-of-13 / deployable** | `generated/its-real-gate-report.json` |
-| Supabase Linter | Findings | **2** (1 INFO + 1 WARN) | `supabase--linter` |
 
 ---
 
@@ -62,9 +60,10 @@ Every claim cites a `generated/*.json` artifact, a `pg_catalog` query, or a file
 | FE-001 | 41 Investment Office pages share generic `business-api` (no dedicated domain APIs) | P1 |
 | FE-002 | 15 admin pages exceed FounderControlShell module budget | P1 |
 | FE-003 | E2E coverage limited to files-upload-roundtrip; 4 of 5 flagship loops lack browser-driven tests | P2 |
-| ~~FE-004~~ | ~~Residual `as any` casts (ISS-091)~~ ✅ RESOLVED 2026-04-17 — `src/pages` count = 0; CI gate enforces threshold = 0 | — |
+| ~~FE-004~~ | ~~Residual `as any` casts (ISS-020 / OPN-P2-04)~~ ✅ RESOLVED 2026-04-17 — `src/pages` count = 0; CI gate enforces threshold = 0 | — |
+| FE-005 | **Stubs & Placeholders Sweep** — 76 actionable hits (P0:5, P1:0, P2:12, P3:30, P4:29) detected by `audit-stubs-placeholders.ts`. P0 hits all in `src/components/sita/apps/boardroom/*` (BoardroomApprovalView, BoardroomDiscussionThread, BoardroomExecutiveView). | P0–P4 |
 
-**Evidence:** `generated/page-registry-completeness-report.json`, `generated/feature-reality-report.json`
+**Evidence:** `generated/page-registry-completeness-report.json`, `generated/feature-reality-report.json`, `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md`
 
 ---
 
