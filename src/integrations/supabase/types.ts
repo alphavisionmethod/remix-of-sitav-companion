@@ -3259,11 +3259,17 @@ export type Database = {
           activated_by: string | null
           created_at: string
           deactivated_at: string | null
+          deactivated_by: string | null
           enabled: boolean
+          expires_at: string | null
           id: string
+          metadata: Json
           reason: string | null
+          requires_approval: boolean
           scope: string
           scope_id: string | null
+          severity: string
+          switch_id: string | null
           updated_at: string
           user_id: string
         }
@@ -3272,11 +3278,17 @@ export type Database = {
           activated_by?: string | null
           created_at?: string
           deactivated_at?: string | null
+          deactivated_by?: string | null
           enabled?: boolean
+          expires_at?: string | null
           id?: string
+          metadata?: Json
           reason?: string | null
+          requires_approval?: boolean
           scope?: string
           scope_id?: string | null
+          severity?: string
+          switch_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -3285,11 +3297,17 @@ export type Database = {
           activated_by?: string | null
           created_at?: string
           deactivated_at?: string | null
+          deactivated_by?: string | null
           enabled?: boolean
+          expires_at?: string | null
           id?: string
+          metadata?: Json
           reason?: string | null
+          requires_approval?: boolean
           scope?: string
           scope_id?: string | null
+          severity?: string
+          switch_id?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -9286,6 +9304,51 @@ export type Database = {
         }
         Relationships: []
       }
+      incident_classifications: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          escalation_owner: string
+          id: string
+          is_active: boolean
+          recommended_runbook_id: string
+          recommended_switch_id: string | null
+          severity: string
+          subsystem: string
+          symptom_code: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          escalation_owner?: string
+          id?: string
+          is_active?: boolean
+          recommended_runbook_id: string
+          recommended_switch_id?: string | null
+          severity?: string
+          subsystem: string
+          symptom_code: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          escalation_owner?: string
+          id?: string
+          is_active?: boolean
+          recommended_runbook_id?: string
+          recommended_switch_id?: string | null
+          severity?: string
+          subsystem?: string
+          symptom_code?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       incidents: {
         Row: {
           affected_services: Json | null
@@ -9632,6 +9695,93 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      kill_switch_approvals: {
+        Row: {
+          approver_user_id: string | null
+          created_at: string
+          decided_at: string | null
+          expires_at: string
+          id: string
+          initiated_by: string
+          intended_action: string
+          metadata: Json
+          reason: string
+          status: string
+          switch_id: string
+          updated_at: string
+        }
+        Insert: {
+          approver_user_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          expires_at?: string
+          id?: string
+          initiated_by: string
+          intended_action: string
+          metadata?: Json
+          reason: string
+          status?: string
+          switch_id: string
+          updated_at?: string
+        }
+        Update: {
+          approver_user_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          expires_at?: string
+          id?: string
+          initiated_by?: string
+          intended_action?: string
+          metadata?: Json
+          reason?: string
+          status?: string
+          switch_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      kill_switch_audit_log: {
+        Row: {
+          action: string
+          actor_user_id: string | null
+          after_state: Json | null
+          before_state: Json | null
+          created_at: string
+          id: string
+          metadata: Json
+          reason: string | null
+          runbook_id: string | null
+          switch_id: string
+          switch_row_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id?: string | null
+          after_state?: Json | null
+          before_state?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          runbook_id?: string | null
+          switch_id: string
+          switch_row_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string | null
+          after_state?: Json | null
+          before_state?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          runbook_id?: string | null
+          switch_id?: string
+          switch_row_id?: string | null
+        }
+        Relationships: []
       }
       layer_health_snapshots: {
         Row: {
@@ -14856,6 +15006,7 @@ export type Database = {
         }
         Returns: Json
       }
+      expire_overdue_kill_switches: { Args: never; Returns: number }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
