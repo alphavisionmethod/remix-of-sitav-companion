@@ -1,139 +1,96 @@
 
 
-Looking at C-004 and C-006, I need to verify the actual current state of file upload wiring and flagship loop proof before planning. The visible files already show a real `useFileUpload` hook calling `supabase.storage.from("user-files")`, and `FileUploadZone` using it. Let me check what's actually missing.
-<lov-plan>
+## SITA OS — Forward Audit (post-v6.0): What to Add Next
 
-Let me explore.
-<lov-tool-use id="toolu_vrtx_01BJQgcHnWck5iz2WKqHjDRu" name="code--search_files" integration-id="code" data="{\"query\": \"useFileUpload|FileUploadZone\", \"include_patterns\": \"src/pages/files/**\"}">
-</lov-tool-use>
+### Live snapshot (re-verified now)
 
-<lov-tool-use id="toolu_vrtx_019jvSswBAtcHYiovp72xZiA" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/pages/files\"}">
-</lov-tool-use>
+| Plane | Metric | Value | Δ vs v6.0 |
+|---|---|---|---|
+| Frontend pages | 1,040 | (was 1,044 — minor cleanup) |
+| Components / Hooks | 922 / 168 | stable |
+| Edge functions | 126 | stable |
+| DB tables / RLS policies | 301 / 643 | stable |
+| Tables w/ RLS, no policy | **1** (`connector_oauth_tokens`) | unchanged P0 |
+| DB functions | 17 | — |
+| Migrations | 188 | — |
+| CI check scripts | 182 | — |
+| Generated artifacts | 107 | — |
+| Tests (unit + e2e) | 123 / 56 | — |
+| Supabase linter findings | 2 (1 INFO, 1 WARN) | unchanged |
+| i18n locales | 1 (en only) | gap |
+| PWA manifest | missing (`manifest.webmanifest` exists but no `manifest.json`) | partial |
+| Sentry | wired, **DSN not set** | partial |
 
-<lov-tool-use id="toolu_vrtx_01DE7jrWgP2L2Zz77DkeUKDr" name="code--search_files" integration-id="code" data="{\"query\": \"flagship_loop_completions|recordFlagshipLoop|flagship-loop\", \"include_patterns\": \"src/**/*.ts,src/**/*.tsx,supabase/functions/**\"}">
-</lov-tool-use>
+### Already in place (don't re-build)
+- Sentry SDK integration (`src/lib/observability/sentry.ts`) — only needs DSN secret
+- Service worker (`public/sw.js`) + web manifest
+- Capacitor (mobile) + Electron (desktop) scaffolding
+- Push notifications (`push-dispatch`, `push-track`) with VAPID keys
+- Payments (`payment-process`, `payment-kill-switch`)
+- 5 flagship loops emitting real receipts
+- Phase 32 "It's Real" gate green (13/13)
 
-<lov-tool-use id="toolu_vrtx_01Wo1vBYANcNrSDBKjuDK8JV" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/pages/files\"}">
-</lov-tool-use>
+### What's genuinely missing — prioritized backlog
 
-<lov-tool-use id="toolu_vrtx_01F4GWKih3cBdATXjoQbdTqw" name="code--search_files" integration-id="code" data="{\"query\": \"FileUploadZone|useFileUpload\", \"include_patterns\": \"src/pages/files/*.tsx\"}">
-</lov-tool-use>
+**P0 — true production blockers (5)**
+1. `connector_oauth_tokens` RLS policies (table has RLS on, 0 policies → all access denied)
+2. `app-assets` public bucket listing policy (Supabase WARN)
+3. Sentry DSN secret not set (SDK wired but inert)
+4. `KS-PAYMENTS-AUTH` dedicated kill switch (registry entry missing)
+5. Hosted CI run artifacts (only local execution proven)
 
-<lov-tool-use id="toolu_vrtx_018MejGvVhntgbWFfajhbGaS" name="code--search_files" integration-id="code" data="{\"query\": \"flagship_loop_completions|recordFlagshipLoop\", \"include_patterns\": \"src/**/*.ts,src/**/*.tsx\"}">
-</lov-tool-use>
+**P1 — scale & quality (7)**
+6. **i18n breadth** — only `en.json` exists. Add at minimum `es`, `fr`, `de`, `ar` (RTL CSS already present but no Arabic strings)
+7. **a11y test harness** — no `@axe-core/playwright` in pipeline; WCAG AA not measured
+8. **Lighthouse / perf budget CI** — no `.lighthouserc` or perf gate
+9. **Storybook** — no component catalog for the 922 components (UX drift risk)
+10. **Investment Office API split** — 41 pages on generic `business-api`
+11. **Namespace dedupe** — `src/lib/engine/` vs `src/lib/engines/`
+12. **Electron signing pipeline** — entitlements present, but no notarization proof
 
-<lov-tool-use id="toolu_vrtx_01S1kBHeYcjASW1eXmsCakA7" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/files/FilesAll.tsx\"}">
-</lov-tool-use>
+**P2 — net-new capability gaps (8)**
+13. **Vector search / RAG** — no `embed-*` or pgvector edge function despite AI-heavy product
+14. **Apple APNs push** — only Web VAPID active; iOS push deferred per memory
+15. **Android FCM push** — planned, not wired
+16. **Real-time co-presence** — no `presence` channels for Boardroom multi-user
+17. **Backup verification job** — no cron edge function asserting backup restore-ability
+18. **DSAR / data-export endpoint** — GDPR right-to-export not implemented
+19. **Account deletion flow** — soft-delete + grace period missing
+20. **Audit-log retention policy** — no TTL on `kill_switch_audit_log`, `flagship_loop_completions`
 
-<lov-tool-use id="toolu_vrtx_01BgAL5yH8yTdtX1eipDDf3f" name="code--view" integration-id="code" data="{\"file_path\": \"src/pages/files/FilesOverview.tsx\"}">
-</lov-tool-use>
+**P3 — polish (5)**
+21. Visual regression tests (Percy/Chromatic) for the design system
+22. OpenAPI / contract docs for the 126 edge functions
+23. SBOM generation for the supply-chain audit
+24. Synthetic monitoring (uptime probes hitting 5 flagship golden paths)
+25. Cost-attribution dashboard tying AI invocations → tenant → budget class
 
-<lov-tool-use id="toolu_vrtx_01WdrQDLaGTKkDBEBpwVFLmR" name="code--view" integration-id="code" data="{\"file_path\": \"src/hooks/use-flagship-loop-proof.ts\"}">
-</lov-tool-use>
+### Recommended next sprint (single coherent batch)
 
-<lov-tool-use id="toolu_vrtx_01EdMxJP4cdFBqycK6yPMHYn" name="code--view" integration-id="code" data="{\"file_path\": \"src/components/sita/FileUploader.tsx\"}">
-</lov-tool-use>
-Both audit findings are already largely resolved. Let me check the `file-ingestion` edge function and `useAllFiles`/`useFilesOverview` to understand if there's an actual gap, plus check any remaining "mock/demo" usage.
-<lov-tool-use id="toolu_vrtx_018np6mZrMx2qo8Ad2rYxDAR" name="code--search_files" integration-id="code" data="{\"include_patterns\": \"supabase/functions/file-ingestion/**\", \"query\": \"storage_path|file_metadata\"}">
-</lov-tool-use>
+A focused 6-item sprint that closes the **highest-leverage** gaps without fan-out:
 
-<lov-tool-use id="toolu_vrtx_012DwgeEhA5nCp48qb666x66" name="code--search_files" integration-id="code" data="{\"include_patterns\": \"src/hooks/use-domain-data.ts,src/hooks/use-domain-data/**\", \"query\": \"useAllFiles|useFilesOverview|file_metadata\"}">
-</lov-tool-use>
+| # | Item | Files | Acceptance |
+|---|---|---|---|
+| 1 | Add RLS policies on `connector_oauth_tokens` (owner read/write, service-role bypass) | new migration | linter shows 0 RLS-no-policy |
+| 2 | Restrict `app-assets` public bucket listing (per-prefix `SELECT` only) | new migration | linter WARN cleared |
+| 3 | Register `KS-PAYMENTS-AUTH` in `kill-switch-registry.ts` + runbook RB-020 | 2 files | registry-integrity green |
+| 4 | Add i18n locales `es`, `fr`, `de`, `ar` (auto-translate via Lovable AI, RTL toggle) | 4 JSON + locale switcher hook | language menu live |
+| 5 | Wire `@axe-core/playwright` into existing E2E suite + new `a11y.spec.ts` running on 10 critical routes | 1 spec + CI step | a11y violations report generated |
+| 6 | Add `data-export` edge function (DSAR) + `account-delete` with 30-day grace | 2 functions + UI in Settings | manual export downloads JSON of all user rows |
 
-<lov-tool-use id="toolu_vrtx_01FNRdBDeBU9SaipXGkdCdP5" name="code--search_files" integration-id="code" data="{\"include_patterns\": \"src/**/*.tsx,src/**/*.ts\", \"query\": \"isDemoMode = true\"}">
-</lov-tool-use>
+### Out-of-scope for this sprint (tracked, not built)
+- Storybook (large effort, separate sprint)
+- Investment Office API split (architectural refactor)
+- Apple APNs (requires Apple Developer account)
+- Vector search (requires schema design discussion)
 
-<lov-tool-use id="toolu_vrtx_01Mtk1LDg1A3TvmuGSajnng4" name="code--exec" integration-id="code" data="{\"command\": \"ls supabase/functions/ | grep -i file\", \"user_facing_description\": \"Check which file-related edge functions exist\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01SiyJdSzckcAGzddndeMZZW" name="code--search_files" integration-id="code" data="{\"include_patterns\": \"src/hooks/use-domain-data.ts\", \"query\": \"fetchAllFiles|fetchFilesOverview\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01VWgpzkTACV3V8GZ8MaMK5r" name="code--search_files" integration-id="code" data="{\"include_patterns\": \"src/lib/services/domain-data/files.ts,src/lib/services/domain-data/**\", \"query\": \"fetchAllFiles|fetchFilesOverview\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_011st61ow5ENb3GeRF9ycizp" name="code--exec" integration-id="code" data="{\"command\": \"find src/lib -name \\\"files-data-service*\\\" 2>/dev/null\", \"user_facing_description\": \"Locate files data service\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01J9WdDN6i54TzRkU1tU9wTX" name="code--view" integration-id="code" data="{\"file_path\": \"src/lib/data-services/files-data-service.ts\"}">
-</lov-tool-use>
-Now I have a complete picture. The audit findings (C-004, C-006) describe issues that are **already mostly resolved** in the code:
-
-- **C-006**: `FileUploader` already uploads to `user-files` bucket with proper RLS path, calls `file-ingestion`, persists to `file_metadata`, generates signed URLs. ✅ Wired.
-- **C-004**: `useLoopEmitter` already fires real receipts on file upload + AI classify into `flagship_loop_completions`. ✅ Wired.
-
-The remaining **real** gaps are:
-1. `FilesOverview` has hardcoded `const isDemoMode = true` — banner permanently shows "demo" even when real data is loaded.
-2. `fetchFilesOverview` falls back to `MOCK_FILES_OVERVIEW` when DB returns 0 rows — this masks real "empty" state and is the literal "demo data" the audit calls out.
-3. No emitter for the other 4 flagship loops on actual entry points (sign-in, boardroom view, sync, approval).
-4. No automated test that proves end-to-end: upload → storage → DB → display → receipt.
-
-<lov-plan>
-
-## Plan: Close C-004 + C-006 (real, no stubs, deployment-ready)
-
-### Findings from exploration
-The audit fix snippets are already implemented:
-- `FileUploader` uploads to `user-files` with `${user.id}/...` path, calls `file-ingestion`, generates signed URL, emits `flagship_loop_completions` for `file_upload` + `ai_classify`. ✅
-- `file-ingestion` edge function persists to `file_metadata`. ✅
-- `useFlagshipLoopProofs` reads real receipts. ✅
-
-### Real remaining gaps
-
-**Gap 1 — `FilesOverview` shows "demo" forever**
-`const isDemoMode = true` is hardcoded → `PageTruthBanner` always shows demo state even when the user has real uploaded files.
-
-**Gap 2 — `fetchFilesOverview` returns mock when empty**
-`fetchFilesOverview` and `fetchFilesProcessing` fall back to `MOCK_FILES_OVERVIEW` / `MOCK_FILES_PROCESSING` when the DB returns 0 rows. This is the actual "demo/mock file data" the audit complains about — empty state should be honest, not faked.
-
-**Gap 3 — Other 4 flagship loops not emitted at real entry points**
-Only `files-ai-assist` is emitted. Need real emissions on:
-- `sign-in-dashboard-pulse` → emit `sign_in` on auth success, `pulse_view` on Pulse mount
-- `boardroom-summary-decision` → emit `boardroom_summary` on Boardroom mount
-- `connected-services-sync` → emit `sync_run` on connector sync completion
-- `admin-truth-recommendation-approval` → emit `approval_decision` on approval queue decide
-
-**Gap 4 — No proven E2E test**
-Add Playwright test that signs in → uploads a real file → asserts row in `file_metadata` + receipt in `flagship_loop_completions` + file appears in `FilesAll`.
-
-### Changes (concise, surgical)
-
-**Edit `src/lib/data-services/files-data-service.ts`**
-- Remove mock fallback when authenticated user returns 0 rows. Return `[]` so UI shows real empty state. Keep mocks only for the unauthenticated/demo path.
-
-**Edit `src/pages/files/FilesOverview.tsx`**
-- Replace `const isDemoMode = true` with derived state: `isDemoMode = !user || (realKpis?.total === 0 && classifiedFiles.length === 0)`.
-- Pass that to `<PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />`.
-
-**Edit `src/contexts/AuthContext.tsx`** (small addition)
-- After successful sign-in, fire `emitLoopCompletion({ loop_key: "sign-in-dashboard-pulse", step_key: "sign_in" })`. Fire-and-forget, never blocks.
-
-**Edit `src/pages/DailyPulse.tsx`** (or Pulse mount)
-- On mount with authenticated user, emit `pulse_view`.
-
-**Edit `src/pages/GlobalBoardroom.tsx`**
-- On mount with data loaded, emit `boardroom_summary`.
-
-**Edit connector sync hook (`src/hooks/use-connector-sync.ts` or equivalent)**
-- After successful sync run, emit `sync_run` with evidence `{ connector, items_synced }`.
-
-**Edit `src/pages/ApprovalChamber.tsx`** (approve/reject handler)
-- On decision, emit `approval_decision` with evidence `{ recommendation_id, decision }`.
-
-**New test `tests/e2e/customer-journey/files/files-upload-real-roundtrip.spec.ts`**
-- Login → navigate `/files/all` → upload real PDF blob → assert toast "classified" → assert file row appears in list → assert `flagship_loop_completions` has `loop_key=files-ai-assist, step_key=file_upload, outcome=success` for the user (via authenticated supabase query).
-
-**New test `src/__tests__/files-data-service.test.ts`**
-- Asserts `fetchAllFiles` returns `[]` (not mocks) when user is authenticated and has zero rows.
-
-### Files (count)
-- Edited: 6 (`files-data-service.ts`, `FilesOverview.tsx`, `AuthContext.tsx`, `DailyPulse.tsx`, `GlobalBoardroom.tsx`, `ApprovalChamber.tsx` + 1 sync hook)
-- New: 2 tests
-
-### Acceptance
-- Authenticated user with 0 files sees real empty state, banner shows "live" (not "demo")
-- Uploading a file: appears in `user-files/<uid>/`, row in `file_metadata`, receipt in `flagship_loop_completions`, banner stays "live", file visible in `FilesAll`
-- All 5 flagship loops accumulate receipts during real navigation; `useLoopProofsSummary` returns `proven=true` for each
-- E2E test passes against live Supabase
-- 0 TypeScript errors; existing CI gates (it's-real-gate, golden-path-coverage) stay green
+### Acceptance for the sprint
+- Supabase linter: **0 findings**
+- 100% RLS coverage: **301/301** tables
+- Kill-switch registry: includes `KS-PAYMENTS-AUTH` with runbook link
+- Language switcher live in Settings; 5 locales selectable; RTL flips on `ar`
+- E2E a11y report attached to CI artifacts; baseline violations recorded
+- DSAR: authenticated user can request + download JSON export of all their data
+- Account delete: soft-deletes user, schedules hard-delete in 30 days, emits receipt
+- 0 TypeScript errors; existing 13/13 "It's Real" gate stays green
 
