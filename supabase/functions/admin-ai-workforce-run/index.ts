@@ -240,12 +240,18 @@ Deno.serve(async (req) => {
     const resolvedRoutingClass = (perm as Record<string, unknown>).preferred_routing_class || (role as Record<string, unknown>).default_routing_class || "balanced_assistant";
     const selectedModel = selectModel(resolvedBudgetClass);
 
-    // STEP 5: Budget policy check
-    const { data: budgetCheck } = await supabaseAdmin.rpc("check_ai_budget_policies", {
-      p_user_id: user.id,
-      p_capability_key: `workforce.${role_key}.${task_key}`,
-      p_estimated_cost_usd: 0.005,
-    });
+    // STEP 5: Budget policy check (optional RPC — safe-noop if not deployed)
+    let budgetCheck: { should_block?: boolean; reason?: string; policy_key?: string } | null = null;
+    try {
+      const { data } = await supabaseAdmin.rpc("check_ai_budget_policies", {
+        p_user_id: user.id,
+        p_capability_key: `workforce.${role_key}.${task_key}`,
+        p_estimated_cost_usd: 0.005,
+      });
+      budgetCheck = (data as typeof budgetCheck) ?? null;
+    } catch (e) {
+      console.warn("[ai-workforce-run] budget policy RPC not available:", (e as Error).message);
+    }
 
     if (budgetCheck?.should_block) {
       await supabaseAdmin.from("ai_workforce_invocations").insert({
