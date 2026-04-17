@@ -1166,6 +1166,82 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_action_receipts: {
+        Row: {
+          action_payload: Json
+          action_type: string
+          approval_request_id: string | null
+          confidence: number
+          created_at: string
+          executed_at: string | null
+          id: string
+          invocation_id: string | null
+          metadata: Json
+          receipt_id: string | null
+          recommendation_summary: string
+          risk_tier: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_payload?: Json
+          action_type: string
+          approval_request_id?: string | null
+          confidence?: number
+          created_at?: string
+          executed_at?: string | null
+          id?: string
+          invocation_id?: string | null
+          metadata?: Json
+          receipt_id?: string | null
+          recommendation_summary: string
+          risk_tier?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_payload?: Json
+          action_type?: string
+          approval_request_id?: string | null
+          confidence?: number
+          created_at?: string
+          executed_at?: string | null
+          id?: string
+          invocation_id?: string | null
+          metadata?: Json
+          receipt_id?: string | null
+          recommendation_summary?: string
+          risk_tier?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_action_receipts_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "approval_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_action_receipts_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_invocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_action_receipts_receipt_id_fkey"
+            columns: ["receipt_id"]
+            isOneToOne: false
+            referencedRelation: "receipts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_budget_alerts: {
         Row: {
           alert_state: string
@@ -1336,6 +1412,81 @@ export type Database = {
           status?: string | null
           user_id?: string
           verification_outcome?: string | null
+        }
+        Relationships: []
+      }
+      ai_invocations: {
+        Row: {
+          capability_key: string
+          completion_tokens: number | null
+          correlation_id: string | null
+          created_at: string
+          error_code: string | null
+          error_message: string | null
+          estimated_cost_usd: number | null
+          expires_at: string
+          id: string
+          invoked_by_role: string | null
+          latency_ms: number | null
+          model: string
+          prompt_class: string
+          prompt_family_id: string | null
+          prompt_tokens: number | null
+          prompt_version_id: string | null
+          provider: string | null
+          request_payload: Json
+          response_payload: Json
+          status: string
+          total_tokens: number | null
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          completion_tokens?: number | null
+          correlation_id?: string | null
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          invoked_by_role?: string | null
+          latency_ms?: number | null
+          model: string
+          prompt_class?: string
+          prompt_family_id?: string | null
+          prompt_tokens?: number | null
+          prompt_version_id?: string | null
+          provider?: string | null
+          request_payload?: Json
+          response_payload?: Json
+          status?: string
+          total_tokens?: number | null
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          completion_tokens?: number | null
+          correlation_id?: string | null
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          invoked_by_role?: string | null
+          latency_ms?: number | null
+          model?: string
+          prompt_class?: string
+          prompt_family_id?: string | null
+          prompt_tokens?: number | null
+          prompt_version_id?: string | null
+          provider?: string | null
+          request_payload?: Json
+          response_payload?: Json
+          status?: string
+          total_tokens?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -3122,6 +3273,72 @@ export type Database = {
         }
         Relationships: []
       }
+      approval_requests: {
+        Row: {
+          action_key: string
+          approver_roles: string[]
+          context: Json
+          created_at: string
+          escalated_at: string | null
+          escalation_state: string
+          expires_at: string
+          id: string
+          metadata: Json
+          policy_basis: Json
+          policy_id: string | null
+          requested_by: string
+          required_approvers: number
+          risk_tier: string
+          status: string
+          subject_id: string | null
+          subject_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          approver_roles?: string[]
+          context?: Json
+          created_at?: string
+          escalated_at?: string | null
+          escalation_state?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          policy_basis?: Json
+          policy_id?: string | null
+          requested_by: string
+          required_approvers?: number
+          risk_tier?: string
+          status?: string
+          subject_id?: string | null
+          subject_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          approver_roles?: string[]
+          context?: Json
+          created_at?: string
+          escalated_at?: string | null
+          escalation_state?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          policy_basis?: Json
+          policy_id?: string | null
+          requested_by?: string
+          required_approvers?: number
+          risk_tier?: string
+          status?: string
+          subject_id?: string | null
+          subject_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       apps: {
         Row: {
           app_id: string
@@ -3292,6 +3509,75 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_kind: string
+          actor_user_id: string | null
+          after_state: Json | null
+          before_state: Json | null
+          correlation_id: string | null
+          created_at: string
+          domain: string
+          id: string
+          ip_address: unknown
+          metadata: Json
+          payload: Json
+          reason: string | null
+          result: string
+          session_id: string | null
+          severity: string
+          subject_id: string | null
+          subject_type: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_kind?: string
+          actor_user_id?: string | null
+          after_state?: Json | null
+          before_state?: Json | null
+          correlation_id?: string | null
+          created_at?: string
+          domain?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          payload?: Json
+          reason?: string | null
+          result?: string
+          session_id?: string | null
+          severity?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_kind?: string
+          actor_user_id?: string | null
+          after_state?: Json | null
+          before_state?: Json | null
+          correlation_id?: string | null
+          created_at?: string
+          domain?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          payload?: Json
+          reason?: string | null
+          result?: string
+          session_id?: string | null
+          severity?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -9177,6 +9463,54 @@ export type Database = {
         }
         Relationships: []
       }
+      graph_nodes: {
+        Row: {
+          attributes: Json
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          importance: number
+          metadata: Json
+          node_key: string
+          node_type: string
+          source: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attributes?: Json
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: string
+          importance?: number
+          metadata?: Json
+          node_key: string
+          node_type: string
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attributes?: Json
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          importance?: number
+          metadata?: Json
+          node_key?: string
+          node_type?: string
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       grocery_items: {
         Row: {
           category: string | null
@@ -10349,6 +10683,63 @@ export type Database = {
           },
         ]
       }
+      notification_deliveries: {
+        Row: {
+          attempt_count: number
+          channel: string
+          created_at: string
+          delivered_at: string | null
+          endpoint_ref: string | null
+          error_code: string | null
+          error_message: string | null
+          failed_at: string | null
+          id: string
+          last_attempt_at: string | null
+          metadata: Json
+          notification_id: string
+          provider_response: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempt_count?: number
+          channel: string
+          created_at?: string
+          delivered_at?: string | null
+          endpoint_ref?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          failed_at?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          metadata?: Json
+          notification_id: string
+          provider_response?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempt_count?: number
+          channel?: string
+          created_at?: string
+          delivered_at?: string | null
+          endpoint_ref?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          failed_at?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          metadata?: Json
+          notification_id?: string
+          provider_response?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notification_delivery_receipts: {
         Row: {
           channel: string | null
@@ -10496,6 +10887,60 @@ export type Database = {
           updated_at?: string
           urgency?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      observability_metrics: {
+        Row: {
+          created_at: string
+          dimension: Json
+          expires_at: string
+          id: string
+          metadata: Json
+          metric_key: string
+          observed_at: string
+          scope: string
+          scope_ref: string | null
+          source: string
+          unit: string | null
+          user_id: string | null
+          value: number
+          window_end: string | null
+          window_start: string | null
+        }
+        Insert: {
+          created_at?: string
+          dimension?: Json
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          metric_key: string
+          observed_at?: string
+          scope?: string
+          scope_ref?: string | null
+          source?: string
+          unit?: string | null
+          user_id?: string | null
+          value: number
+          window_end?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          created_at?: string
+          dimension?: Json
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          metric_key?: string
+          observed_at?: string
+          scope?: string
+          scope_ref?: string | null
+          source?: string
+          unit?: string | null
+          user_id?: string | null
+          value?: number
+          window_end?: string | null
+          window_start?: string | null
         }
         Relationships: []
       }
@@ -11730,6 +12175,66 @@ export type Database = {
         }
         Relationships: []
       }
+      policies: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          domain: string
+          effective_from: string
+          effective_until: string | null
+          evaluation_mode: string
+          id: string
+          is_active: boolean
+          metadata: Json
+          parameters: Json
+          policy_key: string
+          rule_logic: Json
+          scope: string
+          updated_at: string
+          user_id: string | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          domain?: string
+          effective_from?: string
+          effective_until?: string | null
+          evaluation_mode?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          parameters?: Json
+          policy_key: string
+          rule_logic?: Json
+          scope?: string
+          updated_at?: string
+          user_id?: string | null
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          domain?: string
+          effective_from?: string
+          effective_until?: string | null
+          evaluation_mode?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          parameters?: Json
+          policy_key?: string
+          rule_logic?: Json
+          scope?: string
+          updated_at?: string
+          user_id?: string | null
+          version?: number
+        }
+        Relationships: []
+      }
       portfolios: {
         Row: {
           base_currency: string
@@ -12167,6 +12672,77 @@ export type Database = {
         }
         Relationships: []
       }
+      receipts: {
+        Row: {
+          action_key: string
+          actor_kind: string
+          actor_user_id: string | null
+          correlation_id: string | null
+          created_at: string
+          evidence: Json
+          expires_at: string | null
+          hash: string | null
+          id: string
+          outcome: string
+          parent_receipt_id: string | null
+          payload: Json
+          prev_hash: string | null
+          receipt_class: string
+          signature: string | null
+          subject_id: string | null
+          subject_type: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          actor_kind?: string
+          actor_user_id?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          evidence?: Json
+          expires_at?: string | null
+          hash?: string | null
+          id?: string
+          outcome?: string
+          parent_receipt_id?: string | null
+          payload?: Json
+          prev_hash?: string | null
+          receipt_class: string
+          signature?: string | null
+          subject_id?: string | null
+          subject_type: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          actor_kind?: string
+          actor_user_id?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          evidence?: Json
+          expires_at?: string | null
+          hash?: string | null
+          id?: string
+          outcome?: string
+          parent_receipt_id?: string | null
+          payload?: Json
+          prev_hash?: string | null
+          receipt_class?: string
+          signature?: string | null
+          subject_id?: string | null
+          subject_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receipts_parent_receipt_id_fkey"
+            columns: ["parent_receipt_id"]
+            isOneToOne: false
+            referencedRelation: "receipts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       receivables: {
         Row: {
           amount_cents: number
@@ -12485,6 +13061,135 @@ export type Database = {
           },
         ]
       }
+      recovery_snapshots: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          encryption_kind: string
+          failed_at: string | null
+          failure_reason: string | null
+          hash: string | null
+          id: string
+          metadata: Json
+          retention_until: string | null
+          scope: string
+          scope_ref: string | null
+          size_bytes: number | null
+          snapshot_key: string
+          snapshot_type: string
+          started_at: string | null
+          status: string
+          storage_location: string
+          updated_at: string
+          user_id: string
+          verification_result: Json
+          verified_at: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          encryption_kind?: string
+          failed_at?: string | null
+          failure_reason?: string | null
+          hash?: string | null
+          id?: string
+          metadata?: Json
+          retention_until?: string | null
+          scope?: string
+          scope_ref?: string | null
+          size_bytes?: number | null
+          snapshot_key: string
+          snapshot_type?: string
+          started_at?: string | null
+          status?: string
+          storage_location: string
+          updated_at?: string
+          user_id: string
+          verification_result?: Json
+          verified_at?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          encryption_kind?: string
+          failed_at?: string | null
+          failure_reason?: string | null
+          hash?: string | null
+          id?: string
+          metadata?: Json
+          retention_until?: string | null
+          scope?: string
+          scope_ref?: string | null
+          size_bytes?: number | null
+          snapshot_key?: string
+          snapshot_type?: string
+          started_at?: string | null
+          status?: string
+          storage_location?: string
+          updated_at?: string
+          user_id?: string
+          verification_result?: Json
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      release_artifacts: {
+        Row: {
+          artifact_key: string
+          channel: string
+          compatibility: Json
+          component: string
+          created_at: string
+          download_url: string | null
+          hash: string
+          id: string
+          is_yanked: boolean
+          metadata: Json
+          release_notes: string | null
+          signature: string | null
+          size_bytes: number | null
+          updated_at: string
+          version: string
+          yanked_reason: string | null
+        }
+        Insert: {
+          artifact_key: string
+          channel?: string
+          compatibility?: Json
+          component: string
+          created_at?: string
+          download_url?: string | null
+          hash: string
+          id?: string
+          is_yanked?: boolean
+          metadata?: Json
+          release_notes?: string | null
+          signature?: string | null
+          size_bytes?: number | null
+          updated_at?: string
+          version: string
+          yanked_reason?: string | null
+        }
+        Update: {
+          artifact_key?: string
+          channel?: string
+          compatibility?: Json
+          component?: string
+          created_at?: string
+          download_url?: string | null
+          hash?: string
+          id?: string
+          is_yanked?: boolean
+          metadata?: Json
+          release_notes?: string | null
+          signature?: string | null
+          size_bytes?: number | null
+          updated_at?: string
+          version?: string
+          yanked_reason?: string | null
+        }
+        Relationships: []
+      }
       release_compatibility_matrix: {
         Row: {
           api_version: string
@@ -12529,6 +13234,51 @@ export type Database = {
           notes?: string | null
           rollout_percentage?: number
           rollout_stage?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      release_rings: {
+        Row: {
+          cohort_definition: Json
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          is_active: boolean
+          metadata: Json
+          promotes_to: string | null
+          ring_key: string
+          rollout_order: number
+          rollout_percent: number
+          updated_at: string
+        }
+        Insert: {
+          cohort_definition?: Json
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          promotes_to?: string | null
+          ring_key: string
+          rollout_order?: number
+          rollout_percent?: number
+          updated_at?: string
+        }
+        Update: {
+          cohort_definition?: Json
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          promotes_to?: string | null
+          ring_key?: string
+          rollout_order?: number
+          rollout_percent?: number
           updated_at?: string
         }
         Relationships: []
@@ -12837,6 +13587,87 @@ export type Database = {
             columns: ["update_id"]
             isOneToOne: false
             referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rollbacks: {
+        Row: {
+          artifact_id: string | null
+          cause: string
+          cause_evidence: Json
+          completed_at: string | null
+          created_at: string
+          failed_at: string | null
+          from_version: string | null
+          id: string
+          initiated_by: string
+          metadata: Json
+          receipt_id: string | null
+          started_at: string | null
+          status: string
+          subject_id: string | null
+          subject_type: string
+          to_version: string
+          updated_at: string
+          user_id: string
+          verification_result: Json
+        }
+        Insert: {
+          artifact_id?: string | null
+          cause: string
+          cause_evidence?: Json
+          completed_at?: string | null
+          created_at?: string
+          failed_at?: string | null
+          from_version?: string | null
+          id?: string
+          initiated_by: string
+          metadata?: Json
+          receipt_id?: string | null
+          started_at?: string | null
+          status?: string
+          subject_id?: string | null
+          subject_type: string
+          to_version: string
+          updated_at?: string
+          user_id: string
+          verification_result?: Json
+        }
+        Update: {
+          artifact_id?: string | null
+          cause?: string
+          cause_evidence?: Json
+          completed_at?: string | null
+          created_at?: string
+          failed_at?: string | null
+          from_version?: string | null
+          id?: string
+          initiated_by?: string
+          metadata?: Json
+          receipt_id?: string | null
+          started_at?: string | null
+          status?: string
+          subject_id?: string | null
+          subject_type?: string
+          to_version?: string
+          updated_at?: string
+          user_id?: string
+          verification_result?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rollbacks_artifact_id_fkey"
+            columns: ["artifact_id"]
+            isOneToOne: false
+            referencedRelation: "release_artifacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rollbacks_receipt_id_fkey"
+            columns: ["receipt_id"]
+            isOneToOne: false
+            referencedRelation: "receipts"
             referencedColumns: ["id"]
           },
         ]
@@ -13557,6 +14388,66 @@ export type Database = {
           self_repair_result?: string | null
           status?: string
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sync_conflicts: {
+        Row: {
+          conflict_kind: string
+          created_at: string
+          id: string
+          local_payload: Json
+          local_version: number | null
+          metadata: Json
+          namespace: string
+          remote_payload: Json
+          remote_version: number | null
+          resolution_strategy: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          resolved_payload: Json | null
+          status: string
+          sync_object_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conflict_kind?: string
+          created_at?: string
+          id?: string
+          local_payload?: Json
+          local_version?: number | null
+          metadata?: Json
+          namespace: string
+          remote_payload?: Json
+          remote_version?: number | null
+          resolution_strategy?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resolved_payload?: Json | null
+          status?: string
+          sync_object_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conflict_kind?: string
+          created_at?: string
+          id?: string
+          local_payload?: Json
+          local_version?: number | null
+          metadata?: Json
+          namespace?: string
+          remote_payload?: Json
+          remote_version?: number | null
+          resolution_strategy?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resolved_payload?: Json | null
+          status?: string
+          sync_object_id?: string
           updated_at?: string
           user_id?: string
         }
@@ -14318,6 +15209,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      updates: {
+        Row: {
+          artifact_id: string | null
+          component: string
+          created_at: string
+          current_version: string | null
+          failed_at: string | null
+          failure_reason: string | null
+          id: string
+          install_status: string
+          installed_at: string | null
+          metadata: Json
+          release_notes: string | null
+          ring_key: string
+          scheduled_at: string | null
+          target_version: string
+          update_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artifact_id?: string | null
+          component: string
+          created_at?: string
+          current_version?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          install_status?: string
+          installed_at?: string | null
+          metadata?: Json
+          release_notes?: string | null
+          ring_key?: string
+          scheduled_at?: string | null
+          target_version: string
+          update_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          artifact_id?: string | null
+          component?: string
+          created_at?: string
+          current_version?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          install_status?: string
+          installed_at?: string | null
+          metadata?: Json
+          release_notes?: string | null
+          ring_key?: string
+          scheduled_at?: string | null
+          target_version?: string
+          update_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       uptime_heartbeats: {
         Row: {
