@@ -1,17 +1,17 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "version": "1.0.1",
+  "generatedAt": "2026-04-17T12:00:00.000Z",
   "ok": true,
   "data": {
-    "totalRunbooks": 19,
+    "totalRunbooks": 20,
     "subsystemsRequired": 19,
     "subsystemsCovered": 19,
-    "mandatorySubsystemsCovered": 18,
+    "mandatorySubsystemsCovered": 19,
     "criticalIncidentSubsystems": 6,
     "criticalRunbooksWithRecentDrill": 0,
     "criticalRunbooksRequiringDrill": 6,
     "alertsAutoResolveCoverage": {
-      "subsystemsMapped": 18,
+      "subsystemsMapped": 19,
       "sourceAliasesMapped": 35,
       "severityFallbacksDeclared": 4
     },
@@ -23,7 +23,9 @@
       "edgeFunction": "runbook-drill",
       "table": "runbook_drill_results",
       "modesSupported": ["dry-run", "live"],
-      "liveModeGated": true
+      "liveModeGated": true,
+      "scheduledNightly": true,
+      "scheduledRunbookIds": ["RB-001", "RB-002", "RB-005", "RB-009", "RB-014"]
     },
     "uiSurfaces": {
       "FCC04RunbookCenter": "registry-backed",
