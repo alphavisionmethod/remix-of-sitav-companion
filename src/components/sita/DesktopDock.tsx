@@ -321,8 +321,41 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
 
   // Reorder handler for pinned apps
   const handleReorder = useCallback((newOrder: AppDefinition[]) => {
-    setPinnedIds(newOrder.map(a => a.id));
+    setPinnedOrder(newOrder.map(a => a.id));
   }, []);
+
+  // ── Drag-and-drop: accept apps dropped from launcher ──
+  const handleDockDragOver = useCallback((e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes("application/x-sita-app")) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      setDropActive(true);
+    }
+  }, []);
+
+  const handleDockDragLeave = useCallback((e: React.DragEvent) => {
+    // Only clear if leaving the dock entirely
+    if (e.currentTarget === e.target) setDropActive(false);
+  }, []);
+
+  const handleDockDrop = useCallback((e: React.DragEvent) => {
+    const appId = e.dataTransfer.getData("application/x-sita-app");
+    setDropActive(false);
+    if (!appId) return;
+    e.preventDefault();
+    const app = apps.find(a => a.id === appId);
+    if (!app) return;
+    if (pinnedIdSet.has(appId)) {
+      SoundEngine.click();
+      return; // already pinned
+    }
+    if (pinnedIdSet.size >= MAX_CORE) {
+      // Dock is full — bounce the launcher button instead of silently failing
+      return;
+    }
+    pinApp(appId);
+    SoundEngine.click();
+  }, [apps, pinApp, pinnedIdSet]);
 
   if (allDockApps.length === 0) return null;
 
