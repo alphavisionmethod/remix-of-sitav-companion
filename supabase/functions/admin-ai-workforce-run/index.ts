@@ -458,6 +458,7 @@ Provide your structured analysis with findings and recommendations.`;
     }
 
     // STEP 13: Update invocation with real results (canonical columns only)
+    const completedAt = new Date().toISOString();
     await supabaseAdmin.from("ai_workforce_invocations")
       .update({
         status: fallbackOccurred ? "success" : "success",
@@ -495,13 +496,17 @@ Provide your structured analysis with findings and recommendations.`;
       const freshUntil = new Date(Date.now() + 3600_000).toISOString();
       await supabaseAdmin.from("ai_workforce_cached_outputs")
         .upsert({
-          user_id: user.id, role_id: role.id, task_id: task.id,
-          scope_hash: scopeHash,
-          scope_summary: `${scope_type}/${scope_ref || "all"}`,
-          output_id: output.id,
-          fresh_until: freshUntil,
-          reuse_count: 0,
-        }, { onConflict: "role_id,task_id,scope_hash" });
+          user_id: user.id,
+          role_key,
+          task_key,
+          cache_key: scopeHash,
+          output: { invocation_id: invocation.id, output_id: output.id, summary: parsed.summary },
+          model_used: modelUsed,
+          tokens_used: aiResult.tokens_used,
+          cost_cents: costCents,
+          expires_at: freshUntil,
+          hit_count: 0,
+        }, { onConflict: "cache_key" });
     }
 
     // STEP 16: Log to AI usage ledger
