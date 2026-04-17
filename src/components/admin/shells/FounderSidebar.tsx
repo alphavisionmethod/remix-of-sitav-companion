@@ -87,6 +87,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Emergency Authority", icon: ShieldAlert, path: "/admin/mc/emergency" },
       { label: "Platform Adaptation", icon: Zap, path: "/admin/mc/platform-adaptation" },
       { label: "State Authority Map", icon: Layers, path: "/admin/mc/state-authority" },
+      { label: "Data Retention", icon: ScrollText, path: "/admin/data-retention" },
     ],
   },
   {
