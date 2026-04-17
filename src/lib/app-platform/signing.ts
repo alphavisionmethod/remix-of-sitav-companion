@@ -27,13 +27,16 @@ export async function verifyEd25519({ message, signature, publicKey }: VerifyArg
 
     const cryptoKey = await crypto.subtle.importKey(
       "raw",
-      keyBytes,
+      keyBytes.buffer.slice(keyBytes.byteOffset, keyBytes.byteOffset + keyBytes.byteLength) as ArrayBuffer,
       { name: "Ed25519" },
       false,
       ["verify"],
     );
 
-    return await crypto.subtle.verify({ name: "Ed25519" }, cryptoKey, sigBytes, toBytes(message));
+    const messageBytes = toBytes(message);
+    const sigBuf = sigBytes.buffer.slice(sigBytes.byteOffset, sigBytes.byteOffset + sigBytes.byteLength) as ArrayBuffer;
+    const msgBuf = messageBytes.buffer.slice(messageBytes.byteOffset, messageBytes.byteOffset + messageBytes.byteLength) as ArrayBuffer;
+    return await crypto.subtle.verify({ name: "Ed25519" }, cryptoKey, sigBuf, msgBuf);
   } catch {
     // Web Crypto Ed25519 may not be available in all environments — degrade honestly.
     return false;
@@ -44,7 +47,7 @@ export async function verifyEd25519({ message, signature, publicKey }: VerifyArg
 export async function isEd25519Available(): Promise<boolean> {
   try {
     const seed = new Uint8Array(32);
-    await crypto.subtle.importKey("raw", seed, { name: "Ed25519" }, false, ["verify"]);
+    await crypto.subtle.importKey("raw", seed.buffer as ArrayBuffer, { name: "Ed25519" }, false, ["verify"]);
     return true;
   } catch {
     return false;

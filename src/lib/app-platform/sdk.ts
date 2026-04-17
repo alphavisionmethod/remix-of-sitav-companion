@@ -7,16 +7,7 @@ import { makeSandbox, PermissionDeniedError, type SandboxContext } from "./sandb
 import type { AppHostApi, HostCapabilities, HostUser, NotificationArgs, OpenWindowArgs } from "./host-api";
 import type { PackagePermission } from "./package-schema";
 
-declare global {
-  interface Window {
-    sitaApps?: {
-      getHostCapabilities?: () => Promise<{ isElectron: boolean; platform: string }>;
-      launchNativeApp?: (id: string) => Promise<{ ok: boolean; reason?: string }>;
-      openExternalUrl?: (url: string) => Promise<void>;
-    };
-    electron?: { platform?: string };
-  }
-}
+// Globals (Window.sitaApps / Window.electron) are declared in src/vite-env.d.ts
 
 function detectPlatform(): HostCapabilities["platform"] {
   if (typeof window === "undefined") return "web";
