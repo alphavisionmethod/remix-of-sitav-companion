@@ -47,6 +47,11 @@ import { SecurePrompt } from "./shell/SecurePrompt";
 import { AppLaunchBridge } from "./app-platform/AppLaunchBridge";
 import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { useDemoModeRuntimeEnforcement } from "@/hooks/useDemoModeRuntimeEnforcement";
+import { AboutDialog } from "./shell/AboutDialog";
+import { ShortcutsDialog } from "./shell/ShortcutsDialog";
+import { LockScreenOverlay } from "./shell/LockScreenOverlay";
+import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
+import { initZoomFromStorage } from "@/lib/system-menu/menu-actions";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
@@ -133,6 +138,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     window.addEventListener("sita-open-app-store", handler);
     return () => window.removeEventListener("sita-open-app-store", handler);
   }, [doLaunchApp]);
+
+  // Generic open-app launcher (used by SystemMenuBar items like New Window, Help, Settings)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const id = (e as CustomEvent).detail?.appId;
+      if (id) doLaunchApp(id);
+    };
+    window.addEventListener("sita-open-app", handler);
+    return () => window.removeEventListener("sita-open-app", handler);
+  }, [doLaunchApp]);
+
+  // Restore persisted shell zoom on mount
+  useEffect(() => { initZoomFromStorage(); }, []);
 
   // Hooks
   useAdaptiveInterface();
@@ -300,6 +318,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Secure Elevation Prompt (trusted path) */}
       <SecurePrompt />
+
+      {/* System menu dialogs + lock screen */}
+      <AboutDialog />
+      <ShortcutsDialog />
+      <LockScreenOverlay />
+
+      {/* Global keyboard shortcuts (must live inside WindowManagerContext) */}
+      <ShellShortcutsMount onSearchOpen={handleCommandOpen} />
     </SidebarProvider>
     </FilePickerProvider>
     </SecurePromptProvider>
@@ -307,3 +333,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     </OSWindowProvider>
   );
 };
+
+/** Internal: mounts global keyboard shortcuts inside the WindowManagerContext. */
+function ShellShortcutsMount({ onSearchOpen }: { onSearchOpen: () => void }) {
+  useGlobalShortcuts({ onSearchOpen });
+  return null;
+}
