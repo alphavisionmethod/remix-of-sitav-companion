@@ -68,6 +68,19 @@ Deno.serve(async (req) => {
     }, 400);
   }
 
+  // Phase 19.C — Unified policy gate (R5 identity destruction)
+  const decision = resolveUnifiedPolicy({
+    actor: "user",
+    domain: "identity",
+    riskClass: "R5",
+    deviceTrust: 4,
+    biometricStepUpRecent: req.headers.get("x-step-up-recent") === "true",
+    hasJustification: true,
+  });
+  if (!decision.allowed) {
+    return negativeReceiptResponse(decision, { fn: "gdpr-delete" });
+  }
+
   try {
     logger.info("GDPR delete initiated", { userId: auth.user.id });
 
