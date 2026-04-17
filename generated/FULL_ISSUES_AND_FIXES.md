@@ -82,7 +82,17 @@ These must close before General Availability of the corresponding surface.
 - **Risk:** Windows builds emit unsigned EXE/MSI → SmartScreen warnings.
 - **Remediation:** Acquire EV or OV code-signing cert, store as `.pfx`, set `CSC_LINK` + `CSC_KEY_PASSWORD` in CI.
 
+### OPN-P0-06 · Boardroom trust-bearing surfaces still render mock data
+- **Surface:** Boardroom (trust-bearing — must be 100% wired before GA)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P0 section — 5 inline-mock declarations across 3 components:
+  - `src/components/sita/apps/boardroom/BoardroomApprovalView.tsx` lines 28, 34, 39 (`MOCK_APPROVALS`, `MOCK_SEALED`, `MOCK_RECEIPTS`)
+  - `src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx` line 25 (`MOCK_DISCUSSIONS`)
+  - `src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx` line 120 (`mockChain = buildDefaultChain("simulation")`)
+- **Risk:** Boardroom is a P0 trust surface; rendering mock approvals / receipts / discussions violates the "no claims rely on theater" clause of the Phase 32 gate.
+- **Remediation:** Wire each surface to its canonical service (`boardroom_approvals`, `boardroom_receipts`, `boardroom_discussions`) via `Executor`; emit `boardroom_decision_receipts`; gate empty-state with `PremiumEmptyState`.
+
 ---
+
 
 ## 4. Section B — P1 Scale & Hardening Gaps (Open)
 
