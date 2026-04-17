@@ -274,6 +274,40 @@ export default function FCC11IncidentResponseTimeline() {
                             ))}
                           </div>
                         </div>
+
+                        {/* Linked Runbooks (Phase 28.C) — auto-resolved from affectedServices */}
+                        {(() => {
+                          const linked = resolveRunbooksForIncident({
+                            affectedServices: selectedIncident.affectedServices,
+                            severity: selectedIncident.severity === "P1" || selectedIncident.severity === "P2" ? "high" : "medium",
+                          });
+                          const linkedEntries = linked
+                            .map((id) => RUNBOOK_REGISTRY.find((r) => r.runbookId === id))
+                            .filter((r): r is typeof RUNBOOK_REGISTRY[number] => Boolean(r));
+                          if (linkedEntries.length === 0) return null;
+                          return (
+                            <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
+                              <div className="flex items-center gap-2 mb-2">
+                                <BookOpen className="h-3.5 w-3.5 text-primary" />
+                                <p className="text-[10px] font-medium text-primary">Linked Recovery Runbooks ({linkedEntries.length})</p>
+                              </div>
+                              <div className="space-y-1.5">
+                                {linkedEntries.map((rb) => (
+                                  <Link
+                                    key={rb.runbookId}
+                                    to={`/admin/support?runbook=${rb.runbookId}`}
+                                    className="flex items-center gap-2 p-2 rounded bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-primary/20 transition-colors"
+                                  >
+                                    <Badge variant="outline" className="text-[9px] font-mono shrink-0">{rb.runbookId}</Badge>
+                                    <span className="text-xs flex-1 min-w-0 truncate">{rb.title}</span>
+                                    <Badge variant="outline" className="text-[9px] shrink-0">{rb.severity}</Badge>
+                                    <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
                       </CardContent>
                     </Card>
                   </motion.div>
