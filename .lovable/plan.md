@@ -1,73 +1,104 @@
 
 
-## Honest deployment-readiness audit — what's done vs. what's NOT
+## Plan: Wire the macOS-style top menu bar (SystemMenuBar) end-to-end
 
-### ✅ Already shipped (verified live)
-- **DB**: 6 tables (`apps`, `installed_apps`, `app_versions`, `app_launch_events`, `app_permissions_overrides`, `app_sources`) with RLS enabled and 15 policies total. **28 apps seeded** (8 internal, 8 web, 6 PWA, 6 external_desktop, 11 featured), 28 versions, 28 sources.
-- **Edge functions**: All 7 deployed (`app-store-catalog`, `app-install`, `app-uninstall`, `app-launch-resolve`, `app-update-check`, `app-permissions-sync`, `app-manifest-sync`).
-- **Manifest layer**: `manifest-schema.ts`, `manifests.ts`, `runtime.ts`, `permissions.ts`, `install-state.ts`, `launch-resolver.ts` — all present.
-- **Services**: 6 app-store services + 3 native-apps services.
-- **Hooks**: `use-app-platform.ts` exports all 13 required hooks.
-- **Runtime**: `WebAppWindow`, `DesktopOnlyFallback`, `AppLaunchBridge` exist; bridge mounted in `ShellLayout`.
-- **Electron**: `sita-apps-bridge.cjs` registered in `main.cjs`, exposed via `preload.cjs`.
-- **Tests**: `manifest-schema.test.ts`, `launch-resolver.test.ts`.
+The top bar is `src/components/sita/shell/SystemMenuBar.tsx`. Right-side icons (Search, Control Center, Notifications, Trust, Avatar, Wifi, Clock) are already wired. The **brand** ("SITA Desktop"), the **5 menu buttons** (File, Edit, View, Window, Help), and the apostrophe-style left logo do **nothing** when clicked — just toggle a local `activeMenu` flag with no dropdown rendered.
 
-### 🔴 NOT done — the store UI is disconnected from the real backend
+### What each entry will do (final menu spec)
 
-**Audit result**: `grep` for `useAppCatalog | useInstalledApps | useAppLaunch | useAppInstall | useFeaturedApps` across `src/` returns **ZERO matches** outside the hook file itself. **All 17 store pages still read from the in-memory `APP_CATALOG` constant** and the legacy `AppPlatformContext` (which only persists pin/favorite to DB but reads catalog locally).
+**🍎 SITA brand menu** (click logo or "SITA")
+- About SITA OS — opens About dialog (version, build, runtime, copyright)
+- System Settings… — `openWindow("settings")` (⌘,)
+- App Store — dispatch `sita-open-app-store`
+- Mission Control — dispatch `sita-open-mission-control`
+- ─
+- Lock Screen — dispatch `sita-lock-screen` (⌃⌘Q)
+- Sign Out… — confirm → `signOut()` from AuthContext
+- Restart Shell — `window.location.reload()`
 
-This means:
-- Store Home, Library, Updates, Permissions Center, Detail, Compare, Manage, Receipts, Bundle Detail, Enterprise, Dev Tools, Open With, First Launch, Web Install, External Installer, Associations — all rendering against **hardcoded catalog**, not the 28 DB-seeded apps.
-- Install / Uninstall / Pin / Favorite / Launch buttons in store pages don't call edge functions.
-- Update Center can't show real `app_versions` diffs.
-- Permissions Center can't read/write `app_permissions_overrides`.
-- Recents can't read `app_launch_events`.
+**Desktop (active app) menu** (click "Desktop" / activeApp label)
+- About this app — info dialog about current app
+- Preferences… — opens settings scoped to active app (⌘,)
+- Hide window — minimizes focused window (⌘H)
+- Quit — closes focused window (⌘Q)
 
-### 🔴 Other gaps
-- Missing tests required by §24: `install.service.test.ts`, `catalog.service.test.ts`, `native-apps-degraded.test.ts`.
-- `recents.service.test.ts` / installed-apps hook test absent.
-- `handle_new_user` trigger does NOT auto-install `pinned_default=true` apps for new users → fresh signups see empty launcher despite seeded catalog.
-- No command-palette / global search hook into apps catalog (§22 partial).
-- `app-store-catalog` edge function exists but is bypassed by direct Supabase reads — fine, but means search/filter logic is duplicated. Acceptable.
+**File**
+- New Window — `openWindow("files")` (⌘N)
+- Open Search… — calls `onSearchOpen()` (⌘K)
+- Open File… — opens FilePickerService (⌘O)
+- ─
+- Save — dispatch `sita-save-active` (⌘S) — handled by active app if listening
+- Export… — dispatch `sita-export-active`
+- ─
+- Close Window — closes focused window (⌘W)
 
-### Phased fix to reach 100%
+**Edit**
+- Undo / Redo — `document.execCommand` fallback + dispatch `sita-undo`/`sita-redo` (⌘Z / ⇧⌘Z)
+- Cut / Copy / Paste — `document.execCommand` (⌘X / ⌘C / ⌘V)
+- Select All — (⌘A)
+- ─
+- Find in App — dispatch `sita-find-in-app` (⌘F)
 
-**Phase 1 — Wire the 17 store pages to real data (the big one)**
-Re-point each page to use `useAppCatalog`, `useFeaturedApps`, `useInstalledApps`, `useAppDetail`, `useAppUpdates`, `useAppPermissions`, `useAppRecents`. Replace `APP_CATALOG` reads with hook results. Wire all action buttons (Install/Open/Uninstall/Pin/Favorite/Launch/Permissions) to `useAppInstall`, `useAppUninstall`, `useAppPin`, `useAppFavorite`, `useAppLaunch`, `useSetAppPermissions`. Keep `AppStoreComponents` (cards, badges) — they're presentational and reusable; just feed them DB rows mapped to `AppDefinition` shape.
+**View**
+- Toggle Sidebar — dispatch `sita-toggle-sidebar` (⌃⌘S)
+- Toggle Dock Auto-Hide — dispatch `sita-toggle-dock`
+- Show Widgets Gallery — dispatch `sita-open-widget-picker` (already wired upstream)
+- Enter Full Screen — `document.documentElement.requestFullscreen()` / exit (⌃⌘F)
+- ─
+- Theme: Light / Dark / System — sets theme
+- Zoom In / Out / Actual Size (⌘+ / ⌘− / ⌘0) — adjusts root font-size
 
-**Phase 2 — AppPlatformContext consolidation**
-Refactor `AppPlatformContext` to be a thin wrapper over the React Query hooks (single source of truth). Keep its public API stable so the launcher/dock keep working. Drop the duplicate `APP_CATALOG` import for catalog reads; keep it only as a fallback when offline.
+**Window**
+- Minimize — minimize focused window (⌘M)
+- Zoom (Maximize toggle) — maximize focused window
+- ─
+- Bring All to Front — focus all windows in order
+- Cascade Windows — repositions open windows in cascade
+- Close All — closes every open window
+- ─
+- Dynamic list of currently open windows (click → focus) with checkmark on focused one
 
-**Phase 3 — Auto-install default apps on signup**
-New migration: extend `handle_new_user` (or add a sibling trigger) to insert `installed_apps` rows for every `apps` row where `pinned_default=true` (the 8 internal apps). RLS-safe via SECURITY DEFINER. Backfill existing users in same migration.
+**Help**
+- SITA Help… — `openWindow("help")` or opens help center route
+- Keyboard Shortcuts — opens shortcuts modal (⌘/)
+- Documentation — `window.open("https://docs.lovable.dev")`
+- Report an Issue — `openWindow("support")` or mailto
+- ─
+- What's New — opens release notes / changelog
+- About SITA OS — same as brand About
 
-**Phase 4 — Command palette + search wiring**
-Add `useAppSearch(query)` to `use-app-platform.ts` that hits `app-store-catalog` with search param. Wire into existing command palette / launcher search input so apps are discoverable globally (§22 requirement).
+### Implementation approach
 
-**Phase 5 — Missing tests**
-Add `install.service.test.ts`, `catalog.service.test.ts`, `native-apps-degraded.test.ts`, `installed-apps.hook.test.ts`. Cover install/uninstall round-trip, catalog filter, browser-mode degradation for external_desktop apps, and pinned-state derivation.
-
-**Phase 6 — Verification pass**
-- `useAppCatalog()` returns 28 rows in store
-- Install on a fresh user persists to `installed_apps` and reflects in launcher within one tick
-- External-desktop app in browser mode shows `DesktopOnlyFallback`
-- Web app launches into `WebAppWindow` iframe with x-frame fallback
-- Internal app launches via `internal_route` strategy into windowed shell
-- New signup auto-receives 8 pinned_default apps in launcher
-- All tests green; `tsc` 0 errors
+1. **Refactor `SystemMenuBar.tsx`** to render a real dropdown menu under each clicked label (Radix `DropdownMenu` already in repo). Click toggles open; hover-to-switch when one is already open (true macOS behavior — current code half-supports this).
+2. **Make brand + activeApp label clickable** as menu triggers (Apple menu + App menu).
+3. **Create `src/lib/system-menu/menu-actions.ts`** — pure action functions (`openSettings()`, `lockScreen()`, `cascadeWindows()`, `closeAllWindows()`, `toggleFullscreen()`, `setTheme()`, etc.) so menus stay declarative.
+4. **Create `src/components/sita/shell/AboutDialog.tsx`** — small modal for "About SITA OS".
+5. **Add `useGlobalShortcuts` hook** mounted in `ShellLayout` for the keyboard shortcuts (⌘N, ⌘W, ⌘M, ⌘K, ⌘,, ⌘/, ⌃⌘F, ⌃⌘Q, ⌘+, ⌘−, ⌘0). Skip when typing in inputs.
+6. **Wire WindowManager actions**: pass `useWindowManagerContext()` into the menu so Window menu can list/focus/close/cascade real windows.
+7. **Wire AuthContext** (`signOut`) and `useTheme` (already in repo) for the Sign Out and Theme items.
+8. **Dispatch app-level events** (`sita-save-active`, `sita-find-in-app`, `sita-toggle-sidebar`, `sita-toggle-dock`, `sita-lock-screen`) so any current/future app can opt in by listening — no dead buttons (each comes with at least a fallback toast "Not available for this view" so we never silently no-op).
 
 ### Files
 
-| Phase | New | Edited |
-|---|---|---|
-| 1 | — | 17 (all `src/pages/app-platform/*.tsx`) |
-| 2 | — | 1 (`AppPlatformContext.tsx`) |
-| 3 | 1 migration | — |
-| 4 | — | 2 (`use-app-platform.ts`, command palette host) |
-| 5 | 4 tests | — |
-| 6 | — | — (verification only) |
+**New (3)**
+- `src/lib/system-menu/menu-actions.ts` — action layer
+- `src/lib/system-menu/menu-spec.tsx` — declarative menu tree (icons, shortcuts, handlers)
+- `src/components/sita/shell/AboutDialog.tsx` — About modal
+- `src/hooks/useGlobalShortcuts.ts` — keyboard wiring
 
-### Acceptance — Definition of Done satisfied
+**Edited (2)**
+- `src/components/sita/shell/SystemMenuBar.tsx` — render real dropdowns + brand/app menus
+- `src/components/sita/ShellLayout.tsx` — mount `useGlobalShortcuts` + `AboutDialog` portal + lock-screen overlay listener
 
-All 14 DoD items from §29 verifiable end-to-end against the live DB; store UI feels OS-native (not mock cards); fresh signup shows 8 pinned apps; search finds all 28 apps; install/launch buttons all functional; 0 TS errors; tests pass.
+### Acceptance
+
+- Every button in the top bar opens a dropdown or fires its action (no dead clicks)
+- All 5 menus + Apple menu + App menu fully populated and functional
+- Window menu lists every currently-open window and can focus/close them
+- Keyboard shortcuts work globally and don't conflict with input typing
+- Dark/Light/System theme toggle persists across reloads
+- Sign Out actually signs the user out; Lock Screen overlays a lock UI
+- Cascade / Close All visibly reposition / close real windows
+- Fullscreen, About dialog, and Documentation link all work
+- 0 TS errors
 
