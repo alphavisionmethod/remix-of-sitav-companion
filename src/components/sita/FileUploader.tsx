@@ -87,6 +87,13 @@ export const FileUploader = () => {
         sensitivity: result.sensitivity,
       });
 
+      emitLoop("file_upload", {
+        evidence: { filename: file.name, classification: result.classification, sensitivity: result.sensitivity, storage_path: storagePath },
+      });
+      emitLoop("ai_classify", {
+        evidence: { filename: file.name, classification: result.classification },
+      });
+
       toast.success(`${file.name} classified as ${result.classification}`);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Upload failed";

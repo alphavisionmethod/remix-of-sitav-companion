@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
+import { emitLoopCompletion } from "@/hooks/use-flagship-loop-proof";
 
 export function useApprovalQueue(status?: string) {
   return useQuery({
