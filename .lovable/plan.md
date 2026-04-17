@@ -1,82 +1,75 @@
 
 
-## Re-Audit: Phase 20 Disk Truth — 4 Residual Gaps
+## Re-Audit: Checklist 14 — AI / Advisor Reality (Disk Truth)
 
-`production-operations-report.json` says `ok:true`, but the gate only verifies *file presence*. Truth-check against runtime behavior reveals:
+| # | Item | Status | Evidence |
+|---|---|---|---|
+| 1 | Advisor registry exists | ⚠️ **fake** | `generated/advisor-registry.json` has `total: 1` and a single placeholder `{name:"ADVISOR_CONFIGS"}`. Generator just regex-greps `export const`. Real `registry.ts` (429 LOC) is never parsed. No DB table. |
+| 2 | Prompt versions tracked | ❌ | No `ai_prompt_families` / `ai_prompts` / `prompt_versions` table. Inline prompt strings. Constraint #9 of sovereign-ai-gateway memory is **violated**. |
+| 3 | Model routing explicit | ❌ | `routing.service.ts` queries `ai_routing_policies` + `ai_capability_routing` — **neither table exists**. `ai-gateway/index.ts` line 152 also queries the missing table → silent fallback. |
+| 4 | AI provider health visible | ❌ | `provider-registry.service.ts` queries `ai_provider_registry`, `ai_model_registry`, `ai_provider_health` — **none exist**. `AIG01ProviderRegistry`, `AIG02ModelRegistry` render empty tables. |
+| 5 | Cost/budget controls | ✅ | `ai_workforce_budget_classes` + `ai_workforce_invocations` exist + `budget.service.ts` wired. |
+| 6 | Recommendation quality inspectable | ✅ | `ai_workforce_recommendations` + `_scores` + `AdvisorRecommendationMonitor` wired to BoardAPI. |
+| 7 | AI runtime failures triageable | ✅ | `ai_workforce_role_health` + `error_events` + Phase 20 alerts. |
+| 8 | Advisor actions go through policy/approval/proof | ✅ | `ai_workforce_approval_queue` + `ai_inference_receipts` + `advisor_action_queue`. |
+| 9 | Memory bounded + persisted | ✅ | `advisor_memories`, `advisor_board_memory`, `AdvisorMemoryInspector` wired. |
+| 10 | Hallucination/truth protections + tested | ✅ | 6 test files, **61/61 passing** (grounding, contradiction, staleness, refusal, confidence, truth-boundaries) + epistemic firewall services. |
+| 11 | Simulated features marked | ⚠️ partial | `ai_workforce_launch_honesty` table exists; `launch-honesty.service.ts` exists; needs UI surfacing on advisor cards. |
 
-| # | Gap | Evidence |
-|---|---|---|
-| **G1** | `health-cron` **never runs** | `SELECT * FROM cron.job` returns **0 rows**. Function exists but no schedule → uptime "real always-on monitor" claim is false. `uptime_heartbeats` will only ever fill from client beacons (visible tabs). |
-| **G2** | **Zero alert producers wired** | `grep raiseAlert` in `slo-tracking.ts`, `anomaly-detection.ts`, `payment-kill-switch`, `connector-health`, `ai-health` returns **0 hits**. Alert ingest endpoint is alive but no system feeds it. The triage board will only ever show alerts manually inserted. |
-| **G3** | **No Traces or Uptime tabs** in `ObservabilityPage` | Page has `Tabs` but zero references to `trace_spans`, `uptime_status`, `uptime_heartbeats`. Ingested data is invisible to operators. |
-| **G4** | **Sourcemap upload not wired** | `vite.config.ts` has `sourcemap: false` and **no** `@sentry/vite-plugin`. Master prompt explicitly requires "sourcemap upload in CI". Sentry stack traces will be unreadable in production. |
+**Verdict: 4 hard failures (1, 2, 3, 4), 1 partial (11). Currently 6/11 truthful.**
 
 ---
 
-## Phase 20.1 — Production Operations Closure (~10 files, ~450 LOC)
+## Phase 21 — AI/Advisor Reality Closure
 
-### 20.1.A — Schedule `health-cron` for real (G1)
-**Insert** (data, not migration — uses anon key):
-```sql
-SELECT cron.schedule(
-  'sita-health-cron-1m',
-  '* * * * *',
-  $$ SELECT net.http_post(
-       url:='https://fctupowhcljejygjfpty.supabase.co/functions/v1/health-cron',
-       headers:='{"Content-Type":"application/json","Authorization":"Bearer <anon>"}'::jsonb,
-       body:='{}'::jsonb
-     ); $$
-);
-```
-And `'sita-uptime-rollup-5m'` calling a small `uptime-rollup` fn (or inline `REFRESH MATERIALIZED VIEW` if `uptime_status` is matview). Add a **Manage Cron** admin row to `ObservabilityPage` showing `cron.job` rows so operators can see it's alive.
+### 21.A — Real DB-backed AI registries (fixes 2, 3, 4)
+**DB migration** — create the 5 missing tables that `provider-registry.service.ts` + `routing.service.ts` + gateway already reference:
+- `ai_provider_registry` (provider_key PK, display_name, base_url, auth_kind, is_active, region, sla_tier, deprecated_at)
+- `ai_model_registry` (model_id PK, provider FK→ai_provider_registry, model_class, quality_tier, cost_tier, latency_tier, context_length, tool_calling_support, structured_output_support, recommended_use_cases jsonb, deprecated bool, max_tokens_in/out, cost_per_1k_in/out)
+- `ai_provider_health` (provider FK, status, last_probed_at, latency_ms_p50/p95, error_rate_pct, success_count, failure_count, window_start, window_end)
+- `ai_routing_policies` (id, capability_id, primary_model, fallback_models text[], risk_tier, max_cost_cents, enabled, rationale)
+- `ai_capability_routing` (capability_key PK, primary_model, fallback_chain jsonb, task_class, risk_tier, budget_class, is_active)
+- `ai_prompt_families` (family_id PK, owner_domain, current_version_id, description, capability_keys text[]) + `ai_prompt_versions` (id PK, family_id FK, version semver, system_prompt, template, variables jsonb, status: draft|active|deprecated, created_by, activated_at, hash) + `ai_prompt_invocations` (invocation_id, family_id, version_id, capability_key, advisor_id, user_id, ts)
+- All admin-RW + service-role-write RLS, indexed on (provider, model_id, capability_key, family_id).
 
-### 20.1.B — Wire real alert producers (G2)
-Edit 5 sources to call `raiseAlert()` (frontend client) or POST `alert-ingest` (edge):
-- **`src/lib/observability/slo-tracking.ts`** — when `errorBudgetBurnRate > threshold` → `raiseAlert({source:"slo-burn", severity:"high", subsystem, title, dedupKey})`
-- **`src/lib/observability/anomaly-detection.ts`** — on anomaly detection → `raiseAlert("anomaly", severityFromScore, …)`
-- **`supabase/functions/payment-kill-switch/index.ts`** — on activation, POST self→`alert-ingest` `{source:"kill-switch", severity:"critical", subsystem:"payments"}`
-- **`supabase/functions/connector-health/index.ts`** — on status `down|degraded` → `alert-ingest` `{source:"connector", severity:"high"}`
-- **`supabase/functions/ai-health/index.ts`** — on provider failure burst → `alert-ingest` `{source:"ai-provider", severity:"medium"}`
-- **`supabase/functions/error-ingest/index.ts`** — when same fingerprint count >= 10 in 5min, internally fire `alert-ingest` `{source:"error-spike", severity:"high"}`
+**Seed data** — populate `ai_provider_registry` (lovable-ai, openai, google, anthropic), `ai_model_registry` (the 11 models from constraints), `ai_capability_routing` (one row per capability used by gateway), `ai_prompt_families` (one per `prompts.yaml` entry from registry).
 
-Add `_shared/alert-emitter.ts` so edge fns share one client.
+### 21.B — Real advisor registry generator (fixes 1)
+- **REWRITE** `scripts/manifests/generate/generate-advisor-registry.ts` — actually parse `src/packages/advisor-config/registry.ts` AST to extract every advisor entry (id, name, domain, system prompt, tools, autonomy level, model preference, escalation threshold). Emit `total: <real>`, `advisors: [{id, name, domain, capabilities, defaultModel, promptFamilyId, autonomyLevel, riskTier, ...}]`.
+- **NEW DB** `advisor_registry` table mirroring the JSON; populated by a `seed-advisor-registry` edge fn run once at deploy from the generated JSON. Admin page `AdvisorBoardCatalog` switches to query this table.
+- **EDIT** `scripts/architecture/checks/check-advisor-registry.ts` — assert `total >= 6` (the 6 real domain advisors), assert each entry has `promptFamilyId` resolving in `ai_prompt_families`, assert `defaultModel` resolves in `ai_model_registry`.
 
-### 20.1.C — Add Traces + Uptime tabs to `ObservabilityPage` (G3)
-Edit `src/pages/ObservabilityPage.tsx`:
-- New `<TabsTrigger value="traces">Traces</TabsTrigger>` + `<TabsTrigger value="uptime">Uptime</TabsTrigger>`
-- New `src/components/observability/TracesPanel.tsx` — query `trace_spans` last 1h, p50/p95/p99 by `service+operation`, top-20 slowest, click-through to span tree
-- New `src/components/observability/UptimePanel.tsx` — query `uptime_status` view; show 24h/7d/30d % per subsystem, heatmap of last 60 minutes
-- New `src/components/observability/AlertsLivePanel.tsx` (compact) embedded in overview, link to `/admin/alerts`
+### 21.C — Wire prompts through registry (fixes 2, real)
+- **EDIT** `supabase/functions/ai-gateway/index.ts` — accept `promptFamilyId` in request, resolve `ai_prompt_versions` where `status='active'`, log `prompt_version_id` into `ai_workforce_invocations` and `ai_inference_receipts`. Reject calls with raw `system` strings unless `allowAdHoc:true` (R0/R1 only).
+- **EDIT** `src/lib/services/ai-gateway/invoke.ts` — `invokeAICapability({ capabilityKey, promptFamilyId, vars })` — block inline prompts at type level for R3+.
+- **NEW** admin page `/admin/ai/prompts` — `AIPromptFamiliesExplorer.tsx`: list families, current version, diff between versions, activate/rollback (writes new version row with `status='active'` + sets prior to `deprecated`).
+- **NEW** edge fn `prompt-versioning` — actions: `create-version`, `activate-version`, `rollback`, `compute-hash`. Hash = sha256(system + template). Persists to `ai_prompt_versions`.
 
-### 20.1.D — Sentry sourcemap upload (G4)
-- Add `@sentry/vite-plugin` to `package.json`
-- Edit `vite.config.ts`:
-  ```ts
-  build: { sourcemap: process.env.SENTRY_AUTH_TOKEN ? 'hidden' : false }
-  plugins: [
-    react(),
-    process.env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      release: { name: process.env.VITE_APP_RELEASE },
-      sourcemaps: { assets: './dist/**' },
-      disable: !process.env.SENTRY_AUTH_TOKEN,
-    }),
-  ].filter(Boolean)
-  ```
-- Document the 3 build secrets in `.env.production.example` (already partially done).
+### 21.D — Real provider health probes (fixes 4)
+- **EDIT** `supabase/functions/ai-health/index.ts` — for each row in `ai_provider_registry`, run a 1-token ping; write `ai_provider_health` with latency + status + window. Already raises Phase 20 alerts on failure burst.
+- **DB cron** — `cron.schedule('sita-ai-health-2m', '*/2 * * * *', ai-health)` joining the existing health-cron family.
+- **EDIT** `AIG01ProviderRegistry.tsx` — already wired to the now-existing tables. Add live status pill from `ai_provider_health.status`.
 
-### 20.1.E — Strengthen CI Gate 31
-Edit `scripts/architecture/checks/check-production-operations.ts`:
-- Assert `cron.job` contains `sita-health-cron-1m` (read via supabase admin)
-- Assert ≥4 of 5 producer files contain `raiseAlert` or `alert-ingest`
-- Assert `ObservabilityPage` references `trace_spans` AND `uptime_heartbeats`/`uptime_status`
-- Assert `vite.config.ts` references `sentryVitePlugin`
-- Re-emit `generated/production-operations-report.json` with these new evidence keys
+### 21.E — Routing matrix proof (fixes 3)
+- **EDIT** `AIG03RoutingMatrix.tsx` — query both `ai_routing_policies` and `ai_capability_routing`; show: capability → primary model → fallback chain → budget cap → R-tier; allow admin to edit primary/fallback (writes via `routing-policy-update` edge fn with proof receipt).
+- **NEW** edge fn `routing-policy-update` — admin-gated, writes routing row + emits `proof_records` entry.
+- **CI Gate 32** verifies every `capability_key` referenced in code exists in `ai_capability_routing`.
 
-### 20.1.F — Tiny `uptime-rollup` edge fn (optional helper for B)
-Light fn called by 5-min cron that writes daily aggregates if we keep `uptime_status` as a regular view (no matview refresh needed; skip if view is fine).
+### 21.F — Launch honesty markers (fixes 11)
+- **EDIT** `AdvisorBoardCatalog.tsx`, `AdvisorAgentDashboard.tsx` — render badge from `ai_workforce_launch_honesty.actual_status` (e.g. "Simulated", "Beta", "Production"); pull via `getLaunchHonesty(role_key)`.
+- **EDIT** `launch-honesty.service.ts` — already exists; surface in cards.
+- **CI Gate 32** also asserts every advisor in `advisor_registry` has a `launch_honesty` row.
+
+### 21.G — CI Gate 32 + report
+- **NEW** `scripts/architecture/checks/check-ai-advisor-reality.ts` (Gate 32):
+  - Assert all 8 new tables exist + RLS on
+  - Assert `advisor_registry.count >= 6`
+  - Assert ≥1 `ai_prompt_versions.status='active'` per family
+  - Assert `ai_provider_health` has rows < 10min old (cron live)
+  - Assert no `invokeAICapability` call site uses raw `system:` string for R3+ capabilities
+  - Emit `generated/ai-advisor-reality-report.json`
+- **EDIT** `src/lib/ci/ci-gate-registry.ts` + `generated/ci-umbrella-manifest.json` → `gateCount: 32`
+- **EDIT** `src/lib/db/non-edge-table-io-sources.ts` — register the 8 new tables.
 
 ---
 
@@ -84,29 +77,31 @@ Light fn called by 5-min cron that writes daily aggregates if we keep `uptime_st
 
 | Layer | Change |
 |---|---|
-| DB cron (insert SQL) | Schedule `health-cron` every 1m + optional rollup 5m |
-| `src/lib/observability/slo-tracking.ts` | +raiseAlert on burn |
-| `src/lib/observability/anomaly-detection.ts` | +raiseAlert on detection |
-| `supabase/functions/_shared/alert-emitter.ts` | NEW shared edge alert client |
-| `supabase/functions/payment-kill-switch/index.ts` | +alert on activation |
-| `supabase/functions/connector-health/index.ts` | +alert on degraded/down |
-| `supabase/functions/ai-health/index.ts` | +alert on provider failure |
-| `supabase/functions/error-ingest/index.ts` | +alert on spike fingerprint |
-| `src/pages/ObservabilityPage.tsx` | +Traces, Uptime, Cron tabs |
-| `src/components/observability/TracesPanel.tsx` | NEW |
-| `src/components/observability/UptimePanel.tsx` | NEW |
-| `src/components/observability/AlertsLivePanel.tsx` | NEW |
-| `vite.config.ts` | Sentry plugin gated on `SENTRY_AUTH_TOKEN` |
-| `package.json` | +`@sentry/vite-plugin` |
-| `scripts/architecture/checks/check-production-operations.ts` | Stronger assertions |
-| `generated/production-operations-report.json` | Refresh with cron + producers + UI evidence |
+| DB migration | 8 new tables + RLS + indexes + cron schedule |
+| Seed | provider/model/capability/prompt-family seed SQL |
+| `scripts/manifests/generate/generate-advisor-registry.ts` | Real AST parse of registry.ts |
+| `supabase/functions/ai-gateway/index.ts` | promptFamilyId resolution + receipt logging |
+| `supabase/functions/ai-health/index.ts` | Real provider probes → ai_provider_health |
+| `supabase/functions/prompt-versioning/index.ts` | NEW — version CRUD + activate/rollback |
+| `supabase/functions/routing-policy-update/index.ts` | NEW — admin routing edits with proof |
+| `supabase/functions/seed-advisor-registry/index.ts` | NEW — one-shot DB sync from JSON |
+| `src/lib/services/ai-gateway/invoke.ts` | Block raw prompts for R3+ |
+| `src/pages/admin/AIPromptFamiliesExplorer.tsx` | NEW |
+| `src/pages/admin/AIG01ProviderRegistry.tsx` | Live health pill |
+| `src/pages/admin/AIG03RoutingMatrix.tsx` | Editable routing |
+| `src/pages/admin/AdvisorBoardCatalog.tsx` | Launch honesty badge |
+| `scripts/architecture/checks/check-ai-advisor-reality.ts` | NEW Gate 32 |
+| `src/lib/ci/ci-gate-registry.ts`, `generated/ci-umbrella-manifest.json` | gateCount 32 |
+| `generated/ai-advisor-reality-report.json` | NEW |
 
 ### Acceptance
 
-- `SELECT * FROM cron.job WHERE jobname='sita-health-cron-1m'` returns 1 active row; `uptime_heartbeats` accrues `source='cron'` rows every minute
-- Triggering an SLO burn / kill-switch / connector down / AI provider failure / error spike → row appears in `public.alerts` within 30s, surfaces in `AlertTriageBoard`, ack/resolve buttons work end-to-end
-- `/admin/observability` shows live Traces panel (p50/p95/p99 from `trace_spans`) and Uptime panel (24h/7d/30d % from `uptime_status`)
-- Production build with `SENTRY_AUTH_TOKEN` set uploads sourcemaps; without it, build still succeeds (gated)
-- CI Gate 31 (strengthened) green; report shows `cron_scheduled:true`, `alert_producers:5`, `observability_ui_wired:true`, `sourcemap_upload_wired:true`
-- Master prompt sections A1, A2, A3, A4 truthfully **100% wired and deployable**
+- All 8 new tables exist with RLS; `ai_provider_registry` has ≥4 rows, `ai_model_registry` ≥11, `ai_capability_routing` ≥6, `ai_prompt_families` ≥6
+- `AIG01/AIG02/AIG03` admin pages render real rows (no longer empty)
+- `generated/advisor-registry.json` `total >= 6` with full per-advisor metadata
+- `cron.job` contains `sita-ai-health-2m`; `ai_provider_health` accrues rows
+- `invokeAICapability("any-r3-capability", {system:"..."})` is **rejected** at compile-time and runtime
+- `AdvisorBoardCatalog` shows "Simulated"/"Beta"/"Production" pills sourced from `ai_workforce_launch_honesty`
+- CI Gate 32 green; CI Umbrella `gateCount: 32`; `ai-advisor-reality-report.json` `ok:true`
+- Checklist 14 truthfully **11/11**
 
