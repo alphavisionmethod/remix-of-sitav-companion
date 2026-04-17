@@ -84,6 +84,20 @@ export const KILL_SWITCH_ENFORCEMENT_MAP: readonly EnforcementPoint[] = [
     blocks: "Pay / refund operator gates surfaced in admin",
   },
   {
+    switchId: "KS-PAYMENTS-AUTH",
+    layer: "edge-function",
+    enforcedAt: "supabase/functions/payment-process/index.ts",
+    symbol: "checkKillSwitchOrReject",
+    blocks: "New card authorization attempts (3DS, tokenization)",
+  },
+  {
+    switchId: "KS-PAYMENTS-AUTH",
+    layer: "ui-gate",
+    enforcedAt: "src/pages/admin/AR08KillSwitchCenter.tsx",
+    symbol: "useKillSwitchGate",
+    blocks: "Disables checkout/auth UI in admin and product surfaces",
+  },
+  {
     switchId: "KS-PAYMENTS",
     layer: "edge-function",
     enforcedAt: "supabase/functions/payment-kill-switch/index.ts",

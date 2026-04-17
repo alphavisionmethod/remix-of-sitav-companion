@@ -49,6 +49,14 @@ export const KILL_SWITCH_CONSEQUENCE_MAP: readonly RuntimeConsequence[] = [
     emitsNegativeReceipt: true,
   },
   {
+    switchId: "KS-PAYMENTS-AUTH",
+    consequenceClass: "block-mutation",
+    userMessage: "New payment authorizations are paused. Existing settlements and refunds are unaffected.",
+    bannerSeverity: "critical",
+    surfaces: ["web", "desktop", "mobile", "admin"],
+    emitsNegativeReceipt: true,
+  },
+  {
     switchId: "KS-MOBILE-PUSH",
     consequenceClass: "show-degraded-banner",
     userMessage: "Push notifications are paused. In-app notifications still work.",
