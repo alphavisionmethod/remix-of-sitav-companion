@@ -39,7 +39,7 @@ export default function UserSeedHealth() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await (supabase as any)
+    const { data, error } = await dbAny
       .from("user_seed_runs")
       .select("id, user_id, status, reason, seed_version, tables_count, rows_count, error_summary, created_at")
       .order("created_at", { ascending: false })

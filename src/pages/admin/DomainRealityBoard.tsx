@@ -45,7 +45,7 @@ export default function DomainRealityBoard() {
       ]);
       if (cancelled) return;
       setOwnership((own ?? []) as OwnershipRow[]);
-      const tables = (schema as any)?.tables ?? [];
+      const tables = (schema as { tables?: unknown[] } | null)?.tables ?? [];
       setLiveTables(new Set(tables.map((t: any) => t.tablename as string)));
       setLoading(false);
     })();
