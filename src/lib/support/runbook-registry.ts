@@ -346,6 +346,24 @@ export const RUNBOOK_REGISTRY: readonly RunbookEntry[] = [
     escalationTarget: "admin", estimatedResolutionMs: 600_000, lastTestedAt: null, owner: "support",
     boundedContextId: "admin", subsystem: "support-escalation", markdownRef: "docs/runbooks/support-escalation-failure.md",
   },
+
+  // ═══ RB-020 — Ingress / Edge Routing Failure ═══
+  {
+    runbookId: "RB-020", title: "Ingress / Edge Routing Failure",
+    description: "Recover when the ingress / edge layer (Nginx/Traefik/Kong) fails or misroutes traffic",
+    severity: "high", status: "reviewed",
+    triggerCondition: "Ingress returns 5xx to >5% of requests for >2 minutes",
+    affectedServices: ["ingress", "nginx", "traefik"], killSwitchRef: null, messageCodeRef: "NET-003",
+    steps: [
+      { order: 1, action: "Identify failing edge layer from access logs", command: null, expectedOutcome: "Failing upstream identified", rollbackAction: null, timeoutMs: 60_000 },
+      { order: 2, action: "Bypass ingress and call upstream directly", command: null, expectedOutcome: "Upstream-vs-ingress isolation done", rollbackAction: null, timeoutMs: 60_000 },
+      { order: 3, action: "Reload routing config (nginx -s reload / traefik / kong API)", command: null, expectedOutcome: "Routing table reloaded", rollbackAction: "Revert config", timeoutMs: 60_000 },
+      { order: 4, action: "Drain & recycle a single replica to clear cert cache", command: null, expectedOutcome: "Connection pools refreshed", rollbackAction: null, timeoutMs: 120_000 },
+      { order: 5, action: "If recent deploy: pair with RB-009 release rollback", command: null, expectedOutcome: "Edge config rolled back", rollbackAction: null, timeoutMs: 300_000 },
+    ],
+    escalationTarget: "admin", estimatedResolutionMs: 900_000, lastTestedAt: null, owner: "platform",
+    boundedContextId: "cloud-control-plane", subsystem: "ingress", markdownRef: "docs/runbooks/ingress-failure.md",
+  },
 ] as const;
 
 // ── Query Functions ────────────────────────────────────────────
