@@ -113,9 +113,9 @@ if (existsSync(classPath)) {
 }
 
 // ── 5. Per-function metadata coverage ──────────────────────────
-const authNames = new Set(EDGE_FUNCTION_AUTH_MAP.map((a) => a.name));
-const contractNames = new Set(EDGE_FUNCTION_CONTRACT_MAP.map((c) => c.name));
-const ownerNames = new Set(EDGE_FUNCTION_OWNER_MAP.map((o) => o.name));
+const authNames = new Set(Object.keys(EDGE_FUNCTION_AUTH_MAP));
+const contractNames = new Set(Object.keys(EDGE_FUNCTION_CONTRACT_MAP));
+const ownerNames = new Set(Object.keys(EDGE_FUNCTION_OWNER_MAP));
 let metadataGaps = 0;
 for (const fn of EDGE_FUNCTION_REGISTRY) {
   if (fn.status !== "active") continue;
