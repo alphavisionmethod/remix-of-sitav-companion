@@ -385,6 +385,42 @@ export const KILL_SWITCH_REGISTRY: readonly KillSwitchEntry[] = [
     supersedes: [],
     ownerTeam: "finance-team",
   },
+  {
+    switchId: "KS-PAYMENTS-AUTH",
+    target: "payment-auth",
+    displayName: "Payment Authentication Kill Switch",
+    description:
+      "Refuses new card-on-file authorizations and SCA/3DS challenges while leaving captures, refunds, and reconciliation untouched. Used during identity-provider or 3DS gateway incidents.",
+    impactLevel: "severe",
+    affectedServices: [
+      "payment-auth-service",
+      "tokenization-service",
+      "sca-3ds-gateway",
+    ],
+    affectedTables: [
+      "payment_authorizations",
+      "payment_method_tokens",
+      "sca_challenges",
+    ],
+    affectedEdgeFunctions: [
+      "payment-process",
+      "payment-kill-switch",
+      "webauthn-challenge",
+    ],
+    userFacingImpact:
+      "Customers cannot add new cards or pass step-up authentication. Existing tokenized payments + captures continue to clear.",
+    rollbackProcedure:
+      "Disarm switch, verify 3DS provider health probe, replay queued auth attempts via payment-process replay endpoint",
+    requiresDualApproval: true,
+    cooldownMs: 180_000,
+    runbookRef: "RB-005-AUTH",
+    defaultState: "disarmed",
+    boundedContextId: "finance-os",
+    enforcementLayers: ["edge-function", "ui-gate", "domain-service"],
+    dependsOn: [],
+    supersedes: [],
+    ownerTeam: "finance-team",
+  },
 ] as const;
 
 // ── Query Functions ────────────────────────────────────────────
