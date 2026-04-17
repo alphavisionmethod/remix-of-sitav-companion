@@ -56,8 +56,7 @@ import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-
-const isDemoMode = true; // Safe default for demo mode
+import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSampleButton";
 
 
 
@@ -421,9 +420,10 @@ const ProofSummaryBoard = () => {
 const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPacket; onRegenerate: () => void; variant?: string }) => {
   const meta = META[packet.type];
   const genTime = new Date(packet.generatedAt);
+  const { isDemo } = useAuth();
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6">
+    <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6" data-testid="boardroom-summary">
       <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
@@ -435,6 +435,15 @@ const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPack
           </div>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
+          <span
+            data-testid="boardroom-mode-label"
+            className={cn(
+              "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+              isDemo ? "bg-accent/10 text-accent" : "bg-trust-safe/10 text-trust-safe"
+            )}
+          >
+            {isDemo ? "Demo" : "Live"}
+          </span>
           <ConfidencePill value={packet.confidence} />
           {variant && (
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold text-primary capitalize">
@@ -448,7 +457,8 @@ const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPack
           <span className="text-[10px] text-muted-foreground flex items-center gap-1 font-mono">
             <Hash className="h-3 w-3" />{packet.packetId}
           </span>
-          <button onClick={onRegenerate} className="rounded-lg bg-card border border-border p-1.5 hover:bg-secondary transition-colors" title="Regenerate">
+          <BoardroomSeedSampleButton />
+          <button onClick={onRegenerate} data-testid="boardroom-refresh" className="rounded-lg bg-card border border-border p-1.5 hover:bg-secondary transition-colors" title="Regenerate">
             <RefreshCw className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
         </div>
@@ -613,7 +623,18 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
   const isDemoMode = isDemo;
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
-  const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
+  const {
+    pendingApprovals,
+    activeGoals,
+    overdueTasks,
+    recentProofs,
+    notifications,
+    recommendations,
+    boardroomItems,
+    decisionReceipts,
+    unreadNotifications,
+    newRecommendations,
+  } = useBoardroomData();
 
   if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
 
@@ -633,12 +654,21 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     return section;
   });
 
+  // ── Live-data presence flags (drives War Room visibility in live mode) ──
+  const hasDisagreementData = boardroomItems.some(
+    (i: any) => Array.isArray(i.advisor_summaries) && i.advisor_summaries.length >= 2
+  );
+  const hasReceipt = decisionReceipts.length > 0;
+  const hasRecommendations = recommendations.length > 0;
+  const hasApprovals = pendingApprovals.length > 0;
+  const latestReceipt: any = decisionReceipts[0];
+
   // Build PrepPack data from real DB queries
   const prepPriorities = pendingApprovals.slice(0, 4).map((a: Record<string, any>) => ({
-    title: a.title,
-    detail: a.description || `${a.risk_level} risk · ${a.domain || "general"}`,
+    title: a.title || a.summary || "Untitled approval",
+    detail: a.summary || a.description || `${a.priority || "normal"} priority · ${a.domain || "general"}`,
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
-    urgency: (a.risk_level === "high" ? "critical" : a.risk_level === "medium" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
+    urgency: (a.priority === "high" || a.priority === "critical" ? "critical" : a.priority === "normal" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
   const prepCarryovers = overdueTasks.slice(0, 4).map((t: Record<string, any>) => ({
@@ -648,18 +678,20 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     urgency: (t.priority === "high" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
-  const prepDecisions = pendingApprovals.filter((a: Record<string, any>) => a.risk_level !== "high").slice(0, 2).map((a: Record<string, any>) => ({
-    title: a.title,
-    detail: a.description || "Ready for decision",
+  const prepDecisions = pendingApprovals.filter((a: Record<string, any>) => a.priority !== "high" && a.priority !== "critical").slice(0, 2).map((a: Record<string, any>) => ({
+    title: a.title || a.summary || "Pending decision",
+    detail: a.summary || a.description || "Ready for decision",
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
     urgency: "medium" as const,
   }));
 
   const whatChanged = [
+    unreadNotifications > 0 ? `${unreadNotifications} unread notification${unreadNotifications === 1 ? "" : "s"}` : null,
+    newRecommendations > 0 ? `${newRecommendations} new REX recommendation${newRecommendations === 1 ? "" : "s"}` : null,
     activeGoals.length > 0 ? `${activeGoals.length} active goals tracked` : null,
-    pendingApprovals.length > 0 ? `${pendingApprovals.length} approvals pending` : null,
+    hasApprovals ? `${pendingApprovals.length} approval${pendingApprovals.length === 1 ? "" : "s"} pending` : null,
     overdueTasks.length > 0 ? `${overdueTasks.length} overdue tasks need attention` : null,
-    recentProofs.length > 0 ? `${recentProofs.filter((p: Record<string, any>) => p.verification_status === "verified").length} proofs verified` : null,
+    decisionReceipts.length > 0 ? `${decisionReceipts.length} sealed decision${decisionReceipts.length === 1 ? "" : "s"}` : null,
   ].filter(Boolean) as string[];
 
   return (
@@ -747,35 +779,46 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       {/* Metrics & data sections */}
       {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
 
-      {/* ── War Room: Confidence Radar ── */}
-      {isDemoMode && (
+      {/* ── War Room: Confidence Radar (demo OR has recommendations to score) ── */}
+      {(isDemoMode || hasRecommendations) ? (
         <WarRoomConfidenceRadar
-          advisors={mockAdvisors.slice(0, 6).map(a => ({
-            name: a.name,
-            confidence: Math.round(a.confidence * 100),
-            domain: a.domain,
-            color: a.domain === "business" ? "hsl(210, 60%, 55%)" : a.domain === "money" || a.domain === "treasury" ? "hsl(152, 55%, 48%)" : a.domain === "concierge" || a.domain === "family" ? "hsl(280, 50%, 55%)" : "hsl(265, 55%, 58%)",
-          }))}
+          advisors={
+            isDemoMode
+              ? mockAdvisors.slice(0, 6).map(a => ({
+                  name: a.name,
+                  confidence: Math.round(a.confidence * 100),
+                  domain: a.domain,
+                  color: a.domain === "business" ? "hsl(210, 60%, 55%)" : a.domain === "money" || a.domain === "treasury" ? "hsl(152, 55%, 48%)" : a.domain === "concierge" || a.domain === "family" ? "hsl(280, 50%, 55%)" : "hsl(265, 55%, 58%)",
+                }))
+              : recommendations.slice(0, 6).map((r: any) => ({
+                  name: (r.role_key || r.title || "advisor").toString().slice(0, 18),
+                  confidence: Math.round((Number(r.confidence) || 0.5) * 100),
+                  domain: r.domain || "general",
+                  color: r.domain === "business" ? "hsl(210, 60%, 55%)" : r.domain === "money" ? "hsl(152, 55%, 48%)" : r.domain === "concierge" ? "hsl(280, 50%, 55%)" : "hsl(265, 55%, 58%)",
+                }))
+          }
+        />
+      ) : (
+        <EmptyState
+          icon={Brain}
+          title="Confidence Radar"
+          description="Live advisor confidence appears once REX recommendations are generated."
         />
       )}
 
-      {/* ── War Room: Disagreement Theater ── */}
-      {isDemoMode && mockSynthesis.some(s => s.disagreements?.length) && (
+      {/* ── War Room: Disagreement Theater (demo OR boardroom_items with multiple advisor_summaries) ── */}
+      {isDemoMode && mockSynthesis.some(s => s.disagreements?.length) ? (
         <WarRoomDisagreementTheater
           topic="Growth vs. Cash Preservation Strategy"
           sideA={{
-            name: "Business Advisor",
-            domain: "Revenue Growth",
-            color: "hsl(210, 60%, 55%)",
+            name: "Business Advisor", domain: "Revenue Growth", color: "hsl(210, 60%, 55%)",
             position: "Push aggressive outbound — pipeline is healthy enough",
             reasoning: "Current conversion rate of 34% supports expansion. Three qualified leads are warming up.",
             confidence: 72,
             evidence: ["34% conversion rate trending up", "3 warm leads in pipeline", "Competitor just lost key accounts"],
           }}
           sideB={{
-            name: "Money Advisor",
-            domain: "Cash Safety",
-            color: "hsl(152, 55%, 48%)",
+            name: "Money Advisor", domain: "Cash Safety", color: "hsl(152, 55%, 48%)",
             position: "Preserve cash — $5,400 overdue receivables create risk",
             reasoning: "With $5,400 overdue and 2 invoices at risk, expanding spend is premature until collections improve.",
             confidence: 85,
@@ -783,10 +826,46 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           }}
           resolution="Balanced approach recommended: focus collections on overdue invoices while maintaining moderate outbound."
         />
+      ) : !isDemoMode && hasDisagreementData ? (
+        (() => {
+          const item: any = boardroomItems.find((i: any) => Array.isArray(i.advisor_summaries) && i.advisor_summaries.length >= 2);
+          const sums: any[] = item?.advisor_summaries || [];
+          const a = sums[0] || {}; const b = sums[1] || {};
+          return (
+            <WarRoomDisagreementTheater
+              topic={item?.title || "Boardroom Item"}
+              sideA={{
+                name: a.advisor || a.name || "Advisor A",
+                domain: a.domain || item?.domain || "general",
+                color: "hsl(210, 60%, 55%)",
+                position: a.position || a.summary || "Position A",
+                reasoning: a.reasoning || a.rationale || "—",
+                confidence: Math.round((Number(a.confidence) || 0.6) * 100),
+                evidence: Array.isArray(a.evidence) ? a.evidence : [],
+              }}
+              sideB={{
+                name: b.advisor || b.name || "Advisor B",
+                domain: b.domain || item?.domain || "general",
+                color: "hsl(152, 55%, 48%)",
+                position: b.position || b.summary || "Position B",
+                reasoning: b.reasoning || b.rationale || "—",
+                confidence: Math.round((Number(b.confidence) || 0.6) * 100),
+                evidence: Array.isArray(b.evidence) ? b.evidence : [],
+              }}
+              resolution={item?.escalation_reason || "Awaiting owner decision."}
+            />
+          );
+        })()
+      ) : !isDemoMode && (
+        <EmptyState
+          icon={Scale}
+          title="Disagreement Theater"
+          description="Side-by-side advisor positions appear when a boardroom item has 2+ advisor summaries."
+        />
       )}
 
       {/* ── War Room: Voting Card ── */}
-      {isDemoMode && (
+      {isDemoMode ? (
         <VotingCard
           question="Should we hire a contractor for the Q3 expansion project?"
           votes={[
@@ -797,10 +876,16 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             { advisorName: "Concierge", domain: "concierge", position: "for", confidence: 65, reasoning: "Frees up owner time for family priorities" },
           ]}
         />
+      ) : (
+        <EmptyState
+          icon={MessageSquare}
+          title="Voting Card"
+          description="Live advisor voting appears when a boardroom item enters the vote stage."
+        />
       )}
 
       {/* ── War Room: Sentiment Pulse ── */}
-      {isDemoMode && (
+      {isDemoMode ? (
         <SentimentPulse
           overallScore={0.42}
           sentiments={[
@@ -811,10 +896,16 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             { label: "Growth Momentum", score: 0.72, source: "Trend engine" },
           ]}
         />
+      ) : (
+        <EmptyState
+          icon={Activity}
+          title="Sentiment Pulse"
+          description="Cross-domain sentiment will appear once signals are aggregated."
+        />
       )}
 
-      {/* ── War Room: Evidence Chain ── */}
-      {isDemoMode && (
+      {/* ── War Room: Evidence Chain (demo OR latest decision receipt has proof_trail) ── */}
+      {isDemoMode ? (
         <EvidenceChain
           title="Revenue Growth Conclusion Chain"
           nodes={[
@@ -826,10 +917,27 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             { id: "6", label: "Balanced growth strategy recommended", type: "conclusion", confidence: 84, detail: "High confidence supported by verified data" },
           ]}
         />
+      ) : hasReceipt && Array.isArray(latestReceipt?.proof_trail) && latestReceipt.proof_trail.length > 0 ? (
+        <EvidenceChain
+          title={latestReceipt?.approved_motion || "Decision Evidence Chain"}
+          nodes={(latestReceipt.proof_trail as any[]).slice(0, 8).map((p: any, i: number) => ({
+            id: String(p.id || i),
+            label: p.label || p.title || `Step ${i + 1}`,
+            type: (p.type || "source") as any,
+            confidence: Math.round((Number(p.confidence) || 0.85) * 100),
+            detail: p.detail || p.summary,
+          }))}
+        />
+      ) : (
+        <EmptyState
+          icon={Database}
+          title="Evidence Chain"
+          description="Source-to-conclusion lineage appears when a decision is sealed with proof_trail."
+        />
       )}
 
       {/* ── War Room: Scenario Fork ── */}
-      {isDemoMode && (
+      {isDemoMode ? (
         <ScenarioFork
           titleA="Maintain Current Course"
           titleB="Accelerate Growth"
@@ -842,10 +950,16 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             { label: "Risk Score", valueA: "Low", valueB: "High", delta: "↑", direction: "down" },
           ]}
         />
+      ) : (
+        <EmptyState
+          icon={GitCompare}
+          title="Scenario Fork"
+          description="Side-by-side scenario simulations appear when a boardroom item has simulation_state populated."
+        />
       )}
 
-      {/* ── War Room: Decision Seal ── */}
-      {isDemoMode && (
+      {/* ── War Room: Decision Seal (wired to latest boardroom_decision_receipts) ── */}
+      {isDemoMode ? (
         <DecisionSeal
           decision="Adopt balanced execution strategy for Q2"
           decidedBy="Owner (recommended by Business + Money Advisors)"
@@ -853,16 +967,45 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           receiptHash="0x7a3f...e8b2c1d4"
           status="sealed"
         />
+      ) : hasReceipt ? (
+        <DecisionSeal
+          decision={latestReceipt?.approved_motion || latestReceipt?.rationale_summary || "Sealed decision"}
+          decidedBy="Owner"
+          timestamp={latestReceipt?.created_at ? new Date(latestReceipt.created_at).toLocaleString() : "—"}
+          receiptHash={`0x${String(latestReceipt?.id || "").replace(/-/g, "").slice(0, 16)}`}
+          status={(latestReceipt?.status === "sealed" ? "sealed" : "sealed") as any}
+        />
+      ) : (
+        <EmptyState
+          icon={Lock}
+          title="Decision Seal"
+          description="The most recent sealed decision appears here once an approval ceremony completes."
+        />
       )}
 
       {/* Confidence ladder */}
-      {isDemoMode && (
+      {(isDemoMode || hasRecommendations) ? (
         <div className="space-y-3">
           <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
           <SitaCard hover={false}>
-            <ConfidenceLadder items={mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))} />
+            <ConfidenceLadder
+              items={
+                isDemoMode
+                  ? mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))
+                  : recommendations.slice(0, 5).map((r: any) => ({
+                      label: (r.title || r.role_key || "recommendation").toString().slice(0, 32),
+                      confidence: Number(r.confidence) || 0.5,
+                    }))
+              }
+            />
           </SitaCard>
         </div>
+      ) : (
+        <EmptyState
+          icon={Target}
+          title="Confidence Ladder"
+          description="Per-recommendation confidence levels appear when REX produces recommendations."
+        />
       )}
 
       {/* Opportunities */}
@@ -1156,7 +1299,7 @@ const Boardroom = () => {
 
   return (
     <>
-      <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <motion.div data-testid="boardroom-page" className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 <SitaPageHeader
           title="Boardroom"
           subtitle="Where advisor voices become one governed plan — not a dashboard, a deliberation artifact"
