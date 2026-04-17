@@ -26,6 +26,12 @@ const DisconnectSchema = z.object({
   account_id: z.string().uuid(),
 });
 
+const ReconnectSchema = z.object({
+  action: z.literal("reconnect"),
+  account_id: z.string().uuid(),
+  redirect_uri: z.string().url().optional(),
+});
+
 const DEFAULT_SCOPES: Record<string, string[]> = {
   google_drive: [
     "https://www.googleapis.com/auth/drive.readonly",
@@ -63,6 +69,8 @@ Deno.serve(async (req) => {
         return await handleCallback(body, user, serviceClient);
       case "disconnect":
         return await handleDisconnect(body, user, serviceClient);
+      case "reconnect":
+        return await handleReconnect(body, user, serviceClient);
       case "check_config":
         return await handleCheckConfig();
       default:
@@ -356,6 +364,73 @@ async function handleDisconnect(
   });
 
   return corsResponse({ success: true, disconnected: account_id });
+}
+
+async function handleReconnect(
+  body: unknown,
+  user: { id: string },
+  supabase: ReturnType<typeof createClient>,
+): Promise<Response> {
+  const parsed = ReconnectSchema.safeParse(body);
+  if (!parsed.success) return corsError("Invalid reconnect request", 400);
+
+  const { account_id, redirect_uri } = parsed.data;
+
+  // Read existing account
+  const { data: account, error: accErr } = await supabase
+    .from("connector_accounts")
+    .select("connector_type, registry_id")
+    .eq("id", account_id)
+    .eq("user_id", user.id)
+    .single();
+
+  if (accErr || !account) return corsError("Account not found", 404);
+
+  // Read prior scopes from existing token (if any)
+  const { data: existingToken } = await supabase
+    .from("connector_oauth_tokens")
+    .select("scopes_granted")
+    .eq("account_id", account_id)
+    .maybeSingle();
+
+  const priorScopes: string[] =
+    (existingToken?.scopes_granted as string[] | null) ||
+    DEFAULT_SCOPES[account.connector_type as string] ||
+    DEFAULT_SCOPES.google_drive;
+
+  // Mark token as reauth_required (do not delete yet — keep until callback)
+  await supabase
+    .from("connector_oauth_tokens")
+    .update({ reauth_required: true })
+    .eq("account_id", account_id);
+
+  // Flip account status
+  await supabase
+    .from("connector_accounts")
+    .update({ status: "reauth_required" })
+    .eq("id", account_id)
+    .eq("user_id", user.id);
+
+  // Receipt
+  await supabase.from("connector_receipts").insert({
+    user_id: user.id,
+    account_id,
+    event_type: "reconnect_initiated",
+    connector_type: account.connector_type,
+    details: { prior_scopes: priorScopes, reason: "user_initiated_reconnect" },
+  });
+
+  // Re-use initiate flow with prior scopes preserved
+  return await handleInitiate(
+    {
+      action: "initiate",
+      connector_id: account.connector_type,
+      scopes: priorScopes,
+      redirect_uri,
+    },
+    user,
+    supabase,
+  );
 }
 
 function corsResponseWithStatus(data: unknown, status: number): Response {

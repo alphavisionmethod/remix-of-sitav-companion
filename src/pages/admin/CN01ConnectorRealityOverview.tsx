@@ -242,19 +242,56 @@ export default function CN01ConnectorRealityOverview() {
                       <TableHead>Last Auth</TableHead>
                       <TableHead>Token Expiry</TableHead>
                       <TableHead>Reauth</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {accounts.map((a: Record<string, any>) => {
                       const token = tokens.find((t: Record<string, any>) => t.connector_account_id === a.id);
+                      const needsReauth = a.status === "reauth_required";
+                      const isDegraded = a.status === "degraded";
+                      const handleReconnect = async () => {
+                        const { data, error } = await supabase.functions.invoke("connector-oauth", {
+                          body: { action: "reconnect", account_id: a.id },
+                        });
+                        if (error || !data?.success) {
+                          toast.error(`Reconnect failed: ${error?.message ?? data?.error ?? "unknown"}`);
+                          return;
+                        }
+                        toast.success("Reconnect initiated — redirecting to provider…");
+                        if (data.authorization_url) {
+                          window.location.href = data.authorization_url;
+                        }
+                        queryClient.invalidateQueries({ queryKey: ["connector-accounts"] });
+                      };
+                      const handleDisengageFallback = async () => {
+                        const { disengageFakeMode } = await import(
+                          "@/lib/services/connector-control-plane/connector-fake-mode.service"
+                        );
+                        await disengageFakeMode(a.id, a.connector_type);
+                        toast.success("Fallback mode disengaged");
+                        queryClient.invalidateQueries({ queryKey: ["connector-accounts"] });
+                      };
                       return (
                         <TableRow key={a.id}>
-                          <TableCell className="font-medium text-sm">{a.provider || "—"}</TableCell>
+                          <TableCell className="font-medium text-sm">{a.provider || a.connector_type || "—"}</TableCell>
                           <TableCell><Badge variant="outline" className={statusColors[a.status] || ""}>{a.status}</Badge></TableCell>
                           <TableCell className="text-xs max-w-[200px] truncate">{token?.scopes?.join(", ") || "—"}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">{a.connected_at ? new Date(a.connected_at).toLocaleString() : "—"}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">{token?.expires_at ? new Date(token.expires_at).toLocaleString() : "—"}</TableCell>
-                          <TableCell>{statusBadge(a.status === "reauth_required", a.status === "reauth_required" ? "Required" : "OK")}</TableCell>
+                          <TableCell>{statusBadge(needsReauth, needsReauth ? "Required" : "OK")}</TableCell>
+                          <TableCell>
+                            {needsReauth && (
+                              <Button size="sm" variant="outline" onClick={handleReconnect}>
+                                <RefreshCw className="h-3 w-3 mr-1" /> Reconnect
+                              </Button>
+                            )}
+                            {isDegraded && (
+                              <Button size="sm" variant="outline" onClick={handleDisengageFallback}>
+                                Disengage Fallback
+                              </Button>
+                            )}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
