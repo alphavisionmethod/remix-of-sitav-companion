@@ -35,7 +35,16 @@
     "drill:backup-restore": "npx tsx scripts/db/backup/verify-backup-restore.ts",
     "os:build:iso": "sudo -E bash os/image-builder/build.sh",
     "os:test:qemu": "bash os/qemu-test.sh",
-    "os:test:qemu:headless": "bash os/qemu-test.sh --headless"
+    "os:test:qemu:headless": "bash os/qemu-test.sh --headless",
+    "os:verify": "bash os/scripts/verify-boot-artifacts.sh out",
+    "os:verify:verity": "bash os/scripts/verify-verity-metadata.sh out",
+    "os:attest": "bash os/scripts/emit-attestation.sh",
+    "os:test:qemu:validate": "bash os/qemu-validate.sh",
+    "os:bundle": "bash os/scripts/build-update-bundle.sh",
+    "os:bundle:verify": "bash os/scripts/verify-update-bundle.sh",
+    "os:rollback:dryrun": "bash os/scripts/rollback-to-previous.sh --dry-run",
+    "os:support:bundle": "bash os/scripts/generate-support-bundle.sh",
+    "os:vmware:ova": "bash os/vmware/build-ova.sh"
   },
   "dependencies": {
     "@aparajita/capacitor-biometric-auth": "^10.0.0",
