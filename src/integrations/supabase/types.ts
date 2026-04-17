@@ -14504,6 +14504,10 @@ export type Database = {
         Args: { _user_id: string }
         Returns: undefined
       }
+      seed_default_installed_apps: {
+        Args: { _user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
