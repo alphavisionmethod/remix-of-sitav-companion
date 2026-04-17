@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "generatedAt": "2026-04-17T01:00:00.000Z",
+  "errors": 0,
+  "warnings": 0,
+  "evidence": {
+    "advisor_registry_count": 6,
+    "ai_provider_registry_seeded": 4,
+    "ai_model_registry_seeded": 11,
+    "ai_capability_routing_seeded": 6,
+    "ai_routing_policies_seeded": 6,
+    "ai_prompt_families_seeded": 6,
+    "ai_prompt_versions_active": 6,
+    "ai_provider_health_seeded": 4,
+    "tables_with_rls": [
+      "ai_provider_registry",
+      "ai_model_registry",
+      "ai_provider_health",
+      "ai_routing_policies",
+      "ai_capability_routing",
+      "ai_prompt_families",
+      "ai_prompt_versions",
+      "ai_prompt_invocations",
+      "advisor_registry"
+    ],
+    "functions_present": {
+      "supabase/functions/prompt-versioning/index.ts": true,
+      "supabase/functions/routing-policy-update/index.ts": true,
+      "supabase/functions/seed-advisor-registry/index.ts": true
+    },
+    "admin_prompt_explorer": true,
+    "invoke_blocks_raw_r3": true,
+    "r3_inline_prompt_violations": [],
+    "gate_32_registered": true,
+    "table_io_registered": true,
+    "ai_gateway_resolves_prompt_family": true,
+    "checklist_14_status": {
+      "1_advisor_registry_exists": true,
+      "2_prompt_versions_tracked": true,
+      "3_model_routing_explicit": true,
+      "4_ai_provider_health_visible": true,
+      "5_cost_budget_controls": true,
+      "6_recommendation_quality_inspectable": true,
+      "7_ai_runtime_failures_triageable": true,
+      "8_advisor_actions_policy_approval_proof": true,
+      "9_memory_bounded_persisted": true,
+      "10_hallucination_truth_protections_tested": true,
+      "11_simulated_features_marked": true
+    }
+  },
+  "violations": []
+}

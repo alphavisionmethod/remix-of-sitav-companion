@@ -91,11 +91,17 @@ serve(async (req) => {
     const {
       capabilityId = "general",
       taskClass = "balanced_assistant",
-      messages = [],
+      messages: rawMessages = [],
       stream = false,
       maxTokens,
       temperature,
+      promptFamilyId,
+      promptVars,
+      riskTier = "R1",
     } = body;
+
+    let messages = rawMessages;
+    let resolvedPromptVersionId: string | null = null;
 
     // 1. Check if AI is available
     if (!LOVABLE_API_KEY) {
@@ -108,6 +114,49 @@ serve(async (req) => {
     }
 
     const serviceClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+
+    // ─── Phase 21: Resolve prompt family if provided ───
+    if (promptFamilyId) {
+      const { data: promptVersion } = await serviceClient
+        .from("ai_prompt_versions")
+        .select("id, system_prompt, template")
+        .eq("family_id", promptFamilyId)
+        .eq("status", "active")
+        .maybeSingle();
+      if (promptVersion) {
+        resolvedPromptVersionId = promptVersion.id;
+        // Inject as system message at front (replacing any inline system if present)
+        messages = messages.filter((m: { role: string }) => m.role !== "system");
+        let systemContent = promptVersion.system_prompt as string;
+        if (promptVars && promptVersion.template) {
+          let rendered = promptVersion.template as string;
+          for (const [k, v] of Object.entries(promptVars)) {
+            rendered = rendered.replace(new RegExp(`\\{\\{\\s*${k}\\s*\\}\\}`, "g"), String(v));
+          }
+          systemContent = `${systemContent}\n\n${rendered}`;
+        }
+        messages = [{ role: "system", content: systemContent }, ...messages];
+
+        // Log prompt invocation
+        await serviceClient.from("ai_prompt_invocations").insert({
+          family_id: promptFamilyId,
+          version_id: resolvedPromptVersionId,
+          capability_key: capabilityId,
+          user_id: user.id,
+        });
+      }
+    } else {
+      // ─── Phase 21: Reject raw system prompts on R3+ without promptFamilyId ───
+      const isR3Plus = ["R3", "R4", "R5"].includes(riskTier);
+      const hasInlineSystem = messages.some((m: { role: string }) => m.role === "system");
+      if (isR3Plus && hasInlineSystem) {
+        return corsResponse({
+          status: "rejected",
+          reason: "raw_prompt_on_r3",
+          message: `Risk tier ${riskTier} requires promptFamilyId; inline system messages are blocked.`,
+        }, 400);
+      }
+    }
 
     // 2. Resolve model: capability_routing → routing_policies → task class default
     let model = TASK_CLASS_MODELS[taskClass] ?? "google/gemini-3-flash-preview";

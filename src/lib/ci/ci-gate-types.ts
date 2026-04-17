@@ -22,7 +22,8 @@ export type CIGatePhase =
   | "phase-17-edge-function-health-replay"
   | "phase-18-db-reality"
   | "phase-19-auth-policy-trust-reality"
-  | "phase-20-production-operations";
+  | "phase-20-production-operations"
+  | "phase-21-ai-advisor-reality";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 
@@ -34,7 +35,8 @@ export type CIGateOwner =
   | "support-team"
   | "operations-team"
   | "release-team"
-  | "reality-team";
+  | "reality-team"
+  | "ai-platform-team";
 
 export interface CIGateEntry {
   readonly id: string;

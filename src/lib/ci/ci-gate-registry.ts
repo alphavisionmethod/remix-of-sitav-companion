@@ -346,6 +346,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Error monitoring (Sentry + native sink) wired; ≥6 hot edge fns wrapped with withTrace; real health probes + uptime cron; alerts table live with no DEMO_ALERTS imports.",
     producesArtifact: "generated/production-operations-report.json",
   },
+
+  // ── Phase 21 ── AI / Advisor Reality
+  {
+    id: "ai-advisor-reality",
+    phase: "phase-21-ai-advisor-reality",
+    title: "AI / Advisor reality (Checklist 14: registry, prompts, routing, providers)",
+    script: "scripts/architecture/checks/check-ai-advisor-reality.ts",
+    owner: "ai-platform-team",
+    severity: "blocker",
+    description:
+      "Real DB-backed AI registries (provider/model/health/routing/prompts); advisor_registry ≥4 entries with promptFamilyId + defaultModel; R3+ capabilities reject raw inline system prompts; admin prompt explorer wired.",
+    producesArtifact: "generated/ai-advisor-reality-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
