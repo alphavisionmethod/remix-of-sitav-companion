@@ -128,6 +128,8 @@ export function getOSRoutes() {
       <Route path="/settings/accessibility" element={<AccessibilitySettings />} />
       <Route path="/settings/device" element={<DeviceSettingsPage />} />
       <Route path="/settings/trusted-devices" element={<TrustedDeviceManager />} />
+      <Route path="/settings/mfa" element={<MFAEnrollment />} />
+      <Route path="/settings/passkey" element={<PasskeyManagement />} />
 
       {/* Personalization */}
       <Route path="/personalization" element={<PersonalizationStudio />} />
