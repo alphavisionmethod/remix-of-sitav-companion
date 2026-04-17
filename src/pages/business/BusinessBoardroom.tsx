@@ -60,12 +60,12 @@ const [mode, setMode] = useState("weekly");
     return items.length > 0 ? items.slice(0, 5) : [{ id: "no-p", label: "No active priorities — add leads or invoices to start", urgency: "low" as const }];
   }, [leads, opportunities, kpis.overdueInvoices]);
 
-  const changeEvents = useMemo(() => [
+  const changeEvents = useMemo<Array<{ id: string; title: string; timestamp: string; accentColor?: string }>>(() => [
     kpis.newLeads > 0 ? { id: "nl", title: `${kpis.newLeads} new lead${kpis.newLeads > 1 ? "s" : ""} entered pipeline`, timestamp: "This week", accentColor: "hsl(265 55% 58%)" } : null,
     kpis.overdueInvoices.length > 0 ? { id: "oi", title: `${kpis.overdueInvoices.length} invoice${kpis.overdueInvoices.length > 1 ? "s" : ""} became overdue`, timestamp: "This week", accentColor: "hsl(0 70% 55%)" } : null,
     { id: "op", title: `${opportunities.length} opportunity(ies) active`, timestamp: "Current", accentColor: "hsl(152 55% 48%)" },
     { id: "nc", title: "No new customer churn signals", timestamp: "Current", accentColor: "hsl(0 0% 50%)" },
-  ].filter(Boolean) as Array<Record<string, unknown>>, [kpis, opportunities]);
+  ].filter((e): e is { id: string; title: string; timestamp: string; accentColor: string } => e !== null), [kpis, opportunities]);
 
   return (
     <BoardroomCinematic domain="business">

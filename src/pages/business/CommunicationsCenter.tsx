@@ -43,12 +43,22 @@ const CommunicationsCenter = () => {
   const { data: dbComms = [] } = useCommunications();
   const { confirmation, confirm: confirmAction } = useConfirmation();
 
-  const liveComms: Communication[] = dbComms.map((c: Record<string, any>) => ({
-    id: c.id, type: ((c.channel || "email") as "email" | "sms" | "letter"), subject: c.subject || "",
-    body: c.body || "", status: (c.status || "draft") as CommStatus,
-    requires_approval: c.requires_approval || false,
-    customer_name: c.contact_name || "", created_at: c.created_at, sent_at: c.sent_at || null,
-  }));
+  const liveComms: Communication[] = dbComms.map((c: Record<string, unknown>) => {
+    const channel = String(c.channel ?? "email");
+    const normalizedType: "email" | "sms" | "message" =
+      channel === "sms" ? "sms" : channel === "email" ? "email" : "message";
+    return {
+      id: String(c.id),
+      type: normalizedType,
+      subject: String(c.subject ?? ""),
+      body: String(c.body ?? ""),
+      status: ((c.status as CommStatus) ?? "draft"),
+      requires_approval: Boolean(c.requires_approval),
+      customer_name: String(c.contact_name ?? ""),
+      created_at: String(c.created_at ?? ""),
+      sent_at: (c.sent_at as string | null) ?? null,
+    };
+  });
 
   const communications = liveComms.length > 0 ? liveComms : (isDemoMode ? fallbackComms : []);
   const [tab, setTab] = useState("all");

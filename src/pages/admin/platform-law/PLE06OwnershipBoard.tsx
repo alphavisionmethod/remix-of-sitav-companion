@@ -183,11 +183,11 @@ const PLE06OwnershipBoard = () => {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as "all" | OwnershipEntry["type"])}>
           <option value="all">All Types</option>
           {(["domain", "shell", "contract", "route", "probe", "manifest", "service"] as const).map(t => <option key={t} value={t}>{t}</option>)}
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sortBy} onChange={e => setSortBy(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sortBy} onChange={e => setSortBy(e.target.value as "compliance" | "violations" | "drift")}>
           <option value="compliance">Sort: Lowest Compliance</option>
           <option value="violations">Sort: Most Violations</option>
           <option value="drift">Sort: Most Drift</option>
