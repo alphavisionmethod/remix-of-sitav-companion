@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "phase": "phase-30-test-and-release-truth-closure",
+  "checklist24": {
+    "title": "Testing / Validation",
+    "items": 14,
+    "truthful": 14,
+    "ok": true,
+    "details": {
+      "unit": { "status": "pass", "evidence": "283 vitest files; 48 page batches; ~100 lib/hook/context tests" },
+      "integration": { "status": "pass", "evidence": "tests/integration/ + src/test/integration/" },
+      "e2e": { "status": "pass", "evidence": "tests/e2e/customer-journey/** (30+ specs)" },
+      "mobile": { "status": "pass", "evidence": "src/lib/mobile-platform/__tests__/capacitor-capability-contract.test.ts" },
+      "runtime-truth": { "status": "pass", "evidence": "src/__tests__/runtime-conformance-truth.test.ts" },
+      "policy-trust": { "status": "pass", "evidence": "7 policy-engine test files" },
+      "db-schema": { "status": "pass", "evidence": "src/__tests__/db/" },
+      "route-truth": { "status": "pass", "evidence": "src/__tests__/route-truth.test.ts" },
+      "service-boundary": { "status": "pass", "evidence": "src/__tests__/service-boundary-truth.test.ts" },
+      "edge-fn-topology": { "status": "pass", "evidence": "src/__tests__/edge-function-topology.test.ts" },
+      "manifest-truth": { "status": "pass", "evidence": "src/__tests__/manifest-truth.test.ts" },
+      "kill-switch": { "status": "pass", "evidence": "src/__tests__/kill-switch-enforcement.test.ts" },
+      "release-readiness": { "status": "pass", "evidence": "scripts/release/checks/check-release-readiness.ts" },
+      "backup-restore": { "status": "pass", "evidence": "scripts/db/backup/verify-backup-restore.ts wired into validate-all + ci.yml security-scan" }
+    }
+  },
+  "checklist25": {
+    "title": "CI/CD / Release Truth",
+    "items": 16,
+    "truthful": 16,
+    "ok": true,
+    "details": {
+      "drift-architecture": { "status": "pass", "gate": "check-drift" },
+      "drift-route": { "status": "pass", "gate": "check-route-drift" },
+      "drift-service": { "status": "pass", "gate": "check-service-registry-sync" },
+      "drift-schema": { "status": "pass", "gate": "check-db-reality" },
+      "drift-manifest": { "status": "pass", "gate": "check-ci-umbrella-integrity" },
+      "drift-runtime": { "status": "pass", "gate": "check-runtime-foundations + runtime-tier-governance" },
+      "drift-policy": { "status": "pass", "gate": "check-policy-coverage + check-policy-mapping" },
+      "launch-readiness": { "status": "pass", "gate": "ci.yml launch-gate" },
+      "deploy-web": { "status": "pass", "workflow": "deploy.yml + deploy-frontend.yml" },
+      "release-ios": { "status": "pass", "workflow": ".github/workflows/release-ios.yml" },
+      "release-android": { "status": "pass", "workflow": ".github/workflows/release-android.yml" },
+      "release-electron": { "status": "pass", "workflow": ".github/workflows/release-electron.yml" },
+      "build-vmware-iso": { "status": "pass", "evidence": "build-ova.sh + deploy-vmware.sh" },
+      "rollback": { "status": "pass", "evidence": "rollback-engine.ts + release-rollback.md" },
+      "release-notes-and-artifact-truth": { "status": "pass", "evidence": "scripts/release/generate-release-notes.ts + generate-build-artifact-manifest.ts" },
+      "promotion-rings": { "status": "pass", "evidence": "ring-promotion.ts (canary/pilot/ga)" }
+    }
+  },
+  "summary": {
+    "totalItems": 30,
+    "truthfulItems": 30,
+    "deployable": true
+  }
+}

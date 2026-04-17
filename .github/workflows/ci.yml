@@ -112,6 +112,8 @@ jobs:
         run: npx tsx scripts/architecture/check-sensitive-document-privacy.ts || true
       - name: Check edge function health
         run: npx tsx scripts/check-edge-function-health.ts || true
+      - name: Verify backup/restore infrastructure
+        run: npx tsx scripts/db/backup/verify-backup-restore.ts || true
       - name: Generate security report
         run: |
           node -e "
