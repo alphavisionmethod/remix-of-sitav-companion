@@ -1,0 +1,21 @@
+{
+  "runs": [
+    {
+      "timestamp": "20260417T004356Z",
+      "mode": "pg_dump",
+      "file": "20260417T004356Z.sql",
+      "tableCount": 202,
+      "policyCount": 336,
+      "sizeBytes": 555038
+    }
+  ],
+  "latest": {
+    "timestamp": "20260417T004356Z",
+    "mode": "pg_dump",
+    "file": "20260417T004356Z.sql",
+    "tableCount": 202,
+    "policyCount": 336,
+    "sizeBytes": 555038
+  },
+  "updatedAt": "2026-04-17T00:44:35.387Z"
+}

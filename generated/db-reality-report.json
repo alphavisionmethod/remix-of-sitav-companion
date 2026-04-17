@@ -1,0 +1,206 @@
+{
+  "generatedAt": "2026-04-17T00:44:38.756Z",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 15,
+  "summary": {
+    "totalTables": 201,
+    "unownedTables": 0,
+    "ioMappedFunctions": 86,
+    "missingFromIO": 0,
+    "tablesWithWriters": 63,
+    "tablesWithReaders": 51,
+    "tablesWithoutAnyIO": 127,
+    "crossDomainViolations": 18,
+    "backup": {
+      "ok": true,
+      "ageDays": 0,
+      "latest": {
+        "timestamp": "20260417T004356Z",
+        "mode": "pg_dump",
+        "file": "20260417T004356Z.sql",
+        "tableCount": 202,
+        "policyCount": 336,
+        "sizeBytes": 555038
+      }
+    },
+    "restoreDrill": {
+      "ok": true,
+      "mode": "dry-validate",
+      "matchPercent": 100
+    }
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table ai_workforce_approval_queue (owner=ai-engineering) is written by cross-domain functions: admin-ai-workforce-run"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table ai_workforce_invocations (owner=ai-engineering) is written by cross-domain functions: admin-ai-workforce-run"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table ai_workforce_outputs (owner=ai-engineering) is written by cross-domain functions: admin-ai-workforce-run"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table ai_workforce_role_health (owner=ai-engineering) is written by cross-domain functions: admin-ai-workforce-run"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table user_roles (owner=platform-engineering) is written by cross-domain functions: admin-users"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table appointments (owner=crm-team) is written by cross-domain functions: booking-manage, seed-user-data"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table leads (owner=crm-team) is written by cross-domain functions: crm-sync, seed-user-data"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table cloud_activity_journal (owner=cloud-team) is written by cross-domain functions: os-agent-channel"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table incidents (owner=compliance-team) is written by cross-domain functions: self-healing"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table command_memory (owner=os-kernel-team) is written by cross-domain functions: brain-core"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table license_activations (owner=platform-engineering) is written by cross-domain functions: license-gateway"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table license_audit_log (owner=platform-engineering) is written by cross-domain functions: license-gateway"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table support_case_events (owner=platform-engineering) is written by cross-domain functions: support-gateway, user-bff-gateway"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table support_cases (owner=platform-engineering) is written by cross-domain functions: support-gateway"
+    },
+    {
+      "severity": "warning",
+      "code": "cross-domain-writer",
+      "message": "Table communication_metrics (owner=ux-team) is written by cross-domain functions: os-agent-channel"
+    }
+  ],
+  "crossDomainOffenders": [
+    {
+      "table": "ai_workforce_approval_queue",
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    {
+      "table": "user_roles",
+      "writers": [
+        "admin-users"
+      ]
+    },
+    {
+      "table": "appointments",
+      "writers": [
+        "booking-manage",
+        "seed-user-data"
+      ]
+    },
+    {
+      "table": "leads",
+      "writers": [
+        "crm-sync",
+        "seed-user-data"
+      ]
+    },
+    {
+      "table": "cloud_activity_journal",
+      "writers": [
+        "os-agent-channel"
+      ]
+    },
+    {
+      "table": "incidents",
+      "writers": [
+        "self-healing"
+      ]
+    },
+    {
+      "table": "command_memory",
+      "writers": [
+        "brain-core"
+      ]
+    },
+    {
+      "table": "license_activations",
+      "writers": [
+        "license-gateway"
+      ]
+    },
+    {
+      "table": "license_audit_log",
+      "writers": [
+        "license-gateway"
+      ]
+    },
+    {
+      "table": "support_case_events",
+      "writers": [
+        "support-gateway",
+        "user-bff-gateway"
+      ]
+    },
+    {
+      "table": "support_cases",
+      "writers": [
+        "support-gateway"
+      ]
+    },
+    {
+      "table": "communication_metrics",
+      "writers": [
+        "os-agent-channel"
+      ]
+    }
+  ],
+  "missingFromIO": []
+}
