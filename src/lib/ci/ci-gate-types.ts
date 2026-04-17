@@ -25,7 +25,8 @@ export type CIGatePhase =
   | "phase-20-production-operations"
   | "phase-21-ai-advisor-reality"
   | "phase-22-connector-reality"
-  | "phase-23-workflow-reality";
+  | "phase-23-workflow-reality"
+  | "phase-24-domain-reality";
 
 export type CIGateSeverity = "blocker" | "warning" | "info";
 
