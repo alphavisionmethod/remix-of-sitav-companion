@@ -239,18 +239,20 @@ function CommandsPanel() {
 // ── System Status Tab ──────────────────────────────────────────
 
 function SystemPanel() {
-  const { data: status, isLoading: statusLoading } = useSystemStatus();
-  const { data: health } = useSystemHealth();
+  const { data: statusRaw, isLoading: statusLoading } = useSystemStatus();
+  const { data: healthRaw } = useSystemHealth();
+  const status = statusRaw as SystemStatusVM | undefined;
+  const health = healthRaw as SystemHealthVM | undefined;
 
   return (
     <div className="space-y-4">
       {/* Status Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Health", value: (status as any)?.health || "—", icon: Activity, color: "text-emerald-400" },
-          { label: "Devices", value: (status as any)?.devices ?? "—", icon: Globe, color: "text-blue-400" },
-          { label: "Active Commands", value: (status as any)?.active_commands ?? "—", icon: Terminal, color: "text-purple-400" },
-          { label: "Incidents", value: (status as any)?.incidents ?? "—", icon: AlertTriangle, color: "text-amber-400" },
+          { label: "Health", value: status?.health || "—", icon: Activity, color: "text-emerald-400" },
+          { label: "Devices", value: status?.devices ?? "—", icon: Globe, color: "text-blue-400" },
+          { label: "Active Commands", value: status?.active_commands ?? "—", icon: Terminal, color: "text-purple-400" },
+          { label: "Incidents", value: status?.incidents ?? "—", icon: AlertTriangle, color: "text-amber-400" },
         ].map((item) => (
           <Card key={item.label} className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
             <CardContent className="p-4">
@@ -274,7 +276,7 @@ function SystemPanel() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {((health as any)?.subsystems || []).map((sub: any) => (
+            {(health?.subsystems ?? []).map((sub) => (
               <div key={sub.name} className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
                 <div className={`h-2.5 w-2.5 rounded-full ${sub.status === "healthy" ? "bg-emerald-400" : sub.status === "degraded" ? "bg-amber-400" : "bg-red-400"}`} />
                 <div>
@@ -323,9 +325,10 @@ function SystemPanel() {
 // ── Security Tab ───────────────────────────────────────────────
 
 function SecurityPanel() {
-  const { data: posture } = useSecurityPosture();
+  const { data: postureRaw } = useSecurityPosture();
   const { data: approvals = [] } = useSecurityPendingApprovals();
   const emergencyLock = useEmergencyLock();
+  const posture = postureRaw as SecurityPostureVM | undefined;
 
   return (
     <div className="space-y-4">
