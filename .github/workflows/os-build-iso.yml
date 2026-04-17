@@ -1,0 +1,98 @@
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — ISO Build Pipeline
+# Builds a bootable hybrid BIOS+UEFI ISO on a free GitHub Actions runner.
+# ═══════════════════════════════════════════════════════════════════════
+name: sita-os-build-iso
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'os/**'
+      - '.github/workflows/os-build-iso.yml'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. 0.1.0-dev)'
+        required: false
+        default: '0.1.0-dev'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build SITA OS ISO
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
+          df -h
+
+      - name: Build ISO
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+        run: sudo -E bash os/image-builder/build.sh
+
+      - name: Inspect output
+        run: |
+          ls -lh out/
+          cat out/*.manifest.json
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sita-os-iso
+          path: |
+            out/*.iso
+            out/*.sha256
+            out/*.manifest.json
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Build summary
+        if: always()
+        run: |
+          {
+            echo "## 🚀 SITA OS Build"
+            echo ""
+            if [ -f out/*.manifest.json ]; then
+              echo "\`\`\`json"
+              cat out/*.manifest.json
+              echo "\`\`\`"
+            else
+              echo "❌ Build failed — no manifest produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  smoke-test:
+    name: QEMU Smoke Test
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: sita-os-iso
+          path: out/
+
+      - name: Install QEMU + OVMF
+        run: sudo apt-get update -qq && sudo apt-get install -y qemu-system-x86 ovmf
+
+      - name: Boot ISO (90s headless smoke test)
+        run: |
+          ISO="$(ls out/sita-os-*.iso | head -1)"
+          echo "booting $ISO"
+          timeout --preserve-status 90 \
+            qemu-system-x86_64 \
+              -m 2G -smp 2 -cpu qemu64 \
+              -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE.fd \
+              -cdrom "$ISO" -boot d \
+              -display none -nographic \
+              -serial mon:stdio 2>&1 | tee qemu.log | head -200 || true
+          grep -qiE "sita|systemd|kernel" qemu.log && echo "✅ kernel reached userspace" || (echo "❌ no kernel output" && exit 1)

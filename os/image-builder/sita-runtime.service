@@ -1,0 +1,47 @@
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — Runtime Shell Service
+# Launches the SITA Electron desktop shell after first-boot completes.
+# ═══════════════════════════════════════════════════════════════════════
+[Unit]
+Description=SITA OS Desktop Shell
+Documentation=https://sita.dev/docs/runtime
+After=multi-user.target sita-firstboot.service network-online.target
+Wants=network-online.target
+Requires=sita-firstboot.service
+ConditionPathExists=/var/lib/sita/.first-boot-complete
+
+[Service]
+Type=simple
+User=sita
+Group=sita
+PAMName=login
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=NODE_ENV=production
+Environment=SITA_RUNTIME_MODE=desktop
+WorkingDirectory=/opt/sita/shell
+
+# Start X server then launch Electron shell
+ExecStartPre=/usr/bin/install -d -m 0700 -o sita -g sita /run/user/1000
+ExecStart=/usr/bin/xinit /opt/sita/shell/launch.sh -- :0 vt7 -nolisten tcp
+
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=60
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/sita /var/log/sita /home/sita /run/user/1000
+ProtectHome=false
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sita-runtime
+
+[Install]
+WantedBy=graphical.target

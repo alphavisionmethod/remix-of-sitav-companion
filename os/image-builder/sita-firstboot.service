@@ -1,0 +1,24 @@
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — First Boot Provisioning Service
+# Runs once per device. Generates device ID, configures locale/network,
+# binds tenant, and records trust baseline. Then signals runtime.
+# ═══════════════════════════════════════════════════════════════════════
+[Unit]
+Description=SITA OS First-Boot Provisioning
+Documentation=https://sita.dev/docs/first-boot
+DefaultDependencies=no
+After=systemd-machine-id-commit.service local-fs.target
+Before=sita-runtime.service multi-user.target
+ConditionPathExists=!/var/lib/sita/.first-boot-complete
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/sita/first-boot.sh
+StandardOutput=journal+console
+StandardError=journal+console
+SyslogIdentifier=sita-firstboot
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
