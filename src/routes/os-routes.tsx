@@ -9,6 +9,8 @@ const MyPlanUsage = lazy(() => import("@/pages/settings/MyPlanUsage"));
 const AccessibilitySettings = lazy(() => import("@/pages/settings/AccessibilitySettings"));
 const DeviceSettingsPage = lazy(() => import("@/pages/settings/DeviceSettings"));
 const TrustedDeviceManager = lazy(() => import("@/pages/settings/TrustedDeviceManager"));
+const MFAEnrollment = lazy(() => import("@/pages/settings/MFAEnrollment"));
+const PasskeyManagement = lazy(() => import("@/pages/settings/PasskeyManagement"));
 const MissionControl = lazy(() => import("@/pages/mission-control/MissionControlPage"));
 const PersonalizationStudio = lazy(() => import("@/pages/PersonalizationStudio"));
 const MemoryCenter = lazy(() => import("@/pages/MemoryCenter"));
