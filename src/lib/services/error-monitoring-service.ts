@@ -1,19 +1,29 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Error Monitoring Service
+// SITA OS — Error Monitoring Service (Phase 20.A — REWIRED)
 // Captures unhandled errors & rejections, batches reports to
-// the support-gateway edge function for centralized observability.
+// the new error-ingest edge function, also forwards to Sentry
+// when active. Native sink always works.
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { captureException, isSentryActive } from "@/lib/observability/sentry";
+import { fingerprintError, getRuntimeErrorContext } from "@/lib/observability/runtime-error-context";
+import { getCurrentCorrelationId } from "@/lib/observability/request-context";
+import { APP_RELEASE, APP_ENVIRONMENT } from "@/lib/observability/release";
 
 interface ErrorReport {
+  fingerprint: string;
   message: string;
   stack?: string;
-  source?: string;
-  timestamp: string;
-  url: string;
-  userAgent: string;
-  severity: "fatal" | "error" | "warning";
+  source: "frontend";
+  severity: "fatal" | "error" | "warning" | "info";
+  route: string;
+  correlation_id: string | null;
+  release: string;
+  environment: string;
+  user_agent: string;
+  metadata: Record<string, unknown>;
+  sentry_event_id?: string;
 }
 
 const BATCH_INTERVAL_MS = 10_000;
@@ -23,112 +33,91 @@ let errorQueue: ErrorReport[] = [];
 let flushTimer: ReturnType<typeof setInterval> | null = null;
 let initialized = false;
 
-function createReport(
-  message: string,
-  stack?: string,
-  severity: ErrorReport["severity"] = "error",
-  source?: string
-): ErrorReport {
+function build(message: string, stack?: string, severity: ErrorReport["severity"] = "error", source?: string): ErrorReport {
+  const ctx = getRuntimeErrorContext(getCurrentCorrelationId());
   return {
+    fingerprint: fingerprintError(message, stack),
     message: String(message).slice(0, 2048),
-    stack: stack?.slice(0, 4096),
-    source,
+    stack: stack?.slice(0, 8192),
+    source: "frontend",
     severity,
-    timestamp: new Date().toISOString(),
-    url: typeof window !== "undefined" ? window.location.href : "",
-    userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    route: ctx.route,
+    correlation_id: ctx.correlationId,
+    release: APP_RELEASE,
+    environment: APP_ENVIRONMENT,
+    user_agent: ctx.userAgent,
+    metadata: {
+      surface: ctx.surface,
+      capturedFrom: source,
+      featureFlags: ctx.featureFlags,
+      tenantId: ctx.tenantId,
+    },
   };
 }
 
 async function flushQueue() {
   if (errorQueue.length === 0) return;
-
   const batch = errorQueue.splice(0, MAX_BATCH_SIZE);
-
   try {
-    await supabase.functions.invoke("support-gateway", {
-      body: { action: "report-errors", errors: batch },
-    });
+    await supabase.functions.invoke("error-ingest", { body: { errors: batch } });
   } catch {
-    // If reporting fails, re-enqueue (once) to avoid infinite loops
-    if (errorQueue.length < MAX_BATCH_SIZE * 2) {
-      errorQueue.push(...batch);
-    }
+    if (errorQueue.length < MAX_BATCH_SIZE * 2) errorQueue.push(...batch);
   }
 }
 
 function enqueue(report: ErrorReport) {
   errorQueue.push(report);
-  if (errorQueue.length >= MAX_BATCH_SIZE) {
-    flushQueue();
-  }
+  if (errorQueue.length >= MAX_BATCH_SIZE) flushQueue();
 }
 
-/**
- * Initialize global error monitoring.
- * Call once at application startup (before React render).
- */
 export function initErrorMonitoring() {
   if (initialized || typeof window === "undefined") return;
   initialized = true;
 
-  // Capture uncaught errors
   window.addEventListener("error", (event) => {
-    enqueue(
-      createReport(
-        event.message || "Unknown error",
-        event.error?.stack,
-        "error",
-        `${event.filename}:${event.lineno}:${event.colno}`
-      )
+    const report = build(
+      event.message || "Unknown error",
+      event.error?.stack,
+      "error",
+      `${event.filename}:${event.lineno}:${event.colno}`,
     );
+    if (isSentryActive() && event.error) {
+      const id = captureException(event.error);
+      if (id) report.sentry_event_id = id;
+    }
+    enqueue(report);
   });
 
-  // Capture unhandled promise rejections
   window.addEventListener("unhandledrejection", (event) => {
     const reason = event.reason;
-    enqueue(
-      createReport(
-        reason?.message || String(reason),
-        reason?.stack,
-        "error",
-        "unhandledrejection"
-      )
-    );
+    const report = build(reason?.message || String(reason), reason?.stack, "error", "unhandledrejection");
+    if (isSentryActive()) {
+      const id = captureException(reason);
+      if (id) report.sentry_event_id = id;
+    }
+    enqueue(report);
   });
 
-  // Periodic flush
   flushTimer = setInterval(flushQueue, BATCH_INTERVAL_MS);
 
-  // Flush on page unload
   window.addEventListener("beforeunload", () => {
     if (flushTimer) clearInterval(flushTimer);
     flushQueue();
   });
 
-  console.log("[ErrorMonitoring] Initialized");
+  console.log("[ErrorMonitoring] Initialized (release=%s env=%s sentry=%s)", APP_RELEASE, APP_ENVIRONMENT, isSentryActive());
 }
 
-/**
- * Report a fatal error (e.g., from an ErrorBoundary).
- * Immediately enqueues and attempts flush.
- */
 export function reportFatalError(error: Error, componentStack?: string) {
-  enqueue(
-    createReport(
-      error.message,
-      error.stack || componentStack,
-      "fatal",
-      "ErrorBoundary"
-    )
-  );
-  // Attempt immediate flush for fatal errors
+  const report = build(error.message, error.stack || componentStack, "fatal", "ErrorBoundary");
+  if (isSentryActive()) {
+    const id = captureException(error, { componentStack });
+    if (id) report.sentry_event_id = id;
+  }
+  enqueue(report);
   flushQueue();
 }
 
-/**
- * Manually report a warning-level issue.
- */
 export function reportWarning(message: string, context?: string) {
-  enqueue(createReport(message, undefined, "warning", context));
+  enqueue(build(message, undefined, "warning", context));
 }

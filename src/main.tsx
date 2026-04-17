@@ -3,17 +3,16 @@ import App from "./App.tsx";
 import "./index.css";
 import "./i18n";
 import { initPerformanceMonitor } from "@/lib/services/performance-monitor";
+import { initSentry } from "@/lib/observability/sentry";
+import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
+import { installFetchInterceptor } from "@/lib/observability/request-context";
+import { startSpanExporter } from "@/lib/observability/apm";
+import { startUptimeHeartbeat } from "@/lib/observability/uptime";
 
 // ── Service Worker registration with iframe / preview-host guard ──
-// Phase 13 — never register SW inside Lovable preview or any iframe context.
-// SW caching inside the editor preview would serve stale builds and mask code changes.
 if ('serviceWorker' in navigator) {
   const isInIframe = (() => {
-    try {
-      return window.self !== window.top;
-    } catch {
-      return true; // Cross-origin security block → assume iframe
-    }
+    try { return window.self !== window.top; } catch { return true; }
   })();
 
   const host = window.location.hostname;
@@ -25,7 +24,6 @@ if ('serviceWorker' in navigator) {
     host === '127.0.0.1';
 
   if (isInIframe || isPreviewHost) {
-    // Defensive cleanup: unregister any SW that may have been installed earlier
     navigator.serviceWorker.getRegistrations().then((regs) => {
       regs.forEach((r) => r.unregister().catch(() => {}));
     }).catch(() => {});
@@ -36,7 +34,18 @@ if ('serviceWorker' in navigator) {
   }
 }
 
-// Init performance monitoring
+// ── Phase 20: Production observability boot order ──
+// 1) Sentry first so subsequent errors during boot are captured.
+// 2) Native error sink (always-on, even without Sentry DSN).
+// 3) Fetch interceptor (correlation-id / traceparent propagation).
+// 4) Performance monitor.
+// 5) APM span exporter (background batch every 15s).
+// 6) Uptime heartbeat (every 60s while tab is visible).
+initSentry();
+initErrorMonitoring();
+installFetchInterceptor();
 initPerformanceMonitor();
+startSpanExporter();
+startUptimeHeartbeat();
 
 createRoot(document.getElementById("root")!).render(<App />);
