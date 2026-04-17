@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import { Upload, FileText, X, CheckCircle, AlertTriangle, Loader2 } from "lucide-react";
+import { Upload, FileText, X, CheckCircle, AlertTriangle, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Progress } from "@/components/ui/progress";
@@ -7,14 +7,22 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 
-interface UploadedFile {
+export interface UploadedFileEntry {
   name: string;
   size: number;
   status: "uploading" | "classifying" | "done" | "error";
   progress: number;
   classification?: string;
   sensitivity?: string;
+  signedUrl?: string;
+  storagePath?: string;
   error?: string;
+}
+
+type UploadedFile = UploadedFileEntry;
+
+interface FileUploaderProps {
+  onUploaded?: (entry: UploadedFileEntry) => void;
 }
 
 const ALLOWED_TYPES = [
@@ -25,7 +33,7 @@ const ALLOWED_TYPES = [
 ];
 const MAX_SIZE = 20 * 1024 * 1024; // 20MB
 
-export const FileUploader = () => {
+export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
   const { user } = useAuth();
   const emitLoop = useLoopEmitter("files-ai-assist");
   const [files, setFiles] = useState<UploadedFile[]>([]);
@@ -49,13 +57,13 @@ export const FileUploader = () => {
     try {
       const storagePath = `${user.id}/${Date.now()}_${file.name}`;
 
-      // Upload to storage
+      // Upload to storage (correct bucket: user-files, RLS-scoped to user.id folder)
       const { error: uploadError } = await supabase.storage
-        .from("documents")
-        .upload(storagePath, file, { upsert: false });
+        .from("user-files")
+        .upload(storagePath, file, { upsert: false, contentType: file.type });
 
       if (uploadError) throw uploadError;
-      updateFile(file.name, { progress: 60, status: "classifying" });
+      updateFile(file.name, { progress: 60, status: "classifying", storagePath });
 
       // Call file-ingestion edge function
       const { data: session } = await supabase.auth.getSession();
@@ -80,11 +88,27 @@ export const FileUploader = () => {
       if (!resp.ok) throw new Error("Classification failed");
       const result = await resp.json();
 
+      // Generate signed URL for immediate preview/download
+      const { data: signed } = await supabase.storage
+        .from("user-files")
+        .createSignedUrl(storagePath, 3600);
+
+      const finalEntry: UploadedFileEntry = {
+        ...entry,
+        progress: 100,
+        status: "done",
+        classification: result.classification,
+        sensitivity: result.sensitivity,
+        signedUrl: signed?.signedUrl,
+        storagePath,
+      };
+
       updateFile(file.name, {
         progress: 100,
         status: "done",
         classification: result.classification,
         sensitivity: result.sensitivity,
+        signedUrl: signed?.signedUrl,
       });
 
       emitLoop("file_upload", {
@@ -95,12 +119,13 @@ export const FileUploader = () => {
       });
 
       toast.success(`${file.name} classified as ${result.classification}`);
+      onUploaded?.(finalEntry);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Upload failed";
       updateFile(file.name, { status: "error", error: msg });
       toast.error(`Failed to upload ${file.name}: ${msg}`);
     }
-  }, [user]);
+  }, [user, onUploaded, emitLoop]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -174,10 +199,21 @@ export const FileUploader = () => {
                   </div>
                 )}
                 {f.status === "done" && (
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <CheckCircle className="h-3 w-3 text-trust-safe" />
                     <span className="text-[10px] text-foreground font-medium">{f.classification}</span>
                     <span className="text-[10px] text-muted-foreground">· {f.sensitivity}</span>
+                    {f.signedUrl && (
+                      <a
+                        href={f.signedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="ml-auto inline-flex items-center gap-1 text-[10px] font-medium text-primary hover:underline"
+                      >
+                        <ExternalLink className="h-3 w-3" /> Open
+                      </a>
+                    )}
                   </div>
                 )}
                 {f.status === "error" && (
