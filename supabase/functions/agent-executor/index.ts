@@ -6,6 +6,7 @@ import { requireAuth } from "../_shared/auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 
 // ═══ AI Gateway integration ═══
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
