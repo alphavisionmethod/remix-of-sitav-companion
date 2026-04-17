@@ -1,79 +1,103 @@
 
 
-## Re-Audit Verdict — Checklist 15: 10/12 ✅ + 2 Real Gaps
+## Re-Audit — Checklists 15 & 16
 
-Live disk + DB truth confirms Phase 22 infrastructure is fully landed. Two wiring gaps remain.
+### Checklist 15: Integrations / Connectors → 12/12 ✅ (verified, no changes)
+All 8 tables, 5 edge fns, 2 crons, Gate 33 confirmed live.
+
+### Checklist 16: Workflows / Automation → 1/10 ❌ CRITICAL FAÇADE
+
+**Live DB has NONE of the workflow/automation tables** despite migrations existing in source (likely lost in rebase). 40+ files, 4 admin pages, and `scheduler-dispatch` edge fn all reference missing tables.
 
 | # | Item | Status | Evidence |
 |---|---|---|---|
-| 1 | Connector registry exists | ✅ | `connector_registry` 12 rows, RLS on, catalog JSON valid |
-| 2 | Provider health exists | ✅ | `connector_configs` table live + RLS, `connector-health` fn deployed |
-| 3 | OAuth/token lifecycle | ✅ | All 4 tables (`accounts`, `oauth_tokens`, `receipts`, `consent_scope_records`) exist with RLS |
-| 4 | Refresh token rotation | ✅ | `connector-token-refresh` fn deployed; cron `sita-connector-token-refresh-5m` **active** |
-| 5 | Webhook handling | ✅ | `webhook-ingest` fn deployed + `verify_jwt=false`; `webhook_events` table live |
-| 6 | Replay failed webhooks | ✅ | `webhook-replay` fn deployed; `webhook-process` cron `sita-webhook-process-1m` **active** |
-| 7 | Sync cursors | ✅ | `connector_sync_cursors` table exists + RLS |
-| 8 | Connector truth visible in admin | ✅ | `CN01ConnectorRealityOverview` + `CN02ConnectorRegistryConsole` query real tables |
-| 9 | User-facing connection states | ✅ | `connector_accounts.status` modeled (connected/disconnected/reauth_required/degraded) |
-| 10 | Integration failure fallbacks | ❌ | **`connector-fake-mode.service.ts` has no auto-engage policy** — no `recordFailure()`, no 3-strike trigger, no `fallback_engaged` receipt |
-| 11 | Disconnect/reconnect flows | ⚠️ | `disconnect` action wired & tested; **`reconnect` action MISSING** from `connector-oauth/index.ts` (grep returns 0 hits). CN01 has no Reconnect button. |
-| 12 | Permissions/scopes auditable | ✅ | `consent_scope_records` table live + `consent_ledger` exists |
+| 1 | Workflow engine explicit | ⚠️ | `workflow-engine` service exists (in-memory only) |
+| 2 | Runtime state persisted | ❌ | `workflows`, `workflow_runs`, `workflow_steps` **MISSING from DB** |
+| 3 | Steps inspectable | ❌ | No `workflow_steps` table; `WorkflowReplayAudit.tsx` uses `DEMO_RUNS` mock |
+| 4 | Retry/replay exists | ⚠️ | `WorkflowReplayEngine` in-memory; no DB replay log |
+| 5 | Failures visible | ❌ | Admin pages query missing tables → render empty |
+| 6 | Automation policies explicit | ❌ | `scheduled_jobs.policy_family` column missing (table missing) |
+| 7 | Kill switches exist | ❌ | `automation_kill_switches` **MISSING**; KS-WORKFLOW/KS-AUTOMATIONS declared but no DB enforcement |
+| 8 | Actions write proofs | ❌ | No `workflow_receipts` table; no proof binding |
+| 9 | No hidden bypasses | ⚠️ | `check-no-hidden-executor.ts` exists; no workflow-specific check |
+| 10 | Stuck workflow repair in admin | ❌ | No `force_complete` / repair action; only mock data |
 
-**Truth: 10/12 wired, 2 concrete code gaps.**
+**Truth: 1/10 partial, 9/10 hard fails.**
 
 ---
 
-## Phase 22.1 — Reality Closure (2 fixes, ~4 files)
+## Phase 23 — Workflow & Automation Reality Closure
 
-### 22.1.A — Add `reconnect` action to OAuth fn (fixes #11)
-Edit `supabase/functions/connector-oauth/index.ts`:
-- Add `reconnect` to action union schema (alongside `initiate|callback|disconnect`)
-- Handler reads existing `connector_accounts` row + `connector_oauth_tokens.scopes_granted`
-- Marks token `reauth_required=true`, sets `connector_accounts.status='reauth_required'`
-- Returns a fresh OAuth `initiate` URL with prior scopes preserved
-- Writes `connector_receipts(event_type='reconnect_initiated')`
+### 23.A — Restore + extend the missing 8 tables (fixes 2,3,5,6,7,8)
+DB migration:
+- **`workflows`** — id, user_id, name, domain, version, trigger_type, trigger_config jsonb, steps jsonb, enabled, policy_family, kill_switch_class, retry_policy jsonb, approval_required, metadata
+- **`workflow_runs`** — id, user_id, workflow_id FK, status (pending|running|paused|awaiting-approval|completed|failed|cancelled|stuck), current_step, context jsonb, correlation_id, started_at, completed_at, last_progress_at, error, force_terminated_by
+- **`workflow_steps`** — id, run_id FK, step_index, step_id, step_type, status, input jsonb, output jsonb, retries, started_at, completed_at, error, receipt_id
+- **`workflow_state_transitions`** — id, run_id, from_state, to_state, reason, actor, timestamp (insert-only audit)
+- **`workflow_receipts`** — id, run_id, step_id, action, hash, evidence jsonb, created_at (insert-only)
+- **`scheduled_jobs`** — full schema from migration `20260405233420` (with `policy_family`, `kill_switch_class`)
+- **`job_executions`** — full schema (started_at, status, retries, output, error)
+- **`automation_kill_switches`** — id, user_id, scope (global|domain|job_class|workflow_id), scope_id, enabled, reason, activated_by, activated_at, deactivated_at
+All RLS user-scoped + admin-RW; indexes on status/next_run_at/run_id.
 
-### 22.1.B — Reconnect button in admin (fixes #11)
-Edit `src/pages/admin/CN01ConnectorRealityOverview.tsx`:
-- Add "Reconnect" button in account row when `status==='reauth_required'`
-- Calls `supabase.functions.invoke('connector-oauth', { body: { action:'reconnect', account_id }})`
-- On success → toast + redirect to returned auth URL
+### 23.B — Stuck workflow detector + repair (fixes 10)
+- **NEW edge fn `workflow-stuck-detector`** — every 5 min, finds runs where `status='running'` AND `last_progress_at < now() - 30min`; flips to `status='stuck'`; emits Phase 20 alert; writes `workflow_state_transitions` row.
+- **NEW edge fn `workflow-repair`** — admin-gated actions: `retry` (re-enqueue current step), `force_complete` (mark completed + audit), `force_fail` (mark failed + audit), `rollback` (run compensation steps). Every action writes `workflow_receipts` + `timeline_events`.
+- **CRON `sita-workflow-stuck-detector-5m`** every 5 min.
 
-### 22.1.C — Auto-fallback policy (fixes #10)
-Extend `src/lib/services/connector-control-plane/connector-fake-mode.service.ts`:
-- Add `recordConnectorFailure(accountId, connectorType)` — tracks failures in a 10-min sliding window
-- After 3 failures → `engageFakeMode(accountId)`:
-  - UPDATE `connector_accounts SET status='degraded'`
-  - INSERT `connector_receipts(event_type='fallback_engaged', details:{ reason:'3 failures in 10min' })`
-  - Emit Phase 20 alert via `emitAlert()`
-- Add manual override `disengageFakeMode(accountId)` for admin button
-- Wire `recordConnectorFailure` into `connector-proxy` and `connector-sync` fn error paths
+### 23.C — Wire scheduler-dispatch + dispatcher cron (fixes 6, 7)
+- **CRON `sita-scheduler-dispatch-1m`** every minute → `scheduler-dispatch` (already deployed but never invoked).
+- Update `scheduler-dispatch` to also check `KS-WORKFLOW` + `KS-AUTOMATIONS` runtime kill-switches via `checkKillSwitchOrReject`.
 
-### 22.1.D — Strengthen Gate 33 + refresh report
-Edit `scripts/architecture/checks/check-connector-reality.ts`:
-- Assert `connector-oauth/index.ts` contains `"reconnect"` action literal
-- Assert `connector-fake-mode.service.ts` exports `recordConnectorFailure` + `engageFakeMode`
-- Assert `CN01ConnectorRealityOverview.tsx` contains "Reconnect" button
-- Refresh `generated/connector-reality-report.json` with new evidence fields
+### 23.D — Workflow runner edge fn + receipts (fixes 1, 4, 8)
+- **NEW edge fn `workflow-execute`** — canonical runner. Reads `workflows`, creates `workflow_runs` + `workflow_steps`, advances state, writes `workflow_state_transitions` + `workflow_receipts` per step, honors retry policy with exponential backoff via `next_retry_at`.
+- **NEW edge fn `workflow-replay`** — admin: replay a failed run by run_id, creates new run with `replayed_from` link.
+
+### 23.E — Hidden bypass check (fixes 9)
+- **NEW `scripts/architecture/checks/check-no-workflow-bypass.ts`** — scans for direct `workflow_runs.insert` outside `workflow-execute`/`workflow-repair` fns. Fail if found.
+
+### 23.F — Wire admin pages to real tables (fixes 3, 5, 10)
+- `WorkflowReplayAudit.tsx` — replace `DEMO_RUNS` with live query of `workflow_runs` + `workflow_steps`. Add Repair drawer with Retry/Force-Complete/Force-Fail/Rollback buttons calling `workflow-repair`.
+- `AR01AutomationOverview.tsx` — already wired, will start showing real rows once tables exist.
+
+### 23.G — Gate 34 + report
+- **NEW `scripts/architecture/checks/check-workflow-reality.ts`** (Gate 34):
+  - All 8 tables exist + RLS on
+  - Edge fns `workflow-execute`, `workflow-repair`, `workflow-stuck-detector`, `workflow-replay` deployed
+  - Crons `sita-scheduler-dispatch-1m` + `sita-workflow-stuck-detector-5m` active
+  - `WorkflowReplayAudit` references real query (not `DEMO_RUNS`)
+  - `KS-WORKFLOW` enforcement points include `workflow-execute` + `scheduler-dispatch`
+  - Emit `generated/workflow-reality-report.json`
+- Bump `gateCount: 34` in `ci-gate-registry.ts` + `ci-umbrella-manifest.json`.
+- Register 8 new tables in `non-edge-table-io-sources.ts`.
 
 ### Files
 
 | Layer | Change |
 |---|---|
-| `supabase/functions/connector-oauth/index.ts` | EXTEND — add `reconnect` action |
-| `src/pages/admin/CN01ConnectorRealityOverview.tsx` | EXTEND — Reconnect button |
-| `src/lib/services/connector-control-plane/connector-fake-mode.service.ts` | EXTEND — auto-fallback policy + failure tracker |
-| `supabase/functions/connector-proxy/index.ts` | WIRE — call `recordConnectorFailure` on error |
-| `supabase/functions/connector-sync/index.ts` | WIRE — call `recordConnectorFailure` on error |
-| `scripts/architecture/checks/check-connector-reality.ts` | +3 assertions |
-| `generated/connector-reality-report.json` | Refresh evidence |
+| DB migration | 8 tables (workflows + 4 workflow children + 3 automation), RLS, indexes, FKs |
+| Edge fn `workflow-execute` | NEW — canonical runner |
+| Edge fn `workflow-repair` | NEW — retry/force-complete/force-fail/rollback |
+| Edge fn `workflow-stuck-detector` | NEW — 5-min sweep |
+| Edge fn `workflow-replay` | NEW — admin replay |
+| Edge fn `scheduler-dispatch` | EXTEND — KS-WORKFLOW/KS-AUTOMATIONS gates |
+| `WorkflowReplayAudit.tsx` | REWIRE — live data + Repair drawer |
+| `scripts/architecture/checks/check-workflow-reality.ts` | NEW Gate 34 |
+| `scripts/architecture/checks/check-no-workflow-bypass.ts` | NEW bypass check |
+| `src/lib/ci/ci-gate-registry.ts` + manifest | gateCount 34 |
+| `src/lib/db/non-edge-table-io-sources.ts` | register 8 tables |
+| Cron inserts | `sita-scheduler-dispatch-1m` + `sita-workflow-stuck-detector-5m` |
+| `generated/workflow-reality-report.json` | NEW |
 
 ### Acceptance
 
-- `grep "reconnect" supabase/functions/connector-oauth/index.ts` returns hits
-- Calling `connector-oauth { action:'reconnect', account_id }` → returns auth URL + flips status to `reauth_required` + writes receipt
-- CN01 admin renders "Reconnect" button on `reauth_required` rows
-- Simulating 3 connector-proxy failures within 10 min → `connector_accounts.status='degraded'` + `fallback_engaged` receipt written + alert emitted
-- Gate 33 green with new assertions; report `ok:true`
-- Checklist 15 truthfully **12/12 — fully deployable**
+- All 8 tables exist with RLS; `SELECT * FROM workflows LIMIT 1` succeeds (empty OK)
+- `cron.job` contains `sita-scheduler-dispatch-1m` + `sita-workflow-stuck-detector-5m` active
+- `workflow-execute` end-to-end: insert workflow → invoke → run row created → steps advance → receipts written → terminal status
+- Stuck detector flips a synthetic stale run to `status='stuck'` within 5 min + emits alert
+- `workflow-repair { action:'force_complete', run_id }` writes audit + transitions to `completed`
+- `WorkflowReplayAudit` admin page renders real rows + Repair buttons functional
+- Activating `KS-AUTOMATIONS` causes `scheduler-dispatch` to skip dispatch (proof receipt)
+- Gate 34 green; CI Umbrella `gateCount: 34`; report `ok:true`
+- Checklist 16 truthfully **10/10 — fully deployable**
 
