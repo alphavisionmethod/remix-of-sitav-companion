@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-17T01:05:54.537Z",
+  "edgeCallers": [
+    "supabase/functions/admin-bff-gateway/index.ts",
+    "supabase/functions/advisor-agent-loop/index.ts",
+    "supabase/functions/agent-executor/index.ts",
+    "supabase/functions/gdpr-delete/index.ts",
+    "supabase/functions/payment-kill-switch/index.ts",
+    "supabase/functions/payment-process/index.ts"
+  ],
+  "uiCallers": [
+    "src/lib/ci/ci-gate-registry.ts",
+    "src/pages/admin/AIApprovalDesk.tsx",
+    "src/pages/admin/AIT07ApprovalQueuePage.tsx",
+    "src/pages/admin/AR08KillSwitchCenter.tsx",
+    "src/pages/admin/AdvisorActionApprovalAdmin.tsx",
+    "src/pages/admin/AdvisorAgentDashboard.tsx",
+    "src/pages/admin/AdvisorAutonomyPolicyEditor.tsx"
+  ],
+  "edgeCount": 6,
+  "uiCount": 7,
+  "requiredEdge": 6,
+  "requiredUi": 6,
+  "errors": [],
+  "ok": true
+}
