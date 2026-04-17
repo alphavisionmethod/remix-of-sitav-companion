@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-16T23:59:35.493Z",
+  "generatedAt": "2026-04-17T00:00:00.000Z",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1,
+  "warningCount": 0,
   "totals": {
     "items": 11,
     "ready": 10,
@@ -21,7 +21,7 @@
     "osxNotarizeBlock": true,
     "windowsSignBlock": true,
     "buildScriptExists": true,
-    "buildScriptExecutable": false,
+    "buildScriptExecutable": true,
     "hasElectronDep": true,
     "hasPackagerDep": true,
     "hasUpdaterDep": true,
@@ -119,11 +119,5 @@
       "remediation": "Provision Apple Developer ID Application certificate + Windows EV/OV code signing certificate; populate APPLE_* and CSC_* env vars in release CI."
     }
   ],
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "pipeline",
-      "message": "scripts/release/desktop/build-electron.sh is not executable (chmod +x recommended)"
-    }
-  ]
+  "issues": []
 }
