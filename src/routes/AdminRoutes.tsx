@@ -216,6 +216,10 @@ const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDas
 // ── C-020: User Seed Health Dashboard ──
 const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
 
+// ── Phase 33: Platform Readiness + Live Incident Dashboard ──
+const PlatformReadinessScorecard = lazy(() => import("@/pages/admin/PlatformReadinessScorecard"));
+const IncidentDashboardPage = lazy(() => import("@/pages/admin/IncidentDashboardPage"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -258,6 +262,10 @@ export function getAdminRoutes() {
     <Route key="ws-ts-audit" path="/admin/trust-security/audit" element={gated("audit.view", <AuditComplianceWorkspace />)} />,
     <Route key="ws-ts-retention" path="/admin/data-retention" element={gated("audit.view", <DataRetentionDashboard />)} />,
     <Route key="ws-onboarding-seed-health" path="/admin/user-seed-health" element={gated("audit.view", <UserSeedHealth />)} />,
+
+    // ── Phase 33: Platform Readiness Scorecard + Live Incident Dashboard ──
+    <Route key="phase33-readiness" path="/admin/readiness" element={gated("audit.view", <PlatformReadinessScorecard />)} />,
+    <Route key="phase33-incidents-dashboard" path="/admin/incidents/dashboard" element={gated("maintenance.view", <IncidentDashboardPage />)} />,
 
     // ── Phase 7: Meta-Architecture Surfaces ──
     <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,
