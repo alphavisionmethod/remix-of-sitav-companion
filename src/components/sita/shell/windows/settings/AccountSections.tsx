@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useProfile } from "@/hooks/use-profile";
 import {
   User, Shield, Lock, LogOut, Trash2, KeyRound, Globe, Info, Camera, Key,
   ShieldAlert, Database, Brain, ToggleLeft, ToggleRight,
@@ -28,45 +29,27 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
 export function ProfileContent() {
   const { user, isDemo } = useAuth();
+  const { profile, isLoading, updateProfile, refresh } = useProfile();
   const [displayName, setDisplayName] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync local input with canonical profile value when it loads/changes
   useEffect(() => {
-    if (!user || isDemo) {
-      setDisplayName("Demo User");
-      setAvatarUrl(null);
-      setLoading(false);
-      return;
-    }
-    (async () => {
-      const { data } = await (supabase as any)
-        .from("profiles")
-        .select("display_name, avatar_url")
-        .eq("user_id", user.id)
-        .single();
-      if (data) {
-        setDisplayName(data.display_name || "");
-        setAvatarUrl(data.avatar_url || null);
-      }
-      setLoading(false);
-    })();
-  }, [user, isDemo]);
+    setDisplayName(profile?.display_name ?? (isDemo ? "Demo User" : ""));
+  }, [profile?.display_name, isDemo]);
+
+  const avatarUrl = profile?.avatar_url ?? null;
 
   const handleSaveName = useCallback(async () => {
     if (!user || isDemo) { toast.info("Sign in to save changes"); return; }
     setSaving(true);
-    const { error } = await (supabase as any)
-      .from("profiles")
-      .update({ display_name: displayName })
-      .eq("user_id", user.id);
+    const { error } = await updateProfile({ display_name: displayName });
     setSaving(false);
     if (error) toast.error("Failed to update name");
     else toast.success("Name updated");
-  }, [user, isDemo, displayName]);
+  }, [user, isDemo, displayName, updateProfile]);
 
   const handleAvatarUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,13 +62,13 @@ export function ProfileContent() {
     if (uploadError) { toast.error("Upload failed"); setUploading(false); return; }
     const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
     const publicUrl = urlData.publicUrl + "?t=" + Date.now();
-    await (supabase as any).from("profiles").update({ avatar_url: publicUrl }).eq("user_id", user.id);
-    setAvatarUrl(publicUrl);
+    await updateProfile({ avatar_url: publicUrl });
+    await refresh();
     setUploading(false);
     toast.success("Avatar updated");
-  }, [user, isDemo]);
+  }, [user, isDemo, updateProfile, refresh]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <VStack spacing="tight" align="center" className="py-8">
         <NovaText variant="label" muted>Loading profile…</NovaText>

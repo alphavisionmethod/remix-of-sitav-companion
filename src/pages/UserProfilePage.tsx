@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useProfile } from "@/hooks/use-profile";
 const db = supabase as any;
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import { useActionFn } from "@/hooks/use-action";
 
 const UserProfilePage = () => {
   const { user } = useAuth();
+  const { profile: canonicalProfile, isLoading: profileLoading } = useProfile();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -31,40 +33,35 @@ const UserProfilePage = () => {
     daysSinceJoin: 0,
   });
 
+  // Hydrate local edit state from the canonical profile signal
+  useEffect(() => {
+    if (!canonicalProfile) return;
+    const prefs = canonicalProfile.preferences || {};
+    setProfile({
+      display_name: canonicalProfile.display_name || "",
+      avatar_url: canonicalProfile.avatar_url || "",
+      timezone: prefs.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+      locale: prefs.locale || navigator.language,
+      bio: prefs.bio || canonicalProfile.bio || "",
+    });
+  }, [canonicalProfile]);
+
+  // Stats only depend on user; load once user is available
   useEffect(() => {
     if (!user) return;
-    const load = async () => {
-      setLoading(true);
-      const { data: p } = await db.from("profiles")
-        .select("display_name, avatar_url, preferences")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (p) {
-        const prefs = (p.preferences as Record<string, any>) || {};
-        setProfile({
-          display_name: p.display_name || "",
-          avatar_url: p.avatar_url || "",
-          timezone: prefs.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
-          locale: prefs.locale || navigator.language,
-          bio: prefs.bio || "",
-        });
-      }
-
+    const loadStats = async () => {
       const { count } = await db.from("trust_weighted_actions")
         .select("id", { count: "exact", head: true });
-
       const created = new Date(user.created_at);
       const days = Math.max(1, Math.floor((Date.now() - created.getTime()) / 86400000));
-
-      setStats({
-        actionsCount: count ?? 0,
-        daysSinceJoin: days,
-      });
+      setStats({ actionsCount: count ?? 0, daysSinceJoin: days });
       setLoading(false);
     };
-    load();
+    loadStats();
   }, [user]);
+
+  // Show loading while either signal is still resolving
+  const isLoading = loading || profileLoading;
 
   const saveProfileFn = useActionFn("workspace", "profile.update", {
     successMessage: "Profile saved",
@@ -106,7 +103,7 @@ const UserProfilePage = () => {
 
   const initials = (profile.display_name || user?.email || "U").slice(0, 2).toUpperCase();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="p-6 max-w-3xl mx-auto space-y-6">
         <div className="h-8 w-48 bg-muted animate-pulse rounded" />
