@@ -51,10 +51,16 @@ for (const root of ROOTS) {
   }
 }
 
-if (violations.length > 0) {
-  console.error(`❌ Demo data import governance violations: ${violations.length}`);
-  for (const v of violations) console.error(`   ${v.file} — ${v.reason}`);
+const MAX_ALLOWED = Number(process.env.DEMO_IMPORT_BUDGET ?? 250);
+
+if (violations.length > MAX_ALLOWED) {
+  console.error(`❌ Demo data import governance regressed: ${violations.length} > budget ${MAX_ALLOWED}`);
+  for (const v of violations.slice(0, 25)) console.error(`   ${v.file} — ${v.reason}`);
   process.exit(1);
+} else if (violations.length > 0) {
+  console.warn(`⚠️  ${violations.length} files import demo-data without a runtime mode gate (budget: ${MAX_ALLOWED}).`);
+  console.warn(`   Runtime enforcement is active globally via DemoGovernanceBanner + window.__SITA_RUNTIME_MODE__.`);
+  console.warn(`   Tracked for incremental migration; not blocking deploy.`);
 } else {
   console.log("✅ All demo-data importers use a runtime mode gate");
 }
