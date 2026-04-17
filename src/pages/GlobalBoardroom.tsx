@@ -5,7 +5,8 @@ import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { useNavigate } from "react-router-dom";
 import {
   Crown, Briefcase, DollarSign, Headphones, AlertTriangle, CheckCircle,
@@ -27,7 +28,7 @@ const isDemoMode = true; // Safe default for demo mode
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
-  const { isDemo } = useAuth();
+  const { isDemo, user } = useAuth();
   const isDemoMode = isDemo;
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
@@ -35,10 +36,27 @@ const GlobalBoardroom = () => {
   const { data: customers = [] } = useCustomers();
   const { data: invoices = [] } = useInvoices();
   const { data: moneyKpis } = useMoneyKPIs();
+  const emitBoardroomLoop = useLoopEmitter("boardroom-summary-decision");
 
   const k = moneyKpis || { totalBalance: 0, safeToSpend: 0, reserveHealth: 0, billsDue7d: 0, monthlyBurn: 0, estWaste: 0, wasteCount: 0 };
   const overdueInvoices = invoices.filter((i: any) => i.status === "overdue");
   const overdueAmount = overdueInvoices.reduce((s: number, i: any) => s + (i.amount || 0), 0);
+
+  // Flagship Loop 3 — emit boardroom_summary once data has settled (live mode only).
+  useEffect(() => {
+    if (!user || isDemoMode) return;
+    emitBoardroomLoop("boardroom_summary", {
+      outcome: "success",
+      evidence: {
+        leads: leads.length,
+        customers: customers.length,
+        invoices: invoices.length,
+        overdue_amount_cents: Math.round(overdueAmount * 100),
+        total_balance_cents: Math.round((k.totalBalance || 0) * 100),
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, isDemoMode, leads.length, customers.length, invoices.length]);
 
   const crossDomainPriorities = [
     overdueAmount > 0 && { id: "od", label: `Collect $${overdueAmount.toLocaleString()} in overdue invoices`, urgency: "critical" as const },

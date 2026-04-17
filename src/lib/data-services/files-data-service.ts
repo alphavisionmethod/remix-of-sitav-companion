@@ -10,9 +10,11 @@ async function getUser() {
 
 export async function fetchFilesOverview() {
   const user = await getUser();
+  // Unauthenticated/demo path keeps curated fixtures so the surface remains expressive.
   if (!user) return MOCK_FILES_OVERVIEW;
+  // Authenticated users always get real data — empty array means honest empty state.
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
-  if (error || !data || data.length === 0) return MOCK_FILES_OVERVIEW;
+  if (error || !data) return [];
   return data.map((f: any) => ({ name: f.filename, mime: f.mime_type || "application/octet-stream", text: f.extracted_data?.text || "" }));
 }
 
@@ -20,7 +22,7 @@ export async function fetchFilesProcessing() {
   const user = await getUser();
   if (!user) return MOCK_FILES_PROCESSING;
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).eq("status", "processing").order("created_at", { ascending: false }) as { data: any[]; error: any };
-  if (error || !data || data.length === 0) return MOCK_FILES_PROCESSING;
+  if (error || !data) return [];
   return data.map((f: any) => ({ filename: f.filename, mimeType: f.mime_type, sizeBytes: Number(f.size_bytes), textContent: f.extracted_data?.text || "", uploadedBy: "owner" }));
 }
 
@@ -52,7 +54,7 @@ export async function fetchFilesSearchIndex(): Promise<IndexableItem[]> {
   const user = await getUser();
   if (!user) return MOCK_FILES_SEARCH_INDEX;
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
-  if (error || !data || data.length === 0) return MOCK_FILES_SEARCH_INDEX;
+  if (error || !data) return [];
   return data.map((f: any, i: number) => ({
     id: f.id, type: f.classification || "document", domain: classifyDomainFromFile(f) as SearchDomain,
     title: f.filename, body: f.extracted_data?.text || "",

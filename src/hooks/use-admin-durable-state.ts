@@ -206,6 +206,23 @@ export function useConnectorSyncMutation() {
       });
 
       await logOperatorAction(user!.id, "connector_sync", "connector_configs", connectorId, { status, recordsSynced }, { status });
+
+      // Flagship Loop 4 — emit durable proof of sync run completion.
+      // Lazy import keeps this hook free of cyclic deps.
+      try {
+        const { emitLoopCompletion } = await import("@/hooks/use-flagship-loop-proof");
+        await emitLoopCompletion({
+          loop_key: "connected-services-sync",
+          step_key: "sync_run",
+          outcome: status === "success" || status === "completed" ? "success" : status === "pending" ? "partial" : "failure",
+          evidence: {
+            connector_id: connectorId,
+            status,
+            records_synced: recordsSynced ?? 0,
+            error: syncError ?? null,
+          },
+        });
+      } catch { /* receipts must never break the host flow */ }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["connector-sync-history"] });

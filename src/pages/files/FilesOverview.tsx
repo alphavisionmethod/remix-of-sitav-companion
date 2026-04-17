@@ -18,9 +18,6 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
-const isDemoMode = true; // Safe default for demo mode
-
-
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
 const sensitivityColor: Record<SensitivityLevel, string> = {
@@ -72,6 +69,10 @@ const FilesOverview = () => {
   [filesData]);
 
   const sensitiveCount = classifiedFiles.filter(f => f.sensitivity === "confidential" || f.sensitivity === "restricted").length;
+
+  // Truth-banner derived state: live whenever an authenticated user is present —
+  // empty real data is still "live" (it is the user's honest empty state).
+  const isDemoMode = !user;
 
   const recentEvents = [
     { id: "r1", title: "Contract uploaded & classified", timestamp: "2h ago", accentColor: "hsl(152 55% 48%)" },

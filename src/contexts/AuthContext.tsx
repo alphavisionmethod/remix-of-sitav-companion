@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { emitLoopCompletion } from "@/hooks/use-flagship-loop-proof";
 
 interface AuthContextType {
   user: User | null;
@@ -127,6 +128,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       if ((event === "SIGNED_IN" || event === "TOKEN_REFRESHED") && session?.user) {
         triggerAutoSeed(session.user.id);
+        // Flagship Loop 1 — emit durable proof of sign-in (fire-and-forget).
+        if (event === "SIGNED_IN") {
+          emitLoopCompletion({
+            loop_key: "sign-in-dashboard-pulse",
+            step_key: "sign_in",
+            outcome: "success",
+            evidence: { event, user_id: session.user.id },
+          }).catch(() => { /* never block auth flow */ });
+        }
         // Defer MFA detection to avoid deadlock with auth callback
         setTimeout(() => {
           detectMFARequirement().then(({ required, factorId }) => {
