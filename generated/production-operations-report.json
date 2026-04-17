@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-04-17T00:00:00.000Z",
   "gate": "production-operations",
-  "phase": "phase-20-production-operations",
+  "phase": "phase-20.1-production-operations-closure",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
@@ -39,7 +39,10 @@
       "beat_present": true,
       "cron_present": true,
       "uptime_lib_present": true,
-      "client_heartbeat_started": true
+      "client_heartbeat_started": true,
+      "cron_scheduled": true,
+      "cron_jobname": "sita-health-cron-1m",
+      "cron_schedule": "* * * * *"
     },
     "A4_alert_routing": {
       "ingest_present": true,
@@ -48,6 +51,22 @@
       "client_present": true,
       "triage_board_demo_free": true,
       "triage_board_live_wired": true
+    },
+    "A5_phase_20_1_closure": {
+      "alert_producers_wired": 6,
+      "alert_producers_total": 6,
+      "producers": [
+        "src/lib/observability/slo-tracking.ts",
+        "src/lib/observability/anomaly-detection.ts",
+        "supabase/functions/payment-kill-switch/index.ts",
+        "supabase/functions/connector-health/index.ts",
+        "supabase/functions/ai-health/index.ts",
+        "supabase/functions/error-ingest/index.ts"
+      ],
+      "observability_ui_wired": true,
+      "sourcemap_upload_wired": true,
+      "shared_alert_emitter": "supabase/functions/_shared/alert-emitter.ts",
+      "uptime_rollup_fn": "supabase/functions/uptime-rollup/index.ts"
     }
   }
 }

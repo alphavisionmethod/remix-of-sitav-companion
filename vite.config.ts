@@ -74,14 +74,14 @@ export default defineConfig(({ mode }) => ({
     healthJsonPlugin(),
     publicHostRewritePlugin(),
     // Phase 20.1.D — Sentry sourcemap upload (gated on build secret)
-    process.env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
+    process.env.SENTRY_AUTH_TOKEN ? sentryVitePlugin({
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       authToken: process.env.SENTRY_AUTH_TOKEN,
       release: { name: process.env.VITE_APP_RELEASE || undefined },
       sourcemaps: { assets: "./dist/**" },
       disable: !process.env.SENTRY_AUTH_TOKEN,
-    }),
+    }) : false,
   ].filter(Boolean),
   resolve: {
     alias: {
