@@ -7965,6 +7965,75 @@ export type Database = {
         }
         Relationships: []
       }
+      file_metadata: {
+        Row: {
+          classification: string
+          created_at: string
+          extracted_data: Json
+          filename: string
+          id: string
+          mime_type: string | null
+          sensitivity: string
+          size_bytes: number | null
+          status: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          classification?: string
+          created_at?: string
+          extracted_data?: Json
+          filename: string
+          id?: string
+          mime_type?: string | null
+          sensitivity?: string
+          size_bytes?: number | null
+          status?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          classification?: string
+          created_at?: string
+          extracted_data?: Json
+          filename?: string
+          id?: string
+          mime_type?: string | null
+          sensitivity?: string
+          size_bytes?: number | null
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      file_settings: {
+        Row: {
+          created_at: string
+          id: string
+          settings: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          settings?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          settings?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flagship_loop_completions: {
         Row: {
           emitted_at: string
