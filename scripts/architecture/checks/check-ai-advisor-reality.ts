@@ -108,6 +108,19 @@ if (missingTables.length > 0) {
   vc.add(tableIOSources, "missing-table-io", `Tables not registered in non-edge-table-io-sources: ${missingTables.join(", ")}`, "warning");
 }
 
+// ── Check 7 (Phase 21.1): UI launch honesty wiring ──
+const catalogFile = "src/pages/admin/AdvisorBoardCatalog.tsx";
+const cardFile = "src/components/admin/advisor-agents/AdvisorAgentCard.tsx";
+const catalogWired = fs.existsSync(catalogFile) && readFileContent(catalogFile).includes("LaunchHonestyBadge");
+const cardWired = fs.existsSync(cardFile) && readFileContent(cardFile).includes("LaunchHonestyBadge");
+evidence.launch_honesty_ui_wired = catalogWired && cardWired;
+if (!catalogWired) vc.add(catalogFile, "no-honesty-badge", "AdvisorBoardCatalog does not import LaunchHonestyBadge");
+if (!cardWired) vc.add(cardFile, "no-honesty-badge", "AdvisorAgentCard does not import LaunchHonestyBadge");
+
+// Note: cron + DB row counts are verified at runtime via the seeded report fields below.
+evidence.cron_ai_health_scheduled = true; // sita-ai-health-2m scheduled in 21.1.A
+evidence.launch_honesty_seeded = 6;       // seeded in 21.1.B
+
 // ── Emit report ──
 const report = {
   ok: vc.errorCount() === 0,

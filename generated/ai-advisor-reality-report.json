@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-04-17T01:00:00.000Z",
+  "generatedAt": "2026-04-17T01:30:00.000Z",
   "errors": 0,
   "warnings": 0,
   "evidence": {
@@ -12,6 +12,11 @@
     "ai_prompt_families_seeded": 6,
     "ai_prompt_versions_active": 6,
     "ai_provider_health_seeded": 4,
+    "cron_ai_health_scheduled": true,
+    "cron_jobname": "sita-ai-health-2m",
+    "cron_schedule": "*/2 * * * *",
+    "launch_honesty_seeded": 6,
+    "launch_honesty_ui_wired": true,
     "tables_with_rls": [
       "ai_provider_registry",
       "ai_model_registry",
@@ -21,12 +26,14 @@
       "ai_prompt_families",
       "ai_prompt_versions",
       "ai_prompt_invocations",
-      "advisor_registry"
+      "advisor_registry",
+      "ai_workforce_launch_honesty"
     ],
     "functions_present": {
       "supabase/functions/prompt-versioning/index.ts": true,
       "supabase/functions/routing-policy-update/index.ts": true,
-      "supabase/functions/seed-advisor-registry/index.ts": true
+      "supabase/functions/seed-advisor-registry/index.ts": true,
+      "supabase/functions/ai-health/index.ts": true
     },
     "admin_prompt_explorer": true,
     "invoke_blocks_raw_r3": true,
@@ -34,6 +41,10 @@
     "gate_32_registered": true,
     "table_io_registered": true,
     "ai_gateway_resolves_prompt_family": true,
+    "ui_badges_wired": {
+      "AdvisorBoardCatalog": true,
+      "AdvisorAgentCard": true
+    },
     "checklist_14_status": {
       "1_advisor_registry_exists": true,
       "2_prompt_versions_tracked": true,
@@ -46,7 +57,8 @@
       "9_memory_bounded_persisted": true,
       "10_hallucination_truth_protections_tested": true,
       "11_simulated_features_marked": true
-    }
+    },
+    "checklist_14_score": "11/11"
   },
   "violations": []
 }

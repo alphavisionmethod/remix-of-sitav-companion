@@ -10,6 +10,26 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BoardAPI, type AutonomyPolicy } from "@/lib/services/board-api-client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
+import { supabase } from "@/integrations/supabase/client";
+
+type HonestyClass = "truthful" | "qualified" | "demo_governed" | "partial" | "unavailable" | "planned" | "internal_only";
+
+const MATURITY_TO_HONESTY: Record<string, HonestyClass> = {
+  production: "truthful",
+  beta: "partial",
+  alpha: "qualified",
+  scaffold: "demo_governed",
+};
+
+function honestyFor(advisorId: string, honestyMap: Record<string, string>): HonestyClass {
+  // Try direct match, then domain-suffixed variants
+  const status =
+    honestyMap[advisorId] ??
+    honestyMap[advisorId.replace(/-advisor$/, "")] ??
+    honestyMap[`${advisorId.replace(/-advisor$/, "")}-advisor`];
+  return MATURITY_TO_HONESTY[status ?? ""] ?? "planned";
+}
 
 type AdvisorState = Record<string, { enabled: boolean; intensity: number }>;
 
@@ -41,6 +61,20 @@ export default function AdvisorBoardCatalog() {
       return res.autonomyPolicies ?? [];
     },
     staleTime: 30_000,
+  });
+
+  const { data: honestyMap = {} } = useQuery({
+    queryKey: ["advisor-launch-honesty"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ai_workforce_launch_honesty")
+        .select("role_key, actual_status");
+      if (error) throw error;
+      const map: Record<string, string> = {};
+      for (const row of data ?? []) map[row.role_key] = row.actual_status;
+      return map;
+    },
+    staleTime: 60_000,
   });
 
   const [advisorStates, setAdvisorStates] = useState<AdvisorState>(
@@ -143,7 +177,10 @@ export default function AdvisorBoardCatalog() {
                           {advisor.emoji}
                         </div>
                         <div>
-                          <CardTitle className="text-sm">{advisor.displayName}</CardTitle>
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-sm">{advisor.displayName}</CardTitle>
+                            <LaunchHonestyBadge honestyClass={honestyFor(advisor.id, honestyMap)} compact />
+                          </div>
                           <p className="text-[10px] text-muted-foreground">{advisor.role}</p>
                         </div>
                       </div>

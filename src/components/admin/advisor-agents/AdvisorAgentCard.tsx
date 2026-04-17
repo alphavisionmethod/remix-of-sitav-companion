@@ -8,6 +8,7 @@ import {
   DollarSign, Briefcase, Home, Clock
 } from "lucide-react";
 import type { AdvisorAgent } from "@/hooks/use-advisor-agents";
+import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
 
 const DOMAIN_ICONS: Record<string, React.ElementType> = {
   money: DollarSign,
@@ -16,6 +17,13 @@ const DOMAIN_ICONS: Record<string, React.ElementType> = {
 };
 
 const AUTONOMY_LABELS = ["L0 Observe", "L1 Diagnose", "L2 Recommend", "L3 Draft", "L4 Simulate", "L5 Approval Ready", "L6 Constrained Action"];
+
+const MATURITY_TO_HONESTY: Record<string, "truthful" | "qualified" | "demo_governed" | "partial" | "planned"> = {
+  production: "truthful",
+  beta: "partial",
+  alpha: "qualified",
+  scaffold: "demo_governed",
+};
 
 interface Props {
   agent: AdvisorAgent;
@@ -48,6 +56,7 @@ export function AdvisorAgentCard({ agent, onToggle, onAutonomyChange, onInvoke, 
           <div className="flex items-center gap-2">
             <DomainIcon className="h-5 w-5 text-primary" />
             <CardTitle className="text-base">{agent.display_name}</CardTitle>
+            <LaunchHonestyBadge honestyClass={MATURITY_TO_HONESTY[agent.maturity] ?? "planned"} compact />
           </div>
           <div className="flex items-center gap-2">
             <Badge variant={agent.is_active ? "default" : "secondary"} className="text-xs">
