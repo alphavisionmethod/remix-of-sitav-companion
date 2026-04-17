@@ -9,6 +9,16 @@ import { updateService } from "@/lib/services/app-store/update.service";
 import { permissionsService } from "@/lib/services/app-store/permissions.service";
 import { recentsService } from "@/lib/services/app-store/recents.service";
 
+// Re-export ingestion + verification hooks so app-platform consumers
+// can pull everything from a single barrel.
+export {
+  useIngestWebApp,
+  useIngestPwa,
+  useCaptureScreenshot,
+  useIngestionJob,
+  useVerifyPackage,
+} from "@/hooks/use-app-ingestion";
+
 export function useAppCatalog(filters: CatalogFilters = {}) {
   return useQuery({
     queryKey: ["app-catalog", filters],
