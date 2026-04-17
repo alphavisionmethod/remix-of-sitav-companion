@@ -14,3 +14,5 @@ export * from "./edge-function-migration-map";
 export * from "./edge-function-topology-validator";
 export * from "./frontend-action-api-map";
 export * from "./edge-function-policy-map";
+export * from "./edge-function-replay-map";
+export * from "./edge-function-health-source";

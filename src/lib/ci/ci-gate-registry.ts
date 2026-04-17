@@ -294,6 +294,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "15-item Backend / API Reality Checklist: registry/membership ok, governance not RED, no active ambiguous endpoints, every active fn has auth/contract/owner, every high side-effect fn has strict rate-limit + required audit-log, every P0 frontend action has a real backend target.",
     producesArtifact: "generated/backend-api-deployability-report.json",
   },
+
+  // ── Phase 17 ── Edge Function Health & Replay
+  {
+    id: "edge-function-health-replay",
+    phase: "phase-17-edge-function-health-replay",
+    title: "Edge function health & replay (10-item Edge Function Checklist)",
+    script: "scripts/architecture/checks/check-edge-function-health-replay.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Every ORCHESTRATION_FUNCTION + CONNECTOR_WEBHOOK_FUNCTION declares a real, code-backed failure/replay path. Health adapter + admin dashboard wired and observable.",
+    producesArtifact: "generated/edge-function-health-replay-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
