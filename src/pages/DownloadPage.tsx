@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -64,18 +63,29 @@ export default function DownloadPage() {
     })();
   }, [channel]);
 
-  return (
-    <>
-      <Helmet>
-        <title>Download SITA OS — Sovereign Operating System</title>
-        <meta
-          name="description"
-          content="Download SITA OS — a sovereign, secure, self-hosting operating system. Signed ISO, dm-verity hardened, A/B atomic updates."
-        />
-        <link rel="canonical" href="/download" />
-      </Helmet>
+  useEffect(() => {
+    document.title = "Download SITA OS — Sovereign Operating System";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute(
+      "content",
+      "Download SITA OS — sovereign, secure, self-hosting operating system. Signed ISO, dm-verity hardened, A/B atomic updates.",
+    );
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", "/download");
+  }, []);
 
-      <main className="min-h-screen bg-background text-foreground">
+  return (
+    <main className="min-h-screen bg-background text-foreground">
         <section className="container mx-auto max-w-5xl px-6 py-16 md:py-24">
           <header className="mb-12 text-center">
             <h1 className="mb-4 text-4xl font-semibold tracking-tight md:text-5xl">
