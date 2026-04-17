@@ -255,6 +255,9 @@ function setupIPC() {
   ipcMain.handle('get-dlp-status', () => getDLPStatus());
   ipcMain.handle('get-network-sentinel-status', () => getNetworkSentinelStatus());
   ipcMain.handle('get-shield-status', () => getShieldStatus());
+
+  // ── App Platform — Native app launch bridge ──
+  registerSitaAppsBridge();
 }
 
 // ── Deep Link Protocol ──────────────────────────────────────────
