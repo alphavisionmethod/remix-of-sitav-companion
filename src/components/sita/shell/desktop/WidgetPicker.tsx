@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Clock, LayoutGrid, Settings, Bell, CalendarDays, ArrowRight, BriefcaseBusiness, Plus, Minus, RotateCcw, TrendingUp, Users, UserCheck, Brain, Sparkles, DollarSign, CheckSquare, CloudSun, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WidgetInstance } from "@/hooks/useDesktopWidgets";
+import { DesktopSeedSampleButton } from "@/components/sita/DesktopSeedSampleButton";
 
 const WIDGET_ICONS: Record<string, any> = {
   clock: Clock,
@@ -183,8 +184,8 @@ export function WidgetPicker({ open, onClose, hiddenWidgets, allWidgets, allType
                 )}
               </div>
 
-              {/* Reset button */}
-              <div className="border-t border-white/[0.06] px-3 py-2.5">
+              {/* Reset + admin seed */}
+              <div className="border-t border-white/[0.06] px-3 py-2.5 flex items-center justify-between gap-2">
                 <button
                   onClick={onReset}
                   className="flex items-center gap-1.5 text-[11px] text-white/25 hover:text-white/50 transition-colors"
@@ -192,6 +193,7 @@ export function WidgetPicker({ open, onClose, hiddenWidgets, allWidgets, allType
                   <RotateCcw className="h-3 w-3" />
                   Reset Layout
                 </button>
+                <DesktopSeedSampleButton />
               </div>
             </div>
           </motion.div>
