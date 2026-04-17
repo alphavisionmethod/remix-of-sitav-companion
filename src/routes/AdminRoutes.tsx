@@ -209,6 +209,9 @@ const META05CompletenessMatrix = lazy(() => import("@/pages/admin/META05Complete
 // ── Phase 27: Kill-Switch & Safety Center (canonical mount) ──
 const AR08KillSwitchCenter = lazy(() => import("@/pages/admin/AR08KillSwitchCenter"));
 
+// ── C-014: Data Retention Dashboard ──
+const DataRetentionDashboard = lazy(() => import("@/pages/admin/DataRetentionDashboard"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -249,6 +252,7 @@ export function getAdminRoutes() {
     <Route key="ws-ts-perms" path="/admin/trust-security/permissions" element={<Navigate to="/admin/mc/authority-matrix" replace />} />,
     <Route key="ws-ts-sensitive" path="/admin/trust-security/sensitive-actions" element={<Navigate to="/admin/mc/state-authority" replace />} />,
     <Route key="ws-ts-audit" path="/admin/trust-security/audit" element={gated("audit.view", <AuditComplianceWorkspace />)} />,
+    <Route key="ws-ts-retention" path="/admin/data-retention" element={gated("audit.view", <DataRetentionDashboard />)} />,
 
     // ── Phase 7: Meta-Architecture Surfaces ──
     <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,

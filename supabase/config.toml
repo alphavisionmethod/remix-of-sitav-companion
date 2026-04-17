@@ -2,3 +2,6 @@ project_id = "fctupowhcljejygjfpty"
 
 [functions.webhook-ingest]
 verify_jwt = false
+
+[functions.data-cleanup]
+verify_jwt = false
