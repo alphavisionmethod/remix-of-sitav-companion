@@ -2586,6 +2586,90 @@ export type Database = {
         }
         Relationships: []
       }
+      app_assets: {
+        Row: {
+          app_id: string
+          asset_type: string
+          checksum: string | null
+          created_at: string
+          height: number | null
+          id: string
+          metadata: Json
+          mime_type: string | null
+          size_bytes: number | null
+          source_url: string | null
+          storage_path: string
+          width: number | null
+        }
+        Insert: {
+          app_id: string
+          asset_type: string
+          checksum?: string | null
+          created_at?: string
+          height?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          size_bytes?: number | null
+          source_url?: string | null
+          storage_path: string
+          width?: number | null
+        }
+        Update: {
+          app_id?: string
+          asset_type?: string
+          checksum?: string | null
+          created_at?: string
+          height?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          size_bytes?: number | null
+          source_url?: string | null
+          storage_path?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
+      app_ingestion_jobs: {
+        Row: {
+          app_id: string | null
+          created_at: string
+          error_json: Json | null
+          id: string
+          job_type: string
+          requested_by: string | null
+          result_json: Json | null
+          source_url: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          app_id?: string | null
+          created_at?: string
+          error_json?: Json | null
+          id?: string
+          job_type: string
+          requested_by?: string | null
+          result_json?: Json | null
+          source_url: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          app_id?: string | null
+          created_at?: string
+          error_json?: Json | null
+          id?: string
+          job_type?: string
+          requested_by?: string | null
+          result_json?: Json | null
+          source_url?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_launch_events: {
         Row: {
           app_id: string
@@ -2616,6 +2700,54 @@ export type Database = {
           launch_result?: string
           surface?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      app_packages: {
+        Row: {
+          app_id: string
+          channel: string
+          checksum: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          min_platform_version: string
+          package_type: string
+          package_url: string | null
+          runtime_target: string
+          signature_metadata: Json
+          size_bytes: number | null
+          version: string
+        }
+        Insert: {
+          app_id: string
+          channel?: string
+          checksum?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          min_platform_version?: string
+          package_type?: string
+          package_url?: string | null
+          runtime_target?: string
+          signature_metadata?: Json
+          size_bytes?: number | null
+          version: string
+        }
+        Update: {
+          app_id?: string
+          channel?: string
+          checksum?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          min_platform_version?: string
+          package_type?: string
+          package_url?: string | null
+          runtime_target?: string
+          signature_metadata?: Json
+          size_bytes?: number | null
+          version?: string
         }
         Relationships: []
       }
@@ -2652,6 +2784,60 @@ export type Database = {
         }
         Relationships: []
       }
+      app_signatures: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          manifest_hash: string | null
+          package_id: string
+          publisher_key_id: string
+          signature: string
+          status: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          manifest_hash?: string | null
+          package_id: string
+          publisher_key_id: string
+          signature: string
+          status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          manifest_hash?: string | null
+          package_id?: string
+          publisher_key_id?: string
+          signature?: string
+          status?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_signatures_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "app_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_signatures_publisher_key_id_fkey"
+            columns: ["publisher_key_id"]
+            isOneToOne: false
+            referencedRelation: "publisher_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_sources: {
         Row: {
           app_id: string
@@ -2687,6 +2873,83 @@ export type Database = {
           verified?: boolean
         }
         Relationships: []
+      }
+      app_trust_records: {
+        Row: {
+          app_id: string
+          badge: string
+          created_at: string
+          evaluated_at: string
+          evidence: Json
+          id: string
+          score: number
+          source_kind: string
+        }
+        Insert: {
+          app_id: string
+          badge?: string
+          created_at?: string
+          evaluated_at?: string
+          evidence?: Json
+          id?: string
+          score?: number
+          source_kind: string
+        }
+        Update: {
+          app_id?: string
+          badge?: string
+          created_at?: string
+          evaluated_at?: string
+          evidence?: Json
+          id?: string
+          score?: number
+          source_kind?: string
+        }
+        Relationships: []
+      }
+      app_update_channels: {
+        Row: {
+          app_id: string
+          channel: string
+          created_at: string
+          id: string
+          latest_version: string
+          package_id: string | null
+          published_at: string
+          release_notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          app_id: string
+          channel?: string
+          created_at?: string
+          id?: string
+          latest_version: string
+          package_id?: string | null
+          published_at?: string
+          release_notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          app_id?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          latest_version?: string
+          package_id?: string | null
+          published_at?: string
+          release_notes?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_update_channels_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "app_packages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       app_versions: {
         Row: {
@@ -2824,6 +3087,7 @@ export type Database = {
           banner_url: string | null
           category: string | null
           created_at: string
+          default_channel: string
           description: string | null
           enabled: boolean
           featured: boolean
@@ -2834,13 +3098,16 @@ export type Database = {
           launch_strategy: string
           launch_target: Json
           manifest_json: Json | null
+          min_platform_version: string
           name: string
           offline_support: string
           permissions_required: Json | null
           pinned_default: boolean
           publisher: string | null
+          publisher_id: string | null
           requires_auth: boolean
           requires_shell: boolean
+          runtime_target: string
           screenshots: Json | null
           short_name: string | null
           slug: string
@@ -2860,6 +3127,7 @@ export type Database = {
           banner_url?: string | null
           category?: string | null
           created_at?: string
+          default_channel?: string
           description?: string | null
           enabled?: boolean
           featured?: boolean
@@ -2870,13 +3138,16 @@ export type Database = {
           launch_strategy: string
           launch_target?: Json
           manifest_json?: Json | null
+          min_platform_version?: string
           name: string
           offline_support?: string
           permissions_required?: Json | null
           pinned_default?: boolean
           publisher?: string | null
+          publisher_id?: string | null
           requires_auth?: boolean
           requires_shell?: boolean
+          runtime_target?: string
           screenshots?: Json | null
           short_name?: string | null
           slug: string
@@ -2896,6 +3167,7 @@ export type Database = {
           banner_url?: string | null
           category?: string | null
           created_at?: string
+          default_channel?: string
           description?: string | null
           enabled?: boolean
           featured?: boolean
@@ -2906,13 +3178,16 @@ export type Database = {
           launch_strategy?: string
           launch_target?: Json
           manifest_json?: Json | null
+          min_platform_version?: string
           name?: string
           offline_support?: string
           permissions_required?: Json | null
           pinned_default?: boolean
           publisher?: string | null
+          publisher_id?: string | null
           requires_auth?: boolean
           requires_shell?: boolean
+          runtime_target?: string
           screenshots?: Json | null
           short_name?: string | null
           slug?: string
@@ -2926,7 +3201,15 @@ export type Database = {
           version?: string
           window_defaults?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "apps_publisher_id_fkey"
+            columns: ["publisher_id"]
+            isOneToOne: false
+            referencedRelation: "publishers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       assets: {
         Row: {
@@ -9064,11 +9347,14 @@ export type Database = {
           install_status: string
           installed_at: string
           last_launched_at: string | null
+          last_update_check_at: string | null
           launch_count: number
+          package_id: string | null
           permissions_granted: Json | null
           pinned: boolean
           pinned_order: number
           source_channel: string
+          update_channel: string
           updated_at: string
           user_id: string
           version_installed: string | null
@@ -9082,11 +9368,14 @@ export type Database = {
           install_status?: string
           installed_at?: string
           last_launched_at?: string | null
+          last_update_check_at?: string | null
           launch_count?: number
+          package_id?: string | null
           permissions_granted?: Json | null
           pinned?: boolean
           pinned_order?: number
           source_channel?: string
+          update_channel?: string
           updated_at?: string
           user_id: string
           version_installed?: string | null
@@ -9100,16 +9389,27 @@ export type Database = {
           install_status?: string
           installed_at?: string
           last_launched_at?: string | null
+          last_update_check_at?: string | null
           launch_count?: number
+          package_id?: string | null
           permissions_granted?: Json | null
           pinned?: boolean
           pinned_order?: number
           source_channel?: string
+          update_channel?: string
           updated_at?: string
           user_id?: string
           version_installed?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "installed_apps_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "app_packages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       instruments: {
         Row: {
@@ -11466,6 +11766,86 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      publisher_keys: {
+        Row: {
+          algorithm: string
+          created_at: string
+          id: string
+          key_id: string
+          public_key: string
+          publisher_id: string
+          revoked_at: string | null
+        }
+        Insert: {
+          algorithm?: string
+          created_at?: string
+          id?: string
+          key_id: string
+          public_key: string
+          publisher_id: string
+          revoked_at?: string | null
+        }
+        Update: {
+          algorithm?: string
+          created_at?: string
+          id?: string
+          key_id?: string
+          public_key?: string
+          publisher_id?: string
+          revoked_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publisher_keys_publisher_id_fkey"
+            columns: ["publisher_id"]
+            isOneToOne: false
+            referencedRelation: "publishers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publishers: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json
+          name: string
+          owner_user_id: string | null
+          slug: string
+          support_email: string | null
+          trust_tier: string
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name: string
+          owner_user_id?: string | null
+          slug: string
+          support_email?: string | null
+          trust_tier?: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name?: string
+          owner_user_id?: string | null
+          slug?: string
+          support_email?: string | null
+          trust_tier?: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
         }
         Relationships: []
       }
