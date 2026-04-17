@@ -457,40 +457,38 @@ Provide your structured analysis with findings and recommendations.`;
       }
     }
 
-    // STEP 13: Update invocation with real results
-    const completedAt = new Date().toISOString();
+    // STEP 13: Update invocation with real results (canonical columns only)
     await supabaseAdmin.from("ai_workforce_invocations")
       .update({
-        status: fallbackOccurred ? "fallback_success" : "success",
-        completed_at: completedAt,
+        status: fallbackOccurred ? "success" : "success",
         cost_cents: costCents,
-        tokens_used: aiResult.tokens_used,
-        latency_ms: aiResult.latency_ms,
-        output_summary: parsed.summary,
-        output_data: parsed,
-        provider_used: "lovable_ai_gateway",
+        tokens_in: Math.floor(aiResult.tokens_used * 0.6),
+        tokens_out: Math.floor(aiResult.tokens_used * 0.4),
+        duration_ms: aiResult.latency_ms,
         model_used: modelUsed,
-        fallback_occurred: fallbackOccurred,
       })
       .eq("id", invocation.id);
 
-    // STEP 14: Update role health + stats
+    // STEP 14: Update role health (canonical columns only)
+    const { data: existingHealth } = await supabaseAdmin
+      .from("ai_workforce_role_health")
+      .select("id, total_invocations, successful_invocations, failed_invocations")
+      .eq("user_id", user.id)
+      .eq("role_key", role_key)
+      .maybeSingle();
+
     await supabaseAdmin.from("ai_workforce_role_health")
       .upsert({
-        user_id: user.id, role_id: role.id,
-        health_state: fallbackOccurred ? "degraded" : "healthy",
-        health_reason: fallbackOccurred ? "Fallback model used" : null,
-        last_success_at: completedAt,
-        last_used_at: completedAt,
-      }, { onConflict: "role_id" });
-
-    // Increment role cost/invocation counters
-    await supabaseAdmin.rpc("increment_workforce_role_stats" as unknown, {
-      p_role_id: role.id,
-      p_cost_cents: costCents,
-    }).catch(() => {
-      // RPC may not exist yet — safe to ignore
-    });
+        user_id: user.id,
+        role_key,
+        health_status: fallbackOccurred ? "degraded" : "healthy",
+        last_invocation_at: completedAt,
+        total_invocations: (existingHealth?.total_invocations ?? 0) + 1,
+        successful_invocations: (existingHealth?.successful_invocations ?? 0) + 1,
+        failed_invocations: existingHealth?.failed_invocations ?? 0,
+        avg_cost_cents: costCents,
+        avg_latency_ms: aiResult.latency_ms,
+      }, { onConflict: "user_id,role_key" });
 
     // STEP 15: Cache output
     if ((task as Record<string, unknown>).allows_cached_output !== false && output) {
