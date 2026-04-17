@@ -303,29 +303,38 @@ const ApprovalChamber = () => {
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();
   const [tab, setTab] = useState("pending");
+  const [generating, setGenerating] = useState(false);
 
-  // Map DB approvals to ApprovalItem interface, fall back to mocks when empty
-  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: Record<string, any>) => ({
+  // Map DB approvals to ApprovalItem interface.
+  // In LIVE mode: always use real rows (empty array → empty state).
+  // In DEMO mode: keep the curated fixtures so the surface is expressive.
+  const liveItems: ApprovalItem[] = (dbApprovals as Array<Record<string, any>>).map((a) => ({
     id: a.id,
-    title: a.action_summary || a.title || "Untitled",
-    description: a.description || JSON.stringify(a.proposed_action || {}),
-    domain: (a.action_type === "finance" ? "finance" : a.action_type === "concierge" ? "concierge" : "business") as ApprovalItem["domain"],
-    riskLevel: (a.risk_level || "medium") as ApprovalItem["riskLevel"],
+    title: a.action_summary || a.title || "Untitled recommendation",
+    description: a.proposed_action?.actions?.[0]?.description || a.action_summary || "Awaiting review",
+    domain: (a.domain === "finance" || a.domain === "money" ? "finance"
+      : a.domain === "concierge" ? "concierge" : "business") as ApprovalItem["domain"],
+    riskLevel: ((a.risk_level as ApprovalItem["riskLevel"]) || "medium"),
     status: (a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending") as ApprovalItem["status"],
-    requestedBy: a.requested_by || "Advisor",
+    requestedBy: a.action_type ? `Advisor · ${a.action_type}` : "Advisor",
     requestedAt: a.created_at,
-    expiresAt: new Date(Date.now() + 86400000).toISOString(),
-    policyName: a.action_type || "Policy",
-    policyReason: a.decision_reason || "Action requires approval per governance policy.",
+    expiresAt: new Date(new Date(a.created_at).getTime() + 7 * 86400000).toISOString(),
+    policyName: a.flagship_loop_key || "Approval governance",
+    policyReason: a.decision_reason || a.cost_implications || "Action requires approval per governance policy.",
     autonomyLevel: "approve-execute" as AutonomyRung,
-    simulationAvailable: false,
-    requiresDeviceSign: false,
+    simulationAvailable: !!a.execution_required,
+    requiresDeviceSign: a.risk_level === "high",
     amount: a.proposed_action?.amount,
     currency: "USD",
     currentStep: "approval" as ChainStepId,
-    impactSummary: [a.action_summary || "Pending review"],
-    confidence: 0.8,
-  })) : DEMO_APPROVAL_ITEMS;
+    impactSummary: [
+      a.cost_implications,
+      a.launch_implications,
+      a.execution_required ? "Execution will be bound on approval" : null,
+    ].filter(Boolean) as string[],
+    confidence: a.proposed_action?.confidence ?? 0.8,
+  }));
+  const items: ApprovalItem[] = isDemoMode ? DEMO_APPROVAL_ITEMS : liveItems;
 
   const handleAction = async (id: string, action: string) => {
     // Trust-weighted evaluation before execution
@@ -334,17 +343,30 @@ const ApprovalChamber = () => {
       toast.warning(`High risk action (${trustEval.executionMode}) — requires elevated approval`);
     }
 
-    if (dbApprovals.length > 0 && !isDemoMode) {
-      try {
-        if (action === "approve") approve(id);
-        else if (action === "reject") reject(id);
-        toast.success(`Approval ${action}ed (mode: ${trustEval.executionMode})`);
-      } catch (e: any) {
-        toast.error(e.message || `Failed to ${action}`);
-      }
+    if (isDemoMode) {
+      toast.info(`Demo mode: ${action}d (no real change).`);
       return;
     }
-    // Demo/mock fallback — local state only
+    try {
+      if (action === "approve") approve(id);
+      else if (action === "reject") reject(id);
+      else if (action === "defer") toast.info("Deferred — will resurface tomorrow.");
+    } catch (e: any) {
+      toast.error(e.message || `Failed to ${action}`);
+    }
+  };
+
+  const handleGenerateSample = async () => {
+    setGenerating(true);
+    try {
+      const { generateSampleRecommendation } = await import("@/lib/services/rex/recommendation-engine");
+      await generateSampleRecommendation();
+      toast.success("Sample recommendation generated and routed to approval queue");
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to generate sample");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const pending = items.filter(i => i.status === "pending" || i.status === "simulating" || i.status === "awaiting-sign");

@@ -28,14 +28,30 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 // ── Types ──
+// Aligned to canonical `ai_workforce_approval_queue` schema.
+// Legacy fields (risk_tier, severity, impacted_domain, ...) are derived
+// from the joined `ai_workforce_recommendations` row when available.
 interface QueueItem {
   id: string;
   title: string;
+  summary: string | null;
   description: string | null;
-  action_type: string;
+  priority: string;
+  status: string;
+  evidence_links: any | null;
+  cost_implications: string | null;
+  launch_implications: string | null;
+  reviewer_user_id: string | null;
+  reviewer_comments: string | null;
+  decision_at: string | null;
+  remediation_binding_id: string | null;
+  recommendation_id: string | null;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  // Derived for UI compatibility
   role_key: string;
   risk_tier: string;
-  status: string;
   severity: string | null;
   impacted_domain: string | null;
   recommendation_type: string | null;
@@ -53,21 +69,75 @@ interface QueueItem {
   invocation_id: string | null;
   originating_receipt_id: string | null;
   resolved_at: string | null;
-  created_at: string;
-  user_id: string;
+  action_type: string;
 }
+
+const priorityToRiskTier = (p: string): string =>
+  p === "urgent" ? "critical" : p === "high" ? "high" : p === "low" ? "low" : "standard";
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {
-  let query = fromTable("ai_workforce_approval_queue").select("*").order("created_at", { ascending: false }).limit(200);
+  let query = (supabase as any)
+    .from("ai_workforce_approval_queue")
+    .select("*, ai_workforce_recommendations(domain, severity, role_key, confidence, evidence)")
+    .order("created_at", { ascending: false })
+    .limit(200);
   if (filters.status && filters.status !== "all") query = query.eq("status", filters.status);
-  if (filters.risk_tier && filters.risk_tier !== "all") query = query.eq("risk_tier", filters.risk_tier);
-  if (filters.role_key && filters.role_key !== "all") query = query.eq("role_key", filters.role_key);
-  if (filters.severity && filters.severity !== "all") query = query.eq("severity", filters.severity);
-  if (filters.impacted_domain && filters.impacted_domain !== "all") query = query.eq("impacted_domain", filters.impacted_domain);
+  if (filters.priority && filters.priority !== "all") query = query.eq("priority", filters.priority);
   const { data, error } = await query;
   if (error) { console.error("[HQ] Queue fetch error:", error); return []; }
-  return (data ?? []) as QueueItem[];
+
+  let items = ((data ?? []) as Array<Record<string, any>>).map((row): QueueItem => {
+    const rec = row.ai_workforce_recommendations || {};
+    return {
+      id: row.id,
+      title: row.title,
+      summary: row.summary,
+      description: row.summary,
+      priority: row.priority,
+      status: row.status,
+      evidence_links: row.evidence_links,
+      cost_implications: row.cost_implications,
+      launch_implications: row.launch_implications,
+      reviewer_user_id: row.reviewer_user_id,
+      reviewer_comments: row.reviewer_comments,
+      decision_at: row.decision_at,
+      remediation_binding_id: row.remediation_binding_id,
+      recommendation_id: row.recommendation_id,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      user_id: row.user_id,
+      // Derived
+      role_key: rec.role_key || "system",
+      risk_tier: priorityToRiskTier(row.priority),
+      severity: rec.severity ?? null,
+      impacted_domain: rec.domain ?? null,
+      recommendation_type: rec.role_key ?? null,
+      estimated_impact: row.cost_implications,
+      budget_impact: row.cost_implications,
+      launch_impact: row.launch_implications,
+      evidence_summary: row.summary,
+      proposed_action_summary: row.summary,
+      evidence: row.evidence_links,
+      proposed_changes: null,
+      review_notes: null,
+      reviewer_notes: row.reviewer_comments,
+      reviewed_at: row.decision_at,
+      reviewed_by: row.reviewer_user_id,
+      invocation_id: null,
+      originating_receipt_id: null,
+      resolved_at: row.decision_at,
+      action_type: rec.role_key || "system",
+    };
+  });
+
+  // Apply derived-field filters in JS (column doesn't exist on the base table)
+  if (filters.risk_tier && filters.risk_tier !== "all") items = items.filter(i => i.risk_tier === filters.risk_tier);
+  if (filters.role_key && filters.role_key !== "all") items = items.filter(i => i.role_key === filters.role_key);
+  if (filters.severity && filters.severity !== "all") items = items.filter(i => i.severity === filters.severity);
+  if (filters.impacted_domain && filters.impacted_domain !== "all") items = items.filter(i => i.impacted_domain === filters.impacted_domain);
+
+  return items;
 }
 
 // ── Risk color helpers ──
@@ -376,12 +446,29 @@ function HQ03DecisionHistory() {
     queryKey: ["hq-resolved"],
     queryFn: async () => {
       const { data, error } = await db.from("ai_workforce_approval_queue")
-        .select("*")
+        .select("*, ai_workforce_recommendations(domain, severity, role_key)")
         .in("status", ["approved", "rejected", "deferred", "executed", "expired"])
-        .order("resolved_at", { ascending: false })
+        .order("decision_at", { ascending: false, nullsFirst: false })
         .limit(100);
       if (error) return [];
-      return (data ?? []) as QueueItem[];
+      return ((data ?? []) as Array<Record<string, any>>).map((row): QueueItem => {
+        const rec = row.ai_workforce_recommendations || {};
+        return {
+          ...(row as any),
+          summary: row.summary,
+          description: row.summary,
+          role_key: rec.role_key || "system",
+          risk_tier: priorityToRiskTier(row.priority),
+          severity: rec.severity ?? null,
+          impacted_domain: rec.domain ?? null,
+          recommendation_type: rec.role_key ?? null,
+          reviewer_notes: row.reviewer_comments,
+          reviewed_at: row.decision_at,
+          reviewed_by: row.reviewer_user_id,
+          resolved_at: row.decision_at,
+          action_type: rec.role_key || "system",
+        } as QueueItem;
+      });
     },
   });
 
