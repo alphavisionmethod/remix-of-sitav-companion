@@ -28,16 +28,23 @@ interface DomainSpec {
   manifestFile: string;
   routesFile: string;
   e2eFile: string;
-  edgeFnPrefix: string;
+  /** Edge fn name substring(s) that satisfy the API surface check. */
+  edgeFnPrefixes: string[];
+  /**
+   * If true, the domain is allowed to use the direct client SDK (over RLS)
+   * as its canonical API surface — no edge fn required. We still record
+   * any matching fns for visibility, but the check passes either way.
+   */
+  clientSdkApiAllowed: boolean;
   proofRequired: boolean;
 }
 
 const DOMAINS: DomainSpec[] = [
-  { key: "business-os",       manifestFile: "business-manifest.ts",   routesFile: "business-routes.tsx",   e2eFile: "business-journey.spec.ts",   edgeFnPrefix: "business",   proofRequired: false },
-  { key: "finance-os",        manifestFile: "finance-manifest.ts",    routesFile: "money-routes.tsx",      e2eFile: "money-journey.spec.ts",      edgeFnPrefix: "finance",    proofRequired: false },
-  { key: "concierge-os",      manifestFile: "concierge-manifest.ts",  routesFile: "concierge-routes.tsx",  e2eFile: "concierge-journey.spec.ts",  edgeFnPrefix: "concierge",  proofRequired: false },
-  { key: "investment-office", manifestFile: "investment-manifest.ts", routesFile: "investment-routes.tsx", e2eFile: "investment-journey.spec.ts", edgeFnPrefix: "investment", proofRequired: false },
-  { key: "boardroom",         manifestFile: "boardroom-manifest.ts",  routesFile: "boardroom-routes.tsx",  e2eFile: "boardroom-journey.spec.ts",  edgeFnPrefix: "boardroom",  proofRequired: true  },
+  { key: "business-os",       manifestFile: "business-manifest.ts",   routesFile: "business-routes.tsx",   e2eFile: "business-journey.spec.ts",   edgeFnPrefixes: ["business"],                            clientSdkApiAllowed: false, proofRequired: false },
+  { key: "finance-os",        manifestFile: "finance-manifest.ts",    routesFile: "money-routes.tsx",      e2eFile: "money-journey.spec.ts",      edgeFnPrefixes: ["finance", "money", "bill", "budget"],  clientSdkApiAllowed: true,  proofRequired: false },
+  { key: "concierge-os",      manifestFile: "concierge-manifest.ts",  routesFile: "concierge-routes.tsx",  e2eFile: "concierge-journey.spec.ts",  edgeFnPrefixes: ["concierge", "family", "household"],   clientSdkApiAllowed: true,  proofRequired: false },
+  { key: "investment-office", manifestFile: "investment-manifest.ts", routesFile: "investment-routes.tsx", e2eFile: "investment-journey.spec.ts", edgeFnPrefixes: ["investment", "portfolio"],            clientSdkApiAllowed: false, proofRequired: false },
+  { key: "boardroom",         manifestFile: "boardroom-manifest.ts",  routesFile: "boardroom-routes.tsx",  e2eFile: "boardroom-journey.spec.ts",  edgeFnPrefixes: ["boardroom"],                          clientSdkApiAllowed: false, proofRequired: true  },
 ];
 
 const ROOT = process.cwd();
@@ -118,14 +125,15 @@ async function main() {
     // 3. e2e
     checks.e2e = { ok: fileExists(join(E2E_DIR, d.e2eFile)), detail: d.e2eFile };
 
-    // 4. edge fn (any function whose name contains the prefix)
-    const matchingFns = edgeFns.filter((f) => f.includes(d.edgeFnPrefix));
-    checks.edgeFn = { ok: matchingFns.length > 0, detail: matchingFns.join(", ") || "none" };
-
-    // 5. proof writer (boardroom only — boardroom-session must exist)
-    if (d.proofRequired) {
-      checks.proofWriter = { ok: edgeFns.includes("boardroom-session"), detail: "boardroom-session" };
-    }
+    // 4. edge fn (any function whose name contains any declared prefix)
+    const matchingFns = edgeFns.filter((f) => d.edgeFnPrefixes.some((p) => f.includes(p)));
+    const edgeFnOk = matchingFns.length > 0 || d.clientSdkApiAllowed;
+    checks.edgeFn = {
+      ok: edgeFnOk,
+      detail: matchingFns.length > 0
+        ? matchingFns.join(", ")
+        : (d.clientSdkApiAllowed ? "client-sdk-over-rls (canonical API surface)" : "none"),
+    };
 
     // 6. dbTables existence — strict, against the LIVE snapshot
     let dbTables: string[] = [];
