@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
+import { emitLoopCompletion } from "@/hooks/use-flagship-loop-proof";
 
 export function useApprovalQueue(status?: string) {
   return useQuery({
@@ -29,6 +30,11 @@ export function useApproveApprovalItem() {
         .update({ status: "approved", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
+      await emitLoopCompletion({
+        loop_key: "admin-truth-recommendation-approval",
+        step_key: "approval_decision",
+        evidence: { approval_id: id, decision: "approved" },
+      });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["approval-queue"] });
@@ -50,6 +56,11 @@ export function useRejectApprovalItem() {
         .update({ status: "rejected", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
+      await emitLoopCompletion({
+        loop_key: "admin-truth-recommendation-approval",
+        step_key: "approval_decision",
+        evidence: { approval_id: id, decision: "rejected" },
+      });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["approval-queue"] });

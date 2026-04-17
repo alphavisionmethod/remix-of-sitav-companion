@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 
 interface UploadedFile {
   name: string;
@@ -26,6 +27,7 @@ const MAX_SIZE = 20 * 1024 * 1024; // 20MB
 
 export const FileUploader = () => {
   const { user } = useAuth();
+  const emitLoop = useLoopEmitter("files-ai-assist");
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,6 +85,13 @@ export const FileUploader = () => {
         status: "done",
         classification: result.classification,
         sensitivity: result.sensitivity,
+      });
+
+      emitLoop("file_upload", {
+        evidence: { filename: file.name, classification: result.classification, sensitivity: result.sensitivity, storage_path: storagePath },
+      });
+      emitLoop("ai_classify", {
+        evidence: { filename: file.name, classification: result.classification },
       });
 
       toast.success(`${file.name} classified as ${result.classification}`);
