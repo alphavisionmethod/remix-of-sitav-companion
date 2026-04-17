@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import { Upload, FileText, X, CheckCircle, AlertTriangle, Loader2 } from "lucide-react";
+import { Upload, FileText, X, CheckCircle, AlertTriangle, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Progress } from "@/components/ui/progress";
@@ -7,14 +7,22 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 
-interface UploadedFile {
+export interface UploadedFileEntry {
   name: string;
   size: number;
   status: "uploading" | "classifying" | "done" | "error";
   progress: number;
   classification?: string;
   sensitivity?: string;
+  signedUrl?: string;
+  storagePath?: string;
   error?: string;
+}
+
+type UploadedFile = UploadedFileEntry;
+
+interface FileUploaderProps {
+  onUploaded?: (entry: UploadedFileEntry) => void;
 }
 
 const ALLOWED_TYPES = [
