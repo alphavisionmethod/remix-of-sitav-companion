@@ -340,7 +340,7 @@ function SecurityPanel() {
               <Shield className="h-4 w-4 text-emerald-400" />
               <span className="text-xs text-muted-foreground">Posture</span>
             </div>
-            <p className="text-lg font-bold capitalize">{(posture as any)?.posture || "Normal"}</p>
+            <p className="text-lg font-bold capitalize">{posture?.posture || "Normal"}</p>
           </CardContent>
         </Card>
         <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
@@ -349,7 +349,7 @@ function SecurityPanel() {
               <Clock className="h-4 w-4 text-amber-400" />
               <span className="text-xs text-muted-foreground">Pending Approvals</span>
             </div>
-            <p className="text-lg font-bold">{(posture as any)?.pending_approvals ?? approvals.length}</p>
+            <p className="text-lg font-bold">{posture?.pending_approvals ?? approvals.length}</p>
           </CardContent>
         </Card>
         <Card className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl col-span-2 md:col-span-1">
@@ -382,7 +382,7 @@ function SecurityPanel() {
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            {((posture as any)?.devices || []).map((device: any) => (
+            {(posture?.devices ?? []).map((device) => (
               <div key={device.id} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
                 <div className="flex items-center gap-3">
                   <div className={`h-2.5 w-2.5 rounded-full ${device.trust_level === "trusted" ? "bg-emerald-400" : device.trust_level === "revoked" ? "bg-red-400" : "bg-amber-400"}`} />
@@ -391,7 +391,7 @@ function SecurityPanel() {
                 <Badge variant="outline" className="text-[10px] bg-white/[0.03]">{device.trust_level}</Badge>
               </div>
             ))}
-            {(!posture || ((posture as any)?.devices || []).length === 0) && (
+            {(!posture || (posture.devices ?? []).length === 0) && (
               <p className="text-sm text-muted-foreground text-center py-6">No devices registered</p>
             )}
           </div>
@@ -410,7 +410,7 @@ function PoliciesPanel() {
   const [newPolicy, setNewPolicy] = useState({ policy_key: "", display_name: "", description: "", scope: "global", domain: "general" });
 
   const handleCreate = () => {
-    create.mutate(newPolicy as any);
+    create.mutate(newPolicy satisfies NewPolicyVM);
     setNewPolicy({ policy_key: "", display_name: "", description: "", scope: "global", domain: "general" });
     setShowCreate(false);
   };
@@ -554,17 +554,18 @@ function AppsPanel() {
 // ── Sync Tab ──────────────────────────────────────────────────
 
 function SyncPanel() {
-  const { data: syncStatus } = useSyncStatus();
+  const { data: syncStatusRaw } = useSyncStatus();
   const { data: conflicts = [] } = useSyncConflicts();
   const { trigger, pause, resume, resolveConflict } = useSyncControl();
+  const syncStatus = syncStatusRaw as SyncStatusVM | undefined;
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Status", value: (syncStatus as any)?.sync_status || "Healthy", icon: RefreshCw, color: "text-teal-400" },
+          { label: "Status", value: syncStatus?.sync_status || "Healthy", icon: RefreshCw, color: "text-teal-400" },
           { label: "Conflicts", value: conflicts.length, icon: AlertTriangle, color: conflicts.length > 0 ? "text-amber-400" : "text-emerald-400" },
-          { label: "Ledger", value: (syncStatus as any)?.ledger?.length ?? 0, icon: Database, color: "text-blue-400" },
+          { label: "Ledger", value: syncStatus?.ledger?.length ?? 0, icon: Database, color: "text-blue-400" },
           { label: "Last Sync", value: "—", icon: Clock, color: "text-muted-foreground" },
         ].map(item => (
           <Card key={item.label} className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
