@@ -225,7 +225,7 @@ export default function META03GoldenPathHealth() {
                           <DimRow icon={<Database className="h-3 w-3" />} label="Tables" values={s.tableRefs} />
                           <DimRow icon={<Lock className="h-3 w-3" />} label="Policies" values={s.policyRefs} />
                           <DimRow icon={<FileCheck2 className="h-3 w-3" />} label="Receipts" values={s.expectedReceipts} />
-                          <DimRow icon={<FlaskConical className="h-3 w-3" />} label="Verifications" values={s.verifications} />
+                          <DimRow icon={<FlaskConical className="h-3 w-3" />} label="Verifications" values={s.verifications as ReadonlyArray<string>} />
                           <DimRow icon={<BookOpen className="h-3 w-3" />} label="Runbooks" values={s.recoveryRunbookRefs} />
                         </div>
                       </li>
@@ -304,7 +304,7 @@ function DimensionTile({ icon, label, value }: { icon: React.ReactNode; label: s
   );
 }
 
-function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: readonly string[] }) {
+function DimRow({ icon, label, values }: { icon: React.ReactNode; label: string; values: ReadonlyArray<string> }) {
   return (
     <div className="flex items-start gap-1.5">
       <span className="flex items-center gap-1 text-muted-foreground shrink-0 w-[90px]">
