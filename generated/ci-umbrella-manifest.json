@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-16T00:00:00.000Z",
-  "gateCount": 25,
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "gateCount": 26,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -14,9 +14,10 @@
     "phase-10-completeness": 4,
     "phase-12-mobile-deployability": 3,
     "phase-13-web-deployability": 1,
-    "phase-14-desktop-deployability": 1
+    "phase-14-desktop-deployability": 1,
+    "phase-15-appliance-deployability": 1
   },
-  "blockerCount": 25,
+  "blockerCount": 26,
   "warningCount": 0,
   "ok": true,
   "integrity": { "ok": true, "errorCount": 0, "warningCount": 0 }

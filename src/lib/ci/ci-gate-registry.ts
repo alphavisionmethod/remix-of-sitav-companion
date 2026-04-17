@@ -269,6 +269,18 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "11-item Desktop Host / Electron Checklist: sandbox enforced, preload bridge matches contract (22 methods), forge signing config present, fallbacks declared for every desktop-exclusive feature.",
     producesArtifact: "generated/desktop-deployability-report.json",
   },
+
+  // ── Phase 15 ── VMware / ISO / Appliance Deployability
+  {
+    id: "appliance-deployability",
+    phase: "phase-15-appliance-deployability",
+    title: "Appliance deployability (12-item VMware / ISO / appliance checklist)",
+    script: "scripts/architecture/checks/check-appliance-deployability.ts",
+    owner: "release-team",
+    severity: "blocker",
+    description: "12-item VMware / ISO / Appliance Checklist: ISO+OVA build pipelines real & executable, systemd units present, autoinstall configs valid, runtime-capability-matrix declares appliance column, no roadmap capability is overclaimed as native, startup-order + recovery actions wired.",
+    producesArtifact: "generated/appliance-deployability-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
