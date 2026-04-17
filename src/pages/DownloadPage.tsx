@@ -216,6 +216,5 @@ export default function DownloadPage() {
           </section>
         </section>
       </main>
-    </>
   );
 }
