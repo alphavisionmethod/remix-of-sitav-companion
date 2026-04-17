@@ -45,6 +45,18 @@ Deno.serve(async (req) => {
     });
     if (!hasPermission) return json({ error: "Admin access required" }, 403);
 
+    // Phase 19.C — Unified policy gate (R3 admin BFF read)
+    const policyDecision = resolveUnifiedPolicy({
+      actor: "platform-admin",
+      domain: "admin",
+      riskClass: req.method === "GET" ? "R2" : "R3",
+      deviceTrust: 3,
+      hasJustification: true,
+    });
+    if (!policyDecision.allowed) {
+      return negativeReceiptResponse(policyDecision, { fn: "admin-bff-gateway" });
+    }
+
     const url = new URL(req.url);
     const route = url.pathname.replace(/^\/admin-bff-gateway\/?/, "").replace(/^\//, "");
 
