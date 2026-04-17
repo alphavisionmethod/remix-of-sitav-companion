@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, corsResponse, corsError, handleCors } from "../_shared/cors.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
+import { withTrace } from "../_shared/tracing.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
@@ -47,6 +48,7 @@ serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
+  return withTrace(req, "ai-gateway", "completions", async (_logger, state) => {
   try {
     // Rate limiting
     const clientIP = getClientIP(req);
@@ -72,6 +74,7 @@ serve(async (req) => {
       await logSecurityEvent({ eventType: "auth_failure", ipAddress: clientIP, userAgent: getUserAgent(req), functionName: "ai-gateway", severity: "warning" });
       return corsError("Unauthorized", 401);
     }
+    state.setUser(user.id);
 
     const body = await req.json();
 
@@ -476,4 +479,5 @@ serve(async (req) => {
     console.error("ai-gateway error:", e);
     return corsError(e instanceof Error ? e.message : "Unknown error", 500);
   }
+  });
 });

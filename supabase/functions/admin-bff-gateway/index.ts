@@ -5,6 +5,7 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { withTrace } from "../_shared/tracing.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -22,6 +23,7 @@ function json(data: unknown, status = 200) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  return withTrace(req, "admin-bff-gateway", req.method, async (_logger, state) => {
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) return json({ error: "Missing authorization" }, 401);
@@ -37,6 +39,7 @@ Deno.serve(async (req) => {
 
     const { data: { user }, error: authError } = await userClient.auth.getUser();
     if (authError || !user) return json({ error: "Unauthorized" }, 401);
+    state.setUser(user.id);
 
     // Verify admin permission
     const { data: hasPermission } = await adminClient.rpc("has_role", {
@@ -224,4 +227,5 @@ Deno.serve(async (req) => {
   } catch (err) {
     return json({ error: (err as Error).message }, 500);
   }
+  });
 });

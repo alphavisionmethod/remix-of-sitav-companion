@@ -7,6 +7,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
+import { withTrace } from "../_shared/tracing.ts";
 
 // ═══ AI Gateway integration ═══
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -330,6 +331,7 @@ const AI_ELIGIBLE_AGENTS = new Set([
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  return withTrace(req, "agent-executor", "execute", async (logger, state) => {
   const startTime = Date.now();
 
   try {
@@ -337,6 +339,7 @@ serve(async (req) => {
     const authResult = await requireAuth(req);
     if (authResult instanceof Response) return authResult;
     const { user } = authResult;
+    state.setUser(user.id);
 
     const rateCheck = checkRateLimit(`agent-exec:${user.id}`, 20, 60_000);
     if (!rateCheck.allowed) return rateLimitResponse(rateCheck, corsHeaders);
@@ -483,9 +486,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("agent-executor error:", e);
+    logger.error("agent-executor error", { err: e instanceof Error ? e.message : String(e) });
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+  });
 });
