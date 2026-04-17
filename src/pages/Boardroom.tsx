@@ -56,8 +56,7 @@ import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-
-const isDemoMode = true; // Safe default for demo mode
+import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSampleButton";
 
 
 
