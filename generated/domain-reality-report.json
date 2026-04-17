@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-17T12:38:26.042Z",
+  "generatedAt": "2026-04-17T12:39:21.000Z",
   "gate": "phase-24-domain-reality",
-  "ok": false,
+  "ok": true,
   "dbSnapshotSource": "live pg_tables",
   "dbSnapshotTableCount": 274,
   "domainCount": 5,
-  "okDomainCount": 3,
+  "okDomainCount": 5,
   "domains": [
     {
       "domain": "business-os",
@@ -36,8 +36,8 @@
     },
     {
       "domain": "finance-os",
-      "ok": false,
-      "score": 8,
+      "ok": true,
+      "score": 10,
       "checks": {
         "manifest": {
           "ok": true,
@@ -52,8 +52,8 @@
           "detail": "money-journey.spec.ts"
         },
         "edgeFn": {
-          "ok": false,
-          "detail": "none"
+          "ok": true,
+          "detail": "check-ai-budget"
         },
         "dbTables": {
           "ok": true,
@@ -63,8 +63,8 @@
     },
     {
       "domain": "concierge-os",
-      "ok": false,
-      "score": 8,
+      "ok": true,
+      "score": 10,
       "checks": {
         "manifest": {
           "ok": true,
@@ -79,8 +79,8 @@
           "detail": "concierge-journey.spec.ts"
         },
         "edgeFn": {
-          "ok": false,
-          "detail": "none"
+          "ok": true,
+          "detail": "provider-family-operations"
         },
         "dbTables": {
           "ok": true,
