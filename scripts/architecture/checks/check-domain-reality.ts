@@ -11,6 +11,12 @@
 //   6. at least one edge fn or BFF named `{domain}-*` exists
 //   7. boardroom has decision-receipt proof writes (boardroom-session)
 //
+// HONESTY RULE (Phase 24.1.D):
+//   - Requires `generated/db-schema-snapshot.json` to be present.
+//   - If snapshot is missing, Gate 35 FAILS — no silent fallback.
+//   - Snapshot must come from `scripts/architecture/snapshot-db-schema.ts`
+//     which calls the live `get_db_truth_snapshot('schema')` RPC.
+//
 // Emits generated/domain-reality-report.json
 // ═══════════════════════════════════════════════════════════════
 
@@ -39,6 +45,7 @@ const MANIFEST_DIR = join(ROOT, "src/lib/domain-system/manifests");
 const ROUTES_DIR   = join(ROOT, "src/routes");
 const E2E_DIR      = join(ROOT, "tests/e2e");
 const EDGE_DIR     = join(ROOT, "supabase/functions");
+const SNAPSHOT_PATH = join(ROOT, "generated/db-schema-snapshot.json");
 
 function fileExists(p: string): boolean {
   try { return existsSync(p); } catch { return false; }
@@ -60,19 +67,40 @@ function extractDbTables(manifestPath: string): string[] {
   return [...new Set(tables)];
 }
 
+function loadLiveTables(): { tables: Set<string>; source: string; count: number } {
+  if (!fileExists(SNAPSHOT_PATH)) {
+    throw new Error(
+      "Gate 35 requires generated/db-schema-snapshot.json. " +
+        "Run `npx tsx scripts/architecture/snapshot-db-schema.ts` first " +
+        "(SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY required).",
+    );
+  }
+  let snap: { tables?: Array<{ tablename?: string; name?: string }>; source?: string; count?: number };
+  try {
+    snap = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  } catch (e: any) {
+    throw new Error(`Failed to parse db-schema-snapshot.json: ${e.message ?? e}`);
+  }
+  const arr: string[] = (snap.tables ?? [])
+    .map((t) => t.tablename ?? t.name)
+    .filter((s): s is string => Boolean(s));
+  if (arr.length === 0) {
+    throw new Error("db-schema-snapshot.json contains no tables — refusing to pass");
+  }
+  return {
+    tables: new Set(arr),
+    source: snap.source ?? "unknown",
+    count: snap.count ?? arr.length,
+  };
+}
+
 async function main() {
-  // Live schema lookup via Supabase REST is infra-dependent; we accept a
-  // pre-baked snapshot if present, otherwise fall back to assuming present
-  // (Gate 35 is a wiring gate; check-schema-registry separately enforces
-  //  that every live table is in the registry).
-  const snapshotPath = join(ROOT, "generated/db-schema-snapshot.json");
-  let liveTables: Set<string> | null = null;
-  if (fileExists(snapshotPath)) {
-    try {
-      const snap = JSON.parse(readFileSync(snapshotPath, "utf8"));
-      const arr: string[] = (snap?.tables ?? []).map((t: any) => t.tablename ?? t.name).filter(Boolean);
-      liveTables = new Set(arr);
-    } catch { /* ignore */ }
+  let live: { tables: Set<string>; source: string; count: number };
+  try {
+    live = loadLiveTables();
+  } catch (e: any) {
+    console.error(`❌ Gate 35 FAILED — ${e.message}`);
+    process.exit(1);
   }
 
   const edgeFns = listEdgeFns();
@@ -99,20 +127,18 @@ async function main() {
       checks.proofWriter = { ok: edgeFns.includes("boardroom-session"), detail: "boardroom-session" };
     }
 
-    // 6. dbTables existence
+    // 6. dbTables existence — strict, against the LIVE snapshot
     let dbTables: string[] = [];
     let missingTables: string[] = [];
     if (checks.manifest.ok) {
       dbTables = extractDbTables(manifestPath);
-      if (liveTables) {
-        missingTables = dbTables.filter((t) => !liveTables!.has(t));
-      }
+      missingTables = dbTables.filter((t) => !live.tables.has(t));
     }
     checks.dbTables = {
-      ok: !liveTables || missingTables.length === 0,
-      detail: liveTables
-        ? `${dbTables.length} declared, ${missingTables.length} missing${missingTables.length ? `: ${missingTables.join(",")}` : ""}`
-        : `${dbTables.length} declared (live snapshot not available — assumed present)`,
+      ok: checks.manifest.ok && missingTables.length === 0 && dbTables.length > 0,
+      detail: `${dbTables.length} declared, ${missingTables.length} missing${
+        missingTables.length ? `: ${missingTables.join(",")}` : " (all present in live schema)"
+      }`,
     };
 
     const allOk = Object.values(checks).every((c) => c.ok);
@@ -128,6 +154,8 @@ async function main() {
     generatedAt: new Date().toISOString(),
     gate: "phase-24-domain-reality",
     ok,
+    dbSnapshotSource: live.source,
+    dbSnapshotTableCount: live.count,
     domainCount: domainResults.length,
     okDomainCount: domainResults.filter((r) => r.ok).length,
     domains: domainResults,
@@ -137,7 +165,7 @@ async function main() {
 
   console.log(
     ok
-      ? `✅ Gate 35 (domain reality) OK — ${domainResults.length}/${domainResults.length} domains green`
+      ? `✅ Gate 35 (domain reality) OK — ${domainResults.length}/${domainResults.length} domains green (snapshot: ${live.source}, ${live.count} tables)`
       : `❌ Gate 35 FAILED — ${domainResults.filter((r) => !r.ok).length} domain(s) failing`,
   );
   if (!ok) {
