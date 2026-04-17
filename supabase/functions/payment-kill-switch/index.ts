@@ -7,6 +7,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 
 // In-memory kill-switch state (persisted to DB when available)
 let killSwitchActive = false;
