@@ -320,6 +320,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "Every table has owner/writers/readers/tenancy/sensitivity. Every active edge function declares table I/O. Cross-domain writers blocked. Backup manifest fresh and restore drill green.",
     producesArtifact: "generated/db-reality-report.json",
   },
+
+  // ── Phase 19 ── Auth / Policy / Trust Reality
+  {
+    id: "auth-policy-trust-reality",
+    phase: "phase-19-auth-policy-trust-reality",
+    title: "Auth / policy / trust reality (Checklists 12 + 13)",
+    script: "scripts/architecture/checks/check-policy-resolver-coverage.ts",
+    owner: "identity-team",
+    severity: "blocker",
+    description:
+      "MFA + WebAuthn fully wired; resolveUnifiedPolicy invoked from ≥6 R3+ edge functions and ≥6 R3+ UI surfaces; rollback dispatch via compensation-handler-registry.",
+    producesArtifact: "generated/policy-resolver-coverage.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
