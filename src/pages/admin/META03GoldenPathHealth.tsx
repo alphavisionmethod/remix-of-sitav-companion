@@ -195,13 +195,60 @@ export default function META03GoldenPathHealth() {
                 </Section>
               )}
 
-              <div className="flex gap-2 pt-2">
+              {/* ── Phase 29 — 11-Dimension Reality Map ─────── */}
+              <Section icon={<GitBranch className="h-3.5 w-3.5 text-primary" />} title="Reality Map (11 dimensions)">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 text-[10px] mb-3">
+                  <DimensionTile icon={<FileCheck2 className="h-3 w-3" />} label="Release gates" value={selectedPath.releaseGateRefs.length} />
+                  <DimensionTile icon={<LifeBuoy className="h-3 w-3" />} label="Support fallback" value={selectedPath.supportFallbackUrl ? 1 : 0} />
+                  <DimensionTile icon={<BookOpen className="h-3 w-3" />} label="Recovery runbooks" value={selectedPath.recoveryRunbookRefs.length} />
+                </div>
+                {selectedPath.releaseGateRefs.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {selectedPath.releaseGateRefs.map((g) => (
+                      <Badge key={g} variant="outline" className="text-[10px] font-mono">{g}</Badge>
+                    ))}
+                  </div>
+                )}
+                <ScrollArea className="h-[220px] pr-2">
+                  <ul className="space-y-2">
+                    {selectedPath.steps.map((s) => (
+                      <li key={s.stepId} className="border border-border/30 rounded-md p-2 space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium text-foreground">{s.order}. {s.title}</span>
+                          <span className="font-mono text-[9px] text-muted-foreground">{s.stepId}</span>
+                        </div>
+                        <div className="grid grid-cols-1 gap-1 text-[10px]">
+                          <DimRow icon={<Layout className="h-3 w-3" />} label="Screen" values={s.screenComponentRef ? [s.screenComponentRef] : []} />
+                          <DimRow icon={<RouteIcon className="h-3 w-3" />} label="Route" values={[s.routePattern]} />
+                          <DimRow icon={<Cloud className="h-3 w-3" />} label="Edge fns" values={s.edgeFunctionRefs} />
+                          <DimRow icon={<Cog className="h-3 w-3" />} label="Services" values={s.serviceRefs} />
+                          <DimRow icon={<Database className="h-3 w-3" />} label="Tables" values={s.tableRefs} />
+                          <DimRow icon={<Lock className="h-3 w-3" />} label="Policies" values={s.policyRefs} />
+                          <DimRow icon={<FileCheck2 className="h-3 w-3" />} label="Receipts" values={s.expectedReceipts} />
+                          <DimRow icon={<FlaskConical className="h-3 w-3" />} label="Verifications" values={s.verifications} />
+                          <DimRow icon={<BookOpen className="h-3 w-3" />} label="Runbooks" values={s.recoveryRunbookRefs} />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollArea>
+              </Section>
+
+              <div className="flex flex-wrap gap-2 pt-2">
                 <Button asChild size="sm" variant="outline">
                   <Link to="/admin/meta-arch/control-plane">Inspect related switches →</Link>
                 </Button>
                 <Button asChild size="sm" variant="outline">
                   <Link to="/admin/founder/runbooks">Open runbook library →</Link>
                 </Button>
+                {selectedPath.supportFallbackUrl && (
+                  <Button asChild size="sm" variant="default">
+                    <Link to={selectedPath.supportFallbackUrl}>
+                      <LifeBuoy className="h-3.5 w-3.5 mr-1.5" />
+                      Open support fallback →
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           )}
