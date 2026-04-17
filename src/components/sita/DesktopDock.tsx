@@ -274,20 +274,18 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     setContextMenu({ app, x: e.clientX, y: e.clientY, section });
   }, []);
 
-  // Pin / Unpin
+  // Pin / Unpin — bridge to platform context (single source of truth)
   const pinApp = useCallback((appId: string) => {
-    setPinnedIds(prev => {
-      if (prev.includes(appId) || prev.length >= MAX_CORE) return prev;
-      return [...prev, appId];
-    });
-  }, []);
+    if (pinnedIdSet.has(appId) || pinnedIdSet.size >= MAX_CORE) return;
+    pinToDock(appId);
+    setPinnedOrder(prev => prev.includes(appId) ? prev : [...prev, appId].slice(0, MAX_CORE));
+  }, [pinToDock, pinnedIdSet]);
 
   const unpinApp = useCallback((appId: string) => {
-    setPinnedIds(prev => {
-      const next = prev.filter(id => id !== appId);
-      return next.length > 0 ? next : prev; // keep at least one
-    });
-  }, []);
+    if (pinnedIdSet.size <= 1) return; // keep at least one pinned
+    unpinFromDock(appId);
+    setPinnedOrder(prev => prev.filter(id => id !== appId));
+  }, [unpinFromDock, pinnedIdSet]);
 
   // Gaussian magnification + magnetic translation
   const getIconTransform = useCallback((globalIdx: number): { scale: number; magnetX: number } => {
