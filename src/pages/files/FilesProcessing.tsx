@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
 

@@ -9,7 +9,7 @@ import { Bell, Mail, MessageSquare, Shield, DollarSign, Calendar, AlertTriangle,
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

@@ -8,7 +8,7 @@ import { PiggyBank, Target, Shield, TrendingUp, Plus, Trash2 } from "lucide-reac
 import { motion } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { useReservesSavings } from "@/hooks/use-domain-data";

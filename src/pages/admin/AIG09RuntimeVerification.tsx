@@ -9,7 +9,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useAIRuntimeVerification, type CapabilityVerification } from "@/lib/ai/hooks/use-ai-runtime-verification";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { reclassifyAIFeatures, type ReclassificationResult } from "@/lib/ai/ai-launch-honesty-reclassifier";
 import { seedAIRoutingActivation } from "@/lib/ai/ai-routing-seed-service";
 import { getAIStatusMessage } from "@/hooks/use-ai-health";
