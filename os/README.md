@@ -28,11 +28,11 @@ sudo dd if=out/sita-os-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 | Phase | Feature | Status |
 |---|---|---|
 | 1 | Bootable dev ISO (Ubuntu base + SITA shell) | ✅ shipped |
-| 2 | dm-verity + signed kernel + LUKS2 + A/B partitions | ⏳ next |
-| 3 | Custom Electron installer UI | ⏳ |
-| 4 | Update server + signed release manifests | ⏳ |
-| 5 | Recovery + safe mode + factory reset | ⏳ |
-| 6 | Hardware compatibility matrix + preflight | ⏳ |
+| 2 | dm-verity + signed kernel + LUKS2 + A/B partitions + sita-updated | ✅ shipped |
+| 3 | Custom Electron installer UI | ✅ shipped |
+| 4 | Update server (`os-update-manifest` edge fn) + signed release manifests + `/download` page | ✅ shipped |
+| 5 | Recovery console + safe mode + factory reset + crash uploader | ✅ shipped |
+| 6 | Hardware compatibility matrix + preflight | ✅ shipped |
 
 ## Build environment
 

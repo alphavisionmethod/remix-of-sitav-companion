@@ -14,3 +14,7 @@ export { nativeAppLifecycle } from "./native-app-lifecycle";
 export { nativePush } from "./native-push";
 export { nativeBackgroundRunner } from "./native-background-runner";
 export { nativeDeepLinks } from "./native-deep-links";
+export {
+  initNativeCrashReporter,
+  captureNativeException,
+} from "./native-crash-reporter";

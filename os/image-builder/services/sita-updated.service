@@ -1,0 +1,21 @@
+[Unit]
+Description=SITA OS Atomic Update Agent
+Documentation=https://docs.sita.os/updates
+After=network-online.target sita-runtime.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sita-updated --check-and-stage
+SuccessExitStatus=0 2
+# 2 = "no update available", treat as success
+Nice=10
+IOSchedulingClass=idle
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/sita/updates /boot/efi
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
