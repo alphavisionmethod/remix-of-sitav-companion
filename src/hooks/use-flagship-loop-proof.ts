@@ -41,14 +41,14 @@ export async function emitLoopCompletion(p: EmitParams): Promise<void> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await supabase.from("flagship_loop_completions").insert({
+    await supabase.from("flagship_loop_completions").insert([{
       user_id: user.id,
       loop_key: p.loop_key,
       step_key: p.step_key,
       outcome: p.outcome ?? "success",
-      evidence: p.evidence ?? {},
+      evidence: (p.evidence ?? {}) as never,
       latency_ms: p.latency_ms ?? null,
-    });
+    }]);
   } catch {
     // Receipts must never break the host flow.
   }
