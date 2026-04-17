@@ -27,6 +27,7 @@ export { default as SERV06FlagshipTraceability } from "@/pages/admin/SERV06Flags
 
 // ── Architecture subdirectory ──
 export { default as ArchitectureBoundaryBoard } from "@/pages/admin/architecture/ArchitectureBoundaryBoard";
+export { default as SystemArchitecture } from "@/pages/admin/SystemArchitecture";
 export { default as EpistemicFirewallBoard } from "@/pages/admin/architecture/EpistemicFirewallBoard";
 export { default as GodTierIntegrationBoard } from "@/pages/admin/architecture/GodTierIntegrationBoard";
 export { default as GodTierRuntimeBoard } from "@/pages/admin/architecture/GodTierRuntimeBoard";
