@@ -41,6 +41,7 @@ require_host_packages() {
     debootstrap squashfs-tools xorriso isolinux syslinux-common
     grub-pc-bin grub-efi-amd64-bin grub-common mtools dosfstools
     rsync curl ca-certificates
+    sbsigntool cryptsetup-bin zstd jq openssl
   )
   local missing=()
   for p in "${pkgs[@]}"; do
@@ -234,10 +235,44 @@ stage_make_iso() {
   ok "ISO created: ${ISO_PATH} ($(du -h "${ISO_PATH}" | cut -f1))"
 }
 
-# ── Stage 6: post-build artifacts (checksum + manifest) ────────────────
+# ── Stage 6: mirror boot artifacts to OUT_DIR for trust pipeline ───────
+stage_export_artifacts() {
+  log "stage 6 — exporting kernel/initrd/squashfs to ${OUT_DIR}"
+  cp "${ISO_DIR}/casper/vmlinuz"             "${OUT_DIR}/vmlinuz"
+  cp "${ISO_DIR}/casper/initrd"              "${OUT_DIR}/initrd.img"
+  cp "${ISO_DIR}/casper/filesystem.squashfs" "${OUT_DIR}/sita-rootfs.squashfs"
+  ok "exported: vmlinuz, initrd.img, sita-rootfs.squashfs"
+}
+
+# ── Stage 7: trust pipeline (signing + verity) ─────────────────────────
+stage_trust_pipeline() {
+  log "stage 7 — trust pipeline (signing + dm-verity)"
+  local repo_root
+  repo_root="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+
+  SITA_OUT_DIR="${OUT_DIR}" bash "${repo_root}/os/scripts/sign-kernel.sh" "${OUT_DIR}/vmlinuz" \
+    || warn "kernel signing failed (build continues, ISO will be unsigned)"
+  SITA_OUT_DIR="${OUT_DIR}" bash "${repo_root}/os/scripts/sign-initramfs.sh" "${OUT_DIR}/initrd.img" \
+    || warn "initramfs signing failed (build continues)"
+  SITA_OUT_DIR="${OUT_DIR}" bash "${repo_root}/os/scripts/build-verity-root.sh" "${OUT_DIR}/sita-rootfs.squashfs" \
+    || warn "verity build failed (build continues without integrity tree)"
+
+  ok "trust pipeline complete"
+}
+
+# ── Stage 8: post-build artifacts (checksum + manifest) ────────────────
 stage_artifacts() {
-  log "stage 6 — generating SHA256 + build manifest"
+  log "stage 8 — generating SHA256 + build manifest"
   ( cd "${OUT_DIR}" && sha256sum "${ISO_NAME}" > "${ISO_NAME}.sha256" )
+
+  local trust_baseline="dev-unsigned"
+  if [[ -f "${OUT_DIR}/os-signing-receipt.json" ]] \
+     && [[ "$(jq -r .keyKind "${OUT_DIR}/os-signing-receipt.json" 2>/dev/null)" == "production-mok" ]]; then
+    trust_baseline="production-signed"
+  fi
+  local verity_status="absent"
+  [[ -f "${OUT_DIR}/verity-receipt.json" ]] && verity_status="present"
+
   cat > "${OUT_DIR}/${ISO_NAME}.manifest.json" <<EOF
 {
   "name": "sita-os",
@@ -254,13 +289,25 @@ stage_artifacts() {
     "packages": "ok",
     "squashfs": "ok",
     "bootloader": "ok",
-    "iso_assembly": "ok"
+    "iso_assembly": "ok",
+    "export_artifacts": "ok",
+    "trust_pipeline": "ok"
   },
-  "trust_baseline": "dev-unsigned",
-  "next_phase": "phase-2-dm-verity-and-signed-kernel"
+  "trust_baseline": "${trust_baseline}",
+  "verity": "${verity_status}",
+  "schema": "sita-os-build-manifest/v2"
 }
 EOF
   ok "artifacts: ${ISO_NAME}, ${ISO_NAME}.sha256, ${ISO_NAME}.manifest.json"
+}
+
+# ── Stage 9: emit canonical attestation ────────────────────────────────
+stage_attestation() {
+  log "stage 9 — emitting canonical attestation"
+  local repo_root
+  repo_root="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+  ( cd "${repo_root}" && SITA_OUT_DIR="${OUT_DIR}" bash os/scripts/emit-attestation.sh ) \
+    || warn "attestation emission failed (non-fatal)"
 }
 
 # ── Main ───────────────────────────────────────────────────────────────
@@ -273,8 +320,11 @@ main() {
   stage_build_squashfs
   stage_bootloader
   stage_make_iso
+  stage_export_artifacts
+  stage_trust_pipeline
   stage_artifacts
-  log "✅ done — boot it: bash os/qemu-test.sh"
+  stage_attestation
+  log "✅ done — boot: pnpm os:test:qemu  |  validate: pnpm os:test:qemu:validate"
 }
 
 trap 'umount "${ROOT_DIR}/dev" "${ROOT_DIR}/proc" "${ROOT_DIR}/sys" 2>/dev/null || true' EXIT

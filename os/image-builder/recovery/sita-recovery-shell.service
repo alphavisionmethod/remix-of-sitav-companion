@@ -1,0 +1,37 @@
+[Unit]
+Description=SITA OS Recovery Shell (Electron fallback)
+Documentation=https://sita.dev/docs/recovery
+DefaultDependencies=no
+After=sita-runtime.service
+OnFailure=
+
+[Service]
+Type=simple
+StandardInput=tty
+StandardOutput=tty
+StandardError=journal
+TTYPath=/dev/tty7
+TTYReset=yes
+TTYVHangup=yes
+ExecStartPre=/usr/bin/clear
+ExecStart=/bin/sh -c '\
+  echo ""; \
+  echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+  echo "   SITA OS — Recovery Shell"; \
+  echo "   Desktop runtime is unavailable. You are in the safe shell."; \
+  echo ""; \
+  echo "   Available commands:"; \
+  echo "     sita-rollback           switch to previous slot"; \
+  echo "     sita-support-bundle     collect diagnostics tarball"; \
+  echo "     sita-safe-mode          start runtime without Electron"; \
+  echo "     journalctl -u sita-runtime -n 200      see why it crashed"; \
+  echo "     systemctl reboot        try again"; \
+  echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+  echo ""; \
+  exec /bin/bash --login'
+
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=rescue.target

@@ -1,0 +1,11 @@
+{
+  "schema": "sita-os-update-bundle-manifest/v1",
+  "version": "0.0.0",
+  "channel": "stable",
+  "rootHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "minPreviousVersion": "0.0.0",
+  "createdAt": "1970-01-01T00:00:00Z",
+  "applyMode": "ab-slot",
+  "rebootRequired": true,
+  "rollbackAfterFailedBoots": 2
+}

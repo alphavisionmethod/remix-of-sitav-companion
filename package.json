@@ -44,7 +44,8 @@
     "os:bundle:verify": "bash os/scripts/verify-update-bundle.sh",
     "os:rollback:dryrun": "bash os/scripts/rollback-to-previous.sh --dry-run",
     "os:support:bundle": "bash os/scripts/generate-support-bundle.sh",
-    "os:vmware:ova": "bash os/vmware/build-ova.sh"
+    "os:vmware:ova": "bash os/vmware/build-ova.sh",
+    "os:release": "bash os/scripts/release.sh"
   },
   "dependencies": {
     "@aparajita/capacitor-biometric-auth": "^10.0.0",

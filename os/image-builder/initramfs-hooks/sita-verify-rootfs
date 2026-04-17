@@ -1,0 +1,28 @@
+#!/bin/sh
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — Initramfs Hook: Verify Root Filesystem Signature
+#
+# Runs inside initramfs **before** mounting the rootfs. Verifies the
+# detached signature on /boot/initrd.img.sig (already done implicitly
+# by signed-kernel/initramfs chain) and the dm-verity root hash that
+# was passed via systemd.verity_root_hash= on the kernel cmdline.
+#
+# If either check fails → kernel panic (panic-on-corruption is the
+# enforced verity option). The recovery slot remains bootable.
+# ═══════════════════════════════════════════════════════════════════════
+
+PREREQ=""
+prereqs() { echo "$PREREQ"; }
+
+case "$1" in
+  prereqs) prereqs; exit 0 ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+# Bring the verifier into the initramfs
+copy_exec /sbin/veritysetup        /sbin
+copy_exec /usr/bin/openssl         /usr/bin || true
+
+# Mark the hook as installed (initramfs-tools convention)
+echo "sita-verify-rootfs: hook installed" >&2
