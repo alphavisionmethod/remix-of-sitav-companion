@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -7,7 +7,16 @@ import { useOSWindowContext, type OSWindow } from "./WindowContext";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window
 // Premium glassmorphic draggable window with traffic-light controls
+//
+// Performance model (matches DraggableWidget):
+//   • During drag we mutate a ref + apply translate3d directly via rAF
+//     — NO React state churn → buttery smooth 60fps.
+//   • State is committed once on pointerup so memory/persistence stays in sync.
 // ═══════════════════════════════════════════════════════════════
+
+// Viewport reserved space
+const MENU_BAR_HEIGHT = 28; // SystemMenuBar h-7
+const DOCK_RESERVED = 0;    // Dock auto-hides — no need to reserve
 
 interface AppWindowProps {
   window: OSWindow;
@@ -17,44 +26,103 @@ export function AppWindow({ window: win }: AppWindowProps) {
   const { closeWindow, minimizeWindow, maximizeWindow, focusWindow, updateWindowPosition } =
     useOSWindowContext();
 
-  const dragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
+  const elRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef({ x: win.position.x, y: win.position.y });
+  const startRef = useRef({ px: 0, py: 0, ox: 0, oy: 0 });
+  const draggingRef = useRef(false);
+  const rafRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  // ── Pointer-based drag (header only) ──────────────────────
+  // Keep ref in sync when external changes (e.g. cascade) come through
+  useEffect(() => {
+    if (!draggingRef.current) {
+      posRef.current = { x: win.position.x, y: win.position.y };
+    }
+  }, [win.position.x, win.position.y]);
+
+  const clampToViewport = useCallback((x: number, y: number) => {
+    const w = win.size.width;
+    const h = win.size.height;
+    const maxX = Math.max(0, globalThis.innerWidth - w);
+    const maxY = Math.max(MENU_BAR_HEIGHT, globalThis.innerHeight - DOCK_RESERVED - 40);
+    return {
+      x: Math.max(0, Math.min(x, maxX)),
+      // allow dragging up to just under the menu bar
+      y: Math.max(MENU_BAR_HEIGHT, Math.min(y, maxY)),
+    };
+  }, [win.size.width, win.size.height]);
+
+  // ── Pointer-based drag (header only, GPU accelerated) ────
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (win.isMaximized) return;
+      if (e.button !== 0) return;
+      // Don't start drag if clicking interactive child (traffic lights)
+      const target = e.target as HTMLElement;
+      if (target.closest("button")) return;
+
       e.preventDefault();
-      (e.target as HTMLElement).setPointerCapture(e.pointerId);
-      dragRef.current = {
-        startX: e.clientX,
-        startY: e.clientY,
-        originX: win.position.x,
-        originY: win.position.y,
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      startRef.current = {
+        px: e.clientX,
+        py: e.clientY,
+        ox: posRef.current.x,
+        oy: posRef.current.y,
       };
+      draggingRef.current = true;
       setIsDragging(true);
       focusWindow(win.id);
     },
-    [win.isMaximized, win.position, win.id, focusWindow]
+    [win.isMaximized, win.id, focusWindow]
   );
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!dragRef.current) return;
-      const dx = e.clientX - dragRef.current.startX;
-      const dy = e.clientY - dragRef.current.startY;
-      updateWindowPosition(win.id, {
-        x: dragRef.current.originX + dx,
-        y: dragRef.current.originY + dy,
+      if (!draggingRef.current) return;
+      const dx = e.clientX - startRef.current.px;
+      const dy = e.clientY - startRef.current.py;
+      const next = clampToViewport(startRef.current.ox + dx, startRef.current.oy + dy);
+      posRef.current = next;
+
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        if (elRef.current) {
+          // Override left/top with translate during drag for instant updates
+          elRef.current.style.transform = `translate3d(${next.x - win.position.x}px, ${next.y - win.position.y}px, 0)`;
+        }
       });
+    },
+    [clampToViewport, win.position.x, win.position.y]
+  );
+
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      setIsDragging(false);
+      try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* noop */ }
+      cancelAnimationFrame(rafRef.current);
+
+      // Reset transform offset and commit position to state
+      if (elRef.current) elRef.current.style.transform = "";
+      updateWindowPosition(win.id, posRef.current);
     },
     [win.id, updateWindowPosition]
   );
 
-  const onPointerUp = useCallback(() => {
-    dragRef.current = null;
-    setIsDragging(false);
-  }, []);
+  // ── Re-clamp on viewport resize ──────────────────────────
+  useEffect(() => {
+    const handler = () => {
+      if (win.isMaximized) return;
+      const next = clampToViewport(posRef.current.x, posRef.current.y);
+      if (next.x !== posRef.current.x || next.y !== posRef.current.y) {
+        posRef.current = next;
+        updateWindowPosition(win.id, next);
+      }
+    };
+    globalThis.addEventListener("resize", handler);
+    return () => globalThis.removeEventListener("resize", handler);
+  }, [clampToViewport, win.id, win.isMaximized, updateWindowPosition]);
 
   // ── Traffic light button ──────────────────────────────────
   const TrafficLight = ({
@@ -72,6 +140,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
   }) => (
     <button
       aria-label={label}
+      onPointerDown={(e) => e.stopPropagation()}
       onClick={(e) => {
         e.stopPropagation();
         onClick();
@@ -93,28 +162,31 @@ export function AppWindow({ window: win }: AppWindowProps) {
     </button>
   );
 
-  const isFocused = true; // In compositor, topmost is focused — could extend later
-
   return (
     <motion.div
+      ref={elRef}
       key={win.id}
-      initial={{ scale: 0.96, opacity: 0, filter: "blur(8px)" }}
-      animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-      exit={{ scale: 0.98, opacity: 0, filter: "blur(4px)" }}
-      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ scale: 0.96, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.98, opacity: 0 }}
+      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         "absolute flex flex-col overflow-hidden pointer-events-auto",
         "rounded-xl border border-white/[0.08]",
         "bg-background/80 backdrop-blur-xl",
-        isFocused
-          ? "shadow-[0_2px_6px_hsl(0_0%_0%/0.08),0_20px_40px_hsl(0_0%_0%/0.18)]"
-          : "shadow-[0_2px_4px_hsl(0_0%_0%/0.05),0_12px_28px_hsl(0_0%_0%/0.10)]",
-        win.isMaximized && "!inset-0 !w-full !h-full !rounded-none"
+        "shadow-[0_2px_6px_hsl(0_0%_0%/0.08),0_20px_40px_hsl(0_0%_0%/0.18)]",
+        win.isMaximized && "!rounded-none"
       )}
       style={{
         zIndex: win.zIndex,
+        willChange: isDragging ? "transform" : "auto",
         ...(win.isMaximized
-          ? {}
+          ? {
+              left: 0,
+              top: MENU_BAR_HEIGHT,
+              width: "100vw",
+              height: `calc(100vh - ${MENU_BAR_HEIGHT}px)`,
+            }
           : {
               left: win.position.x,
               top: win.position.y,
@@ -127,7 +199,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
       {/* ── Title bar ──────────────────────────────────────── */}
       <div
         className={cn(
-          "flex items-center h-10 px-3 gap-2 select-none shrink-0",
+          "flex items-center h-10 px-3 gap-2 select-none shrink-0 touch-none",
           "border-b border-white/[0.06]",
           "bg-background/40",
           !win.isMaximized && "cursor-grab",
@@ -136,6 +208,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onDoubleClick={() => maximizeWindow(win.id)}
       >
         {/* Traffic lights */}
         <div className="flex items-center gap-1.5 group">
