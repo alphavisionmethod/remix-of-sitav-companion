@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-17T00:00:00.000Z",
-  "phase": "phase-19-auth-policy-trust-reality",
+  "generatedAt": "2026-04-17T01:30:00.000Z",
+  "phase": "phase-19.1-auth-ux-wiring-closure",
   "checklist12": {
     "title": "Auth / Identity",
     "items": {
@@ -9,12 +9,12 @@
       "session_refresh": { "status": "ready", "evidence": "onAuthStateChange + TOKEN_REFRESHED handling" },
       "mfa": {
         "status": "ready",
-        "evidence": "MFAService wraps supabase.auth.mfa.enroll/challenge/verify; MFAEnrollment page; MFAChallenge component; v_admin_user_mfa_factors view"
+        "evidence": "MFAService wraps supabase.auth.mfa.enroll/challenge/verify; MFAEnrollment page reachable at /settings/mfa (registered in src/routes/os-routes.tsx); MFAChallenge component rendered by Login.tsx when AuthContext.requiresMFA is true; AuthContext detects AAL2 via getAuthenticatorAssuranceLevel + listFactors after sign-in; verifyMFA() exposed; v_admin_user_mfa_factors view; Settings hub tile with live Enrolled/Not set up status"
       },
       "oauth_apple_google_microsoft": { "status": "ready", "evidence": "Google + Apple buttons via lovable.auth.signInWithOAuth" },
       "passkey_webauthn": {
         "status": "ready",
-        "evidence": "WebAuthnService uses navigator.credentials.create/get; webauthn-challenge edge fn; user_passkeys table; PasskeyManagement page"
+        "evidence": "WebAuthnService uses navigator.credentials.create/get; webauthn-challenge edge fn; user_passkeys table; PasskeyManagement page reachable at /settings/passkey (registered in src/routes/os-routes.tsx); Settings hub tile shows live passkey count"
       },
       "trusted_device": { "status": "ready", "evidence": "device-trust-registry.ts + device-identity-registry.ts" },
       "admin_auth_separated": { "status": "ready", "evidence": "AdminRoute + useRequireAdmin + PermissionGatedRoute + has_admin_permission RPC" },
@@ -37,7 +37,7 @@
       "kill_switch_aware": { "status": "ready", "evidence": "kill-switch-enforcement-map + checkKillSwitchOrReject in edge fns" },
       "no_bypass": {
         "status": "ready",
-        "evidence": "supabase/functions/_shared/policy.ts ports resolveUnifiedPolicy; CI Gate 30 enforces ≥6 edge + ≥6 UI callers"
+        "evidence": "supabase/functions/_shared/policy.ts ports resolveUnifiedPolicy; CI Gate 30 enforces ≥6 edge + ≥6 UI callers + security-page route reachability"
       },
       "ui_trust_states_reflect_backend": {
         "status": "ready",
@@ -51,11 +51,31 @@
     },
     "score": "11/11"
   },
+  "authPolicyWiring": {
+    "routes_registered": true,
+    "signin_challenge_wired": true,
+    "settings_hub_links": true,
+    "evidence": {
+      "routes": [
+        "src/routes/os-routes.tsx → /settings/mfa → MFAEnrollment",
+        "src/routes/os-routes.tsx → /settings/passkey → PasskeyManagement"
+      ],
+      "signin_flow": [
+        "src/contexts/AuthContext.tsx detectMFARequirement() called after SIGNED_IN/getSession",
+        "src/contexts/AuthContext.tsx exposes requiresMFA, mfaFactorId, verifyMFA, cancelMFA",
+        "src/pages/auth/Login.tsx renders <MFAChallenge> when requiresMFA && mfaFactorId"
+      ],
+      "settings_hub": [
+        "src/pages/SettingsPage.tsx renders Two-factor and Passkey tiles with live status pills sourced from MFAService.listFactors() + WebAuthnService.listPasskeys()"
+      ]
+    }
+  },
   "ciGate": {
     "id": "phase-19-auth-policy-trust-reality",
     "script": "scripts/architecture/checks/check-policy-resolver-coverage.ts",
     "requiredEdgeCallers": 6,
     "requiredUiCallers": 6,
+    "securityPageRouteReachability": true,
     "severity": "error"
   },
   "errorCount": 0,

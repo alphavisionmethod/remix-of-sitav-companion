@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-// CI Gate 30 — Policy Resolver Coverage (Phase 19.F)
+// CI Gate 30 — Policy Resolver Coverage + Auth Page Reachability (Phase 19 / 19.1)
 // Asserts that resolveUnifiedPolicy / useUnifiedPolicy / usePolicyDecision are
-// referenced from at least the minimum required call sites in app + edge code.
+// referenced from at least the minimum required call sites in app + edge code,
+// AND that security-critical pages (MFA, Passkey) are imported by a route file.
 
 import { readdirSync, readFileSync, statSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
@@ -13,6 +14,13 @@ const ROOTS = [
   { dir: "supabase/functions", kind: "edge" as const, pattern: /resolveUnifiedPolicy/ },
   { dir: "src", kind: "ui" as const, pattern: /useUnifiedPolicy|usePolicyDecision|resolveUnifiedPolicy/ },
 ];
+
+// Phase 19.1.E — security-critical pages that MUST be reachable via a route
+const SECURITY_PAGES = [
+  { file: "src/pages/settings/MFAEnrollment.tsx", importToken: "MFAEnrollment" },
+  { file: "src/pages/settings/PasskeyManagement.tsx", importToken: "PasskeyManagement" },
+];
+const ROUTES_DIR = "src/routes";
 
 function walk(dir: string, out: string[] = []): string[] {
   if (!existsSync(dir)) return out;
@@ -47,6 +55,26 @@ for (const root of ROOTS) {
   }
 }
 
+// Route reachability check
+const routeFiles = walk(ROUTES_DIR);
+const routeBlob = routeFiles.map((f) => readFileSync(f, "utf8")).join("\n");
+const unreachablePages: string[] = [];
+const reachablePages: string[] = [];
+for (const page of SECURITY_PAGES) {
+  if (!existsSync(page.file)) {
+    unreachablePages.push(`${page.file} (page file missing)`);
+    continue;
+  }
+  // Match either the export token or its file path being imported in any route file
+  const tokenRe = new RegExp(`\\b${page.importToken}\\b`);
+  const pathRe = new RegExp(page.file.replace("src/", "@/").replace(/\.tsx?$/, ""));
+  if (tokenRe.test(routeBlob) || pathRe.test(routeBlob)) {
+    reachablePages.push(page.file);
+  } else {
+    unreachablePages.push(`${page.file} (no route imports ${page.importToken})`);
+  }
+}
+
 const errors: string[] = [];
 if (callSites.edge.length < REQUIRED_EDGE_CALLERS) {
   errors.push(
@@ -58,6 +86,9 @@ if (callSites.ui.length < REQUIRED_UI_CALLERS) {
     `UI surfaces consuming policy hooks: ${callSites.ui.length}/${REQUIRED_UI_CALLERS}`
   );
 }
+for (const u of unreachablePages) {
+  errors.push(`Security page unreachable: ${u}`);
+}
 
 const report = {
   generatedAt: new Date().toISOString(),
@@ -67,6 +98,8 @@ const report = {
   uiCount: callSites.ui.length,
   requiredEdge: REQUIRED_EDGE_CALLERS,
   requiredUi: REQUIRED_UI_CALLERS,
+  securityPagesReachable: reachablePages,
+  securityPagesUnreachable: unreachablePages,
   errors,
   ok: errors.length === 0,
 };
@@ -83,5 +116,5 @@ if (errors.length > 0) {
   process.exit(1);
 }
 console.log(
-  `✅ Policy resolver coverage: edge=${callSites.edge.length} ui=${callSites.ui.length}`
+  `✅ Policy resolver coverage: edge=${callSites.edge.length} ui=${callSites.ui.length} security-pages-reachable=${reachablePages.length}/${SECURITY_PAGES.length}`
 );

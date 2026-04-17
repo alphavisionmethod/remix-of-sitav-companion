@@ -7,12 +7,16 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isDemo: boolean;
+  requiresMFA: boolean;
+  mfaFactorId: string | null;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInAsDemo: () => void;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: any }>;
   updatePassword: (password: string) => Promise<{ error: any }>;
+  verifyMFA: (code: string) => Promise<{ error: any }>;
+  cancelMFA: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,6 +46,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
   const [seedTriggered, setSeedTriggered] = useState(false);
+  const [requiresMFA, setRequiresMFA] = useState(false);
+  const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
 
   const triggerAutoSeed = async () => {
     if (seedTriggered) return;
@@ -63,6 +69,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  /**
+   * Phase 19.1.B — Detect AAL2 step-up requirement.
+   * Returns { requiresMFA, factorId } based on current vs next assurance level.
+   */
+  const detectMFARequirement = async (): Promise<{ required: boolean; factorId: string | null }> => {
+    try {
+      const { data: aal, error: aalErr } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (aalErr || !aal) return { required: false, factorId: null };
+      if (aal.nextLevel === "aal2" && aal.currentLevel === "aal1") {
+        const { data: factors } = await supabase.auth.mfa.listFactors();
+        const totp = factors?.totp?.find((f) => f.status === "verified");
+        if (totp) return { required: true, factorId: totp.id };
+      }
+    } catch (e) {
+      console.warn("MFA detection failed:", e);
+    }
+    return { required: false, factorId: null };
+  };
+
   useEffect(() => {
     // Check if demo session was active
     if (localStorage.getItem("sita-demo-session") === "true") {
@@ -76,9 +101,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-      // Auto-seed on sign-in events (email, OAuth, etc.)
       if ((event === "SIGNED_IN" || event === "TOKEN_REFRESHED") && session?.user) {
         triggerAutoSeed();
+        // Defer MFA detection to avoid deadlock with auth callback
+        setTimeout(() => {
+          detectMFARequirement().then(({ required, factorId }) => {
+            setRequiresMFA(required);
+            setMfaFactorId(factorId);
+          });
+        }, 0);
+      }
+      if (event === "SIGNED_OUT") {
+        setRequiresMFA(false);
+        setMfaFactorId(null);
       }
     });
 
@@ -86,6 +121,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) {
+        detectMFARequirement().then(({ required, factorId }) => {
+          setRequiresMFA(required);
+          setMfaFactorId(factorId);
+        });
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -106,8 +147,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (!error) {
-      // Auto-seed demo data on first login
       triggerAutoSeed();
+      // MFA requirement is detected via onAuthStateChange → detectMFARequirement
     }
     return { error };
   };
@@ -125,8 +166,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setSession(null);
       setIsDemo(false);
+      setRequiresMFA(false);
+      setMfaFactorId(null);
       return;
     }
+    setRequiresMFA(false);
+    setMfaFactorId(null);
     await supabase.auth.signOut();
   };
 
@@ -142,8 +187,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error };
   };
 
+  /** Phase 19.1.B — Verify TOTP code to satisfy AAL2 step-up. */
+  const verifyMFA = async (code: string) => {
+    if (!mfaFactorId) return { error: new Error("No MFA factor pending") };
+    const { error } = await supabase.auth.mfa.challengeAndVerify({
+      factorId: mfaFactorId,
+      code,
+    });
+    if (!error) {
+      setRequiresMFA(false);
+      setMfaFactorId(null);
+    }
+    return { error };
+  };
+
+  const cancelMFA = async () => {
+    setRequiresMFA(false);
+    setMfaFactorId(null);
+    await supabase.auth.signOut();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, isDemo, signUp, signIn, signInAsDemo, signOut, resetPassword, updatePassword }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        loading,
+        isDemo,
+        requiresMFA,
+        mfaFactorId,
+        signUp,
+        signIn,
+        signInAsDemo,
+        signOut,
+        resetPassword,
+        updatePassword,
+        verifyMFA,
+        cancelMFA,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

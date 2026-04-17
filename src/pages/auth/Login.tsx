@@ -7,12 +7,13 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Zap, Brain, BarChart3
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
 import { AuthDivider } from "@/components/auth/AuthDivider";
+import { MFAChallenge } from "@/components/auth/MFAChallenge";
 import { motion } from "framer-motion";
 import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 
 const Login = () => {
-  const { signIn, signInAsDemo } = useAuth();
+  const { signIn, signInAsDemo, requiresMFA, mfaFactorId, cancelMFA } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,27 @@ const Login = () => {
   const [savedEmail] = useState(() => localStorage.getItem("sita-last-email") || "");
   const [showLockScreen, setShowLockScreen] = useState(!!savedEmail);
   const [showBoot, setShowBoot] = useState(!!savedEmail);
+
+  // Phase 19.1.B — MFA challenge step renders before completing sign-in
+  if (requiresMFA && mfaFactorId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <div className="w-full max-w-md">
+          <MFAChallenge
+            factorId={mfaFactorId}
+            onSuccess={() => {
+              toast.success("Multi-factor verification complete");
+              navigate("/");
+            }}
+            onCancel={async () => {
+              await cancelMFA();
+              toast.info("Sign-in cancelled");
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   // Boot sequence for returning users
   if (showBoot && savedEmail) {

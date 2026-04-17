@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T01:05:54.537Z",
+  "generatedAt": "2026-04-17T01:10:43.008Z",
   "edgeCallers": [
     "supabase/functions/admin-bff-gateway/index.ts",
     "supabase/functions/advisor-agent-loop/index.ts",
@@ -21,6 +21,11 @@
   "uiCount": 7,
   "requiredEdge": 6,
   "requiredUi": 6,
+  "securityPagesReachable": [
+    "src/pages/settings/MFAEnrollment.tsx",
+    "src/pages/settings/PasskeyManagement.tsx"
+  ],
+  "securityPagesUnreachable": [],
   "errors": [],
   "ok": true
 }
