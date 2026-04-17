@@ -293,14 +293,14 @@ const ActivityStream = () => {
     queryKey: ["timeline_approvals", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await db.from("approval_queue")
-        .select("*")
+      const { data } = await db.from("ai_workforce_approval_queue")
+        .select("id, status, title, summary, priority, created_at, decision_at")
         .order("created_at", { ascending: false })
         .limit(20);
       return (data || []).map((a: Record<string, any>) => ({
         type: `approval.${a.status}`,
         created_at: a.created_at,
-        payload: { summary: a.action_summary, action_type: a.action_type },
+        payload: { summary: a.title, action_type: a.priority },
         source: "approval_engine",
         processed: a.status !== "pending",
       }));

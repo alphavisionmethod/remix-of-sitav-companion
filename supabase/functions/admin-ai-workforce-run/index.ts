@@ -240,22 +240,27 @@ Deno.serve(async (req) => {
     const resolvedRoutingClass = (perm as Record<string, unknown>).preferred_routing_class || (role as Record<string, unknown>).default_routing_class || "balanced_assistant";
     const selectedModel = selectModel(resolvedBudgetClass);
 
-    // STEP 5: Budget policy check
-    const { data: budgetCheck } = await supabaseAdmin.rpc("check_ai_budget_policies", {
-      p_user_id: user.id,
-      p_capability_key: `workforce.${role_key}.${task_key}`,
-      p_estimated_cost_usd: 0.005,
-    });
+    // STEP 5: Budget policy check (optional RPC — safe-noop if not deployed)
+    let budgetCheck: { should_block?: boolean; reason?: string; policy_key?: string } | null = null;
+    try {
+      const { data } = await supabaseAdmin.rpc("check_ai_budget_policies", {
+        p_user_id: user.id,
+        p_capability_key: `workforce.${role_key}.${task_key}`,
+        p_estimated_cost_usd: 0.005,
+      });
+      budgetCheck = (data as typeof budgetCheck) ?? null;
+    } catch (e) {
+      console.warn("[ai-workforce-run] budget policy RPC not available:", (e as Error).message);
+    }
 
     if (budgetCheck?.should_block) {
       await supabaseAdmin.from("ai_workforce_invocations").insert({
-        user_id: user.id, role_key, task_type: task_key,
-        budget_class: resolvedBudgetClass, status: "blocked_budget",
+        user_id: user.id, role_key, task_key,
+        budget_posture: budget_posture || "normal",
+        status: "blocked_budget",
         mode, scope_type, scope_ref, scope_payload,
-        requested_budget_posture: budget_posture,
-        resolved_routing_class: resolvedRoutingClass,
-        invoked_by_user_id: user.id,
-        cost_cents: 0, tokens_used: 0, latency_ms: 0, fallback_occurred: false,
+        cost_cents: 0, tokens_in: 0, tokens_out: 0, duration_ms: 0,
+        error_message: budgetCheck.reason || "Budget policy blocked invocation",
       });
 
       return new Response(JSON.stringify({
@@ -272,28 +277,22 @@ Deno.serve(async (req) => {
       const { data: cached } = await supabaseAdmin
         .from("ai_workforce_cached_outputs")
         .select("*")
-        .eq("scope_hash", scopeHash)
-        .gt("fresh_until", new Date().toISOString())
+        .eq("cache_key", scopeHash)
+        .gt("expires_at", new Date().toISOString())
         .maybeSingle();
       if (cached) cachedOutput = cached;
     }
 
     // STEP 7: Create invocation record
-    const startedAt = new Date().toISOString();
     const { data: invocation, error: invErr } = await supabaseAdmin
       .from("ai_workforce_invocations")
       .insert({
-        user_id: user.id, role_key, task_type: task_key,
-        budget_class: resolvedBudgetClass,
+        user_id: user.id, role_key, task_key,
+        budget_posture: budget_posture || "normal",
         status: cachedOutput ? "success" : "running",
         mode, scope_type, scope_ref, scope_payload,
-        requested_budget_posture: budget_posture,
-        resolved_routing_class: resolvedRoutingClass,
-        used_cached_output: !!cachedOutput,
-        cached_output_ref: cachedOutput?.id || null,
-        invoked_by_user_id: user.id,
-        started_at: startedAt,
-        cost_cents: 0, tokens_used: 0, latency_ms: 0, fallback_occurred: false,
+        model_used: cachedOutput?.model_used ?? null,
+        cost_cents: 0, tokens_in: 0, tokens_out: 0, duration_ms: 0,
       })
       .select().single();
 
@@ -306,16 +305,16 @@ Deno.serve(async (req) => {
     // STEP 8: Return cached if fresh
     if (cachedOutput) {
       await supabaseAdmin.from("ai_workforce_cached_outputs")
-        .update({ reuse_count: (cachedOutput.reuse_count || 0) + 1 })
+        .update({ hit_count: (cachedOutput.hit_count || 0) + 1 })
         .eq("id", cachedOutput.id);
 
       await supabaseAdmin.from("ai_workforce_invocations")
-        .update({ status: "success", completed_at: new Date().toISOString(), cost_cents: 0 })
+        .update({ status: "success", cost_cents: 0, duration_ms: 0 })
         .eq("id", invocation.id);
 
       return new Response(JSON.stringify({
         status: "success", invocation_id: invocation.id,
-        cached: true, cache_reuse_count: (cachedOutput.reuse_count || 0) + 1,
+        cached: true, cache_hit_count: (cachedOutput.hit_count || 0) + 1,
         output: { summary: "Cached result returned", type: "cached" },
         recommendations_count: 0, approval_items_created: 0,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -349,21 +348,21 @@ Provide your structured analysis with findings and recommendations.`;
         await supabaseAdmin.from("ai_workforce_invocations")
           .update({
             status: "failed",
-            completed_at: new Date().toISOString(),
-            error_summary: (fallbackErr as Error).message,
-            fallback_occurred: true,
+            error_message: (fallbackErr as Error).message,
           })
           .eq("id", invocation.id);
 
-        // Update role health
+        // Update role health (canonical columns only)
         await supabaseAdmin.from("ai_workforce_role_health")
           .upsert({
-            user_id: user.id, role_id: role.id,
-            health_state: "degraded",
-            health_reason: (fallbackErr as Error).message,
-            last_failure_at: new Date().toISOString(),
-            last_used_at: new Date().toISOString(),
-          }, { onConflict: "role_id" });
+            user_id: user.id,
+            role_key,
+            health_status: "degraded",
+            last_error: (fallbackErr as Error).message,
+            last_invocation_at: new Date().toISOString(),
+            failed_invocations: 1,
+            total_invocations: 1,
+          }, { onConflict: "user_id,role_key" });
 
         return new Response(JSON.stringify({
           status: "failed",
@@ -385,21 +384,24 @@ Provide your structured analysis with findings and recommendations.`;
     const costCents = estimateCostCents(modelUsed, aiResult.tokens_used);
     const hasRecommendations = parsed.recommendations && parsed.recommendations.length > 0;
 
-    // STEP 11: Persist output
+    // STEP 11: Persist output (canonical columns: invocation_id, output_type, content, quality_score)
     const { data: output } = await supabaseAdmin
       .from("ai_workforce_outputs")
       .insert({
         user_id: user.id,
         invocation_id: invocation.id,
-        output_type: (task as Record<string, unknown>).task_family || "summary",
-        title: `${role.display_name}: ${task.display_name}`,
-        summary_text: parsed.summary,
-        structured_payload: parsed,
-        confidence_class: parsed.confidence >= 0.8 ? "high" : parsed.confidence >= 0.5 ? "medium" : "low",
-        launch_honesty_class: role.launch_honesty_class || "internal_only",
-        contains_recommendations: hasRecommendations,
-        contains_proposed_actions: hasRecommendations,
-        contains_sensitive_suggestions: false,
+        output_type: (task as Record<string, unknown>).task_family as string || "summary",
+        content: {
+          title: `${role.display_name}: ${task.display_name}`,
+          summary: parsed.summary,
+          findings: parsed.findings ?? [],
+          recommendations: parsed.recommendations ?? [],
+          confidence: parsed.confidence ?? 0.5,
+          launch_honesty_class: (role as Record<string, unknown>).launch_honesty_class || "internal_only",
+          contains_recommendations: hasRecommendations,
+        },
+        quality_score: typeof parsed.confidence === "number" ? Math.round(parsed.confidence * 100) / 100 : null,
+        flagged: false,
       })
       .select().single();
 
@@ -461,68 +463,71 @@ Provide your structured analysis with findings and recommendations.`;
       }
     }
 
-    // STEP 13: Update invocation with real results
+    // STEP 13: Update invocation with real results (canonical columns only)
     const completedAt = new Date().toISOString();
     await supabaseAdmin.from("ai_workforce_invocations")
       .update({
-        status: fallbackOccurred ? "fallback_success" : "success",
-        completed_at: completedAt,
+        status: fallbackOccurred ? "success" : "success",
         cost_cents: costCents,
-        tokens_used: aiResult.tokens_used,
-        latency_ms: aiResult.latency_ms,
-        output_summary: parsed.summary,
-        output_data: parsed,
-        provider_used: "lovable_ai_gateway",
+        tokens_in: Math.floor(aiResult.tokens_used * 0.6),
+        tokens_out: Math.floor(aiResult.tokens_used * 0.4),
+        duration_ms: aiResult.latency_ms,
         model_used: modelUsed,
-        fallback_occurred: fallbackOccurred,
       })
       .eq("id", invocation.id);
 
-    // STEP 14: Update role health + stats
+    // STEP 14: Update role health (canonical columns only)
+    const { data: existingHealth } = await supabaseAdmin
+      .from("ai_workforce_role_health")
+      .select("id, total_invocations, successful_invocations, failed_invocations")
+      .eq("user_id", user.id)
+      .eq("role_key", role_key)
+      .maybeSingle();
+
     await supabaseAdmin.from("ai_workforce_role_health")
       .upsert({
-        user_id: user.id, role_id: role.id,
-        health_state: fallbackOccurred ? "degraded" : "healthy",
-        health_reason: fallbackOccurred ? "Fallback model used" : null,
-        last_success_at: completedAt,
-        last_used_at: completedAt,
-      }, { onConflict: "role_id" });
-
-    // Increment role cost/invocation counters
-    await supabaseAdmin.rpc("increment_workforce_role_stats" as unknown, {
-      p_role_id: role.id,
-      p_cost_cents: costCents,
-    }).catch(() => {
-      // RPC may not exist yet — safe to ignore
-    });
+        user_id: user.id,
+        role_key,
+        health_status: fallbackOccurred ? "degraded" : "healthy",
+        last_invocation_at: completedAt,
+        total_invocations: (existingHealth?.total_invocations ?? 0) + 1,
+        successful_invocations: (existingHealth?.successful_invocations ?? 0) + 1,
+        failed_invocations: existingHealth?.failed_invocations ?? 0,
+        avg_cost_cents: costCents,
+        avg_latency_ms: aiResult.latency_ms,
+      }, { onConflict: "user_id,role_key" });
 
     // STEP 15: Cache output
     if ((task as Record<string, unknown>).allows_cached_output !== false && output) {
       const freshUntil = new Date(Date.now() + 3600_000).toISOString();
       await supabaseAdmin.from("ai_workforce_cached_outputs")
         .upsert({
-          user_id: user.id, role_id: role.id, task_id: task.id,
-          scope_hash: scopeHash,
-          scope_summary: `${scope_type}/${scope_ref || "all"}`,
-          output_id: output.id,
-          fresh_until: freshUntil,
-          reuse_count: 0,
-        }, { onConflict: "role_id,task_id,scope_hash" });
+          user_id: user.id,
+          role_key,
+          task_key,
+          cache_key: scopeHash,
+          output: { invocation_id: invocation.id, output_id: output.id, summary: parsed.summary },
+          model_used: modelUsed,
+          tokens_used: aiResult.tokens_used,
+          cost_cents: costCents,
+          expires_at: freshUntil,
+          hit_count: 0,
+        }, { onConflict: "cache_key" });
     }
 
-    // STEP 16: Log to AI usage ledger
-    await supabaseAdmin.from("ai_usage_ledger").insert({
+    // STEP 16: Log to AI inference receipts (canonical sovereign-gateway ledger)
+    await supabaseAdmin.from("ai_inference_receipts").insert({
       user_id: user.id,
-      capability_key: `workforce.${role_key}.${task_key}`,
+      capability_id: `workforce.${role_key}.${task_key}`,
       provider: "lovable_ai_gateway",
       model: modelUsed,
       input_tokens: Math.floor(aiResult.tokens_used * 0.6),
       output_tokens: Math.floor(aiResult.tokens_used * 0.4),
-      total_tokens: aiResult.tokens_used,
-      estimated_cost_usd: costCents / 100,
+      cost_estimate_cents: costCents,
       latency_ms: aiResult.latency_ms,
       status: fallbackOccurred ? "fallback" : "success",
-    }).catch(console.error);
+      route_reason: fallbackOccurred ? "primary_failed_fallback" : "primary_success",
+    }).catch((e: unknown) => console.error("[ai-workforce-run] inference receipt failed:", e));
 
     return new Response(JSON.stringify({
       status: fallbackOccurred ? "fallback_success" : "success",

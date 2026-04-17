@@ -20,6 +20,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 // ── Types (re-use demo-data interface) ────────────────────────
@@ -299,6 +301,7 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 const ApprovalChamber = () => {
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
+  const isAdmin = useIsAdmin();
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();
@@ -375,7 +378,7 @@ const ApprovalChamber = () => {
   return (
     <div className="space-y-6 p-6 max-w-5xl mx-auto">
 {/* Header */}
-      <div className="space-y-1">
+      <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="rounded-xl bg-primary/10 p-2.5">
             <ShieldCheck className="h-6 w-6 text-primary" />
@@ -387,6 +390,18 @@ const ApprovalChamber = () => {
             </p>
           </div>
         </div>
+        {isAdmin && !isDemoMode && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleGenerateSample}
+            disabled={generating}
+            className="gap-2 shrink-0"
+          >
+            {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
+            Generate Sample
+          </Button>
+        )}
       </div>
 
       {/* Summary Strip */}
