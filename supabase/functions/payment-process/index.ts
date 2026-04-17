@@ -3,6 +3,7 @@ import { corsHeaders, corsResponse, corsError, handleCors } from "../_shared/cor
 import { requireAuth } from "../_shared/auth.ts";
 import { z, zodValidate } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 
 const ActionSchema = z.discriminatedUnion("action", [
   z.object({
@@ -45,6 +46,22 @@ Deno.serve(async (req) => {
     const v = zodValidate(body, ActionSchema);
     if (!v.success) return v.response;
     const d = v.data;
+
+    // Phase 19.C — Unified policy gate (R4 money domain)
+    const isMutating = d.action === "initiate" || d.action === "verify" || d.action === "cancel";
+    if (isMutating) {
+      const decision = resolveUnifiedPolicy({
+        actor: "user",
+        domain: "money",
+        riskClass: "R4",
+        deviceTrust: 3,
+        biometricStepUpRecent: req.headers.get("x-step-up-recent") === "true",
+        hasJustification: true,
+      });
+      if (!decision.allowed) {
+        return negativeReceiptResponse(decision, { fn: "payment-process", action: d.action });
+      }
+    }
 
     if (d.action === "list-pending") {
       const { data, error } = await supabase.from("approval_queue")

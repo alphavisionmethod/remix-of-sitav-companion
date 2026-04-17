@@ -8,6 +8,7 @@ import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cor
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 const logger = new EdgeLogger("gdpr-delete");
@@ -65,6 +66,19 @@ Deno.serve(async (req) => {
       error: "Confirmation required",
       message: 'Send { "confirm": "DELETE_ALL_MY_DATA" } to proceed',
     }, 400);
+  }
+
+  // Phase 19.C — Unified policy gate (R5 identity destruction)
+  const decision = resolveUnifiedPolicy({
+    actor: "user",
+    domain: "identity",
+    riskClass: "R5",
+    deviceTrust: 4,
+    biometricStepUpRecent: req.headers.get("x-step-up-recent") === "true",
+    hasJustification: true,
+  });
+  if (!decision.allowed) {
+    return negativeReceiptResponse(decision, { fn: "gdpr-delete" });
   }
 
   try {

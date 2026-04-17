@@ -10002,6 +10002,54 @@ export type Database = {
           },
         ]
       }
+      user_passkeys: {
+        Row: {
+          aaguid: string | null
+          backup_eligible: boolean
+          backup_state: boolean
+          created_at: string
+          credential_id: string
+          device_label: string | null
+          id: string
+          last_used_at: string | null
+          public_key: string
+          sign_count: number
+          transports: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aaguid?: string | null
+          backup_eligible?: boolean
+          backup_state?: boolean
+          created_at?: string
+          credential_id: string
+          device_label?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key: string
+          sign_count?: number
+          transports?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aaguid?: string | null
+          backup_eligible?: boolean
+          backup_state?: boolean
+          created_at?: string
+          credential_id?: string
+          device_label?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key?: string
+          sign_count?: number
+          transports?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -10050,8 +10098,65 @@ export type Database = {
         }
         Relationships: []
       }
+      webauthn_challenges: {
+        Row: {
+          ceremony_type: string
+          challenge: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          ceremony_type: string
+          challenge: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          ceremony_type?: string
+          challenge?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
+      v_admin_user_mfa_factors: {
+        Row: {
+          created_at: string | null
+          factor_id: string | null
+          factor_type: "totp" | "webauthn" | "phone" | null
+          status: "unverified" | "verified" | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          factor_id?: string | null
+          factor_type?: "totp" | "webauthn" | "phone" | null
+          status?: "unverified" | "verified" | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          factor_id?: string | null
+          factor_type?: "totp" | "webauthn" | "phone" | null
+          status?: "unverified" | "verified" | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       v_outcome_verification_summary: {
         Row: {
           count: number | null

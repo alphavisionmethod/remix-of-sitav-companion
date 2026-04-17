@@ -1,4 +1,5 @@
 import { useAction } from "@/hooks/use-action";
+import { usePolicyDecision } from "@/hooks/use-policy-decision";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AR08: Kill Switch & Safety Center
 // ═══════════════════════════════════════════════════════════════
@@ -18,6 +19,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function AR08KillSwitchCenter() {
+  const policy = usePolicyDecision({ domain: "admin", riskClass: "R5", actor: "platform-admin" });
+  void policy;
   const queryClient = useQueryClient();
   const { data: switches = [] } = useQuery({
     queryKey: ["kill-switches"],

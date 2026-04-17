@@ -7,6 +7,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 
 // In-memory kill-switch state (persisted to DB when available)
 let killSwitchActive = false;
@@ -30,6 +31,21 @@ serve(async (req) => {
 
     if (!["activate", "deactivate", "status"].includes(action)) {
       return corsError("Invalid action. Use: activate, deactivate, status", 400);
+    }
+
+    // Phase 19.C — Unified policy gate (R5 admin kill-switch)
+    if (action !== "status") {
+      const decision = resolveUnifiedPolicy({
+        actor: "platform-admin",
+        domain: "admin",
+        riskClass: "R5",
+        deviceTrust: 4,
+        biometricStepUpRecent: req.headers.get("x-step-up-recent") === "true",
+        hasJustification: true,
+      });
+      if (!decision.allowed) {
+        return negativeReceiptResponse(decision, { fn: "payment-kill-switch", action });
+      }
     }
 
     const serviceClient = getServiceClient();
