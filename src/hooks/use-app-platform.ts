@@ -17,6 +17,17 @@ export function useAppCatalog(filters: CatalogFilters = {}) {
   });
 }
 
+/** Global app search — used by command palette / launcher search. */
+export function useAppSearch(query: string, limit = 20) {
+  const trimmed = query.trim();
+  return useQuery({
+    queryKey: ["app-search", trimmed, limit],
+    queryFn: () => catalogService.list({ search: trimmed, limit }),
+    enabled: trimmed.length >= 2,
+    staleTime: 30_000,
+  });
+}
+
 export function useAppDetail(appId: string | null | undefined) {
   return useQuery({
     queryKey: ["app-detail", appId],
