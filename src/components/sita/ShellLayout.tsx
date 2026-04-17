@@ -244,6 +244,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         handleLaunchApp={handleLaunchApp} doLaunchApp={doLaunchApp}
       />
 
+      {/* App Platform — global webview/native launch bridge */}
+      <AppLaunchBridge />
+
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
 
         {/* Persistent honesty banner — only renders in demo mode */}
