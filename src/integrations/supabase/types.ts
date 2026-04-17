@@ -5693,54 +5693,6 @@ export type Database = {
         }
         Relationships: []
       }
-      concierge_errands: {
-        Row: {
-          bundle_id: string | null
-          combinable: boolean | null
-          created_at: string
-          due_date: string | null
-          estimated_minutes: number | null
-          id: string
-          location: string | null
-          notes: string | null
-          priority: string | null
-          status: string | null
-          title: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          bundle_id?: string | null
-          combinable?: boolean | null
-          created_at?: string
-          due_date?: string | null
-          estimated_minutes?: number | null
-          id?: string
-          location?: string | null
-          notes?: string | null
-          priority?: string | null
-          status?: string | null
-          title: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          bundle_id?: string | null
-          combinable?: boolean | null
-          created_at?: string
-          due_date?: string | null
-          estimated_minutes?: number | null
-          id?: string
-          location?: string | null
-          notes?: string | null
-          priority?: string | null
-          status?: string | null
-          title?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       concierge_recurring_obligations: {
         Row: {
           automatable: boolean | null
@@ -7803,6 +7755,57 @@ export type Database = {
         }
         Relationships: []
       }
+      errands: {
+        Row: {
+          bundle_id: string | null
+          combinable: boolean
+          created_at: string
+          due_date: string | null
+          estimated_minutes: number | null
+          id: string
+          location: string | null
+          metadata: Json
+          notes: string | null
+          priority: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bundle_id?: string | null
+          combinable?: boolean
+          created_at?: string
+          due_date?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          notes?: string | null
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bundle_id?: string | null
+          combinable?: boolean
+          created_at?: string
+          due_date?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          notes?: string | null
+          priority?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       error_events: {
         Row: {
           correlation_id: string | null
@@ -7875,6 +7878,90 @@ export type Database = {
           updated_at?: string
           user_agent?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      event_plans: {
+        Row: {
+          budget_cents: number | null
+          created_at: string
+          event_date: string | null
+          event_type: string | null
+          guest_count: number | null
+          id: string
+          location: string | null
+          metadata: Json
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_cents?: number | null
+          created_at?: string
+          event_date?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_cents?: number | null
+          created_at?: string
+          event_date?: string | null
+          event_type?: string | null
+          guest_count?: number | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      family_members: {
+        Row: {
+          birthdate: string | null
+          created_at: string
+          display_name: string
+          id: string
+          metadata: Json
+          notes: string | null
+          relationship: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          birthdate?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          relationship?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          birthdate?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          relationship?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -8005,6 +8092,48 @@ export type Database = {
           started_at?: string | null
           status?: string
           task_graph?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      gift_plans: {
+        Row: {
+          budget_cents: number | null
+          created_at: string
+          id: string
+          idea: string | null
+          metadata: Json
+          occasion: string | null
+          recipient: string
+          status: string
+          target_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_cents?: number | null
+          created_at?: string
+          id?: string
+          idea?: string | null
+          metadata?: Json
+          occasion?: string | null
+          recipient: string
+          status?: string
+          target_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_cents?: number | null
+          created_at?: string
+          id?: string
+          idea?: string | null
+          metadata?: Json
+          occasion?: string | null
+          recipient?: string
+          status?: string
+          target_date?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -8255,6 +8384,51 @@ export type Database = {
           quantity?: number
           status?: string
           symbol?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      household_tasks: {
+        Row: {
+          assigned_to: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          metadata: Json
+          recurrence: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          metadata?: Json
+          recurrence?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          metadata?: Json
+          recurrence?: string | null
+          status?: string
+          title?: string
           updated_at?: string
           user_id?: string
         }
@@ -8837,6 +9011,48 @@ export type Database = {
           max_devices?: number
           product_tier?: string
           status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      maintenance_items: {
+        Row: {
+          asset: string
+          cadence: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          next_due: string | null
+          provider_id: string | null
+          status: string
+          task: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset: string
+          cadence?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          next_due?: string | null
+          provider_id?: string | null
+          status?: string
+          task: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset?: string
+          cadence?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          next_due?: string | null
+          provider_id?: string | null
+          status?: string
+          task?: string
           updated_at?: string
           user_id?: string
         }
@@ -10573,6 +10789,51 @@ export type Database = {
         }
         Relationships: []
       }
+      providers: {
+        Row: {
+          category: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          name: string
+          notes: string | null
+          rating: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name: string
+          notes?: string | null
+          rating?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name?: string
+          notes?: string | null
+          rating?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       quotes: {
         Row: {
           amount_cents: number
@@ -11144,6 +11405,48 @@ export type Database = {
           },
         ]
       }
+      reservations: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          party_size: number | null
+          reservation_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+          vendor: string | null
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          party_size?: number | null
+          reservation_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+          vendor?: string | null
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          party_size?: number | null
+          reservation_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          vendor?: string | null
+        }
+        Relationships: []
+      }
       reserves: {
         Row: {
           balance_cents: number
@@ -11181,6 +11484,48 @@ export type Database = {
           reserve_type?: string | null
           status?: string
           target_cents?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      responsibilities: {
+        Row: {
+          area: string | null
+          cadence: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          next_review: string | null
+          owner: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          cadence?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          next_review?: string | null
+          owner?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          cadence?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          next_review?: string | null
+          owner?: string | null
+          status?: string
+          title?: string
           updated_at?: string
           user_id?: string
         }
@@ -11411,6 +11756,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      schedules: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_at: string | null
+          id: string
+          location: string | null
+          metadata: Json
+          start_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_at?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          start_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_at?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json
+          start_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       school_activities: {
         Row: {
@@ -12293,6 +12680,48 @@ export type Database = {
           start_date?: string | null
           status?: string | null
           travelers?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      trips: {
+        Row: {
+          created_at: string
+          destination: string | null
+          end_date: string | null
+          id: string
+          itinerary: Json
+          metadata: Json
+          start_date: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          destination?: string | null
+          end_date?: string | null
+          id?: string
+          itinerary?: Json
+          metadata?: Json
+          start_date?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          destination?: string | null
+          end_date?: string | null
+          id?: string
+          itinerary?: Json
+          metadata?: Json
+          start_date?: string | null
+          status?: string
+          title?: string
           updated_at?: string
           user_id?: string
         }

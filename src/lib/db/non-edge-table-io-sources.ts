@@ -280,6 +280,52 @@ export const NON_EDGE_TABLE_IO: Record<string, NonEdgeTableIO> = {
     writers: [clientWrite("admin kill switch toggle"), sys("workflow-execute edge fn")],
     readers: [sys("scheduler-dispatch edge fn"), sys("workflow-execute edge fn"), clientRead("admin AR01AutomationOverview")],
   },
+
+  // ── Phase 24.1 — Concierge OS canonical tables ──────────────
+  schedules: {
+    writers: [clientWrite("ConciergeSchedules")],
+    readers: [clientRead("ConciergeSchedules"), clientRead("FamilyCommandCenter")],
+  },
+  errands: {
+    writers: [clientWrite("ErrandsLogistics"), clientWrite("useCreateErrand hook")],
+    readers: [clientRead("ErrandsLogistics"), clientRead("useErrands hook"), clientRead("ConciergeRuntimeBoard")],
+  },
+  trips: {
+    writers: [clientWrite("ConciergeTravel")],
+    readers: [clientRead("ConciergeTravel"), clientRead("FamilyCommandCenter")],
+  },
+  reservations: {
+    writers: [clientWrite("ConciergeAppointments")],
+    readers: [clientRead("ConciergeAppointments"), clientRead("ConciergeRuntimeBoard")],
+  },
+  household_tasks: {
+    writers: [clientWrite("HouseholdOperations")],
+    readers: [clientRead("HouseholdOperations"), clientRead("FamilyCommandCenter")],
+  },
+  event_plans: {
+    writers: [clientWrite("EventPlanning")],
+    readers: [clientRead("EventPlanning")],
+  },
+  gift_plans: {
+    writers: [clientWrite("GiftTracker")],
+    readers: [clientRead("GiftTracker")],
+  },
+  providers: {
+    writers: [clientWrite("ServiceProviders")],
+    readers: [clientRead("ServiceProviders"), clientRead("ConciergeRuntimeBoard")],
+  },
+  family_members: {
+    writers: [clientWrite("FamilyCommandCenter")],
+    readers: [clientRead("FamilyCommandCenter"), clientRead("LifeScore")],
+  },
+  maintenance_items: {
+    writers: [clientWrite("HouseholdMaintenance")],
+    readers: [clientRead("HouseholdMaintenance"), clientRead("FamilyCommandCenter")],
+  },
+  responsibilities: {
+    writers: [clientWrite("LifeAdmin")],
+    readers: [clientRead("LifeAdmin"), clientRead("LifeScore")],
+  },
 };
 
 export function getNonEdgeIO(table: string): NonEdgeTableIO | undefined {

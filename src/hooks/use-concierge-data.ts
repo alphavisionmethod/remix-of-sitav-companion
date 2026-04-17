@@ -93,14 +93,15 @@ export function useAppointments() {
 }
 
 // ═══ New Concierge Hooks ═══
+// Canonical table: `errands` (Phase 24.1 — replaces legacy `concierge_errands`)
 
 export function useErrands() {
   const uid = useUserId();
   return useQuery({
-    queryKey: ["concierge-errands", uid],
+    queryKey: ["errands", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await fromTable("concierge_errands").select("*").eq("user_id", uid!).order("due_date");
+      const { data } = await fromTable("errands").select("*").eq("user_id", uid!).order("due_date");
       return data ?? [];
     },
   });
@@ -121,11 +122,11 @@ export function useCreateErrand() {
       notes?: string;
       status?: string;
     }) => {
-      const { data, error } = await fromTable("concierge_errands").insert({ ...errand, user_id: uid! }).select().single();
+      const { data, error } = await fromTable("errands").insert({ ...errand, user_id: uid! }).select().single();
       if (error) throw error;
       return data;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
 }
 
@@ -133,11 +134,11 @@ export function useUpdateErrand() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...updates }: { id: string; [key: string]: any }) => {
-      const { data, error } = await fromTable("concierge_errands").update(updates).eq("id", id).select().single();
+      const { data, error } = await fromTable("errands").update(updates).eq("id", id).select().single();
       if (error) throw error;
       return data;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
 }
 
@@ -145,10 +146,10 @@ export function useDeleteErrand() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await fromTable("concierge_errands").delete().eq("id", id);
+      const { error } = await fromTable("errands").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
 }
 
