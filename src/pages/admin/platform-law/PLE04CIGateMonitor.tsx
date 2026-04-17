@@ -186,19 +186,19 @@ const PLE04CIGateMonitor = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search gates..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-9" />
         </div>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={catFilter} onChange={e => setCatFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={catFilter} onChange={e => setCatFilter(e.target.value as "all" | "architecture" | "validation" | "generation" | "master")}>
           <option value="all">All Categories</option>
           <option value="architecture">Architecture</option>
           <option value="validation">Validation</option>
           <option value="generation">Generation</option>
           <option value="master">Master</option>
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={typeFilter} onChange={e => setTypeFilter(e.target.value as "all" | "blocking" | "advisory")}>
           <option value="all">All Types</option>
           <option value="blocking">Blocking</option>
           <option value="advisory">Advisory</option>
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={statusFilter} onChange={e => setStatusFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={statusFilter} onChange={e => setStatusFilter(e.target.value as "all" | "pass" | "fail" | "skipped" | "never-run")}>
           <option value="all">All Statuses</option>
           <option value="pass">Pass</option>
           <option value="fail">Fail</option>

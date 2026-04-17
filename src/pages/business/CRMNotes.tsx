@@ -89,7 +89,7 @@ const CRMNotes = () => {
         contact_id: form.contact_id || null,
         company_id: form.company_id || null,
         is_pinned: form.is_pinned,
-      } as any);
+      });
       toast.success("Note created");
       setShowAdd(false);
       setForm({ title: "", content: "", note_type: "general", contact_id: "", company_id: "", is_pinned: false });
@@ -98,7 +98,7 @@ const CRMNotes = () => {
 
   const togglePin = async (n: typeof notes[0]) => {
     try {
-      await updateNote.mutateAsync({ id: n.id, updates: { is_pinned: !n.is_pinned } as any });
+      await updateNote.mutateAsync({ id: n.id, updates: { is_pinned: !n.is_pinned } });
       toast.success(n.is_pinned ? "Unpinned" : "Pinned");
     } catch { toast.error("Failed to update"); }
   };
@@ -111,7 +111,7 @@ const CRMNotes = () => {
   const saveEdit = async () => {
     if (!editingNote) return;
     try {
-      await updateNote.mutateAsync({ id: editingNote, updates: { title: editForm.title || null, content: editForm.content } as any });
+      await updateNote.mutateAsync({ id: editingNote, updates: { title: editForm.title || null, content: editForm.content } });
       toast.success("Note updated");
       setEditingNote(null);
     } catch { toast.error("Failed to update"); }

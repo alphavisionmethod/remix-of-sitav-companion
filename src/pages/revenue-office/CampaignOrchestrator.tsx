@@ -18,6 +18,23 @@ import {
   DEMO_CAMPAIGN_FATIGUE,
   DEMO_DELIVERABILITY,
 } from "@/lib/demo-data/revenue-office";
+interface AttributionRow {
+  campaign: string;
+  channel: string;
+  sent?: number;
+  impressions?: number;
+  registered?: number;
+  clicked?: number;
+  clicks?: number;
+  attended?: number;
+  opened?: number;
+  leads?: number;
+  responded?: number;
+  converted: number;
+  revenue: string;
+  roi: string;
+  cost: string;
+}
 
 
 export default function CampaignOrchestrator() {
@@ -149,15 +166,15 @@ export default function CampaignOrchestrator() {
                       </div>
                       <div className="grid grid-cols-4 gap-3 text-center text-xs">
                         <div>
-                          <p className="font-bold text-foreground">{(a as any).sent || (a as any).impressions || (a as any).registered}</p>
+                          <p className="font-bold text-foreground">{(a as AttributionRow).sent ?? (a as AttributionRow).impressions ?? (a as AttributionRow).registered}</p>
                           <p className="text-muted-foreground">{a.channel === "Paid" ? "Impressions" : a.channel === "Event" ? "Registered" : "Sent"}</p>
                         </div>
                         <div>
-                          <p className="font-bold text-foreground">{(a as any).clicked || (a as any).clicks || (a as any).attended || (a as any).opened}</p>
+                          <p className="font-bold text-foreground">{(a as AttributionRow).clicked ?? (a as AttributionRow).clicks ?? (a as AttributionRow).attended ?? (a as AttributionRow).opened}</p>
                           <p className="text-muted-foreground">{a.channel === "Event" ? "Attended" : a.channel === "Email" ? "Opened" : "Clicked"}</p>
                         </div>
                         <div>
-                          <p className="font-bold text-foreground">{(a as any).leads || (a as any).responded}</p>
+                          <p className="font-bold text-foreground">{(a as AttributionRow).leads ?? (a as AttributionRow).responded}</p>
                           <p className="text-muted-foreground">Leads</p>
                         </div>
                         <div>
