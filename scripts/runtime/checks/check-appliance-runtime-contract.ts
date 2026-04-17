@@ -9,9 +9,9 @@ import * as fs from "fs";
 
 const vc = new ViolationCollector();
 
-// Check ISO build infrastructure
+// Check ISO build infrastructure (canonical paths)
 const isoFiles = [
-  "scripts/release/build-iso.sh",
+  "scripts/release/appliance/build-iso.sh",
   "scripts/release/iso/autoinstall/user-data",
   "scripts/release/iso/sita-os.service",
 ];
@@ -21,13 +21,13 @@ for (const f of isoFiles) {
 }
 console.log(`  💿 ${found}/${isoFiles.length} ISO/appliance artifacts found`);
 
-if (found === 0) {
-  vc.add("scripts/release/", "no-appliance-infra", "No appliance/ISO build infrastructure found", "warning");
+if (found < isoFiles.length) {
+  vc.add("scripts/release/", "missing-appliance-infra", `Missing appliance/ISO artifacts (${found}/${isoFiles.length})`, "warning");
 }
 
-// Check OVA build infrastructure
+// Check OVA build infrastructure (canonical paths)
 const ovaFiles = [
-  "scripts/release/build-ova.sh",
+  "scripts/release/vmware/build-ova.sh",
   "scripts/release/templates/sita-os.ovf.template",
 ];
 let ovaFound = 0;
@@ -35,6 +35,10 @@ for (const f of ovaFiles) {
   if (fs.existsSync(f)) ovaFound++;
 }
 console.log(`  📀 ${ovaFound}/${ovaFiles.length} OVA/VMware artifacts found`);
+
+if (ovaFound < ovaFiles.length) {
+  vc.add("scripts/release/vmware/", "missing-ova-infra", `Missing OVA/VMware artifacts (${ovaFound}/${ovaFiles.length})`, "warning");
+}
 
 // Check runtime capability matrix references appliance
 const matrixPath = "src/lib/runtime/runtime-capability-matrix.ts";
