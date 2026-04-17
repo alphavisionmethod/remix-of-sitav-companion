@@ -144,6 +144,19 @@ serve(async (req) => {
     }
 
     const userId = claimsData.user.id;
+
+    // Phase 19.C — Unified policy gate (R4 advisor autonomous action)
+    const policyDecision = resolveUnifiedPolicy({
+      actor: "advisor",
+      domain: "business",
+      riskClass: "R4",
+      deviceTrust: 3,
+      hasJustification: true,
+    });
+    if (!policyDecision.allowed) {
+      return negativeReceiptResponse(policyDecision, { fn: "advisor-agent-loop", userId });
+    }
+
     const idGate = identityGate(userId);
     if (!idGate.passed) {
       return new Response(JSON.stringify({ error: idGate.reason }), {
