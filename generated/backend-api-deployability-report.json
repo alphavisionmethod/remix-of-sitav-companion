@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-17T00:25:11.312Z",
+  "generatedAt": "2026-04-17T00:26:17.609Z",
   "phase": "phase-16-backend-api-deployability",
-  "ok": false,
-  "errorCount": 10,
-  "warningCount": 5,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
   "ready": 14,
   "partial": 1,
   "deferred": 0,
@@ -11,27 +11,27 @@
   "total": 15,
   "metrics": {
     "edgeFunctionsTotal": 85,
-    "activeAmbiguousCount": 4,
+    "activeAmbiguousCount": 0,
     "metadataGaps": 0,
     "policyGaps": 0,
-    "unresolvedActions": 9,
+    "unresolvedActions": 0,
     "frontendActions": {
-      "total": 45,
-      "p0": 27,
-      "p1": 17,
-      "p2": 1,
+      "total": 46,
+      "p0": 25,
+      "p1": 18,
+      "p2": 3,
       "byKind": {
         "edge-function": 32,
         "local-capability": 8,
         "realtime-channel": 2,
         "supabase-rpc": 0,
-        "supabase-table": 3
+        "supabase-table": 4
       },
       "bySurface": {
-        "user": 35,
-        "admin": 6,
+        "user": 36,
+        "admin": 7,
         "kernel": 1,
-        "system": 3
+        "system": 2
       }
     },
     "policyCoverage": {
@@ -163,81 +163,5 @@
       "blocker": true
     }
   ],
-  "issues": [
-    {
-      "severity": "error",
-      "area": "governance",
-      "message": "governance overallStatus=RED (1 failed)"
-    },
-    {
-      "severity": "warning",
-      "area": "governance",
-      "message": "governance.totalFunctions=84 but registry has 85"
-    },
-    {
-      "severity": "error",
-      "area": "classification",
-      "message": "Active non-wrapper \"agent-intelligence\" still ambiguous: overlap-with-brain-core"
-    },
-    {
-      "severity": "error",
-      "area": "classification",
-      "message": "Active non-wrapper \"ambient-os-operations\" still ambiguous: mixes-ux-orchestration-with-runtime"
-    },
-    {
-      "severity": "error",
-      "area": "classification",
-      "message": "Active non-wrapper \"brain-core\" still ambiguous: mixes-aggregation"
-    },
-    {
-      "severity": "error",
-      "area": "classification",
-      "message": "Active non-wrapper \"cloud-admin-api\" still ambiguous: admin-aggregator-overlap"
-    },
-    {
-      "severity": "warning",
-      "area": "action-map",
-      "message": "Action \"comms.send-email\" targets unknown edge function \"communications-send\""
-    },
-    {
-      "severity": "warning",
-      "area": "action-map",
-      "message": "Action \"comms.send-sms\" targets unknown edge function \"communications-send\""
-    },
-    {
-      "severity": "warning",
-      "area": "action-map",
-      "message": "Action \"push.subscribe\" targets unknown edge function \"push-subscribe\""
-    },
-    {
-      "severity": "warning",
-      "area": "action-map",
-      "message": "Action \"push.send\" targets unknown edge function \"push-send\""
-    },
-    {
-      "severity": "error",
-      "area": "action-map",
-      "message": "Action \"connectors.oauth-start\" targets unknown edge function \"connector-oauth-start\""
-    },
-    {
-      "severity": "error",
-      "area": "action-map",
-      "message": "Action \"connectors.oauth-callback\" targets unknown edge function \"connector-oauth-callback\""
-    },
-    {
-      "severity": "error",
-      "area": "action-map",
-      "message": "Action \"billing.checkout\" targets unknown edge function \"stripe-checkout\""
-    },
-    {
-      "severity": "error",
-      "area": "action-map",
-      "message": "Action \"billing.portal\" targets unknown edge function \"stripe-portal\""
-    },
-    {
-      "severity": "error",
-      "area": "action-map",
-      "message": "Action \"billing.webhook\" targets unknown edge function \"stripe-webhook\""
-    }
-  ]
+  "issues": []
 }
