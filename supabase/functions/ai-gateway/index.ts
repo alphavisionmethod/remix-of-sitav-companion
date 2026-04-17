@@ -120,7 +120,6 @@ serve(async (req) => {
       }, 503);
     }
 
-    const serviceClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
     // ─── Phase 21: Resolve prompt family if provided ───
     if (promptFamilyId) {

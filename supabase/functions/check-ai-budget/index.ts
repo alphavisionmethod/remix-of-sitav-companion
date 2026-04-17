@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Budget Enforcement Edge Function
-// Gates AI invocations by calling check_ai_budget_policies DB fn
+// Thin HTTP wrapper around the canonical checkAIBudget helper.
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -40,44 +41,35 @@ Deno.serve(async (req) => {
       );
     }
 
-    const body = await req.json();
+    const body = await req.json().catch(() => ({}));
     const capabilityKey = body.capability_key ?? "unknown";
-    const estimatedCostUsd = body.estimated_cost_usd ?? 0.01;
+    const estimatedCostUsd = Number(body.estimated_cost_usd ?? 0.01);
 
-    // Call the DB function
-    const { data, error } = await supabase.rpc("check_ai_budget_policies", {
-      p_user_id: user.id,
-      p_capability_key: capabilityKey,
-      p_estimated_cost_usd: estimatedCostUsd,
-    });
-
-    if (error) {
-      console.error("Budget check error:", error);
-      // Fail open — allow the request but log
-      return new Response(
-        JSON.stringify({ allowed: true, reason: "policy_check_error", error: error.message }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-
-    const result = data as Record<string, unknown>;
+    const decision = await checkAIBudget(
+      supabase,
+      user.id,
+      capabilityKey,
+      estimatedCostUsd,
+      // strict:false here because callers use this to *advise* the UI
+      { strict: false },
+    );
 
     return new Response(
       JSON.stringify({
-        allowed: result.allowed ?? true,
-        reason: result.reason ?? "no_policy",
-        should_downgrade: result.should_downgrade ?? false,
-        should_block: result.should_block ?? false,
-        fallback_model_id: result.fallback_model_id ?? null,
-        policy_key: result.policy_key ?? null,
-        pct: result.pct ?? null,
-        alert_state: result.alert_state ?? null,
-        premium_blocked: result.premium_blocked ?? false,
+        allowed: decision.allowed,
+        reason: decision.reason,
+        should_downgrade: decision.shouldDowngrade,
+        should_block: decision.shouldBlock,
+        fallback_model_id: decision.fallbackModelId,
+        policy_key: decision.policyKey,
+        pct: decision.pct,
+        alert_state: decision.alertState,
+        premium_blocked: decision.premiumBlocked,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
-    console.error("Budget enforcement error:", err);
+    console.error("[check-ai-budget] enforcement error:", err);
     return new Response(
       JSON.stringify({ allowed: true, reason: "enforcement_error", error: String(err) }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
