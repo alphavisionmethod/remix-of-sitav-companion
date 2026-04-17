@@ -202,7 +202,7 @@ export default function FCC04RunbookCenter() {
                               <Badge variant="outline" className={`text-[10px] ${SEVERITY_BADGES[selected.severity]}`}>{selected.severity}</Badge>
                               <Badge variant="outline" className={`text-[10px] ${STATUS_BADGES[selected.status]}`}>{selected.status}</Badge>
                               {selected.killSwitchRef && (
-                                <Badge variant="outline" className="text-[10px] text-orange-400 border-orange-400/20">
+                                <Badge variant="outline" className="text-[10px] text-sita-gold border-sita-gold/20">
                                   <Shield className="h-2.5 w-2.5 mr-1" />{selected.killSwitchRef}
                                 </Badge>
                               )}
@@ -256,7 +256,7 @@ export default function FCC04RunbookCenter() {
                                 <div className="flex-1 min-w-0">
                                   <p>{step.action}</p>
                                   <p className="text-[10px] text-muted-foreground mt-0.5">→ {step.expectedOutcome}</p>
-                                  {step.rollbackAction && <p className="text-[10px] text-orange-400/80 mt-0.5">↩ rollback: {step.rollbackAction}</p>}
+                                  {step.rollbackAction && <p className="text-[10px] text-sita-gold/80 mt-0.5">↩ rollback: {step.rollbackAction}</p>}
                                 </div>
                                 <Badge variant="outline" className="text-[9px] shrink-0">{Math.round(step.timeoutMs / 1000)}s</Badge>
                               </div>
