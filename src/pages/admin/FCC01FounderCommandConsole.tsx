@@ -216,7 +216,7 @@ export default function FCC01FounderCommandConsole() {
                                   {d.status}
                                 </Badge>
                                 <Badge variant="outline" className="text-[10px]">{domainCfg.label}</Badge>
-                                <Badge variant="outline" className="text-[10px]">{(d.decomposed_plan as any[])?.length || 0} tasks</Badge>
+                                <Badge variant="outline" className="text-[10px]">{(d.decomposed_plan ?? []).length} tasks</Badge>
                               </div>
                             </div>
                             <ChevronRight className="h-4 w-4 text-muted-foreground/40 mt-1 shrink-0" />
@@ -298,15 +298,15 @@ export default function FCC01FounderCommandConsole() {
 }
 
 function DirectiveDetail({ directive }: { directive: DirectiveRecord }) {
-  const tasks = (directive.decomposed_plan || []) as any[];
-  const assignments = (directive.agent_assignments || []) as { agentClass: AgentClass; taskCount: number }[];
-  const risk = (directive.risk_assessment as any)?.level || "low";
+  const tasks = directive.decomposed_plan ?? [];
+  const assignments = directive.agent_assignments ?? [];
+  const risk = ((directive.risk_assessment as { level?: string })?.level) || "low";
   const domainCfg = DOMAIN_CONFIG[directive.domain_classification] || DOMAIN_CONFIG.general;
   const DomainIcon = domainCfg.icon;
 
-  const milestones = new Map<string, any[]>();
+  const milestones = new Map<string, typeof tasks>();
   for (const t of tasks) {
-    const ms = t.milestone || "Tasks";
+    const ms = (t as { milestone?: string }).milestone || "Tasks";
     milestones.set(ms, [...(milestones.get(ms) || []), t]);
   }
 

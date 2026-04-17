@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+// Note: db alias removed in favor of direct supabase client + per-call casting at boundary
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import {
@@ -77,7 +77,7 @@ const priorityToRiskTier = (p: string): string =>
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {
-  let query = (supabase as any)
+  let query = supabase
     .from("ai_workforce_approval_queue")
     .select("*, ai_workforce_recommendations(domain, severity, role_key, confidence, evidence)")
     .order("created_at", { ascending: false })
