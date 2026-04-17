@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_deletion_requests: {
+        Row: {
+          cancelled_at: string | null
+          created_at: string
+          id: string
+          purged_at: string | null
+          reason: string | null
+          receipt_hash: string | null
+          requested_at: string
+          scheduled_purge_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancelled_at?: string | null
+          created_at?: string
+          id?: string
+          purged_at?: string | null
+          reason?: string | null
+          receipt_hash?: string | null
+          requested_at?: string
+          scheduled_purge_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancelled_at?: string | null
+          created_at?: string
+          id?: string
+          purged_at?: string | null
+          reason?: string | null
+          receipt_hash?: string | null
+          requested_at?: string
+          scheduled_purge_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       accounts: {
         Row: {
           created_at: string
@@ -7895,6 +7937,48 @@ export type Database = {
         }
         Relationships: []
       }
+      data_export_requests: {
+        Row: {
+          bytes_exported: number | null
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          export_format: string
+          id: string
+          requested_at: string
+          row_count: number | null
+          status: string
+          table_count: number | null
+          user_id: string
+        }
+        Insert: {
+          bytes_exported?: number | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          export_format?: string
+          id?: string
+          requested_at?: string
+          row_count?: number | null
+          status?: string
+          table_count?: number | null
+          user_id: string
+        }
+        Update: {
+          bytes_exported?: number | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          export_format?: string
+          id?: string
+          requested_at?: string
+          row_count?: number | null
+          status?: string
+          table_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       data_retention_runs: {
         Row: {
           dry_run: boolean
@@ -15038,6 +15122,10 @@ export type Database = {
       seed_default_installed_apps: {
         Args: { _user_id: string }
         Returns: undefined
+      }
+      trim_kill_switch_audit_log: {
+        Args: { _keep_days?: number }
+        Returns: number
       }
     }
     Enums: {
