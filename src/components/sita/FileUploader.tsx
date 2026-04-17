@@ -57,13 +57,13 @@ export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
     try {
       const storagePath = `${user.id}/${Date.now()}_${file.name}`;
 
-      // Upload to storage
+      // Upload to storage (correct bucket: user-files, RLS-scoped to user.id folder)
       const { error: uploadError } = await supabase.storage
-        .from("documents")
-        .upload(storagePath, file, { upsert: false });
+        .from("user-files")
+        .upload(storagePath, file, { upsert: false, contentType: file.type });
 
       if (uploadError) throw uploadError;
-      updateFile(file.name, { progress: 60, status: "classifying" });
+      updateFile(file.name, { progress: 60, status: "classifying", storagePath });
 
       // Call file-ingestion edge function
       const { data: session } = await supabase.auth.getSession();
@@ -88,11 +88,27 @@ export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
       if (!resp.ok) throw new Error("Classification failed");
       const result = await resp.json();
 
+      // Generate signed URL for immediate preview/download
+      const { data: signed } = await supabase.storage
+        .from("user-files")
+        .createSignedUrl(storagePath, 3600);
+
+      const finalEntry: UploadedFileEntry = {
+        ...entry,
+        progress: 100,
+        status: "done",
+        classification: result.classification,
+        sensitivity: result.sensitivity,
+        signedUrl: signed?.signedUrl,
+        storagePath,
+      };
+
       updateFile(file.name, {
         progress: 100,
         status: "done",
         classification: result.classification,
         sensitivity: result.sensitivity,
+        signedUrl: signed?.signedUrl,
       });
 
       emitLoop("file_upload", {
@@ -103,12 +119,13 @@ export const FileUploader = ({ onUploaded }: FileUploaderProps = {}) => {
       });
 
       toast.success(`${file.name} classified as ${result.classification}`);
+      onUploaded?.(finalEntry);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Upload failed";
       updateFile(file.name, { status: "error", error: msg });
       toast.error(`Failed to upload ${file.name}: ${msg}`);
     }
-  }, [user]);
+  }, [user, onUploaded, emitLoop]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
