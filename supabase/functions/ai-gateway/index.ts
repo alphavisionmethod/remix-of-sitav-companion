@@ -5,7 +5,6 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 import { withTrace } from "../_shared/tracing.ts";
 import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
-import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
