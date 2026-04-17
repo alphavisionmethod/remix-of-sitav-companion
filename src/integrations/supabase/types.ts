@@ -1770,6 +1770,120 @@ export type Database = {
         }
         Relationships: []
       }
+      alert_routes: {
+        Row: {
+          channel: string
+          config: Json
+          created_at: string
+          enabled: boolean
+          id: string
+          severity_min: string
+          source_pattern: string
+          target: string
+          updated_at: string
+        }
+        Insert: {
+          channel: string
+          config?: Json
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          severity_min?: string
+          source_pattern: string
+          target: string
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          config?: Json
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          severity_min?: string
+          source_pattern?: string
+          target?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      alerts: {
+        Row: {
+          ack_at: string | null
+          ack_by: string | null
+          assignee_user_id: string | null
+          count: number
+          created_at: string
+          dedup_key: string | null
+          description: string
+          fingerprint: string
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          metadata: Json
+          related_incident_id: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          runbook_id: string | null
+          severity: string
+          source: string
+          status: string
+          subsystem: string
+          suppressed_until: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ack_at?: string | null
+          ack_by?: string | null
+          assignee_user_id?: string | null
+          count?: number
+          created_at?: string
+          dedup_key?: string | null
+          description?: string
+          fingerprint: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          metadata?: Json
+          related_incident_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          runbook_id?: string | null
+          severity?: string
+          source: string
+          status?: string
+          subsystem: string
+          suppressed_until?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          ack_at?: string | null
+          ack_by?: string | null
+          assignee_user_id?: string | null
+          count?: number
+          created_at?: string
+          dedup_key?: string | null
+          description?: string
+          fingerprint?: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          metadata?: Json
+          related_incident_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          runbook_id?: string | null
+          severity?: string
+          source?: string
+          status?: string
+          subsystem?: string
+          suppressed_until?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       api_gateway_routes: {
         Row: {
           created_at: string
@@ -6308,6 +6422,81 @@ export type Database = {
         }
         Relationships: []
       }
+      error_events: {
+        Row: {
+          correlation_id: string | null
+          count: number
+          created_at: string
+          environment: string
+          fingerprint: string
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          message: string
+          metadata: Json
+          release: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          route: string | null
+          sentry_event_id: string | null
+          severity: string
+          source: string
+          stack: string | null
+          tenant_id: string | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          correlation_id?: string | null
+          count?: number
+          created_at?: string
+          environment?: string
+          fingerprint: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          message: string
+          metadata?: Json
+          release?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          route?: string | null
+          sentry_event_id?: string | null
+          severity?: string
+          source?: string
+          stack?: string | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          correlation_id?: string | null
+          count?: number
+          created_at?: string
+          environment?: string
+          fingerprint?: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          message?: string
+          metadata?: Json
+          release?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          route?: string | null
+          sentry_event_id?: string | null
+          severity?: string
+          source?: string
+          stack?: string | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       flagship_loops: {
         Row: {
           blocker_count: number
@@ -9667,6 +9856,63 @@ export type Database = {
         }
         Relationships: []
       }
+      trace_spans: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          duration_ms: number
+          end_ts: string
+          error: string | null
+          http_status: number | null
+          id: string
+          operation: string
+          parent_span_id: string | null
+          service: string
+          span_id: string
+          start_ts: string
+          status: string
+          tags: Json
+          trace_id: string
+          user_id: string | null
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          duration_ms: number
+          end_ts: string
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          operation: string
+          parent_span_id?: string | null
+          service: string
+          span_id: string
+          start_ts: string
+          status?: string
+          tags?: Json
+          trace_id: string
+          user_id?: string | null
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          duration_ms?: number
+          end_ts?: string
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          operation?: string
+          parent_span_id?: string | null
+          service?: string
+          span_id?: string
+          start_ts?: string
+          status?: string
+          tags?: Json
+          trace_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       travel_plans: {
         Row: {
           budget: number | null
@@ -10002,6 +10248,39 @@ export type Database = {
           },
         ]
       }
+      uptime_heartbeats: {
+        Row: {
+          id: string
+          latency_ms: number | null
+          metadata: Json
+          region: string | null
+          source: string
+          status: string
+          subsystem: string
+          ts: string
+        }
+        Insert: {
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json
+          region?: string | null
+          source: string
+          status: string
+          subsystem: string
+          ts?: string
+        }
+        Update: {
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json
+          region?: string | null
+          source?: string
+          status?: string
+          subsystem?: string
+          ts?: string
+        }
+        Relationships: []
+      }
       user_passkeys: {
         Row: {
           aaguid: string | null
@@ -10130,6 +10409,20 @@ export type Database = {
       }
     }
     Views: {
+      uptime_status: {
+        Row: {
+          current_status: string | null
+          d30_total: number | null
+          d7_total: number | null
+          h24_total: number | null
+          last_check_at: string | null
+          subsystem: string | null
+          uptime_24h_pct: number | null
+          uptime_30d_pct: number | null
+          uptime_7d_pct: number | null
+        }
+        Relationships: []
+      }
       v_admin_user_mfa_factors: {
         Row: {
           created_at: string | null
