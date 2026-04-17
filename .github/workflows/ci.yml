@@ -329,6 +329,14 @@ jobs:
         continue-on-error: true
       - name: Launch truth audit
         run: npx tsx scripts/release/release-launch-truth-audit.ts || true
+      - name: Final "It's Real" Gate (Checklist 27 — 13-clause aggregator, blocker)
+        run: npx tsx scripts/architecture/checks/check-its-real-gate.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: its-real-gate-report
+          path: generated/its-real-gate-report.json
+          retention-days: 30
       - name: Generate launch gate report
         run: |
           node -e "
