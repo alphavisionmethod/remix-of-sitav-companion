@@ -1179,6 +1179,7 @@ export type Database = {
           capability_id: string | null
           cost_estimate_cents: number | null
           created_at: string | null
+          expires_at: string | null
           id: string
           input_tokens: number | null
           latency_ms: number | null
@@ -1195,6 +1196,7 @@ export type Database = {
           capability_id?: string | null
           cost_estimate_cents?: number | null
           created_at?: string | null
+          expires_at?: string | null
           id?: string
           input_tokens?: number | null
           latency_ms?: number | null
@@ -1211,6 +1213,7 @@ export type Database = {
           capability_id?: string | null
           cost_estimate_cents?: number | null
           created_at?: string | null
+          expires_at?: string | null
           id?: string
           input_tokens?: number | null
           latency_ms?: number | null
@@ -1741,6 +1744,7 @@ export type Database = {
           created_at: string
           duration_ms: number | null
           error_message: string | null
+          expires_at: string | null
           id: string
           mode: string
           model_used: string | null
@@ -1761,6 +1765,7 @@ export type Database = {
           created_at?: string
           duration_ms?: number | null
           error_message?: string | null
+          expires_at?: string | null
           id?: string
           mode?: string
           model_used?: string | null
@@ -1781,6 +1786,7 @@ export type Database = {
           created_at?: string
           duration_ms?: number | null
           error_message?: string | null
+          expires_at?: string | null
           id?: string
           mode?: string
           model_used?: string | null
@@ -1840,6 +1846,7 @@ export type Database = {
         Row: {
           content: Json
           created_at: string
+          expires_at: string | null
           flag_reason: string | null
           flagged: boolean
           id: string
@@ -1851,6 +1858,7 @@ export type Database = {
         Insert: {
           content?: Json
           created_at?: string
+          expires_at?: string | null
           flag_reason?: string | null
           flagged?: boolean
           id?: string
@@ -1862,6 +1870,7 @@ export type Database = {
         Update: {
           content?: Json
           created_at?: string
+          expires_at?: string | null
           flag_reason?: string | null
           flagged?: boolean
           id?: string
@@ -3438,6 +3447,7 @@ export type Database = {
           device_id: string | null
           device_name: string | null
           event_type: string
+          expires_at: string | null
           id: string
           ip_address: string | null
           object_id: string | null
@@ -3451,6 +3461,7 @@ export type Database = {
           device_id?: string | null
           device_name?: string | null
           event_type?: string
+          expires_at?: string | null
           id?: string
           ip_address?: string | null
           object_id?: string | null
@@ -3464,6 +3475,7 @@ export type Database = {
           device_id?: string | null
           device_name?: string | null
           event_type?: string
+          expires_at?: string | null
           id?: string
           ip_address?: string | null
           object_id?: string | null
@@ -3592,6 +3604,7 @@ export type Database = {
           actor_user_id: string
           created_at: string
           details: Json | null
+          expires_at: string | null
           id: string
           ip_address: string | null
           severity: string
@@ -3603,6 +3616,7 @@ export type Database = {
           actor_user_id: string
           created_at?: string
           details?: Json | null
+          expires_at?: string | null
           id?: string
           ip_address?: string | null
           severity?: string
@@ -3614,6 +3628,7 @@ export type Database = {
           actor_user_id?: string
           created_at?: string
           details?: Json | null
+          expires_at?: string | null
           id?: string
           ip_address?: string | null
           severity?: string
@@ -7166,6 +7181,42 @@ export type Database = {
         }
         Relationships: []
       }
+      data_retention_runs: {
+        Row: {
+          dry_run: boolean
+          duration_ms: number
+          error: string | null
+          id: string
+          metadata: Json
+          mode: string
+          ran_at: string
+          rows_deleted: number
+          table_name: string
+        }
+        Insert: {
+          dry_run?: boolean
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          metadata?: Json
+          mode?: string
+          ran_at?: string
+          rows_deleted?: number
+          table_name: string
+        }
+        Update: {
+          dry_run?: boolean
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          metadata?: Json
+          mode?: string
+          ran_at?: string
+          rows_deleted?: number
+          table_name?: string
+        }
+        Relationships: []
+      }
       deals: {
         Row: {
           created_at: string
@@ -7812,6 +7863,7 @@ export type Database = {
           count: number
           created_at: string
           environment: string
+          expires_at: string | null
           fingerprint: string
           first_seen_at: string
           id: string
@@ -7836,6 +7888,7 @@ export type Database = {
           count?: number
           created_at?: string
           environment?: string
+          expires_at?: string | null
           fingerprint: string
           first_seen_at?: string
           id?: string
@@ -7860,6 +7913,7 @@ export type Database = {
           count?: number
           created_at?: string
           environment?: string
+          expires_at?: string | null
           fingerprint?: string
           first_seen_at?: string
           id?: string
@@ -9388,6 +9442,7 @@ export type Database = {
           created_at: string
           dismissed: boolean
           domain: string | null
+          expires_at: string | null
           icon_name: string | null
           id: string
           metadata: Json | null
@@ -9406,6 +9461,7 @@ export type Database = {
           created_at?: string
           dismissed?: boolean
           domain?: string | null
+          expires_at?: string | null
           icon_name?: string | null
           id?: string
           metadata?: Json | null
@@ -9424,6 +9480,7 @@ export type Database = {
           created_at?: string
           dismissed?: boolean
           domain?: string | null
+          expires_at?: string | null
           icon_name?: string | null
           id?: string
           metadata?: Json | null
