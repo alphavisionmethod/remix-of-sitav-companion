@@ -499,6 +499,41 @@ interface AppGridItemProps {
 function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunchApp, onClose }: AppGridItemProps) {
   const hasQuickActions = item.app.quickActions && item.app.quickActions.length > 0;
   const isLocked = item.cta === "locked" || item.cta === "request-access";
+  const isInstalled = item.app.installStatus === "installed";
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Close context menu on outside click / scroll / escape
+  useEffect(() => {
+    if (!ctxMenu) return;
+    const close = () => setCtxMenu(null);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setCtxMenu(null); };
+    window.addEventListener("click", close);
+    window.addEventListener("scroll", close, true);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("click", close);
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [ctxMenu]);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isInstalled) return;
+    setCtxMenu({ x: e.clientX, y: e.clientY });
+  }, [isInstalled]);
+
+  const handleDragStart = useCallback((e: React.DragEvent) => {
+    if (!isInstalled) { e.preventDefault(); return; }
+    e.dataTransfer.effectAllowed = "copy";
+    e.dataTransfer.setData("application/x-sita-app", item.app.id);
+    e.dataTransfer.setData("text/plain", item.app.name);
+    setIsDragging(true);
+  }, [isInstalled, item.app.id, item.app.name]);
+
+  const handleDragEnd = useCallback(() => setIsDragging(false), []);
 
   const gridButton = (
     <motion.button
@@ -508,17 +543,17 @@ function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunc
       whileHover={{ scale: 1.06, y: -2 }}
       whileTap={{ scale: 0.92 }}
       onClick={() => onClick(item)}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        if (item.app.installStatus === "installed") {
-          onTogglePin(item.app.id, item.isPinned);
-        }
-      }}
+      onContextMenu={handleContextMenu}
+      draggable={isInstalled}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       className={cn(
-        "flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-[hsl(0_0%_100%/0.06)] transition-colors min-h-[44px] min-w-[44px]",
-        isLocked && "opacity-40"
+        "flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-[hsl(0_0%_100%/0.06)] transition-all min-h-[44px] min-w-[44px]",
+        isLocked && "opacity-40",
+        isDragging && "opacity-40 scale-95",
+        isInstalled && "cursor-grab active:cursor-grabbing"
       )}
-      aria-label={`${item.app.name}${item.cta !== "open" ? `, ${item.cta}` : ""}`}
+      aria-label={`${item.app.name}${item.cta !== "open" ? `, ${item.cta}` : ""}${isInstalled ? ", drag to dock to pin, right-click for options" : ""}`}
     >
       <div className="relative">
         <div className={cn(
@@ -534,6 +569,11 @@ function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunc
           )}
         </div>
         <AppBadge item={item} />
+        {item.isPinned && (
+          <span className="absolute -top-1 -left-1 w-3.5 h-3.5 rounded-full bg-[hsl(45_90%_55%/0.9)] flex items-center justify-center shadow-sm" title="Pinned to dock">
+            <Pin className="w-2 h-2 text-[hsl(0_0%_10%)]" />
+          </span>
+        )}
       </div>
       <span className="text-[10px] text-[hsl(0_0%_100%/0.65)] truncate w-full text-center">
         {item.app.name}
@@ -542,14 +582,80 @@ function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunc
     </motion.button>
   );
 
-  if (!hasQuickActions || isLocked) return gridButton;
+  // Floating context menu (rendered into the document via fixed positioning)
+  const contextMenuEl = ctxMenu && (
+    <div
+      className="fixed z-[300] min-w-[180px] rounded-xl overflow-hidden bg-[hsl(0_0%_8%/0.95)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.10)] shadow-[0_8px_32px_hsl(0_0%_0%/0.45)] p-1"
+      style={{ left: Math.min(ctxMenu.x, window.innerWidth - 200), top: Math.min(ctxMenu.y, window.innerHeight - 160) }}
+      onClick={(e) => e.stopPropagation()}
+      onContextMenu={(e) => e.preventDefault()}
+      role="menu"
+      data-testid="launcher-app-context-menu"
+    >
+      <button
+        role="menuitem"
+        className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] text-[hsl(0_0%_100%/0.85)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors"
+        onClick={() => { setCtxMenu(null); onClick(item); }}
+      >
+        Open {item.app.name}
+      </button>
+      <div className="h-px bg-[hsl(0_0%_100%/0.08)] my-1" />
+      <button
+        role="menuitem"
+        className={cn(
+          "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] transition-colors",
+          item.isPinned
+            ? "text-[hsl(0_70%_70%)] hover:bg-[hsl(0_70%_60%/0.12)]"
+            : "text-[hsl(45_90%_70%)] hover:bg-[hsl(45_90%_55%/0.12)]"
+        )}
+        onClick={() => { setCtxMenu(null); onTogglePin(item.app.id, item.isPinned); }}
+        data-testid={item.isPinned ? "ctx-unpin-from-dock" : "ctx-pin-to-dock"}
+      >
+        {item.isPinned ? <PinOff className="w-3.5 h-3.5" /> : <Pin className="w-3.5 h-3.5" />}
+        <span>{item.isPinned ? "Unpin from Dock" : "Pin to Dock"}</span>
+      </button>
+      {hasQuickActions && (
+        <>
+          <div className="h-px bg-[hsl(0_0%_100%/0.08)] my-1" />
+          <div className="text-[9px] text-[hsl(0_0%_100%/0.4)] px-2.5 py-1 font-medium uppercase tracking-wider">
+            Quick Actions
+          </div>
+          {item.app.quickActions!.map(action => (
+            <button
+              key={action.id}
+              role="menuitem"
+              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] text-[hsl(0_0%_100%/0.7)] hover:text-[hsl(0_0%_100%/0.95)] hover:bg-[hsl(0_0%_100%/0.06)] transition-colors"
+              onClick={() => {
+                setCtxMenu(null);
+                onQuickAction(item.app.id, action.id);
+                SoundEngine.click();
+                onLaunchApp(item.app.id);
+                onClose();
+              }}
+            >
+              <span>{action.label}</span>
+            </button>
+          ))}
+        </>
+      )}
+    </div>
+  );
+
+  if (!hasQuickActions || isLocked) {
+    return (
+      <>
+        {gridButton}
+        {contextMenuEl}
+      </>
+    );
+  }
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <div className="relative group">
           {gridButton}
-          <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             <ChevronRight className="w-3 h-3 text-[hsl(0_0%_100%/0.4)]" />
           </div>
         </div>
@@ -582,9 +688,10 @@ function AppGridItem({ item, index, onClick, onTogglePin, onQuickAction, onLaunc
             onClick={() => onTogglePin(item.app.id, item.isPinned)}
           >
             {item.isPinned ? <PinOff className="w-3 h-3" /> : <Pin className="w-3 h-3" />}
-            <span>{item.isPinned ? "Unpin" : "Pin to Launcher"}</span>
+            <span>{item.isPinned ? "Unpin from Dock" : "Pin to Dock"}</span>
           </button>
         </div>
+        {contextMenuEl}
       </PopoverContent>
     </Popover>
   );
