@@ -33,6 +33,21 @@ serve(async (req) => {
       return corsError("Invalid action. Use: activate, deactivate, status", 400);
     }
 
+    // Phase 19.C — Unified policy gate (R5 admin kill-switch)
+    if (action !== "status") {
+      const decision = resolveUnifiedPolicy({
+        actor: "platform-admin",
+        domain: "admin",
+        riskClass: "R5",
+        deviceTrust: 4,
+        biometricStepUpRecent: req.headers.get("x-step-up-recent") === "true",
+        hasJustification: true,
+      });
+      if (!decision.allowed) {
+        return negativeReceiptResponse(decision, { fn: "payment-kill-switch", action });
+      }
+    }
+
     const serviceClient = getServiceClient();
 
     if (action === "status") {
