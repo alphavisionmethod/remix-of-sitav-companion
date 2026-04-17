@@ -1,6 +1,11 @@
 /**
  * SITA OS — Canonical AI Budget Check
  * Wraps check_ai_budget_policies RPC for consistent budget enforcement.
+ *
+ * Modes:
+ *   default → fail-OPEN on RPC error (legacy callers; logs structured warning).
+ *   strict  → fail-CLOSED on RPC error (gateway choke points). Returns
+ *             { allowed: false, reason: "enforcement_unavailable" }.
  */
 
 export interface BudgetDecision {
@@ -15,16 +20,29 @@ export interface BudgetDecision {
   premiumBlocked: boolean;
 }
 
-/**
- * Check AI budget policies before making an AI call.
- * Fails open (returns allowed=true) on RPC errors.
- */
+export interface CheckAIBudgetOptions {
+  /** When true, fail-CLOSED on RPC error (deny request). Default false. */
+  strict?: boolean;
+}
+
+function warn(payload: Record<string, unknown>): void {
+  // Single structured line so log search filters can find it
+  try {
+    console.warn(`[ai-budget-check] ${JSON.stringify(payload)}`);
+  } catch {
+    console.warn("[ai-budget-check] warn-log-failure");
+  }
+}
+
 export async function checkAIBudget(
   serviceClient: any,
   userId: string,
   capabilityKey: string,
-  estimatedCostUsd: number = 0.01
+  estimatedCostUsd: number = 0.01,
+  options: CheckAIBudgetOptions = {},
 ): Promise<BudgetDecision> {
+  const strict = options.strict === true;
+
   try {
     const { data, error } = await serviceClient.rpc("check_ai_budget_policies", {
       p_user_id: userId,
@@ -33,7 +51,26 @@ export async function checkAIBudget(
     });
 
     if (error) {
-      console.error("Budget policy check error:", error);
+      warn({
+        kind: "rpc_error",
+        capability_key: capabilityKey,
+        estimated_cost_usd: estimatedCostUsd,
+        strict,
+        error: error.message ?? String(error),
+      });
+      if (strict) {
+        return {
+          allowed: false,
+          shouldDowngrade: false,
+          shouldBlock: true,
+          fallbackModelId: null,
+          reason: "enforcement_unavailable",
+          policyKey: null,
+          pct: null,
+          alertState: "critical",
+          premiumBlocked: false,
+        };
+      }
       return {
         allowed: true,
         shouldDowngrade: false,
@@ -47,7 +84,7 @@ export async function checkAIBudget(
       };
     }
 
-    const result = data as Record<string, unknown>;
+    const result = (data ?? {}) as Record<string, unknown>;
     return {
       allowed: (result.allowed as boolean) ?? true,
       shouldDowngrade: (result.should_downgrade as boolean) ?? false,
@@ -60,7 +97,26 @@ export async function checkAIBudget(
       premiumBlocked: (result.premium_blocked as boolean) ?? false,
     };
   } catch (e) {
-    console.error("Budget check error:", e);
+    warn({
+      kind: "exception",
+      capability_key: capabilityKey,
+      estimated_cost_usd: estimatedCostUsd,
+      strict,
+      error: e instanceof Error ? e.message : String(e),
+    });
+    if (strict) {
+      return {
+        allowed: false,
+        shouldDowngrade: false,
+        shouldBlock: true,
+        fallbackModelId: null,
+        reason: "enforcement_unavailable",
+        policyKey: null,
+        pct: null,
+        alertState: "critical",
+        premiumBlocked: false,
+      };
+    }
     return {
       allowed: true,
       shouldDowngrade: false,

@@ -1124,6 +1124,45 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_budget_alerts: {
+        Row: {
+          alert_state: string
+          created_at: string
+          expires_at: string
+          id: string
+          observed_cost_usd: number | null
+          period_class: string
+          scope_ref: string | null
+          scope_type: string
+          threshold_percent: number | null
+          user_id: string
+        }
+        Insert: {
+          alert_state?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          observed_cost_usd?: number | null
+          period_class?: string
+          scope_ref?: string | null
+          scope_type?: string
+          threshold_percent?: number | null
+          user_id: string
+        }
+        Update: {
+          alert_state?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          observed_cost_usd?: number | null
+          period_class?: string
+          scope_ref?: string | null
+          scope_type?: string
+          threshold_percent?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_capability_routing: {
         Row: {
           budget_class: string
@@ -1173,6 +1212,36 @@ export type Database = {
             referencedColumns: ["model_id"]
           },
         ]
+      }
+      ai_fallback_events: {
+        Row: {
+          capability_key: string
+          created_at: string
+          expires_at: string
+          fallback_reason: string
+          id: string
+          result_state: string
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          expires_at?: string
+          fallback_reason: string
+          id?: string
+          result_state?: string
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          expires_at?: string
+          fallback_reason?: string
+          id?: string
+          result_state?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       ai_inference_receipts: {
         Row: {
@@ -1522,6 +1591,50 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_receipt_records: {
+        Row: {
+          capability_key: string
+          created_at: string
+          decision_class: string
+          degraded_reason: string | null
+          expires_at: string
+          id: string
+          mode: string
+          usage_ledger_id: string | null
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          decision_class?: string
+          degraded_reason?: string | null
+          expires_at?: string
+          id?: string
+          mode?: string
+          usage_ledger_id?: string | null
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          decision_class?: string
+          degraded_reason?: string | null
+          expires_at?: string
+          id?: string
+          mode?: string
+          usage_ledger_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_receipt_records_usage_ledger_id_fkey"
+            columns: ["usage_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "ai_usage_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_routing_policies: {
         Row: {
           capability_id: string
@@ -1568,6 +1681,60 @@ export type Database = {
             referencedColumns: ["model_id"]
           },
         ]
+      }
+      ai_usage_ledger: {
+        Row: {
+          capability_key: string
+          completion_tokens: number | null
+          created_at: string
+          error_code: string | null
+          error_summary: string | null
+          estimated_cost_usd: number | null
+          expires_at: string
+          id: string
+          latency_ms: number | null
+          mode: string
+          prompt_tokens: number | null
+          request_class: string | null
+          status: string
+          total_tokens: number | null
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_code?: string | null
+          error_summary?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          latency_ms?: number | null
+          mode?: string
+          prompt_tokens?: number | null
+          request_class?: string | null
+          status?: string
+          total_tokens?: number | null
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_code?: string | null
+          error_summary?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          latency_ms?: number | null
+          mode?: string
+          prompt_tokens?: number | null
+          request_class?: string | null
+          status?: string
+          total_tokens?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       ai_workforce_approval_queue: {
         Row: {
@@ -13956,6 +14123,14 @@ export type Database = {
       }
     }
     Functions: {
+      check_ai_budget_policies: {
+        Args: {
+          p_capability_key: string
+          p_estimated_cost_usd: number
+          p_user_id: string
+        }
+        Returns: Json
+      }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
@@ -13979,6 +14154,10 @@ export type Database = {
       is_tenant_member: {
         Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
+      }
+      seed_default_budget_classes: {
+        Args: { _user_id: string }
+        Returns: undefined
       }
     }
     Enums: {

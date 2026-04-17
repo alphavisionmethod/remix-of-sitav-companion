@@ -123,7 +123,7 @@ serve(async (req) => {
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-    const budgetDecision = await checkAIBudget(adminClient, user.id, `personal_brain.${mode}`, 0.005);
+    const budgetDecision = await checkAIBudget(adminClient, user.id, `personal_brain.${mode}`, 0.005, { strict: true });
     let model = "google/gemini-3-flash-preview";
     if (!budgetDecision.allowed) {
       return new Response(JSON.stringify({ error: "AI budget exceeded. Upgrade or wait for reset.", code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
