@@ -40,6 +40,15 @@ const ApprovalsCenter = () => {
     setExpandedId(null);
   };
 
+  const handleGenerateSample = async () => {
+    try {
+      const { generateSampleRecommendation } = await import("@/lib/services/rex/recommendation-engine");
+      await generateSampleRecommendation();
+    } catch (e) {
+      console.error("[ApprovalsCenter] sample generation failed:", e);
+    }
+  };
+
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 <SitaPageHeader
