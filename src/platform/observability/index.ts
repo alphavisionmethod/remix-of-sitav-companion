@@ -1,6 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Platform Barrel: Observability
+// SITA OS — Platform Barrel: Observability (consumer)
 // Canonical import: @/platform/observability
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/hooks/useOrchestrationHealth";
+
+// Layer 3 truth re-exports
+export * from "@/lib/platform/observability";
