@@ -5,12 +5,15 @@ import React, { createContext, useContext, useState, useCallback, type ReactNode
 // Manages OS-level window state: open, close, minimize, maximize, focus
 // ═══════════════════════════════════════════════════════════════
 
+export type SnapDirection = "left" | "right" | "top" | "bottom" | "center" | "full";
+
 export interface OSWindow {
   id: string;
   title: string;
   component: ReactNode;
   isMinimized: boolean;
   isMaximized: boolean;
+  isPinned?: boolean;
   zIndex: number;
   position: { x: number; y: number };
   size: { width: number; height: number };
@@ -24,6 +27,8 @@ interface OSWindowContextType {
   maximizeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   updateWindowPosition: (id: string, position: { x: number; y: number }) => void;
+  snapWindow: (id: string, dir: SnapDirection) => void;
+  togglePinned: (id: string) => void;
 }
 
 const OSWindowContext = createContext<OSWindowContextType | null>(null);
