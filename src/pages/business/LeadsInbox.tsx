@@ -144,17 +144,14 @@ const LeadsInbox = () => {
     }
 
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
-      >
-        <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
-          <Search className="h-8 w-8 text-primary/20" />
-        </div>
-        <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
-        <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to see full details and scoring breakdown</p>
-      </motion.div>
+      <div className="hidden lg:block">
+        <EmptyState
+          variant="card"
+          icon={Search}
+          title="Select a lead to review"
+          description="Click any card to see full details and scoring breakdown."
+        />
+      </div>
     );
   };
 

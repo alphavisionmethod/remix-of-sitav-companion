@@ -99,10 +99,12 @@ const AIRootCauseGraph = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-              <Network className="h-8 w-8 text-muted-foreground/30 mb-3" />
-              <p className="text-sm text-muted-foreground">Select a node to see connections</p>
-            </div>
+            <EmptyState
+              variant="card"
+              icon={Network}
+              title="No node selected"
+              description="Select a node to see its connections."
+            />
           )}
         </div>
       </div>

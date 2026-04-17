@@ -94,10 +94,12 @@ const AITimeMachine = () => {
               </div>
             );
           })() : (
-            <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-              <History className="h-8 w-8 text-muted-foreground/30 mb-3" />
-              <p className="text-sm text-muted-foreground">Select an event to see details</p>
-            </div>
+            <EmptyState
+              variant="card"
+              icon={History}
+              title="No event selected"
+              description="Select an event to see its details."
+            />
           )}
         </div>
       </div>
