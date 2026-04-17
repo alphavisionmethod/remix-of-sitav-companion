@@ -10,7 +10,7 @@ import {
   Search, X, Power, Globe, MessageSquare, Briefcase,
   DollarSign, Music, Settings, Wrench, Home, Shield,
   BookOpen, Gamepad2, FolderOpen, Cpu, Pin, PinOff,
-  Lock, Download, ChevronRight, Sparkles, Star,
+  Lock, Download, ChevronRight, Sparkles, Star, LayoutDashboard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
