@@ -195,7 +195,7 @@ export default function BusinessSettingsPage() {
     if (localState.businessTypes.includes("saas")) weights.saas = 0.8;
     if (localState.businessTypes.includes("creator") || localState.businessTypes.includes("coaching")) weights.creator = 0.8;
     if (localState.businessTypes.includes("membership")) weights.membership = 0.8;
-    updateOverrides(weights as any);
+    updateOverrides(weights as Parameters<typeof updateOverrides>[0]);
     setHasChanges(false);
     setPrevTypes(localState.businessTypes);
     setJourneyNeedsUpdate(false);

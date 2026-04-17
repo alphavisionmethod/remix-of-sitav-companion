@@ -1663,7 +1663,7 @@ const KernelDashboard = () => {
                 return entries.map(([id, diag]) => {
                   const meta = SERVICE_META[id] || { icon: Server, color: "text-muted-foreground", label: id };
                   const Icon = meta.icon;
-                  const status = (diag as any).status as ServiceStatus;
+                  const status = (diag as { status: ServiceStatus }).status;
                   const bootEntry = serviceManagerStats.bootLog.find(e => e.serviceId === id);
                   const stats = { ...diag } as Record<string, unknown>;
                   delete stats.status;

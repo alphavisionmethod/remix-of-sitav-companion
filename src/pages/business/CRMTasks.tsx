@@ -111,7 +111,7 @@ const CRMTasks = () => {
         contact_id: form.contact_id || null,
         company_id: form.company_id || null,
         opportunity_id: form.opportunity_id || null,
-      } as any);
+      });
       toast.success("Task created");
       setShowAdd(false);
       setForm({ title: "", description: "", priority: "medium", due_date: "", task_type: "follow-up", contact_id: "", company_id: "", opportunity_id: "" });
@@ -125,7 +125,7 @@ const CRMTasks = () => {
         updates: {
           status: t.status === "completed" ? "pending" : "completed",
           completed_at: t.status === "completed" ? null : new Date().toISOString()
-        } as any,
+        },
       });
       toast.success(t.status === "completed" ? "Reopened" : "Completed!");
     } catch { toast.error("Failed to update"); }

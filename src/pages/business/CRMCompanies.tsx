@@ -39,7 +39,7 @@ const CRMCompanies = () => {
       const payload: Record<string, unknown> = { ...form };
       if (form.annual_revenue) payload.annual_revenue = Number(form.annual_revenue);
       else delete payload.annual_revenue;
-      await createCompany.mutateAsync(payload as any);
+      await createCompany.mutateAsync(payload);
       toast.success("Company created");
       setShowAdd(false);
       setForm({ name: "", domain: "", industry: "", size: "", website: "", phone: "", annual_revenue: "" });

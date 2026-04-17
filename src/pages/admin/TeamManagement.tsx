@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";

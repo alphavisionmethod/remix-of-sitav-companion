@@ -36,7 +36,7 @@ export default function AppStoreCenter() {
 
   useEffect(() => {
     const module = pathToModuleId(location.pathname);
-    (window as any).__appStoreInitialModule = module;
+    (window as unknown as { __appStoreInitialModule?: string }).__appStoreInitialModule = module;
     window.dispatchEvent(
       new CustomEvent("sita-open-app-store", { detail: { module } })
     );

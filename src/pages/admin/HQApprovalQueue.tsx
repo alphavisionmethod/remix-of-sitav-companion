@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+// Note: db alias removed in favor of direct supabase client + per-call casting at boundary
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import {
@@ -77,7 +77,7 @@ const priorityToRiskTier = (p: string): string =>
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {
-  let query = (supabase as any)
+  let query = supabase
     .from("ai_workforce_approval_queue")
     .select("*, ai_workforce_recommendations(domain, severity, role_key, confidence, evidence)")
     .order("created_at", { ascending: false })
@@ -445,28 +445,28 @@ function HQ03DecisionHistory() {
   const { data: resolved = [] } = useQuery({
     queryKey: ["hq-resolved"],
     queryFn: async () => {
-      const { data, error } = await db.from("ai_workforce_approval_queue")
+      const { data, error } = await supabase.from("ai_workforce_approval_queue")
         .select("*, ai_workforce_recommendations(domain, severity, role_key)")
         .in("status", ["approved", "rejected", "deferred", "executed", "expired"])
         .order("decision_at", { ascending: false, nullsFirst: false })
         .limit(100);
       if (error) return [];
-      return ((data ?? []) as Array<Record<string, any>>).map((row): QueueItem => {
-        const rec = row.ai_workforce_recommendations || {};
+      return ((data ?? []) as Array<Record<string, unknown>>).map((row): QueueItem => {
+        const rec = (row.ai_workforce_recommendations as Record<string, unknown> | null) || {};
         return {
-          ...(row as any),
-          summary: row.summary,
-          description: row.summary,
-          role_key: rec.role_key || "system",
-          risk_tier: priorityToRiskTier(row.priority),
-          severity: rec.severity ?? null,
-          impacted_domain: rec.domain ?? null,
-          recommendation_type: rec.role_key ?? null,
-          reviewer_notes: row.reviewer_comments,
-          reviewed_at: row.decision_at,
-          reviewed_by: row.reviewer_user_id,
-          resolved_at: row.decision_at,
-          action_type: rec.role_key || "system",
+          ...(row as unknown as QueueItem),
+          summary: row.summary as string | null,
+          description: row.summary as string | null,
+          role_key: (rec.role_key as string) || "system",
+          risk_tier: priorityToRiskTier(row.priority as string),
+          severity: (rec.severity as string | null) ?? null,
+          impacted_domain: (rec.domain as string | null) ?? null,
+          recommendation_type: (rec.role_key as string | null) ?? null,
+          reviewer_notes: row.reviewer_comments as string | null,
+          reviewed_at: row.decision_at as string | null,
+          reviewed_by: row.reviewer_user_id as string | null,
+          resolved_at: row.decision_at as string | null,
+          action_type: (rec.role_key as string) || "system",
         } as QueueItem;
       });
     },

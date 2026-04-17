@@ -6,7 +6,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
 import { useAuth } from "@/contexts/AuthContext";

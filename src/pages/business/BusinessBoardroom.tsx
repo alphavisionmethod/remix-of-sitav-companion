@@ -65,7 +65,7 @@ const [mode, setMode] = useState("weekly");
     kpis.overdueInvoices.length > 0 ? { id: "oi", title: `${kpis.overdueInvoices.length} invoice${kpis.overdueInvoices.length > 1 ? "s" : ""} became overdue`, timestamp: "This week", accentColor: "hsl(0 70% 55%)" } : null,
     { id: "op", title: `${opportunities.length} opportunity(ies) active`, timestamp: "Current", accentColor: "hsl(152 55% 48%)" },
     { id: "nc", title: "No new customer churn signals", timestamp: "Current", accentColor: "hsl(0 0% 50%)" },
-  ].filter(Boolean) as any[], [kpis, opportunities]);
+  ].filter(Boolean) as Array<Record<string, unknown>>, [kpis, opportunities]);
 
   return (
     <BoardroomCinematic domain="business">

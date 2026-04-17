@@ -90,7 +90,7 @@ export default function DesktopPage() {
 
   // ── Calm Engine wiring (before early returns) ──────────────
   const wm = useWindowManagerContext();
-  const { handleLaunchApp } = useWindowLauncher(wm as any);
+  const { handleLaunchApp } = useWindowLauncher(wm as Parameters<typeof useWindowLauncher>[0]);
   const visibleWindows = wm?.visibleWindows ?? [];
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
 

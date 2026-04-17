@@ -44,7 +44,7 @@ const CommunicationsCenter = () => {
   const { confirmation, confirm: confirmAction } = useConfirmation();
 
   const liveComms: Communication[] = dbComms.map((c: Record<string, any>) => ({
-    id: c.id, type: (c.channel || "email") as any, subject: c.subject || "",
+    id: c.id, type: ((c.channel || "email") as "email" | "sms" | "letter"), subject: c.subject || "",
     body: c.body || "", status: (c.status || "draft") as CommStatus,
     requires_approval: c.requires_approval || false,
     customer_name: c.contact_name || "", created_at: c.created_at, sent_at: c.sent_at || null,
@@ -54,7 +54,7 @@ const CommunicationsCenter = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ type: "email" as any, subject: "", body: "", status: "draft" as CommStatus, requires_approval: false, customer_name: "" });
+  const [form, setForm] = useState({ type: "email" as "email" | "sms" | "letter", subject: "", body: "", status: "draft" as CommStatus, requires_approval: false, customer_name: "" });
 
   const resetForm = useCallback(() => { setForm({ type: "email", subject: "", body: "", status: "draft", requires_approval: false, customer_name: "" }); setShowForm(false); }, []);
 

@@ -51,10 +51,11 @@ const AIEngineeringBoard = () => {
 
   const [tab, setTab] = useState("overview");
 
-  const missionsList = engData.missions ?? DEMO_MISSIONS;
-  const activeMissions = missionsList.filter((m: any) => ["in_progress", "simulated", "ready_for_approval"].includes(m.status)).length;
-  const blockedMissions = missionsList.filter((m: any) => m.status === "blocked").length;
-  const completedMissions = missionsList.filter((m: any) => m.status === "applied" || m.status === "learned_from").length;
+  type MissionRow = { title: string; status: string; confidence: number; progress: number; agent: string; blocker?: string };
+  const missionsList = (engData.missions ?? DEMO_MISSIONS) as MissionRow[];
+  const activeMissions = missionsList.filter((m) => ["in_progress", "simulated", "ready_for_approval"].includes(m.status)).length;
+  const blockedMissions = missionsList.filter((m) => m.status === "blocked").length;
+  const completedMissions = missionsList.filter((m) => m.status === "applied" || m.status === "learned_from").length;
 
   const chiefSynthesis = useMemo(() => generateChiefSynthesis({
     activeMissions: isDemo ? 5 : activeMissions,
@@ -187,7 +188,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-2">
-              {(missionsList as any[]).slice(0, 5).map((m: any) => (
+              {missionsList.slice(0, 5).map((m) => (
                 <div key={m.title} className="rounded-lg border border-border/20 p-3">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium">{m.title}</span>
@@ -305,11 +306,11 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 3: MISSIONS ── */}
         <TabsContent value="missions" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{(missionsList as any[]).length} active missions</p>
+            <p className="text-sm text-muted-foreground">{missionsList.length} active missions</p>
             <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="space-y-2">
-            {(missionsList as any[]).map((m: any) => (
+            {missionsList.map((m) => (
               <div key={m.title} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">{m.title}</span>

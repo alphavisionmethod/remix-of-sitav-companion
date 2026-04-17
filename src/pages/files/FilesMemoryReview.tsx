@@ -10,7 +10,7 @@ import { useAllFiles } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 
 const FilesMemoryReview = () => {
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();

@@ -82,7 +82,7 @@ const CRMPipeline = () => {
         contact_id: form.contact_id || null, company_id: form.company_id || null,
         expected_close_date: form.expected_close_date || null,
         notes: form.notes || null,
-      } as any);
+      });
       toast.success("Deal created");
       setShowAdd(false);
       setForm({ title: "", value: "", stage: "Discovery", probability: "20", source: "", contact_id: "", company_id: "", expected_close_date: "", notes: "" });
@@ -98,7 +98,7 @@ const CRMPipeline = () => {
           stage: newStage,
           ...(stage?.is_won ? { status: "won", won_at: new Date().toISOString() } : {}),
           ...(stage?.is_lost ? { status: "lost", lost_at: new Date().toISOString() } : {}),
-        } as any,
+        },
       });
       toast.success(`Moved to ${newStage}`);
     } catch { toast.error("Failed to update"); }
@@ -278,7 +278,7 @@ const CRMPipeline = () => {
                   variant={focusFilter === f.key ? "default" : "outline"}
                   size="sm"
                   className="text-xs gap-1"
-                  onClick={() => setFocusFilter(f.key as any)}
+                  onClick={() => setFocusFilter(f.key as "stalled" | "closing" | "at-risk" | "all")}
                 >
                   {f.label}
                   {f.count > 0 && <span className="text-[10px] px-1 rounded-full bg-background/20">{f.count}</span>}

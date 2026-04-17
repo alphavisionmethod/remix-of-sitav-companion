@@ -396,8 +396,8 @@ export default function SEC01SessionSecrets() {
                         <p className="text-xs font-medium text-foreground truncate">{s.label}</p>
                         <p className="text-[10px] text-muted-foreground">{s.type} · v{s.version} · {s.ownerScope}</p>
                       </div>
-                      <Badge variant="outline" className={`text-[10px] ${secretStatusColor((s as any).status || "active")}`}>
-                        {(s as any).status || "active"}
+                      <Badge variant="outline" className={`text-[10px] ${secretStatusColor(((s as { status?: SecretStatus }).status) || "active")}`}>
+                        {((s as { status?: SecretStatus }).status) || "active"}
                       </Badge>
                     </div>
                   ))

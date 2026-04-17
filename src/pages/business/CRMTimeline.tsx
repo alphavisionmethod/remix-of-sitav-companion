@@ -177,7 +177,7 @@ const CRMTimeline = () => {
         direction: form.direction,
         contact_id: form.contact_id || null,
         outcome: form.outcome || null,
-      } as any);
+      });
       toast.success("Entry added to timeline");
       setShowAdd(false);
       setForm({ comm_type: "note", subject: "", content: "", direction: "outbound", contact_id: "", outcome: "" });

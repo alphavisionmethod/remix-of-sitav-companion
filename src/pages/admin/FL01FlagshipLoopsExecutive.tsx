@@ -10,7 +10,7 @@ import {
 } from "@/lib/core-services/flagship-loops/flagship-loop-service";
 import { getDomainsByFlagshipLoop } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

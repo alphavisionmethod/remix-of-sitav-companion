@@ -35,7 +35,7 @@ const isDemoMode = true; // Safe default for demo mode
 
 
 const DOMAIN_CONFIG: DomainConfig = {
-  id: "trust" as any,
+  id: "trust" as DomainConfig["id"],
   title: "Trust Center",
   icon: Shield,
   accentFrom: "hsl(35 75% 55%)",

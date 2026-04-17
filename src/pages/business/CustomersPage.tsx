@@ -164,7 +164,7 @@ const CustomersPage = () => {
             <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_6%)] px-3 py-2 text-sm text-foreground" />
             <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_6%)] px-3 py-2 text-sm text-foreground" />
           </div>
-          <SitaButton variant="primary" size="sm" onClick={() => createCustomer.mutate({ name: formName, email: formEmail || null, company: formCompany || null, phone: formPhone || null, status: "active" } as any)} disabled={!formName.trim()}>Create</SitaButton>
+          <SitaButton variant="primary" size="sm" onClick={() => createCustomer.mutate({ name: formName, email: formEmail || null, company: formCompany || null, phone: formPhone || null, status: "active" })} disabled={!formName.trim()}>Create</SitaButton>
         </div>
       )}
 
@@ -242,7 +242,7 @@ const CustomersPage = () => {
 
   const detailPane = selected ? (
     <div className="p-4">
-      <CustomerDetailPane customer={selected} onDelete={(id) => deleteCustomer.mutate({ id } as any)} />
+      <CustomerDetailPane customer={selected} onDelete={(id) => deleteCustomer.mutate({ id })} />
       <div className="mt-4">
         <AdvisorCard
           advisorName="CRM Advisor"

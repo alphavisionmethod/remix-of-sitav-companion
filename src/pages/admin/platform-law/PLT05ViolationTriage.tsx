@@ -35,7 +35,10 @@ const PLT05ViolationTriage = () => {
     });
   }, [search, sevFilter, statusFilter, ownerFilter]);
 
-  const sevColor: Record<string, string> = { critical: "destructive", high: "default", medium: "secondary", low: "outline" };
+  type BadgeVariant = "destructive" | "default" | "secondary" | "outline";
+  const sevColor: Record<string, BadgeVariant> = { critical: "destructive", high: "default", medium: "secondary", low: "outline" };
+  type SevFilter = "all" | "critical" | "high" | "medium" | "low";
+  type StatusFilter = "all" | ViolationStatus;
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
@@ -142,13 +145,13 @@ const PLT05ViolationTriage = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search violations..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-9" />
         </div>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sevFilter} onChange={e => setSevFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={sevFilter} onChange={e => setSevFilter(e.target.value as SevFilter)}>
           <option value="all">All Severities</option>
           <option value="critical">Critical</option>
           <option value="high">High</option>
           <option value="medium">Medium</option>
         </select>
-        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={statusFilter} onChange={e => setStatusFilter(e.target.value as any)}>
+        <select className="h-9 rounded-md border bg-background px-3 text-sm" value={statusFilter} onChange={e => setStatusFilter(e.target.value as StatusFilter)}>
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="acknowledged">Acknowledged</option>
@@ -185,7 +188,7 @@ const PLT05ViolationTriage = () => {
                       <TableCell className="font-mono text-xs">{v.violationId}</TableCell>
                       <TableCell className="font-mono text-xs">{v.ruleId}</TableCell>
                       <TableCell className="text-xs max-w-[300px] truncate">{v.message}</TableCell>
-                      <TableCell><Badge variant={sevColor[v.severity] as any} className="text-[10px]">{v.severity}</Badge></TableCell>
+                      <TableCell><Badge variant={sevColor[v.severity]} className="text-[10px]">{v.severity}</Badge></TableCell>
                       <TableCell className="text-xs">{v.owner}</TableCell>
                       <TableCell className={`text-xs font-mono ${age > 7 ? "text-red-400" : age > 3 ? "text-amber-400" : "text-muted-foreground"}`}>{age}d</TableCell>
                       <TableCell><Badge variant="outline" className="text-[10px]">{v.status}</Badge></TableCell>
@@ -209,7 +212,7 @@ const PLT05ViolationTriage = () => {
           <CardContent className="space-y-3 text-sm">
             <p>{selected.message}</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div><span className="text-muted-foreground text-xs">Severity</span><div><Badge variant={sevColor[selected.severity] as any}>{selected.severity}</Badge></div></div>
+              <div><span className="text-muted-foreground text-xs">Severity</span><div><Badge variant={sevColor[selected.severity]}>{selected.severity}</Badge></div></div>
               <div><span className="text-muted-foreground text-xs">Status</span><div><Badge variant="outline">{selected.status}</Badge></div></div>
               <div><span className="text-muted-foreground text-xs">Owner</span><div>{selected.owner}</div></div>
               <div><span className="text-muted-foreground text-xs">Age</span><div className="font-mono">{getViolationAge(selected)} days</div></div>

@@ -111,7 +111,7 @@ const CRMSegments = () => {
     if (!segmentName.trim()) { toast.error("Enter a segment name"); return; }
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await (supabase as any).from("crm_segments").insert({
+    await dbAny.from("crm_segments").insert({
       user_id: user.id,
       name: segmentName,
       filter_config: conditions,

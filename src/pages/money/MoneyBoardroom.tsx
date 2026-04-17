@@ -31,7 +31,7 @@ const MoneyBoardroom = () => {
     k.wasteCount > 0 ? { id: "waste", label: `${k.wasteCount} subscriptions flagged as waste`, urgency: "normal" as const, meta: `$${k.estWaste}/mo` } : null,
     k.reserveHealth < 80 ? { id: "reserve", label: `Reserve health at ${k.reserveHealth}% — below target`, urgency: "critical" as const } : null,
     { id: "approvals", label: "No overdue approvals — all clear", urgency: "low" as const },
-  ].filter(Boolean) as any[];
+  ].filter(Boolean) as Array<Record<string, unknown>>;
 
   const wasteQueue = wasteSubscriptions.map((sub: Record<string, any>) => ({
     id: sub.id, label: `Cancel ${sub.name}`, meta: `$${(Number(sub.cost) * 12).toFixed(0)}/yr`, urgency: "high" as const,

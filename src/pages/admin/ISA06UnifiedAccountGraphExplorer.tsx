@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db = supabase as any;
+import { dbAny as db } from "@/lib/supabase-helpers";
 import { Network, Shield, Plug, Smartphone, Users, ArrowRight, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

@@ -33,7 +33,7 @@ const AccessibilitySettings = () => {
           </div>
           <div className="space-y-2">
             <p className="text-sm font-medium">Text Size</p>
-            <Slider value={[textSize]} min={75} max={200} step={25} onValueChange={([v]) => setTextSize(v as any)} />
+            <Slider value={[textSize]} min={75} max={200} step={25} onValueChange={([v]) => setTextSize(v as Parameters<typeof setTextSize>[0])} />
             <p className="text-xs text-muted-foreground">{textSize}%{textSize === 100 ? " — Default" : ""}</p>
           </div>
           <div className="flex items-center justify-between">
@@ -84,7 +84,7 @@ const AccessibilitySettings = () => {
           </div>
           <div className="space-y-2">
             <p className="text-sm font-medium">Announcement Verbosity</p>
-            <Select value={verbosity} onValueChange={(v) => setVerbosity(v as any)}>
+            <Select value={verbosity} onValueChange={(v) => setVerbosity(v as Parameters<typeof setVerbosity>[0])}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="minimal">Minimal</SelectItem>

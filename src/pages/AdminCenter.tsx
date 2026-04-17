@@ -13,7 +13,7 @@ const AdminCenter = () => {
 
   useEffect(() => {
     const module = pathToModuleId(location.pathname);
-    (window as any).__missionControlInitialModule = module;
+    (window as unknown as { __missionControlInitialModule?: string }).__missionControlInitialModule = module;
     window.dispatchEvent(new CustomEvent("sita-open-mission-control", { detail: { module } }));
     navigate("/desktop", { replace: true });
   }, [location.pathname, navigate]);

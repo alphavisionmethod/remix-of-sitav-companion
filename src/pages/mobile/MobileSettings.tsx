@@ -89,7 +89,7 @@ const MobileSettings = () => {
           description="System-wide dark theme"
           value={darkMode === "dark"}
           onToggle={(v) => {
-            setDarkMode(v ? "dark" as any : "light" as any);
+            setDarkMode(v ? ("dark" as "dark" | "light") : ("light" as "dark" | "light"));
             document.documentElement.classList.toggle("dark", v);
           }}
         />
@@ -131,7 +131,7 @@ const MobileSettings = () => {
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">AI & Intelligence</h2>
       <div className="space-y-1.5 mb-6">
         <NavRow icon={Brain} label="AI Autonomy" badge={autonomy === "always-ask" ? "Manual" : autonomy === "simulate-first" ? "Simulate" : "Trusted"} />
-        <ToggleRow icon={Shield} label="AI Requires Approval" description="AI suggestions always need manual approval" value={autonomy === "always-ask"} onToggle={(v) => setAutonomy(v ? "always-ask" as any : "simulate-first" as any)} />
+        <ToggleRow icon={Shield} label="AI Requires Approval" description="AI suggestions always need manual approval" value={autonomy === "always-ask"} onToggle={(v) => setAutonomy(v ? ("always-ask" as "always-ask" | "simulate-first") : ("simulate-first" as "always-ask" | "simulate-first"))} />
       </div>
 
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Accessibility</h2>

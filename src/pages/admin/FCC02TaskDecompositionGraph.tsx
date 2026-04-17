@@ -97,7 +97,7 @@ export default function FCC02TaskDecompositionGraph() {
                   <p className="line-clamp-2 text-xs">{d.intent_text}</p>
                   <div className="flex gap-1.5 mt-2">
                     <Badge variant="outline" className="text-[9px]">{d.domain_classification}</Badge>
-                    <Badge variant="outline" className="text-[9px]">{(d.decomposed_plan as any[])?.length || 0} tasks</Badge>
+                    <Badge variant="outline" className="text-[9px]">{(d.decomposed_plan ?? []).length} tasks</Badge>
                   </div>
                 </CardContent>
               </Card>

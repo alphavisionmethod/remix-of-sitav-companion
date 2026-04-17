@@ -59,7 +59,7 @@ const UpcomingNeeds = () => {
     id: o.id,
     label: o.title,
     meta: o.dueLabel,
-    urgency: (o.dueLabel.includes("Overdue") ? "critical" : o.dueLabel.startsWith("Today") ? "high" : "normal") as any,
+    urgency: ((o.dueLabel.includes("Overdue") ? "critical" : o.dueLabel.startsWith("Today") ? "high" : "normal") as "critical" | "high" | "normal"),
   }));
 
   const timelineEvents = OBLIGATIONS.slice(0, 6).map(o => ({
