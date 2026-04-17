@@ -10,6 +10,7 @@ import { FolderOpen, Search, Eye, Link2, Shield, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
 import { FileUploader } from "@/components/sita/FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 
 type FileCategory = "all" | "business" | "money" | "household" | "travel" | "legal" | "sensitive";
@@ -47,9 +48,17 @@ function formatSize(bytes: number | null): string {
 
 const FilesAll = () => {
   const { data: rawFiles = [], isLoading } = useAllFiles();
+  const queryClient = useQueryClient();
   const [category, setCategory] = useState<FileCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
+
+  const handleUploaded = () => {
+    queryClient.invalidateQueries({ queryKey: ["all-files"] });
+    queryClient.invalidateQueries({ queryKey: ["files-overview"] });
+    queryClient.invalidateQueries({ queryKey: ["file-kpis"] });
+    queryClient.invalidateQueries({ queryKey: ["notifications"] });
+  };
 
   const files = useMemo(() => rawFiles.map((f: any) => ({
     ...f,
@@ -79,7 +88,7 @@ const FilesAll = () => {
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
       <PageTruthBanner />
 
-      <FileUploader />
+      <FileUploader onUploaded={handleUploaded} />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Files" value={files.length} icon={FolderOpen} />

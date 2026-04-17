@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/utils/file-classification";
 import { useFilesOverview } from "@/hooks/use-domain-data";
 import { useAIInsight } from "@/hooks/use-backend-actions";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -30,10 +30,18 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 const FilesOverview = () => {
   const { data: filesData = [] } = useFilesOverview();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const aiInsight = useAIInsight();
   const [aiResult, setAiResult] = useState<string | null>(null);
   const [analyzingFile, setAnalyzingFile] = useState<string | null>(null);
   const [view, setView] = useState<ViewVariant>("founder");
+
+  const handleUploaded = () => {
+    queryClient.invalidateQueries({ queryKey: ["files-overview"] });
+    queryClient.invalidateQueries({ queryKey: ["file-kpis", user?.id] });
+    queryClient.invalidateQueries({ queryKey: ["all-files"] });
+    queryClient.invalidateQueries({ queryKey: ["notifications"] });
+  };
 
   const { data: realKpis } = useQuery({
     queryKey: ["file-kpis", user?.id],
@@ -98,7 +106,7 @@ const FilesOverview = () => {
         onChange={(k) => setView(k as ViewVariant)}
       />
 
-      <FileUploader />
+      <FileUploader onUploaded={handleUploaded} />
       <UniversalIntakeBox />
 
       <SummaryCard
