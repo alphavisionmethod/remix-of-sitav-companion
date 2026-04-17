@@ -313,8 +313,16 @@ export function AppLauncherPanel({ open, onClose, onLaunchApp }: AppLauncherPane
                       role="option"
                       aria-selected={isFocused}
                       aria-label={`${item.app.name}${item.cta !== "open" ? `, ${item.cta}` : ""}`}
+                      draggable={item.app.installStatus === "installed"}
+                      onDragStart={(e) => {
+                        if (item.app.installStatus !== "installed") { e.preventDefault(); return; }
+                        e.dataTransfer.effectAllowed = "copy";
+                        e.dataTransfer.setData("application/x-sita-app", item.app.id);
+                        e.dataTransfer.setData("text/plain", item.app.name);
+                      }}
                       className={cn(
-                        "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all duration-100 group cursor-pointer min-h-[44px]",
+                        "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all duration-100 group min-h-[44px]",
+                        item.app.installStatus === "installed" ? "cursor-grab active:cursor-grabbing" : "cursor-pointer",
                         isFocused
                           ? "bg-[hsl(210_80%_55%/0.2)] ring-1 ring-[hsl(210_80%_55%/0.3)]"
                           : "hover:bg-[hsl(0_0%_100%/0.08)]",
