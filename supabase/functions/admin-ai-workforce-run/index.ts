@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { requireAdmin } from "../_shared/auth.ts";
 import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -240,33 +241,29 @@ Deno.serve(async (req) => {
     const resolvedRoutingClass = (perm as Record<string, unknown>).preferred_routing_class || (role as Record<string, unknown>).default_routing_class || "balanced_assistant";
     const selectedModel = selectModel(resolvedBudgetClass);
 
-    // STEP 5: Budget policy check (optional RPC — safe-noop if not deployed)
-    let budgetCheck: { should_block?: boolean; reason?: string; policy_key?: string } | null = null;
-    try {
-      const { data } = await supabaseAdmin.rpc("check_ai_budget_policies", {
-        p_user_id: user.id,
-        p_capability_key: `workforce.${role_key}.${task_key}`,
-        p_estimated_cost_usd: 0.005,
-      });
-      budgetCheck = (data as typeof budgetCheck) ?? null;
-    } catch (e) {
-      console.warn("[ai-workforce-run] budget policy RPC not available:", (e as Error).message);
-    }
+    // STEP 5: Budget policy check (canonical, strict — fail-closed)
+    const budgetDecision = await checkAIBudget(
+      supabaseAdmin,
+      user.id,
+      `workforce.${role_key}.${task_key}`,
+      0.005,
+      { strict: true },
+    );
 
-    if (budgetCheck?.should_block) {
+    if (budgetDecision.shouldBlock) {
       await supabaseAdmin.from("ai_workforce_invocations").insert({
         user_id: user.id, role_key, task_key,
         budget_posture: budget_posture || "normal",
         status: "blocked_budget",
         mode, scope_type, scope_ref, scope_payload,
         cost_cents: 0, tokens_in: 0, tokens_out: 0, duration_ms: 0,
-        error_message: budgetCheck.reason || "Budget policy blocked invocation",
+        error_message: budgetDecision.reason || "Budget policy blocked invocation",
       });
 
       return new Response(JSON.stringify({
         status: "blocked_budget",
-        reason: budgetCheck.reason,
-        policy_key: budgetCheck.policy_key,
+        reason: budgetDecision.reason,
+        policy_key: budgetDecision.policyKey,
       }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
