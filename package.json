@@ -38,8 +38,10 @@
     "os:test:qemu:headless": "bash os/qemu-test.sh --headless"
   },
   "dependencies": {
+    "@aparajita/capacitor-biometric-auth": "^10.0.0",
     "@capacitor/android": "^8.3.1",
     "@capacitor/app": "^8.1.0",
+    "@capacitor/background-runner": "^3.0.0",
     "@capacitor/cli": "^8.3.1",
     "@capacitor/core": "^8.3.1",
     "@capacitor/device": "^8.0.2",
