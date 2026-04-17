@@ -1,53 +1,85 @@
 
 
-## Fix C-008: Boardroom uses demo data only — what's actually broken
+## Fix C-009: Dashboard shows no real data — what's actually broken
 
-### Live findings (worse than the brief)
+### Live findings (much worse than the brief)
 
-I read every file. The brief understates the problem in 3 ways:
+The brief points at `DailyPulse.tsx` and `DesktopPage.tsx`. I read both:
 
-1. 🔴 **Top-level `const isDemoMode = true` at `src/pages/Boardroom.tsx:60`** — a hardcoded module-scoped constant. Even though most components correctly call `useAuth().isDemo`, this constant still exists at file scope and could shadow or confuse future edits. It violates the **reality-mode-wiring** memory rule.
+1. ✅ **`DailyPulse.tsx` is already live-wired** (verified — uses `usePulseLiveData`, queries `notifications` + `ai_workforce_approval_queue` + `ai_workforce_recommendations` + `cloud_files`, gated on `useDataMode().isDemoMode`). No fix needed here.
 
-2. 🔴 **`useBoardroomData` does not query the 3 tables the brief mandates.** It queries `approval_queue` (legacy), `goals`, `tasks`, `sita_proof_records` — but the canonical post-C-007 truth is `ai_workforce_approval_queue` + `ai_workforce_recommendations` + `notifications`. Result: even when "live", Boardroom shows zero real REX recommendations and zero real notifications. Confirmed via DB: all 3 canonical tables exist.
+2. ✅ **`src/pages/Index.tsx` does not exist.** Root `/` redirects to `/desktop` via `<Navigate>`. No fix needed.
 
-3. 🟠 **6 of 7 inline War Room sections (Confidence Radar, Disagreement Theater, Voting Card, Sentiment Pulse, Evidence Chain, Scenario Fork, Decision Seal, Confidence Ladder) are gated behind `if (isDemoMode)` and render *nothing* in live mode** — leaving a giant blank gap on the live boardroom page. They need a "no live data yet" empty state OR be wired to real data.
+3. 🔴 **The real C-009 surface is the `DesktopPage` widget canvas — 12 of ~17 desktop widgets are 100% hardcoded constants.** Confirmed via grep. Every one is module-scoped `const` arrays with fake data. None query the DB:
 
-4. 🟠 **`error` paths in `use-boardroom-data.ts` silently fall back to mock data** (lines 60, 75, 90, 104). Per the constraint memory, this masks real DB errors and hides whether the user actually has data. Should return empty arrays + surface error.
+| Widget | Hardcoded constant | Should query |
+|---|---|---|
+| `DesktopWhatMattersWidget` | `domains = [...]` (3 fake domain cards) | `notifications` + `ai_workforce_approval_queue` per-domain counts |
+| `DesktopBusinessKPIWidget` | `KPIS = [...]` | `deals` (sum amount), `ai_workforce_approval_queue` count |
+| `DesktopFinanceSnapshotWidget` | inline numbers | `holdings` (sum value), `cloud_files` (count) |
+| `DesktopConciergeTasksWidget` | `TASKS = [...]` | `household_tasks` |
+| `DesktopBoardroomBriefWidget` | inline | `boardroom_items` (active) + latest `boardroom_decision_receipts` |
+| `DesktopCRMPipelineWidget` | `DEALS = [...]` | `deals` grouped by stage |
+| `DesktopLeadsRecoveredWidget` | `STATS = [...]` | `leads` (status counts) |
+| `DesktopInvestmentPulseWidget` | `HOLDINGS = [...]` | `holdings` |
+| `DesktopCalendarTodayWidget` | `EVENTS = [...]` | `calendar_events` (today) |
+| `DesktopAdvisorCouncilWidget` | `ADVISORS = [...]` | `advisor_profiles` + recent `advisor_board_recommendations` |
+| `DesktopNotificationsFeedWidget` | `DEMO_ALERTS = [...]` | `notifications` (recent unread) |
+| `DesktopNotificationsWidget` | `STOCKS = [...]` (mislabeled — actually a stock ticker) | `holdings` |
+| `DesktopPortfolioMapWidget` | `SECTORS = [...]` | `holdings` (group by sector) |
 
-### The fix — 4 surgical changes
+This violates the **reality-mode-wiring** memory rule on the *primary post-login surface* — every widget is a stub, regardless of demo/live state.
 
-**1. Rewrite `src/hooks/use-boardroom-data.ts`** to be the canonical Boardroom data hook per the C-008 brief:
-- Query `notifications` (unread, limit 5), `ai_workforce_approval_queue` (pending), `ai_workforce_recommendations` (status='new', limit 10), `boardroom_items` (active), `boardroom_decision_receipts` (recent)
-- Keep existing `goals`/`tasks`/`overdueTasks`/`recentProofs` queries but point proofs to `boardroom_decision_receipts` as the canonical proof source
-- Remove silent mock fallback on error → return `[]` + log; only fall back to mocks when `isDemoMode === true`
-- Add new return fields: `unreadNotifications`, `newRecommendations`, plus the raw arrays
-- All queries gated on `enabled: !!user || isDemoMode`
-- Backward-compatible: keep `pendingApprovals`, `activeGoals`, `overdueTasks`, `recentProofs` field names so `Boardroom.tsx` and `BoardroomPulseView.tsx` and `BoardroomApprovalView.tsx` keep working
+### DB confirmed available (live query)
 
-**2. Edit `src/pages/Boardroom.tsx`**:
-- DELETE line 60 `const isDemoMode = true;` (the orphan hardcode)
-- In `PacketView`, surface the new live counts (notifications + recommendations) into `whatChanged[]` so live users see real activity reflected in the Prep Pack
-- For the 6 War Room sections currently gated by `if (isDemoMode)`: change pattern to `{(isDemoMode || hasLiveData) && ...}` where `hasLiveData` derives from the new hook (e.g., disagreements card only renders if there's actual `boardroom_items` with conflicting `advisor_summaries`); otherwise show a compact `EmptyState` so the live page does not have visual gaps
-- Wire `Decision Seal` to the most-recent `boardroom_decision_receipts` row when available
+`notifications`, `ai_workforce_approval_queue`, `ai_workforce_recommendations`, `cloud_files`, `boardroom_items`, `boardroom_decision_receipts`, `calendar_events`, `holdings`, `deals`, `leads`, `household_tasks`, `advisor_profiles`, `advisor_board_recommendations` — all present with RLS.
 
-**3. Add a new admin/dev helper**: `supabase/functions/seed-boardroom-demo/index.ts` is **not** needed — instead, add a small "Generate sample notification + recommendation" admin button inside `PacketHeader` (admin-gated, visible only to `has_role('admin')`) that calls existing tables to create one row of each. This proves the live loop end-to-end without manual SQL. Mirrors the C-007 pattern.
+### The fix — 4 changes
 
-**4. Add `data-testid` hooks** matching `tests/e2e/selectors/boardroom.ts`: `boardroom-page`, `boardroom-summary`, `boardroom-mode-label`, `boardroom-metric` so the existing demo-vs-real e2e test (`boardroom-demo-vs-real.spec.ts`) actually has selectors to assert against.
+**1. New canonical data hook `src/hooks/useDesktopWidgetsData.ts`**
+One `useQuery` per widget category, all gated on `enabled: !!user`, all return `{ data, isLoading, isEmpty }`. No silent fallbacks. In demo mode (`useDataMode().isDemoMode === true`), returns the existing hardcoded shapes so demo presentations stay identical. Live mode returns real DB rows.
+
+Hooks exposed:
+- `useWhatMattersData()` → counts per domain
+- `useBusinessKPIData()` → pipeline value, approval count, revenue
+- `useFinanceSnapshotData()` → portfolio total, file count
+- `useConciergeTasksData()` → household tasks
+- `useBoardroomBriefData()` → latest item + receipt
+- `useCRMPipelineData()` → deals by stage
+- `useLeadsRecoveredData()` → lead status counts
+- `useInvestmentPulseData()` → holdings rows
+- `useCalendarTodayData()` → today's events
+- `useAdvisorCouncilData()` → advisor profiles + last recs
+- `useNotificationsFeedData()` → recent unread notifications
+- `usePortfolioMapData()` → holdings by sector
+
+**2. Rewrite all 12 widget files** to:
+- Import its hook
+- Use `useDataMode()` to decide demo-vs-live (NO hardcoded `isDemoMode`)
+- Render real data when live, demo constants when demo
+- Render an honest `EmptyState` (already exists at `src/components/primitives/feedback/EmptyState.tsx`) when live + zero rows, with an action navigating to the relevant feature page (e.g., "Upload File", "Add Holding")
+- Add `data-testid` matching the widget type for E2E
+
+**3. Add a small `<DesktopWidgetSeedSampleButton>` in admin debug panel** (mirroring the C-007/C-008 seed pattern) that inserts one sample row into `deals`, `holdings`, `household_tasks`, `calendar_events`, `notifications` so admins can verify the live loop end-to-end without manual SQL. Lives at `src/components/sita/DesktopSeedSampleButton.tsx`, mounts inside the existing widget picker only for `useIsAdmin() === true && !isDemoMode`.
+
+**4. Tests** — add `tests/e2e/desktop-widgets-live-vs-demo.spec.ts` smoke test asserting widgets render in both modes without crashing.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `src/hooks/use-boardroom-data.ts` | Rewrite — query `notifications` + `ai_workforce_approval_queue` + `ai_workforce_recommendations` + `boardroom_items` + `boardroom_decision_receipts`; remove silent error→mock fallback; expose new fields |
-| `src/pages/Boardroom.tsx` | Delete orphan `const isDemoMode = true`; thread real notification + recommendation counts into Prep Pack; replace `{isDemoMode && ...}` gates with `{(isDemoMode \|\| hasLiveData) && ...}` + empty-state fallback; wire Decision Seal to real receipt; add `data-testid`s; admin-gated "Generate sample" button in `PacketHeader` |
+| `src/hooks/useDesktopWidgetsData.ts` | NEW — 12 query hooks |
+| 12 × `src/components/sita/shell/desktop/Desktop*Widget.tsx` | Rewrite to consume hooks + EmptyState; remove module-scoped constants |
+| `src/components/sita/DesktopSeedSampleButton.tsx` | NEW — admin sample inserter |
+| `src/components/sita/shell/desktop/WidgetPicker.tsx` | Mount seed button when admin + live |
+| `tests/e2e/desktop-widgets-live-vs-demo.spec.ts` | NEW — smoke test |
 
 ### Acceptance
 
-- Logged-in live user with zero data: Boardroom renders header + Prep Pack with empty-state messages, no blank War Room gaps, no crashes
-- Logged-in live user clicks admin "Generate sample": one row inserted into `notifications` + one into `ai_workforce_recommendations` + one into `ai_workforce_approval_queue` → counts update within 15s (staleTime)
-- Demo user: identical visual output to today (no regression)
-- `isDemoMode` exists nowhere as a hardcoded constant — only via `useAuth().isDemo` or `useDataMode().isDemoMode`
-- `boardroom-demo-vs-real.spec.ts` selectors all resolve
+- New live user sees desktop with honest `EmptyState`s ("No deals yet", "No holdings yet", etc.) — never fake numbers
+- Demo user sees identical visuals to today (no regression)
+- Admin clicks "Seed sample" → 1 row inserted into each of 5 tables → widgets reflect within 30s (staleTime)
+- Zero hardcoded constant arrays remain in any `Desktop*Widget.tsx`
 - 0 TS errors, 0 silent error→mock fallbacks
-- C-008 moves 🟠 DEMO-GOVERNED → ✅ RESOLVED, deployment-ready
+- C-009 moves 🟠 DEMO-GOVERNED → ✅ RESOLVED, deployment-ready
 
