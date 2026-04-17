@@ -82,11 +82,11 @@ export function CloudObservabilityAdmin() {
       cards.push({
         key: `slo_${slo.slo.id}`,
         label: `SLO ${slo.slo.id}`,
-        value: (slo.actualSLI * 100).toFixed(2),
+        value: (slo.currentValue * 100).toFixed(2),
         unit: "%",
-        health: slo.compliant ? "good" : "warning",
+        health: slo.isMet ? "good" : "warning",
         icon: BarChart3,
-        description: `Target ${(slo.slo.targetSLO * 100).toFixed(2)}% — ${slo.compliant ? "within" : "breaching"} budget`,
+        description: `Target ${(slo.slo.target * 100).toFixed(2)}% — ${slo.isMet ? "within" : "breaching"} budget (burn ${slo.burnRate.toFixed(2)}x)`,
         source: "slo-tracking",
       });
     }
