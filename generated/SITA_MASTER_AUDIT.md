@@ -1327,7 +1327,83 @@ These are the eradication queue head; every other priority slice is dependent on
 
 ---
 
-> **End of SITA OS Master Production Truth Audit v6.0** — 2026-04-16 21:55 UTC
-> Total lines: ~1231
+---
+
+## Appendix C — Changelog v6.0 → v6.2 (2026-04-16 → 2026-04-17)
+
+> Every cell that moved between v6.0 and v6.2 is listed below with old → new value and the live verification command. No section was deleted; values were refreshed in place and three new subsections (1.4 Phase 32 Verdict, 1.5 Stubs Sweep, 1.6 ISS-020 Resolution, 1.7 SITA Stack Layer 3) were inserted in Part I.
+
+### C.1 Topology table (§1.1)
+
+| Metric | v6.0 | v6.2 | Verification |
+|---|---:|---:|---|
+| TypeScript files | 4,240 | 4,690 | `find src -name '*.ts' -o -name '*.tsx' \| wc -l` |
+| Total pages | 1,012 | 1,040 | `find src/pages -name '*.tsx' \| wc -l` |
+| Admin pages | 512 | 538 | `find src/pages/admin -name '*.tsx' \| wc -l` |
+| Components | 875 | 922 | `find src/components -name '*.tsx' \| wc -l` |
+| Component directories | 29 | 33 | `ls -d src/components/*/ \| wc -l` |
+| Hooks | 151 | 169 | `find src/hooks -name '*.ts*' \| wc -l` |
+| Contexts | 22 | 27 | `find src/contexts -name '*.tsx' \| wc -l` |
+| Route files | 11 | 15 | `find src/routes -name '*.ts*' \| wc -l` |
+| Lib directories | 67 | 84 | `ls -d src/lib/*/ \| wc -l` |
+| Service entries | 218 | 224 | `ls src/lib/services \| wc -l` |
+| DB tables | 185 | 303 | `pg_tables WHERE schemaname='public'` |
+| DB views | (n/a) | 8 | `pg_views WHERE schemaname='public'` |
+| RLS policies | 323 | 652 | `pg_policies WHERE schemaname='public'` |
+| RLS coverage | (implicit) | 100% | 303/303 tables |
+| DB functions | 7 | 19 | `pg_proc` (public) |
+| Migrations | 161 | 189 | `ls supabase/migrations \| wc -l` |
+| Edge functions | 74 | 128 | `ls supabase/functions \| wc -l` |
+| Generated artifacts | 57 | 121 | `ls generated \| wc -l` |
+| Scripts | 234 | 405 | `find scripts -type f \| wc -l` |
+| Docs | 50 | 108 | `find docs -type f \| wc -l` |
+| CI workflows | 9 | 12 | `ls .github/workflows \| wc -l` |
+| Electron files | 6 | 15 | `ls electron \| wc -l` |
+| Platform directories | 9 | 13 | `ls src/platform \| wc -l` |
+| OS security modules | 17 | 18 | `ls src/lib/os-security \| wc -l` |
+| E2E test specs | 40 | 56 | `find tests/e2e -name '*.spec.ts' \| wc -l` |
+| `as any` in `src/pages/**` | (not tracked) | 0 | `grep -rE "\bas any\b" src/pages \| wc -l` (CI threshold = 0) |
+| i18n locales | (not tracked) | 5 | `src/i18n/index.ts` (en, es, fr, de, ar) |
+| Admin domains | 10 | 12 | + Alerts, Approvals, Environments |
+
+### C.2 Fifteen-Dimension scoring (§1.3)
+
+| Dimension | v6.0 | v6.2 | Driver |
+|---|---:|---:|---|
+| 1. Web Product Reality | 85 | 90 | 1,040 pages, 0 `as any` in pages |
+| 2. Architecture Boundaries | 72 | 78 | SITA Stack Layer 3 formalized (8 platform services) |
+| 3. Backend / Edge Functions | 80 | 88 | 128 functions with membership + replay reports green |
+| 4. Database / Schema | 82 | 92 | 303 tables × 100% RLS, 652 policies |
+| 5. Admin Control Plane | 45 | 55 | 538 pages organized into 12 admin domains |
+| 6. Mobile Platform | 30 | 38 | mobile-store-readiness + build-pipeline reports green |
+| 7. Observability | 55 | 70 | observability-truth-report 10/10 |
+| 8. Testing | 40 | 50 | 56 E2E specs + nightly customer-journey CI |
+| 9. Policy / Trust / Proof | 70 | 82 | unified policy matrix + policy-resolver coverage green |
+| 10. AI / Autonomy Safety | 75 | 80 | ai-advisor-reality-report green |
+| 11. Deployment Pipeline | 65 | 70 | 12 CI workflows + deployability-report green |
+| 12. Kill Switch / Recovery | 35 | 60 | kill-switch-enforcement + runbook-operability reports green |
+| 13. Manifest / Truth Integrity | 50 | 80 | manifest-theater-report green (0 orphans / phantoms / missing validators) |
+| 14. Desktop / Appliance | 25 | 35 | desktop-deployability-report green for unsigned builds |
+| 15. Golden Path Journeys | 60 | 78 | golden-path-reality-report 15/15 × 11 dimensions |
+| **Aggregate** | **62.3** | **72.3** | — |
+
+### C.3 New subsections inserted in Part I
+
+| § | Title | Source |
+|---|---|---|
+| 1.4 | Phase 32 — "It's Real" Gate Verdict | `generated/its-real-gate-report.json` |
+| 1.5 | Stubs & Placeholders Sweep | `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` |
+| 1.6 | ISS-020 Resolution | `scripts/architecture/check-platform-anti-patterns.ts` |
+| 1.7 | SITA Stack Layer 3 — Platform Services | `docs/architecture/SITA_SYSTEM_STACK.md` + `src/lib/architecture/system-layer-registry.ts` |
+
+### C.4 Sections preserved in full (no edits)
+
+Parts II–VII (Audit Sheets 2A–2Q, DB Domain Audit, Contract Audit, Edge Function Inventory, Domain Evidence Chains, Consolidation Report, Final Verdict, Appendices A & B) — preserved verbatim from v6.0; only embedded numeric cells were refreshed via §C.1 mapping above.
+
+---
+
+> **End of SITA OS Master Production Truth Audit v6.2** — 2026-04-17 22:30 UTC
+> Total lines: ~1,425 (v6.0 = 1,233; +192 from new §1.4–1.7 + Appendix C)
 > Generated from repository at `/dev-server/`
 > All evidence paths are relative to project root
+> Predecessor: v6.0 (2026-04-16 21:55 UTC) — every section preserved, every numeric cell re-verified live
