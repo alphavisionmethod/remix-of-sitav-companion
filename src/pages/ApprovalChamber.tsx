@@ -21,6 +21,7 @@ import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -306,6 +307,7 @@ const ApprovalChamber = () => {
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();
+  const emitApprovalLoop = useLoopEmitter("admin-truth-recommendation-approval");
   const [tab, setTab] = useState("pending");
   const [generating, setGenerating] = useState(false);
 
@@ -355,8 +357,25 @@ const ApprovalChamber = () => {
       if (action === "approve") approve(id);
       else if (action === "reject") reject(id);
       else if (action === "defer") toast.info("Deferred — will resurface tomorrow.");
+
+      // Flagship Loop 5 — emit durable proof of approval decision.
+      if (action === "approve" || action === "reject" || action === "defer") {
+        emitApprovalLoop("approval_decision", {
+          outcome: "success",
+          evidence: {
+            recommendation_id: id,
+            decision: action,
+            risk_tier: trustEval.riskTier,
+            execution_mode: trustEval.executionMode,
+          },
+        });
+      }
     } catch (e: any) {
       toast.error(e.message || `Failed to ${action}`);
+      emitApprovalLoop("approval_decision", {
+        outcome: "failure",
+        evidence: { recommendation_id: id, decision: action, error: e?.message ?? String(e) },
+      });
     }
   };
 
