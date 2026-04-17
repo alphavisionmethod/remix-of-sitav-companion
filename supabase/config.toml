@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.data-cleanup]
 verify_jwt = false
+
+[functions.os-update-manifest]
+verify_jwt = false
