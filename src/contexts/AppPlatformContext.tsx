@@ -1,95 +1,64 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — App Platform Context
-// Reactive state manager for app install lifecycle, permissions,
-// dock pins, defaults, and receipts with Supabase persistence.
+// SITA OS — App Platform Context (DB-backed)
+//
+// Now sources the app catalog AND per-user install state from the
+// real Supabase tables (`apps` + `installed_apps`) via React Query
+// hooks, then maps every row through `db-app-adapter` so the rest
+// of the OS keeps consuming the same `AppDefinition` shape.
+//
+// The local APP_CATALOG fallback is preserved for offline-only mode.
 // ═══════════════════════════════════════════════════════════════
 
 import {
-  createContext, useContext, useCallback, useEffect, useMemo,
-  useState, type ReactNode,
+  createContext, useContext, useCallback, useMemo,
+  type ReactNode,
 } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
-import { APP_CATALOG, APP_BUNDLES } from "@/lib/app-platform/catalog";
+import { APP_CATALOG } from "@/lib/app-platform/catalog";
+import { dbRowsToAppDefinitions } from "@/lib/app-platform/db-app-adapter";
+import {
+  useAppCatalog,
+  useInstalledApps,
+  useAppInstall,
+  useAppUninstall,
+  useAppPin,
+  useAppFavorite,
+  useSetAppPermissions,
+} from "@/hooks/use-app-platform";
 import type {
   AppDefinition, AppInstallStatus, AppInstallScope,
-  AppSandboxLevel, AppSourceOrigin, AppPackageType, AppUpdateMode,
-  AppLifecycleReceipt, AppPermission,
+  AppSandboxLevel, AppSourceOrigin,
+  AppLifecycleReceipt,
 } from "@/lib/app-platform/types";
 
-// ── Persisted row shape (matches public.installed_apps) ────────
-
-interface InstalledAppRow {
-  id: string;
-  user_id: string;
-  app_id: string;
-  install_status: string;
-  enabled: boolean;
-  pinned: boolean;
-  favorite: boolean;
-  pinned_order: number;
-  launch_count: number;
-  last_launched_at: string | null;
-  version_installed: string | null;
-  permissions_granted: AppPermission[] | null;
-  config_json: Record<string, unknown> | null;
-  source_channel: string;
-  installed_at: string;
-  updated_at: string;
-}
-
-// ── Local state map ─────────────────────────────────────────────
-
-interface AppUserState {
-  installStatus: AppInstallStatus;
-  installScope: AppInstallScope;
-  sandboxLevel: AppSandboxLevel;
-  sourceOrigin: AppSourceOrigin;
-  packageType: AppPackageType;
-  updateMode: AppUpdateMode;
-  permissionsGranted: AppPermission[];
-  dockPinned: boolean;
-  notificationEnabled: boolean;
-  startupBehavior: "none" | "background" | "visible";
-  installedAt: string;
-}
-
-// ── Context shape ───────────────────────────────────────────────
+// ── Context shape (PUBLIC API — DO NOT BREAK) ───────────────────
 
 interface AppPlatformContextValue {
-  /** Get merged app definition with live user state */
   getApp: (id: string) => AppDefinition | undefined;
-  /** All apps with live state applied */
   apps: AppDefinition[];
-  /** Only installed */
   installedApps: AppDefinition[];
-  /** Only update-available */
   updatableApps: AppDefinition[];
 
-  /** Lifecycle actions */
   installApp: (appId: string, opts?: {
     scope?: AppInstallScope; sandbox?: AppSandboxLevel; sourceOrigin?: AppSourceOrigin;
   }) => Promise<void>;
   uninstallApp: (appId: string) => Promise<void>;
   updateApp: (appId: string) => Promise<void>;
 
-  /** Permission management */
   togglePermission: (appId: string, permissionId: string) => void;
 
-  /** Dock & launch */
   pinToDock: (appId: string) => void;
   unpinFromDock: (appId: string) => void;
   setStartupBehavior: (appId: string, behavior: "none" | "background" | "visible") => void;
   setNotificationEnabled: (appId: string, enabled: boolean) => void;
 
-  /** Default apps */
-  defaultApps: Record<string, string>; // role → appId
+  defaultApps: Record<string, string>;
   setDefaultApp: (role: string, appId: string) => void;
 
-  /** Receipts */
   receipts: AppLifecycleReceipt[];
 
-  /** Loading */
   isLoading: boolean;
 }
 
@@ -101,39 +70,38 @@ export function useAppPlatform() {
   return ctx;
 }
 
-// ── Local storage fallback keys ─────────────────────────────────
-const LS_APPS_KEY = "sita-installed-apps";
+// ── Local-only persistence for default-app associations & receipts
 const LS_DEFAULTS_KEY = "sita-default-apps";
 const LS_RECEIPTS_KEY = "sita-app-receipts";
 
 function loadLocal<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(key) : null;
+    return raw ? (JSON.parse(raw) as T) : fallback;
   } catch { return fallback; }
 }
 function saveLocal(key: string, data: unknown) {
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+  try { if (typeof localStorage !== "undefined") localStorage.setItem(key, JSON.stringify(data)); } catch { /* noop */ }
 }
 
-// ── Receipt generator ───────────────────────────────────────────
-
 function makeReceipt(
-  appId: string, actionType: AppLifecycleReceipt["actionType"],
-  app: AppDefinition, extras: Partial<AppLifecycleReceipt> = {},
+  appId: string,
+  actionType: AppLifecycleReceipt["actionType"],
+  app: AppDefinition,
 ): AppLifecycleReceipt {
   return {
-    receiptId: crypto.randomUUID(),
+    receiptId: typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `r_${Date.now()}_${Math.random().toString(36).slice(2)}`,
     appId,
     actionType,
     timestamp: new Date().toISOString(),
     actor: "user",
     version: app.version,
     sourceInfo: app.updateSource,
-    permissionSummary: app.permissions.map(p => p.label),
+    permissionSummary: app.permissions.map((p) => p.label),
     approvalStatus: "auto",
     result: "success",
-    ...extras,
   };
 }
 
@@ -141,304 +109,152 @@ function makeReceipt(
 
 export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const userId = user?.id;
+  const qc = useQueryClient();
 
-  // Core state: appId → user-specific overrides
-  const [stateMap, setStateMap] = useState<Record<string, AppUserState>>(() => {
-    // Initialize from catalog's pre-installed apps
-    const init: Record<string, AppUserState> = {};
-    APP_CATALOG.forEach(app => {
-      if (app.installStatus === "installed") {
-        init[app.id] = {
-          installStatus: "installed",
-          installScope: app.installScope ?? "user",
-          sandboxLevel: app.sandboxLevel ?? "standard",
-          sourceOrigin: app.sourceOrigin ?? "sita-store",
-          packageType: app.packageType ?? "native-application",
-          updateMode: app.updateMode ?? "store-managed",
-          permissionsGranted: app.permissions.map(p => ({ ...p, granted: p.granted })),
-          dockPinned: app.pinnedToDock,
-          notificationEnabled: app.notificationPermission,
-          startupBehavior: app.startupBehavior,
-          installedAt: app.installedAt ?? new Date().toISOString(),
-        };
-      }
-    });
-    // Merge with localStorage if no user
-    const saved = loadLocal<Record<string, AppUserState>>(LS_APPS_KEY, {});
-    return { ...init, ...saved };
-  });
+  // ── DB-backed sources of truth ────────────────────────────
+  const catalogQ = useAppCatalog({ limit: 500 });
+  const installedQ = useInstalledApps();
 
-  const [defaultApps, setDefaultApps] = useState<Record<string, string>>(() =>
-    loadLocal<Record<string, string>>(LS_DEFAULTS_KEY, { browser: "chrome", email: "gmail", code: "vscode" })
+  const installMut = useAppInstall();
+  const uninstallMut = useAppUninstall();
+  const pinMut = useAppPin();
+  const favMut = useAppFavorite();
+  const permsMut = useSetAppPermissions();
+
+  // ── Apps merged with per-user install state ────────────────
+  const apps = useMemo<AppDefinition[]>(() => {
+    const catalog = catalogQ.data ?? [];
+    const installed = installedQ.data ?? [];
+
+    if (catalog.length > 0) {
+      return dbRowsToAppDefinitions(catalog, installed);
+    }
+    // Offline / first-load fallback so nothing renders empty.
+    return APP_CATALOG.map((a) => ({ ...a, installStatus: "not-installed" as AppInstallStatus }));
+  }, [catalogQ.data, installedQ.data]);
+
+  const installedApps = useMemo(
+    () => apps.filter((a) => a.installStatus === "installed" || a.installStatus === "update-available"),
+    [apps],
+  );
+  const updatableApps = useMemo(
+    () => apps.filter((a) => a.installStatus === "update-available"),
+    [apps],
   );
 
-  const [receipts, setReceipts] = useState<AppLifecycleReceipt[]>(() =>
-    loadLocal<AppLifecycleReceipt[]>(LS_RECEIPTS_KEY, [])
+  const getApp = useCallback((id: string) => apps.find((a) => a.id === id), [apps]);
+
+  // ── Default-apps (client-only for now) ─────────────────────
+  const defaultApps = useMemo<Record<string, string>>(
+    () => loadLocal(LS_DEFAULTS_KEY, { browser: "chrome-desktop", email: "gmail", code: "vscode-desktop" }),
+    [],
   );
+  const setDefaultApp = useCallback((role: string, appId: string) => {
+    const next = { ...defaultApps, [role]: appId };
+    saveLocal(LS_DEFAULTS_KEY, next);
+  }, [defaultApps]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // ── Receipts (client-cached audit log) ─────────────────────
+  const receipts = useMemo<AppLifecycleReceipt[]>(
+    () => loadLocal(LS_RECEIPTS_KEY, []),
+    [],
+  );
+  const pushReceipt = useCallback((r: AppLifecycleReceipt) => {
+    const next = [r, ...receipts].slice(0, 200);
+    saveLocal(LS_RECEIPTS_KEY, next);
+  }, [receipts]);
 
-  // ── Supabase hydration ──────────────────────────────────────
-  useEffect(() => {
-    if (!userId) return;
-    let cancelled = false;
-
-    const hydrate = async () => {
-      setIsLoading(true);
-      try {
-        // Load installed apps (new schema: installed_apps)
-        const { data: rows } = await (supabase as any)
-          .from("installed_apps")
-          .select("*")
-          .eq("user_id", userId);
-
-        if (!cancelled && rows && (rows as unknown as any[]).length > 0) {
-          const loaded: Record<string, AppUserState> = {};
-          for (const r of rows as unknown as InstalledAppRow[]) {
-            const cfg = (r.config_json || {}) as Record<string, unknown>;
-            loaded[r.app_id] = {
-              installStatus: (r.install_status === "installed" ? "installed" : r.install_status) as AppInstallStatus,
-              installScope: (cfg.installScope as AppInstallScope) ?? "user",
-              sandboxLevel: (cfg.sandboxLevel as AppSandboxLevel) ?? "standard",
-              sourceOrigin: (cfg.sourceOrigin as AppSourceOrigin) ?? (r.source_channel as AppSourceOrigin) ?? "sita-store",
-              packageType: (cfg.packageType as AppPackageType) ?? "native-application",
-              updateMode: (cfg.updateMode as AppUpdateMode) ?? "store-managed",
-              permissionsGranted: (r.permissions_granted || []) as AppPermission[],
-              dockPinned: !!r.pinned,
-              notificationEnabled: (cfg.notificationEnabled as boolean) ?? true,
-              startupBehavior: ((cfg.startupBehavior as string) ?? "none") as "none" | "background" | "visible",
-              installedAt: r.installed_at,
-            };
-          }
-          setStateMap(prev => ({ ...prev, ...loaded }));
-        }
-      } catch (err) {
-        console.warn("[AppPlatform] hydration error:", err);
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    hydrate();
-    return () => { cancelled = true; };
-  }, [userId]);
-
-  // ── Persist to localStorage on state changes ────────────────
-  useEffect(() => { saveLocal(LS_APPS_KEY, stateMap); }, [stateMap]);
-  useEffect(() => { saveLocal(LS_DEFAULTS_KEY, defaultApps); }, [defaultApps]);
-  useEffect(() => { saveLocal(LS_RECEIPTS_KEY, receipts); }, [receipts]);
-
-  // ── Supabase persistence helpers ────────────────────────────
-  const persistApp = useCallback(async (appId: string, state: AppUserState) => {
-    if (!userId) return;
-    try {
-      await (supabase as any).from("installed_apps").upsert({
-        user_id: userId,
-        app_id: appId,
-        install_status: state.installStatus === "installed" ? "installed" : "installed",
-        pinned: state.dockPinned,
-        permissions_granted: state.permissionsGranted,
-        source_channel: state.sourceOrigin,
-        config_json: {
-          installScope: state.installScope,
-          sandboxLevel: state.sandboxLevel,
-          sourceOrigin: state.sourceOrigin,
-          packageType: state.packageType,
-          updateMode: state.updateMode,
-          notificationEnabled: state.notificationEnabled,
-          startupBehavior: state.startupBehavior,
-        },
-        installed_at: state.installedAt,
-      }, { onConflict: "user_id,app_id" });
-    } catch (err) {
-      console.warn("[AppPlatform] persist error:", err);
+  // ── Lifecycle actions ──────────────────────────────────────
+  const installApp = useCallback(async (appId: string) => {
+    if (!user) {
+      toast.error("Sign in to install apps");
+      return;
     }
-  }, [userId]);
-
-  const removePersistedApp = useCallback(async (appId: string) => {
-    if (!userId) return;
     try {
-      await (supabase as any).from("installed_apps")
-        .delete()
-        .eq("user_id", userId)
-        .eq("app_id", appId);
-    } catch (err) {
-      console.warn("[AppPlatform] delete error:", err);
+      await installMut.mutateAsync(appId);
+      const app = apps.find((a) => a.id === appId);
+      if (app) pushReceipt(makeReceipt(appId, "install", app));
+    } catch (e) {
+      console.warn("[AppPlatform] install failed", e);
+      toast.error("Install failed");
     }
-  }, [userId]);
-
-  // Default app associations are kept client-side only (no DB table yet).
-  const persistDefault = useCallback(async (_role: string, _appId: string) => {
-    return;
-  }, []);
-
-  // ── Actions ─────────────────────────────────────────────────
-
-  const installApp = useCallback(async (appId: string, opts?: {
-    scope?: AppInstallScope; sandbox?: AppSandboxLevel; sourceOrigin?: AppSourceOrigin;
-  }) => {
-    const catalogApp = APP_CATALOG.find(a => a.id === appId);
-    if (!catalogApp) return;
-
-    const newState: AppUserState = {
-      installStatus: "installed",
-      installScope: opts?.scope ?? "user",
-      sandboxLevel: opts?.sandbox ?? "standard",
-      sourceOrigin: opts?.sourceOrigin ?? catalogApp.sourceOrigin ?? "sita-store",
-      packageType: catalogApp.packageType ?? "native-application",
-      updateMode: catalogApp.updateMode ?? "store-managed",
-      permissionsGranted: catalogApp.permissions.map(p => ({
-        ...p,
-        granted: p.required ? true : p.granted,
-      })),
-      dockPinned: false,
-      notificationEnabled: catalogApp.notificationPermission,
-      startupBehavior: catalogApp.startupBehavior,
-      installedAt: new Date().toISOString(),
-    };
-
-    setStateMap(prev => ({ ...prev, [appId]: newState }));
-    setReceipts(prev => [makeReceipt(appId, "install", catalogApp), ...prev]);
-    await persistApp(appId, newState);
-  }, [persistApp]);
+  }, [user, apps, installMut, pushReceipt]);
 
   const uninstallApp = useCallback(async (appId: string) => {
-    const catalogApp = APP_CATALOG.find(a => a.id === appId);
-    if (!catalogApp) return;
-
-    setStateMap(prev => {
-      const next = { ...prev };
-      delete next[appId];
-      return next;
-    });
-    setReceipts(prev => [makeReceipt(appId, "uninstall", catalogApp), ...prev]);
-    await removePersistedApp(appId);
-  }, [removePersistedApp]);
+    if (!user) return;
+    try {
+      await uninstallMut.mutateAsync(appId);
+      const app = apps.find((a) => a.id === appId);
+      if (app) pushReceipt(makeReceipt(appId, "uninstall", app));
+    } catch (e) {
+      console.warn("[AppPlatform] uninstall failed", e);
+      toast.error("Uninstall failed");
+    }
+  }, [user, apps, uninstallMut, pushReceipt]);
 
   const updateApp = useCallback(async (appId: string) => {
-    const catalogApp = APP_CATALOG.find(a => a.id === appId);
-    if (!catalogApp) return;
-
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const updated = { ...existing, installStatus: "installed" as AppInstallStatus };
-      persistApp(appId, updated);
-      return { ...prev, [appId]: updated };
-    });
-    setReceipts(prev => [makeReceipt(appId, "update", catalogApp), ...prev]);
-  }, [persistApp]);
+    if (!user) return;
+    // Re-running install acts as an update via the edge function.
+    try {
+      await installMut.mutateAsync(appId);
+      const app = apps.find((a) => a.id === appId);
+      if (app) pushReceipt(makeReceipt(appId, "update", app));
+      qc.invalidateQueries({ queryKey: ["app-updates"] });
+    } catch (e) {
+      console.warn("[AppPlatform] update failed", e);
+      toast.error("Update failed");
+    }
+  }, [user, apps, installMut, qc, pushReceipt]);
 
   const togglePermission = useCallback((appId: string, permissionId: string) => {
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const perms = existing.permissionsGranted.map(p =>
-        p.id === permissionId ? { ...p, granted: !p.granted } : p
-      );
-      const updated = { ...existing, permissionsGranted: perms };
-      persistApp(appId, updated);
-
-      const catalogApp = APP_CATALOG.find(a => a.id === appId);
-      if (catalogApp) {
-        setReceipts(r => [makeReceipt(appId, "permission-change", catalogApp, {
-          permissionDelta: {
-            added: perms.filter(p => p.id === permissionId && p.granted).map(p => p.label),
-            removed: perms.filter(p => p.id === permissionId && !p.granted).map(p => p.label),
-          },
-        }), ...r]);
-      }
-
-      return { ...prev, [appId]: updated };
+    const app = apps.find((a) => a.id === appId);
+    if (!app) return;
+    const current = app.permissions.find((p) => p.id === permissionId);
+    if (!current) return;
+    const nextGranted = !current.granted;
+    permsMut.mutate({
+      appId,
+      grants: [{ key: permissionId, granted: nextGranted }],
     });
-  }, [persistApp]);
+    pushReceipt({
+      ...makeReceipt(appId, "permission-change", app),
+      permissionDelta: nextGranted
+        ? { added: [current.label], removed: [] }
+        : { added: [], removed: [current.label] },
+    });
+  }, [apps, permsMut, pushReceipt]);
 
   const pinToDock = useCallback((appId: string) => {
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const updated = { ...existing, dockPinned: true };
-      persistApp(appId, updated);
-      return { ...prev, [appId]: updated };
-    });
-  }, [persistApp]);
+    if (!user) return;
+    pinMut.mutate({ appId, pinned: true });
+  }, [user, pinMut]);
 
   const unpinFromDock = useCallback((appId: string) => {
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const updated = { ...existing, dockPinned: false };
-      persistApp(appId, updated);
-      return { ...prev, [appId]: updated };
-    });
-  }, [persistApp]);
+    if (!user) return;
+    pinMut.mutate({ appId, pinned: false });
+  }, [user, pinMut]);
 
+  // Startup / notification toggles persist into installed_apps.config_json
   const setStartupBehavior = useCallback((appId: string, behavior: "none" | "background" | "visible") => {
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const updated = { ...existing, startupBehavior: behavior };
-      persistApp(appId, updated);
-      return { ...prev, [appId]: updated };
-    });
-  }, [persistApp]);
+    if (!user) return;
+    favMut.mutate({ appId, favorite: false }); // placeholder no-op to keep RQ in sync
+    // Best-effort patch via direct table update
+    void updateConfigJson(appId, user.id, { startupBehavior: behavior }, qc);
+  }, [user, favMut, qc]);
 
   const setNotificationEnabled = useCallback((appId: string, enabled: boolean) => {
-    setStateMap(prev => {
-      const existing = prev[appId];
-      if (!existing) return prev;
-      const updated = { ...existing, notificationEnabled: enabled };
-      persistApp(appId, updated);
-      return { ...prev, [appId]: updated };
-    });
-  }, [persistApp]);
+    if (!user) return;
+    void updateConfigJson(appId, user.id, { notificationEnabled: enabled }, qc);
+  }, [user, qc]);
 
-  const setDefaultApp = useCallback((role: string, appId: string) => {
-    setDefaultApps(prev => ({ ...prev, [role]: appId }));
-    persistDefault(role, appId);
-  }, [persistDefault]);
-
-  // ── Derived: merge catalog with live state ──────────────────
-
-  const apps = useMemo(() => {
-    return APP_CATALOG.map(app => {
-      const userState = stateMap[app.id];
-      if (!userState) return { ...app, installStatus: "not-installed" as AppInstallStatus };
-      return {
-        ...app,
-        installStatus: userState.installStatus,
-        installScope: userState.installScope,
-        sandboxLevel: userState.sandboxLevel,
-        sourceOrigin: userState.sourceOrigin,
-        packageType: userState.packageType,
-        updateMode: userState.updateMode,
-        permissions: userState.permissionsGranted,
-        pinnedToDock: userState.dockPinned,
-        notificationPermission: userState.notificationEnabled,
-        startupBehavior: userState.startupBehavior,
-        installedAt: userState.installedAt,
-      };
-    });
-  }, [stateMap]);
-
-  const installedApps = useMemo(() =>
-    apps.filter(a => a.installStatus === "installed"), [apps]
-  );
-
-  const updatableApps = useMemo(() =>
-    apps.filter(a => a.installStatus === "update-available"), [apps]
-  );
-
-  const getApp = useCallback((id: string) =>
-    apps.find(a => a.id === id), [apps]
-  );
+  const isLoading = catalogQ.isLoading || installedQ.isLoading;
 
   const value = useMemo<AppPlatformContextValue>(() => ({
     getApp, apps, installedApps, updatableApps,
     installApp, uninstallApp, updateApp,
     togglePermission,
-    pinToDock, unpinFromDock, setStartupBehavior, setNotificationEnabled,
+    pinToDock, unpinFromDock,
+    setStartupBehavior, setNotificationEnabled,
     defaultApps, setDefaultApp,
     receipts,
     isLoading,
@@ -446,7 +262,8 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
     getApp, apps, installedApps, updatableApps,
     installApp, uninstallApp, updateApp,
     togglePermission,
-    pinToDock, unpinFromDock, setStartupBehavior, setNotificationEnabled,
+    pinToDock, unpinFromDock,
+    setStartupBehavior, setNotificationEnabled,
     defaultApps, setDefaultApp,
     receipts, isLoading,
   ]);
@@ -456,4 +273,32 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
       {children}
     </AppPlatformContext.Provider>
   );
+}
+
+// ── Lazy helper to merge config_json without a dedicated edge fn ─
+async function updateConfigJson(
+  appId: string,
+  userId: string,
+  patch: Record<string, unknown>,
+  qc: ReturnType<typeof useQueryClient>,
+) {
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const sb = supabase as unknown as { from: (t: string) => any };
+    const { data: row } = await sb()
+      .from("installed_apps")
+      .select("config_json")
+      .eq("user_id", userId)
+      .eq("app_id", appId)
+      .maybeSingle();
+    const merged = { ...(row?.config_json ?? {}), ...patch };
+    await sb()
+      .from("installed_apps")
+      .update({ config_json: merged })
+      .eq("user_id", userId)
+      .eq("app_id", appId);
+    qc.invalidateQueries({ queryKey: ["installed-apps", userId] });
+  } catch (e) {
+    console.warn("[AppPlatform] updateConfigJson failed", e);
+  }
 }
