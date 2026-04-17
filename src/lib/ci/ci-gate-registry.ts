@@ -333,6 +333,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       "MFA + WebAuthn fully wired; resolveUnifiedPolicy invoked from ≥6 R3+ edge functions and ≥6 R3+ UI surfaces; rollback dispatch via compensation-handler-registry.",
     producesArtifact: "generated/policy-resolver-coverage.json",
   },
+
+  // ── Phase 20 ── Production Operations Reality
+  {
+    id: "production-operations",
+    phase: "phase-20-production-operations",
+    title: "Production operations reality (error monitoring, APM, uptime, alert routing)",
+    script: "scripts/architecture/checks/check-production-operations.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Error monitoring (Sentry + native sink) wired; ≥6 hot edge fns wrapped with withTrace; real health probes + uptime cron; alerts table live with no DEMO_ALERTS imports.",
+    producesArtifact: "generated/production-operations-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
