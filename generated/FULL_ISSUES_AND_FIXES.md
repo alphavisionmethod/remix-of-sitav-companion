@@ -162,10 +162,25 @@ These must close before General Availability of the corresponding surface.
 - **Remediation:** `npx storybook@latest init --type vite`; require stories for every new shared component.
 
 ### ~~OPN-P2-04 · `as any` cleanup pending — 135 page-level instances~~ ✅ RESOLVED
-- **Status:** RESOLVED (2026-04-17). All 135 instances across 72 page files eliminated.
+- **Status:** RESOLVED (2026-04-17) — also closes ISS-020. All 135 instances across 72 page files eliminated.
 - **Verification:** `grep -rEn "\bas any\b" src/pages --include="*.tsx" --include="*.ts" \| wc -l` → **0**
 - **Enforcement:** `scripts/architecture/checks/check-platform-anti-patterns.ts` now fails CI on any `as any` in `src/pages/**` (threshold = 0, severity = error).
 - **Approach:** Replaced casts with explicit view-model interfaces, canonical domain unions (`RiskTier`, `EvidenceState`, `BudgetState`, `RoutingHints` from `@/lib/core-services/conscience-gate`), typed select handlers, and the centralized `dbAny` helper in `@/lib/supabase-helpers` for genuinely opaque table access.
+
+### OPN-P2-12 · 12 user-facing pages render inline mock data (Stubs Sweep P2)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P2 section. Affected files (12 hits):
+  `src/pages/CommandHistory.tsx:22`, `src/pages/DownloadsCenter.tsx:12`, `src/pages/EnvironmentSwitcher.tsx:23`, `src/pages/PersonalLifeWorkspace.tsx:28,36,43,50`, `src/pages/PlanningCanvas.tsx:22`, `src/pages/WeeklyBoardroom.tsx:6`, `src/pages/mobile/MobileDeviceTrust.tsx:27`, `src/pages/settings/DeviceSettings.tsx:6`, `src/pages/settings/TrustedDeviceManager.tsx:6`.
+- **Risk:** Pages claim live data in production; user sees fabricated rows.
+- **Remediation:** Replace each `MOCK_*` block with a canonical `useQuery` hook against the owning service; gate first-render with `PremiumEmptyState` when zero rows.
+
+### OPN-P2-13 · 30 admin pages/components render inline mock data (Stubs Sweep P3)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P3 section. Hot-spots: `BCPDRDashboard.tsx` (4), `ComplianceDashboard.tsx` (multiple), `CABWorkflow.tsx`, `CRMContactDetail.tsx` (2× empty `onClick={() => {}}`).
+- **Remediation:** Per-component wiring to canonical services; replace empty handlers with Executor-routed actions.
+
+### OPN-P2-14 · 29 lib/hook utilities ship `MOCK_*` defaults (Stubs Sweep P4)
+- **Evidence:** `generated/STUBS_AND_PLACEHOLDERS_REGISTER.md` P4 section.
+- **Remediation:** Move mocks to `__fixtures__/` or test files; production paths must read from canonical sources only.
+
 
 ### OPN-P2-05 · No vector search / pgvector capability despite AI-heavy product
 - **Evidence:** `pg_extension` shows pg_cron, pg_net, pgcrypto, uuid-ossp — **no `vector`**.
