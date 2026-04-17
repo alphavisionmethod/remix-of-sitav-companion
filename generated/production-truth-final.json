@@ -1,89 +1,298 @@
 {
-  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "generatedAt": "2026-04-17T00:26:26.979Z",
   "verdict": "ready",
-  "totals": { "totalGates": 26, "passedGates": 26, "blockerFails": 0, "warningFails": 0 },
+  "totals": {
+    "totalGates": 27,
+    "passedGates": 27,
+    "blockerFails": 0,
+    "warningFails": 0
+  },
   "byPhase": {
-    "phase-1-bounded-context": { "total": 1, "passed": 1 },
-    "phase-2-runtime-tier": { "total": 2, "passed": 2 },
-    "phase-3-permissions": { "total": 2, "passed": 2 },
-    "phase-4-kill-switches": { "total": 1, "passed": 1 },
-    "phase-5-runbooks": { "total": 1, "passed": 1 },
-    "phase-6-golden-paths": { "total": 1, "passed": 1 },
-    "phase-7-meta-arch": { "total": 1, "passed": 1 },
-    "phase-8-ci-umbrella": { "total": 1, "passed": 1 },
-    "phase-9-reality-deployability": { "total": 6, "passed": 6 },
-    "phase-10-completeness": { "total": 4, "passed": 4 },
-    "phase-12-mobile-deployability": { "total": 3, "passed": 3 },
-    "phase-13-web-deployability": { "total": 1, "passed": 1 },
-    "phase-14-desktop-deployability": { "total": 1, "passed": 1 },
-    "phase-15-appliance-deployability": { "total": 1, "passed": 1 }
+    "phase-1-bounded-context": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-2-runtime-tier": {
+      "total": 2,
+      "passed": 2
+    },
+    "phase-3-permissions": {
+      "total": 2,
+      "passed": 2
+    },
+    "phase-4-kill-switches": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-5-runbooks": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-6-golden-paths": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-7-meta-arch": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-8-ci-umbrella": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-9-reality-deployability": {
+      "total": 6,
+      "passed": 6
+    },
+    "phase-10-completeness": {
+      "total": 4,
+      "passed": 4
+    },
+    "phase-12-mobile-deployability": {
+      "total": 3,
+      "passed": 3
+    },
+    "phase-13-web-deployability": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-14-desktop-deployability": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-15-appliance-deployability": {
+      "total": 1,
+      "passed": 1
+    },
+    "phase-16-backend-api-deployability": {
+      "total": 1,
+      "passed": 1
+    }
   },
-  "deployability": [
-    { "surface": "web", "score": 99, "status": "ready" },
-    { "surface": "electron", "score": 98, "status": "ready" },
-    { "surface": "appliance", "score": 96, "status": "ready" },
-    { "surface": "ios", "score": 96, "status": "ready" },
-    { "surface": "android", "score": 98, "status": "ready" },
-    { "surface": "mobile-pwa", "score": 97, "status": "ready" },
-    { "surface": "admin", "score": 99, "status": "ready" }
+  "gates": [
+    {
+      "gateId": "bounded-context-coverage",
+      "phase": "phase-1-bounded-context",
+      "severity": "blocker",
+      "reportPath": "generated/bounded-context-manifest.json",
+      "ok": true
+    },
+    {
+      "gateId": "runtime-foundations",
+      "phase": "phase-2-runtime-tier",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "surface-ownership",
+      "phase": "phase-2-runtime-tier",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "policy-coverage",
+      "phase": "phase-3-permissions",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "policy-mapping",
+      "phase": "phase-3-permissions",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "kill-switch-coverage",
+      "phase": "phase-4-kill-switches",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "runbook-coverage",
+      "phase": "phase-5-runbooks",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "golden-path-coverage",
+      "phase": "phase-6-golden-paths",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "registry-integrity",
+      "phase": "phase-7-meta-arch",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "ci-umbrella-integrity",
+      "phase": "phase-8-ci-umbrella",
+      "severity": "blocker",
+      "reportPath": "generated/ci-umbrella-manifest.json",
+      "ok": true
+    },
+    {
+      "gateId": "feature-reality-coverage",
+      "phase": "phase-9-reality-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/feature-reality-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "context-membership",
+      "phase": "phase-9-reality-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/context-membership-manifest.json",
+      "ok": true
+    },
+    {
+      "gateId": "page-state-coverage",
+      "phase": "phase-9-reality-deployability",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "cta-wiring",
+      "phase": "phase-9-reality-deployability",
+      "severity": "warning",
+      "ok": true
+    },
+    {
+      "gateId": "mock-leak",
+      "phase": "phase-9-reality-deployability",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "deployability-coverage",
+      "phase": "phase-9-reality-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/deployability-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "edge-function-membership-completeness",
+      "phase": "phase-10-completeness",
+      "severity": "blocker",
+      "reportPath": "generated/edge-function-membership-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "table-membership-completeness",
+      "phase": "phase-10-completeness",
+      "severity": "blocker",
+      "reportPath": "generated/table-membership-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "page-registry-completeness",
+      "phase": "phase-10-completeness",
+      "severity": "blocker",
+      "reportPath": "generated/page-registry-completeness-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "route-registry-completeness",
+      "phase": "phase-10-completeness",
+      "severity": "blocker",
+      "reportPath": "generated/route-registry-completeness-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "mobile-store-readiness",
+      "phase": "phase-12-mobile-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/mobile-store-readiness-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "mobile-min-os-floor",
+      "phase": "phase-12-mobile-deployability",
+      "severity": "blocker",
+      "ok": true
+    },
+    {
+      "gateId": "mobile-build-pipeline",
+      "phase": "phase-12-mobile-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/mobile-build-pipeline-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "web-deployability",
+      "phase": "phase-13-web-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/web-deployability-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "desktop-deployability",
+      "phase": "phase-14-desktop-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/desktop-deployability-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "appliance-deployability",
+      "phase": "phase-15-appliance-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/appliance-deployability-report.json",
+      "ok": true
+    },
+    {
+      "gateId": "backend-api-deployability",
+      "phase": "phase-16-backend-api-deployability",
+      "severity": "blocker",
+      "reportPath": "generated/backend-api-deployability-report.json",
+      "ok": true
+    }
   ],
-  "mobileReadiness": {
-    "ios": { "total": 18, "ready": 16, "deferred": 2, "partial": 0, "missing": 0, "ok": true },
-    "android": { "total": 18, "ready": 17, "deferred": 1, "partial": 0, "missing": 0, "ok": true },
-    "buildPipeline": { "ok": true, "capacitorDeps": true, "exportOptionsPlist": true },
-    "ok": true
-  },
-  "webReadiness": {
-    "total": 13,
-    "ready": 13,
-    "partial": 0,
-    "deferred": 0,
-    "missing": 0,
-    "swIframeGuard": true,
-    "cspAligned": true,
-    "pushIconsResolved": true,
-    "ok": true
-  },
-  "desktopReadiness": {
-    "total": 11,
-    "ready": 10,
-    "partial": 1,
-    "deferred": 0,
-    "missing": 0,
-    "sandboxEnforced": true,
-    "bridgeMethodCount": 22,
-    "signingConfigPresent": true,
-    "fallbacksComplete": true,
-    "ok": true
-  },
-  "applianceReadiness": {
-    "total": 12,
-    "ready": 11,
-    "partial": 1,
-    "deferred": 0,
-    "missing": 0,
-    "buildPipelinesExecutable": true,
-    "systemdUnitsPresent": 5,
-    "autoinstallPresent": 3,
-    "ovfTemplateOk": true,
-    "matrixApplianceOk": true,
-    "roadmapOverclaims": 0,
-    "recoveryActionCount": 4,
-    "ok": true
-  },
+  "deployability": [
+    {
+      "surface": "web",
+      "score": 100,
+      "status": "ready"
+    },
+    {
+      "surface": "electron",
+      "score": 90,
+      "status": "ready"
+    },
+    {
+      "surface": "appliance",
+      "score": 100,
+      "status": "ready"
+    },
+    {
+      "surface": "ios",
+      "score": 80,
+      "status": "ready"
+    },
+    {
+      "surface": "android",
+      "score": 100,
+      "status": "ready"
+    },
+    {
+      "surface": "mobile-pwa",
+      "score": 100,
+      "status": "ready"
+    },
+    {
+      "surface": "admin",
+      "score": 100,
+      "status": "ready"
+    }
+  ],
   "acceptanceCriteria": {
     "all-gates-green": true,
-    "26-gates-registered": true,
+    "22-gates-registered": true,
     "edge-functions-claimed": true,
     "tables-claimed": true,
     "routes-owned": true,
     "feature-floor-met": true,
-    "page-state-floor-met": true,
-    "mobile-store-readiness-ok": true,
-    "mobile-build-pipeline-ok": true,
-    "web-deployability-ok": true,
-    "desktop-deployability-ok": true,
-    "appliance-deployability-ok": true
+    "page-state-floor-met": true
   },
   "ok": true
 }
