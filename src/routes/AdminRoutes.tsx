@@ -172,6 +172,7 @@ const MOB01StoreReadinessCenter = lazy(() => import("@/pages/admin/MOB01StoreRea
 const WEB01DeployabilityCenter = lazy(() => import("@/pages/admin/WEB01DeployabilityCenter"));
 const DSK01DeployabilityCenter = lazy(() => import("@/pages/admin/DSK01DeployabilityCenter"));
 const APP01ApplianceDeployabilityCenter = lazy(() => import("@/pages/admin/APP01ApplianceDeployabilityCenter"));
+const BAP01BackendApiDeployabilityCenter = lazy(() => import("@/pages/admin/BAP01BackendApiDeployabilityCenter"));
 
 // ── Phase 3: Canonical Domain Hubs ──
 const OverviewHome = lazy(() => import("@/pages/admin/overview/OverviewHome"));
@@ -368,5 +369,6 @@ export function getAdminRoutes() {
     <Route key="web01" path="/admin/web/deployability" element={gated("audit.view", <WEB01DeployabilityCenter />)} />,
     <Route key="dsk01" path="/admin/desktop/deployability" element={gated("audit.view", <DSK01DeployabilityCenter />)} />,
     <Route key="app01" path="/admin/appliance/deployability" element={gated("audit.view", <APP01ApplianceDeployabilityCenter />)} />,
+    <Route key="bap01" path="/admin/backend-api/deployability" element={gated("audit.view", <BAP01BackendApiDeployabilityCenter />)} />,
   ];
 }

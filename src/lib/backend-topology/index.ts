@@ -12,3 +12,5 @@ export * from "./edge-function-owner-map";
 export * from "./edge-function-runtime-consequence-map";
 export * from "./edge-function-migration-map";
 export * from "./edge-function-topology-validator";
+export * from "./frontend-action-api-map";
+export * from "./edge-function-policy-map";

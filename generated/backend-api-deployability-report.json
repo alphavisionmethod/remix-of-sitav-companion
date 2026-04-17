@@ -1,0 +1,167 @@
+{
+  "generatedAt": "2026-04-17T00:26:17.609Z",
+  "phase": "phase-16-backend-api-deployability",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "ready": 14,
+  "partial": 1,
+  "deferred": 0,
+  "missing": 0,
+  "total": 15,
+  "metrics": {
+    "edgeFunctionsTotal": 85,
+    "activeAmbiguousCount": 0,
+    "metadataGaps": 0,
+    "policyGaps": 0,
+    "unresolvedActions": 0,
+    "frontendActions": {
+      "total": 46,
+      "p0": 25,
+      "p1": 18,
+      "p2": 3,
+      "byKind": {
+        "edge-function": 32,
+        "local-capability": 8,
+        "realtime-channel": 2,
+        "supabase-rpc": 0,
+        "supabase-table": 4
+      },
+      "bySurface": {
+        "user": 36,
+        "admin": 7,
+        "kernel": 1,
+        "system": 2
+      }
+    },
+    "policyCoverage": {
+      "total": 85,
+      "rateLimit": {
+        "strict": 40,
+        "standard": 45,
+        "none": 0
+      },
+      "idempotency": {
+        "required": 40,
+        "optional": 40,
+        "n/a": 5
+      },
+      "auditLog": {
+        "required": 62,
+        "optional": 23,
+        "none": 0
+      },
+      "highRiskWithStrictRateLimit": 31,
+      "highRiskWithRequiredAudit": 31
+    }
+  },
+  "items": [
+    {
+      "id": "backend.action-real",
+      "title": "Every backend action is a real, callable function",
+      "status": "ready",
+      "evidence": "generated/edge-function-membership-report.json — totalOnDisk = totalClaimed (85), 0 orphans, 0 ghosts, 0 duplicates.",
+      "blocker": true
+    },
+    {
+      "id": "backend.api-inventory",
+      "title": "API inventory exists",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-registry.ts — 85 entries with full 14-field strict topology (id, name, path, category, boundedContext, owner, authModel, contracts, sideEffectClass, allowedCallers, callsInto, runtimeConsequence, migrationStatus, status).",
+      "blocker": true
+    },
+    {
+      "id": "backend.frontend-action-mapped",
+      "title": "Every frontend action maps to API or local capability",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/frontend-action-api-map.ts — 45+ P0/P1/P2 entries covering auth, AI, files, comms, push, connectors, billing, realtime, GDPR, admin, runtime. Every P0 action has a real edge-function/local-capability/realtime target.",
+      "blocker": true
+    },
+    {
+      "id": "backend.request-schema",
+      "title": "Every API has a request schema",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-contract-map.ts — 85 entries with named inputSchema (e.g. AdminApiRequest, BffGatewayRequest, AgentExecutorRequest).",
+      "blocker": true
+    },
+    {
+      "id": "backend.response-schema",
+      "title": "Every API has a response schema",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-contract-map.ts — every entry declares outputSchema; standardised envelopes for BFF + domain functions.",
+      "blocker": true
+    },
+    {
+      "id": "backend.auth-model",
+      "title": "Every API has an auth model",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-auth-map.ts — 85 entries classified jwt | service-role | anon | webhook-secret | api-key. Auth alignment validated by check-edge-function-auth.ts.",
+      "blocker": true
+    },
+    {
+      "id": "backend.permission-model",
+      "title": "Every API has a permission model",
+      "status": "ready",
+      "evidence": "EDGE_FUNCTION_AUTH_MAP carries adminOnly + has_admin_permission(role,permission) DB function; admin actions resolved via cloud_admin_role_assignments + admin_role_permissions.",
+      "blocker": true
+    },
+    {
+      "id": "backend.error-model",
+      "title": "Every API has a unified error model",
+      "status": "ready",
+      "evidence": "Standardised StandardError envelope across the registry; supabase/functions/_shared/api-response.ts emits { ok, error: { code, message, details } } shape.",
+      "blocker": true
+    },
+    {
+      "id": "backend.no-catchall",
+      "title": "No catch-all ambiguous endpoints remain",
+      "status": "ready",
+      "evidence": "Generic names (admin-api, admin-gateway, main, api-gateway) demoted to WRAPPER_ONLY/DEPRECATE_AND_REDIRECT; canonical singletons enforced (admin-bff-gateway, agent-executor, user-bff-gateway).",
+      "blocker": true
+    },
+    {
+      "id": "backend.bff-domain-separation",
+      "title": "BFF / admin / domain / orchestration / runtime separated",
+      "status": "ready",
+      "evidence": "BackendCategory enum (6 strict classes); 1 ADMIN_BFF, 4 PUBLIC_BFF, 38 DOMAIN_FUNCTION, 18 ORCHESTRATION_FUNCTION, 12 CONNECTOR_WEBHOOK_FUNCTION, 7 RUNTIME_SYSTEM_FUNCTION. Validator enforces exactly-one classification.",
+      "blocker": true
+    },
+    {
+      "id": "backend.topology-map",
+      "title": "Backend topology map exists",
+      "status": "ready",
+      "evidence": "docs/architecture/BACKEND_TOPOLOGY_MAP.md + src/lib/backend-topology/ (10 files) + dashboard /admin/backend-topology + classification audit generated/edge-function-classification-audit.json.",
+      "blocker": true
+    },
+    {
+      "id": "backend.one-function-one-role",
+      "title": "One function = one role",
+      "status": "ready",
+      "evidence": "edge-function-topology-validator.ts asserts each entry has exactly one BackendCategory; ambiguous targets resolved with explicit migrationStatus=wrapper or status=deprecated.",
+      "blocker": true
+    },
+    {
+      "id": "backend.no-duplicate-bff",
+      "title": "No duplicate gateway/BFF/orchestration responsibility",
+      "status": "ready",
+      "evidence": "admin-bff-gateway is canonical singleton; admin-api + admin-gateway marked WRAPPER_ONLY; agent-executor is sole orchestration choke point. Enforced by check-admin-bff-canonical.",
+      "blocker": true
+    },
+    {
+      "id": "backend.integration-tested",
+      "title": "All critical APIs are integration tested",
+      "status": "partial",
+      "evidence": "Deno test files exist for shared envelope, ai-gateway, agent-executor smoke paths. Broad coverage requires Deno test runner against a real Supabase test project.",
+      "blocker": false,
+      "remediation": "Expand supabase/functions/<name>/index_test.ts coverage to all P0 critical APIs (gdpr-delete, payment-process, push-send, connector-oauth-callback) using Deno test + dotenv-loaded VITE_SUPABASE_* env."
+    },
+    {
+      "id": "backend.policy-envelope",
+      "title": "Rate limits, idempotency, audit logging declared per function",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-policy-map.ts — every function has explicit rateLimit + idempotency + auditLog policy. All sideEffectClass=high functions declare strict rate-limit + required audit-log; webhooks declare required idempotency.",
+      "blocker": true
+    }
+  ],
+  "issues": []
+}

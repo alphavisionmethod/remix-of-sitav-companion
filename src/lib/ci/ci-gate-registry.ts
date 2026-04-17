@@ -281,6 +281,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     description: "12-item VMware / ISO / Appliance Checklist: ISO+OVA build pipelines real & executable, systemd units present, autoinstall configs valid, runtime-capability-matrix declares appliance column, no roadmap capability is overclaimed as native, startup-order + recovery actions wired.",
     producesArtifact: "generated/appliance-deployability-report.json",
   },
+
+  // ── Phase 16 ── Backend / API Deployability
+  {
+    id: "backend-api-deployability",
+    phase: "phase-16-backend-api-deployability",
+    title: "Backend / API deployability (15-item Backend / API Reality Checklist)",
+    script: "scripts/architecture/checks/check-backend-api-deployability.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "15-item Backend / API Reality Checklist: registry/membership ok, governance not RED, no active ambiguous endpoints, every active fn has auth/contract/owner, every high side-effect fn has strict rate-limit + required audit-log, every P0 frontend action has a real backend target.",
+    producesArtifact: "generated/backend-api-deployability-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {
