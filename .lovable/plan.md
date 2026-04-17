@@ -1,100 +1,104 @@
 
 
-## Fix C-006: File Upload Not Wired to Storage Bucket — what's actually broken
+## Fix C-007: REX Loop end-to-end — what's actually broken
 
-### Live findings (much worse than the brief suggests)
+### Live findings (severe — multiple cascading bugs)
 
-I queried the live database and inspected the code. The brief understates the problem. There are **3 cascading bugs** that combine to silently break the entire FilesAll/Overview pipeline:
+I queried the live DB and read every relevant file. The brief understates the problem in 4 important ways:
 
-1. 🔴 **`FileUploader.tsx` uploads to a bucket that doesn't exist.** Line 54: `supabase.storage.from("documents").upload(...)`. The actual bucket is `user-files`. Every upload fails immediately with a 404. Verified: `SELECT id FROM storage.buckets` returns only `user-files`.
+1. 🔴 **Two parallel approval systems exist, both broken.**
+   - User-facing pages (`ApprovalChamber`, `ApprovalsCenter`, `useApprovals`, `useApprovalQueue` in `use-brain-core.ts`, `use-approval-queue-mutations.ts`, even `DailyPulse`) all read/write `approval_queue` — **a table that does not exist** (`relation "approval_queue" does not exist`). Every query fails silently (catch returns `[]`), every mutation throws, and the UI falls back to demo mocks.
+   - Admin pages (`HQApprovalQueue`, `REX02ApprovalQueueCompletion`) read `ai_workforce_approval_queue` — **the right table** — but with column names that don't exist (`risk_tier`, `resolved_at`).
 
-2. 🔴 **The entire `file_metadata` table doesn't exist.** Verified: `SELECT EXISTS (… table_name='file_metadata')` returns **false**. Yet `files-data-service.ts` (lines 14, 22, 30, 38, 46, 54), `file-ingestion` edge function (line 132), `FilesOverview.tsx` (line 42), and the FilesAll hook all read/write `file_metadata`. Every query returns `error` and fallback mock data is shown — explaining why the page "looks fine" but is 100% mock.
+2. 🔴 **Edge function inserts fail silently.** `admin-ai-workforce-run/index.ts:411-450` inserts into `ai_workforce_recommendations` and `ai_workforce_approval_queue` using ~10 columns that don't exist (`output_id`, `role_id`, `recommendation_type`, `risk_tier`, `estimated_impact`, `budget_impact_class`, `launch_impact_class`, `evidence_refs`, `queue_type`, `impacted_domain`, `evidence_summary`). Every "AI run" produces 0 persisted recommendations.
 
-3. 🔴 **Two parallel, incompatible file systems coexist.** The Explorer page (`FilesExplorer.tsx`) uses `cloud_files` (real, exists, has data flow via `file-explorer-service.ts`). FilesAll/Overview/Processing use the broken `file_metadata` path. They never see each other's files.
+3. 🔴 **No execution chain runs.** `recommendation_execution_bindings`, `recommendation_execution_events`, `recommendation_outcome_verifications` all empty. No service ever inserts into them.
 
-4. ✅ Bucket `user-files` exists, is private, has correct RLS policies (`auth.uid()::text = (storage.foldername(name))[1]` pattern via 4 policies for SELECT/INSERT/UPDATE/DELETE).
-5. ✅ `cloud_files` table exists with proper schema and is wired correctly in the Explorer.
-6. ✅ `file-ingestion` edge function logic (AI classification + notification) is sound — it just writes to a non-existent table.
+4. ✅ Schema for the REX loop is solid (20 tables + `v_recommendation_execution_pipeline` + `v_recommendation_closure_summary` views). RLS correctly user-scoped. Just nothing writes to it.
 
-### The fix (one migration + 3 surgical code edits)
+### The fix — pick ONE canonical table, wire the full loop
 
-#### 1. Migration — create `file_metadata` table with RLS
+Designate **`ai_workforce_approval_queue`** as the single canonical user approval queue and retire the phantom `approval_queue`. Then wire the closed loop end-to-end.
 
-A single new SQL migration that creates the missing table the entire `file_metadata` pipeline depends on:
+#### 1. New canonical service `src/lib/services/rex/recommendation-engine.ts`
 
-```sql
-CREATE TABLE public.file_metadata (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  storage_path text NOT NULL,
-  filename text NOT NULL,
-  mime_type text,
-  size_bytes bigint,
-  classification text DEFAULT 'general',
-  sensitivity text DEFAULT 'internal',
-  status text DEFAULT 'classified',
-  extracted_data jsonb DEFAULT '{}'::jsonb,
-  created_at timestamptz DEFAULT now() NOT NULL,
-  updated_at timestamptz DEFAULT now() NOT NULL
-);
+One file, three exported functions:
+- `createRecommendation({domain, title, summary, evidence, severity, executionRequired, flagshipLoopKey})` — inserts into `ai_workforce_recommendations` with the **real** column set (`role_key`, `task_key`, `confidence`, `lifecycle_status`, `outcome_verification_required`, etc.).
+- `routeToApproval(recommendationId)` — inserts a row into `ai_workforce_approval_queue` with the **real** columns (`recommendation_id`, `title`, `summary`, `priority`, `evidence_links`, `cost_implications`, `launch_implications`).
+- `bindExecution(recommendationId, approvalQueueItemId, {bindingType, ownerTeam})` + `recordExecutionEvent(bindingId, eventType, summary)` + `recordOutcomeVerification(recommendationId, bindingId, expected, actual)` — wires the post-approval chain.
 
-CREATE INDEX idx_file_metadata_user ON public.file_metadata(user_id, created_at DESC);
-CREATE INDEX idx_file_metadata_status ON public.file_metadata(user_id, status);
+All functions emit a `flagship_loop_completions` receipt (`loop_key="admin-truth-recommendation-approval"`, `step_key` = `recommendation_created` / `routed_to_approval` / `execution_bound` / `outcome_verified`). RLS auto-scopes by `auth.uid()`.
 
-ALTER TABLE public.file_metadata ENABLE ROW LEVEL SECURITY;
+#### 2. Replace ALL `approval_queue` reads/writes with `ai_workforce_approval_queue`
 
--- 4 policies: SELECT/INSERT/UPDATE/DELETE, all `auth.uid() = user_id`, TO authenticated
--- Plus admin override via has_role(auth.uid(),'admin')
+Surgical edits to retire the phantom table:
 
-CREATE TRIGGER file_metadata_updated_at
-BEFORE UPDATE ON public.file_metadata
-FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
-```
+| File | Change |
+|---|---|
+| `src/hooks/use-sita-data.ts` (`useApprovals`) | `from("approval_queue")` → `from("ai_workforce_approval_queue")`; map columns: `action_summary` → `title`, `decision_reason` → `reviewer_comments`, etc. |
+| `src/hooks/use-brain-core.ts` (`useApprovalQueue`) | Same table swap; update shape; mutation uses `decision_at` + `reviewer_user_id` + `reviewer_comments`. |
+| `src/hooks/use-approval-queue-mutations.ts` | Same table swap; column rename `reviewed_by` → `reviewer_user_id`, `decision_reason` → `reviewer_comments`, `decided_at` → `decision_at`. |
+| `src/pages/admin/REX02ApprovalQueueCompletion.tsx` | Drop `risk_tier` / `resolved_at` references → use `priority` + `decision_at`. |
+| `src/pages/admin/HQApprovalQueue.tsx` | Same column corrections. |
 
-Also create `file_settings` (referenced at `files-data-service.ts:68/76`, also missing — same pattern, simpler shape: `user_id, settings jsonb, created_at, updated_at`).
+#### 3. Fix the AI edge function inserts
 
-#### 2. `src/components/sita/FileUploader.tsx` — fix bucket name
+`supabase/functions/admin-ai-workforce-run/index.ts` — rewrite the recommendation + approval inserts at lines 411-450 to match the real schema. Use `role_key` (not `role_id`), `severity`, `confidence`, `lifecycle_status`, `evidence`, `execution_required`, `flagship_loop_key`. For approval queue: `recommendation_id`, `title`, `summary`, `priority`, `evidence_links` only.
 
-Change line 54 from `.from("documents")` to `.from("user-files")`. One-line bugfix that turns every upload from a guaranteed 404 into a successful upload that lands in the correct, RLS-protected bucket under `<user-id>/...`.
+After this, every AI workforce run actually produces persisted recommendations.
 
-#### 3. `src/components/sita/FileUploader.tsx` — surface real signed-URL after upload
+#### 4. Wire ApprovalChamber + ApprovalsCenter to real data
 
-After the edge function returns metadata, call `supabase.storage.from("user-files").createSignedUrl(storagePath, 3600)` and store it on the local `UploadedFile` so the user can immediately preview/download. Also expose a small "Open" link next to the green checkmark when `status === "done"`.
+- `ApprovalChamber.tsx` (line 308) — drop the "fall back to mocks when empty" behavior; render real `useApprovals()` rows. Map `priority` → `riskLevel`, `evidence_links` → `impactSummary`. When user clicks Approve, call `useApproveApprovalItem` (already updated) **and** call `bindExecution()` from the new engine if the recommendation has `execution_required=true`. Show a toast when the binding row is created.
+- `ApprovalsCenter.tsx` — same: drop demo gate, use real hooks, surface `priority` instead of `risk_level`.
 
-#### 4. `src/pages/files/FilesAll.tsx` — invalidate query on upload completion
+#### 5. Seed-able demo recommendation generator (so the loop is visible immediately)
 
-The page reads `useAllFiles()` (cached query key `["all-files"]`) but never refreshes after upload. Add a `useQueryClient().invalidateQueries({ queryKey: ["all-files"] })` and `["files-overview"]` and `["file-kpis"]` invalidation when `FileUploader` reports a successful upload. Done by:
-- Add an optional `onUploaded?: (entry) => void` callback prop to `FileUploader`.
-- In `FilesAll.tsx` and `FilesOverview.tsx`, pass an `onUploaded` that invalidates the relevant query keys.
+Add a small "Generate Sample Recommendation" admin button in `ApprovalChamber` (visible only to admins via `has_role`) that calls `createRecommendation({ domain:"finance", title:"Reconcile Stripe payouts", summary:"3 payouts in last 24h need review", severity:"warning", executionRequired:true, flagshipLoopKey:"admin-truth-recommendation-approval", evidence:[{source:"stripe_payouts", count:3}]})` then `routeToApproval()`. Lets QA verify the loop in 1 click without waiting for an AI run.
 
-This makes the user-visible loop **real**: upload → file appears in storage → metadata row inserted → FilesAll list refreshes → KPI tiles update → notification toasts (already wired via C-005 fix).
+#### 6. New migration — add minimal indexes & a helper view (only if missing)
 
-### Verification (post-deploy)
+A small migration to ensure:
+- `decision_at` index on `ai_workforce_approval_queue` (used by Resolved tab order).
+- A new view `v_user_pending_approvals` joining `ai_workforce_approval_queue + ai_workforce_recommendations` so the UI hook does one query instead of two. Idempotent `CREATE OR REPLACE VIEW` with `security_invoker=on`.
 
-1. `SELECT EXISTS (… table_name='file_metadata')` returns `true`.
-2. As a logged-in user, drop a PDF on the `FileUploader` zone in `/files/all`:
-   - `SELECT * FROM storage.objects WHERE bucket_id='user-files' AND name LIKE '<my-uid>/%'` shows the new object.
-   - `SELECT * FROM file_metadata WHERE user_id='<my-uid>' ORDER BY created_at DESC LIMIT 1` shows the new row with `classification`, `sensitivity` populated.
-   - The file appears in the FilesAll list **without manual refresh**.
-   - A toast "File classified: …" appears (via realtime notifications fix from C-005).
-3. The "Open" link on the upload card returns a working signed URL.
-4. Flagship-loop receipts (`flagship_loop_completions` from C-004) show new `file_upload` and `ai_classify` step rows for the user.
+### Verification (post-deploy, end-to-end)
+
+1. Sign in as a real user → open `/approval-chamber`. Click new "Generate Sample" button.
+   - `SELECT * FROM ai_workforce_recommendations WHERE user_id=auth.uid() ORDER BY created_at DESC LIMIT 1` → returns the new row with `lifecycle_status='new'`.
+   - `SELECT * FROM ai_workforce_approval_queue WHERE recommendation_id=<id>` → returns the queued approval.
+   - Item appears immediately in the UI list (no refresh).
+2. Click **Approve**.
+   - `ai_workforce_approval_queue.status='approved'`, `decision_at` set, `reviewer_user_id` set.
+   - `ai_workforce_recommendations.lifecycle_status` advanced to `approved`.
+   - `recommendation_execution_bindings` has 1 new row (`binding_status='bound'`).
+   - `recommendation_execution_events` has 1 row (`event_type='created'`).
+   - `recommendation_outcome_verifications` has 1 row (`verification_status='pending'`).
+   - `flagship_loop_completions` has 4 new rows for this user (created, routed, decision, bound).
+3. Refresh `/admin/rex02-*` boards — counts update; no more "0 / silent error".
+4. Re-run an AI workforce job from `/admin/ai-runtime` → recommendations actually persist (currently they don't).
+5. `useApprovals()` no longer returns `[]` for live users.
 
 ### Files
 
 | File | Change |
 |---|---|
-| `supabase/migrations/<new>.sql` | NEW — create `file_metadata` + `file_settings` tables, indexes, RLS, updated_at trigger |
-| `src/components/sita/FileUploader.tsx` | Fix bucket name `documents` → `user-files`; add signed-URL fetch + Open link; add `onUploaded` callback |
-| `src/pages/files/FilesAll.tsx` | Pass `onUploaded` that invalidates `["all-files"]` |
-| `src/pages/files/FilesOverview.tsx` | Pass `onUploaded` that invalidates `["files-overview"]` and `["file-kpis", user.id]` |
+| `src/lib/services/rex/recommendation-engine.ts` | NEW — canonical create/route/bind/event/verify functions |
+| `src/hooks/use-sita-data.ts` | `useApprovals` → `ai_workforce_approval_queue`, column rename |
+| `src/hooks/use-brain-core.ts` | `useApprovalQueue` → `ai_workforce_approval_queue`, column rename |
+| `src/hooks/use-approval-queue-mutations.ts` | Table + column rename; add `bindExecution` call on approve |
+| `src/pages/ApprovalChamber.tsx` | Drop demo fallback; real data; "Generate Sample" admin button |
+| `src/pages/ApprovalsCenter.tsx` | Drop demo gate; real data; map new columns |
+| `src/pages/admin/HQApprovalQueue.tsx` | Drop `risk_tier`/`resolved_at`; use `priority`/`decision_at` |
+| `src/pages/admin/REX02ApprovalQueueCompletion.tsx` | Same column corrections |
+| `supabase/functions/admin-ai-workforce-run/index.ts` | Rewrite recommendation + approval insert columns |
+| `supabase/migrations/<new>.sql` | Index on `decision_at`; `v_user_pending_approvals` view |
 
 ### Acceptance
 
-- Uploads land in the correct, RLS-protected `user-files` bucket
-- Metadata row is persisted in `file_metadata` (no more silent fallback to mocks)
-- FilesAll, FilesOverview, FilesProcessing, FilesSearch all show real user files
-- Upload → AI classify → notification → list refresh loop is end-to-end real
-- Existing `cloud_files`-based Explorer continues to work unchanged (no regression)
-- C-006 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
+- `useApprovals` returns real DB rows (no silent fallback)
+- One canonical approval table (`ai_workforce_approval_queue`) used by user, admin, edge functions
+- AI workforce runs persist recommendations + queue items (today they silently drop)
+- Approve click runs the full chain: queue → binding → event → outcome verification → 4 receipts
+- C-007 moves 🟡 PARTIAL → ✅ RESOLVED, deployment-ready
 
