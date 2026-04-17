@@ -33,6 +33,7 @@ import {
   RefreshCw,
   FileText,
   Search,
+  Workflow,
 } from "lucide-react";
 import {
   ADMIN_DOMAINS,
@@ -41,6 +42,9 @@ import {
   type AdminDomain,
   type AdminRouteEntry,
 } from "@/lib/architecture/admin-route-registry";
+import { getAllWorkflows } from "@/lib/architecture/owner-workflow-map";
+
+const ACTIVE_WORKFLOW_STORAGE_KEY = "sita.admin.activeWorkflow";
 
 const DOMAIN_ICONS: Record<AdminDomain, React.ElementType> = {
   overview: Home,
@@ -129,6 +133,35 @@ export function AdminCommandPalette() {
       <CommandInput placeholder="Type a command or search admin routes…" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
+
+        <CommandGroup heading="Workflows">
+          {getAllWorkflows().map((wf) => (
+            <CommandItem
+              key={wf.key}
+              value={`Workflow ${wf.label} ${wf.description} ${wf.entry}`}
+              onSelect={() => {
+                try {
+                  sessionStorage.setItem(ACTIVE_WORKFLOW_STORAGE_KEY, wf.key);
+                } catch {
+                  // Ignore storage errors
+                }
+                handleNavSelect(wf.entry);
+              }}
+              className="cursor-pointer"
+            >
+              <Workflow className="mr-2 h-4 w-4 text-primary" />
+              <span className="font-medium">{wf.label}</span>
+              <span className="ml-2 text-[10px] text-muted-foreground truncate">
+                {wf.description}
+              </span>
+              <span className="ml-auto text-[10px] text-muted-foreground/60 font-mono">
+                {wf.steps.length} steps
+              </span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+
+        <CommandSeparator />
 
         {ADMIN_DOMAINS.map((domain) => {
           const entries = grouped.get(domain) ?? [];
