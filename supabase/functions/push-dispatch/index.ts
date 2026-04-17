@@ -6,6 +6,7 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, handleCors, corsResponse, corsError } from "../_shared/cors.ts";
+import { checkAnyKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 interface PushPayload {
   notification_id: string;
@@ -337,6 +338,13 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    // Phase 27 — KS-OUTBOUND + KS-MOBILE-PUSH enforcement
+    const killed = await checkAnyKillSwitchOrReject(
+      ["KS-OUTBOUND", "KS-MOBILE-PUSH"],
+      supabase,
+    );
+    if (killed) return killed;
 
     const urgency = payload.urgency || "normal";
     const category = payload.category || "general";

@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 Deno.serve(async (req) => {

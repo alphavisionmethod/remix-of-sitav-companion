@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -50,13 +51,17 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "workflow_disabled" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // 2. Kill switch check (KS-WORKFLOW + workflow-specific)
+    // 2. Kill switch check (KS-WORKFLOW canonical + legacy domain/workflow scopes)
+    // Phase 27 — canonical helper enforces KS-WORKFLOW + global
+    const killed = await checkKillSwitchOrReject("KS-WORKFLOW", supabase);
+    if (killed) return killed;
+
+    // Legacy domain/workflow_id specific scope check (preserved for migrations)
     const { data: kills } = await supabase
       .from("automation_kill_switches")
       .select("scope, scope_id, reason")
       .eq("enabled", true);
     const isKilled = (kills ?? []).some((k: any) =>
-      (k.scope === "global") ||
       (k.scope === "domain" && k.scope_id === wf.domain) ||
       (k.scope === "workflow_id" && k.scope_id === workflow_id)
     );
