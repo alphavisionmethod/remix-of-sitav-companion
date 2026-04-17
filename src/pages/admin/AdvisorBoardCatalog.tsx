@@ -63,6 +63,20 @@ export default function AdvisorBoardCatalog() {
     staleTime: 30_000,
   });
 
+  const { data: honestyMap = {} } = useQuery({
+    queryKey: ["advisor-launch-honesty"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ai_workforce_launch_honesty")
+        .select("role_key, actual_status");
+      if (error) throw error;
+      const map: Record<string, string> = {};
+      for (const row of data ?? []) map[row.role_key] = row.actual_status;
+      return map;
+    },
+    staleTime: 60_000,
+  });
+
   const [advisorStates, setAdvisorStates] = useState<AdvisorState>(
     BUSINESS_ADVISORS.reduce(
       (acc, a) => ({ ...acc, [a.id]: { enabled: true, intensity: 70 } }),
