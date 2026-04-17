@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
