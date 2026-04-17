@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-17T00:26:17.609Z",
+  "generatedAt": "2026-04-17T00:34:51.040Z",
   "phase": "phase-16-backend-api-deployability",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
-  "ready": 14,
+  "ready": 16,
   "partial": 1,
   "deferred": 0,
   "missing": 0,
-  "total": 15,
+  "total": 17,
   "metrics": {
     "edgeFunctionsTotal": 85,
     "activeAmbiguousCount": 0,
@@ -160,6 +160,20 @@
       "title": "Rate limits, idempotency, audit logging declared per function",
       "status": "ready",
       "evidence": "src/lib/backend-topology/edge-function-policy-map.ts — every function has explicit rateLimit + idempotency + auditLog policy. All sideEffectClass=high functions declare strict rate-limit + required audit-log; webhooks declare required idempotency.",
+      "blocker": true
+    },
+    {
+      "id": "backend.health-visibility",
+      "title": "Per-function health/metrics visible in admin",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-health-source.ts (useEdgeFunctionHealth) + /admin/edge-functions/health (EFH01EdgeFunctionHealthCenter) covers all 85 functions with invocations/errorRate/p95/health-band, sourced from db-truth-introspect edge_function_metrics aggregator.",
+      "blocker": true
+    },
+    {
+      "id": "backend.replay-paths",
+      "title": "Failure/replay paths declared per orchestration & connector function",
+      "status": "ready",
+      "evidence": "src/lib/backend-topology/edge-function-replay-map.ts declares replay kind + mechanism + on-disk evidence for every ORCHESTRATION_FUNCTION (12) and CONNECTOR_WEBHOOK_FUNCTION (11). CI gate 28 (check-edge-function-health-replay) enforces presence and webhook kind constraint.",
       "blocker": true
     }
   ],

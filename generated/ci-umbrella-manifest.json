@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-17T00:26:19.522Z",
-  "gateCount": 27,
+  "generatedAt": "2026-04-17T00:34:49.327Z",
+  "gateCount": 28,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -16,10 +16,11 @@
     "phase-13-web-deployability": 1,
     "phase-14-desktop-deployability": 1,
     "phase-15-appliance-deployability": 1,
-    "phase-16-backend-api-deployability": 1
+    "phase-16-backend-api-deployability": 1,
+    "phase-17-edge-function-health-replay": 1
   },
   "bySeverity": {
-    "blocker": 26,
+    "blocker": 27,
     "warning": 1
   },
   "registry": [
@@ -280,11 +281,21 @@
       "severity": "blocker",
       "description": "15-item Backend / API Reality Checklist: registry/membership ok, governance not RED, no active ambiguous endpoints, every active fn has auth/contract/owner, every high side-effect fn has strict rate-limit + required audit-log, every P0 frontend action has a real backend target.",
       "producesArtifact": "generated/backend-api-deployability-report.json"
+    },
+    {
+      "id": "edge-function-health-replay",
+      "phase": "phase-17-edge-function-health-replay",
+      "title": "Edge function health & replay (10-item Edge Function Checklist)",
+      "script": "scripts/architecture/checks/check-edge-function-health-replay.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Every ORCHESTRATION_FUNCTION + CONNECTOR_WEBHOOK_FUNCTION declares a real, code-backed failure/replay path. Health adapter + admin dashboard wired and observable.",
+      "producesArtifact": "generated/edge-function-health-replay-report.json"
     }
   ],
   "integrity": {
-    "checkedAt": "2026-04-17T00:26:19.523Z",
-    "gateCount": 27,
+    "checkedAt": "2026-04-17T00:34:49.328Z",
+    "gateCount": 28,
     "issues": [],
     "errorCount": 0,
     "warningCount": 0,
