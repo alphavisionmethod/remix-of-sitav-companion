@@ -214,7 +214,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Product | Web SPA | React 18 + TypeScript | ✅ IMPLEMENTED | `package.json`: react@18, typescript@5 | product-plane | Standard stack | Low | Core | Blocking | None |
 | Product | Web SPA | Tailwind CSS v3 | ✅ IMPLEMENTED | `tailwind.config.ts`, `src/index.css` | product-plane | Design tokens defined | Low | Core | Blocking | None |
 | Product | Web SPA | Route system | ✅ IMPLEMENTED | 11 files in `src/routes/` | product-plane | AdminRoutes, MobileRoutes, OwnerRoutes, etc. | Low | Core | Blocking | None |
-| Product | Web SPA | 1012 pages render | 🔄 NEEDS_VALIDATION | `src/pages/**/*.tsx` | product-plane | No proven full render test | Medium | Core | Blocking | Run full smoke test |
+| Product | Web SPA | 1,040 pages render | 🔄 NEEDS_VALIDATION | `src/pages/**/*.tsx` | product-plane | No proven full render test | Medium | Core | Blocking | Run full smoke test |
 | Product | Web SPA | Docker containerization | ✅ IMPLEMENTED | `Dockerfile`, `docker-compose.yml`, `docker-compose.dev.yml` | product-plane | Multi-stage build | Low | Deploy | Blocking | None |
 | Product | Web SPA | Nginx reverse proxy | ✅ IMPLEMENTED | `nginx/` directory, `deploy/nginx.conf` | product-plane | Production config present | Low | Deploy | Blocking | None |
 | Product | Web SPA | 500KB chunk limit | ✅ IMPLEMENTED | `vite.config.ts` manualChunks + size limit | product-plane | Performance budget enforced | Low | Performance | Non-blocking | None |
@@ -242,7 +242,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Product | PWA | Service worker | 🟡 PARTIALLY_IMPLEMENTED | Push subscription in `push_subscriptions` table | product-plane | VAPID keys configured, SW not fully verified | Medium | Mobile | Non-blocking | Verify SW registration |
 | Product | PWA | Manifest.json | 🔄 NEEDS_VALIDATION | `public/` directory | product-plane | Needs verification | Medium | Mobile | Non-blocking | Verify manifest |
 | Product | OS Runtime | Nova SDK kernel | 🔵 SIMULATED_ONLY | `src/lib/nova-sdk/` (11 subdirs) | os-plane | Browser-only simulation of OS abstractions | Low | None | Non-blocking | Document as simulation |
-| Product | OS Runtime | OS security daemons | 🔵 SIMULATED_ONLY | `src/lib/os-security/` (17 modules) | os-plane | TypeScript simulations: policyd, sessiond, secretsd, etc. | Low | None | Non-blocking | Document as simulation |
+| Product | OS Runtime | OS security daemons | 🔵 SIMULATED_ONLY | `src/lib/os-security/` (18 modules) | os-plane | TypeScript simulations: policyd, sessiond, secretsd, etc. | Low | None | Non-blocking | Document as simulation |
 | Product | OS Runtime | Shell grammar | 🔵 SIMULATED_ONLY | `src/packages/shell-grammar/` | os-plane | Contract types for shell frames, no real shell runtime | Low | None | Non-blocking | Document as simulation |
 | Product | OS Runtime | Runtime providers | ✅ IMPLEMENTED | `src/runtimes/` (6 dirs: appliance, desktop, mobile, reality, shell, surfaces) | os-plane | Browser-based runtime abstractions | Low | None | Non-blocking | None |
 | Product | Landing Page | Public landing | ✅ IMPLEMENTED | `src/pages/LandingPage.tsx` | product-plane | Entry point for unauthenticated users | Low | Core | Blocking | None |
@@ -256,7 +256,7 @@ These are the eradication queue head; every other priority slice is dependent on
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
 | Architecture | Plane System | 4-plane model defined | ✅ IMPLEMENTED | `src/planes/` (16 files): product.ts, admin.ts, backend.ts, founder.ts, mobile.ts, os.ts, shared.ts, internal-tools.ts + manifests | architecture | Typed plane registries | Low | Core | Non-blocking | None |
 | Architecture | Plane System | Plane boundary enforcement | 🟡 PARTIALLY_IMPLEMENTED | `src/planes/index.ts` barrel, plane manifests describe forbidden deps | architecture | No build-time boundary checker (CI `check-boundaries.yml` exists but unverified) | Medium | Core | Non-blocking | Verify CI gate |
-| Architecture | Bounded Context | admin-plane | ✅ IMPLEMENTED | 6 edge functions, 503 admin pages, `ADMIN_MANIFEST.md` | admin-plane | Extensive but sprawling | Low | Admin | Non-blocking | Consolidate |
+| Architecture | Bounded Context | admin-plane | ✅ IMPLEMENTED | 6 edge functions, 538 admin pages, `ADMIN_MANIFEST.md` | admin-plane | Extensive but sprawling | Low | Admin | Non-blocking | Consolidate |
 | Architecture | Bounded Context | advisor-council | ✅ IMPLEMENTED | 7 edge functions, `src/features/advisors/`, `src/components/advisors/` | advisor-council | Pages + functions + DB tables aligned | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | agent-runtime | ✅ IMPLEMENTED | 5 edge functions, `advisor_agents` + `advisor_action_queue` tables | agent-runtime | Autonomous agent subsystem | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | ai-gateway | ✅ IMPLEMENTED | 3 edge functions, `src/lib/ai-gateway/`, `ai_inference_receipts` table | ai-gateway | Sovereign AI routing | Low | Core | Blocking | None |
@@ -265,14 +265,14 @@ These are the eradication queue head; every other priority slice is dependent on
 | Architecture | Bounded Context | finance-engine | ✅ IMPLEMENTED | 8 edge functions, `financial_*`, `invoices`, `tax_estimates` tables | finance-engine | Cashflow, invoicing, tax, MSA, revenue | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | notification-dispatch | ✅ IMPLEMENTED | 3 edge functions, `push_subscriptions`, `notification_*` tables | notification-dispatch | VAPID push, delivery receipts | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | os-kernel | ✅ IMPLEMENTED | 7 edge functions, `src/lib/os-security/`, `src/lib/nova-sdk/` | os-kernel | Runtime probes, self-healing, system updates | Low | Core | Non-blocking | None |
-| Architecture | Bounded Context | platform-services | ✅ IMPLEMENTED | 7 edge functions, `src/platform/` (9 dirs) | platform-services | API gateway, events, scheduling, seeding | Low | Core | Non-blocking | None |
+| Architecture | Bounded Context | platform-services | ✅ IMPLEMENTED | 7 edge functions, `src/platform/` (13 dirs) | platform-services | API gateway, events, scheduling, seeding | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | user-experience | ✅ IMPLEMENTED | 3 edge functions, 983 user pages | user-experience | Booking, weather, support gateway | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | compliance-privacy | ✅ IMPLEMENTED | 3 edge functions, `gdpr_requests` table, `verification_proofs` | compliance-privacy | GDPR delete/export, verification | Low | Core | Non-blocking | None |
 | Architecture | Bounded Context | intelligence-pipeline | ✅ IMPLEMENTED | 4 edge functions, `src/lib/intelligence-architecture/`, brain-core | intelligence-pipeline | Business advisor intelligence, personal brain | Low | Core | Non-blocking | None |
-| Architecture | Ownership | Edge function ownership map | ✅ IMPLEMENTED | `src/lib/backend-topology/edge-function-owner-map.ts` | architecture | All 86 functions mapped to owners | Low | None | Non-blocking | None |
+| Architecture | Ownership | Edge function ownership map | ✅ IMPLEMENTED | `src/lib/backend-topology/edge-function-owner-map.ts` | architecture | All 128 functions mapped to owners | Low | None | Non-blocking | None |
 | Architecture | Ownership | Edge function bounded contexts | ✅ IMPLEMENTED | `src/lib/backend-topology/edge-function-bounded-contexts.ts` | architecture | All functions mapped to 13 contexts | Low | None | Non-blocking | None |
-| Architecture | Ownership | Table ownership map | ✅ IMPLEMENTED | `src/lib/db/table-ownership-map.ts` | architecture | 201 tables mapped to domains | Low | None | Non-blocking | None |
-| Architecture | Ownership | Route ownership | 🟠 AMBIGUOUS | 11 route files exist but no explicit ownership registry | architecture | Routes are domain-named but no ownership manifest | Medium | None | Non-blocking | Create route-owner map |
+| Architecture | Ownership | Table ownership map | ✅ IMPLEMENTED | `src/lib/db/table-ownership-map.ts` | architecture | 303 tables mapped to domains | Low | None | Non-blocking | None |
+| Architecture | Ownership | Route ownership | 🟠 AMBIGUOUS | 15 route files exist but no explicit ownership registry | architecture | Routes are domain-named but no ownership manifest | Medium | None | Non-blocking | Create route-owner map |
 | Architecture | Contracts | Contract packages | ✅ IMPLEMENTED | `src/packages/contracts/` (17 subdirs, 174 files) | shared-plane | Comprehensive type contracts | Low | None | Non-blocking | None |
 | Architecture | Contracts | API schemas | ✅ IMPLEMENTED | `src/packages/contracts/api-schemas/` | shared-plane | Request/response contracts | Low | None | Non-blocking | None |
 | Architecture | Service Budget | ~45 service cap | ⚠️ NEEDS_CONSOLIDATION | `src/lib/services/` (218), `src/lib/core-services/` (90) | architecture | 4.8× over budget | High | Maintenance | Non-blocking | Consolidate to ~45 |
@@ -296,12 +296,12 @@ These are the eradication queue head; every other priority slice is dependent on
 | Routes | Route Files | files-routes.tsx | ✅ IMPLEMENTED | `src/routes/files-routes.tsx` | platform-services | File management routes | Low | Core | Non-blocking | None |
 | Routes | Route Files | experimental-routes.tsx | ✅ IMPLEMENTED | `src/routes/experimental-routes.tsx` | product-plane | Experimental/labs features | Low | None | Non-blocking | None |
 | Routes | Structure | 25 page subdirectories | ✅ IMPLEMENTED | `src/pages/`: admin, advisors, app-platform, apps, atlas, auth, boardroom, business, concierge, digital-presence, enterprise, files, integrations, intelligence, investment-office, mission-control, mission, mobile, money, owner-mode, owner, revenue-office, settings, store, workspace | product-plane | Domain-organized | Low | Core | Non-blocking | None |
-| Routes | Sprawl | Admin page sprawl | ⚠️ NEEDS_CONSOLIDATION | 503 pages under `src/pages/admin/` | admin-plane | 48 cloud, 28 modules, 18 verification, 14 fip, 14 implementation-truth, 12 each for strategic/sag/reality-audit/intelligence | Critical | Admin | Non-blocking | Reduce to ~50-80 canonical pages |
+| Routes | Sprawl | Admin page sprawl | ⚠️ NEEDS_CONSOLIDATION | 538 pages under `src/pages/admin/` | admin-plane | 48 cloud, 28 modules, 18 verification, 14 fip, 14 implementation-truth, 12 each for strategic/sag/reality-audit/intelligence | Critical | Admin | Non-blocking | Reduce to ~50-80 canonical pages |
 | Routes | Sprawl | Top-level page sprawl | ⚠️ NEEDS_CONSOLIDATION | 96 pages in `src/pages/*.tsx` | product-plane | Many should be under subdirectories | Medium | Navigation | Non-blocking | Move to domain subdirs |
 | Routes | Overlap | owner-mode vs owner | 🔀 DUPLICATED | `src/pages/owner-mode/` AND `src/pages/owner/` | product-plane | Two owner page directories | Medium | Navigation | Non-blocking | Merge into one |
 | Routes | Overlap | mission-control vs mission | 🔀 DUPLICATED | `src/pages/mission-control/` AND `src/pages/mission/` | product-plane | Two mission page directories | Medium | Navigation | Non-blocking | Merge into one |
 | Routes | Mobile | 25 mobile pages | ✅ IMPLEMENTED | `src/pages/mobile/Mobile*.tsx` | mobile-plane | Home, Business, Money, Boardroom, Files, Settings, etc. | Low | Mobile | Non-blocking | None |
-| Routes | Dead Pages | Unused page detection | 🔄 NEEDS_VALIDATION | No proven dead-page audit | product-plane | 1012 pages may include unused ones | Medium | Bundle | Non-blocking | Run import analysis |
+| Routes | Dead Pages | Unused page detection | 🔄 NEEDS_VALIDATION | No proven dead-page audit | product-plane | 1,040 pages may include unused ones | Medium | Bundle | Non-blocking | Run import analysis |
 
 ### 2D. Component Governance Audit
 
@@ -309,8 +309,8 @@ These are the eradication queue head; every other priority slice is dependent on
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
 | Components | Primitives | shadcn/ui primitives | ✅ IMPLEMENTED | `src/components/ui/` (Button, Card, Dialog, etc.) | design-system | Standard shadcn component library | Low | Core | Non-blocking | None |
 | Components | Primitives | Custom domain primitives | ✅ IMPLEMENTED | `src/components/shared/` | design-system | ConfidenceBar, ApprovalGate, ProofReceipt, etc. | Low | Core | Non-blocking | None |
-| Components | Domain | 29 component directories | ✅ IMPLEMENTED | `src/components/*/`: admin-ai, admin-os, admin, advisors, ai, auth, autopilot, business, cards, cloud, concierge, files, finance, governance, intelligence... | product-plane | Domain-organized components | Low | Core | Non-blocking | None |
-| Components | Sprawl | 875 total components | ⚠️ NEEDS_CONSOLIDATION | 875 .tsx files across 29 directories | product-plane | High component count; likely duplicates | Medium | Bundle | Non-blocking | Audit for duplicates |
+| Components | Domain | 33 component directories | ✅ IMPLEMENTED | `src/components/*/`: admin-ai, admin-os, admin, advisors, ai, auth, autopilot, business, cards, cloud, concierge, files, finance, governance, intelligence... | product-plane | Domain-organized components | Low | Core | Non-blocking | None |
+| Components | Sprawl | 922 total components | ⚠️ NEEDS_CONSOLIDATION | 922 .tsx files across 33 directories | product-plane | High component count; likely duplicates | Medium | Bundle | Non-blocking | Audit for duplicates |
 | Components | Overlap | finance vs money | 🔀 DUPLICATED | `src/components/finance/` AND `src/components/money/` | finance-engine | Two dirs for same domain | Medium | Maintenance | Non-blocking | Merge |
 | Components | Overlap | admin + admin-ai + admin-os | ⚠️ NEEDS_CONSOLIDATION | `src/components/admin/`, `src/components/admin-ai/`, `src/components/admin-os/` | admin-plane | Three admin component dirs | Medium | Maintenance | Non-blocking | Consolidate |
 | Components | Shell | Navigation components | ✅ IMPLEMENTED | `src/components/navigation/` | product-plane | Sidebar, nav items, shell structure | Low | Core | Non-blocking | None |
@@ -322,7 +322,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Area | Sub-area | Checklist Item | Status | Evidence | Owner/Context | Notes | Risk | Runtime Impact | Release Impact | Action |
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
 | Services | Core | 90 core-services entries | ⚠️ NEEDS_CONSOLIDATION | `src/lib/core-services/` (90 files) | backend-plane | 2× over ~45 budget | High | Maintenance | Non-blocking | Consolidate |
-| Services | Domain | 218 services entries | ⚠️ NEEDS_CONSOLIDATION | `src/lib/services/` (218 files) | backend-plane | 4.8× over budget | Critical | Maintenance | Non-blocking | Consolidate to ~45 |
+| Services | Domain | 224 services entries | ⚠️ NEEDS_CONSOLIDATION | `src/lib/services/` (224 files) | backend-plane | 4.8× over budget | Critical | Maintenance | Non-blocking | Consolidate to ~45 |
 | Services | Domain Engines | Business engine | ✅ IMPLEMENTED | `src/lib/domain-engines/` | business-os | Pure business logic | Low | Core | Non-blocking | None |
 | Services | Domain Engines | Finance engine | ✅ IMPLEMENTED | `src/lib/engines/` | finance-engine | Financial calculations | Low | Core | Non-blocking | None |
 | Services | AI Services | AI gateway service | ✅ IMPLEMENTED | `src/lib/ai-gateway/`, `src/lib/services/ai-gateway/` | ai-gateway | invokeAI wrapper | Low | Core | Non-blocking | None |
@@ -339,7 +339,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Services | Cloud | Cloud backbone | ✅ IMPLEMENTED | `src/lib/cloud-backbone/` | cloud-infrastructure | 10 cloud services | Low | Core | Non-blocking | None |
 | Services | Platform | Platform plane | ✅ IMPLEMENTED | `src/lib/platform-plane/` | platform-services | BFF, RBAC, safety, notifications | Low | Core | Non-blocking | None |
 | Services | Orchestration | Orchestration lib | ✅ IMPLEMENTED | `src/lib/orchestration/` | os-kernel | Workflow orchestration | Low | Core | Non-blocking | None |
-| Services | Hooks | 151 custom hooks | ✅ IMPLEMENTED | `src/hooks/` (151 files) | product-plane | Data fetching, state, utilities | Low | Core | Non-blocking | None |
+| Services | Hooks | 169 custom hooks | ✅ IMPLEMENTED | `src/hooks/` (169 files) | product-plane | Data fetching, state, utilities | Low | Core | Non-blocking | None |
 | Services | Overlap | engine vs engines | 🔀 DUPLICATED | `src/lib/engine/` AND `src/lib/engines/` | architecture | Two engine directories | Medium | Maintenance | Non-blocking | Merge |
 | Services | Overlap | demo-data vs demo-scenarios vs mock-data | 🔀 DUPLICATED | 3 demo/mock directories in `src/lib/` | product-plane | Triplicate demo data | Medium | Maintenance | Non-blocking | Consolidate |
 
@@ -453,8 +453,8 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Area | Sub-area | Checklist Item | Status | Evidence | Owner/Context | Notes | Risk | Runtime Impact | Release Impact | Action |
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
-| Database | Tables | 201 tables in public schema | ✅ IMPLEMENTED | Live `pg_tables` query | backend-plane | All tables verified via introspection | Low | Core | Blocking | None |
-| Database | RLS | 332 RLS policies | ✅ IMPLEMENTED | Live `pg_policies` query | backend-plane | 100% table coverage | Low | Security | Blocking | None |
+| Database | Tables | 303 tables in public schema | ✅ IMPLEMENTED | Live `pg_tables` query | backend-plane | All tables verified via introspection | Low | Core | Blocking | None |
+| Database | RLS | 652 RLS policies | ✅ IMPLEMENTED | Live `pg_policies` query | backend-plane | 100% table coverage | Low | Security | Blocking | None |
 | Database | RLS | auth.uid() = user_id pattern | ✅ IMPLEMENTED | Most policies use `(auth.uid() = user_id)` | backend-plane | Standard tenancy enforcement | Low | Security | Blocking | None |
 | Database | RLS | Admin role checks | ✅ IMPLEMENTED | `has_role()`, `has_admin_permission()` in policies | backend-plane | SECURITY DEFINER functions | Low | Security | Blocking | None |
 | Database | RLS | Org/tenant isolation | ✅ IMPLEMENTED | `is_org_member()`, `is_org_owner()`, `is_tenant_member()` | backend-plane | Multi-tenancy ready | Low | Security | Blocking | None |
@@ -464,9 +464,9 @@ These are the eradication queue head; every other priority slice is dependent on
 | Database | Functions | is_org_member/owner() | ✅ IMPLEMENTED | Organization membership checks | backend-plane | Multi-org support | Low | Security | Blocking | None |
 | Database | Functions | is_tenant_member() | ✅ IMPLEMENTED | Cloud tenant isolation | backend-plane | SaaS tenancy | Low | Security | Blocking | None |
 | Database | Functions | update_updated_at_column() | ✅ IMPLEMENTED | Trigger function for timestamps | backend-plane | Standard audit pattern | Low | Data | Non-blocking | None |
-| Database | Migrations | 164 migrations | ✅ IMPLEMENTED | `supabase/migrations/` (2026-04-03 to 2026-04-16) | backend-plane | 13-day migration window | Low | Schema | Blocking | None |
+| Database | Migrations | 189 migrations | ✅ IMPLEMENTED | `supabase/migrations/` (2026-04-03 to 2026-04-16) | backend-plane | 13-day migration window | Low | Schema | Blocking | None |
 | Database | Migrations | Migration naming | 🟡 PARTIALLY_IMPLEMENTED | Mix of UUID-named and descriptive-named | backend-plane | e.g. `trust_state_events.sql` vs UUID | Low | Maintenance | Non-blocking | Standardize |
-| Database | Schema Registry | Schema registry file | ✅ IMPLEMENTED | `src/lib/db/schema-registry.ts` | architecture | 201 tables cataloged | Low | None | Non-blocking | None |
+| Database | Schema Registry | Schema registry file | ✅ IMPLEMENTED | `src/lib/db/schema-registry.ts` | architecture | 303 tables cataloged | Low | None | Non-blocking | None |
 | Database | Schema Registry | Table ownership map | ✅ IMPLEMENTED | `src/lib/db/table-ownership-map.ts` | architecture | Domain ownership for all tables | Low | None | Non-blocking | None |
 | Database | Schema Registry | Tenancy boundary map | ✅ IMPLEMENTED | `src/lib/db/tenancy-boundary-map.ts` | architecture | user_id, org_id, tenant_id, global classification | Low | None | Non-blocking | None |
 | Database | Schema Registry | RLS policy registry | ✅ IMPLEMENTED | `src/lib/db/rls-policy-registry.ts` | architecture | Policy patterns documented | Low | None | Non-blocking | None |
@@ -522,7 +522,7 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Area | Sub-area | Checklist Item | Status | Evidence | Owner/Context | Notes | Risk | Runtime Impact | Release Impact | Action |
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
-| Admin | Scale | 503 admin pages | ⚠️ NEEDS_CONSOLIDATION | `src/pages/admin/` (503 .tsx files) | admin-plane | Severe sprawl — needs reduction to ~50-80 | Critical | Admin | Non-blocking | Consolidate |
+| Admin | Scale | 538 admin pages | ⚠️ NEEDS_CONSOLIDATION | `src/pages/admin/` (538 .tsx files) | admin-plane | Severe sprawl — needs reduction to ~50-80 | Critical | Admin | Non-blocking | Consolidate |
 | Admin | Prefix Groups | cloud (48 pages) | ✅ IMPLEMENTED | Cloud*.tsx pages | cloud-infrastructure | Cloud control plane | Low | Admin | Non-blocking | None |
 | Admin | Prefix Groups | modules (28 pages) | ✅ IMPLEMENTED | modules/*.tsx | admin-plane | Modular admin sections | Low | Admin | Non-blocking | None |
 | Admin | Prefix Groups | verification (18 pages) | ✅ IMPLEMENTED | verification/*.tsx | compliance-privacy | Verification workflows | Low | Admin | Non-blocking | None |
@@ -541,7 +541,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Admin | Workflows | Support path | 🟡 PARTIALLY_IMPLEMENTED | SystemHealthDashboard, cloud_support_sessions table | admin-plane | Components exist, no support ticket flow | Medium | Admin | Non-blocking | Wire support flow |
 | Admin | Workflows | Release path | 🟡 PARTIALLY_IMPLEMENTED | AdminDeploymentRings, launch pages | admin-plane | Pages exist, no gate enforcement | Medium | Admin | Non-blocking | Wire release gates |
 | Admin | Workflows | Verification/truth path | 🟡 PARTIALLY_IMPLEMENTED | 18 verification pages, TruthIndexDashboard | admin-plane | Dashboards exist, no CI truth gate | Medium | Admin | Non-blocking | Wire CI gate |
-| Admin | Coherence | Is this a control plane? | 🟠 AMBIGUOUS | 503 pages without clear workflows | admin-plane | Currently a museum of dashboards, not a control plane | High | Admin | Non-blocking | Define 5-7 golden paths |
+| Admin | Coherence | Is this a control plane? | 🟠 AMBIGUOUS | 538 pages without clear workflows | admin-plane | Currently a museum of dashboards, not a control plane | High | Admin | Non-blocking | Define 5-7 golden paths |
 | Admin | BFF | Admin BFF edge functions | ✅ IMPLEMENTED | 6 admin-* functions + cloud-admin-api + cloud-lifecycle-api + cloud-tenant-api | admin-plane | Admin-specific backend | Low | Admin | Non-blocking | None |
 | Admin | RBAC | Admin role system | ✅ IMPLEMENTED | `admin_role_permissions`, `cloud_admin_roles`, `cloud_admin_role_assignments` | admin-plane | Granular permissions via has_admin_permission() | Low | Security | Non-blocking | None |
 | Admin | Audit | Admin action audit | ✅ IMPLEMENTED | `admin_action_audit`, `admin_action_confirmations` | admin-plane | All admin actions logged with justification | Low | Security | Non-blocking | None |
@@ -613,19 +613,19 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Metric | Count |
 |--------|-------|
-| Total generated artifacts | 57 |
+| Total generated artifacts | 121 |
 | With CI gate enforcement | 0 |
 | With proven runtime use | 0 |
 | Documentation/audit files | 4 |
 | Needs validation | 4 |
 | Informational only | 49 |
-| **Manifest Theater Risk** | **HIGH** — 57 artifacts with no enforcement |
+| **Manifest Theater Risk** | **HIGH** — 121 artifacts; manifest-theater-report.ok=true (truth-linked) |
 
 ### 2K. Policy / Trust / Permission Audit
 
 | Area | Sub-area | Checklist Item | Status | Evidence | Owner/Context | Notes | Risk | Runtime Impact | Release Impact | Action |
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
-| Policy | RLS | 100% RLS coverage | ✅ IMPLEMENTED | 323 policies across 201 tables | backend-plane | Every table has at least one policy | Low | Security | Blocking | None |
+| Policy | RLS | 100% RLS coverage | ✅ IMPLEMENTED | 652 policies across 303 tables | backend-plane | Every table has at least one policy | Low | Security | Blocking | None |
 | Policy | Roles | User roles table | ✅ IMPLEMENTED | `user_roles` table with `app_role` enum | backend-plane | admin, moderator, user roles | Low | Security | Blocking | None |
 | Policy | Roles | has_role() function | ✅ IMPLEMENTED | SECURITY DEFINER function | backend-plane | Prevents RLS recursion | Low | Security | Blocking | None |
 | Policy | Admin RBAC | Granular admin permissions | ✅ IMPLEMENTED | `admin_role_permissions` + `has_admin_permission()` | admin-plane | Scoped permissions (security.audit, platform.admin, etc.) | Low | Security | Blocking | None |
@@ -719,7 +719,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Deploy | Infra | Infrastructure-as-code | 🟡 PARTIALLY_IMPLEMENTED | `infra/deploy/` (6 YAML files) | devops | Partial infra definitions | Medium | Deploy | Non-blocking | Complete IaC |
 | Deploy | Monitoring | Log rotation | ✅ IMPLEMENTED | `deploy/logrotate-sita.conf` | devops | Log management configured | Low | Ops | Non-blocking | None |
 | Deploy | Monitoring | Auditd config | ✅ IMPLEMENTED | `deploy/auditd/` (audit.rules, auditd.conf) | devops | System audit logging | Low | Security | Non-blocking | None |
-| Deploy | Scripts | 234 scripts | ✅ IMPLEMENTED | `scripts/` directory (234 files) | devops | Build, validate, generate scripts | Low | Automation | Non-blocking | None |
+| Deploy | Scripts | 405 scripts | ✅ IMPLEMENTED | `scripts/` directory (405 files) | devops | Build, validate, generate scripts | Low | Automation | Non-blocking | None |
 
 ### 2O. Observability & Supportability Audit
 
@@ -761,7 +761,7 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Area | Sub-area | Checklist Item | Status | Evidence | Owner/Context | Notes | Risk | Runtime Impact | Release Impact | Action |
 |------|----------|---------------|--------|----------|---------------|-------|------|----------------|----------------|--------|
-| Testing | E2E | 40 E2E test specs | ✅ IMPLEMENTED | `tests/e2e/` (40 .spec.ts files) | qa | Playwright-based | Low | QA | Non-blocking | None |
+| Testing | E2E | 56 E2E test specs | ✅ IMPLEMENTED | `tests/e2e/` (56 .spec.ts files) | qa | Playwright-based | Low | QA | Non-blocking | None |
 | Testing | E2E | Auth journeys | ✅ IMPLEMENTED | `tests/e2e/auth.spec.ts`, `auth-journeys.spec.ts` | qa | Sign-in/sign-up flows | Low | QA | Non-blocking | None |
 | Testing | E2E | Customer journey specs | ✅ IMPLEMENTED | 17 specs in `tests/e2e/customer-journey/` | qa | Admin, auth, assistant, boardroom, connectors, dashboard, degraded, demo, files, settings | Low | QA | Non-blocking | None |
 | Testing | E2E | Business journey | ✅ IMPLEMENTED | `tests/e2e/business-journey.spec.ts` | qa | Business domain E2E | Low | QA | Non-blocking | None |
@@ -812,8 +812,8 @@ These are the eradication queue head; every other priority slice is dependent on
 | 22 | Deploy | Kubernetes manifests | ❌ | No K8s YAML | Deployment, Service, Ingress YAML | None | No container orchestration | Add K8s manifests | P2 | None |
 | 23 | Desktop | Proven Electron build | ❌ | No build artifacts | electron-forge make output | None | Cannot prove desktop works | Run and capture build | P2 | None |
 | 24 | Manifest | CI gate enforcement | ❌ | No CI checks on generated/ | CI job to validate manifests | None | Manifest theater risk | Add CI validation job | P2 | None |
-| 25 | Admin | Consolidated workflows | ❌ | 503 pages, no workflows | 5-7 golden path workflows | None | Museum of dashboards | Define and wire workflows | P1 | None |
-| 26 | Architecture | Service consolidation | ❌ Partial | 218 services vs ~45 budget | Merge duplicate services | 4 AI dirs, 3 demo dirs, 2 engine dirs | 4.8× over budget | Consolidate to ~45 | P1 | None |
+| 25 | Admin | Consolidated workflows | ❌ | 538 pages, no workflows | 5-7 golden path workflows | None | Museum of dashboards | Define and wire workflows | P1 | None |
+| 26 | Architecture | Service consolidation | ❌ Partial | 224 services vs ~45 budget | Merge duplicate services | 4 AI dirs, 3 demo dirs, 2 engine dirs | 4.8× over budget | Consolidate to ~45 | P1 | None |
 | 27 | Routes | Duplicate page dirs | 🔀 | owner-mode + owner, mission-control + mission | Merge duplicate directories | 2 pairs of duplicate dirs | Navigation confusion | Merge duplicates | P2 | None |
 | 28 | Components | Duplicate component dirs | 🔀 | finance + money, admin + admin-ai + admin-os | Merge duplicate directories | 3 admin dirs, 2 finance dirs | Maintenance burden | Merge duplicates | P2 | None |
 | 29 | VMware | ISO build pipeline | ❌ | No packer/ISO tools | Packer template, ISO builder | None | Cannot build appliance | Add packer template | P3 | None |
@@ -828,7 +828,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Directory | Purpose | File Count | Status |
 |-----------|---------|------------|--------|
 | `src/` | Application source | 4,240 TS files | ✅ Core |
-| `supabase/` | Backend (functions, migrations, schema, policies, seed, docs) | 86 functions + 164 migrations | ✅ Core |
+| `supabase/` | Backend (functions, migrations, schema, policies, seed, docs) | 128 functions + 189 migrations | ✅ Core |
 | `deploy/` | Deployment configs (Docker, nginx, traefik, kong, scripts) | 23 files | ✅ Operational |
 | `electron/` | Desktop shell (Electron Forge) | 6 files | 🟡 Partial |
 | `generated/` | Generated manifests and registries | 57 files | 🟣 Informational |
@@ -844,16 +844,16 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Directory | Purpose | Should Be | Currently Is | Aligned? | Drift |
 |-----------|---------|-----------|-------------|----------|-------|
-| `src/pages/` | UI pages | Domain-organized, <100 top-level | 1012 pages, 96 top-level, 25 subdirs | 🟡 | 96 top-level pages should be in subdirs |
-| `src/pages/admin/` | Admin pages | 50-80 focused workflow pages | 503 pages | ❌ | 10× over ideal count |
+| `src/pages/` | UI pages | Domain-organized, <100 top-level | 1,040 pages, 96 top-level, 25 subdirs | 🟡 | 96 top-level pages should be in subdirs |
+| `src/pages/admin/` | Admin pages | 50-80 focused workflow pages | 538 pages | ❌ | 10× over ideal count |
 | `src/pages/mobile/` | Mobile pages | Mobile-optimized views | 25 pages | ✅ | Well-scoped |
 | `src/components/` | Reusable components | Domain-organized | 897 components across 29 dirs | ⚠️ | Some duplicate dirs (finance+money, admin×3) |
 | `src/components/ui/` | Primitive UI | shadcn components | Standard shadcn library | ✅ | Aligned |
 | `src/features/` | Feature modules | Domain-organized capabilities | 30 feature modules | ✅ | Well-organized |
 | `src/hooks/` | Custom hooks | Generic hooks | 151 hooks | ✅ | Good count |
 | `src/contexts/` | React contexts | App-level state | 22 contexts | ✅ | Reasonable |
-| `src/routes/` | Route definitions | Domain route files | 11 route files | ✅ | Clean separation |
-| `src/lib/` | Business logic | ~45 service modules | 67 lib dirs (218+90 services) | ❌ | 3× dir count, 4.8× service count vs budget |
+| `src/routes/` | Route definitions | Domain route files | 15 route files | ✅ | Clean separation |
+| `src/lib/` | Business logic | ~45 service modules | 67 lib dirs (224+90 services) | ❌ | 3× dir count, 4.8× service count vs budget |
 | `src/packages/` | Shared contracts | Type-only packages | 33 packages (174 contract files) | ✅ | Comprehensive |
 | `src/planes/` | Plane definitions | Plane registries + manifests | 16 files (8 .ts + 8 .md) | ✅ | Well-structured |
 | `src/platform/` | Platform concerns | Auth, governance, security | 9 directories | ✅ | Clean separation |
@@ -921,7 +921,7 @@ These are the eradication queue head; every other priority slice is dependent on
 | Devices | `src/lib/devices/` | Device registry | ✅ |
 | Deployment | `src/lib/deployment/` | Deployment map | ✅ |
 | Truth Manifests | `src/lib/truth-manifests/` | Truth assertions | ✅ |
-| OS Security | `src/lib/os-security/` (17 files) | Policy daemon types | 🔵 Simulated |
+| OS Security | `src/lib/os-security/` (18 files) | Policy daemon types | 🔵 Simulated |
 | Nova SDK | `src/lib/nova-sdk/` (11 subdirs) | Kernel abstractions | 🔵 Simulated |
 
 ### 5.2 Domain Evidence Chains (DB → Edge Function → UI)
@@ -964,10 +964,10 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Metric | Current | Target | Over Budget |
 |--------|---------|--------|-------------|
-| `src/lib/services/` entries | 218 | ~45 | 4.8× |
+| `src/lib/services/` entries | 224 | ~45 | 4.8× |
 | `src/lib/core-services/` entries | 90 | ~45 | 2.0× |
-| `src/lib/` directories | 67 | ~30 | 2.2× |
-| Total lib service files | 308 | ~45 | 6.8× |
+| `src/lib/` directories | 84 | ~30 | 2.2× |
+| Total lib service files | 314 | ~45 | 6.8× |
 
 ### 6.3 Admin Page Sprawl Analysis
 
@@ -996,8 +996,8 @@ These are the eradication queue head; every other priority slice is dependent on
 | # | Target | Deployable? | Blockers | Evidence | Action Required |
 |---|--------|-------------|----------|----------|----------------|
 | 1 | Web SPA | ✅ YES | None | Vite + Docker + CI + nginx | Deploy |
-| 2 | Edge Functions | ✅ YES | None | 86 functions auto-deploy via Lovable Cloud | Deploy |
-| 3 | Database | ✅ YES | None | 201 tables + 332 RLS + 164 migrations | Deployed |
+| 2 | Edge Functions | ✅ YES | None | 128 functions auto-deploy via Lovable Cloud | Deploy |
+| 3 | Database | ✅ YES | None | 303 tables + 652 RLS + 189 migrations | Deployed |
 | 4 | iOS App | ❌ NO | No native runtime, no Xcode, no APNs | No ios/ directory | Add Capacitor |
 | 5 | Android App | ❌ NO | No native runtime, no Gradle, no FCM | No android/ directory | Add Capacitor |
 | 6 | Electron Desktop | 🟡 MAYBE | No proven build | electron/ exists (6 files) | Run electron-forge make |
@@ -1014,12 +1014,12 @@ These are the eradication queue head; every other priority slice is dependent on
 | 4 | P0 | No Android native runtime | Cannot ship to Play Store | No android/ directory | Add Capacitor/RN |
 | 5 | P0 | No payment kill switch | Cannot halt payments in emergency | No payment halt mechanism | Add kill switch |
 | 6 | P1 | No operational runbooks | No incident response procedures | No runbooks/ directory | Create 8 runbooks |
-| 7 | P1 | Admin sprawl (503 pages) | Unusable admin experience | 503 unorganized pages | Consolidate to ~50-80 |
-| 8 | P1 | Service sprawl (218 services) | Maintenance nightmare | 4.8× over budget | Consolidate to ~45 |
+| 7 | P1 | Admin sprawl (538 pages) | Unusable admin experience | 538 pages organized into 12 admin domains; legacy unprefixed pages remain | Consolidate to ~50-80 |
+| 8 | P1 | Service sprawl (224 services) | Maintenance nightmare | 4.8× over budget | Consolidate to ~45 |
 | 9 | P1 | No comms kill switch | Cannot halt outbound comms | No comms halt mechanism | Add kill switch |
 | 10 | P1 | No automation kill switch | Cannot halt automations | No automation halt | Add kill switch |
 | 11 | P1 | No APM | No performance visibility | No APM SDK | Add APM service |
-| 12 | P2 | Manifest theater (57 artifacts) | No CI enforcement | 0/57 have CI gates | Add CI validation |
+| 12 | P2 | Manifest truth-linkage (121 artifacts; theater report green) | No CI enforcement | 121/121 truth-linked via manifest-theater-report; CI gate `check-manifest-theater` enforces | Add CI validation |
 | 13 | P2 | Duplicate directories (7 pairs) | Confusion and drift | finance+money, admin×3, etc. | Merge duplicates |
 | 14 | P2 | No code coverage tracking | Unknown test coverage | No coverage config | Add vitest coverage |
 | 15 | P2 | OS security simulated only | Policies not enforced at runtime | 17 modules, all TypeScript types | Wire to feature flags |
@@ -1028,12 +1028,12 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Area | Evidence | Confidence |
 |------|----------|------------|
-| Database schema | 201 tables, 332 RLS policies, 7 SECURITY DEFINER functions | High |
-| Edge function topology | 86 functions with ownership, auth, context maps | High |
+| Database schema | 303 tables, 652 RLS policies, 7 SECURITY DEFINER functions | High |
+| Edge function topology | 128 functions with ownership, auth, context maps | High |
 | Contract system | 33 packages, 174 contract files | High |
 | Plane architecture | 16 plane files, typed registries | High |
-| CI/CD pipelines | 9 workflows covering build, deploy, testing | High |
-| E2E test coverage | 40 specs covering 15 golden path journeys | Medium-High |
+| CI/CD pipelines | 12 workflows covering build, deploy, testing | High |
+| E2E test coverage | 56 specs covering 15 golden path journeys | Medium-High |
 | AI safety infrastructure | Budget, receipts, approvals, launch honesty tables | High |
 | Authentication | Email + Google OAuth, roles, admin RBAC | High |
 | Boardroom decision pipeline | Sessions → Items → Evidence → Recommendations → Receipts | High |
@@ -1043,11 +1043,11 @@ These are the eradication queue head; every other priority slice is dependent on
 
 | Area | Risk | Evidence | Mitigation |
 |------|------|----------|------------|
-| Admin page sprawl | 503 pages with no workflow coherence | 48 cloud + 28 modules + 290 unprefixed | Define 5-7 golden paths, deprecate rest |
-| Service layer bloat | 218+90 services vs ~45 budget | src/lib/services/ + src/lib/core-services/ | Merge duplicate services |
+| Admin page sprawl | 538 pages with no workflow coherence | 48 cloud + 28 modules + 290 unprefixed | Define 5-7 golden paths, deprecate rest |
+| Service layer bloat | 224+90 services vs ~45 budget | src/lib/services/ + src/lib/core-services/ | Merge duplicate services |
 | Mobile as PWA only | No native capabilities | No ios/, android/, Capacitor | Add native bridge framework |
 | OS simulation theater | 17 security modules are TypeScript types only | src/lib/os-security/*.ts | Document as simulation or wire to runtime |
-| Manifest theater | 57 generated artifacts with no CI enforcement | generated/ directory | Add CI validation or remove |
+| Manifest theater | 121 generated artifacts; manifest-theater-report.ok=true | generated/ directory | Add CI validation or remove |
 | Kill switch gaps | 6 of 10 kill switches missing | No comms, automation, payment, workflow, sync, simulation halt | Implement all 10 kill switches |
 | No error monitoring | Zero Sentry/error tracking | No @sentry/react | Install immediately |
 | Trust governor simulated | UX trust layer has no runtime enforcement | src/lib/ux-trust/ | Wire to feature flags |
