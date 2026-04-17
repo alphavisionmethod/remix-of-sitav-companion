@@ -171,7 +171,15 @@ if (!existsSync(startupOrder)) {
 } else {
   try {
     const json = JSON.parse(readFileSync(startupOrder, "utf8"));
-    startupOrderPhases = Array.isArray(json.phases) ? json.phases.length : (typeof json.phaseCount === "number" ? json.phaseCount : 0);
+    // Support shapes: { phases: [...] }, { phases: number }, { phaseCount: number }, or derive from services[].phase
+    if (Array.isArray(json.phases)) startupOrderPhases = json.phases.length;
+    else if (typeof json.phases === "number") startupOrderPhases = json.phases;
+    else if (typeof json.phaseCount === "number") startupOrderPhases = json.phaseCount;
+    else if (Array.isArray(json.services)) {
+      startupOrderPhases = new Set(
+        json.services.map((s: { phase?: number }) => s.phase).filter((p: unknown) => typeof p === "number"),
+      ).size;
+    }
     startupOrderServices = Array.isArray(json.services) ? json.services.length : (typeof json.serviceCount === "number" ? json.serviceCount : 0);
     if (startupOrderPhases < 1) {
       issues.push({ severity: "error", area: "startup-order", message: "startup-order.json has 0 phases" });
@@ -188,8 +196,10 @@ if (!existsSync(recoveryContract)) {
   issues.push({ severity: "error", area: "recovery", message: `${recoveryContract} missing` });
 } else {
   const rc = readFileSync(recoveryContract, "utf8");
-  const m = rc.match(/actionId\s*:/g);
-  recoveryActionCount = m ? m.length : 0;
+  // Recovery actions are array entries with `id: "kebab-case"` (also accept legacy `actionId:`)
+  const idMatches = rc.match(/^\s{2,}id\s*:\s*"[a-z0-9-]+"/gm) ?? [];
+  const legacyMatches = rc.match(/actionId\s*:/g) ?? [];
+  recoveryActionCount = idMatches.length + legacyMatches.length;
   if (recoveryActionCount < 1) {
     issues.push({
       severity: "error",
