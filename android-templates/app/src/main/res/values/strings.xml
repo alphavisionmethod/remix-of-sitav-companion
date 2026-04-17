@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SITA OS</string>
+    <string name="title_activity_main">SITA OS</string>
+    <string name="package_name">com.sitaos.app</string>
+    <string name="custom_url_scheme">sita-os</string>
+    <string name="default_notification_channel_id">sita_os_default</string>
+    <string name="default_notification_channel_name">SITA OS Notifications</string>
+</resources>
