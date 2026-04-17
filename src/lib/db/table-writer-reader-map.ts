@@ -19,15 +19,29 @@ import {
   getWritersFor,
 } from "../backend-topology/edge-function-table-io-map";
 import { EDGE_FUNCTION_OWNER_MAP, type OwnerTeam } from "../backend-topology/edge-function-owner-map";
+import { NON_EDGE_TABLE_IO, type TableIOSource } from "./non-edge-table-io-sources";
+import {
+  isExemptedCrossDomainWriter,
+} from "./cross-domain-write-exemptions";
 
 export interface TableWriterReaderEntry {
   readonly table: string;
   readonly domain: DbDomain;
   readonly ownerTeam: OwnershipTeam;
+  /** Edge-function writers (function names). */
   readonly writers: readonly string[];
+  /** Edge-function readers (function names). */
   readonly readers: readonly string[];
+  /** Non-edge writers (client-sdk / rpc / trigger / system / view). */
+  readonly nonEdgeWriters: readonly TableIOSource[];
+  /** Non-edge readers. */
+  readonly nonEdgeReaders: readonly TableIOSource[];
   /** Writer functions whose owner-team is NOT aligned with the table's owner team. */
   readonly crossDomainWriters: readonly string[];
+  /** Cross-domain writers without an exemption — release blocker. */
+  readonly unexemptedCrossDomainWriters: readonly string[];
+  /** True when at least one writer or reader (edge OR non-edge) is declared. */
+  readonly hasAnyIO: boolean;
 }
 
 /** Map function-owner team → table-owner team for cross-domain comparison. */
