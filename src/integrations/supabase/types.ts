@@ -1400,6 +1400,83 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_implementation_suggestions: {
+        Row: {
+          created_at: string
+          estimated_effort: string
+          evidence_refs: Json
+          expected_value: string
+          id: string
+          priority: string
+          proposed_change_type: string
+          rationale: string
+          review_comments: string | null
+          reviewed_at: string | null
+          reviewer_user_id: string | null
+          source_agent_id: string
+          source_council: string
+          source_signal_ref: string
+          source_signal_type: string
+          status: string
+          summary: string
+          superseded_by: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_effort?: string
+          evidence_refs?: Json
+          expected_value?: string
+          id?: string
+          priority?: string
+          proposed_change_type?: string
+          rationale?: string
+          review_comments?: string | null
+          reviewed_at?: string | null
+          reviewer_user_id?: string | null
+          source_agent_id: string
+          source_council?: string
+          source_signal_ref: string
+          source_signal_type: string
+          status?: string
+          summary?: string
+          superseded_by?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          estimated_effort?: string
+          evidence_refs?: Json
+          expected_value?: string
+          id?: string
+          priority?: string
+          proposed_change_type?: string
+          rationale?: string
+          review_comments?: string | null
+          reviewed_at?: string | null
+          reviewer_user_id?: string | null
+          source_agent_id?: string
+          source_council?: string
+          source_signal_ref?: string
+          source_signal_type?: string
+          status?: string
+          summary?: string
+          superseded_by?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_implementation_suggestions_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "ai_implementation_suggestions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_inference_receipts: {
         Row: {
           capability_id: string | null
@@ -8974,6 +9051,71 @@ export type Database = {
         }
         Relationships: []
       }
+      dependency_upgrade_findings: {
+        Row: {
+          advisory_id: string | null
+          created_at: string
+          current_version: string | null
+          ecosystem: string
+          id: string
+          issue_class: string
+          package_name: string
+          related_suggestion_id: string | null
+          scanned_at: string
+          severity: string
+          source_evidence: Json
+          status: string
+          suggested_action: string | null
+          target_version: string | null
+          updated_at: string
+          upgrade_risk: string
+        }
+        Insert: {
+          advisory_id?: string | null
+          created_at?: string
+          current_version?: string | null
+          ecosystem?: string
+          id?: string
+          issue_class?: string
+          package_name: string
+          related_suggestion_id?: string | null
+          scanned_at?: string
+          severity?: string
+          source_evidence?: Json
+          status?: string
+          suggested_action?: string | null
+          target_version?: string | null
+          updated_at?: string
+          upgrade_risk?: string
+        }
+        Update: {
+          advisory_id?: string | null
+          created_at?: string
+          current_version?: string | null
+          ecosystem?: string
+          id?: string
+          issue_class?: string
+          package_name?: string
+          related_suggestion_id?: string | null
+          scanned_at?: string
+          severity?: string
+          source_evidence?: Json
+          status?: string
+          suggested_action?: string | null
+          target_version?: string | null
+          updated_at?: string
+          upgrade_risk?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dependency_upgrade_findings_related_suggestion_id_fkey"
+            columns: ["related_suggestion_id"]
+            isOneToOne: false
+            referencedRelation: "ai_implementation_suggestions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       device_attestations: {
         Row: {
           attestation_type: string
@@ -12511,6 +12653,57 @@ export type Database = {
           rung_reason?: string
           trust_score?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_weekly_digests: {
+        Row: {
+          created_at: string
+          delivery_state: string
+          escalations: Json
+          evidence_refs: Json
+          generated_by: string
+          highlights: Json
+          id: string
+          period_end: string
+          period_start: string
+          summary_markdown: string
+          top_cost_anomalies: Json
+          top_incidents: Json
+          top_suggestions: Json
+          trust_changes: Json
+        }
+        Insert: {
+          created_at?: string
+          delivery_state?: string
+          escalations?: Json
+          evidence_refs?: Json
+          generated_by?: string
+          highlights?: Json
+          id?: string
+          period_end: string
+          period_start: string
+          summary_markdown?: string
+          top_cost_anomalies?: Json
+          top_incidents?: Json
+          top_suggestions?: Json
+          trust_changes?: Json
+        }
+        Update: {
+          created_at?: string
+          delivery_state?: string
+          escalations?: Json
+          evidence_refs?: Json
+          generated_by?: string
+          highlights?: Json
+          id?: string
+          period_end?: string
+          period_start?: string
+          summary_markdown?: string
+          top_cost_anomalies?: Json
+          top_incidents?: Json
+          top_suggestions?: Json
+          trust_changes?: Json
         }
         Relationships: []
       }
@@ -19546,6 +19739,23 @@ export type Database = {
         }
         Returns: string
       }
+      propose_implementation_suggestion: {
+        Args: {
+          p_estimated_effort?: string
+          p_evidence_refs?: Json
+          p_expected_value?: string
+          p_priority?: string
+          p_proposed_change_type?: string
+          p_rationale: string
+          p_source_agent_id: string
+          p_source_council: string
+          p_source_signal_ref: string
+          p_source_signal_type: string
+          p_summary: string
+          p_title: string
+        }
+        Returns: string
+      }
       propose_internal_cost_optimization: {
         Args: {
           p_current_state: Json
@@ -19600,6 +19810,15 @@ export type Database = {
           _user_id?: string
         }
         Returns: string
+      }
+      record_implementation_suggestion_decision: {
+        Args: {
+          p_action: string
+          p_comments?: string
+          p_suggestion_id: string
+          p_supersedes?: string
+        }
+        Returns: Json
       }
       record_internal_agent_reflection: {
         Args: {
@@ -19669,6 +19888,7 @@ export type Database = {
         Args: { _user_id: string }
         Returns: string
       }
+      summarize_implementation_suggestions: { Args: never; Returns: Json }
       summarize_internal_agent_learning: {
         Args: { _lookback_hours?: number }
         Returns: {
