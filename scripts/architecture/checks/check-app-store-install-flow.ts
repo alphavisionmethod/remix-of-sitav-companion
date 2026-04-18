@@ -6,6 +6,7 @@
 import { readJsonSafe } from "../lib/utils";
 
 interface InstallTruth {
+  status: string;
   classification: string;
   consumerCount: number;
   edgeFunctions: string[];
@@ -21,14 +22,14 @@ if (!data) {
   process.exit(1);
 }
 
-const classOk = data.classification === "real-production-grade";
+const statusOk = data.status === "real-production-grade";
 const consumerOk = data.consumerCount >= MIN_CONSUMERS;
 const edgeOk = (data.edgeFunctions?.length ?? 0) >= MIN_EDGE_FUNCTIONS;
 const svcOk = data.installServiceExists === true;
-const ok = classOk && consumerOk && edgeOk && svcOk;
+const ok = statusOk && consumerOk && edgeOk && svcOk;
 
 console.log(
-  `${ok ? "✅" : "❌"} App Store install: ${data.classification} ` +
+  `${ok ? "✅" : "❌"} App Store install: ${data.status} ` +
   `(${data.consumerCount} consumers ≥ ${MIN_CONSUMERS}, ` +
   `${data.edgeFunctions?.length ?? 0} edge fns ≥ ${MIN_EDGE_FUNCTIONS}, ` +
   `installService=${svcOk})`
