@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
@@ -164,18 +163,15 @@ export function AppWindow({ window: win }: AppWindowProps) {
   );
 
   return (
-    <motion.div
+    <div
       ref={elRef}
       key={win.id}
-      initial={{ scale: 0.96, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.98, opacity: 0 }}
-      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         "absolute flex flex-col overflow-hidden pointer-events-auto",
         "rounded-xl border border-white/[0.08]",
         "bg-background/80 backdrop-blur-xl",
         "shadow-[0_2px_6px_hsl(0_0%_0%/0.08),0_20px_40px_hsl(0_0%_0%/0.18)]",
+        "animate-in fade-in zoom-in-95 duration-150",
         win.isMaximized && "!rounded-none"
       )}
       style={{
@@ -256,6 +252,6 @@ export function AppWindow({ window: win }: AppWindowProps) {
       >
         {win.component}
       </div>
-    </motion.div>
+    </div>
   );
 }
