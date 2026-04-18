@@ -347,4 +347,28 @@ const LeadsInbox = () => {
   );
 };
 
+// Federated cross-domain hints (Phase S/T) — surfaces non-lead matches inline.
+function FederatedLeadsHints({ query }: { query: string }) {
+  const { results, search, clearResults } = useGlobalSearch();
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (query.trim().length >= 2) search(query);
+      else clearResults();
+    }, 250);
+    return () => clearTimeout(t);
+  }, [query, search, clearResults]);
+  const cross = results.filter((r) => r.type !== "lead").slice(0, 4);
+  if (!query.trim() || cross.length === 0) return null;
+  return (
+    <div className="rounded-lg border border-border/40 bg-secondary/30 p-2.5 text-[11px]">
+      <span className="text-muted-foreground mr-2">Also matches in other apps:</span>
+      {cross.map((r) => (
+        <span key={`${r.type}:${r.id}`} className="mr-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+          {r.domain}/{r.type}: {r.title.slice(0, 32)}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default LeadsInbox;
