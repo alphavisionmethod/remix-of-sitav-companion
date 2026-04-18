@@ -14,7 +14,7 @@ export type CIGatePhase =
   | "phase-8-ci-umbrella"
   | "phase-9-reality-deployability"
   | "phase-10-completeness"
-  | "phase-12-mobile-deployability"
+  | "phase-12-native-deployability"
   | "phase-13-web-deployability"
   | "phase-14-desktop-deployability"
   | "phase-15-appliance-deployability"

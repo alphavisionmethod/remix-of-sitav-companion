@@ -215,28 +215,9 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     producesArtifact: "generated/route-registry-completeness-report.json",
   },
 
-  // ── Phase 12 ── Mobile Deployability (iOS + Android Store Readiness)
+  // ── Phase 12 ── Native Deployability (Ubuntu OS + Electron)
   {
-    id: "mobile-store-readiness",
-    phase: "phase-12-mobile-deployability",
-    title: "Mobile store readiness (iOS + Android)",
-    script: "scripts/architecture/checks/check-mobile-store-readiness.ts",
-    owner: "release-team",
-    severity: "blocker",
-    description: "iOS App Store + Google Play Store 36-item checklist: zero missing, partial items must have remediation.",
-    producesArtifact: "generated/mobile-store-readiness-report.json",
-  },
-  {
-    id: "mobile-min-os-floor",
-    phase: "phase-12-mobile-deployability",
-    title: "Mobile minimum OS floor",
-    script: "scripts/architecture/checks/check-mobile-store-readiness.ts",
-    owner: "release-team",
-    severity: "blocker",
-    description: "iOS ≥ 16.0 and Android API ≥ 26 enforced via min-os-version-contract.",
-  },
-  {
-    id: "mobile-build-pipeline",
+    id: "os-build-pipeline",
     phase: "phase-12-native-deployability",
     title: "Ubuntu-native build pipeline (ISO + IMG + OVA)",
     script: "scripts/architecture/checks/check-os-build-pipeline.ts",
