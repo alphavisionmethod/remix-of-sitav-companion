@@ -1,0 +1,2 @@
+// @lovable:migrated-wrapper
+export * from "@/platform/cloud/cloud-support-service";
