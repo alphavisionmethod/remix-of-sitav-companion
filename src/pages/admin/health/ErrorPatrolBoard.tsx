@@ -71,8 +71,8 @@ interface KillSwitchRow {
 
 const severityColor: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive border-destructive/30",
-  high: "bg-orange-500/15 text-orange-600 border-orange-500/30",
-  medium: "bg-yellow-500/15 text-yellow-600 border-yellow-500/30",
+  high: "bg-warning/15 text-warning border-warning/30",
+  medium: "bg-accent/30 text-accent-foreground border-accent",
   low: "bg-muted text-muted-foreground border-border",
 };
 
@@ -196,7 +196,7 @@ export default function ErrorPatrolBoard() {
           className={
             killSwitch?.enabled
               ? "border-destructive/40 text-destructive bg-destructive/10"
-              : "border-emerald-500/30 text-emerald-600 bg-emerald-500/10"
+              : "border-primary/30 text-primary bg-primary/10"
           }
         >
           {killSwitch?.enabled ? (
@@ -286,7 +286,7 @@ export default function ErrorPatrolBoard() {
                     </TableCell>
                     <TableCell>
                       {r.rollback_available === "available" && (
-                        <Badge className="bg-emerald-500/15 text-emerald-600 border-emerald-500/30" variant="outline">
+                        <Badge className="bg-primary/15 text-primary border-primary/30" variant="outline">
                           available
                         </Badge>
                       )}
