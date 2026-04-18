@@ -1,35 +1,9 @@
 {
-  "generatedAt": "2026-04-18T12:02:54.691Z",
+  "generatedAt": "2026-04-18T12:05:55.612Z",
   "gate": "plane-import-graph",
-  "directViolationCount": 5,
+  "directViolationCount": 0,
   "baseline": 5,
   "level": "warn",
   "ok": true,
-  "violations": [
-    {
-      "from": "src/pages/ObservabilityPage.tsx",
-      "to": "src/components/sita/admin/index.ts",
-      "spec": "@/components/sita/admin"
-    },
-    {
-      "from": "src/pages/PolicySimulatorHub.tsx",
-      "to": "src/components/sita/admin/index.ts",
-      "spec": "@/components/sita/admin"
-    },
-    {
-      "from": "src/pages/UsersAdminPage.tsx",
-      "to": "src/components/sita/admin/index.ts",
-      "spec": "@/components/sita/admin"
-    },
-    {
-      "from": "src/pages/WorkflowReplayHub.tsx",
-      "to": "src/components/sita/admin/index.ts",
-      "spec": "@/components/sita/admin"
-    },
-    {
-      "from": "src/pages/owner-mode/OwnerModePage.tsx",
-      "to": "src/components/sita/admin/index.ts",
-      "spec": "@/components/sita/admin"
-    }
-  ]
+  "violations": []
 }
