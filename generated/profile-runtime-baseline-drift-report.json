@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:36:35.493Z",
   "gate": "profile-runtime-baseline-drift",
-  "level": "block",
+  "generatedAt": "2026-04-18T12:37:05.099Z",
   "ok": true,
-  "hardFailureCount": 0,
-  "softDriftCount": 0
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": []
 }
