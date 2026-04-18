@@ -9586,6 +9586,137 @@ export type Database = {
         }
         Relationships: []
       }
+      external_workforce_api_keys: {
+        Row: {
+          created_at: string
+          id: string
+          key_id: string
+          last_used_at: string | null
+          revoked_at: string | null
+          scope: string
+          secret_hash: string
+          status: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key_id: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          scope?: string
+          secret_hash: string
+          status?: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key_id?: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          scope?: string
+          secret_hash?: string
+          status?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      external_workforce_subscriptions: {
+        Row: {
+          callback_url: string
+          created_at: string
+          event_types: string[]
+          failure_count: number
+          id: string
+          last_delivered_at: string | null
+          signing_secret_hash: string
+          status: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          callback_url: string
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          last_delivered_at?: string | null
+          signing_secret_hash: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          callback_url?: string
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          last_delivered_at?: string | null
+          signing_secret_hash?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      external_workforce_webhook_deliveries: {
+        Row: {
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          event_type: string
+          http_status: number | null
+          id: string
+          payload_hash: string
+          retry_count: number
+          signed_with_key: string | null
+          subscription_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          event_type: string
+          http_status?: number | null
+          id?: string
+          payload_hash: string
+          retry_count?: number
+          signed_with_key?: string | null
+          subscription_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          event_type?: string
+          http_status?: number | null
+          id?: string
+          payload_hash?: string
+          retry_count?: number
+          signed_with_key?: string | null
+          subscription_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_workforce_webhook_deliveries_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "external_workforce_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       family_members: {
         Row: {
           birthdate: string | null
@@ -9622,6 +9753,81 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      federated_knowledge_shares: {
+        Row: {
+          created_at: string
+          dp_epsilon: number
+          id: string
+          pattern_hash: string
+          pattern_kind: string
+          payload: Json
+          redaction_level: string
+          source_tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dp_epsilon: number
+          id?: string
+          pattern_hash: string
+          pattern_kind: string
+          payload?: Json
+          redaction_level?: string
+          source_tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dp_epsilon?: number
+          id?: string
+          pattern_hash?: string
+          pattern_kind?: string
+          payload?: Json
+          redaction_level?: string
+          source_tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      federated_pattern_aggregates: {
+        Row: {
+          confidence_band: string
+          contributing_tenant_count: number
+          created_at: string
+          frequency_band: string
+          id: string
+          pattern_key: string
+          payload: Json
+          user_id: string
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          confidence_band: string
+          contributing_tenant_count?: number
+          created_at?: string
+          frequency_band: string
+          id?: string
+          pattern_key: string
+          payload?: Json
+          user_id: string
+          window_end: string
+          window_start: string
+        }
+        Update: {
+          confidence_band?: string
+          contributing_tenant_count?: number
+          created_at?: string
+          frequency_band?: string
+          id?: string
+          pattern_key?: string
+          payload?: Json
+          user_id?: string
+          window_end?: string
+          window_start?: string
         }
         Relationships: []
       }
@@ -10827,6 +11033,84 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_agent_assurance_reports: {
+        Row: {
+          assurance_score: number
+          breach_count: number
+          created_at: string
+          drill_count: number
+          evidence_refs: Json
+          id: string
+          period_end: string
+          period_start: string
+          summary: string | null
+          user_id: string
+        }
+        Insert: {
+          assurance_score?: number
+          breach_count?: number
+          created_at?: string
+          drill_count?: number
+          evidence_refs?: Json
+          id?: string
+          period_end: string
+          period_start: string
+          summary?: string | null
+          user_id: string
+        }
+        Update: {
+          assurance_score?: number
+          breach_count?: number
+          created_at?: string
+          drill_count?: number
+          evidence_refs?: Json
+          id?: string
+          period_end?: string
+          period_start?: string
+          summary?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      internal_agent_auto_rollback_events: {
+        Row: {
+          applied_autonomy: number
+          created_at: string
+          id: string
+          reason: string
+          receipt_payload: Json | null
+          rollback_target: string
+          slo_snapshot_id: string | null
+          status: string
+          triggered_by: string
+          user_id: string
+        }
+        Insert: {
+          applied_autonomy?: number
+          created_at?: string
+          id?: string
+          reason: string
+          receipt_payload?: Json | null
+          rollback_target: string
+          slo_snapshot_id?: string | null
+          status?: string
+          triggered_by?: string
+          user_id: string
+        }
+        Update: {
+          applied_autonomy?: number
+          created_at?: string
+          id?: string
+          reason?: string
+          receipt_payload?: Json | null
+          rollback_target?: string
+          slo_snapshot_id?: string | null
+          status?: string
+          triggered_by?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       internal_agent_canary_runs: {
         Row: {
           created_at: string
@@ -10862,6 +11146,54 @@ export type Database = {
           observed?: Json
           started_at?: string
           status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      internal_agent_chaos_drills: {
+        Row: {
+          blast_radius: number
+          created_at: string
+          drill_key: string
+          enabled: boolean
+          id: string
+          last_outcome: Json | null
+          last_run_at: string | null
+          scenario: string
+          schedule_cron: string | null
+          status: string
+          target_system: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blast_radius?: number
+          created_at?: string
+          drill_key: string
+          enabled?: boolean
+          id?: string
+          last_outcome?: Json | null
+          last_run_at?: string | null
+          scenario: string
+          schedule_cron?: string | null
+          status?: string
+          target_system: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blast_radius?: number
+          created_at?: string
+          drill_key?: string
+          enabled?: boolean
+          id?: string
+          last_outcome?: Json | null
+          last_run_at?: string | null
+          scenario?: string
+          schedule_cron?: string | null
+          status?: string
+          target_system?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -16821,6 +17153,42 @@ export type Database = {
         }
         Relationships: []
       }
+      tenant_federation_optins: {
+        Row: {
+          created_at: string
+          id: string
+          opt_in_version: string
+          opted_in_at: string
+          opted_in_by: string
+          revoked_at: string | null
+          scope: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          opt_in_version: string
+          opted_in_at?: string
+          opted_in_by: string
+          revoked_at?: string | null
+          scope?: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          opt_in_version?: string
+          opted_in_at?: string
+          opted_in_by?: string
+          revoked_at?: string | null
+          scope?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       theses: {
         Row: {
           conviction: number
@@ -18443,10 +18811,15 @@ export type Database = {
         }
         Returns: Json
       }
+      clamp_assurance_action_autonomy: {
+        Args: { p_requested_level: number }
+        Returns: number
+      }
       clamp_tenant_action_autonomy: {
         Args: { p_requested_level: number }
         Returns: number
       }
+      dp_noise_clamp: { Args: { p_epsilon: number }; Returns: number }
       evaluate_action_safety_gates: {
         Args: {
           _action_class: string

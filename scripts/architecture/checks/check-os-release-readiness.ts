@@ -139,6 +139,16 @@ const REQUIRED_GATES = [
   "tenant-kill-switch-justification",
   "slo-evaluator-function",
   "phase7-admin-pages",
+  // Internal AI Workforce — Phase 8 closure (9 BLOCK gates)
+  "internal-agent-phase8-tables",
+  "assurance-l3-ceiling",
+  "chaos-safe-catalogue",
+  "external-workforce-api-readonly",
+  "webhook-hmac-signing",
+  "federation-optin-required",
+  "dp-noise-floor",
+  "knowledge-anonymization",
+  "phase8-admin-pages",
 ];
 
 const GENERATED_DIR = "generated";
