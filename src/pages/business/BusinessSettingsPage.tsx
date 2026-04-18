@@ -210,6 +210,7 @@ export default function BusinessSettingsPage() {
     setPrevTypes(localState.businessTypes);
     setJourneyNeedsUpdate(false);
     setSaveState("saved");
+    clearDraft(); // Phase S — autosaved draft is now redundant
     toast.success("Business settings saved successfully");
     setTimeout(() => setSaveState("idle"), 2000);
   };

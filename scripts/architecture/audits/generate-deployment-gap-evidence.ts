@@ -59,7 +59,7 @@ writeJsonOutput(path.join(OUT_DIR, "app-install-truth-map.json"), envelope({
 
 // ── 2. FILE PICKER ADOPTION ───────────────────────────────────
 const rawFileInputs: Array<{ file: string; line: number }> = [];
-const RAW_INPUT_EXCLUDED = /FilePickerService\.tsx$|FileExplorerToolbar\.tsx$|__tests__|\.test\./;
+const RAW_INPUT_EXCLUDED = /FilePickerService\.tsx$|__tests__|\.test\./;
 for (const f of tsFiles) {
   if (RAW_INPUT_EXCLUDED.test(f)) continue;
   const lines = readSafe(f).split("\n");
@@ -176,6 +176,7 @@ const refreshWorkerExists = fs.existsSync("supabase/functions/connector-token-re
 const refreshWorkerSrc = readSafe("supabase/functions/connector-token-refresh/index.ts");
 const googleRefreshReal = /oauth2\.googleapis\.com\/token|googleapis.*refresh_token/i.test(refreshWorkerSrc);
 const microsoftRefreshReal = /login\.microsoftonline\.com.*token|refreshMicrosoft\b/i.test(refreshWorkerSrc);
+const slackRefreshReal = /slack\.com\/api\/oauth\.v2\.access|refreshSlack\b/i.test(refreshWorkerSrc);
 const providerRegistryPath = "src/lib/services/connector-engine/connector-oauth-provider-registry.ts";
 const providerRegistryExists = fs.existsSync(providerRegistryPath);
 
@@ -186,13 +187,14 @@ writeJsonOutput(path.join(OUT_DIR, "connector-oauth-rotation-map.json"), envelop
   providers: {
     google: { status: googleRefreshReal ? "real-implementation" : "stub-pending-phase-M", scope: "drive,gmail,calendar" },
     microsoft: { status: microsoftRefreshReal ? "real-implementation" : "manual", reason: microsoftRefreshReal ? "Phase R: real Graph refresh wired" : "No active connector wiring; manual rotation by ops" },
-    slack: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
+    slack: { status: slackRefreshReal ? "real-implementation" : "manual", reason: slackRefreshReal ? "Phase S: real oauth.v2.access refresh wired" : "No active connector wiring; manual rotation by ops" },
     salesforce: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
   },
   classification:
+    googleRefreshReal && microsoftRefreshReal && slackRefreshReal ? "google-microsoft-slack-real-others-manual" :
     googleRefreshReal && microsoftRefreshReal ? "google-and-microsoft-real-others-manual" :
     googleRefreshReal ? "google-real-others-manual" : "rotation-gap-google-pending",
-  notes: "Google + Microsoft are wired with real refresh; Slack/Salesforce remain manual with truth labels.",
+  notes: "Google + Microsoft + Slack are wired with real refresh; Salesforce remains manual with truth labels.",
 }));
 
 // ── 9. FRONTEND ↔ BACKEND ↔ SUBSTRATE MATRIX ──────────────────
@@ -203,6 +205,7 @@ const matrix: Array<{ action: string; backend: string; substrate: string; status
   { action: "AI inference", backend: "edge:ai-gateway", substrate: "db:ai_invocations + ai_usage_ledger", status: "real" },
   { action: "Connector token refresh (Google)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: googleRefreshReal ? "real" : "stub-pending" },
   { action: "Connector token refresh (Microsoft)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: microsoftRefreshReal ? "real" : "manual" },
+  { action: "Connector token refresh (Slack)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: slackRefreshReal ? "real" : "manual" },
   { action: "Connector OAuth init", backend: "edge:connector-oauth", substrate: "db:connector_credentials", status: "real" },
   { action: "Global search", backend: "rpc:supabase tables", substrate: "db:multi-domain", status: "real" },
   { action: "Draft autosave", backend: "client-only", substrate: "localStorage + IndexedDB (offline-db.ts)", status: "real" },
