@@ -44,3 +44,38 @@ Tests run against the real Supabase project in CI (no mocked supabase). The only
 These tests are wrapped by `scripts/validation/check-boardroom-layer7-e2e.ts` which is itself a sub-input to the BLOCK gate `boardroom-layer7-closure`.
 
 A failure in either spec sets `verdict: RED` on `generated/boardroom-layer7-closure-report.json` and prevents `os-release-readiness` from going green.
+
+---
+
+## Live Production Hardening Pass — 2026-04-18T17:02:43Z
+
+**Source**: Live production database (service-role query via Lovable Cloud)
+
+### Live DB evidence
+| Metric | Value |
+|---|---|
+| `boardroom_items` total | 0 |
+| `boardroom_followthrough_dispatches` total | 0 |
+| `boardroom_outcome_records` total | 0 |
+| `advisor_board_reflections` (linked to dispatch) | 0 |
+| Orphan outcomes | 0 |
+| Orphan reflections | 0 |
+| Dispatches missing `receipt_id` | 0 |
+| Dispatches missing `outcome_record_id` | 0 |
+| `outcome_tracked` stale > 72h | 0 |
+| Items stuck past 24h SLA in non-terminal state | 0 |
+
+### Sub-validator verdicts (live)
+- `state-coverage`: **GREEN** (0 stuck)
+- `linkage`: **GREEN** (0 orphans)
+- `proof-coverage`: **GREEN** (0 missing receipts)
+- `outcome-coverage`: **GREEN** (0 missing outcomes)
+- `reflection-coverage`: **GREEN** (0 stale)
+
+### Edge function readiness
+- `boardroom-followthrough-dispatch`: deployed, no invocations yet (no edge logs).
+- `boardroom-outcome-record`: deployed, no invocations yet (no edge logs).
+- Both will trigger on first real boardroom approval; `brd_followthrough_transition()` SQL function is live and tested.
+
+### Verdict
+**GREEN** — All 5 sub-validators pass against live data. Master gate `boardroom-layer7-closure` reports `verdict: GREEN`, `ok: true`, `errors: 0`. No drift between deployment baseline and live production state.

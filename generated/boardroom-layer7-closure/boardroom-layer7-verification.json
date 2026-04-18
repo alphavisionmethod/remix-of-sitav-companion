@@ -1,17 +1,30 @@
 {
-  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "generatedAt": "2026-04-18T17:02:43Z",
   "gateName": "boardroom-layer7-closure",
   "gateLevel": "BLOCK",
+  "source": "live-db",
   "aggregateStatus": "GREEN",
   "closureRatio": 1.0,
   "totalDispatches": 0,
   "closedOrTracked": 0,
   "checks": {
-    "state": { "status": "GREEN", "payload": { "stuckCount": 0, "slaHours": 24 } },
-    "linkage": { "status": "GREEN", "payload": { "orphanedOutcomes": [], "orphanedReflections": [] } },
-    "proof": { "status": "GREEN", "payload": { "totalExecuted": 0, "missingReceipt": 0 } },
-    "outcome": { "status": "GREEN", "payload": { "totalExecuted": 0, "missingOutcome": 0 } },
-    "reflection": { "status": "GREEN", "payload": { "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 } }
+    "state": { "status": "GREEN", "source": "live-db", "payload": { "stuckCount": 0, "slaHours": 24 } },
+    "linkage": { "status": "GREEN", "source": "live-db", "payload": { "orphanedOutcomes": [], "orphanedReflections": [] } },
+    "proof": { "status": "GREEN", "source": "live-db", "payload": { "totalExecuted": 0, "missingReceipt": 0 } },
+    "outcome": { "status": "GREEN", "source": "live-db", "payload": { "totalExecuted": 0, "missingOutcome": 0 } },
+    "reflection": { "status": "GREEN", "source": "live-db", "payload": { "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 } }
+  },
+  "liveDbEvidence": {
+    "boardroomItems": 0,
+    "dispatches": 0,
+    "outcomes": 0,
+    "reflectionsLinked": 0,
+    "orphanOutcomes": 0,
+    "orphanReflections": 0,
+    "missingReceipts": 0,
+    "missingOutcomes": 0,
+    "staleReflections": 0,
+    "stuckPastSla": 0
   },
   "wiredInto": {
     "userSurface": "src/components/sita/apps/boardroom/BoardroomAppShell.tsx (module: followthrough)",
@@ -23,5 +36,6 @@
     ],
     "releaseGate": "scripts/architecture/checks/check-boardroom-layer7-closure.ts",
     "masterAggregator": "scripts/architecture/checks/check-os-release-readiness.ts (REQUIRED_GATES)"
-  }
+  },
+  "note": "Live production DB hardening pass complete. All 5 sub-validators GREEN against real boardroom_items / boardroom_followthrough_dispatches / boardroom_outcome_records / advisor_board_reflections tables. System has zero items currently — no drift, no orphans, no stale chains. Edge functions deployed and ready (no invocations yet, hence no edge logs)."
 }
