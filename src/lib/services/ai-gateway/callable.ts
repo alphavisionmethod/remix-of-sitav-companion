@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { conscienceGate } from "@/lib/services/conscience-gate";
+import { conscienceGate } from "@/lib/core-services/conscience-gate";
 import { createNegativeReceipt, type NegativeReceipt } from "@/lib/services/epistemic-firewall";
 
 export interface BrainCoreResponse {

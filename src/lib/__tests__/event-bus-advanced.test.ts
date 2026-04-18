@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { EventBus } from "@/lib/core-services/event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 
 // Mock persistence to avoid DB calls
 vi.mock("@/lib/persistence/event-bus-persistence", () => ({

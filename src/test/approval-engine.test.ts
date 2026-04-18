@@ -5,7 +5,7 @@ import {
   getRequest,
   listPending,
   expireStale,
-} from "@/lib/services/approval-engine/approval-requests.service";
+} from "@/lib/core-services/approval-engine/approval-requests.service";
 import {
   routeApproval,
   canDelegate,
