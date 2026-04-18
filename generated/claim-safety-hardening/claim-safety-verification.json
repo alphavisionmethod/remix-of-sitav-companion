@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-04-18T00:00:00Z",
+  "verdict": "GREEN",
+  "phases": {
+    "phase_1_os_language": "complete",
+    "phase_2_demo_registry": "complete",
+    "phase_3_containment_ui": "complete",
+    "phase_4_wording_policy": "complete",
+    "phase_5_validation_gates": "complete"
+  },
+  "gates": [
+    { "id": "check-os-claim-safety",                  "result": "GREEN", "metric": "0 prohibited claims" },
+    { "id": "check-track-b-language-boundaries",      "result": "GREEN", "metric": "0 leaks" },
+    { "id": "check-no-prohibited-native-claims",      "result": "GREEN", "metric": "0 violations" },
+    { "id": "check-demo-only-surface-badging",        "result": "GREEN", "metric": "9/9 badged" },
+    { "id": "check-future-vision-route-containment",  "result": "GREEN", "metric": "2/2 contained" },
+    { "id": "check-device-surface-claim-safety",      "result": "GREEN", "metric": "9/9 registered" },
+    { "id": "check-deployment-wording-safety",        "result": "GREEN", "metric": "0 over-claims" },
+    { "id": "check-launch-honesty-alignment",         "result": "GREEN", "metric": "18/18 docs carry caveats" },
+    { "id": "check-qualifier-required-claims",        "result": "GREEN", "metric": "0 unqualified uses" }
+  ],
+  "surfaces_contained": 9,
+  "claim_bearing_docs_with_caveats": 18,
+  "ci_gates_added": 9,
+  "total_release_gates_after_this_work": "45+",
+  "no_stubs": true,
+  "no_duplicates": true,
+  "fully_wired": true,
+  "fully_integrated": true
+}
