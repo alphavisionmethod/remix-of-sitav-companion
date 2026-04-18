@@ -8842,6 +8842,66 @@ export type Database = {
         }
         Relationships: []
       }
+      drill_cadence_registry: {
+        Row: {
+          backup_owner_role: string | null
+          cadence_interval_hours: number
+          cadence_label: string
+          category: string
+          created_at: string
+          description: string | null
+          display_name: string
+          drill_key: string
+          evidence_path: string | null
+          evidence_table: string | null
+          id: string
+          is_active: boolean
+          last_run_at: string | null
+          last_status: string | null
+          next_due_at: string | null
+          owner_role: string
+          updated_at: string
+        }
+        Insert: {
+          backup_owner_role?: string | null
+          cadence_interval_hours: number
+          cadence_label: string
+          category: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          drill_key: string
+          evidence_path?: string | null
+          evidence_table?: string | null
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          last_status?: string | null
+          next_due_at?: string | null
+          owner_role: string
+          updated_at?: string
+        }
+        Update: {
+          backup_owner_role?: string | null
+          cadence_interval_hours?: number
+          cadence_label?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          drill_key?: string
+          evidence_path?: string | null
+          evidence_table?: string | null
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          last_status?: string | null
+          next_due_at?: string | null
+          owner_role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dual_authority_challenges: {
         Row: {
           action: string
@@ -11110,6 +11170,72 @@ export type Database = {
           title?: string
           updated_at?: string
           urgency?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      oauth_refresh_probe_results: {
+        Row: {
+          account_id: string | null
+          alert_state: string
+          created_at: string
+          duration_ms: number | null
+          evidence: Json
+          failure_class: string | null
+          failure_reason: string | null
+          id: string
+          lifecycle_state: string
+          next_probe_due_at: string | null
+          probe_finished_at: string | null
+          probe_id: string
+          probe_started_at: string
+          provider: string
+          reauth_required: boolean
+          retry_count: number
+          status: string
+          token_row_id: string | null
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          alert_state?: string
+          created_at?: string
+          duration_ms?: number | null
+          evidence?: Json
+          failure_class?: string | null
+          failure_reason?: string | null
+          id?: string
+          lifecycle_state?: string
+          next_probe_due_at?: string | null
+          probe_finished_at?: string | null
+          probe_id: string
+          probe_started_at?: string
+          provider: string
+          reauth_required?: boolean
+          retry_count?: number
+          status?: string
+          token_row_id?: string | null
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          alert_state?: string
+          created_at?: string
+          duration_ms?: number | null
+          evidence?: Json
+          failure_class?: string | null
+          failure_reason?: string | null
+          id?: string
+          lifecycle_state?: string
+          next_probe_due_at?: string | null
+          probe_finished_at?: string | null
+          probe_id?: string
+          probe_started_at?: string
+          provider?: string
+          reauth_required?: boolean
+          retry_count?: number
+          status?: string
+          token_row_id?: string | null
           user_id?: string
         }
         Relationships: []
@@ -13765,6 +13891,87 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      restore_drill_receipts: {
+        Row: {
+          artifact_path: string | null
+          backup_file: string | null
+          backup_mode: string | null
+          backup_table_count: number
+          created_at: string
+          critical_route_fail_count: number
+          critical_route_pass_count: number
+          drill_class: string
+          drill_id: string
+          duration_ms: number
+          environment: string
+          errors: Json
+          finished_at: string
+          id: string
+          match_percent: number
+          mode: string
+          registry_table_count: number
+          rls_fail_count: number
+          rls_pass_count: number
+          runner_identity: string | null
+          started_at: string
+          status: string
+          verification_matrix: Json
+          warnings: Json
+        }
+        Insert: {
+          artifact_path?: string | null
+          backup_file?: string | null
+          backup_mode?: string | null
+          backup_table_count?: number
+          created_at?: string
+          critical_route_fail_count?: number
+          critical_route_pass_count?: number
+          drill_class?: string
+          drill_id: string
+          duration_ms: number
+          environment?: string
+          errors?: Json
+          finished_at: string
+          id?: string
+          match_percent?: number
+          mode: string
+          registry_table_count?: number
+          rls_fail_count?: number
+          rls_pass_count?: number
+          runner_identity?: string | null
+          started_at: string
+          status: string
+          verification_matrix?: Json
+          warnings?: Json
+        }
+        Update: {
+          artifact_path?: string | null
+          backup_file?: string | null
+          backup_mode?: string | null
+          backup_table_count?: number
+          created_at?: string
+          critical_route_fail_count?: number
+          critical_route_pass_count?: number
+          drill_class?: string
+          drill_id?: string
+          duration_ms?: number
+          environment?: string
+          errors?: Json
+          finished_at?: string
+          id?: string
+          match_percent?: number
+          mode?: string
+          registry_table_count?: number
+          rls_fail_count?: number
+          rls_pass_count?: number
+          runner_identity?: string | null
+          started_at?: string
+          status?: string
+          verification_matrix?: Json
+          warnings?: Json
         }
         Relationships: []
       }

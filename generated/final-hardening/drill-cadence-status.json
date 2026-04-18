@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-18T17:30:00Z",
+  "dbBacked": true,
+  "table": "drill_cadence_registry",
+  "adminBoard": "src/components/admin/DrillCadenceBoard.tsx",
+  "validator": "scripts/validation/check-drill-cadence-freshness.ts",
+  "registeredDrills": [
+    "restore-drill-production-shape",
+    "oauth-refresh-probe-google",
+    "oauth-refresh-probe-microsoft",
+    "oauth-refresh-probe-slack",
+    "release-artifact-verification",
+    "baseline-seal-verification",
+    "notification-calmness-review",
+    "admin-golden-path-drill",
+    "boardroom-followthrough-runbook-drill"
+  ],
+  "categories": ["disaster-recovery", "connector-health", "release", "governance", "ux", "operator-readiness"],
+  "ok": true
+}

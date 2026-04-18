@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-18T17:30:00Z",
+  "oldName": "Nova Kernel",
+  "newCanonicalName": "Nova Runtime SDK",
+  "classification": "userland-runtime-substrate",
+  "aliasModule": "src/platform/nova-runtime-sdk/index.ts",
+  "compatibilityStrategy": "Internal directory src/platform/nova-sdk/kernel/* keeps existing names as a temporary compatibility alias; all new code imports from @/platform/nova-runtime-sdk.",
+  "claimRiskRemoved": ["host-kernel ownership", "kernel-level isolation", "real-hardware control"],
+  "honestyNote": "Nova Runtime SDK simulates OS-like primitives in userland. It is not a host kernel and provides no kernel-level security boundary.",
+  "validator": "scripts/validation/check-nova-runtime-sdk-naming.ts",
+  "ok": true
+}

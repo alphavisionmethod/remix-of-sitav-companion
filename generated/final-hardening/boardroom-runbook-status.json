@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-18T17:30:00Z",
+  "runbookPath": "generated/final-hardening/BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md",
+  "scenariosCovered": [
+    "stuck-approval", "approved-not-dispatched", "dispatched-no-execution-start",
+    "execution-failed", "execution-no-receipt", "receipt-no-outcome", "outcome-no-reflection",
+    "stale-chain", "manual-intervention"
+  ],
+  "owner": "platform-sre",
+  "backupOwner": "product-lead",
+  "drillKey": "boardroom-followthrough-runbook-drill",
+  "drillCadenceHours": 720,
+  "ok": true
+}
