@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-18T17:30:00Z",
+  "verdict": "GREEN",
+  "restoreDrill": { "implemented": true, "scriptPath": "scripts/db/restore/production-shape-restore-drill.ts", "receiptTable": "restore_drill_receipts" },
+  "oauthProbe": { "implemented": true, "edgeFunction": "oauth-refresh-probe", "providers": ["google", "microsoft", "slack"], "receiptTable": "oauth_refresh_probe_results" },
+  "validators": [
+    "scripts/validation/check-production-restore-drill.ts",
+    "scripts/validation/check-oauth-refresh-probe-coverage.ts"
+  ],
+  "adminSurfaces": [
+    "src/components/admin/OAuthRefreshHealthBoard.tsx"
+  ],
+  "ok": true
+}

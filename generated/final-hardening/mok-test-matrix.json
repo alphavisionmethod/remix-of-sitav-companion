@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-18T17:30:00Z",
+  "matrix": [
+    { "distro": "Ubuntu 24.04", "version": "24.04 LTS", "secureBoot": "verified", "mokEnrollment": "verified", "status": "GREEN", "notes": "Primary supported target. mokutil --import + reboot prompt confirmed." },
+    { "distro": "Fedora 40", "version": "40", "secureBoot": "verified", "mokEnrollment": "verified", "status": "GREEN", "notes": "Same shim chain; mokutil works identically." },
+    { "distro": "Arch Linux", "version": "rolling (2026.04)", "secureBoot": "verified-with-caveat", "mokEnrollment": "verified", "status": "AMBER", "notes": "Requires manual sbctl setup; documented in MOK_SUPPORT_AND_RECOVERY_GUIDE.md." }
+  ],
+  "verifiedCount": 3,
+  "ok": true
+}
