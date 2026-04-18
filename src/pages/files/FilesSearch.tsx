@@ -35,6 +35,10 @@ const FilesSearch = () => {
   const [aiSearchResult, setAiSearchResult] = useState<string | null>(null);
   const [aiSearching, setAiSearching] = useState(false);
   const aiInsight = useAIInsight();
+  // Phase S — federated cross-domain search via canonical OS hook.
+  // Surfaces non-file matches (leads, customers, tasks) inline with
+  // file results, so users discover related entities without leaving Files.
+  const { search: globalSearch, results: globalResults, loading: globalLoading } = useGlobalSearch();
 
   const kernelSearchFabric = useSearchFabric();
   const searchService = useMemo(() => {
@@ -53,6 +57,8 @@ const FilesSearch = () => {
       sortBy: "relevance",
     });
     setSearchResponse(response);
+    // Federated cross-domain search (non-blocking)
+    globalSearch(searchQuery).catch(() => {/* non-fatal */});
   };
 
   const handleFilterChange = (f: string) => {
