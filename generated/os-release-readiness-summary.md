@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T03:07:39.605Z
+> Generated: 2026-04-18T12:33:27.281Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 25 |
-| Gates present  | 25 |
+| Gates required | 34 |
+| Gates present  | 34 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3329 |
+| Total warnings | 3348 |
 
 ## Per-gate results
 
@@ -41,11 +41,20 @@
 | `misplaced-runtime-logic` | ✅ | 0 | 0 |
 | `misplaced-data-logic` | ✅ | 0 | 0 |
 | `misplaced-domain-logic` | ✅ | 0 | 0 |
-| `legacy-wrapper-usage` | ✅ | 0 | 1499 |
+| `legacy-wrapper-usage` | ✅ | 0 | 1518 |
+| `profile-runtime-hardening` | ✅ | 0 | 0 |
+| `launcher-registry-completeness` | ✅ | 0 | 0 |
+| `app-profile-matrix` | ✅ | 0 | 0 |
+| `hidden-app-routes` | ✅ | 0 | 0 |
+| `mobile-capability-truth` | ✅ | 0 | 0 |
+| `profile-route-coverage` | ✅ | 0 | 0 |
+| `command-palette-profile-leakage` | ✅ | 0 | 0 |
+| `shared-component-profile-pollution` | ✅ | 0 | 0 |
+| `route-guard-coverage` | ✅ | 0 | 0 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3329 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3348 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

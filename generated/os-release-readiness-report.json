@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T03:07:39.605Z",
+  "generatedAt": "2026-04-18T12:33:27.281Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -176,11 +176,74 @@
       "gate": "legacy-wrapper-usage",
       "ok": true,
       "errors": 0,
-      "warnings": 1499
+      "warnings": 1518
+    },
+    {
+      "file": "generated/profile-runtime-hardening-report.json",
+      "gate": "profile-runtime-hardening",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/launcher-registry-completeness-report.json",
+      "gate": "launcher-registry-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-profile-matrix-report.json",
+      "gate": "app-profile-matrix",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/hidden-app-routes-report.json",
+      "gate": "hidden-app-routes",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-capability-truth-report.json",
+      "gate": "mobile-capability-truth",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/profile-route-coverage-report.json",
+      "gate": "profile-route-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/command-palette-profile-leakage-report.json",
+      "gate": "command-palette-profile-leakage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/shared-component-profile-pollution-report.json",
+      "gate": "shared-component-profile-pollution",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-guard-coverage-report.json",
+      "gate": "route-guard-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3329,
+  "totalWarnings": 3348,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
