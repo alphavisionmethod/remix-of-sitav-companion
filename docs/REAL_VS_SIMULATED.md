@@ -885,3 +885,6 @@ Some concepts have both a "real" implementation (Supabase Auth, RLS) and a "simu
 ---
 
 *End of audit. This document should be updated as systems are wired to real backend truth.*
+
+
+> **Canonical framing**: SITA OS is an Ubuntu-native userland AI operating system. Where this document references "operating system" or "boot sequence", it refers to the userland AI operating environment running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
