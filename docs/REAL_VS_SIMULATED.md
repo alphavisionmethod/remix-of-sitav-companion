@@ -1,4 +1,4 @@
-> **Canonical framing**: SITA OS is an Ubuntu-native userland AI operating system running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. References to "operating system" and "boot sequence" mean the userland AI operating environment. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
+> **Canonical framing**: SITA OS is an Ubuntu-native userland AI Ubuntu-native userland operating system running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. References to "Ubuntu-native userland operating system" and "userland boot sequence (above systemd on Ubuntu)" mean the userland AI operating environment. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
 
 # REAL vs SIMULATED — Full SITA OS Architecture Reality Audit
 
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-SITA OS is a Lovable-hosted Vite + React + TypeScript SPA backed by Supabase. It presents itself as a multi-plane operating system platform with kernel services, device management, AI workforce, boardroom governance, cloud infrastructure, and mobile authority. **The reality is that the project is a well-scaffolded frontend application with genuine backend infrastructure (auth, DB, edge functions, storage) powering roughly 15–20% of its surface area, while the remaining 80–85% is UI-only, demo-data-driven, or architecturally aspirational.**
+SITA OS is a Lovable-hosted Vite + React + TypeScript SPA backed by Supabase. It presents itself as a multi-plane Ubuntu-native userland operating system platform with kernel services, device management, AI workforce, boardroom governance, cloud infrastructure, and mobile authority. **The reality is that the project is a well-scaffolded frontend application with genuine backend infrastructure (auth, DB, edge functions, storage) powering roughly 15–20% of its surface area, while the remaining 80–85% is UI-only, demo-data-driven, or architecturally aspirational.**
 
 ### Top 10 Truths
 
@@ -549,7 +549,7 @@ SITA OS is a Lovable-hosted Vite + React + TypeScript SPA backed by Supabase. It
 - Crash resilience (try/catch wrappers, not real crash recovery)
 - Power manager (battery API wrapper at best, simulated states)
 - Transactional filesystem (in-memory key-value store)
-- Kernel boot sequence (sequential function calls)
+- Kernel userland boot sequence (above systemd on Ubuntu) (sequential function calls)
 
 **What is missing to make any of this real:**
 - A real OS runtime (Electron with native modules, or actual OS-level code)
@@ -870,7 +870,7 @@ Some concepts have both a "real" implementation (Supabase Auth, RLS) and a "simu
 | App Store | Demo data UI |
 | Timeline/Activity | Demo data UI |
 | 200+ service shims | Frontend abstractions, not backend services |
-| Shell as "OS" | Web application UI, not an operating system |
+| Shell as "OS" | Web application UI, not an Ubuntu-native userland operating system |
 
 ---
 
@@ -889,4 +889,4 @@ Some concepts have both a "real" implementation (Supabase Auth, RLS) and a "simu
 *End of audit. This document should be updated as systems are wired to real backend truth.*
 
 
-> **Canonical framing**: SITA OS is an Ubuntu-native userland AI operating system. Where this document references "operating system" or "boot sequence", it refers to the userland AI operating environment running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
+> **Canonical framing**: SITA OS is an Ubuntu-native userland AI Ubuntu-native userland operating system. Where this document references "Ubuntu-native userland operating system" or "userland boot sequence (above systemd on Ubuntu)", it refers to the userland AI operating environment running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
