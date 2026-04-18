@@ -52,11 +52,22 @@ ls -la /boot/efi/loader/entries 2>/dev/null > state/boot-entries.txt || true
 # 3a. Phase 3 — canonical native diagnostics + crash logs + recovery snapshot
 mkdir -p diagnostics crashes
 # Run all collectors fresh (best-effort; fall back to existing files)
-for c in collect-boot-health collect-runtime-health collect-update-health collect-service-failures; do
+for c in collect-boot-health collect-runtime-health collect-update-health collect-service-failures collect-service-health; do
   [[ -x "/opt/sita/diagnostics/${c}.sh" ]] && bash "/opt/sita/diagnostics/${c}.sh" >/dev/null 2>&1 || true
 done
+# Phase 1/3 — boot-target + update-state inspectors
+[[ -x /opt/sita/diagnostics/check-boot-target.sh ]] && \
+  bash /opt/sita/diagnostics/check-boot-target.sh > diagnostics/boot-target.txt 2>&1 || true
+[[ -x /opt/sita/scripts/check-update-state.sh ]] && \
+  bash /opt/sita/scripts/check-update-state.sh > diagnostics/update-state.txt 2>&1 || true
 [[ -x /opt/sita/recovery/recovery-status.sh ]] && \
   bash /opt/sita/recovery/recovery-status.sh > diagnostics/recovery-status.txt 2>/dev/null || true
+# Backup status snapshot
+if [[ -d /var/lib/sita/backups ]]; then
+  ls -lh /var/lib/sita/backups/ > state/backup-status.txt 2>&1 || true
+  find /var/lib/sita/backups -name 'sita-backup-*.tar.gz' -printf '%T@ %p %s\n' 2>/dev/null \
+    | sort -rn | head -10 > state/backup-recent.txt || true
+fi
 cp -r /var/lib/sita/diagnostics/. diagnostics/ 2>/dev/null || true
 cp -r /var/log/sita/crashes/.     crashes/     2>/dev/null || true
 cp -r /var/lib/sita/state/.       state/native-state/ 2>/dev/null || true

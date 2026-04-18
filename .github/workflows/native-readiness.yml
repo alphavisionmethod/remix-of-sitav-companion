@@ -40,9 +40,13 @@ jobs:
         run: npx tsx scripts/architecture/checks/check-os-support-bundle-readiness.ts
       - name: Native observability readiness
         run: npx tsx scripts/architecture/checks/check-native-observability-readiness.ts
+      - name: Aggregate release readiness
+        run: npx tsx scripts/architecture/checks/check-os-release-readiness.ts
       - name: Upload reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: native-readiness-reports
-          path: generated/*-readiness-report.json
+          path: |
+            generated/*-readiness-report.json
+            generated/os-release-readiness-summary.md

@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — Operator Control Surface
+#
+# Single canonical entrypoint for SITA OS operators. Thin wrapper around
+# existing canonical scripts. Adds NOTHING beyond dispatch — every
+# action delegates to the script that already owns that concern.
+#
+# Install path (in image): /usr/bin/sita-ops → /opt/sita/bin/sita-ops
+# ═══════════════════════════════════════════════════════════════════════
+set -uo pipefail
+
+readonly SITA="/opt/sita"
+
+usage() {
+  cat <<USAGE
+sita-ops — SITA OS operator control surface
+
+USAGE:
+  sita-ops <command> [args]
+
+COMMANDS:
+  status                 Aggregated health: boot target + services + shell + update + recovery
+  shell-health           One-shot Electron shell health probe
+  restart-shell          Repair + restart sita-runtime.service
+  recovery               Enter recovery mode (TUI)
+  recovery-status        Print recovery / boot / verity / shell snapshot
+  rollback [--reset-state]
+                         Flip to previous A/B slot (state preserved unless --reset-state)
+  update-status          Inspect A/B update state (staged / interrupted / failed)
+  support-bundle         Generate redacted diagnostic tarball
+  backup                 Run canonical backup (deploy/backup.sh)
+  repair <target>        Run a repair script: shell | first-boot | update-state | runtime-services
+  version                Print image version, channel, slot
+
+EXAMPLES:
+  sudo sita-ops status
+  sudo sita-ops repair shell
+  sudo sita-ops support-bundle
+  sudo sita-ops rollback
+
+USAGE
+}
+
+require_root() {
+  [[ ${EUID} -eq 0 ]] || { echo "sita-ops: this command requires root (use sudo)" >&2; exit 2; }
+}
+
+cmd_version() {
+  echo "version: $(cat /etc/sita/version 2>/dev/null || echo unknown)"
+  echo "channel: $(cat /etc/sita/channel 2>/dev/null || echo unknown)"
+  echo "slot:    $(cat /etc/sita/slot    2>/dev/null || echo unknown)"
+}
+
+cmd_status() {
+  require_root
+  echo "═══ SITA OS status ═══"
+  cmd_version
+  echo
+  echo "── boot target ──"
+  "${SITA}/diagnostics/check-boot-target.sh" || true
+  echo
+  echo "── services ──"
+  "${SITA}/diagnostics/collect-service-health.sh" >/dev/null || true
+  cat /var/lib/sita/diagnostics/service-health.json 2>/dev/null \
+    | grep -E '"unit"|"active"|"restarts"' | sed 's/^/  /'
+  echo
+  echo "── shell ──"
+  "${SITA}/runtime/check-shell-health.sh" || true
+  echo
+  echo "── update state ──"
+  "${SITA}/scripts/check-update-state.sh" || true
+  echo
+  echo "── recovery ──"
+  "${SITA}/recovery/recovery-status.sh" 2>/dev/null || echo "  (recovery-status not available)"
+}
+
+cmd_dispatch() {
+  local sub="${1:-}"
+  shift || true
+  case "${sub}" in
+    status)            cmd_status ;;
+    shell-health)      "${SITA}/runtime/check-shell-health.sh" ;;
+    restart-shell)     require_root; "${SITA}/recovery/repair-shell.sh" ;;
+    recovery)          require_root; "${SITA}/recovery/recovery-entry.sh" ;;
+    recovery-status)   "${SITA}/recovery/recovery-status.sh" ;;
+    rollback)          require_root; "${SITA}/scripts/rollback-to-previous.sh" "$@" ;;
+    update-status)     "${SITA}/scripts/check-update-state.sh" ;;
+    support-bundle)    require_root; "${SITA}/scripts/generate-support-bundle.sh" ;;
+    backup)            require_root; "${SITA}/deploy/backup.sh" "$@" ;;
+    repair)
+      require_root
+      local what="${1:-}"
+      case "${what}" in
+        shell)             "${SITA}/recovery/repair-shell.sh" ;;
+        first-boot)        "${SITA}/recovery/repair-first-boot.sh" ;;
+        update-state)      shift || true; "${SITA}/recovery/repair-update-state.sh" "$@" ;;
+        runtime-services)  "${SITA}/recovery/repair-runtime-services.sh" ;;
+        ""|-h|--help)
+          echo "sita-ops repair <shell|first-boot|update-state|runtime-services>" >&2
+          exit 2 ;;
+        *)
+          echo "sita-ops repair: unknown target '${what}'" >&2
+          exit 2 ;;
+      esac
+      ;;
+    version)           cmd_version ;;
+    -h|--help|help|"") usage ;;
+    *)
+      echo "sita-ops: unknown command '${sub}'" >&2
+      usage >&2
+      exit 2 ;;
+  esac
+}
+
+cmd_dispatch "$@"
