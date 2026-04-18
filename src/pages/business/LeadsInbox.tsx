@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
@@ -60,6 +60,14 @@ const LeadsInbox = () => {
   } = useLeadInbox();
 
   const stats = getInboxStats(items);
+
+  // Phase S — federated cross-domain search via canonical OS hook.
+  // Local `setSearch` filters the inbox; `useGlobalSearch` surfaces
+  // related entities (customers, tasks, invoices) for context.
+  const { search: globalSearch, results: globalResults, loading: globalLoading } = useGlobalSearch();
+  useEffect(() => {
+    if (search.trim().length >= 2) globalSearch(search.trim()).catch(() => {/* non-fatal */});
+  }, [search, globalSearch]);
 
   // Compare mode: when exactly 2 items are checked
   const compareLeads = useMemo(() => {
