@@ -1,0 +1,28 @@
+{
+  "phase": "phase-2-safe-autonomous-actions",
+  "component": "internal-agent-execute-action",
+  "status": "complete",
+  "function_path": "supabase/functions/internal-agent-execute-action/index.ts",
+  "verify_jwt": false,
+  "auth_model": "in-code admin check + service-role bypass",
+  "handlers": [
+    "restart_workflow",
+    "replay_workflow",
+    "clear_stale_lock",
+    "rotate_expired_token",
+    "disable_unhealthy_connector",
+    "trigger_safe_repair_path",
+    "enable_connector",
+    "cancel_workflow_run"
+  ],
+  "safety_brain": "evaluate_action_safety_gates RPC (SECURITY DEFINER)",
+  "gate_count": 7,
+  "rate_limit_per_agent_per_hour": 10,
+  "master_kill_switch": "KS-INTERNAL-AGENTS-EXECUTE",
+  "approval_queue_table": "ai_workforce_approval_queue",
+  "intent_table": "internal_agent_action_intents",
+  "action_table": "internal_agent_actions",
+  "receipt_table": "ai_action_receipts",
+  "verified_at": "2026-04-18T19:35:00Z",
+  "ok": true
+}
