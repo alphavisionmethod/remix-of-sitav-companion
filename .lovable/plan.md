@@ -1,113 +1,98 @@
 
+The user wants Part 2 of the Ubuntu-Native reorientation: a comprehensive hardening sweep across service supervision, shell resilience, update safety, recovery, observability, app runtime, validation, and docs.
 
-## Ubuntu-Native Platform Reorientation — Phased Implementation
+Let me audit existing state quickly to scope correctly without duplicating.
 
-### Pre-flight audit findings (from live repo)
+Already shipped (from context + visible files):
+- `electron/` 15 .cjs hardening modules
+- `os/scripts/` 19 scripts (build, sign, verity, TPM, SBOM, rollback, support bundle, release.sh)
+- `os/runtime/shell-watchdog.sh` ✅ exists
+- `os/scripts/generate-support-bundle.sh` ✅ exists with diagnostics/crashes/redaction
+- `os/diagnostics/` collectors (boot/runtime/update/service-failures/heartbeat) ✅
+- `os/recovery/` with recovery-entry, recovery-status, recovery-collect, safe-mode ✅
+- `os/image-builder/services/` systemd units (sita-updated, sita-recovery-shell, etc.)
+- `docs/os/` already has 18 docs including RECOVERY_MODE.md
+- 8 native readiness checks + aggregator (Part 1)
+- `.github/workflows/native-readiness.yml`, `os-build-iso.yml`
+- `deploy/backup.sh` + `deploy/first-boot.sh`
 
-I need to inventory active iOS/Apple footprint before drafting phases.
-<lov-tool-use id="toolu_vrtx_01UrFvXiJL9GHGdRWi6hH8xu" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"=== iOS workflows ===\\\" && ls .github/workflows | grep -iE \\\"ios|apple|mobile\\\" && echo \\\"=== iOS scripts ===\\\" && find scripts -ipath \\\"*ios*\\\" -o -ipath \\\"*apple*\\\" 2>/dev/null | head -40 && echo \\\"=== iOS templates ===\\\" && ls ios-templates 2>/dev/null && echo \\\"=== Capacitor ===\\\" && ls capacitor.config.ts 2>/dev/null && grep -l \\\"@capacitor\\\" package.json && echo \\\"=== Mobile readiness checks ===\\\" && find scripts/architecture -name \\\"*mobile*\\\" -o -name \\\"*ios*\\\" 2>/dev/null && echo \\\"=== Generated mobile reports ===\\\" && ls generated 2>/dev/null | grep -iE \\\"mobile|ios|apple|store-readiness\\\" && echo \\\"=== Docs iOS ===\\\" && find docs -ipath \\\"*ios*\\\" 2>/dev/null && echo \\\"=== OS docs present ===\\\" && ls docs/os 2>/dev/null && echo \\\"=== OS scripts ===\\\" && ls os/scripts 2>/dev/null && echo \\\"=== OS workflows ===\\\" && ls .github/workflows | grep -iE \\\"os-|electron|qemu|vmware\\\"\", \"user_facing_description\": \"Auditing iOS and Ubuntu-native footprint\"}">
-</lov-tool-use>
+Gaps to fill (real, non-duplicate):
+1. Canonical service model doc + audit of existing units
+2. Boot target validation script
+3. Desktop session model doc (xinit/TTY7/fallback wiring is in memory but undocumented)
+4. Shell health probe enhancements (only watchdog exists)
+5. Writable state model doc
+6. Backup/restore canonical doc (script exists, doc missing)
+7. Logging model doc
+8. Repair toolkit (4 scripts: shell, first-boot, update-state, runtime-services)
+9. Validation matrix doc
+10. Hardware support matrix doc
+11. Release readiness aggregator script + report
+12. Native runbooks (shell-crash-loop, failed-update, rollback-failure, recovery-usage, first-boot-failure, qemu-failure)
+13. Operator control wrapper script (`sita-ops`)
+14. Service health summary collector enhancement
+15. Update CI to run release readiness
 
-<lov-tool-use id="toolu_vrtx_01QE4Ehm3Jorazv1gsTTzXRW" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"=== iOS/Apple workflows ===\\\" && ls .github/workflows 2>/dev/null | grep -iE \\\"ios|apple|mobile|android\\\" && echo \\\"--- all workflows ---\\\" && ls .github/workflows 2>/dev/null && echo \\\"=== iOS scripts ===\\\" && find scripts -ipath \\\"*ios*\\\" -o -ipath \\\"*apple*\\\" 2>/dev/null | head -40 && echo \\\"=== iOS templates dir ===\\\" && ls -la ios-templates 2>/dev/null && echo \\\"=== android-templates ===\\\" && ls -la android-templates 2>/dev/null && echo \\\"=== capacitor ===\\\" && ls capacitor.config.ts 2>/dev/null && grep -l \\\"@capacitor\\\" package.json 2>/dev/null && echo \\\"=== Mobile arch checks ===\\\" && find scripts/architecture -iname \\\"*mobile*\\\" -o -iname \\\"*ios*\\\" -o -iname \\\"*apple*\\\" 2>/dev/null\", \"user_facing_description\": \"Auditing iOS footprint part 1\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_016Uo1GApT4ERinEDrJ88Pw1" name="code--exec" integration-id="code" data="{\"command\": \"cd /dev-server && echo \\\"=== generated mobile/ios reports ===\\\" && ls generated 2>/dev/null | grep -iE \\\"mobile|ios|apple|store\\\" && echo \\\"=== docs/ios ===\\\" && find docs -ipath \\\"*ios*\\\" -o -ipath \\\"*apple*\\\" -o -ipath \\\"*mobile*\\\" 2>/dev/null && echo \\\"=== docs/os ===\\\" && ls docs/os 2>/dev/null && echo \\\"=== os/scripts ===\\\" && ls os/scripts 2>/dev/null && echo \\\"=== os/ structure ===\\\" && ls os 2>/dev/null && echo \\\"=== electron files ===\\\" && ls electron 2>/dev/null && echo \\\"=== src/lib/mobile-platform ===\\\" && ls src/lib/mobile-platform 2>/dev/null && echo \\\"=== package.json mobile deps ===\\\" && grep -E \\\"@capacitor|@aparajita\\\" package.json 2>/dev/null\", \"user_facing_description\": \"Auditing iOS footprint part 2\"}">
-</lov-tool-use>
-I have enough context. The repo currently treats iOS/Android/Capacitor as active platforms — 4 mobile workflows, iOS templates, scripts, mobile readiness checks, and 11 Capacitor deps. The user wants Ubuntu-native to become the canonical native truth and Apple/iOS to be archived.
+Plan structure: 6 phases, each independently deployable.
 
 <lov-plan>
 
-## Ubuntu-Native Reorientation — Phased Implementation Plan
+## Ubuntu-Native Part 2 — Stability, Recovery & Operability Hardening
 
-### Audit findings (real state)
+### Phase 1 — Service Model & Boot Reliability (deploy-ready)
+- `docs/os/SERVICE_MODEL.md` — canonical inventory of all `sita-*.service`/`.target`/`.timer` units (sita-firstboot, sita-runtime, sita-updated, sita-recovery, sita-recovery-shell, healthd, crashd, settingsd, timed, accessibilityd) with: purpose, deps, restart policy, log path, failure behavior.
+- `os/diagnostics/check-boot-target.sh` — validates `graphical.target` reached, required units active, no critical failures; emits `/var/lib/sita/diagnostics/boot-target.json`.
+- `os/diagnostics/collect-service-health.sh` — structured per-service health summary feeding support bundle.
+- Wire both into `generate-support-bundle.sh`.
 
-**Currently active iOS/Apple/mobile-native surface:**
-- 4 CI workflows: `ios-bootstrap.yml`, `release-ios.yml`, `android-bootstrap.yml`, `release-android.yml`
-- Scripts: `scripts/ios/bootstrap.sh`, `scripts/release/ios/build-ios.sh`, `exportOptions.plist`
-- Templates: `ios-templates/App/`, `android-templates/app/`
-- Capacitor stack: `capacitor.config.ts` + 11 `@capacitor/*` deps + `@aparajita/capacitor-biometric-auth`
-- Architecture checks: `check-mobile-build-pipeline.ts`, `check-mobile-store-readiness.ts`
-- Generated reports: `mobile-build-pipeline-report.json`, `mobile-store-readiness-report.json`
-- Docs: `docs/ios/IOS_NATIVE_RUNTIME.md`, `docs/architecture/MOBILE_*`, `docs/runbooks/mobile-push-registration.md`
-- `src/lib/mobile-platform/` with ios/, android/, native/ subdirs (8 native adapters)
+### Phase 2 — Desktop Session & Shell Resilience
+- `docs/os/DESKTOP_SESSION_MODEL.md` — xinit on TTY7 → sita-runtime → Electron → watchdog → fallback to sita-recovery-shell. Document GPU `translate3d` window-drag perf path.
+- `os/runtime/check-shell-health.sh` — one-shot probe (process alive, IPC responsive, renderer not white-screen via marker file from preload).
+- Enhance `electron/preload.cjs` to write `/var/lib/sita/state/shell-heartbeat` every 5s (read by health probe).
+- `docs/os/ELECTRON_PRELOAD_CONTRACT.md` — typed IPC surface, sandbox boundaries.
 
-**Already shipped Ubuntu-native foundation (keep + extend):**
-- `os/scripts/` (19 scripts: build-raw-img, verity, signing, TPM, SBOM, rollback, support bundle, release.sh)
-- `os/` (image-builder, installer, recovery, runtime, update, vm, vmware, qemu-validate.sh)
-- `docs/os/` (18 canonical docs already present)
-- `electron/` (15 .cjs hardening modules)
-- `.github/workflows/os-build-iso.yml`, `desktop-build.yml`, `release-electron.yml`
+### Phase 3 — Update Safety, Writable State & Backup Canonicalization
+- `docs/os/WRITABLE_STATE_MODEL.md` — partition policy: `/` read-only (verity), `/var/lib/sita` writable, `/home` LUKS2, `/etc/sita` config overlay; what survives update vs rollback.
+- `docs/os/BACKUP_AND_RESTORE.md` — canonicalizes `deploy/backup.sh` (scope, retention, restore flow, support-bundle inclusion).
+- `os/scripts/check-update-state.sh` — detects partial/failed updates, emits `update-state.json`.
+- Wire update-state into `check-os-update-readiness.ts`.
 
-### Phase 1 — Decision boundary & archive scaffolding
-- Create `archive/` top-level with `archive/README.md` declaring archive policy.
-- Create `docs/archive/ios/` and `scripts/archive/ios/` with INACTIVE banner READMEs.
-- Add canonical `docs/PLATFORM_SCOPE.md` — single source of truth for active vs inactive platforms.
+### Phase 4 — Repair Toolkit & Recovery Hardening
+- `os/recovery/repair-shell.sh` — clear safe-mode marker, reset crash counter, restart sita-runtime.
+- `os/recovery/repair-first-boot.sh` — re-run first-boot.sh idempotently, validate marker.
+- `os/recovery/repair-update-state.sh` — abort stuck update, mark slot bad, prepare rollback.
+- `os/recovery/repair-runtime-services.sh` — restart failed sita-* units in dependency order.
+- `os/bin/sita-ops` — single operator entrypoint wrapping: status, restart-shell, support-bundle, rollback, recovery, repair-*.
+- Update `docs/os/RECOVERY_MODE.md` to reference repair toolkit.
 
-### Phase 2 — Archive Apple/iOS active assets
-- Move `docs/ios/IOS_NATIVE_RUNTIME.md` → `docs/archive/ios/`
-- Move `scripts/ios/bootstrap.sh` → `scripts/archive/ios/`
-- Move `scripts/release/ios/` → `scripts/archive/ios/release/`
-- Move `ios-templates/` → `archive/ios-templates/`
-- Move `android-templates/` → `archive/android-templates/` (Android also non-active per user)
-- Prepend INACTIVE banners to each archived file.
-- Delete `.github/workflows/{ios-bootstrap,release-ios,android-bootstrap,release-android}.yml` (or move to `.github/workflows-archive/`).
-- Remove all 11 `@capacitor/*` deps + `@aparajita/capacitor-biometric-auth` from `package.json`.
-- Delete `capacitor.config.ts`.
-- Move `src/lib/mobile-platform/{ios,android,native,release,security,sync,services,analytics,migration,navigation,runtime,contracts}/` native-specific pieces to `archive/mobile-platform/`. Keep only browser/PWA-safe pieces if any are imported by web code; otherwise archive the whole tree and remove imports.
+### Phase 5 — Observability, Logging & Runbooks
+- `docs/os/LOGGING_MODEL.md` — journalctl-first policy, file-based exceptions (`/var/log/sita/crashes/`), rotation, redaction, support-bundle inclusion rules.
+- `docs/os/OBSERVABILITY_AND_DIAGNOSTICS.md` — refresh to reference all collectors + sita-ops.
+- `docs/os/runbooks/` — 6 new runbooks:
+  - `shell-crash-loop.md`
+  - `failed-update.md`
+  - `rollback-failure.md`
+  - `recovery-mode-usage.md`
+  - `first-boot-failure.md`
+  - `qemu-boot-failure.md`
+- Each runbook references real scripts/outputs, no fluff.
 
-### Phase 3 — Replace mobile readiness with Ubuntu-native readiness
-- Delete `scripts/architecture/checks/check-mobile-build-pipeline.ts`
-- Delete `scripts/architecture/checks/check-mobile-store-readiness.ts`
-- Delete `generated/mobile-build-pipeline-report.json`, `generated/mobile-store-readiness-report.json`
-- Create real, executable checks (no stubs):
-  - `scripts/architecture/checks/check-os-build-pipeline.ts` → emits `generated/os-build-pipeline-report.json`
-  - `scripts/architecture/checks/check-os-trust-chain-readiness.ts` → `generated/os-trust-chain-readiness-report.json`
-  - `scripts/architecture/checks/check-os-update-readiness.ts` → `generated/os-update-readiness-report.json`
-  - `scripts/architecture/checks/check-os-recovery-readiness.ts` → `generated/os-recovery-readiness-report.json`
-  - `scripts/architecture/checks/check-electron-shell-session-readiness.ts` → `generated/native-shell-session-readiness-report.json`
-  - `scripts/architecture/checks/check-qemu-vm-readiness.ts` → `generated/qemu-vm-readiness-report.json`
-  - `scripts/architecture/checks/check-os-support-bundle-readiness.ts` → `generated/os-support-bundle-readiness-report.json`
-  - `scripts/architecture/checks/check-native-observability-readiness.ts` → `generated/native-observability-readiness-report.json`
-- Each check inspects real files in `os/scripts/`, `os/`, `electron/`, `.github/workflows/` and emits a JSON verdict — no fake green checks.
-
-### Phase 4 — Wire Ubuntu-native readiness into CI
-- Update `.github/workflows/os-build-iso.yml` to run all 8 new readiness checks and upload reports as artifacts.
-- Add new workflow `.github/workflows/native-readiness.yml` that runs the 8 checks on every PR.
-- Update `package.json` scripts: add `os:readiness`, `os:readiness:trust`, `os:readiness:update`, `os:readiness:recovery`, `os:readiness:shell`, `os:readiness:qemu`, `os:readiness:support`, `os:readiness:observability`.
-
-### Phase 5 — Canonical Ubuntu-native deployment audit
-- Write `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — same rigor as the iOS v2 audit but for Ubuntu-native: verdict, shipped assets, gap matrix (P0/P1/P2 in Ubuntu-native terms — not Apple terms), remediation phases A–G, ownership split (Lovable vs operator), preflight checklist, residual gaps, end-to-end timeline.
-- Write `docs/os/SITA_OS_NATIVE_RUNTIME.md` — operator runbook (bootstrap → build → sign → release → update → rollback → recover).
-- Write `docs/os/IMAGE_LAYOUT_AND_PARTITIONS.md` — A/B layout, ESP, recovery, verity hash device.
-- Update existing `docs/os/*.md` cross-refs.
-
-### Phase 6 — Platform truth doc + admin/observability wiring
-- `docs/PLATFORM_SCOPE.md` — supported (Web, Edge, Ubuntu-native ISO, Electron on Ubuntu, QEMU), partial (VMware OVA, hardware matrix), inactive (iOS, Android, Capacitor, App Store, TestFlight).
-- Update `docs/architecture/MOBILE_PLATFORM_SYSTEM.md` and `MOBILE_EXPERIENCE_SYSTEM.md` to remove Capacitor/iOS/Android language; reframe as PWA + responsive web only, or archive them.
-- Update `os/README.md` and root `README.md` with platform scope statement.
-
-### Phase 7 — Memory & registry cleanup
-- Update memory `architecture/mobile-platform` and `features/platform-runtimes` to reflect inactive iOS/Android.
-- Update `architecture/index.md` metric counts.
-- Remove iOS/Android references from manifest registries (`generated/ci-umbrella-manifest.json`, etc.) where present.
-- Run a grep sweep for `App Store`, `TestFlight`, `Apple Developer`, `Capacitor`, `APNs`, `FCM`, `iOS native`, `Android native` across `docs/`, `src/`, `scripts/` and rewrite or remove (no silent leftovers).
-
-### Phase 8 — Verification & broken-reference sweep
-- Grep for imports of removed `@capacitor/*`, `capacitor.config`, `mobile-platform/{ios,android,native}` paths and fix every consumer.
-- Run `npm run build` + `npm run typecheck` to confirm no broken references.
-- Re-run all 8 native readiness checks; commit fresh `generated/*-report.json` artifacts.
-- Update `SITA_MASTER_AUDIT.md` v7.0 → v7.1 reflecting Ubuntu-native canonical truth (mobile dimensions removed/renamed, deployability matrix down to 6 active targets).
+### Phase 6 — Validation Matrix, Release Readiness & CI
+- `docs/os/VALIDATION_MATRIX.md` — canonical pass/fail grid (ISO build, trust, dm-verity, QEMU boot, first-boot, shell start, services, support bundle, update metadata, recovery entry, backup smoke, diagnostics).
+- `docs/os/HARDWARE_SUPPORT_MATRIX.md` — honest tested/expected/experimental/unsupported tiers.
+- `scripts/architecture/checks/check-os-release-readiness.ts` — aggregates all 8 Part-1 readiness reports + Phase 1–5 outputs into `generated/os-release-readiness-report.json` + `.md` summary.
+- Update `.github/workflows/native-readiness.yml` to run release-readiness aggregator and upload summary.
 
 ### Constraints enforced
-- No stubs: every readiness check inspects real files and returns real verdicts.
-- No duplicates: existing `os/scripts/`, `docs/os/`, `electron/` are extended — not parallel-built.
-- No silent leftovers: every Apple/Capacitor reference is archived, deleted, or rewritten.
-- No broken refs: typecheck + build must pass after Phase 8.
-- Fully wired: docs ↔ scripts ↔ CI ↔ generated artifacts ↔ admin truth pages.
+- No new backup/recovery/logging/watchdog systems — all phases extend `deploy/backup.sh`, `os/recovery/`, `os/diagnostics/`, `os/runtime/shell-watchdog.sh`.
+- Every new script is executable and inspects real state.
+- Every doc references real scripts/units/paths.
+- `sita-ops` is a thin wrapper, not a duplicate command tree.
+- All new diagnostics flow into the existing `generate-support-bundle.sh`.
 
-### Files touched (scope summary)
-- **Delete:** 4 workflows, 2 mobile checks, 2 mobile reports, `capacitor.config.ts`, 12 npm deps
-- **Move to archive:** `ios-templates/`, `android-templates/`, `scripts/ios/`, `scripts/release/ios/`, `docs/ios/`, ~12 `src/lib/mobile-platform/` subdirs
-- **Create:** 8 readiness checks + 8 generated reports, 1 new workflow, 3 canonical docs (`PLATFORM_SCOPE`, `SITA_OS_NATIVE_DEPLOYMENT_AUDIT`, `IMAGE_LAYOUT_AND_PARTITIONS`)
-- **Update:** `package.json`, `os-build-iso.yml`, `docs/os/*` cross-refs, root + `os/README.md`, `SITA_MASTER_AUDIT.md`
+### Files (scope summary)
+- **Create scripts (8):** check-boot-target.sh, collect-service-health.sh, check-shell-health.sh, check-update-state.sh, repair-{shell,first-boot,update-state,runtime-services}.sh, sita-ops, check-os-release-readiness.ts
+- **Create docs (11):** SERVICE_MODEL, DESKTOP_SESSION_MODEL, ELECTRON_PRELOAD_CONTRACT, WRITABLE_STATE_MODEL, BACKUP_AND_RESTORE, LOGGING_MODEL, VALIDATION_MATRIX, HARDWARE_SUPPORT_MATRIX + 6 runbooks (under `docs/os/runbooks/`)
+- **Update (5):** preload.cjs (heartbeat), generate-support-bundle.sh (new collectors), check-os-update-readiness.ts (update-state wiring), RECOVERY_MODE.md (repair refs), native-readiness.yml (release aggregator)
+- **Generated:** os-release-readiness-report.json + .md
 
