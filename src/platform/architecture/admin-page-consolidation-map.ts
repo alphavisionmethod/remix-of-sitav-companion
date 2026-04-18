@@ -184,6 +184,44 @@ export const CLUSTER_DOMAIN_MAP: Record<string, AdminDomain> = {
   Version: "releases", View: "verification", Widget: "verification",
   Workflow: "verification", Workforce: "ai-runtime",
   Workspace: "environments", Wrapper: "verification",
+
+  // ── Phase 1 expansion: deployability + meta + verification clusters ──
+  APP: "releases",   // APP01ApplianceDeployabilityCenter
+  BAP: "health",     // BAP01BackendApiDeployabilityCenter
+  CI: "releases",    // CI01CIUmbrellaCenter
+  DSK: "releases",   // DSK01DeployabilityCenter
+  EFH: "health",     // EFH01EdgeFunctionHealthCenter
+  WEB: "releases",   // WEB01DeployabilityCenter
+  META: "verification", // META01–05 architecture/truth boards
+  V: "verification",    // V01–V07 verification boards
+
+  // ── Word prefixes (alpha-sorted additions) ──
+  Api: "integrations",
+  Benchmark: "verification",
+  Client: "config",
+  Config: "config",
+  Cost: "ai-runtime",
+  Cross: "verification",      // CrossDomainMemoryExplorer / CrossTenantGovernance
+  Db: "verification",
+  Decay: "ai-runtime",
+  Delivery: "releases",
+  Dependency: "verification",
+  Desktop: "verification",
+  Differential: "ai-runtime",
+  Error: "alerts",
+  Escalation: "alerts",
+  GodTier: "verification",
+  Integrations: "integrations",
+  Operator: "overview",
+  Pattern: "ai-runtime",
+  Portfolio: "verification",
+  Read: "verification",        // ReadModelSnapshotsAdmin
+  Reasoning: "ai-runtime",
+  Releases: "releases",
+  Smart: "support",
+  Time: "verification",        // TimeToTruthDashboard
+  Value: "verification",
+  Zero: "ai-runtime",          // ZeroWastePromptView
 };
 
 // ─── Curated page classifications ────────────────────────────────
