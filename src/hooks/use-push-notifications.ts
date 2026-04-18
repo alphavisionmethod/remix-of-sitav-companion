@@ -20,7 +20,7 @@ import {
 const useMobileRuntime = () => ({ os: "web" as const, isFirstClassMobile: false });
 const useMobileCapability = (_key: string): "supported" | "unsupported" => "unsupported";
 
-export type PushTransport = "apns" | "fcm" | "web" | "none";
+export type PushTransport = "web" | "none";
 
 export interface UsePushNotificationsReturn {
   isSupported: boolean;
@@ -44,26 +44,13 @@ export function usePushNotifications(): UsePushNotificationsReturn {
   const [devices, setDevices] = useState<PushTokenRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { os, isFirstClassMobile } = useMobileRuntime();
-  const apnsStatus = useMobileCapability("push.apns");
-  const fcmStatus = useMobileCapability("push.fcm");
-  const webStatus = useMobileCapability("push.web");
+  const { isFirstClassMobile } = useMobileRuntime();
 
   const { transport, unavailableReason, isSupported } = useMemo(() => {
-    const webOk = isPushSupported() && webStatus !== "unsupported" && webStatus !== "roadmap";
-    if (isFirstClassMobile && os === "ios") {
-      if (apnsStatus === "supported") return { transport: "apns" as const, unavailableReason: "", isSupported: true };
-      if (webOk) return { transport: "web" as const, unavailableReason: "APNs deferred — using web push fallback.", isSupported: true };
-      return { transport: "none" as const, unavailableReason: "Push is not yet enabled on iOS for this build.", isSupported: false };
-    }
-    if (isFirstClassMobile && os === "android") {
-      if (fcmStatus === "supported") return { transport: "fcm" as const, unavailableReason: "", isSupported: true };
-      if (webOk) return { transport: "web" as const, unavailableReason: "FCM not yet provisioned — using web push fallback.", isSupported: true };
-      return { transport: "none" as const, unavailableReason: "Push is not yet enabled on Android for this build.", isSupported: false };
-    }
+    const webOk = isPushSupported();
     if (webOk) return { transport: "web" as const, unavailableReason: "", isSupported: true };
     return { transport: "none" as const, unavailableReason: "Push is unsupported in this runtime.", isSupported: false };
-  }, [isFirstClassMobile, os, apnsStatus, fcmStatus, webStatus]);
+  }, []);
 
   // Load existing tokens
   useEffect(() => {

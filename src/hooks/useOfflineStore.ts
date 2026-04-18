@@ -15,12 +15,13 @@ import {
   stopSyncManager,
 } from '@/lib/offline-db';
 import { fromDynamicTable } from "@/lib/supabase-helpers";
-import {
-  mobileSyncQueue,
-  getMobileSyncHealth,
-  type OfflineMutation,
-} from "@/lib/mobile-platform";
-import { useMobileRuntime } from "@/lib/mobile-platform";
+// Mobile-platform archived. Ubuntu-native is canonical native platform.
+type OfflineMutation = { status: string };
+const mobileSyncQueue = {
+  subscribe: (_fn: (q: ReadonlyArray<OfflineMutation>) => void) => () => {},
+};
+const getMobileSyncHealth = () => ({ totalQueued: 0 });
+const useMobileRuntime = () => ({ isFirstClassMobile: false });
 
 interface UseOfflineStoreOptions {
   /** Cache key for this data */
