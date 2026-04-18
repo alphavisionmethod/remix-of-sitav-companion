@@ -15,9 +15,9 @@ import {
 } from "lucide-react";
 
 // ── Import generated JSON ───────────────────────────────────
-import validationSummary from "../../../generated/validation-summary.json";
-import operationalScorecards from "../../../generated/operational-scorecards.json";
-import architectureCompliance from "../../../generated/architecture-compliance-report.json";
+import validationSummary from "@/../generated/validation-summary.json";
+import operationalScorecards from "@/../generated/operational-scorecards.json";
+import architectureCompliance from "@/../generated/architecture-compliance-report.json";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Types ───────────────────────────────────────────────────
