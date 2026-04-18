@@ -22,9 +22,13 @@ permissions:
 
 jobs:
   build:
-    name: Build SITA OS ISO
+    name: Build SITA OS ISO (${{ matrix.profile }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [user, operator]
     steps:
       - uses: actions/checkout@v4
 
@@ -48,10 +52,11 @@ jobs:
             echo "::warning::No MOK secrets — build will use ephemeral dev key (UNSIGNED for production)"
           fi
 
-      - name: Build ISO
+      - name: Build ISO (profile=${{ matrix.profile }})
         env:
           VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
-        run: sudo -E bash os/image-builder/build.sh
+          SITA_PROFILE: ${{ matrix.profile }}
+        run: sudo -E bash os/image-builder/build.sh --profile=${{ matrix.profile }}
 
       - name: Verify boot artifacts
         run: sudo -E bash os/scripts/verify-boot-artifacts.sh out
@@ -120,7 +125,7 @@ jobs:
       - name: Upload ISO + attestation + supply-chain artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sita-os-iso
+          name: sita-os-iso-${{ matrix.profile }}
           path: |
             out/*.iso
             out/*.img
@@ -159,15 +164,19 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   smoke-test:
-    name: QEMU Smoke Test
+    name: QEMU Smoke Test (${{ matrix.profile }})
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [user, operator]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: sita-os-iso
+          name: sita-os-iso-${{ matrix.profile }}
           path: out/
 
       - name: Install QEMU + OVMF
@@ -182,7 +191,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qemu-validation
+          name: qemu-validation-${{ matrix.profile }}
           path: |
             out/qemu-validation.log
             out/qemu-validation-report.json

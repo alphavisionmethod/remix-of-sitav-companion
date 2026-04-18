@@ -1,0 +1,35 @@
+{
+  "$schema": "../profile.schema.json",
+  "profile": "operator",
+  "displayName": "SITA OS — Operator Edition",
+  "artifactName": "sita-os-operator",
+  "description": "Operator/admin control plane edition. Admin shell is default; user product apps minimized but available for cross-checks.",
+  "defaultShellHome": "/admin",
+  "enabledPlanes": ["core-os", "shell-runtime", "user", "admin", "backend-services"],
+  "adminPlaneAccess": "default",
+  "allowedApps": [
+    "files",
+    "settings",
+    "notifications",
+    "observability",
+    "release-center",
+    "verification-center",
+    "kill-switch-center",
+    "support-diagnostics",
+    "ai-governance",
+    "platform-control",
+    "user-org-intervention",
+    "incident-triage"
+  ],
+  "featureFlags": {
+    "show.admin.nav": true,
+    "show.dev.tools": true,
+    "support.diagnostics.level": "operator-full",
+    "branding.variant": "operator"
+  },
+  "supportToolingLevel": "operator-full",
+  "branding": {
+    "wordmarkSuffix": " — Operator",
+    "themeVariant": "operator-default"
+  }
+}

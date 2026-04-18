@@ -10,20 +10,39 @@
 # ═══════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
+# ── Deployment Profile (Part 3 — 5-Plane Reorganization) ───────────────
+# Selects which composition gets baked into the artifact.
+#   --profile=user       (default) → sita-os-user-<version>-<arch>.iso
+#   --profile=operator           → sita-os-operator-<version>-<arch>.iso
+SITA_PROFILE="${SITA_PROFILE:-user}"
+for arg in "$@"; do
+  case "$arg" in
+    --profile=*) SITA_PROFILE="${arg#--profile=}" ;;
+  esac
+done
+case "$SITA_PROFILE" in
+  user|operator) ;;
+  *) echo "[fail] unknown --profile=$SITA_PROFILE (must be: user|operator)" >&2; exit 2 ;;
+esac
+PROFILE_MANIFEST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/profiles/${SITA_PROFILE}.profile.json"
+[[ -f "$PROFILE_MANIFEST" ]] || { echo "[fail] missing profile manifest: $PROFILE_MANIFEST" >&2; exit 2; }
+
 # ── Configuration ──────────────────────────────────────────────────────
 VERSION="${VERSION:-0.1.0-dev}"
 ARCH="${ARCH:-amd64}"
 SUITE="${SUITE:-noble}"
 MIRROR="${MIRROR:-http://archive.ubuntu.com/ubuntu/}"
-BUILD_DIR="${BUILD_DIR:-$(pwd)/build/iso-${VERSION}}"
+BUILD_DIR="${BUILD_DIR:-$(pwd)/build/iso-${SITA_PROFILE}-${VERSION}}"
 OUT_DIR="${OUT_DIR:-$(pwd)/out}"
 ROOT_DIR="${BUILD_DIR}/chroot"
 ISO_DIR="${BUILD_DIR}/iso"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-ISO_NAME="sita-os-${VERSION}-${ARCH}.iso"
-ISO_LABEL="SITA_OS_${VERSION//./_}"
+ISO_NAME="sita-os-${SITA_PROFILE}-${VERSION}-${ARCH}.iso"
+ISO_LABEL="SITA_OS_${SITA_PROFILE^^}_${VERSION//./_}"
 ISO_PATH="${OUT_DIR}/${ISO_NAME}"
+
+export SITA_PROFILE PROFILE_MANIFEST
 
 # ── Pretty logging ─────────────────────────────────────────────────────
 log()  { printf "\033[1;36m[sita-build]\033[0m %s\n" "$*"; }
@@ -106,6 +125,11 @@ stage_install_packages() {
   install -m 0755 "${REPO_ROOT}/os/runtime/check-shell-health.sh"      "${ROOT_DIR}/opt/sita/runtime/check-shell-health.sh"
   install -m 0755 -d "${ROOT_DIR}/opt/sita/shell"
   install -m 0755 "${SCRIPT_DIR}/launch.sh"                            "${ROOT_DIR}/opt/sita/shell/launch.sh"
+
+  # ── Embed deployment profile manifest (Part 3) ───────────────────────
+  install -m 0644 "${PROFILE_MANIFEST}" "${ROOT_DIR}/etc/sita/deployment-profile.json"
+  ok "embedded deployment profile: ${SITA_PROFILE}"
+
 
   # Run package install + service enable inside chroot
   cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'

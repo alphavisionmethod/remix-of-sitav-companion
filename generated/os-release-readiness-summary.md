@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T01:39:56.054Z
+> Generated: 2026-04-18T01:53:02.113Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 8 |
-| Gates present  | 8 |
+| Gates required | 11 |
+| Gates present  | 11 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 1 |
@@ -25,6 +25,9 @@
 | `qemu-vm-readiness` | ✅ | 0 | 0 |
 | `os-support-bundle-readiness` | ✅ | 0 | 1 |
 | `native-observability-readiness` | ✅ | 0 | 0 |
+| `deployment-profile-coverage` | ✅ | 0 | 0 |
+| `route-plane-coverage` | ✅ | 0 | 0 |
+| `5-plane-boundaries` | ✅ | 0 | 0 |
 
 ## Verdict
 

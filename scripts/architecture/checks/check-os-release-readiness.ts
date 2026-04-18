@@ -37,6 +37,10 @@ const REQUIRED_GATES = [
   "qemu-vm-readiness",
   "os-support-bundle-readiness",
   "native-observability-readiness",
+  // Part 3 — 5-Plane Reorganization gates
+  "deployment-profile-coverage",
+  "route-plane-coverage",
+  "5-plane-boundaries",
 ];
 
 const GENERATED_DIR = "generated";

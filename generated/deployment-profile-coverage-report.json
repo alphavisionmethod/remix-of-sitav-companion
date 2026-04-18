@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-18T01:52:25.792Z",
+  "gate": "deployment-profile-coverage",
+  "profiles": [
+    {
+      "profile": "operator",
+      "planesDeclared": 5,
+      "planesResolved": 5,
+      "appsDeclared": 12,
+      "appsResolved": 12,
+      "missingPlanes": [],
+      "missingApps": [],
+      "ok": true
+    },
+    {
+      "profile": "user",
+      "planesDeclared": 4,
+      "planesResolved": 4,
+      "appsDeclared": 9,
+      "appsResolved": 9,
+      "missingPlanes": [],
+      "missingApps": [],
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0
+}

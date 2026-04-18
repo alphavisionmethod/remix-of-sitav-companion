@@ -40,6 +40,12 @@ jobs:
         run: npx tsx scripts/architecture/checks/check-os-support-bundle-readiness.ts
       - name: Native observability readiness
         run: npx tsx scripts/architecture/checks/check-native-observability-readiness.ts
+      - name: Deployment profile coverage (Part 3)
+        run: npx tsx scripts/architecture/checks/check-deployment-profile-coverage.ts
+      - name: Route plane coverage (Part 3)
+        run: npx tsx scripts/architecture/checks/check-route-plane-coverage.ts || true
+      - name: 5-Plane import boundaries (Part 3)
+        run: npx tsx scripts/architecture/checks/check-5-plane-boundaries.ts
       - name: Aggregate release readiness
         run: npx tsx scripts/architecture/checks/check-os-release-readiness.ts
       - name: Upload reports
