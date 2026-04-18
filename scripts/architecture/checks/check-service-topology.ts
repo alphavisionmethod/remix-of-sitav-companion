@@ -31,7 +31,9 @@ if (existsSync(ROOT)) {
   }
 }
 
-const BUDGET = 200; // current ≈178; warn if grows beyond budget
+// Phase B6 — ratchet down. Current 178; budget tightened to 185 to prevent
+// service-layer regrowth in src/lib/. Stays warn-level until full migration.
+const BUDGET = 185;
 const ok = hidden.length <= BUDGET;
 const report = {
   generatedAt: new Date().toISOString(),
