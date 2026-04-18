@@ -1,9 +1,30 @@
 {
-  "generatedAt": "2026-04-18T12:41:34.502Z",
+  "generatedAt": "2026-04-18T12:43:47.807Z",
   "gate": "profile-runtime-attestation",
   "level": "block",
-  "ok": true,
-  "errorCount": 0,
+  "ok": false,
+  "errorCount": 4,
   "warningCount": 0,
-  "issues": []
+  "issues": [
+    {
+      "severity": "error",
+      "area": "attestation",
+      "message": "digest mismatch: app-registry-map.json"
+    },
+    {
+      "severity": "error",
+      "area": "attestation",
+      "message": "digest mismatch: app-route-profile-map.json"
+    },
+    {
+      "severity": "error",
+      "area": "attestation",
+      "message": "digest mismatch: mobile-capability-map.json"
+    },
+    {
+      "severity": "error",
+      "area": "attestation",
+      "message": "digest mismatch: profile-separation-map.json"
+    }
+  ]
 }
