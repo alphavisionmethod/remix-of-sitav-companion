@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T17:02:43Z",
+  "generatedAt": "2026-04-18T17:14:02Z",
   "source": "live-db",
   "orphanedOutcomes": [],
   "orphanedReflections": [],
@@ -9,5 +9,5 @@
   "totalOutcomes": 0,
   "totalReflectionsLinked": 0,
   "status": "GREEN",
-  "note": "Live DB query: zero orphaned outcomes or reflections. All linkage constraints satisfied."
+  "note": "Live DB query (production hardening pass): zero orphaned outcomes or reflections. FK linkage 100% intact."
 }

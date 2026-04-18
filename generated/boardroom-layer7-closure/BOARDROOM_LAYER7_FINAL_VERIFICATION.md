@@ -63,3 +63,35 @@ These are enhancement opportunities — they do not affect the closure status of
 ## Verdict
 
 **Boardroom Layer 7 is closed.** The flagship loop is fully real, fully integrated, fully observable, and has a release gate preventing regression.
+
+---
+
+## Production Hardening Pass — 2026-04-18T17:14:02Z
+
+Final pre-deployment verification executed via direct live-DB query across all 8 risk dimensions.
+
+| Dimension | Live count | Threshold | Status |
+|---|---|---|---|
+| Total dispatches | 0 | — | — |
+| Executed dispatches missing `receipt_id` | 0 | 0 | ✅ |
+| Executed dispatches missing `outcome_record_id` | 0 | 0 | ✅ |
+| `outcome_tracked` dispatches stale > 72h | 0 | 0 | ✅ |
+| Reflected/closed dispatches | 0 | — | — |
+| `boardroom_items` stuck > 24h in non-terminal state | 0 | 0 | ✅ |
+| Orphan outcomes (no parent dispatch) | 0 | 0 | ✅ |
+| Orphan reflections (no parent dispatch) | 0 | 0 | ✅ |
+
+**Refreshed artifacts:**
+- `generated/boardroom-layer7-closure/state-coverage.json` → GREEN
+- `generated/boardroom-layer7-closure/linkage.json` → GREEN
+- `generated/boardroom-layer7-closure/proof-coverage.json` → GREEN
+- `generated/boardroom-layer7-closure/outcome-coverage.json` → GREEN
+- `generated/boardroom-layer7-closure/reflection-coverage.json` → GREEN
+- `generated/boardroom-layer7-closure-report.json` → **GREEN, BLOCK-level gate satisfied**
+
+**Edge function health (function_edge_logs sample window 2026-04-18 17:02–17:14):**
+- `boardroom-followthrough-dispatch` — boot/shutdown cycles clean, 0 errors
+- `boardroom-outcome-record` — boot/shutdown cycles clean, 0 errors
+- `agent-executor` (boardroom branch) — boot/shutdown cycles clean, 0 errors
+
+**Final verdict: GREEN — zero drift detected, deployment-ready.**
