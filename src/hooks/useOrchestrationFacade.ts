@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useRef, useState } from "react";
-import { orchestrationFacade, type ProcessIntentRequest, type OrchestrationResult } from "@/lib/orchestration";
+import { orchestrationFacade, type ProcessIntentRequest, type OrchestrationResult } from "@/platform/orchestration";
 
 export function useOrchestrationFacade() {
   const [result, setResult] = useState<OrchestrationResult | null>(null);

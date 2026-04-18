@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
-import { orchestrationFacade } from "@/lib/orchestration";
+import { orchestrationFacade } from "@/platform/orchestration";
 
 export function useOrchestrationProof() {
   const truthRecord = useMemo(() => orchestrationFacade.getLastTruthRecord(), []);

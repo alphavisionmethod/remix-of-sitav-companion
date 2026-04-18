@@ -18,8 +18,8 @@ export { CANONICAL_EXECUTION_STAGES } from "@/lib/core-services/canonical-execut
 export type { CanonicalStage, ExecutionPathRecord } from "@/lib/core-services/canonical-execution-path";
 
 // ── Canonical Orchestration Facade (4-layer authority) ──
-export { OrchestrationFacade, orchestrationFacade } from "@/lib/orchestration";
-export type { ProcessIntentRequest } from "@/lib/orchestration";
+export { OrchestrationFacade, orchestrationFacade } from "@/platform/orchestration";
+export type { ProcessIntentRequest } from "@/platform/orchestration";
 
 // Legacy compat re-export (consumers should migrate to OrchestrationFacade)
 export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";

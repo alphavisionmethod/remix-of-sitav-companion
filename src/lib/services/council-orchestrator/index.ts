@@ -5,7 +5,7 @@
 // It may gather advisor positions and coordinate debate/synthesis
 // but MUST NOT execute, plan workflows, or write proof directly.
 // New orchestration consumers MUST use:
-//   import { orchestrationFacade } from "@/lib/orchestration";
+//   import { orchestrationFacade } from "@/platform/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId } from "@/packages/contracts";

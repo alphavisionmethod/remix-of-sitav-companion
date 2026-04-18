@@ -4,7 +4,7 @@
 // role invocation, cost tracking, cache, and approvals.
 // Subordinate to the canonical execution layer.
 // New orchestration consumers MUST use:
-//   import { orchestrationFacade } from "@/lib/orchestration";
+//   import { orchestrationFacade } from "@/platform/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
