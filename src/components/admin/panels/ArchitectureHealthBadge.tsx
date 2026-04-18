@@ -10,9 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Shield, Layers, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
-import { ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, LAYERS, type Layer } from "@/lib/architecture/layer-manifest";
-import { SERVICE_BUDGET, DUPLICATE_SERVICES } from "@/lib/architecture/service-ownership-manifest";
-import { FORBIDDEN_PATTERNS } from "@/lib/architecture/boundary-rules";
+import { ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, LAYERS, type Layer } from "@/platform/architecture/layer-manifest";
+import { SERVICE_BUDGET, DUPLICATE_SERVICES } from "@/platform/architecture/service-ownership-manifest";
+import { FORBIDDEN_PATTERNS } from "@/platform/architecture/boundary-rules";
 
 const LAYER_DOT_COLORS: Record<Layer, string> = {
   "web": "bg-blue-500",

@@ -5,7 +5,7 @@
 // and admin UIs can import types without pulling registry data.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 export type RunbookSeverity = "low" | "medium" | "high" | "critical";
 export type RunbookStatus = "draft" | "reviewed" | "approved" | "tested";

@@ -6,7 +6,7 @@
 // full registry data graph.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 /** Operational state of a kill switch */
 export type KillSwitchState = "active" | "armed" | "disarmed" | "testing";

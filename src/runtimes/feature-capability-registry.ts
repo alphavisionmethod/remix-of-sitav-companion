@@ -15,7 +15,7 @@
 
 import type { CanonicalSurface } from "./surface-types";
 import { CANONICAL_SURFACES } from "./surface-types";
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 /** Per-surface capability availability state. */
 export type FeatureAvailability =

@@ -17,7 +17,7 @@ import {
   DOMAIN_DESCRIPTIONS,
   DOMAIN_LABELS,
   type AdminRouteEntry,
-} from "@/lib/architecture/admin-route-registry";
+} from "@/platform/architecture/admin-route-registry";
 
 interface DomainHubIndexProps {
   domain: AdminDomain;

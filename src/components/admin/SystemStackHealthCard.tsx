@@ -15,7 +15,7 @@ import {
   validateSystemStack,
   getL3Service,
   type SystemLayer,
-} from "@/lib/architecture/system-layer-registry";
+} from "@/platform/architecture/system-layer-registry";
 
 const LAYER_LABEL: Record<SystemLayer, string> = {
   "L1-experience": "L1 · Experience",

@@ -5,8 +5,8 @@
 // Wraps any existing command source — does NOT replace it.
 // ═══════════════════════════════════════════════════════════════
 
-import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
-import { ROUTE_PLANE_MAP } from "@/lib/architecture/route-plane-map";
+import type { DeploymentProfileKey } from "@/platform/architecture/route-plane-map";
+import { ROUTE_PLANE_MAP } from "@/platform/architecture/route-plane-map";
 import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 
 export interface CommandEntry {

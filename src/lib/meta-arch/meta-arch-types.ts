@@ -4,7 +4,7 @@
 // queryable lattice for admin surfaces and the integrity validator.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextEntry, BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextEntry, BoundedContextId } from "@/platform/architecture/bounded-context-types";
 import type { KillSwitchEntry } from "@/lib/control-plane/kill-switch-types";
 import type { RunbookEntry } from "@/lib/support/runbook-types";
 import type { GoldenPathEntry, GoldenPathId } from "@/lib/operations/golden-path-types";

@@ -9,7 +9,7 @@ import {
   type ApprovalTierInput,
   resolveApprovalTier,
   validateCapabilityContract,
-} from "@/lib/architecture/capability-contract-system";
+} from "@/platform/architecture/capability-contract-system";
 
 import { ADVISOR_CONTRACTS } from "@/lib/no-hallucination/advisor-contract";
 

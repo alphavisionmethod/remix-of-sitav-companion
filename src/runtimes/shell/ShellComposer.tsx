@@ -4,7 +4,7 @@ import {
   getDeploymentProfile,
   getDefaultShellHome,
 } from "@/runtimes/deployment-profile";
-import { resolveRoutePlane } from "@/lib/architecture/route-plane-map";
+import { resolveRoutePlane } from "@/platform/architecture/route-plane-map";
 
 /**
  * ShellComposer

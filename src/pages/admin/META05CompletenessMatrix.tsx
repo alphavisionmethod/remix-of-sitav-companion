@@ -14,9 +14,9 @@ import {
   BOUNDED_CONTEXT_REGISTRY,
   totalEdgeFunctions,
   totalTables,
-} from "@/lib/architecture/bounded-context-registry";
+} from "@/platform/architecture/bounded-context-registry";
 import { PAGE_STATE_REGISTRY } from "@/lib/reality/page-state-registry";
-import { ROUTE_CONTEXT_BINDINGS } from "@/lib/architecture/context-membership-map";
+import { ROUTE_CONTEXT_BINDINGS } from "@/platform/architecture/context-membership-map";
 
 type DimensionKey = "edgeFunctions" | "tables" | "pages" | "routes";
 

@@ -6,7 +6,7 @@
 // PolicyDomainKey; this map ensures domain↔context coherence.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 export type PolicyDomainKey =
   | "business"      // CRM, leads, opportunities, outbound
