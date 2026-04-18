@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:19:27.839Z",
+  "generatedAt": "2026-04-18T02:19:42.450Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -118,8 +118,8 @@
     {
       "file": "generated/ks-payments-auth-readiness-report.json",
       "gate": "ks-payments-auth-readiness",
-      "ok": false,
-      "errors": 1,
+      "ok": true,
+      "errors": 0,
       "warnings": 1
     },
     {
@@ -137,9 +137,9 @@
       "warnings": 0
     }
   ],
-  "totalErrors": 1,
+  "totalErrors": 0,
   "totalWarnings": 5,
   "missingGates": [],
-  "ok": false,
-  "verdict": "RED"
+  "ok": true,
+  "verdict": "YELLOW"
 }
