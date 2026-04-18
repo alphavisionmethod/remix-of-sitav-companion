@@ -18,6 +18,9 @@ schedules, the corresponding edge functions are manual-only.
 | `sita-webhook-retry`       | `*/2 * * * *` | `webhook-retry-processor`    | Process retry queue every 2 min         |
 | `sita-compliance-evidence` | `0 6 * * *` | `compliance-evidence-cron`     | Daily SOC2/ISO evidence collection      |
 | `sita-dr-drill`            | `0 5 * * 0` | `dr-drill-cron`                | Weekly Sunday DR simulation             |
+| `sita-internal-agent-reflect` | `*/30 * * * *` | `internal-agent-reflect`  | Phase 3 — outcome scoring + EWMA trust  |
+| `sita-suggestion-generator` | `0 */6 * * *` | `internal-agent-suggestion-generator` | Phase 3 — propose from real signals |
+| `sita-weekly-digest`       | `0 7 * * 1` | `internal-agent-weekly-digest` | Phase 3 — Mon 07:00 UTC workforce digest |
 
 ## Install template
 
