@@ -222,6 +222,9 @@ const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
 const PlatformReadinessScorecard = lazy(() => import("@/pages/admin/PlatformReadinessScorecard"));
 const IncidentDashboardPage = lazy(() => import("@/pages/admin/IncidentDashboardPage"));
 
+// ── Phase 2: Safe Autonomous Actions — Error Patrol Triage Board ──
+const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -242,6 +245,7 @@ export function getAdminRoutes() {
 
     // ── Phase 25: Workflow step routes (every OwnerWorkflow step resolves) ──
     <Route key="ws-daily-incidents" path="/admin/health/incidents" element={gated("maintenance.view", <MCIncidents />)} />,
+    <Route key="ws-health-error-patrol" path="/admin/health/error-patrol" element={gated("maintenance.view", <ErrorPatrolBoard />)} />,
     <Route key="ws-daily-launchready" path="/admin/releases/launch-readiness" element={gated("audit.view", <LaunchReadinessBoard />)} />,
     <Route key="ws-weekly-truth" path="/admin/overview/generated-truth" element={<Navigate to="/admin/generated-truth" replace />} />,
     <Route key="ws-weekly-aieff" path="/admin/ai-runtime/intelligence/efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
