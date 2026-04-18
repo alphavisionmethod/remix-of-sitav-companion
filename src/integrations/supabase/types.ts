@@ -10902,6 +10902,78 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_agent_reflections: {
+        Row: {
+          action_class: string
+          agent_id: string
+          confidence_calibration: number | null
+          created_at: string
+          evidence: Json
+          gate_fitness_score: number
+          id: string
+          intent_id: string
+          intent_status: string
+          lesson_learned: string
+          outcome_quality: number
+          pattern_tags: Json
+          recommendation: string | null
+          reflected_at: string
+          should_repeat: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          action_class: string
+          agent_id: string
+          confidence_calibration?: number | null
+          created_at?: string
+          evidence?: Json
+          gate_fitness_score?: number
+          id?: string
+          intent_id: string
+          intent_status: string
+          lesson_learned?: string
+          outcome_quality?: number
+          pattern_tags?: Json
+          recommendation?: string | null
+          reflected_at?: string
+          should_repeat?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          action_class?: string
+          agent_id?: string
+          confidence_calibration?: number | null
+          created_at?: string
+          evidence?: Json
+          gate_fitness_score?: number
+          id?: string
+          intent_id?: string
+          intent_status?: string
+          lesson_learned?: string
+          outcome_quality?: number
+          pattern_tags?: Json
+          recommendation?: string | null
+          reflected_at?: string
+          should_repeat?: boolean | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_reflections_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "internal_agent_reflections_intent_id_fkey"
+            columns: ["intent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internal_agent_runtime_state: {
         Row: {
           agent_id: string
@@ -17525,6 +17597,20 @@ export type Database = {
         }
         Returns: string
       }
+      record_internal_agent_reflection: {
+        Args: {
+          _confidence_calibration?: number
+          _evidence?: Json
+          _gate_fitness_score: number
+          _intent_id: string
+          _lesson_learned?: string
+          _outcome_quality: number
+          _pattern_tags?: Json
+          _recommendation?: string
+          _should_repeat?: boolean
+        }
+        Returns: string
+      }
       resolve_error_patrol_detection: {
         Args: { _detection_id: string; _notes?: string }
         Returns: Json
@@ -17541,6 +17627,20 @@ export type Database = {
       seed_master_internal_agent_kill_switch: {
         Args: { _user_id: string }
         Returns: string
+      }
+      summarize_internal_agent_learning: {
+        Args: { _lookback_hours?: number }
+        Returns: {
+          agent_id: string
+          avg_gate_fitness: number
+          avg_outcome_quality: number
+          avoid_count: number
+          last_reflected_at: string
+          reflections_count: number
+          repeat_count: number
+          top_patterns: Json
+          trust_score: number
+        }[]
       }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
