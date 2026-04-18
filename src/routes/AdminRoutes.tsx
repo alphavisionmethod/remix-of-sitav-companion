@@ -237,6 +237,7 @@ export function getAdminRoutes() {
     <Route key="hub-trustsec" path="/admin/trust-security" element={gated("audit.view", <TrustSecurityHome />)} />,
     <Route key="hub-verification" path="/admin/verification" element={gated("audit.view", <VerificationHome />)} />,
     <Route key="hub-airuntime" path="/admin/ai-runtime" element={gated("flags.view", <AIRuntimeHome />)} />,
+    <Route key="ws-airuntime-intents" path="/admin/ai-runtime/internal-agent-intents" element={gated("audit.view", <InternalAgentIntentTimeline />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
