@@ -68,7 +68,7 @@ const InvoicesCollections = () => {
   const addInvoice = useAction("finance", "invoice.create", {
     successMessage: "Invoice created",
     invalidateKeys: [["invoices"]],
-    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
+    onSuccess: () => { clearDraft(); setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
   });
 
   const updateStatus = useAction("finance", "invoice.status", {
