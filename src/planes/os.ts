@@ -145,4 +145,4 @@ export type {
 } from "@/lib/os-services/platform-ipc-bus";
 
 // ── Sync Engine ──
-export * from "@/lib/sync-engine";
+export * from "@/platform/sync-engine";

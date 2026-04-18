@@ -13,7 +13,7 @@ import {
   Shield, Folder, Trash2, MoreHorizontal, Copy, ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { sharingEngine } from "@/lib/sync-engine/collaboration/sharing-engine";
+import { sharingEngine } from "@/platform/sync-engine/collaboration/sharing-engine";
 
 const DEMO_SHARES = [
   { id: "1", objectName: "Q4 Business Plan.pdf", sharedWith: 3, permission: "edit" as const, linkActive: true, createdAt: "2026-04-14T10:00:00Z" },

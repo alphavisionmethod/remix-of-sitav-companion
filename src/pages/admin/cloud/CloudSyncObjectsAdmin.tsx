@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Search, Database, Eye, Clock, FileText, Settings, Layout, Smartphone, Bell, Folder, GitBranch } from "lucide-react";
-import { syncd } from "@/lib/sync-engine/syncd";
-import { namespaceRegistry } from "@/lib/sync-engine/sync-namespaces";
-import { conflictResolver } from "@/lib/sync-engine/conflict-resolver";
-import type { SyncObject } from "@/lib/sync-engine/sync-object-model";
+import { syncd } from "@/platform/sync-engine/syncd";
+import { namespaceRegistry } from "@/platform/sync-engine/sync-namespaces";
+import { conflictResolver } from "@/platform/sync-engine/conflict-resolver";
+import type { SyncObject } from "@/platform/sync-engine/sync-object-model";
 
 const typeIcons: Record<string, React.ElementType> = {
   file: FileText, folder: Folder, setting: Settings, app_setting: Settings,

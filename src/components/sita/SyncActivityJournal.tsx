@@ -14,7 +14,7 @@ import {
   Filter, ChevronDown, Undo2, HardDrive, Globe, Image
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { JournalCategory, JournalSeverity } from "@/lib/sync-engine/collaboration/activity-journal";
+import type { JournalCategory, JournalSeverity } from "@/platform/sync-engine/collaboration/activity-journal";
 
 // ─── Demo Data ───────────────────────────────────────────────
 

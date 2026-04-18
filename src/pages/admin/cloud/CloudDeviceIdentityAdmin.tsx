@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Search, Smartphone, Monitor, Tablet, Globe, ShieldCheck, ShieldOff, KeyRound, Eye, RotateCcw, Laptop } from "lucide-react";
-import { deviceIdentity, type DeviceIdentity as DevIdentity, type DeviceTrustLevel } from "@/lib/sync-engine/security/device-identity";
+import { deviceIdentity, type DeviceIdentity as DevIdentity, type DeviceTrustLevel } from "@/platform/sync-engine/security/device-identity";
 import { toast } from "sonner";
 
 const trustColors: Record<DeviceTrustLevel, string> = {

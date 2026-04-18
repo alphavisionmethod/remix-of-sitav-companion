@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Layers, Shield, GitMerge, Eye, Settings, FileText, Layout, Bell, Smartphone } from "lucide-react";
-import { namespaceRegistry, type SyncNamespace } from "@/lib/sync-engine/sync-namespaces";
-import { syncPolicy } from "@/lib/sync-engine/security/sync-policy";
+import { namespaceRegistry, type SyncNamespace } from "@/platform/sync-engine/sync-namespaces";
+import { syncPolicy } from "@/platform/sync-engine/security/sync-policy";
 
 const priorityColors: Record<string, string> = {
   critical: "bg-destructive/20 text-destructive",
