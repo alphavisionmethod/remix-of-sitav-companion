@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-04-18T12:30:00.000Z",
+  "wave": "profile-and-runtime-hardening",
+  "phases": ["A-evidence", "B-guardrails", "C-fixes", "D-verification", "E-graduation"],
+  "deployable": true,
+  "tscErrors": 0,
+  "newBlockGates": 4,
+  "newWarnGates": 4,
+  "newBlockGateNames": [
+    "check-app-profile-matrix",
+    "check-mobile-capability-truth",
+    "check-command-palette-profile-leakage",
+    "check-shared-component-profile-pollution"
+  ],
+  "newWarnGateNames": [
+    "check-launcher-registry-completeness",
+    "check-hidden-app-routes",
+    "check-profile-route-coverage",
+    "check-route-guard-coverage"
+  ],
+  "evidence": {
+    "appsInRegistry": 19,
+    "routesScanned": 673,
+    "userProfileApps": 10,
+    "operatorProfileApps": 13,
+    "manifestMismatches": 0,
+    "manifestOrphans": 0,
+    "appsMissingRoute": 0,
+    "adminAppsWithoutRole": 0,
+    "hiddenAppLikeRoutes": 1,
+    "sharedLayerLeakage": 0,
+    "commandPaletteLeaks": 0,
+    "adminRoutesUnguarded": 0,
+    "adminRoutesTotal": 191,
+    "mobileFeaturesClassified": 25,
+    "mobileLive": 12,
+    "mobilePartial": 10,
+    "mobileResponsiveOnly": 4,
+    "mobileDeferred": 1,
+    "mobileLyingLive": 0
+  },
+  "behaviorGuarantees": {
+    "filesMoved": 0,
+    "filesDeleted": 0,
+    "routesRemoved": 0,
+    "importsBroken": 0,
+    "componentsSplit": 0,
+    "behaviorChanges": 0
+  }
+}
