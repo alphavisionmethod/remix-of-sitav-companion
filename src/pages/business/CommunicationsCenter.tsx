@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, MessageSquare, Send, Plus, X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -64,9 +65,14 @@ const CommunicationsCenter = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ type: "email" as "email" | "sms" | "letter", subject: "", body: "", status: "draft" as CommStatus, requires_approval: false, customer_name: "" });
+  type CommForm = { type: "email" | "sms" | "letter"; subject: string; body: string; status: CommStatus; requires_approval: boolean; customer_name: string };
+  const EMPTY_COMM_FORM: CommForm = { type: "email", subject: "", body: "", status: "draft", requires_approval: false, customer_name: "" };
+  const { draft: commDraft, updateDraft: updateCommDraft, clearDraft: clearCommDraft } =
+    useDraftAutosave<CommForm>("business:comm:new", "business");
+  const [form, setForm] = useState<CommForm>(() => ({ ...EMPTY_COMM_FORM, ...commDraft }));
+  useEffect(() => { updateCommDraft(form); }, [form, updateCommDraft]);
 
-  const resetForm = useCallback(() => { setForm({ type: "email", subject: "", body: "", status: "draft", requires_approval: false, customer_name: "" }); setShowForm(false); }, []);
+  const resetForm = useCallback(() => { setForm(EMPTY_COMM_FORM); clearCommDraft(); setShowForm(false); }, [clearCommDraft]);
 
   const executeComm = useActionFn("business", "communication.write", { silent: true });
 
