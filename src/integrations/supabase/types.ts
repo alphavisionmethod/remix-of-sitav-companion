@@ -9438,6 +9438,109 @@ export type Database = {
         }
         Relationships: []
       }
+      error_patrol_detections: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          affected_resource_id: string | null
+          affected_resource_type: string | null
+          created_at: string
+          first_seen_at: string
+          follow_up_recommendation: string | null
+          frequency: number
+          id: string
+          last_seen_at: string
+          linked_agent_action_id: string | null
+          linked_incident_id: string | null
+          linked_intent_id: string | null
+          muted_until: string | null
+          pattern_key: string
+          raw_signal: Json
+          resolution_notes: string | null
+          resolved_at: string | null
+          severity: string
+          signature_hash: string
+          status: string
+          subsystem: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          affected_resource_id?: string | null
+          affected_resource_type?: string | null
+          created_at?: string
+          first_seen_at?: string
+          follow_up_recommendation?: string | null
+          frequency?: number
+          id?: string
+          last_seen_at?: string
+          linked_agent_action_id?: string | null
+          linked_incident_id?: string | null
+          linked_intent_id?: string | null
+          muted_until?: string | null
+          pattern_key: string
+          raw_signal?: Json
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          signature_hash: string
+          status?: string
+          subsystem: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          affected_resource_id?: string | null
+          affected_resource_type?: string | null
+          created_at?: string
+          first_seen_at?: string
+          follow_up_recommendation?: string | null
+          frequency?: number
+          id?: string
+          last_seen_at?: string
+          linked_agent_action_id?: string | null
+          linked_incident_id?: string | null
+          linked_intent_id?: string | null
+          muted_until?: string | null
+          pattern_key?: string
+          raw_signal?: Json
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          signature_hash?: string
+          status?: string
+          subsystem?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "error_patrol_detections_linked_agent_action_id_fkey"
+            columns: ["linked_agent_action_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_actions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "error_patrol_detections_linked_incident_id_fkey"
+            columns: ["linked_incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "error_patrol_detections_linked_intent_id_fkey"
+            columns: ["linked_intent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_plans: {
         Row: {
           budget_cents: number | null
@@ -10350,6 +10453,211 @@ export type Database = {
           symbol?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      internal_agent_action_intents: {
+        Row: {
+          action_class: string
+          action_id: string | null
+          agent_id: string
+          approval_request_id: string | null
+          confidence: number
+          correlation_id: string | null
+          created_at: string
+          denial_reason: string | null
+          error_message: string | null
+          executed_at: string | null
+          execution_result: Json | null
+          gate_results: Json
+          id: string
+          invocation_id: string | null
+          precondition_check_passed: boolean
+          precondition_evidence: Json
+          receipt_id: string | null
+          rollback_capable: boolean
+          rollback_intent_id: string | null
+          rollback_plan: Json | null
+          rolled_back_at: string | null
+          rolled_back_by: string | null
+          status: string
+          target_id: string
+          target_resource_type: string
+          updated_at: string
+        }
+        Insert: {
+          action_class: string
+          action_id?: string | null
+          agent_id: string
+          approval_request_id?: string | null
+          confidence?: number
+          correlation_id?: string | null
+          created_at?: string
+          denial_reason?: string | null
+          error_message?: string | null
+          executed_at?: string | null
+          execution_result?: Json | null
+          gate_results?: Json
+          id?: string
+          invocation_id?: string | null
+          precondition_check_passed?: boolean
+          precondition_evidence?: Json
+          receipt_id?: string | null
+          rollback_capable?: boolean
+          rollback_intent_id?: string | null
+          rollback_plan?: Json | null
+          rolled_back_at?: string | null
+          rolled_back_by?: string | null
+          status?: string
+          target_id: string
+          target_resource_type: string
+          updated_at?: string
+        }
+        Update: {
+          action_class?: string
+          action_id?: string | null
+          agent_id?: string
+          approval_request_id?: string | null
+          confidence?: number
+          correlation_id?: string | null
+          created_at?: string
+          denial_reason?: string | null
+          error_message?: string | null
+          executed_at?: string | null
+          execution_result?: Json | null
+          gate_results?: Json
+          id?: string
+          invocation_id?: string | null
+          precondition_check_passed?: boolean
+          precondition_evidence?: Json
+          receipt_id?: string | null
+          rollback_capable?: boolean
+          rollback_intent_id?: string | null
+          rollback_plan?: Json | null
+          rolled_back_at?: string | null
+          rolled_back_by?: string | null
+          status?: string
+          target_id?: string
+          target_resource_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_action_intents_action_class_fkey"
+            columns: ["action_class"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_whitelist"
+            referencedColumns: ["action_class"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_action_id_fkey"
+            columns: ["action_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_actions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_approval_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "approval_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_pending_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_receipt_id_fkey"
+            columns: ["receipt_id"]
+            isOneToOne: false
+            referencedRelation: "ai_action_receipts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_rollback_intent_id_fkey"
+            columns: ["rollback_intent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internal_agent_action_whitelist: {
+        Row: {
+          action_class: string
+          created_at: string
+          description: string
+          display_name: string
+          gate_function_name: string
+          id: string
+          is_active: boolean
+          is_reversible: boolean
+          max_autonomy_required: string
+          rate_limit_per_hour: number
+          requires_approval_above_confidence: number
+          requires_rollback: boolean
+          reverse_action_class: string | null
+          target_resource_type: string
+          updated_at: string
+        }
+        Insert: {
+          action_class: string
+          created_at?: string
+          description?: string
+          display_name: string
+          gate_function_name?: string
+          id?: string
+          is_active?: boolean
+          is_reversible?: boolean
+          max_autonomy_required?: string
+          rate_limit_per_hour?: number
+          requires_approval_above_confidence?: number
+          requires_rollback?: boolean
+          reverse_action_class?: string | null
+          target_resource_type: string
+          updated_at?: string
+        }
+        Update: {
+          action_class?: string
+          created_at?: string
+          description?: string
+          display_name?: string
+          gate_function_name?: string
+          id?: string
+          is_active?: boolean
+          is_reversible?: boolean
+          max_autonomy_required?: string
+          rate_limit_per_hour?: number
+          requires_approval_above_confidence?: number
+          requires_rollback?: boolean
+          reverse_action_class?: string | null
+          target_resource_type?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -16880,6 +17188,85 @@ export type Database = {
         }
         Relationships: []
       }
+      error_patrol_triage_view: {
+        Row: {
+          acknowledged_at: string | null
+          affected_resource_id: string | null
+          affected_resource_type: string | null
+          agent_action_status: string | null
+          agent_action_type: string | null
+          agent_confidence: number | null
+          first_seen_at: string | null
+          follow_up_recommendation: string | null
+          frequency: number | null
+          id: string | null
+          incident_severity: string | null
+          incident_title: string | null
+          intent_action_class: string | null
+          intent_executed_at: string | null
+          intent_receipt_id: string | null
+          intent_status: string | null
+          last_seen_at: string | null
+          linked_agent_action_id: string | null
+          linked_incident_id: string | null
+          linked_intent_id: string | null
+          muted_until: string | null
+          pattern_key: string | null
+          resolved_at: string | null
+          responding_agent_council: string | null
+          responding_agent_id: string | null
+          rollback_availability: string | null
+          rollback_capable: boolean | null
+          rolled_back_at: string | null
+          severity: string | null
+          status: string | null
+          subsystem: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "error_patrol_detections_linked_agent_action_id_fkey"
+            columns: ["linked_agent_action_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_actions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "error_patrol_detections_linked_incident_id_fkey"
+            columns: ["linked_incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "error_patrol_detections_linked_intent_id_fkey"
+            columns: ["linked_intent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_action_class_fkey"
+            columns: ["intent_action_class"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_action_whitelist"
+            referencedColumns: ["action_class"]
+          },
+          {
+            foreignKeyName: "internal_agent_action_intents_receipt_id_fkey"
+            columns: ["intent_receipt_id"]
+            isOneToOne: false
+            referencedRelation: "ai_action_receipts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_agent_id_fkey"
+            columns: ["responding_agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+        ]
+      }
       uptime_status: {
         Row: {
           current_status: string | null
@@ -17042,6 +17429,16 @@ export type Database = {
           p_capability_key: string
           p_estimated_cost_usd: number
           p_user_id: string
+        }
+        Returns: Json
+      }
+      evaluate_action_safety_gates: {
+        Args: {
+          _action_class: string
+          _agent_id: string
+          _confidence: number
+          _precondition_evidence?: Json
+          _target_id: string
         }
         Returns: Json
       }
