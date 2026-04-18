@@ -1,51 +1,50 @@
 
 
-Continuing the Admin AI Engineering closure pass. Two remaining buckets from the approved plan: (1) finish wiring the drilldown panel + refactor remaining surfaces to canonical primitives, (2) Phase 5 — validators, deliverables, aggregator bump.
+## Phase 1 Final Closure — Gaps Found
 
-### Phase A — Mount drilldowns + refactor stragglers
+### Verified GREEN (already complete)
+- 5/5 DB tables exist (`internal_agent_definitions`, `internal_agent_runtime_state`, `internal_agent_actions`, `council_escalations`, `supervisor_decisions`)
+- **40/40 agents seeded across 6 councils**, **40/40 runtime_state rows** backfilled
+- `internal-agent-loop` edge function exists (611 lines, real budget/kill-switch/receipt wiring)
+- `InternalAgentsBoard` (492 lines), `CouncilsBoard` (334 lines), `AIRuntimeDrilldownPanel` (259 lines) — all real, not stubs
+- 6 internal-agent validators + 2 admin-flagship validators in `scripts/validation/`
+- `flagship-surface-closure/` 11 deliverables present
 
-**A1. Mount `AIRuntimeDrilldownPanel` in `InternalAgentsBoard` drawer**
-- Replace the inline "recent actions" list in the agent drilldown drawer with the canonical `AIRuntimeDrilldownPanel` (Actions / Budget / Health tabs). Keep header summary + supervisor actions.
-- Add the `NightlyProofBadge` to the board header so the nightly proof timestamp is visible at a glance.
+### Two real gaps to close
 
-**A2. Refactor remaining color-map surfaces to `ConnectorStateBadge`**
-- `src/pages/admin/connectors/CN01ConnectorRealityOverview.tsx` — replace local `getStatusColor` with `<ConnectorStateBadge state={...} />`.
-- `src/pages/admin/connectors/CN05ConnectorHealthBoard.tsx` — same.
-- `src/pages/admin/cloud-backbone/CloudBackboneAdmin.tsx` — only the connector-state column.
-- `src/pages/admin/integrations/IntegrationsHome.tsx` — switch the per-provider chip to canonical badge using `connector_effective_state` view results.
-- Delete the now-dead local color maps in those files (zero duplicates).
+**Gap 1 — 12 of 12 required Phase 1 deliverables are missing** (only `ARCHITECTURE.md`, `RUNTIME_LOOP.md`, `SUPERVISOR_MODEL.md`, `VALIDATORS_INDEX.md`, `seed-payload.json` exist; the 12 prompt-mandated filenames are absent because the earlier pass used different names).
 
-**A3. Wire `IntegrationStreakPanel` + `IntegrationReceiptDrawer` into `IntegrationsHome`**
-- Add streak panel as the 5th module of the Integrations hub.
-- Open the receipt drawer from any row in `OAuthRefreshHealthBoard` (already imported; just wire the row-click handler).
+**Gap 2 — `internal-agent-loop` has no `pg_cron` schedule** → "scheduled runtime loop is real" acceptance criterion fails. The function exists and runs on manual trigger, but no cron job invokes it. This is the only true wiring gap.
 
-### Phase B — Phase 5: Validators + deliverables + aggregator
+### Closure work (single deploy)
 
-**B1. Eight BLOCK validators** (each emits `GateReport` via existing `emitGateReport`):
-| Script | What it asserts |
+**A. Add pg_cron schedule for `internal-agent-loop`** (data migration via insert tool — contains anon key, must not be a schema migration):
+- Enable `pg_cron` + `pg_net` extensions if not already enabled (verified separately).
+- Insert one cron job: `internal-agent-loop-tick` running `*/5 * * * *` (every 5 min). Loop internally evaluates which agents are due based on `schedule_type` (continuous=5m, hourly, daily, on-event=skipped). This matches the prompt's cadence model with one frequent loop + internal due-evaluation (the cleanest project-native option).
+- Job calls `https://fctupowhcljejygjfpty.supabase.co/functions/v1/internal-agent-loop` with anon-key bearer + `{"trigger":"cron"}` body.
+
+**B. Generate the 12 missing Phase 1 deliverables** under `generated/internal-ai-runtime-phase1/`:
+
+| File | Content source |
 |---|---|
-| `scripts/validation/check-internal-agent-registry.ts` | DB definition count == spec count (40); no orphan `agent_id`s |
-| `scripts/validation/check-internal-agent-runtime-coverage.ts` | every definition has a runtime_state row |
-| `scripts/validation/check-internal-agent-admin-pages.ts` | `AIRuntimeHome` includes `internal-agents` + `councils` modules; routes registered |
-| `scripts/validation/check-internal-agent-escalation-runtime.ts` | escalation FK targets resolve; supervisor keys exist in `SUPERVISORS` |
-| `scripts/validation/check-internal-agent-seed-integrity.ts` | seed payload hash matches DB `spec_hash`; idempotent re-seed produces zero diff |
-| `scripts/validation/check-internal-agent-runtime-loop.ts` | `internal-agent-loop/index.ts` exists; references budget/kill-switch/receipt patterns |
-| `scripts/validation/check-admin-ai-runtime-drilldowns.ts` | `InternalAgentsBoard` imports `AIRuntimeDrilldownPanel` + `NightlyProofBadge` |
-| `scripts/validation/check-admin-integrations-health-visibility.ts` | `IntegrationsHome` uses streak panel + receipt drawer + `ConnectorStateBadge`; greps for forbidden local color maps in connector pages |
+| `INTERNAL_AI_RUNTIME_PHASE1_CURRENT_STATE_AUDIT.md` | Pre-bridge gap inventory (Sys A vs Sys B) |
+| `INTERNAL_AI_RUNTIME_PHASE1_TARGET_MODEL.md` | End-state architecture |
+| `INTERNAL_AGENT_TABLES_AND_LINKAGE.md` | DB schema + FK lineage to `ai_workforce_invocations`/receipts/approvals |
+| `INTERNAL_AGENT_RUNTIME_LOOP_SPEC.md` | Loop algorithm, cron cadence, due-evaluation, safety guards |
+| `INTERNAL_AGENT_ADMIN_UI_SPEC.md` | `/admin/ai-runtime/internal-agents` + `/councils` page contracts |
+| `INTERNAL_AGENT_SEEDING_MODEL.md` | `seed_internal_agents_from_json` RPC + idempotency via `spec_hash` |
+| `SUPERVISOR_RUNTIME_MODEL.md` | 7 supervisors, decision types, escalation routing, meta-supervisor path |
+| `INTERNAL_AI_RUNTIME_PHASE1_FINAL_VERIFICATION.md` | Acceptance criteria checklist with evidence per item |
+| `internal-agent-phase1-status.json` | Machine-readable status: 40 agents, 6 councils, all gates green, cron active |
+| `internal-agent-table-map.json` | Table → row counts → FK targets |
+| `internal-agent-runtime-loop.json` | Function path, cron schedule, cadence map, safety tokens |
+| `internal-agent-verification.json` | Per-criterion pass/fail snapshot |
 
-**B2. Deliverables (14 files)** under `generated/flagship-surface-closure/` and `generated/internal-ai-runtime-phase1/`:
-- 8 markdown specs (`ONBOARDING_…`, `BOARDROOM_…`, `CONCIERGE_…`, `COMMS_…`, `ADMIN_AI_RUNTIME_CLOSURE_SPEC.md`, `ADMIN_INTEGRATIONS_CLOSURE_SPEC.md`, `SHARED_STATE_AND_TRUST_ALIGNMENT.md`, `FLAGSHIP_SURFACE_FINAL_VERIFICATION.md`).
-- 6 status JSONs. The 4 user-surface JSONs explicitly carry `status: "deferred"` with the operator-scoping note (no fake completion).
-- 4 missing Phase-1 docs in `generated/internal-ai-runtime-phase1/` (architecture, runtime loop, supervisor model, validators index).
+**C. Verify by running the 6 internal-agent validators** + confirming the cron job appears in `cron.job` (queryable via service-role helper if needed).
 
-**B3. Aggregator bump 50 → 58**
-- Update `scripts/architecture/checks/check-os-release-readiness.ts` to ingest the 8 new gate reports.
-- Update `package.json` `release:readiness:full` to invoke them.
-- Add `internal-agents:run-all` script bundling the 6 internal-agent validators.
-
-### Cross-cutting (kept identical to approved plan)
-- Zero new tables, zero stubs, no fake-live states.
-- Drilldown deep-links use existing `/admin/ai-gateway/receipts/:id` and `/admin/integrations/oauth-refresh-health` routes — no new routes.
-- All new validators are read-only; aggregator gate count only bumps when all 8 pass.
-- 4 deferred user-surface JSONs are honest: `status: "deferred", reason: "operator-scoped to admin AI engineering team per directive"`.
+### Cross-cutting (unchanged from approved plan)
+- Zero new tables, zero stubs, zero duplicate runtime stacks.
+- Cron uses real anon-key insert (per `schedule-jobs-supabase-edge-functions` rule) — not a schema migration.
+- All 12 deliverables generated from real DB state + real file inspection (no fabricated numbers).
+- No code changes to admin UI, edge function, or registry — those are already complete.
 
