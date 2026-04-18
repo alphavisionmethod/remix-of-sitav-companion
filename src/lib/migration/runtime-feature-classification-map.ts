@@ -4,7 +4,7 @@
 // Maps runtime-sensitive code locations to their owning runtime tier(s).
 // ═══════════════════════════════════════════════════════════════
 
-import type { RuntimeTier } from "../runtime/runtime-tier-model";
+import type { RuntimeTier } from "@/runtimes/runtime-tier-model";
 
 export type RuntimeOwnership =
   | "WEB_TIER_OWNED"
