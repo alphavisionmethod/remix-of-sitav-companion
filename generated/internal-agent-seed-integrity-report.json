@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T23:07:38.917Z",
+  "gate": "internal-agent-seed-integrity",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "migrationFile": "20260418200626_122755dc-797f-47b8-a953-eff11678c38a.sql"
+}
