@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-18T12:41:34.502Z",
+  "gate": "profile-runtime-attestation",
+  "level": "block",
+  "ok": true,
+  "attestationAttestedAt": "2026-04-18T12:41:31.533Z",
+  "attestationAttestor": "root",
+  "baselineFingerprint": "91b177808d601fc9703344784363dcdcc65ce7c189b924f5388d37146947c127",
+  "baselineMatches": true,
+  "signatureValid": true,
+  "signatureAlgorithm": "HMAC-SHA256",
+  "signatureKeyId": "cb3714d48c13cf64",
+  "coveredFileCount": 5,
+  "digestMismatchCount": 0,
+  "digestMismatches": [],
+  "guidance": "attestation valid — surface untampered"
+}

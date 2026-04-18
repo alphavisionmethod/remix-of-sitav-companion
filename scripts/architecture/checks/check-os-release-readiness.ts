@@ -71,6 +71,8 @@ const REQUIRED_GATES = [
   "route-guard-coverage",
   // Phase H — Baseline drift detection (sealed surface guard)
   "profile-runtime-baseline-drift",
+  // Phase I — Signed attestation (HMAC tamper detection)
+  "profile-runtime-attestation",
 ];
 
 const GENERATED_DIR = "generated";
