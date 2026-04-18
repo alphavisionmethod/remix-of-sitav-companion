@@ -1,26 +1,14 @@
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
-import { toast } from "sonner";
 import CNSubNav from "@/components/admin/CNSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
-
-
-const statusColors: Record<string, string> = {
-  healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400",
-  unhealthy: "bg-red-500/20 text-red-400", token_expired: "bg-red-500/20 text-red-400",
-  reauth_required: "bg-orange-500/20 text-orange-400", not_configured: "bg-muted text-muted-foreground",
-  demo_simulated: "bg-purple-500/20 text-purple-400", internal_test: "bg-blue-500/20 text-blue-400",
-  shell_only: "bg-muted text-muted-foreground", unknown: "bg-muted text-muted-foreground",
-};
 
 export default function CN05ConnectorHealthBoard() {
   const queryClient = useQueryClient();
