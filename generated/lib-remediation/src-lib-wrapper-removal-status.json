@@ -1,0 +1,8 @@
+{
+  "wave": 4,
+  "generatedAt": "2026-04-18",
+  "wrapperCount": 188,
+  "removedThisWave": 0,
+  "policy": "Wrappers removed only when consumer count = 0 AND removal-condition satisfied. Bulk removal queued for Wave 5.",
+  "queuedForWave5": true
+}

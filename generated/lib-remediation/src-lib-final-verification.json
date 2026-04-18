@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-18",
+  "wave": 4,
+  "tsErrors": 0,
+  "duplicateGroupsRemaining": 0,
+  "duplicateGroupsConsolidated": 14,
+  "wrappersInLib": 188,
+  "totalLibFiles": 1767,
+  "libTopLevelEntries": 103,
+  "legacyImportSites": 2023,
+  "consumerRewireSitesThisWave": 4,
+  "hardeningChecksAdded": ["check-residual-lib-canonicality.ts"],
+  "deploymentSafe": true,
+  "runtimeBehaviorChanged": false,
+  "dbMigrationsRequired": false
+}
