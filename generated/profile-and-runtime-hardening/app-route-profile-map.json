@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T12:25:41.049Z",
+  "generatedAt": "2026-04-18T12:28:37.110Z",
   "totalRoutes": 673,
   "routes": [
     {
@@ -7430,11 +7430,10 @@
       "profiles": [
         "user"
       ],
-      "appBacked": false,
-      "hiddenAppLike": true,
-      "drift": [
-        "hidden-app-like"
-      ]
+      "appBacked": true,
+      "appId": "desktop",
+      "hiddenAppLike": false,
+      "drift": []
     },
     {
       "path": "/pulse",
@@ -8936,6 +8935,6 @@
   "driftSummary": {
     "routeNotInPlaneMap": 323,
     "adminRouteUnguarded": 0,
-    "hiddenAppLike": 1
+    "hiddenAppLike": 0
   }
 }

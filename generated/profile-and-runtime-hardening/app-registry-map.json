@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-18T12:25:41.040Z",
-  "totalApps": 19,
+  "generatedAt": "2026-04-18T12:28:37.102Z",
+  "totalApps": 20,
   "apps": [
     {
       "appId": "business-os",
@@ -240,6 +240,26 @@
       ],
       "inUserManifest": true,
       "inOperatorManifest": false,
+      "drift": []
+    },
+    {
+      "appId": "desktop",
+      "displayName": "Desktop",
+      "plane": "shell-runtime",
+      "profiles": [
+        "user",
+        "operator"
+      ],
+      "launcherVisible": false,
+      "commandVisible": false,
+      "defaultPinned": [],
+      "riskTier": "R0",
+      "description": "Desktop shell host (canonical launcher surface, not itself launchable)",
+      "routeMatches": [
+        "/desktop"
+      ],
+      "inUserManifest": true,
+      "inOperatorManifest": true,
       "drift": []
     },
     {

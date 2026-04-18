@@ -18,13 +18,13 @@ const data = JSON.parse(readFileSync(SRC, "utf-8")) as {
 };
 
 const offenders = data.apps.filter((a) => a.drift.length > 0);
-const BUDGET = Number(process.env.LAUNCHER_REGISTRY_BUDGET ?? 5);
+const BUDGET = Number(process.env.LAUNCHER_REGISTRY_BUDGET ?? 0);
 const ok = offenders.length <= BUDGET && data.manifestOrphans.length === 0;
 
 writeFileSync(join(OUT, "launcher-registry-completeness.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "launcher-registry-completeness",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   offenderCount: offenders.length,
   manifestOrphans: data.manifestOrphans,
@@ -32,5 +32,5 @@ writeFileSync(join(OUT, "launcher-registry-completeness.json"), JSON.stringify({
   ok,
 }, null, 2));
 
-console.log(`launcher-registry: ${offenders.length} apps with drift (budget ${BUDGET}), orphans ${data.manifestOrphans.length} — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+console.log(`launcher-registry: ${offenders.length} apps with drift (budget ${BUDGET}), orphans ${data.manifestOrphans.length} — ${ok ? "OK" : "FAIL"}`);
+process.exit(ok ? 0 : 1); // block-level — graduated

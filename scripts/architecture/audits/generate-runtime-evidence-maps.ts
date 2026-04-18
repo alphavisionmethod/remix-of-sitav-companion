@@ -205,6 +205,7 @@ function appExpectedRoute(appId: string): string {
     "workspace": "/workspace",
     "app-store": "/apps",
     "files": "/files",
+    "desktop": "/desktop",
     "settings": "/settings",
     "notifications": "/notifications",
     "search": "/search",

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:25:52.218Z",
+  "generatedAt": "2026-04-18T12:29:54.620Z",
   "gate": "profile-route-coverage",
-  "level": "warn",
-  "budget": 5,
+  "level": "block",
+  "budget": 0,
   "orphanCount": 0,
   "sample": [],
   "ok": true

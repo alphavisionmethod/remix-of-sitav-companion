@@ -1,10 +1,10 @@
 # App Registry & Launcher Audit (Phase A)
-Generated: 2026-04-18T12:25:41.144Z
+Generated: 2026-04-18T12:28:37.202Z
 ## Coverage
-- Apps in registry: **19**
+- Apps in registry: **20**
 - Routes scanned: **673**
-- User profile allowedApps: **10**
-- Operator profile allowedApps: **13**
+- User profile allowedApps: **11**
+- Operator profile allowedApps: **14**
 ## Drift Summary
 - Apps with missing route: **0**
 - Apps missing from user manifest (but declare user profile): **0**
