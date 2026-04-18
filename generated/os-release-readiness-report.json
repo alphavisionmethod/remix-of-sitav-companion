@@ -1,8 +1,15 @@
 {
-  "generatedAt": "2026-04-18T01:39:30.353Z",
+  "generatedAt": "2026-04-18T01:39:56.054Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
+    {
+      "file": "generated/os-build-pipeline-report.json",
+      "gate": "os-build-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
     {
       "file": "generated/os-trust-chain-readiness-report.json",
       "gate": "os-trust-chain-readiness",
@@ -55,9 +62,7 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 1,
-  "missingGates": [
-    "os-build-pipeline"
-  ],
-  "ok": false,
-  "verdict": "RED"
+  "missingGates": [],
+  "ok": true,
+  "verdict": "YELLOW"
 }
