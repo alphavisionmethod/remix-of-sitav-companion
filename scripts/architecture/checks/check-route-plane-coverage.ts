@@ -28,7 +28,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 // Extract declared prefixes from the map file.
 const declaredPrefixes = new Set<string>();
 if (existsSync(MAP_FILE)) {
-  const src = require("node:fs").readFileSync(MAP_FILE, "utf8") as string;
+  const src = readFileSync(MAP_FILE, "utf8");
   for (const m of src.matchAll(/prefix:\s*"([^"]+)"/g)) {
     declaredPrefixes.add(m[1]);
   }
