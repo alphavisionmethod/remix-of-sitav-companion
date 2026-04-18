@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { DEMO_TRADES } from "@/lib/demo-data/investment";
+import { DEMO_TRADES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function WhatWouldBreak() {

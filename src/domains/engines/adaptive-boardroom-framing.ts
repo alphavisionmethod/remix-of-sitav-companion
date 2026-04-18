@@ -3,7 +3,7 @@
 // Returns boardroom configuration based on BusinessProfileResult
 // ═══════════════════════════════════════════════════════════════
 
-import type { BusinessProfileResult, BoardroomFocus } from "@/lib/engines/business-profile-engine";
+import type { BusinessProfileResult, BoardroomFocus } from "@/domains/engines/business-profile-engine";
 
 export interface BoardroomAgendaItem {
   id: string;

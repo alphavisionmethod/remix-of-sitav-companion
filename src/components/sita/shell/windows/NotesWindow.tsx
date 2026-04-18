@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_TYPE, APP_COMPONENTS } from "@/platform/design-system/app-window-system";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import ReactMarkdown from "react-markdown";
 
 export const NOTES_MANIFEST = {

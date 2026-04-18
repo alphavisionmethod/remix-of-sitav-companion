@@ -4,7 +4,7 @@ import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-r
 import { useNavigate } from "react-router-dom";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_THEMES } from "@/lib/demo-data/investment";
+import { DEMO_THEMES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function OpportunityMap() {

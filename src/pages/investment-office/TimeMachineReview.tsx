@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 import { useTimeMachineSnapshots, useDecisionRecords, useAdvisorObservations } from "@/hooks/use-investment-memory";
-import { DEMO_PAST_DECISIONS } from "@/lib/demo-data/investment";
+import { DEMO_PAST_DECISIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function TimeMachineReview() {

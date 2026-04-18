@@ -11,7 +11,7 @@ import {
   type CashRunway,
   type CostOptimization,
   type CostBreakdown,
-} from "@/lib/engines/economic-intelligence-engine";
+} from "@/domains/engines/economic-intelligence-engine";
 
 export function useEconomicIntelligence() {
   const [projections, setProjections] = useState<RevenueProjection[]>([]);

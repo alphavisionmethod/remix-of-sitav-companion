@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, DollarSign, Users, TrendingUp, TrendingDown, AlertTriangle, MessageCircle } from "lucide-react";
 import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
-import { getAdvisorRoster } from "@/lib/advisor-topology";
+import { getAdvisorRoster } from "@/domains/advisors/topology";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
 import { useCountUpFormatted } from "@/hooks/useCountUp";

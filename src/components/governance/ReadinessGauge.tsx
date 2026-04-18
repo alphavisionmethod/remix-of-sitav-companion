@@ -11,7 +11,7 @@ import { useReadinessToDelegate } from "@/lib/hooks/use-meta-governance";
 import { motion } from "framer-motion";
 import { Target, TrendingUp, TrendingDown, Minus, Lock, Unlock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ReadinessInput } from "@/lib/engines/readiness-engine";
+import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import type { OSEntityScope as EntityScope } from "@/packages/contracts";
 
 import type { DelegationTier, ReadinessSubscore } from "@/packages/contracts";

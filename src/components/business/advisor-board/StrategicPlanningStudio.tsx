@@ -16,7 +16,7 @@ import { SparklineChart } from "./SparklineChart";
 import type {
   StrategicGoal, Milestone, TimelineProjection, StrategyDocument, PlanningSnapshot,
   GoalStatus, MilestoneStatus,
-} from "@/lib/engines/strategic-planning-engine";
+} from "@/domains/engines/strategic-planning-engine";
 
 const STATUS_CONFIG: Record<GoalStatus, { label: string; color: string; icon: React.ElementType }> = {
   not_started: { label: "Not Started", color: "hsl(0 0% 50%)", icon: Clock },

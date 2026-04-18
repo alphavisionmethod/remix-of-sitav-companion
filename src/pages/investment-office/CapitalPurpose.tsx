@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-import { DEMO_INV_PURPOSES as DEMO_PURPOSES, DEMO_INV_RULES as DEMO_RULES } from "@/lib/demo-data/investment";
+import { DEMO_INV_PURPOSES as DEMO_PURPOSES, DEMO_INV_RULES as DEMO_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TOTAL = DEMO_PURPOSES.reduce((s, p) => s + p.allocated, 0);

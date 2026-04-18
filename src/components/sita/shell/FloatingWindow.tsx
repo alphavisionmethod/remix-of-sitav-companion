@@ -7,7 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect, useMemo, useDeferredValue, type ReactNode } from "react";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/platform/design-system/nova-os";

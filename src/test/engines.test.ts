@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   ObservabilityEngine, ReleaseSafetyEngine, TrustDeviceEngine,
   ComplianceAuditEngine, EnterpriseControlPlaneEngine, SupportDiagnosticsEngine,
-} from "@/lib/engines/enterprise-maturity";
+} from "@/domains/engines/enterprise-maturity";
 import { RevenueOpportunityEngine } from "@/lib/engines";
 
 describe("ObservabilityEngine", () => {

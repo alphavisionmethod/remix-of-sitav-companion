@@ -12,7 +12,7 @@ import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { AppLoader, type AppBundle } from "@/lib/nova-sdk/runtime/loader";
 import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { NovaKernel } from "@/lib/nova-sdk/kernel/boot";
 
 interface NovaSDKContextType {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { DEMO_SIZING_SCENARIOS } from "@/lib/demo-data/investment";
+import { DEMO_SIZING_SCENARIOS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

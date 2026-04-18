@@ -6,7 +6,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
+import { SURFACE_REGISTRY } from "@/platform/verification/surface-registry";
 
 // ── Action Inventory ──
 

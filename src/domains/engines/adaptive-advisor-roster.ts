@@ -4,7 +4,7 @@
 // Extends the static AdvisorRole type from advisor-topology.ts
 // ═══════════════════════════════════════════════════════════════
 
-import type { BusinessProfileResult, AdvisorSpec } from "@/lib/engines/business-profile-engine";
+import type { BusinessProfileResult, AdvisorSpec } from "@/domains/engines/business-profile-engine";
 
 export interface AdaptiveAdvisor {
   id: string;

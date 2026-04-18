@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Brain, Sparkles, Mic, Play, Pause, CheckCircle, Shield, XCircle, HelpCircle, Lock } from "lucide-react";
-import { getAdvisorRoster, type AdvisorRole } from "@/lib/advisor-topology";
+import { getAdvisorRoster, type AdvisorRole } from "@/domains/advisors/topology";
 import { TalkingAvatar } from "./TalkingAvatar";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 

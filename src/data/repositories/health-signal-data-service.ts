@@ -8,7 +8,7 @@ const db = supabase as any;
 import {
   DEMO_SIGNAL_PROVIDERS,
   DEMO_SIGNAL_SUBSYSTEMS,
-} from "@/lib/demo-data/health-signals";
+} from "@/data/seed/health-signals";
 
 export async function fetchWearableProviders(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_SIGNAL_PROVIDERS;

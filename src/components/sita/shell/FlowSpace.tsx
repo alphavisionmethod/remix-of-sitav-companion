@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
 import { cn } from "@/lib/utils";
 import { Layers, Mail, FolderOpen, FileText, Monitor, Plus, Minus } from "lucide-react";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import type { ReactNode } from "react";
 
 // ── Types ────────────────────────────────────────────────────

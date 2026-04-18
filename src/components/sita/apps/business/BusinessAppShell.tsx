@@ -26,7 +26,7 @@ import { BusinessModeIndicator } from "@/components/business/adaptive/BusinessMo
 import BusinessPulseStrip from "@/components/business/adaptive/BusinessPulseStrip";
 import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveCommandPalette";
 import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
-import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
+import { getSidebarOverrides, applySidebarOverrides } from "@/domains/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
 import FormationShell from "@/pages/revenue-office/onboarding/FormationShell";

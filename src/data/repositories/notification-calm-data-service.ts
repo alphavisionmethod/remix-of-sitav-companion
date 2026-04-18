@@ -16,7 +16,7 @@ import {
   DEMO_DELIVERY_RULES,
   DEMO_CROSS_DEVICE_SURFACES,
   DEMO_HANDOFF_FLOWS,
-} from "@/lib/demo-data/notification-calm";
+} from "@/data/seed/notification-calm";
 
 export async function fetchAttentionDecisions(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_ROUTING_MATRIX;

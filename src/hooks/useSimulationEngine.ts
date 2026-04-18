@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useMemo } from "react";
-import { getSimulationEngine } from "@/lib/engines/simulation-engine";
+import { getSimulationEngine } from "@/domains/engines/simulation-engine";
 import type { ScenarioPack } from "@/packages/simulation-contracts/scenario-types";
 import type { DryRunRequest } from "@/packages/simulation-contracts/dry-run-types";
 import type { WhatIfScenario } from "@/packages/simulation-contracts/what-if-types";

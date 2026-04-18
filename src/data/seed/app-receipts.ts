@@ -1,5 +1,5 @@
 // SITA OS — Demo Data: App Receipts
-import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
+import type { AppLifecycleReceipt } from "@/domains/apps/types";
 
 export const DEMO_APP_RECEIPTS: (AppLifecycleReceipt & { appName: string; appIcon: string })[] = [
   { receiptId: "rcpt-001", appId: "terminal", appName: "SITA Terminal", appIcon: "⬛", actionType: "install", timestamp: "2026-01-01T10:00:00Z", actor: "System (first boot)", version: "1.0.0", sourceInfo: "SITA App Store (verified)", permissionSummary: ["File system access", "System access"], approvalStatus: "auto", result: "success" },

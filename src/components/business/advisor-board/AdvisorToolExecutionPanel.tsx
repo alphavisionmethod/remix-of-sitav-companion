@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import type {
   ToolDefinition, ToolExecution, ToolExecutionStatus, ToolCategory,
-} from "@/lib/engines/advisor-tool-execution-engine";
+} from "@/domains/engines/advisor-tool-execution-engine";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Mail, CheckSquare, UserCog, Calendar, Receipt, MessageSquare, FileText, ClipboardList,

@@ -3,7 +3,7 @@
 // Suggests workflow templates based on business profile
 // ═══════════════════════════════════════════════════════════════
 
-import type { BusinessProfileResult, WorkflowSuggestion } from "@/lib/engines/business-profile-engine";
+import type { BusinessProfileResult, WorkflowSuggestion } from "@/domains/engines/business-profile-engine";
 
 export function getWorkflowSuggestions(profile: BusinessProfileResult, limit = 6): WorkflowSuggestion[] {
   return profile.workflows

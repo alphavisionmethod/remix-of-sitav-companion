@@ -14,7 +14,7 @@ import {
   fetchDeliveryRules,
   fetchCrossDeviceSurfaces,
   fetchHandoffFlows,
-} from "@/lib/data-services/notification-calm-data-service";
+} from "@/data/repositories/notification-calm-data-service";
 
 export function useAttentionDecisions() {
   const { isDemoMode } = useDataMode();

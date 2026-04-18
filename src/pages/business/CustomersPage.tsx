@@ -24,7 +24,7 @@ import {
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
 import { useCustomers } from "@/hooks/use-domain-data";
-import type { MockCustomer } from "@/lib/data-services/business-data-service";
+import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";

@@ -12,7 +12,7 @@ import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getFinanceAdaptation } from "@/lib/engines/cross-os-integration";
+import { getFinanceAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";

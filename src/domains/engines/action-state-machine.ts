@@ -11,7 +11,7 @@ import {
   linkEventToAction,
   linkPolicyToAction,
   addProofToAction,
-} from "@/lib/persistence/action-lineage-persistence";
+} from "@/data/persistence/action-lineage-persistence";
 
 const VALID_TRANSITIONS: Record<ActionState, ActionState[]> = {
   detected: ["proposed", "archived"],

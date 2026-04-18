@@ -11,7 +11,7 @@ import {
   Calendar, Users, ExternalLink, Check, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { crossNavigate } from "@/lib/engines/cross-os-integration";
+import { crossNavigate } from "@/domains/engines/cross-os-integration";
 import { useNotifications, type UnifiedNotification } from "@/hooks/useNotifications";
 import type { LucideIcon } from "lucide-react";
 

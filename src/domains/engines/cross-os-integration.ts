@@ -4,7 +4,7 @@
 // emit cross-domain events, and deep-link into each other.
 // ═══════════════════════════════════════════════════════════════
 
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 // ── Cross-OS Event Types ────────────────────────────────────
 

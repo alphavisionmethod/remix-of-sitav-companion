@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { usePortfolioPositionsMemory, useExecutionRecords, useThesisRecords } from "@/hooks/use-investment-memory";
-import { DEMO_ACTIVE_POSITIONS } from "@/lib/demo-data/investment";
+import { DEMO_ACTIVE_POSITIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function PostTradeLoop() {

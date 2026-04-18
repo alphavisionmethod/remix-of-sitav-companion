@@ -17,7 +17,7 @@ import {
   getActiveSignals, crossNavigate,
   getFinanceAdaptation, getConciergeAdaptation,
   type CrossDomainSignal,
-} from "@/lib/engines/cross-os-integration";
+} from "@/domains/engines/cross-os-integration";
 import type { LucideIcon } from "lucide-react";
 
 const APP_STYLES: Record<string, { color: string; icon: LucideIcon; label: string }> = {

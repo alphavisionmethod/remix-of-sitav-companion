@@ -9,7 +9,7 @@ import {
   fetchUnifiedCalendarEvents,
   type CalendarSource,
   type UnifiedCalendarEvent,
-} from "@/lib/data-services/unified-calendar-service";
+} from "@/data/repositories/unified-calendar-service";
 
 export type { UnifiedCalendarEvent, CalendarSource };
 

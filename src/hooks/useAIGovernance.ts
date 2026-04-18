@@ -13,7 +13,7 @@ import {
   getAuditLog,
   generateGovernanceReport,
   type AIAuditRecord,
-} from "@/lib/engines/ai-governance-engine";
+} from "@/domains/engines/ai-governance-engine";
 import type { PromptDefinition } from "@/packages/ai-contracts/prompt-types";
 import type { AITrustBoundary, AIActionGate } from "@/packages/ai-contracts/safety-types";
 import type { ModelRoutingPolicy } from "@/packages/ai-contracts/routing-types";

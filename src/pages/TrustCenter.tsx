@@ -13,7 +13,7 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { TrustDebtEngine } from "@/lib/engines/trust-debt-engine";
+import { TrustDebtEngine } from "@/domains/engines/trust-debt-engine";
 import { cn } from "@/lib/utils";
 import {
   Shield, LayoutDashboard, Smartphone, Key, Lock, Eye, Settings,

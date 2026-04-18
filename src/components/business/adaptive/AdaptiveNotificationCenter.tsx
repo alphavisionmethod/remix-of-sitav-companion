@@ -19,7 +19,7 @@ import {
   rankNotifications,
   generateDemoNotifications,
   type RankedNotification,
-} from "@/lib/engines/adaptive-notification-engine";
+} from "@/domains/engines/adaptive-notification-engine";
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   cart_abandoned: ShoppingCart, order_placed: Package, payment_received: CheckCircle,

@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
-import type { ConnectorUseCase } from "@/lib/engines/connector-concierge";
+import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

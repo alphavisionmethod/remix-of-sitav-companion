@@ -9,7 +9,7 @@ import {
   DEMO_PLATFORMS,
   DEMO_CAPABILITIES,
   DEMO_NSS_TARGETS,
-} from "@/lib/demo-data/native-shell";
+} from "@/data/seed/native-shell";
 
 export async function fetchNativeShellPlatforms(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_PLATFORMS;

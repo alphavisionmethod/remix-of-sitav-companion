@@ -18,7 +18,7 @@ import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteA
 import type { CRMAutomation } from "@/data/repositories/crm-data-service";
 import { format, formatDistanceToNow } from "date-fns";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getWorkflowSuggestions } from "@/lib/engines/adaptive-workflow-templates";
+import { getWorkflowSuggestions } from "@/domains/engines/adaptive-workflow-templates";
 
 // ─── Constants ──────────────────────────────────────────────
 const TRIGGER_TYPES = [

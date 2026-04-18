@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useMemo } from "react";
-import { getReleaseEngine } from "@/lib/engines/release-engine";
+import { getReleaseEngine } from "@/domains/engines/release-engine";
 import type { RolloutStateMachine } from "@/packages/release-contracts/rollout-types";
 import type { ReleaseHealthSnapshot, ReleaseHealthThresholds } from "@/packages/release-contracts/health-types";
 import type { ReleaseGateSet } from "@/packages/release-contracts/compatibility-types";

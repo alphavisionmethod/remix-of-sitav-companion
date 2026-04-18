@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getAdvisorRoster, type AdvisorRole } from "@/lib/advisor-topology";
+import { getAdvisorRoster, type AdvisorRole } from "@/domains/advisors/topology";
 import { Users, MessageCircle, Sparkles, Swords, FileCheck, Brain, ChevronDown, ChevronRight, CheckCircle, AlertTriangle, ShieldCheck } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 

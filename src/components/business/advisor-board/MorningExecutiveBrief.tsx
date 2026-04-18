@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
-import type { ProfitLoopSummary } from "@/lib/engines/continuous-profit-engine";
+import type { ProfitLoopSummary } from "@/domains/engines/continuous-profit-engine";
 import type { BusinessContextSnapshot } from "@/domains/engines/business-context-graph";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
 

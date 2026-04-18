@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-import { DEMO_FAMILY_GOALS, DEMO_FAMILY_MEMBERS, DEMO_FAMILY_RULES } from "@/lib/demo-data/investment";
+import { DEMO_FAMILY_GOALS, DEMO_FAMILY_MEMBERS, DEMO_FAMILY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(0)}K`;

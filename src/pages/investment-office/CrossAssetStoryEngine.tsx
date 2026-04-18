@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_NARRATIVES } from "@/lib/demo-data/investment";
+import { DEMO_NARRATIVES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function CrossAssetStoryEngine() {

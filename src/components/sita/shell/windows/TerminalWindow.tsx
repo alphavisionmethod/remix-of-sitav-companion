@@ -9,7 +9,7 @@ import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X, ChevronRight, Cpu, HardDrive, Wifi, Clock, Terminal as TermIcon } from "lucide-react";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 
 export const TERMINAL_MANIFEST = {
   id: "com.nova.terminal",
