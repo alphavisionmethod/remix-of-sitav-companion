@@ -10,6 +10,7 @@ import { CRMCompanyDetail } from "@/components/business/crm/CRMCompanyDetail";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";
 
@@ -23,7 +24,11 @@ const CRMCompanies = () => {
   const [view, setView] = useState<"card" | "table">("card");
   const [showAdd, setShowAdd] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", domain: "", industry: "", size: "", website: "", phone: "", annual_revenue: "" });
+  type CompanyForm = { name: string; domain: string; industry: string; size: string; website: string; phone: string; annual_revenue: string };
+  const EMPTY_COMPANY_FORM: CompanyForm = { name: "", domain: "", industry: "", size: "", website: "", phone: "", annual_revenue: "" };
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<CompanyForm>("business:crm:company:new", "business");
+  const [form, setForm] = useState<CompanyForm>(() => ({ ...EMPTY_COMPANY_FORM, ...draft }));
+  React.useEffect(() => { updateDraft(form); }, [form, updateDraft]);
 
   const filtered = useMemo(() => {
     if (!search) return companies;
@@ -42,7 +47,8 @@ const CRMCompanies = () => {
       await createCompany.mutateAsync(payload);
       toast.success("Company created");
       setShowAdd(false);
-      setForm({ name: "", domain: "", industry: "", size: "", website: "", phone: "", annual_revenue: "" });
+      setForm(EMPTY_COMPANY_FORM);
+      clearDraft();
     } catch { toast.error("Failed to create company"); }
   };
 

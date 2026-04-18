@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play, AlertTriangle, FileText, Lock } from "lucide-react";
 import { DEMO_CORE_CATEGORIES_POLICY_EDITOR as DEMO_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { useEffect } from "react";
 
 const PolicyEditor = () => {
   const { user } = useAuth();
@@ -20,9 +22,12 @@ const PolicyEditor = () => {
   const [category, setCategory] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newCategory, setNewCategory] = useState("general");
-  const [newApproval, setNewApproval] = useState(true);
+  type PolicyDraft = { newName: string; newCategory: string; newApproval: boolean };
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<PolicyDraft>("system:policy:new", "system");
+  const [newName, setNewName] = useState(draft.newName ?? "");
+  const [newCategory, setNewCategory] = useState(draft.newCategory ?? "general");
+  const [newApproval, setNewApproval] = useState(draft.newApproval ?? true);
+  useEffect(() => { updateDraft({ newName, newCategory, newApproval }); }, [newName, newCategory, newApproval, updateDraft]);
 
   const { data: policies = [], isLoading } = useQuery({
     queryKey: ["policies", user?.id],
