@@ -1,6 +1,6 @@
 # Mobile Offline Hardening — Truth Classification
 
-_Generated: 2026-04-18T12:56:22.409Z_
+_Generated: 2026-04-18T13:03:48.664Z_
 
 ## Mobile platform status: **ARCHIVED**
 
@@ -8,7 +8,7 @@ Per `features/platform-runtimes` memory: Mobile (Capacitor/iOS/Android) is archi
 
 ## Web offline persistence: **REAL**
 - Canonical: `src/lib/offline/offline-db.ts` (IndexedDB)
-- Status: ❌ missing
+- Status: ✅ present
 
 ## Legacy mobile localStorage queue references
 _None — clean_

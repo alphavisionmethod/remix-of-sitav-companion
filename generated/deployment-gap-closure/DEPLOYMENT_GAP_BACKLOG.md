@@ -1,6 +1,6 @@
 # Deployment Gap Backlog
 
-_Generated: 2026-04-18T12:56:22.409Z_
+_Generated: 2026-04-18T13:03:48.664Z_
 
 This backlog merges all admitted P0/P1 gaps with hidden risks discovered during audit.
 
@@ -14,7 +14,7 @@ This backlog merges all admitted P0/P1 gaps with hidden risks discovered during 
 |---|-----|----------|--------|-------|
 | 1 | App Store install flow real | P0 | RESOLVED — already real (11 edge fns) | K-audit |
 | 2 | File picker adoption | P1 | 6 ad-hoc inputs vs 2 canonical | M2 |
-| 3 | Draft autosave adoption | P1 | 0 consumers — adoption gap | M3 |
+| 3 | Draft autosave adoption | P1 | 2 consumers — adoption gap | M3 |
 | 4 | Window snap integration | P1 | INTEGRATED | M4 |
 | 5 | Mobile offline queue | P0 | RESOLVED — mobile archived, web on IndexedDB | M5 (truth-classify) |
 | 6 | Unified search wired to shells | P1 | 2 canonical consumers | M6 |

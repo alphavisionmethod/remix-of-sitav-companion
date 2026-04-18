@@ -1,6 +1,6 @@
 # Manifest Truth Closure
 
-_Generated: 2026-04-18T12:56:22.409Z_
+_Generated: 2026-04-18T13:03:48.664Z_
 
 ## Registry components (11)
 - `src/lib/truth-manifests/manifest-ci-gate-map.ts`
