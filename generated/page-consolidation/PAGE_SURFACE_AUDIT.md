@@ -1,5 +1,5 @@
 # Page Surface Audit
-> Generated: 2026-04-18T11:43:37.839Z
+> Generated: 2026-04-18T11:46:12.783Z
 > Source: `scripts/architecture/audits/page-consolidation-audit.ts`
 > Status: **read-only audit** (Phase 0). Zero code/route changes.
 
@@ -76,7 +76,7 @@
 
 ## Thin pages (LOC < 80) — strong merge candidates
 
-**72 thin admin pages identified.** These are top candidates for conversion to embedded views (Phase 5).
+**81 thin admin pages identified.** These are top candidates for conversion to embedded views (Phase 5).
 
 - `src/pages/admin/AIT04ActivityFeedPage.tsx` (3 LOC) → /admin/ai-runtime/activity-feed
 - `src/pages/admin/AIT06RecommendationsPage.tsx` (3 LOC) → /admin/ai-runtime/recommendations
@@ -104,4 +104,4 @@
 - `src/pages/admin/DependencyMapViewer.tsx` (76 LOC) → /admin/verification/ependency-map-viewer
 - `src/pages/admin/DeploymentUnitExplorer.tsx` (69 LOC) → /admin/releases/eployment-unit-explorer
 
-…and 47 more (see `page-surface-map.json`)
+…and 56 more (see `page-surface-map.json`)

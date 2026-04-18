@@ -1,5 +1,5 @@
 # Canonical Route Ownership
-> Generated: 2026-04-18T11:43:37.839Z
+> Generated: 2026-04-18T11:46:12.783Z
 > Source: `scripts/architecture/audits/page-consolidation-audit.ts`
 > Status: **read-only audit** (Phase 0). Zero code/route changes.
 

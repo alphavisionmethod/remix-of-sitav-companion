@@ -1,5 +1,5 @@
 # Page Verification Results
-> Generated: 2026-04-18T11:43:50.703Z
+> Generated: 2026-04-18T11:46:26.547Z
 > Source: `scripts/architecture/audits/page-verification-runner.ts`
 > Status: ✅ **ALL CHECKS PASS**
 
@@ -7,14 +7,14 @@
 
 | Check | Result | Duration |
 |---|---|---:|
-| `audit` | ✅ pass | 2177ms |
-| `admin-classification-coverage` | ✅ pass | 2185ms |
-| `admin-domain-budget` | ✅ pass | 1982ms |
-| `admin-route-coherence` | ✅ pass | 1996ms |
-| `redirect-coverage` | ✅ pass | 1972ms |
-| `experimental-isolation` | ✅ pass | 1896ms |
-| `page-registry-completeness` | ✅ pass | 1975ms |
-| `typecheck` | ✅ pass | 792ms |
+| `audit` | ✅ pass | 2097ms |
+| `admin-classification-coverage` | ✅ pass | 2198ms |
+| `admin-domain-budget` | ✅ pass | 1897ms |
+| `admin-route-coherence` | ✅ pass | 1908ms |
+| `redirect-coverage` | ✅ pass | 2184ms |
+| `experimental-isolation` | ✅ pass | 1981ms |
+| `page-registry-completeness` | ✅ pass | 2449ms |
+| `typecheck` | ✅ pass | 1082ms |
 
 ## Per-check tail output
 
@@ -86,27 +86,3 @@ Registered: 22
 
 ```
 
-
-## Phase 5 — Wave 1 Shipped (Verification sub-boards)
-
-Six pages classified `SECONDARY_SUBVIEW` with curated `targetRoute`s
-were physically relocated to their canonical home and replaced with
-thin re-export shims so all current importers (route registry,
-verification index barrel, vitest batches) keep working.
-
-| Old path (now shim) | Canonical home |
-|---|---|
-| `src/pages/admin/verification/V01SurfaceInventoryBoard.tsx` | `src/admin/modules/verification/views/V01SurfaceInventoryBoard.tsx` |
-| `src/pages/admin/verification/V02InteractionCoverageBoard.tsx` | `src/admin/modules/verification/views/V02InteractionCoverageBoard.tsx` |
-| `src/pages/admin/verification/V03P0JourneyBoard.tsx` | `src/admin/modules/verification/views/V03P0JourneyBoard.tsx` |
-| `src/pages/admin/verification/V04ModeVerificationBoard.tsx` | `src/admin/modules/verification/views/V04ModeVerificationBoard.tsx` |
-| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | `src/admin/modules/verification/views/V06EvidenceExplorer.tsx` |
-| `src/pages/admin/verification/V07LaunchBlockerBoard.tsx` | `src/admin/modules/verification/views/V07LaunchBlockerBoard.tsx` |
-
-A new barrel `src/admin/modules/verification/views/index.ts` exposes
-the canonical imports. Future waves should follow this exact pattern
-(copy → shim → barrel → verify) per domain so each is independently
-revertible by deleting the canonical file and inlining the shim.
-
-**Wave 1 status:** ✅ 8/8 verification gates pass, TypeScript clean,
-zero broken imports, zero route changes.
