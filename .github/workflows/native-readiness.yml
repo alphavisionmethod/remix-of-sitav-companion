@@ -1,0 +1,48 @@
+name: native-readiness
+
+on:
+  pull_request:
+    paths:
+      - 'os/**'
+      - 'electron/**'
+      - 'docs/os/**'
+      - 'scripts/architecture/checks/check-os-*.ts'
+      - 'scripts/architecture/checks/check-electron-*.ts'
+      - 'scripts/architecture/checks/check-qemu-*.ts'
+      - 'scripts/architecture/checks/check-native-*.ts'
+      - '.github/workflows/native-readiness.yml'
+  push:
+    branches: [main]
+
+jobs:
+  ubuntu-native-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci
+      - name: OS build pipeline
+        run: npx tsx scripts/architecture/checks/check-os-build-pipeline.ts
+      - name: Trust chain readiness
+        run: npx tsx scripts/architecture/checks/check-os-trust-chain-readiness.ts
+      - name: Update readiness
+        run: npx tsx scripts/architecture/checks/check-os-update-readiness.ts
+      - name: Recovery readiness
+        run: npx tsx scripts/architecture/checks/check-os-recovery-readiness.ts
+      - name: Electron shell readiness
+        run: npx tsx scripts/architecture/checks/check-electron-shell-session-readiness.ts
+      - name: QEMU/VM readiness
+        run: npx tsx scripts/architecture/checks/check-qemu-vm-readiness.ts
+      - name: Support bundle readiness
+        run: npx tsx scripts/architecture/checks/check-os-support-bundle-readiness.ts
+      - name: Native observability readiness
+        run: npx tsx scripts/architecture/checks/check-native-observability-readiness.ts
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-readiness-reports
+          path: generated/*-readiness-report.json
