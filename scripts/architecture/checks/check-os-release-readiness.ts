@@ -71,6 +71,8 @@ const REQUIRED_GATES = [
   "route-guard-coverage",
   // Phase H — Baseline drift detection (sealed surface guard)
   "profile-runtime-baseline-drift",
+  // Boardroom Layer 7 — Follow-through closure (BLOCK gate)
+  "boardroom-layer7-closure",
 ];
 
 const GENERATED_DIR = "generated";

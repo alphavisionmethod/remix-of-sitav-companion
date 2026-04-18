@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "chain": [
+    { "node": "boardroom_items", "key": "id" },
+    { "node": "advisor_board_recommendations", "linkedVia": "boardroom_items.recommendation_id (logical)", "key": "id" },
+    { "node": "approval_decisions", "linkedVia": "ai_workforce_approval_queue.recommendation_id", "key": "id" },
+    { "node": "boardroom_followthrough_dispatches", "linkedVia": "dispatch.boardroom_item_id", "key": "id" },
+    { "node": "command_steps", "linkedVia": "dispatch.command_step_id", "key": "id" },
+    { "node": "agent_action_receipts", "linkedVia": "dispatch.receipt_id", "key": "id" },
+    { "node": "proofs", "linkedVia": "agent_action_receipts.proof_id (when present)", "key": "id" },
+    { "node": "boardroom_outcome_records", "linkedVia": "outcome.dispatch_id", "key": "id" },
+    { "node": "advisor_board_reflections", "linkedVia": "reflection.dispatch_id + reflection.outcome_record_id + reflection.boardroom_item_id", "key": "id" },
+    { "node": "timeline_events", "linkedVia": "subject_id = boardroom_item.id, metadata.correlation_id", "key": "id" }
+  ],
+  "fkAdditions": [
+    { "table": "advisor_board_reflections", "column": "boardroom_item_id", "references": "boardroom_items.id", "onDelete": "SET NULL" },
+    { "table": "advisor_board_reflections", "column": "dispatch_id", "references": "boardroom_followthrough_dispatches.id", "onDelete": "SET NULL" },
+    { "table": "advisor_board_reflections", "column": "outcome_record_id", "references": "boardroom_outcome_records.id", "onDelete": "SET NULL" },
+    { "table": "boardroom_outcome_records", "column": "dispatch_id", "references": "boardroom_followthrough_dispatches.id", "onDelete": "CASCADE" },
+    { "table": "boardroom_outcome_records", "column": "boardroom_item_id", "references": "boardroom_items.id", "onDelete": "CASCADE" },
+    { "table": "boardroom_followthrough_dispatches", "column": "boardroom_item_id", "references": "boardroom_items.id", "onDelete": "CASCADE" }
+  ],
+  "newColumns": {
+    "boardroom_items": [
+      "followthrough_state",
+      "dispatch_id",
+      "execution_command_step_id",
+      "outcome_status",
+      "outcome_recorded_at",
+      "reflection_id",
+      "last_followthrough_event_at",
+      "followthrough_failure_reason"
+    ]
+  },
+  "indexes": [
+    "idx_brd_followthrough_dispatches_item_state",
+    "idx_brd_followthrough_dispatches_state_created",
+    "idx_brd_outcome_records_dispatch",
+    "idx_brd_items_followthrough_state"
+  ]
+}
