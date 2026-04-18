@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:08:01.227Z",
+  "generatedAt": "2026-04-18T23:08:53.190Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -377,8 +377,8 @@
     {
       "file": "generated/internal-agent-escalation-runtime-report.json",
       "gate": "internal-agent-escalation-runtime",
-      "ok": false,
-      "errors": 19,
+      "ok": true,
+      "errors": 0,
       "warnings": 0
     },
     {
@@ -823,9 +823,9 @@
       "warnings": 0
     }
   ],
-  "totalErrors": 19,
+  "totalErrors": 0,
   "totalWarnings": 3348,
   "missingGates": [],
-  "ok": false,
-  "verdict": "RED"
+  "ok": true,
+  "verdict": "YELLOW"
 }
