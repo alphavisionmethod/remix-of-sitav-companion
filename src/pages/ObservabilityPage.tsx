@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
-import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime } from "@/hooks/useOSRuntime";
 import {
   useMissionControlSummary, useFounderCostSummary, useConnectorSummaries,
   useDiagnosticsSummary, useSystemActivity, useTrustSummary,

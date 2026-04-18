@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useBills as useMoneyBills } from "@/hooks/use-money-data";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/useAction";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, CreditCard, Plus, Trash2, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";

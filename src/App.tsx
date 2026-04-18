@@ -21,7 +21,7 @@ import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { RuntimeProvider } from "@/contexts/RuntimeProvider";
 import { AppPlatformProvider } from "@/contexts/AppPlatformContext";
-import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
+import { OSRuntimeProvider } from "@/hooks/useOSRuntime";
 import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
 import { ThemeProvider } from "@/contexts/AppearanceContext";
 // MobileRuntimeProvider archived — Ubuntu-native is canonical native platform.

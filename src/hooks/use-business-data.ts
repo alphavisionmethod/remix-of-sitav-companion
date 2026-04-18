@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery } from "@tanstack/react-query";
-import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
+import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/lib/mock-data/revenue-autopilot";

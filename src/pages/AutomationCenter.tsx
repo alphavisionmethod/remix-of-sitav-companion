@@ -7,7 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/useAction";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAutomationRules, useDelegations } from "@/hooks/use-domain-data";
@@ -16,7 +16,7 @@ import {
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
-import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/data/seed";
+import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

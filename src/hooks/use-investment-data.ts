@@ -6,7 +6,7 @@
 export { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-domain-data";
 
 import { useQuery } from "@tanstack/react-query";
-import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
+import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 

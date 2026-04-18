@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
+import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
 import { DEMO_DEFAULT_CATEGORIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

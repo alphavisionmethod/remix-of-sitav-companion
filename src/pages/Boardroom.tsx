@@ -23,7 +23,7 @@ import { WarRoomEntryCeremony } from "@/components/sita/WarRoomEntryCeremony";
 import { WarRoomConfidenceRadar } from "@/components/sita/WarRoomConfidenceRadar";
 import { WarRoomDisagreementTheater } from "@/components/sita/WarRoomDisagreementTheater";
 import { WarRoomPresentation } from "@/components/sita/WarRoomPresentation";
-import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";

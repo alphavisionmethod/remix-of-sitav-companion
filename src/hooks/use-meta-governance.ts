@@ -17,8 +17,8 @@ import type {
   FounderBottleneckEvent,
   WorkspaceViewMode, ViewModelFilter,
   GovernanceBoardroomSection, TrendWindow,
-} from "../types/meta-governance.types";
-import type { EntityScope, OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { EntityScope, OSDomain } from "@/lib/types/os-unified.types";
 
 // ── Trust Debt ──────────────────────────────────────────────────
 

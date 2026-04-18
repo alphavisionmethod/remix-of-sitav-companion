@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/useAction";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText, Target } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";

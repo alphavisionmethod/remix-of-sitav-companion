@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

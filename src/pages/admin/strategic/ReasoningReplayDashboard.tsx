@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
-import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
+import { useEngineEvents } from "@/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/hooks/useIntelligenceAPI";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ReasoningReplayDashboard = () => {

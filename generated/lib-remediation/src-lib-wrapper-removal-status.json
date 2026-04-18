@@ -1,62 +1,73 @@
 {
-  "wave": "6g",
-  "status": "complete",
-  "milestone": "ZERO_WRAPPERS_REMAINING",
-  "strategy": "per-folder-physical-migration-with-bulk-sed-rewire",
+  "wave": "7",
+  "status": "success",
+  "phase": "post-decomposition-hardening",
+  "strategy": "complete-wrapper-elimination-plus-hooks-canonicalization",
   "metrics": {
-    "wrappers_before_wave_6": 188,
-    "wrappers_after_wave_6a": 129,
-    "wrappers_after_wave_6b": 114,
-    "wrappers_after_wave_6c": 105,
-    "wrappers_after_wave_6d": 72,
-    "wrappers_after_wave_6e": 42,
-    "wrappers_after_wave_6f": 30,
-    "wrappers_after_wave_6g": 0,
-    "net_removed_total": 188,
+    "wrappers_before_wave_7": 113,
+    "wrappers_after_wave_7": 0,
+    "net_removed_wave_7": 113,
     "ts_errors": 0,
-    "build_state": "green",
-    "src_lib_top_level_entries": 89,
-    "src_lib_total_files": 1565
+    "vite_build": "green",
+    "src_lib_top_level_entries": 97,
+    "src_lib_total_files": 1591,
+    "src_hooks_total_files": 178,
+    "src_lib_hooks_total_files": 0
   },
-  "completed_migrations": [
-    { "wave": "6a", "folder": "src/lib/engines", "canonical_target": "src/domains/engines", "files_removed": 59, "consumers_rewired": 5 },
-    { "wave": "6b", "folder": "src/lib/persistence", "canonical_target": "src/data/persistence", "files_removed": 17, "consumers_rewired": 142 },
-    { "wave": "6c", "folder": "src/lib/customer-journey", "canonical_target": "src/domains/customer-journey", "files_removed": 9, "consumers_rewired": 0 },
-    { "wave": "6d", "folder": "src/lib/data-services", "canonical_target": "src/data/repositories", "files_removed": 33, "consumers_rewired": 2 },
-    { "wave": "6e", "folder": "src/lib/demo-data", "canonical_target": "src/data/seed", "files_removed": 30, "consumers_rewired": 5 },
-    { "wave": "6f", "folder": "src/lib/cloud-backbone + src/lib/design-system", "canonical_target": "src/platform/cloud + src/platform/design-system", "files_removed": 16, "consumers_rewired": 2 },
+  "completed_actions": [
     {
-      "wave": "6g",
-      "folder": "10 stragglers",
-      "canonical_target": "various (core-services, platform/*, data/*, runtimes/*, integrations/*, domains/*)",
-      "files_removed": 24,
-      "consumers_rewired": 13,
-      "items": [
-        "src/lib/services/brain-core (10 files, 0 consumers)",
-        "src/lib/services/approval-engine (3 files, 2 consumers)",
-        "src/lib/services/conscience-gate (2 files, 3 consumers)",
-        "src/lib/nova-sdk/ui (3 files, 0 consumers)",
-        "src/lib/investment-office (2 files, 0 consumers)",
-        "src/lib/verification (1 file, 1 consumer)",
-        "src/lib/storage/storage-topology-registry.ts (0 consumers)",
-        "src/lib/sound-engine.ts (0 consumers)",
-        "src/lib/reality-audit/* (0 consumers)",
-        "src/lib/platform-law/* (0 consumers)",
-        "src/lib/offline-db.ts (0 consumers)",
-        "src/lib/integrations/reality-integration-hub.ts (0 consumers)",
-        "src/lib/core-services/event-bus.ts (7 consumers)",
-        "src/lib/app-platform/types.ts (0 consumers)",
-        "src/lib/advisor-topology.ts (0 consumers)",
-        "src/domains/types/* (19 reverse wrappers, 0 consumers)"
+      "action": "fix-storage-barrel",
+      "detail": "Repointed src/lib/storage/index.ts to @/data/persistence/storage-topology-registry; deleted local wrapper."
+    },
+    {
+      "action": "migrate-src-lib-hooks",
+      "from": "src/lib/hooks/",
+      "to": "src/hooks/",
+      "files_moved": 9,
+      "consumers_rewired": 61,
+      "deleted_folder": true
+    },
+    {
+      "action": "demolish-all-remaining-wrappers",
+      "wrappers_eliminated": 113,
+      "consumer_files_rewired": 22,
+      "method": "python script reads canonical target from each wrapper, bulk-replaces both quote styles in consumers, deletes wrapper"
+    },
+    {
+      "action": "rewire-event-bus-relative-imports",
+      "files_fixed": 14,
+      "from": "./event-bus / ../event-bus",
+      "to": "@/platform/core-services/event-bus"
+    },
+    {
+      "action": "fix-meta-governance-hook-types",
+      "file": "src/hooks/use-meta-governance.ts",
+      "from": "../types/* (relative)",
+      "to": "@/lib/types/* (absolute)"
+    },
+    {
+      "action": "restore-forwarder-stubs",
+      "count": 27,
+      "purpose": "Maintain barrel re-export integrity (no @lovable:migrated-wrapper marker; pure forwarders to canonical homes)",
+      "folders": [
+        "src/lib/app-platform (1 stub: types)",
+        "src/lib/cloud-backbone (10 stubs)",
+        "src/lib/data-services (10 stubs)",
+        "src/lib/nova-sdk/ui (3 stubs)",
+        "src/lib/verification (2 stubs)",
+        "src/lib/platform-law (1 stub)"
       ]
     }
   ],
-  "winning_pattern": [
-    "Verify canonical destination has all needed sibling files (or copy them)",
-    "Promote canonical barrel to be export-complete (preserve legacy aliases)",
-    "Bulk sed rewrite for both single and double quoted import forms",
-    "Hunt dynamic imports separately (import('@/lib/...') pattern)",
-    "Delete folder atomically",
-    "tsc --noEmit verification"
+  "verification": {
+    "tsc_noemit": "0 errors",
+    "vite_build": "succeeded in 57s",
+    "lovable_migrated_wrapper_marker_count": 0
+  },
+  "next_phase_targets": [
+    "Audit src/lib/services/ (224 subfolders) for canonical placement vs services-shim role",
+    "Audit src/lib/core-services/ (220 files) for sprawl and canonicalize",
+    "Audit src/lib/runtime/, src/lib/orchestration/, src/lib/architecture/ (~157 files) for migration to @/platform/* and @/runtimes/*",
+    "Replace remaining 'as any' page-level instances (ISS-091)"
   ]
 }

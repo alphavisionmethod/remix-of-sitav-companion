@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, createContext, useContext } from "react";
-import { useOSRuntime, type OSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime, type OSRuntime } from "@/hooks/useOSRuntime";
 import { useNavigate } from "react-router-dom";
 import { useMissionControlLive } from "@/hooks/use-mission-control-data";
 import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";

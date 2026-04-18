@@ -2,7 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
-import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
+import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
 // Re-export the rich types directly from mock-data for full compatibility
 export type { OwnerApprovalItem, OwnerPricingItem } from "@/lib/mock-data/owner";

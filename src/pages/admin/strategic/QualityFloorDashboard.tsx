@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useQualityFloors } from "@/lib/hooks/useIntelligencePersistence";
+import { useQualityFloors } from "@/hooks/useIntelligencePersistence";
 import { DEFAULT_QUALITY_FLOORS } from "@/lib/strategic-intelligence/quality-floor-engine";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

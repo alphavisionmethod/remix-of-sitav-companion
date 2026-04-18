@@ -7,7 +7,7 @@
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useReadinessToDelegate } from "@/lib/hooks/use-meta-governance";
+import { useReadinessToDelegate } from "@/hooks/use-meta-governance";
 import { motion } from "framer-motion";
 import { Target, TrendingUp, TrendingDown, Minus, Lock, Unlock } from "lucide-react";
 import { cn } from "@/lib/utils";

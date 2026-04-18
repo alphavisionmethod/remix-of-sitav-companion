@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/useAction";
 import { CreditCard, AlertTriangle, Plus, Trash2, Pencil, Pause, Play, XCircle, Eye, DollarSign } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";

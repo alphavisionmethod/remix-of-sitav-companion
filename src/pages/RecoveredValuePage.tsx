@@ -12,7 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

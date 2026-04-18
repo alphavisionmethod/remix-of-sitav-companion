@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
+import { useIntelligenceAssets } from "@/hooks/useIntelligencePersistence";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

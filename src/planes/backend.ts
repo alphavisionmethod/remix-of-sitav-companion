@@ -124,7 +124,7 @@ export {
   cloudQuotaService, cloudAuditService, cloudTenantService,
   cloudWorkerService, cloudLifecycleService, cloudAbuseService,
   cloudSupportService,
-} from "@/platform/cloud";
+} from "@/lib/cloud-backbone";
 export type {
   StorageUsageRecord, StorageHealthReport, BucketStats,
   SyncHealthReport, SyncConflict, SyncJob, DelayedUser,
@@ -136,7 +136,7 @@ export type {
   LifecycleRule, ArchiveJob, StorageTier, AccountClosureRequest, ReconciliationRun,
   AbuseEvent, AbuseSummary,
   SupportSession,
-} from "@/platform/cloud";
+} from "@/lib/cloud-backbone";
 
 // ── Persistence Layer ──
 export {
@@ -196,7 +196,7 @@ export * from "@/lib/intelligence-architecture";
 export * from "@/lib/detection";
 
 // ── Verification (namespaced — LaunchHonestyClass overlaps with core-services/launch-readiness) ──
-export * as Verification from "@/platform/verification";
+export * as Verification from "@/lib/verification";
 
 // ── Sovereign AI Gateway (namespaced — AIProvider/TaskClass/CostTier overlap with services/ai-gateway) ──
 export * as SovereignAIGateway from "@/lib/sovereign-ai-gateway";

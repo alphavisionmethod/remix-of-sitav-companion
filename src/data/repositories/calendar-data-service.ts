@@ -2,7 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
-import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
+import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
 export interface CalendarEventItem {
   id: string; title: string; date: string; type: "booking" | "meeting" | "deadline" | "task";

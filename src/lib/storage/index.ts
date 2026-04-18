@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Storage Layer Barrel
-// Canonical import: @/lib/storage
+// Canonical import: @/lib/storage (forwards to @/data/persistence)
 // ═══════════════════════════════════════════════════════════════
 
 export {
@@ -17,4 +17,4 @@ export {
   type ReplicationMode,
   type StorageTier,
   type StorageBackendEntry,
-} from "./storage-topology-registry";
+} from "@/data/persistence/storage-topology-registry";

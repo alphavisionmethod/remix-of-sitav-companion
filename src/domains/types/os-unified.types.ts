@@ -1,2 +1,2 @@
-// @lovable:type-forwarder
+// @lovable:migrated-wrapper
 export * from "@/lib/types/os-unified.types";

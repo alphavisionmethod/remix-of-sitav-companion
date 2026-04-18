@@ -8,7 +8,7 @@ import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { useDelegationRegistry } from "@/lib/hooks/use-meta-governance";
+import { useDelegationRegistry } from "@/hooks/use-meta-governance";
 import { motion } from "framer-motion";
 import { GitBranch, Shield, TrendingUp, ChevronUp, ChevronDown, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
