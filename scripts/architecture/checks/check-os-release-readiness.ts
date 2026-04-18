@@ -59,6 +59,16 @@ const REQUIRED_GATES = [
   "misplaced-data-logic",
   "misplaced-domain-logic",
   "legacy-wrapper-usage",
+  // Phase G — Profile & Runtime Hardening (8 block-level gates + 1 orchestrator)
+  "profile-runtime-hardening",
+  "launcher-registry-completeness",
+  "app-profile-matrix",
+  "hidden-app-routes",
+  "mobile-capability-truth",
+  "profile-route-coverage",
+  "command-palette-profile-leakage",
+  "shared-component-profile-pollution",
+  "route-guard-coverage",
 ];
 
 const GENERATED_DIR = "generated";
