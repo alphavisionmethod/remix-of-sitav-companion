@@ -1,0 +1,31 @@
+{
+  "function": "internal-agent-execute-action",
+  "deployed": true,
+  "allowed_action_classes": [
+    "restart_workflow",
+    "replay_workflow",
+    "clear_stale_lock",
+    "rotate_expired_token",
+    "disable_unhealthy_connector",
+    "trigger_safe_repair_path",
+    "enable_connector",
+    "cancel_workflow_run"
+  ],
+  "safety_gates": [
+    "whitelist",
+    "agent_exists",
+    "precondition",
+    "rollback_plan",
+    "receipt_required",
+    "rate_limit",
+    "kill_switch",
+    "autonomy",
+    "suspension",
+    "approval_threshold"
+  ],
+  "kill_switch": "KS-INTERNAL-AGENTS-EXECUTE",
+  "approval_queue": "ai_workforce_approval_queue (reused)",
+  "receipt_store": "ai_action_receipts (reused)",
+  "intent_ledger": "internal_agent_action_intents",
+  "auth": ["service-role (loop)", "admin user (operator rollback)"]
+}
