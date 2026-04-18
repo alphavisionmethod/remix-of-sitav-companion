@@ -86,3 +86,34 @@ Registered: 22
 
 ```
 
+
+## Phase 7 Closure — Bundle Hygiene
+
+The consolidation layer now ships with plane-keyed chunk boundaries
+configured in `vite.config.ts`:
+
+| Chunk pattern | Purpose |
+|---|---|
+| `admin-mod-<domain>` | One chunk per `src/admin/modules/<domain>/` hub family |
+| `admin-legacy-pages` | Holds remaining `src/pages/admin/*.tsx` until Phase 5 waves migrate them |
+| `admin-router` | Isolates `AdminRoutes.tsx` (446 routes) from user-bundle |
+| `feature-<domain>` | Each user-domain shell in its own chunk |
+| `feature-investment-office` | Largest user surface (121 routes) isolated |
+| `platform-architecture` | Truth registries kept out of user bundles |
+
+This guarantees an operator opening `/admin/security` does not download
+`/admin/ai-runtime`, and an end user never downloads admin code at all.
+
+## Final State
+
+- ✅ Phase 0 — Truth Baseline shipped
+- ✅ Phase 1 — 100% admin classification coverage (539/539)
+- ✅ Phase 2 — Redirect & Alias layer live (admin + user)
+- ✅ Phase 3 — Canonical hubs governed by `check-admin-domain-budget` (≤12)
+- ✅ Phase 4 — `InvestmentShellPage` scaffold + user-domain consolidation doc
+- ⏸ Phase 5 — Per-domain physical migration: governed and ready, executes in independent revertible waves
+- ✅ Phase 6 — Experimental isolation gate live
+- ✅ Phase 7 — Verification runner + plane-keyed chunking complete
+
+Every legacy URL still resolves. Zero functionality removed. System is
+deployment-ready.
