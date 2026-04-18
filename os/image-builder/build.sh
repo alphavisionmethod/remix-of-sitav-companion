@@ -80,12 +80,30 @@ stage_install_packages() {
 
   # Copy SITA assets into chroot
   install -m 0755 -d "${ROOT_DIR}/opt/sita" "${ROOT_DIR}/etc/sita"
+  install -m 0755 -d "${ROOT_DIR}/opt/sita/bin" "${ROOT_DIR}/opt/sita/recovery" \
+                     "${ROOT_DIR}/opt/sita/diagnostics" "${ROOT_DIR}/opt/sita/runtime"
   cp -r "${SCRIPT_DIR}/branding"     "${ROOT_DIR}/opt/sita/branding"
   cp     "${SCRIPT_DIR}/first-boot.sh"          "${ROOT_DIR}/opt/sita/first-boot.sh"
   cp     "${SCRIPT_DIR}/sita-runtime.service"   "${ROOT_DIR}/etc/systemd/system/sita-runtime.service"
   cp     "${SCRIPT_DIR}/sita-firstboot.service" "${ROOT_DIR}/etc/systemd/system/sita-firstboot.service"
   install -m 0644 "${SCRIPT_DIR}/branding/os-release" "${ROOT_DIR}/etc/os-release"
   install -m 0644 "${SCRIPT_DIR}/packages.list"        "${ROOT_DIR}/tmp/packages.list"
+
+  # Phase 3 — recovery + diagnostics + runtime watchdog (canonical paths)
+  REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+  install -m 0755 "${REPO_ROOT}/os/scripts/generate-support-bundle.sh" "${ROOT_DIR}/opt/sita/bin/generate-support-bundle.sh"
+  install -m 0755 "${REPO_ROOT}/os/scripts/rollback-to-previous.sh"    "${ROOT_DIR}/opt/sita/bin/rollback-to-previous.sh"
+  cp -r "${SCRIPT_DIR}/recovery/."                                     "${ROOT_DIR}/opt/sita/recovery/"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-entry.sh"         "${ROOT_DIR}/opt/sita/recovery/recovery-entry.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-status.sh"        "${ROOT_DIR}/opt/sita/recovery/recovery-status.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-collect.sh"       "${ROOT_DIR}/opt/sita/recovery/recovery-collect.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-menu.sh"          "${ROOT_DIR}/opt/sita/recovery/recovery-menu.sh"
+  install -m 0644 "${REPO_ROOT}/os/diagnostics/_lib.sh"                "${ROOT_DIR}/opt/sita/diagnostics/_lib.sh"
+  for f in collect-boot-health collect-runtime-health collect-update-health collect-service-failures emit-runtime-status; do
+    install -m 0755 "${REPO_ROOT}/os/diagnostics/${f}.sh" "${ROOT_DIR}/opt/sita/diagnostics/${f}.sh"
+  done
+  install -m 0755 "${REPO_ROOT}/os/runtime/shell-watchdog.sh"          "${ROOT_DIR}/opt/sita/runtime/shell-watchdog.sh"
+  install -m 0755 "${REPO_ROOT}/os/runtime/check-shell-health.sh"      "${ROOT_DIR}/opt/sita/runtime/check-shell-health.sh"
 
   # Run package install + service enable inside chroot
   cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'
