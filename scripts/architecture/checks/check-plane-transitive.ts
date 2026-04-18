@@ -96,7 +96,9 @@ const dedupedTrans = transViol.filter((v, i, a) =>
   a.findIndex((x) => x.from === v.from && x.to === v.to) === i
 );
 
-const TRANS_BUDGET = 50;
+// Phase B6 — ratchet down. Current 12; budget tightened to 20 to prevent
+// transitive leakage growth. Stays warn-level until full graph isolation.
+const TRANS_BUDGET = 20;
 const ok = dedupedTrans.length <= TRANS_BUDGET;
 const report = {
   generatedAt: new Date().toISOString(),
