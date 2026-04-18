@@ -5,7 +5,7 @@
 // decision logic, boardroom recommendations, or action execution
 // outside device/surface continuity.
 // New orchestration consumers MUST use:
-//   import { orchestrationFacade } from "@/lib/orchestration";
+//   import { orchestrationFacade } from "@/platform/orchestration";
 // ═══════════════════════════════════════════════════════════════
 
 import {

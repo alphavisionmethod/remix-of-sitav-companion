@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
-import { orchestrationFacade } from "@/lib/orchestration";
+import { orchestrationFacade } from "@/platform/orchestration";
 
 export function useOrchestrationPlanning() {
   const lastResult = useMemo(() => orchestrationFacade.getLastResult(), []);
