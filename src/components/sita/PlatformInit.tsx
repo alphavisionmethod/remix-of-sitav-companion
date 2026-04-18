@@ -12,7 +12,7 @@ import { useUnifiedWsBridge, useWsCacheInvalidation } from "@/hooks/use-unified-
 import { useEffect } from "react";
 import { createCloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
 import { bootOSSecurity, isOSSecurityBooted } from "@/lib/os-security";
-import { syncd } from "@/lib/sync-engine";
+import { syncd } from "@/platform/sync-engine";
 import { initSessionThreatDetector } from "@/lib/core-services/security/session-threat-detector";
 import { initSecureVault } from "@/lib/core-services/security/secure-memory-vault";
 import { generateCanaryToken } from "@/lib/core-services/security/ai-output-firewall";

@@ -7,10 +7,10 @@ import {
   AlertTriangle, AlertCircle, Shield, Download, Upload, Clock,
   XCircle, Loader, ChevronDown, ChevronUp, Smartphone, HardDrive
 } from "lucide-react";
-import { syncStateMachine, type SyncUXState, type SyncStateInfo } from "@/lib/sync-engine/sync-state-machine";
-import { syncd } from "@/lib/sync-engine/syncd";
-import { uploadScheduler } from "@/lib/sync-engine/transport/upload-scheduler";
-import { deviceIdentity } from "@/lib/sync-engine/security/device-identity";
+import { syncStateMachine, type SyncUXState, type SyncStateInfo } from "@/platform/sync-engine/sync-state-machine";
+import { syncd } from "@/platform/sync-engine/syncd";
+import { uploadScheduler } from "@/platform/sync-engine/transport/upload-scheduler";
+import { deviceIdentity } from "@/platform/sync-engine/security/device-identity";
 import { cn } from "@/lib/utils";
 
 const stateIcons: Record<SyncUXState, React.ElementType> = {

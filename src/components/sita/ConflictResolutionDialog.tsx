@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, ArrowLeft, ArrowRight, Check, GitMerge, Clock, Monitor, Smartphone, X, HelpCircle } from "lucide-react";
-import { conflictResolver, type SyncConflict } from "@/lib/sync-engine/conflict-resolver";
+import { conflictResolver, type SyncConflict } from "@/platform/sync-engine/conflict-resolver";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

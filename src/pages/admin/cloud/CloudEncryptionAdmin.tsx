@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, Key, RotateCcw, Lock, Eye, AlertTriangle, CheckCircle } from "lucide-react";
-import { syncEncryption, type EncryptionKeyMeta } from "@/lib/sync-engine/security/sync-encryption";
-import { namespaceRegistry } from "@/lib/sync-engine/sync-namespaces";
+import { syncEncryption, type EncryptionKeyMeta } from "@/platform/sync-engine/security/sync-encryption";
+import { namespaceRegistry } from "@/platform/sync-engine/sync-namespaces";
 import { toast } from "sonner";
 
 // Seed demo keys

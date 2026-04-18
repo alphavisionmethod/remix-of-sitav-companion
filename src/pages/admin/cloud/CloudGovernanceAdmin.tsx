@@ -15,11 +15,11 @@ import {
   CheckCircle, XCircle, Clock, BarChart3, Smartphone, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { syncQuotas } from "@/lib/sync-engine/governance/sync-quotas";
-import { appGovernance } from "@/lib/sync-engine/governance/app-governance";
-import { trustScoring, type TrustState } from "@/lib/sync-engine/governance/trust-scoring";
-import { complianceEngine } from "@/lib/sync-engine/governance/compliance-engine";
-import { abusePrevention } from "@/lib/sync-engine/operations/abuse-prevention";
+import { syncQuotas } from "@/platform/sync-engine/governance/sync-quotas";
+import { appGovernance } from "@/platform/sync-engine/governance/app-governance";
+import { trustScoring, type TrustState } from "@/platform/sync-engine/governance/trust-scoring";
+import { complianceEngine } from "@/platform/sync-engine/governance/compliance-engine";
+import { abusePrevention } from "@/platform/sync-engine/operations/abuse-prevention";
 
 const DEMO_TRUST_DEVICES = [
   { id: "d1", name: "MacBook Pro", state: "trusted" as TrustState, score: 92, platform: "macOS" },
