@@ -1,16 +1,19 @@
 {
-  "wave": "6b",
+  "wave": "6e",
   "status": "success",
   "strategy": "per-folder-physical-migration-with-bulk-sed-rewire",
   "metrics": {
     "wrappers_before_wave_6": 188,
     "wrappers_after_wave_6a": 129,
     "wrappers_after_wave_6b": 114,
-    "net_removed_total": 74,
+    "wrappers_after_wave_6c": 114,
+    "wrappers_after_wave_6d": 81,
+    "wrappers_after_wave_6e": 45,
+    "net_removed_total": 143,
     "ts_errors": 0,
     "build_state": "green",
-    "src_lib_top_level_entries": 101,
-    "src_lib_total_files": 1687
+    "src_lib_top_level_entries": 98,
+    "src_lib_total_files": 1616
   },
   "completed_migrations": [
     {
@@ -27,17 +30,39 @@
       "files_removed": 17,
       "consumers_rewired": 142,
       "barrel_alias_added": "getScopedMemoryStats -> getMemoryStats"
+    },
+    {
+      "wave": "6c",
+      "folder": "src/lib/customer-journey",
+      "canonical_target": "src/domains/customer-journey",
+      "files_removed": 9,
+      "consumers_rewired": 0,
+      "note": "All consumers were already on canonical path; pure wrapper deletion."
+    },
+    {
+      "wave": "6d",
+      "folder": "src/lib/data-services",
+      "canonical_target": "src/data/repositories",
+      "files_removed": 33,
+      "consumers_rewired": 2,
+      "barrel_promotion": "src/data/repositories/index.ts expanded from stub to 32-export complete barrel; src/data/index.ts simplified to re-export from canonical."
+    },
+    {
+      "wave": "6e",
+      "folder": "src/lib/demo-data",
+      "canonical_target": "src/data/seed",
+      "files_removed": 30,
+      "consumers_rewired": 5,
+      "content_relocated": "Real demo content (DEMO_INBOX_ITEMS etc.) and packs.ts physically copied to canonical seed/ before legacy folder deletion."
     }
   ],
   "next_targets": [
-    { "folder": "src/lib/customer-journey", "wrappers": 9 },
-    { "folder": "src/lib/data-services", "wrappers": 21 },
-    { "folder": "src/lib/demo-data", "wrappers": 30 },
     { "folder": "src/lib/cloud-backbone", "wrappers": 10 },
-    { "folder": "src/lib/design-system", "wrappers": 5 }
+    { "folder": "src/lib/design-system", "wrappers": 5 },
+    { "folder": "src/lib/services", "wrappers": "varies (sub-batched)" }
   ],
   "winning_pattern": [
-    "Verify canonical destination has all needed sibling files",
+    "Verify canonical destination has all needed sibling files (or copy them)",
     "Promote canonical barrel to be export-complete (preserve legacy aliases)",
     "Bulk sed rewrite for both single and double quoted import forms",
     "Hunt dynamic imports separately (import('@/lib/...') pattern)",
