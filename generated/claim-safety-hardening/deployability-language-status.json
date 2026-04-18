@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-04-18T00:00:00Z",
+  "policy_path": "generated/claim-safety-hardening/DEPLOYMENT_WORDING_POLICY.md",
+  "audit_path": "generated/claim-safety-hardening/DEPLOYABILITY_LANGUAGE_AUDIT.md",
+  "active_caveats": [
+    { "id": 1, "title": "TPM hardware proof on real hardware", "owner": "Trust Council", "status": "pending" },
+    { "id": 2, "title": "Production-shape restore drill — first scheduled live execution", "owner": "DR Owner", "status": "pending" },
+    { "id": 3, "title": "OAuth refresh probe — 7-day continuous health window", "owner": "Connectors Owner", "status": "accumulating" },
+    { "id": 4, "title": "Boardroom L7 follow-through — operator-trained runbook drill", "owner": "Boardroom Owner", "status": "pending" },
+    { "id": 5, "title": "MOK per-distro live tests — Fedora 40 + Arch", "owner": "Install Owner", "status": "partial-ubuntu-only" }
+  ],
+  "approved_phrases": [
+    "deployable with qualifiers",
+    "production-capable on Track A",
+    "pilot-ready",
+    "controlled-launch-ready",
+    "release-system-ready with a short P1 closure list"
+  ],
+  "prohibited_phrases": [
+    "nothing left to prove",
+    "fully production-certified in all respects",
+    "100% production-ready",
+    "no remaining operational caveats",
+    "no remaining gaps",
+    "complete with nothing left to do"
+  ],
+  "qualifier_required_phrases": [
+    "production-ready",
+    "DEPLOYABLE",
+    "release-ready",
+    "deployable=true"
+  ],
+  "ci_gates": [
+    "check-deployment-wording-safety",
+    "check-launch-honesty-alignment",
+    "check-qualifier-required-claims"
+  ],
+  "verdict": "GREEN"
+}
