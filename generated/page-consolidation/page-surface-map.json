@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T11:40:53.743Z",
+  "generatedAt": "2026-04-18T11:43:37.839Z",
   "totals": {
     "onDisk": 1042,
     "mountedRoutes": 661,
@@ -8414,8 +8414,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 132,
-      "imports": 10,
+      "loc": 10,
+      "imports": 0,
       "targetRoute": "/admin/verification/surface-inventory"
     },
     {
@@ -8426,8 +8426,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 177,
-      "imports": 7,
+      "loc": 6,
+      "imports": 0,
       "targetRoute": "/admin/verification/interaction-coverage"
     },
     {
@@ -8438,8 +8438,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 269,
-      "imports": 9,
+      "loc": 6,
+      "imports": 0,
       "targetRoute": "/admin/verification/p0-journeys"
     },
     {
@@ -8450,8 +8450,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 66,
-      "imports": 5,
+      "loc": 6,
+      "imports": 0,
       "targetRoute": "/admin/verification/mode-verification"
     },
     {
@@ -8474,8 +8474,8 @@
       "pageClass": "DETAIL_EXPLORER",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 138,
-      "imports": 8,
+      "loc": 6,
+      "imports": 0,
       "targetRoute": "/admin/verification/evidence"
     },
     {
@@ -8486,8 +8486,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 158,
-      "imports": 6,
+      "loc": 6,
+      "imports": 0,
       "targetRoute": "/admin/verification/launch-blockers"
     },
     {
