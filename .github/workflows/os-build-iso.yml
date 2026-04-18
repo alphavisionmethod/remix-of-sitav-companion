@@ -191,7 +191,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qemu-validation
+          name: qemu-validation-${{ matrix.profile }}
           path: |
             out/qemu-validation.log
             out/qemu-validation-report.json
