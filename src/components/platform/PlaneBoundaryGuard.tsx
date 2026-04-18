@@ -2,21 +2,36 @@ import { ReactNode } from "react";
 import { useCurrentPlane } from "@/hooks/useCurrentPlane";
 import { useRequireAdminPermission } from "@/hooks/useRequireAdminPermission";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Monitor, Server, Layers } from "lucide-react";
+import { Shield, Monitor, Server, Layers, Cpu, Terminal } from "lucide-react";
 import type { PlaneKey } from "@/lib/platform-plane";
+import {
+  CANONICAL_PLANES,
+  resolvePlane,
+  type CanonicalPlaneKey,
+  type PlaneKeyAny,
+} from "@/lib/architecture/plane-registry";
 
 interface PlaneBoundaryGuardProps {
   children: ReactNode;
-  requiredPlane?: PlaneKey;
+  requiredPlane?: PlaneKeyAny;
   requiredPermission?: string;
   showPlaneBadge?: boolean;
 }
 
+const PLANE_ICON: Record<CanonicalPlaneKey, any> = {
+  "core-os": Cpu,
+  "shell-runtime": Terminal,
+  user: Monitor,
+  admin: Shield,
+  "backend-services": Server,
+};
+
+// Legacy 4-key view — preserved for rendering only via shim resolution.
 const PLANE_INFO: Record<PlaneKey, { label: string; icon: any; color: string }> = {
-  control: { label: "Control Plane", icon: Shield, color: "text-purple-400 bg-purple-500/10 border-purple-500/30" },
-  product: { label: "Product Plane", icon: Monitor, color: "text-blue-400 bg-blue-500/10 border-blue-500/30" },
-  "shared-core": { label: "Shared Core", icon: Server, color: "text-amber-400 bg-amber-500/10 border-amber-500/30" },
-  "internal-execution": { label: "Internal Execution", icon: Layers, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
+  control: { label: "Admin Control Plane", icon: Shield, color: CANONICAL_PLANES.admin.badgeClass },
+  product: { label: "User Product Plane", icon: Monitor, color: CANONICAL_PLANES.user.badgeClass },
+  "shared-core": { label: "Backend Services", icon: Server, color: CANONICAL_PLANES["backend-services"].badgeClass },
+  "internal-execution": { label: "Admin Control Plane", icon: Layers, color: CANONICAL_PLANES.admin.badgeClass },
 };
 
 export function PlaneBoundaryGuard({
@@ -29,7 +44,14 @@ export function PlaneBoundaryGuard({
   const { hasPermission, loading } = useRequireAdminPermission(requiredPermission || "audit.view");
 
   const effectivePlane = requiredPlane || currentPlane;
-  const info = PLANE_INFO[effectivePlane];
+  // Resolve via canonical registry — accepts both legacy and canonical keys.
+  const canonicalKey = resolvePlane(effectivePlane as PlaneKeyAny);
+  const canonical = CANONICAL_PLANES[canonicalKey];
+  const info = {
+    label: canonical.label,
+    color: canonical.badgeClass,
+    icon: PLANE_ICON[canonicalKey] ?? Layers,
+  };
   const Icon = info.icon;
 
   if (loading) {
