@@ -29,6 +29,8 @@ interface RawGate {
   leakCount?: number;
   leakageCount?: number;
   unguardedCount?: number;
+  totalSoftDrift?: number;
+  digestMismatchCount?: number;
 }
 
 interface AggregatorReport {
@@ -50,6 +52,8 @@ const GATES: Array<[string, string, string, keyof RawGate]> = [
   ["command-palette-profile-leakage",        "scripts/architecture/checks/check-command-palette-profile-leakage.ts",        "generated/command-palette-profile-leakage.json",        "leakCount"],
   ["shared-component-profile-pollution",     "scripts/architecture/checks/check-shared-component-profile-pollution.ts",     "generated/shared-component-profile-pollution.json",     "leakageCount"],
   ["route-guard-coverage",                   "scripts/architecture/checks/check-route-guard-coverage.ts",                   "generated/route-guard-coverage.json",                   "unguardedCount"],
+  ["profile-runtime-baseline-drift",         "scripts/architecture/checks/check-profile-runtime-baseline-drift.ts",         "generated/profile-runtime-baseline-drift.json",         "totalSoftDrift"],
+  ["profile-runtime-attestation",            "scripts/architecture/checks/check-profile-runtime-attestation.ts",            "generated/profile-runtime-attestation.json",            "digestMismatchCount"],
 ];
 
 mkdirSync("generated", { recursive: true });

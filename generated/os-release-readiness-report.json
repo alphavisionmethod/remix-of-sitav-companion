@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T12:33:27.281Z",
+  "generatedAt": "2026-04-18T12:42:25.153Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -237,6 +237,20 @@
     {
       "file": "generated/route-guard-coverage-report.json",
       "gate": "route-guard-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/profile-runtime-baseline-drift-report.json",
+      "gate": "profile-runtime-baseline-drift",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/profile-runtime-attestation-report.json",
+      "gate": "profile-runtime-attestation",
       "ok": true,
       "errors": 0,
       "warnings": 0

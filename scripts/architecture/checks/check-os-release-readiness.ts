@@ -69,6 +69,10 @@ const REQUIRED_GATES = [
   "command-palette-profile-leakage",
   "shared-component-profile-pollution",
   "route-guard-coverage",
+  // Phase H — Baseline drift detection (sealed surface guard)
+  "profile-runtime-baseline-drift",
+  // Phase I — Signed attestation (HMAC tamper detection)
+  "profile-runtime-attestation",
 ];
 
 const GENERATED_DIR = "generated";

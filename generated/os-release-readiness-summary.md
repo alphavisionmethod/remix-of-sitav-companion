@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T12:33:27.281Z
+> Generated: 2026-04-18T12:42:25.153Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 34 |
-| Gates present  | 34 |
+| Gates required | 36 |
+| Gates present  | 36 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
@@ -51,6 +51,8 @@
 | `command-palette-profile-leakage` | ✅ | 0 | 0 |
 | `shared-component-profile-pollution` | ✅ | 0 | 0 |
 | `route-guard-coverage` | ✅ | 0 | 0 |
+| `profile-runtime-baseline-drift` | ✅ | 0 | 0 |
+| `profile-runtime-attestation` | ✅ | 0 | 0 |
 
 ## Verdict
 

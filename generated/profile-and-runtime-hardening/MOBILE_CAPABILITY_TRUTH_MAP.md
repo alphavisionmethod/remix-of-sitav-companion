@@ -1,5 +1,5 @@
 # Mobile Capability Truth Map (Phase A)
-Generated: 2026-04-18T12:33:02.705Z
+Generated: 2026-04-18T12:41:39.927Z
 | File | Feature | Class | Persistence | Auth | Biometric | Notes |
 |---|---|---|---|---|---|---|
 | `src/pages/mobile/MobileAIChat.tsx` | MobileAIChat | mock | none | — | — | — |
