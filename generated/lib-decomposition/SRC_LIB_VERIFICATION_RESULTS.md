@@ -1,6 +1,6 @@
 # SITA OS — src/lib Decomposition Verification
 
-> Generated: 2026-04-18T02:58:45.297Z
+> Generated: 2026-04-18T03:01:42.158Z
 > Gate: `lib-decomposition-readiness`  Verdict: 🟡 YELLOW (in-migration)
 
 ## Counts
@@ -9,17 +9,17 @@
 |---|---|
 | Files remaining in src/lib (non-allowlist) | 1731 |
 | Files in src/lib allowlist (utils/internal/hooks) | 36 |
-| Detected shim-shaped wrappers | 157 |
-| Populated canonical destination roots | 2 / 7 |
+| Detected shim-shaped wrappers | 194 |
+| Populated canonical destination roots | 5 / 7 |
 
 ## Canonical destination population
 
 | Root | Total files | Non-barrel files |
 |---|---|---|
-| `src/domains` | 16 | 0 |
-| `src/platform` | 35 | 0 |
+| `src/domains` | 30 | 14 |
+| `src/platform` | 41 | 6 |
 | `src/runtimes` | 9 | 1 |
-| `src/data` | 7 | 0 |
+| `src/data` | 24 | 17 |
 | `src/integrations` | 7 | 2 |
 | `src/contracts` | 3 | 0 |
 | `src/legacy` | 3 | 0 |
@@ -33,6 +33,7 @@
 | `src/lib/ai-engineering/index.ts` | 22 | `./observation-layer` |
 | `src/lib/api/index.ts` | 4 | `./edge-client` |
 | `src/lib/app-platform/index.ts` | 8 | `./types` |
+| `src/lib/app-platform/types.ts` | 1 | `@/domains/apps/types` |
 | `src/lib/backend-topology/index.ts` | 14 | `./edge-function-registry` |
 | `src/lib/boardroom/index.ts` | 5 | `./types` |
 | `src/lib/capabilities/index.ts` | 16 | `./capability-registry` |
@@ -47,7 +48,6 @@
 | `src/lib/core-services/approval-engine/index.ts` | 4 | `./approval-history.service` |
 | `src/lib/core-services/architecture/god-tier-integration-engine.ts` | 1 | `@/lib/services/architecture/god-tier-integration-engine` |
 | `src/lib/core-services/architecture/index.ts` | 1 | `./god-tier-integration-engine` |
-| `src/lib/core-services/biometric-auth/index.ts` | 1 | `@/lib/services/biometric-auth` |
 
 ## Verdict
 

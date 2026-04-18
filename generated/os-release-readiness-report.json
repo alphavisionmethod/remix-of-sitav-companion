@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:58:46.851Z",
+  "generatedAt": "2026-04-18T03:01:45.424Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -176,11 +176,11 @@
       "gate": "legacy-wrapper-usage",
       "ok": true,
       "errors": 0,
-      "warnings": 2198
+      "warnings": 1980
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 4028,
+  "totalWarnings": 3810,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
