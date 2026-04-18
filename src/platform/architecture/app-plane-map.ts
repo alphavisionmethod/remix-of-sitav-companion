@@ -47,6 +47,7 @@ export const APP_PLANE_MAP: AppPlaneEntry[] = [
   { appId: "app-store",    displayName: "App Store",     plane: "user", profiles: ["user"],            launcherVisible: true, commandVisible: true,  defaultPinned: [],                  riskTier: "R1", description: "App platform store / catalog" },
 
   // ── Shared Shell Runtime (both profiles) ──
+  { appId: "desktop",       displayName: "Desktop",       plane: "shell-runtime", profiles: ["user", "operator"], launcherVisible: false, commandVisible: false, defaultPinned: [],                   riskTier: "R0", description: "Desktop shell host (canonical launcher surface, not itself launchable)" },
   { appId: "files",         displayName: "Files",         plane: "shell-runtime", profiles: ["user", "operator"], launcherVisible: true, commandVisible: true,  defaultPinned: ["user", "operator"], riskTier: "R1", description: "Files browser (shared)" },
   { appId: "settings",      displayName: "Settings",      plane: "shell-runtime", profiles: ["user", "operator"], launcherVisible: true, commandVisible: true,  defaultPinned: [],                   riskTier: "R0", description: "Settings (role-aware sections)" },
   { appId: "notifications", displayName: "Notifications", plane: "shell-runtime", profiles: ["user", "operator"], launcherVisible: true, commandVisible: true,  defaultPinned: [],                   riskTier: "R0", description: "Notifications center" },
