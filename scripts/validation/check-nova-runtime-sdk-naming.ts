@@ -12,6 +12,8 @@ const ALLOWED_PATHS = [
   /^generated\/final-hardening\//,                // rename audit lives here
   /^generated\/DEPLOYMENT_AUDIT\.md$/,            // audit narrative
   /^scripts\/validation\/check-nova-runtime-sdk-naming\.ts$/, // this file
+  /^scripts\/validation\/check-no-user-visible-nova-kernel-claims\.ts$/, // sibling validator
+  /^src\/platform\/nova-runtime-sdk\/index\.ts$/, // honesty notes in SDK boundary
   /\.test\.tsx?$/,                                // tests reference internal symbol
 ];
 

@@ -3,7 +3,7 @@
 // Track B (native substrate) must not claim host-kernel ownership in user-facing copy.
 import { execSync } from "node:child_process";
 const FORBIDDEN = ["our kernel", "owns the kernel", "kernel-level isolation", "replaces the host kernel"];
-const ALLOWED = [/scripts\/validation\//, /\.test\.tsx?$/, /docs\/REAL_VS_SIMULATED\.md/];
+const ALLOWED = [/scripts\/validation\//, /\.test\.tsx?$/, /docs\/REAL_VS_SIMULATED\.md/, /src\/platform\/nova-runtime-sdk\/index\.ts/];
 let violations: string[] = [];
 for (const term of FORBIDDEN) {
   try {

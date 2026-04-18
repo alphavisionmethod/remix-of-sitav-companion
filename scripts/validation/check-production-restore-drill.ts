@@ -3,7 +3,7 @@
 // Validates production-shape restore drill freshness + status.
 import { existsSync, readFileSync } from "node:fs";
 
-const REPORT = "generated/production-restore-status.json";
+const REPORT = "generated/restore-and-oauth-hardening/production-restore-status.json";
 const MAX_AGE_DAYS = 35; // monthly cadence + grace
 
 if (!existsSync(REPORT)) {
