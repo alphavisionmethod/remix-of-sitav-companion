@@ -1,18 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Runtime Evidence Public API
-// Canonical entry point for runtime evidence collection.
-// ═══════════════════════════════════════════════════════════════
-
-export type {
-  RuntimeEvidenceRecord,
-  RuntimeEvidenceBundle,
-  RuntimeEvidenceCollector,
-  RuntimeEvidenceCollectorRegistration,
-} from "./runtime-evidence-types";
-
-export {
-  RUNTIME_EVIDENCE_COLLECTORS,
-  getCollector,
-  getManifestIdsWithEvidence,
-  runAllCollectors,
-} from "./runtime-evidence-registry";
+/**
+ * @deprecated Migrated to `@/platform/truth/runtime-evidence/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/truth/runtime-evidence/index";

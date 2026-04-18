@@ -1,20 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Storage Layer Barrel
-// Canonical import: @/lib/storage
-// ═══════════════════════════════════════════════════════════════
-
-export {
-  STORAGE_TOPOLOGY_REGISTRY,
-  getBackendById,
-  getBackendsByType,
-  getOfflineCapableBackends,
-  getRLSProtectedBackends,
-  getBackendsByDomain,
-  getPersistentBackends,
-  getFailoverChain,
-  type StorageBackendType,
-  type EncryptionModel,
-  type ReplicationMode,
-  type StorageTier,
-  type StorageBackendEntry,
-} from "./storage-topology-registry";
+/**
+ * @deprecated Migrated to `@/data/persistence/index` in Wave 2 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/data/persistence/index";

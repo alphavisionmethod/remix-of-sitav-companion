@@ -1,2 +1,7 @@
-// Canonical re-export — core-services/life-simulation
-export * from "@/lib/services/life-simulation";
+/**
+ * @deprecated Migrated to `@/platform/core-services/life-simulation/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/life-simulation/index";

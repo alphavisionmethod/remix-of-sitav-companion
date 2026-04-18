@@ -1,37 +1,7 @@
-// Runtime probe — GP-ENV-RECOVERY
-import type { ProbeDescriptor, ProbeResult } from "./index";
-
-async function run(): Promise<ProbeResult> {
-  const start = performance.now();
-  const checks: Record<string, boolean> = {};
-  try {
-    checks.fetchAvailable = typeof fetch === "function";
-    checks.navigatorOnline = typeof navigator !== "undefined" ? navigator.onLine : true;
-    const allPass = Object.values(checks).every(Boolean);
-    return {
-      probeId: "probe.env-recovery",
-      pathId: "GP-ENV-RECOVERY",
-      status: allPass ? "pass" : "fail",
-      latencyMs: Math.round(performance.now() - start),
-      checkedAt: new Date().toISOString(),
-      details: { checks },
-    };
-  } catch (e) {
-    return {
-      probeId: "probe.env-recovery",
-      pathId: "GP-ENV-RECOVERY",
-      status: "fail",
-      latencyMs: Math.round(performance.now() - start),
-      checkedAt: new Date().toISOString(),
-      details: { checks },
-      error: e instanceof Error ? e.message : String(e),
-    };
-  }
-}
-
-export const envRecoveryProbe: ProbeDescriptor = {
-  probeId: "probe.env-recovery",
-  pathId: "GP-ENV-RECOVERY",
-  title: "Env recovery: network reachable for rollback ops",
-  run,
-};
+/**
+ * @deprecated Migrated to `@/runtimes/core/probes/env-recovery-probe` in Wave 3 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/runtimes/core/probes/env-recovery-probe";

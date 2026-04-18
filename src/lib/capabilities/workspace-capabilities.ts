@@ -1,17 +1,7 @@
-import { registerCapability } from "./capability-registry";
-
-registerCapability("workspace.memory.upsert", async (params) => ({
-  success: true, data: params,
-}));
-
-registerCapability("workspace.profile.update", async (params) => ({
-  success: true, data: params,
-}));
-
-registerCapability("workspace.settings.update", async (params) => ({
-  success: true, data: params,
-}));
-
-registerCapability("workspace.activity.log", async (params) => ({
-  success: true, data: { id: crypto.randomUUID(), ...params },
-}));
+/**
+ * @deprecated Migrated to `@/platform/capabilities/workspace-capabilities` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/capabilities/workspace-capabilities";

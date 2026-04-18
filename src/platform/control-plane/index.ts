@@ -1,7 +1,58 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/control-plane
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Control Plane Barrel
+// Canonical import: @/lib/control-plane
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export {
+  KILL_SWITCH_REGISTRY,
+  getKillSwitch,
+  getKillSwitchByTarget,
+  getDualApprovalSwitches,
+  getSwitchesByImpact,
+  getSwitchesAffectingService,
+  getSwitchesAffectingTable,
+  getSwitchesWithRunbook,
+  getSwitchesByBoundedContext,
+  getSwitchesByOwner,
+  getImpactSummary,
+} from "./kill-switch-registry";
+
+export type {
+  KillSwitchState,
+  ImpactLevel,
+  KillSwitchEntry,
+  EnforcementLayer,
+  EnforcementPoint,
+  RuntimeConsequenceClass,
+  RuntimeConsequence,
+  SwitchDependencyEdge,
+  KillSwitchGateResult,
+} from "./kill-switch-types";
+
+export {
+  KILL_SWITCH_ENFORCEMENT_MAP,
+  getEnforcementPoints,
+  getEnforcementCoverage,
+} from "./kill-switch-enforcement-map";
+
+export {
+  KILL_SWITCH_DEPENDENCY_MAP,
+  getDependenciesOf,
+  getDependentsOn,
+  recommendCascade,
+} from "./kill-switch-dependency-map";
+
+export {
+  KILL_SWITCH_CONSEQUENCE_MAP,
+  getConsequence,
+  getConsequencesForSurface,
+} from "./kill-switch-runtime-consequence";
+
+export {
+  useKillSwitchGate,
+  checkKillSwitch,
+  checkKillSwitchOrReject,
+  setKillSwitchStateResolver,
+  publishKillSwitchSnapshot,
+  snapshotAllKillSwitches,
+} from "./use-kill-switch-gate";

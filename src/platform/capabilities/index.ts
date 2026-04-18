@@ -1,7 +1,23 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/capabilities
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Capability Layer Barrel
+// Import this to register all capability handlers
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export { invokeCapability, listCapabilities, hasCapability, registerCapability } from "./capability-registry";
+
+// Side-effect imports — register handlers on import
+import "./files-capability";
+import "./advisor-capability";
+import "./connector-capability";
+import "./money-capability";
+import "./finance-capabilities";
+import "./business-capabilities";
+import "./concierge-capabilities";
+import "./system-capabilities";
+import "./admin-capabilities";
+import "./digital-presence-capabilities";
+import "./investment-capabilities";
+import "./workspace-capabilities";
+import "./atlas-capabilities";
+import "./enterprise-capabilities";
+import "./app-platform-capabilities";

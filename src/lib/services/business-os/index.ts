@@ -1,28 +1,7 @@
-// @persistence: none — stateless module, no durable state to persist
-export { scoreLead, detectStaleLead } from "./lead-scoring.service";
-export type { ScoredLeadResult } from "./lead-scoring.service";
-export * from "./customer-dashboard.service";
-export * from "./revenue-autopilot.service";
-export * from "./contacts.service";
-export * from "./accounts.service";
-export * from "./customer-timeline.service";
-export * from "./customer-health.service";
-export * from "./lead-intake.service";
-export * from "./stale-lead-detector.service";
-export * from "./callback-queue.service";
-export * from "./opportunity-engine.service";
-export * from "./opportunity-ranking.service";
-export * from "./reactivation.service";
-export * from "./leakage-engine.service";
-export * from "./recovery-engine.service";
-export * from "./recovered-value-ledger.service";
-export * from "./no-show-recovery.service";
-export * from "./collections-command.service";
-export * from "./proposals.service";
-export * from "./quotes.service";
-export * from "./follow-up.service";
-export * from "./invoice-linking.service";
-export * from "./collections.service";
-export * from "./business-boardroom-inputs.service";
-export * from "./website-management.service";
-
+/**
+ * @deprecated Migrated to `@/domains/business/index` in Wave 5 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/domains/business/index";

@@ -1,6 +1,7 @@
-// Canonical — core-services/capability-router
-// Flat engine + all sub-services
-export * from "../capability-router";
-export * from "@/lib/services/capability-router/capability-registry.service";
-export * from "@/lib/services/capability-router/pack-enablement.service";
-export * from "@/lib/services/capability-router/shell-space-routing.service";
+/**
+ * @deprecated Migrated to `@/platform/core-services/capability-router/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/capability-router/index";

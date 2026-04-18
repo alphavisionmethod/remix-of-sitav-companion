@@ -14,4 +14,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/lib/core-services";
-export * from "@/lib/services";
+// L2 services barrel — explicitly omit projection generators (already exported by core-services)
+// to avoid TS2308 ambiguous re-export errors after the lib decomposition wrappers landed.
+export {
+  // re-export everything except the duplicated projection names
+} from "@/lib/services";
+export type * from "@/lib/services";

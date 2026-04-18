@@ -1,15 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Domain System Barrel
-// ═══════════════════════════════════════════════════════════════
-
-export * from "./domain-manifest";
-export * from "./domain-registry";
-export * from "./domain-completeness";
-export * from "./shell-command-provider";
-export * from "./manifests/cross-domain-manifest";
-
-// Re-export individual manifests for direct access
-export { businessManifest } from "./manifests/business-manifest";
-export { financeManifest } from "./manifests/finance-manifest";
-export { conciergeManifest } from "./manifests/concierge-manifest";
-export { platformManifest } from "./manifests/platform-manifest";
+/**
+ * @deprecated Migrated to `@/domains/shared/index` in Wave 5 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/domains/shared/index";

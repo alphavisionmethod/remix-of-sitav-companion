@@ -1,42 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — useUtilityAI Hook
-// Lightweight utility AI: classify, extract, transform, label
-// ═══════════════════════════════════════════════════════════════
-
-import { useCallback } from "react";
-import { useAICapability } from "./use-ai-capability";
-import type { AIRequestIntent } from "../ai-state-types";
-
-interface UseUtilityAIOptions {
-  capabilityKey?: string;
-  intent?: AIRequestIntent;
-}
-
-export function useUtilityAI(options: UseUtilityAIOptions = {}) {
-  const {
-    capabilityKey = "utility.extract",
-    intent = "extract",
-  } = options;
-
-  const ai = useAICapability();
-
-  const execute = useCallback(async (systemPrompt: string, input: string) => {
-    return ai.invoke({
-      capabilityKey,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: input },
-      ],
-      taskClass: "cheap_utility",
-      surface: "web.utility",
-      intent,
-      maxTokens: 500,
-      temperature: 0,
-    });
-  }, [capabilityKey, intent, ai.invoke]);
-
-  return {
-    ...ai,
-    execute,
-  };
-}
+/**
+ * @deprecated Migrated to `@/platform/ai/hooks/use-utility-ai` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/ai/hooks/use-utility-ai";

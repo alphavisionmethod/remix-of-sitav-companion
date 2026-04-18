@@ -1,13 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Desktop Release Barrel (Phase 14)
-// ═══════════════════════════════════════════════════════════════
-
-export {
-  DESKTOP_DEPLOYABILITY_READINESS,
-  desktopReadinessSummary,
-} from "./desktop-deployability-readiness";
-export type {
-  DesktopReadinessItem,
-  DesktopReadinessStatus,
-  DesktopReadinessSummary,
-} from "./desktop-deployability-readiness";
+/**
+ * @deprecated Migrated to `@/runtimes/core/desktop/release/index` in Wave 3 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/runtimes/core/desktop/release/index";

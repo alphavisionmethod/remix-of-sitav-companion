@@ -1,7 +1,35 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/policy
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Policy Layer Barrel
+// Canonical import: @/lib/policy
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export {
+  UNIFIED_POLICY_MATRIX,
+  getPolicyById,
+  getPoliciesByDomain,
+  getCriticalPolicies,
+  getHardBlockPolicies,
+  getOverridablePolicies,
+  getAuditRequiredPolicies,
+  getPoliciesByScope,
+  validatePolicyCompleteness,
+  resolveUnifiedPolicy,
+  denyAllQuery,
+  type PolicyDomain,
+  type EnforcementMode,
+  type PolicyScope,
+  type UnifiedPolicyEntry,
+  type UnifiedPolicyQuery,
+  type UnifiedPolicyDecision,
+  type SensitivityClass,
+  type TenantScope,
+} from "./unified-policy-matrix";
+
+// ── Phase 3 Meta-Architecture: 9-Dimension Policy Surfaces ──
+export * from "./policy-actor-registry";
+export * from "./policy-domain-map";
+export * from "./policy-surface-map";
+export * from "./policy-proof-requirements";
+export * from "./policy-reversibility-map";
+export * from "./policy-trust-thresholds";
+export * from "./policy-approval-map";

@@ -1,28 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// Rendering Pipeline Collector
-// Captures rendering pipeline state (compositor, wayland, drivers).
-// ═══════════════════════════════════════════════════════════════
-
-import { makeRecord, safeGet } from "./_helpers";
-import type { RuntimeEvidenceRecord } from "../runtime-evidence-types";
-
-export function collectRenderingPipelineEvidence(): RuntimeEvidenceRecord {
-  const w = (typeof window !== "undefined" ? window : {}) as Record<string, unknown>;
-  const pipeline = {
-    compositor: safeGet(() => w.Compositor != null, false),
-    wayland: safeGet(() => w.WaylandServer != null, false),
-    drivers: safeGet(() => w.DriverManager != null, false),
-    windowServer: safeGet(() => w.WindowServer != null, false),
-  };
-  const activeStages = Object.values(pipeline).filter(Boolean).length;
-  const warnings: string[] = [];
-  if (activeStages === 0) {
-    warnings.push("No rendering pipeline stage exposed at runtime");
-  }
-  return makeRecord(
-    "collector.rendering-pipeline",
-    "manifest-rendering-pipeline",
-    { pipeline, activeStages, totalStages: Object.keys(pipeline).length },
-    { itemCount: activeStages, warnings },
-  );
-}
+/**
+ * @deprecated Migrated to `@/platform/truth/runtime-evidence/collectors/rendering-pipeline-collector` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/truth/runtime-evidence/collectors/rendering-pipeline-collector";

@@ -1,12 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Data Facade: Connector Health
-// Pages import from here instead of core-services directly
-// ═══════════════════════════════════════════════════════════════
-
-export {
-  fetchConnectorHealth,
-} from "@/lib/core-services/connector-health-service";
-
-export type {
-  ConnectorHealthResult,
-} from "@/lib/core-services/connector-health-service";
+/**
+ * @deprecated Migrated to `@/data/seed/connectors` in Wave 2 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/data/seed/connectors";

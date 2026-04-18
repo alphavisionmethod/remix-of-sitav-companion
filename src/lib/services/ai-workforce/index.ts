@@ -1,15 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Workforce Barrel
-// ═══════════════════════════════════════════════════════════════
-
-// Re-export the original in-memory workforce service (used by governance)
-export { AIWorkforceService, createAIWorkforce } from "./workforce-service";
-export type { AgentAssignmentResult } from "./workforce-service";
-
-// Re-export governance
-export * from "./agent-governance";
-export * from "./agent-health-monitor";
-
-// Re-export DB-backed orchestrator
-export * from "./workforce-orchestrator";
-
+/**
+ * @deprecated Migrated to `@/domains/ai-workforce/index` in Wave 5 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/domains/ai-workforce/index";

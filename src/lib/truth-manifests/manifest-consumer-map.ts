@@ -1,35 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Manifest Consumer Map
-// Which pages/scripts consume each artifact
-// ═══════════════════════════════════════════════════════════════
-
-import { MANIFEST_REGISTRY } from "./manifest-registry";
-
-export interface ConsumerEntry {
-  manifestId: string;
-  consumers: string[];
-  consumerCount: number;
-}
-
-/** Build consumer map */
-export function buildConsumerMap(): ConsumerEntry[] {
-  return MANIFEST_REGISTRY.map((entry) => ({
-    manifestId: entry.id,
-    consumers: entry.consumers,
-    consumerCount: entry.consumers.length,
-  }));
-}
-
-/** Get orphaned manifests (no consumers) */
-export function getOrphanedManifests(): string[] {
-  return MANIFEST_REGISTRY
-    .filter((m) => m.consumers.length === 0)
-    .map((m) => m.id);
-}
-
-/** Get most-consumed manifests (sorted descending) */
-export function getMostConsumedManifests(limit = 10): ConsumerEntry[] {
-  return buildConsumerMap()
-    .sort((a, b) => b.consumerCount - a.consumerCount)
-    .slice(0, limit);
-}
+/**
+ * @deprecated Migrated to `@/platform/truth/manifest-consumer-map` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/truth/manifest-consumer-map";
