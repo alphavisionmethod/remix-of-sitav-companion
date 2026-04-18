@@ -112,6 +112,11 @@ const REQUIRED_GATES = [
   "internal-agent-reflection-table",
   "internal-agent-reflect-function",
   "reflection-board-page",
+  // Internal AI Workforce — Phase 4 closure (4 BLOCK gates)
+  "internal-agent-policy-drafts-table",
+  "internal-agent-policy-architect-function",
+  "policy-draft-review-page",
+  "policy-draft-never-auto-apply",
 ];
 
 const GENERATED_DIR = "generated";

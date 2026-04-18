@@ -192,6 +192,7 @@ const VerificationHome = lazy(() => import("@/pages/admin/verification/Verificat
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
 const InternalAgentIntentTimeline = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentIntentTimeline"));
 const ReflectionBoard = lazy(() => import("@/pages/admin/ai-runtime/ReflectionBoard"));
+const PolicyDraftReviewBoard = lazy(() => import("@/pages/admin/ai-runtime/PolicyDraftReviewBoard"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
@@ -240,6 +241,7 @@ export function getAdminRoutes() {
     <Route key="hub-airuntime" path="/admin/ai-runtime" element={gated("flags.view", <AIRuntimeHome />)} />,
     <Route key="ws-airuntime-intents" path="/admin/ai-runtime/internal-agent-intents" element={gated("audit.view", <InternalAgentIntentTimeline />)} />,
     <Route key="ws-airuntime-reflection" path="/admin/ai-runtime/reflection-board" element={gated("audit.view", <ReflectionBoard />)} />,
+    <Route key="ws-airuntime-policy-drafts" path="/admin/ai-runtime/policy-drafts" element={gated("audit.view", <PolicyDraftReviewBoard />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
