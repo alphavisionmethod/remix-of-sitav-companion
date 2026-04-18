@@ -52,6 +52,13 @@ const REQUIRED_GATES = [
   "ks-payments-auth-readiness",
   "ci-artifacts-proof",
   "electron-signing-readiness",
+  // Phase 15 — src/lib decomposition (Wave 8 guardrails + verifier)
+  "lib-decomposition-readiness",
+  "lib-ownership-drift",
+  "misplaced-runtime-logic",
+  "misplaced-data-logic",
+  "misplaced-domain-logic",
+  "legacy-wrapper-usage",
 ];
 
 const GENERATED_DIR = "generated";
