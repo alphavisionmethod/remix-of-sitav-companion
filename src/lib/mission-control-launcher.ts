@@ -1,7 +1,7 @@
 /**
- * @deprecated Migrated to `@/domains/mission-control/launcher` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ * Programmatic launcher for Mission Control windowed app.
  */
-export * from "@/domains/mission-control/launcher";
+export function openMissionControlModule(module: string = "dashboard") {
+  (window as any).__missionControlInitialModule = module;
+  window.dispatchEvent(new CustomEvent("sita-open-mission-control", { detail: { module } }));
+}

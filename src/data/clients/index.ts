@@ -1,18 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — DB Truth Layer
-// Barrel export for all database truth registries
+// SITA OS — Canonical Barrel: src/data/clients
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
 // ═══════════════════════════════════════════════════════════════
-
-export * from "./schema-registry";
-export * from "./table-ownership-map";
-export * from "./tenancy-boundary-map";
-export * from "./rls-policy-registry";
-export * from "./migration-registry";
-export * from "./db-truth-registry";
-export * from "./db-runtime-consequence-map";
-export * from "./db-dependency-map";
-export * from "./db-audit-registry";
-export * from "./db-health-engine";
-export * from "./table-writer-reader-map";
-export * from "./non-edge-table-io-sources";
-export * from "./cross-domain-write-exemptions";
+export {};

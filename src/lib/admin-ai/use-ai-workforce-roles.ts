@@ -1,7 +1,18 @@
-/**
- * @deprecated Migrated to `@/domains/ai-workforce/use-ai-workforce-roles` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/ai-workforce/use-ai-workforce-roles";
+import { useQuery } from "@tanstack/react-query";
+import { fetchWorkforceRoles, fetchWorkforceRoleHealth } from "./admin-ai-workforce-client";
+
+export function useAIWorkforceRoles() {
+  return useQuery({
+    queryKey: ["ai-workforce-roles"],
+    queryFn: fetchWorkforceRoles,
+    staleTime: 30_000,
+  });
+}
+
+export function useAIWorkforceRoleHealth() {
+  return useQuery({
+    queryKey: ["ai-workforce-role-health"],
+    queryFn: fetchWorkforceRoleHealth,
+    staleTime: 30_000,
+  });
+}

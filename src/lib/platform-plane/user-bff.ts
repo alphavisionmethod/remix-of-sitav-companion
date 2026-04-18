@@ -1,7 +1,188 @@
-/**
- * @deprecated Migrated to `@/platform/core/user-bff` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core/user-bff";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — User Backend-for-Frontend (BFF)
+// Aggregates multiple backend services into shaped payloads for product UI
+// ═══════════════════════════════════════════════════════════════
+
+import { supabase } from "@/integrations/supabase/client";
+
+export interface UserDashboard {
+  account: { id: string; email: string; displayName: string; avatarUrl: string | null };
+  storage: { usedBytes: number; quotaBytes: number; fileCount: number; usagePercent: number };
+  devices: { total: number; trusted: number; pendingTrust: number; recentDevices: DeviceSummary[] };
+  sync: { status: string; lastCheckpoint: string | null; pendingChanges: number; conflictCount: number };
+  notifications: { unreadCount: number; recent: NotificationSummary[] };
+  supportCases: { openCount: number; recentCase: CaseSummary | null };
+}
+
+export interface DeviceSummary {
+  id: string;
+  deviceName: string;
+  platform: string;
+  trustState: string;
+  lastSeen: string | null;
+}
+
+export interface NotificationSummary {
+  id: string;
+  title: string;
+  category: string;
+  severity: string;
+  createdAt: string;
+  read: boolean;
+}
+
+export interface CaseSummary {
+  id: string;
+  title: string;
+  status: string;
+  priority: string;
+  createdAt: string;
+}
+
+class UserBFF {
+  async getUserDashboard(userId: string): Promise<UserDashboard> {
+    const [account, storage, devices, sync, notifications, support] = await Promise.all([
+      this.getAccount(userId),
+      this.getStorageSummary(userId),
+      this.getDeviceHealth(userId),
+      this.getSyncStatus(userId),
+      this.getNotifications(userId),
+      this.getSupportSummary(userId),
+    ]);
+    return { account, storage, devices, sync, notifications, supportCases: support };
+  }
+
+  async getAccount(userId: string) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("user_id, display_name, avatar_url")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    const { data: authData } = await supabase.auth.getUser();
+
+    return {
+      id: userId,
+      email: authData?.user?.email ?? "",
+      displayName: data?.display_name ?? "User",
+      avatarUrl: data?.avatar_url ?? null,
+    };
+  }
+
+  async getStorageSummary(userId: string) {
+    const { data } = await supabase
+      .from("cloud_storage_usage")
+      .select("used_bytes, quota_bytes, file_count")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    return {
+      usedBytes: data?.used_bytes ?? 0,
+      quotaBytes: data?.quota_bytes ?? 5368709120,
+      fileCount: data?.file_count ?? 0,
+      usagePercent: data?.quota_bytes ? Math.round((data.used_bytes / data.quota_bytes) * 100) : 0,
+    };
+  }
+
+  async getDeviceHealth(userId: string) {
+    const { data: devices } = await supabase
+      .from("cloud_devices")
+      .select("id, device_name, platform, trust_state, last_seen_at")
+      .eq("user_id", userId)
+      .order("last_seen_at", { ascending: false })
+      .limit(10);
+
+    const devList = devices ?? [];
+
+    return {
+      total: devList.length,
+      trusted: devList.filter((d) => d.trust_state === "trusted").length,
+      pendingTrust: devList.filter((d) => d.trust_state === "pending").length,
+      recentDevices: devList.slice(0, 5).map((d) => ({
+        id: d.id,
+        deviceName: d.device_name,
+        platform: d.platform,
+        trustState: d.trust_state,
+        lastSeen: d.last_seen_at,
+      })),
+    };
+  }
+
+  async getSyncStatus(userId: string) {
+    const { data: checkpoint } = await supabase
+      .from("cloud_sync_checkpoints")
+      .select("id, user_id")
+      .eq("user_id", userId)
+      .limit(1)
+      .maybeSingle();
+
+    const { count: pendingChanges } = await supabase
+      .from("cloud_sync_changes")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId);
+
+    const { count: conflictCount } = await supabase
+      .from("cloud_conflicts")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("state", "unresolved");
+
+    return {
+      status: checkpoint ? "active" : "idle",
+      lastCheckpoint: checkpoint ? new Date().toISOString() : null,
+      pendingChanges: pendingChanges ?? 0,
+      conflictCount: conflictCount ?? 0,
+    };
+  }
+
+  async getNotifications(userId: string) {
+    const { data: notifs } = await supabase
+      .from("platform_notifications" as never)
+      .select("id, title, category, severity, created_at, read" as never)
+      .eq("target_user_id" as never, userId)
+      .eq("audience" as never, "user")
+      .eq("dismissed" as never, false)
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+    const list = (notifs ?? []) as unknown as Array<{
+      id: string; title: string; category: string; severity: string;
+      created_at: string; read: boolean;
+    }>;
+
+    return {
+      unreadCount: list.filter((n) => !n.read).length,
+      recent: list.map((n) => ({
+        id: n.id,
+        title: n.title,
+        category: n.category,
+        severity: n.severity,
+        createdAt: n.created_at,
+        read: n.read,
+      })),
+    };
+  }
+
+  async getSupportSummary(userId: string) {
+    const { data: cases } = await supabase
+      .from("support_cases" as never)
+      .select("id, title, status, priority, created_at" as never)
+      .eq("user_id" as never, userId)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    const list = (cases ?? []) as unknown as Array<{
+      id: string; title: string; status: string; priority: string; created_at: string;
+    }>;
+    const openCases = list.filter((c) => ["open", "investigating", "escalated"].includes(c.status));
+
+    return {
+      openCount: openCases.length,
+      recentCase: openCases.length > 0
+        ? { id: openCases[0].id, title: openCases[0].title, status: openCases[0].status, priority: openCases[0].priority, createdAt: openCases[0].created_at }
+        : null,
+    };
+  }
+}
+
+export const userBFF = new UserBFF();

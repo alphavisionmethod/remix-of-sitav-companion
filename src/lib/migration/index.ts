@@ -1,7 +1,10 @@
-/**
- * @deprecated Migrated to `@/platform/migration/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/migration/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Migration Registry Barrel
+// Central import point for service authority + duplicate +
+// deprecation maps. Used by governance scripts and admin
+// dashboards to render the architectural truth in one place.
+// ═══════════════════════════════════════════════════════════════
+
+export * from "./service-authority-map";
+export * from "./duplicate-service-map";
+export * from "./deprecation-map";

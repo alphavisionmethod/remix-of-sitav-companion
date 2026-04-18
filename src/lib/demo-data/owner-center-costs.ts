@@ -1,7 +1,8 @@
-/**
- * @deprecated Migrated to `@/data/seed/owner-center-costs` in Wave 2 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/data/seed/owner-center-costs";
+// SITA OS — Demo Data: Owner Center Engine Costs
+export const DEMO_ENGINE_COSTS = [
+  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
+  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
+  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
+  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
+  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
+];

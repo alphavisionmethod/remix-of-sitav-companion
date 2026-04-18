@@ -1,7 +1,2 @@
-/**
- * @deprecated Migrated to `@/platform/core-services/canonical-pipeline/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core-services/canonical-pipeline/index";
+// Canonical re-export — core-services/canonical-pipeline
+export * from "@/lib/services/canonical-pipeline";

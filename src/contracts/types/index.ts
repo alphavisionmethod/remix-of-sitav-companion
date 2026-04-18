@@ -1,11 +1,7 @@
-// SITA OS — Shared Types Barrel
-export * from "./admin-view-models";
-export * from "./advisor-orchestration.types";
-export * from "./auth-connector-separation.types";
-export * from "./digital-twin.types";
-export * from "./domain-types";
-export * from "./dwe-types";
-export * from "./entity-graph.types";
-export * from "./guards";
-export * from "./memory-governance.types";
-export * from "./meta-governance.types";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Canonical Barrel: src/contracts/types
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
+// ═══════════════════════════════════════════════════════════════
+export {};

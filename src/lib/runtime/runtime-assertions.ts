@@ -1,7 +1,41 @@
-/**
- * @deprecated Migrated to `@/runtimes/core/runtime-assertions` in Wave 3 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/runtimes/core/runtime-assertions";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Runtime Assertions
+// Helpers for capability checks at runtime
+// ═══════════════════════════════════════════════════════════════
+
+import { isElectronRuntime } from "./desktop/desktop-runtime-detection";
+import { checkDesktopFeature } from "./desktop/desktop-feature-gates";
+
+/** Assert that a capability is available, throw if not */
+export function assertCapability(capabilityId: string, message?: string): void {
+  const result = checkDesktopFeature(capabilityId);
+  if (!result.available) {
+    throw new Error(message ?? `Capability "${capabilityId}" is not available in the current runtime`);
+  }
+}
+
+/** Assert that we are running in Electron */
+export function assertElectron(message?: string): void {
+  if (!isElectronRuntime()) {
+    throw new Error(message ?? "This operation requires the Electron desktop runtime");
+  }
+}
+
+/** Safely check a capability and return a fallback value */
+export function withCapabilityCheck<T>(capabilityId: string, ifAvailable: () => T, fallback: T): T {
+  const result = checkDesktopFeature(capabilityId);
+  if (result.available) {
+    return ifAvailable();
+  }
+  return fallback;
+}
+
+/** Log a warning if a capability is used in an unexpected runtime */
+export function warnIfNotAvailable(capabilityId: string): boolean {
+  const result = checkDesktopFeature(capabilityId);
+  if (!result.available) {
+    console.warn(`[SITA Runtime] Capability "${capabilityId}" is not available. Reason: ${result.reason}`);
+    return false;
+  }
+  return true;
+}

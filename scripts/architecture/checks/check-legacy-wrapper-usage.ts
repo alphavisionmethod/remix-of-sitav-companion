@@ -1,75 +1,88 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 // ═══════════════════════════════════════════════════════════════
-// Check: Legacy Wrapper Usage
-// Reports how many external consumers still import via deprecated
-// src/lib wrapper shims. Goal: this number trends to zero.
-// Writes generated/lib-decomposition/wrapper-usage-snapshot.json.
+// SITA OS — Legacy Wrapper Usage Check
+// Counts every consumer import that targets a path in src/lib
+// (excluding the canonical hot-path utils + internal allowlist).
+// The number must trend toward zero as the decomposition completes.
 // ═══════════════════════════════════════════════════════════════
-import * as fs from "fs";
-import * as path from "path";
-import { scanDir, readFileContent } from "../lib/utils";
 
-const ROOT = process.cwd();
-const WRAPPER_MAP_PATH = path.join(ROOT, "generated/lib-decomposition/src-lib-wrapper-map.json");
-const SNAPSHOT_PATH = path.join(ROOT, "generated/lib-decomposition/wrapper-usage-snapshot.json");
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { join, relative } from "node:path";
 
-if (!fs.existsSync(WRAPPER_MAP_PATH)) {
-  console.log("  ℹ️  No wrapper map yet — skipping.");
-  process.exit(0);
-}
-const map = JSON.parse(fs.readFileSync(WRAPPER_MAP_PATH, "utf8"));
-const wrappers: Array<{ oldPath: string; canonicalPath: string; canonicalSpec: string }> = map.wrappers ?? [];
+const OUT_DIR = "generated";
+mkdirSync(OUT_DIR, { recursive: true });
 
-// Build importable spec for each wrapper old path
-const wrapperSpecs = new Map<string, { canonical: string; count: number }>();
-for (const w of wrappers) {
-  const noSrc = w.oldPath.replace(/^src\//, "");
-  const noExt = noSrc.replace(/\.(tsx?|jsx?)$/, "").replace(/\/index$/, "");
-  wrapperSpecs.set(`@/${noExt}`, { canonical: w.canonicalSpec, count: 0 });
-}
-
-const allFiles = [
-  ...scanDir("src/pages", [".ts", ".tsx"]),
-  ...scanDir("src/components", [".ts", ".tsx"]),
-  ...scanDir("src/hooks", [".ts", ".tsx"]),
-  ...scanDir("src/contexts", [".ts", ".tsx"]),
-  ...scanDir("src/features", [".ts", ".tsx"]),
-  ...scanDir("src/planes", [".ts", ".tsx"]),
-  ...scanDir("src/domains", [".ts", ".tsx"]),
-  ...scanDir("src/platform", [".ts", ".tsx"]),
-  ...scanDir("src/runtimes", [".ts", ".tsx"]),
-  ...scanDir("src/data", [".ts", ".tsx"]),
-  ...scanDir("src/integrations", [".ts", ".tsx"]),
+const SCAN_ROOTS = ["src"];
+const ALLOWED = [
+  /^@\/lib\/utils(\/|$|\.ts)/,
+  /^@\/lib\/internal(\/|$)/,
+  /^@\/lib\/hooks(\/|$)/,
 ];
 
-const importRE = /from\s+['"]([^'"]+)['"]/g;
-let totalUsage = 0;
-for (const f of allFiles) {
-  const content = readFileContent(f);
-  let m: RegExpExecArray | null;
-  while ((m = importRE.exec(content)) !== null) {
-    const spec = m[1];
-    if (wrapperSpecs.has(spec)) {
-      wrapperSpecs.get(spec)!.count++;
-      totalUsage++;
+const LIB_IMPORT = /from ["'](@\/lib\/[^"']+)["']/g;
+
+interface Counted { path: string; count: number; topConsumers: string[]; }
+
+function walk(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+  const out: string[] = [];
+  for (const e of readdirSync(dir)) {
+    if (e === "node_modules" || e.startsWith(".")) continue;
+    const full = join(dir, e);
+    if (statSync(full).isDirectory()) out.push(...walk(full));
+    else if (/\.(ts|tsx)$/.test(e)) out.push(full);
+  }
+  return out;
+}
+
+const counts = new Map<string, { count: number; consumers: Set<string> }>();
+let scannedFiles = 0;
+
+for (const root of SCAN_ROOTS) {
+  for (const file of walk(root)) {
+    // Don't count src/lib's own internal imports.
+    if (file.startsWith("src/lib/")) continue;
+    scannedFiles++;
+    const content = readFileSync(file, "utf8");
+    let m: RegExpExecArray | null;
+    LIB_IMPORT.lastIndex = 0;
+    while ((m = LIB_IMPORT.exec(content)) !== null) {
+      const importPath = m[1];
+      if (ALLOWED.some(r => r.test(importPath))) continue;
+      const slot = counts.get(importPath) ?? { count: 0, consumers: new Set<string>() };
+      slot.count++;
+      slot.consumers.add(relative(".", file));
+      counts.set(importPath, slot);
     }
   }
 }
 
-const usage = [...wrapperSpecs.entries()]
-  .map(([spec, info]) => ({ wrapperImport: spec, canonical: info.canonical, externalConsumers: info.count }))
-  .sort((a, b) => b.externalConsumers - a.externalConsumers);
+const ranked: Counted[] = [...counts.entries()]
+  .map(([path, v]) => ({ path, count: v.count, topConsumers: [...v.consumers].slice(0, 5) }))
+  .sort((a, b) => b.count - a.count);
 
-const snapshot = {
+const totalImports = ranked.reduce((s, r) => s + r.count, 0);
+const distinctPaths = ranked.length;
+
+const report = {
   generatedAt: new Date().toISOString(),
-  totalWrappers: wrappers.length,
-  totalExternalUsages: totalUsage,
-  hotWrappers: usage.slice(0, 30),
+  gate: "legacy-wrapper-usage",
+  scannedFiles,
+  totalLegacyImports: totalImports,
+  distinctLegacyPaths: distinctPaths,
+  topPaths: ranked.slice(0, 30),
+  ok: true,                        // tracked, not gated
+  errorCount: 0,
+  warningCount: totalImports,
 };
-fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2));
 
-console.log(`  🪟 Wrappers tracked: ${wrappers.length}`);
-console.log(`  🔌 External consumer imports through wrappers: ${totalUsage}`);
-console.log(`  📄 Snapshot: generated/lib-decomposition/wrapper-usage-snapshot.json`);
-// Non-fatal: this is a trend metric
+writeFileSync(join(OUT_DIR, "legacy-wrapper-usage-report.json"), JSON.stringify(report, null, 2));
+console.log(
+  `legacy-wrapper-usage: ${totalImports} import(s) across ${distinctPaths} legacy path(s) (target: 0)`,
+);
+if (ranked.length > 0) {
+  console.log("Top 5:");
+  for (const r of ranked.slice(0, 5)) console.log(`  ${r.count.toString().padStart(4)}  ${r.path}`);
+}
 process.exit(0);

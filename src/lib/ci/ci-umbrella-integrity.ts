@@ -1,7 +1,41 @@
-/**
- * @deprecated Migrated to `@/platform/ci/ci-umbrella-integrity` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/ci/ci-umbrella-integrity";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — CI Umbrella Integrity (in-memory)
+// Pure validation of registry shape; filesystem check lives in CI script.
+// ═══════════════════════════════════════════════════════════════
+
+import { CI_GATE_REGISTRY } from "./ci-gate-registry";
+import type { CIUmbrellaIntegrityReport, CIUmbrellaIntegrityIssue } from "./ci-gate-types";
+
+export function validateCIUmbrellaIntegrity(): CIUmbrellaIntegrityReport {
+  const issues: CIUmbrellaIntegrityIssue[] = [];
+  const seen = new Set<string>();
+
+  for (const g of CI_GATE_REGISTRY) {
+    if (seen.has(g.id)) {
+      issues.push({ severity: "error", gateId: g.id, message: "Duplicate gate id" });
+    }
+    seen.add(g.id);
+
+    if (!g.script || !g.script.endsWith(".ts")) {
+      issues.push({ severity: "error", gateId: g.id, message: `Invalid script path: ${g.script}` });
+    }
+    if (!g.title || g.title.length < 4) {
+      issues.push({ severity: "warning", gateId: g.id, message: "Title too short" });
+    }
+    if (!g.description || g.description.length < 10) {
+      issues.push({ severity: "warning", gateId: g.id, message: "Description too short" });
+    }
+  }
+
+  const errorCount = issues.filter((i) => i.severity === "error").length;
+  const warningCount = issues.filter((i) => i.severity === "warning").length;
+
+  return {
+    checkedAt: new Date().toISOString(),
+    gateCount: CI_GATE_REGISTRY.length,
+    issues,
+    errorCount,
+    warningCount,
+    ok: errorCount === 0,
+  };
+}

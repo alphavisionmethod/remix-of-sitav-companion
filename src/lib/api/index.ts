@@ -1,7 +1,5 @@
-/**
- * @deprecated Migrated to `@/integrations/api/index` in Wave 6 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/integrations/api/index";
+// SITA OS — API Client Barrel
+export * from "./edge-client";
+export * from "./os-api-client";
+export * from "./payment-api";
+export * from "./schemas";

@@ -1,7 +1,11 @@
-/**
- * @deprecated Migrated to `@/platform/core/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Platform Services Master Barrel (Layer 3)
+// Canonical import: @/lib/platform
+// ═══════════════════════════════════════════════════════════════
+
+export * as auth          from "./auth";
+export * as proof         from "./proof";
+export * as execution     from "./execution";
+export * as observability from "./observability";
+export * as sync          from "./sync";
+export * as notifications from "./notifications";

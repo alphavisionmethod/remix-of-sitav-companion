@@ -1,7 +1,26 @@
-/**
- * @deprecated Migrated to `@/domains/ai-workforce/use-ai-workforce-recommendations` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/ai-workforce/use-ai-workforce-recommendations";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetchWorkforceRecommendations, updateRecommendationStatus, insertRecommendationScore } from "./admin-ai-workforce-client";
+
+export function useAIWorkforceRecommendations(limit = 50) {
+  return useQuery({
+    queryKey: ["ai-workforce-recommendations", limit],
+    queryFn: () => fetchWorkforceRecommendations(limit),
+    staleTime: 15_000,
+  });
+}
+
+export function useUpdateRecommendationStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) => updateRecommendationStatus(id, status),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] }),
+  });
+}
+
+export function useScoreRecommendation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: insertRecommendationScore,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] }),
+  });
+}

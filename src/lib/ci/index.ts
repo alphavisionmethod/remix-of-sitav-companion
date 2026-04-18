@@ -1,7 +1,30 @@
-/**
- * @deprecated Migrated to `@/platform/ci/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/ci/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — CI Layer Barrel (Phase 8)
+// Canonical import: @/lib/ci
+// ═══════════════════════════════════════════════════════════════
+
+export type {
+  CIGatePhase,
+  CIGateSeverity,
+  CIGateOwner,
+  CIGateEntry,
+  CIGateEvaluation,
+  CIUmbrellaIntegrityIssue,
+  CIUmbrellaIntegrityReport,
+} from "./ci-gate-types";
+
+export {
+  CI_GATE_REGISTRY,
+  listGatesByPhase,
+  findGate,
+  gatesByOwner,
+  blockerCount,
+} from "./ci-gate-registry";
+
+export type { ReleaseReadiness } from "./ci-umbrella-evaluator";
+export {
+  evaluateReleaseReadiness,
+  gatesPendingEvaluation,
+} from "./ci-umbrella-evaluator";
+
+export { validateCIUmbrellaIntegrity } from "./ci-umbrella-integrity";

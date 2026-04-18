@@ -1,7 +1,10 @@
-/**
- * @deprecated Migrated to `@/platform/core-services/brain-core/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core-services/brain-core/index";
+// Canonical implementation — core-services/brain-core
+export * from "./orchestrate-intent";
+export * from "./councils";
+export * from "./choose-advisors";
+export * from "./choose-execution-mode";
+export * from "./build-explanation";
+export * from "./build-simulation-request";
+export * from "./build-approval-package";
+export * from "./build-boardroom-request";
+export * from "./model-router";

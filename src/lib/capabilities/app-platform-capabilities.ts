@@ -1,7 +1,17 @@
-/**
- * @deprecated Migrated to `@/platform/capabilities/app-platform-capabilities` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/capabilities/app-platform-capabilities";
+import { registerCapability } from "./capability-registry";
+
+registerCapability("app-platform.app.install", async (params) => ({
+  success: true, data: { id: crypto.randomUUID(), ...params },
+}));
+
+registerCapability("app-platform.app.uninstall", async (params) => ({
+  success: true, data: params,
+}));
+
+registerCapability("app-platform.pack.create", async (params) => ({
+  success: true, data: { id: crypto.randomUUID(), ...params },
+}));
+
+registerCapability("app-platform.pack.update", async (params) => ({
+  success: true, data: params,
+}));

@@ -1,7 +1,6 @@
-/**
- * @deprecated Migrated to `@/platform/core-services/event-bus/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core-services/event-bus/index";
+// Canonical — core-services/event-bus
+// Flat engine + all sub-services
+export * from "../event-bus";
+export * from "@/lib/services/event-bus/event-envelope";
+export * from "@/lib/services/event-bus/publish-event.service";
+export * from "@/lib/services/event-bus/subscribe-event.service";

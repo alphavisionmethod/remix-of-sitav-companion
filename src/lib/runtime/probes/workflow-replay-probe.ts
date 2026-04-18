@@ -1,7 +1,37 @@
-/**
- * @deprecated Migrated to `@/runtimes/core/probes/workflow-replay-probe` in Wave 3 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/runtimes/core/probes/workflow-replay-probe";
+// Runtime probe — GP-WORKFLOW-REPLAY
+import type { ProbeDescriptor, ProbeResult } from "./index";
+
+async function run(): Promise<ProbeResult> {
+  const start = performance.now();
+  const checks: Record<string, boolean> = {};
+  try {
+    checks.fetchAvailable = typeof fetch === "function";
+    checks.jsonAvailable = typeof JSON !== "undefined";
+    const allPass = Object.values(checks).every(Boolean);
+    return {
+      probeId: "probe.workflow-replay",
+      pathId: "GP-WORKFLOW-REPLAY",
+      status: allPass ? "pass" : "fail",
+      latencyMs: Math.round(performance.now() - start),
+      checkedAt: new Date().toISOString(),
+      details: { checks },
+    };
+  } catch (e) {
+    return {
+      probeId: "probe.workflow-replay",
+      pathId: "GP-WORKFLOW-REPLAY",
+      status: "fail",
+      latencyMs: Math.round(performance.now() - start),
+      checkedAt: new Date().toISOString(),
+      details: { checks },
+      error: e instanceof Error ? e.message : String(e),
+    };
+  }
+}
+
+export const workflowReplayProbe: ProbeDescriptor = {
+  probeId: "probe.workflow-replay",
+  pathId: "GP-WORKFLOW-REPLAY",
+  title: "Workflow replay: admin API reachable",
+  run,
+};

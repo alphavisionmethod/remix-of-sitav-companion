@@ -1,7 +1,362 @@
-/**
- * @deprecated Migrated to `@/data/seed/ecosystem-master-seeder` in Wave 2 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/data/seed/ecosystem-master-seeder";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Master Ecosystem Seeder
+// Populates all critical ecosystem tables with operational data
+// Run once per authenticated user to bootstrap admin pages
+// ═══════════════════════════════════════════════════════════════
+
+import { supabase } from "@/integrations/supabase/client";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
+
+async function getUserId(): Promise<string | null> {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user?.id ?? null;
+}
+
+async function upsertRows(table: string, rows: Record<string, unknown>[], conflictCol?: string): Promise<number> {
+  const opts = conflictCol ? { onConflict: conflictCol } : {};
+  const { error } = await fromDynamicTable(table).upsert(rows, opts);
+  if (error) {
+    console.warn(`[seeder] ${table} upsert warning:`, error.message);
+    return 0;
+  }
+  return rows.length;
+}
+
+// ── AI Provider Registry ────────────────────────────────────
+function aiProviderRows(userId: string) {
+  return [
+    { user_id: userId, provider_key: "lovable", display_name: "Lovable AI Gateway", api_style: "openai", is_active: true, mode: "real", launch_stage: "production", supports_streaming: true, supports_structured_output: true, supports_tools: true, supports_demo_mode: false },
+    { user_id: userId, provider_key: "demo", display_name: "Demo Provider (Local)", api_style: "openai", is_active: true, mode: "demo", launch_stage: "production", supports_streaming: false, supports_structured_output: true, supports_tools: false, supports_demo_mode: true },
+  ];
+}
+
+// ── AI Model Registry ───────────────────────────────────────
+function aiModelRows(userId: string) {
+  return [
+    { user_id: userId, model_id: "gemini-2.5-flash-lite", provider: "lovable", provider_model_name: "gemini-2.5-flash-lite", model_class: "economy", display_name: "Gemini 2.5 Flash Lite", cost_per_1k_input: 0.01, cost_per_1k_output: 0.04, context_length: 128000, is_active: true, cost_tier: "economy", latency_tier: "fast", quality_tier: "good", tool_calling_support: true, structured_output_support: true },
+    { user_id: userId, model_id: "gemini-2.5-flash", provider: "lovable", provider_model_name: "gemini-2.5-flash", model_class: "balanced", display_name: "Gemini 2.5 Flash", cost_per_1k_input: 0.015, cost_per_1k_output: 0.06, context_length: 128000, is_active: true, cost_tier: "balanced", latency_tier: "medium", quality_tier: "strong", tool_calling_support: true, structured_output_support: true },
+    { user_id: userId, model_id: "gemini-2.5-pro", provider: "lovable", provider_model_name: "gemini-2.5-pro", model_class: "premium", display_name: "Gemini 2.5 Pro", cost_per_1k_input: 0.07, cost_per_1k_output: 0.28, context_length: 128000, is_active: true, cost_tier: "premium", latency_tier: "slow", quality_tier: "exceptional", tool_calling_support: true, structured_output_support: true },
+  ];
+}
+
+// ── AI Budget Policies ──────────────────────────────────────
+function aiBudgetPolicyRows(userId: string) {
+  return [
+    { user_id: userId, policy_key: "global_default", scope_type: "global", is_active: true, daily_budget_usd: 5.0, weekly_budget_usd: 25.0, monthly_budget_usd: 80.0, max_request_cost_usd: 0.50, max_daily_requests: 200, premium_allowed: true, alert_threshold_percent: 70, critical_threshold_percent: 90, block_on_exceeded: false, fallback_on_exceeded: true },
+    { user_id: userId, policy_key: "economy_cap", scope_type: "capability", scope_ref: "economy_admin", is_active: true, daily_budget_usd: 1.0, max_request_cost_usd: 0.05, premium_allowed: false, alert_threshold_percent: 80, critical_threshold_percent: 95, block_on_exceeded: true, fallback_on_exceeded: false },
+  ];
+}
+
+// ── AI Capability Routing ───────────────────────────────────
+function aiCapabilityRoutingRows(userId: string) {
+  return [
+    { user_id: userId, capability_key: "admin_workforce_task", routing_class: "balanced", budget_class: "balanced", quality_requirement: "strong", max_latency_class: "medium", launch_honesty_class: "internal_only", is_active: true, structured_output_required: true, tool_use_required: true, can_fallback_to_demo: true, can_fallback_to_unavailable: false },
+    { user_id: userId, capability_key: "architecture_review", routing_class: "premium", budget_class: "premium", quality_requirement: "exceptional", max_latency_class: "slow", launch_honesty_class: "internal_only", is_active: true, structured_output_required: true, tool_use_required: true, can_fallback_to_demo: false, can_fallback_to_unavailable: false },
+    { user_id: userId, capability_key: "incident_triage", routing_class: "economy", budget_class: "economy", quality_requirement: "good", max_latency_class: "fast", launch_honesty_class: "internal_only", is_active: true, structured_output_required: true, tool_use_required: false, can_fallback_to_demo: true, can_fallback_to_unavailable: true },
+  ];
+}
+
+// ── Connector Registry ──────────────────────────────────────
+function connectorRegistryRows(userId: string) {
+  const now = new Date().toISOString();
+  return [
+    { user_id: userId, connector_key: "bank_plaid", display_name: "Bank (Plaid)", category: "finance", provider: "plaid", auth_method: "oauth2", is_active: true, launch_stage: "demo", demo_available: true, created_at: now },
+    { user_id: userId, connector_key: "google_calendar", display_name: "Google Calendar", category: "productivity", provider: "google", auth_method: "oauth2", is_active: true, launch_stage: "demo", demo_available: true, created_at: now },
+    { user_id: userId, connector_key: "email_gmail", display_name: "Gmail", category: "communication", provider: "google", auth_method: "oauth2", is_active: true, launch_stage: "demo", demo_available: true, created_at: now },
+    { user_id: userId, connector_key: "stripe", display_name: "Stripe Payments", category: "finance", provider: "stripe", auth_method: "api_key", is_active: true, launch_stage: "planned", demo_available: false, created_at: now },
+    { user_id: userId, connector_key: "quickbooks", display_name: "QuickBooks", category: "finance", provider: "intuit", auth_method: "oauth2", is_active: false, launch_stage: "planned", demo_available: false, created_at: now },
+  ];
+}
+
+// ── Advisor Registry ────────────────────────────────────────
+function advisorRegistryRows(userId: string) {
+  return [
+    { user_id: userId, advisor_type: "money", display_name: "Money Advisor", domain: "finance", trust_threshold: 0.7, active: true, explanation_style: "concise", memory_scope: "session" },
+    { user_id: userId, advisor_type: "business", display_name: "Business Advisor", domain: "business", trust_threshold: 0.65, active: true, explanation_style: "detailed", memory_scope: "persistent" },
+    { user_id: userId, advisor_type: "concierge", display_name: "Concierge Advisor", domain: "concierge", trust_threshold: 0.6, active: true, explanation_style: "friendly", memory_scope: "session" },
+    { user_id: userId, advisor_type: "family", display_name: "Family Advisor", domain: "concierge", trust_threshold: 0.6, active: false, explanation_style: "empathetic", memory_scope: "persistent" },
+  ];
+}
+
+// ── Self-Healing Rules ──────────────────────────────────────
+function selfHealingRuleRows(userId: string) {
+  return [
+    { user_id: userId, rule_name: "auto_restart_stale_connector", trigger_condition: "connector.health_state == 'stale' AND connector.last_sync_age > 3600", action_type: "restart_sync", risk_level: "low", enabled: true, max_frequency: "1/hour" },
+    { user_id: userId, rule_name: "downgrade_failing_model", trigger_condition: "model.error_rate > 0.3 AND model.requests_24h > 10", action_type: "downgrade_model_tier", risk_level: "medium", enabled: true, max_frequency: "1/day" },
+    { user_id: userId, rule_name: "alert_budget_critical", trigger_condition: "budget.daily_pct >= 90", action_type: "send_alert", risk_level: "low", enabled: true, max_frequency: "1/hour" },
+  ];
+}
+
+// ── Launch Honesty ──────────────────────────────────────────
+function launchHonestyRows(userId: string) {
+  return [
+    { user_id: userId, capability_key: "finance_os_core", launch_honesty_class: "real_internal", public_claim_allowed: false, qualifier_required: true, notes: "Core finance OS — internal use, demo data" },
+    { user_id: userId, capability_key: "business_os_crm", launch_honesty_class: "demo_governed", public_claim_allowed: false, qualifier_required: true, notes: "CRM features demo-governed" },
+    { user_id: userId, capability_key: "admin_ai_workforce", launch_honesty_class: "internal_only", public_claim_allowed: false, qualifier_required: false, notes: "Admin AI workforce — internal engineering tool" },
+    { user_id: userId, capability_key: "concierge_scheduling", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Scheduling — planned but not yet real" },
+    // Push notification channels — web-first strategy
+    { user_id: userId, capability_key: "push_web", launch_honesty_class: "real", public_claim_allowed: true, qualifier_required: false, notes: "Web push via VAPID — active, production-ready" },
+    { user_id: userId, capability_key: "push_android_fcm", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Android FCM push — planned, not blocking web launch" },
+    { user_id: userId, capability_key: "push_apple_apns", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Apple APNs push — deferred, requires paid Apple Developer membership" },
+  ];
+}
+
+// ── Audit Logs (sample) ─────────────────────────────────────
+function auditLogRows(userId: string) {
+  const now = new Date();
+  return Array.from({ length: 8 }, (_, i) => {
+    const d = new Date(now.getTime() - i * 3600_000);
+    const actions = ["login", "seed_data", "view_dashboard", "invoke_ai_task", "approve_recommendation", "update_policy", "review_audit", "export_data"];
+    return {
+      user_id: userId,
+      action: actions[i],
+      category: i < 2 ? "auth" : i < 5 ? "ai_operations" : "governance",
+      actor: "user",
+      target_type: "system",
+      target_id: `sys-${i}`,
+      severity: i === 0 ? "info" : i < 4 ? "low" : "medium",
+      details: { description: `${actions[i]} event`, timestamp: d.toISOString() },
+      created_at: d.toISOString(),
+    };
+  });
+}
+
+// ── Capability Definitions ──────────────────────────────────
+function capabilityDefinitionRows(userId: string) {
+  return [
+    { user_id: userId, capability_key: "view_financial_dashboard", display_name: "View Financial Dashboard", domain: "finance-os", risk_class: "informational", launch_stage: "internal", is_active: true },
+    { user_id: userId, capability_key: "execute_payment", display_name: "Execute Payment", domain: "finance-os", risk_class: "high", launch_stage: "planned", is_active: false },
+    { user_id: userId, capability_key: "manage_leads", display_name: "Manage Leads", domain: "business-os", risk_class: "low", launch_stage: "demo", is_active: true },
+    { user_id: userId, capability_key: "schedule_appointment", display_name: "Schedule Appointment", domain: "concierge-os", risk_class: "medium", launch_stage: "demo", is_active: true },
+    { user_id: userId, capability_key: "invoke_ai_workforce", display_name: "Invoke AI Workforce Task", domain: "platform", risk_class: "low", launch_stage: "internal", is_active: true },
+  ];
+}
+
+// ── Incidents (sample) ──────────────────────────────────────
+function incidentRows(userId: string) {
+  const now = new Date();
+  return [
+    { user_id: userId, title: "Connector sync stale: bank_plaid", description: "Plaid connector has not synced in over 6 hours", severity: "medium", source: "self_healing", status: "open", created_at: new Date(now.getTime() - 7200_000).toISOString() },
+    { user_id: userId, title: "AI budget alert: daily 85%", description: "Daily AI spend has reached 85% of budget", severity: "low", source: "budget_monitor", status: "resolved", created_at: new Date(now.getTime() - 86400_000).toISOString() },
+  ];
+}
+
+// ── Surface Types + Readiness ───────────────────────────────
+function surfaceTypeRows(userId: string) {
+  return [
+    { user_id: userId, surface_key: "web_desktop", display_name: "Web Desktop", platform: "web", form_factor: "desktop", is_active: true },
+    { user_id: userId, surface_key: "web_mobile", display_name: "Web Mobile", platform: "web", form_factor: "mobile", is_active: true },
+    { user_id: userId, surface_key: "ios_native", display_name: "iOS Native", platform: "ios", form_factor: "mobile", is_active: false },
+    { user_id: userId, surface_key: "android_native", display_name: "Android Native", platform: "android", form_factor: "mobile", is_active: false },
+    { user_id: userId, surface_key: "watchos", display_name: "watchOS", platform: "watchos", form_factor: "wearable", is_active: false },
+  ];
+}
+
+// ── User AI Budgets ─────────────────────────────────────────
+function userAiBudgetRows(userId: string) {
+  return [
+    { user_id: userId, period: "monthly", limit_tokens: 500000, limit_cost_cents: 8000, used_tokens: 12450, used_cost_cents: 185, hard_limit: false, auto_downgrade_model: true },
+  ];
+}
+
+// ── Scheduled Jobs ──────────────────────────────────────────
+function scheduledJobRows(userId: string) {
+  const job = (name: string, domain: string, job_class: string, cron: string, target: string, risk: string = "low", autonomy: string = "supervised", desc?: string) => ({
+    user_id: userId, name, domain, job_class, cron_expression: cron, target_function: target,
+    description: desc || `${name} — ${job_class}`, risk_tier: risk, autonomy_tier: autonomy,
+    state: "configured", retry_policy: "exponential", max_retries: 3, environment: "production",
+    kill_switch_class: "global", metadata: {},
+  });
+  return [
+    job("Daily Health Check", "platform", "health_check", "0 */6 * * *", "edge:system-updates", "low", "autonomous", "Platform-wide health probe"),
+    job("Self-Healing: Connector Repair", "connectors", "self_heal", "*/30 * * * *", "edge:self-healing", "medium", "supervised", "Detect and repair degraded connectors"),
+    job("Self-Healing: Stale Data Cleanup", "data", "self_heal", "0 3 * * *", "edge:self-healing", "medium", "supervised", "Clean stale data artifacts"),
+    job("Agent Heartbeat Monitor", "agents", "agent_heartbeat", "*/5 * * * *", "edge:agent-heartbeat", "low", "autonomous", "Verify all agents are responsive"),
+    job("Agent Task Dispatcher", "agents", "agent_execution", "*/15 * * * *", "edge:agent-scheduler", "medium", "supervised", "Dispatch queued agent tasks"),
+    job("System Maintenance: DB Vacuum", "platform", "maintenance", "0 4 * * 0", "edge:system-updates", "low", "autonomous", "Weekly database maintenance"),
+    job("Expired Signal Cleanup", "platform", "cleanup", "0 2 * * *", "edge:system-updates", "low", "autonomous", "Remove expired signals and stale queue items"),
+    job("Data Consistency Check", "data", "consistency_check", "0 5 * * *", "edge:system-updates", "low", "autonomous", "Verify cross-table referential integrity"),
+    job("Projection Rebuild: Metrics", "analytics", "projection_rebuild", "0 1 * * 1", "edge:system-updates", "low", "supervised", "Weekly metrics projection refresh"),
+    job("Scheduled Notification Digest", "notifications", "scheduled_notification", "0 8 * * *", "edge:system-updates", "low", "autonomous", "Morning notification digest"),
+    job("Scheduled Verification Sweep", "compliance", "scheduled_verification", "0 7 * * *", "edge:system-updates", "low", "supervised", "Verify pending compliance items"),
+    job("Connector Sync Check", "connectors", "scheduled_sync", "*/60 * * * *", "edge:system-updates", "low", "autonomous", "Check connector sync freshness"),
+    job("Budget Enforcement Scan", "ai", "budget_enforcement", "0 */4 * * *", "edge:system-updates", "low", "autonomous", "Enforce AI budget thresholds"),
+    job("Policy Audit Scan", "compliance", "policy_audit", "0 6 * * 1", "edge:system-updates", "low", "supervised", "Weekly policy compliance audit"),
+    job("Daily Intelligence Digest", "ai", "digest_generation", "0 9 * * *", "edge:system-updates", "low", "autonomous", "Generate daily AI usage digest"),
+    job("Runtime Truth Audit", "platform", "health_check", "0 6 * * *", "edge:system-updates", "low", "supervised", "Daily runtime truth verification"),
+  ];
+}
+
+// ── Runtime Probes (10 probes) ──────────────────────────────
+function runtimeProbeRows(userId: string) {
+  const probes = [
+    { probe_id: "supabase", name: "Supabase Connectivity", target_system: "supabase", owner: "platform", success_criteria: "profiles table accessible", failure_criteria: "query error" },
+    { probe_id: "auth", name: "Auth Service", target_system: "supabase_auth", owner: "platform", success_criteria: "session retrievable", failure_criteria: "no session" },
+    { probe_id: "storage", name: "Storage Service", target_system: "supabase_storage", owner: "platform", success_criteria: "bucket listable", failure_criteria: "storage error" },
+    { probe_id: "edge_functions", name: "Edge Functions", target_system: "supabase_functions", owner: "platform", success_criteria: "functions API reachable", failure_criteria: "timeout or error" },
+    { probe_id: "realtime", name: "Realtime", target_system: "supabase_realtime", owner: "platform", success_criteria: "channel subscribable", failure_criteria: "connection timeout" },
+    { probe_id: "ai_gateway", name: "AI Gateway", target_system: "ai_provider_registry", owner: "ai", success_criteria: "active providers exist", failure_criteria: "no active providers" },
+    { probe_id: "connectors", name: "Connector Health", target_system: "connector_registry", owner: "platform", success_criteria: "active connectors exist", failure_criteria: "no active connectors" },
+    { probe_id: "workflows", name: "Workflow Engine", target_system: "workflows", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+    { probe_id: "notifications", name: "Notification Queue", target_system: "notifications_queue", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+    { probe_id: "telemetry", name: "Telemetry", target_system: "os_event_log", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+  ];
+  return probes.map(p => ({ user_id: userId, ...p, enabled: true, severity: "high", launch_impact: "blocks", cadence_seconds: 300 }));
+}
+
+// ── Platform Health Snapshots (10 domains) ──────────────────
+function platformHealthSnapshotRows(userId: string) {
+  const domains = ["supabase", "auth", "storage", "edge_functions", "realtime", "ai_gateway", "connectors", "workflows", "notifications", "telemetry"];
+  return domains.map(d => ({
+    user_id: userId,
+    domain: d,
+    component: d.replace(/_/g, " "),
+    health_status: "healthy",
+    health_score: 100,
+    details: { seeded: true },
+    degraded_capabilities: [],
+    check_duration_ms: 5,
+  }));
+}
+
+// ── Device Families (7 canonical) ───────────────────────────
+function deviceFamilyRows(userId: string) {
+  return [
+    { user_id: userId, family_key: "web_desktop", name: "Web Desktop", description: "Desktop web browser", interaction_type: "active", screen_class: "large", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "web_mobile", name: "Web Mobile", description: "Mobile web browser", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "web_tablet", name: "Web Tablet", description: "Tablet web browser", interaction_type: "active", screen_class: "medium", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "ios_native", name: "iOS Native", description: "Native iOS app", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "android_native", name: "Android Native", description: "Native Android app", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "desktop_electron", name: "Desktop Electron", description: "Electron desktop app", interaction_type: "active", screen_class: "large", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "watchos", name: "watchOS", description: "Apple Watch glance surface", interaction_type: "passive", screen_class: "glance", notification_type: "haptic", quick_action_support: false, launch_stage: "planned", active: true },
+  ];
+}
+
+// ── Surface Portability Registry (30 capabilities) ──────────
+function surfacePortabilityRows(userId: string) {
+  const caps = [
+    "boardroom_dashboard", "approval_workflow", "proof_chain", "alert_system", "advisor_ai",
+    "money_management", "investment_portfolio", "business_ops", "workspace_management", "owner_settings",
+    "calendar_scheduling", "workflow_engine", "receipt_ledger", "reality_governance", "connector_system",
+    "demo_scenario_engine", "trust_weighted_actions", "incident_management", "admin_observability", "surface_portability",
+    "household_ops", "document_management", "crm_relationships", "ai_budget_governance", "device_telemetry",
+    "push_notifications", "authentication_identity", "session_handoff", "offline_queue", "global_search",
+  ];
+  return caps.map(key => ({
+    user_id: userId,
+    capability_key: key,
+    capability_name: key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100,
+    notes: "Seeded — canonical capability",
+  }));
+}
+
+// ── OS Event Log (sample ambient data) ──────────────────────
+function osEventLogRows(userId: string) {
+  const now = new Date();
+  return Array.from({ length: 15 }, (_, i) => {
+    const d = new Date(now.getTime() - i * 600_000);
+    const events = [
+      { event_type: "service_start", source: "os_kernel", payload: { service: "finance-os" } },
+      { event_type: "connector_sync", source: "connector_runtime", payload: { connector: "bank_plaid", status: "success" } },
+      { event_type: "ai_invocation", source: "ai_workforce", payload: { role: "runtime_truth_analyst", task: "runtime_truth_audit" } },
+      { event_type: "policy_check", source: "policy_engine", payload: { policy: "ai_budget", result: "allowed" } },
+      { event_type: "user_action", source: "ui", payload: { action: "view_dashboard", surface: "web_desktop" } },
+    ];
+    const ev = events[i % events.length];
+    return { user_id: userId, event_type: ev.event_type, source: ev.source, payload: ev.payload, created_at: d.toISOString() };
+  });
+}
+
+// ── Assistant Role States (9 roles) ─────────────────────────
+function assistantRoleStateRows(userId: string) {
+  const roles = [
+    { role_key: "chief_of_staff", display_name: "Chief of Staff", tone_mode: "executive", proactive: true, escalation_behavior: "escalate", domain: "all", priority: 1 },
+    { role_key: "operator", display_name: "Operator", tone_mode: "concise", proactive: true, escalation_behavior: "auto_handle", domain: "operations", priority: 2 },
+    { role_key: "strategist", display_name: "Strategist", tone_mode: "analytical", proactive: true, escalation_behavior: "recommend", domain: "strategy", priority: 3 },
+    { role_key: "money_sentinel", display_name: "Money Sentinel", tone_mode: "precise", proactive: true, escalation_behavior: "alert", domain: "finance", priority: 1 },
+    { role_key: "boardroom_curator", display_name: "Boardroom Curator", tone_mode: "executive", proactive: false, escalation_behavior: "recommend", domain: "boardroom", priority: 4 },
+    { role_key: "followup_guardian", display_name: "Follow-Up Guardian", tone_mode: "caring", proactive: true, escalation_behavior: "remind", domain: "relationships", priority: 5 },
+    { role_key: "risk_watcher", display_name: "Risk Watcher", tone_mode: "direct", proactive: true, escalation_behavior: "escalate", domain: "risk", priority: 2 },
+    { role_key: "calm_filter", display_name: "Calm Filter", tone_mode: "calm", proactive: true, escalation_behavior: "suppress", domain: "attention", priority: 1 },
+    { role_key: "health_monitor", display_name: "Health Monitor", tone_mode: "caring", proactive: true, escalation_behavior: "alert", domain: "health", priority: 3 },
+  ];
+  return roles.map(r => ({ user_id: userId, ...r, enabled: true, active_state: "active", last_active_at: new Date().toISOString() }));
+}
+
+// ── Interruption Policies (3 defaults) ──────────────────────
+function interruptionPolicyRows(userId: string) {
+  return [
+    { user_id: userId, policy_name: "quiet_hours", category: "sleep", default_delivery: "silent queue", escalation_rule: "critical only", priority: "low", enabled: true, quiet_window_start: "22:00", quiet_window_end: "07:00" },
+    { user_id: userId, policy_name: "focus_mode", category: "deep_work", default_delivery: "defer", escalation_rule: "high+ after 30min", priority: "normal", enabled: true },
+    { user_id: userId, policy_name: "exercise_mode", category: "exercise", default_delivery: "watch nudge", escalation_rule: "critical only", priority: "low", enabled: true },
+  ];
+}
+
+// ── Capability Surface Bindings (13 capabilities) ───────────
+function capabilitySurfaceBindingRows(userId: string) {
+  const caps = [
+    { capability_key: "approvals", capability_name: "Approvals", mobile_experience: "full", desktop_experience: "full", wearable_experience: "micro_action", surface_fit: "mobile_primary", requires_native_api: false },
+    { capability_key: "alerts", capability_name: "Alerts", mobile_experience: "full", desktop_experience: "adapted", wearable_experience: "glance", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "advisor_chat", capability_name: "Advisor Chat", mobile_experience: "full", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "mobile_supported", requires_native_api: false },
+    { capability_key: "daily_pulse", capability_name: "Daily Pulse", mobile_experience: "full", desktop_experience: "full", wearable_experience: "glance", surface_fit: "cross_surface", requires_native_api: false },
+    { capability_key: "quick_capture", capability_name: "Quick Capture", mobile_experience: "full", desktop_experience: "minimal", wearable_experience: "not_available", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "boardroom", capability_name: "Boardroom", mobile_experience: "adapted", desktop_experience: "full", wearable_experience: "glance", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "workflow_builder", capability_name: "Workflow Builder", mobile_experience: "minimal", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "ai_engineering", capability_name: "AI Engineering", mobile_experience: "not_available", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "not_mobile_appropriate", requires_native_api: false },
+    { capability_key: "finance_workspace", capability_name: "Finance Workspace", mobile_experience: "adapted", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "micro_approvals", capability_name: "Micro Approvals", mobile_experience: "full", desktop_experience: "not_available", wearable_experience: "micro_action", surface_fit: "wearable_micro_action", requires_native_api: true },
+    { capability_key: "camera_capture", capability_name: "Camera Capture", mobile_experience: "full", desktop_experience: "not_available", wearable_experience: "not_available", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "biometric_actions", capability_name: "Biometric Actions", mobile_experience: "full", desktop_experience: "minimal", wearable_experience: "micro_action", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "push_notifications", capability_name: "Push Notifications", mobile_experience: "full", desktop_experience: "adapted", wearable_experience: "full", surface_fit: "cross_surface", requires_native_api: true },
+  ];
+  return caps.map(c => ({ user_id: userId, ...c }));
+}
+
+// ── Master Seed Function ────────────────────────────────────
+export async function seedEcosystemData(): Promise<{ seeded: number; errors: string[] }> {
+  const userId = await getUserId();
+  if (!userId) return { seeded: 0, errors: ["Not authenticated"] };
+
+  const errors: string[] = [];
+  let total = 0;
+
+  const tasks: Array<{ table: string; rows: Record<string, unknown>[]; conflict?: string }> = [
+    { table: "ai_provider_registry", rows: aiProviderRows(userId), conflict: "user_id,provider_key" },
+    { table: "ai_model_registry", rows: aiModelRows(userId), conflict: "user_id,model_id" },
+    { table: "ai_budget_policies", rows: aiBudgetPolicyRows(userId), conflict: "user_id,policy_key" },
+    { table: "ai_capability_routing", rows: aiCapabilityRoutingRows(userId), conflict: "user_id,capability_key" },
+    { table: "connector_registry", rows: connectorRegistryRows(userId), conflict: "user_id,connector_key" },
+    { table: "advisor_registry", rows: advisorRegistryRows(userId) },
+    { table: "ai_self_healing_rules", rows: selfHealingRuleRows(userId) },
+    { table: "ai_launch_honesty", rows: launchHonestyRows(userId) },
+    { table: "audit_logs", rows: auditLogRows(userId) },
+    { table: "capability_definitions", rows: capabilityDefinitionRows(userId) },
+    { table: "incidents", rows: incidentRows(userId) },
+    { table: "surface_types", rows: surfaceTypeRows(userId) },
+    { table: "user_ai_budgets", rows: userAiBudgetRows(userId) },
+    { table: "scheduled_jobs", rows: scheduledJobRows(userId) },
+    { table: "os_event_log", rows: osEventLogRows(userId) },
+    { table: "runtime_probes", rows: runtimeProbeRows(userId), conflict: "user_id,probe_id" },
+    { table: "platform_health_snapshots", rows: platformHealthSnapshotRows(userId) },
+    { table: "device_families", rows: deviceFamilyRows(userId), conflict: "user_id,family_key" },
+    { table: "surface_portability_registry", rows: surfacePortabilityRows(userId), conflict: "user_id,capability_key" },
+    { table: "assistant_role_states", rows: assistantRoleStateRows(userId) },
+    { table: "interruption_policies", rows: interruptionPolicyRows(userId) },
+    { table: "capability_surface_bindings", rows: capabilitySurfaceBindingRows(userId), conflict: "user_id,capability_key" },
+  ];
+
+  for (const task of tasks) {
+    try {
+      const count = await upsertRows(task.table, task.rows, task.conflict);
+      total += count;
+      if (count === 0) errors.push(`${task.table}: 0 rows inserted`);
+    } catch (e: any) {
+      errors.push(`${task.table}: ${e.message}`);
+    }
+  }
+
+  console.log(`[ecosystem-seeder] Seeded ${total} rows across ${tasks.length} tables. Errors: ${errors.length}`);
+  return { seeded: total, errors };
+}

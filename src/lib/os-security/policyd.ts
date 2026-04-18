@@ -1,7 +1,354 @@
-/**
- * @deprecated Migrated to `@/platform/security/policyd` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/security/policyd";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — policyd: Authorization Daemon
+// RBAC + Capability evaluation, deny-by-default,
+// contextual policy checks, decision logging
+// ═══════════════════════════════════════════════════════════════
+
+import {
+  type OSSession, type OSUserRole, type ActionPolicy, type IPCResult,
+  type AuditSeverity, type ServiceIdentity,
+  ACTION_AUTHORIZATION_TABLE, DEFAULT_ROLE_CAPABILITIES, hasRequiredRole,
+} from "./types";
+import { getAuthDaemon } from "./authd";
+import { getPolicyBundleManager, type DeviceMode, type PolicyBundle, type FullPolicyContent } from "./policyd-bundles";
+import { getContextualDecisionEngine, type EnhancedPolicyContext, type EnhancedPolicyDecision } from "./policyd-decisions";
+
+// ── Environmental Context ───────────────────────────────────
+
+export interface EnvironmentalContext {
+  screenLocked: boolean;
+  guestSession: boolean;
+  enterpriseManaged: boolean;
+  publicWifiDetected: boolean;
+  securityLockdown: boolean;
+  vpnActive: boolean;
+  batteryLevel?: number;
+  deviceMode?: string;
+}
+
+export interface PolicyDecision {
+  allowed: boolean;
+  reason: string;
+  elevationRequired: boolean;
+  freshAuthRequired: boolean;
+  matchedPolicy?: ActionPolicy;
+  severity: AuditSeverity;
+  environmentalOverrides?: string[];
+}
+
+// ── Service Identity Registry ───────────────────────────────
+
+import type { ExtendedServiceIdentity } from "./types";
+
+const SERVICE_REGISTRY: Map<string, ServiceIdentity> = new Map();
+const EXTENDED_SERVICE_REGISTRY: Map<string, ExtendedServiceIdentity> = new Map();
+
+export function registerService(identity: ServiceIdentity): void {
+  SERVICE_REGISTRY.set(identity.serviceName, identity);
+}
+
+export function registerExtendedService(identity: ExtendedServiceIdentity): void {
+  EXTENDED_SERVICE_REGISTRY.set(identity.serviceName, identity);
+  SERVICE_REGISTRY.set(identity.serviceName, identity);
+}
+
+export function getServiceIdentity(name: string): ServiceIdentity | undefined {
+  return SERVICE_REGISTRY.get(name);
+}
+
+export function getExtendedServiceIdentity(name: string): ExtendedServiceIdentity | undefined {
+  return EXTENDED_SERVICE_REGISTRY.get(name);
+}
+
+export function verifyServiceIdentity(name: string): { verified: boolean; reason: string } {
+  const ext = EXTENDED_SERVICE_REGISTRY.get(name);
+  if (!ext) {
+    const basic = SERVICE_REGISTRY.get(name);
+    if (!basic) return { verified: false, reason: "Service not registered" };
+    return { verified: true, reason: "Basic identity only — no signing verification" };
+  }
+  if (ext.status !== "active") return { verified: false, reason: `Service status: ${ext.status}` };
+  if (!ext.signingIdentity) return { verified: false, reason: "Missing signing identity" };
+  return { verified: true, reason: "Identity verified with signature" };
+}
+
+export function getExtendedServices(): ExtendedServiceIdentity[] {
+  return Array.from(EXTENDED_SERVICE_REGISTRY.values());
+}
+
+// ── PolicyD Service ─────────────────────────────────────────
+
+export class PolicyDaemon {
+  private decisionLog: Array<{
+    timestamp: number;
+    sessionId: string;
+    action: string;
+    decision: PolicyDecision;
+    correlationId: string;
+  }> = [];
+
+  private customPolicies: ActionPolicy[] = [];
+  private initialized = false;
+
+  async initialize(): Promise<void> {
+    if (this.initialized) return;
+
+    // Register default system services
+    const systemServices: ServiceIdentity[] = [
+      { serviceName: "wifid", serviceUid: "sita-wifid", allowedActions: ["wifi.toggle", "wifi.connect.open", "wifi.connect.secure", "wifi.forget"], secretScopes: ["wifi-psk"], privileged: true, registeredAt: Date.now() },
+      { serviceName: "btd", serviceUid: "sita-btd", allowedActions: ["bluetooth.toggle", "bluetooth.pair", "bluetooth.unpair"], secretScopes: ["bluetooth-bond-key"], privileged: true, registeredAt: Date.now() },
+      { serviceName: "shieldd", serviceUid: "sita-shieldd", allowedActions: ["shield.vpn.toggle", "shield.vpn.configure", "shield.firewall.toggle", "shield.firewall.disable", "shield.firewall.rules"], secretScopes: ["vpn-private-key", "certificate-private-key"], privileged: true, registeredAt: Date.now() },
+      { serviceName: "powerd", serviceUid: "sita-powerd", allowedActions: ["power.profile.set", "power.shutdown", "power.reboot"], secretScopes: [], privileged: true, registeredAt: Date.now() },
+      { serviceName: "certd", serviceUid: "sita-certd", allowedActions: ["cert.install.user", "cert.install.system", "cert.remove"], secretScopes: ["certificate-private-key"], privileged: true, registeredAt: Date.now() },
+      { serviceName: "auditd", serviceUid: "sita-auditd", allowedActions: ["audit.view", "audit.export"], secretScopes: [], privileged: true, registeredAt: Date.now() },
+    ];
+
+    for (const svc of systemServices) {
+      registerService(svc);
+    }
+
+    this.initialized = true;
+  }
+
+  // ── Core Evaluation ─────────────────────────────────────
+
+  evaluate(
+    action: string,
+    session: OSSession,
+    environment: EnvironmentalContext,
+    correlationId?: string
+  ): PolicyDecision {
+    const corrId = correlationId || crypto.randomUUID();
+
+    // 1. Find matching policy
+    const policy = this.findPolicy(action);
+    if (!policy) {
+      const decision: PolicyDecision = {
+        allowed: false,
+        reason: `No policy found for action: ${action}. Deny by default.`,
+        elevationRequired: false,
+        freshAuthRequired: false,
+        severity: "warning",
+      };
+      this.logDecision(session.sessionId, action, decision, corrId);
+      return decision;
+    }
+
+    const overrides: string[] = [];
+
+    // 2. Check locked session
+    if (session.locked && !policy.lockedSessionAllowed) {
+      const decision: PolicyDecision = {
+        allowed: false,
+        reason: "Action not allowed while session is locked",
+        elevationRequired: false,
+        freshAuthRequired: true,
+        matchedPolicy: policy,
+        severity: "warning",
+      };
+      this.logDecision(session.sessionId, action, decision, corrId);
+      return decision;
+    }
+
+    // 3. Check role
+    if (!hasRequiredRole(session.role, policy.requiredRole)) {
+      const decision: PolicyDecision = {
+        allowed: false,
+        reason: `Insufficient role: requires ${policy.requiredRole}, user has ${session.role}`,
+        elevationRequired: policy.elevationRequired,
+        freshAuthRequired: policy.freshAuthRequired,
+        matchedPolicy: policy,
+        severity: policy.auditSeverity,
+      };
+      this.logDecision(session.sessionId, action, decision, corrId);
+      return decision;
+    }
+
+    // 4. Check capability
+    if (!session.capabilities.includes(policy.requiredCapability)) {
+      const decision: PolicyDecision = {
+        allowed: false,
+        reason: `Missing capability: ${policy.requiredCapability}`,
+        elevationRequired: false,
+        freshAuthRequired: false,
+        matchedPolicy: policy,
+        severity: "warning",
+      };
+      this.logDecision(session.sessionId, action, decision, corrId);
+      return decision;
+    }
+
+    // 5. Environmental overrides
+    if (environment.securityLockdown) {
+      const lockdownDenied = ["shield.firewall.disable", "security.baseline.change", "cert.install.system"];
+      if (lockdownDenied.includes(action)) {
+        overrides.push("security-lockdown-active");
+        const decision: PolicyDecision = {
+          allowed: false,
+          reason: "Action blocked: security lockdown mode is active",
+          elevationRequired: false,
+          freshAuthRequired: false,
+          matchedPolicy: policy,
+          severity: "critical",
+          environmentalOverrides: overrides,
+        };
+        this.logDecision(session.sessionId, action, decision, corrId);
+        return decision;
+      }
+    }
+
+    if (environment.guestSession && policy.requiredRole !== "guest") {
+      overrides.push("guest-session-restriction");
+    }
+
+    if (environment.publicWifiDetected && action.startsWith("secrets.")) {
+      overrides.push("public-wifi-secret-access-warning");
+    }
+
+    // 6. Check auth freshness
+    const authd = getAuthDaemon();
+    const needsFresh = policy.freshAuthRequired && !authd.isAuthFresh(session.sessionId);
+
+    // 7. Build result
+    const decision: PolicyDecision = {
+      allowed: !policy.elevationRequired || false, // elevation-required means not auto-allowed
+      reason: policy.elevationRequired
+        ? `Action requires elevation: ${policy.description}`
+        : `Action allowed: ${policy.description}`,
+      elevationRequired: policy.elevationRequired,
+      freshAuthRequired: needsFresh,
+      matchedPolicy: policy,
+      severity: policy.auditSeverity,
+      environmentalOverrides: overrides.length > 0 ? overrides : undefined,
+    };
+
+    // If no elevation needed, allow it
+    if (!policy.elevationRequired) {
+      decision.allowed = true;
+    }
+
+    this.logDecision(session.sessionId, action, decision, corrId);
+    return decision;
+  }
+
+  // ── Explain ─────────────────────────────────────────────
+
+  explain(action: string): { policy: ActionPolicy | null; capabilities: string[]; roles: OSUserRole[] } {
+    const policy = this.findPolicy(action);
+    if (!policy) return { policy: null, capabilities: [], roles: [] };
+
+    const roles: OSUserRole[] = [];
+    for (const [role, caps] of Object.entries(DEFAULT_ROLE_CAPABILITIES)) {
+      if (caps.includes(policy.requiredCapability)) {
+        roles.push(role as OSUserRole);
+      }
+    }
+
+    return { policy, capabilities: [policy.requiredCapability], roles };
+  }
+
+  // ── Service Authorization ───────────────────────────────
+
+  authorizeService(serviceName: string, action: string): boolean {
+    const svc = SERVICE_REGISTRY.get(serviceName);
+    if (!svc) return false;
+    return svc.allowedActions.includes(action);
+  }
+
+  // ── Policy Management ───────────────────────────────────
+
+  addCustomPolicy(policy: ActionPolicy): void {
+    this.customPolicies.push(policy);
+  }
+
+  private findPolicy(action: string): ActionPolicy | undefined {
+    // Custom policies take precedence
+    return this.customPolicies.find(p => p.action === action)
+      || ACTION_AUTHORIZATION_TABLE.find(p => p.action === action);
+  }
+
+  // ── Decision Log ────────────────────────────────────────
+
+  private logDecision(sessionId: string, action: string, decision: PolicyDecision, correlationId: string) {
+    this.decisionLog.push({
+      timestamp: Date.now(),
+      sessionId,
+      action,
+      decision,
+      correlationId,
+    });
+    if (this.decisionLog.length > 10000) {
+      this.decisionLog = this.decisionLog.slice(-5000);
+    }
+  }
+
+  getDecisionLog(limit = 100) {
+    return this.decisionLog.slice(-limit);
+  }
+
+  getRegisteredServices(): ServiceIdentity[] {
+    return Array.from(SERVICE_REGISTRY.values());
+  }
+
+  // ── Enhanced Policy APIs ────────────────────────────────
+
+  switchDeviceMode(mode: DeviceMode): { previousMode: DeviceMode; newMode: DeviceMode } {
+    const bundleManager = getPolicyBundleManager();
+    const result = bundleManager.switchMode(mode);
+    return { previousMode: result.previousMode, newMode: result.newMode };
+  }
+
+  getDeviceMode(): DeviceMode {
+    return getPolicyBundleManager().getCurrentMode();
+  }
+
+  getEffectivePolicy(): FullPolicyContent {
+    return getPolicyBundleManager().getEffective();
+  }
+
+  installBundle(bundle: PolicyBundle): { success: boolean; error?: string } {
+    return getPolicyBundleManager().installBundle(bundle);
+  }
+
+  validateBundle(bundle: PolicyBundle): { valid: boolean; errors: string[] } {
+    return getPolicyBundleManager().validateBundle(bundle);
+  }
+
+  simulateAction(ctx: EnhancedPolicyContext): { decision: EnhancedPolicyDecision | null; matchedRules: string[] } {
+    return getContextualDecisionEngine().simulate(ctx);
+  }
+
+  explainAction(action: string, ctx: EnhancedPolicyContext): ReturnType<typeof getContextualDecisionEngine.prototype.explain> {
+    return getContextualDecisionEngine().explain(action, ctx);
+  }
+
+  getActiveConstraints() {
+    return getPolicyBundleManager().getActiveConstraints();
+  }
+
+  evaluateUpdatePreflight(ctx: EnhancedPolicyContext) {
+    return getContextualDecisionEngine().evaluateUpdatePreflight(ctx);
+  }
+
+  evaluateOnboardingDefaults() {
+    return getContextualDecisionEngine().evaluateOnboardingDefaults();
+  }
+
+  getStats() {
+    const bundleStats = getPolicyBundleManager().getStats();
+    return {
+      totalPolicies: ACTION_AUTHORIZATION_TABLE.length + this.customPolicies.length,
+      registeredServices: SERVICE_REGISTRY.size,
+      decisionLogSize: this.decisionLog.length,
+      ...bundleStats,
+    };
+  }
+}
+
+// ── Singleton ──────────────────────────────────────────────
+
+let _policyd: PolicyDaemon | null = null;
+export function getPolicyDaemon(): PolicyDaemon {
+  if (!_policyd) _policyd = new PolicyDaemon();
+  return _policyd;
+}

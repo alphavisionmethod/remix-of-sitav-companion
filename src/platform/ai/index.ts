@@ -1,39 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Frontend Integration Barrel
+// SITA OS — Canonical Barrel: src/platform/ai
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
 // ═══════════════════════════════════════════════════════════════
-
-// State types & helpers
-export * from "./ai-state-types";
-
-// Canonical client
-export { invokeAICapability, invokeSynthesis, invokeUtility } from "./ai-capability-client";
-export type { TrustEnrichedResponse } from "./ai-capability-client";
-
-// Response normalization
-export { normalizeGatewayResponse } from "./ai-response-normalizer";
-
-// Surface grammar
-export {
-  STATE_BADGE_CONFIG,
-  LAUNCH_LEVEL_CONFIG,
-  DEGRADED_MESSAGES,
-  formatFreshness,
-  isStale,
-} from "./ai-surface-grammar";
-
-// Launch honesty reclassifier
-export { reclassifyAIFeatures } from "./ai-launch-honesty-reclassifier";
-
-// Hooks
-export { useAICapability } from "./hooks/use-ai-capability";
-export { useAdvisorChat } from "./hooks/use-advisor-chat";
-export { useBoardroomSummary } from "./hooks/use-boardroom-summary";
-export { useDailyPulse } from "./hooks/use-daily-pulse";
-export { useAdminSynthesis } from "./hooks/use-admin-synthesis";
-export { useUtilityAI } from "./hooks/use-utility-ai";
-export { useMemorySummary } from "./hooks/use-memory-summary";
-export { useAIRuntimeVerification } from "./hooks/use-ai-runtime-verification";
-
-// Workforce executor
-export { executeWorkforceTask } from "./workforce-executor";
-export type { WorkforceExecutionRequest, WorkforceExecutionResult } from "./workforce-executor";
+export {};

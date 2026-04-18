@@ -1,7 +1,124 @@
-/**
- * @deprecated Migrated to `@/platform/topology/edge-function-owner-map` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/topology/edge-function-owner-map";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Edge Function Owner Map
+// Team/domain ownership for each function
+// ═══════════════════════════════════════════════════════════════
+
+export type OwnerTeam =
+  | "platform-core"
+  | "admin-governance"
+  | "advisor-intelligence"
+  | "agent-runtime"
+  | "ai-engineering"
+  | "cloud-infrastructure"
+  | "connector-integrations"
+  | "finance-engine"
+  | "notification-services"
+  | "os-kernel"
+  | "compliance-security"
+  | "user-experience";
+
+export const EDGE_FUNCTION_OWNER_MAP: Record<string, OwnerTeam> = {
+  "admin-ai-workforce-run": "admin-governance",
+  "admin-api": "admin-governance",
+  "admin-bff-gateway": "admin-governance",
+  "admin-gateway": "admin-governance",
+  "admin-intelligence": "admin-governance",
+  "admin-users": "admin-governance",
+  "advisor-agent-loop": "advisor-intelligence",
+  "advisor-avatar-generate": "advisor-intelligence",
+  "advisor-conversation": "advisor-intelligence",
+  "advisor-deep-intelligence": "advisor-intelligence",
+  "advisor-knowledge-manage": "advisor-intelligence",
+  "advisor-weekly-report": "advisor-intelligence",
+  "agent-executor": "agent-runtime",
+  "agent-heartbeat": "agent-runtime",
+  "agent-intelligence": "agent-runtime",
+  "agent-scheduler": "agent-runtime",
+  "agent-signal": "agent-runtime",
+  "ai-gateway": "ai-engineering",
+  "ai-health": "ai-engineering",
+  "check-ai-budget": "ai-engineering",
+  "ambient-os-operations": "os-kernel",
+  "api-gateway": "platform-core",
+  "app-store-api": "user-experience",
+  "booking-manage": "user-experience",
+  "brain-core": "ai-engineering",
+  "business-advisor-intelligence": "advisor-intelligence",
+  "business-board-api": "advisor-intelligence",
+  "cashflow-calculate": "finance-engine",
+  "chat-advisor": "advisor-intelligence",
+  "cloud-admin-api": "cloud-infrastructure",
+  "cloud-device-api": "cloud-infrastructure",
+  "cloud-lifecycle-api": "cloud-infrastructure",
+  "cloud-storage-api": "cloud-infrastructure",
+  "cloud-sync-api": "cloud-infrastructure",
+  "cloud-tenant-api": "cloud-infrastructure",
+  "cloud-worker-api": "cloud-infrastructure",
+  "communications-api": "user-experience",
+  "connector-batch": "connector-integrations",
+  "connector-discover": "connector-integrations",
+  "connector-health": "connector-integrations",
+  "connector-oauth": "connector-integrations",
+  "connector-operations": "connector-integrations",
+  "connector-proxy": "connector-integrations",
+  "connector-sync": "connector-integrations",
+  "connector-transform": "connector-integrations",
+  "cost-alert": "finance-engine",
+  "crm-sync": "connector-integrations",
+  "db-truth-introspect": "platform-core",
+  "device-telemetry": "cloud-infrastructure",
+  "digital-twin-engine": "ai-engineering",
+  "ecosystem-operations": "platform-core",
+  "event-processor": "platform-core",
+  "file-ingestion": "platform-core",
+  "gdpr-delete": "compliance-security",
+  "gdpr-export": "compliance-security",
+  "get-weather": "user-experience",
+  "health-check": "platform-core",
+  "intelligence-api": "ai-engineering",
+  "investment-portfolio-api": "finance-engine",
+  "invoice-generate": "finance-engine",
+  "license-gateway": "user-experience",
+  "main": "platform-core",
+  "msa-operations": "finance-engine",
+  "os-agent-channel": "os-kernel",
+  "os-command": "os-kernel",
+  "os-status": "os-kernel",
+  "payment-kill-switch": "finance-engine",
+  "payment-process": "finance-engine",
+  "personal-brain": "ai-engineering",
+  "provider-family-operations": "connector-integrations",
+  "push-dispatch": "notification-services",
+  "push-track": "notification-services",
+  "revenue-caller": "finance-engine",
+  "runtime-probes": "os-kernel",
+  "scheduler-dispatch": "platform-core",
+  "seed-user-data": "platform-core",
+  "self-healing": "os-kernel",
+  "simulation-engine-api": "ai-engineering",
+  "support-gateway": "user-experience",
+  "system-updates": "os-kernel",
+  "tasks-workflow-api": "user-experience",
+  "tax-estimate": "finance-engine",
+  "user-bff-gateway": "user-experience",
+  "vapid-public-key": "notification-services",
+  "verification-recorder": "compliance-security",
+} as const;
+
+export function getOwnerForFunction(name: string): OwnerTeam | undefined {
+  return EDGE_FUNCTION_OWNER_MAP[name];
+}
+
+export function getFunctionsByOwner(owner: OwnerTeam): string[] {
+  return Object.entries(EDGE_FUNCTION_OWNER_MAP)
+    .filter(([, o]) => o === owner)
+    .map(([name]) => name);
+}
+
+export function getOwnerCounts(): Record<OwnerTeam, number> {
+  const counts = {} as Record<OwnerTeam, number>;
+  for (const owner of Object.values(EDGE_FUNCTION_OWNER_MAP)) {
+    counts[owner] = (counts[owner] || 0) + 1;
+  }
+  return counts;
+}

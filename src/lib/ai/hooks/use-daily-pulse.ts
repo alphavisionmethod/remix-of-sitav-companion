@@ -1,7 +1,39 @@
-/**
- * @deprecated Migrated to `@/platform/ai/hooks/use-daily-pulse` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/ai/hooks/use-daily-pulse";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — useDailyPulse Hook
+// Digest synthesis for daily pulse generation
+// ═══════════════════════════════════════════════════════════════
+
+import { useCallback } from "react";
+import { useAICapability } from "./use-ai-capability";
+
+interface UseDailyPulseOptions {
+  capabilityKey?: string;
+}
+
+export function useDailyPulse(options: UseDailyPulseOptions = {}) {
+  const { capabilityKey = "daily_pulse.generate" } = options;
+  const ai = useAICapability();
+
+  const generate = useCallback(async (contextData: string) => {
+    return ai.invoke({
+      capabilityKey,
+      messages: [
+        {
+          role: "system",
+          content: "You are a concise daily briefing generator for SITA OS. Summarize the key events, priorities, and actions for today in a calm, clear, actionable format.",
+        },
+        { role: "user", content: contextData },
+      ],
+      taskClass: "balanced_assistant",
+      surface: "web.pulse",
+      intent: "summarize",
+      maxTokens: 800,
+    });
+  }, [capabilityKey, ai.invoke]);
+
+  return {
+    ...ai,
+    generate,
+    regenerate: ai.retry,
+  };
+}

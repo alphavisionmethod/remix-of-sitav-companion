@@ -1,7 +1,3 @@
-/**
- * @deprecated Migrated to `@/domains/engines/shared/index` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/engines/shared/index";
+export { computeAging, computeAgingTier, TRUST_AGING_MS, EXECUTION_AGING_MS } from "./aging";
+export type { AgingThresholds } from "./aging";
+

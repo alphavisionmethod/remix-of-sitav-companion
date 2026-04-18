@@ -1,7 +1,22 @@
-/**
- * @deprecated Migrated to `@/data/seed/owner-center` in Wave 2 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/data/seed/owner-center";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Mock Data: Owner Center Policy Simulation
+// ═══════════════════════════════════════════════════════════════
+
+export function buildMockSimResult(simInput: { amount: number; [key: string]: unknown }) {
+  return {
+    simulation: {
+      input: simInput,
+      final_effect: simInput.amount > 500 ? "deny" : "allow",
+      evaluated_policies: 3,
+      results: [
+        {
+          policy_name: "Auto-pay under $500",
+          effect: simInput.amount > 500 ? "deny" : "allow",
+          reasons: simInput.amount > 500
+            ? [`Amount $${simInput.amount} exceeds max $500`]
+            : ["Within auto-pay limit"],
+        },
+      ],
+    },
+  };
+}

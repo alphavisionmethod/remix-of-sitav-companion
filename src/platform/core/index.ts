@@ -1,11 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Platform Services Master Barrel (Layer 3)
-// Canonical import: @/lib/platform
+// SITA OS — Canonical Barrel: src/platform/core
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
 // ═══════════════════════════════════════════════════════════════
-
-export * as auth          from "./auth";
-export * as proof         from "./proof";
-export * as execution     from "./execution";
-export * as observability from "./observability";
-export * as sync          from "./sync";
-export * as notifications from "./notifications";
+export {};

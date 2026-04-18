@@ -1,7 +1,17 @@
-/**
- * @deprecated Migrated to `@/platform/capabilities/enterprise-capabilities` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/capabilities/enterprise-capabilities";
+import { registerCapability } from "./capability-registry";
+
+registerCapability("enterprise.tenant.create", async (params) => ({
+  success: true, data: { id: crypto.randomUUID(), ...params },
+}));
+
+registerCapability("enterprise.tenant.update", async (params) => ({
+  success: true, data: params,
+}));
+
+registerCapability("enterprise.policy.create", async (params) => ({
+  success: true, data: { id: crypto.randomUUID(), ...params },
+}));
+
+registerCapability("enterprise.governance.audit", async (params) => ({
+  success: true, data: { compliant: true, ...params },
+}));

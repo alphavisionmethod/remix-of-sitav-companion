@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-04-18T02:57:17.739Z",
+  "gate": "lib-decomposition-readiness",
+  "remainingLibFiles": 1731,
+  "allowlistedLibFiles": 36,
+  "canonicalCounts": {
+    "src/domains": {
+      "files": 16,
+      "nonBarrel": 0
+    },
+    "src/platform": {
+      "files": 35,
+      "nonBarrel": 0
+    },
+    "src/runtimes": {
+      "files": 9,
+      "nonBarrel": 1
+    },
+    "src/data": {
+      "files": 7,
+      "nonBarrel": 0
+    },
+    "src/integrations": {
+      "files": 7,
+      "nonBarrel": 2
+    },
+    "src/contracts": {
+      "files": 3,
+      "nonBarrel": 0
+    },
+    "src/legacy": {
+      "files": 3,
+      "nonBarrel": 0
+    }
+  },
+  "populatedCanonicalDirs": 2,
+  "shimWrappers": 157,
+  "shimWrapperSample": [
+    {
+      "path": "src/lib/admin-ai/index.ts",
+      "loc": 7,
+      "reExportsFrom": "./admin-ai-workforce-client"
+    },
+    {
+      "path": "src/lib/advisor-intelligence/index.ts",
+      "loc": 15,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/ai-engineering/index.ts",
+      "loc": 22,
+      "reExportsFrom": "./observation-layer"
+    },
+    {
+      "path": "src/lib/api/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./edge-client"
+    },
+    {
+      "path": "src/lib/app-platform/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/backend-topology/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./edge-function-registry"
+    },
+    {
+      "path": "src/lib/boardroom/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/capabilities/index.ts",
+      "loc": 16,
+      "reExportsFrom": "./capability-registry"
+    },
+    {
+      "path": "src/lib/cloud-backbone/index.ts",
+      "loc": 20,
+      "reExportsFrom": "./cloud-storage-service"
+    },
+    {
+      "path": "src/lib/constants/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./ui-config"
+    },
+    {
+      "path": "src/lib/contracts/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./global-contracts-registry"
+    },
+    {
+      "path": "src/lib/core-services/ai-gateway/diagnostics.service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-gateway/diagnostics.service"
+    },
+    {
+      "path": "src/lib/core-services/ai-gateway/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-gateway"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/admin-budget-routing-policy.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce/admin-budget-routing-policy"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/workforce-orchestrator.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce/workforce-orchestrator"
+    },
+    {
+      "path": "src/lib/core-services/approval-engine/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./approval-history.service"
+    },
+    {
+      "path": "src/lib/core-services/architecture/god-tier-integration-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/architecture/god-tier-integration-engine"
+    },
+    {
+      "path": "src/lib/core-services/architecture/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./god-tier-integration-engine"
+    },
+    {
+      "path": "src/lib/core-services/biometric-auth/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/biometric-auth"
+    }
+  ],
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1731
+}

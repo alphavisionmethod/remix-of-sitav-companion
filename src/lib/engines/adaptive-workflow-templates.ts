@@ -1,7 +1,27 @@
-/**
- * @deprecated Migrated to `@/domains/engines/adaptive-workflow-templates` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/engines/adaptive-workflow-templates";
+// ═══════════════════════════════════════════════════════════════
+// Adaptive Workflow Templates Engine
+// Suggests workflow templates based on business profile
+// ═══════════════════════════════════════════════════════════════
+
+import type { BusinessProfileResult, WorkflowSuggestion } from "@/lib/engines/business-profile-engine";
+
+export function getWorkflowSuggestions(profile: BusinessProfileResult, limit = 6): WorkflowSuggestion[] {
+  return profile.workflows
+    .filter(w => w.affinityScore > 0.2)
+    .slice(0, limit);
+}
+
+export function getWorkflowCategories(profile: BusinessProfileResult): { category: string; count: number; topWorkflow: string }[] {
+  const byArchetype = new Map<string, WorkflowSuggestion[]>();
+  for (const wf of profile.workflows) {
+    const arr = byArchetype.get(wf.archetype) || [];
+    arr.push(wf);
+    byArchetype.set(wf.archetype, arr);
+  }
+
+  return Array.from(byArchetype.entries()).map(([arch, wfs]) => ({
+    category: arch,
+    count: wfs.length,
+    topWorkflow: wfs[0]?.name || "",
+  }));
+}

@@ -1,12 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — App Platform Public API
+// SITA OS — Canonical Barrel: src/domains/apps
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
 // ═══════════════════════════════════════════════════════════════
-
-export * from "./types";
-export * from "./catalog";
-export * from "./manifest-schema";
-export * from "./manifests";
-export * from "./runtime";
-export * from "./permissions";
-export * from "./install-state";
-export * from "./launch-resolver";
+export {};

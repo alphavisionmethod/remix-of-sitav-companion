@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T02:21:44.649Z
-> Verdict: **GREEN** ✅
+> Generated: 2026-04-18T02:57:19.349Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 19 |
-| Gates present  | 19 |
+| Gates required | 25 |
+| Gates present  | 25 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 0 |
+| Total warnings | 4028 |
 
 ## Per-gate results
 
@@ -36,10 +36,16 @@
 | `ks-payments-auth-readiness` | ✅ | 0 | 0 |
 | `ci-artifacts-proof` | ✅ | 0 | 0 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
+| `lib-decomposition-readiness` | ✅ | 0 | 1731 |
+| `lib-ownership-drift` | ✅ | 0 | 99 |
+| `misplaced-runtime-logic` | ✅ | 0 | 0 |
+| `misplaced-data-logic` | ✅ | 0 | 0 |
+| `misplaced-domain-logic` | ✅ | 0 | 0 |
+| `legacy-wrapper-usage` | ✅ | 0 | 2198 |
 
 ## Verdict
 
-✅ All required readiness gates passed with no warnings. Release is **cuttable**.
+⚠️ All required gates passed, but 4028 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

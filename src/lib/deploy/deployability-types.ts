@@ -1,7 +1,30 @@
-/**
- * @deprecated Migrated to `@/platform/deploy/deployability-types` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/deploy/deployability-types";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Deployability Types
+// Per-surface build → sign → distribute → update → recover scoring.
+// ═══════════════════════════════════════════════════════════════
+
+import type { SurfaceId } from "@/lib/reality/feature-reality-types";
+
+export type DeployStage = "build" | "sign" | "distribute" | "update" | "recover";
+
+export type DeployStageState = "ready" | "partial" | "missing" | "deferred";
+
+export interface DeployStageEvidence {
+  readonly stage: DeployStage;
+  readonly state: DeployStageState;
+  readonly artifact: string;
+  readonly notes?: string;
+}
+
+export interface DeployabilityEntry {
+  readonly surface: SurfaceId;
+  readonly stages: readonly DeployStageEvidence[];
+}
+
+export interface DeployabilityScore {
+  readonly surface: SurfaceId;
+  readonly score: number;       // 0..100
+  readonly readyStages: number;
+  readonly totalStages: number;
+  readonly blockers: readonly string[];
+}

@@ -1,7 +1,21 @@
-/**
- * @deprecated Migrated to `@/platform/capabilities/digital-presence-capabilities` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/capabilities/digital-presence-capabilities";
+import { registerCapability } from "./capability-registry";
+
+registerCapability("digital-presence.website.create", async (params) => ({
+  success: true, data: { id: crypto.randomUUID(), ...params },
+}));
+
+registerCapability("digital-presence.website.update", async (params) => ({
+  success: true, data: params,
+}));
+
+registerCapability("digital-presence.seo.analyze", async (params) => ({
+  success: true, data: { score: 85, suggestions: [], ...params },
+}));
+
+registerCapability("digital-presence.brand.update", async (params) => ({
+  success: true, data: params,
+}));
+
+registerCapability("digital-presence.analytics.query", async (params) => ({
+  success: true, data: { visitors: 0, pageViews: 0, ...params },
+}));

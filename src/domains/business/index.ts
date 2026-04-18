@@ -1,28 +1,7 @@
-// @persistence: none — stateless module, no durable state to persist
-export { scoreLead, detectStaleLead } from "./lead-scoring.service";
-export type { ScoredLeadResult } from "./lead-scoring.service";
-export * from "./customer-dashboard.service";
-export * from "./revenue-autopilot.service";
-export * from "./contacts.service";
-export * from "./accounts.service";
-export * from "./customer-timeline.service";
-export * from "./customer-health.service";
-export * from "./lead-intake.service";
-export * from "./stale-lead-detector.service";
-export * from "./callback-queue.service";
-export * from "./opportunity-engine.service";
-export * from "./opportunity-ranking.service";
-export * from "./reactivation.service";
-export * from "./leakage-engine.service";
-export * from "./recovery-engine.service";
-export * from "./recovered-value-ledger.service";
-export * from "./no-show-recovery.service";
-export * from "./collections-command.service";
-export * from "./proposals.service";
-export * from "./quotes.service";
-export * from "./follow-up.service";
-export * from "./invoice-linking.service";
-export * from "./collections.service";
-export * from "./business-boardroom-inputs.service";
-export * from "./website-management.service";
-
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Canonical Barrel: src/domains/business
+// Created by Wave 1 of src/lib decomposition.
+// Files migrated here from src/lib/* will be re-exported from this barrel.
+// Do NOT add deep cross-layer imports here.
+// ═══════════════════════════════════════════════════════════════
+export {};

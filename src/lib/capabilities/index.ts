@@ -1,7 +1,23 @@
-/**
- * @deprecated Migrated to `@/platform/capabilities/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/capabilities/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Capability Layer Barrel
+// Import this to register all capability handlers
+// ═══════════════════════════════════════════════════════════════
+
+export { invokeCapability, listCapabilities, hasCapability, registerCapability } from "./capability-registry";
+
+// Side-effect imports — register handlers on import
+import "./files-capability";
+import "./advisor-capability";
+import "./connector-capability";
+import "./money-capability";
+import "./finance-capabilities";
+import "./business-capabilities";
+import "./concierge-capabilities";
+import "./system-capabilities";
+import "./admin-capabilities";
+import "./digital-presence-capabilities";
+import "./investment-capabilities";
+import "./workspace-capabilities";
+import "./atlas-capabilities";
+import "./enterprise-capabilities";
+import "./app-platform-capabilities";

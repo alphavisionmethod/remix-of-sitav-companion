@@ -1,7 +1,10 @@
-/**
- * @deprecated Migrated to `@/domains/engines/index` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/engines/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Domain Engines Barrel Export
+// Pure deterministic functions for Business, Finance, and Concierge
+// ═══════════════════════════════════════════════════════════════
+
+export * from "./business-os";
+export * from "./finance-os";
+export * from "./concierge-os";
+export * from "./revenue-autopilot";
+export * from "./investment-office";

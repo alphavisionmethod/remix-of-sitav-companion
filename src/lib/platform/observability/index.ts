@@ -1,7 +1,2 @@
-/**
- * @deprecated Migrated to `@/platform/core/observability/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core/observability/index";
+// Layer 3 · Observability platform service barrel
+export * from "./observability-registry";

@@ -1,7 +1,13 @@
-/**
- * @deprecated Migrated to `@/data/repositories/index` in Wave 2 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/data/repositories/index";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Data Services Barrel
+// ═══════════════════════════════════════════════════════════════
+export * from "./activity-data-service";
+export * from "./admin-data-service";
+export * from "./ai-ops-data-service";
+export * from "./business-data-service";
+export * from "./cai-data-service";
+export * from "./calendar-data-service";
+export * from "./capability-launch-data-service";
+export * from "./connector-ops-data-service";
+export * from "./crm-data-service";
+export * from "./demo-governance-data-service";

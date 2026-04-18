@@ -1,7 +1,43 @@
-/**
- * @deprecated Migrated to `@/domains/business/proposals.service` in Wave 5 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/domains/business/proposals.service";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Business OS: Proposals Service
+// ═══════════════════════════════════════════════════════════════
+
+export interface Proposal {
+  id: string;
+  accountId: string;
+  title: string;
+  totalCents: number;
+  lineItems: ProposalLineItem[];
+  status: "draft" | "sent" | "viewed" | "accepted" | "rejected" | "expired";
+  validUntil: string;
+  createdAt: string;
+  sentAt?: string;
+}
+
+export interface ProposalLineItem {
+  description: string;
+  quantity: number;
+  unitPriceCents: number;
+  totalCents: number;
+}
+
+export function createProposal(accountId: string, title: string, items: Omit<ProposalLineItem, "totalCents">[]): Proposal {
+  const lineItems = items.map(i => ({ ...i, totalCents: i.quantity * i.unitPriceCents }));
+  return {
+    id: `prop-${Date.now()}`,
+    accountId,
+    title,
+    totalCents: lineItems.reduce((s, i) => s + i.totalCents, 0),
+    lineItems,
+    status: "draft",
+    validUntil: new Date(Date.now() + 30 * 86400000).toISOString(),
+    createdAt: new Date().toISOString(),
+  };
+}
+
+export function computeWinRate(proposals: Proposal[]): number {
+  const decided = proposals.filter(p => p.status === "accepted" || p.status === "rejected");
+  if (decided.length === 0) return 0;
+  return Math.round((decided.filter(p => p.status === "accepted").length / decided.length) * 100);
+}
+

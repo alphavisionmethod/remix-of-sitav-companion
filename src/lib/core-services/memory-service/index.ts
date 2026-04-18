@@ -1,7 +1,9 @@
-/**
- * @deprecated Migrated to `@/platform/core-services/memory-service/index` in Wave 4 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/platform/core-services/memory-service/index";
+// Canonical — core-services/memory-service
+// Flat engine + all sub-services
+export * from "../memory-service";
+export * from "@/lib/services/memory-service/profile-memory.service";
+export * from "@/lib/services/memory-service/workflow-memory.service";
+export * from "@/lib/services/memory-service/preference-memory.service";
+export * from "@/lib/services/memory-service/boardroom-memory.service";
+export * from "@/lib/services/memory-service/trust-memory.service";
+export * from "@/lib/services/memory-service/correction.service";

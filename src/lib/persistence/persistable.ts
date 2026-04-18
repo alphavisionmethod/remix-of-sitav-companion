@@ -1,7 +1,31 @@
-/**
- * @deprecated Migrated to `@/data/persistence/persistable` in Wave 2 of src/lib decomposition.
- * This wrapper exists for back-compat and will be removed once consumers are rewired.
- * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
- * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
- */
-export * from "@/data/persistence/persistable";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Persistable Interface
+// All engines/services that survive refresh implement this
+// ═══════════════════════════════════════════════════════════════
+
+export interface Persistable {
+  /** Serialize all mutable state to a plain JSON-safe object */
+  serialize(): Record<string, unknown>;
+  /** Restore state from a previously serialized snapshot */
+  hydrate(state: Record<string, unknown>): void;
+}
+
+/** Type guard to check if an object implements Persistable */
+export function isPersistable(obj: unknown): obj is Persistable {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    typeof (obj as Record<string, unknown>).serialize === "function" &&
+    typeof (obj as Record<string, unknown>).hydrate === "function"
+  );
+}
+
+/** Helper: serialize a Map<string, T> to an array of [key, value] */
+export function serializeMap<T>(map: Map<string, T>): Array<[string, T]> {
+  return Array.from(map.entries());
+}
+
+/** Helper: hydrate a Map<string, T> from an array of [key, value] */
+export function hydrateMap<T>(entries: Array<[string, T]>): Map<string, T> {
+  return new Map(entries ?? []);
+}
