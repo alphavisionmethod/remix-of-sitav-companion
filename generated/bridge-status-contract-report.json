@@ -1,44 +1,8 @@
 {
-  "generatedAt": "2026-04-18T23:28:26.805Z",
+  "generatedAt": "2026-04-18T23:29:10.289Z",
   "gate": "bridge-status-contract",
-  "ok": false,
-  "errorCount": 7,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "executor-contract",
-      "message": "executor never returns status=\"executed\" — bridge telemetry will silently miscount"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"executed\" but executor never returns it (valid: denied, approval_pending)"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"executed\" but executor never returns it (valid: denied, approval_pending)"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"ran\" but executor never returns it (valid: denied, approval_pending)"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"skipped\" but executor never returns it (valid: denied, approval_pending)"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"blocked\" but executor never returns it (valid: denied, approval_pending)"
-    },
-    {
-      "severity": "error",
-      "area": "bridge-status-mismatch",
-      "message": "loop checks r.status === \"error\" but executor never returns it (valid: denied, approval_pending)"
-    }
-  ]
+  "issues": []
 }
