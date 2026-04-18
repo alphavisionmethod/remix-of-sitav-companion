@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-04-18T19:10:00.000Z",
+  "tables": [
+    {
+      "name": "internal_agent_definitions",
+      "schema": "public",
+      "rowCount": 40,
+      "uniqueKey": "agent_id",
+      "rls": "admin-only",
+      "indexes": ["agent_id (unique)", "council", "is_active"],
+      "fkOut": [],
+      "fkIn": [
+        "internal_agent_runtime_state.agent_id",
+        "internal_agent_actions.agent_id",
+        "council_escalations.source_agent_id"
+      ]
+    },
+    {
+      "name": "internal_agent_runtime_state",
+      "schema": "public",
+      "rowCount": 40,
+      "uniqueKey": "agent_id",
+      "rls": "admin-only",
+      "fkOut": ["agent_id → internal_agent_definitions.agent_id"],
+      "fkIn": []
+    },
+    {
+      "name": "internal_agent_actions",
+      "schema": "public",
+      "rowCount": 0,
+      "rls": "admin-only-read; service-role-write",
+      "fkOut": [
+        "agent_id → internal_agent_definitions.agent_id",
+        "invocation_id → ai_workforce_invocations.id",
+        "approval_request_id → ai_workforce_approval_queue.id",
+        "receipt_id → ai_action_receipts.id"
+      ],
+      "fkIn": ["supervisor_decisions.target_action_id"]
+    },
+    {
+      "name": "council_escalations",
+      "schema": "public",
+      "rowCount": 0,
+      "rls": "admin-only",
+      "fkOut": ["source_agent_id → internal_agent_definitions.agent_id"],
+      "fkIn": ["supervisor_decisions.target_escalation_id"]
+    },
+    {
+      "name": "supervisor_decisions",
+      "schema": "public",
+      "rowCount": 0,
+      "rls": "admin-only",
+      "fkOut": [
+        "target_agent_id → internal_agent_definitions.agent_id",
+        "target_action_id → internal_agent_actions.id",
+        "target_escalation_id → council_escalations.id"
+      ],
+      "fkIn": []
+    }
+  ],
+  "canonicalReuse": {
+    "invocations": "ai_workforce_invocations",
+    "actionReceipts": "ai_action_receipts",
+    "inferenceReceipts": "ai_inference_receipts",
+    "approvalQueue": "ai_workforce_approval_queue",
+    "budgetClasses": "ai_workforce_budget_classes",
+    "budgetGate": "check_ai_budget_policies (rpc)",
+    "killSwitches": "automation_kill_switches",
+    "killSwitchAudit": "kill_switch_audit_log",
+    "usageLedger": "ai_usage_ledger"
+  },
+  "noDuplicateTables": true
+}
