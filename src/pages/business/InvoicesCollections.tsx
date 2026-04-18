@@ -206,6 +206,7 @@ const InvoicesCollections = () => {
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Notes</label>
             <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" />
           </div>
+          {hasDraft && <p className="text-[10px] text-[hsl(265_55%_68%)]">✓ Draft autosaved</p>}
           <button
             onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })}
             disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date}
