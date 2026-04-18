@@ -195,6 +195,9 @@ const ReflectionBoard = lazy(() => import("@/pages/admin/ai-runtime/ReflectionBo
 const PolicyDraftReviewBoard = lazy(() => import("@/pages/admin/ai-runtime/PolicyDraftReviewBoard"));
 const TrustLadderBoard = lazy(() => import("@/pages/admin/ai-runtime/TrustLadderBoard"));
 const CrossCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/CrossCouncilBoard"));
+const SLOObservabilityBoard = lazy(() => import("@/pages/admin/ai-runtime/SLOObservabilityBoard"));
+const OwnerCopilotBriefings = lazy(() => import("@/pages/admin/ai-runtime/OwnerCopilotBriefings"));
+const TenantFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/TenantFederationBoard"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
@@ -246,6 +249,9 @@ export function getAdminRoutes() {
     <Route key="ws-airuntime-policy-drafts" path="/admin/ai-runtime/policy-drafts" element={gated("audit.view", <PolicyDraftReviewBoard />)} />,
     <Route key="ws-airuntime-trust-ladder" path="/admin/ai-runtime/trust-ladder" element={gated("audit.view", <TrustLadderBoard />)} />,
     <Route key="ws-airuntime-cross-council" path="/admin/ai-runtime/cross-council" element={gated("audit.view", <CrossCouncilBoard />)} />,
+    <Route key="ws-airuntime-observatory" path="/admin/ai-runtime/observatory" element={gated("audit.view", <SLOObservabilityBoard />)} />,
+    <Route key="ws-airuntime-owner-copilot" path="/admin/ai-runtime/owner-copilot" element={gated("audit.view", <OwnerCopilotBriefings />)} />,
+    <Route key="ws-airuntime-tenant-federation" path="/admin/ai-runtime/tenant-federation" element={gated("flags.rollout", <TenantFederationBoard />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
