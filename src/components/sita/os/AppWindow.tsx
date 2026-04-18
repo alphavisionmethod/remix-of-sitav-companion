@@ -252,6 +252,6 @@ export function AppWindow({ window: win }: AppWindowProps) {
       >
         {win.component}
       </div>
-    </motion.div>
+    </div>
   );
 }
