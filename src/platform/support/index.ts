@@ -1,7 +1,49 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/support
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Support Layer Barrel
+// Canonical import: @/lib/support
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export {
+  RUNBOOK_REGISTRY,
+  getRunbook,
+  getRunbooksBySeverity,
+  getRunbooksForService,
+  getRunbooksWithKillSwitch,
+  getRunbooksByOwner,
+  getUntestedRunbooks,
+  getRunbooksByStatus,
+  getRunbookForKillSwitch,
+  getRunbooksByBoundedContext,
+  getRunbookForSubsystem,
+} from "./runbook-registry";
+
+export type {
+  RunbookSeverity,
+  RunbookStatus,
+  RunbookStep,
+  RunbookEntry,
+  RunbookSubsystem,
+} from "./runbook-types";
+
+export {
+  RUNBOOK_SUBSYSTEM_REQUIREMENTS,
+  getMandatorySubsystems,
+  getCriticalIncidentSubsystems,
+  type RunbookSubsystemRequirement,
+} from "./runbook-subsystem-map";
+
+export {
+  resolveRunbookForAlert,
+  resolveRunbooksForIncident,
+  describeResolution,
+  type ResolveAlertInput,
+  type ResolveIncidentInput,
+} from "./runbook-resolver";
+
+export {
+  getLastDrillForRunbook,
+  getDrillSummaries,
+  triggerRunbookDrill,
+  type RunbookDrillResult,
+  type DrillSummary,
+} from "./runbook-drill-status";

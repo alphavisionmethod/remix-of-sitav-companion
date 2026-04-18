@@ -1,7 +1,19 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/topology
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Backend Topology Layer
+// Barrel export for all edge function topology maps
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export * from "./edge-function-registry";
+export * from "./edge-function-categories";
+export * from "./edge-function-bounded-contexts";
+export * from "./edge-function-auth-map";
+export * from "./edge-function-contract-map";
+export * from "./edge-function-owner-map";
+export * from "./edge-function-runtime-consequence-map";
+export * from "./edge-function-migration-map";
+export * from "./edge-function-topology-validator";
+export * from "./frontend-action-api-map";
+export * from "./edge-function-policy-map";
+export * from "./edge-function-replay-map";
+export * from "./edge-function-health-source";
+export * from "./edge-function-table-io-map";

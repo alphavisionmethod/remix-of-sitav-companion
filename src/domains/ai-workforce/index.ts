@@ -1,7 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/domains/ai-workforce
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — AI Workforce Barrel
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+// Re-export the original in-memory workforce service (used by governance)
+export { AIWorkforceService, createAIWorkforce } from "./workforce-service";
+export type { AgentAssignmentResult } from "./workforce-service";
+
+// Re-export governance
+export * from "./agent-governance";
+export * from "./agent-health-monitor";
+
+// Re-export DB-backed orchestrator
+export * from "./workforce-orchestrator";
+

@@ -1,7 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Legacy Orchestrator Map (Migration)
-// Maps every legacy orchestrator to its new role
-// ═══════════════════════════════════════════════════════════════
-
-// Re-export the canonical registry which contains the full map
-export { LEGACY_ORCHESTRATOR_MAP, getLegacyEntry, getEntriesByLayer, getMigrationReport } from "../shared/orchestration-registry";
+/**
+ * @deprecated Migrated to `@/platform/orchestration/migration/legacy-orchestrator-map` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/orchestration/migration/legacy-orchestrator-map";

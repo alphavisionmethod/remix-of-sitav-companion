@@ -1,32 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// Syscall Collector
-// Snapshots syscall surface area available at runtime.
-// ═══════════════════════════════════════════════════════════════
-
-import { makeRecord, safeGet } from "./_helpers";
-import type { RuntimeEvidenceRecord } from "../runtime-evidence-types";
-
-interface SyscallShape {
-  name: string;
-  category?: string;
-}
-
-function readSyscalls(): SyscallShape[] {
-  if (typeof window === "undefined") return [];
-  const w = window as unknown as { Syscall?: { listSyscalls?: () => SyscallShape[] } };
-  return safeGet(() => w.Syscall?.listSyscalls?.() ?? [], []);
-}
-
-export function collectSyscallEvidence(): RuntimeEvidenceRecord {
-  const syscalls = readSyscalls();
-  const warnings: string[] = [];
-  if (syscalls.length === 0) {
-    warnings.push("No syscall surface exposed at runtime");
-  }
-  return makeRecord(
-    "collector.syscall",
-    "manifest-syscall",
-    { syscalls, count: syscalls.length },
-    { itemCount: syscalls.length, warnings },
-  );
-}
+/**
+ * @deprecated Migrated to `@/platform/truth/runtime-evidence/collectors/syscall-collector` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/truth/runtime-evidence/collectors/syscall-collector";

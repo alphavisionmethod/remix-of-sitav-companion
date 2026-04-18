@@ -1,24 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Context → Primary Surface Map (derived view)
-// ═══════════════════════════════════════════════════════════════
-
-import { BOUNDED_CONTEXT_REGISTRY } from "./bounded-context-registry";
-import type { BoundedContextId, RuntimeTier } from "./bounded-context-types";
-
-export const CONTEXT_PRIMARY_SURFACE: Readonly<Record<BoundedContextId, RuntimeTier>> =
-  Object.freeze(
-    BOUNDED_CONTEXT_REGISTRY.reduce((acc, c) => {
-      acc[c.contextId] = c.primarySurface;
-      return acc;
-    }, {} as Record<BoundedContextId, RuntimeTier>)
-  );
-
-export function getPrimarySurface(id: BoundedContextId): RuntimeTier | undefined {
-  return CONTEXT_PRIMARY_SURFACE[id];
-}
-
-export function getContextsByPrimarySurface(surface: RuntimeTier): readonly BoundedContextId[] {
-  return BOUNDED_CONTEXT_REGISTRY
-    .filter((c) => c.primarySurface === surface)
-    .map((c) => c.contextId);
-}
+/**
+ * @deprecated Migrated to `@/platform/architecture/context-surface-map` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/architecture/context-surface-map";

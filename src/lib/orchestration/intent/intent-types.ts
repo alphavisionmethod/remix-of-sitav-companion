@@ -1,11 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Intent Types (Intent Layer)
-// Re-exports and additional intent-specific types
-// ═══════════════════════════════════════════════════════════════
-
-export type { IntentClassification, RiskTier } from "./intent-orchestrator";
-export type { RoutingDecision } from "./decision-router";
-export type { RankedRecommendation } from "./recommendation-prioritizer";
-export type { IssueSignal, SelectedIssue } from "./issue-selection-engine";
-export type { OpportunitySignal, SelectedOpportunity } from "./opportunity-selection-engine";
-export type { EscalationDecision } from "./escalation-router";
+/**
+ * @deprecated Migrated to `@/platform/orchestration/intent/intent-types` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/orchestration/intent/intent-types";

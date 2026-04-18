@@ -1,7 +1,7 @@
-// Canonical — core-services/policy-engine
-// Flat engine + all sub-services
-export * from "../policy-engine";
-export * from "@/lib/services/policy-engine/truth-boundaries.service";
-export * from "@/lib/services/policy-engine/approval-requirements.service";
-export * from "@/lib/services/policy-engine/sensitive-doc-policy.service";
-export * from "@/lib/services/policy-engine/outbound-comm-policy.service";
+/**
+ * @deprecated Migrated to `@/platform/core-services/policy-engine/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/policy-engine/index";

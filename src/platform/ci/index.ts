@@ -1,7 +1,30 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/platform/ci
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — CI Layer Barrel (Phase 8)
+// Canonical import: @/lib/ci
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export type {
+  CIGatePhase,
+  CIGateSeverity,
+  CIGateOwner,
+  CIGateEntry,
+  CIGateEvaluation,
+  CIUmbrellaIntegrityIssue,
+  CIUmbrellaIntegrityReport,
+} from "./ci-gate-types";
+
+export {
+  CI_GATE_REGISTRY,
+  listGatesByPhase,
+  findGate,
+  gatesByOwner,
+  blockerCount,
+} from "./ci-gate-registry";
+
+export type { ReleaseReadiness } from "./ci-umbrella-evaluator";
+export {
+  evaluateReleaseReadiness,
+  gatesPendingEvaluation,
+} from "./ci-umbrella-evaluator";
+
+export { validateCIUmbrellaIntegrity } from "./ci-umbrella-integrity";

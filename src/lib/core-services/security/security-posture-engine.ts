@@ -1,2 +1,7 @@
-// Re-export from lib/services
-export * from "@/lib/services/security/security-posture-engine";
+/**
+ * @deprecated Migrated to `@/platform/core-services/security/security-posture-engine` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/security/security-posture-engine";

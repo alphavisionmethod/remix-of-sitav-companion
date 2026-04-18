@@ -1,12 +1,7 @@
-// Canonical — core-services/executor-service
-// Flat engine + sub-services (selective to avoid ExecutionEnvelope conflict)
-export * from "../executor-service";
-export {
-  executeAction,
-  getEnvelope,
-  markFailed,
-  markRolledBack,
-  listExecutions
-} from "@/lib/services/executor-service/execute-action.service";
-export * from "@/lib/services/executor-service/execute-workflow-step.service";
-export * from "@/lib/services/executor-service/execute-connector-action.service";
+/**
+ * @deprecated Migrated to `@/platform/core-services/executor-service/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/executor-service/index";

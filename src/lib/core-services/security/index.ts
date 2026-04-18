@@ -1,35 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Security Module Barrel Export
-// ═══════════════════════════════════════════════════════════════
-
-// Batch 1 — Detection & Monitoring
-export * from "./intrusion-detection-engine";
-export * from "./audit-trail-engine";
-export * from "./device-attestation-service";
-
-// Batch 2 — Enforcement & Governance
-export * from "./resource-governor";
-export * from "./zero-trust-validator";
-export * from "./ai-trust-enforcer";
-export * from "./human-factor-guard";
-
-// Batch 3 — Reliability & Resilience
-export * from "./event-consistency-engine";
-export * from "./update-safety-system";
-export * from "./chaos-testing-framework";
-
-// Batch 4 — Integration Fabric
-export * from "./security-fabric";
-
-// Batch 5 — Gap Fill: Trust, Verification, Redundancy, Hardening
-export * from "./trust-boundary-model";
-export * from "./defensive-programming-engine";
-export * from "./formal-verification-framework";
-export * from "./redundancy-failover-engine";
-export * from "./mobile-agent-hardening";
-export * from "./admin-founder-hardening";
-
-// Batch 6 — Advanced Hardening (Anti-Hack & AI Leak Prevention)
-export * from "./ai-output-firewall";
-export * from "./session-threat-detector";
-export * from "./secure-memory-vault";
+/**
+ * @deprecated Migrated to `@/platform/core-services/security/index` in Wave 4 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/platform/core-services/security/index";
