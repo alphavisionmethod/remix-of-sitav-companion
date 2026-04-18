@@ -1,0 +1,21 @@
+{
+  "phase": "3",
+  "component": "internal_agent_reflections",
+  "status": "GREEN",
+  "table_exists": true,
+  "rls_enabled": true,
+  "fk_to_action_intents": true,
+  "indexes": ["agent_id_created_at", "action_intent_id", "outcome_quality_failures"],
+  "rpc_record_reflection": "record_internal_agent_reflection",
+  "rpc_summarize": "summarize_internal_agent_learning",
+  "edge_function": "internal-agent-reflect",
+  "schedule": "*/30 * * * *",
+  "trust_update_path": "EWMA via record_internal_agent_reflection only",
+  "validators": [
+    "check-internal-agent-reflection-table",
+    "check-internal-agent-reflect-function",
+    "check-reflection-board-page",
+    "check-trust-score-update-logic",
+    "check-reflection-to-action-linkage"
+  ]
+}

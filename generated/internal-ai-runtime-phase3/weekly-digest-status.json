@@ -1,0 +1,21 @@
+{
+  "phase": "3",
+  "component": "internal_agent_weekly_digests",
+  "status": "GREEN",
+  "table_exists": true,
+  "rls_enabled": true,
+  "unique_constraint": "(period_start, period_end)",
+  "edge_function": "internal-agent-weekly-digest",
+  "schedule": "0 7 * * 1",
+  "generator_agent": "kc-knowledge-coordinator",
+  "aggregation_sources_7d": [
+    "error_patrol_detections",
+    "ai_implementation_suggestions",
+    "internal_agent_reflections",
+    "ai_budget_alerts",
+    "internal_agent_consensus_sessions"
+  ],
+  "admin_page": "/admin/ai-runtime/weekly-digest",
+  "permission_gate": "audit.view",
+  "validator": "check-weekly-digest-generation"
+}
