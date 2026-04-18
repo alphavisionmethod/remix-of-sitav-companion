@@ -1,98 +1,103 @@
 
-The user wants Part 2 of the Ubuntu-Native reorientation: a comprehensive hardening sweep across service supervision, shell resilience, update safety, recovery, observability, app runtime, validation, and docs.
 
-Let me audit existing state quickly to scope correctly without duplicating.
+The user wants a comprehensive architectural reorganization: Core OS + Shared Shell + User Plane + Admin Plane + Backend Services Plane with deployment profiles. Let me audit current state to scope correctly.
 
-Already shipped (from context + visible files):
-- `electron/` 15 .cjs hardening modules
-- `os/scripts/` 19 scripts (build, sign, verity, TPM, SBOM, rollback, support bundle, release.sh)
-- `os/runtime/shell-watchdog.sh` ✅ exists
-- `os/scripts/generate-support-bundle.sh` ✅ exists with diagnostics/crashes/redaction
-- `os/diagnostics/` collectors (boot/runtime/update/service-failures/heartbeat) ✅
-- `os/recovery/` with recovery-entry, recovery-status, recovery-collect, safe-mode ✅
-- `os/image-builder/services/` systemd units (sita-updated, sita-recovery-shell, etc.)
-- `docs/os/` already has 18 docs including RECOVERY_MODE.md
-- 8 native readiness checks + aggregator (Part 1)
-- `.github/workflows/native-readiness.yml`, `os-build-iso.yml`
-- `deploy/backup.sh` + `deploy/first-boot.sh`
+Existing state from context:
+- `src/planes/` already exists with 7 planes (backend, os, shared, admin, founder, product, internal-tools) — already has 4-plane model
+- `src/runtimes/shell/` exists (canonical shell barrel)
+- `src/admin/routes/` exists
+- `src/app/` exists
+- `src/components/platform/PlaneBoundaryGuard.tsx` exists with 4 PlaneKey enum
+- `os/` has full image builder, scripts, recovery, diagnostics, systemd units (Part 1+2 done)
+- `electron/` has 15 hardened modules
+- 8 readiness gates passing, release readiness aggregator at YELLOW
+- `AdminControlPlaneShell` consolidates 12 admin domains
+- `feature-runtime-tier-registry` already declares 4 tiers
+- 956 pages, 84 edge functions, 201 tables
 
-Gaps to fill (real, non-duplicate):
-1. Canonical service model doc + audit of existing units
-2. Boot target validation script
-3. Desktop session model doc (xinit/TTY7/fallback wiring is in memory but undocumented)
-4. Shell health probe enhancements (only watchdog exists)
-5. Writable state model doc
-6. Backup/restore canonical doc (script exists, doc missing)
-7. Logging model doc
-8. Repair toolkit (4 scripts: shell, first-boot, update-state, runtime-services)
-9. Validation matrix doc
-10. Hardware support matrix doc
-11. Release readiness aggregator script + report
-12. Native runbooks (shell-crash-loop, failed-update, rollback-failure, recovery-usage, first-boot-failure, qemu-failure)
-13. Operator control wrapper script (`sita-ops`)
-14. Service health summary collector enhancement
-15. Update CI to run release readiness
+Gaps for this restructure (real, non-duplicate):
+1. **Plane key collision** — `planes/index.ts` has 7 namespaces but `PlaneKey` type only has 4 (control/product/shared-core/internal-execution). Need canonical 5-plane reconciliation: core-os, shell-runtime, user, admin, backend-services.
+2. **No deployment profile system** — image builder produces one ISO; needs `user` vs `operator` profile selection.
+3. **Route plane membership** — routes don't declare plane ownership in a registry.
+4. **App registry plane membership** — apps in launcher don't declare visibility per plane/profile.
+5. **Shell composition mode** — no runtime selector for "which plane's home is default" based on role/profile.
+6. **Missing canonical docs**: `CORE_OS_USER_ADMIN_BACKEND_MODEL`, `DEPLOYMENT_PROFILES`, `USER_PROFILE_DEPLOYMENT`, `OPERATOR_PROFILE_DEPLOYMENT`, `SHARED_VS_PROFILE_SPECIFIC_COMPONENTS`, `ADMIN_CONTROL_PLANE_GOLDEN_PATHS`, `ROUTE_AND_APP_PLANE_MAP`.
+7. **Build pipeline** — `os/scripts/build-iso.sh` (or equivalent) needs `--profile=user|operator` flag.
+8. **CI** — needs matrix build for both profiles + validation that profile manifests match reality.
+9. **Plane boundary enforcement** — `PlaneBoundaryGuard` needs the 5-plane key set; `check-layer-boundaries.ts` needs profile awareness.
 
-Plan structure: 6 phases, each independently deployable.
+Constraints:
+- Reuse existing `src/planes/` — don't create `src/core-os/` or `src/shell-runtime/` as new top-level dirs (would duplicate). Instead: rename/consolidate within existing `src/planes/` to the canonical 5.
+- Reuse existing `os/` substrate — single image builder, profile flag only.
+- Reuse existing `electron/` — single shell, profile-aware composition.
+- Reuse existing `AdminControlPlaneShell` for admin plane home.
+- Reuse existing route/app registries — add `plane` and `profiles[]` fields, don't fork them.
+
+Plan: 5 phases, each independently deployable.
 
 <lov-plan>
 
-## Ubuntu-Native Part 2 — Stability, Recovery & Operability Hardening
+## Core OS + 5-Plane + Deployment Profile Reorganization
 
-### Phase 1 — Service Model & Boot Reliability (deploy-ready)
-- `docs/os/SERVICE_MODEL.md` — canonical inventory of all `sita-*.service`/`.target`/`.timer` units (sita-firstboot, sita-runtime, sita-updated, sita-recovery, sita-recovery-shell, healthd, crashd, settingsd, timed, accessibilityd) with: purpose, deps, restart policy, log path, failure behavior.
-- `os/diagnostics/check-boot-target.sh` — validates `graphical.target` reached, required units active, no critical failures; emits `/var/lib/sita/diagnostics/boot-target.json`.
-- `os/diagnostics/collect-service-health.sh` — structured per-service health summary feeding support bundle.
-- Wire both into `generate-support-bundle.sh`.
+### Phase 1 — Canonical 5-Plane Model (Truth Layer)
+**Reconcile the existing plane sprawl into one canonical 5-plane model without forking dirs.**
 
-### Phase 2 — Desktop Session & Shell Resilience
-- `docs/os/DESKTOP_SESSION_MODEL.md` — xinit on TTY7 → sita-runtime → Electron → watchdog → fallback to sita-recovery-shell. Document GPU `translate3d` window-drag perf path.
-- `os/runtime/check-shell-health.sh` — one-shot probe (process alive, IPC responsive, renderer not white-screen via marker file from preload).
-- Enhance `electron/preload.cjs` to write `/var/lib/sita/state/shell-heartbeat` every 5s (read by health probe).
-- `docs/os/ELECTRON_PRELOAD_CONTRACT.md` — typed IPC surface, sandbox boundaries.
+- `src/lib/architecture/plane-registry.ts` (new) — single source of truth for the 5 planes:
+  - `core-os` (substrate: image builder, boot, trust, update, recovery → maps to `os/` + `src/planes/os/`)
+  - `shell-runtime` (Electron + window/launcher/notifications → maps to `electron/` + `src/runtimes/shell/`)
+  - `user` (Business/Money/Concierge/Files/Boardroom → consolidates `src/planes/product/` + `src/planes/founder/`)
+  - `admin` (control plane → `src/planes/admin/`)
+  - `backend-services` (Supabase/edge functions → `src/planes/backend/`)
+- Update `src/components/platform/PlaneBoundaryGuard.tsx` `PLANE_INFO` to the canonical 5 keys (deprecate old 4 with shim mapping).
+- Update `src/planes/index.ts` barrel to expose only the 5 canonical namespaces; archive `founder`, `internal-tools`, `mobile` references with a deprecation shim.
+- `docs/architecture/CORE_OS_USER_ADMIN_BACKEND_MODEL.md` — canonical architecture doc with shared-vs-non-shared matrix.
 
-### Phase 3 — Update Safety, Writable State & Backup Canonicalization
-- `docs/os/WRITABLE_STATE_MODEL.md` — partition policy: `/` read-only (verity), `/var/lib/sita` writable, `/home` LUKS2, `/etc/sita` config overlay; what survives update vs rollback.
-- `docs/os/BACKUP_AND_RESTORE.md` — canonicalizes `deploy/backup.sh` (scope, retention, restore flow, support-bundle inclusion).
-- `os/scripts/check-update-state.sh` — detects partial/failed updates, emits `update-state.json`.
-- Wire update-state into `check-os-update-readiness.ts`.
+### Phase 2 — Route & App Plane Membership Registry
+**Make plane ownership explicit and queryable for every route/app.**
 
-### Phase 4 — Repair Toolkit & Recovery Hardening
-- `os/recovery/repair-shell.sh` — clear safe-mode marker, reset crash counter, restart sita-runtime.
-- `os/recovery/repair-first-boot.sh` — re-run first-boot.sh idempotently, validate marker.
-- `os/recovery/repair-update-state.sh` — abort stuck update, mark slot bad, prepare rollback.
-- `os/recovery/repair-runtime-services.sh` — restart failed sita-* units in dependency order.
-- `os/bin/sita-ops` — single operator entrypoint wrapping: status, restart-shell, support-bundle, rollback, recovery, repair-*.
-- Update `docs/os/RECOVERY_MODE.md` to reference repair toolkit.
+- `src/lib/architecture/route-plane-map.ts` (new) — maps every route prefix to one of the 5 planes + role gate + profile visibility.
+- Extend existing app registry entries (in `packages/store-metadata` / `src/lib/apps/`) with `plane: PlaneKey` and `profiles: ProfileKey[]` fields.
+- `scripts/architecture/checks/check-route-plane-coverage.ts` — fails CI if any route lacks a plane assignment.
+- `docs/architecture/ROUTE_AND_APP_PLANE_MAP.md` — generated summary of route/app → plane mapping.
 
-### Phase 5 — Observability, Logging & Runbooks
-- `docs/os/LOGGING_MODEL.md` — journalctl-first policy, file-based exceptions (`/var/log/sita/crashes/`), rotation, redaction, support-bundle inclusion rules.
-- `docs/os/OBSERVABILITY_AND_DIAGNOSTICS.md` — refresh to reference all collectors + sita-ops.
-- `docs/os/runbooks/` — 6 new runbooks:
-  - `shell-crash-loop.md`
-  - `failed-update.md`
-  - `rollback-failure.md`
-  - `recovery-mode-usage.md`
-  - `first-boot-failure.md`
-  - `qemu-boot-failure.md`
-- Each runbook references real scripts/outputs, no fluff.
+### Phase 3 — Deployment Profile System (user vs operator)
+**One image builder, two profile artifacts.**
 
-### Phase 6 — Validation Matrix, Release Readiness & CI
-- `docs/os/VALIDATION_MATRIX.md` — canonical pass/fail grid (ISO build, trust, dm-verity, QEMU boot, first-boot, shell start, services, support bundle, update metadata, recovery entry, backup smoke, diagnostics).
-- `docs/os/HARDWARE_SUPPORT_MATRIX.md` — honest tested/expected/experimental/unsupported tiers.
-- `scripts/architecture/checks/check-os-release-readiness.ts` — aggregates all 8 Part-1 readiness reports + Phase 1–5 outputs into `generated/os-release-readiness-report.json` + `.md` summary.
-- Update `.github/workflows/native-readiness.yml` to run release-readiness aggregator and upload summary.
+- `os/profiles/user.profile.json` + `os/profiles/operator.profile.json` — declare: enabled planes, default shell home route, allowed app IDs, default feature flags, support tooling level, branding override.
+- `os/scripts/build-iso.sh` — accept `--profile=user|operator`, embed profile manifest at `/etc/sita/deployment-profile.json`, output `sita-os-{profile}-{version}.iso`.
+- `src/lib/runtime/deployment-profile.ts` (new) — runtime reader for `/etc/sita/deployment-profile.json` (with web fallback to `user`).
+- `src/runtimes/shell/ShellComposer.tsx` (new, thin) — selects default home route by reading profile + user role; reuses existing `AdminControlPlaneShell` for operator default and existing user shell for user default. **No new shell, just composition.**
+- `docs/os/DEPLOYMENT_PROFILES.md`, `docs/os/USER_PROFILE_DEPLOYMENT.md`, `docs/os/OPERATOR_PROFILE_DEPLOYMENT.md`, `docs/os/SHARED_VS_PROFILE_SPECIFIC_COMPONENTS.md`.
+
+### Phase 4 — Admin Plane Workflow Consolidation
+**Reorganize admin pages around 8 canonical operator workflows (not page museum).**
+
+- `src/admin/workflows/` (new index) — 8 canonical workflows mapped to existing pages: Incident Triage, Release Readiness, Support Diagnostics, Truth/Verification, Security/Kill-Switch, AI Governance, Platform/Cloud Control, User/Org Intervention.
+- `src/lib/admin/admin-workflow-registry.ts` — registry mapping each workflow → primary page + supporting pages + required permission.
+- Update `AdminControlPlaneShell` primary nav to surface the 8 workflows (existing 12 domains become sub-navigation under workflows).
+- `docs/admin/ADMIN_CONTROL_PLANE_GOLDEN_PATHS.md` — operator runbook for each of the 8 workflows.
+- **No page deletions** — existing 12 admin domains keep their routes; reorganization is navigation/IA only.
+
+### Phase 5 — CI Matrix Build & Profile Validation
+**Build, validate, and release both profile artifacts in one pipeline.**
+
+- `.github/workflows/os-build-iso.yml` — convert to matrix: `[user, operator]`, builds both ISOs in parallel, runs QEMU smoke per profile.
+- `scripts/architecture/checks/check-deployment-profile-coverage.ts` — validates every `plane`/`app` declared in profile manifests resolves to real code (no orphan profile entries).
+- `scripts/architecture/checks/check-plane-boundaries.ts` — extends existing `check-layer-boundaries.ts` to enforce: user plane code MUST NOT import from `src/planes/admin/`, admin plane MUST NOT import user-only domains.
+- Wire both checks into `.github/workflows/native-readiness.yml` and the existing `check-os-release-readiness.ts` aggregator.
+- Update `generated/os-release-readiness-report.json` to emit per-profile verdict.
 
 ### Constraints enforced
-- No new backup/recovery/logging/watchdog systems — all phases extend `deploy/backup.sh`, `os/recovery/`, `os/diagnostics/`, `os/runtime/shell-watchdog.sh`.
-- Every new script is executable and inspects real state.
-- Every doc references real scripts/units/paths.
-- `sita-ops` is a thin wrapper, not a duplicate command tree.
-- All new diagnostics flow into the existing `generate-support-bundle.sh`.
+- **No new top-level dirs** — `src/core-os/`, `src/shell-runtime/`, `src/backend-services/` are NOT created. Canonical truth lives in `src/lib/architecture/plane-registry.ts`; existing `src/planes/`, `os/`, `electron/`, `src/admin/`, `src/runtimes/shell/` map to the 5 planes via the registry.
+- **One image builder** — `os/scripts/build-iso.sh` gets a `--profile` flag; no fork.
+- **One Electron shell** — `electron/main.cjs` reads profile manifest; no second host.
+- **One admin shell** — `AdminControlPlaneShell` stays canonical; workflows are IA reorganization only.
+- **No page deletions** in Phase 4 — pages keep working under existing routes; nav restructures.
+- **Backwards compatibility** — `PlaneBoundaryGuard`'s old 4 keys keep working via shim mapping during migration.
 
 ### Files (scope summary)
-- **Create scripts (8):** check-boot-target.sh, collect-service-health.sh, check-shell-health.sh, check-update-state.sh, repair-{shell,first-boot,update-state,runtime-services}.sh, sita-ops, check-os-release-readiness.ts
-- **Create docs (11):** SERVICE_MODEL, DESKTOP_SESSION_MODEL, ELECTRON_PRELOAD_CONTRACT, WRITABLE_STATE_MODEL, BACKUP_AND_RESTORE, LOGGING_MODEL, VALIDATION_MATRIX, HARDWARE_SUPPORT_MATRIX + 6 runbooks (under `docs/os/runbooks/`)
-- **Update (5):** preload.cjs (heartbeat), generate-support-bundle.sh (new collectors), check-os-update-readiness.ts (update-state wiring), RECOVERY_MODE.md (repair refs), native-readiness.yml (release aggregator)
-- **Generated:** os-release-readiness-report.json + .md
+- **Create code (8):** plane-registry.ts, route-plane-map.ts, deployment-profile.ts (runtime), ShellComposer.tsx, admin-workflow-registry.ts, check-route-plane-coverage.ts, check-deployment-profile-coverage.ts, check-plane-boundaries.ts
+- **Create configs (2):** os/profiles/user.profile.json, os/profiles/operator.profile.json
+- **Create docs (7):** CORE_OS_USER_ADMIN_BACKEND_MODEL, DEPLOYMENT_PROFILES, USER_PROFILE_DEPLOYMENT, OPERATOR_PROFILE_DEPLOYMENT, SHARED_VS_PROFILE_SPECIFIC_COMPONENTS, ADMIN_CONTROL_PLANE_GOLDEN_PATHS, ROUTE_AND_APP_PLANE_MAP
+- **Update (6):** PlaneBoundaryGuard.tsx (5-plane keys + shim), src/planes/index.ts (canonical 5), AdminControlPlaneShell (8-workflow nav), os/scripts/build-iso.sh (--profile flag), .github/workflows/os-build-iso.yml (matrix), check-os-release-readiness.ts (per-profile)
 
