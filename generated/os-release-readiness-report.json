@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:19:42.450Z",
+  "generatedAt": "2026-04-18T02:21:44.649Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -120,14 +120,14 @@
       "gate": "ks-payments-auth-readiness",
       "ok": true,
       "errors": 0,
-      "warnings": 1
+      "warnings": 0
     },
     {
       "file": "generated/ci-artifacts-proof-report.json",
       "gate": "ci-artifacts-proof",
       "ok": true,
       "errors": 0,
-      "warnings": 4
+      "warnings": 0
     },
     {
       "file": "generated/electron-signing-readiness-report.json",
@@ -138,8 +138,8 @@
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 5,
+  "totalWarnings": 0,
   "missingGates": [],
   "ok": true,
-  "verdict": "YELLOW"
+  "verdict": "GREEN"
 }
