@@ -80,6 +80,7 @@ const uiCandidates = [
   "src/pages/admin/AdminApprovalsPage.tsx",
   "src/components/admin/AdminApprovalQueue.tsx",
   "src/pages/admin/AdminKillSwitches.tsx",
+  "src/pages/admin/AR08KillSwitchCenter.tsx",
 ];
 check("ui.approval-surface",
   uiCandidates.some((p) => existsSync(resolve(REPO_ROOT, p))),
