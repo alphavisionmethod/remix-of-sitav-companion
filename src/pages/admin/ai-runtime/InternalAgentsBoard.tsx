@@ -404,10 +404,10 @@ function AgentDetailSheet({
                   <p className="text-xs">{state.suspension_reason}</p>
                 </Card>
               )}
-              {state?.last_action_summary && (
-                <Card className="p-2 mt-2">
-                  <p className="text-[10px] uppercase text-muted-foreground tracking-wide">Last observation</p>
-                  <p className="text-xs">{state.last_action_summary}</p>
+              {state?.last_error_message && (
+                <Card className="p-2 mt-2 bg-destructive/5 border-destructive/30">
+                  <p className="text-[10px] uppercase text-muted-foreground tracking-wide">Last error</p>
+                  <p className="text-xs">{state.last_error_message}</p>
                 </Card>
               )}
             </section>
@@ -452,11 +452,11 @@ function AgentDetailSheet({
                       <span className="font-medium">{a.action_type}</span>
                       <span className="text-muted-foreground">{relTime(a.created_at)}</span>
                     </div>
-                    {a.observation && <p className="mt-1 text-muted-foreground line-clamp-2">{a.observation}</p>}
+                    {a.summary && <p className="mt-1 text-muted-foreground line-clamp-2">{a.summary}</p>}
                     <div className="flex items-center gap-2 mt-1 text-[10px] text-muted-foreground">
                       <span>conf {Math.round(Number(a.confidence) * 100)}%</span>
                       <span>· {a.status}</span>
-                      {a.cost_cents != null && <span>· {(a.cost_cents / 100).toFixed(2)}¢</span>}
+                      {a.duration_ms != null && <span>· {a.duration_ms}ms</span>}
                     </div>
                   </Card>
                 ))}
