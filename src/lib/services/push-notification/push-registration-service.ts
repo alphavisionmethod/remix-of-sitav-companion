@@ -19,15 +19,11 @@ export interface PushTokenRecord {
   created_at: string;
 }
 
-// ── Platform Detection ───────────────────────────────────────
+// ── Platform Detection (Ubuntu-native canonical; iOS/Android archived) ──
 
 function detectPlatform(): PushPlatform {
   if (typeof window === "undefined") return "web";
   if (('electron' in window)) return "electron";
-  // Capacitor detection
-  if (window.Capacitor?.isNativePlatform?.()) {
-    return window.Capacitor?.getPlatform?.() === "ios" ? "ios" : "android";
-  }
   return "web";
 }
 
@@ -82,33 +78,7 @@ async function registerWebPush(vapidPublicKey: string): Promise<{
   };
 }
 
-// ── Capacitor Push Registration ──────────────────────────────
-
-async function registerCapacitorPush(): Promise<string | null> {
-  try {
-    // Dynamic import — only available when @capacitor/push-notifications is installed
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mod: any = await (Function('return import("@capacitor/push-notifications")')());
-    const PushNotifications = mod.PushNotifications;
-    const permResult = await PushNotifications.requestPermissions();
-    if (permResult.receive !== "granted") return null;
-
-    await PushNotifications.register();
-
-    return new Promise((resolve) => {
-      PushNotifications.addListener("registration", (token) => {
-        resolve(token.value);
-      });
-      PushNotifications.addListener("registrationError", () => {
-        resolve(null);
-      });
-      // Timeout after 10s
-      setTimeout(() => resolve(null), 10000);
-    });
-  } catch {
-    return null;
-  }
-}
+// ── Capacitor Push Registration archived (Ubuntu-native canonical) ──
 
 // ── Public API ───────────────────────────────────────────────
 
@@ -138,10 +108,8 @@ export async function registerPushToken(vapidPublicKey?: string): Promise<PushTo
     }
     case "ios":
     case "android": {
-      const nativeToken = await registerCapacitorPush();
-      if (!nativeToken) return null;
-      token = nativeToken;
-      break;
+      // iOS/Android native push archived — Ubuntu-native is canonical native platform.
+      return null;
     }
     case "electron": {
       // Electron uses realtime for notifications, but we register a placeholder
@@ -230,7 +198,6 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
 
 export function isPushSupported(): boolean {
   if (typeof window === "undefined") return false;
-  if (window.Capacitor?.isNativePlatform?.()) return true;
   if (('electron' in window)) return true;
   return "serviceWorker" in navigator && "PushManager" in window;
 }

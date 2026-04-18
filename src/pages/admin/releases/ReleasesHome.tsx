@@ -11,7 +11,7 @@ import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainH
 const LaunchReadinessBoard = lazy(() => import("@/pages/admin/LaunchReadinessBoard"));
 const LaunchHonestyBoard = lazy(() => import("@/pages/admin/LaunchHonestyBoard"));
 const ReleaseEngineeringPage = lazy(() => import("@/pages/admin/ReleaseEngineeringPage"));
-const MobileParityDashboard = lazy(() => import("@/pages/admin/MobileParityDashboard"));
+// MobileParityDashboard archived — Ubuntu-native is canonical native platform.
 const MCReleasesUpdates = lazy(() => import("@/pages/admin/modules/MCReleasesUpdates"));
 const AdminDeploymentRings = lazy(() => import("@/pages/admin/AdminDeploymentRings"));
 
@@ -51,13 +51,7 @@ export default function ReleasesHome() {
       legacyPath: "/admin/release-engineering",
       render: wrap(ReleaseEngineeringPage),
     },
-    {
-      id: "mobile-parity",
-      label: "Mobile Parity",
-      description: "Mobile vs web feature parity status.",
-      legacyPath: "/admin/mobile-parity",
-      render: wrap(MobileParityDashboard),
-    },
+    // mobile-parity module removed — Ubuntu-native canonical (see docs/PLATFORM_SCOPE.md)
     {
       id: "deployment-rings",
       label: "Deployment Rings",

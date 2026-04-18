@@ -24,7 +24,8 @@ import { AppPlatformProvider } from "@/contexts/AppPlatformContext";
 import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
 import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
 import { ThemeProvider } from "@/contexts/AppearanceContext";
-import { MobileRuntimeProvider } from "@/lib/mobile-platform";
+// MobileRuntimeProvider archived — Ubuntu-native is canonical native platform.
+// See docs/PLATFORM_SCOPE.md and archive/src/mobile-platform/.
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
@@ -193,14 +194,12 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <EntityContextProvider>
   <RuntimeProvider>
   <OSRuntimeProvider>
-  <MobileRuntimeProvider>
   <AppPlatformProvider>
   <InspectorProvider>
   <PlatformInit />
   {children}
   </InspectorProvider>
   </AppPlatformProvider>
-  </MobileRuntimeProvider>
   </OSRuntimeProvider>
   </RuntimeProvider>
   </EntityContextProvider>
