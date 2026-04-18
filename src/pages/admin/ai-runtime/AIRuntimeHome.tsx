@@ -23,6 +23,9 @@ const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const AdvisorBoardCatalog = lazy(() => import("@/pages/admin/AdvisorBoardCatalog"));
 const InternalAgentsBoard = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentsBoard"));
 const CouncilsBoard = lazy(() => import("@/pages/admin/ai-runtime/CouncilsBoard"));
+const SuggestionsBoard = lazy(() => import("@/pages/admin/ai-runtime/SuggestionsBoard"));
+const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"));
+const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
 
 function ModuleFallback() {
   return (
@@ -58,6 +61,27 @@ export default function AIRuntimeHome() {
       description: "6 councils + supervisor escalations.",
       legacyPath: "/admin/ai-runtime/councils",
       render: wrap(CouncilsBoard),
+    },
+    {
+      id: "suggestions",
+      label: "Suggestions",
+      description: "Phase 3 — evidence-backed implementation proposals from internal AI workforce signals.",
+      legacyPath: "/admin/ai-runtime/suggestions",
+      render: wrap(SuggestionsBoard),
+    },
+    {
+      id: "weekly-digest",
+      label: "Weekly Digest",
+      description: "Phase 3 — synthesized 7-day workforce intelligence digest.",
+      legacyPath: "/admin/ai-runtime/weekly-digest",
+      render: wrap(WeeklyDigestBoard),
+    },
+    {
+      id: "dependency-findings",
+      label: "Dependency Findings",
+      description: "Phase 3 — normalized npm audit findings linked to upgrade suggestions.",
+      legacyPath: "/admin/ai-runtime/dependency-findings",
+      render: wrap(DependencyFindingsBoard),
     },
     {
       id: "efficiency",

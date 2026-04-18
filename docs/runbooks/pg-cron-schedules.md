@@ -18,6 +18,9 @@ schedules, the corresponding edge functions are manual-only.
 | `sita-webhook-retry`       | `*/2 * * * *` | `webhook-retry-processor`    | Process retry queue every 2 min         |
 | `sita-compliance-evidence` | `0 6 * * *` | `compliance-evidence-cron`     | Daily SOC2/ISO evidence collection      |
 | `sita-dr-drill`            | `0 5 * * 0` | `dr-drill-cron`                | Weekly Sunday DR simulation             |
+| `sita-internal-agent-reflect` | `*/30 * * * *` | `internal-agent-reflect`  | Phase 3 — outcome scoring + EWMA trust  |
+| `sita-suggestion-generator` | `0 */6 * * *` | `internal-agent-suggestion-generator` | Phase 3 — propose from real signals |
+| `sita-weekly-digest`       | `0 7 * * 1` | `internal-agent-weekly-digest` | Phase 3 — Mon 07:00 UTC workforce digest |
 
 ## Install template
 
@@ -88,3 +91,36 @@ select runid, jobid, status, return_message, start_time, end_time
 ```sql
 select cron.unschedule('sita-dr-drill');
 ```
+
+-- Phase 3 — Internal agent reflection (every 30 min)
+select cron.schedule(
+  'sita-internal-agent-reflect',
+  '*/30 * * * *',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-reflect',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{"lookback_hours":2,"max_batch":50}'::jsonb
+     ); $$
+);
+
+-- Phase 3 — Suggestion generator (every 6 hours)
+select cron.schedule(
+  'sita-suggestion-generator',
+  '0 */6 * * *',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-suggestion-generator',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{}'::jsonb
+     ); $$
+);
+
+-- Phase 3 — Weekly digest (Mon 07:00 UTC)
+select cron.schedule(
+  'sita-weekly-digest',
+  '0 7 * * 1',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-weekly-digest',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{}'::jsonb
+     ); $$
+);

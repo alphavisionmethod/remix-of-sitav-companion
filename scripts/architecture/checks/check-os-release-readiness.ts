@@ -113,6 +113,13 @@ const REQUIRED_GATES = [
   "internal-agent-reflection-table",
   "internal-agent-reflect-function",
   "reflection-board-page",
+  // Phase 3 expansion — Suggestions / Digest / Dependencies / Trust / Linkage (6 BLOCK gates)
+  "implementation-suggestions-pipeline",
+  "suggestion-generator-function",
+  "weekly-digest-generation",
+  "dependency-upgrade-proposer",
+  "trust-score-update-logic",
+  "reflection-to-action-linkage",
   // Internal AI Workforce — Phase 4 closure (4 BLOCK gates)
   "internal-agent-policy-drafts-table",
   "internal-agent-policy-architect-function",
