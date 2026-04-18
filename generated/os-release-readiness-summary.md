@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T20:24:19.328Z
-> Verdict: **RED** ❌
+> Generated: 2026-04-18T23:08:53.190Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 79 |
-| Gates present  | 73 |
-| Gates missing  | 6 |
+| Gates required | 117 |
+| Gates present  | 117 |
+| Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
 
@@ -68,7 +68,13 @@
 | `admin-operator-coherence` | ✅ | 0 | 0 |
 | `human-use-operational-readiness` | ✅ | 0 | 0 |
 | `internal-agent-registry` | ✅ | 0 | 0 |
+| `internal-agent-runtime-coverage` | ✅ | 0 | 0 |
+| `internal-agent-admin-pages` | ✅ | 0 | 0 |
+| `internal-agent-escalation-runtime` | ✅ | 0 | 0 |
+| `internal-agent-seed-integrity` | ✅ | 0 | 0 |
 | `internal-agent-runtime-loop` | ✅ | 0 | 0 |
+| `admin-ai-runtime-drilldowns` | ✅ | 0 | 0 |
+| `admin-integrations-health-visibility` | ✅ | 0 | 0 |
 | `internal-agent-execute-action` | ✅ | 0 | 0 |
 | `autonomous-action-safety-gates` | ✅ | 0 | 0 |
 | `autonomous-action-receipts` | ✅ | 0 | 0 |
@@ -90,16 +96,48 @@
 | `trust-ladder-never-self-promote` | ✅ | 0 | 0 |
 | `knowledge-bus-write-discipline` | ✅ | 0 | 0 |
 | `trust-ladder-supervisor-readout` | ✅ | 0 | 0 |
-| `internal-agent-runtime-coverage` | ❌ MISSING | — | — |
-| `internal-agent-admin-pages` | ❌ MISSING | — | — |
-| `internal-agent-escalation-runtime` | ❌ MISSING | — | — |
-| `internal-agent-seed-integrity` | ❌ MISSING | — | — |
-| `admin-ai-runtime-drilldowns` | ❌ MISSING | — | — |
-| `admin-integrations-health-visibility` | ❌ MISSING | — | — |
+| `internal-agent-consensus-tables` | ✅ | 0 | 0 |
+| `internal-agent-cost-proposals-table` | ✅ | 0 | 0 |
+| `internal-agent-runbook-tables` | ✅ | 0 | 0 |
+| `cross-council-l3-ceiling` | ✅ | 0 | 0 |
+| `cost-proposals-never-auto-apply` | ✅ | 0 | 0 |
+| `self-healer-safe-catalogue` | ✅ | 0 | 0 |
+| `cross-council-board-page` | ✅ | 0 | 0 |
+| `internal-agent-phase7-tables` | ✅ | 0 | 0 |
+| `tenant-l3-ceiling` | ✅ | 0 | 0 |
+| `owner-copilot-bff-readonly` | ✅ | 0 | 0 |
+| `tenant-kill-switch-justification` | ✅ | 0 | 0 |
+| `slo-evaluator-function` | ✅ | 0 | 0 |
+| `phase7-admin-pages` | ✅ | 0 | 0 |
+| `internal-agent-phase8-tables` | ✅ | 0 | 0 |
+| `assurance-l3-ceiling` | ✅ | 0 | 0 |
+| `chaos-safe-catalogue` | ✅ | 0 | 0 |
+| `external-workforce-api-readonly` | ✅ | 0 | 0 |
+| `webhook-hmac-signing` | ✅ | 0 | 0 |
+| `federation-optin-required` | ✅ | 0 | 0 |
+| `dp-noise-floor` | ✅ | 0 | 0 |
+| `knowledge-anonymization` | ✅ | 0 | 0 |
+| `phase8-admin-pages` | ✅ | 0 | 0 |
+| `internal-agent-phase9-tables` | ✅ | 0 | 0 |
+| `dr-l3-ceiling` | ✅ | 0 | 0 |
+| `signed-release-artifacts` | ✅ | 0 | 0 |
+| `audit-export-immutable` | ✅ | 0 | 0 |
+| `tenant-self-service-isolation` | ✅ | 0 | 0 |
+| `tenant-quota-hard-ceiling` | ✅ | 0 | 0 |
+| `compliance-evidence-allowlisted` | ✅ | 0 | 0 |
+| `attestation-packet-signed` | ✅ | 0 | 0 |
+| `phase9-admin-pages` | ✅ | 0 | 0 |
+| `tenant-admin-role-gate` | ✅ | 0 | 0 |
+| `dp-epsilon-budget-ledger` | ✅ | 0 | 0 |
+| `webhook-retry-queue` | ✅ | 0 | 0 |
+| `compliance-collector-allowlist` | ✅ | 0 | 0 |
+| `pg-cron-schedules` | ✅ | 0 | 0 |
+| `pg-extensions-enabled` | ✅ | 0 | 0 |
+| `release-artifact-signer` | ✅ | 0 | 0 |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 6 missing gate(s).
+⚠️ All required gates passed, but 3348 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
