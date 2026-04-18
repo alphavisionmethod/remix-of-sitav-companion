@@ -89,3 +89,10 @@ npm run release:readiness:full  # full 72-gate aggregator
 ```
 
 All 8 Phase 2 gates **GREEN**. Deployable.
+
+## Active Caveats
+
+- Autonomous actions are clamped to `safe_class IN ('safe','reversible')` — destructive classes always require human approval and never auto-execute.
+- Trust score and autonomy ceiling are governed by the EWMA reflection RPC; no surface in the codebase may write `trust_score` directly.
+- Rollback paths are required per action; missing rollback metadata fails the `autonomous-action-rollback-coverage` gate.
+- All Phase 2 receipts are append-only and signed; the bridge status contract is enforced by `check-bridge-status-contract.ts`.
