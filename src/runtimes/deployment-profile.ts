@@ -5,8 +5,8 @@
 // to "user" profile in browser/web contexts.
 // ═══════════════════════════════════════════════════════════════
 
-import type { CanonicalPlaneKey } from "@/lib/architecture/plane-registry";
-import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
+import type { CanonicalPlaneKey } from "@/platform/architecture/plane-registry";
+import type { DeploymentProfileKey } from "@/platform/architecture/route-plane-map";
 
 export interface DeploymentProfileManifest {
   profile: DeploymentProfileKey;

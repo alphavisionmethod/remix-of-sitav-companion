@@ -5,7 +5,7 @@
 // Paths). Pure functions only — no I/O, no Supabase, no React.
 // ═══════════════════════════════════════════════════════════════
 
-import { BOUNDED_CONTEXT_REGISTRY } from "@/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "@/platform/architecture/bounded-context-registry";
 import { KILL_SWITCH_REGISTRY } from "@/lib/control-plane/kill-switch-registry";
 import { RUNBOOK_REGISTRY } from "@/lib/support/runbook-registry";
 import { GOLDEN_PATH_REGISTRY } from "@/lib/operations/golden-path-registry";
@@ -15,7 +15,7 @@ import type {
   MetaContextSummary,
   MetaContextHealth,
 } from "./meta-arch-types";
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 const CONTEXT_INDEX = new Map(BOUNDED_CONTEXT_REGISTRY.map((c) => [c.contextId, c]));
 const SWITCH_INDEX = new Map(KILL_SWITCH_REGISTRY.map((s) => [s.switchId, s]));

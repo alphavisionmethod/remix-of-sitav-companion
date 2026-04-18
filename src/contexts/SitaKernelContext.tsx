@@ -5,7 +5,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useCallback, useState, useRef, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/lib/architecture/layer-manifest";
+import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/platform/architecture/layer-manifest";
 import { SitaKernel, getSitaKernel } from "@/lib/sita-kernel";
 import { useEntityContext } from "@/contexts/EntityContext";
 import type { CanonicalChainResult } from "@/lib/core-services/index";

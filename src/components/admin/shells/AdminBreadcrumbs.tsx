@@ -13,7 +13,7 @@ import {
   DOMAIN_HUB_PATHS,
   DOMAIN_LABELS,
   type AdminDomain,
-} from "@/lib/architecture/admin-route-registry";
+} from "@/platform/architecture/admin-route-registry";
 import { resolveActiveDomain } from "./AdminPrimaryNav";
 
 // ── Fallback labels for path segments not represented in the registry ──

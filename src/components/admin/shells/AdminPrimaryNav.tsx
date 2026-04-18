@@ -30,7 +30,7 @@ import {
   DOMAIN_LABELS,
   DOMAIN_DESCRIPTIONS,
   type AdminDomain,
-} from "@/lib/architecture/admin-route-registry";
+} from "@/platform/architecture/admin-route-registry";
 
 const DOMAIN_ICONS: Record<AdminDomain, React.ElementType> = {
   overview: Home,

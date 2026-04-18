@@ -11,10 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, Layers, AlertTriangle, CheckCircle2, ArrowRight, Ban, CircleDot, Target, Clock, XCircle } from "lucide-react";
-import { LAYERS, ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, type Layer } from "@/lib/architecture/layer-manifest";
-import { ALLOWED_IMPORTS, FORBIDDEN_PATTERNS } from "@/lib/architecture/boundary-rules";
-import { ROUTE_FAMILIES } from "@/lib/architecture/route-registry";
-import { SERVICE_BUDGET, DUPLICATE_SERVICES, KERNEL_SERVICES, OS_SERVICES_LIST, DOMAIN_SERVICES } from "@/lib/architecture/service-ownership-manifest";
+import { LAYERS, ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, type Layer } from "@/platform/architecture/layer-manifest";
+import { ALLOWED_IMPORTS, FORBIDDEN_PATTERNS } from "@/platform/architecture/boundary-rules";
+import { ROUTE_FAMILIES } from "@/platform/architecture/route-registry";
+import { SERVICE_BUDGET, DUPLICATE_SERVICES, KERNEL_SERVICES, OS_SERVICES_LIST, DOMAIN_SERVICES } from "@/platform/architecture/service-ownership-manifest";
 
 const LAYER_COLORS: Record<Layer, string> = {
   "web": "bg-blue-500/20 text-blue-400 border-blue-500/30",

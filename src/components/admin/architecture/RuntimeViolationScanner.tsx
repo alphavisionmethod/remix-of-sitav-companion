@@ -14,8 +14,8 @@ import {
   AlertTriangle, CheckCircle2, RefreshCw, Scan, ShieldAlert,
   ChevronDown, ChevronRight, XCircle, Shield, Zap, Info
 } from "lucide-react";
-import { LAYERS, ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, type Layer } from "@/lib/architecture/layer-manifest";
-import { ALLOWED_IMPORTS, FORBIDDEN_PATTERNS } from "@/lib/architecture/boundary-rules";
+import { LAYERS, ROUTE_LAYER_MAP, SERVICE_LAYER_MAP, type Layer } from "@/platform/architecture/layer-manifest";
+import { ALLOWED_IMPORTS, FORBIDDEN_PATTERNS } from "@/platform/architecture/boundary-rules";
 
 // ── Types ──────────────────────────────────────────────────────
 

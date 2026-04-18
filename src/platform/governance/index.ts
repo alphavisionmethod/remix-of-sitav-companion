@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Architecture governance modules
-export * from "@/lib/architecture";
+export * from "@/platform/architecture";
 
 // Governance UI components
 export * from "@/components/governance";

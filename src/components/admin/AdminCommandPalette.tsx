@@ -41,8 +41,8 @@ import {
   DOMAIN_LABELS,
   type AdminDomain,
   type AdminRouteEntry,
-} from "@/lib/architecture/admin-route-registry";
-import { getAllWorkflows } from "@/lib/architecture/owner-workflow-map";
+} from "@/platform/architecture/admin-route-registry";
+import { getAllWorkflows } from "@/platform/architecture/owner-workflow-map";
 
 const ACTIVE_WORKFLOW_STORAGE_KEY = "sita.admin.activeWorkflow";
 

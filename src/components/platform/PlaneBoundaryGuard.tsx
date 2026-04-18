@@ -9,7 +9,7 @@ import {
   resolvePlane,
   type CanonicalPlaneKey,
   type PlaneKeyAny,
-} from "@/lib/architecture/plane-registry";
+} from "@/platform/architecture/plane-registry";
 
 interface PlaneBoundaryGuardProps {
   children: ReactNode;

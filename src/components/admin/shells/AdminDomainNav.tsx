@@ -16,7 +16,7 @@ import {
   DOMAIN_LABELS,
   type AdminDomain,
   type AdminRouteEntry,
-} from "@/lib/architecture/admin-route-registry";
+} from "@/platform/architecture/admin-route-registry";
 
 // Re-export so existing call sites keep compiling.
 export type { AdminDomain };

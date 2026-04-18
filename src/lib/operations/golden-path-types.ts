@@ -5,7 +5,7 @@
 // platform MUST keep green for launch readiness.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 /** Stable, kebab-case Golden Path identifier (e.g. "GP-SIGN-IN"). */
 export type GoldenPathId =

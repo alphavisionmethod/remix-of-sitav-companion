@@ -6,7 +6,7 @@
 // rings, kill switches, fleet diagnostics) hide in user profile.
 // ═══════════════════════════════════════════════════════════════
 
-import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
+import type { DeploymentProfileKey } from "@/platform/architecture/route-plane-map";
 import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 
 export interface SettingsSectionDescriptor {

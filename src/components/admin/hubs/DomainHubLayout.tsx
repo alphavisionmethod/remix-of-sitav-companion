@@ -17,7 +17,7 @@ import {
   type AdminDomain,
   DOMAIN_LABELS,
   DOMAIN_DESCRIPTIONS,
-} from "@/lib/architecture/admin-route-registry";
+} from "@/platform/architecture/admin-route-registry";
 
 export interface HubModule {
   /** Stable id used as ?tab= query param. */

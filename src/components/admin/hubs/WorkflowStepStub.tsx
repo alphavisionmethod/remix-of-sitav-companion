@@ -8,7 +8,7 @@
 
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { DomainHubIndex } from "@/components/admin/hubs/DomainHubIndex";
-import type { AdminDomain } from "@/lib/architecture/admin-route-registry";
+import type { AdminDomain } from "@/platform/architecture/admin-route-registry";
 
 interface WorkflowStepStubProps {
   domain: AdminDomain;

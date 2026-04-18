@@ -11,8 +11,8 @@
 import {
   APP_PLANE_MAP,
   type AppPlaneEntry,
-} from "@/lib/architecture/app-plane-map";
-import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
+} from "@/platform/architecture/app-plane-map";
+import type { DeploymentProfileKey } from "@/platform/architecture/route-plane-map";
 import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 
 export interface LauncherFilterContext {

@@ -3,7 +3,7 @@
 // Anti-drift: every feature must declare its honest reality state.
 // ═══════════════════════════════════════════════════════════════
 
-import type { BoundedContextId } from "@/lib/architecture/bounded-context-types";
+import type { BoundedContextId } from "@/platform/architecture/bounded-context-types";
 
 export type RealityState =
   | "real"          // production implementation, real backend, real data

@@ -7,7 +7,7 @@
 import { describe, it, expect } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
-import { ROUTE_FAMILIES, getRegistrySummary } from "@/lib/architecture/route-registry";
+import { ROUTE_FAMILIES, getRegistrySummary } from "@/platform/architecture/route-registry";
 
 function walk(dir: string, acc: string[] = []): string[] {
   if (!fs.existsSync(dir)) return acc;

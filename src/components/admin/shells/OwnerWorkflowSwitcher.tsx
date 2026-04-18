@@ -17,7 +17,7 @@ import {
   OWNER_WORKFLOWS,
   type OwnerWorkflowKey,
   getAllWorkflows,
-} from "@/lib/architecture/owner-workflow-map";
+} from "@/platform/architecture/owner-workflow-map";
 
 const STORAGE_KEY = "sita.admin.activeWorkflow";
 

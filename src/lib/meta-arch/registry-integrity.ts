@@ -5,7 +5,7 @@
 // report consumable by both the CI gate and the admin surface.
 // ═══════════════════════════════════════════════════════════════
 
-import { BOUNDED_CONTEXT_REGISTRY } from "@/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "@/platform/architecture/bounded-context-registry";
 import { KILL_SWITCH_REGISTRY } from "@/lib/control-plane/kill-switch-registry";
 import { RUNBOOK_REGISTRY } from "@/lib/support/runbook-registry";
 import { GOLDEN_PATH_REGISTRY } from "@/lib/operations/golden-path-registry";
