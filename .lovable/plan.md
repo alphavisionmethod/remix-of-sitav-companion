@@ -1,106 +1,77 @@
 
-## Phase 1 Runtime Bridge — Internal AI Workforce → Real Operation
+
+## Flagship Closure — Scoped to Admin AI Engineering Team
+
+### User's scope narrowing
+The prompt lists 6 surfaces, but the user said **"only on the admin ai engineer team"**. That means:
+- **IN SCOPE**: Admin AI Runtime (`/admin/ai-runtime`), Admin Integrations (`/admin/integrations`), shared trust/state primitives, validators, deliverables.
+- **OUT OF SCOPE** (this pass): user-facing onboarding, boardroom briefing, concierge chat, comms inbox. (Will be addressed in deliverables as "deferred user-surface work — separate prompt".)
 
 ### Verified ground truth
-- **40 agents** exist as canonical specs in `src/lib/internal-agents/` (6 councils × P/B/S/R/A/K). Duplicate at `src/packages/internal-agent-config/` — will treat `src/lib/internal-agents/` as sole seed source (no new parallel registry).
-- **7 supervisors** + 6 councils already typed and exported.
-- **AI runtime tables** already real: `ai_workforce_invocations`, `ai_workforce_approval_queue`, `ai_workforce_budget_classes`, `agent_action_receipts`, `agent_signals`, `runtime_agents`, `agent_signals`. Reuse these — do NOT duplicate.
-- **Edge runtime patterns** proven in `agent-executor` (policy + budget + receipts + signals + tracing). The new loop will reuse `_shared/policy.ts`, `_shared/ai-budget-check.ts`, `_shared/ai-receipt-logger.ts`, AI gateway.
-- **Admin extension point**: `AIRuntimeHome` is a `DomainHubLayout` hub — adding 2 modules (`internal-agents`, `councils`) is the canonical, drift-free integration.
+- `AIRuntimeHome.tsx` has **9 modules** but is **missing** the Phase 1 Internal Agents + Councils tabs we just built (`InternalAgentsBoard.tsx`, `CouncilsBoard.tsx` exist but aren't wired).
+- `IntegrationsHome.tsx` has 4 modules; `OAuthRefreshHealthBoard` is wired but no canonical connector-state badge unifies the surfaces. 17 files redefine status colors locally → drift.
+- No `ConnectorStateBadge` primitive exists — every page rolls its own status color map. This is the real wiring gap.
+- No `SimulatedPersonaBadge` primitive exists; `PageTruthBanner` covers page-level but not row-level disclosure.
+- 6 Phase-1 internal-agent validators planned but none written yet; only 2 deliverables in `generated/internal-ai-runtime-phase1/`.
 
 ### Five deployable phases (each green-on-deploy)
 
 ---
 
-### Phase 1 — DB Foundation (5 tables, RLS, indexes)
-Single migration. **No data writes yet, so can deploy without breaking anything.**
-
-| Table | Purpose | Key linkage |
-|---|---|---|
-| `internal_agent_definitions` | 40 agents seeded from `ALL_DETAILED_AGENTS` | unique `agent_id` |
-| `internal_agent_runtime_state` | Live mutable state per agent | FK → definitions |
-| `internal_agent_actions` | Every meaningful action | FK → definitions, `ai_workforce_invocations`, `agent_action_receipts`, `ai_workforce_approval_queue` |
-| `council_escalations` | Cross-agent + agent→supervisor | FK → definitions |
-| `supervisor_decisions` | Override/suspend/downgrade audit | FK → escalations + actions |
-
-- RLS: admin-only via `has_role(_, 'admin')` for write; admin + service-role for read; service-role bypass for the runtime loop.
-- Indexes on `(council, is_active)`, `(agent_id)`, `(status, created_at DESC)`, `(supervisor_key)`.
-- Trigger: `update_updated_at_column` reused.
-- **Verification**: schema registry regenerates clean; `check-db-truth` passes; admin pages still render unchanged.
+### Phase 1 — Wire Phase-1 Internal Agents into AIRuntimeHome (single-deploy)
+- Add `internal-agents` + `councils` modules to `AIRuntimeHome.tsx` modules array (lazy-loaded, gated by `has_admin_permission(_, 'ai_workforce.manage')` via existing `AdminControlPlaneShell`).
+- Add `ADMIN_ROUTE_REGISTRY` entries `/admin/ai-runtime/internal-agents` + `/admin/ai-runtime/councils` so `DomainHubLayout` deeplinking works.
+- Verify `InternalAgentsBoard` + `CouncilsBoard` mount, render the 40 seeded agents, manual-trigger button calls `internal-agent-loop`.
+- **Deployable**: yes — adds 2 tabs to existing hub; no schema changes; no risk to other hub modules.
 
 ---
 
-### Phase 2 — Seed Bridge + Definition Sync
-- New script `scripts/seed/seed-internal-agents.ts` reads `ALL_DETAILED_AGENTS` + `SUPERVISORS` and upserts into `internal_agent_definitions` (idempotent, by `agent_id`).
-- New service `src/lib/internal-agents/runtime/internal-agent-registry.ts` — single source for the runtime loop + admin UI to read combined `definition + state`.
-- Auto-seed migration: SECURITY DEFINER function `seed_internal_agent_definitions()` invoked once via insert, embedding the 40-agent payload generated from spec at build time.
-- Empty runtime_state rows auto-created for each definition (one per agent).
-- Validators: `check-internal-agent-registry.ts` + `check-internal-agent-seed-integrity.ts` (BLOCK gates) — fail if DB count ≠ spec count, or any `agent_id` missing.
-- **Verification**: 40 definitions + 40 runtime_state rows present; admin UI (Phase 4) will read from this even when empty.
+### Phase 2 — Canonical `ConnectorStateBadge` primitive + adopt across admin surfaces
+- New `src/components/primitives/status/ConnectorStateBadge.tsx` composing existing `StatusBadge` with the canonical 6-state union: `connected | degraded | reauth_required | failing | manual | demo_simulated`.
+- Single source of truth: `src/lib/connectors/connector-state-grammar.ts` (label, tone, icon, recommended CTA per state).
+- Refactor `OAuthRefreshHealthBoard`, `CN01ConnectorRealityOverview`, `CN05ConnectorHealthBoard`, `IntegrationsHome` to use the primitive — delete local color maps (eliminates 4 duplicate status systems).
+- Add `next_action` resolver: `connected → none`, `degraded → retry`, `reauth_required → reconnect (deeplinks to /admin/integrations/oauth-refresh-health)`, `failing → diagnose runbook`, `manual → ack`.
+- **Deployable**: yes — pure UI primitive; legacy maps deleted only after refactor compiles.
 
 ---
 
-### Phase 3 — `internal-agent-loop` Edge Function (the bridge core)
-Single edge function `supabase/functions/internal-agent-loop/index.ts` with:
-- **Due-agent evaluator**: parses `schedule_cron` against `last_run_at` + `cooldown_until`; respects `is_active`, suspension, kill-switches.
-- **Per-agent runner** (reuses canonical infra):
-  1. Load definition + state (single join query)
-  2. Check `automation_kill_switches` for `internal-agents.<council>.<agent_id>` scope
-  3. Call existing `checkAIBudget` → respect downgrade
-  4. Call AI gateway via existing pattern (no parallel client)
-  5. Insert `ai_workforce_invocations` row (canonical receipt)
-  6. Insert `internal_agent_actions` row linked to invocation
-  7. Decision branch by `current_autonomy_level`:
-     - `observe`/`diagnose`/`recommend`/`draft` → record action only
-     - `simulate` → record + simulation_result
-     - `approval-ready` → also insert into `ai_workforce_approval_queue` with `recommendation_id` link
-     - `constrained-action` → execute scoped tool only if confidence ≥ `confidence_threshold_act`
-  8. On confidence < threshold OR consecutive failures ≥ 3 → insert `council_escalations` row routed to agent's `escalation_target` supervisor
-  9. Update `internal_agent_runtime_state` (last_run_at, last_success_at/last_failure_at, consecutive_failures, total_*, trust_score recalc)
-- **pg_cron** every 5 min calls the loop with service role; loop internally evaluates which agents are due.
-- Idempotency key: `agent_id + minute-bucket`; rate limit reused from `_shared/rate-limit.ts`.
-- **Verification**: invoking the loop with one due agent writes invocation + action + state; second invocation within cooldown is skipped.
+### Phase 3 — Admin AI Runtime drilldown completeness (real receipts/ledger/fallback/nightly proof)
+- Extend `InternalAgentsBoard` row drilldown drawer with three tabs:
+  1. **Actions** (last 50 from `internal_agent_actions` joined to `ai_workforce_invocations` for token/cost) — already partially done; complete the receipt link to `/admin/ai-gateway/receipts/:invocation_id`.
+  2. **Budget & Cost** (last 24h `ai_usage_ledger` filtered by agent's correlation_ids; current `ai_workforce_budget_classes` for the agent's class).
+  3. **Fallback / Health** (last 30 entries from `ai_fallback_events` for this agent; `ai_provider_health` snapshot).
+- Add `AIRuntimeDrilldownPanel` shared component reused by `InternalAgentsBoard`, `AIT01TeamOverview`, `CouncilsBoard` (no duplicate fetch logic).
+- Wire **nightly proof status** badge to `production_truth_dashboard.md` parsed timestamp via existing `useProductionTruth` hook (if missing, query `os_release_readiness_report.json` via existing manifest reader). Display real "last verified at" + result.
+- **Deployable**: yes — additive panels; no DB changes.
 
 ---
 
-### Phase 4 — Admin UI: 2 New Hub Modules + Drilldowns
-Extend `AIRuntimeHome.tsx` with two new modules (no new shell):
-- **`internal-agents` tab**: `InternalAgentsBoard.tsx`
-  - Live table from `internal_agent_definitions LEFT JOIN internal_agent_runtime_state`
-  - Columns: agent, council, status, current_autonomy/max, trust_score, last_run, consecutive_failures, recent actions count
-  - Row drilldown drawer: full definition + last 20 `internal_agent_actions` (linked to invocation/receipt) + escalations
-  - Operator actions (gated by `has_admin_permission(_, 'ai_workforce.manage')`): manual trigger (calls `internal-agent-loop` with `agent_id`), suspend/resume, autonomy downgrade
-  - Filters: council, status, suspended-only
-- **`councils` tab**: `CouncilsBoard.tsx`
-  - 6 panels (one per council) — agent count, active/paused, recent actions/escalations, supervisor status from `supervisor_decisions`
-  - Per-council drilldown shows pending escalations + last supervisor decisions
-- Realtime: subscribe to `internal_agent_runtime_state` + `council_escalations` so the boards reflect loop activity live.
-- Route registration in `ADMIN_ROUTE_REGISTRY` (ai-runtime domain).
-- **Verification**: `/admin/ai-runtime` shows 2 new tabs, populated with the 40 seeded agents; manual trigger of an agent updates the row in real time.
+### Phase 4 — Admin Integrations: streak + receipt + reauth flow completion
+- Add **`IntegrationStreakPanel`** to `IntegrationsHome` as a 5th module: 7-day refresh streak per provider from `connector_oauth_health_probes` (last 7 days bucketed); each cell renders `ConnectorStateBadge`.
+- Add **`IntegrationReceiptDrawer`** opened from any `OAuthRefreshHealthBoard` row → shows last 20 `connector_oauth_health_probes` rows + `connector_tokens.rotation_count` + `last_refreshed_at`.
+- Add **reauth CTA wiring**: clicking `reauth_required` chip dispatches a real reauth flow — server-side helper `requestProviderReauth(provider, account_id)` writes to `connector_accounts.status='reauth_required'` (already supported by RLS) and emits a `timeline_events` row `connector.reauth_requested` so it appears in observability.
+- Eliminate ambiguous "connected" — `IntegrationsHome` reads `connector_accounts.status` AND `connector_tokens.expires_at < now()` AND `ai_provider_health.status` and surfaces the worst-of-3 state. Pure SQL view: `connector_effective_state` (read-only view, RLS = same as connector_accounts).
+- **Deployable**: yes — one read-only view + 2 new admin UI panels; no destructive change.
 
 ---
 
-### Phase 5 — Supervisor Runtime + Validators + Final Wiring
-- Server-side action helpers in `src/lib/internal-agents/runtime/supervisor-actions.ts` for `approve/reject/override/suspend/downgrade/escalate-meta` — each writes `supervisor_decisions` and mutates target `internal_agent_runtime_state` or `council_escalations` accordingly.
-- Meta-supervisor key: `chief-of-staff` already exists; escalations marked `severity='high'` or unresolved >24h auto-route to it via the loop.
-- New supervisor section in `CouncilsBoard` for resolving open escalations.
-- New BLOCK-level validators wired into master aggregator (50 → 56):
-  - `check-internal-agent-registry.ts`
-  - `check-internal-agent-runtime-coverage.ts`
-  - `check-internal-agent-admin-pages.ts`
-  - `check-internal-agent-escalation-runtime.ts`
-  - `check-internal-agent-seed-integrity.ts`
-  - `check-internal-agent-runtime-loop.ts`
-- All 12 deliverable docs + 4 status JSONs written to `generated/internal-ai-runtime-phase1/`.
-- Append `internal-agents:run-all` script + integrate into `release:readiness:full`.
-- **Verification**: `npm run release:readiness` shows 56/56 green; an injected escalation in DB appears in admin UI; a supervisor "suspend" action sets `current_status='suspended'` and the loop skips that agent next tick.
+### Phase 5 — Validators + deliverables + master aggregator wiring
+- Write the 6 internal-agent BLOCK validators (`check-internal-agent-registry.ts`, `runtime-coverage`, `admin-pages`, `escalation-runtime`, `seed-integrity`, `runtime-loop`) — each a real `scripts/validation/check-*.ts` that reads from DB + filesystem and emits `GateReport` via `emitGateReport`.
+- Write the 2 admin-scoped flagship validators:
+  - `check-admin-ai-runtime-drilldowns.ts` — asserts `InternalAgentsBoard` imports the 3 drilldown tabs + nightly-proof badge.
+  - `check-admin-integrations-health-visibility.ts` — asserts `IntegrationsHome` includes streak panel + receipt drawer + uses `ConnectorStateBadge` exclusively (greps for forbidden local color maps).
+- Write the 14 deliverable `.md` + `.json` docs into `generated/flagship-surface-closure/` AND `generated/internal-ai-runtime-phase1/` (the 8 still-missing ones).
+- Update `scripts/architecture/checks/check-os-release-readiness.ts` aggregator: 50 → 58 gates (6 internal-agent + 2 admin-flagship). Update `package.json` `release:readiness:full`.
+- User-facing surfaces (onboarding/boardroom/concierge/comms) explicitly marked **deferred** in `FLAGSHIP_SURFACE_FINAL_VERIFICATION.md` with a note: "Phase admin-only complete; user-surface closure tracked separately per operator scope decision."
+- **Deployable**: yes — validators are read-only; aggregator gate count bumped only when all 8 pass.
 
 ---
 
 ### Cross-cutting rules (enforced every phase)
-- **Zero duplication**: reuse `ai_workforce_invocations`, `ai_workforce_approval_queue`, `agent_action_receipts`, existing AI gateway, existing budget check, existing kill-switches, existing admin shell, existing `DomainHubLayout`.
-- **Zero stubs**: every new file has full implementation; validators run real checks.
-- **Wiring contracts**: `internal_agent_actions.invocation_id` FK enforces canonical receipt linkage; admin pages drill through to the existing receipts viewer.
-- **Spec-as-source**: 40 agents come from `src/lib/internal-agents/agents/*.ts` only; the parallel `src/packages/internal-agent-config/` is left untouched (it's a typed sub-package re-export) and explicitly noted in the audit doc as legacy contract types.
-- **Safety**: every loop tick is policy-checked, budget-checked, kill-switch-checked, idempotency-keyed; max autonomy `simulate` for any agent declared `simulate`/`draft`/`recommend`/`observe` (no agent in the spec is currently `constrained-action`, so first-day risk surface is observe→approval-ready only).
-- **Operator visibility**: every state change emits a `timeline_events` row using existing `brd_followthrough_transition`-style pattern adapted as `internal_agent.transition` so it appears in existing observability streams.
+- **No duplication**: `ConnectorStateBadge` replaces 4 local color maps; `AIRuntimeDrilldownPanel` is the only receipts/ledger/fallback fetcher; `connector_effective_state` view replaces ad-hoc 3-table joins in 3 places.
+- **No stubs**: every panel reads real DB tables (`internal_agent_actions`, `ai_workforce_invocations`, `ai_usage_ledger`, `ai_fallback_events`, `ai_provider_health`, `connector_oauth_health_probes`).
+- **No fake live**: nightly proof badge shows real timestamp or "never run" — never green-by-default.
+- **Wiring**: drilldown receipts deep-link to existing `/admin/ai-gateway/receipts`; reauth deep-links to `/admin/integrations/oauth-refresh-health`; manual-trigger calls real `internal-agent-loop` edge function.
+- **Scope honesty**: deliverables JSON files for the 4 deferred user surfaces will exist with `status: "deferred", reason: "operator-scoped to admin AI engineering team per directive"` — no fake "complete" claims.
+- **Safety**: all new SQL is one read-only view + zero data writes; validators are read-only; UI changes additive only.
+
