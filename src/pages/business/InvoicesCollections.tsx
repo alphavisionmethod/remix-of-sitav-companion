@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,7 +38,17 @@ const InvoicesCollections = () => {
   const invoiceLabel = primaryMode === "ecommerce" ? "Orders & Payments" : primaryMode === "appointment-based" ? "Session Billing" : primaryMode === "membership" ? "Membership Billing" : "Invoices & Collections";
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
+  // Phase S — canonical autosave for new-invoice draft (localStorage + IndexedDB, 7-day TTL)
+  const { draft, updateDraft, clearDraft, hasDraft } = useDraftAutosave<{
+    invoice_number: string; amount: string; due_date: string; notes: string;
+  }>("finance:invoice:new", "finance");
+  const [form, setForm] = useState({
+    invoice_number: draft.invoice_number ?? "",
+    amount: draft.amount ?? "",
+    due_date: draft.due_date ?? "",
+    notes: draft.notes ?? "",
+  });
+  useEffect(() => { updateDraft(form); }, [form, updateDraft]);
   const generatePdf = useInvoiceGenerate();
   const sendInvoice = useInvoiceSend();
 
@@ -61,7 +72,7 @@ const InvoicesCollections = () => {
   const addInvoice = useAction("finance", "invoice.create", {
     successMessage: "Invoice created",
     invalidateKeys: [["invoices"]],
-    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
+    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); clearDraft(); },
   });
 
   const updateStatus = useAction("finance", "invoice.status", {
@@ -195,6 +206,7 @@ const InvoicesCollections = () => {
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Notes</label>
             <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" />
           </div>
+          {hasDraft && <p className="text-[10px] text-[hsl(265_55%_68%)]">✓ Draft autosaved</p>}
           <button
             onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })}
             disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date}

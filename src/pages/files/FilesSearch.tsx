@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useGlobalSearch } from "@/platform/search";
 import { toast } from "sonner";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
@@ -34,6 +35,10 @@ const FilesSearch = () => {
   const [aiSearchResult, setAiSearchResult] = useState<string | null>(null);
   const [aiSearching, setAiSearching] = useState(false);
   const aiInsight = useAIInsight();
+  // Phase S — federated cross-domain search via canonical OS hook.
+  // Surfaces non-file matches (leads, customers, tasks) inline with
+  // file results, so users discover related entities without leaving Files.
+  const { search: globalSearch, results: globalResults, loading: globalLoading } = useGlobalSearch();
 
   const kernelSearchFabric = useSearchFabric();
   const searchService = useMemo(() => {
@@ -52,6 +57,8 @@ const FilesSearch = () => {
       sortBy: "relevance",
     });
     setSearchResponse(response);
+    // Federated cross-domain search (non-blocking)
+    globalSearch(searchQuery).catch(() => {/* non-fatal */});
   };
 
   const handleFilterChange = (f: string) => {
@@ -128,7 +135,28 @@ const FilesSearch = () => {
         </div>
       )}
 
-      {/* Quick Queries */}
+      {/* Phase S — federated cross-domain results from canonical useGlobalSearch */}
+      {query.trim().length >= 2 && (globalLoading || globalResults.length > 0) && (
+        <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-2">
+          <div className="flex items-center gap-2">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <p className="text-xs font-semibold text-foreground">Cross-Domain Results</p>
+            <Badge variant="outline" className="text-[10px]">{globalLoading ? "…" : globalResults.length}</Badge>
+          </div>
+          {!globalLoading && globalResults.length > 0 && (
+            <ul className="space-y-1">
+              {globalResults.slice(0, 6).map(r => (
+                <li key={r.id} className="text-xs text-muted-foreground flex items-center gap-2">
+                  <Badge variant="secondary" className="text-[9px] capitalize">{r.type}</Badge>
+                  <span className="text-foreground">{r.title}</span>
+                  {r.subtitle && <span className="text-muted-foreground/70">— {r.subtitle}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       <div className="space-y-2">
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Quick Queries</h3>
         <div className="flex flex-wrap gap-2">

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:13:53.078Z",
+  "generatedAt": "2026-04-18T13:29:53.432Z",
   "canonicalProvider": "src/components/sita/shell/FilePickerService.tsx",
   "providerExists": true,
   "rawFileInputSites": [
     {
-      "file": "src/components/business/CRMImportWizard.tsx",
-      "line": 332
+      "file": "src/components/files/FileExplorerToolbar.tsx",
+      "line": 23
     },
     {
       "file": "src/components/sita/shell/windows/settings/AccountSections.tsx",
@@ -17,10 +17,6 @@
       "line": 114
     },
     {
-      "file": "src/pages/UserProfilePage.tsx",
-      "line": 131
-    },
-    {
       "file": "src/pages/mobile/MobileQuickCapture.tsx",
       "line": 74
     },
@@ -29,12 +25,15 @@
       "line": 20
     }
   ],
-  "rawFileInputCount": 6,
+  "rawFileInputCount": 5,
   "canonicalConsumers": [
+    "src/components/business/CRMImportWizard.tsx",
+    "src/components/files/FileExplorerToolbar.tsx",
     "src/components/sita/ShellLayout.tsx",
-    "src/lib/system-menu/menu-actions.ts"
+    "src/lib/system-menu/menu-actions.ts",
+    "src/pages/UserProfilePage.tsx"
   ],
-  "canonicalConsumerCount": 2,
-  "classification": "adoption-gap",
-  "notes": "6 ad-hoc file inputs vs 2 canonical consumers. Low-level upload flows acceptably bypass picker; UI surfaces should adopt."
+  "canonicalConsumerCount": 5,
+  "classification": "mostly-adopted",
+  "notes": "5 ad-hoc file inputs vs 5 canonical consumers. Low-level upload flows acceptably bypass picker; UI surfaces should adopt."
 }

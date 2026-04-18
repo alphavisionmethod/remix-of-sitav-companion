@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
@@ -20,6 +20,7 @@ import { ScoreExplainabilityDrawer } from "@/components/business/lead-inbox/Scor
 import { LeadScoreComparison } from "@/components/business/lead-inbox/LeadScoreComparison";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
+import { useGlobalSearch } from "@/platform/search";
 
 import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
 import { toast } from "sonner";
@@ -59,6 +60,14 @@ const LeadsInbox = () => {
   } = useLeadInbox();
 
   const stats = getInboxStats(items);
+
+  // Phase S — federated cross-domain search via canonical OS hook.
+  // Local `setSearch` filters the inbox; `useGlobalSearch` surfaces
+  // related entities (customers, tasks, invoices) for context.
+  const { search: globalSearch, results: globalResults, loading: globalLoading } = useGlobalSearch();
+  useEffect(() => {
+    if (search.trim().length >= 2) globalSearch(search.trim()).catch(() => {/* non-fatal */});
+  }, [search, globalSearch]);
 
   // Compare mode: when exactly 2 items are checked
   const compareLeads = useMemo(() => {
@@ -249,8 +258,11 @@ const LeadsInbox = () => {
           placeholder="Search by name, company, email, or inquiry..."
         />
       </div>
-
-      {/* Main content */}
+      {search.trim().length >= 2 && (globalLoading || globalResults.length > 0) && (
+        <p className="text-[11px] text-muted-foreground -mt-2 px-1">
+          {globalLoading ? "Searching across workspace…" : `Also found ${globalResults.length} related items in other domains`}
+        </p>
+      )}
       {viewMode === "priority-stack" ? (
         <div className="grid gap-5 lg:grid-cols-5">
           <div className="lg:col-span-3">
