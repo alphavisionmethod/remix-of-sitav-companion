@@ -16,7 +16,8 @@ import { syncd } from "@/lib/sync-engine";
 import { initSessionThreatDetector } from "@/lib/core-services/security/session-threat-detector";
 import { initSecureVault } from "@/lib/core-services/security/secure-memory-vault";
 import { generateCanaryToken } from "@/lib/core-services/security/ai-output-firewall";
-import { mobileSyncQueue, localStorageQueuePersistence, mobileOfflineSyncEngine } from "@/lib/mobile-platform";
+// Mobile sync queue archived with mobile-platform tree (Ubuntu-native canonical).
+// Web offline cache continues via useOfflineStore + offline-db.
 
 /**
  * Invisible component that initializes platform-level hooks.
@@ -72,15 +73,8 @@ export function PlatformInit() {
     console.log("[PlatformInit] AI canary token generated");
   }, []);
 
-  // Mobile sync queue: attach durable persistence + hydrate
-  useEffect(() => {
-    mobileSyncQueue.attachPersistence(localStorageQueuePersistence);
-    mobileSyncQueue.hydrate().then(() => {
-      console.log("[PlatformInit] Mobile sync queue hydrated");
-    }).catch((err) => console.error("[PlatformInit] Mobile sync hydrate failed:", err));
-    // Engine drain loop is started lazily by the engine itself when needed.
-    void mobileOfflineSyncEngine;
-  }, []);
+  // Mobile sync queue removed — see archive/src/mobile-platform/.
+  // The web app uses useOfflineStore (offline-db) for offline mutation queueing.
 
   return null;
 }

@@ -194,14 +194,12 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <EntityContextProvider>
   <RuntimeProvider>
   <OSRuntimeProvider>
-  <MobileRuntimeProvider>
   <AppPlatformProvider>
   <InspectorProvider>
   <PlatformInit />
   {children}
   </InspectorProvider>
   </AppPlatformProvider>
-  </MobileRuntimeProvider>
   </OSRuntimeProvider>
   </RuntimeProvider>
   </EntityContextProvider>

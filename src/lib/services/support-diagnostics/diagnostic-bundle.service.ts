@@ -10,7 +10,8 @@ import { runAllProbes, getOverallHealth } from "@/lib/observability/health-probe
 import { getCostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer } from "@/lib/observability/structured-logger";
 import { tracer } from "@/lib/observability/distributed-tracing";
-import { peekMobileDiagnostics } from "@/lib/mobile-platform/analytics/mobile-diagnostics";
+// peekMobileDiagnostics archived (Ubuntu-native canonical platform).
+const peekMobileDiagnostics = (): Array<{ kind?: string; ts?: number }> => [];
 import { serviceHeartbeat } from "@/lib/services/service-registry/heartbeat";
 import { createIncidentManagement } from "@/lib/services/incident-management";
 

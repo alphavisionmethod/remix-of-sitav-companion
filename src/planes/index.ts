@@ -11,6 +11,7 @@ export * as OSPlane from "./os";
 export * as SharedPlane from "./shared";
 export * as AdminPlane from "./admin";
 export * as FounderPlane from "./founder";
-export * as MobilePlane from "./mobile";
+// MobilePlane archived — Ubuntu-native is canonical native platform.
+// See docs/PLATFORM_SCOPE.md and archive/src/mobile-platform/.
 export * as ProductPlane from "./product";
 export * as InternalToolsPlane from "./internal-tools";
