@@ -1,6 +1,78 @@
 {
-  "generatedAt": "2026-04-18T02:46:33.083Z",
+  "generatedAt": "2026-04-18T02:46:48.930Z",
   "wrappers": [
+    {
+      "oldPath": "src/lib/api/edge-client.ts",
+      "canonicalPath": "src/integrations/api/edge-client.ts",
+      "canonicalSpec": "@/integrations/api/edge-client",
+      "wave": 6,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:47.218Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/api/index.ts",
+      "canonicalPath": "src/integrations/api/index.ts",
+      "canonicalSpec": "@/integrations/api/index",
+      "wave": 6,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:47.218Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/api/os-api-client.ts",
+      "canonicalPath": "src/integrations/api/os-api-client.ts",
+      "canonicalSpec": "@/integrations/api/os-api-client",
+      "wave": 6,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:47.221Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/api/payment-api.ts",
+      "canonicalPath": "src/integrations/api/payment-api.ts",
+      "canonicalSpec": "@/integrations/api/payment-api",
+      "wave": 6,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:47.218Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/api/schemas.ts",
+      "canonicalPath": "src/integrations/api/schemas.ts",
+      "canonicalSpec": "@/integrations/api/schemas",
+      "wave": 6,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:47.219Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/constants/index.ts",
+      "canonicalPath": "src/contracts/constants/index.ts",
+      "canonicalSpec": "@/contracts/constants/index",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.918Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/constants/ui-config.ts",
+      "canonicalPath": "src/contracts/constants/ui-config.ts",
+      "canonicalSpec": "@/contracts/constants/ui-config",
+      "wave": 7,
+      "importerCount": 6,
+      "addedAt": "2026-04-18T02:46:48.923Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/contracts/global-contracts-registry.ts",
+      "canonicalPath": "src/contracts/global-contracts-registry.ts",
+      "canonicalSpec": "@/contracts/global-contracts-registry",
+      "wave": 7,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:48.923Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
     {
       "oldPath": "src/lib/data-services/activity-data-service.ts",
       "canonicalPath": "src/data/repositories/activity-data-service.ts",
@@ -713,6 +785,303 @@
       "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
     },
     {
+      "oldPath": "src/lib/detection/auto-seed.ts",
+      "canonicalPath": "src/runtimes/detection/auto-seed.ts",
+      "canonicalSpec": "@/runtimes/detection/auto-seed",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.581Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/detection/index.ts",
+      "canonicalPath": "src/runtimes/detection/index.ts",
+      "canonicalSpec": "@/runtimes/detection/index",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.581Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/detection/reality-detection-engine.ts",
+      "canonicalPath": "src/runtimes/detection/reality-detection-engine.ts",
+      "canonicalSpec": "@/runtimes/detection/reality-detection-engine",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.581Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/appliance-device-capabilities.ts",
+      "canonicalPath": "src/runtimes/devices/appliance-device-capabilities.ts",
+      "canonicalSpec": "@/runtimes/devices/appliance-device-capabilities",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.565Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/biometric-capability-map.ts",
+      "canonicalPath": "src/runtimes/devices/biometric-capability-map.ts",
+      "canonicalSpec": "@/runtimes/devices/biometric-capability-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.565Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/desktop-device-capabilities.ts",
+      "canonicalPath": "src/runtimes/devices/desktop-device-capabilities.ts",
+      "canonicalSpec": "@/runtimes/devices/desktop-device-capabilities",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.566Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/device-attestation-map.ts",
+      "canonicalPath": "src/runtimes/devices/device-attestation-map.ts",
+      "canonicalSpec": "@/runtimes/devices/device-attestation-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.566Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/device-capability-registry.ts",
+      "canonicalPath": "src/runtimes/devices/device-capability-registry.ts",
+      "canonicalSpec": "@/runtimes/devices/device-capability-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.566Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/device-identity-registry.ts",
+      "canonicalPath": "src/runtimes/devices/device-identity-registry.ts",
+      "canonicalSpec": "@/runtimes/devices/device-identity-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.566Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/device-trust-registry.ts",
+      "canonicalPath": "src/runtimes/devices/device-trust-registry.ts",
+      "canonicalSpec": "@/runtimes/devices/device-trust-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.567Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/ecosystem-device-map.ts",
+      "canonicalPath": "src/runtimes/devices/ecosystem-device-map.ts",
+      "canonicalSpec": "@/runtimes/devices/ecosystem-device-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.567Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/index.ts",
+      "canonicalPath": "src/runtimes/devices/index.ts",
+      "canonicalSpec": "@/runtimes/devices/index",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.569Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/devices/mobile-device-capabilities.ts",
+      "canonicalPath": "src/runtimes/devices/mobile-device-capabilities.ts",
+      "canonicalSpec": "@/runtimes/devices/mobile-device-capabilities",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.569Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/analytics-segregation-engine.ts",
+      "canonicalPath": "src/runtimes/reality/analytics-segregation-engine.ts",
+      "canonicalSpec": "@/runtimes/reality/analytics-segregation-engine",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.569Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/capability-resolution-engine.ts",
+      "canonicalPath": "src/runtimes/reality/capability-resolution-engine.ts",
+      "canonicalSpec": "@/runtimes/reality/capability-resolution-engine",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.570Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-analytics-segregation.ts",
+      "canonicalPath": "src/runtimes/reality/demo-analytics-segregation.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-analytics-segregation",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.570Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-governance-seeder.ts",
+      "canonicalPath": "src/runtimes/reality/demo-governance-seeder.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-governance-seeder",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.581Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-interaction-policy.ts",
+      "canonicalPath": "src/runtimes/reality/demo-interaction-policy.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-interaction-policy",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.570Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-policy-engine.ts",
+      "canonicalPath": "src/runtimes/reality/demo-policy-engine.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-policy-engine",
+      "wave": 3,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-scenario-loader.ts",
+      "canonicalPath": "src/runtimes/reality/demo-scenario-loader.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-scenario-loader",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.570Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/demo-scenario-packs.ts",
+      "canonicalPath": "src/runtimes/reality/demo-scenario-packs.ts",
+      "canonicalSpec": "@/runtimes/reality/demo-scenario-packs",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.571Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/mode-aware-provider.ts",
+      "canonicalPath": "src/runtimes/reality/mode-aware-provider.ts",
+      "canonicalSpec": "@/runtimes/reality/mode-aware-provider",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/providers/demo-providers.ts",
+      "canonicalPath": "src/runtimes/reality/providers/demo-providers.ts",
+      "canonicalSpec": "@/runtimes/reality/providers/demo-providers",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.571Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/providers/index.ts",
+      "canonicalPath": "src/runtimes/reality/providers/index.ts",
+      "canonicalSpec": "@/runtimes/reality/providers/index",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/providers/provider-interfaces.ts",
+      "canonicalPath": "src/runtimes/reality/providers/provider-interfaces.ts",
+      "canonicalSpec": "@/runtimes/reality/providers/provider-interfaces",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.571Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/providers/real-providers.ts",
+      "canonicalPath": "src/runtimes/reality/providers/real-providers.ts",
+      "canonicalSpec": "@/runtimes/reality/providers/real-providers",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.571Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/real-provider-registry.ts",
+      "canonicalPath": "src/runtimes/reality/real-provider-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/real-provider-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.572Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/reality-mode-context.tsx",
+      "canonicalPath": "src/runtimes/reality/reality-mode-context.tsx",
+      "canonicalSpec": "@/runtimes/reality/reality-mode-context",
+      "wave": 3,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:45.589Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/reality-mode-registry.ts",
+      "canonicalPath": "src/runtimes/reality/reality-mode-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/reality-mode-registry",
+      "wave": 3,
+      "importerCount": 4,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/reality-mode-resolver.ts",
+      "canonicalPath": "src/runtimes/reality/reality-mode-resolver.ts",
+      "canonicalSpec": "@/runtimes/reality/reality-mode-resolver",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.572Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/reality-resolution-records.ts",
+      "canonicalPath": "src/runtimes/reality/reality-resolution-records.ts",
+      "canonicalSpec": "@/runtimes/reality/reality-resolution-records",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.572Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/dual-reality/surface-class-registry.ts",
+      "canonicalPath": "src/runtimes/reality/surface-class-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/surface-class-registry",
+      "wave": 3,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/integrations/reality-integration-hub.ts",
+      "canonicalPath": "src/integrations/external/reality-integration-hub.ts",
+      "canonicalSpec": "@/integrations/external/reality-integration-hub",
+      "wave": 6,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:47.219Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
       "oldPath": "src/lib/mock-data/_demo-source-marker.ts",
       "canonicalPath": "src/data/seed/_demo-source-marker.ts",
       "canonicalSpec": "@/data/seed/_demo-source-marker",
@@ -1100,6 +1469,645 @@
       "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
     },
     {
+      "oldPath": "src/lib/reality-audit/reality-audit-registry.ts",
+      "canonicalPath": "src/runtimes/reality/reality-audit-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/reality-audit-registry",
+      "wave": 3,
+      "importerCount": 13,
+      "addedAt": "2026-04-18T02:46:45.590Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality-records/canonical-records.ts",
+      "canonicalPath": "src/runtimes/reality/canonical-records.ts",
+      "canonicalSpec": "@/runtimes/reality/canonical-records",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality-records/truth-vocabulary.ts",
+      "canonicalPath": "src/runtimes/reality/truth-vocabulary.ts",
+      "canonicalSpec": "@/runtimes/reality/truth-vocabulary",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality/feature-reality-registry.ts",
+      "canonicalPath": "src/runtimes/reality/feature-reality-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/feature-reality-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.582Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality/feature-reality-types.ts",
+      "canonicalPath": "src/runtimes/reality/feature-reality-types.ts",
+      "canonicalSpec": "@/runtimes/reality/feature-reality-types",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.582Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality/page-state-contract.ts",
+      "canonicalPath": "src/runtimes/reality/page-state-contract.ts",
+      "canonicalSpec": "@/runtimes/reality/page-state-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality/page-state-registry.ts",
+      "canonicalPath": "src/runtimes/reality/page-state-registry.ts",
+      "canonicalSpec": "@/runtimes/reality/page-state-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.583Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/reality/surface-claim-map.ts",
+      "canonicalPath": "src/runtimes/reality/surface-claim-map.ts",
+      "canonicalSpec": "@/runtimes/reality/surface-claim-map",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.583Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/admin-runtime-contract.ts",
+      "canonicalPath": "src/runtimes/core/admin-runtime-contract.ts",
+      "canonicalSpec": "@/runtimes/core/admin-runtime-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance-runtime-contract.ts",
+      "canonicalPath": "src/runtimes/core/appliance-runtime-contract.ts",
+      "canonicalSpec": "@/runtimes/core/appliance-runtime-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.574Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/appliance-capabilities.ts",
+      "canonicalPath": "src/runtimes/core/appliance/appliance-capabilities.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/appliance-capabilities",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/appliance-fallbacks.ts",
+      "canonicalPath": "src/runtimes/core/appliance/appliance-fallbacks.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/appliance-fallbacks",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/appliance-runtime-contract.ts",
+      "canonicalPath": "src/runtimes/core/appliance/appliance-runtime-contract.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/appliance-runtime-contract",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/first-boot-contract.ts",
+      "canonicalPath": "src/runtimes/core/appliance/first-boot-contract.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/first-boot-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/recovery-contract.ts",
+      "canonicalPath": "src/runtimes/core/appliance/recovery-contract.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/recovery-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.573Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/release/appliance-deployability-readiness.ts",
+      "canonicalPath": "src/runtimes/core/appliance/release/appliance-deployability-readiness.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/release/appliance-deployability-readiness",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.574Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/appliance/release/index.ts",
+      "canonicalPath": "src/runtimes/core/appliance/release/index.ts",
+      "canonicalSpec": "@/runtimes/core/appliance/release/index",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/backend/release/backend-api-deployability-readiness.ts",
+      "canonicalPath": "src/runtimes/core/backend/release/backend-api-deployability-readiness.ts",
+      "canonicalSpec": "@/runtimes/core/backend/release/backend-api-deployability-readiness",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.574Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/backend/release/index.ts",
+      "canonicalPath": "src/runtimes/core/backend/release/index.ts",
+      "canonicalSpec": "@/runtimes/core/backend/release/index",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/capability-fallbacks.ts",
+      "canonicalPath": "src/runtimes/core/capability-fallbacks.ts",
+      "canonicalSpec": "@/runtimes/core/capability-fallbacks",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.574Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/capability-launch-honesty-map.ts",
+      "canonicalPath": "src/runtimes/core/capability-launch-honesty-map.ts",
+      "canonicalSpec": "@/runtimes/core/capability-launch-honesty-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/deployment-profile.ts",
+      "canonicalPath": "src/runtimes/core/deployment-profile.ts",
+      "canonicalSpec": "@/runtimes/core/deployment-profile",
+      "wave": 3,
+      "importerCount": 6,
+      "addedAt": "2026-04-18T02:46:45.589Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-fallbacks.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-fallbacks.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-fallbacks",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.584Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-feature-gates.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-feature-gates.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-feature-gates",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-host-capabilities.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-host-capabilities.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-host-capabilities",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-host-contract.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-host-contract.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-host-contract",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-release-channel-map.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-release-channel-map.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-release-channel-map",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-runtime-detection.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-runtime-detection.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-runtime-detection",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-security-boundaries.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-security-boundaries.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-security-boundaries",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.587Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/desktop-update-contract.ts",
+      "canonicalPath": "src/runtimes/core/desktop/desktop-update-contract.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/desktop-update-contract",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/electron-bridge-capabilities.ts",
+      "canonicalPath": "src/runtimes/core/desktop/electron-bridge-capabilities.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/electron-bridge-capabilities",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/electron-bridge-contract.ts",
+      "canonicalPath": "src/runtimes/core/desktop/electron-bridge-contract.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/electron-bridge-contract",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/release/desktop-deployability-readiness.ts",
+      "canonicalPath": "src/runtimes/core/desktop/release/desktop-deployability-readiness.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/release/desktop-deployability-readiness",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/desktop/release/index.ts",
+      "canonicalPath": "src/runtimes/core/desktop/release/index.ts",
+      "canonicalSpec": "@/runtimes/core/desktop/release/index",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/event-classification-map.ts",
+      "canonicalPath": "src/runtimes/core/event-classification-map.ts",
+      "canonicalSpec": "@/runtimes/core/event-classification-map",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/feature-capability-registry.ts",
+      "canonicalPath": "src/runtimes/core/feature-capability-registry.ts",
+      "canonicalSpec": "@/runtimes/core/feature-capability-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/feature-runtime-tier-registry.ts",
+      "canonicalPath": "src/runtimes/core/feature-runtime-tier-registry.ts",
+      "canonicalSpec": "@/runtimes/core/feature-runtime-tier-registry",
+      "wave": 3,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/feature-tier-registry.ts",
+      "canonicalPath": "src/runtimes/core/feature-tier-registry.ts",
+      "canonicalSpec": "@/runtimes/core/feature-tier-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.585Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/index.ts",
+      "canonicalPath": "src/runtimes/core/index.ts",
+      "canonicalSpec": "@/runtimes/core/index",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/infra-implementation-coverage-map.ts",
+      "canonicalPath": "src/runtimes/core/infra-implementation-coverage-map.ts",
+      "canonicalSpec": "@/runtimes/core/infra-implementation-coverage-map",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/infra-runtime-classification-map.ts",
+      "canonicalPath": "src/runtimes/core/infra-runtime-classification-map.ts",
+      "canonicalSpec": "@/runtimes/core/infra-runtime-classification-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/launch-honesty-rules.ts",
+      "canonicalPath": "src/runtimes/core/launch-honesty-rules.ts",
+      "canonicalSpec": "@/runtimes/core/launch-honesty-rules",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/mobile-runtime-contract.ts",
+      "canonicalPath": "src/runtimes/core/mobile-runtime-contract.ts",
+      "canonicalSpec": "@/runtimes/core/mobile-runtime-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.575Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/mobile-store-registry.ts",
+      "canonicalPath": "src/runtimes/core/mobile-store-registry.ts",
+      "canonicalSpec": "@/runtimes/core/mobile-store-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/portability-rules.ts",
+      "canonicalPath": "src/runtimes/core/portability-rules.ts",
+      "canonicalSpec": "@/runtimes/core/portability-rules",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/env-recovery-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/env-recovery-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/env-recovery-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/first-boot-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/first-boot-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/first-boot-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/index.ts",
+      "canonicalPath": "src/runtimes/core/probes/index.ts",
+      "canonicalSpec": "@/runtimes/core/probes/index",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/mobile-approval-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/mobile-approval-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/mobile-approval-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/oauth-sync-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/oauth-sync-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/oauth-sync-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/push-pipeline-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/push-pipeline-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/push-pipeline-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/restore-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/restore-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/restore-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.576Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/probes/workflow-replay-probe.ts",
+      "canonicalPath": "src/runtimes/core/probes/workflow-replay-probe.ts",
+      "canonicalSpec": "@/runtimes/core/probes/workflow-replay-probe",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/product-reality-tiers.ts",
+      "canonicalPath": "src/runtimes/core/product-reality-tiers.ts",
+      "canonicalSpec": "@/runtimes/core/product-reality-tiers",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/reality-classification-registry.ts",
+      "canonicalPath": "src/runtimes/core/reality-classification-registry.ts",
+      "canonicalSpec": "@/runtimes/core/reality-classification-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-assertions.ts",
+      "canonicalPath": "src/runtimes/core/runtime-assertions.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-assertions",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-capability-matrix.ts",
+      "canonicalPath": "src/runtimes/core/runtime-capability-matrix.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-capability-matrix",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-context.tsx",
+      "canonicalPath": "src/runtimes/core/runtime-context.tsx",
+      "canonicalSpec": "@/runtimes/core/runtime-context",
+      "wave": 3,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:45.589Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-detection.ts",
+      "canonicalPath": "src/runtimes/core/runtime-detection.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-detection",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-flags.ts",
+      "canonicalPath": "src/runtimes/core/runtime-flags.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-flags",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-message-registry.ts",
+      "canonicalPath": "src/runtimes/core/runtime-message-registry.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-message-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/runtime-tier-model.ts",
+      "canonicalPath": "src/runtimes/core/runtime-tier-model.ts",
+      "canonicalSpec": "@/runtimes/core/runtime-tier-model",
+      "wave": 3,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:45.588Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/service-lifecycle-registry.ts",
+      "canonicalPath": "src/runtimes/core/service-lifecycle-registry.ts",
+      "canonicalSpec": "@/runtimes/core/service-lifecycle-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/simulated-surface-registry.ts",
+      "canonicalPath": "src/runtimes/core/simulated-surface-registry.ts",
+      "canonicalSpec": "@/runtimes/core/simulated-surface-registry",
+      "wave": 3,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:45.586Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/simulation/shell-simulation-capabilities.ts",
+      "canonicalPath": "src/runtimes/core/simulation/shell-simulation-capabilities.ts",
+      "canonicalSpec": "@/runtimes/core/simulation/shell-simulation-capabilities",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.577Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/simulation/simulated-os-contract.ts",
+      "canonicalPath": "src/runtimes/core/simulation/simulated-os-contract.ts",
+      "canonicalSpec": "@/runtimes/core/simulation/simulated-os-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.578Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/simulation/surface-simulation-rules.ts",
+      "canonicalPath": "src/runtimes/core/simulation/surface-simulation-rules.ts",
+      "canonicalSpec": "@/runtimes/core/simulation/surface-simulation-rules",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.578Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/surface-types.ts",
+      "canonicalPath": "src/runtimes/core/surface-types.ts",
+      "canonicalSpec": "@/runtimes/core/surface-types",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.578Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/web/web-capability-map.ts",
+      "canonicalPath": "src/runtimes/core/web/web-capability-map.ts",
+      "canonicalSpec": "@/runtimes/core/web/web-capability-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.578Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/web/web-fallbacks.ts",
+      "canonicalPath": "src/runtimes/core/web/web-fallbacks.ts",
+      "canonicalSpec": "@/runtimes/core/web/web-fallbacks",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.579Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/runtime/web/web-runtime-contract.ts",
+      "canonicalPath": "src/runtimes/core/web/web-runtime-contract.ts",
+      "canonicalSpec": "@/runtimes/core/web/web-runtime-contract",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.579Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
       "oldPath": "src/lib/seed/contract-runtime-consumer.ts",
       "canonicalPath": "src/data/seed/contract-runtime-consumer.ts",
       "canonicalSpec": "@/data/seed/contract-runtime-consumer",
@@ -1136,6 +2144,24 @@
       "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
     },
     {
+      "oldPath": "src/lib/shopify/config.ts",
+      "canonicalPath": "src/integrations/shopify/config.ts",
+      "canonicalSpec": "@/integrations/shopify/config",
+      "wave": 6,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:47.220Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/shopify/index.ts",
+      "canonicalPath": "src/integrations/shopify/index.ts",
+      "canonicalSpec": "@/integrations/shopify/index",
+      "wave": 6,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:47.221Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
       "oldPath": "src/lib/storage/index.ts",
       "canonicalPath": "src/data/persistence/index.ts",
       "canonicalSpec": "@/data/persistence/index",
@@ -1151,6 +2177,78 @@
       "wave": 2,
       "importerCount": 0,
       "addedAt": "2026-04-18T02:46:33.051Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/supabase-helpers.ts",
+      "canonicalPath": "src/integrations/supabase/helpers.ts",
+      "canonicalSpec": "@/integrations/supabase/helpers",
+      "wave": 6,
+      "importerCount": 224,
+      "addedAt": "2026-04-18T02:46:47.221Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/drag-snap-behavior-map.ts",
+      "canonicalPath": "src/runtimes/surfaces/drag-snap-behavior-map.ts",
+      "canonicalSpec": "@/runtimes/surfaces/drag-snap-behavior-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.579Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/host-window-vs-simulated-map.ts",
+      "canonicalPath": "src/runtimes/surfaces/host-window-vs-simulated-map.ts",
+      "canonicalSpec": "@/runtimes/surfaces/host-window-vs-simulated-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.579Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/layout-persistence-map.ts",
+      "canonicalPath": "src/runtimes/surfaces/layout-persistence-map.ts",
+      "canonicalSpec": "@/runtimes/surfaces/layout-persistence-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.580Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/shell-surface-map.ts",
+      "canonicalPath": "src/runtimes/surfaces/shell-surface-map.ts",
+      "canonicalSpec": "@/runtimes/surfaces/shell-surface-map",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.580Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/surface-runtime-registry.ts",
+      "canonicalPath": "src/runtimes/surfaces/surface-runtime-registry.ts",
+      "canonicalSpec": "@/runtimes/surfaces/surface-runtime-registry",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.580Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/widget-capability-matrix.ts",
+      "canonicalPath": "src/runtimes/surfaces/widget-capability-matrix.ts",
+      "canonicalSpec": "@/runtimes/surfaces/widget-capability-matrix",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.580Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/surfaces/window-capability-matrix.ts",
+      "canonicalPath": "src/runtimes/surfaces/window-capability-matrix.ts",
+      "canonicalSpec": "@/runtimes/surfaces/window-capability-matrix",
+      "wave": 3,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:45.581Z",
       "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
     },
     {
@@ -1493,6 +2591,177 @@
       "wave": 2,
       "importerCount": 1,
       "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/admin-view-models.ts",
+      "canonicalPath": "src/contracts/types/admin-view-models.ts",
+      "canonicalSpec": "@/contracts/types/admin-view-models",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.919Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/advisor-orchestration.types.ts",
+      "canonicalPath": "src/contracts/types/advisor-orchestration.types.ts",
+      "canonicalSpec": "@/contracts/types/advisor-orchestration.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.919Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/auth-connector-separation.types.ts",
+      "canonicalPath": "src/contracts/types/auth-connector-separation.types.ts",
+      "canonicalSpec": "@/contracts/types/auth-connector-separation.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.919Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/digital-twin.types.ts",
+      "canonicalPath": "src/contracts/types/digital-twin.types.ts",
+      "canonicalSpec": "@/contracts/types/digital-twin.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.919Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/domain-types.ts",
+      "canonicalPath": "src/contracts/types/domain-types.ts",
+      "canonicalSpec": "@/contracts/types/domain-types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.920Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/dwe-types.ts",
+      "canonicalPath": "src/contracts/types/dwe-types.ts",
+      "canonicalSpec": "@/contracts/types/dwe-types",
+      "wave": 7,
+      "importerCount": 7,
+      "addedAt": "2026-04-18T02:46:48.923Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/entity-graph.types.ts",
+      "canonicalPath": "src/contracts/types/entity-graph.types.ts",
+      "canonicalSpec": "@/contracts/types/entity-graph.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.920Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/guards.ts",
+      "canonicalPath": "src/contracts/types/guards.ts",
+      "canonicalSpec": "@/contracts/types/guards",
+      "wave": 7,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:48.923Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/index.ts",
+      "canonicalPath": "src/contracts/types/index.ts",
+      "canonicalSpec": "@/contracts/types/index",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.920Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/memory-governance.types.ts",
+      "canonicalPath": "src/contracts/types/memory-governance.types.ts",
+      "canonicalSpec": "@/contracts/types/memory-governance.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.921Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/meta-governance.types.ts",
+      "canonicalPath": "src/contracts/types/meta-governance.types.ts",
+      "canonicalSpec": "@/contracts/types/meta-governance.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.921Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/mission-control.types.ts",
+      "canonicalPath": "src/contracts/types/mission-control.types.ts",
+      "canonicalSpec": "@/contracts/types/mission-control.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.921Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/os-unified.types.ts",
+      "canonicalPath": "src/contracts/types/os-unified.types.ts",
+      "canonicalSpec": "@/contracts/types/os-unified.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/policy-depth.types.ts",
+      "canonicalPath": "src/contracts/types/policy-depth.types.ts",
+      "canonicalSpec": "@/contracts/types/policy-depth.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/relation-parsers.ts",
+      "canonicalPath": "src/contracts/types/relation-parsers.ts",
+      "canonicalSpec": "@/contracts/types/relation-parsers",
+      "wave": 7,
+      "importerCount": 8,
+      "addedAt": "2026-04-18T02:46:48.923Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/render.ts",
+      "canonicalPath": "src/contracts/types/render.ts",
+      "canonicalSpec": "@/contracts/types/render",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/replay-recovery.types.ts",
+      "canonicalPath": "src/contracts/types/replay-recovery.types.ts",
+      "canonicalSpec": "@/contracts/types/replay-recovery.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/revenue-engine.types.ts",
+      "canonicalPath": "src/contracts/types/revenue-engine.types.ts",
+      "canonicalSpec": "@/contracts/types/revenue-engine.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/types/token-governance.types.ts",
+      "canonicalPath": "src/contracts/types/token-governance.types.ts",
+      "canonicalSpec": "@/contracts/types/token-governance.types",
+      "wave": 7,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:48.922Z",
       "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
     }
   ]
