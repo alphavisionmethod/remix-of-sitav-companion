@@ -1,23 +1,32 @@
 {
-  "generatedAt": "2026-04-18T13:00:00.000Z",
-  "wave": "phase-a + B1 + B2 + B3 + B4 + B5",
+  "generatedAt": "2026-04-18T13:30:00.000Z",
+  "wave": "phase-a + B1 + B2 + B3 + B4 + B5 + B6",
   "buildStatus": "green",
   "tscNoEmit": { "exitCode": 0, "errorCount": 0 },
   "checks": {
-    "service-topology":     { "status": "ok", "value": 178, "budget": 200, "level": "warn"  },
+    "service-topology":     { "status": "ok", "value": 178, "budget": 185, "level": "warn"  },
     "contract-topology":    { "status": "ok", "value": 0,   "budget": 0,   "level": "block" },
     "plane-import-graph":   { "status": "ok", "value": 0,   "baseline": 0, "level": "block" },
-    "plane-transitive":     { "status": "ok", "direct": 0, "transitive": 12, "budget": 50, "level": "warn" },
-    "route-truth":          { "status": "warn", "value": 26, "level": "warn", "note": "false-positive heavy, never blocks" },
+    "plane-transitive":     { "status": "ok", "direct": 0, "transitive": 12, "budget": 20, "level": "warn" },
+    "route-truth":          { "status": "warn", "value": 26, "level": "warn", "note": "FP-heavy, never blocks" },
     "dead-pages":           { "status": "ok", "value": 53,  "budget": 150, "level": "warn"  },
     "route-wrapper-usage":  { "status": "ok", "wrappers": 8, "undeclared": 0, "level": "block" },
-    "lib-ownership-drift":  { "status": "ok" }
+    "lib-ownership-drift":  { "status": "ok", "level": "block" }
   },
   "graduations": {
     "plane-import-graph":   { "from": "warn", "to": "block", "previousBaseline": 5, "newBaseline": 0 },
     "contract-topology":    { "from": "warn", "to": "block", "previousBudget": 250, "newBudget": 0 },
     "route-wrapper-usage":  { "from": "warn", "to": "block" }
   },
+  "ratchets": {
+    "service-topology":  { "previousBudget": 200, "newBudget": 185, "current": 178 },
+    "plane-transitive":  { "previousBudget": 50,  "newBudget": 20,  "current": 12  }
+  },
+  "blockLevelGates": 4,
+  "warnLevelGates": 4,
   "deploymentReady": true,
-  "constitutionalEnforcement": "active"
+  "constitutionalEnforcement": "active",
+  "behaviorRegressions": 0,
+  "filesMoved": 0,
+  "filesDeleted": 0
 }
