@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   fetchPersistedEvents, getEventLineage, markEventReplayed,
   fetchActionLineage, fetchPolicyEvaluations, getActionExplanation,
-} from "@/lib/persistence";
+} from "@/data/persistence";
 import { toast } from "sonner";
 import { getSitaKernel } from "@/lib/sita-kernel";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

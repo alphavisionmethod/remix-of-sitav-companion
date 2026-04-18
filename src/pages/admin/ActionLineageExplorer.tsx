@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GitBranch, RefreshCw, Eye, RotateCcw, Link2, Shield, Activity, FileText } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchActionLineage, getActionExplanation, findStuckActions, type PersistedActionLineage } from "@/lib/persistence";
+import { fetchActionLineage, getActionExplanation, findStuckActions, type PersistedActionLineage } from "@/data/persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

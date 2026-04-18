@@ -3,7 +3,7 @@
 // "Why?" layer for decisions, trust, automations, and blocks
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 
 const SERVICE_KEY = "explainability-engine";
 

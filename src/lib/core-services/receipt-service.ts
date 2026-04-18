@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { ReceiptType as CanonicalReceiptType } from "@/packages/contracts";
-import { persistReceipt, fetchReceipts } from "@/lib/persistence/supabase-adapters";
+import { persistReceipt, fetchReceipts } from "@/data/persistence/supabase-adapters";
 
 export type { CanonicalReceiptType };
 

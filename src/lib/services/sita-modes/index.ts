@@ -1,5 +1,5 @@
 // SITA OS — SITA Modes (elevated: 12 modes, auto-transition, mode effects)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 
 export type SitaMode = 'standard' | 'focus' | 'executive' | 'stealth' | 'family' | 'travel' | 'emergency' | 'recovery' | 'execution' | 'founder' | 'investor_demo' | 'boardroom';

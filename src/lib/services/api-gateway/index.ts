@@ -3,7 +3,7 @@
 // Ingress routing, rate limiting, auth validation
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface RouteConfig { path: string; method: string; service: string; handler: string; auth: boolean; rateLimit: number; timeout: number; trustLevel: string; }
 export interface RateLimitState { key: string; count: number; windowStart: string; limit: number; remaining: number; }

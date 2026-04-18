@@ -143,8 +143,8 @@ export {
   persistReceipt, fetchReceipts,
   persistProof, fetchProofs,
   persistMemory, fetchMemory, forgetMemory,
-} from "@/lib/persistence";
-export type { PersistedReceipt, PersistedProof, PersistedMemoryEntry } from "@/lib/persistence";
+} from "@/data/persistence";
+export type { PersistedReceipt, PersistedProof, PersistedMemoryEntry } from "@/data/persistence";
 
 // ── Observability ──
 export {

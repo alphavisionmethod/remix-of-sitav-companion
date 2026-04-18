@@ -4,7 +4,7 @@
 // device version tracking for the SITA device fleet
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type RolloutStrategy = "immediate" | "canary-then-all" | "ring-based" | "scheduled";
 export type RolloutStatus = "draft" | "active" | "paused" | "completed" | "rolled-back" | "failed";

@@ -1,5 +1,5 @@
 // SITA OS — File Ingestion (merge: connector-control-plane)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface IngestedFile { id: string; filename: string; mimeType: string; sizeBytes: number; status: 'pending' | 'processing' | 'classified' | 'failed'; classification?: string; extractedData?: Record<string, unknown>; ingestedAt: string; }
 export class FileIngestionService {

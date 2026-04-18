@@ -1,5 +1,5 @@
 // SITA OS — Pack Management Service (merge: enterprise-control-plane)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface VerticalPack { id: string; name: string; domain: string; version: string; modules: string[]; schemas: string[]; active: boolean; installedAt?: string; }
 export class PackManagementService {

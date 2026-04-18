@@ -3,7 +3,7 @@
 // Real-time unified context from all OS subsystems
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 

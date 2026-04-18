@@ -1,5 +1,5 @@
 // SITA OS — Operating Autopilot (merge: workflow-engine)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface AutopilotRule { id: string; trigger: string; action: string; conditions: Record<string, unknown>; active: boolean; executionCount: number; }
 export class OperatingAutopilotService {

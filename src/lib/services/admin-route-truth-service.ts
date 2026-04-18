@@ -6,7 +6,7 @@
 import {
   loadServiceState,
   debouncedSaveServiceState,
-} from "@/lib/persistence/universal-service-persistence";
+} from "@/data/persistence/universal-service-persistence";
 import type {
   AdminApiManifestEntry,
   AdminRouteTruthResult,

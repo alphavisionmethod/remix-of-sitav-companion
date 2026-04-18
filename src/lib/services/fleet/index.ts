@@ -1,5 +1,5 @@
 // SITA OS — Fleet Service (target parent: fleet-health-consolidation)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface FleetNode { id: string; name: string; type: string; status: 'online' | 'offline' | 'degraded'; version: string; lastHeartbeat: string; metrics: Record<string, number>; }
 export class FleetService {

@@ -1,5 +1,5 @@
 // SITA OS — Document Engine
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface ManagedDocument { id: string; title: string; type: string; status: 'draft' | 'review' | 'approved' | 'archived'; content: string; version: number; createdAt: string; updatedAt: string; ownerId: string; tags: string[]; }
 export class DocumentEngineService {

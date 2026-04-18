@@ -3,7 +3,7 @@
 // E-signature workflow with approval chain integration
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type SignatureStatus = "draft" | "pending-signatures" | "partially-signed" | "completed" | "expired" | "voided";
 

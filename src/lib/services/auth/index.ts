@@ -3,7 +3,7 @@
 // Session management, token validation, MFA coordination
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface AuthSession { userId: string; email: string; role: string; deviceId: string; createdAt: string; expiresAt: string; mfaVerified: boolean; trustLevel: string; }
 export interface AuthChallenge { type: 'password' | 'otp' | 'biometric' | 'device-attestation'; issuedAt: string; expiresAt: string; verified: boolean; }

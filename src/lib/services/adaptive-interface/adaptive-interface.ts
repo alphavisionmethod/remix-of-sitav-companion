@@ -3,7 +3,7 @@
 // Context-driven UI adaptation: density, layout, animations
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 
 export type InterfaceDensity = "calm" | "standard" | "focus" | "analyst" | "presentation";
 export type AnimationLevel = "none" | "subtle" | "standard" | "rich";

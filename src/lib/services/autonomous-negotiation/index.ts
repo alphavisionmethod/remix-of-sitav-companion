@@ -3,7 +3,7 @@
 // AI-powered negotiation strategies with BATNA analysis
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type NegotiationStrategy = 'anchor-high' | 'best-alternative' | 'value-decomposition' | 'time-pressure' | 'bundle-leverage';
 export type NegotiationStatus = 'research' | 'strategy' | 'contact' | 'counter' | 'accept' | 'escalate' | 'closed';

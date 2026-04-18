@@ -1,5 +1,5 @@
 // SITA OS — Intent Inbox (merge: brain-core)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface IntentMessage { id: string; intent: string; source: string; payload: Record<string, unknown>; priority: string; status: 'pending' | 'routed' | 'processed'; receivedAt: string; }
 export class IntentInboxService {

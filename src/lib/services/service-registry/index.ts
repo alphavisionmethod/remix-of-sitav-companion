@@ -3,7 +3,7 @@
 // Dynamic service discovery, health aggregation, dependency graph
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type ServiceStatus = "healthy" | "degraded" | "down" | "unknown";
 export type ServiceTierLevel = "tier-1" | "tier-2" | "tier-3" | "isolated";

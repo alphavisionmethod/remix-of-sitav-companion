@@ -12,7 +12,7 @@ import {
   forgetScopedMemory,
   fetchScopedMemory,
   type MemoryScope,
-} from "@/lib/persistence/memory-service-persistence";
+} from "@/data/persistence/memory-service-persistence";
 
 /** @deprecated Use CanonicalPrivacyTier from contracts */
 export type ServicePrivacyTier = CanonicalPrivacyTier;

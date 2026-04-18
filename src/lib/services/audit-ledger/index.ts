@@ -1,5 +1,5 @@
 // SITA OS — Audit Ledger (merge: support-diagnostics)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface AuditEntry { id: string; action: string; actor: string; target: string; domain: string; severity: 'info' | 'warning' | 'critical'; details: Record<string, unknown>; timestamp: string; correlationId?: string; ip?: string; }
 export class AuditLedgerService {

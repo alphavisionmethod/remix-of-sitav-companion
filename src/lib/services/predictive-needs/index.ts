@@ -3,7 +3,7 @@
 // Proactive cross-domain need anticipation
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type NeedCategory = 'financial' | 'business' | 'household' | 'health' | 'legal' | 'education';
 export type NeedUrgency = 'immediate' | 'this-week' | 'this-month' | 'this-quarter';

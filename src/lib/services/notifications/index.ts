@@ -3,7 +3,7 @@
 // Backend notification routing, delivery tracking, preferences
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type NotificationType = "info" | "success" | "warning" | "error" | "action-required" | "reminder";
 

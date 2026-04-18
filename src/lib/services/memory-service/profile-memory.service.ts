@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { MemoryObject, DomainId, PrivacyTier } from "@/packages/contracts";
-import { persistMemoryEntry, fetchScopedMemory, supersedeMemoryEntry } from "@/lib/persistence/memory-service-persistence";
+import { persistMemoryEntry, fetchScopedMemory, supersedeMemoryEntry } from "@/data/persistence/memory-service-persistence";
 
 
 const profileStore = new Map<string, MemoryObject>();

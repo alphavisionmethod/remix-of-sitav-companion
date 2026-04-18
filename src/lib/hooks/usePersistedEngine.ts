@@ -10,7 +10,7 @@ import {
   loadEngineState,
   appendEngineEvent,
   fetchEngineEvents,
-} from "@/lib/persistence/engine-persistence-adapter";
+} from "@/data/persistence/engine-persistence-adapter";
 
 // ── Generic hook: persist any serializable engine state ─────────
 export function usePersistedEngine(

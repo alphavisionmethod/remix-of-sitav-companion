@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { TypedReceipt, ActionReceipt, SystemReceipt } from "@/packages/proof-model";
-import { persistReceipt } from "@/lib/persistence/supabase-adapters";
+import { persistReceipt } from "@/data/persistence/supabase-adapters";
 
 const receiptChain: TypedReceipt[] = [];
 

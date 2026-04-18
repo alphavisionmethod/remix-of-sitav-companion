@@ -32,7 +32,7 @@ import {
 } from "./types";
 import {
   createPersistenceHelper,
-} from "@/lib/persistence/universal-service-persistence";
+} from "@/data/persistence/universal-service-persistence";
 
 // ── Helpers ─────────────────────────────────────────────────
 const uid = () => crypto.randomUUID();

@@ -3,7 +3,7 @@
 // Privacy walls, cross-domain synthesis, attention boundaries
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import type { DomainId } from "@/packages/contracts/_contract-scaffold";
 
 export type BoundaryScope = "personal" | "household" | "business" | "investment" | "family";

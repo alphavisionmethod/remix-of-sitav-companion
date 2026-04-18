@@ -3,7 +3,7 @@
 // Single entry point for all user intents across all surfaces
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import type { DomainId, RiskTier, ExecutionStatus } from "@/packages/contracts/_contract-scaffold";
 
 // ── Types ────────────────────────────────────────────────────────

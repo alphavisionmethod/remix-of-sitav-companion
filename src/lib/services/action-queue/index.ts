@@ -4,7 +4,7 @@
 // Priority-ordered queue for deferred and scheduled actions
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type ActionPriority = 'critical' | 'high' | 'normal' | 'low' | 'background';
 export type ActionStatus = 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled' | 'dead-lettered';
