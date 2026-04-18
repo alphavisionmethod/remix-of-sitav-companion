@@ -1,6 +1,6 @@
 # Deployment Gap Backlog
 
-_Generated: 2026-04-18T13:42:32.439Z_
+_Generated: 2026-04-18T13:52:40.158Z_
 
 This backlog merges all admitted P0/P1 gaps with hidden risks discovered during audit.
 
@@ -21,7 +21,7 @@ This backlog merges all admitted P0/P1 gaps with hidden risks discovered during 
 | 7 | AI cost metering live | P0 | RESOLVED — real ledger + 7 consumers | K-audit |
 | 8 | Connector OAuth rotation | P1 | Google real / others manual | M8 |
 | 9–14 | Operator maturity (health UI, backup verify, biometric, updater, support diag, replay) | P2 | Multi-component — see SUPPORTABILITY_AND_OPERATOR_READINESS.md | guardrails |
-| H1 | Frontend↔backend matrix | P1 | 16 actions mapped, 15 real | K-audit |
+| H1 | Frontend↔backend matrix | P1 | 20 actions mapped, 19 real | K-audit |
 | H2 | DB truth closure | P0 | RESOLVED — 7/7 components present | K-audit |
 | H3 | Manifest truth closure | P0 | RESOLVED — 6/6 governance components | K-audit |
 | H4 | Supportability closure | P1 | 7 runbook files + classifier + kill-switch | K-audit |

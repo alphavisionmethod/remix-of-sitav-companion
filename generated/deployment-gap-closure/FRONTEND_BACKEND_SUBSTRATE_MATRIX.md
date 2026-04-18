@@ -1,8 +1,8 @@
 # Frontend ↔ Backend ↔ Substrate Matrix
 
-_Generated: 2026-04-18T13:42:32.439Z_
+_Generated: 2026-04-18T13:52:40.158Z_
 
-## Action coverage: 16 actions
+## Action coverage: 20 actions
 
 | Action | Backend | Substrate | Status |
 |--------|---------|-----------|--------|
@@ -12,6 +12,8 @@ _Generated: 2026-04-18T13:42:32.439Z_
 | AI inference | edge:ai-gateway | db:ai_invocations + ai_usage_ledger | real |
 | Connector token refresh (Google) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
 | Connector token refresh (Microsoft) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
+| Connector token refresh (Slack) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
+| Connector token refresh (Salesforce) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
 | Connector OAuth init | edge:connector-oauth | db:connector_credentials | real |
 | Global search | rpc:supabase tables | db:multi-domain | real |
 | Draft autosave | client-only | localStorage + IndexedDB (offline-db.ts) | real |
@@ -22,9 +24,11 @@ _Generated: 2026-04-18T13:42:32.439Z_
 | Approval requests | edge:approval-engine | db:approval_decisions | real |
 | Receipt emission | edge:receipt-issuer | db:receipts | real |
 | Kill-switch arm | edge:kill-switch-control | db:kill_switch_audit_log | real |
+| Admin action audit | trigger+rls | db:admin_action_audit | real |
+| AI budget alerting | edge:ai-gateway | db:ai_budget_alerts | real |
 
 ## Summary
-- **Real:** 15
+- **Real:** 19
 - **Honestly archived:** 1
 - **Pending real implementation:** 0
 

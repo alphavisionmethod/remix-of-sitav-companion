@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:42:32.439Z",
+  "generatedAt": "2026-04-18T13:52:40.158Z",
   "matrix": [
     {
       "action": "App install",
@@ -34,6 +34,18 @@
     },
     {
       "action": "Connector token refresh (Microsoft)",
+      "backend": "edge:connector-token-refresh",
+      "substrate": "db:connector_oauth_tokens",
+      "status": "real"
+    },
+    {
+      "action": "Connector token refresh (Slack)",
+      "backend": "edge:connector-token-refresh",
+      "substrate": "db:connector_oauth_tokens",
+      "status": "real"
+    },
+    {
+      "action": "Connector token refresh (Salesforce)",
       "backend": "edge:connector-token-refresh",
       "substrate": "db:connector_oauth_tokens",
       "status": "real"
@@ -97,10 +109,22 @@
       "backend": "edge:kill-switch-control",
       "substrate": "db:kill_switch_audit_log",
       "status": "real"
+    },
+    {
+      "action": "Admin action audit",
+      "backend": "trigger+rls",
+      "substrate": "db:admin_action_audit",
+      "status": "real"
+    },
+    {
+      "action": "AI budget alerting",
+      "backend": "edge:ai-gateway",
+      "substrate": "db:ai_budget_alerts",
+      "status": "real"
     }
   ],
-  "totalActions": 16,
-  "realActions": 15,
+  "totalActions": 20,
+  "realActions": 19,
   "archivedActions": 1,
   "pendingActions": 0
 }

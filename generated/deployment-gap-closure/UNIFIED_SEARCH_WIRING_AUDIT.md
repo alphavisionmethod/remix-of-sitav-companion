@@ -1,6 +1,6 @@
 # Unified Search Wiring Audit
 
-_Generated: 2026-04-18T13:42:32.439Z_
+_Generated: 2026-04-18T13:52:40.158Z_
 
 ## Canonical hook
 - ✅ `src/hooks/use-global-search.ts`
