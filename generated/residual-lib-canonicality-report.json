@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-18T03:34:44.816Z",
+  "gate": "residual-lib-canonicality",
+  "allowedTopLevel": [
+    "utils.ts",
+    "utils",
+    "internal",
+    "hooks",
+    "__tests__"
+  ],
+  "baselineCount": 103,
+  "presentCount": 103,
+  "violations": [],
+  "ok": true,
+  "errorCount": 0
+}
