@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:03:48.664Z",
+  "generatedAt": "2026-04-18T13:11:51.571Z",
   "edgeFunctions": [
     "app-ingest-pwa",
     "app-ingest-web",
