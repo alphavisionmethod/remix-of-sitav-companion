@@ -89,6 +89,16 @@ const REQUIRED_GATES = [
   "frontend-polish-coverage",
   "admin-operator-coherence",
   "human-use-operational-readiness",
+  // Internal AI Workforce — Phase 1 closure (6 BLOCK gates)
+  "internal-agent-registry",
+  "internal-agent-runtime-coverage",
+  "internal-agent-admin-pages",
+  "internal-agent-escalation-runtime",
+  "internal-agent-seed-integrity",
+  "internal-agent-runtime-loop",
+  // Flagship Surface Closure — Admin AI Engineering scope (2 BLOCK gates)
+  "admin-ai-runtime-drilldowns",
+  "admin-integrations-health-visibility",
 ];
 
 const GENERATED_DIR = "generated";
