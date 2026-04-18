@@ -1,23 +1,7 @@
+// @lovable:migrated-wrapper
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Data Facade: Integrations
-// Pages import from here instead of core-services directly
+// SITA OS — Deprecated wrapper. Canonical home: @/data/seed/integrations
+// This file exists only to bridge legacy imports during decomposition.
+// New code must import directly from the canonical path.
 // ═══════════════════════════════════════════════════════════════
-
-export {
-  DEMO_CONNECTIONS,
-  DEMO_AUDIT_LOG,
-  DEMO_ACTION_REQUESTS,
-} from "@/lib/core-services/integration-hub/demo-connections";
-
-export type {
-  DemoConnection,
-  DemoAuditEntry,
-  DemoActionRequest,
-} from "@/lib/core-services/integration-hub/demo-connections";
-
-export {
-  INTEGRATION_PROVIDERS,
-  PROVIDER_CATEGORIES,
-  getProviderById,
-} from "@/lib/core-services/integration-hub/providers";
-
+export * from "@/data/seed/integrations";

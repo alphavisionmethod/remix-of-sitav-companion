@@ -1,20 +1,7 @@
+// @lovable:migrated-wrapper
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Data Facade: System Status / Self-Healing
-// Pages import from here instead of core-services directly
+// SITA OS — Deprecated wrapper. Canonical home: @/data/seed/system-status
+// This file exists only to bridge legacy imports during decomposition.
+// New code must import directly from the canonical path.
 // ═══════════════════════════════════════════════════════════════
-
-export {
-  createSelfHealingService,
-  createImmuneController,
-  createFleetHealthService,
-  HEALING_CAPABILITY_MAP,
-  ESCALATION_RULES,
-  DEGRADED_MODES,
-} from "@/lib/core-services/self-healing";
-
-export type {
-  Incident,
-  ServiceHealthRecord,
-  QuarantineRecord,
-  CircuitBreakerState,
-} from "@/lib/core-services/self-healing/types";
+export * from "@/data/seed/system-status";
