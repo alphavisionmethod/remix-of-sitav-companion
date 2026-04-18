@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T12:11:06.455Z",
+  "generatedAt": "2026-04-18T12:11:16.852Z",
   "gate": "plane-transitive",
   "directViolationCount": 0,
   "transitiveViolationCount": 12,
-  "transitiveBudget": 50,
+  "transitiveBudget": 20,
   "level": "warn",
   "ok": true,
   "directSample": [],
