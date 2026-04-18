@@ -641,7 +641,7 @@ export function OSSetupExperience() {
       // Boot → Device Trust bridge
       try {
         const { getDeviceId, getDeviceName, detectSurfaceType } = await import("@/lib/services/surface-detection");
-        const { TrustDeviceEngine } = await import("@/lib/engines");
+        const { TrustDeviceEngine } = await import("@/domains/engines");
         const trustEngine = new TrustDeviceEngine();
         const deviceId = getDeviceId();
         const deviceName = getDeviceName();

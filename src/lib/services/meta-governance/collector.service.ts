@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getEventBus } from "../../core-services/event-bus";
-import { getMetaGovernanceEngine } from "../../engines/meta-governance-engine";
+import { getMetaGovernanceEngine } from "@/domains/engines/meta-governance-engine";
 import type { BusEvent } from "../../core-services/event-bus";
 import type { DebtEvidence } from "../../types/meta-governance.types";
 import type { OSDomain, EntityScope } from "../../types/os-unified.types";
