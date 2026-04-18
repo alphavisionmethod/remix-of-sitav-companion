@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-18T17:02:43Z",
+  "source": "live-db",
+  "slaHours": 24,
+  "stuckCount": 0,
+  "stuck": [],
+  "totalItems": 0,
+  "stateDistribution": [],
+  "status": "GREEN",
+  "note": "Live DB query returned 0 boardroom_items past SLA in non-terminal state. Coverage GREEN."
+}
