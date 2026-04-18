@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 // New design system
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
@@ -37,7 +38,13 @@ const InvoicesCollections = () => {
   const invoiceLabel = primaryMode === "ecommerce" ? "Orders & Payments" : primaryMode === "appointment-based" ? "Session Billing" : primaryMode === "membership" ? "Membership Billing" : "Invoices & Collections";
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<{ invoice_number: string; amount: string; due_date: string; notes: string }>("finance:invoice:new", "money");
+  const [form, setForm] = useState({
+    invoice_number: draft.invoice_number ?? "",
+    amount: draft.amount ?? "",
+    due_date: draft.due_date ?? "",
+    notes: draft.notes ?? "",
+  });
   const generatePdf = useInvoiceGenerate();
   const sendInvoice = useInvoiceSend();
 

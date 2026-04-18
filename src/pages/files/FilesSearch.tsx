@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useGlobalSearch } from "@/platform/search";
 import { toast } from "sonner";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
@@ -34,6 +35,7 @@ const FilesSearch = () => {
   const [aiSearchResult, setAiSearchResult] = useState<string | null>(null);
   const [aiSearching, setAiSearching] = useState(false);
   const aiInsight = useAIInsight();
+  const { results: crossDomainResults, search: searchCrossDomain } = useGlobalSearch();
 
   const kernelSearchFabric = useSearchFabric();
   const searchService = useMemo(() => {
@@ -52,6 +54,8 @@ const FilesSearch = () => {
       sortBy: "relevance",
     });
     setSearchResponse(response);
+    // Federated cross-domain search via canonical hook.
+    searchCrossDomain(searchQuery);
   };
 
   const handleFilterChange = (f: string) => {

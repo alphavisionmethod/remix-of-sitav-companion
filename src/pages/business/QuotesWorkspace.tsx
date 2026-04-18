@@ -18,7 +18,7 @@ import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
-
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
@@ -28,7 +28,13 @@ const QuotesWorkspace = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ title: "", total: "", expiry_date: "", notes: "" });
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<{ title: string; total: string; expiry_date: string; notes: string }>("business:quote:new", "business");
+  const [form, setForm] = useState({
+    title: draft.title ?? "",
+    total: draft.total ?? "",
+    expiry_date: draft.expiry_date ?? "",
+    notes: draft.notes ?? "",
+  });
 
   const { data: quotes = [], isLoading } = useQuery({
     queryKey: ["quotes", user?.id],
