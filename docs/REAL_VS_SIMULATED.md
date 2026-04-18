@@ -1,3 +1,5 @@
+> **Canonical framing**: SITA OS is an Ubuntu-native userland AI operating system running above the signed Ubuntu 24.04 LTS substrate (kernel 6.8+) with systemd boot orchestration. References to "operating system" and "boot sequence" mean the userland AI operating environment. See `generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md`.
+
 # REAL vs SIMULATED — Full SITA OS Architecture Reality Audit
 
 > Generated: 2026-04-15

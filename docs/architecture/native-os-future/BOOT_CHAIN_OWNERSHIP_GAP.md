@@ -1,4 +1,5 @@
 <!-- track-b -->
+<!-- track-b -->
 # Boot Chain Ownership — GAP
 
 **Classification:** Future / native-substrate. **Not implemented.**
@@ -18,3 +19,6 @@ A SITA-owned boot chain: firmware interface (UEFI/coreboot fork), bootloader, si
 - ❌ No claim of "we own the boot chain."
 - ❌ No claim of secure-boot custody or measured-boot attestation.
 - ✅ The simulated boot sequence is allowed because it is shell decoration; `ShellSimulationBanner` exists for this exact reason.
+
+
+> Note: This document discusses the userland boot sequence above systemd on the Ubuntu 24.04 substrate. Track-B research only.
