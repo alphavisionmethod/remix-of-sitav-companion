@@ -7,7 +7,8 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGlobalSearch } from "@/platform/search";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 import {
@@ -25,6 +26,16 @@ const ApprovalsCenter = () => {
   const { approve, reject } = useApprovalQueue();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const { results: relatedResults, search: runRelatedSearch, clearResults: clearRelated } = useGlobalSearch();
+  // Keep cross-domain related items in sync with the typed query.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (searchQuery.trim().length >= 2) runRelatedSearch(searchQuery);
+      else clearRelated();
+    }, 250);
+    return () => clearTimeout(t);
+  }, [searchQuery, runRelatedSearch, clearRelated]);
 
   const pending = approvals.filter((a: Record<string, any>) => a.status === "pending");
   const decided = approvals.filter((a: Record<string, any>) => a.status !== "pending");
