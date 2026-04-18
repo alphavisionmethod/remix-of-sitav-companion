@@ -1,0 +1,137 @@
+{
+  "generatedAt": "2026-04-18T02:18:08.150Z",
+  "gate": "ci-artifacts-proof",
+  "phase": "phase-14-production-launch-hardening",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 4,
+  "totals": {
+    "workflowsExpected": 9,
+    "workflowsPresent": 9,
+    "workflowsMissing": []
+  },
+  "workflows": [
+    {
+      "workflow": "ci.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": true,
+        "node20Plus": false
+      }
+    },
+    {
+      "workflow": "deploy-backend.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": false,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "deploy-frontend.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": false,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "desktop-build.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": true,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "mobile-build.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": true,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "native-readiness.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": false,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "os-build-iso.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": false,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "release-electron.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": true,
+        "node20Plus": true
+      }
+    },
+    {
+      "workflow": "sentry-release.yml",
+      "checks": {
+        "uploadV4": true,
+        "noUploadV3": true,
+        "artifactNamePresent": true,
+        "concurrencyGroup": true,
+        "node20Plus": true
+      }
+    }
+  ],
+  "findings": [
+    {
+      "workflow": "ci.yml",
+      "severity": "error",
+      "rule": "node20",
+      "message": "setup-node uses Node < 20 (Node 20 LTS minimum)"
+    },
+    {
+      "workflow": "deploy-backend.yml",
+      "severity": "warning",
+      "rule": "concurrency",
+      "message": "no concurrency group declared (thundering-herd risk)"
+    },
+    {
+      "workflow": "deploy-frontend.yml",
+      "severity": "warning",
+      "rule": "concurrency",
+      "message": "no concurrency group declared (thundering-herd risk)"
+    },
+    {
+      "workflow": "native-readiness.yml",
+      "severity": "warning",
+      "rule": "concurrency",
+      "message": "no concurrency group declared (thundering-herd risk)"
+    },
+    {
+      "workflow": "os-build-iso.yml",
+      "severity": "warning",
+      "rule": "concurrency",
+      "message": "no concurrency group declared (thundering-herd risk)"
+    }
+  ]
+}
