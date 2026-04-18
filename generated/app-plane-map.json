@@ -1,5 +1,10 @@
 {
-  "generatedAt": "2026-04-18T02:05:23.300Z",
+  "generatedAt": "2026-04-18T02:08:28.086Z",
+  "gate": "app-plane-map",
+  "phase": "phase-12-native-deployability",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
   "totalApps": 19,
   "byPlane": {
     "user": 6,
@@ -10,8 +15,6 @@
     "user": 10,
     "operator": 13
   },
-  "errors": 0,
-  "warnings": 0,
   "issues": [],
   "apps": [
     {

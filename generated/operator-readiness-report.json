@@ -1,6 +1,11 @@
 {
-  "generatedAt": "2026-04-18T02:05:25.034Z",
+  "generatedAt": "2026-04-18T02:08:29.740Z",
+  "gate": "operator-readiness",
+  "phase": "phase-12-native-deployability",
   "profile": "operator",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
   "overall": "GREEN",
   "counts": {
     "pass": 8,

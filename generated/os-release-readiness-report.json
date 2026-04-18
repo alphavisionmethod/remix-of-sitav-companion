@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:07:35.265Z",
+  "generatedAt": "2026-04-18T02:08:31.307Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -81,6 +81,13 @@
       "warnings": 0
     },
     {
+      "file": "generated/app-plane-map-report.json",
+      "gate": "app-plane-map",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/user-profile-readiness-report.json",
       "gate": "user-profile-readiness",
       "ok": true,
@@ -97,9 +104,7 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 0,
-  "missingGates": [
-    "app-plane-map"
-  ],
-  "ok": false,
-  "verdict": "RED"
+  "missingGates": [],
+  "ok": true,
+  "verdict": "GREEN"
 }
