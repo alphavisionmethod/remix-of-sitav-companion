@@ -237,13 +237,13 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
   },
   {
     id: "mobile-build-pipeline",
-    phase: "phase-12-mobile-deployability",
-    title: "Mobile build pipeline (Capacitor + IPA + AAB)",
-    script: "scripts/architecture/checks/check-mobile-build-pipeline.ts",
+    phase: "phase-12-native-deployability",
+    title: "Ubuntu-native build pipeline (ISO + IMG + OVA)",
+    script: "scripts/architecture/checks/check-os-build-pipeline.ts",
     owner: "release-team",
     severity: "blocker",
-    description: "Capacitor deps installed, capacitor.config.ts parses, exportOptions.plist exists, build scripts present.",
-    producesArtifact: "generated/mobile-build-pipeline-report.json",
+    description: "OS build scripts present, qemu validation green, signing artifacts wired. (iOS/Capacitor archived — see docs/PLATFORM_SCOPE.md.)",
+    producesArtifact: "generated/os-build-pipeline-report.json",
   },
 
   // ── Phase 13 ── Web Deployability (Production SPA Readiness)
