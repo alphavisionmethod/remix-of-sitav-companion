@@ -68,8 +68,14 @@ function validatePage(absPath: string, relPath: string): PageResult {
     return { page: relPath, ok: false, reason: "no JSX, createElement, fragment, or component re-export" };
   }
 
-  const openBraces = (stripped.match(/\{/g) ?? []).length;
-  const closeBraces = (stripped.match(/\}/g) ?? []).length;
+  // Strip strings/template literals before brace-counting so content tokens
+  // like `{` inside text or templates don't skew the balance check.
+  const codeOnly = stripped
+    .replace(/`(?:\\[\s\S]|\$\{[^}]*\}|[^`\\])*`/g, "''")
+    .replace(/"(?:\\.|[^"\\])*"/g, "''")
+    .replace(/'(?:\\.|[^'\\])*'/g, "''");
+  const openBraces = (codeOnly.match(/\{/g) ?? []).length;
+  const closeBraces = (codeOnly.match(/\}/g) ?? []).length;
   if (Math.abs(openBraces - closeBraces) > 0) {
     return { page: relPath, ok: false, reason: `unbalanced braces (open=${openBraces} close=${closeBraces})` };
   }
