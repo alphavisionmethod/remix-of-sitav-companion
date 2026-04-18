@@ -186,6 +186,7 @@ const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/Environme
 const ReleasesHome = lazy(() => import("@/pages/admin/releases/ReleasesHome"));
 const SupportHome = lazy(() => import("@/pages/admin/support/SupportHome"));
 const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
+const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
 const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
@@ -242,6 +243,7 @@ export function getAdminRoutes() {
 
     // ── Phase 25: Workflow step routes (every OwnerWorkflow step resolves) ──
     <Route key="ws-daily-incidents" path="/admin/health/incidents" element={gated("maintenance.view", <MCIncidents />)} />,
+    <Route key="ws-health-error-patrol" path="/admin/health/error-patrol" element={gated("maintenance.view", <ErrorPatrolBoard />)} />,
     <Route key="ws-daily-launchready" path="/admin/releases/launch-readiness" element={gated("audit.view", <LaunchReadinessBoard />)} />,
     <Route key="ws-weekly-truth" path="/admin/overview/generated-truth" element={<Navigate to="/admin/generated-truth" replace />} />,
     <Route key="ws-weekly-aieff" path="/admin/ai-runtime/intelligence/efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
