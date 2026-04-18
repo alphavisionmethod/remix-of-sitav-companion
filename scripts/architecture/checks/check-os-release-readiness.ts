@@ -41,6 +41,10 @@ const REQUIRED_GATES = [
   "deployment-profile-coverage",
   "route-plane-coverage",
   "5-plane-boundaries",
+  // Part 2 — Profile-aware composition gates
+  "app-plane-map",
+  "user-profile-readiness",
+  "operator-readiness",
 ];
 
 const GENERATED_DIR = "generated";
