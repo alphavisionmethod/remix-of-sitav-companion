@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-18T03:01:43.896Z",
+  "generatedAt": "2026-04-18T03:02:55.364Z",
   "gate": "legacy-wrapper-usage",
-  "scannedFiles": 2945,
+  "scannedFiles": 2946,
   "totalLegacyImports": 1980,
   "distinctLegacyPaths": 688,
   "topPaths": [

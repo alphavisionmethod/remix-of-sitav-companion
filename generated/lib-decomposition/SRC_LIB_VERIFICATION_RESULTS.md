@@ -1,6 +1,6 @@
 # SITA OS — src/lib Decomposition Verification
 
-> Generated: 2026-04-18T03:01:42.158Z
+> Generated: 2026-04-18T03:02:53.602Z
 > Gate: `lib-decomposition-readiness`  Verdict: 🟡 YELLOW (in-migration)
 
 ## Counts
@@ -17,7 +17,7 @@
 | Root | Total files | Non-barrel files |
 |---|---|---|
 | `src/domains` | 30 | 14 |
-| `src/platform` | 41 | 6 |
+| `src/platform` | 42 | 6 |
 | `src/runtimes` | 9 | 1 |
 | `src/data` | 24 | 17 |
 | `src/integrations` | 7 | 2 |

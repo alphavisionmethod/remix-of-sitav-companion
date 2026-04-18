@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T03:01:42.158Z",
+  "generatedAt": "2026-04-18T03:02:53.602Z",
   "gate": "lib-decomposition-readiness",
   "remainingLibFiles": 1731,
   "allowlistedLibFiles": 36,
@@ -9,7 +9,7 @@
       "nonBarrel": 14
     },
     "src/platform": {
-      "files": 41,
+      "files": 42,
       "nonBarrel": 6
     },
     "src/runtimes": {
