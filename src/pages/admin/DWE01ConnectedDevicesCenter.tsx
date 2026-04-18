@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { ConnectedDeviceRow, DeviceFamilyRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 
 const iconMap: Record<string, React.ReactNode> = {
   phone: <Smartphone className="h-5 w-5" />,
@@ -42,6 +43,7 @@ export default function DWE01ConnectedDevicesCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
+      <DemoOnlyBanner surfaceId="DWE01" />
 <div>
         <h1 className="text-2xl font-bold text-foreground">DWE01 — Connected Devices Center</h1>
         <p className="text-muted-foreground">All phones, watches, desktops, wearables, and their trust/connection state.</p>

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-04-18T00:00:00Z",
+  "registry_path": "src/lib/claim-safety/demo-only-surface-registry.ts",
+  "total_surfaces": 9,
+  "by_containment": {
+    "demo_only": 5,
+    "internal_preview": 2,
+    "future_vision": 2
+  },
+  "surfaces": [
+    { "id": "DWE01", "name": "Connected Devices Center", "containment": "demo_only", "route": "/admin/dwe01-connected-devices" },
+    { "id": "DWE02", "name": "Presence & Continuity Center", "containment": "demo_only", "route": "/admin/dwe02-presence-continuity" },
+    { "id": "DWE03", "name": "Wearable Signals Center", "containment": "demo_only", "route": "/admin/dwe03-wearable-signals" },
+    { "id": "DWE04", "name": "Notification Routing Studio", "containment": "demo_only", "route": "/admin/dwe04-notification-routing" },
+    { "id": "DWE05", "name": "Device Trust & Approvals Center", "containment": "demo_only", "route": "/admin/dwe05-device-trust" },
+    { "id": "DWE06", "name": "Ambient Assistant Center", "containment": "future_vision", "route": "/admin/dwe06-ambient-assistant" },
+    { "id": "DWE07", "name": "Device Launch Honesty Board", "containment": "internal_preview", "route": "/admin/dwe07-device-launch-honesty" },
+    { "id": "UAO03", "name": "Ambient Team Control", "containment": "future_vision", "route": "/admin/uao03-ambient-team-control" },
+    { "id": "UAO08", "name": "Ambient Launch Readiness", "containment": "internal_preview", "route": "/admin/uao08-ambient-launch-readiness" }
+  ],
+  "ci_gates": [
+    "check-demo-only-surface-badging",
+    "check-future-vision-route-containment",
+    "check-device-surface-claim-safety"
+  ],
+  "verdict": "GREEN"
+}

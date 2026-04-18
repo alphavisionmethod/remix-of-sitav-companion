@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AmbientNotificationRouteRow, NotificationFatigueProfileRow, InterruptionPolicyRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 
 export default function DWE04NotificationRoutingStudio() {
   const { user } = useAuth();
@@ -47,6 +48,7 @@ export default function DWE04NotificationRoutingStudio() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
+      <DemoOnlyBanner surfaceId="DWE04" />
 <div>
         <h1 className="text-2xl font-bold text-foreground">DWE04 — Notification Routing Studio</h1>
         <p className="text-muted-foreground">What goes where, why it was routed, urgency policy, fatigue suppression.</p>

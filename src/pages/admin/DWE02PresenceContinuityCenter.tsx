@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { PresenceStateRow, HandoffSessionRow, ContextContinuityRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 
 export default function DWE02PresenceContinuityCenter() {
   const { user } = useAuth();
@@ -43,6 +44,7 @@ export default function DWE02PresenceContinuityCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
+      <DemoOnlyBanner surfaceId="DWE02" />
 <div>
         <h1 className="text-2xl font-bold text-foreground">DWE02 — Presence & Continuity Center</h1>
         <p className="text-muted-foreground">Active device, continuity state, handoffs, focus, interruption tolerance.</p>

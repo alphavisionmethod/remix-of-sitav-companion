@@ -1937,3 +1937,21 @@
 
 *End of Master Deployment Audit v4.0 — SITA OS*
 *Total items audited: 96 user pages, 503 admin pages, 158 hooks, 27 contexts, 14 routes, 86 edge functions, 897 components, 248 scripts, 94 generated artifacts, 201 DB tables + 4 views, 332 RLS policies, 7 SECURITY DEFINER funcs, 164 migrations, 30 features, 34 packages, 1665 lib modules — total 5274+ source files*
+
+---
+
+## Active Caveats
+
+The following P1 evidence gaps remain open as of 2026-04-18. Status claims in this document are made **subject to** this list:
+
+| # | Caveat | Owner | Tracking |
+|---|---|---|---|
+| 1 | TPM hardware proof on real hardware | Trust Council | `generated/final-hardening/MOK_TEST_MATRIX.md` |
+| 2 | Production-shape restore drill — first scheduled live execution | DR Owner | `generated/restore-and-oauth-hardening/PRODUCTION_RESTORE_DRILL_RUNBOOK.md` |
+| 3 | OAuth refresh probe — 7-day continuous health window | Connectors Owner | `generated/restore-and-oauth-hardening/OAUTH_REFRESH_PROBE_LOGGING_AND_RECEIPTS.md` |
+| 4 | Boardroom L7 follow-through — operator-trained runbook drill | Boardroom Owner | `generated/final-hardening/BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md` |
+| 5 | MOK per-distro live tests — Fedora 40 + Arch | Install Owner | `generated/final-hardening/MOK_TEST_MATRIX.md` |
+
+Until each caveat is independently closed with evidence linked from the corresponding tracking doc, **deployability claims must be read together with this list**, not in isolation.
+
+Policy: `generated/claim-safety-hardening/DEPLOYMENT_WORDING_POLICY.md`

@@ -8,6 +8,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AmbientLaunchReadinessRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
+import { FutureVisionBadge } from "@/components/claim-safety/FutureVisionBadge";
+import { getDemoOnlySurfacesByContainment, DEMO_ONLY_SURFACE_COUNT } from "@/lib/claim-safety/demo-only-surface-registry";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
   const { user } = useAuth();
@@ -37,6 +40,37 @@ export default function DWE07DeviceLaunchHonestyBoard() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
+      <DemoOnlyBanner surfaceId="DWE07" />
+
+      {/* Live Demo-Only Surface Registry truth board */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Beaker className="h-4 w-4" />
+            Demo-Only Surface Registry ({DEMO_ONLY_SURFACE_COUNT})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {(Object.entries(getDemoOnlySurfacesByContainment()) as [keyof ReturnType<typeof getDemoOnlySurfacesByContainment>, ReturnType<typeof getDemoOnlySurfacesByContainment>[keyof ReturnType<typeof getDemoOnlySurfacesByContainment>]][]).map(([level, surfaces]) => (
+              <div key={level} className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <FutureVisionBadge containment={level} />
+                  <span className="text-xs text-muted-foreground">{surfaces.length}</span>
+                </div>
+                <ul className="space-y-1">
+                  {surfaces.map((s) => (
+                    <li key={s.surfaceId} className="text-xs">
+                      <span className="font-mono text-muted-foreground">{s.surfaceId}</span>{" "}
+                      <span className="text-foreground">{s.surfaceName}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 <div>
         <h1 className="text-2xl font-bold text-foreground">DWE07 — Device & Wearable Launch Honesty Board</h1>
         <p className="text-muted-foreground">Truthful device readiness: real, demo, pilot, internal, unsupported.</p>

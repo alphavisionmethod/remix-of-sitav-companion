@@ -1,4 +1,5 @@
 import UAOSubNav from "@/components/admin/UAOSubNav";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +39,7 @@ export default function UAO03AmbientTeamControl() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
+      <DemoOnlyBanner surfaceId="UAO03" />
 <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6" /> Ambient Team Control</h1>
