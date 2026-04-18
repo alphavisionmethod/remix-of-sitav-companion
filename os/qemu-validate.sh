@@ -43,10 +43,14 @@ declare -A checks=(
   [kernel-userspace]="systemd\[1\]: Reached|systemd\[1\]: Starting"
   [first-boot]="SITA OS First Boot|sita-firstboot"
   [runtime-shell]="SITA OS Desktop Shell|sita-runtime"
+  [networking-up]="systemd-networkd|networkd"
+  [recovery-target-known]="sita-recovery|recovery"
 )
 declare -A negative=(
   [no-kernel-panic]="Kernel panic"
   [no-verity-corruption]="dm-verity: corruption|verity verification failed"
+  [no-oom-kill]="Out of memory: Killed process"
+  [no-failed-mount]="Failed to mount /sysroot|emergency mode"
 )
 
 results=()
@@ -74,9 +78,32 @@ for name in "${!negative[@]}"; do
   fi
 done
 
+# JSON report
 printf '{"validatedAt":"%s","iso":"%s","timeoutSec":%d,"results":[%s],"failures":%d}\n' \
   "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(basename "${ISO}")" "${TIMEOUT}" \
   "$(IFS=,; echo "${results[*]}")" "${fail}" > "${REPORT}"
 
-echo "📄 report: ${REPORT}"
-[[ "${fail}" -eq 0 ]] && { echo "✅ QEMU validation PASS"; exit 0; } || { echo "❌ ${fail} assertion(s) failed"; exit 1; }
+# Markdown report (CI-friendly summary)
+MD="${OUT_DIR}/qemu-validation-report.md"
+{
+  echo "# SITA OS — QEMU Validation Report"
+  echo ""
+  echo "- ISO: \`$(basename "${ISO}")\`"
+  echo "- Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "- Timeout: ${TIMEOUT}s"
+  echo "- Failures: **${fail}**"
+  echo ""
+  echo "## Assertions"
+  echo ""
+  echo "| Check | Status |"
+  echo "|---|---|"
+  for r in "${results[@]}"; do
+    name=$(echo "$r" | sed -E 's/.*"check":"([^"]+)".*/\1/')
+    stat=$(echo "$r" | sed -E 's/.*"status":"([^"]+)".*/\1/')
+    icon="✅"; [[ "$stat" == "fail" ]] && icon="❌"
+    echo "| ${name} | ${icon} ${stat} |"
+  done
+} > "${MD}"
+
+echo "📄 reports: ${REPORT} + ${MD}"
+[[ "${fail}" -eq 0 ]] && { echo "✅ QEMU validation PASS (${#checks[@]} positive + ${#negative[@]} negative)"; exit 0; } || { echo "❌ ${fail} assertion(s) failed"; exit 1; }
