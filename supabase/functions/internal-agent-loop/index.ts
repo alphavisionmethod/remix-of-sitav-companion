@@ -611,7 +611,7 @@ async function bridgeIncidentResponse(supabase: any): Promise<BridgeResult> {
       row.user_id,
     );
     if (r.ok) {
-      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      if (r.status === "approval_pending") result.approvalsQueued++;
       else if (r.status === "executed") result.actionsDispatched++;
     } else {
       result.errors.push(`clear_stale_lock:${row.id}:${r.error}`);
@@ -675,7 +675,7 @@ async function bridgeSpendControl(supabase: any): Promise<BridgeResult> {
       a.user_id,
     );
     if (r.ok) {
-      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      if (r.status === "approval_pending") result.approvalsQueued++;
       else if (r.status === "executed") result.actionsDispatched++;
     } else {
       result.errors.push(`disable_unhealthy_connector:${target.id}:${r.error}`);
