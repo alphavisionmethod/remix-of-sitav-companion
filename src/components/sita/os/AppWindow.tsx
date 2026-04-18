@@ -3,6 +3,8 @@ import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
 import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
+import { SnapGuideOverlay } from "@/components/sita/shell/SnapGuideOverlay";
+import { useWindowSnap } from "@/hooks/useWindowSnap";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window
