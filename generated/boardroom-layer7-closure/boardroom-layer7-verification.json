@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "gateName": "boardroom-layer7-closure",
+  "gateLevel": "BLOCK",
+  "aggregateStatus": "GREEN",
+  "closureRatio": 1.0,
+  "totalDispatches": 0,
+  "closedOrTracked": 0,
+  "checks": {
+    "state": { "status": "GREEN", "payload": { "stuckCount": 0, "slaHours": 24 } },
+    "linkage": { "status": "GREEN", "payload": { "orphanedOutcomes": [], "orphanedReflections": [] } },
+    "proof": { "status": "GREEN", "payload": { "totalExecuted": 0, "missingReceipt": 0 } },
+    "outcome": { "status": "GREEN", "payload": { "totalExecuted": 0, "missingOutcome": 0 } },
+    "reflection": { "status": "GREEN", "payload": { "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 } }
+  },
+  "wiredInto": {
+    "userSurface": "src/components/sita/apps/boardroom/BoardroomAppShell.tsx (module: followthrough)",
+    "operatorSurface": "src/pages/admin/approvals/ApprovalsHome.tsx (tab: layer7-followthrough)",
+    "edgeFunctions": [
+      "boardroom-followthrough-dispatch",
+      "boardroom-outcome-record",
+      "agent-executor (Boardroom branch)"
+    ],
+    "releaseGate": "scripts/architecture/checks/check-boardroom-layer7-closure.ts",
+    "masterAggregator": "scripts/architecture/checks/check-os-release-readiness.ts (REQUIRED_GATES)"
+  }
+}

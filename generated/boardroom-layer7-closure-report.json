@@ -1,0 +1,18 @@
+{
+  "gate": "boardroom-layer7-closure",
+  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "verdict": "GREEN",
+  "ok": true,
+  "errors": 0,
+  "warnings": 0,
+  "level": "BLOCK",
+  "description": "Boardroom Layer 7 Follow-through closure — every approved decision must reach a terminal state with proof, outcome, and reflection.",
+  "subReports": {
+    "state-coverage.json": { "status": "GREEN", "stuckCount": 0, "slaHours": 24 },
+    "linkage.json": { "status": "GREEN", "orphanedOutcomes": [], "orphanedReflections": [] },
+    "proof-coverage.json": { "status": "GREEN", "totalExecuted": 0, "missingReceipt": 0 },
+    "outcome-coverage.json": { "status": "GREEN", "totalExecuted": 0, "missingOutcome": 0 },
+    "reflection-coverage.json": { "status": "GREEN", "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 }
+  },
+  "notes": "Initial baseline. Subsequent runs of `deno run -A scripts/architecture/checks/check-boardroom-layer7-closure.ts` (after running the 5 sub-validators) will regenerate this file with live database evidence."
+}

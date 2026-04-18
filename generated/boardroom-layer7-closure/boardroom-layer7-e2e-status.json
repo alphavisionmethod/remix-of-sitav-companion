@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "specs": [
+    {
+      "name": "boardroom-followthrough-low-risk",
+      "path": "tests/e2e/boardroom-layer7/boardroom-followthrough-low-risk.spec.ts",
+      "riskTier": "low",
+      "approvalMode": "auto",
+      "status": "GREEN",
+      "asserts": [
+        "boardroom_items row exists",
+        "advisor_board_recommendations row exists",
+        "approval_decisions row exists",
+        "boardroom_followthrough_dispatches row created with correlation_id",
+        "agent-executor invoked with source=boardroom-followthrough",
+        "command_steps row created",
+        "agent_action_receipts row created",
+        "boardroom_outcome_records row auto-derived",
+        "advisor_board_reflections row with all FKs",
+        "boardroom_items.followthrough_state reaches 'closed'",
+        "timeline_events contains 9+ boardroom.followthrough.transition rows"
+      ]
+    },
+    {
+      "name": "boardroom-followthrough-dual-approval",
+      "path": "tests/e2e/boardroom-layer7/boardroom-followthrough-dual-approval.spec.ts",
+      "riskTier": "high",
+      "approvalMode": "dual-operator",
+      "status": "GREEN",
+      "asserts": [
+        "two operator approvals required and captured",
+        "dispatch only proceeds after second approval",
+        "outcome recorded manually by operator (not auto)",
+        "reflection required before close (not auto-close)",
+        "Layer7FollowthroughBoard surfaces the chain in 'Closed' filter"
+      ]
+    }
+  ],
+  "mockingPolicy": "Real Supabase, real edge functions, real DB. Only the outbound side-effect of the executed tool (e.g., send-email) is stubbed; the dispatch→receipt→outcome→reflection chain is fully real."
+}

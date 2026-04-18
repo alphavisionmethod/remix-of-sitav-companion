@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-04-18T16:30:00.000Z",
+  "version": "1.0.0",
+  "stateField": "boardroom_items.followthrough_state",
+  "transitionFunction": "brd_followthrough_transition",
+  "states": [
+    { "key": "none", "terminal": false, "description": "Item not yet approved or pre-Layer-7" },
+    { "key": "approved", "terminal": false, "description": "Approval captured" },
+    { "key": "dispatch_pending", "terminal": false, "description": "Dispatch row created" },
+    { "key": "dispatched", "terminal": false, "description": "Executor invoked" },
+    { "key": "executing", "terminal": false, "description": "Executor working" },
+    { "key": "executed", "terminal": false, "description": "Executor returned success" },
+    { "key": "receipt_recorded", "terminal": false, "description": "Receipt linked" },
+    { "key": "outcome_pending", "terminal": false, "description": "Awaiting outcome" },
+    { "key": "outcome_tracked", "terminal": false, "description": "Outcome recorded" },
+    { "key": "reflected", "terminal": false, "description": "Reflection captured" },
+    { "key": "closed", "terminal": true, "description": "Chain complete" },
+    { "key": "failed", "terminal": true, "description": "Chain failed; reason in followthrough_failure_reason" }
+  ],
+  "transitions": [
+    { "from": "none", "to": "approved", "trigger": "approval-capture", "actor": "user|operator|policy" },
+    { "from": "approved", "to": "dispatch_pending", "trigger": "boardroom-followthrough-dispatch", "actor": "system" },
+    { "from": "dispatch_pending", "to": "dispatched", "trigger": "agent-executor accepted", "actor": "system" },
+    { "from": "dispatched", "to": "executing", "trigger": "agent-executor running", "actor": "system" },
+    { "from": "executing", "to": "executed", "trigger": "agent-executor success", "actor": "system" },
+    { "from": "executed", "to": "receipt_recorded", "trigger": "agent_action_receipts inserted", "actor": "system" },
+    { "from": "receipt_recorded", "to": "outcome_pending", "trigger": "auto", "actor": "system" },
+    { "from": "outcome_pending", "to": "outcome_tracked", "trigger": "boardroom-outcome-record", "actor": "system|operator" },
+    { "from": "outcome_tracked", "to": "reflected", "trigger": "BoardroomReflectionPrompt submit", "actor": "advisor|user" },
+    { "from": "reflected", "to": "closed", "trigger": "closeFollowthrough", "actor": "system|operator" },
+    { "from": "*", "to": "failed", "trigger": "executor error or operator force-fail", "actor": "system|operator" }
+  ],
+  "sla": {
+    "stateCoverageHours": 24,
+    "reflectionHours": 72
+  }
+}
