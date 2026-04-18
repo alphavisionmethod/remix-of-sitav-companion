@@ -1,7 +1,4 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/data/projections
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
-// ═══════════════════════════════════════════════════════════════
-export {};
+// SITA OS — Projection Service
+// @persistence: none — stateless module, no durable state to persist
+export { generateHomePulse, generateBusinessProjection, generateMoneyProjection, generateConciergeProjection, generateAdvisorProjection, generateBoardroomProjection, generateProofProjection, generateStoreProjection } from '../projections';
+

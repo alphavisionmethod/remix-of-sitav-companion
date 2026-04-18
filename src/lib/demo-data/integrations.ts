@@ -1,23 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Data Facade: Integrations
-// Pages import from here instead of core-services directly
-// ═══════════════════════════════════════════════════════════════
-
-export {
-  DEMO_CONNECTIONS,
-  DEMO_AUDIT_LOG,
-  DEMO_ACTION_REQUESTS,
-} from "@/lib/core-services/integration-hub/demo-connections";
-
-export type {
-  DemoConnection,
-  DemoAuditEntry,
-  DemoActionRequest,
-} from "@/lib/core-services/integration-hub/demo-connections";
-
-export {
-  INTEGRATION_PROVIDERS,
-  PROVIDER_CATEGORIES,
-  getProviderById,
-} from "@/lib/core-services/integration-hub/providers";
-
+/**
+ * @deprecated Migrated to `@/data/seed/integrations` in Wave 2 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/data/seed/integrations";

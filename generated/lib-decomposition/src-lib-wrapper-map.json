@@ -1,0 +1,1499 @@
+{
+  "generatedAt": "2026-04-18T02:46:33.083Z",
+  "wrappers": [
+    {
+      "oldPath": "src/lib/data-services/activity-data-service.ts",
+      "canonicalPath": "src/data/repositories/activity-data-service.ts",
+      "canonicalSpec": "@/data/repositories/activity-data-service",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/admin-data-service.ts",
+      "canonicalPath": "src/data/repositories/admin-data-service.ts",
+      "canonicalSpec": "@/data/repositories/admin-data-service",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/ai-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/ai-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/ai-ops-data-service",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/business-data-service.ts",
+      "canonicalPath": "src/data/repositories/business-data-service.ts",
+      "canonicalSpec": "@/data/repositories/business-data-service",
+      "wave": 2,
+      "importerCount": 4,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/cai-data-service.ts",
+      "canonicalPath": "src/data/repositories/cai-data-service.ts",
+      "canonicalSpec": "@/data/repositories/cai-data-service",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/calendar-data-service.ts",
+      "canonicalPath": "src/data/repositories/calendar-data-service.ts",
+      "canonicalSpec": "@/data/repositories/calendar-data-service",
+      "wave": 2,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/capability-launch-data-service.ts",
+      "canonicalPath": "src/data/repositories/capability-launch-data-service.ts",
+      "canonicalSpec": "@/data/repositories/capability-launch-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.056Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/connector-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/connector-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/connector-ops-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.057Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/crm-data-service.ts",
+      "canonicalPath": "src/data/repositories/crm-data-service.ts",
+      "canonicalSpec": "@/data/repositories/crm-data-service",
+      "wave": 2,
+      "importerCount": 12,
+      "addedAt": "2026-04-18T02:46:33.073Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/demo-governance-data-service.ts",
+      "canonicalPath": "src/data/repositories/demo-governance-data-service.ts",
+      "canonicalSpec": "@/data/repositories/demo-governance-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.039Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/digital-presence-data-service.ts",
+      "canonicalPath": "src/data/repositories/digital-presence-data-service.ts",
+      "canonicalSpec": "@/data/repositories/digital-presence-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.039Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/feature-lifecycle-data-service.ts",
+      "canonicalPath": "src/data/repositories/feature-lifecycle-data-service.ts",
+      "canonicalSpec": "@/data/repositories/feature-lifecycle-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/file-explorer-service.ts",
+      "canonicalPath": "src/data/repositories/file-explorer-service.ts",
+      "canonicalSpec": "@/data/repositories/file-explorer-service",
+      "wave": 2,
+      "importerCount": 8,
+      "addedAt": "2026-04-18T02:46:33.072Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/files-data-service.ts",
+      "canonicalPath": "src/data/repositories/files-data-service.ts",
+      "canonicalSpec": "@/data/repositories/files-data-service",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/health-signal-data-service.ts",
+      "canonicalPath": "src/data/repositories/health-signal-data-service.ts",
+      "canonicalSpec": "@/data/repositories/health-signal-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.057Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/index.ts",
+      "canonicalPath": "src/data/repositories/index.ts",
+      "canonicalSpec": "@/data/repositories/index",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/integration-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/integration-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/integration-ops-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/intelligence-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/intelligence-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/intelligence-ops-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/investment-data-service.ts",
+      "canonicalPath": "src/data/repositories/investment-data-service.ts",
+      "canonicalSpec": "@/data/repositories/investment-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.057Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/investment-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/investment-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/investment-ops-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/mission-control-data-service.ts",
+      "canonicalPath": "src/data/repositories/mission-control-data-service.ts",
+      "canonicalSpec": "@/data/repositories/mission-control-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.057Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/mobile-data-service.ts",
+      "canonicalPath": "src/data/repositories/mobile-data-service.ts",
+      "canonicalSpec": "@/data/repositories/mobile-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/money-data-service.ts",
+      "canonicalPath": "src/data/repositories/money-data-service.ts",
+      "canonicalSpec": "@/data/repositories/money-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/native-shell-data-service.ts",
+      "canonicalPath": "src/data/repositories/native-shell-data-service.ts",
+      "canonicalSpec": "@/data/repositories/native-shell-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/notification-calm-data-service.ts",
+      "canonicalPath": "src/data/repositories/notification-calm-data-service.ts",
+      "canonicalSpec": "@/data/repositories/notification-calm-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/owner-data-service.ts",
+      "canonicalPath": "src/data/repositories/owner-data-service.ts",
+      "canonicalSpec": "@/data/repositories/owner-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/platform-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/platform-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/platform-ops-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.040Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/revenue-data-service.ts",
+      "canonicalPath": "src/data/repositories/revenue-data-service.ts",
+      "canonicalSpec": "@/data/repositories/revenue-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/revenue-ops-data-service.ts",
+      "canonicalPath": "src/data/repositories/revenue-ops-data-service.ts",
+      "canonicalSpec": "@/data/repositories/revenue-ops-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.059Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/surface-mode-data-service.ts",
+      "canonicalPath": "src/data/repositories/surface-mode-data-service.ts",
+      "canonicalSpec": "@/data/repositories/surface-mode-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.041Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/system-misc-data-service.ts",
+      "canonicalPath": "src/data/repositories/system-misc-data-service.ts",
+      "canonicalSpec": "@/data/repositories/system-misc-data-service",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.041Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/unified-calendar-service.ts",
+      "canonicalPath": "src/data/repositories/unified-calendar-service.ts",
+      "canonicalSpec": "@/data/repositories/unified-calendar-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.060Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/data-services/workspace-data-service.ts",
+      "canonicalPath": "src/data/repositories/workspace-data-service.ts",
+      "canonicalSpec": "@/data/repositories/workspace-data-service",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.060Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/cross-domain-write-exemptions.ts",
+      "canonicalPath": "src/data/clients/cross-domain-write-exemptions.ts",
+      "canonicalSpec": "@/data/clients/cross-domain-write-exemptions",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.041Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/db-audit-registry.ts",
+      "canonicalPath": "src/data/clients/db-audit-registry.ts",
+      "canonicalSpec": "@/data/clients/db-audit-registry",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.041Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/db-dependency-map.ts",
+      "canonicalPath": "src/data/clients/db-dependency-map.ts",
+      "canonicalSpec": "@/data/clients/db-dependency-map",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.042Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/db-health-engine.ts",
+      "canonicalPath": "src/data/clients/db-health-engine.ts",
+      "canonicalSpec": "@/data/clients/db-health-engine",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.060Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/db-runtime-consequence-map.ts",
+      "canonicalPath": "src/data/clients/db-runtime-consequence-map.ts",
+      "canonicalSpec": "@/data/clients/db-runtime-consequence-map",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.042Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/db-truth-registry.ts",
+      "canonicalPath": "src/data/clients/db-truth-registry.ts",
+      "canonicalSpec": "@/data/clients/db-truth-registry",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.042Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/index.ts",
+      "canonicalPath": "src/data/clients/index.ts",
+      "canonicalSpec": "@/data/clients/index",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.042Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/migration-registry.ts",
+      "canonicalPath": "src/data/clients/migration-registry.ts",
+      "canonicalSpec": "@/data/clients/migration-registry",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.060Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/non-edge-table-io-sources.ts",
+      "canonicalPath": "src/data/clients/non-edge-table-io-sources.ts",
+      "canonicalSpec": "@/data/clients/non-edge-table-io-sources",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.043Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/rls-policy-registry.ts",
+      "canonicalPath": "src/data/clients/rls-policy-registry.ts",
+      "canonicalSpec": "@/data/clients/rls-policy-registry",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.061Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/schema-registry.ts",
+      "canonicalPath": "src/data/clients/schema-registry.ts",
+      "canonicalSpec": "@/data/clients/schema-registry",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.061Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/table-ownership-map.ts",
+      "canonicalPath": "src/data/clients/table-ownership-map.ts",
+      "canonicalSpec": "@/data/clients/table-ownership-map",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/table-writer-reader-map.ts",
+      "canonicalPath": "src/data/clients/table-writer-reader-map.ts",
+      "canonicalSpec": "@/data/clients/table-writer-reader-map",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.061Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/db/tenancy-boundary-map.ts",
+      "canonicalPath": "src/data/clients/tenancy-boundary-map.ts",
+      "canonicalSpec": "@/data/clients/tenancy-boundary-map",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/admin-intelligence.ts",
+      "canonicalPath": "src/data/seed/admin-intelligence.ts",
+      "canonicalSpec": "@/data/seed/admin-intelligence",
+      "wave": 2,
+      "importerCount": 8,
+      "addedAt": "2026-04-18T02:46:33.073Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/admin-platform.tsx",
+      "canonicalPath": "src/data/seed/admin-platform.tsx",
+      "canonicalSpec": "@/data/seed/admin-platform",
+      "wave": 2,
+      "importerCount": 75,
+      "addedAt": "2026-04-18T02:46:33.076Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/app-receipts.ts",
+      "canonicalPath": "src/data/seed/app-receipts.ts",
+      "canonicalSpec": "@/data/seed/app-receipts",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/approval-chamber.ts",
+      "canonicalPath": "src/data/seed/approval-chamber.ts",
+      "canonicalSpec": "@/data/seed/approval-chamber",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/apps.ts",
+      "canonicalPath": "src/data/seed/apps.ts",
+      "canonicalSpec": "@/data/seed/apps",
+      "wave": 2,
+      "importerCount": 6,
+      "addedAt": "2026-04-18T02:46:33.072Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/atlas.ts",
+      "canonicalPath": "src/data/seed/atlas.ts",
+      "canonicalSpec": "@/data/seed/atlas",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/business.ts",
+      "canonicalPath": "src/data/seed/business.ts",
+      "canonicalSpec": "@/data/seed/business",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.067Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/calendar-workspace.ts",
+      "canonicalPath": "src/data/seed/calendar-workspace.ts",
+      "canonicalSpec": "@/data/seed/calendar-workspace",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/communications.ts",
+      "canonicalPath": "src/data/seed/communications.ts",
+      "canonicalSpec": "@/data/seed/communications",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/concierge.ts",
+      "canonicalPath": "src/data/seed/concierge.ts",
+      "canonicalSpec": "@/data/seed/concierge",
+      "wave": 2,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/connectors.ts",
+      "canonicalPath": "src/data/seed/connectors.ts",
+      "canonicalSpec": "@/data/seed/connectors",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/core-pages.ts",
+      "canonicalPath": "src/data/seed/core-pages.ts",
+      "canonicalSpec": "@/data/seed/core-pages",
+      "wave": 2,
+      "importerCount": 26,
+      "addedAt": "2026-04-18T02:46:33.073Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/digital-presence.ts",
+      "canonicalPath": "src/data/seed/digital-presence.ts",
+      "canonicalSpec": "@/data/seed/digital-presence",
+      "wave": 2,
+      "importerCount": 18,
+      "addedAt": "2026-04-18T02:46:33.073Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/durability.ts",
+      "canonicalPath": "src/data/seed/durability.ts",
+      "canonicalSpec": "@/data/seed/durability",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/enterprise.ts",
+      "canonicalPath": "src/data/seed/enterprise.ts",
+      "canonicalSpec": "@/data/seed/enterprise",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/health-signals.ts",
+      "canonicalPath": "src/data/seed/health-signals.ts",
+      "canonicalSpec": "@/data/seed/health-signals",
+      "wave": 2,
+      "importerCount": 4,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/import-export.ts",
+      "canonicalPath": "src/data/seed/import-export.ts",
+      "canonicalSpec": "@/data/seed/import-export",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.062Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/incidents.ts",
+      "canonicalPath": "src/data/seed/incidents.ts",
+      "canonicalSpec": "@/data/seed/incidents",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/integrations.ts",
+      "canonicalPath": "src/data/seed/integrations.ts",
+      "canonicalSpec": "@/data/seed/integrations",
+      "wave": 2,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/media.ts",
+      "canonicalPath": "src/data/seed/media.ts",
+      "canonicalSpec": "@/data/seed/media",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/native-shell.ts",
+      "canonicalPath": "src/data/seed/native-shell.ts",
+      "canonicalSpec": "@/data/seed/native-shell",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/notes.ts",
+      "canonicalPath": "src/data/seed/notes.ts",
+      "canonicalSpec": "@/data/seed/notes",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/notification-calm.ts",
+      "canonicalPath": "src/data/seed/notification-calm.ts",
+      "canonicalSpec": "@/data/seed/notification-calm",
+      "wave": 2,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/outcome-engine.ts",
+      "canonicalPath": "src/data/seed/outcome-engine.ts",
+      "canonicalSpec": "@/data/seed/outcome-engine",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/owner-center-costs.ts",
+      "canonicalPath": "src/data/seed/owner-center-costs.ts",
+      "canonicalSpec": "@/data/seed/owner-center-costs",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/packs.ts",
+      "canonicalPath": "src/data/seed/packs.ts",
+      "canonicalSpec": "@/data/seed/packs",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/revenue-office.ts",
+      "canonicalPath": "src/data/seed/revenue-office.ts",
+      "canonicalSpec": "@/data/seed/revenue-office",
+      "wave": 2,
+      "importerCount": 35,
+      "addedAt": "2026-04-18T02:46:33.075Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-data/system-status.ts",
+      "canonicalPath": "src/data/seed/system-status.ts",
+      "canonicalSpec": "@/data/seed/system-status",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-scenarios/default.ts",
+      "canonicalPath": "src/data/seed/default.ts",
+      "canonicalSpec": "@/data/seed/default",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-scenarios/family.ts",
+      "canonicalPath": "src/data/seed/family.ts",
+      "canonicalSpec": "@/data/seed/family",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-scenarios/founder.ts",
+      "canonicalPath": "src/data/seed/founder.ts",
+      "canonicalSpec": "@/data/seed/founder",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/demo-scenarios/money.ts",
+      "canonicalPath": "src/data/seed/money.ts",
+      "canonicalSpec": "@/data/seed/money",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/_demo-source-marker.ts",
+      "canonicalPath": "src/data/seed/_demo-source-marker.ts",
+      "canonicalSpec": "@/data/seed/_demo-source-marker",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/activity.ts",
+      "canonicalPath": "src/data/seed/activity.ts",
+      "canonicalSpec": "@/data/seed/activity",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/admin-ops.ts",
+      "canonicalPath": "src/data/seed/admin-ops.ts",
+      "canonicalSpec": "@/data/seed/admin-ops",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/admin.ts",
+      "canonicalPath": "src/data/seed/admin.ts",
+      "canonicalSpec": "@/data/seed/admin",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.044Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/advisor-mission-control.ts",
+      "canonicalPath": "src/data/seed/advisor-mission-control.ts",
+      "canonicalSpec": "@/data/seed/advisor-mission-control",
+      "wave": 2,
+      "importerCount": 5,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/automation.ts",
+      "canonicalPath": "src/data/seed/automation.ts",
+      "canonicalSpec": "@/data/seed/automation",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.045Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/calendar.ts",
+      "canonicalPath": "src/data/seed/calendar.ts",
+      "canonicalSpec": "@/data/seed/calendar",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.063Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/collections.ts",
+      "canonicalPath": "src/data/seed/collections.ts",
+      "canonicalSpec": "@/data/seed/collections",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/connector-sync.ts",
+      "canonicalPath": "src/data/seed/connector-sync.ts",
+      "canonicalSpec": "@/data/seed/connector-sync",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/conscience-gate.ts",
+      "canonicalPath": "src/data/seed/conscience-gate.ts",
+      "canonicalSpec": "@/data/seed/conscience-gate",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/customers.ts",
+      "canonicalPath": "src/data/seed/customers.ts",
+      "canonicalSpec": "@/data/seed/customers",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.045Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/files.ts",
+      "canonicalPath": "src/data/seed/files.ts",
+      "canonicalSpec": "@/data/seed/files",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.045Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/fleet-health.ts",
+      "canonicalPath": "src/data/seed/fleet-health.ts",
+      "canonicalSpec": "@/data/seed/fleet-health",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/inbox.ts",
+      "canonicalPath": "src/data/seed/inbox.ts",
+      "canonicalSpec": "@/data/seed/inbox",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.045Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/index.ts",
+      "canonicalPath": "src/data/seed/index.ts",
+      "canonicalSpec": "@/data/seed/index",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.046Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/investment.ts",
+      "canonicalPath": "src/data/seed/investment.ts",
+      "canonicalSpec": "@/data/seed/investment",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/lease-dashboard.ts",
+      "canonicalPath": "src/data/seed/lease-dashboard.ts",
+      "canonicalSpec": "@/data/seed/lease-dashboard",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.046Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/legacy-display-mocks.ts",
+      "canonicalPath": "src/data/seed/legacy-display-mocks.ts",
+      "canonicalSpec": "@/data/seed/legacy-display-mocks",
+      "wave": 2,
+      "importerCount": 4,
+      "addedAt": "2026-04-18T02:46:33.071Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/mobile.ts",
+      "canonicalPath": "src/data/seed/mobile.ts",
+      "canonicalSpec": "@/data/seed/mobile",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.046Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/owner-center.ts",
+      "canonicalPath": "src/data/seed/owner-center.ts",
+      "canonicalSpec": "@/data/seed/owner-center",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.047Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/owner.ts",
+      "canonicalPath": "src/data/seed/owner.ts",
+      "canonicalSpec": "@/data/seed/owner",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.068Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/reserves.ts",
+      "canonicalPath": "src/data/seed/reserves.ts",
+      "canonicalSpec": "@/data/seed/reserves",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.047Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/revenue-autopilot.ts",
+      "canonicalPath": "src/data/seed/revenue-autopilot.ts",
+      "canonicalSpec": "@/data/seed/revenue-autopilot",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/revenue-calling.ts",
+      "canonicalPath": "src/data/seed/revenue-calling.ts",
+      "canonicalSpec": "@/data/seed/revenue-calling",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/search.ts",
+      "canonicalPath": "src/data/seed/search.ts",
+      "canonicalSpec": "@/data/seed/search",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.047Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/workflows.ts",
+      "canonicalPath": "src/data/seed/workflows.ts",
+      "canonicalSpec": "@/data/seed/workflows",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.047Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/mock-data/workspace.ts",
+      "canonicalPath": "src/data/seed/workspace.ts",
+      "canonicalSpec": "@/data/seed/workspace",
+      "wave": 2,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/offline-db.ts",
+      "canonicalPath": "src/data/persistence/offline-db.ts",
+      "canonicalSpec": "@/data/persistence/offline-db",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.064Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/action-lineage-persistence.ts",
+      "canonicalPath": "src/data/persistence/action-lineage-persistence.ts",
+      "canonicalSpec": "@/data/persistence/action-lineage-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.048Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/cai-persistence-bridge.ts",
+      "canonicalPath": "src/data/persistence/cai-persistence-bridge.ts",
+      "canonicalSpec": "@/data/persistence/cai-persistence-bridge",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/compute-governance-persistence.ts",
+      "canonicalPath": "src/data/persistence/compute-governance-persistence.ts",
+      "canonicalSpec": "@/data/persistence/compute-governance-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.048Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/engine-persistence-adapter.ts",
+      "canonicalPath": "src/data/persistence/engine-persistence-adapter.ts",
+      "canonicalSpec": "@/data/persistence/engine-persistence-adapter",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.048Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/event-bus-persistence.ts",
+      "canonicalPath": "src/data/persistence/event-bus-persistence.ts",
+      "canonicalSpec": "@/data/persistence/event-bus-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.048Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/intelligence-asset-persistence.ts",
+      "canonicalPath": "src/data/persistence/intelligence-asset-persistence.ts",
+      "canonicalSpec": "@/data/persistence/intelligence-asset-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/memory-service-persistence.ts",
+      "canonicalPath": "src/data/persistence/memory-service-persistence.ts",
+      "canonicalSpec": "@/data/persistence/memory-service-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/mock-replacement-persistence.ts",
+      "canonicalPath": "src/data/persistence/mock-replacement-persistence.ts",
+      "canonicalSpec": "@/data/persistence/mock-replacement-persistence",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/operator-taste-persistence.ts",
+      "canonicalPath": "src/data/persistence/operator-taste-persistence.ts",
+      "canonicalSpec": "@/data/persistence/operator-taste-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/persistable.ts",
+      "canonicalPath": "src/data/persistence/persistable.ts",
+      "canonicalSpec": "@/data/persistence/persistable",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/policy-engine-persistence.ts",
+      "canonicalPath": "src/data/persistence/policy-engine-persistence.ts",
+      "canonicalSpec": "@/data/persistence/policy-engine-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/quality-floor-persistence.ts",
+      "canonicalPath": "src/data/persistence/quality-floor-persistence.ts",
+      "canonicalSpec": "@/data/persistence/quality-floor-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/reality-classification-persistence.ts",
+      "canonicalPath": "src/data/persistence/reality-classification-persistence.ts",
+      "canonicalSpec": "@/data/persistence/reality-classification-persistence",
+      "wave": 2,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/supabase-adapters.ts",
+      "canonicalPath": "src/data/persistence/supabase-adapters.ts",
+      "canonicalSpec": "@/data/persistence/supabase-adapters",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.049Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/persistence/universal-service-persistence.ts",
+      "canonicalPath": "src/data/persistence/universal-service-persistence.ts",
+      "canonicalSpec": "@/data/persistence/universal-service-persistence",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.050Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/seed/contract-runtime-consumer.ts",
+      "canonicalPath": "src/data/seed/contract-runtime-consumer.ts",
+      "canonicalSpec": "@/data/seed/contract-runtime-consumer",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.050Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/seed/data-flow-bridge.ts",
+      "canonicalPath": "src/data/seed/data-flow-bridge.ts",
+      "canonicalSpec": "@/data/seed/data-flow-bridge",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.050Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/seed/ecosystem-master-seeder.ts",
+      "canonicalPath": "src/data/seed/ecosystem-master-seeder.ts",
+      "canonicalSpec": "@/data/seed/ecosystem-master-seeder",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.050Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/services/projection-service/index.ts",
+      "canonicalPath": "src/data/projections/index.ts",
+      "canonicalSpec": "@/data/projections/index",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.050Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/storage/index.ts",
+      "canonicalPath": "src/data/persistence/index.ts",
+      "canonicalSpec": "@/data/persistence/index",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.051Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/storage/storage-topology-registry.ts",
+      "canonicalPath": "src/data/persistence/storage-topology-registry.ts",
+      "canonicalSpec": "@/data/persistence/storage-topology-registry",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.051Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/adapters/app-state-adapter.ts",
+      "canonicalPath": "src/data/sync/adapters/app-state-adapter.ts",
+      "canonicalSpec": "@/data/sync/adapters/app-state-adapter",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.051Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/adapters/file-watch-adapter.ts",
+      "canonicalPath": "src/data/sync/adapters/file-watch-adapter.ts",
+      "canonicalSpec": "@/data/sync/adapters/file-watch-adapter",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.051Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/adapters/session-sync-adapter.ts",
+      "canonicalPath": "src/data/sync/adapters/session-sync-adapter.ts",
+      "canonicalSpec": "@/data/sync/adapters/session-sync-adapter",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.052Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/adapters/settings-sync-adapter.ts",
+      "canonicalPath": "src/data/sync/adapters/settings-sync-adapter.ts",
+      "canonicalSpec": "@/data/sync/adapters/settings-sync-adapter",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.052Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/adapters/sync-cache-db.ts",
+      "canonicalPath": "src/data/sync/adapters/sync-cache-db.ts",
+      "canonicalSpec": "@/data/sync/adapters/sync-cache-db",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.052Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/app-sdk.ts",
+      "canonicalPath": "src/data/sync/app-sdk.ts",
+      "canonicalSpec": "@/data/sync/app-sdk",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.052Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/collaboration/activity-journal.ts",
+      "canonicalPath": "src/data/sync/collaboration/activity-journal.ts",
+      "canonicalSpec": "@/data/sync/collaboration/activity-journal",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.065Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/collaboration/content-classifier.ts",
+      "canonicalPath": "src/data/sync/collaboration/content-classifier.ts",
+      "canonicalSpec": "@/data/sync/collaboration/content-classifier",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.053Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/collaboration/sharing-engine.ts",
+      "canonicalPath": "src/data/sync/collaboration/sharing-engine.ts",
+      "canonicalSpec": "@/data/sync/collaboration/sharing-engine",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.065Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/collaboration/version-history.ts",
+      "canonicalPath": "src/data/sync/collaboration/version-history.ts",
+      "canonicalSpec": "@/data/sync/collaboration/version-history",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.053Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/conflict-resolver.ts",
+      "canonicalPath": "src/data/sync/conflict-resolver.ts",
+      "canonicalSpec": "@/data/sync/conflict-resolver",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/delta-engine.ts",
+      "canonicalPath": "src/data/sync/delta-engine.ts",
+      "canonicalSpec": "@/data/sync/delta-engine",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.053Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/ecosystem/device-enrollment.ts",
+      "canonicalPath": "src/data/sync/ecosystem/device-enrollment.ts",
+      "canonicalSpec": "@/data/sync/ecosystem/device-enrollment",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.053Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/ecosystem/presence-engine.ts",
+      "canonicalPath": "src/data/sync/ecosystem/presence-engine.ts",
+      "canonicalSpec": "@/data/sync/ecosystem/presence-engine",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.054Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/ecosystem/push-wake.ts",
+      "canonicalPath": "src/data/sync/ecosystem/push-wake.ts",
+      "canonicalSpec": "@/data/sync/ecosystem/push-wake",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.054Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/ecosystem/sync-search.ts",
+      "canonicalPath": "src/data/sync/ecosystem/sync-search.ts",
+      "canonicalSpec": "@/data/sync/ecosystem/sync-search",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.054Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/governance/app-governance.ts",
+      "canonicalPath": "src/data/sync/governance/app-governance.ts",
+      "canonicalSpec": "@/data/sync/governance/app-governance",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.065Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/governance/compliance-engine.ts",
+      "canonicalPath": "src/data/sync/governance/compliance-engine.ts",
+      "canonicalSpec": "@/data/sync/governance/compliance-engine",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.065Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/governance/sync-quotas.ts",
+      "canonicalPath": "src/data/sync/governance/sync-quotas.ts",
+      "canonicalSpec": "@/data/sync/governance/sync-quotas",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.065Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/governance/trust-scoring.ts",
+      "canonicalPath": "src/data/sync/governance/trust-scoring.ts",
+      "canonicalSpec": "@/data/sync/governance/trust-scoring",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/index.ts",
+      "canonicalPath": "src/data/sync/index.ts",
+      "canonicalSpec": "@/data/sync/index",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.069Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/operations/abuse-prevention.ts",
+      "canonicalPath": "src/data/sync/operations/abuse-prevention.ts",
+      "canonicalSpec": "@/data/sync/operations/abuse-prevention",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/operations/job-engine.ts",
+      "canonicalPath": "src/data/sync/operations/job-engine.ts",
+      "canonicalSpec": "@/data/sync/operations/job-engine",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.054Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/operations/sync-health.ts",
+      "canonicalPath": "src/data/sync/operations/sync-health.ts",
+      "canonicalSpec": "@/data/sync/operations/sync-health",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.055Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/operations/transfer-optimizer.ts",
+      "canonicalPath": "src/data/sync/operations/transfer-optimizer.ts",
+      "canonicalSpec": "@/data/sync/operations/transfer-optimizer",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.055Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/security/device-identity.ts",
+      "canonicalPath": "src/data/sync/security/device-identity.ts",
+      "canonicalSpec": "@/data/sync/security/device-identity",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/security/sync-auth.ts",
+      "canonicalPath": "src/data/sync/security/sync-auth.ts",
+      "canonicalSpec": "@/data/sync/security/sync-auth",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.055Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/security/sync-encryption.ts",
+      "canonicalPath": "src/data/sync/security/sync-encryption.ts",
+      "canonicalSpec": "@/data/sync/security/sync-encryption",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/security/sync-policy.ts",
+      "canonicalPath": "src/data/sync/security/sync-policy.ts",
+      "canonicalSpec": "@/data/sync/security/sync-policy",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/sync-namespaces.ts",
+      "canonicalPath": "src/data/sync/sync-namespaces.ts",
+      "canonicalSpec": "@/data/sync/sync-namespaces",
+      "wave": 2,
+      "importerCount": 3,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/sync-notifications.ts",
+      "canonicalPath": "src/data/sync/sync-notifications.ts",
+      "canonicalSpec": "@/data/sync/sync-notifications",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.055Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/sync-object-model.ts",
+      "canonicalPath": "src/data/sync/sync-object-model.ts",
+      "canonicalSpec": "@/data/sync/sync-object-model",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/sync-state-machine.ts",
+      "canonicalPath": "src/data/sync/sync-state-machine.ts",
+      "canonicalSpec": "@/data/sync/sync-state-machine",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/syncd.ts",
+      "canonicalPath": "src/data/sync/syncd.ts",
+      "canonicalSpec": "@/data/sync/syncd",
+      "wave": 2,
+      "importerCount": 2,
+      "addedAt": "2026-04-18T02:46:33.070Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/transport/nearby-sync.ts",
+      "canonicalPath": "src/data/sync/transport/nearby-sync.ts",
+      "canonicalSpec": "@/data/sync/transport/nearby-sync",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.055Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/transport/predictive-sync.ts",
+      "canonicalPath": "src/data/sync/transport/predictive-sync.ts",
+      "canonicalSpec": "@/data/sync/transport/predictive-sync",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.056Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/transport/realtime-client.ts",
+      "canonicalPath": "src/data/sync/transport/realtime-client.ts",
+      "canonicalSpec": "@/data/sync/transport/realtime-client",
+      "wave": 2,
+      "importerCount": 0,
+      "addedAt": "2026-04-18T02:46:33.056Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    },
+    {
+      "oldPath": "src/lib/sync-engine/transport/upload-scheduler.ts",
+      "canonicalPath": "src/data/sync/transport/upload-scheduler.ts",
+      "canonicalSpec": "@/data/sync/transport/upload-scheduler",
+      "wave": 2,
+      "importerCount": 1,
+      "addedAt": "2026-04-18T02:46:33.066Z",
+      "removalCondition": "Remove after consumers migrate to canonical path AND check-legacy-wrapper-usage reports zero importers"
+    }
+  ]
+}

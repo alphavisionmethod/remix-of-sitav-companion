@@ -1,7 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/data/repositories
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Data Services Barrel
 // ═══════════════════════════════════════════════════════════════
-export {};
+export * from "./activity-data-service";
+export * from "./admin-data-service";
+export * from "./ai-ops-data-service";
+export * from "./business-data-service";
+export * from "./cai-data-service";
+export * from "./calendar-data-service";
+export * from "./capability-launch-data-service";
+export * from "./connector-ops-data-service";
+export * from "./crm-data-service";
+export * from "./demo-governance-data-service";

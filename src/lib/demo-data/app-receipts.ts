@@ -1,13 +1,7 @@
-// SITA OS — Demo Data: App Receipts
-import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
-
-export const DEMO_APP_RECEIPTS: (AppLifecycleReceipt & { appName: string; appIcon: string })[] = [
-  { receiptId: "rcpt-001", appId: "terminal", appName: "SITA Terminal", appIcon: "⬛", actionType: "install", timestamp: "2026-01-01T10:00:00Z", actor: "System (first boot)", version: "1.0.0", sourceInfo: "SITA App Store (verified)", permissionSummary: ["File system access", "System access"], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-002", appId: "files-app", appName: "SITA Files", appIcon: "📁", actionType: "install", timestamp: "2026-01-01T10:00:05Z", actor: "System (first boot)", version: "1.0.0", sourceInfo: "SITA App Store (verified)", permissionSummary: ["File system access"], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-003", appId: "calculator", appName: "SITA Calculator", appIcon: "🔢", actionType: "install", timestamp: "2026-01-01T10:00:10Z", actor: "System (first boot)", version: "1.0.0", sourceInfo: "SITA App Store (verified)", permissionSummary: [], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-004", appId: "settings-app", appName: "SITA Settings", appIcon: "⚙️", actionType: "install", timestamp: "2026-01-01T10:00:15Z", actor: "System (first boot)", version: "1.0.0", sourceInfo: "SITA App Store (verified)", permissionSummary: [], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-005", appId: "chrome", appName: "Google Chrome", appIcon: "🌐", actionType: "install", timestamp: "2026-03-15T14:23:00Z", actor: "User", version: "124.0.6367", sourceInfo: "SITA App Store (SITA Verified)", permissionSummary: ["Downloads", "Notifications", "Clipboard", "Camera"], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-006", appId: "chrome", appName: "Google Chrome", appIcon: "🌐", actionType: "update", timestamp: "2026-03-28T09:00:00Z", actor: "Auto-update", version: "124.0.6400", sourceInfo: "SITA App Store (store-managed)", permissionSummary: [], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-007", appId: "vscode", appName: "Visual Studio Code", appIcon: "💻", actionType: "install", timestamp: "2026-03-16T11:00:00Z", actor: "User", version: "1.92.0", sourceInfo: "SITA App Store (SITA Verified)", permissionSummary: ["Files", "Clipboard", "Notifications", "Network"], approvalStatus: "auto", result: "success" },
-  { receiptId: "rcpt-008", appId: "vscode", appName: "Visual Studio Code", appIcon: "💻", actionType: "permission-change", timestamp: "2026-03-20T15:30:00Z", actor: "User", version: "1.92.0", sourceInfo: "Permission center", permissionSummary: ["Added: Terminal integration"], approvalStatus: "approved", result: "success" },
-];
+/**
+ * @deprecated Migrated to `@/data/seed/app-receipts` in Wave 2 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
+ */
+export * from "@/data/seed/app-receipts";

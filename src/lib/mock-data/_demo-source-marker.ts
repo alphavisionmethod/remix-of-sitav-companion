@@ -1,21 +1,7 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Source Marker
-// All data in mock-data/ files is classified as DEMO SCENARIO DATA.
-// In real mode, pages should use mode-aware data services instead.
-// This marker enables runtime source tracking.
-// ═══════════════════════════════════════════════════════════════
-
 /**
- * Runtime marker: data from mock-data/ files is demo scenario data.
- * Pages consuming this data are operating in demo-backed mode.
- * The Dual Reality system classifies this as source: "demo".
+ * @deprecated Migrated to `@/data/seed/_demo-source-marker` in Wave 2 of src/lib decomposition.
+ * This wrapper exists for back-compat and will be removed once consumers are rewired.
+ * Tracked in: generated/lib-decomposition/src-lib-wrapper-map.json
+ * Policy: docs/architecture/LEGACY_AND_WRAPPER_POLICY.md
  */
-export const __DEMO_SOURCE__ = true;
-export const __DATA_CLASSIFICATION__ = "demo-scenario" as const;
-
-/** Returns true if current window has ?mode=real, indicating mock usage is a truth violation */
-export function isDemoViolation(): boolean {
-  if (typeof window === "undefined") return false;
-  const params = new URLSearchParams(window.location.search);
-  return params.get("mode") === "real";
-}
+export * from "@/data/seed/_demo-source-marker";
