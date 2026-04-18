@@ -1,46 +1,46 @@
 {
-  "generatedAt": "2026-04-18T11:37:42.316Z",
+  "generatedAt": "2026-04-18T11:38:52.198Z",
   "ok": true,
   "checks": [
     {
       "name": "audit",
       "ok": true,
-      "durationMs": 2386
+      "durationMs": 2185
     },
     {
       "name": "admin-classification-coverage",
       "ok": true,
-      "durationMs": 2268
+      "durationMs": 2313
     },
     {
       "name": "admin-domain-budget",
       "ok": true,
-      "durationMs": 2163
+      "durationMs": 2225
     },
     {
       "name": "admin-route-coherence",
       "ok": true,
-      "durationMs": 2272
+      "durationMs": 2573
     },
     {
       "name": "redirect-coverage",
       "ok": true,
-      "durationMs": 2175
+      "durationMs": 2266
     },
     {
       "name": "experimental-isolation",
       "ok": true,
-      "durationMs": 2733
+      "durationMs": 2095
     },
     {
       "name": "page-registry-completeness",
       "ok": true,
-      "durationMs": 2343
+      "durationMs": 2449
     },
     {
       "name": "typecheck",
       "ok": true,
-      "durationMs": 850
+      "durationMs": 1019
     }
   ]
 }
