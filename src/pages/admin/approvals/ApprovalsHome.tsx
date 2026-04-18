@@ -15,6 +15,11 @@ const HQApprovalQueue = lazy(() => import("@/pages/admin/AIT07ApprovalQueuePage"
 const AdvisorActionApproval = lazy(
   () => import("@/pages/admin/AdvisorActionApprovalAdmin"),
 );
+const Layer7FollowthroughBoard = lazy(() =>
+  import("@/components/admin/boardroom/Layer7FollowthroughBoard").then((m) => ({
+    default: m.Layer7FollowthroughBoard,
+  })),
+);
 
 function ModuleFallback() {
   return (
@@ -60,6 +65,14 @@ export default function ApprovalsHome() {
       description: "Headquarter-level approval queue.",
       legacyPath: "/admin/ai-team/approval-queue",
       render: wrap(HQApprovalQueue),
+    },
+    {
+      id: "layer7-followthrough",
+      label: "Layer 7 Follow-through",
+      description: "Boardroom post-approval chain — dispatched, executed, outcome-tracked, reflected.",
+      badge: { label: "L7", tone: "info" },
+      legacyPath: "/admin/boardroom/followthrough",
+      render: wrap(Layer7FollowthroughBoard),
     },
   ];
 
