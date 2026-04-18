@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RUNTIME_CAPABILITY_MATRIX } from "@/lib/runtime/runtime-capability-matrix";
-import { FEATURE_TIER_REGISTRY, getLaunchReadyFeatures } from "@/lib/runtime/feature-tier-registry";
-import { RUNTIME_FLAGS, getEnabledFlags } from "@/lib/runtime/runtime-flags";
-import { SIMULATED_SURFACES } from "@/lib/runtime/simulated-surface-registry";
+import { RUNTIME_CAPABILITY_MATRIX } from "@/runtimes/runtime-capability-matrix";
+import { FEATURE_TIER_REGISTRY, getLaunchReadyFeatures } from "@/runtimes/feature-tier-registry";
+import { RUNTIME_FLAGS, getEnabledFlags } from "@/runtimes/runtime-flags";
+import { SIMULATED_SURFACES } from "@/runtimes/simulated-surface-registry";
 
 const RuntimeTruthCoverageDashboard = () => {
   const launchReady = getLaunchReadyFeatures();

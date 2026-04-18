@@ -1,6 +1,6 @@
 import { Info } from "lucide-react";
-import { useFeatureRuntimeTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
-import { getFeatureRuntimeTier } from "@/lib/runtime/feature-runtime-tier-registry";
+import { useFeatureRuntimeTier, useRuntimeTier } from "@/runtimes/runtime-context";
+import { getFeatureRuntimeTier } from "@/runtimes/feature-runtime-tier-registry";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

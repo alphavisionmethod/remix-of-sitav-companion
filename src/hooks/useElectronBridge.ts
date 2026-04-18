@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
-import { useRuntimeTier } from "@/lib/runtime/runtime-context";
+import { useRuntimeTier } from "@/runtimes/runtime-context";
 
 interface UpdateState {
   checking: boolean;

@@ -100,7 +100,7 @@ import type { PolicyActor } from "./policy-actor-registry";
 import { getActorMetadata } from "./policy-actor-registry";
 import type { PolicyDomainKey } from "./policy-domain-map";
 import { getPolicyDomain } from "./policy-domain-map";
-import type { CanonicalSurface } from "@/lib/runtime/surface-types";
+import type { CanonicalSurface } from "@/runtimes/surface-types";
 import { getSurfacePolicyState, getSurfacePolicyReason, requiresStepUp } from "./policy-surface-map";
 import type { ProofRequirement, RiskClass } from "./policy-proof-requirements";
 import { getProofRequirement } from "./policy-proof-requirements";

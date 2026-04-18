@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import {
   getDeploymentProfile,
   getDefaultShellHome,
-} from "@/lib/runtime/deployment-profile";
+} from "@/runtimes/deployment-profile";
 import { resolveRoutePlane } from "@/lib/architecture/route-plane-map";
 
 /**

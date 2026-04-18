@@ -11,9 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle2, AlertTriangle, Layers, Monitor, Server, Sparkles } from "lucide-react";
-import { useRuntimeTier, useRuntimeProbe } from "@/lib/runtime/runtime-context";
-import { RUNTIME_TIERS, type RuntimeTier } from "@/lib/runtime/runtime-tier-model";
-import { FEATURE_RUNTIME_TIER_MAPPING } from "@/lib/runtime/feature-runtime-tier-registry";
+import { useRuntimeTier, useRuntimeProbe } from "@/runtimes/runtime-context";
+import { RUNTIME_TIERS, type RuntimeTier } from "@/runtimes/runtime-tier-model";
+import { FEATURE_RUNTIME_TIER_MAPPING } from "@/runtimes/feature-runtime-tier-registry";
 
 const TIER_ICON: Record<RuntimeTier, typeof Monitor> = {
   WEB_APP: Monitor,

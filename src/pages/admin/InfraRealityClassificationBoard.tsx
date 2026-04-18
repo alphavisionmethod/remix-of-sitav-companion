@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { INFRA_DOC_CLASSIFICATIONS, getOverallInfraCoverage } from "@/lib/runtime/reality-classification-registry";
-import { getInfraCoverageStats, getMissingClaims } from "@/lib/runtime/infra-implementation-coverage-map";
+import { INFRA_DOC_CLASSIFICATIONS, getOverallInfraCoverage } from "@/runtimes/reality-classification-registry";
+import { getInfraCoverageStats, getMissingClaims } from "@/runtimes/infra-implementation-coverage-map";
 
 const InfraRealityClassificationBoard = () => {
   const overallCoverage = getOverallInfraCoverage();

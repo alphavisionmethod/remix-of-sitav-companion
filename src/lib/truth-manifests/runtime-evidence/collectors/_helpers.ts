@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { RuntimeEvidenceRecord } from "../runtime-evidence-types";
-import { detectActiveRuntimeTier } from "@/lib/runtime/runtime-detection";
+import { detectActiveRuntimeTier } from "@/runtimes/runtime-detection";
 
 /** Build a baseline record with a single tier probe and timestamp. */
 export function makeRecord(

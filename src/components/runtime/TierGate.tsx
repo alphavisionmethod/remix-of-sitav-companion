@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
-import { useFeatureRuntimeTier, useRuntimeTier } from "@/lib/runtime/runtime-context";
-import type { RuntimeTier, TierAvailability } from "@/lib/runtime/runtime-tier-model";
-import { getFeatureRuntimeTier } from "@/lib/runtime/feature-runtime-tier-registry";
+import { useFeatureRuntimeTier, useRuntimeTier } from "@/runtimes/runtime-context";
+import type { RuntimeTier, TierAvailability } from "@/runtimes/runtime-tier-model";
+import { getFeatureRuntimeTier } from "@/runtimes/feature-runtime-tier-registry";
 import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
 
 interface TierGateProps {

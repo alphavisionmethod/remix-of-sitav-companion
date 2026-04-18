@@ -5,8 +5,8 @@
 
 import { makeRecord } from "./_helpers";
 import type { RuntimeEvidenceRecord } from "../runtime-evidence-types";
-import { probeRuntimeTier } from "@/lib/runtime/runtime-detection";
-import { getRuntimeTier } from "@/lib/runtime/runtime-tier-model";
+import { probeRuntimeTier } from "@/runtimes/runtime-detection";
+import { getRuntimeTier } from "@/runtimes/runtime-tier-model";
 
 export function collectRuntimeTierEvidence(): RuntimeEvidenceRecord {
   const probe = probeRuntimeTier();

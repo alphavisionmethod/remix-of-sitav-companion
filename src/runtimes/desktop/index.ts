@@ -15,7 +15,7 @@ export {
   getDesktopPlatform,
   type DesktopPlatform,
   type DesktopRuntimeInfo,
-} from "@/lib/runtime/desktop/desktop-runtime-detection";
+} from "@/runtimes/desktop/desktop-runtime-detection";
 
 // ── Host Contract ────────────────────────────────────────────
 export {
@@ -26,7 +26,7 @@ export {
   type DesktopPrivilege,
   type DesktopBoundary,
   type DesktopHostContractEntry,
-} from "@/lib/runtime/desktop/desktop-host-contract";
+} from "@/runtimes/desktop/desktop-host-contract";
 
 // ── Host Capabilities ────────────────────────────────────────
 export {
@@ -37,7 +37,7 @@ export {
   getDesktopExclusiveCapabilities,
   type DesktopCapability,
   type CapabilityStatus,
-} from "@/lib/runtime/desktop/desktop-host-capabilities";
+} from "@/runtimes/desktop/desktop-host-capabilities";
 
 // ── Bridge Contract ──────────────────────────────────────────
 export {
@@ -52,7 +52,7 @@ export {
   type BackupEntry,
   type CrashReport,
   type RendererError,
-} from "@/lib/runtime/desktop/electron-bridge-contract";
+} from "@/runtimes/desktop/electron-bridge-contract";
 
 // ── Bridge Capabilities ──────────────────────────────────────
 export {
@@ -63,7 +63,7 @@ export {
   type SecurityClass,
   type RuntimeConsequence,
   type BridgeCapabilityBinding,
-} from "@/lib/runtime/desktop/electron-bridge-capabilities";
+} from "@/runtimes/desktop/electron-bridge-capabilities";
 
 // ── Feature Gates ────────────────────────────────────────────
 export {
@@ -76,7 +76,7 @@ export {
   canSendNotifications,
   getFeatureGateSummary,
   type FeatureGateResult,
-} from "@/lib/runtime/desktop/desktop-feature-gates";
+} from "@/runtimes/desktop/desktop-feature-gates";
 
 // ── Security Boundaries ──────────────────────────────────────
 export {
@@ -86,7 +86,7 @@ export {
   type TrustEnforcement,
   type ThreatVector,
   type SecurityPostureSummary,
-} from "@/lib/runtime/desktop/desktop-security-boundaries";
+} from "@/runtimes/desktop/desktop-security-boundaries";
 
 // ── Update Contract ──────────────────────────────────────────
 export {
@@ -96,7 +96,7 @@ export {
   UPDATE_DEGRADED_MODE,
   type UpdateLifecycleState,
   type UpdateLifecycleTransition,
-} from "@/lib/runtime/desktop/desktop-update-contract";
+} from "@/runtimes/desktop/desktop-update-contract";
 
 // ── Release Channels ─────────────────────────────────────────
 export {
@@ -107,7 +107,7 @@ export {
   type ReleaseChannelId,
   type ReleaseChannel,
   type MinimumVersionPolicy,
-} from "@/lib/runtime/desktop/desktop-release-channel-map";
+} from "@/runtimes/desktop/desktop-release-channel-map";
 
 // ── Fallbacks ────────────────────────────────────────────────
 export {
@@ -117,4 +117,4 @@ export {
   getCapabilitiesByFallbackStrategy,
   type FallbackStrategy,
   type FallbackDefinition,
-} from "@/lib/runtime/desktop/desktop-fallbacks";
+} from "@/runtimes/desktop/desktop-fallbacks";

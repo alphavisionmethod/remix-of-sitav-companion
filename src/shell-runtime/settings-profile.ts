@@ -7,7 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
-import { getDeploymentProfile } from "@/lib/runtime/deployment-profile";
+import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 
 export interface SettingsSectionDescriptor {
   id: string;

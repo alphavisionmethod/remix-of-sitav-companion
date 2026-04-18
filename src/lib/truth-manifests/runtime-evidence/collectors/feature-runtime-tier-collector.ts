@@ -20,7 +20,7 @@ interface FeatureTierEntryShape {
 function readRegistry(): FeatureTierEntryShape[] {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const mod = require("@/lib/runtime/feature-runtime-tier-registry") as {
+    const mod = require("@/runtimes/feature-runtime-tier-registry") as {
       FEATURE_RUNTIME_TIER_REGISTRY?: FeatureTierEntryShape[];
       listFeatureRuntimeTierEntries?: () => FeatureTierEntryShape[];
     };
