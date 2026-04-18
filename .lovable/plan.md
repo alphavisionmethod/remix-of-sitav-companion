@@ -1,75 +1,98 @@
 
 
-The user wants a single mobile deployment readiness audit document for Android + iOS. From the file context I already have rich evidence:
+The user wants Boardroom Layer 7 (post-approval follow-through) fully closed in phases, production-grade. Let me map current canonical state then plan minimal but complete phases.
 
-**Confirmed present:**
-- `mobile/store-metadata/android.json` + `android.data-safety.json` — full Play listing + data safety form
-- `mobile/store-metadata/ios.json` + screenshots spec — full App Store listing
-- `mobile/ios/Info.plist.template` — all NSUsageDescriptions, ATS strict, deep links
-- `mobile/ios/SIGNING.md` — DEFERRED (Apple membership pending)
-- `mobile/android/SIGNING.md` — READY-ON-KEYSTORE (pipeline complete, awaiting keystore)
-- `mobile/android/AndroidManifest.permissions.xml` + `TARGET_SDK_POLICY.md` (SDK 34)
-- `mobile/ios/PrivacyInfo.xcprivacy` (privacy manifest declared)
-- `.github/workflows/mobile-build.yml` — unsigned IPA + AAB build pipeline
-- `scripts/android/bootstrap.sh` — local bootstrap script
-- `infra/deploy/mobile.yaml` — full deployment manifest (Flutter declared but Capacitor used elsewhere — contradiction)
-- `generated/mobile-store-readiness-report.json` — 20/20 satisfied, 0 deferred (April 18, 2026)
-- `generated/mobile-build-pipeline-report.json` — pipeline GREEN
-- `generated/mobile-capability-truth-report.json` — 0 lying-live offenders
+**Existing canonical pieces (from memory + schema):**
+- `boardroom_items`, `boardroom_decision_receipts`, `ai_workforce_recommendations`, `ai_workforce_approval_queue`
+- `advisor_board_actions`, `advisor_board_reflections`
+- `command_steps`, `timeline_events`, `proofs` (canonical execution + proof tables)
+- `agent-executor` edge function (sole orchestration choke point)
+- `recommendation-engine.ts` service (REX lifecycle)
+- 13-state Boardroom lifecycle (per `architecture/orchestration-pipeline` memory)
+- `OrchestrationFacade` (sole entry point)
 
-**Critical contradictions/blockers found:**
-1. Memory says mobile is **ARCHIVED** (`mobile-offline-truth-map.json` classification: "honestly-archived"; canonical runtime = Ubuntu/Electron). But store-metadata + pipelines exist.
-2. Older audit (`archive/generated/mobile-store-readiness-report.json`) scored Android 35/100, iOS 25/100 (per memory `governance/mobile-readiness-audit`).
-3. Newer report shows 20/20 satisfied — directly contradicts older score.
-4. `infra/deploy/mobile.yaml` declares **Flutter 3.24** as the platform, but everything else is **Capacitor**. Stale/contradiction.
-5. iOS SIGNING is DEFERRED (no Apple Developer membership).
-6. Android signing READY-ON-KEYSTORE (no keystore generated yet).
-7. No actual `android/` or `ios/` Capacitor-generated native folders are confirmed in repo (bootstrap script suggests they're generated on demand).
-8. FCM `google-services.json` is template-only.
+**Real gap:** Layer 7 chain after `APPROVED` — dispatch→execute→result→proof→outcome→reflection — is not durably linked end-to-end with explicit lifecycle states, operator visibility, or E2E proof.
 
-The doc will be ~50-70KB, single file, written to `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` (per user filename request — they wrote "THE ULTIMATE SITA OS AUDIT.MD" but described content as "Mobile App Deployment Readiness Master Report"). I'll honor the requested filename and use the requested title as the document's H1.
-
-Read-only mode → present plan; user approves → I write the file.
+**Plan: 4 phases, no parallel systems, extend canonical tables.**
 
 ---
 
-# Plan — `THE ULTIMATE SITA OS AUDIT.md` (Mobile Deployment Readiness Master Report)
+# Plan — Boardroom Layer 7 Follow-Through Closure
 
-**Output:** ONE downloadable file at `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` (~50–70 KB), surfaced via `<lov-artifact>`.
+## Phase 1 — Canonical Lifecycle + Linkage Schema (Foundation)
+Extend existing canonical tables; no parallel systems.
 
-## Document structure (16 sections per spec)
+**DB migration (additive only):**
+- Add `followthrough_state` enum to `boardroom_items`: `approved | dispatch_pending | dispatched | executing | executed | receipt_recorded | outcome_pending | outcome_tracked | reflected | closed | failed`
+- Add columns to `boardroom_items`: `followthrough_state`, `dispatch_id`, `execution_command_step_id`, `outcome_status`, `outcome_recorded_at`, `reflection_id`, `last_followthrough_event_at`
+- New table `boardroom_followthrough_dispatches` (links item ↔ recommendation ↔ approval ↔ command_steps ↔ proofs)
+- New table `boardroom_outcome_records` (expected vs actual, success/partial/failed, affected entities, confidence, retry flag)
+- Extend `advisor_board_reflections` with `boardroom_item_id`, `outcome_record_id`, `dispatch_id` FKs
+- RLS: org-scoped via `is_org_member`; admin override via `has_role`
+- Indexes on state, dispatch_id, item_id
 
-1. **Executive Summary** — overall status, top blockers, **Android score: 72/100**, **iOS score: 48/100**, effort estimate, launch risk.
-2. **Project Identification** — Capacitor stack, bundle id `com.sita.os`, repo layout, contradiction with `infra/deploy/mobile.yaml` (Flutter declared, Capacitor used).
-3. **Current Implementation Inventory** — 22 categories (auth, onboarding, dashboard, notifications, payments, deep links, offline, etc.) classified Confirmed/Partial/Missing/Cannot Verify.
-4. **Android Deployment Readiness** — 6 sub-audits (project structure, build/release, manifest/permissions, assets, store readiness, testing). Confirmed-ready list, missing list, blockers, fixes, **score 72/100**.
-5. **iOS Deployment Readiness** — 6 sub-audits (project structure, signing, permissions/privacy, assets, App Store, testing). Confirmed-ready, missing, blockers, fixes, **score 48/100**.
-6. **Configuration, Environments, Secrets** — `.env` strategy, hardcoded keys risk, FCM template, APNs absence.
-7. **Dependencies & Native Modules** — Capacitor core present, native folders generated on bootstrap, no `package.json` mobile-specific deps audit possible without read.
-8. **Backend / API / Services Readiness** — Lovable Cloud (Supabase) backend, edge functions, push transport honesty.
-9. **Security, Privacy, Compliance** — ATS strict ✅, privacy manifest ✅, GDPR/CCPA declared ✅, biometric auth modeled, jailbreak detection MISSING.
-10. **UX / QA / Production Polish** — loading/empty/error states (per memory), placeholder content risk, mobile-vs-OS split per memory.
-11. **CI/CD & Release Operations** — `mobile-build.yml` exists (unsigned), no Fastlane, no EAS, manual signing steps.
-12. **App Store / Play Store Submission Readiness** — separate checklists per platform, all metadata fields, screenshots specs.
-13. **Missing Items Master Gap Analysis** — table of ~30 items with title, platform, severity, evidence, fix, effort, blocker?
-14. **Prioritized Action Plan** — 5 phases (critical blockers → store submission → security → quality → nice-to-have).
-15. **Final Release Decision** — Android: **Conditionally Ready** (needs keystore + Play Console). iOS: **Not Ready** (Apple Developer membership absent). Next 10 concrete steps.
-16. **Reporting Style Notes** — methodology, evidence sources, classification labels.
+**Service layer (extend canonical, no forks):**
+- `src/lib/services/boardroom/followthrough-engine.ts` — state machine, transitions, idempotency, timeline emission
+- Extend `recommendation-engine.ts` to call followthrough-engine on approval capture
+- All transitions emit `timeline_events` with correlation_id
 
-## Special features
-- Surface the **archived-vs-store-ready contradiction** prominently (memory says archived; artifacts say 20/20 satisfied).
-- Resolve the **Flutter-vs-Capacitor contradiction** in `infra/deploy/mobile.yaml`.
-- Use the explicit classification labels (Confirmed Present / Partially Present / Missing / Cannot Verify / Needs Manual Confirmation) per user spec.
-- Every gap = why-it-matters + risk + files + fix + effort.
-- Final go/no-go recommendation per platform.
+## Phase 2 — Dispatch + Execution + Proof Wiring
+Wire approval → real `agent-executor` invocation; persist results; link proofs.
+
+**Edge functions:**
+- New `boardroom-followthrough-dispatch` — receives approved recommendation, builds execution payload, calls `agent-executor`, writes `boardroom_followthrough_dispatches`, transitions state `dispatch_pending → dispatched → executing`
+- Extend `agent-executor` to write `command_steps` rows and emit `proofs` linked to `dispatch_id`
+- New `boardroom-outcome-record` edge function — accepts outcome verification (auto from executor success + manual operator override), writes `boardroom_outcome_records`, transitions `executed → outcome_tracked`
+
+**Hooks:**
+- `useBoardroomFollowthrough(itemId)` — real-time subscription on state changes
+- `useDispatchBoardroomAction(itemId)` — mutation wrapper
+
+## Phase 3 — Operator + User Visibility
+Extend existing admin/user surfaces; no new disconnected pages.
+
+**User-facing (extend Boardroom shell):**
+- New tab/subview `BoardroomFollowthroughPanel` inside existing Boardroom shell — chain visualization (approved → dispatched → executed → outcome → reflected), per-state badges, calm aesthetic, proof drilldowns
+- Per-item state badge in existing decision/recommendation lists
+- Failed/attention-required CTA inline
+
+**Admin-facing (extend existing /admin/approvals + /admin/verification):**
+- New panel `Layer7FollowthroughBoard` inside `/admin/approvals` — queues for: stale dispatches, failed executions, missing proofs, missing outcomes, missing reflections
+- Drilldown modal with full chain (item → recommendation → approval → dispatch → command_step → proof → outcome → reflection)
+- Manual operator actions: retry dispatch, mark outcome, force-close
+
+**Reflection capture:**
+- `BoardroomReflectionPrompt` component — surfaces after `outcome_tracked`, captures usefulness/quality/lessons, writes to `advisor_board_reflections` with full linkage, transitions to `reflected → closed`
+
+## Phase 4 — E2E Proof + Validation Guardrails
+Real integration tests + CI gates to prevent regression.
+
+**E2E tests (`tests/e2e/boardroom-layer7/`):**
+- `boardroom-followthrough-low-risk.spec.ts` — full chain low-risk auto-approve path
+- `boardroom-followthrough-dual-approval.spec.ts` — high-risk dual-approval path
+- Both assert: item created → recommendation → approval → dispatch row → command_step → proof → outcome record → reflection → state=closed
+
+**Validation scripts (`scripts/validation/`):**
+- `check-boardroom-layer7-state-coverage.ts` — every item past APPROVED has terminal state within SLA
+- `check-boardroom-followthrough-linkage.ts` — no orphan dispatches/outcomes/reflections
+- `check-boardroom-proof-receipt-coverage.ts` — every executed dispatch has proof
+- `check-boardroom-outcome-tracking.ts` — outcome record exists for every executed dispatch
+- `check-boardroom-reflection-coverage.ts` — reflection coverage rate ≥ threshold
+- `check-boardroom-layer7-e2e.ts` — runs the E2E suite as a release gate
+
+**Generated artifacts under `generated/boardroom-layer7-closure/`:**
+- All 9 markdown files + 4 JSON files exactly as specified in the prompt
+- Wired into `master-release-aggregator` as new BLOCK-level gate `boardroom-layer7-closure`
 
 ## Out of scope
-- Modifying any code or config.
-- Generating Capacitor `android/`/`ios/` folders.
-- Writing the Apple/Google account setup itself (only documenting what's needed).
+- Replacing existing 13-state lifecycle (we map into it)
+- Touching other flagship loops
+- New approval mechanism (we use canonical `approval_decisions` / `ai_workforce_approval_queue`)
+- Mobile surfaces (mobile is honestly archived per memory)
 
-## Deliverable
-- Single markdown file, ~50–70 KB.
-- `<lov-artifact path="THE ULTIMATE SITA OS AUDIT.md" mime_type="text/markdown">` for download.
-- No code changes, no companion files.
+## Deliverables per phase
+- Phase 1: 1 migration, 1 service, schema docs
+- Phase 2: 2 edge functions, 1 extended edge function, 2 hooks
+- Phase 3: 3 new components, 2 extended pages, 1 reflection flow
+- Phase 4: 2 E2E specs, 6 validation scripts, 13 generated truth artifacts, 1 master-release gate
 
