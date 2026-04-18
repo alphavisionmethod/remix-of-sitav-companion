@@ -4,17 +4,17 @@
   "table": "drill_cadence_registry",
   "adminBoard": "src/components/admin/DrillCadenceBoard.tsx",
   "validator": "scripts/validation/check-drill-cadence-freshness.ts",
-  "registeredDrills": [
-    "restore-drill-production-shape",
-    "oauth-refresh-probe-google",
-    "oauth-refresh-probe-microsoft",
-    "oauth-refresh-probe-slack",
-    "release-artifact-verification",
-    "baseline-seal-verification",
-    "notification-calmness-review",
-    "admin-golden-path-drill",
-    "boardroom-followthrough-runbook-drill"
+  "drills": [
+    { "key": "restore-drill-production-shape", "severity": "block", "overdue": false, "cadenceDays": 35 },
+    { "key": "oauth-refresh-probe-google", "severity": "block", "overdue": false, "cadenceDays": 1 },
+    { "key": "oauth-refresh-probe-microsoft", "severity": "block", "overdue": false, "cadenceDays": 1 },
+    { "key": "oauth-refresh-probe-slack", "severity": "block", "overdue": false, "cadenceDays": 1 },
+    { "key": "release-artifact-verification", "severity": "block", "overdue": false, "cadenceDays": 14 },
+    { "key": "baseline-seal-verification", "severity": "warn", "overdue": false, "cadenceDays": 30 },
+    { "key": "notification-calmness-review", "severity": "warn", "overdue": false, "cadenceDays": 14 },
+    { "key": "admin-golden-path-drill", "severity": "warn", "overdue": false, "cadenceDays": 30 },
+    { "key": "boardroom-followthrough-runbook-drill", "severity": "warn", "overdue": false, "cadenceDays": 30 }
   ],
-  "categories": ["disaster-recovery", "connector-health", "release", "governance", "ux", "operator-readiness"],
+  "categories": ["disaster-recovery","connector-health","release","governance","ux","operator-readiness"],
   "ok": true
 }

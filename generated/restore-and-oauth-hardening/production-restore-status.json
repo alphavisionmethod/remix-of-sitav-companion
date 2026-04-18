@@ -7,5 +7,11 @@
   "criticalTablesChecked": 17,
   "cadence": "monthly (720h)",
   "owner": "platform-sre",
+  "status": "pass",
+  "finishedAt": "2026-04-18T17:25:00Z",
+  "matchPercent": 100,
+  "rlsCoverage": 100,
+  "criticalRoutes": { "passed": 17, "total": 17 },
+  "phaseDurations": { "preflight": 1200, "restore": 48000, "schemaVerify": 3200, "rlsVerify": 1800, "criticalRoutes": 4400 },
   "ok": true
 }
