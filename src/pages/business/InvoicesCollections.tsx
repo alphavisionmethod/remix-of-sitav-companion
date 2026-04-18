@@ -188,19 +188,19 @@ const InvoicesCollections = () => {
         <div className="space-y-4">
           <div>
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Invoice # *</label>
-            <input value={form.invoice_number} onChange={e => setForm({ ...form, invoice_number: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none focus:ring-2 focus:ring-[hsl(265_55%_58%/0.2)]" />
+            <input value={form.invoice_number} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, invoice_number: v })); updateDraft({ invoice_number: v }); }} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none focus:ring-2 focus:ring-[hsl(265_55%_58%/0.2)]" />
           </div>
           <div>
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Amount *</label>
-            <input type="number" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
+            <input type="number" value={form.amount} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, amount: v })); updateDraft({ amount: v }); }} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
           </div>
           <div>
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Due Date *</label>
-            <input type="date" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
+            <input type="date" value={form.due_date} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, due_date: v })); updateDraft({ due_date: v }); }} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
           </div>
           <div>
             <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Notes</label>
-            <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" />
+            <input value={form.notes} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, notes: v })); updateDraft({ notes: v }); }} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" />
           </div>
           <button
             onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })}
