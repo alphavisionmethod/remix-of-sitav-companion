@@ -91,3 +91,36 @@ select runid, jobid, status, return_message, start_time, end_time
 ```sql
 select cron.unschedule('sita-dr-drill');
 ```
+
+-- Phase 3 — Internal agent reflection (every 30 min)
+select cron.schedule(
+  'sita-internal-agent-reflect',
+  '*/30 * * * *',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-reflect',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{"lookback_hours":2,"max_batch":50}'::jsonb
+     ); $$
+);
+
+-- Phase 3 — Suggestion generator (every 6 hours)
+select cron.schedule(
+  'sita-suggestion-generator',
+  '0 */6 * * *',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-suggestion-generator',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{}'::jsonb
+     ); $$
+);
+
+-- Phase 3 — Weekly digest (Mon 07:00 UTC)
+select cron.schedule(
+  'sita-weekly-digest',
+  '0 7 * * 1',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/internal-agent-weekly-digest',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{}'::jsonb
+     ); $$
+);
