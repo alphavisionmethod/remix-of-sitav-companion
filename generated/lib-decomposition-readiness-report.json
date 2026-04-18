@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-04-18T03:02:53.602Z",
+  "generatedAt": "2026-04-18T03:07:37.996Z",
   "gate": "lib-decomposition-readiness",
   "remainingLibFiles": 1731,
   "allowlistedLibFiles": 36,
   "canonicalCounts": {
     "src/domains": {
-      "files": 30,
-      "nonBarrel": 14
+      "files": 86,
+      "nonBarrel": 70
     },
     "src/platform": {
-      "files": 42,
-      "nonBarrel": 6
+      "files": 59,
+      "nonBarrel": 23
     },
     "src/runtimes": {
-      "files": 9,
-      "nonBarrel": 1
+      "files": 10,
+      "nonBarrel": 2
     },
     "src/data": {
-      "files": 24,
-      "nonBarrel": 17
+      "files": 84,
+      "nonBarrel": 77
     },
     "src/integrations": {
-      "files": 7,
-      "nonBarrel": 2
+      "files": 8,
+      "nonBarrel": 3
     },
     "src/contracts": {
       "files": 3,
@@ -34,7 +34,7 @@
     }
   },
   "populatedCanonicalDirs": 5,
-  "shimWrappers": 194,
+  "shimWrappers": 329,
   "shimWrapperSample": [
     {
       "path": "src/lib/admin-ai/index.ts",
@@ -45,6 +45,11 @@
       "path": "src/lib/advisor-intelligence/index.ts",
       "loc": 15,
       "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/advisor-topology.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/advisors/topology"
     },
     {
       "path": "src/lib/ai-engineering/index.ts",
@@ -82,59 +87,54 @@
       "reExportsFrom": "./capability-registry"
     },
     {
-      "path": "src/lib/cloud-backbone/index.ts",
-      "loc": 20,
-      "reExportsFrom": "./cloud-storage-service"
-    },
-    {
-      "path": "src/lib/constants/index.ts",
+      "path": "src/lib/cloud-backbone/cloud-abuse-service.ts",
       "loc": 1,
-      "reExportsFrom": "./ui-config"
+      "reExportsFrom": "@/platform/cloud/cloud-abuse-service"
     },
     {
-      "path": "src/lib/contracts/index.ts",
+      "path": "src/lib/cloud-backbone/cloud-audit-service.ts",
       "loc": 1,
-      "reExportsFrom": "./global-contracts-registry"
+      "reExportsFrom": "@/platform/cloud/cloud-audit-service"
     },
     {
-      "path": "src/lib/core-services/ai-gateway/diagnostics.service.ts",
+      "path": "src/lib/cloud-backbone/cloud-device-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/ai-gateway/diagnostics.service"
+      "reExportsFrom": "@/platform/cloud/cloud-device-service"
     },
     {
-      "path": "src/lib/core-services/ai-gateway/index.ts",
+      "path": "src/lib/cloud-backbone/cloud-lifecycle-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/ai-gateway"
+      "reExportsFrom": "@/platform/cloud/cloud-lifecycle-service"
     },
     {
-      "path": "src/lib/core-services/ai-workforce/admin-budget-routing-policy.ts",
+      "path": "src/lib/cloud-backbone/cloud-quota-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/ai-workforce/admin-budget-routing-policy"
+      "reExportsFrom": "@/platform/cloud/cloud-quota-service"
     },
     {
-      "path": "src/lib/core-services/ai-workforce/index.ts",
+      "path": "src/lib/cloud-backbone/cloud-storage-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/ai-workforce"
+      "reExportsFrom": "@/platform/cloud/cloud-storage-service"
     },
     {
-      "path": "src/lib/core-services/ai-workforce/workforce-orchestrator.ts",
+      "path": "src/lib/cloud-backbone/cloud-support-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/ai-workforce/workforce-orchestrator"
+      "reExportsFrom": "@/platform/cloud/cloud-support-service"
     },
     {
-      "path": "src/lib/core-services/approval-engine/index.ts",
-      "loc": 4,
-      "reExportsFrom": "./approval-history.service"
-    },
-    {
-      "path": "src/lib/core-services/architecture/god-tier-integration-engine.ts",
+      "path": "src/lib/cloud-backbone/cloud-sync-service.ts",
       "loc": 1,
-      "reExportsFrom": "@/lib/services/architecture/god-tier-integration-engine"
+      "reExportsFrom": "@/platform/cloud/cloud-sync-service"
     },
     {
-      "path": "src/lib/core-services/architecture/index.ts",
+      "path": "src/lib/cloud-backbone/cloud-tenant-service.ts",
       "loc": 1,
-      "reExportsFrom": "./god-tier-integration-engine"
+      "reExportsFrom": "@/platform/cloud/cloud-tenant-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-worker-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-worker-service"
     }
   ],
   "ok": true,

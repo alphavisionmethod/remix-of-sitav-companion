@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-04-18T03:05:40.175Z",
+  "generatedAt": "2026-04-18T03:07:38.043Z",
   "gate": "legacy-wrapper-usage",
-  "scannedFiles": 3003,
-  "totalLegacyImports": 1590,
-  "distinctLegacyPaths": 643,
+  "scannedFiles": 3081,
+  "totalLegacyImports": 1499,
+  "distinctLegacyPaths": 588,
   "topPaths": [
     {
       "path": "@/lib/supabase-helpers",
-      "count": 263,
+      "count": 289,
       "topConsumers": [
         "src/components/admin/panels/IncidentSummaryPanel.tsx",
         "src/components/business/CustomerHealthDashboard.tsx",
@@ -17,14 +17,14 @@
       ]
     },
     {
-      "path": "@/lib/demo-data/investment",
-      "count": 27,
+      "path": "@/lib/dual-reality/reality-mode-registry",
+      "count": 13,
       "topConsumers": [
-        "src/pages/investment-office/BeginnerMode.tsx",
-        "src/pages/investment-office/BehavioralFirewall.tsx",
-        "src/pages/investment-office/CapitalPurpose.tsx",
-        "src/pages/investment-office/CapitalTwin.tsx",
-        "src/pages/investment-office/CatalystWarRoom.tsx"
+        "src/data/repositories/activity-data-service.ts",
+        "src/data/repositories/business-data-service.ts",
+        "src/data/repositories/calendar-data-service.ts",
+        "src/data/repositories/crm-data-service.ts",
+        "src/data/repositories/investment-data-service.ts"
       ]
     },
     {
@@ -36,17 +36,6 @@
         "src/components/admin/compute-governance/shared.ts",
         "src/hooks/use-compute-governance.ts",
         "src/pages/admin/ComputeGovernanceBoard.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/sound-engine",
-      "count": 11,
-      "topConsumers": [
-        "src/components/sita/DesktopDock.tsx",
-        "src/components/sita/shell/AppLauncherPanel.tsx",
-        "src/components/sita/shell/FloatingWindow.tsx",
-        "src/components/sita/shell/FlowSpace.tsx",
-        "src/components/sita/shell/windows/CalendarWindow.tsx"
       ]
     },
     {
@@ -171,14 +160,14 @@
       ]
     },
     {
-      "path": "@/lib/engines/cross-os-integration",
+      "path": "@/lib/mock-data/advisor-mission-control",
       "count": 7,
       "topConsumers": [
-        "src/components/sita/CommandPalette.tsx",
-        "src/components/sita/NotificationCenter.tsx",
-        "src/components/sita/apps/concierge/ConciergeAppShell.tsx",
-        "src/components/sita/apps/finance/FinanceAppShell.tsx",
-        "src/components/sita/cross-os/CrossDomainIntelligenceBridge.tsx"
+        "src/components/sita/AdvisorComponents.tsx",
+        "src/components/sita/MissionControlComponents.tsx",
+        "src/data/repositories/mission-control-data-service.ts",
+        "src/hooks/use-mission-control-views.ts",
+        "src/hooks/useAdvisorMissionControl.ts"
       ]
     },
     {
@@ -244,17 +233,6 @@
       ]
     },
     {
-      "path": "@/lib/mock-data/advisor-mission-control",
-      "count": 6,
-      "topConsumers": [
-        "src/components/sita/AdvisorComponents.tsx",
-        "src/components/sita/MissionControlComponents.tsx",
-        "src/hooks/use-mission-control-views.ts",
-        "src/hooks/useAdvisorMissionControl.ts",
-        "src/test/advisor-workspace.test.ts"
-      ]
-    },
-    {
       "path": "@/lib/os-security",
       "count": 6,
       "topConsumers": [
@@ -298,17 +276,6 @@
       ]
     },
     {
-      "path": "@/lib/advisor-topology",
-      "count": 6,
-      "topConsumers": [
-        "src/components/sita/apps/boardroom/AdvisorProfileCard.tsx",
-        "src/components/sita/apps/boardroom/BoardroomAdvisorCouncil.tsx",
-        "src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx",
-        "src/components/sita/apps/boardroom/BoardroomPulseView.tsx",
-        "src/components/sita/apps/boardroom/BoardroomSynthesisView.tsx"
-      ]
-    },
-    {
       "path": "@/lib/services/orchestration-pipeline/module-advisor-consumer",
       "count": 6,
       "topConsumers": [
@@ -329,9 +296,41 @@
         "src/components/sita/shell/windows/KernelDashboardWindow.tsx",
         "src/pages/admin/KernelDashboard.tsx"
       ]
+    },
+    {
+      "path": "@/lib/os-security/types",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/shell/SecurePrompt.tsx",
+        "src/components/sita/shell/SecurePromptProvider.tsx",
+        "src/components/sita/shell/windows/SecurityAccountsPanel.tsx",
+        "src/hooks/useOSSecurity.ts",
+        "src/pages/admin/SEC01SessionSecrets.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/nova-sdk/graphics/context",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/shell/windows/KernelDashboardWindow.tsx",
+        "src/components/sita/shell/windows/NovaCanvasBars.tsx",
+        "src/components/sita/shell/windows/NovaCanvasChart.tsx",
+        "src/components/sita/shell/windows/NovaTerminal.tsx",
+        "src/components/sita/shell/windows/SyscallDashboardWindow.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/mock-data/workspace",
+      "count": 6,
+      "topConsumers": [
+        "src/data/repositories/workspace-data-service.ts",
+        "src/pages/workspace/DocsWorkspace.tsx",
+        "src/pages/workspace/SheetsWorkspace.tsx",
+        "src/pages/workspace/SlidesWorkspace.tsx"
+      ]
     }
   ],
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1590
+  "warningCount": 1499
 }

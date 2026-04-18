@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T03:02:53.602Z",
+  "generatedAt": "2026-04-18T03:07:37.996Z",
   "wrappers": [
     {
       "path": "src/lib/admin-ai/index.ts",
@@ -10,6 +10,11 @@
       "path": "src/lib/advisor-intelligence/index.ts",
       "loc": 15,
       "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/advisor-topology.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/advisors/topology"
     },
     {
       "path": "src/lib/ai-engineering/index.ts",
@@ -45,6 +50,56 @@
       "path": "src/lib/capabilities/index.ts",
       "loc": 16,
       "reExportsFrom": "./capability-registry"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-abuse-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-abuse-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-audit-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-audit-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-device-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-device-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-lifecycle-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-lifecycle-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-quota-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-quota-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-storage-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-storage-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-support-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-support-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-sync-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-sync-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-tenant-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-tenant-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-worker-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-worker-service"
     },
     {
       "path": "src/lib/cloud-backbone/index.ts",
@@ -377,9 +432,214 @@
       "reExportsFrom": "../workflow-engine"
     },
     {
+      "path": "src/lib/customer-journey/ai-journey-classifier.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/ai-journey-classifier"
+    },
+    {
+      "path": "src/lib/customer-journey/blocker-scoring-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/blocker-scoring-engine"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-coverage-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-coverage-hooks"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-evidence-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-evidence-hooks"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-hooks"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-ingestion-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-ingestion-hooks"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-registry-seeder.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-registry-seeder"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-registry"
+    },
+    {
+      "path": "src/lib/customer-journey/journey-scoring-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/customer-journey/journey-scoring-hooks"
+    },
+    {
+      "path": "src/lib/data-services/activity-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/activity-data-service"
+    },
+    {
+      "path": "src/lib/data-services/admin-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/admin-data-service"
+    },
+    {
+      "path": "src/lib/data-services/ai-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/ai-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/business-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/business-data-service"
+    },
+    {
+      "path": "src/lib/data-services/cai-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/cai-data-service"
+    },
+    {
+      "path": "src/lib/data-services/calendar-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/calendar-data-service"
+    },
+    {
+      "path": "src/lib/data-services/capability-launch-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/capability-launch-data-service"
+    },
+    {
+      "path": "src/lib/data-services/connector-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/connector-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/crm-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/crm-data-service"
+    },
+    {
+      "path": "src/lib/data-services/demo-governance-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/demo-governance-data-service"
+    },
+    {
+      "path": "src/lib/data-services/digital-presence-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/digital-presence-data-service"
+    },
+    {
+      "path": "src/lib/data-services/feature-lifecycle-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/feature-lifecycle-data-service"
+    },
+    {
+      "path": "src/lib/data-services/file-explorer-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/file-explorer-service"
+    },
+    {
+      "path": "src/lib/data-services/files-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/files-data-service"
+    },
+    {
+      "path": "src/lib/data-services/health-signal-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/health-signal-data-service"
+    },
+    {
       "path": "src/lib/data-services/index.ts",
       "loc": 10,
       "reExportsFrom": "./activity-data-service"
+    },
+    {
+      "path": "src/lib/data-services/integration-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/integration-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/intelligence-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/intelligence-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/investment-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/investment-data-service"
+    },
+    {
+      "path": "src/lib/data-services/investment-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/investment-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/mission-control-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/mission-control-data-service"
+    },
+    {
+      "path": "src/lib/data-services/mobile-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/mobile-data-service"
+    },
+    {
+      "path": "src/lib/data-services/money-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/money-data-service"
+    },
+    {
+      "path": "src/lib/data-services/native-shell-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/native-shell-data-service"
+    },
+    {
+      "path": "src/lib/data-services/notification-calm-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/notification-calm-data-service"
+    },
+    {
+      "path": "src/lib/data-services/owner-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/owner-data-service"
+    },
+    {
+      "path": "src/lib/data-services/platform-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/platform-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/revenue-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/revenue-data-service"
+    },
+    {
+      "path": "src/lib/data-services/revenue-ops-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/revenue-ops-data-service"
+    },
+    {
+      "path": "src/lib/data-services/surface-mode-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/surface-mode-data-service"
+    },
+    {
+      "path": "src/lib/data-services/system-misc-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/system-misc-data-service"
+    },
+    {
+      "path": "src/lib/data-services/unified-calendar-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/unified-calendar-service"
+    },
+    {
+      "path": "src/lib/data-services/workspace-data-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/repositories/workspace-data-service"
     },
     {
       "path": "src/lib/db/index.ts",
@@ -392,14 +652,179 @@
       "reExportsFrom": "./feature-lifecycle"
     },
     {
+      "path": "src/lib/demo-data/admin-intelligence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/admin-intelligence"
+    },
+    {
+      "path": "src/lib/demo-data/admin-platform.tsx",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/admin-platform"
+    },
+    {
+      "path": "src/lib/demo-data/app-receipts.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/app-receipts"
+    },
+    {
+      "path": "src/lib/demo-data/approval-chamber.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/approval-chamber"
+    },
+    {
+      "path": "src/lib/demo-data/apps.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/apps"
+    },
+    {
+      "path": "src/lib/demo-data/atlas.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/atlas"
+    },
+    {
+      "path": "src/lib/demo-data/business.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/business"
+    },
+    {
+      "path": "src/lib/demo-data/calendar-workspace.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/calendar-workspace"
+    },
+    {
+      "path": "src/lib/demo-data/communications.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/communications"
+    },
+    {
+      "path": "src/lib/demo-data/concierge.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/concierge"
+    },
+    {
+      "path": "src/lib/demo-data/connectors.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/connectors"
+    },
+    {
+      "path": "src/lib/demo-data/core-pages.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/core-pages"
+    },
+    {
+      "path": "src/lib/demo-data/digital-presence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/digital-presence"
+    },
+    {
+      "path": "src/lib/demo-data/durability.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/durability"
+    },
+    {
+      "path": "src/lib/demo-data/enterprise.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/enterprise"
+    },
+    {
+      "path": "src/lib/demo-data/health-signals.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/health-signals"
+    },
+    {
+      "path": "src/lib/demo-data/import-export.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/import-export"
+    },
+    {
+      "path": "src/lib/demo-data/incidents.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/incidents"
+    },
+    {
+      "path": "src/lib/demo-data/integrations.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/integrations"
+    },
+    {
+      "path": "src/lib/demo-data/investment.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/investment"
+    },
+    {
+      "path": "src/lib/demo-data/media.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/media"
+    },
+    {
+      "path": "src/lib/demo-data/native-shell.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/native-shell"
+    },
+    {
+      "path": "src/lib/demo-data/notes.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/notes"
+    },
+    {
+      "path": "src/lib/demo-data/notification-calm.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/notification-calm"
+    },
+    {
+      "path": "src/lib/demo-data/outcome-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/outcome-engine"
+    },
+    {
+      "path": "src/lib/demo-data/owner-center-costs.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/owner-center-costs"
+    },
+    {
       "path": "src/lib/demo-data/packs.ts",
       "loc": 1,
       "reExportsFrom": "@/lib/core-services/capability-router/pack-enablement.service"
     },
     {
+      "path": "src/lib/demo-data/revenue-office.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/revenue-office"
+    },
+    {
+      "path": "src/lib/demo-data/system-status.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/seed/system-status"
+    },
+    {
       "path": "src/lib/deployment/index.ts",
       "loc": 11,
       "reExportsFrom": "./deployment-unit-registry"
+    },
+    {
+      "path": "src/lib/design-system/app-window-system.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/design-system/app-window-system"
+    },
+    {
+      "path": "src/lib/design-system/domain-atmospheres.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/design-system/domain-atmospheres"
+    },
+    {
+      "path": "src/lib/design-system/nova-os.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/design-system/nova-os"
+    },
+    {
+      "path": "src/lib/design-system/sita-design-tokens.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/design-system/sita-design-tokens"
+    },
+    {
+      "path": "src/lib/design-system/snap-zones.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/design-system/snap-zones"
     },
     {
       "path": "src/lib/detection/index.ts",
@@ -425,6 +850,66 @@
       "path": "src/lib/engine/index.ts",
       "loc": 2,
       "reExportsFrom": "./compositor-sim"
+    },
+    {
+      "path": "src/lib/engines/action-state-machine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/action-state-machine"
+    },
+    {
+      "path": "src/lib/engines/adaptive-advisor-roster.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/adaptive-advisor-roster"
+    },
+    {
+      "path": "src/lib/engines/adaptive-boardroom-framing.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/adaptive-boardroom-framing"
+    },
+    {
+      "path": "src/lib/engines/adaptive-notification-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/adaptive-notification-engine"
+    },
+    {
+      "path": "src/lib/engines/adaptive-sidebar-intelligence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/adaptive-sidebar-intelligence"
+    },
+    {
+      "path": "src/lib/engines/adaptive-workflow-templates.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/adaptive-workflow-templates"
+    },
+    {
+      "path": "src/lib/engines/advisor-memory-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/advisor-memory-engine"
+    },
+    {
+      "path": "src/lib/engines/advisor-orchestration.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/advisor-orchestration"
+    },
+    {
+      "path": "src/lib/engines/advisor-performance-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/advisor-performance-engine"
+    },
+    {
+      "path": "src/lib/engines/advisor-reflection-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/advisor-reflection-engine"
+    },
+    {
+      "path": "src/lib/engines/advisor-tool-execution-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/advisor-tool-execution-engine"
+    },
+    {
+      "path": "src/lib/engines/ai-governance-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/ai-governance-engine"
     },
     {
       "path": "src/lib/engines/business-action-pipeline.ts",
@@ -482,6 +967,91 @@
       "reExportsFrom": "@/domains/engines/business-radar-engine"
     },
     {
+      "path": "src/lib/engines/client-intelligence-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/client-intelligence-engine"
+    },
+    {
+      "path": "src/lib/engines/confidence-risk-scorer.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/confidence-risk-scorer"
+    },
+    {
+      "path": "src/lib/engines/connector-concierge.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/connector-concierge"
+    },
+    {
+      "path": "src/lib/engines/continuous-profit-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/continuous-profit-engine"
+    },
+    {
+      "path": "src/lib/engines/cross-advisor-coordinator.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/cross-advisor-coordinator"
+    },
+    {
+      "path": "src/lib/engines/cross-os-integration.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/cross-os-integration"
+    },
+    {
+      "path": "src/lib/engines/decision-journal-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/decision-journal-engine"
+    },
+    {
+      "path": "src/lib/engines/delegation-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/delegation-engine"
+    },
+    {
+      "path": "src/lib/engines/digital-twin.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/digital-twin"
+    },
+    {
+      "path": "src/lib/engines/drag-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/drag-engine"
+    },
+    {
+      "path": "src/lib/engines/economic-intelligence-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/economic-intelligence-engine"
+    },
+    {
+      "path": "src/lib/engines/enterprise-maturity.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/enterprise-maturity"
+    },
+    {
+      "path": "src/lib/engines/entity-role-graph.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/entity-role-graph"
+    },
+    {
+      "path": "src/lib/engines/execution-debt-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/execution-debt-engine"
+    },
+    {
+      "path": "src/lib/engines/founder-bottleneck-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/founder-bottleneck-engine"
+    },
+    {
+      "path": "src/lib/engines/graph-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/graph-engine"
+    },
+    {
+      "path": "src/lib/engines/invisible-labor-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/invisible-labor-engine"
+    },
+    {
       "path": "src/lib/engines/lead-recovery-engine.ts",
       "loc": 1,
       "reExportsFrom": "@/domains/engines/lead-recovery-engine"
@@ -492,9 +1062,99 @@
       "reExportsFrom": "@/domains/engines/lead-scoring-engine"
     },
     {
+      "path": "src/lib/engines/memory-governance.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/memory-governance"
+    },
+    {
+      "path": "src/lib/engines/meta-governance-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/meta-governance-engine"
+    },
+    {
+      "path": "src/lib/engines/policy-depth-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/policy-depth-engine"
+    },
+    {
+      "path": "src/lib/engines/profile-evolution-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/profile-evolution-engine"
+    },
+    {
+      "path": "src/lib/engines/readiness-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/readiness-engine"
+    },
+    {
+      "path": "src/lib/engines/release-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/release-engine"
+    },
+    {
+      "path": "src/lib/engines/replay-recovery.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/replay-recovery"
+    },
+    {
+      "path": "src/lib/engines/revenue-opportunity.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/revenue-opportunity"
+    },
+    {
+      "path": "src/lib/engines/setup-orchestration-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/setup-orchestration-engine"
+    },
+    {
+      "path": "src/lib/engines/setup-phase-definitions.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/setup-phase-definitions"
+    },
+    {
       "path": "src/lib/engines/shared/index.ts",
       "loc": 2,
       "reExportsFrom": "./aging"
+    },
+    {
+      "path": "src/lib/engines/simulation-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/simulation-engine"
+    },
+    {
+      "path": "src/lib/engines/strategic-planning-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/strategic-planning-engine"
+    },
+    {
+      "path": "src/lib/engines/token-governance.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/token-governance"
+    },
+    {
+      "path": "src/lib/engines/trust-debt-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/trust-debt-engine"
+    },
+    {
+      "path": "src/lib/engines/workspace-view-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/workspace-view-engine"
+    },
+    {
+      "path": "src/lib/integrations/reality-integration-hub.ts",
+      "loc": 1,
+      "reExportsFrom": "@/integrations/external/reality-integration-hub"
+    },
+    {
+      "path": "src/lib/investment-office/mock-data.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/investment/mock-data"
+    },
+    {
+      "path": "src/lib/investment-office/types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/investment/types"
     },
     {
       "path": "src/lib/migration/index.ts",
@@ -682,9 +1342,19 @@
       "reExportsFrom": "./platform-law-registry"
     },
     {
+      "path": "src/lib/platform-law/platform-law-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/governance/platform-law-registry"
+    },
+    {
       "path": "src/lib/platform-plane/index.ts",
       "loc": 18,
       "reExportsFrom": "./plane-registry"
+    },
+    {
+      "path": "src/lib/reality-audit/reality-audit-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/runtimes/reality/reality-audit-registry"
     },
     {
       "path": "src/lib/runtime/index.ts",
@@ -865,6 +1535,11 @@
       "path": "src/lib/shopify/index.ts",
       "loc": 1,
       "reExportsFrom": "./config"
+    },
+    {
+      "path": "src/lib/sound-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/runtime/sound-engine"
     },
     {
       "path": "src/lib/sovereign-ai-gateway/index.ts",
