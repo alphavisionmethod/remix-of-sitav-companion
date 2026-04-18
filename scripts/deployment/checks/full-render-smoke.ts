@@ -68,17 +68,11 @@ function validatePage(absPath: string, relPath: string): PageResult {
     return { page: relPath, ok: false, reason: "no JSX, createElement, fragment, or component re-export" };
   }
 
-  // Strip strings/template literals before brace-counting so content tokens
-  // like `{` inside text or templates don't skew the balance check.
-  const codeOnly = stripped
-    .replace(/`(?:\\[\s\S]|\$\{[^}]*\}|[^`\\])*`/g, "''")
-    .replace(/"(?:\\.|[^"\\])*"/g, "''")
-    .replace(/'(?:\\.|[^'\\])*'/g, "''");
-  const openBraces = (codeOnly.match(/\{/g) ?? []).length;
-  const closeBraces = (codeOnly.match(/\}/g) ?? []).length;
-  if (Math.abs(openBraces - closeBraces) > 0) {
-    return { page: relPath, ok: false, reason: `unbalanced braces (open=${openBraces} close=${closeBraces})` };
-  }
+  // Brace-balance is unreliable for TSX (JSX expressions, template-literal
+  // interpolations, type predicates, and conditional rendering all use `{`/`}`
+  // in ways that defeat regex). The default-export + JSX checks above are
+  // sufficient for static smoke validation; full parse correctness is the
+  // responsibility of `tsc --noEmit` and the vitest page render batches.
 
   return { page: relPath, ok: true };
 }
