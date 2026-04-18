@@ -4,7 +4,7 @@
 // User, Advisor, Client, Campaign, Revenue Pipeline
 // ═══════════════════════════════════════════════════════════════
 
-import { revenueAdvisorStances, revenueMemoryEvents, revenueRetentionSignals, revenueExperiments, revenueCampaigns, revenueFunnels, revenueFunnelSteps, revenueOffers, revenueBookings, revenueReviews, revenueSegments, revenueReputationMetrics, revenueWinbackQueue } from "@/lib/data-services/revenue-ops-data-service";
+import { revenueAdvisorStances, revenueMemoryEvents, revenueRetentionSignals, revenueExperiments, revenueCampaigns, revenueFunnels, revenueFunnelSteps, revenueOffers, revenueBookings, revenueReviews, revenueSegments, revenueReputationMetrics, revenueWinbackQueue } from "@/data/repositories/revenue-ops-data-service";
 
 // ── Types ──────────────────────────────────────────────────────
 export interface AdvisorMemoryEntry {
