@@ -117,6 +117,13 @@ const REQUIRED_GATES = [
   "internal-agent-policy-architect-function",
   "policy-draft-review-page",
   "policy-draft-never-auto-apply",
+  // Internal AI Workforce — Phase 5 closure (6 BLOCK gates)
+  "internal-agent-trust-ladder-table",
+  "internal-agent-trust-evaluator-function",
+  "trust-ladder-board-page",
+  "trust-ladder-never-self-promote",
+  "knowledge-bus-write-discipline",
+  "trust-ladder-supervisor-readout",
 ];
 
 const GENERATED_DIR = "generated";
