@@ -30,16 +30,29 @@ if (supKeys.size === 0) {
   });
 }
 
+// Collect every registered agentId across the agent council files. Escalation
+// targets may legitimately point at either a supervisor (`sup-*` / `chief-of-staff`)
+// or a peer agent (`aw-*`). Both are valid resolution targets.
+const agentKeys = new Set<string>();
+for (const f of readdirSync(AGENTS_DIR)) {
+  if (!f.endsWith(".ts") || f === "index.ts") continue;
+  const src = readFileSync(join(AGENTS_DIR, f), "utf8");
+  for (const m of src.matchAll(/agentId:\s*"([^"]+)"/g)) {
+    agentKeys.add(m[1]);
+  }
+}
+
+const validTargets = new Set<string>([...supKeys, ...agentKeys]);
+
 let unresolved = 0;
 for (const f of readdirSync(AGENTS_DIR)) {
   if (!f.endsWith(".ts") || f === "index.ts") continue;
   const src = readFileSync(join(AGENTS_DIR, f), "utf8");
-  // Each agent has escalationTargets: ["sup-xxx", "sup-yyy"]
   const targets = Array.from(src.matchAll(/escalationTargets:\s*\[([^\]]*)\]/g));
   for (const m of targets) {
     const ids = Array.from(m[1].matchAll(/"([^"]+)"/g)).map((x) => x[1]);
     for (const id of ids) {
-      if (!supKeys.has(id)) {
+      if (!validTargets.has(id)) {
         issues.push({
           severity: "error",
           area: f,
