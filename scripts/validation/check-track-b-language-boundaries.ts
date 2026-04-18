@@ -5,6 +5,7 @@
 // stay inside docs/nova/, src/lib/nova-sdk/, or files explicitly marked <!-- track-b -->.
 import * as cp from "node:child_process";
 import * as fs from "node:fs";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const TRACK_B_PHRASES = [
   "Nova Runtime SDK simulated kernel",
@@ -48,4 +49,9 @@ for (const term of TRACK_B_PHRASES) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} track-b-language-boundaries: ${violations.length} leaks`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "track-b-language-boundaries",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "track-b", message: v })),
+});
 process.exit(ok ? 0 : 1);

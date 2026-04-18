@@ -5,6 +5,7 @@
 // MUST contain an `## Active Caveats` block in the same file.
 import * as cp from "node:child_process";
 import * as fs from "node:fs";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const QUALIFIER_REQUIRED = ["DEPLOYABLE", "production-ready", "deployable=true", "release-ready"];
 
@@ -47,4 +48,10 @@ for (const f of flagged) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} launch-honesty-alignment: ${flagged.size} claim-bearing docs, ${violations.length} missing caveats`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "launch-honesty-alignment",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "launch-honesty", message: v })),
+  extra: { claimBearingDocs: flagged.size },
+});
 process.exit(ok ? 0 : 1);

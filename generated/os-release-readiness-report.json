@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T14:39:54.989Z",
+  "generatedAt": "2026-04-18T18:05:17.933Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -244,6 +244,76 @@
     {
       "file": "generated/profile-runtime-baseline-drift-report.json",
       "gate": "profile-runtime-baseline-drift",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/boardroom-layer7-closure-report.json",
+      "gate": "boardroom-layer7-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-claim-safety-report.json",
+      "gate": "os-claim-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/track-b-language-boundaries-report.json",
+      "gate": "track-b-language-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-prohibited-native-claims-report.json",
+      "gate": "no-prohibited-native-claims",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/demo-only-surface-badging-report.json",
+      "gate": "demo-only-surface-badging",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/future-vision-route-containment-report.json",
+      "gate": "future-vision-route-containment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/device-surface-claim-safety-report.json",
+      "gate": "device-surface-claim-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/deployment-wording-safety-report.json",
+      "gate": "deployment-wording-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/launch-honesty-alignment-report.json",
+      "gate": "launch-honesty-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/qualifier-required-claims-report.json",
+      "gate": "qualifier-required-claims",
       "ok": true,
       "errors": 0,
       "warnings": 0

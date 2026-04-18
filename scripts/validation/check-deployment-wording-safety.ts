@@ -4,6 +4,7 @@
 // Fails if prohibited deployability phrases ("nothing left to prove", "fully production-certified",
 // "100% production-ready", "no remaining operational caveats", etc.) appear in claim-bearing docs.
 import * as cp from "node:child_process";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const PROHIBITED = [
   "nothing left to prove",
@@ -46,4 +47,9 @@ for (const term of PROHIBITED) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} deployment-wording-safety: ${violations.length} over-claims`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "deployment-wording-safety",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "deploy-wording", message: v })),
+});
 process.exit(ok ? 0 : 1);

@@ -5,6 +5,7 @@
 // OR carry an explicit "// claim-safety:exempt" sentinel comment.
 import * as fs from "node:fs";
 import * as cp from "node:child_process";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const REGISTRY_PATH = "src/lib/claim-safety/demo-only-surface-registry.ts";
 
@@ -42,4 +43,10 @@ for (const f of files) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} device-surface-claim-safety: ${files.length} scanned, ${violations.length} unregistered`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "device-surface-claim-safety",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "device-surface", message: v })),
+  extra: { filesScanned: files.length },
+});
 process.exit(ok ? 0 : 1);

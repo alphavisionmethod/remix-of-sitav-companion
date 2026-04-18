@@ -4,6 +4,7 @@
 // Every route registered with containment="future_vision" must NOT appear in user-profile navigation.
 // Operator-only routes are acceptable.
 import * as fs from "node:fs";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const REGISTRY_PATH = "src/lib/claim-safety/demo-only-surface-registry.ts";
 
@@ -47,4 +48,10 @@ for (const route of futureRoutes) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} future-vision-route-containment: ${futureRoutes.length} routes, ${violations.length} leaks`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "future-vision-route-containment",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "future-vision", message: v })),
+  extra: { futureRoutes: futureRoutes.length },
+});
 process.exit(ok ? 0 : 1);

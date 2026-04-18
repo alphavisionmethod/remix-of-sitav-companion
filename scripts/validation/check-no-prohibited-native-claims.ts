@@ -4,6 +4,7 @@
 // Strict scan of public/marketing surfaces (READMEs, product pages, admin truth boards)
 // for over-claiming native-substrate-ownership phrases.
 import * as cp from "node:child_process";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const PROHIBITED = [
   "custom kernel",
@@ -40,4 +41,9 @@ for (const term of PROHIBITED) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} no-prohibited-native-claims: ${violations.length} violations`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "no-prohibited-native-claims",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "native-claim", message: v })),
+});
 process.exit(ok ? 0 : 1);

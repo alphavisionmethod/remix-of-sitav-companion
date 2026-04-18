@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T14:39:54.989Z
+> Generated: 2026-04-18T18:05:17.933Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 35 |
-| Gates present  | 35 |
+| Gates required | 45 |
+| Gates present  | 45 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
@@ -52,6 +52,16 @@
 | `shared-component-profile-pollution` | ✅ | 0 | 0 |
 | `route-guard-coverage` | ✅ | 0 | 0 |
 | `profile-runtime-baseline-drift` | ✅ | 0 | 0 |
+| `boardroom-layer7-closure` | ✅ | 0 | 0 |
+| `os-claim-safety` | ✅ | 0 | 0 |
+| `track-b-language-boundaries` | ✅ | 0 | 0 |
+| `no-prohibited-native-claims` | ✅ | 0 | 0 |
+| `demo-only-surface-badging` | ✅ | 0 | 0 |
+| `future-vision-route-containment` | ✅ | 0 | 0 |
+| `device-surface-claim-safety` | ✅ | 0 | 0 |
+| `deployment-wording-safety` | ✅ | 0 | 0 |
+| `launch-honesty-alignment` | ✅ | 0 | 0 |
+| `qualifier-required-claims` | ✅ | 0 | 0 |
 
 ## Verdict
 
