@@ -28,10 +28,12 @@ if [[ ! -x "${GEN}" && ! -f "${GEN}" ]]; then
   exit 2
 fi
 
-if ! mountpoint -q /var 2>/dev/null && [[ ! -w /var/lib/sita 2>/dev/null ]]; then
+if ! touch /var/lib/sita/.write-test 2>/dev/null; then
   export SITA_SUPPORT_DIR="/tmp/sita-support"
   mkdir -p "${SITA_SUPPORT_DIR}"
   echo "ℹ  /var is read-only — writing to ${SITA_SUPPORT_DIR}"
+else
+  rm -f /var/lib/sita/.write-test
 fi
 
 bash "${GEN}"
