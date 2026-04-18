@@ -40,10 +40,14 @@ const CRMNotes = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [form, setForm] = useState({
-    title: "", content: "", note_type: "general", contact_id: "", company_id: "", is_pinned: false
-  });
+  type NoteForm = { title: string; content: string; note_type: string; contact_id: string; company_id: string; is_pinned: boolean };
+  const EMPTY_FORM: NoteForm = { title: "", content: "", note_type: "general", contact_id: "", company_id: "", is_pinned: false };
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<NoteForm>("business:crm:note:new", "business");
+  const [form, setForm] = useState<NoteForm>(() => ({ ...EMPTY_FORM, ...draft }));
   const [editForm, setEditForm] = useState({ title: "", content: "" });
+
+  // Mirror form changes into the autosaved draft
+  React.useEffect(() => { updateDraft(form); }, [form, updateDraft]);
 
   const contactMap = useMemo(() => {
     const m: Record<string, string> = {};
