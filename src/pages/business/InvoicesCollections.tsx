@@ -38,7 +38,17 @@ const InvoicesCollections = () => {
   const invoiceLabel = primaryMode === "ecommerce" ? "Orders & Payments" : primaryMode === "appointment-based" ? "Session Billing" : primaryMode === "membership" ? "Membership Billing" : "Invoices & Collections";
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
+  // Phase S — canonical autosave for new-invoice draft (localStorage + IndexedDB, 7-day TTL)
+  const { draft, updateDraft, clearDraft, hasDraft } = useDraftAutosave<{
+    invoice_number: string; amount: string; due_date: string; notes: string;
+  }>("finance:invoice:new", "finance");
+  const [form, setForm] = useState({
+    invoice_number: draft.invoice_number ?? "",
+    amount: draft.amount ?? "",
+    due_date: draft.due_date ?? "",
+    notes: draft.notes ?? "",
+  });
+  useEffect(() => { updateDraft(form); }, [form, updateDraft]);
   const generatePdf = useInvoiceGenerate();
   const sendInvoice = useInvoiceSend();
 
@@ -62,7 +72,7 @@ const InvoicesCollections = () => {
   const addInvoice = useAction("finance", "invoice.create", {
     successMessage: "Invoice created",
     invalidateKeys: [["invoices"]],
-    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
+    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); clearDraft(); },
   });
 
   const updateStatus = useAction("finance", "invoice.status", {
