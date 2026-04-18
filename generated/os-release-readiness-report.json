@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:19:42.450Z",
+  "generatedAt": "2026-04-18T02:24:56.446Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -132,6 +132,13 @@
     {
       "file": "generated/electron-signing-readiness-report.json",
       "gate": "electron-signing-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/full-render-smoke-report.json",
+      "gate": "full-render-smoke",
       "ok": true,
       "errors": 0,
       "warnings": 0

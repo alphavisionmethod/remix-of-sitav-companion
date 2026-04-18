@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T02:19:42.450Z
+> Generated: 2026-04-18T02:24:56.446Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 19 |
-| Gates present  | 19 |
+| Gates required | 20 |
+| Gates present  | 20 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 5 |
@@ -36,6 +36,7 @@
 | `ks-payments-auth-readiness` | ✅ | 0 | 1 |
 | `ci-artifacts-proof` | ✅ | 0 | 4 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
+| `full-render-smoke` | ✅ | 0 | 0 |
 
 ## Verdict
 
