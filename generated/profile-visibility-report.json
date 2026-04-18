@@ -1,0 +1,335 @@
+{
+  "generatedAt": "2026-04-18T02:05:25.033Z",
+  "routes": [
+    {
+      "prefix": "/admin/founder",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "founder.view"
+    },
+    {
+      "prefix": "/admin/engineering",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "engineering.view"
+    },
+    {
+      "prefix": "/admin/release",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "release.view"
+    },
+    {
+      "prefix": "/admin/observability",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "audit.view"
+    },
+    {
+      "prefix": "/admin/support",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "support.view"
+    },
+    {
+      "prefix": "/admin/security",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "security.view"
+    },
+    {
+      "prefix": "/admin/verification",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "verification.view"
+    },
+    {
+      "prefix": "/admin",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "requiredPermission": "admin.view"
+    },
+    {
+      "prefix": "/desktop",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/business",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/money",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/concierge",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/files",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/boardroom",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/workspace",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/apps",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/cloud",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/launcher",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/notifications",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/settings",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/search",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/api",
+      "plane": "backend-services",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/auth",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "requiredPermission": null
+    },
+    {
+      "prefix": "/",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "requiredPermission": null
+    }
+  ],
+  "apps": [
+    {
+      "appId": "business-os",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R1"
+    },
+    {
+      "appId": "money-os",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R2"
+    },
+    {
+      "appId": "concierge",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R1"
+    },
+    {
+      "appId": "boardroom",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R2"
+    },
+    {
+      "appId": "workspace",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R0"
+    },
+    {
+      "appId": "app-store",
+      "plane": "user",
+      "visibleInUser": true,
+      "visibleInOperator": false,
+      "roleRequired": null,
+      "riskTier": "R1"
+    },
+    {
+      "appId": "files",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "roleRequired": null,
+      "riskTier": "R1"
+    },
+    {
+      "appId": "settings",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "roleRequired": null,
+      "riskTier": "R0"
+    },
+    {
+      "appId": "notifications",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "roleRequired": null,
+      "riskTier": "R0"
+    },
+    {
+      "appId": "search",
+      "plane": "shell-runtime",
+      "visibleInUser": true,
+      "visibleInOperator": true,
+      "roleRequired": null,
+      "riskTier": "R0"
+    },
+    {
+      "appId": "observability",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "audit.view",
+      "riskTier": "R2"
+    },
+    {
+      "appId": "release-center",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "release.view",
+      "riskTier": "R3"
+    },
+    {
+      "appId": "verification-center",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "verification.view",
+      "riskTier": "R3"
+    },
+    {
+      "appId": "kill-switch-center",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "security.kill",
+      "riskTier": "R5"
+    },
+    {
+      "appId": "support-diagnostics",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "support.view",
+      "riskTier": "R3"
+    },
+    {
+      "appId": "ai-governance",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "ai.governance",
+      "riskTier": "R3"
+    },
+    {
+      "appId": "platform-control",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "platform.admin",
+      "riskTier": "R4"
+    },
+    {
+      "appId": "user-org-intervention",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "users.intervene",
+      "riskTier": "R4"
+    },
+    {
+      "appId": "incident-triage",
+      "plane": "admin",
+      "visibleInUser": false,
+      "visibleInOperator": true,
+      "roleRequired": "incident.respond",
+      "riskTier": "R3"
+    }
+  ],
+  "summary": {
+    "routesUserOnly": 9,
+    "routesOperatorOnly": 8,
+    "routesShared": 7,
+    "appsUserOnly": 6,
+    "appsOperatorOnly": 9,
+    "appsShared": 4
+  }
+}

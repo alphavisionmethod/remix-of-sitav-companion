@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-04-18T02:05:25.034Z",
+  "profile": "operator",
+  "overall": "GREEN",
+  "counts": {
+    "pass": 8,
+    "warn": 0,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "id": "manifest-present",
+      "status": "pass",
+      "message": "profile manifest loaded"
+    },
+    {
+      "id": "planes-declared",
+      "status": "pass",
+      "message": "5 planes enabled"
+    },
+    {
+      "id": "routes-mapped",
+      "status": "pass",
+      "message": "15 routes resolve to this profile"
+    },
+    {
+      "id": "apps-allowed",
+      "status": "pass",
+      "message": "13 apps shippable in this profile"
+    },
+    {
+      "id": "default-shell-home",
+      "status": "pass",
+      "message": "shell home → /admin"
+    },
+    {
+      "id": "operator-workflows",
+      "status": "pass",
+      "message": "8 canonical workflows wired"
+    },
+    {
+      "id": "admin-plane-enabled",
+      "status": "pass",
+      "message": "admin plane enabled"
+    },
+    {
+      "id": "support-tooling",
+      "status": "pass",
+      "message": "support tooling = operator-full"
+    }
+  ]
+}

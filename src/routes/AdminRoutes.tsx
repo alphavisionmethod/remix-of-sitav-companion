@@ -2,6 +2,7 @@ import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
 import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
+import AdminRootLanding from "@/routes/AdminRootLanding";
 
 /** Helper to wrap a page element with a permission gate */
 function gated(permission: string, element: React.ReactNode) {
@@ -235,8 +236,8 @@ export function getAdminRoutes() {
     <Route key="hub-airuntime" path="/admin/ai-runtime" element={gated("flags.view", <AIRuntimeHome />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
-    // /admin → /admin/overview canonical entry
-    <Route key="hub-root" path="/admin" element={<Navigate to="/admin/overview" replace />} />,
+    // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
+    <Route key="hub-root" path="/admin" element={<AdminRootLanding />} />,
 
     // ── Phase 25: Workflow step routes (every OwnerWorkflow step resolves) ──
     <Route key="ws-daily-incidents" path="/admin/health/incidents" element={gated("maintenance.view", <MCIncidents />)} />,
