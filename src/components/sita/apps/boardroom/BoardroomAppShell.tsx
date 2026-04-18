@@ -21,6 +21,7 @@ import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
 import { BoardroomLineageView } from "./BoardroomLineageView";
 import { BoardroomCrossAppImpact } from "./BoardroomCrossAppImpact";
 import { BoardroomExplainability } from "./BoardroomExplainability";
+import { BoardroomFollowthroughPanel } from "./BoardroomFollowthroughPanel";
 import { useBoardroomSession } from "@/hooks/useBoardroomSession";
 
 const MODULES = [
@@ -30,6 +31,7 @@ const MODULES = [
   { id: "council", label: "Council", icon: Crown },
   { id: "simulation", label: "Simulation", icon: FlaskConical },
   { id: "approvals", label: "Approvals", icon: CheckSquare },
+  { id: "followthrough", label: "Follow-through", icon: Workflow },
   { id: "lineage", label: "Lineage", icon: GitBranch },
   { id: "impact", label: "Impact", icon: Globe },
   { id: "explainability", label: "Explain", icon: HelpCircle },
@@ -41,14 +43,15 @@ type SessionMode = "review" | "simulation" | "approval";
 
 const MODULE_SESSION_MODE: Record<string, SessionMode> = {
   executive: "review", pulse: "review", synthesis: "review", council: "review",
-  simulation: "simulation", approvals: "approval", lineage: "review",
-  impact: "review", explainability: "review", memory: "review",
+  simulation: "simulation", approvals: "approval", followthrough: "review",
+  lineage: "review", impact: "review", explainability: "review", memory: "review",
 };
 
 const MODULE_AMBIENT: Record<string, string> = {
   executive: "hsl(280 40% 15% / 0.25)", pulse: "hsl(280 40% 15% / 0.2)",
   synthesis: "hsl(260 40% 18% / 0.2)", council: "hsl(300 35% 15% / 0.2)",
   simulation: "hsl(40 50% 15% / 0.25)", approvals: "hsl(145 40% 12% / 0.25)",
+  followthrough: "hsl(170 45% 14% / 0.25)",
   lineage: "hsl(200 40% 15% / 0.2)", impact: "hsl(320 40% 15% / 0.2)",
   explainability: "hsl(240 40% 15% / 0.2)", memory: "hsl(220 40% 15% / 0.2)",
 };
@@ -231,6 +234,7 @@ export function BoardroomAppShell() {
       );
       case "simulation": return <BoardroomSimulationView {...viewProps} />;
       case "approvals": return <BoardroomApprovalView {...viewProps} />;
+      case "followthrough": return <BoardroomFollowthroughPanel scope={scope} />;
       case "lineage": return <BoardroomLineageView />;
       case "impact": return <BoardroomCrossAppImpact scope={scope} />;
       case "explainability": return <BoardroomExplainability scope={scope} />;
