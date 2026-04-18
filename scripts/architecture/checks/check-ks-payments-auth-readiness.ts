@@ -12,7 +12,7 @@
 //
 // Emits: generated/ks-payments-auth-readiness-report.json
 // ═══════════════════════════════════════════════════════════════
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const REPO_ROOT = process.cwd();
@@ -63,7 +63,6 @@ check("runbook.exists", runbookFound, "No payments runbook (RB-PAYMENTS / RB-005
 const migrationsDir = resolve(REPO_ROOT, "supabase/migrations");
 let approvalsTableSeen = false;
 if (existsSync(migrationsDir)) {
-  const { readdirSync } = require("node:fs");
   for (const f of readdirSync(migrationsDir) as string[]) {
     if (!f.endsWith(".sql")) continue;
     const txt = readFileSync(resolve(migrationsDir, f), "utf8");
