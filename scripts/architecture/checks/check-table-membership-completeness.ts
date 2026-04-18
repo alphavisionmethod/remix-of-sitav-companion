@@ -7,7 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 
 const SNAPSHOT_PATH = "generated/db-schema-snapshot.json";
 const REPORT_PATH = "generated/table-membership-report.json";

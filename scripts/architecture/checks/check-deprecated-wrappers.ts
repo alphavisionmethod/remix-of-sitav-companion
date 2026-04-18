@@ -13,7 +13,7 @@ import { ViolationCollector } from "../lib/utils";
 import {
   DUPLICATE_FAMILIES,
   allDeclaredWrappers,
-} from "../../../src/lib/architecture/component-duplication-map";
+} from "../../../src/platform/architecture/component-duplication-map";
 
 const vc = new ViolationCollector();
 

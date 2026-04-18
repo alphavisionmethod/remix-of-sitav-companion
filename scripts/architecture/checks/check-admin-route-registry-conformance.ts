@@ -3,7 +3,7 @@
 // SITA OS — Admin Route Registry Conformance Check
 //
 // Every route mounted in src/routes/AdminRoutes.tsx MUST have a
-// corresponding entry in src/lib/architecture/admin-route-registry.ts.
+// corresponding entry in src/platform/architecture/admin-route-registry.ts.
 // New routes added without registry entries fail CI.
 // ═══════════════════════════════════════════════════════════════
 
@@ -13,7 +13,7 @@ import { ViolationCollector } from "../lib/utils";
 const vc = new ViolationCollector();
 
 const ROUTES_PATH = "src/routes/AdminRoutes.tsx";
-const REGISTRY_PATH = "src/lib/architecture/admin-route-registry.ts";
+const REGISTRY_PATH = "src/platform/architecture/admin-route-registry.ts";
 
 if (!fs.existsSync(ROUTES_PATH)) {
   vc.add(ROUTES_PATH, "missing-routes", "AdminRoutes.tsx not found");

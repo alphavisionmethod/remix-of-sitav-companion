@@ -8,7 +8,7 @@
 
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { ROUTE_CONTEXT_BINDINGS, resolveRouteContext } from "../../../src/lib/architecture/context-membership-map";
+import { ROUTE_CONTEXT_BINDINGS, resolveRouteContext } from "../../../src/platform/architecture/context-membership-map";
 
 const ROUTES_DIR = "src/routes";
 const REPORT_PATH = "generated/route-registry-completeness-report.json";

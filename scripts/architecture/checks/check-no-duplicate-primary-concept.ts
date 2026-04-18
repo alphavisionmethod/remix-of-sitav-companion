@@ -10,7 +10,7 @@ import { ViolationCollector } from "../lib/utils";
 import {
   ADMIN_DOMAINS,
   ADMIN_ROUTE_REGISTRY,
-} from "../../../src/lib/architecture/admin-route-registry";
+} from "../../../src/platform/architecture/admin-route-registry";
 
 const vc = new ViolationCollector();
 
@@ -25,13 +25,13 @@ for (const d of ADMIN_DOMAINS) {
   const hubs = primaryByDomain[d] ?? [];
   if (hubs.length === 0) {
     vc.add(
-      "src/lib/architecture/admin-route-registry.ts",
+      "src/platform/architecture/admin-route-registry.ts",
       "missing-primary",
       `Domain "${d}" has no PRIMARY_DOMAIN_ENTRY`,
     );
   } else if (hubs.length > 1) {
     vc.add(
-      "src/lib/architecture/admin-route-registry.ts",
+      "src/platform/architecture/admin-route-registry.ts",
       "duplicate-primary",
       `Domain "${d}" has ${hubs.length} primary entries: ${hubs.join(", ")} — exactly one is allowed`,
     );

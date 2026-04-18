@@ -14,8 +14,8 @@ import { ViolationCollector, writeJsonOutput } from "../lib/utils";
 const vc = new ViolationCollector();
 
 const ROUTES_PATH = "src/routes/AdminRoutes.tsx";
-const WORKFLOW_PATH = "src/lib/architecture/owner-workflow-map.ts";
-const REGISTRY_PATH = "src/lib/architecture/admin-route-registry.ts";
+const WORKFLOW_PATH = "src/platform/architecture/owner-workflow-map.ts";
+const REGISTRY_PATH = "src/platform/architecture/admin-route-registry.ts";
 const REPORT_PATH = "generated/owner-workflow-reality-report.json";
 
 if (!fs.existsSync(ROUTES_PATH) || !fs.existsSync(WORKFLOW_PATH) || !fs.existsSync(REGISTRY_PATH)) {

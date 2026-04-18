@@ -20,7 +20,7 @@ import {
   getMandatorySubsystems,
   getCriticalIncidentSubsystems,
 } from "../../../src/lib/support/runbook-subsystem-map";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 import { KILL_SWITCH_REGISTRY } from "../../../src/lib/control-plane/kill-switch-registry";
 
 const vc = new ViolationCollector();

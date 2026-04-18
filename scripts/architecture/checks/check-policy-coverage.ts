@@ -78,7 +78,7 @@ const REQUIRED = [
   "src/lib/policy/policy-reversibility-map.ts",
   "src/lib/policy/policy-trust-thresholds.ts",
   "src/lib/policy/policy-approval-map.ts",
-  "src/lib/architecture/bounded-context-registry.ts",
+  "src/platform/architecture/bounded-context-registry.ts",
   "src/lib/runtime/surface-types.ts",
 ];
 for (const p of REQUIRED) {
@@ -98,7 +98,7 @@ const proofSrc = fs.readFileSync("src/lib/policy/policy-proof-requirements.ts", 
 const revSrc = fs.readFileSync("src/lib/policy/policy-reversibility-map.ts", "utf-8");
 const trustSrc = fs.readFileSync("src/lib/policy/policy-trust-thresholds.ts", "utf-8");
 const approvalSrc = fs.readFileSync("src/lib/policy/policy-approval-map.ts", "utf-8");
-const ctxSrc = fs.readFileSync("src/lib/architecture/bounded-context-registry.ts", "utf-8");
+const ctxSrc = fs.readFileSync("src/platform/architecture/bounded-context-registry.ts", "utf-8");
 const surfaceTypeSrc = fs.readFileSync("src/lib/runtime/surface-types.ts", "utf-8");
 
 // 1. Extract domain keys

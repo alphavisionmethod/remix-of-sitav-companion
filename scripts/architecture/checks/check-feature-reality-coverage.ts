@@ -13,7 +13,7 @@ import {
   realityCoverageStats,
 } from "../../../src/lib/reality/feature-reality-registry";
 import type { FeatureRealityCoverageReport } from "../../../src/lib/reality/feature-reality-types";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 
 const issues: { featureId: string; reason: string }[] = [];
 const validContexts = new Set(BOUNDED_CONTEXT_REGISTRY.map((c) => c.contextId));
