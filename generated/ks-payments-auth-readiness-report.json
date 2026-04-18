@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-18T02:19:40.458Z",
+  "generatedAt": "2026-04-18T02:21:41.544Z",
   "gate": "ks-payments-auth-readiness",
   "phase": "phase-14-production-launch-hardening",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1,
+  "warningCount": 0,
   "killSwitch": "KS-PAYMENTS-AUTH",
   "contract": {
     "registered": true,
@@ -13,11 +13,5 @@
     "runbookLinked": true,
     "approvalsTablePresent": true
   },
-  "issues": [
-    {
-      "severity": "warning",
-      "clause": "ui.approval-surface",
-      "message": "No operator UI surface for approving KS-PAYMENTS-AUTH activations"
-    }
-  ]
+  "issues": []
 }

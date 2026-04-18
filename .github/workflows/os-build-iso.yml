@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: os-build-iso-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build SITA OS ISO (${{ matrix.profile }})
