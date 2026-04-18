@@ -17,7 +17,8 @@
     "app-store",
     "settings",
     "notifications",
-    "search"
+    "search",
+    "desktop"
   ],
   "featureFlags": {
     "show.admin.nav": false,
