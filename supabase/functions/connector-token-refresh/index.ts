@@ -50,8 +50,38 @@ async function refreshGoogle(refreshToken: string): Promise<RefreshOutcome> {
   };
 }
 
+async function refreshMicrosoft(refreshToken: string): Promise<RefreshOutcome> {
+  const clientId = Deno.env.get("MICROSOFT_CONNECTOR_CLIENT_ID");
+  const clientSecret = Deno.env.get("MICROSOFT_CONNECTOR_CLIENT_SECRET");
+  const tenantId = Deno.env.get("MICROSOFT_CONNECTOR_TENANT_ID") ?? "common";
+  if (!clientId || !clientSecret) throw new Error("missing-microsoft-oauth-secrets");
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+    scope: "offline_access https://graph.microsoft.com/.default",
+  });
+  const resp = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`microsoft-refresh-failed:${resp.status}:${text.slice(0, 120)}`);
+  }
+  const data = await resp.json();
+  return {
+    newAccessToken: data.access_token,
+    newRefreshToken: data.refresh_token,
+    expiresInSec: typeof data.expires_in === "number" ? data.expires_in : 3600,
+  };
+}
+
 async function refreshForProvider(provider: string, refreshToken: string): Promise<{ outcome: RefreshOutcome; mode: "real" | "noop" }> {
   if (provider === "google") return { outcome: await refreshGoogle(refreshToken), mode: "real" };
+  if (provider === "microsoft") return { outcome: await refreshMicrosoft(refreshToken), mode: "real" };
   return { outcome: { newAccessToken: "", expiresInSec: 3600 }, mode: "noop" };
 }
 
