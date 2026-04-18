@@ -1,5 +1,5 @@
 # Page Verification Results
-> Generated: 2026-04-18T11:40:08.727Z
+> Generated: 2026-04-18T11:41:06.902Z
 > Source: `scripts/architecture/audits/page-verification-runner.ts`
 > Status: ✅ **ALL CHECKS PASS**
 
@@ -7,14 +7,14 @@
 
 | Check | Result | Duration |
 |---|---|---:|
-| `audit` | ✅ pass | 2366ms |
-| `admin-classification-coverage` | ✅ pass | 2401ms |
-| `admin-domain-budget` | ✅ pass | 2176ms |
-| `admin-route-coherence` | ✅ pass | 2383ms |
-| `redirect-coverage` | ✅ pass | 2365ms |
-| `experimental-isolation` | ✅ pass | 2995ms |
-| `page-registry-completeness` | ✅ pass | 2729ms |
-| `typecheck` | ✅ pass | 1016ms |
+| `audit` | ✅ pass | 2086ms |
+| `admin-classification-coverage` | ✅ pass | 1999ms |
+| `admin-domain-budget` | ✅ pass | 1898ms |
+| `admin-route-coherence` | ✅ pass | 2092ms |
+| `redirect-coverage` | ✅ pass | 1968ms |
+| `experimental-isolation` | ✅ pass | 2076ms |
+| `page-registry-completeness` | ✅ pass | 2269ms |
+| `typecheck` | ✅ pass | 797ms |
 
 ## Per-check tail output
 
