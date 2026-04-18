@@ -81,3 +81,10 @@
 All 7 Phase 6 BLOCK gates: **GREEN**.
 Combined with phases 1-5: the AI workforce now has a complete loop —
 **observe → act → learn → ladder → share → coordinate → optimize → self-heal**, all under explicit human-in-the-loop ceilings.
+
+## Active Caveats
+
+- Cross-council actions are clamped to L3 hard ceiling at the DB layer — no trigger or RPC path can elevate beyond L3 without human dual-approval.
+- Cost-saving proposals never auto-apply; they always enter the implementation suggestions pipeline as `proposed`.
+- Self-healer is locked to a curated safe runbook catalogue; arbitrary runbook execution is rejected.
+- Consensus-engine outputs are advisory only and feed the suggestion pipeline — they cannot bypass approval queues.

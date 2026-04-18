@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:20:39.307Z",
+  "generatedAt": "2026-04-18T23:55:34.539Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -466,6 +466,13 @@
       "warnings": 0
     },
     {
+      "file": "generated/bridge-status-contract-report.json",
+      "gate": "bridge-status-contract",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/internal-agent-reflection-table-report.json",
       "gate": "internal-agent-reflection-table",
       "ok": true,
@@ -482,6 +489,48 @@
     {
       "file": "generated/reflection-board-page-report.json",
       "gate": "reflection-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/implementation-suggestions-pipeline-report.json",
+      "gate": "implementation-suggestions-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/suggestion-generator-function-report.json",
+      "gate": "suggestion-generator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/weekly-digest-generation-report.json",
+      "gate": "weekly-digest-generation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dependency-upgrade-proposer-report.json",
+      "gate": "dependency-upgrade-proposer",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-score-update-logic-report.json",
+      "gate": "trust-score-update-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/reflection-to-action-linkage-report.json",
+      "gate": "reflection-to-action-linkage",
       "ok": true,
       "errors": 0,
       "warnings": 0

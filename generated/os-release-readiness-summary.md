@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T23:20:39.307Z
+> Generated: 2026-04-18T23:55:34.539Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 117 |
-| Gates present  | 117 |
+| Gates required | 124 |
+| Gates present  | 124 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
@@ -83,9 +83,16 @@
 | `agent-primitive-wiring` | ✅ | 0 | 0 |
 | `priority-bridge-wiring` | ✅ | 0 | 0 |
 | `kill-switch-backfill` | ✅ | 0 | 0 |
+| `bridge-status-contract` | ✅ | 0 | 0 |
 | `internal-agent-reflection-table` | ✅ | 0 | 0 |
 | `internal-agent-reflect-function` | ✅ | 0 | 0 |
 | `reflection-board-page` | ✅ | 0 | 0 |
+| `implementation-suggestions-pipeline` | ✅ | 0 | 0 |
+| `suggestion-generator-function` | ✅ | 0 | 0 |
+| `weekly-digest-generation` | ✅ | 0 | 0 |
+| `dependency-upgrade-proposer` | ✅ | 0 | 0 |
+| `trust-score-update-logic` | ✅ | 0 | 0 |
+| `reflection-to-action-linkage` | ✅ | 0 | 0 |
 | `internal-agent-policy-drafts-table` | ✅ | 0 | 0 |
 | `internal-agent-policy-architect-function` | ✅ | 0 | 0 |
 | `policy-draft-review-page` | ✅ | 0 | 0 |
