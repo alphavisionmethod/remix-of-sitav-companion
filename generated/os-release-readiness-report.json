@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-04-18T01:38:29.239Z",
+  "gate": "os-release-readiness",
+  "phase": "phase-12-native-deployability",
+  "inputs": [
+    {
+      "file": "generated/os-trust-chain-readiness-report.json",
+      "gate": "os-trust-chain-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-update-readiness-report.json",
+      "gate": "os-update-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-recovery-readiness-report.json",
+      "gate": "os-recovery-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/native-shell-session-readiness-report.json",
+      "gate": "native-shell-session-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/qemu-vm-readiness-report.json",
+      "gate": "qemu-vm-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-support-bundle-readiness-report.json",
+      "gate": "os-support-bundle-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/native-observability-readiness-report.json",
+      "gate": "native-observability-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "totalErrors": 0,
+  "totalWarnings": 1,
+  "missingGates": [
+    "os-build-pipeline"
+  ],
+  "ok": false,
+  "verdict": "RED"
+}
