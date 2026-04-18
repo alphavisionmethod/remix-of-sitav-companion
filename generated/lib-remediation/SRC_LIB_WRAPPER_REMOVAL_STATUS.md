@@ -1,84 +1,58 @@
 # SRC_LIB Wrapper Removal Status
 
-_Last updated: Wave 7 complete — 100% wrapper elimination + hooks canonicalization_
+_Last updated: Wave 8 complete — runtime layer fully migrated to canonical home_
 
 ## Cumulative Summary
 
-| Metric | Wave 6e End | Wave 6g End | **Wave 7 End** |
+| Metric | Wave 6g End | Wave 7 End | **Wave 8 End** |
 |---|---|---|---|
-| `@lovable:migrated-wrapper` files | 45 | 113* | **0** |
+| `@lovable:migrated-wrapper` files | 113 | 0 | **0** |
 | TS errors | 0 | 0 | **0** |
-| Vite build | (untested) | (untested) | **✅ green (57s)** |
-| `src/lib` top-level entries | 90 | 89 | **97** † |
-| `src/lib` total files | ~1610 | 1572 | **1591** |
-| `src/hooks` total files | ~169 | ~169 | **178** |
-| `src/lib/hooks` total files | 10 | 10 | **0** |
+| Vite build | (untested) | ✅ 57s | **✅ 53s** |
+| `src/lib` top-level entries | 89 | 97 | **96** |
+| `src/lib` total files | 1572 | 1591 | **1528** |
+| `src/hooks` total files | ~169 | 178 | **178** |
+| `src/runtimes` total files | 8 | 8 | **73** |
 
-\* Wave 6g summary undercounted: the marker was reintroduced by partially-rolled-back deletes; Wave 7 fully eliminates it with both `tsc` AND `vite build` verification.
-† The bump reflects 27 minimal forwarder stubs intentionally re-introduced (no marker, no logic, just `export * from "@/canonical/path"`) to preserve barrel API parity.
+## Wave 8 — Runtime Folder Promotion ✅
 
-## Wave 7 — Complete Wrapper Elimination ✅
+**Folder:** `src/lib/runtime/` → `src/runtimes/`
 
-### 1. Storage Barrel Fix
-- `src/lib/storage/index.ts` was importing `./storage-topology-registry` which was a deleted wrapper. Repointed to `@/data/persistence/storage-topology-registry` and deleted the local wrapper.
+### Steps Executed
+1. **Conflict scan:** Verified zero file-level conflicts between source and destination (only barrel `index.ts` files coincided — handled separately).
+2. **Physical migration:** Moved all 63 files preserving subfolder structure (`appliance/`, `appliance/release/`, `backend/release/`, `desktop/`, `desktop/release/`, `probes/`, `simulation/`, `web/`).
+3. **Root barrel rename:** `src/lib/runtime/index.ts` had no `src/runtimes/index.ts` peer to merge with, so it was relocated to `src/runtimes/runtime-index.ts` (zero consumers, safe rename).
+4. **Bulk rewire:** 27 consumer files updated from `@/lib/runtime/` → `@/runtimes/` via single sed pass.
+5. **Folder deletion:** `src/lib/runtime/` removed atomically.
+6. **Self-healing facades:** Existing `src/runtimes/desktop/index.ts` and `src/runtimes/appliance/index.ts` barrel facades that previously forwarded to `@/lib/runtime/desktop/*` were automatically rewired by the same sed pass, making them self-contained against their new local siblings.
 
-### 2. Hooks Canonicalization
-- Migrated all 9 hooks from `src/lib/hooks/` → `src/hooks/`.
-- Bulk-rewired 61 consumer files (`@/lib/hooks/X` → `@/hooks/X`).
-- Deleted `src/lib/hooks/` folder entirely.
-
-### 3. Mass Wrapper Demolition
-- Built a Python script that:
-  1. Scans `src/lib/**` for files marked `@lovable:migrated-wrapper`.
-  2. Parses each wrapper's canonical target (`export * from "@/canonical/X"`).
-  3. Bulk-rewrites all consumers in `src/**` to point directly to the canonical path (both quote styles).
-  4. Deletes the wrapper file.
-- Result: **112 wrappers eliminated, 22 consumer files rewired** in a single pass.
-- One marker stub (`src/lib/advisor-topology.ts`) deleted manually (zero consumers).
-
-### 4. Event-Bus Relative Import Fix
-- 14 files inside `src/lib/core-services/` and `src/lib/services/` used relative `./event-bus` / `../event-bus` paths that pointed to the now-deleted wrapper.
-- Bulk-rewired all to absolute `@/platform/core-services/event-bus`.
-
-### 5. Forwarder Stub Restoration
-Vite build (stricter than `tsc`) caught 6 barrel files (`index.ts` / `catalog.ts`) that re-exported from now-deleted siblings. Restored 27 thin forwarder stubs (no marker, single line `export * from "@/canonical/path"`):
-
-| Folder | Stubs | Canonical Home |
-|---|---|---|
-| `src/lib/app-platform/` | 1 (`types.ts`) | `@/domains/apps/types` |
-| `src/lib/cloud-backbone/` | 10 (cloud-*-service) | `@/platform/cloud/*` |
-| `src/lib/data-services/` | 10 | `@/data/repositories/*` |
-| `src/lib/nova-sdk/ui/` | 3 | `@/platform/nova-sdk/ui/*` |
-| `src/lib/verification/` | 2 | `@/platform/verification/*` |
-| `src/lib/platform-law/` | 1 | `@/platform/governance/platform-law-registry` |
-
-These stubs are **API-compatibility forwarders only**, not migration wrappers — they carry no `@lovable:migrated-wrapper` marker and the lib-ownership-drift gate accepts them.
-
-## Verification
+### Verification
 
 ```
 $ npx tsc --noEmit          → 0 errors
-$ npx vite build            → ✅ built in 57s
-$ grep -rl "@lovable:migrated-wrapper" src/lib | wc -l → 0
+$ npx vite build            → ✅ built in 52.80s
+$ grep -rn "@/lib/runtime" src → 0 import statements (1 comment-only reference in moved barrel)
 ```
 
 ## Architectural Position
 
-`src/lib` is now firmly in **Option B** posture (narrow shared utility layer) per `SRC_LIB_CANONICAL_OWNERSHIP_FINAL.md`. The remaining 97 top-level entries fall into three categories:
+The runtime layer (boot, host contracts, capability matrices, deployment profiles, release readiness probes, runtime detection) is now fully co-located under `src/runtimes/` per the **5-Plane Model** (Layer A: Core OS / Layer B: Shell Runtime). This eliminates the legacy `@/lib/runtime/*` deep-import path and aligns with the canonical-ownership model in `SRC_LIB_CANONICAL_OWNERSHIP_FINAL.md`.
 
-1. **Allowed permanently** (`utils.ts`, `utils/`, `internal/`, `__tests__/`, `types/`).
-2. **Active shim layer** for backward-compatible imports — re-exports only, no business logic (e.g., `services/`, `core-services/` index files).
-3. **In-migration but tracked** — folders like `runtime/`, `orchestration/`, `architecture/` whose contents will move to `@/platform/*` or `@/runtimes/*` in subsequent phases.
+`src/runtimes/` now contains 73 files spanning 8 subfolders, fully replacing the 63-file `src/lib/runtime/` plus the 8 existing facade barrels.
 
-## Next Phase Targets
+## Next Phase Targets (priority order)
 
-| Folder | Files | Strategy |
-|---|---|---|
-| `src/lib/services/` | 498 | Audit each service for canonical-placement vs shim-role; collapse duplicates against `src/lib/core-services/`. |
-| `src/lib/core-services/` | 220 | Promote canonical implementations to `@/platform/core-services/`; collapse stubs (52 known empty stubs). |
-| `src/lib/runtime/` | 63 | Migrate to `@/runtimes/web/runtime/`. |
-| `src/lib/nova-sdk/` | 55 | Confirm full migration to `@/platform/nova-sdk/`. |
-| `src/lib/orchestration/` | 47 | Migrate to `@/platform/orchestration/`. |
-| `src/lib/architecture/` | 47 | Migrate to `@/platform/architecture/`. |
+| Folder | Files | Destination | Risk | Strategy |
+|---|---|---|---|---|
+| `src/lib/architecture/` | 47 | `src/platform/architecture/` | Low | Wave 8 pattern (physical promotion + bulk sed) |
+| `src/lib/sync-engine/` | 38 | `src/platform/sync-engine/` | Low | Wave 8 pattern |
+| `src/lib/orchestration/` | 47 | `src/platform/orchestration/` | Medium | Preserve canonical-spine layering |
+| `src/lib/nova-sdk/` | 55 | Confirm full migration to `@/platform/nova-sdk/` | Medium | Audit + collapse |
+| `src/lib/services/` + `src/lib/core-services/` | 703 | Multi-wave audit; collapse to ~45 canonical services | High | Service-by-service truth audit |
 
-Each will follow the **proven Wave 7 pattern**: bulk-rewire consumers via canonical-target parsing → restore forwarder stubs only when barrels demand them → verify with both `tsc` AND `vite build`.
+Each subsequent wave will follow the **proven Wave 7+8 pattern**:
+1. Conflict scan (file-level, not barrel-level).
+2. Physical promotion of all files preserving subfolder structure.
+3. Bulk sed rewire across `src/**/*.{ts,tsx}` for both quote styles.
+4. Restore minimal forwarder stubs only when external barrels demand them (no `@lovable:migrated-wrapper` marker).
+5. Verify with both `tsc --noEmit` AND `vite build` (Vite catches what tsc misses).

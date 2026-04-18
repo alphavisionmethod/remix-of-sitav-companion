@@ -1,73 +1,76 @@
 {
-  "wave": "7",
+  "wave": "8",
   "status": "success",
-  "phase": "post-decomposition-hardening",
-  "strategy": "complete-wrapper-elimination-plus-hooks-canonicalization",
+  "phase": "post-decomposition-runtime-migration",
+  "strategy": "physical-folder-promotion-with-bulk-rewire",
   "metrics": {
-    "wrappers_before_wave_7": 113,
-    "wrappers_after_wave_7": 0,
-    "net_removed_wave_7": 113,
+    "files_migrated": 63,
+    "consumers_rewired": 27,
     "ts_errors": 0,
     "vite_build": "green",
-    "src_lib_top_level_entries": 97,
-    "src_lib_total_files": 1591,
-    "src_hooks_total_files": 178,
-    "src_lib_hooks_total_files": 0
+    "vite_build_time_seconds": 52.8,
+    "src_lib_top_level_entries_before": 97,
+    "src_lib_top_level_entries_after": 96,
+    "src_lib_total_files_before": 1591,
+    "src_lib_total_files_after": 1528,
+    "src_runtimes_total_files_before": 8,
+    "src_runtimes_total_files_after": 73,
+    "wrappers_marker_count": 0
   },
   "completed_actions": [
     {
-      "action": "fix-storage-barrel",
-      "detail": "Repointed src/lib/storage/index.ts to @/data/persistence/storage-topology-registry; deleted local wrapper."
+      "action": "promote-runtime-folder",
+      "from": "src/lib/runtime/",
+      "to": "src/runtimes/",
+      "files_moved": 63,
+      "subfolders_promoted": ["appliance/", "appliance/release/", "backend/release/", "desktop/", "desktop/release/", "probes/", "simulation/", "web/"],
+      "root_index_renamed": "src/lib/runtime/index.ts → src/runtimes/runtime-index.ts (avoid clash with absent root barrel)"
     },
     {
-      "action": "migrate-src-lib-hooks",
-      "from": "src/lib/hooks/",
-      "to": "src/hooks/",
-      "files_moved": 9,
-      "consumers_rewired": 61,
-      "deleted_folder": true
+      "action": "bulk-rewire-consumers",
+      "files_changed": 27,
+      "from_pattern": "@/lib/runtime/",
+      "to_pattern": "@/runtimes/"
     },
     {
-      "action": "demolish-all-remaining-wrappers",
-      "wrappers_eliminated": 113,
-      "consumer_files_rewired": 22,
-      "method": "python script reads canonical target from each wrapper, bulk-replaces both quote styles in consumers, deletes wrapper"
-    },
-    {
-      "action": "rewire-event-bus-relative-imports",
-      "files_fixed": 14,
-      "from": "./event-bus / ../event-bus",
-      "to": "@/platform/core-services/event-bus"
-    },
-    {
-      "action": "fix-meta-governance-hook-types",
-      "file": "src/hooks/use-meta-governance.ts",
-      "from": "../types/* (relative)",
-      "to": "@/lib/types/* (absolute)"
-    },
-    {
-      "action": "restore-forwarder-stubs",
-      "count": 27,
-      "purpose": "Maintain barrel re-export integrity (no @lovable:migrated-wrapper marker; pure forwarders to canonical homes)",
-      "folders": [
-        "src/lib/app-platform (1 stub: types)",
-        "src/lib/cloud-backbone (10 stubs)",
-        "src/lib/data-services (10 stubs)",
-        "src/lib/nova-sdk/ui (3 stubs)",
-        "src/lib/verification (2 stubs)",
-        "src/lib/platform-law (1 stub)"
-      ]
+      "action": "delete-source-folder",
+      "deleted": "src/lib/runtime/",
+      "verified_empty": true
     }
   ],
   "verification": {
     "tsc_noemit": "0 errors",
-    "vite_build": "succeeded in 57s",
-    "lovable_migrated_wrapper_marker_count": 0
+    "vite_build": "succeeded in 52.80s",
+    "remaining_lib_runtime_references": "0 imports (only 1 comment in moved barrel)"
   },
+  "architectural_note": "src/runtimes/desktop/index.ts and src/runtimes/appliance/index.ts (existing facade barrels) previously re-exported from @/lib/runtime/desktop/* — those references were rewired to @/runtimes/desktop/* automatically by the bulk-rewire pass, making the facades self-contained.",
   "next_phase_targets": [
-    "Audit src/lib/services/ (224 subfolders) for canonical placement vs services-shim role",
-    "Audit src/lib/core-services/ (220 files) for sprawl and canonicalize",
-    "Audit src/lib/runtime/, src/lib/orchestration/, src/lib/architecture/ (~157 files) for migration to @/platform/* and @/runtimes/*",
-    "Replace remaining 'as any' page-level instances (ISS-091)"
+    {
+      "folder": "src/lib/architecture",
+      "files": 47,
+      "destination": "src/platform/architecture/",
+      "risk": "low",
+      "notes": "Pure architecture validation utilities — no consumer hot path."
+    },
+    {
+      "folder": "src/lib/orchestration",
+      "files": 47,
+      "destination": "src/platform/orchestration/",
+      "risk": "medium",
+      "notes": "Orchestration spine — confirm canonical-spine layering preserved."
+    },
+    {
+      "folder": "src/lib/sync-engine",
+      "files": 38,
+      "destination": "src/platform/sync-engine/",
+      "risk": "low"
+    },
+    {
+      "folder": "src/lib/services + src/lib/core-services",
+      "files": 703,
+      "destination": "Audit canonical placement; collapse duplicates per architecture-rules budget (~45 canonical services).",
+      "risk": "high",
+      "notes": "Largest remaining sprawl. Multi-wave effort."
+    }
   ]
 }
