@@ -1,5 +1,5 @@
 # Experimental & Phased Surfaces
-> Generated: 2026-04-18T11:33:37.229Z
+> Generated: 2026-04-18T11:37:27.455Z
 > Source: `scripts/architecture/audits/page-consolidation-audit.ts`
 > Status: **read-only audit** (Phase 0). Zero code/route changes.
 
