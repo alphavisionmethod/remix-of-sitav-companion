@@ -17043,6 +17043,7 @@ export type Database = {
         Args: { _user_id: string }
         Returns: undefined
       }
+      seed_internal_agents_from_json: { Args: { _agents: Json }; Returns: Json }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
         Returns: number
