@@ -2,7 +2,7 @@
 
 **Status:** ✅ COMPLETE — `deployable=true` maintained
 **Date:** 2026-04-18
-**Hardening fingerprint:** (re-sealed below)
+**Hardening fingerprint:** `27bd5e203b8ba62e4c9917a4f8ec2717f7c4c3508e59e14bed3b628d5cdac825`
 
 ## Outcome
 
