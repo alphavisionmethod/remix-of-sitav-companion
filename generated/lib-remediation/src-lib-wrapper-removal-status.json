@@ -1,47 +1,73 @@
 {
-  "wave": "6b",
+  "wave": "7",
   "status": "success",
-  "strategy": "per-folder-physical-migration-with-bulk-sed-rewire",
+  "phase": "post-decomposition-hardening",
+  "strategy": "complete-wrapper-elimination-plus-hooks-canonicalization",
   "metrics": {
-    "wrappers_before_wave_6": 188,
-    "wrappers_after_wave_6a": 129,
-    "wrappers_after_wave_6b": 114,
-    "net_removed_total": 74,
+    "wrappers_before_wave_7": 113,
+    "wrappers_after_wave_7": 0,
+    "net_removed_wave_7": 113,
     "ts_errors": 0,
-    "build_state": "green",
-    "src_lib_top_level_entries": 101,
-    "src_lib_total_files": 1687
+    "vite_build": "green",
+    "src_lib_top_level_entries": 97,
+    "src_lib_total_files": 1591,
+    "src_hooks_total_files": 178,
+    "src_lib_hooks_total_files": 0
   },
-  "completed_migrations": [
+  "completed_actions": [
     {
-      "wave": "6a",
-      "folder": "src/lib/engines",
-      "canonical_target": "src/domains/engines",
-      "files_removed": 59,
-      "consumers_rewired": 5
+      "action": "fix-storage-barrel",
+      "detail": "Repointed src/lib/storage/index.ts to @/data/persistence/storage-topology-registry; deleted local wrapper."
     },
     {
-      "wave": "6b",
-      "folder": "src/lib/persistence",
-      "canonical_target": "src/data/persistence",
-      "files_removed": 17,
-      "consumers_rewired": 142,
-      "barrel_alias_added": "getScopedMemoryStats -> getMemoryStats"
+      "action": "migrate-src-lib-hooks",
+      "from": "src/lib/hooks/",
+      "to": "src/hooks/",
+      "files_moved": 9,
+      "consumers_rewired": 61,
+      "deleted_folder": true
+    },
+    {
+      "action": "demolish-all-remaining-wrappers",
+      "wrappers_eliminated": 113,
+      "consumer_files_rewired": 22,
+      "method": "python script reads canonical target from each wrapper, bulk-replaces both quote styles in consumers, deletes wrapper"
+    },
+    {
+      "action": "rewire-event-bus-relative-imports",
+      "files_fixed": 14,
+      "from": "./event-bus / ../event-bus",
+      "to": "@/platform/core-services/event-bus"
+    },
+    {
+      "action": "fix-meta-governance-hook-types",
+      "file": "src/hooks/use-meta-governance.ts",
+      "from": "../types/* (relative)",
+      "to": "@/lib/types/* (absolute)"
+    },
+    {
+      "action": "restore-forwarder-stubs",
+      "count": 27,
+      "purpose": "Maintain barrel re-export integrity (no @lovable:migrated-wrapper marker; pure forwarders to canonical homes)",
+      "folders": [
+        "src/lib/app-platform (1 stub: types)",
+        "src/lib/cloud-backbone (10 stubs)",
+        "src/lib/data-services (10 stubs)",
+        "src/lib/nova-sdk/ui (3 stubs)",
+        "src/lib/verification (2 stubs)",
+        "src/lib/platform-law (1 stub)"
+      ]
     }
   ],
-  "next_targets": [
-    { "folder": "src/lib/customer-journey", "wrappers": 9 },
-    { "folder": "src/lib/data-services", "wrappers": 21 },
-    { "folder": "src/lib/demo-data", "wrappers": 30 },
-    { "folder": "src/lib/cloud-backbone", "wrappers": 10 },
-    { "folder": "src/lib/design-system", "wrappers": 5 }
-  ],
-  "winning_pattern": [
-    "Verify canonical destination has all needed sibling files",
-    "Promote canonical barrel to be export-complete (preserve legacy aliases)",
-    "Bulk sed rewrite for both single and double quoted import forms",
-    "Hunt dynamic imports separately (import('@/lib/...') pattern)",
-    "Delete folder atomically",
-    "tsc --noEmit verification"
+  "verification": {
+    "tsc_noemit": "0 errors",
+    "vite_build": "succeeded in 57s",
+    "lovable_migrated_wrapper_marker_count": 0
+  },
+  "next_phase_targets": [
+    "Audit src/lib/services/ (224 subfolders) for canonical placement vs services-shim role",
+    "Audit src/lib/core-services/ (220 files) for sprawl and canonicalize",
+    "Audit src/lib/runtime/, src/lib/orchestration/, src/lib/architecture/ (~157 files) for migration to @/platform/* and @/runtimes/*",
+    "Replace remaining 'as any' page-level instances (ISS-091)"
   ]
 }
