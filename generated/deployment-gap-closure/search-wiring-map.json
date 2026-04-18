@@ -1,14 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:13:53.078Z",
+  "generatedAt": "2026-04-18T13:29:53.432Z",
   "canonicalHook": "src/hooks/use-global-search.ts",
   "hookExists": true,
   "universalCommandSurface": true,
   "consumers": [
     "src/components/sita/shell/UniversalCommandSurface.tsx",
-    "src/pages/SearchPage.tsx"
+    "src/pages/SearchPage.tsx",
+    "src/pages/business/LeadsInbox.tsx",
+    "src/pages/files/FilesSearch.tsx"
   ],
-  "consumerCount": 2,
+  "consumerCount": 4,
   "resultDomains": [
     "leads",
     "customers",
@@ -25,5 +27,5 @@
     "settings"
   ],
   "classification": "wired-canonical",
-  "notes": "2 canonical consumers (UniversalCommandSurface, SearchPage). Domain shells may benefit from additional wiring in Phase M."
+  "notes": "4 canonical consumers (UniversalCommandSurface, SearchPage). Domain shells may benefit from additional wiring in Phase M."
 }
