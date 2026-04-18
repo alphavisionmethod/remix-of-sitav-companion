@@ -6,6 +6,10 @@ on:
       - "backend/edge-functions/**"
       - "supabase/functions/**"
 
+concurrency:
+  group: deploy-backend-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
