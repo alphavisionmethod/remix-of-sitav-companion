@@ -3551,6 +3551,102 @@ export type Database = {
         }
         Relationships: []
       }
+      attestation_packets: {
+        Row: {
+          bundle_sha256: string
+          controls_passing: number
+          controls_total: number
+          created_at: string
+          delivered_at: string | null
+          evidence_count: number
+          framework: string
+          id: string
+          packet_key: string
+          period_end: string
+          period_start: string
+          signature: string
+          signed_by: string
+          status: string
+          storage_path: string | null
+        }
+        Insert: {
+          bundle_sha256: string
+          controls_passing?: number
+          controls_total?: number
+          created_at?: string
+          delivered_at?: string | null
+          evidence_count?: number
+          framework: string
+          id?: string
+          packet_key: string
+          period_end: string
+          period_start: string
+          signature: string
+          signed_by?: string
+          status?: string
+          storage_path?: string | null
+        }
+        Update: {
+          bundle_sha256?: string
+          controls_passing?: number
+          controls_total?: number
+          created_at?: string
+          delivered_at?: string | null
+          evidence_count?: number
+          framework?: string
+          id?: string
+          packet_key?: string
+          period_end?: string
+          period_start?: string
+          signature?: string
+          signed_by?: string
+          status?: string
+          storage_path?: string | null
+        }
+        Relationships: []
+      }
+      audit_export_bundles: {
+        Row: {
+          bundle_key: string
+          created_at: string
+          exported_at: string | null
+          id: string
+          period_end: string
+          period_start: string
+          record_count: number
+          sha256: string
+          signature: string
+          status: string
+          storage_path: string | null
+        }
+        Insert: {
+          bundle_key: string
+          created_at?: string
+          exported_at?: string | null
+          id?: string
+          period_end: string
+          period_start: string
+          record_count?: number
+          sha256: string
+          signature: string
+          status?: string
+          storage_path?: string | null
+        }
+        Update: {
+          bundle_key?: string
+          created_at?: string
+          exported_at?: string | null
+          id?: string
+          period_end?: string
+          period_start?: string
+          record_count?: number
+          sha256?: string
+          signature?: string
+          status?: string
+          storage_path?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -6943,6 +7039,95 @@ export type Database = {
         }
         Relationships: []
       }
+      compliance_controls: {
+        Row: {
+          category: string | null
+          collection_cadence: string
+          control_id: string
+          created_at: string
+          description: string | null
+          evidence_query: string | null
+          framework: string
+          id: string
+          required: boolean
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          collection_cadence?: string
+          control_id: string
+          created_at?: string
+          description?: string | null
+          evidence_query?: string | null
+          framework: string
+          id?: string
+          required?: boolean
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          collection_cadence?: string
+          control_id?: string
+          created_at?: string
+          description?: string | null
+          evidence_query?: string | null
+          framework?: string
+          id?: string
+          required?: boolean
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      compliance_evidence: {
+        Row: {
+          collected_at: string
+          control_id: string
+          evidence_kind: string
+          expires_at: string
+          failure_reason: string | null
+          id: string
+          pass: boolean
+          payload: Json
+          sha256: string
+        }
+        Insert: {
+          collected_at?: string
+          control_id: string
+          evidence_kind: string
+          expires_at?: string
+          failure_reason?: string | null
+          id?: string
+          pass?: boolean
+          payload?: Json
+          sha256: string
+        }
+        Update: {
+          collected_at?: string
+          control_id?: string
+          evidence_kind?: string
+          expires_at?: string
+          failure_reason?: string | null
+          id?: string
+          pass?: boolean
+          payload?: Json
+          sha256?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_evidence_control_id_fkey"
+            columns: ["control_id"]
+            isOneToOne: false
+            referencedRelation: "compliance_controls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
@@ -8973,6 +9158,66 @@ export type Database = {
           plane?: string
           status?: string
           team?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dr_drills: {
+        Row: {
+          created_at: string
+          data_integrity_pct: number | null
+          drill_key: string
+          drill_type: string
+          evidence: Json
+          finished_at: string | null
+          id: string
+          notes: string | null
+          rpo_actual_seconds: number | null
+          rpo_target_seconds: number
+          rto_actual_seconds: number | null
+          rto_target_seconds: number
+          scheduled_at: string
+          scope: string
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_integrity_pct?: number | null
+          drill_key: string
+          drill_type?: string
+          evidence?: Json
+          finished_at?: string | null
+          id?: string
+          notes?: string | null
+          rpo_actual_seconds?: number | null
+          rpo_target_seconds?: number
+          rto_actual_seconds?: number | null
+          rto_target_seconds?: number
+          scheduled_at?: string
+          scope?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_integrity_pct?: number | null
+          drill_key?: string
+          drill_type?: string
+          evidence?: Json
+          finished_at?: string | null
+          id?: string
+          notes?: string | null
+          rpo_actual_seconds?: number | null
+          rpo_target_seconds?: number
+          rto_actual_seconds?: number | null
+          rto_target_seconds?: number
+          scheduled_at?: string
+          scope?: string
+          started_at?: string | null
+          status?: string
           updated_at?: string
         }
         Relationships: []
@@ -14686,6 +14931,51 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_as_code_rules: {
+        Row: {
+          bound_controls: Json
+          created_at: string
+          description: string | null
+          display_name: string
+          enforcement: string
+          id: string
+          rule_body: string
+          rule_format: string
+          rule_key: string
+          status: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          bound_controls?: Json
+          created_at?: string
+          description?: string | null
+          display_name: string
+          enforcement?: string
+          id?: string
+          rule_body: string
+          rule_format?: string
+          rule_key: string
+          status?: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          bound_controls?: Json
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          enforcement?: string
+          id?: string
+          rule_body?: string
+          rule_format?: string
+          rule_key?: string
+          status?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
       portfolios: {
         Row: {
           base_currency: string
@@ -15581,6 +15871,51 @@ export type Database = {
           user_id?: string
           verification_result?: Json
           verified_at?: string | null
+        }
+        Relationships: []
+      }
+      region_failover_events: {
+        Row: {
+          approval_request_id: string | null
+          created_at: string
+          data_loss_seconds: number | null
+          duration_seconds: number | null
+          from_region: string
+          id: string
+          notes: string | null
+          staged_payload: Json
+          status: string
+          to_region: string
+          trigger_kind: string
+          updated_at: string
+        }
+        Insert: {
+          approval_request_id?: string | null
+          created_at?: string
+          data_loss_seconds?: number | null
+          duration_seconds?: number | null
+          from_region: string
+          id?: string
+          notes?: string | null
+          staged_payload?: Json
+          status?: string
+          to_region: string
+          trigger_kind: string
+          updated_at?: string
+        }
+        Update: {
+          approval_request_id?: string | null
+          created_at?: string
+          data_loss_seconds?: number | null
+          duration_seconds?: number | null
+          from_region?: string
+          id?: string
+          notes?: string | null
+          staged_payload?: Json
+          status?: string
+          to_region?: string
+          trigger_kind?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -16653,6 +16988,51 @@ export type Database = {
         }
         Relationships: []
       }
+      signed_release_artifacts: {
+        Row: {
+          artifact_kind: string
+          artifact_name: string
+          attestation: Json
+          created_at: string
+          id: string
+          release_tag: string
+          sha256: string
+          signature: string
+          signed_by: string
+          size_bytes: number
+          verified: boolean
+          verified_at: string | null
+        }
+        Insert: {
+          artifact_kind: string
+          artifact_name: string
+          attestation?: Json
+          created_at?: string
+          id?: string
+          release_tag: string
+          sha256: string
+          signature: string
+          signed_by?: string
+          size_bytes?: number
+          verified?: boolean
+          verified_at?: string | null
+        }
+        Update: {
+          artifact_kind?: string
+          artifact_name?: string
+          attestation?: Json
+          created_at?: string
+          id?: string
+          release_tag?: string
+          sha256?: string
+          signature?: string
+          signed_by?: string
+          size_bytes?: number
+          verified?: boolean
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       simulations: {
         Row: {
           completed_at: string | null
@@ -17185,6 +17565,87 @@ export type Database = {
           revoked_at?: string | null
           scope?: string
           tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tenant_quotas: {
+        Row: {
+          current_usage: number
+          hard_ceiling: number
+          id: string
+          last_reset_at: string
+          quota_key: string
+          quota_value: number
+          reset_period: string
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_usage?: number
+          hard_ceiling?: number
+          id?: string
+          last_reset_at?: string
+          quota_key: string
+          quota_value?: number
+          reset_period?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_usage?: number
+          hard_ceiling?: number
+          id?: string
+          last_reset_at?: string
+          quota_key?: string
+          quota_value?: number
+          reset_period?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tenant_self_service_actions: {
+        Row: {
+          action_kind: string
+          after_state: Json | null
+          before_state: Json | null
+          created_at: string
+          id: string
+          justification: string | null
+          receipt_hash: string | null
+          status: string
+          target_ref: string
+          tenant_id: string | null
+          user_id: string
+        }
+        Insert: {
+          action_kind: string
+          after_state?: Json | null
+          before_state?: Json | null
+          created_at?: string
+          id?: string
+          justification?: string | null
+          receipt_hash?: string | null
+          status?: string
+          target_ref: string
+          tenant_id?: string | null
+          user_id: string
+        }
+        Update: {
+          action_kind?: string
+          after_state?: Json | null
+          before_state?: Json | null
+          created_at?: string
+          id?: string
+          justification?: string | null
+          receipt_hash?: string | null
+          status?: string
+          target_ref?: string
+          tenant_id?: string | null
           user_id?: string
         }
         Relationships: []
@@ -18815,6 +19276,7 @@ export type Database = {
         Args: { p_requested_level: number }
         Returns: number
       }
+      clamp_dr_action_autonomy: { Args: { requested: number }; Returns: number }
       clamp_tenant_action_autonomy: {
         Args: { p_requested_level: number }
         Returns: number
