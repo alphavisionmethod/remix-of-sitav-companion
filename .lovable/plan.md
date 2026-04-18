@@ -1,140 +1,122 @@
 
 
-Let me explore the current state of `src/lib` to understand the scope before planning.
-<lov-tool-use id="toolu_vrtx_01U3JFZtf2URFFDA2zUbxbhN" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/lib\"}">
-</lov-tool-use>
+The user wants the post-decomposition remediation pass for `src/lib`. This is the second-round closure work after the initial migration. Looking at the build errors and current state:
 
-<lov-tool-use id="toolu_vrtx_01FssmwsNdNG5sVc2GZ1f97n" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src\"}">
-</lov-tool-use>
+1. There are still active build errors with `src/domains/engines/shared/aging.ts` and several engine type imports.
+2. ~1,499 legacy wrapper imports remain across the codebase.
+3. ~1,172 deprecated wrapper shims exist in `src/lib`.
+4. 14 known duplicate fingerprint groups (core-services vs services).
+5. No `generated/lib-remediation/` artifacts exist yet.
 
-<lov-tool-use id="toolu_vrtx_01MqND14NuDxLo5RNBgcQVFi" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/lib\"}">
-</lov-tool-use>
+I need to present a focused, phased plan in chat mode (read-only).
 
-<lov-tool-use id="toolu_vrtx_013WaisrobS3TUBNwLmQGoCa" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src\"}">
-</lov-tool-use>
+# SITA OS — `src/lib` Post-Decomposition Remediation Plan
 
-<lov-tool-use id="toolu_vrtx_01RWBapXA92iLytBgxpEsBYT" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== src/lib file count ===\\\"; find src/lib -type f | wc -l; echo \\\"=== src/lib subfolder file counts ===\\\"; for d in src/lib/*/; do n=$(find \\\"$d\\\" -type f | wc -l); printf \\\"%5d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -50; echo \\\"=== top-level loose files ===\\\"; find src/lib -maxdepth 1 -type f\", \"user_facing_description\": \"Surveying src/lib size and shape\"}">
-</lov-tool-use>
+## Current State Snapshot
 
-<lov-tool-use id="toolu_vrtx_012nWH6ihPfDAPpwEetbCh77" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== existing src/data ===\\\"; ls src/data 2>/dev/null; echo; echo \\\"=== existing src/platform ===\\\"; ls src/platform 2>/dev/null; echo; echo \\\"=== existing src/runtimes ===\\\"; ls src/runtimes 2>/dev/null; echo; echo \\\"=== existing src/integrations ===\\\"; ls src/integrations 2>/dev/null; echo; echo \\\"=== existing src/contracts ===\\\"; ls src/contracts 2>/dev/null; echo; echo \\\"=== existing src/features ===\\\"; ls src/features 2>/dev/null; echo; echo \\\"=== src/planes ===\\\"; ls src/planes 2>/dev/null\", \"user_facing_description\": \"Checking existing canonical destinations\"}">
-</lov-tool-use>
+| Metric | Value |
+|---|---|
+| Files migrated to canonical roots | ~1,000 |
+| Wrapper shims remaining in `src/lib` | ~1,172 |
+| Active legacy wrapper imports | 1,499 |
+| Known duplicate fingerprint groups | 14 (core-services ↔ services) |
+| Active TypeScript build errors | 43 (engine type resolution + arithmetic) |
+| Existing remediation reports | 0 |
 
-<lov-tool-use id="toolu_vrtx_01TctV2TMPSeo9X8RcKDZqGY" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== Import graph: how many files import from @/lib/* ===\\\"; grep -rEho \\\"from ['\\\\\\\"]@/lib/[^'\\\\\\\"]+\\\" src 2>/dev/null | sort -u | wc -l; echo \\\"=== Sample top-imported lib paths ===\\\"; grep -rEho \\\"from ['\\\\\\\"]@/lib/[^'\\\\\\\"]+\\\" src 2>/dev/null | sort | uniq -c | sort -rn | head -40; echo; echo \\\"=== Total consuming files ===\\\"; grep -rEl \\\"from ['\\\\\\\"]@/lib/\\\" src 2>/dev/null | wc -l\", \"user_facing_description\": \"Measuring blast radius of any src/lib move\"}">
-</lov-tool-use>
+## Active Build Blockers (must fix first)
 
-<lov-tool-use id="toolu_vrtx_0198BWu1X22TZ2uoHfozy948" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== src/lib/services subdir summary ===\\\"; for d in src/lib/services/*/; do n=$(find \\\"$d\\\" -type f 2>/dev/null | wc -l); printf \\\"%4d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -30; echo; echo \\\"=== src/lib/core-services subdir summary ===\\\"; for d in src/lib/core-services/*/; do n=$(find \\\"$d\\\" -type f 2>/dev/null | wc -l); printf \\\"%4d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -30\", \"user_facing_description\": \"Inspecting two largest folders\"}">
-</lov-tool-use>
-I have enough to design a safe, phased plan. The scale is massive — 1,768 files in `src/lib`, 2,115 consumer files, 863 unique import paths — and many destinations (`src/data`, `src/contracts`) are essentially empty barrels today. A "move everything" sweep would be catastrophic. The plan must be wave-based, audit-first, wrapper-heavy, and verification-gated.
+The errors all trace to two root causes:
 
-<lov-plan>
+1. **`src/domains/engines/shared/aging.ts` line 7** imports `../../types/meta-governance.types` — that file IS the wrapper, so it should import directly from `@/lib/types/meta-governance.types` (or the canonical resolved type).
+2. **`readiness-engine.ts` / `invisible-labor-engine.ts`** have `unknown`-typed arithmetic. Root cause: `Object.entries(record)` returns `unknown` values when the source type isn't properly threaded through the wrapper chain. Wrappers re-export `* from "@/lib/types/..."` but type narrowing context can be lost.
 
-# src/lib Decomposition — Safe, Phased Migration Plan
+These will be fixed in Phase 0.
 
-## Reality Check (from audit)
+## Remediation Phases
 
-- **`src/lib`: 1,768 files across 88 subfolders** + 18 loose top-level files
-- **2,115 files** in the project import from `@/lib/*` across **863 distinct import paths**
-- Hottest paths: `@/lib/utils` (763 importers), `@/lib/supabase-helpers` (366), `@/lib/persistence/universal-service-persistence` (121)
-- Largest folders: `services/` (498), `core-services/` (220), `runtime/` (63), `engines/` (60), `nova-sdk/` (55)
-- Destinations `src/data/`, `src/contracts/` are nearly empty barrels; `src/platform/`, `src/runtimes/` already exist with structure
-- Memory: existing FIP, Service Constitution, and Layer Boundary checks already constrain this — refactor must respect them
+### Phase 0 — Unblock the build (immediate)
+- Rewrite `src/domains/engines/shared/aging.ts` to use absolute `@/lib/types/...` import (avoids relative path through wrapper folder).
+- Fix `readiness-engine.ts` and `invisible-labor-engine.ts` `unknown` type issues by adding explicit type assertions on `Object.entries`/record iteration where needed.
+- Confirm all 19 wrapper files in `src/domains/types/` resolve via tsconfig path mapping.
 
-**Risk if done naively:** thousands of broken imports, build collapse, lost ownership. We will **NOT** mass-move. Every wave is audit → wrapper → rewire → verify.
+### Phase 1 — Resolve 14 duplicate fingerprint groups
+Each pair (e.g., `src/lib/core-services/approval-engine/*` vs `src/lib/services/approval-engine/*`) is byte-identical. Plan:
+- Pick canonical home per architecture rules: approval-engine → `src/platform/governance/`; brain-core → `src/platform/orchestration/`; conscience-gate → `src/platform/policy/`.
+- Move canonical implementation; replace BOTH old paths with thin wrappers.
+- Run `rewire-consumers` to update all importers.
 
-## Strategy: Audit-First, Wrapper-Bridged, Wave-Based
+### Phase 2 — Consumer rewire wave 4 (target: 1,499 → <500)
+- Re-run universal `rewire-consumers-wave3.ts` engine across all `// @lovable:migrated-wrapper` files.
+- Manually rewire the top 30 most-imported legacy paths (from `legacy-wrapper-usage-report.json`).
 
-```text
-Wave 0 → AUDIT     (read-only, generates classification map, no code moves)
-Wave 1 → SCAFFOLD  (create destination folders + ownership registry)
-Wave 2-7 → MIGRATE (one folder family per wave, each: move → wrapper-shim → rewire → verify)
-Wave 8 → GUARDRAILS (CI checks to prevent regression)
-Wave 9 → REPORT    (final verification + deliverables)
-```
+### Phase 3 — Wrapper removal pass
+- For every wrapper with **0 remaining consumers**, delete the wrapper file.
+- Update `src-lib-wrapper-map.json` with `removed` status.
+- Target: reduce wrapper count from ~1,172 toward <300.
 
-Every migrated file leaves behind a **deprecated wrapper shim** at its old `src/lib` path that re-exports from the canonical home. This guarantees zero broken imports during the multi-wave migration. Wrappers are tracked in `src-lib-wrapper-map.json` and removed in a future cleanup pass once consumers are rewired.
+### Phase 4 — Finish ownership migration for unclassified `src/lib` residents
+Run `classify-services-unclassified.ts` for any remaining un-migrated subtrees:
+- `src/lib/app-platform/` → `src/platform/app-platform/`
+- `src/lib/storage/` → `src/data/persistence/`
+- `src/lib/customer-journey/` → `src/domains/customer-journey/`
+- `src/lib/integrations/` → `src/integrations/external/`
+- Any leftover engines → `src/domains/engines/`
 
-## Phase 1 — Wave 0: Full Audit (read-only)
+### Phase 5 — Stale reference cleanup
+Repo-wide grep + rewrite for remaining old-path imports in:
+- `scripts/**` (especially `scripts/architecture/checks/`)
+- `src/test/**` and `src/__tests__/**`
+- `docs/**` markdown references
+- Admin dashboards reading from `generated/` paths
+- CI workflows in `.github/`
 
-Build `scripts/architecture/audit-src-lib.ts` that walks every file in `src/lib`, and for each emits:
-- current path, exports, line count
-- importer count + top consumers
-- heuristic classification (domain | platform | runtime | data | integration | contract | legacy | shared-internal)
-- duplicate detection (fingerprint by export shape)
-- recommended target path
+### Phase 6 — Generate remediation report bundle
+Create `generated/lib-remediation/` with all 12 required artifacts:
+- `SRC_LIB_REMEDIATION_PLAN.md`
+- `SRC_LIB_WRAPPER_REMOVAL_STATUS.md`
+- `SRC_LIB_DUPLICATE_RESOLUTION_REPORT.md`
+- `SRC_LIB_REMAINING_LEGACY_JUSTIFICATION.md`
+- `SRC_LIB_CANONICAL_OWNERSHIP_FINAL.md`
+- `SRC_LIB_STALE_REFERENCE_CLEANUP.md`
+- `SRC_LIB_HARDENING_STATUS.md`
+- `SRC_LIB_FINAL_VERIFICATION_RESULTS.md`
+- 4 corresponding `.json` machine-readable companions.
 
-**Deliverables:**
-- `generated/lib-decomposition/SRC_LIB_FULL_CLASSIFICATION_AUDIT.md`
-- `generated/lib-decomposition/src-lib-classification-map.json`
-- `generated/lib-decomposition/SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`
+### Phase 7 — Add hardening guardrails
+New CI checks:
+- `check-residual-lib-canonicality.ts` — fails if any non-allowlisted file appears in `src/lib/`.
+- Tighten existing `check-lib-ownership-drift.ts` to error (not warn) on new additions.
+- Wire all 6 lib-decomposition checks into `check-os-release-readiness.ts` aggregator as **error gates** (currently advisory).
 
-## Phase 2 — Wave 1: Scaffold Destinations + Ownership Map
+### Phase 8 — Define final role of `src/lib`
+Adopt **Option B** (narrow shared utility layer):
+- Allowed: `utils.ts`, `utils/`, `internal/` (migration bridges), `hooks/` (legacy hooks pending move).
+- Everything else → wrapper or removed.
+- Update `docs/architecture/CANONICAL_OWNERSHIP_MODEL.md` to lock this in.
 
-- Build out skeleton in `src/domains/{business,finance,concierge,boardroom,files,identity,mission-control,proof,workflows,ai-workforce,shared}/`
-- Expand `src/data/{clients,repositories,projections,persistence,adapters,sync}/`
-- Verify `src/platform/`, `src/runtimes/`, `src/integrations/` subtrees exist and have index barrels
-- Generate `generated/lib-decomposition/src-lib-target-map.json` and `SRC_LIB_CURRENT_TO_TARGET_MAP.md` — every file gets a planned destination *before* anything moves
-- Create `docs/architecture/SRC_LIB_DECOMPOSITION_MODEL.md` and `CANONICAL_OWNERSHIP_MODEL.md`
+### Phase 9 — Final verification
+- `tsc --noEmit` clean
+- All architecture checks green
+- `legacy-wrapper-usage-report.json` shows downward trend confirmed
+- All 12 remediation reports generated and consistent
 
-## Phase 3 — Migration Waves (one family per wave)
+## Expected End State
 
-Each wave follows the **same safe pattern**:
-1. Move files to canonical home (preserve content exactly)
-2. Replace each old `src/lib/...` file with a thin re-export wrapper + `@deprecated` JSDoc
-3. Rewire **high-traffic consumers** (top 20 importers) to canonical paths
-4. Run `tsc --noEmit`, build, and architecture checks
-5. Update `src-lib-wrapper-map.json`
+| Metric | Before | After (target) |
+|---|---|---|
+| TS errors | 43 | 0 |
+| Duplicate groups | 14 | 0 |
+| Wrapper shims | ~1,172 | <300 |
+| Legacy imports | 1,499 | <500 |
+| `src/lib/` top-level entries | 30+ | ≤4 (allowlisted) |
+| Remediation reports | 0 | 12 |
+| Hardening checks (errors not warnings) | 0 | 6 |
 
-**Wave order (low-risk → high-risk):**
+## Technical Notes
 
-| Wave | Source family | → Destination | Files | Notes |
-|------|---------------|---------------|-------|-------|
-| 2 | `lib/persistence/`, `lib/sync-engine/`, `lib/db/`, `lib/data-services/`, `lib/storage/`, `lib/offline-db.ts` | `src/data/` | ~125 | Pure data layer; high-impact (`universal-service-persistence` = 121 importers) — wrapper essential |
-| 3 | `lib/runtime/`, `lib/devices/`, `lib/surfaces/`, `lib/dual-reality/`, `lib/reality/`, `lib/reality-audit/`, `lib/reality-records/`, `lib/detection/` | `src/runtimes/` | ~150 | Runtime/substrate logic |
-| 4 | `lib/policy/`, `lib/observability/`, `lib/security/`, `lib/os-security/`, `lib/support/`, `lib/sovereign-ai-gateway/`, `lib/ai-gateway/`, `lib/ai/`, `lib/no-hallucination/`, `lib/verification/`, `lib/control-plane/`, `lib/cloud-backbone/`, `lib/platform/`, `lib/platform-plane/`, `lib/platform-law/`, `lib/orchestration/`, `lib/operations/`, `lib/incidents/`, `lib/compute-governance/`, `lib/capabilities/`, `lib/fip/`, `lib/ci/`, `lib/deploy/`, `lib/deployment/`, `lib/migration/`, `lib/architecture/`, `lib/meta-arch/`, `lib/truth-manifests/`, `lib/backend-topology/` | `src/platform/` | ~350 | Platform/governance — largest wave; sub-batched by subdomain |
-| 5 | `lib/services/business-os/`, `engines/`, `domain-engines/`, `domain-system/`, `boardroom/`, `investment-office/`, `advisor-intelligence/`, `advisor-protocol/`, `strategic-intelligence/`, `intelligence-architecture/`, `customer-journey/`, `setup/`, `internal-agents/`, `admin-ai/`, `app-platform/`, `pack-store/`, `ux-trust/`, `delivery-methodology/`, `business-launcher.ts`, `finance-launcher.ts`, `concierge-launcher.ts`, `mission-control-launcher.ts`, `app-store-launcher.ts`, `business-journey-config.ts`, `advisor-topology.ts`, `cross-domain.ts`, `continuity-engine.ts`, `export-engine.ts` | `src/domains/{business,finance,concierge,boardroom,investment,mission-control,advisors,...}/` | ~400 | Domain logic — sub-waved per bounded context |
-| 6 | `lib/integrations/`, `lib/shopify/`, `lib/api/`, `lib/supabase-helpers.ts` | `src/integrations/` | ~50 | External providers; `supabase-helpers` (366 importers) needs wrapper |
-| 7 | `lib/contracts/`, `lib/types/`, `lib/constants/` | `src/contracts/` & `src/types/` | ~40 | Type/contract consolidation |
-| 7b | `lib/services/` remainder (~350), `lib/core-services/` (220), `lib/nova-sdk/` (55), `lib/os-services/` | mixed → `src/platform/`, `src/domains/`, `src/runtimes/` per audit | ~625 | The hard cases — split per file based on Wave-0 classification, not folder name |
-
-**Stays in place** (or moves to `src/lib/internal/`): `lib/utils.ts` (763 importers — keep canonical here), `lib/utils/`, `lib/hooks/` (move to `src/hooks/`), `lib/__tests__/`, `lib/demo-data/`, `lib/mock-data/`, `lib/seed/`, `lib/demo-scenarios/` (these become `src/data/seed/` later).
-
-**Goes to `src/legacy/`:** anything in audit flagged as duplicate, unused, or experimental-non-canonical (e.g. likely candidates: `lib/canonical-backend/`, `lib/simulation/` if unused, dead engine experiments). Each entry gets a documented reason in `SRC_LIB_WRAPPER_MAP.md`.
-
-## Phase 4 — Wave 8: Guardrails
-
-Add CI scripts to prevent regression:
-- `scripts/architecture/checks/check-lib-ownership-drift.ts` — fails if new files are added to `src/lib/` outside an allowlist (utils, hooks, internal)
-- `scripts/architecture/checks/check-misplaced-runtime-logic.ts` — flags runtime imports in `src/domains/`
-- `scripts/architecture/checks/check-misplaced-data-logic.ts` — flags DB calls outside `src/data/` or `src/integrations/`
-- `scripts/architecture/checks/check-misplaced-domain-logic.ts` — flags business-context strings in `src/platform/`
-- `scripts/architecture/checks/check-legacy-wrapper-usage.ts` — counts remaining wrapper imports, fails CI if growing
-- Wire all into the OS release readiness aggregator as new gates
-
-## Phase 5 — Wave 9: Verification + Final Reports
-
-- Run full `tsc --noEmit`, `npm run build`, all architecture checks
-- Run `full-render-smoke` gate to confirm all 993 pages still render
-- Generate final deliverables in `generated/lib-decomposition/`:
-  - `SRC_LIB_FULL_CLASSIFICATION_AUDIT.md`
-  - `SRC_LIB_CURRENT_TO_TARGET_MAP.md`
-  - `SRC_LIB_MIGRATION_PLAN.md`
-  - `SRC_LIB_WRAPPER_MAP.md`
-  - `SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`
-  - `SRC_LIB_SECONDARY_REFACTOR_DISCOVERIES.md`
-  - `SRC_LIB_VERIFICATION_RESULTS.md`
-  - JSON counterparts for each
-- Update `os-release-readiness-report.json` with new `lib-decomposition-readiness` gate
-
-## No-Loss Safety Contract
-
-- **No file deleted** in this refactor — moved or wrapped, never dropped
-- **No import broken** — wrappers ensure old paths resolve until consumers migrate
-- **No empty destination folders** — only created when files arrive
-- **All wrappers tracked** in `src-lib-wrapper-map.json` with removal conditions
-- **Build runs after every wave** — broken wave is reverted before proceeding
-- `src/lib/utils.ts` (the 763-importer hot path) **stays put** — it's a true shared utility, not misplaced logic
-
-## Realistic Scope Note
-
-This is a multi-day, multi-wave refactor touching 1,768 source files and 2,115 consumers. Each wave will be its own implementation pass. I will execute **Wave 0 (audit) + Wave 1 (scaffold + ownership map)** in the first implementation turn — that produces the full classification, target map, and destination skeleton without moving a single canonical file, giving you a complete picture and approval gate before the actual code moves begin in subsequent waves.
+- All wrapper files use the `// @lovable:migrated-wrapper` marker, which the universal rewire engine auto-detects — no manual config needed per file.
+- Phase 1 duplicate consolidation is safe because fingerprints are byte-identical (verified in `SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`).
+- Phase 3 wrapper removal is gated on zero-consumer detection; no aggressive deletion.
+- The `tsconfig.json` `paths` mapping for `@/*` already resolves both `src/lib/*` and canonical roots, so wrapper indirection has no runtime cost — only build-time.
+- No database migrations required; this is pure code architecture work.
 
