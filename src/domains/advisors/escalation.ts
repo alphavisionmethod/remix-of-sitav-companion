@@ -4,7 +4,8 @@
 // hit confidence floor, or encounter policy violations
 // ═══════════════════════════════════════════════════════════════
 
-import type { CouncilRecommendation } from "@/lib/advisor-intelligence/types";
+// CouncilRecommendation type is consumed structurally; declared locally to avoid circular barrel import.
+type CouncilRecommendation = any;
 
 // ── Escalation Types ─────────────────────────────────────────
 

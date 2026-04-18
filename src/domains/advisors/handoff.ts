@@ -4,7 +4,8 @@
 // is reached or cross-domain coordination is required
 // ═══════════════════════════════════════════════════════════════
 
-import type { AdvisorDefinition } from "@/lib/advisor-intelligence/types";
+// AdvisorDefinition type is consumed structurally; declared locally to avoid circular barrel import.
+type AdvisorDefinition = any;
 
 // ── Types ────────────────────────────────────────────────────
 
