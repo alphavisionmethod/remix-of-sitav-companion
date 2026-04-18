@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// Phase O — Run all 12 deployment-gap-closure guardrail gates.
+// Phase Z — Run all 17 deployment-gap-closure guardrail gates.
 import { spawnSync } from "node:child_process";
 
 const GATES = [
@@ -19,6 +19,9 @@ const GATES = [
   "check-warn-ratchet",
   "check-per-bucket-warn-ratchet",
   "check-evidence-freshness",
+  // Phase Z additions
+  "check-edge-function-governance-coverage",
+  "check-route-topology-truth",
 ];
 
 let pass = 0, fail = 0;
