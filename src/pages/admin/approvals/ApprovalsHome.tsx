@@ -70,7 +70,7 @@ export default function ApprovalsHome() {
       id: "layer7-followthrough",
       label: "Layer 7 Follow-through",
       description: "Boardroom post-approval chain — dispatched, executed, outcome-tracked, reflected.",
-      badge: { label: "L7", tone: "info" },
+      badge: { label: "L7", tone: "default" },
       legacyPath: "/admin/boardroom/followthrough",
       render: wrap(Layer7FollowthroughBoard),
     },
