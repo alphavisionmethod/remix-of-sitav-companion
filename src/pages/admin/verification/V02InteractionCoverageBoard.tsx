@@ -7,8 +7,8 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY, getVerificationStats, type SurfaceEntry, type TestPriority, type SurfaceClass } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useVerificationRuns } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY, getVerificationStats, type SurfaceEntry, type TestPriority, type SurfaceClass } from "@/platform/verification/surface-registry";
 import { CheckCircle2, XCircle, MinusCircle, BarChart3, AlertTriangle, Shield, Target } from "lucide-react";
 
 function coveragePct(passed: number, total: number) {

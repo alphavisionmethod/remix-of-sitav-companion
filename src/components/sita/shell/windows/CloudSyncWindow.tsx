@@ -7,11 +7,11 @@ import { useState, useEffect, useCallback } from "react";
 import { Cloud, RefreshCw, Check, AlertTriangle, Wifi, WifiOff, FileText, Settings, MonitorSmartphone } from "lucide-react";
 import {
   AppLayout, VStack, HStack, Divider,
-} from "@/lib/nova-sdk/ui/layout";
+} from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaToolbar,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { CloudSyncManager, type SyncStatus, type ConflictRecord } from "@/lib/core-services/cloud-sync-manager";
 import { cn } from "@/lib/utils";

@@ -5,7 +5,7 @@ import {
   updateMockReplacementStatus,
   deleteMockReplacement,
   type MockReplacement,
-} from "@/lib/persistence/mock-replacement-persistence";
+} from "@/data/persistence/mock-replacement-persistence";
 import { toast } from "sonner";
 
 const KEY = ["mock-replacements"];

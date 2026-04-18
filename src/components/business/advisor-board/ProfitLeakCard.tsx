@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, ArrowRight } from "lucide-react";
-import type { LeakItem } from "@/lib/engines/business-profitability-engine";
+import type { LeakItem } from "@/domains/engines/business-profitability-engine";
 
 interface Props {
   leaks: LeakItem[];

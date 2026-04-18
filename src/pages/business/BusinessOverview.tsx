@@ -7,7 +7,7 @@ import {
   Sparkles, Play, BarChart3, Leaf, Shield
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { HomeIdentityHeader } from "@/components/business/home/HomeIdentityHeader";
 import { WhatMattersNowHero } from "@/components/business/home/WhatMattersNowHero";
 import { PressurePulseLayer } from "@/components/business/home/PressurePulseLayer";

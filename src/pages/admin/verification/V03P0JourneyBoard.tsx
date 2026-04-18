@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useVerificationSurfaces } from "@/lib/verification/verification-hooks";
+import { useVerificationSurfaces } from "@/platform/verification/verification-hooks";
 import {
   CUSTOMER_JOURNEY_REGISTRY,
   type JourneyDefinition,

@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useVerificationSurfaces, useSeedSurfaces } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY, getVerificationStats } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useSeedSurfaces } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY, getVerificationStats } from "@/platform/verification/surface-registry";
 import { Database, Layers, Search, Loader2, Download, RefreshCw } from "lucide-react";
 
 

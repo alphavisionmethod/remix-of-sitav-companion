@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:57:17.739Z",
+  "generatedAt": "2026-04-18T03:02:53.602Z",
   "wrappers": [
     {
       "path": "src/lib/admin-ai/index.ts",
@@ -25,6 +25,11 @@
       "path": "src/lib/app-platform/index.ts",
       "loc": 8,
       "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/app-platform/types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/apps/types"
     },
     {
       "path": "src/lib/backend-topology/index.ts",
@@ -180,6 +185,11 @@
       "path": "src/lib/core-services/event-bus/index.ts",
       "loc": 4,
       "reExportsFrom": "../event-bus"
+    },
+    {
+      "path": "src/lib/core-services/event-bus.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/core-services/event-bus"
     },
     {
       "path": "src/lib/core-services/finance-os/index.ts",
@@ -417,6 +427,71 @@
       "reExportsFrom": "./compositor-sim"
     },
     {
+      "path": "src/lib/engines/business-action-pipeline.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-action-pipeline"
+    },
+    {
+      "path": "src/lib/engines/business-advisor-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-advisor-engine"
+    },
+    {
+      "path": "src/lib/engines/business-advisor-personas.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-advisor-personas"
+    },
+    {
+      "path": "src/lib/engines/business-archetype-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-archetype-engine"
+    },
+    {
+      "path": "src/lib/engines/business-autonomy-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-autonomy-engine"
+    },
+    {
+      "path": "src/lib/engines/business-context-graph.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-context-graph"
+    },
+    {
+      "path": "src/lib/engines/business-identity-layers.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-identity-layers"
+    },
+    {
+      "path": "src/lib/engines/business-module-adaptations.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-module-adaptations"
+    },
+    {
+      "path": "src/lib/engines/business-profile-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-profile-engine"
+    },
+    {
+      "path": "src/lib/engines/business-profitability-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-profitability-engine"
+    },
+    {
+      "path": "src/lib/engines/business-radar-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/business-radar-engine"
+    },
+    {
+      "path": "src/lib/engines/lead-recovery-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/lead-recovery-engine"
+    },
+    {
+      "path": "src/lib/engines/lead-scoring-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/engines/lead-scoring-engine"
+    },
+    {
       "path": "src/lib/engines/shared/index.ts",
       "loc": 2,
       "reExportsFrom": "./aging"
@@ -442,9 +517,29 @@
       "reExportsFrom": "./service-manager"
     },
     {
+      "path": "src/lib/nova-sdk/ui/NovaThemeProvider.tsx",
+      "loc": 1,
+      "reExportsFrom": "@/platform/nova-sdk/ui/NovaThemeProvider"
+    },
+    {
+      "path": "src/lib/nova-sdk/ui/components.tsx",
+      "loc": 1,
+      "reExportsFrom": "@/platform/nova-sdk/ui/components"
+    },
+    {
+      "path": "src/lib/nova-sdk/ui/layout.tsx",
+      "loc": 1,
+      "reExportsFrom": "@/platform/nova-sdk/ui/layout"
+    },
+    {
       "path": "src/lib/observability/index.ts",
       "loc": 12,
       "reExportsFrom": "./structured-logger"
+    },
+    {
+      "path": "src/lib/offline-db.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/offline-db"
     },
     {
       "path": "src/lib/orchestration/execution/execution-types.ts",
@@ -470,6 +565,81 @@
       "path": "src/lib/orchestration/proof/proof-types.ts",
       "loc": 6,
       "reExportsFrom": "./receipt-builder"
+    },
+    {
+      "path": "src/lib/persistence/action-lineage-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/action-lineage-persistence"
+    },
+    {
+      "path": "src/lib/persistence/cai-persistence-bridge.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/cai-persistence-bridge"
+    },
+    {
+      "path": "src/lib/persistence/compute-governance-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/compute-governance-persistence"
+    },
+    {
+      "path": "src/lib/persistence/engine-persistence-adapter.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/engine-persistence-adapter"
+    },
+    {
+      "path": "src/lib/persistence/event-bus-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/event-bus-persistence"
+    },
+    {
+      "path": "src/lib/persistence/intelligence-asset-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/intelligence-asset-persistence"
+    },
+    {
+      "path": "src/lib/persistence/memory-service-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/memory-service-persistence"
+    },
+    {
+      "path": "src/lib/persistence/mock-replacement-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/mock-replacement-persistence"
+    },
+    {
+      "path": "src/lib/persistence/operator-taste-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/operator-taste-persistence"
+    },
+    {
+      "path": "src/lib/persistence/persistable.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/persistable"
+    },
+    {
+      "path": "src/lib/persistence/policy-engine-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/policy-engine-persistence"
+    },
+    {
+      "path": "src/lib/persistence/quality-floor-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/quality-floor-persistence"
+    },
+    {
+      "path": "src/lib/persistence/reality-classification-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/reality-classification-persistence"
+    },
+    {
+      "path": "src/lib/persistence/supabase-adapters.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/supabase-adapters"
+    },
+    {
+      "path": "src/lib/persistence/universal-service-persistence.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/universal-service-persistence"
     },
     {
       "path": "src/lib/platform/auth/index.ts",
@@ -702,6 +872,11 @@
       "reExportsFrom": "./types"
     },
     {
+      "path": "src/lib/storage/storage-topology-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/data/persistence/storage-topology-registry"
+    },
+    {
       "path": "src/lib/strategic-intelligence/index.ts",
       "loc": 24,
       "reExportsFrom": "./intelligence-capital-index"
@@ -784,6 +959,16 @@
       "path": "src/lib/verification/index.ts",
       "loc": 2,
       "reExportsFrom": "./surface-registry"
+    },
+    {
+      "path": "src/lib/verification/surface-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/verification/surface-registry"
+    },
+    {
+      "path": "src/lib/verification/verification-hooks.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/verification/verification-hooks"
     }
   ]
 }

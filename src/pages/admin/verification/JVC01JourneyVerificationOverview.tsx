@@ -7,8 +7,8 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useVerificationSurfaces, useVerificationRuns, useVerificationBlockers } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY, getVerificationStats } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useVerificationRuns, useVerificationBlockers } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY, getVerificationStats } from "@/platform/verification/surface-registry";
 import { CUSTOMER_JOURNEY_REGISTRY, getLaunchBlockerJourneys } from "@/lib/customer-journey/journey-registry";
 import { useNavigate } from "react-router-dom";
 import {

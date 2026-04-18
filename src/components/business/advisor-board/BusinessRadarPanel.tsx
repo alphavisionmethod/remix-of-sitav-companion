@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import { SparklineChart } from "./SparklineChart";
-import type { BusinessSignal, RadarSnapshot, SignalCategory, SignalSeverity } from "@/lib/engines/business-radar-engine";
+import type { BusinessSignal, RadarSnapshot, SignalCategory, SignalSeverity } from "@/domains/engines/business-radar-engine";
 
 const CATEGORY_ICONS: Record<SignalCategory, React.ElementType> = {
   lead: Target, client: Users, revenue: DollarSign, cash: DollarSign,

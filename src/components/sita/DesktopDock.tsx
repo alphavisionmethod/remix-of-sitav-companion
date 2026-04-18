@@ -14,7 +14,7 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import { useAppSurfacing } from "@/hooks/useAppSurfacing";
 import { useDockContext } from "@/hooks/useDockContext";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition } from "@/domains/apps/types";
 import type { useWindowManager } from "@/hooks/useWindowManager";
 import { DockWindowPreview } from "./shell/DockWindowPreview";
 import { RecentFlowStrip } from "./shell/RecentFlowStrip";

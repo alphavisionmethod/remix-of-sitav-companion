@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_DEV_CATEGORIES } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { GrowthOpportunity } from "@/lib/engines/business-profitability-engine";
+import type { GrowthOpportunity } from "@/domains/engines/business-profitability-engine";
 
 interface Props {
   opportunities: GrowthOpportunity[];

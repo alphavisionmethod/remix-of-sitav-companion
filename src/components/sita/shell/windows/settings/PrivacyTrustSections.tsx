@@ -7,11 +7,11 @@ import {
   Shield, Globe, HardDrive, Lock, Download, Trash2, ShieldAlert,
   Monitor, Smartphone, Clock, Key, Eye, Ban, UserCheck,
 } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaSlider,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { useAuth } from "@/contexts/AuthContext";

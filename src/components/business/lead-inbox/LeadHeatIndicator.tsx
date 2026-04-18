@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { HeatStatus, UrgencyBand } from "@/lib/engines/lead-scoring-engine";
-import { HEAT_STATUS_META, URGENCY_BAND_META } from "@/lib/engines/lead-scoring-engine";
+import type { HeatStatus, UrgencyBand } from "@/domains/engines/lead-scoring-engine";
+import { HEAT_STATUS_META, URGENCY_BAND_META } from "@/domains/engines/lead-scoring-engine";
 import { TrendingUp, TrendingDown, Minus, RotateCcw, Flame } from "lucide-react";
 
 const heatIcon: Record<HeatStatus, typeof Flame> = {

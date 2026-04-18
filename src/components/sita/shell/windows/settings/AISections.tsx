@@ -3,10 +3,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Brain, DollarSign, Zap, BarChart3, Shield, Eye } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaCard, NovaSectionLabel, NovaToggle, NovaSlider, NovaBadge,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { SettingRow } from "./shared";
 import { useSettingsValue } from "@/hooks/use-settings-value";

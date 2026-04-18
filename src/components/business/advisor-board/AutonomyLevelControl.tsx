@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AUTONOMY_LEVELS, ALL_DOMAINS, type TrustModeState, type AutonomyDomain, type AutonomyLevel } from "@/lib/engines/business-autonomy-engine";
+import { AUTONOMY_LEVELS, ALL_DOMAINS, type TrustModeState, type AutonomyDomain, type AutonomyLevel } from "@/domains/engines/business-autonomy-engine";
 
 interface Props {
   state: TrustModeState;

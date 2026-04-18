@@ -11,9 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/lib/engines/business-advisor-personas";
+import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/domains/engines/business-advisor-personas";
 import type { MemorySnapshot } from "@/lib/engines/advisor-memory-engine";
-import type { BusinessContextSnapshot } from "@/lib/engines/business-context-graph";
+import type { BusinessContextSnapshot } from "@/domains/engines/business-context-graph";
 import ReactMarkdown from "react-markdown";
 
 interface ChatMessage {

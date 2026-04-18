@@ -10,8 +10,8 @@ import {
   Home, TrendingUp, Workflow, Database, Download, HelpCircle, Info,
   Activity, Accessibility, Smartphone, LayoutGrid,
 } from "lucide-react";
-import { AppLayout, VStack } from "@/lib/nova-sdk/ui/layout";
-import { NovaList, NovaSectionLabel, NovaToolbar } from "@/lib/nova-sdk/ui/components";
+import { AppLayout, VStack } from "@/platform/nova-sdk/ui/layout";
+import { NovaList, NovaSectionLabel, NovaToolbar } from "@/platform/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { SettingsSearch } from "./settings/shared";
 

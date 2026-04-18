@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T02:57:19.349Z
+> Generated: 2026-04-18T03:02:56.938Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -11,7 +11,7 @@
 | Gates present  | 25 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 4028 |
+| Total warnings | 3810 |
 
 ## Per-gate results
 
@@ -41,11 +41,11 @@
 | `misplaced-runtime-logic` | ✅ | 0 | 0 |
 | `misplaced-data-logic` | ✅ | 0 | 0 |
 | `misplaced-domain-logic` | ✅ | 0 | 0 |
-| `legacy-wrapper-usage` | ✅ | 0 | 2198 |
+| `legacy-wrapper-usage` | ✅ | 0 | 1980 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 4028 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3810 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

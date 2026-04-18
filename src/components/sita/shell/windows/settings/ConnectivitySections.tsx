@@ -8,11 +8,11 @@ import {
   WifiOff, Signal, Search, Headphones, Mouse, Speaker, Trash2,
   Shield, Key, FolderSync, Upload, Download,
 } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaAvatar, NovaSlider,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { toast } from "sonner";
 import { SettingRow, ResetSectionButton } from "./shared";

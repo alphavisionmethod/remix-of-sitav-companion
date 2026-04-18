@@ -3,10 +3,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Volume2, Bell, Keyboard, ChevronRight, Mic, VolumeX, Music, Mouse } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaCard, NovaToggle, NovaSlider, NovaBadge, NovaSectionLabel, NovaText,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { SettingRow, ResetSectionButton } from "./shared";
 import { cn } from "@/lib/utils";

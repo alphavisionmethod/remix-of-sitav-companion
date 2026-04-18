@@ -1,0 +1,230 @@
+{
+  "generatedAt": "2026-04-18T03:01:20.336Z",
+  "summary": {
+    "moved": 37
+  },
+  "results": [
+    {
+      "from": "src/lib/persistence/universal-service-persistence.ts",
+      "to": "src/data/persistence/universal-service-persistence.ts",
+      "canonicalImport": "@/data/persistence/universal-service-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/persistable.ts",
+      "to": "src/data/persistence/persistable.ts",
+      "canonicalImport": "@/data/persistence/persistable",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/supabase-adapters.ts",
+      "to": "src/data/persistence/supabase-adapters.ts",
+      "canonicalImport": "@/data/persistence/supabase-adapters",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/event-bus-persistence.ts",
+      "to": "src/data/persistence/event-bus-persistence.ts",
+      "canonicalImport": "@/data/persistence/event-bus-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/memory-service-persistence.ts",
+      "to": "src/data/persistence/memory-service-persistence.ts",
+      "canonicalImport": "@/data/persistence/memory-service-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/policy-engine-persistence.ts",
+      "to": "src/data/persistence/policy-engine-persistence.ts",
+      "canonicalImport": "@/data/persistence/policy-engine-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/action-lineage-persistence.ts",
+      "to": "src/data/persistence/action-lineage-persistence.ts",
+      "canonicalImport": "@/data/persistence/action-lineage-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/cai-persistence-bridge.ts",
+      "to": "src/data/persistence/cai-persistence-bridge.ts",
+      "canonicalImport": "@/data/persistence/cai-persistence-bridge",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/compute-governance-persistence.ts",
+      "to": "src/data/persistence/compute-governance-persistence.ts",
+      "canonicalImport": "@/data/persistence/compute-governance-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/engine-persistence-adapter.ts",
+      "to": "src/data/persistence/engine-persistence-adapter.ts",
+      "canonicalImport": "@/data/persistence/engine-persistence-adapter",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/intelligence-asset-persistence.ts",
+      "to": "src/data/persistence/intelligence-asset-persistence.ts",
+      "canonicalImport": "@/data/persistence/intelligence-asset-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/mock-replacement-persistence.ts",
+      "to": "src/data/persistence/mock-replacement-persistence.ts",
+      "canonicalImport": "@/data/persistence/mock-replacement-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/operator-taste-persistence.ts",
+      "to": "src/data/persistence/operator-taste-persistence.ts",
+      "canonicalImport": "@/data/persistence/operator-taste-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/quality-floor-persistence.ts",
+      "to": "src/data/persistence/quality-floor-persistence.ts",
+      "canonicalImport": "@/data/persistence/quality-floor-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/persistence/reality-classification-persistence.ts",
+      "to": "src/data/persistence/reality-classification-persistence.ts",
+      "canonicalImport": "@/data/persistence/reality-classification-persistence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/offline-db.ts",
+      "to": "src/data/persistence/offline-db.ts",
+      "canonicalImport": "@/data/persistence/offline-db",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/storage/storage-topology-registry.ts",
+      "to": "src/data/persistence/storage-topology-registry.ts",
+      "canonicalImport": "@/data/persistence/storage-topology-registry",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-identity-layers.ts",
+      "to": "src/domains/engines/business-identity-layers.ts",
+      "canonicalImport": "@/domains/engines/business-identity-layers",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-profile-engine.ts",
+      "to": "src/domains/engines/business-profile-engine.ts",
+      "canonicalImport": "@/domains/engines/business-profile-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-module-adaptations.ts",
+      "to": "src/domains/engines/business-module-adaptations.ts",
+      "canonicalImport": "@/domains/engines/business-module-adaptations",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/lead-scoring-engine.ts",
+      "to": "src/domains/engines/lead-scoring-engine.ts",
+      "canonicalImport": "@/domains/engines/lead-scoring-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-radar-engine.ts",
+      "to": "src/domains/engines/business-radar-engine.ts",
+      "canonicalImport": "@/domains/engines/business-radar-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-archetype-engine.ts",
+      "to": "src/domains/engines/business-archetype-engine.ts",
+      "canonicalImport": "@/domains/engines/business-archetype-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-context-graph.ts",
+      "to": "src/domains/engines/business-context-graph.ts",
+      "canonicalImport": "@/domains/engines/business-context-graph",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-action-pipeline.ts",
+      "to": "src/domains/engines/business-action-pipeline.ts",
+      "canonicalImport": "@/domains/engines/business-action-pipeline",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-advisor-engine.ts",
+      "to": "src/domains/engines/business-advisor-engine.ts",
+      "canonicalImport": "@/domains/engines/business-advisor-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-advisor-personas.ts",
+      "to": "src/domains/engines/business-advisor-personas.ts",
+      "canonicalImport": "@/domains/engines/business-advisor-personas",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-autonomy-engine.ts",
+      "to": "src/domains/engines/business-autonomy-engine.ts",
+      "canonicalImport": "@/domains/engines/business-autonomy-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/business-profitability-engine.ts",
+      "to": "src/domains/engines/business-profitability-engine.ts",
+      "canonicalImport": "@/domains/engines/business-profitability-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/lead-recovery-engine.ts",
+      "to": "src/domains/engines/lead-recovery-engine.ts",
+      "canonicalImport": "@/domains/engines/lead-recovery-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/verification/verification-hooks.ts",
+      "to": "src/platform/verification/verification-hooks.ts",
+      "canonicalImport": "@/platform/verification/verification-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/verification/surface-registry.ts",
+      "to": "src/platform/verification/surface-registry.ts",
+      "canonicalImport": "@/platform/verification/surface-registry",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/core-services/event-bus.ts",
+      "to": "src/platform/core-services/event-bus.ts",
+      "canonicalImport": "@/platform/core-services/event-bus",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/app-platform/types.ts",
+      "to": "src/domains/apps/types.ts",
+      "canonicalImport": "@/domains/apps/types",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/nova-sdk/ui/layout.tsx",
+      "to": "src/platform/nova-sdk/ui/layout.tsx",
+      "canonicalImport": "@/platform/nova-sdk/ui/layout",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/nova-sdk/ui/components.tsx",
+      "to": "src/platform/nova-sdk/ui/components.tsx",
+      "canonicalImport": "@/platform/nova-sdk/ui/components",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/nova-sdk/ui/NovaThemeProvider.tsx",
+      "to": "src/platform/nova-sdk/ui/NovaThemeProvider.tsx",
+      "canonicalImport": "@/platform/nova-sdk/ui/NovaThemeProvider",
+      "status": "moved"
+    }
+  ]
+}

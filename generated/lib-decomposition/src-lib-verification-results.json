@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-04-18T02:57:17.739Z",
+  "generatedAt": "2026-04-18T03:02:53.602Z",
   "gate": "lib-decomposition-readiness",
   "remainingLibFiles": 1731,
   "allowlistedLibFiles": 36,
   "canonicalCounts": {
     "src/domains": {
-      "files": 16,
-      "nonBarrel": 0
+      "files": 30,
+      "nonBarrel": 14
     },
     "src/platform": {
-      "files": 35,
-      "nonBarrel": 0
+      "files": 42,
+      "nonBarrel": 6
     },
     "src/runtimes": {
       "files": 9,
       "nonBarrel": 1
     },
     "src/data": {
-      "files": 7,
-      "nonBarrel": 0
+      "files": 24,
+      "nonBarrel": 17
     },
     "src/integrations": {
       "files": 7,
@@ -33,8 +33,8 @@
       "nonBarrel": 0
     }
   },
-  "populatedCanonicalDirs": 2,
-  "shimWrappers": 157,
+  "populatedCanonicalDirs": 5,
+  "shimWrappers": 194,
   "shimWrapperSample": [
     {
       "path": "src/lib/admin-ai/index.ts",
@@ -60,6 +60,11 @@
       "path": "src/lib/app-platform/index.ts",
       "loc": 8,
       "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/app-platform/types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/apps/types"
     },
     {
       "path": "src/lib/backend-topology/index.ts",
@@ -130,11 +135,6 @@
       "path": "src/lib/core-services/architecture/index.ts",
       "loc": 1,
       "reExportsFrom": "./god-tier-integration-engine"
-    },
-    {
-      "path": "src/lib/core-services/biometric-auth/index.ts",
-      "loc": 1,
-      "reExportsFrom": "@/lib/services/biometric-auth"
     }
   ],
   "ok": true,

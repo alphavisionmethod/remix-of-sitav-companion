@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { toast } from "sonner";
 import { MOCK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";
-import { computeLeadScore, computeBatchScores, type LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
+import { computeLeadScore, computeBatchScores, type LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
 
 export type InboxFilter = "all" | "new" | "urgent" | "high-quality" | "missing-info" | "duplicates" | "snoozed" | "accepted" | "rejected" | "exceptional" | "recovery" | "at-risk";
 

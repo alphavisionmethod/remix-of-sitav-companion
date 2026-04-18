@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getCrossOSLinks, crossNavigate, type CrossOSLink } from "@/lib/engines/cross-os-integration";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   ArrowDownLeft, Clock, Calculator, PieChart, FlaskConical,

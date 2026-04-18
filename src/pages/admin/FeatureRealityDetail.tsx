@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
-import { PROGRESSION_REQUIREMENTS, EVIDENCE_SIGNALS } from "@/lib/persistence/reality-classification-persistence";
+import { PROGRESSION_REQUIREMENTS, EVIDENCE_SIGNALS } from "@/data/persistence/reality-classification-persistence";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, ArrowRight, FileCode, Database, Zap } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

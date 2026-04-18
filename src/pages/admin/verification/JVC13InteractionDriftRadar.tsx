@@ -8,9 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SURFACE_REGISTRY, type SurfaceEntry } from "@/lib/verification/surface-registry";
+import { SURFACE_REGISTRY, type SurfaceEntry } from "@/platform/verification/surface-registry";
 import { CUSTOMER_JOURNEY_REGISTRY } from "@/lib/customer-journey/journey-registry";
-import { useVerificationSurfaces } from "@/lib/verification/verification-hooks";
+import { useVerificationSurfaces } from "@/platform/verification/verification-hooks";
 import { Radar, AlertTriangle, CheckCircle2, XCircle, GitBranch, Clock, Shield, ArrowRight } from "lucide-react";
 
 interface DriftItem {

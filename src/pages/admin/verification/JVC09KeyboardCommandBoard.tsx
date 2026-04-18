@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
+import { SURFACE_REGISTRY } from "@/platform/verification/surface-registry";
 import { Keyboard, Command, CheckCircle2, AlertTriangle, ArrowRight, Zap } from "lucide-react";
 
 export default function JVC09KeyboardCommandBoard() {

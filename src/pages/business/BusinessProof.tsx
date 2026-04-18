@@ -12,7 +12,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, type ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { Receipt, Shield, CheckCircle, Clock, Eye, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";

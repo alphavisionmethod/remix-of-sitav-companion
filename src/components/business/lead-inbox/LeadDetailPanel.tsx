@@ -9,10 +9,10 @@ import { LeadScoreRadar } from "./LeadScoreRadar";
 import { LeadActivityTimeline } from "./LeadActivityTimeline";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
-import { generateInboxAdvisors } from "@/lib/engines/business-advisor-engine";
+import { generateInboxAdvisors } from "@/domains/engines/business-advisor-engine";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
-import type { LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail, Phone, Building2, Clock, Sparkles, AlertTriangle,

@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 import { BarChart3, AlertTriangle, Target, Clock, TrendingUp, Users, ShoppingCart, CalendarDays, DollarSign, FileText, Layers, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface AgendaItem {
   id: string;

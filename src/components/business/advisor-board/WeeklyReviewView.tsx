@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Calendar, TrendingUp, AlertTriangle, DollarSign, Users, Activity } from "lucide-react";
-import type { ProfitabilityBrief } from "@/lib/engines/business-profitability-engine";
+import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
 
 interface Props {
   brief: ProfitabilityBrief;

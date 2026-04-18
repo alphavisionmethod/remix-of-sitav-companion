@@ -1,7 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Barrel: src/data/persistence
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// Re-exports of files migrated from src/lib/persistence/* during the
+// src/lib decomposition. Prefer deep imports for tree-shaking.
 // ═══════════════════════════════════════════════════════════════
-export {};
+export * from "./universal-service-persistence";
+export * from "./persistable";
+export * from "./supabase-adapters";
+export * from "./event-bus-persistence";
+export * from "./memory-service-persistence";
+export * from "./policy-engine-persistence";
+export * from "./action-lineage-persistence";
+export * from "./cai-persistence-bridge";
+export * from "./compute-governance-persistence";
+export * from "./engine-persistence-adapter";
+export * from "./intelligence-asset-persistence";
+export * from "./mock-replacement-persistence";
+export * from "./operator-taste-persistence";
+export * from "./quality-floor-persistence";
+export * from "./reality-classification-persistence";
+export * from "./offline-db";
+export * from "./storage-topology-registry";

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { ConfidenceLevel } from "@/lib/engines/lead-scoring-engine";
-import { CONFIDENCE_META } from "@/lib/engines/lead-scoring-engine";
+import type { ConfidenceLevel } from "@/domains/engines/lead-scoring-engine";
+import { CONFIDENCE_META } from "@/domains/engines/lead-scoring-engine";
 import { Shield, ShieldAlert, ShieldQuestion } from "lucide-react";
 
 const confIcon: Record<ConfidenceLevel, typeof Shield> = {

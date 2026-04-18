@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
-import { generateStagesAdvisors } from "@/lib/engines/business-advisor-engine";
+import { generateStagesAdvisors } from "@/domains/engines/business-advisor-engine";
 
 const CRMPipeline = () => {
   const { adaptations } = useBusinessProfile();

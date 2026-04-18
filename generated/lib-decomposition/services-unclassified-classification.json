@@ -1,0 +1,1799 @@
+{
+  "generatedAt": "2026-04-18T03:00:27.094Z",
+  "totalEntries": 224,
+  "totalFiles": 498,
+  "entries": [
+    {
+      "name": "__tests__",
+      "isDir": true,
+      "files": 3,
+      "klass": "shared-internal",
+      "target": "src/lib/__tests__/__tests__",
+      "reason": "tests-stay"
+    },
+    {
+      "name": "accuracy-classifier",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/accuracy-classifier",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "action-queue",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/action-queue",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "action-safety",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/action-safety",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "adaptive-interface",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/adaptive-interface",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "adaptive-visual-system.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/adaptive-visual-system",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "admin-route-truth-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/admin-route-truth-service",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "admin-service",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/admin-service",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "advisor-feedback",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/advisor-feedback",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "advisor-knowledge",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/advisor-knowledge",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "advisor-memory",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/boardroom/advisor-memory",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "ai-economics",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/ai-workforce/ai-economics",
+      "reason": "ai-workforce"
+    },
+    {
+      "name": "ai-gateway",
+      "isDir": true,
+      "files": 10,
+      "klass": "platform",
+      "target": "src/platform/ai/ai-gateway",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "ai-memory-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/ai-workforce/ai-memory-graph",
+      "reason": "ai-workforce"
+    },
+    {
+      "name": "ai-workforce",
+      "isDir": true,
+      "files": 6,
+      "klass": "domain",
+      "target": "src/domains/ai-workforce/ai-workforce",
+      "reason": "ai-workforce"
+    },
+    {
+      "name": "alerting",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/alerting",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "ambient-context-engine.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/ambient-context-engine",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "analytics",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/analytics",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "anomaly-alert",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/anomaly-alert",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "api-gateway",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/api-gateway",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "app-ingestion",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/apps/app-ingestion",
+      "reason": "apps-domain"
+    },
+    {
+      "name": "app-store",
+      "isDir": true,
+      "files": 8,
+      "klass": "domain",
+      "target": "src/domains/apps/app-store",
+      "reason": "apps-domain"
+    },
+    {
+      "name": "approval-engine",
+      "isDir": true,
+      "files": 5,
+      "klass": "platform",
+      "target": "src/platform/core-services/approval-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "architecture",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/architecture",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "attention-os",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/attention-os",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "attribution-analytics",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/attribution-analytics",
+      "reason": "business-context"
+    },
+    {
+      "name": "audit-ledger",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/audit-ledger",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "audit-trail-timeline",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/audit-trail-timeline",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "auth",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/auth",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "auto-proposal",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/auto-proposal",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "autonomous-negotiation",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/autonomous-negotiation",
+      "reason": "business-context"
+    },
+    {
+      "name": "background-intelligence.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/background-intelligence",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "billing",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/finance/billing",
+      "reason": "finance-context"
+    },
+    {
+      "name": "biometric-auth",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/biometric-auth",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "board-api-client.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/board-api-client",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "boardroom-bridge.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/boardroom-bridge",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "boardroom-service",
+      "isDir": true,
+      "files": 9,
+      "klass": "domain",
+      "target": "src/domains/boardroom/boardroom-service",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "booking-scheduling",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/booking-scheduling",
+      "reason": "business-context"
+    },
+    {
+      "name": "boot-persistence",
+      "isDir": true,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/boot-persistence",
+      "reason": "persistence"
+    },
+    {
+      "name": "boundary-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/boundary-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "brain-core",
+      "isDir": true,
+      "files": 10,
+      "klass": "platform",
+      "target": "src/platform/orchestration/brain-core",
+      "reason": "orchestration"
+    },
+    {
+      "name": "business-os",
+      "isDir": true,
+      "files": 26,
+      "klass": "domain",
+      "target": "src/domains/business/business-os",
+      "reason": "business-context"
+    },
+    {
+      "name": "canonical-pipeline",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/orchestration/canonical-pipeline",
+      "reason": "orchestration"
+    },
+    {
+      "name": "capability-router",
+      "isDir": true,
+      "files": 4,
+      "klass": "platform",
+      "target": "src/platform/orchestration/capability-router",
+      "reason": "orchestration"
+    },
+    {
+      "name": "capital-allocation",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/finance/capital-allocation",
+      "reason": "finance-context"
+    },
+    {
+      "name": "chief-of-staff",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/chief-of-staff",
+      "reason": "business-context"
+    },
+    {
+      "name": "ci-launch-gate-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/ci-launch-gate-service",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "client-sentiment",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/client-sentiment",
+      "reason": "business-context"
+    },
+    {
+      "name": "cloud-control-plane-infra",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/cloud-control-plane-infra",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "communication-service",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/communication-service",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "competitive-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/competitive-intelligence",
+      "reason": "business-context"
+    },
+    {
+      "name": "compound-life-score",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/compound-life-score",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "concierge-os",
+      "isDir": true,
+      "files": 21,
+      "klass": "domain",
+      "target": "src/domains/concierge/concierge-os",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "connector-control-plane",
+      "isDir": true,
+      "files": 15,
+      "klass": "integration",
+      "target": "src/integrations/external/connector-control-plane",
+      "reason": "external-provider"
+    },
+    {
+      "name": "connector-health-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/connector-health-service",
+      "reason": "external-provider"
+    },
+    {
+      "name": "connector-notification-honesty-seed.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/connector-notification-honesty-seed",
+      "reason": "external-provider"
+    },
+    {
+      "name": "connector-runners",
+      "isDir": true,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/connector-runners",
+      "reason": "external-provider"
+    },
+    {
+      "name": "connector-truth",
+      "isDir": true,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/connector-truth",
+      "reason": "external-provider"
+    },
+    {
+      "name": "conscience-gate",
+      "isDir": true,
+      "files": 3,
+      "klass": "platform",
+      "target": "src/platform/security/conscience-gate",
+      "reason": "platform-security"
+    },
+    {
+      "name": "constitution-compiler",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/constitution-compiler",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "constitution-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/constitution-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "context-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/context-graph",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "continuity-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/continuity-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "council-orchestrator",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/boardroom/council-orchestrator",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "data-scope-model",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/data-scope-model",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "database",
+      "isDir": true,
+      "files": 2,
+      "klass": "data",
+      "target": "src/data/persistence/database",
+      "reason": "persistence"
+    },
+    {
+      "name": "decision-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/decision-intelligence",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "degraded-mode",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/degraded-mode",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "demo-governance",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/demo-governance",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "desk",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/desk",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "device-mesh",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/device-mesh",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "device-presence-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/device-presence-service",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "digest-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/digest-engine",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "digest-journal",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/digest-journal",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "digital-legacy-vault",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/digital-legacy-vault",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "digital-twins",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/digital-twins",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "document-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/document-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "document-signature",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/document-signature",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "domain-runtime",
+      "isDir": true,
+      "files": 2,
+      "klass": "runtime",
+      "target": "src/runtimes/core/domain-runtime",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "duress-detection",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/duress-detection",
+      "reason": "platform-security"
+    },
+    {
+      "name": "ecosystem-orchestrator",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/orchestration/ecosystem-orchestrator",
+      "reason": "orchestration"
+    },
+    {
+      "name": "edge-device-runtime",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/edge-device-runtime",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "emergency-halt",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/emergency-halt",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "engineering-governance",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/strategic-intelligence/engineering-governance",
+      "reason": "release/governance domain"
+    },
+    {
+      "name": "enterprise-control-plane",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/enterprise-control-plane",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "entity-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/entity-graph",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "epistemic-firewall",
+      "isDir": true,
+      "files": 8,
+      "klass": "platform",
+      "target": "src/platform/security/epistemic-firewall",
+      "reason": "platform-security"
+    },
+    {
+      "name": "error-monitoring-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/error-monitoring-service",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "event-bus",
+      "isDir": true,
+      "files": 5,
+      "klass": "platform",
+      "target": "src/platform/core-services/event-bus",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "executor-service",
+      "isDir": true,
+      "files": 4,
+      "klass": "platform",
+      "target": "src/platform/orchestration/executor-service",
+      "reason": "orchestration"
+    },
+    {
+      "name": "experience-signature",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/experience-signature",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "explainability",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/explainability",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "family-command-center",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/family-command-center",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "family-constitution",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/family-constitution",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "file-ingestion",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/file-ingestion",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "finance-os",
+      "isDir": true,
+      "files": 40,
+      "klass": "domain",
+      "target": "src/domains/finance/finance-os",
+      "reason": "finance-context"
+    },
+    {
+      "name": "flagship-loops",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/flagship-loops",
+      "reason": "orchestration"
+    },
+    {
+      "name": "fleet",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/fleet",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "fleet-health",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/fleet-health",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "fleet-ota",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/fleet-ota",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "founder-orchestrator",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/founder-orchestrator",
+      "reason": "business-context"
+    },
+    {
+      "name": "fraud-sentinel",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/fraud-sentinel",
+      "reason": "platform-security"
+    },
+    {
+      "name": "frontend",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/frontend",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "golden-trace-runner",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/golden-trace-runner",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "google-provider-family",
+      "isDir": true,
+      "files": 5,
+      "klass": "integration",
+      "target": "src/integrations/external/google-provider-family",
+      "reason": "external-provider"
+    },
+    {
+      "name": "governance-simulator",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/governance-simulator",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "habit-tracker",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/habit-tracker",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "handoff",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/handoff",
+      "reason": "orchestration"
+    },
+    {
+      "name": "household-org-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/household-org-graph",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "i18n",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/i18n",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "identity",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/identity",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "identity-auth",
+      "isDir": true,
+      "files": 8,
+      "klass": "platform",
+      "target": "src/platform/core-services/identity-auth",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "immune-controller",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/immune-controller",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "incident-management",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/incident-management",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "index.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "shared-internal",
+      "target": "src/lib/services/index",
+      "reason": "barrel-stay"
+    },
+    {
+      "name": "inference-gateway",
+      "isDir": true,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/inference-gateway",
+      "reason": "external-provider"
+    },
+    {
+      "name": "injection-firewall",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/injection-firewall",
+      "reason": "platform-security"
+    },
+    {
+      "name": "integration-concierge",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/setup/integration-concierge",
+      "reason": "setup-context"
+    },
+    {
+      "name": "integration-hub",
+      "isDir": true,
+      "files": 4,
+      "klass": "integration",
+      "target": "src/integrations/external/integration-hub",
+      "reason": "external-provider"
+    },
+    {
+      "name": "intent-inbox",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/intent-inbox",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "intent-orchestrator",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/intent-orchestrator",
+      "reason": "orchestration"
+    },
+    {
+      "name": "keyvault",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/keyvault",
+      "reason": "platform-security"
+    },
+    {
+      "name": "launch-gate",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/strategic-intelligence/launch-gate",
+      "reason": "release/governance domain"
+    },
+    {
+      "name": "launch-readiness",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/strategic-intelligence/launch-readiness",
+      "reason": "release/governance domain"
+    },
+    {
+      "name": "lease-manager",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/lease-manager",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "legacy-planning",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/legacy-planning",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "life-growth",
+      "isDir": true,
+      "files": 6,
+      "klass": "domain",
+      "target": "src/domains/concierge/life-growth",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "life-score",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/life-score",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "life-simulation",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/concierge/life-simulation",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "memory-governance",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/memory-governance",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "memory-service",
+      "isDir": true,
+      "files": 7,
+      "klass": "platform",
+      "target": "src/platform/ai/memory-service",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "messaging-gateway",
+      "isDir": true,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/messaging-gateway",
+      "reason": "external-provider"
+    },
+    {
+      "name": "meta-governance",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/meta-governance",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "mnemosyne",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/ai/mnemosyne",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "model-router",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/ai/model-router",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "multi-agent-debate",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/multi-agent-debate",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "native-apps",
+      "isDir": true,
+      "files": 5,
+      "klass": "domain",
+      "target": "src/domains/apps/native-apps",
+      "reason": "apps-domain"
+    },
+    {
+      "name": "natural-language-policy",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/boardroom/natural-language-policy",
+      "reason": "boardroom-context"
+    },
+    {
+      "name": "notifications",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/notifications",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "observability",
+      "isDir": true,
+      "files": 4,
+      "klass": "platform",
+      "target": "src/platform/observability/observability",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "observability-hub",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/observability-hub",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "offline-queue",
+      "isDir": true,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/offline-queue",
+      "reason": "persistence"
+    },
+    {
+      "name": "offline-sync",
+      "isDir": true,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/offline-sync",
+      "reason": "persistence"
+    },
+    {
+      "name": "onboarding",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/setup/onboarding",
+      "reason": "setup-context"
+    },
+    {
+      "name": "onboarding-daemon",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/setup/onboarding-daemon",
+      "reason": "setup-context"
+    },
+    {
+      "name": "operating-autopilot",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/operating-autopilot",
+      "reason": "orchestration"
+    },
+    {
+      "name": "opportunity-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/opportunity-engine",
+      "reason": "business-context"
+    },
+    {
+      "name": "opportunity-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/opportunity-graph",
+      "reason": "business-context"
+    },
+    {
+      "name": "opportunity-radar",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/opportunity-radar",
+      "reason": "business-context"
+    },
+    {
+      "name": "orchestration-pipeline",
+      "isDir": true,
+      "files": 8,
+      "klass": "platform",
+      "target": "src/platform/orchestration/orchestration-pipeline",
+      "reason": "orchestration"
+    },
+    {
+      "name": "os-awareness",
+      "isDir": true,
+      "files": 2,
+      "klass": "runtime",
+      "target": "src/runtimes/core/os-awareness",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "os-orchestration",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/os-orchestration",
+      "reason": "orchestration"
+    },
+    {
+      "name": "os-unification",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/os-unification",
+      "reason": "orchestration"
+    },
+    {
+      "name": "outcome-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/outcome-engine",
+      "reason": "orchestration"
+    },
+    {
+      "name": "owner-control-room",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/owner-control-room",
+      "reason": "business-context"
+    },
+    {
+      "name": "pack-management-service",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/apps/pack-management-service",
+      "reason": "apps-domain"
+    },
+    {
+      "name": "payment-execution-service",
+      "isDir": true,
+      "files": 2,
+      "klass": "domain",
+      "target": "src/domains/finance/payment-execution-service",
+      "reason": "finance-context"
+    },
+    {
+      "name": "performance-monitor",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/observability/performance-monitor",
+      "reason": "platform-observability"
+    },
+    {
+      "name": "personal-graph",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/personal-graph",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "personal-operating-model",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/personal-operating-model",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "personalization-engine",
+      "isDir": true,
+      "files": 3,
+      "klass": "platform",
+      "target": "src/platform/ai/personalization-engine",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "platform-readiness",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/strategic-intelligence/platform-readiness",
+      "reason": "release/governance domain"
+    },
+    {
+      "name": "policy-engine",
+      "isDir": true,
+      "files": 5,
+      "klass": "platform",
+      "target": "src/platform/core-services/policy-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "predictive-intent",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/predictive-intent",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "predictive-needs",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/predictive-needs",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "predictive-prefetch.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/predictive-prefetch",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "preferences",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/preferences",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "profiles",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/profiles",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "projection-service",
+      "isDir": true,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/projection-service",
+      "reason": "persistence"
+    },
+    {
+      "name": "projections",
+      "isDir": true,
+      "files": 9,
+      "klass": "data",
+      "target": "src/data/persistence/projections",
+      "reason": "persistence"
+    },
+    {
+      "name": "prompt-assembler",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/prompt-assembler",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "proof-orchestrator",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/proof-orchestrator",
+      "reason": "orchestration"
+    },
+    {
+      "name": "protocol-bridge",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/protocol-bridge",
+      "reason": "orchestration"
+    },
+    {
+      "name": "provider-family",
+      "isDir": true,
+      "files": 1,
+      "klass": "integration",
+      "target": "src/integrations/external/provider-family",
+      "reason": "external-provider"
+    },
+    {
+      "name": "push-notification",
+      "isDir": true,
+      "files": 2,
+      "klass": "integration",
+      "target": "src/integrations/external/push-notification",
+      "reason": "external-provider"
+    },
+    {
+      "name": "realtime-gateway",
+      "isDir": true,
+      "files": 3,
+      "klass": "integration",
+      "target": "src/integrations/external/realtime-gateway",
+      "reason": "external-provider"
+    },
+    {
+      "name": "receipt-service",
+      "isDir": true,
+      "files": 5,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/receipt-service",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "recommendation-execution",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/recommendation-execution",
+      "reason": "orchestration"
+    },
+    {
+      "name": "relationship-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/relationship-intelligence",
+      "reason": "business-context"
+    },
+    {
+      "name": "release-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/strategic-intelligence/release-intelligence",
+      "reason": "release/governance domain"
+    },
+    {
+      "name": "release-persistence-service.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/release-persistence-service",
+      "reason": "persistence"
+    },
+    {
+      "name": "revenue-autopilot",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/revenue-autopilot",
+      "reason": "business-context"
+    },
+    {
+      "name": "revenue-growth",
+      "isDir": true,
+      "files": 4,
+      "klass": "domain",
+      "target": "src/domains/business/revenue-growth",
+      "reason": "business-context"
+    },
+    {
+      "name": "revenue-leak-detector",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/revenue-leak-detector",
+      "reason": "business-context"
+    },
+    {
+      "name": "revenue-ticker",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/revenue-ticker",
+      "reason": "business-context"
+    },
+    {
+      "name": "rex",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/rex",
+      "reason": "orchestration"
+    },
+    {
+      "name": "role-permission-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/role-permission-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "routine-detector.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/routine-detector",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "search-fabric",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/search-fabric",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "security",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/security",
+      "reason": "platform-security"
+    },
+    {
+      "name": "security-privacy",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/security/security-privacy",
+      "reason": "platform-security"
+    },
+    {
+      "name": "self-healing",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/ai/self-healing",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "self-learning",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/self-learning",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "service-registry",
+      "isDir": true,
+      "files": 4,
+      "klass": "platform",
+      "target": "src/platform/core-services/service-registry",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "session-persistence.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/session-persistence",
+      "reason": "persistence"
+    },
+    {
+      "name": "session-resume",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/session-resume",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "setup",
+      "isDir": true,
+      "files": 8,
+      "klass": "domain",
+      "target": "src/domains/setup/setup",
+      "reason": "setup-context"
+    },
+    {
+      "name": "simulator",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/simulator",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "sita-modes",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/sita-modes",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "sovereign-calculation",
+      "isDir": true,
+      "files": 8,
+      "klass": "domain",
+      "target": "src/domains/finance/sovereign-calculation",
+      "reason": "finance-context"
+    },
+    {
+      "name": "sovereign-exporter",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/finance/sovereign-exporter",
+      "reason": "finance-context"
+    },
+    {
+      "name": "sovereign-time",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/sovereign-time",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "support-diagnostics",
+      "isDir": true,
+      "files": 5,
+      "klass": "platform",
+      "target": "src/platform/core-services/support-diagnostics",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "surface-detection",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/surface-detection",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "surface-portability",
+      "isDir": true,
+      "files": 3,
+      "klass": "runtime",
+      "target": "src/runtimes/core/surface-portability",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "system-updates",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/system-updates",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "tenant-firewall",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/tenant-firewall",
+      "reason": "platform-security"
+    },
+    {
+      "name": "time-wealth",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/time-wealth",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "timeline-calendar",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/concierge/timeline-calendar",
+      "reason": "concierge-context"
+    },
+    {
+      "name": "timing-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/timing-intelligence",
+      "reason": "platform-ai"
+    },
+    {
+      "name": "trust-actions",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/trust-actions",
+      "reason": "platform-security"
+    },
+    {
+      "name": "trust-governor",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/trust-governor",
+      "reason": "platform-security"
+    },
+    {
+      "name": "trust-state-service",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/security/trust-state-service",
+      "reason": "platform-security"
+    },
+    {
+      "name": "trusted-device",
+      "isDir": true,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/trusted-device",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "truth-indices",
+      "isDir": true,
+      "files": 2,
+      "klass": "platform",
+      "target": "src/platform/core-services/truth-indices",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "universal-state-sync",
+      "isDir": true,
+      "files": 1,
+      "klass": "data",
+      "target": "src/data/persistence/universal-state-sync",
+      "reason": "persistence"
+    },
+    {
+      "name": "update-daemon",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/core-services/update-daemon",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "verification-engine",
+      "isDir": true,
+      "files": 6,
+      "klass": "platform",
+      "target": "src/platform/core-services/verification-engine",
+      "reason": "platform-core-service"
+    },
+    {
+      "name": "voice-command",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/services-unclassified/voice-command",
+      "reason": "fallback-needs-review"
+    },
+    {
+      "name": "website-management",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/business/website-management",
+      "reason": "business-context"
+    },
+    {
+      "name": "widget-marketplace",
+      "isDir": true,
+      "files": 1,
+      "klass": "domain",
+      "target": "src/domains/apps/widget-marketplace",
+      "reason": "apps-domain"
+    },
+    {
+      "name": "window-physics.ts",
+      "isDir": false,
+      "files": 1,
+      "klass": "runtime",
+      "target": "src/runtimes/core/window-physics",
+      "reason": "runtime-substrate"
+    },
+    {
+      "name": "workflow-engine",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/orchestration/workflow-engine",
+      "reason": "orchestration"
+    },
+    {
+      "name": "workspace-intelligence",
+      "isDir": true,
+      "files": 1,
+      "klass": "platform",
+      "target": "src/platform/ai/workspace-intelligence",
+      "reason": "platform-ai"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ import { RecoveryOverview } from "@/components/business/lead-recovery/RecoveryOv
 import { RecoveryQueuePanel } from "@/components/business/lead-recovery/RecoveryQueuePanel";
 import { RecoveryCard } from "@/components/business/lead-recovery/RecoveryCard";
 import { RecoveryHighPressureBanner } from "@/components/business/lead-recovery/RecoveryStates";
-import { MOCK_RECOVERY_CANDIDATES, filterByQueue, type RecoveryCandidate } from "@/lib/engines/lead-recovery-engine";
+import { MOCK_RECOVERY_CANDIDATES, filterByQueue, type RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
 
 type MainTab = "overview" | "queues" | "campaigns" | "analytics";
 type SortMode = "score" | "value" | "urgency" | "recency";

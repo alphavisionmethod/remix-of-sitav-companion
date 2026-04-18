@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Users, Zap, Loader2, Save } from "lucide-react";
-import { BUSINESS_ADVISORS } from "@/lib/engines/business-advisor-personas";
+import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BoardAPI, type AutonomyPolicy } from "@/lib/services/board-api-client";

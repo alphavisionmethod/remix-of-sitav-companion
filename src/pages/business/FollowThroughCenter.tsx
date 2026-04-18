@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { QueueCard } from "@/components/sita/cards";
 import { UrgencyBadge, ExecutionBadge } from "@/components/sita/badges";

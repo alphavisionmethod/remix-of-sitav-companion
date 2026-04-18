@@ -6,7 +6,7 @@ import {
   type BusinessProfileResult,
   type ArchetypeWeights,
   type ProfileArchetype,
-} from "@/lib/engines/business-profile-engine";
+} from "@/domains/engines/business-profile-engine";
 
 interface BusinessProfileContextValue {
   profile: BusinessProfileResult;

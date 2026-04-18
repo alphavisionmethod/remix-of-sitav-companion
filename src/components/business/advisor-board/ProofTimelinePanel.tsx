@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Shield, CheckCircle, XCircle, Clock, Zap } from "lucide-react";
-import type { BusinessAction } from "@/lib/engines/business-action-pipeline";
+import type { BusinessAction } from "@/domains/engines/business-action-pipeline";
 
 interface Props {
   actions: BusinessAction[];

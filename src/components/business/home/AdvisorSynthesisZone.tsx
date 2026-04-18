@@ -5,9 +5,9 @@ import {
   ArrowRight, Eye, Zap, MessageCircle
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
-import { generateHomeAdvisors, detectAdvisorDisagreements } from "@/lib/engines/business-advisor-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
+import { generateHomeAdvisors, detectAdvisorDisagreements } from "@/domains/engines/business-advisor-engine";
 import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
 
 type Stance = "confident" | "cautious" | "divided";

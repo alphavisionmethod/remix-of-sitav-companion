@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { PriorityTier } from "@/lib/engines/lead-scoring-engine";
-import { PRIORITY_TIER_META } from "@/lib/engines/lead-scoring-engine";
+import type { PriorityTier } from "@/domains/engines/lead-scoring-engine";
+import { PRIORITY_TIER_META } from "@/domains/engines/lead-scoring-engine";
 import { Flame, ArrowUp, Eye, Sprout, RotateCcw, Minus } from "lucide-react";
 
 const tierIcon: Record<PriorityTier, typeof Flame> = {

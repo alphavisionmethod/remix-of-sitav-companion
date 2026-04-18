@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ARCHETYPE_PROFILES, type BusinessArchetype } from "@/lib/engines/business-archetype-engine";
+import { ARCHETYPE_PROFILES, type BusinessArchetype } from "@/domains/engines/business-archetype-engine";
 
 interface Props {
   selected: BusinessArchetype;

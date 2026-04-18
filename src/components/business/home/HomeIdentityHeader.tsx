@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, Activity, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer, getTimeAwareGreeting } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import { BusinessModeIndicator } from "@/components/business/adaptive/BusinessModeIndicator";
 
 const TRUST_LABELS: Record<string, { label: string; color: string; icon: React.ElementType }> = {

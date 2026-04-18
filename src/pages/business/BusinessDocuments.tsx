@@ -11,7 +11,7 @@ import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
   FileText, Image, File, Upload, Search, FolderOpen, Paperclip, Eye,

@@ -4,8 +4,8 @@
 
 import { useState, useCallback } from "react";
 import { RotateCcw, Search } from "lucide-react";
-import { VStack, HStack } from "@/lib/nova-sdk/ui/layout";
-import { NovaText, NovaButton, NovaCard } from "@/lib/nova-sdk/ui/components";
+import { VStack, HStack } from "@/platform/nova-sdk/ui/layout";
+import { NovaText, NovaButton, NovaCard } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { SettingsService } from "@/lib/nova-sdk/services/settings-service";

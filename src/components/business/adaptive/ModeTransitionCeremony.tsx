@@ -12,8 +12,8 @@ import {
   Shield, MapPin, Heart, Zap, CheckCircle,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 const MODE_ICONS: Record<string, React.ElementType> = {
   ShoppingCart, Briefcase, Building2, Users, Calendar, Crown, Shield, MapPin, Heart, Zap,

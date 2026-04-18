@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { getEventBus } from "@/lib/core-services/event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 import { getTransmissionLog } from "@/lib/services/orchestration-pipeline/signal-emitter";
 import { initAdvisorConsumer, getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { initAppBoardSynthesizer, getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";

@@ -7,10 +7,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Terminal, Cpu, HardDrive, AlertTriangle, Activity, Trash2, Search, X } from "lucide-react";
 import {
   AppLayout, VStack, HStack, Divider,
-} from "@/lib/nova-sdk/ui/layout";
+} from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel, NovaBadge, NovaToolbar, NovaInput,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { consoleCapture, type CapturedEntry } from "@/lib/nova-sdk/services/console-capture";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";

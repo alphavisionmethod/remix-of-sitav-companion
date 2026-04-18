@@ -11,7 +11,7 @@ import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCente
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 const STORAGE_KEY = "sita-autopilot-config";
 

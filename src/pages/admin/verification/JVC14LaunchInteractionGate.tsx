@@ -8,8 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useVerificationSurfaces, useVerificationBlockers } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY, getVerificationStats } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useVerificationBlockers } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY, getVerificationStats } from "@/platform/verification/surface-registry";
 import { CUSTOMER_JOURNEY_REGISTRY, getLaunchBlockerJourneys } from "@/lib/customer-journey/journey-registry";
 import { fromTable } from "@/lib/supabase-helpers";
 import {

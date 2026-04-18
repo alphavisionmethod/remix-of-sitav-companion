@@ -7,29 +7,29 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/lib/engines/business-advisor-personas";
-import { generateProfitabilityBrief, type ProfitabilityBrief } from "@/lib/engines/business-profitability-engine";
+import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/domains/engines/business-advisor-personas";
+import { generateProfitabilityBrief, type ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
 import {
   createDefaultTrustState, setDomainLevel, setGlobalLevel, emergencyPause, resumeFromPause,
   canExecute, AUTONOMY_LEVELS,
   type TrustModeState, type AutonomyDomain, type AutonomyLevel,
-} from "@/lib/engines/business-autonomy-engine";
+} from "@/domains/engines/business-autonomy-engine";
 import {
   createAction, simulateAction, requestApproval, approveAction, rejectAction, executeAction, rollbackAction,
   getActionStats, getPendingApprovals,
   type BusinessAction,
-} from "@/lib/engines/business-action-pipeline";
+} from "@/domains/engines/business-action-pipeline";
 import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
 import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/lib/engines/advisor-tool-execution-engine";
-import { getBusinessRadarEngine } from "@/lib/engines/business-radar-engine";
+import { getBusinessRadarEngine } from "@/domains/engines/business-radar-engine";
 import { getStrategicPlanningEngine } from "@/lib/engines/strategic-planning-engine";
 import { getClientIntelligenceEngine } from "@/lib/engines/client-intelligence-engine";
 import { getAdvisorPerformanceEngine } from "@/lib/engines/advisor-performance-engine";
 import { getDecisionJournalEngine } from "@/lib/engines/decision-journal-engine";
 import type { DecisionOutcome } from "@/lib/engines/decision-journal-engine";
 import type { MilestoneStatus } from "@/lib/engines/strategic-planning-engine";
-import { getBusinessContextGraph } from "@/lib/engines/business-context-graph";
-import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/lib/engines/business-archetype-engine";
+import { getBusinessContextGraph } from "@/domains/engines/business-context-graph";
+import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/domains/engines/business-archetype-engine";
 import { getCrossAdvisorCoordinator } from "@/lib/engines/cross-advisor-coordinator";
 import { getConfidenceRiskScorer } from "@/lib/engines/confidence-risk-scorer";
 import { getContinuousProfitEngine } from "@/lib/engines/continuous-profit-engine";

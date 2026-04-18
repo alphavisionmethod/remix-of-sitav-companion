@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Check, X, Play, Undo, Eye, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { BusinessAction } from "@/lib/engines/business-action-pipeline";
+import type { BusinessAction } from "@/domains/engines/business-action-pipeline";
 
 interface Props {
   actions: BusinessAction[];

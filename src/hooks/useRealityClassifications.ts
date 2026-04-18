@@ -4,7 +4,7 @@ import {
   upsertRealityClassification,
   deleteRealityClassification,
   type RealityClassification,
-} from "@/lib/persistence/reality-classification-persistence";
+} from "@/data/persistence/reality-classification-persistence";
 import { toast } from "sonner";
 
 const KEY = ["reality-classifications"];
