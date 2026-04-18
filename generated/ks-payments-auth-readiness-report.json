@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-18T02:18:46.839Z",
+  "gate": "ks-payments-auth-readiness",
+  "phase": "phase-14-production-launch-hardening",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 1,
+  "killSwitch": "KS-PAYMENTS-AUTH",
+  "contract": {
+    "registered": true,
+    "dualApproval": true,
+    "enforcementMapped": false,
+    "runbookLinked": false,
+    "approvalsTablePresent": true
+  },
+  "issues": [
+    {
+      "severity": "error",
+      "clause": "runbook.exists",
+      "message": "No payments runbook (RB-PAYMENTS / RB-005) or runbook-registry.ts"
+    },
+    {
+      "severity": "warning",
+      "clause": "ui.approval-surface",
+      "message": "No operator UI surface for approving KS-PAYMENTS-AUTH activations"
+    }
+  ]
+}

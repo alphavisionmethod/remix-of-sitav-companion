@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T02:18:11.159Z
+> Generated: 2026-04-18T02:18:50.729Z
 > Verdict: **RED** ❌
 
 ## Summary
@@ -8,10 +8,10 @@
 | Metric | Value |
 |---|---|
 | Gates required | 19 |
-| Gates present  | 18 |
-| Gates missing  | 1 |
+| Gates present  | 19 |
+| Gates missing  | 0 |
 | Total errors   | 1 |
-| Total warnings | 4 |
+| Total warnings | 5 |
 
 ## Per-gate results
 
@@ -33,13 +33,13 @@
 | `operator-readiness` | ✅ | 0 | 0 |
 | `mobile-store-readiness` | ✅ | 0 | 0 |
 | `mobile-build-pipeline` | ✅ | 0 | 0 |
-| `ci-artifacts-proof` | ❌ | 1 | 4 |
+| `ks-payments-auth-readiness` | ❌ | 1 | 1 |
+| `ci-artifacts-proof` | ✅ | 0 | 4 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
-| `ks-payments-auth-readiness` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 1 error(s) and resolve 1 missing gate(s).
+❌ Release is **NOT cuttable**. Fix 1 error(s) and resolve 0 missing gate(s).
 
 ## Related
 

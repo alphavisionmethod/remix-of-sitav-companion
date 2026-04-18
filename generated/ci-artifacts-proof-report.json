@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T02:18:08.150Z",
+  "generatedAt": "2026-04-18T02:18:49.166Z",
   "gate": "ci-artifacts-proof",
   "phase": "phase-14-production-launch-hardening",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 4,
   "totals": {
     "workflowsExpected": 9,
@@ -18,7 +18,7 @@
         "noUploadV3": true,
         "artifactNamePresent": true,
         "concurrencyGroup": true,
-        "node20Plus": false
+        "node20Plus": true
       }
     },
     {
@@ -103,12 +103,6 @@
     }
   ],
   "findings": [
-    {
-      "workflow": "ci.yml",
-      "severity": "error",
-      "rule": "node20",
-      "message": "setup-node uses Node < 20 (Node 20 LTS minimum)"
-    },
     {
       "workflow": "deploy-backend.yml",
       "severity": "warning",
