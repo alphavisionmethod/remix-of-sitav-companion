@@ -194,6 +194,7 @@ const InternalAgentIntentTimeline = lazy(() => import("@/pages/admin/ai-runtime/
 const ReflectionBoard = lazy(() => import("@/pages/admin/ai-runtime/ReflectionBoard"));
 const PolicyDraftReviewBoard = lazy(() => import("@/pages/admin/ai-runtime/PolicyDraftReviewBoard"));
 const TrustLadderBoard = lazy(() => import("@/pages/admin/ai-runtime/TrustLadderBoard"));
+const CrossCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/CrossCouncilBoard"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
@@ -244,6 +245,7 @@ export function getAdminRoutes() {
     <Route key="ws-airuntime-reflection" path="/admin/ai-runtime/reflection-board" element={gated("audit.view", <ReflectionBoard />)} />,
     <Route key="ws-airuntime-policy-drafts" path="/admin/ai-runtime/policy-drafts" element={gated("audit.view", <PolicyDraftReviewBoard />)} />,
     <Route key="ws-airuntime-trust-ladder" path="/admin/ai-runtime/trust-ladder" element={gated("audit.view", <TrustLadderBoard />)} />,
+    <Route key="ws-airuntime-cross-council" path="/admin/ai-runtime/cross-council" element={gated("audit.view", <CrossCouncilBoard />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
