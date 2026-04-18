@@ -22,7 +22,9 @@ ARCHIVE="${DEST_DIR}/sita-support-${HOST}-${TS}.tar.zst"
 cd "${WORK}"
 mkdir -p meta logs services state
 
-# 1. metadata
+# 1. metadata (incl. active deployment profile — Part 2)
+PROFILE_ID="$(jq -r '.profile // "unknown"' /etc/sita/deployment-profile.json 2>/dev/null || echo unknown)"
+PROFILE_ARTIFACT="$(jq -r '.artifactName // "unknown"' /etc/sita/deployment-profile.json 2>/dev/null || echo unknown)"
 cat > meta/host.json <<JSON
 {
   "hostname": "${HOST}",
@@ -31,9 +33,14 @@ cat > meta/host.json <<JSON
   "uptime": "$(uptime -p)",
   "sitaVersion": "$(cat /etc/sita/version 2>/dev/null || echo unknown)",
   "channel":     "$(cat /etc/sita/channel 2>/dev/null || echo unknown)",
-  "slot":        "$(cat /etc/sita/slot    2>/dev/null || echo unknown)"
+  "slot":        "$(cat /etc/sita/slot    2>/dev/null || echo unknown)",
+  "deploymentProfile":     "${PROFILE_ID}",
+  "deploymentArtifact":    "${PROFILE_ARTIFACT}"
 }
 JSON
+
+# Capture the full profile manifest (post-redaction safe)
+cp /etc/sita/deployment-profile.json meta/deployment-profile.json 2>/dev/null || true
 
 # 2. boot + service logs (last 2000 lines each)
 journalctl -b -n 2000 --no-pager > logs/journal-current-boot.log    || true

@@ -1,9 +1,35 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, webFrame } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
 // ── Bridge contract version (see docs/os/ELECTRON_PRELOAD_CONTRACT.md) ──
 const BRIDGE_VERSION = '1.0.0';
+
+// ── Deployment Profile Injection ─────────────────────────────
+// Reads /etc/sita/deployment-profile.json (baked into the ISO by
+// the image builder) and exposes it to the renderer BEFORE app
+// scripts run, so getDeploymentProfile() returns the real profile.
+const PROFILE_PATH = process.env.SITA_DEPLOYMENT_PROFILE_PATH || '/etc/sita/deployment-profile.json';
+let __sitaDeploymentProfile = null;
+try {
+  if (fs.existsSync(PROFILE_PATH)) {
+    const raw = fs.readFileSync(PROFILE_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (parsed && (parsed.profile === 'user' || parsed.profile === 'operator')) {
+      __sitaDeploymentProfile = parsed;
+    }
+  }
+} catch (err) {
+  // Non-fatal — renderer will fall back to user profile.
+  // eslint-disable-next-line no-console
+  console.warn('[sita-preload] deployment profile read failed:', err && err.message);
+}
+// Inject into renderer's window before any app code runs.
+try {
+  contextBridge.exposeInMainWorld('__SITA_DEPLOYMENT_PROFILE__', __sitaDeploymentProfile);
+} catch {
+  // contextBridge will reject non-cloneable values; fall through silently.
+}
 
 // ── Heartbeat: liveness signal consumed by os/runtime/check-shell-health.sh
 // Writes mtime every 5s. Stale > 30s = renderer hung → exit code 14.
