@@ -88,8 +88,7 @@ Deno.serve(async (req) => {
 
       await sb.from("webhook_retry_queue").update({
         attempt_count: attempt,
-        last_error: errMsg,
-        last_http_status: httpStatus,
+        last_error: errMsg ? `${errMsg}${httpStatus ? ` (http=${httpStatus})` : ""}` : null,
         status: success ? "succeeded" : isFinalFailure ? "dlq" : "pending",
         next_attempt_at: success || isFinalFailure ? row.next_attempt_at : nextAt,
         updated_at: new Date().toISOString(),
