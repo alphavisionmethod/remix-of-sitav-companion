@@ -23,14 +23,19 @@ function daysSince(iso: string | null | undefined): number {
 }
 
 const COLLECTORS: Record<string, (sb: SB) => Promise<Snapshot>> = {
-  // RLS coverage from the canonical truth snapshot.
+  // RLS coverage from a service-role-callable catalog summary.
   rls_coverage: async (sb) => {
-    const { data } = await sb.rpc("get_db_truth_snapshot", { _op: "summary" });
-    const t = data as { totalTables?: number; tablesWithRls?: number } | null;
+    const { data } = await sb.rpc("get_compliance_rls_summary");
+    const t = data as { totalTables?: number; tablesWithRls?: number; totalPolicies?: number } | null;
     const total = t?.totalTables ?? 0;
     const withRls = t?.tablesWithRls ?? 0;
     const pct = total ? Math.round((withRls / total) * 100) : 0;
-    return { value: pct, unit: "%", detail: `${withRls}/${total} tables`, raw: { total, withRls } };
+    return {
+      value: pct,
+      unit: "%",
+      detail: `${withRls}/${total} tables, ${t?.totalPolicies ?? 0} policies`,
+      raw: { total, withRls, totalPolicies: t?.totalPolicies ?? 0 },
+    };
   },
   // Audit log integrity = number of admin-action audit rows in the trailing 24h (append-only chain readable).
   audit_log_integrity: async (sb) => {
