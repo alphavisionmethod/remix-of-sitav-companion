@@ -30,7 +30,8 @@ export type RunbookSubsystem =
   | "mobile-push"
   | "runtime-probe"
   | "support-escalation"
-  | "ingress";
+  | "ingress"
+  | "boardroom-followthrough";
 
 export interface RunbookStep {
   readonly order: number;

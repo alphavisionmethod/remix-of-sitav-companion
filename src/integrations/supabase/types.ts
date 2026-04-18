@@ -3997,6 +3997,65 @@ export type Database = {
           },
         ]
       }
+      boardroom_followthrough_sla_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          age_hours: number
+          alert_router_ok: boolean
+          boardroom_item_id: string
+          bucket: string
+          created_at: string
+          dispatch_id: string
+          id: string
+          payload: Json
+          severity: string
+          state: string
+          triggered_by: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          age_hours: number
+          alert_router_ok?: boolean
+          boardroom_item_id: string
+          bucket: string
+          created_at?: string
+          dispatch_id: string
+          id?: string
+          payload?: Json
+          severity: string
+          state: string
+          triggered_by?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          age_hours?: number
+          alert_router_ok?: boolean
+          boardroom_item_id?: string
+          bucket?: string
+          created_at?: string
+          dispatch_id?: string
+          id?: string
+          payload?: Json
+          severity?: string
+          state?: string
+          triggered_by?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_followthrough_sla_alerts_dispatch_id_fkey"
+            columns: ["dispatch_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_followthrough_dispatches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boardroom_items: {
         Row: {
           advisor_summaries: Json
