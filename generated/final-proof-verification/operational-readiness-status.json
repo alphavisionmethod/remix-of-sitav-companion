@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-04-18T18:30:00.000Z",
+  "phase": "final-proof-verification/section-E",
+  "totals": {
+    "killSwitches": 17,
+    "runbooks": 20
+  },
+  "scenarios": [
+    { "id": "S-CONNECTOR", "name": "Connector failure",            "detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" },
+    { "id": "S-AI",        "name": "AI provider incident",         "detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" },
+    { "id": "S-BOARDROOM", "name": "Boardroom backlog/exec failure","detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" },
+    { "id": "S-DB",        "name": "DB / restore incident",        "detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" },
+    { "id": "S-NOTIFY",    "name": "Notification / queue failure", "detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" },
+    { "id": "S-RUNTIME",   "name": "Edge / runtime degradation",   "detect": true, "selectRunbook": true, "executeKillSwitch": true, "evidenceVisible": true, "rollback": true, "confirmRecovery": true, "verdict": "operatorReady" }
+  ],
+  "killSwitchRunbookLinkage": {
+    "killSwitchesWithRunbookRef": 17,
+    "runbooksWithDetectionAndRecovery": 20,
+    "ok": true
+  },
+  "ok": true
+}

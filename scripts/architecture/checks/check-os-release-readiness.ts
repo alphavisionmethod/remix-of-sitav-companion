@@ -83,6 +83,12 @@ const REQUIRED_GATES = [
   "deployment-wording-safety",
   "launch-honesty-alignment",
   "qualifier-required-claims",
+  // Final Proof Verification — 5 BLOCK gates (Section A–E)
+  "gate-meaningfulness",
+  "app-store-lifecycle-reality",
+  "frontend-polish-coverage",
+  "admin-operator-coherence",
+  "human-use-operational-readiness",
 ];
 
 const GENERATED_DIR = "generated";

@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-18T18:13:53.053Z",
+  "gate": "human-use-operational-readiness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "killSwitches": 16,
+  "runbooks": 20,
+  "scenariosPass": 6
+}

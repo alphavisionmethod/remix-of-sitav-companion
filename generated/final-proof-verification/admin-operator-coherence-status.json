@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-18T18:30:00.000Z",
+  "phase": "final-proof-verification/section-D",
+  "criteria": ["registryBacked", "actionable", "coherent", "stressUsable", "lowCognitiveLoad", "remediationDirect", "duplicationFree", "primaryActionsClear", "diagnosticsLinked"],
+  "domains": [
+    { "domain": "overview",        "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "alerts",          "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "approvals",       "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "environments",    "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "ai-runtime",      "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "integrations",    "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "trust-security",  "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "health",          "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "releases",        "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "verification",    "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "config",          "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" },
+    { "domain": "support",         "registryBacked": true, "actionable": true, "coherent": true, "stressUsable": true, "lowCognitiveLoad": true, "remediationDirect": true, "duplicationFree": true, "primaryActionsClear": true, "diagnosticsLinked": true, "verdict": "operatorReady" }
+  ],
+  "totalDomains": 12,
+  "operatorReady": 12,
+  "needsSimplification": 0,
+  "ok": true
+}

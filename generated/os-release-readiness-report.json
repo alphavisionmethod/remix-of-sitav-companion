@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T18:05:17.933Z",
+  "generatedAt": "2026-04-18T18:13:58.490Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -314,6 +314,41 @@
     {
       "file": "generated/qualifier-required-claims-report.json",
       "gate": "qualifier-required-claims",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/gate-meaningfulness-report.json",
+      "gate": "gate-meaningfulness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-store-lifecycle-reality-report.json",
+      "gate": "app-store-lifecycle-reality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/frontend-polish-coverage-report.json",
+      "gate": "frontend-polish-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-operator-coherence-report.json",
+      "gate": "admin-operator-coherence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/human-use-operational-readiness-report.json",
+      "gate": "human-use-operational-readiness",
       "ok": true,
       "errors": 0,
       "warnings": 0
