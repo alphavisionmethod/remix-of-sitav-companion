@@ -3,7 +3,7 @@ import {
   ObservabilityEngine, ReleaseSafetyEngine, TrustDeviceEngine,
   ComplianceAuditEngine, EnterpriseControlPlaneEngine, SupportDiagnosticsEngine,
 } from "@/domains/engines/enterprise-maturity";
-import { RevenueOpportunityEngine } from "@/lib/engines";
+import { RevenueOpportunityEngine } from "@/domains/engines";
 
 describe("ObservabilityEngine", () => {
   it("returns SLO definitions", () => {

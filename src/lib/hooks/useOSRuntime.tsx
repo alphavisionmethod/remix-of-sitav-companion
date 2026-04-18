@@ -13,8 +13,8 @@ import {
   EnterpriseControlPlaneEngine, SupportDiagnosticsEngine, ObservabilityEngine,
   ReleaseSafetyEngine, TrustDeviceEngine, ComplianceAuditEngine,
   ExecutionDebtEngine, InvisibleLaborEngine, DragEngine, FounderBottleneckEngine,
-} from "@/lib/engines";
-import { ReplayRecoveryEngine } from "@/lib/engines/replay-recovery";
+} from "@/domains/engines";
+import { ReplayRecoveryEngine } from "@/domains/engines/replay-recovery";
 import type { OSRuntimeContext } from "@/packages/contracts";
 import { createOSUnificationService } from "@/lib/services/os-unification";
 import { buildActiveSurface } from "@/lib/services/surface-detection";

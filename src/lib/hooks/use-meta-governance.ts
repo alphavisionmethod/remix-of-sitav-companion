@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo, useCallback, useState } from "react";
-import { getMetaGovernanceEngine } from "../engines/meta-governance-engine";
-import type { ReadinessInput } from "../engines/readiness-engine";
+import { getMetaGovernanceEngine } from "@/domains/engines/meta-governance-engine";
+import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import type {
   TrustDebtRecord, TrustDebtCategory, TrustDimension,
   ExecutionDebtRecord, ExecutionDebtCategory,
