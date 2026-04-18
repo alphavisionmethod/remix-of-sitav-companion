@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-18T12:22:03.291Z",
+  "sharedComponentLeakage": [],
+  "manifestMismatches": [
+    {
+      "appId": "search",
+      "issue": "declared user-profile but missing from user.profile.json allowedApps"
+    },
+    {
+      "appId": "search",
+      "issue": "declared operator-profile but missing from operator.profile.json allowedApps"
+    }
+  ],
+  "summary": {
+    "leakageCount": 0,
+    "manifestMismatchCount": 2,
+    "userProfileApps": 9,
+    "operatorProfileApps": 12,
+    "appPlaneMapEntries": 19
+  }
+}
