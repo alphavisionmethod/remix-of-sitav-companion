@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGlobalSearch } from "@/platform/search";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
@@ -161,6 +162,7 @@ const LeadsInbox = () => {
       <PageTruthBanner />
 
       {/* Top bar */}
+      <FederatedLeadsHints query={search} />
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex-1 min-w-0">
           <p className="text-sm text-muted-foreground leading-relaxed">{summary}</p>
