@@ -349,8 +349,8 @@ export default function ErrorPatrolBoard() {
                       <b>Linked incident:</b>{" "}
                       {selected.linked_incident_id ? (
                         <a
-                          className="underline inline-flex items-center gap-1"
-                          href={`/admin/health/incidents`}
+                          className="underline inline-flex items-center gap-1 text-primary"
+                          href="/admin/health/incidents"
                         >
                           {selected.linked_incident_id.slice(0, 8)}…
                           <ExternalLink className="w-3 h-3" />
