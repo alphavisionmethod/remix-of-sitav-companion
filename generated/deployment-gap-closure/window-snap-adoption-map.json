@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T12:52:08.800Z",
+  "generatedAt": "2026-04-18T12:56:22.409Z",
   "snapWindowImplemented": true,
   "overlayComponentExists": true,
-  "appWindowMountIntegratesOverlay": false,
-  "classification": "partial-integration",
-  "notes": "Snap logic and overlay exist but AppWindow does not yet render the overlay during drag. Phase M wires it."
+  "appWindowMountIntegratesOverlay": true,
+  "classification": "fully-integrated",
+  "notes": "Snap windowing fully wired: WindowContext.snapWindow + SnapGuideOverlay mounted in AppWindow."
 }

@@ -1,6 +1,6 @@
 # Frontend ↔ Backend ↔ Substrate Matrix
 
-_Generated: 2026-04-18T12:52:08.800Z_
+_Generated: 2026-04-18T12:56:22.409Z_
 
 ## Action coverage: 15 actions
 
@@ -10,7 +10,7 @@ _Generated: 2026-04-18T12:52:08.800Z_
 | App uninstall | edge:app-uninstall | db:installed_apps | real |
 | App update check | edge:app-update-check | db:installed_apps | real |
 | AI inference | edge:ai-gateway | db:ai_invocations + ai_usage_ledger | real |
-| Connector token refresh | edge:connector-token-refresh | db:connector_tokens | stub-pending |
+| Connector token refresh | edge:connector-token-refresh | db:connector_tokens | real-google-stub-others |
 | Connector OAuth init | edge:connector-oauth | db:connector_credentials | real |
 | Global search | rpc:supabase tables | db:multi-domain | real |
 | Draft autosave | client-only | localStorage (Phase M → IndexedDB) | client-real-storage-upgrading |
@@ -25,5 +25,5 @@ _Generated: 2026-04-18T12:52:08.800Z_
 ## Summary
 - **Real:** 12
 - **Honestly archived:** 1
-- **Pending real implementation:** 2
+- **Pending real implementation:** 1
 

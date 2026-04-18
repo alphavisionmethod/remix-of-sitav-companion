@@ -1,6 +1,6 @@
 # Deployment Gap Backlog
 
-_Generated: 2026-04-18T12:52:08.800Z_
+_Generated: 2026-04-18T12:56:22.409Z_
 
 This backlog merges all admitted P0/P1 gaps with hidden risks discovered during audit.
 
@@ -15,11 +15,11 @@ This backlog merges all admitted P0/P1 gaps with hidden risks discovered during 
 | 1 | App Store install flow real | P0 | RESOLVED — already real (11 edge fns) | K-audit |
 | 2 | File picker adoption | P1 | 6 ad-hoc inputs vs 2 canonical | M2 |
 | 3 | Draft autosave adoption | P1 | 0 consumers — adoption gap | M3 |
-| 4 | Window snap integration | P1 | PARTIAL — overlay exists, AppWindow needs wire | M4 |
+| 4 | Window snap integration | P1 | INTEGRATED | M4 |
 | 5 | Mobile offline queue | P0 | RESOLVED — mobile archived, web on IndexedDB | M5 (truth-classify) |
 | 6 | Unified search wired to shells | P1 | 2 canonical consumers | M6 |
 | 7 | AI cost metering live | P0 | RESOLVED — real ledger + 7 consumers | K-audit |
-| 8 | Connector OAuth rotation | P1 | Google pending Phase M / others manual | M8 |
+| 8 | Connector OAuth rotation | P1 | Google real / others manual | M8 |
 | 9–14 | Operator maturity (health UI, backup verify, biometric, updater, support diag, replay) | P2 | Multi-component — see SUPPORTABILITY_AND_OPERATOR_READINESS.md | guardrails |
 | H1 | Frontend↔backend matrix | P1 | 15 actions mapped, 12 real | K-audit |
 | H2 | DB truth closure | P0 | RESOLVED — 7/7 components present | K-audit |

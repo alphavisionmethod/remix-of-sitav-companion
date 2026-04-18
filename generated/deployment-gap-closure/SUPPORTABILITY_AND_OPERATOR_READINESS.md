@@ -1,6 +1,6 @@
 # Supportability & Operator Readiness
 
-_Generated: 2026-04-18T12:52:08.800Z_
+_Generated: 2026-04-18T12:56:22.409Z_
 
 ## Runbook system (7 files)
 - `src/lib/support/index.ts`

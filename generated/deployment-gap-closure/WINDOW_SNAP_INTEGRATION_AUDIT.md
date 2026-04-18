@@ -1,12 +1,12 @@
 # Window Snap Integration Audit
 
-_Generated: 2026-04-18T12:52:08.800Z_
+_Generated: 2026-04-18T12:56:22.409Z_
 
 ## Components
 - WindowContext.snapWindow: ✅
 - SnapGuideOverlay: ✅ `src/components/sita/shell/SnapGuideOverlay.tsx`
-- AppWindow integration: ❌ overlay not yet rendered during drag
+- AppWindow integration: ✅ overlay mounted
 
 ## Classification
-**PARTIAL** — Phase M wires overlay into AppWindow drag state.
+**FULLY INTEGRATED**
 

@@ -1,19 +1,19 @@
 # Connector OAuth Hardening
 
-_Generated: 2026-04-18T12:52:08.800Z_
+_Generated: 2026-04-18T12:56:22.409Z_
 
 ## Refresh worker
 - ✅ `supabase/functions/connector-token-refresh`
-- Google real refresh implementation: ⚠ stub — Phase M implements
+- Google real refresh implementation: ✅ implemented
 
 ## Provider matrix
 | Provider | Status | Notes |
 |----------|--------|-------|
-| Google   | stub → Phase M | drive, gmail, calendar |
+| Google   | real | drive, gmail, calendar |
 | Microsoft | manual | No active connector wiring |
 | Slack | manual | No active connector wiring |
 | Salesforce | manual | No active connector wiring |
 
 ## Classification
-**ROTATION GAP — Phase M closes Google**
+**GOOGLE REAL — others honestly labeled manual**
 

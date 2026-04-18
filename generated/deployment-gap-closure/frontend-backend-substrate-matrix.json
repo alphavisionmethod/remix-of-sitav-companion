@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T12:52:08.800Z",
+  "generatedAt": "2026-04-18T12:56:22.409Z",
   "matrix": [
     {
       "action": "App install",
@@ -30,7 +30,7 @@
       "action": "Connector token refresh",
       "backend": "edge:connector-token-refresh",
       "substrate": "db:connector_tokens",
-      "status": "stub-pending"
+      "status": "real-google-stub-others"
     },
     {
       "action": "Connector OAuth init",
@@ -96,5 +96,5 @@
   "totalActions": 15,
   "realActions": 12,
   "archivedActions": 1,
-  "pendingActions": 2
+  "pendingActions": 1
 }
