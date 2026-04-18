@@ -14,6 +14,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const NOTE_TYPE_META: Record<string, { icon: React.ElementType; color: string; label: string }> = {
   general: { icon: StickyNote, color: "text-yellow-400", label: "General" },
@@ -92,7 +93,8 @@ const CRMNotes = () => {
       });
       toast.success("Note created");
       setShowAdd(false);
-      setForm({ title: "", content: "", note_type: "general", contact_id: "", company_id: "", is_pinned: false });
+      setForm(EMPTY_FORM);
+      clearDraft();
     } catch { toast.error("Failed to create note"); }
   };
 
