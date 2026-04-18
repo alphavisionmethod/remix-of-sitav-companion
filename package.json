@@ -57,10 +57,10 @@
     "os:tpm:seal": "bash os/scripts/seal-verity-to-tpm.sh",
     "os:tpm:verify": "bash os/scripts/verify-tpm-seal.sh",
     "os:secureboot:enroll": "bash os/scripts/enroll-secureboot-mok.sh",
-    "os:sbom:generate": "bash os/scripts/generate-sbom.sh",
+    "os:sbom": "bash os/scripts/generate-sbom.sh",
     "os:sbom:verify": "bash os/scripts/verify-sbom.sh",
-    "os:reproducible:env": ". os/scripts/reproducible-build-env.sh",
-    "os:reproducible:verify": "bash os/scripts/verify-reproducibility.sh",
+    "os:reproducibility": "sudo -E bash os/scripts/verify-reproducibility.sh",
+    "os:reproducibility:env": "bash os/scripts/reproducible-build-env.sh --print",
     "os:release": "bash os/scripts/release.sh"
   },
   "dependencies": {

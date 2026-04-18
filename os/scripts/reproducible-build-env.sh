@@ -1,54 +1,48 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════════════
-# SITA OS — Reproducible Build Environment
+# SITA OS — Reproducible build environment
 #
-# Source this file (`. os/scripts/reproducible-build-env.sh`) BEFORE
-# running build.sh, build-raw-img.sh, or build-update-bundle.sh. It pins
-# every variable that influences output bytes:
+# Source this file (`. os/scripts/reproducible-build-env.sh`) at the
+# top of any build script to pin every variable that influences
+# determinism: timestamps, locale, timezone, umask, mksquashfs flags.
 #
-#   • SOURCE_DATE_EPOCH    — clamps mtimes for tar / mksquashfs / cpio
-#   • TZ                   — UTC everywhere
-#   • LC_ALL / LANG        — C.UTF-8
-#   • UMASK                — 0022 (predictable mode bits)
-#   • PYTHONHASHSEED       — 0 (deterministic dict iteration)
-#   • SITA_MKSQUASHFS_OPTS — -no-exports -all-root -mkfs-time / -fstime
-#                            -all-time so squashfs is byte-identical
-#   • LDFLAGS / CFLAGS     — -Wl,--build-id=none where supported
-#
-# Honors a caller-supplied SOURCE_DATE_EPOCH; otherwise uses the most
-# recent git commit timestamp; otherwise falls back to a fixed 2024-01-01
-# epoch so dev builds are still reproducible across machines.
+# Following https://reproducible-builds.org/docs/source-date-epoch/
 # ═══════════════════════════════════════════════════════════════════════
 
-if [[ -z "${SOURCE_DATE_EPOCH:-}" ]]; then
-  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct 2>/dev/null || echo 1704067200)"
+# Use the most-recent git commit timestamp as the canonical SDE.
+if [ -z "${SOURCE_DATE_EPOCH:-}" ]; then
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct 2>/dev/null || echo 1700000000)"
   else
-    SOURCE_DATE_EPOCH=1704067200  # 2024-01-01T00:00:00Z
+    SOURCE_DATE_EPOCH="1700000000"
   fi
+  export SOURCE_DATE_EPOCH
 fi
-export SOURCE_DATE_EPOCH
 
-export TZ=UTC
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
-export PYTHONHASHSEED=0
-umask 0022
+export TZ=UTC
+umask 022
 
-# Deterministic squashfs flags consumed by build.sh
-export SITA_MKSQUASHFS_OPTS="${SITA_MKSQUASHFS_OPTS:--no-exports -all-root -mkfs-time ${SOURCE_DATE_EPOCH} -fstime ${SOURCE_DATE_EPOCH} -all-time ${SOURCE_DATE_EPOCH} -no-xattrs -noappend -comp xz -Xbcj x86 -b 1M -progress}"
+# Deterministic mksquashfs flags (no compression timestamps, fixed UID/GID)
+export SITA_MKSQUASHFS_OPTS="-noappend -all-root -mkfs-time ${SOURCE_DATE_EPOCH} -all-time ${SOURCE_DATE_EPOCH} -reproducible -no-exports -no-fragments -no-xattrs -comp xz"
 
-# Deterministic tar flags consumed by build-update-bundle.sh
-export SITA_TAR_OPTS="${SITA_TAR_OPTS:---sort=name --mtime=@${SOURCE_DATE_EPOCH} --owner=0 --group=0 --numeric-owner --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime}"
+# Deterministic xorriso flags
+export SITA_XORRISO_OPTS="-volid SITA_OS -joliet on -rock on -modification-date ${SOURCE_DATE_EPOCH}"
 
-# Deterministic cpio flags for initramfs assembly
-export SITA_CPIO_OPTS="${SITA_CPIO_OPTS:--R 0:0 --reproducible}"
+# Deterministic tar flags (used by update bundle builder)
+export SITA_TAR_OPTS="--sort=name --owner=0 --group=0 --numeric-owner --mtime=@${SOURCE_DATE_EPOCH}"
 
-# Build-id stripped where supported (kernel modules, native helpers)
-export LDFLAGS="${LDFLAGS:-} -Wl,--build-id=none"
-export CFLAGS="${CFLAGS:-} -ffile-prefix-map=$(pwd)=."
-export CXXFLAGS="${CXXFLAGS:-} -ffile-prefix-map=$(pwd)=."
+# Node / npm determinism
+export npm_config_audit=false
+export npm_config_fund=false
+export npm_config_update_notifier=false
 
-echo "🔁 reproducible build env:"
-echo "   SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}  ($(date -u -d "@${SOURCE_DATE_EPOCH}" +%Y-%m-%dT%H:%M:%SZ))"
-echo "   TZ=${TZ}  LC_ALL=${LC_ALL}  umask=$(umask)"
+if [ "${1:-}" = "--print" ]; then
+  echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
+  echo "TZ=${TZ}"
+  echo "LC_ALL=${LC_ALL}"
+  echo "SITA_MKSQUASHFS_OPTS=${SITA_MKSQUASHFS_OPTS}"
+  echo "SITA_XORRISO_OPTS=${SITA_XORRISO_OPTS}"
+  echo "SITA_TAR_OPTS=${SITA_TAR_OPTS}"
+fi

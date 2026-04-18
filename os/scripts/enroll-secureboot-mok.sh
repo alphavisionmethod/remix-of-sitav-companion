@@ -1,110 +1,97 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════════════
-# SITA OS — Secure Boot / shim+MOK Enrollment Automation
+# SITA OS — Secure Boot MOK enrollment + boot-chain signing
 #
-# Builds the shim chain consumed at first boot:
+# Generates (or reuses) the SITA Machine Owner Key, then signs the
+# shim → grub → kernel chain so a Secure Boot enabled UEFI system
+# can verify each stage. The resulting MOK cert is exported in DER
+# form for one-shot enrollment via `mokutil --import` on first boot.
 #
-#   shimx64.efi  (Microsoft-signed loader from `shim-signed`)
-#     → grubx64.efi    (signed with our MOK)
-#       → vmlinuz       (signed with our MOK — see sign-kernel.sh)
-#         → initrd      (signed-by-detached — see sign-initramfs.sh)
+# Inputs:
+#   SITA_OUT_DIR     output dir            — default: out
+#   SITA_MOK_KEY     existing MOK private key (PEM) — optional
+#   SITA_MOK_CERT    existing MOK cert (PEM)        — optional
+#   SITA_VERSION     version string                 — required
+#   SHIM_PATH        path to shim binary inside ISO root
+#   GRUB_PATH        path to grub binary
+#   KERNEL_PATH      path to kernel image
 #
-# Outputs (all under $SITA_OUT_DIR):
-#   shim/shimx64.efi
-#   shim/grubx64.efi
-#   shim/MOK.cer          (DER, the cert end-users enroll in MokManager)
-#   shim/MOK.fingerprint  (sha256 of cert)
-#   shim/mok-enroll.json  (machine-readable manifest)
-#
-# At first boot, sita-firstboot.service runs `mokutil --import MOK.cer`
-# so the next reboot prompts the user (one-time) to enroll the MOK.
-# After enrollment, all subsequent kernels and initrds we sign with the
-# matching MOK key are accepted under Secure Boot.
+# If SITA_MOK_KEY/CERT are unset, a fresh ephemeral pair is generated
+# and clearly marked "DEV-ONLY" in the manifest — production builds
+# MUST inject real keys via the GitHub Actions secret pipeline.
 # ═══════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
 OUT_DIR="${SITA_OUT_DIR:-out}"
-KEYS_DIR="${SITA_KEYS_DIR:-os/keys}"
-SHIM_OUT="${OUT_DIR}/shim"
-SHIM_SRC="${SITA_SHIM_SRC:-/usr/lib/shim/shimx64.efi.signed}"
-GRUB_SRC="${SITA_GRUB_SRC:-/usr/lib/grub/x86_64-efi/grubx64.efi}"
-MOK_KEY="${KEYS_DIR}/MOK.key"
-MOK_CRT="${KEYS_DIR}/MOK.crt"
+VERSION="${SITA_VERSION:-${VERSION:-0.0.0-dev}}"
+KEY="${SITA_MOK_KEY:-}"
+CERT="${SITA_MOK_CERT:-}"
+SHIM_PATH="${SHIM_PATH:-${OUT_DIR}/efi/boot/shimx64.efi}"
+GRUB_PATH="${GRUB_PATH:-${OUT_DIR}/efi/boot/grubx64.efi}"
+KERNEL_PATH="${KERNEL_PATH:-${OUT_DIR}/boot/vmlinuz}"
 
-mkdir -p "${SHIM_OUT}"
+mkdir -p "$OUT_DIR/secureboot"
 
-echo "🔏 Secure Boot / MOK enrollment artifacts"
-echo "   keys:   ${KEYS_DIR}"
-echo "   out:    ${SHIM_OUT}"
+if ! command -v openssl    >/dev/null 2>&1; then echo "✘ openssl required" >&2; exit 2; fi
+if ! command -v sbsign     >/dev/null 2>&1; then echo "✘ sbsigntool required (apt: sbsigntool)" >&2; exit 2; fi
+if ! command -v sbverify   >/dev/null 2>&1; then echo "✘ sbverify required" >&2; exit 2; fi
 
-# 1. Ensure MOK keypair exists (idempotent — sign-kernel.sh also generates)
-if [[ ! -f "${MOK_KEY}" || ! -f "${MOK_CRT}" ]]; then
-  echo "🔑 generating MOK keypair (one-time)"
-  mkdir -p "${KEYS_DIR}"
-  openssl req -new -x509 -newkey rsa:3072 -keyout "${MOK_KEY}" \
-    -out "${MOK_CRT}" -nodes -days 3650 \
-    -subj "/CN=SITA OS Machine Owner Key/O=SITA/" \
-    -addext "extendedKeyUsage=codeSigning"
-  chmod 600 "${MOK_KEY}"
+PROVENANCE="production"
+if [ -z "$KEY" ] || [ -z "$CERT" ]; then
+  PROVENANCE="dev-ephemeral"
+  echo "⚠ no SITA_MOK_KEY/SITA_MOK_CERT provided — generating EPHEMERAL dev key"
+  WORK="$(mktemp -d)"
+  openssl req -new -x509 -nodes -days 3650 \
+    -newkey rsa:3072 \
+    -subj "/CN=SITA OS Dev MOK ${VERSION}/O=SITA OS/" \
+    -keyout "$WORK/mok.key" -out "$WORK/mok.crt" >/dev/null 2>&1
+  KEY="$WORK/mok.key"
+  CERT="$WORK/mok.crt"
 fi
 
-# 2. Stage shim — accept either real shim-signed install or a passthrough
-if [[ -f "${SHIM_SRC}" ]]; then
-  cp "${SHIM_SRC}" "${SHIM_OUT}/shimx64.efi"
-  SHIM_MODE="vendor-signed"
-else
-  echo "⚠  ${SHIM_SRC} not present — emitting placeholder shim wrapper"
-  echo "   (build host lacks shim-signed; CI install: apt-get install -y shim-signed)"
-  printf 'SITA-SHIM-PLACEHOLDER\n' > "${SHIM_OUT}/shimx64.efi"
-  SHIM_MODE="placeholder"
-fi
+# Export DER for mokutil --import
+openssl x509 -in "$CERT" -outform DER -out "$OUT_DIR/secureboot/sita-mok.der"
+cp "$CERT" "$OUT_DIR/secureboot/sita-mok.crt"
+CERT_FP="$(openssl x509 -in "$CERT" -noout -fingerprint -sha256 | sed 's/^.*=//')"
 
-# 3. Stage and sign grub
-if [[ -f "${GRUB_SRC}" ]]; then
-  cp "${GRUB_SRC}" "${SHIM_OUT}/grubx64.efi"
-  if command -v sbsign >/dev/null 2>&1; then
-    sbsign --key "${MOK_KEY}" --cert "${MOK_CRT}" \
-      --output "${SHIM_OUT}/grubx64.efi" "${SHIM_OUT}/grubx64.efi"
-    GRUB_MODE="signed"
-  else
-    echo "⚠  sbsign not present — grub left unsigned"
-    GRUB_MODE="unsigned"
+sign_one() {
+  local target="$1" label="$2"
+  if [ ! -f "$target" ]; then
+    echo "  • ${label}: SKIP (not present at ${target})"
+    return 0
   fi
-else
-  echo "⚠  ${GRUB_SRC} not present — emitting placeholder grub wrapper"
-  printf 'SITA-GRUB-PLACEHOLDER\n' > "${SHIM_OUT}/grubx64.efi"
-  GRUB_MODE="placeholder"
-fi
+  local out_signed="${target}.signed"
+  sbsign --key "$KEY" --cert "$CERT" --output "$out_signed" "$target" >/dev/null
+  mv "$out_signed" "$target"
+  if sbverify --cert "$CERT" "$target" >/dev/null 2>&1; then
+    echo "  • ${label}: signed + verified ✓"
+  else
+    echo "✘ ${label}: signature failed verification" >&2
+    return 1
+  fi
+}
 
-# 4. Export MOK cert in DER form (mokutil format)
-openssl x509 -in "${MOK_CRT}" -outform DER -out "${SHIM_OUT}/MOK.cer"
-FP="$(openssl x509 -in "${MOK_CRT}" -noout -fingerprint -sha256 \
-       | sed 's/^.*=//; s/://g' | tr 'A-F' 'a-f')"
-printf '%s\n' "${FP}" > "${SHIM_OUT}/MOK.fingerprint"
+echo "▸ Signing boot chain"
+sign_one "$SHIM_PATH"   "shim"
+sign_one "$GRUB_PATH"   "grub"
+sign_one "$KERNEL_PATH" "kernel"
 
-# 5. Hashes
-SHIM_SHA="$(sha256sum "${SHIM_OUT}/shimx64.efi" | awk '{print $1}')"
-GRUB_SHA="$(sha256sum "${SHIM_OUT}/grubx64.efi" | awk '{print $1}')"
-MOK_SHA="$(sha256sum "${SHIM_OUT}/MOK.cer"      | awk '{print $1}')"
-
-cat > "${SHIM_OUT}/mok-enroll.json" <<JSON
+cat > "$OUT_DIR/secureboot/mok-manifest.json" <<JSON
 {
-  "$schema": "https://sita.dev/schemas/mok-enroll.v1.json",
-  "generatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "shim":  { "path": "shim/shimx64.efi",  "sha256": "${SHIM_SHA}", "mode": "${SHIM_MODE}" },
-  "grub":  { "path": "shim/grubx64.efi",  "sha256": "${GRUB_SHA}", "mode": "${GRUB_MODE}" },
-  "mok":   {
-    "certPath": "shim/MOK.cer",
-    "sha256":   "${MOK_SHA}",
-    "fingerprintSha256": "${FP}",
-    "subject":  "$(openssl x509 -in "${MOK_CRT}" -noout -subject | sed 's/^subject=//')"
+  "version":            "${VERSION}",
+  "generated_at":       "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "key_provenance":     "${PROVENANCE}",
+  "cert_sha256_fp":     "${CERT_FP}",
+  "der_path":           "secureboot/sita-mok.der",
+  "signed_targets": {
+    "shim":   "$( [ -f "$SHIM_PATH"   ] && echo true || echo false )",
+    "grub":   "$( [ -f "$GRUB_PATH"   ] && echo true || echo false )",
+    "kernel": "$( [ -f "$KERNEL_PATH" ] && echo true || echo false )"
   },
-  "firstBootCommand": "mokutil --import /boot/efi/EFI/sita/MOK.cer"
+  "enroll_command":     "mokutil --import /boot/sita-mok.der"
 }
 JSON
 
-echo "✅ shim chain staged"
-echo "   shim:   ${SHIM_OUT}/shimx64.efi  (${SHIM_MODE})"
-echo "   grub:   ${SHIM_OUT}/grubx64.efi  (${GRUB_MODE})"
-echo "   MOK:    ${SHIM_OUT}/MOK.cer       fp=${FP}"
-echo "   manifest: ${SHIM_OUT}/mok-enroll.json"
+echo "✓ MOK enrollment artifacts → ${OUT_DIR}/secureboot/"
+[ "$PROVENANCE" = "dev-ephemeral" ] && \
+  echo "  ⚠ DEV-ONLY key — replace with SITA_MOK_KEY/CERT secrets for production"

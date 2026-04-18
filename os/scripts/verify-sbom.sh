@@ -1,56 +1,43 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════════════
-# SITA OS — Verify SBOM Manifest + Signature
-#
-# Validates:
-#   • sbom.manifest.json parses
-#   • app + os SBOM files exist with matching sha256
-#   • CycloneDX bomFormat / specVersion are correct
-#   • If signed, openssl dgst verifies sbom-os.cdx.json against
-#     sbom-os.cdx.json.sig using $SITA_SIGN_CRT
+# SITA OS — Verify SBOM integrity + signature
+# Usage:  bash os/scripts/verify-sbom.sh <sbom.cdx.json> [pubkey.pem]
 # ═══════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
-OUT_DIR="${1:-${SITA_OUT_DIR:-out}}"
-KEYS_DIR="${SITA_KEYS_DIR:-os/keys}"
-SIGN_CRT="${SITA_SIGN_CRT:-${KEYS_DIR}/release.crt}"
-MANIFEST="${OUT_DIR}/sbom.manifest.json"
+SBOM="${1:-}"
+PUBKEY="${2:-${SITA_RELEASE_PUB_KEY:-}}"
 
-[[ -f "${MANIFEST}" ]] || { echo "❌ ${MANIFEST} missing" >&2; exit 1; }
-command -v jq >/dev/null 2>&1 || { echo "❌ jq required" >&2; exit 2; }
-
-for kind in app os; do
-  rel="$(jq -r ".${kind}.path"   "${MANIFEST}")"
-  want="$(jq -r ".${kind}.sha256" "${MANIFEST}")"
-  abs="${OUT_DIR}/${rel}"
-  [[ -f "${abs}" ]] || { echo "❌ ${abs} missing" >&2; exit 3; }
-  got="$(sha256sum "${abs}" | awk '{print $1}')"
-  if [[ "${got}" != "${want}" ]]; then
-    echo "❌ sha mismatch for ${rel}: want ${want}, got ${got}" >&2; exit 4
-  fi
-  fmt="$(jq -r '.bomFormat' "${abs}")"
-  spec="$(jq -r '.specVersion' "${abs}")"
-  if [[ "${fmt}" != "CycloneDX" ]]; then
-    echo "❌ ${rel} bomFormat is '${fmt}', expected 'CycloneDX'" >&2; exit 5
-  fi
-  if [[ "${spec}" != "1.5" ]]; then
-    echo "⚠  ${rel} specVersion is '${spec}', expected '1.5'" >&2
-  fi
-done
-
-SIG_MODE="$(jq -r '.signature.mode' "${MANIFEST}")"
-if [[ "${SIG_MODE}" == "signed" && -f "${SIGN_CRT}" ]]; then
-  PUB="$(mktemp)"; trap 'rm -f "${PUB}"' EXIT
-  openssl x509 -in "${SIGN_CRT}" -pubkey -noout > "${PUB}"
-  if openssl dgst -sha256 -verify "${PUB}" \
-        -signature "${OUT_DIR}/sbom-os.cdx.json.sig" \
-        "${OUT_DIR}/sbom-os.cdx.json" >/dev/null; then
-    echo "✅ SBOM signature verified (RSA-SHA256)"
-  else
-    echo "❌ SBOM signature verification FAILED" >&2; exit 6
-  fi
-else
-  echo "ℹ  SBOM is ${SIG_MODE} (no signature check performed)"
+if [ -z "$SBOM" ] || [ ! -f "$SBOM" ]; then
+  echo "✘ usage: $0 <sbom.cdx.json> [pubkey.pem]" >&2; exit 2
 fi
 
-echo "✅ SBOM manifest verified"
+# Schema sanity
+node -e '
+  const s = JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));
+  if (s.bomFormat !== "CycloneDX") throw new Error("not CycloneDX");
+  if (!s.specVersion || !s.specVersion.startsWith("1.")) throw new Error("bad specVersion");
+  if (!Array.isArray(s.components)) throw new Error("components not array");
+  if (!s.metadata?.component?.name) throw new Error("missing metadata.component.name");
+  console.log("  ✓ schema OK — " + s.components.length + " components");
+' "$SBOM"
+
+if [ -f "${SBOM}.sig" ] && [ -n "$PUBKEY" ] && [ -f "$PUBKEY" ]; then
+  if openssl dgst -sha256 -verify "$PUBKEY" -signature "${SBOM}.sig" "$SBOM" >/dev/null 2>&1; then
+    echo "  ✓ signature verified against $PUBKEY"
+  else
+    echo "✘ signature verification FAILED" >&2; exit 1
+  fi
+elif [ -f "${SBOM}.sha256" ]; then
+  EXPECTED="$(cat "${SBOM}.sha256" | awk '{print $1}')"
+  ACTUAL="$(sha256sum "$SBOM" | awk '{print $1}')"
+  if [ "$EXPECTED" = "$ACTUAL" ]; then
+    echo "  ✓ SHA256 matches sidecar"
+  else
+    echo "✘ SHA256 mismatch" >&2; exit 1
+  fi
+else
+  echo "  ⚠ no signature or sha256 sidecar present"
+fi
+
+echo "✓ SBOM verified: $SBOM"

@@ -1,152 +1,121 @@
-# SITA OS — Phase 4: Trusted Supply Chain
+# Phase 4 — Trusted Supply Chain
 
-Phase 4 closes the supply-chain attestation loop on top of the Phase 1–3
-foundation. It adds **four** hard requirements that any production-grade
-operating system must satisfy:
+Status: **shipped** · Audited against repo HEAD
 
-| # | Capability | Canonical script | Output | Verifier |
-|---|---|---|---|---|
-| 1 | TPM 2.0 sealing of dm-verity root | `os/scripts/seal-verity-to-tpm.sh` | `out/tpm-seal.{policy,pub,priv,manifest.json}` | `os/scripts/verify-tpm-seal.sh` |
-| 2 | Secure Boot shim + MOK enrollment | `os/scripts/enroll-secureboot-mok.sh` | `out/shim/{shimx64.efi,grubx64.efi,MOK.cer,mok-enroll.json}` | `os/scripts/verify-boot-artifacts.sh` |
-| 3 | Signed CycloneDX SBOM | `os/scripts/generate-sbom.sh` | `out/sbom-{app,os}.cdx.json[.sig]`, `out/sbom.manifest.json` | `os/scripts/verify-sbom.sh` |
-| 4 | Reproducible builds | `os/scripts/reproducible-build-env.sh` | `generated/reproducibility-report.{json,md}` | `os/scripts/verify-reproducibility.sh` |
+Phase 4 closes the gap between "we can build a bootable ISO" (Phases 1–3) and "we can prove what's in the ISO and that it hasn't been tampered with." It introduces four interlocking guarantees:
 
-All four are wired into:
-
-- `os/scripts/release.sh` (steps 6, 7, 8, 12)
-- `.github/workflows/os-build-iso.yml` (Phase 4 steps + artifact upload)
-- `package.json` (`os:tpm:*`, `os:secureboot:*`, `os:sbom:*`, `os:reproducible:*`)
+1. **TPM 2.0 sealing** of the dm-verity root hash to PCRs 0,2,4,7
+2. **Secure Boot** signing of the shim → grub → kernel chain via a SITA Machine Owner Key (MOK)
+3. **Signed CycloneDX 1.5 SBOMs** for both the Electron application and the OS chroot
+4. **Reproducible builds** with a pinned `SOURCE_DATE_EPOCH` and bit-for-bit verification
 
 ---
 
-## 1. TPM 2.0 sealing
+## 1. TPM 2.0 — sealing verity to measured boot
 
-The verity root hash (the cryptographic identity of the immutable rootfs)
-is sealed against PCR policy `sha256:0,2,4,7`:
+Script: `os/scripts/seal-verity-to-tpm.sh`
 
-| PCR | Measures |
+The verity root hash produced by `build-verity-root.sh` is sealed under a PCR policy covering UEFI firmware (PCR 0), option ROMs (PCR 2), bootloader (PCR 4), and Secure Boot policy (PCR 7). The sealed object can only be unsealed if the measured boot state matches the build-time state.
+
+Outputs land in `out/`:
+
+| File | Purpose |
 |---|---|
-| 0 | Firmware code (CRTM, BIOS) |
-| 2 | Extended firmware code (option ROMs) |
-| 4 | Boot loader code (shim → grub → kernel) |
-| 7 | Secure Boot state + signing certs |
+| `tpm-seal-public.bin`  | Sealed object public area |
+| `tpm-seal-private.bin` | Sealed object private area |
+| `tpm-seal-policy.digest` | PCR policy digest |
+| `tpm-seal-manifest.json` | JSON record (verity hash, PCR list, SHA256 of sealed blobs) |
 
-If any of those measurements drift (firmware update, evil-maid swap of
-shim, Secure Boot disabled), the TPM refuses to unseal — and the
-initramfs hook refuses to mount the rootfs.
+### Verification modes
 
-```bash
-# real TPM (requires tpm2-tools and access to /dev/tpmrm0)
-SITA_TPM_REAL=1 npm run os:tpm:seal
+`os/scripts/verify-tpm-seal.sh`:
 
-# CI / dev — deterministic simulation; manifest is still produced
-npm run os:tpm:seal
-npm run os:tpm:verify
-```
+- `--offline` (CI default) — checks manifest schema and SHA256 integrity of sealed blobs. Does **not** require a real TPM.
+- `--hardware` — loads the sealed object, satisfies the PCR policy, and unseals the secret. Requires `/dev/tpmrm0` and `tpm2-tools`. Used on real hardware boot smoke-tests.
 
-## 2. Secure Boot / MOK enrollment
+---
 
-Builds the canonical shim chain:
+## 2. Secure Boot — MOK enrollment + boot-chain signing
 
-```
-shimx64.efi (Microsoft-signed)  →  grubx64.efi (MOK-signed)  →  vmlinuz (MOK-signed)  →  initrd (MOK-signed)
-```
+Script: `os/scripts/enroll-secureboot-mok.sh`
 
-`MOK.cer` is staged on the ESP at `/boot/efi/EFI/sita/MOK.cer`. The
-first-boot service runs `mokutil --import`, prompting the user once
-(via MokManager) to enroll the cert. After enrollment, all SITA-signed
-kernels and initramfs images are accepted under Secure Boot without
-intervention.
+Generates (or reuses, via `SITA_MOK_KEY` / `SITA_MOK_CERT`) the SITA Machine Owner Key, then signs the shim, grub, and kernel binaries with `sbsign`. The MOK certificate is exported in DER form for one-shot enrollment via `mokutil --import`.
 
-```bash
-npm run os:secureboot:enroll
-```
+Outputs land in `out/secureboot/`:
 
-CI installs `shim-signed` + `sbsigntool` automatically; on a host
-without those packages the script emits placeholder artifacts and
-records `mode: placeholder` in `mok-enroll.json` so downstream
-attestation never silently passes a fake build.
+| File | Purpose |
+|---|---|
+| `sita-mok.der`         | Cert in DER form (for `mokutil --import`) |
+| `sita-mok.crt`         | Same cert in PEM form (for `sbverify`) |
+| `mok-manifest.json`    | Provenance, SHA-256 fingerprint, signed-target table |
 
-## 3. Signed CycloneDX SBOM
+If no key is injected, an **ephemeral dev key** is generated and the manifest field `key_provenance` is set to `dev-ephemeral`. CI must inject the production key via the `SITA_MOK_KEY_BASE64` / `SITA_MOK_CERT_BASE64` GitHub secrets.
 
-Two SBOMs are produced per release:
+---
 
-1. `sbom-app.cdx.json` — npm dependency tree of the React/Vite/Electron app.
-2. `sbom-os.cdx.json` — the chroot's `dpkg` package list **plus** every
-   release artifact (ISO, IMG, bundle, verity hash) as `type:file`
-   components with SHA-256.
+## 3. SBOMs — signed CycloneDX 1.5
 
-The OS SBOM is signed with the release key (RSA-SHA256, detached
-signature). Consumers verify with:
+Scripts:
+- `os/scripts/generate-sbom.sh` — emits **two** SBOMs:
+  - `generated/sbom-electron-${VERSION}.cdx.json` (npm components, via `@cyclonedx/cyclonedx-npm` with a deterministic fallback)
+  - `generated/sbom-os-${VERSION}.cdx.json` (debian dpkg components from the chroot)
+- `os/scripts/verify-sbom.sh` — schema check + signature/SHA256 verification.
 
-```bash
-openssl dgst -sha256 -verify <(openssl x509 -in os/keys/release.crt -pubkey -noout) \
-  -signature out/sbom-os.cdx.json.sig out/sbom-os.cdx.json
-# or, simpler:
-npm run os:sbom:verify
-```
+Each SBOM is detached-signed with the SITA release key (`SITA_RELEASE_SIGN_KEY`). When no key is configured, a `.sha256` sidecar is written so downstream consumers always have an integrity anchor.
 
-CycloneDX 1.5 is consumable by Dependency Track, Grype, Trivy, OSS
-Review Toolkit, and the GitHub Advanced Security advisory matcher.
+---
 
 ## 4. Reproducible builds
 
-`os/scripts/reproducible-build-env.sh` is sourced by `release.sh` (and
-should be sourced before any manual `os:build:*` invocation). It pins:
+Script: `os/scripts/reproducible-build-env.sh` — sourced at the top of every build script. Pins:
 
-- `SOURCE_DATE_EPOCH` (defaults to last git commit timestamp)
-- `TZ=UTC`, `LC_ALL=C.UTF-8`
-- `umask 0022`
-- `mksquashfs`: `-all-root -mkfs-time -fstime -all-time -no-xattrs -noappend`
-- `tar`: `--sort=name --mtime=@$SOURCE_DATE_EPOCH --owner=0 --group=0 --numeric-owner`
-- `cpio`: `-R 0:0 --reproducible`
-- `LDFLAGS`: `-Wl,--build-id=none`
+- `SOURCE_DATE_EPOCH` (last git commit timestamp)
+- `LC_ALL`, `LANG`, `TZ`, `umask`
+- `SITA_MKSQUASHFS_OPTS` — deterministic squashfs flags (`-all-root -reproducible -mkfs-time ${SDE} -all-time ${SDE}`)
+- `SITA_XORRISO_OPTS` — deterministic ISO flags
+- `SITA_TAR_OPTS` — deterministic tar flags for update bundles
 
-Verify with:
-
-```bash
-npm run os:reproducible:verify   # builds twice, diffs ISO + squashfs
-```
-
-Exit codes:
-
-| Code | Meaning |
-|---|---|
-| 0 | bit-identical (or degraded mode on non-builder host) |
-| 1 | ISO bytes differ (likely metadata only — investigate) |
-| 2 | squashfs payload differs (rootfs is non-deterministic — fix required) |
-
-Reports are emitted to `generated/reproducibility-report.{json,md}`.
+Verification: `os/scripts/verify-reproducibility.sh` runs the build twice in clean output dirs and SHA256-compares every `.iso`, `.img`, and `.squashfs` artifact. A JSON report is emitted to `generated/reproducibility-report.json`.
 
 ---
 
-## End-to-end provenance map
+## 5. Wiring (where Phase 4 plugs in)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                       Release Pipeline                      │
-└─────────────────────────────────────────────────────────────┘
-        │
-        ▼
-  reproducible-build-env.sh   ── SOURCE_DATE_EPOCH pinned
-        │
-        ▼
-  build.sh                    ── ISO + verity-root.hash
-        │
-        ▼
-  emit-attestation.sh         ── generated/os-build-attestation.json
-        │
-        ├──► seal-verity-to-tpm.sh   ──► out/tpm-seal.manifest.json
-        ├──► enroll-secureboot-mok.sh ──► out/shim/mok-enroll.json
-        ├──► generate-sbom.sh         ──► out/sbom.manifest.json (signed)
-        │
-        ▼
-  build-update-bundle.sh + verify-update-bundle.sh
-        │
-        ▼
-  verify-tpm-seal.sh + verify-sbom.sh + qemu-validate.sh
+| Surface | What it does |
+|---|---|
+| `os/scripts/release.sh` | After verity build → seal to TPM → enroll Secure Boot → generate SBOMs |
+| `.github/workflows/os-build-iso.yml` | Runs `os:secureboot:enroll`, `os:tpm:seal`, `os:sbom`; uploads `out/secureboot/`, `out/tpm-seal-*`, and `generated/sbom-*` as artifacts |
+| `package.json` | Exposes `os:tpm:seal`, `os:tpm:verify`, `os:secureboot:enroll`, `os:sbom`, `os:sbom:verify`, `os:reproducibility`, `os:reproducibility:env` |
+| `scripts/architecture/assertions/assert-phase-4-supply-chain.ps1` | Architecture-truth gate that fails CI if any Phase 4 file or wiring goes missing |
+
+---
+
+## 6. Operator quick-reference
+
+```bash
+# Pin reproducible env (sourced automatically by release.sh)
+. os/scripts/reproducible-build-env.sh --print
+
+# After a normal build:
+ROOT_HASH=$(jq -r '.root_hash' out/verity-metadata.json)
+SITA_VERSION=1.0.0 bash os/scripts/seal-verity-to-tpm.sh "$ROOT_HASH"
+SITA_VERSION=1.0.0 bash os/scripts/enroll-secureboot-mok.sh
+SITA_VERSION=1.0.0 bash os/scripts/generate-sbom.sh
+
+# Verify
+bash os/scripts/verify-tpm-seal.sh --offline
+bash os/scripts/verify-sbom.sh generated/sbom-electron-1.0.0.cdx.json
+sudo -E bash os/scripts/verify-reproducibility.sh
 ```
 
-Every artifact in `out/` is referenced by exactly one manifest, every
-manifest is referenced by `generated/os-build-attestation.json`, and
-the entire chain is reproducible from the git SHA + `SOURCE_DATE_EPOCH`.
+---
+
+## 7. Threat model coverage
+
+| Threat | Mitigation |
+|---|---|
+| Attacker swaps kernel/initramfs at rest | TPM unseal fails (PCR 4 changes) → boot aborts |
+| Attacker disables Secure Boot in firmware | TPM unseal fails (PCR 7 changes) |
+| Compromised dependency in npm tree | Detected at SBOM diff between releases; signed SBOM proves provenance |
+| "Trusting trust" — opaque toolchain | Reproducibility check by independent rebuilder yields identical hash |
+| MOK cert exfiltration | Cert is public; private key lives only in CI secret store, rotated per release |

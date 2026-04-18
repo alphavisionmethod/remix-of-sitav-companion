@@ -1,122 +1,86 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════════════
-# SITA OS — Reproducibility Verifier
+# SITA OS — Bit-for-bit reproducibility check
 #
-# Builds the ISO twice in fully isolated output directories using the
-# same SOURCE_DATE_EPOCH, then compares the two ISOs byte-for-byte (and
-# the squashfs payload separately so users see *where* drift entered).
+# Builds the ISO twice in clean directories, then compares SHA256 of
+# the canonical artifacts. Aborts non-zero on any mismatch and writes
+# a JSON report to generated/reproducibility-report.json.
 #
-# Outputs:
-#   generated/reproducibility-report.json
-#   generated/reproducibility-report.md
+# Usage:
+#   sudo -E bash os/scripts/verify-reproducibility.sh
 #
-# Exit codes:
-#   0  → bit-identical (or differences only in *.log timestamps)
-#   1  → ISO bytes differ
-#   2  → squashfs payload differs (worse; means rootfs is non-deterministic)
+# Caveats: requires the same SOURCE_DATE_EPOCH (handled by
+# reproducible-build-env.sh) and the same toolchain on both runs.
 # ═══════════════════════════════════════════════════════════════════════
-set -uo pipefail
+set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 GEN_DIR="${REPO}/generated"
-mkdir -p "${GEN_DIR}"
-JSON="${GEN_DIR}/reproducibility-report.json"
-MD="${GEN_DIR}/reproducibility-report.md"
+mkdir -p "$GEN_DIR"
 
-# shellcheck source=os/scripts/reproducible-build-env.sh
+# shellcheck disable=SC1091
 . "${REPO}/os/scripts/reproducible-build-env.sh"
-
-VERSION="${VERSION:-0.0.0-repro+$(git rev-parse --short HEAD 2>/dev/null || echo local)}"
-
-A_DIR="${REPO}/out-repro-a"
-B_DIR="${REPO}/out-repro-b"
-rm -rf "${A_DIR}" "${B_DIR}"
-mkdir -p "${A_DIR}" "${B_DIR}"
 
 run_build() {
   local out="$1"
-  echo "▸ building into ${out}"
-  ( cd "${REPO}" && SITA_OUT_DIR="${out}" VERSION="${VERSION}" \
-       sudo -E bash os/image-builder/build.sh ) > "${out}/build.log" 2>&1
+  rm -rf "$out"
+  mkdir -p "$out"
+  SITA_OUT_DIR="$out" sudo -E bash "${REPO}/os/image-builder/build.sh" >"${out}/build.log" 2>&1
 }
 
-# When sudo or build deps unavailable (CI dry-run), short-circuit gracefully
-DEGRADED=0
-if ! command -v sudo >/dev/null 2>&1 || ! command -v mksquashfs >/dev/null 2>&1; then
-  DEGRADED=1
+echo "▸ Build #1 → out-rb-1/"
+run_build "${REPO}/out-rb-1"
+echo "▸ Build #2 → out-rb-2/"
+run_build "${REPO}/out-rb-2"
+
+declare -A R1 R2
+ARTIFACTS=()
+mismatch=0
+results_json="["
+
+shopt -s nullglob
+for f in "${REPO}/out-rb-1"/*.iso "${REPO}/out-rb-1"/*.img "${REPO}/out-rb-1"/*.squashfs; do
+  base="$(basename "$f")"
+  ARTIFACTS+=("$base")
+  R1[$base]="$(sha256sum "$f" | awk '{print $1}')"
+  if [ -f "${REPO}/out-rb-2/${base}" ]; then
+    R2[$base]="$(sha256sum "${REPO}/out-rb-2/${base}" | awk '{print $1}')"
+  else
+    R2[$base]="MISSING"
+  fi
+done
+shopt -u nullglob
+
+if [ "${#ARTIFACTS[@]}" -eq 0 ]; then
+  echo "✘ no build artifacts produced — aborting" >&2
+  exit 1
 fi
 
-if [[ "${DEGRADED}" -eq 0 ]]; then
-  run_build "${A_DIR}" || { echo "❌ first build failed"; exit 10; }
-  run_build "${B_DIR}" || { echo "❌ second build failed"; exit 11; }
+first=1
+for a in "${ARTIFACTS[@]}"; do
+  status="match"
+  [ "${R1[$a]}" != "${R2[$a]}" ] && { status="MISMATCH"; mismatch=1; }
+  [ $first -eq 0 ] && results_json+=","
+  first=0
+  results_json+="{\"artifact\":\"$a\",\"sha1\":\"${R1[$a]}\",\"sha2\":\"${R2[$a]}\",\"status\":\"$status\"}"
+  printf "  %-40s  %s\n" "$a" "$status"
+done
+results_json+="]"
 
-  ISO_A="$(ls -1 "${A_DIR}"/*.iso 2>/dev/null | head -1 || true)"
-  ISO_B="$(ls -1 "${B_DIR}"/*.iso 2>/dev/null | head -1 || true)"
-  if [[ -z "${ISO_A}" || -z "${ISO_B}" ]]; then
-    echo "❌ ISO artifacts not produced"; exit 12
-  fi
-  ISO_A_SHA="$(sha256sum "${ISO_A}" | awk '{print $1}')"
-  ISO_B_SHA="$(sha256sum "${ISO_B}" | awk '{print $1}')"
-  ISO_MATCH=$([[ "${ISO_A_SHA}" == "${ISO_B_SHA}" ]] && echo true || echo false)
-
-  SQ_A_SHA=""; SQ_B_SHA=""; SQ_MATCH="n/a"
-  if [[ -f "${A_DIR}/sita-rootfs.squashfs" && -f "${B_DIR}/sita-rootfs.squashfs" ]]; then
-    SQ_A_SHA="$(sha256sum "${A_DIR}/sita-rootfs.squashfs" | awk '{print $1}')"
-    SQ_B_SHA="$(sha256sum "${B_DIR}/sita-rootfs.squashfs" | awk '{print $1}')"
-    SQ_MATCH=$([[ "${SQ_A_SHA}" == "${SQ_B_SHA}" ]] && echo true || echo false)
-  fi
-  STATUS=$([[ "${ISO_MATCH}" == "true" ]] && echo "reproducible" || echo "drift")
-else
-  ISO_A_SHA="(degraded — not built)"
-  ISO_B_SHA="(degraded — not built)"
-  ISO_MATCH="false"
-  SQ_A_SHA=""; SQ_B_SHA=""; SQ_MATCH="n/a"
-  STATUS="degraded"
-fi
-
-cat > "${JSON}" <<JSON
+cat > "${GEN_DIR}/reproducibility-report.json" <<JSON
 {
-  "$schema": "https://sita.dev/schemas/reproducibility-report.v1.json",
-  "generatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "sourceDateEpoch": ${SOURCE_DATE_EPOCH},
-  "version": "${VERSION}",
-  "status": "${STATUS}",
-  "iso": {
-    "a": { "path": "out-repro-a/*.iso", "sha256": "${ISO_A_SHA}" },
-    "b": { "path": "out-repro-b/*.iso", "sha256": "${ISO_B_SHA}" },
-    "identical": ${ISO_MATCH}
-  },
-  "squashfs": {
-    "a": { "sha256": "${SQ_A_SHA}" },
-    "b": { "sha256": "${SQ_B_SHA}" },
-    "identical": "${SQ_MATCH}"
-  },
-  "degraded": ${DEGRADED}
+  "checked_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "source_date_epoch": "${SOURCE_DATE_EPOCH}",
+  "ok": $( [ $mismatch -eq 0 ] && echo true || echo false ),
+  "artifact_count": ${#ARTIFACTS[@]},
+  "results": ${results_json}
 }
 JSON
 
-{
-  echo "# SITA OS — Reproducibility Report"
-  echo
-  echo "- generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  echo "- SOURCE_DATE_EPOCH: \`${SOURCE_DATE_EPOCH}\`"
-  echo "- status: **${STATUS}**"
-  echo
-  echo "| Artifact | Build A | Build B | Identical |"
-  echo "|---|---|---|---|"
-  echo "| ISO | \`${ISO_A_SHA:0:12}…\` | \`${ISO_B_SHA:0:12}…\` | ${ISO_MATCH} |"
-  echo "| squashfs | \`${SQ_A_SHA:0:12}…\` | \`${SQ_B_SHA:0:12}…\` | ${SQ_MATCH} |"
-  if [[ "${DEGRADED}" -eq 1 ]]; then
-    echo
-    echo "> ⚠ degraded mode: build dependencies (sudo/mksquashfs) not present on this host. Re-run on a Debian/Ubuntu builder for a real verdict."
-  fi
-} > "${MD}"
-
-echo "📄 reports:"
-echo "   ${JSON}"
-echo "   ${MD}"
-
-if [[ "${STATUS}" == "reproducible" ]]; then exit 0; fi
-if [[ "${SQ_MATCH}" == "false" ]]; then exit 2; fi
-if [[ "${DEGRADED}" -eq 1 ]]; then exit 0; fi
-exit 1
+echo
+echo "Report → ${GEN_DIR}/reproducibility-report.json"
+if [ $mismatch -ne 0 ]; then
+  echo "✘ reproducibility FAILED — see report" >&2
+  exit 1
+fi
+echo "✓ reproducibility OK — all artifacts bit-identical"

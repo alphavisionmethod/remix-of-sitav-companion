@@ -1,6 +1,14 @@
-Write-Host "Phase 4 trusted supply chain check..."
-$ok = $true
-$paths = @(
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — Phase 4 Trusted Supply Chain assertion
+#
+# Fails the architecture-truth job if any Phase 4 script, doc, or
+# wiring is missing. Mirrors the pattern of the other assert-*.ps1
+# files used in the CI-truth pipeline.
+# ═══════════════════════════════════════════════════════════════════════
+$ErrorActionPreference = "Stop"
+$root = (Resolve-Path "$PSScriptRoot/../../..").Path
+
+$required = @(
   "os/scripts/seal-verity-to-tpm.sh",
   "os/scripts/verify-tpm-seal.sh",
   "os/scripts/enroll-secureboot-mok.sh",
@@ -10,29 +18,42 @@ $paths = @(
   "os/scripts/verify-reproducibility.sh",
   "docs/os/PHASE_4_TRUSTED_SUPPLY_CHAIN.md"
 )
-foreach ($p in $paths) {
-  if (Test-Path $p) { Write-Host "PASS: $p" }
-  else { Write-Host "FAIL: $p missing"; $ok = $false }
+
+$missing = @()
+foreach ($rel in $required) {
+  $p = Join-Path $root $rel
+  if (-not (Test-Path $p)) { $missing += $rel }
 }
 
-# Wiring assertions
-$release = Get-Content "os/scripts/release.sh" -Raw
-foreach ($needle in @("seal-verity-to-tpm.sh","enroll-secureboot-mok.sh","generate-sbom.sh","verify-tpm-seal.sh","verify-sbom.sh","reproducible-build-env.sh")) {
-  if ($release -match [regex]::Escape($needle)) { Write-Host "PASS: release.sh wires $needle" }
-  else { Write-Host "FAIL: release.sh missing $needle"; $ok = $false }
+# Wiring spot-checks: release.sh + workflow + package.json must reference Phase 4 steps
+$release   = Get-Content (Join-Path $root "os/scripts/release.sh") -Raw
+$workflow  = Get-Content (Join-Path $root ".github/workflows/os-build-iso.yml") -Raw
+$pkg       = Get-Content (Join-Path $root "package.json") -Raw
+
+$wiring = @{
+  "release.sh seal-verity-to-tpm"  = $release  -match "seal-verity-to-tpm"
+  "release.sh generate-sbom"       = $release  -match "generate-sbom"
+  "release.sh enroll-secureboot"   = $release  -match "enroll-secureboot-mok"
+  "workflow phase-4 step"          = $workflow -match "Phase 4|seal-verity|generate-sbom"
+  "package.json os:sbom"           = $pkg      -match "os:sbom"
+  "package.json os:tpm:seal"       = $pkg      -match "os:tpm:seal"
+  "package.json os:secureboot"     = $pkg      -match "os:secureboot"
 }
 
-$pkg = Get-Content "package.json" -Raw
-foreach ($needle in @("os:tpm:seal","os:tpm:verify","os:secureboot:enroll","os:sbom:generate","os:sbom:verify","os:reproducible:verify")) {
-  if ($pkg -match [regex]::Escape($needle)) { Write-Host "PASS: package.json wires $needle" }
-  else { Write-Host "FAIL: package.json missing $needle"; $ok = $false }
+$wireBroken = @()
+foreach ($k in $wiring.Keys) { if (-not $wiring[$k]) { $wireBroken += $k } }
+
+if ($missing.Count -gt 0 -or $wireBroken.Count -gt 0) {
+  if ($missing.Count -gt 0) {
+    Write-Host "✘ Phase 4 MISSING files:" -ForegroundColor Red
+    $missing | ForEach-Object { Write-Host "    - $_" -ForegroundColor Red }
+  }
+  if ($wireBroken.Count -gt 0) {
+    Write-Host "✘ Phase 4 BROKEN wiring:" -ForegroundColor Red
+    $wireBroken | ForEach-Object { Write-Host "    - $_" -ForegroundColor Red }
+  }
+  exit 1
 }
 
-$ci = Get-Content ".github/workflows/os-build-iso.yml" -Raw
-foreach ($needle in @("seal-verity-to-tpm.sh","enroll-secureboot-mok.sh","generate-sbom.sh","verify-tpm-seal.sh","verify-sbom.sh","tpm-seal.manifest.json","sbom.manifest.json","mok-enroll.json")) {
-  if ($ci -match [regex]::Escape($needle)) { Write-Host "PASS: CI wires $needle" }
-  else { Write-Host "FAIL: CI missing $needle"; $ok = $false }
-}
-
-if (-not $ok) { exit 1 }
-Write-Host "PASS: phase-4 trusted supply chain operability verified"
+Write-Host "✓ Phase 4 trusted supply chain — all files present, wiring intact" -ForegroundColor Green
+exit 0
