@@ -1,13 +1,13 @@
 {
   "version": "1.0.0",
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-04-17T20:18:50.282Z",
+  "generatedAt": "2026-04-18T02:09:32.876Z",
   "phase": "phase-32-its-real-gate",
   "checklist": 27,
   "title": "Final \"It's Real\" Gate",
-  "verdict": "real",
-  "ok": true,
-  "deployable": true,
+  "verdict": "not-real",
+  "ok": false,
+  "deployable": false,
   "clauses": [
     {
       "id": 1,
@@ -68,8 +68,9 @@
       "alsoReports": [
         "generated/mobile-build-pipeline-report.json"
       ],
-      "ok": true,
-      "evidence": "mobile-store-readiness.ok=true + mobile-build-pipeline.ok=true (iOS≥16, Android API≥26, IPA+AAB pipelines)"
+      "ok": false,
+      "evidence": "mobile-store-readiness.ok=true + mobile-build-pipeline.ok=true (iOS≥16, Android API≥26, IPA+AAB pipelines)",
+      "failureReason": "Report not found: generated/mobile-store-readiness-report.json"
     },
     {
       "id": 7,
@@ -143,10 +144,16 @@
   ],
   "summary": {
     "total": 13,
-    "passed": 13,
-    "failed": 0,
-    "ok": true,
-    "deployable": true
+    "passed": 12,
+    "failed": 1,
+    "ok": false,
+    "deployable": false
   },
-  "failures": []
+  "failures": [
+    {
+      "id": 6,
+      "name": "mobile-runtime-explicit",
+      "reason": "Report not found: generated/mobile-store-readiness-report.json"
+    }
+  ]
 }
