@@ -1,14 +1,47 @@
 {
-  "wave": 5,
-  "generatedAt": "2026-04-18",
-  "outcome": "no-net-removal",
-  "wrappersRemovedNet": 0,
-  "tsErrorsAfter": 0,
-  "buildSafe": true,
-  "lessonLearned": "Static-text consumer scans miss dynamic imports and barrel re-exports. Bulk wrapper removal requires AST resolution or per-folder migration sign-off, not pattern matching.",
-  "passes": [
-    { "id": "5a", "criterion": "scan excluded src/lib", "removed": 176, "tsErrorsAfter": 346, "rolledBack": true },
-    { "id": "5b", "criterion": "full repo scan including src/lib", "removed": 160, "tsErrorsAfter": 90, "rolledBack": true }
+  "wave": "6a",
+  "status": "success",
+  "strategy": "per-folder-physical-migration",
+  "metrics": {
+    "wrappers_before": 188,
+    "wrappers_after": 129,
+    "net_removed": 59,
+    "ts_errors": 0,
+    "build_state": "green"
+  },
+  "completed_migrations": [
+    {
+      "folder": "src/lib/engines",
+      "canonical_target": "src/domains/engines",
+      "files_removed": 59,
+      "consumers_rewired": 5,
+      "consumer_files": [
+        "src/lib/hooks/useOSRuntime.tsx",
+        "src/lib/hooks/use-meta-governance.ts",
+        "src/lib/services/meta-governance/collector.service.ts",
+        "src/components/sita/OSSetupExperience.tsx",
+        "src/test/engines.test.ts"
+      ]
+    }
   ],
-  "recommendedNextWave": "per-folder physical migration with bound wrapper deletion"
+  "next_targets": [
+    { "folder": "src/lib/persistence", "wrappers": 15, "external_consumers": 146 },
+    { "folder": "src/lib/customer-journey", "wrappers": 9 },
+    { "folder": "src/lib/data-services", "wrappers": 21 },
+    { "folder": "src/lib/demo-data", "wrappers": 30 }
+  ],
+  "lessons_learned": {
+    "wave_5_failure_root_causes": [
+      "Static text scans miss dynamic imports",
+      "Templated path strings escape regex",
+      "Internal src/lib consumers require full repo scan"
+    ],
+    "wave_6_winning_pattern": [
+      "Audit canonical destination has all needed files",
+      "Promote canonical barrel to be export-complete",
+      "Rewire ALL consumers (including internal src/lib ones)",
+      "Delete folder atomically",
+      "Verify tsc immediately"
+    ]
+  }
 }

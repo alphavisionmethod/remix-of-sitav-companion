@@ -1,54 +1,49 @@
-# SITA OS — Wave 5 Wrapper Removal Status (Revised)
+# SRC_LIB Wrapper Removal Status
 
-Generated: 2026-04-18
+_Last updated: Wave 6a complete_
 
-## Outcome: 0 wrappers removed (safety-preserved)
+## Summary
 
-Wave 5 attempted bulk removal of wrappers with zero detected consumers. **Two sequential passes (5a + 5b) both broke the build.** Each time the wrappers were restored from sibling-file canonical matches, returning the build to green (0 TS errors).
-
-## Why removal was unsafe
-
-The static-text consumer scan (literal `"@/lib/<path>"` match across all of `src/`) does **not** detect:
-
-- Dynamic imports built from templated path strings.
-- Re-exports through barrel files that compose the import path at build time.
-- Path resolution chains routed through Vite plugins or tsconfig path aliases other than `@/`.
-- Test fixtures and storybook autoloads.
-
-The 160 wrappers Wave 5b "removed" turned out to be referenced by ≥90 consumers via paths the scan didn't recognize. Restoring all 160 from sibling canonical matches returned the build to clean.
-
-## Final Wave 5 ledger
-
-| Pass | Wrappers removed | Build errors after | Action |
+| Metric | Wave 4 End | Wave 5 (Aborted) | Wave 6a End |
 |---|---|---|---|
-| 5a (excluded src/lib from scan) | 176 | 346 | Restored from siblings (fallback to `core-services` ↔ `services` swap). |
-| 5b (full repo scan) | 160 | 90 | Restored from siblings. |
-| **Net Wave 5** | **0** | **0** | All wrappers retained; build green. |
+| Wrappers remaining | 188 | 188 (restored) | **129** |
+| TS errors | 0 | 0 (after restore) | **0** |
+| Net wrappers removed | 0 | 0 | **59** |
 
-## Implications for the canonical ownership model
+## Wave 6a — Engines Folder Migration ✅
 
-Wrappers cannot be removed by static analysis alone. **A safe removal pass requires either:**
+**Strategy:** Per-folder physical migration (not bulk static deletion).
 
-1. **AST-based import resolution** (e.g., ts-morph) that resolves dynamic imports and barrel re-exports.
-2. **Build-time tree-shake telemetry**: instrument Vite/Rollup output to record which `@/lib/*` paths are actually emitted, and treat anything missing as truly dead.
-3. **Manual per-folder audits** as folders are physically migrated to canonical homes — at which point each wrapper's removal is gated on the folder's own migration sign-off.
+**Steps executed:**
+1. Verified `src/domains/engines/` had 58 canonical implementation files (all 57 wrappers' siblings + index).
+2. Promoted `src/domains/engines/index.ts` from a 13-export partial barrel to a complete 50+ export barrel matching the legacy `src/lib/engines/index.ts`.
+3. Rewired 4 stale consumers:
+   - `src/lib/hooks/useOSRuntime.tsx` (2 imports)
+   - `src/test/engines.test.ts`
+   - `src/lib/hooks/use-meta-governance.ts` (2 imports)
+   - `src/lib/services/meta-governance/collector.service.ts`
+   - `src/components/sita/OSSetupExperience.tsx` (dynamic import)
+4. Deleted entire `src/lib/engines/` directory (57 wrapper files + index.ts + shared/ folder = 59 files).
+5. Verified `tsc --noEmit` returns 0 errors.
 
-Approach 3 is the safest and aligns with the existing wave-by-wave migration cadence. Wave 5's attempt to bulk-remove wrappers without folder migration was the wrong abstraction.
+**Outcome:** Engines are now exclusively under `src/domains/engines/` with a complete public barrel. No legacy `@/lib/engines/*` import paths remain.
 
-## Wave 5 deliverables that DID succeed
+## Wave 5 (Aborted) — Lessons Learned
 
-- `scripts/architecture/wave5b-remove-zero-consumer-wrappers.ts` — the corrected scan (kept for forensic reference).
-- This report documenting why bulk removal is unsafe.
-- Build remains green at 0 TS errors.
+Static text-scan-based bulk removal failed twice (~346 and ~90 errors respectively) because:
+- Dynamic imports (`await import("@/lib/...")`) were missed.
+- Templated path strings escaped the regex.
+- Internal `src/lib/` consumers required full repo scan.
 
-## Recommended Wave 6 path
+**Resolution:** Adopted per-folder migration with explicit consumer audit, used successfully in Wave 6a.
 
-Skip bulk wrapper removal. Instead:
+## Next Targets (Wave 6b/6c)
 
-1. Pick **one** physical folder (e.g., `src/lib/persistence/` → `src/data/persistence/`).
-2. Move all files; update wrappers to point at the new canonical home.
-3. Run the consumer rewire wave for that folder only.
-4. Once all consumers point at the new canonical, delete the wrappers for that folder specifically.
-5. Repeat for one folder per wave.
+| Folder | Wrappers | External Consumers | Risk |
+|---|---|---|---|
+| `src/lib/persistence/` | 15 | 146 | Medium (high consumer count, needs systematic rewire) |
+| `src/lib/customer-journey/` | 9 | TBD | Low–Medium |
+| `src/lib/data-services/` | 21 | TBD | Medium |
+| `src/lib/demo-data/` | 30 | TBD | Low (demo only) |
 
-This preserves build safety wave-over-wave and avoids the failure mode Wave 5 hit.
+Each will follow the Wave 6a pattern: barrel completion → consumer rewire → folder deletion → tsc verification.
