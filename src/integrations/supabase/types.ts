@@ -7698,6 +7698,68 @@ export type Database = {
         }
         Relationships: []
       }
+      council_escalations: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          escalation_reason: string
+          evidence: Json
+          id: string
+          meta_escalated_at: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          source_agent_id: string
+          source_council: string
+          status: string
+          target_supervisor: string
+          updated_at: string
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          escalation_reason?: string
+          evidence?: Json
+          id?: string
+          meta_escalated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source_agent_id: string
+          source_council: string
+          status?: string
+          target_supervisor: string
+          updated_at?: string
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          escalation_reason?: string
+          evidence?: Json
+          id?: string
+          meta_escalated_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source_agent_id?: string
+          source_council?: string
+          status?: string
+          target_supervisor?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "council_escalations_source_agent_id_fkey"
+            columns: ["source_agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+        ]
+      }
       crm_automations: {
         Row: {
           actions: Json
@@ -10276,6 +10338,337 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      internal_agent_actions: {
+        Row: {
+          action_type: string
+          agent_id: string
+          approval_request_id: string | null
+          autonomy_level_used: string
+          confidence: number
+          correlation_id: string | null
+          council: string
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          escalation_id: string | null
+          execution_result: Json | null
+          id: string
+          invocation_id: string | null
+          observation_payload: Json
+          rationale: string | null
+          rollback_data: Json | null
+          simulation_result: Json | null
+          status: string
+          summary: string
+          updated_at: string
+        }
+        Insert: {
+          action_type?: string
+          agent_id: string
+          approval_request_id?: string | null
+          autonomy_level_used?: string
+          confidence?: number
+          correlation_id?: string | null
+          council: string
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          escalation_id?: string | null
+          execution_result?: Json | null
+          id?: string
+          invocation_id?: string | null
+          observation_payload?: Json
+          rationale?: string | null
+          rollback_data?: Json | null
+          simulation_result?: Json | null
+          status?: string
+          summary?: string
+          updated_at?: string
+        }
+        Update: {
+          action_type?: string
+          agent_id?: string
+          approval_request_id?: string | null
+          autonomy_level_used?: string
+          confidence?: number
+          correlation_id?: string | null
+          council?: string
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          escalation_id?: string | null
+          execution_result?: Json | null
+          id?: string
+          invocation_id?: string | null
+          observation_payload?: Json
+          rationale?: string | null
+          rollback_data?: Json | null
+          simulation_result?: Json | null
+          status?: string
+          summary?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_actions_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_approval_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "approval_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_approval_request_id_fkey"
+            columns: ["approval_request_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_pending_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_escalation_id_fkey"
+            columns: ["escalation_id"]
+            isOneToOne: false
+            referencedRelation: "council_escalations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "internal_agent_actions_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internal_agent_definitions: {
+        Row: {
+          agent_id: string
+          confidence_threshold_act: number
+          confidence_threshold_recommend: number
+          cost_budget_daily_cents: number
+          cost_budget_guidance: string
+          council: string
+          created_at: string
+          current_autonomy_level: string
+          escalation_targets: Json
+          failure_handling_rules: Json
+          human_approval_requirements: Json
+          id: string
+          is_active: boolean
+          maturity: string
+          max_autonomy_level: string
+          max_invocations_per_day: number
+          measurable_kpis: Json
+          memory_scope: string
+          mission: string
+          name: string
+          out_of_scope: Json
+          primary_escalation_target: string | null
+          receives_escalations_from: Json
+          related_docs: Json
+          related_services: Json
+          reporting_outputs: Json
+          rollback_authority: string
+          schedule_cron: string | null
+          schedule_type: string
+          scope: Json
+          simulation_requirements: Json
+          spec_hash: string | null
+          special_ability: string
+          tags: Json
+          tools_allowed: Json
+          tools_forbidden: Json
+          trigger_conditions: Json
+          trigger_events: Json
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          confidence_threshold_act?: number
+          confidence_threshold_recommend?: number
+          cost_budget_daily_cents?: number
+          cost_budget_guidance?: string
+          council: string
+          created_at?: string
+          current_autonomy_level?: string
+          escalation_targets?: Json
+          failure_handling_rules?: Json
+          human_approval_requirements?: Json
+          id?: string
+          is_active?: boolean
+          maturity?: string
+          max_autonomy_level?: string
+          max_invocations_per_day?: number
+          measurable_kpis?: Json
+          memory_scope?: string
+          mission?: string
+          name: string
+          out_of_scope?: Json
+          primary_escalation_target?: string | null
+          receives_escalations_from?: Json
+          related_docs?: Json
+          related_services?: Json
+          reporting_outputs?: Json
+          rollback_authority?: string
+          schedule_cron?: string | null
+          schedule_type?: string
+          scope?: Json
+          simulation_requirements?: Json
+          spec_hash?: string | null
+          special_ability?: string
+          tags?: Json
+          tools_allowed?: Json
+          tools_forbidden?: Json
+          trigger_conditions?: Json
+          trigger_events?: Json
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          confidence_threshold_act?: number
+          confidence_threshold_recommend?: number
+          cost_budget_daily_cents?: number
+          cost_budget_guidance?: string
+          council?: string
+          created_at?: string
+          current_autonomy_level?: string
+          escalation_targets?: Json
+          failure_handling_rules?: Json
+          human_approval_requirements?: Json
+          id?: string
+          is_active?: boolean
+          maturity?: string
+          max_autonomy_level?: string
+          max_invocations_per_day?: number
+          measurable_kpis?: Json
+          memory_scope?: string
+          mission?: string
+          name?: string
+          out_of_scope?: Json
+          primary_escalation_target?: string | null
+          receives_escalations_from?: Json
+          related_docs?: Json
+          related_services?: Json
+          reporting_outputs?: Json
+          rollback_authority?: string
+          schedule_cron?: string | null
+          schedule_type?: string
+          scope?: Json
+          simulation_requirements?: Json
+          spec_hash?: string | null
+          special_ability?: string
+          tags?: Json
+          tools_allowed?: Json
+          tools_forbidden?: Json
+          trigger_conditions?: Json
+          trigger_events?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_runtime_state: {
+        Row: {
+          agent_id: string
+          consecutive_failures: number
+          cooldown_until: string | null
+          created_at: string
+          current_run_correlation_id: string | null
+          current_status: string
+          id: string
+          last_error_message: string | null
+          last_failure_at: string | null
+          last_invocation_id: string | null
+          last_run_at: string | null
+          last_success_at: string | null
+          suspended_at: string | null
+          suspended_by: string | null
+          suspension_reason: string | null
+          total_actions_recorded: number
+          total_escalations: number
+          total_failures: number
+          total_runs: number
+          total_successes: number
+          trust_score: number
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          consecutive_failures?: number
+          cooldown_until?: string | null
+          created_at?: string
+          current_run_correlation_id?: string | null
+          current_status?: string
+          id?: string
+          last_error_message?: string | null
+          last_failure_at?: string | null
+          last_invocation_id?: string | null
+          last_run_at?: string | null
+          last_success_at?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          suspension_reason?: string | null
+          total_actions_recorded?: number
+          total_escalations?: number
+          total_failures?: number
+          total_runs?: number
+          total_successes?: number
+          trust_score?: number
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          consecutive_failures?: number
+          cooldown_until?: string | null
+          created_at?: string
+          current_run_correlation_id?: string | null
+          current_status?: string
+          id?: string
+          last_error_message?: string | null
+          last_failure_at?: string | null
+          last_invocation_id?: string | null
+          last_run_at?: string | null
+          last_success_at?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          suspension_reason?: string | null
+          total_actions_recorded?: number
+          total_escalations?: number
+          total_failures?: number
+          total_runs?: number
+          total_successes?: number
+          trust_score?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_runtime_state_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: true
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "internal_agent_runtime_state_last_invocation_id_fkey"
+            columns: ["last_invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       investment_theses: {
         Row: {
@@ -14742,6 +15135,82 @@ export type Database = {
           vendor?: string
         }
         Relationships: []
+      }
+      supervisor_decisions: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          decided_by: string | null
+          decision_type: string
+          evidence_refs: Json
+          executed_at: string
+          id: string
+          new_state: Json | null
+          previous_state: Json | null
+          rationale: string
+          supervisor_key: string
+          target_action_id: string | null
+          target_agent_id: string | null
+          target_escalation_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          decided_by?: string | null
+          decision_type: string
+          evidence_refs?: Json
+          executed_at?: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          rationale?: string
+          supervisor_key: string
+          target_action_id?: string | null
+          target_agent_id?: string | null
+          target_escalation_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          decided_by?: string | null
+          decision_type?: string
+          evidence_refs?: Json
+          executed_at?: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          rationale?: string
+          supervisor_key?: string
+          target_action_id?: string | null
+          target_agent_id?: string | null
+          target_escalation_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supervisor_decisions_target_action_id_fkey"
+            columns: ["target_action_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_actions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supervisor_decisions_target_agent_id_fkey"
+            columns: ["target_agent_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_definitions"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "supervisor_decisions_target_escalation_id_fkey"
+            columns: ["target_escalation_id"]
+            isOneToOne: false
+            referencedRelation: "council_escalations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       support_access_grants: {
         Row: {
