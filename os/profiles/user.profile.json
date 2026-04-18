@@ -16,7 +16,8 @@
     "workspace",
     "app-store",
     "settings",
-    "notifications"
+    "notifications",
+    "search"
   ],
   "featureFlags": {
     "show.admin.nav": false,
