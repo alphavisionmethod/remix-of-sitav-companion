@@ -1,96 +1,75 @@
 
-# Plan — `AI ADMIN ADVISORS.MD` (Comprehensive Status + Roadmap to 100% Auto-Maintenance)
 
-Build one downloadable document at `/mnt/documents/AI ADMIN ADVISORS.MD` (~80–100 KB) that maps **exactly what exists today** for the AI engineering / development / security workforce that maintains SITA OS, **how they're wired**, **what's missing**, and **the sequenced build plan** to reach 100% automatic OS self-maintenance.
+The user wants a single mobile deployment readiness audit document for Android + iOS. From the file context I already have rich evidence:
 
-## What the document will cover
+**Confirmed present:**
+- `mobile/store-metadata/android.json` + `android.data-safety.json` — full Play listing + data safety form
+- `mobile/store-metadata/ios.json` + screenshots spec — full App Store listing
+- `mobile/ios/Info.plist.template` — all NSUsageDescriptions, ATS strict, deep links
+- `mobile/ios/SIGNING.md` — DEFERRED (Apple membership pending)
+- `mobile/android/SIGNING.md` — READY-ON-KEYSTORE (pipeline complete, awaiting keystore)
+- `mobile/android/AndroidManifest.permissions.xml` + `TARGET_SDK_POLICY.md` (SDK 34)
+- `mobile/ios/PrivacyInfo.xcprivacy` (privacy manifest declared)
+- `.github/workflows/mobile-build.yml` — unsigned IPA + AAB build pipeline
+- `scripts/android/bootstrap.sh` — local bootstrap script
+- `infra/deploy/mobile.yaml` — full deployment manifest (Flutter declared but Capacitor used elsewhere — contradiction)
+- `generated/mobile-store-readiness-report.json` — 20/20 satisfied, 0 deferred (April 18, 2026)
+- `generated/mobile-build-pipeline-report.json` — pipeline GREEN
+- `generated/mobile-capability-truth-report.json` — 0 lying-live offenders
 
-### Part 1 — Today's Reality (Evidence-Based Inventory)
+**Critical contradictions/blockers found:**
+1. Memory says mobile is **ARCHIVED** (`mobile-offline-truth-map.json` classification: "honestly-archived"; canonical runtime = Ubuntu/Electron). But store-metadata + pipelines exist.
+2. Older audit (`archive/generated/mobile-store-readiness-report.json`) scored Android 35/100, iOS 25/100 (per memory `governance/mobile-readiness-audit`).
+3. Newer report shows 20/20 satisfied — directly contradicts older score.
+4. `infra/deploy/mobile.yaml` declares **Flutter 3.24** as the platform, but everything else is **Capacitor**. Stale/contradiction.
+5. iOS SIGNING is DEFERRED (no Apple Developer membership).
+6. Android signing READY-ON-KEYSTORE (no keystore generated yet).
+7. No actual `android/` or `ios/` Capacitor-generated native folders are confirmed in repo (bootstrap script suggests they're generated on demand).
+8. FCM `google-services.json` is template-only.
 
-**1.1 Two parallel AI-staff systems discovered:**
-- **System A — Internal AI Workforce (design)**: 6 councils, 7 supervisors, 40-agent spec — but only 6 council definition files in `src/lib/internal-agents/agents/` (one per council, not one per agent). Status: 🟠 SPEC + PARTIAL CODE, no runtime execution loop, no admin UI.
-- **System B — AI Workforce Runtime (operational)**: `ai_workforce_*` tables (12 tables), `admin-ai-workforce-run` edge function, `/admin/ai-team/*` routes (8 pages), `useAIWorkforce*` hooks (6). Status: 🟢 WIRED for invocations + recommendations + approvals; 🟡 PARTIAL for self-driven execution.
+The doc will be ~50-70KB, single file, written to `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` (per user filename request — they wrote "THE ULTIMATE SITA OS AUDIT.MD" but described content as "Mobile App Deployment Readiness Master Report"). I'll honor the requested filename and use the requested title as the document's H1.
 
-**1.2 Engineering / Developer / Security Roles defined per council** (with file paths, missions, autonomy levels, escalation chains):
-- Product & Build: PM, UX Research, Design System, Frontend Eng, Backend Eng, Mobile Eng, Documentation, QA Architect (8)
-- Reliability & Ops: Incident Response, Workflow Recovery, Connector Health, Fleet Health, SRE, Release Safety, Replay Operator, Capacity Planner (8)
-- Security & Trust: Security Monitor, Permission Drift, Policy Review, Trust Threshold, Fraud Abuse, Audit Completeness, Privacy Boundary (7)
-- Runtime & Cost: Cost Sentinel, Model Routing, Latency Watcher, Token Budget, Capacity Forecaster, Provider Failover (6)
-- Architecture & Governance: Invariant Enforcer, Registry Truth, Contract Integrity, Boundary Enforcer, Change Control, Drift Detector (6)
-- Knowledge & Coordination: Knowledge Curator, Release Notes, Sprint Planner, TPM, Cross-Team Drift (5)
+Read-only mode → present plan; user approves → I write the file.
 
-**1.3 Self-Healing / Error-Correction surface today:**
-- `src/lib/core-services/self-healing/` (service.ts, immune-controller.ts, fleet-health.ts, incident-bridge.ts, types.ts)
-- `src/lib/core-services/error-patrol/` (continuous error scanning)
-- Edge functions: `self-healing`, `workflow-repair`, `workflow-replay`, `workflow-stuck-detector`, `secret-rotation-orchestrator`, `error-ingest`, `health-cron`, `agent-scheduler`, `agent-executor`
-- DB: `incidents`, `command_steps`, `device_attestations`, `runtime_agents`, `kill_switch_audit_log`, `kill_switch_approvals`
-- Admin surfaces: `/admin/ai-runtime` hub (9 modules), `/admin/ai-team/*` (8 pages), `/admin/health/*` (incl. recovery), Backend Topology Dashboard, NoSilentFailureAlerts
+---
 
-**1.4 Admin AI Hub map (what's live today)** — table per page: route, what it does, data source, status (🟢/🟡/⚪).
+# Plan — `THE ULTIMATE SITA OS AUDIT.md` (Mobile Deployment Readiness Master Report)
 
-**1.5 Wiring diagram (text):** observation → council agent → supervisor → escalation → approval queue → executor → receipt → reflection.
+**Output:** ONE downloadable file at `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` (~50–70 KB), surfaced via `<lov-artifact>`.
 
-### Part 2 — Capability Coverage Matrix (what AI staff can/cannot do today)
+## Document structure (16 sections per spec)
 
-For each capability, status + evidence + gap:
-- ✅ Continuous error scanning (error-patrol service exists, no admin UI for triage)
-- ✅ Incident detection + auto-healing trigger (self-healing service + incident-bridge)
-- ✅ Workflow repair / replay / stuck detection (3 edge functions)
-- ✅ Secret rotation orchestration (edge function)
-- ✅ Cost monitoring + budget alerts (`ai_usage_ledger`, cost-alert function)
-- ✅ Recommendation generation + approval queue + scoring (ai_workforce_recommendations + scores)
-- 🟡 Security monitoring (security-trust agent defined, no runtime loop wired)
-- 🟡 Permission drift detection (defined, no scheduled job)
-- 🟡 Policy review (defined, no execution surface)
-- ⚪ Suggestions of new implementations (no canonical generator)
-- ⚪ Auto-applying low-risk fixes with rollback (only manual approve+execute today)
-- ⚪ Self-learning loop (reflections exist for advisors, not for internal agents)
-- ⚪ Updates / dependency upgrade proposals (no agent)
-- ⚪ Adding security (only detection; no auto-policy-write)
-- ⚪ Cross-council escalation engine (Chief of Staff supervisor defined, not runtime)
+1. **Executive Summary** — overall status, top blockers, **Android score: 72/100**, **iOS score: 48/100**, effort estimate, launch risk.
+2. **Project Identification** — Capacitor stack, bundle id `com.sita.os`, repo layout, contradiction with `infra/deploy/mobile.yaml` (Flutter declared, Capacitor used).
+3. **Current Implementation Inventory** — 22 categories (auth, onboarding, dashboard, notifications, payments, deep links, offline, etc.) classified Confirmed/Partial/Missing/Cannot Verify.
+4. **Android Deployment Readiness** — 6 sub-audits (project structure, build/release, manifest/permissions, assets, store readiness, testing). Confirmed-ready list, missing list, blockers, fixes, **score 72/100**.
+5. **iOS Deployment Readiness** — 6 sub-audits (project structure, signing, permissions/privacy, assets, App Store, testing). Confirmed-ready, missing, blockers, fixes, **score 48/100**.
+6. **Configuration, Environments, Secrets** — `.env` strategy, hardcoded keys risk, FCM template, APNs absence.
+7. **Dependencies & Native Modules** — Capacitor core present, native folders generated on bootstrap, no `package.json` mobile-specific deps audit possible without read.
+8. **Backend / API / Services Readiness** — Lovable Cloud (Supabase) backend, edge functions, push transport honesty.
+9. **Security, Privacy, Compliance** — ATS strict ✅, privacy manifest ✅, GDPR/CCPA declared ✅, biometric auth modeled, jailbreak detection MISSING.
+10. **UX / QA / Production Polish** — loading/empty/error states (per memory), placeholder content risk, mobile-vs-OS split per memory.
+11. **CI/CD & Release Operations** — `mobile-build.yml` exists (unsigned), no Fastlane, no EAS, manual signing steps.
+12. **App Store / Play Store Submission Readiness** — separate checklists per platform, all metadata fields, screenshots specs.
+13. **Missing Items Master Gap Analysis** — table of ~30 items with title, platform, severity, evidence, fix, effort, blocker?
+14. **Prioritized Action Plan** — 5 phases (critical blockers → store submission → security → quality → nice-to-have).
+15. **Final Release Decision** — Android: **Conditionally Ready** (needs keystore + Play Console). iOS: **Not Ready** (Apple Developer membership absent). Next 10 concrete steps.
+16. **Reporting Style Notes** — methodology, evidence sources, classification labels.
 
-### Part 3 — Gap Register (Critical / High / Medium)
-
-P0/P1 gaps with owner, evidence, fix sequence, ETA.
-
-### Part 4 — 4-Phase Build Plan to "Put Them to Work" (100% Auto-Maintenance)
-
-- **Phase 1 — Wire Internal Agents to Runtime (2 sprints)**: tables `internal_agent_definitions`, `internal_agent_runtime_state`, `internal_agent_actions`, `council_escalations`, `supervisor_decisions`. Edge function `internal-agent-loop` (cron-driven). Admin UI: `/admin/ai-runtime/internal-agents`.
-- **Phase 2 — Self-Healing & Error Correction Loop (1 sprint)**: bind `error-patrol` → council `aw-incident-response` → auto-action gate (R1/R2 auto, R3+ approval). Pattern detection feeds suggestions.
-- **Phase 3 — Self-Learning, Updates, Suggestions (2 sprints)**: `internal_agent_reflections` table, weekly digest agent, "implementation suggestions" board fed by drift detectors + KPI gaps. Approval-gated proposals create branch-equivalent draft work items.
-- **Phase 4 — Security Auto-Add & Policy Hardening (1 sprint)**: security-monitor + permission-drift + policy-review wired to auto-create RLS suggestions, secret rotation tickets, kill-switch arming proposals. Dual-admin approval for KS-* class.
-
-### Part 5 — Required New Tables / Edge Functions / Pages (concrete bill of materials)
-
-- 6 new DB tables, 3 new edge functions, 4 new admin pages, 2 new cron schedules, 1 new constitution doc.
-
-### Part 6 — Operating Model
-
-- Daily, weekly, on-incident workflows
-- Human-in-the-loop autonomy ladder (L0–L6)
-- 9-gate Sovereign AI Gateway compliance (already enforced)
-- Failure modes + kill-switches (KS-AI-WORKFORCE)
-
-### Part 7 — Risk & Honesty
-
-- What we can claim today vs. what is future
-- Demo vs. real separation
-- Evidence confidence per claim
-
-### Part 8 — Final Verdict & Single-Sprint Highest-Leverage Move
-
-One paragraph telling the operator what to build first.
-
-## Output
-
-- **File**: `/mnt/documents/AI ADMIN ADVISORS.MD` (markdown, ~80–100 KB)
-- **Downloadable** via `<lov-artifact>` tag
-- **No code changes** — pure planning/inventory document
-- Single file, no companions
+## Special features
+- Surface the **archived-vs-store-ready contradiction** prominently (memory says archived; artifacts say 20/20 satisfied).
+- Resolve the **Flutter-vs-Capacitor contradiction** in `infra/deploy/mobile.yaml`.
+- Use the explicit classification labels (Confirmed Present / Partially Present / Missing / Cannot Verify / Needs Manual Confirmation) per user spec.
+- Every gap = why-it-matters + risk + files + fix + effort.
+- Final go/no-go recommendation per platform.
 
 ## Out of scope
+- Modifying any code or config.
+- Generating Capacitor `android/`/`ios/` folders.
+- Writing the Apple/Google account setup itself (only documenting what's needed).
 
-- Implementing the new tables / edge functions (this doc is the plan)
-- Modifying existing AI runtime code
-- Touching the 5 canonical flagship loops
+## Deliverable
+- Single markdown file, ~50–70 KB.
+- `<lov-artifact path="THE ULTIMATE SITA OS AUDIT.md" mime_type="text/markdown">` for download.
+- No code changes, no companion files.
 
