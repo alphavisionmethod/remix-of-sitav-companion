@@ -1,17 +1,39 @@
 # SRC_LIB Wrapper Removal Status
 
-_Last updated: Wave 9 complete — architecture layer fully migrated to canonical home_
+_Last updated: Wave 10 complete — sync-engine layer fully migrated to canonical home_
 
 ## Cumulative Summary
 
-| Metric | Wave 7 End | Wave 8 End | **Wave 9 End** |
+| Metric | Wave 8 End | Wave 9 End | **Wave 10 End** |
 |---|---|---|---|
 | `@lovable:migrated-wrapper` files | 0 | 0 | **0** |
 | TS errors | 0 | 0 | **0** |
-| Vite build | ✅ 57s | ✅ 53s | **✅ 52.5s** |
-| `src/lib` top-level entries | 97 | 96 | **95** |
-| `src/lib/architecture` files | 47 | 47 | **0 (deleted)** |
-| `src/platform/architecture` files | 1 | 1 | **46** |
+| Vite build | ✅ 53s | ✅ 52.5s | **✅ 53.7s** |
+| `src/lib` top-level entries | 96 | 95 | **94** |
+| `src/lib/sync-engine` files | 38 | 38 | **0 (deleted)** |
+| `src/platform/sync-engine` files | 0 | 0 | **38** |
+
+## Wave 10 — Sync-Engine Folder Promotion ✅
+
+**Folder:** `src/lib/sync-engine/` → `src/platform/sync-engine/`
+
+### Steps Executed
+1. **Conflict scan:** Verified zero file-name collisions — no pre-existing `src/platform/sync-engine/` directory; the unrelated `src/platform/sync/` barrel was left untouched (different concern).
+2. **Physical migration:** Moved all 38 files preserving the 7-subfolder structure (`adapters/`, `collaboration/`, `ecosystem/`, `governance/`, `operations/`, `security/`, `transport/`) plus 9 root files (`syncd.ts`, `delta-engine.ts`, `conflict-resolver.ts`, `sync-state-machine.ts`, `sync-object-model.ts`, `sync-namespaces.ts`, `sync-notifications.ts`, `app-sdk.ts`, `index.ts`).
+3. **Bulk rewire:** Single sed pass rewrote 11 consumer files from `@/lib/sync-engine/*` → `@/platform/sync-engine/*`.
+4. **Folder deletion:** `src/lib/sync-engine/` removed atomically.
+
+### Verification
+
+```
+$ grep -rn "@/lib/sync-engine" src   → 0 hits
+$ npx tsc --noEmit                   → 0 errors
+$ npx vite build                     → ✅ built in 53.72s
+```
+
+## Architectural Position
+
+The sync-engine layer (Sync daemon `syncd`, delta/conflict resolution, state machine, object model, namespaces, notifications, app-SDK, plus 5 adapters, 4 collaboration modules, 4 ecosystem modules, 4 governance modules, 4 operations modules, 4 security modules, 4 transport modules) is now fully co-located under `src/platform/sync-engine/` per the **Canonical Ownership Model** (Layer 3 platform service: Sync).
 
 ## Wave 9 — Architecture Folder Promotion ✅
 
