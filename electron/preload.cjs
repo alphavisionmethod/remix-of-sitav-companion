@@ -1,6 +1,26 @@
 const { contextBridge, ipcRenderer } = require('electron');
+const fs = require('fs');
+const path = require('path');
+
+// ── Bridge contract version (see docs/os/ELECTRON_PRELOAD_CONTRACT.md) ──
+const BRIDGE_VERSION = '1.0.0';
+
+// ── Heartbeat: liveness signal consumed by os/runtime/check-shell-health.sh
+// Writes mtime every 5s. Stale > 30s = renderer hung → exit code 14.
+const HEARTBEAT_PATH = process.env.SITA_HEARTBEAT_PATH || '/var/lib/sita/state/shell-heartbeat';
+function writeHeartbeat() {
+  try {
+    fs.mkdirSync(path.dirname(HEARTBEAT_PATH), { recursive: true });
+    const tmp = `${HEARTBEAT_PATH}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, String(Date.now()));
+    fs.renameSync(tmp, HEARTBEAT_PATH);
+  } catch { /* read-only fs in dev / sandbox — ignore */ }
+}
+writeHeartbeat();
+setInterval(writeHeartbeat, 5000).unref?.();
 
 contextBridge.exposeInMainWorld('electron', {
+  bridgeVersion: BRIDGE_VERSION,
   platform: process.platform,
 
   // ── System ──────────────────────────────────────────────────

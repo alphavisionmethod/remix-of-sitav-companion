@@ -10,9 +10,15 @@ const UPDATE_SCRIPTS = [
   "os/scripts/build-update-bundle.sh",
   "os/scripts/verify-update-bundle.sh",
   "os/scripts/rollback-to-previous.sh",
+  "os/scripts/check-update-state.sh",
 ];
 const UPDATE_DIRS = ["os/update"];
-const UPDATE_DOCS = ["docs/os/UPDATE_AND_ROLLBACK_STRATEGY.md", "docs/os/ROLLBACK_STRATEGY.md"];
+const UPDATE_DOCS = [
+  "docs/os/UPDATE_AND_ROLLBACK_STRATEGY.md",
+  "docs/os/ROLLBACK_STRATEGY.md",
+  "docs/os/runbooks/failed-update.md",
+  "docs/os/runbooks/rollback-failure.md",
+];
 
 for (const s of UPDATE_SCRIPTS) if (!existsSync(s)) issues.push({ severity: "error", area: "scripts", message: `Missing update script: ${s}` });
 for (const d of UPDATE_DIRS) if (!existsSync(d)) issues.push({ severity: "error", area: "layout", message: `Missing dir: ${d}` });

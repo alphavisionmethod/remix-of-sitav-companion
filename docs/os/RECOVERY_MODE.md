@@ -12,6 +12,7 @@
 
 | Command | Canonical script | Purpose |
 |---|---|---|
+| `sita-ops` | `os/bin/sita-ops` | Single operator entrypoint (status / repair / rollback / support-bundle) |
 | `sita-recovery` | `os/recovery/recovery-entry.sh` → `os/image-builder/recovery/sita-recovery.sh menu` | Recovery TUI |
 | `sita-recovery-status` | `os/recovery/recovery-status.sh` | Print + JSON snapshot of boot/update/verity/shell state |
 | `sita-recovery-collect` | `os/recovery/recovery-collect.sh` | Generate support bundle from recovery |
@@ -21,6 +22,19 @@
 | `sita-safe-mode` | `os/image-builder/recovery/safe-mode.sh` | Start runtime without Electron extensions |
 | `sita-verify` | `veritysetup verify sita_root` | Verify the active slot |
 | `cryptsetup` | system | Unlock `/var` and `/home` for read-only inspection |
+
+## Repair toolkit
+
+For common failures, prefer the targeted repair scripts (all idempotent):
+
+| Failure | Command | What it does |
+|---|---|---|
+| Shell crash loop | `sudo sita-ops repair shell` | Clears safe-mode marker, restarts `sita-runtime` |
+| First-boot incomplete | `sudo sita-ops repair first-boot` | Re-runs `deploy/first-boot.sh`, validates marker |
+| Stuck/failed update | `sudo sita-ops repair update-state [--mark-bad]` | Cleans staging, optionally prepares rollback |
+| Failed daemons | `sudo sita-ops repair runtime-services` | Restarts `sita-*` units in dependency order |
+
+See `docs/os/runbooks/` for end-to-end procedures.
 
 ## Fallback shell (Electron crash)
 
