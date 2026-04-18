@@ -5,7 +5,7 @@ import {
   recordModelSpend,
   setModelBudget,
   resetDailySpend,
-} from "@/lib/services/brain-core/model-router";
+} from "@/lib/core-services/brain-core/model-router";
 
 describe("Budget-Aware Model Router", () => {
   beforeEach(() => {

@@ -10,18 +10,18 @@ import {
   routeApproval,
   canDelegate,
   getNextDelegate,
-} from "@/lib/services/approval-engine/approval-routing.service";
+} from "@/lib/core-services/approval-engine/approval-routing.service";
 import {
   getEscalationConfig,
   shouldEscalate,
   getNextEscalationTarget,
   createMultiStepApproval,
   advanceMultiStep,
-} from "@/lib/services/approval-engine/escalation-rules.service";
+} from "@/lib/core-services/approval-engine/escalation-rules.service";
 import {
   recordApproval,
   computeMetrics,
-} from "@/lib/services/approval-engine/approval-history.service";
+} from "@/lib/core-services/approval-engine/approval-history.service";
 
 describe("Approval Engine — Requests", () => {
   it("creates an approval request with correct defaults", () => {
