@@ -6,7 +6,7 @@
 import type { SitaEvent } from "@/packages/event-types";
 import type { EventEnvelope } from "./event-envelope";
 import { persistEvent, persistDeadLetter as persistDeadLetterEntry } from "@/data/persistence/event-bus-persistence";
-import type { BusEvent, DeadLetterEntry } from "@/lib/core-services/event-bus";
+import type { BusEvent, DeadLetterEntry } from "@/platform/core-services/event-bus";
 
 type EventHandler = (event: SitaEvent, envelope: EventEnvelope) => void;
 

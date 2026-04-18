@@ -3,7 +3,7 @@
 // Subscribes to domain signals and routes to registered advisors
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus, type BusEvent } from "@/lib/core-services/event-bus";
+import { getEventBus, type BusEvent } from "@/platform/core-services/event-bus";
 import { getAdvisorsForSignal, getBoardroomWorthinessScore, type AdvisorRegistryEntry } from "./advisor-routing-registry";
 import type { DomainSignal, AdvisorOutputPacket, TransmissionLogEntry } from "./types";
 

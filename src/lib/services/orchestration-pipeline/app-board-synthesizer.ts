@@ -3,7 +3,7 @@
 // Collects advisor outputs per domain and produces synthesis
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus, type BusEvent } from "@/lib/core-services/event-bus";
+import { getEventBus, type BusEvent } from "@/platform/core-services/event-bus";
 import type { AdvisorOutputPacket, AppBoardSynthesis, AdvisorPosition, Domain } from "./types";
 
 const syntheses: Map<Domain, AppBoardSynthesis> = new Map();

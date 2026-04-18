@@ -3,7 +3,7 @@
 // End-to-end verification of the orchestration pipeline
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus } from "@/lib/core-services/event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 import { createDomainSignal, emitDomainSignal, getTransmissionLog } from "./signal-emitter";
 import { getAdvisorOutputs } from "./module-advisor-consumer";
 import { getSynthesisForDomain } from "./app-board-synthesizer";

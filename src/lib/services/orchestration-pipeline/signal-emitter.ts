@@ -3,7 +3,7 @@
 // Publishes structured domain signals to the event bus
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus } from "@/lib/core-services/event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 import type { DomainSignal, TransmissionLogEntry } from "./types";
 
 const transmissionLog: TransmissionLogEntry[] = [];
