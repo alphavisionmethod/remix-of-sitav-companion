@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T01:52:46.233Z
-> Verdict: **RED** ❌
+> Generated: 2026-04-18T01:53:02.113Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
 | Gates required | 11 |
-| Gates present  | 10 |
-| Gates missing  | 1 |
+| Gates present  | 11 |
+| Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 1 |
 
@@ -26,12 +26,12 @@
 | `os-support-bundle-readiness` | ✅ | 0 | 1 |
 | `native-observability-readiness` | ✅ | 0 | 0 |
 | `deployment-profile-coverage` | ✅ | 0 | 0 |
+| `route-plane-coverage` | ✅ | 0 | 0 |
 | `5-plane-boundaries` | ✅ | 0 | 0 |
-| `route-plane-coverage` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 1 missing gate(s).
+⚠️ All required gates passed, but 1 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

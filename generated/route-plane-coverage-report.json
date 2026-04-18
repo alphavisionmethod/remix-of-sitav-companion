@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-18T01:53:00.579Z",
+  "gate": "route-plane-coverage",
+  "scannedRoutes": 54,
+  "coveredRoutes": 54,
+  "uncoveredRoutes": [],
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0
+}

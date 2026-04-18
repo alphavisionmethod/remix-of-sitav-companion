@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T01:52:46.233Z",
+  "generatedAt": "2026-04-18T01:53:02.113Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -67,6 +67,13 @@
       "warnings": 0
     },
     {
+      "file": "generated/route-plane-coverage-report.json",
+      "gate": "route-plane-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/5-plane-boundaries-report.json",
       "gate": "5-plane-boundaries",
       "ok": true,
@@ -76,9 +83,7 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 1,
-  "missingGates": [
-    "route-plane-coverage"
-  ],
-  "ok": false,
-  "verdict": "RED"
+  "missingGates": [],
+  "ok": true,
+  "verdict": "YELLOW"
 }
