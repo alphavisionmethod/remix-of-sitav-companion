@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { DeviceTrustRecordRow, MicroApprovalPolicyRow, DeviceApprovalReceiptRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 
 export default function DWE05DeviceTrustApprovalsCenter() {
   const { user } = useAuth();
@@ -47,6 +48,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
+      <DemoOnlyBanner surfaceId="DWE05" />
 <div>
         <h1 className="text-2xl font-bold text-foreground">DWE05 — Device Trust & Approvals Center</h1>
         <p className="text-muted-foreground">Trusted devices, device-bound approvals, biometric escalation, security posture.</p>
