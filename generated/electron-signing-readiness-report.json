@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-18T02:18:09.661Z",
+  "gate": "electron-signing-readiness",
+  "phase": "phase-14-production-launch-hardening",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "signingStatus": {
+    "macos": {
+      "scaffold": true,
+      "tier": "deferred-on-cert"
+    },
+    "windows": {
+      "scaffold": true,
+      "tier": "deferred-on-cert"
+    },
+    "linux": {
+      "scaffold": true,
+      "tier": "ready"
+    }
+  },
+  "artifactSlots": {
+    "macCertsBase64": "MAC_CERTS",
+    "macCertsPassword": "MAC_CERTS_PASSWORD",
+    "appleId": "APPLE_ID",
+    "appleIdPassword": "APPLE_ID_PASSWORD",
+    "appleTeamId": "APPLE_TEAM_ID",
+    "windowsPfxBase64": "WINDOWS_PFX",
+    "windowsPfxPassword": "WINDOWS_PFX_PASSWORD"
+  },
+  "issues": []
+}
