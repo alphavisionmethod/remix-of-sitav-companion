@@ -478,6 +478,13 @@ async function runAgent(
         total_runs: (state?.total_runs ?? 0) + 1,
       })
       .eq("agent_id", def.agent_id);
+    return {
+      agentId: def.agent_id,
+      status: "error",
+      reason: e instanceof Error ? e.message : String(e),
+      durationMs: Date.now() - startedAt,
+    };
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
