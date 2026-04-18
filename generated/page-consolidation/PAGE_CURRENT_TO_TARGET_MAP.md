@@ -1,5 +1,5 @@
 # Page Current → Target Map
-> Generated: 2026-04-18T11:40:53.743Z
+> Generated: 2026-04-18T11:43:37.839Z
 > Source: `scripts/architecture/audits/page-consolidation-audit.ts`
 > Status: **read-only audit** (Phase 0). Zero code/route changes.
 
@@ -479,7 +479,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `KernelDashboard` | _(unmounted)_ | `/admin/verification/ernel` | DETAIL_EXPLORER |  |  | 2061 |
 | `ServiceIdentityAdmin` | _(unmounted)_ | `/admin/verification/ervice-identity-admin` | DETAIL_EXPLORER |  |  | 129 |
 | `DesktopHostCapabilityExplorer` | _(unmounted)_ | `/admin/verification/esktop-host-capability-explorer` | DETAIL_EXPLORER |  |  | 129 |
-| `V06EvidenceExplorer` | _(unmounted)_ | `/admin/verification/evidence` | DETAIL_EXPLORER | ✓ |  | 138 |
+| `V06EvidenceExplorer` | _(unmounted)_ | `/admin/verification/evidence` | DETAIL_EXPLORER | ✓ |  | 6 |
 | `AR06ExecutionTraceExplorer` | _(unmounted)_ | `/admin/verification/execution-trace-explorer` | DETAIL_EXPLORER |  |  | 137 |
 | `CJ01ExecutiveReport` | _(unmounted)_ | `/admin/verification/executive-report` | DETAIL_EXPLORER |  |  | 360 |
 | `V05FailureTriageBoard` | _(unmounted)_ | `/admin/verification/failure-triage` | WORKFLOW_TOOL | ✓ |  | 79 |
@@ -487,15 +487,15 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `ChangeImpactAnalyzer` | _(unmounted)_ | `/admin/verification/hange-impact-analyzer` | DETAIL_EXPLORER |  |  | 120 |
 | `TimeToTruthDashboard` | _(unmounted)_ | `/admin/verification/ime-to-truth` | DETAIL_EXPLORER |  |  | 94 |
 | `SimulatedCoreServicesBoard` | _(unmounted)_ | `/admin/verification/imulated-core-services-board` | DETAIL_EXPLORER |  |  | 80 |
-| `V02InteractionCoverageBoard` | _(unmounted)_ | `/admin/verification/interaction-coverage` | SECONDARY_SUBVIEW | ✓ |  | 177 |
+| `V02InteractionCoverageBoard` | _(unmounted)_ | `/admin/verification/interaction-coverage` | SECONDARY_SUBVIEW | ✓ |  | 6 |
 | `CJ03JourneyDetailView` | _(unmounted)_ | `/admin/verification/journey-detail-view` | DETAIL_EXPLORER |  |  | 224 |
 | `CJ02JourneyTruthMatrix` | _(unmounted)_ | `/admin/verification/journey-truth-matrix` | DETAIL_EXPLORER |  |  | 201 |
 | `AR08KillSwitchCenter` | _(unmounted)_ | `/admin/verification/kill-switch` | DETAIL_EXPLORER |  |  | 152 |
 | `CJ04LaunchBlockerView` | _(unmounted)_ | `/admin/verification/launch-blocker-view` | DETAIL_EXPLORER |  |  | 256 |
-| `V07LaunchBlockerBoard` | _(unmounted)_ | `/admin/verification/launch-blockers` | SECONDARY_SUBVIEW | ✓ |  | 158 |
+| `V07LaunchBlockerBoard` | _(unmounted)_ | `/admin/verification/launch-blockers` | SECONDARY_SUBVIEW | ✓ |  | 6 |
 | `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 104 |
 | `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 210 |
-| `V04ModeVerificationBoard` | _(unmounted)_ | `/admin/verification/mode-verification` | SECONDARY_SUBVIEW | ✓ |  | 66 |
+| `V04ModeVerificationBoard` | _(unmounted)_ | `/admin/verification/mode-verification` | SECONDARY_SUBVIEW | ✓ |  | 6 |
 | `FIPIntakeDesk` | _(unmounted)_ | `/admin/verification/ntake-desk` | DETAIL_EXPLORER |  |  | 168 |
 | `InvestorProofLedger` | _(unmounted)_ | `/admin/verification/nvestor-proof-ledger` | DETAIL_EXPLORER |  |  | 215 |
 | `MockEliminationCenter` | _(unmounted)_ | `/admin/verification/ock-elimination` | DETAIL_EXPLORER |  |  | 111 |
@@ -523,7 +523,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `RouteRealityHeatmap` | _(unmounted)_ | `/admin/verification/oute-reality-heatmap` | DETAIL_EXPLORER |  |  | 80 |
 | `RouteSourceDiagnostics` | _(unmounted)_ | `/admin/verification/oute-source-diagnostics` | DETAIL_EXPLORER |  |  | 110 |
 | `CJ07OwnerRemediationView` | _(unmounted)_ | `/admin/verification/owner-remediation-view` | DETAIL_EXPLORER |  |  | 94 |
-| `V03P0JourneyBoard` | _(unmounted)_ | `/admin/verification/p0-journeys` | SECONDARY_SUBVIEW | ✓ |  | 269 |
+| `V03P0JourneyBoard` | _(unmounted)_ | `/admin/verification/p0-journeys` | SECONDARY_SUBVIEW | ✓ |  | 6 |
 | `FIPSpecStudio` | _(unmounted)_ | `/admin/verification/pec-studio` | DETAIL_EXPLORER |  |  | 99 |
 | `MCApprovalFlow` | _(unmounted)_ | `/admin/verification/pproval-flow` | DETAIL_EXPLORER |  |  | 5 |
 | `META04ProductReality` | _(unmounted)_ | `/admin/verification/product-reality` | DETAIL_EXPLORER |  |  | 260 |
@@ -538,7 +538,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `TruthIndexDashboard` | _(unmounted)_ | `/admin/verification/ruth-index` | DETAIL_EXPLORER |  |  | 105 |
 | `AR02ScheduledJobRegistry` | _(unmounted)_ | `/admin/verification/scheduled-job-registry` | DETAIL_EXPLORER |  |  | 100 |
 | `AR03SelfHealingBoard` | _(unmounted)_ | `/admin/verification/self-healing-board` | DETAIL_EXPLORER |  |  | 109 |
-| `V01SurfaceInventoryBoard` | _(unmounted)_ | `/admin/verification/surface-inventory` | SECONDARY_SUBVIEW | ✓ |  | 132 |
+| `V01SurfaceInventoryBoard` | _(unmounted)_ | `/admin/verification/surface-inventory` | SECONDARY_SUBVIEW | ✓ |  | 10 |
 | `SYS01SystemIntelligence` | _(unmounted)_ | `/admin/verification/system-intelligence` | DETAIL_EXPLORER |  |  | 703 |
 | `AR05SystemMaintenanceBoard` | _(unmounted)_ | `/admin/verification/system-maintenance-board` | DETAIL_EXPLORER |  |  | 104 |
 | `QualityFloorDashboard` | _(unmounted)_ | `/admin/verification/uality-floor` | DETAIL_EXPLORER |  |  | 88 |

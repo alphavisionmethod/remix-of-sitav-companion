@@ -1,5 +1,5 @@
 # Page Verification Results
-> Generated: 2026-04-18T11:41:06.902Z
+> Generated: 2026-04-18T11:43:50.703Z
 > Source: `scripts/architecture/audits/page-verification-runner.ts`
 > Status: ✅ **ALL CHECKS PASS**
 
@@ -7,14 +7,14 @@
 
 | Check | Result | Duration |
 |---|---|---:|
-| `audit` | ✅ pass | 2086ms |
-| `admin-classification-coverage` | ✅ pass | 1999ms |
-| `admin-domain-budget` | ✅ pass | 1898ms |
-| `admin-route-coherence` | ✅ pass | 2092ms |
-| `redirect-coverage` | ✅ pass | 1968ms |
-| `experimental-isolation` | ✅ pass | 2076ms |
-| `page-registry-completeness` | ✅ pass | 2269ms |
-| `typecheck` | ✅ pass | 797ms |
+| `audit` | ✅ pass | 2177ms |
+| `admin-classification-coverage` | ✅ pass | 2185ms |
+| `admin-domain-budget` | ✅ pass | 1982ms |
+| `admin-route-coherence` | ✅ pass | 1996ms |
+| `redirect-coverage` | ✅ pass | 1972ms |
+| `experimental-isolation` | ✅ pass | 1896ms |
+| `page-registry-completeness` | ✅ pass | 1975ms |
+| `typecheck` | ✅ pass | 792ms |
 
 ## Per-check tail output
 
@@ -87,33 +87,26 @@ Registered: 22
 ```
 
 
-## Phase 7 Closure — Bundle Hygiene
+## Phase 5 — Wave 1 Shipped (Verification sub-boards)
 
-The consolidation layer now ships with plane-keyed chunk boundaries
-configured in `vite.config.ts`:
+Six pages classified `SECONDARY_SUBVIEW` with curated `targetRoute`s
+were physically relocated to their canonical home and replaced with
+thin re-export shims so all current importers (route registry,
+verification index barrel, vitest batches) keep working.
 
-| Chunk pattern | Purpose |
+| Old path (now shim) | Canonical home |
 |---|---|
-| `admin-mod-<domain>` | One chunk per `src/admin/modules/<domain>/` hub family |
-| `admin-legacy-pages` | Holds remaining `src/pages/admin/*.tsx` until Phase 5 waves migrate them |
-| `admin-router` | Isolates `AdminRoutes.tsx` (446 routes) from user-bundle |
-| `feature-<domain>` | Each user-domain shell in its own chunk |
-| `feature-investment-office` | Largest user surface (121 routes) isolated |
-| `platform-architecture` | Truth registries kept out of user bundles |
+| `src/pages/admin/verification/V01SurfaceInventoryBoard.tsx` | `src/admin/modules/verification/views/V01SurfaceInventoryBoard.tsx` |
+| `src/pages/admin/verification/V02InteractionCoverageBoard.tsx` | `src/admin/modules/verification/views/V02InteractionCoverageBoard.tsx` |
+| `src/pages/admin/verification/V03P0JourneyBoard.tsx` | `src/admin/modules/verification/views/V03P0JourneyBoard.tsx` |
+| `src/pages/admin/verification/V04ModeVerificationBoard.tsx` | `src/admin/modules/verification/views/V04ModeVerificationBoard.tsx` |
+| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | `src/admin/modules/verification/views/V06EvidenceExplorer.tsx` |
+| `src/pages/admin/verification/V07LaunchBlockerBoard.tsx` | `src/admin/modules/verification/views/V07LaunchBlockerBoard.tsx` |
 
-This guarantees an operator opening `/admin/security` does not download
-`/admin/ai-runtime`, and an end user never downloads admin code at all.
+A new barrel `src/admin/modules/verification/views/index.ts` exposes
+the canonical imports. Future waves should follow this exact pattern
+(copy → shim → barrel → verify) per domain so each is independently
+revertible by deleting the canonical file and inlining the shim.
 
-## Final State
-
-- ✅ Phase 0 — Truth Baseline shipped
-- ✅ Phase 1 — 100% admin classification coverage (539/539)
-- ✅ Phase 2 — Redirect & Alias layer live (admin + user)
-- ✅ Phase 3 — Canonical hubs governed by `check-admin-domain-budget` (≤12)
-- ✅ Phase 4 — `InvestmentShellPage` scaffold + user-domain consolidation doc
-- ⏸ Phase 5 — Per-domain physical migration: governed and ready, executes in independent revertible waves
-- ✅ Phase 6 — Experimental isolation gate live
-- ✅ Phase 7 — Verification runner + plane-keyed chunking complete
-
-Every legacy URL still resolves. Zero functionality removed. System is
-deployment-ready.
+**Wave 1 status:** ✅ 8/8 verification gates pass, TypeScript clean,
+zero broken imports, zero route changes.
