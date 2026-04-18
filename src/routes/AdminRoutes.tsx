@@ -198,6 +198,10 @@ const CrossCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/CrossCounc
 const SLOObservabilityBoard = lazy(() => import("@/pages/admin/ai-runtime/SLOObservabilityBoard"));
 const OwnerCopilotBriefings = lazy(() => import("@/pages/admin/ai-runtime/OwnerCopilotBriefings"));
 const TenantFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/TenantFederationBoard"));
+// ── Phase 8: Continuous Assurance, External API, Knowledge Federation ──
+const AssuranceChaosBoard = lazy(() => import("@/pages/admin/ai-runtime/AssuranceChaosBoard"));
+const ExternalWorkforceApiBoard = lazy(() => import("@/pages/admin/ai-runtime/ExternalWorkforceApiBoard"));
+const KnowledgeFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/KnowledgeFederationBoard"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
@@ -252,6 +256,9 @@ export function getAdminRoutes() {
     <Route key="ws-airuntime-observatory" path="/admin/ai-runtime/observatory" element={gated("audit.view", <SLOObservabilityBoard />)} />,
     <Route key="ws-airuntime-owner-copilot" path="/admin/ai-runtime/owner-copilot" element={gated("audit.view", <OwnerCopilotBriefings />)} />,
     <Route key="ws-airuntime-tenant-federation" path="/admin/ai-runtime/tenant-federation" element={gated("flags.rollout", <TenantFederationBoard />)} />,
+    <Route key="ws-airuntime-assurance" path="/admin/ai-runtime/assurance" element={gated("audit.view", <AssuranceChaosBoard />)} />,
+    <Route key="ws-airuntime-external-api" path="/admin/ai-runtime/external-api" element={gated("flags.rollout", <ExternalWorkforceApiBoard />)} />,
+    <Route key="ws-airuntime-federation" path="/admin/ai-runtime/federation" element={gated("flags.rollout", <KnowledgeFederationBoard />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
