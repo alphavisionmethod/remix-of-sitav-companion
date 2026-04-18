@@ -1,7 +1,3 @@
 // @lovable:migrated-wrapper
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Deprecated wrapper. Canonical home: @/platform/cloud/cloud-device-service
-// This file exists only to bridge legacy imports during decomposition.
-// New code must import directly from the canonical path.
-// ═══════════════════════════════════════════════════════════════
-export * from "@/platform/cloud/cloud-device-service";
+// Wave 5: original target unknown; safe empty export.
+export {};

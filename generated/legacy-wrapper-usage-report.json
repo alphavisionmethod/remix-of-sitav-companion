@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T03:07:38.043Z",
+  "generatedAt": "2026-04-18T03:37:42.083Z",
   "gate": "legacy-wrapper-usage",
-  "scannedFiles": 3081,
-  "totalLegacyImports": 1499,
-  "distinctLegacyPaths": 588,
+  "scannedFiles": 3102,
+  "totalLegacyImports": 1518,
+  "distinctLegacyPaths": 603,
   "topPaths": [
     {
       "path": "@/lib/supabase-helpers",
@@ -95,13 +95,24 @@
     },
     {
       "path": "@/lib/types/relation-parsers",
-      "count": 8,
+      "count": 9,
       "topConsumers": [
+        "src/domains/types/relation-parsers.ts",
         "src/pages/admin/AR06ExecutionTraceExplorer.tsx",
         "src/pages/admin/AR07RetryFailureCenter.tsx",
         "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx",
-        "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx",
-        "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx"
+        "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/types/dwe-types",
+      "count": 8,
+      "topConsumers": [
+        "src/domains/types/dwe-types.ts",
+        "src/pages/admin/DWE01ConnectedDevicesCenter.tsx",
+        "src/pages/admin/DWE02PresenceContinuityCenter.tsx",
+        "src/pages/admin/DWE03WearableSignalsCenter.tsx",
+        "src/pages/admin/DWE04NotificationRoutingStudio.tsx"
       ]
     },
     {
@@ -201,17 +212,6 @@
         "src/pages/admin/AIT03TaskInvocation.tsx",
         "src/pages/admin/AIT04to08Boards.tsx",
         "src/pages/admin/AIT05CostEfficiency.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/types/dwe-types",
-      "count": 7,
-      "topConsumers": [
-        "src/pages/admin/DWE01ConnectedDevicesCenter.tsx",
-        "src/pages/admin/DWE02PresenceContinuityCenter.tsx",
-        "src/pages/admin/DWE03WearableSignalsCenter.tsx",
-        "src/pages/admin/DWE04NotificationRoutingStudio.tsx",
-        "src/pages/admin/DWE05DeviceTrustApprovalsCenter.tsx"
       ]
     },
     {
@@ -332,5 +332,5 @@
   ],
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1499
+  "warningCount": 1518
 }

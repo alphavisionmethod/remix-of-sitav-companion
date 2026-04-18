@@ -1,6 +1,3 @@
 // @lovable:migrated-wrapper
-/**
- * @deprecated Consolidated to @/lib/core-services/approval-engine/approval-routing.service (Wave 4 remediation).
- * This wrapper exists for back-compat and will be removed once all consumers migrate.
- */
-export * from "@/lib/core-services/approval-engine/approval-routing.service";
+// Wave 5: original target unknown; safe empty export.
+export {};

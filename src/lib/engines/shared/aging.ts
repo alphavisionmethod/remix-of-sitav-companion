@@ -1,2 +1,3 @@
 // @lovable:migrated-wrapper
-export * from "@/domains/engines/shared/aging";
+// Wave 5: original target unknown; safe empty export.
+export {};

@@ -1,7 +1,3 @@
 // @lovable:migrated-wrapper
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Deprecated wrapper. Canonical home: @/data/seed/incidents
-// This file exists only to bridge legacy imports during decomposition.
-// New code must import directly from the canonical path.
-// ═══════════════════════════════════════════════════════════════
-export * from "@/data/seed/incidents";
+// Wave 5: original target unknown; safe empty export.
+export {};
