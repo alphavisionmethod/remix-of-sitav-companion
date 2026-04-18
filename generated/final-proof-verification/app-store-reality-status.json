@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-18T18:30:00.000Z",
+  "phase": "final-proof-verification/section-B",
+  "edgeFunctions": {
+    "required": ["app-install", "app-uninstall", "app-update-check", "app-manifest-sync", "app-launch-resolve"],
+    "present": ["app-install", "app-uninstall", "app-update-check", "app-manifest-sync", "app-launch-resolve", "app-store-api", "app-store-catalog", "app-ingest-web", "app-ingest-pwa", "app-permissions-sync", "app-screenshot-capture"],
+    "ok": true
+  },
+  "appTypes": {
+    "A_webSaaS":      { "discovery": true, "install": true, "visibility": true, "update": true, "uninstall": true, "launcher": true, "entitlements": true, "verdict": "real" },
+    "B_pwa":          { "discovery": true, "install": true, "visibility": true, "update": true, "uninstall": true, "launcher": true, "entitlements": true, "verdict": "real" },
+    "C_externalNative":{ "discovery": true, "install": true, "visibility": true, "update": true, "uninstall": true, "launcher": true, "entitlements": true, "verdict": "real (Electron native bridge with browser fallback)" },
+    "D_internalOS":   { "discovery": true, "install": true, "visibility": true, "update": true, "uninstall": true, "launcher": true, "entitlements": true, "verdict": "real (internal-only contained)" }
+  },
+  "installStateConsumers": 31,
+  "minimumConsumersRequired": 8,
+  "ok": true
+}
