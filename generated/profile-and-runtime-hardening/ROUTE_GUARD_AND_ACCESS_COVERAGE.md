@@ -1,5 +1,5 @@
 # Route Guard & Access Coverage (Phase A)
-Generated: 2026-04-18T12:41:39.927Z
+Generated: 2026-04-18T12:44:03.442Z
 ## Coverage
 - Total routes: **673**
 - Admin-plane routes: **191**

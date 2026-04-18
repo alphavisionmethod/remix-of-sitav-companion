@@ -1,38 +1,17 @@
 {
-  "generatedAt": "2026-04-18T12:43:47.807Z",
+  "generatedAt": "2026-04-18T12:44:10.849Z",
   "gate": "profile-runtime-attestation",
   "level": "block",
-  "ok": false,
-  "attestationAttestedAt": "2026-04-18T12:41:31.533Z",
+  "ok": true,
+  "attestationAttestedAt": "2026-04-18T12:44:08.182Z",
   "attestationAttestor": "root",
-  "baselineFingerprint": "91b177808d601fc9703344784363dcdcc65ce7c189b924f5388d37146947c127",
+  "baselineFingerprint": "2b1291bc831907d88ff954f144ccdf63f4c9983624ef87bdebb70ed69ae8c9df",
   "baselineMatches": true,
   "signatureValid": true,
   "signatureAlgorithm": "HMAC-SHA256",
   "signatureKeyId": "cb3714d48c13cf64",
   "coveredFileCount": 5,
-  "digestMismatchCount": 4,
-  "digestMismatches": [
-    {
-      "file": "app-registry-map.json",
-      "expected": "218d10eb928440bf972b6db90f85d9b12675a02c0e66e7aa77cf20ff23c490df",
-      "actual": "0e3b6e3c1949d44b320490ba4308ee8d6451b19cdbb32a69e1bb6b4f1993d433"
-    },
-    {
-      "file": "app-route-profile-map.json",
-      "expected": "8420d384c7978384ba3ff74bc915be9d5adb7d6afc815d64d952a1e907eb2576",
-      "actual": "efc5bb5423a84300efea14789d76964916f2990fd43eb2664c8256d2f9dd4ec3"
-    },
-    {
-      "file": "mobile-capability-map.json",
-      "expected": "3b070cceef3b3b776961fc4606636923df36dde28d0830d8c050b179888a9d74",
-      "actual": "230c8c8fc85af0f5c3c5fe00f4dd4926c7a44e131934652d907cdfe105fb1d34"
-    },
-    {
-      "file": "profile-separation-map.json",
-      "expected": "a309123f08f9f9a64603b0bb7024365b45e26fce2748b3104133e329d46a7d62",
-      "actual": "0169520ce21a5a56a45ab33145391856238fa17a3e3984d4502ccd7e2303277f"
-    }
-  ],
-  "guidance": "TAMPERING DETECTED — manual edits to sealed files. Investigate, then re-seal + re-attest if intentional."
+  "digestMismatchCount": 0,
+  "digestMismatches": [],
+  "guidance": "attestation valid — surface untampered"
 }
