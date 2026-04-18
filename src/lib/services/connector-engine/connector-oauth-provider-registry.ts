@@ -37,16 +37,18 @@ export const CONNECTOR_OAUTH_PROVIDER_REGISTRY: readonly ConnectorOAuthProvider[
   {
     key: "slack",
     displayName: "Slack",
-    status: "manual",
+    status: "real",
+    refreshEndpoint: "https://slack.com/api/oauth.v2.access",
     scopes: ["chat:write", "channels:read"],
-    notes: "No active connector wiring; manual rotation by ops team.",
+    notes: "Real refresh implemented in connector-token-refresh edge function (Phase U). Uses SLACK_CONNECTOR_CLIENT_ID + SLACK_CONNECTOR_CLIENT_SECRET secrets. Falls back to reauth_required if secrets unset.",
   },
   {
     key: "salesforce",
     displayName: "Salesforce",
-    status: "manual",
+    status: "real",
+    refreshEndpoint: "https://login.salesforce.com/services/oauth2/token",
     scopes: ["api", "refresh_token"],
-    notes: "No active connector wiring; manual rotation by ops team.",
+    notes: "Real refresh implemented in connector-token-refresh edge function (Phase U). Uses SALESFORCE_CONNECTOR_CLIENT_ID/SECRET/LOGIN_URL secrets. Falls back to reauth_required if secrets unset.",
   },
   {
     key: "hubspot",

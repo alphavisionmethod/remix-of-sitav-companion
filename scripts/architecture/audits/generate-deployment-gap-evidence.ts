@@ -176,6 +176,8 @@ const refreshWorkerExists = fs.existsSync("supabase/functions/connector-token-re
 const refreshWorkerSrc = readSafe("supabase/functions/connector-token-refresh/index.ts");
 const googleRefreshReal = /oauth2\.googleapis\.com\/token|googleapis.*refresh_token/i.test(refreshWorkerSrc);
 const microsoftRefreshReal = /login\.microsoftonline\.com.*token|refreshMicrosoft\b/i.test(refreshWorkerSrc);
+const slackRefreshReal = /slack\.com\/api\/oauth\.v2\.access|refreshSlack\b/i.test(refreshWorkerSrc);
+const salesforceRefreshReal = /salesforce.*services\/oauth2\/token|refreshSalesforce\b/i.test(refreshWorkerSrc);
 const providerRegistryPath = "src/lib/services/connector-engine/connector-oauth-provider-registry.ts";
 const providerRegistryExists = fs.existsSync(providerRegistryPath);
 
@@ -186,13 +188,14 @@ writeJsonOutput(path.join(OUT_DIR, "connector-oauth-rotation-map.json"), envelop
   providers: {
     google: { status: googleRefreshReal ? "real-implementation" : "stub-pending-phase-M", scope: "drive,gmail,calendar" },
     microsoft: { status: microsoftRefreshReal ? "real-implementation" : "manual", reason: microsoftRefreshReal ? "Phase R: real Graph refresh wired" : "No active connector wiring; manual rotation by ops" },
-    slack: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
-    salesforce: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
+    slack: { status: slackRefreshReal ? "real-implementation" : "manual", reason: slackRefreshReal ? "Phase U: real oauth.v2.access refresh wired (deferred-on-secret)" : "No active connector wiring; manual rotation by ops" },
+    salesforce: { status: salesforceRefreshReal ? "real-implementation" : "manual", reason: salesforceRefreshReal ? "Phase U: real services/oauth2/token refresh wired (deferred-on-secret)" : "No active connector wiring; manual rotation by ops" },
   },
   classification:
+    googleRefreshReal && microsoftRefreshReal && slackRefreshReal && salesforceRefreshReal ? "all-four-real-implementation" :
     googleRefreshReal && microsoftRefreshReal ? "google-and-microsoft-real-others-manual" :
     googleRefreshReal ? "google-real-others-manual" : "rotation-gap-google-pending",
-  notes: "Google + Microsoft are wired with real refresh; Slack/Salesforce remain manual with truth labels.",
+  notes: "Google + Microsoft + Slack + Salesforce all wired with real refresh; Slack/Salesforce gracefully degrade to reauth_required if secrets missing.",
 }));
 
 // ── 9. FRONTEND ↔ BACKEND ↔ SUBSTRATE MATRIX ──────────────────
@@ -203,6 +206,8 @@ const matrix: Array<{ action: string; backend: string; substrate: string; status
   { action: "AI inference", backend: "edge:ai-gateway", substrate: "db:ai_invocations + ai_usage_ledger", status: "real" },
   { action: "Connector token refresh (Google)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: googleRefreshReal ? "real" : "stub-pending" },
   { action: "Connector token refresh (Microsoft)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: microsoftRefreshReal ? "real" : "manual" },
+  { action: "Connector token refresh (Slack)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: slackRefreshReal ? "real" : "manual" },
+  { action: "Connector token refresh (Salesforce)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: salesforceRefreshReal ? "real" : "manual" },
   { action: "Connector OAuth init", backend: "edge:connector-oauth", substrate: "db:connector_credentials", status: "real" },
   { action: "Global search", backend: "rpc:supabase tables", substrate: "db:multi-domain", status: "real" },
   { action: "Draft autosave", backend: "client-only", substrate: "localStorage + IndexedDB (offline-db.ts)", status: "real" },
@@ -213,6 +218,8 @@ const matrix: Array<{ action: string; backend: string; substrate: string; status
   { action: "Approval requests", backend: "edge:approval-engine", substrate: "db:approval_decisions", status: "real" },
   { action: "Receipt emission", backend: "edge:receipt-issuer", substrate: "db:receipts", status: "real" },
   { action: "Kill-switch arm", backend: "edge:kill-switch-control", substrate: "db:kill_switch_audit_log", status: "real" },
+  { action: "Admin action audit", backend: "trigger+rls", substrate: "db:admin_action_audit", status: "real" },
+  { action: "AI budget alerting", backend: "edge:ai-gateway", substrate: "db:ai_budget_alerts", status: "real" },
 ];
 writeJsonOutput(path.join(OUT_DIR, "frontend-backend-substrate-matrix.json"), envelope({
   matrix,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sealedAt": "2026-04-18T13:44:31.481Z",
+  "sealedAt": "2026-04-18T13:53:27.641Z",
   "sealedBy": "root",
   "notes": "Phase H baseline — represents GREEN state after Phases A–G. Re-seal only on intentional, approved surface change.",
   "counts": {
@@ -1018,5 +1018,5 @@
       ]
     }
   },
-  "fingerprint": "32e7c92864921e9633e0e87d4e7d5c4fef6f903d10bbb96e6b2419914900dfa9"
+  "fingerprint": "f23bbd875c9461d8bafae21ad279a84b6cbe3658ba9e1e93360c07cf84b52264"
 }

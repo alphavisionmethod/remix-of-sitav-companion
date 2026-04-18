@@ -1,6 +1,6 @@
 # Mobile Offline Hardening — Truth Classification
 
-_Generated: 2026-04-18T13:42:32.439Z_
+_Generated: 2026-04-18T13:52:40.158Z_
 
 ## Mobile platform status: **ARCHIVED**
 
