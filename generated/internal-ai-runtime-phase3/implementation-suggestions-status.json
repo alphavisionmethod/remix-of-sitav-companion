@@ -1,0 +1,26 @@
+{
+  "phase": "3",
+  "component": "ai_implementation_suggestions",
+  "status": "GREEN",
+  "table_exists": true,
+  "rls_enabled": true,
+  "unique_constraint": "(source_signal_type, source_signal_ref)",
+  "rpcs": [
+    "propose_implementation_suggestion",
+    "record_implementation_suggestion_decision",
+    "summarize_implementation_suggestions"
+  ],
+  "edge_function": "internal-agent-suggestion-generator",
+  "schedule": "0 */6 * * *",
+  "real_signal_sources": [
+    "error_patrol_detections",
+    "internal_agent_reflections",
+    "ai_budget_alerts",
+    "internal_agent_consensus_sessions",
+    "internal_agent_policy_drafts"
+  ],
+  "admin_page": "/admin/ai-runtime/suggestions",
+  "permission_gate": "audit.view",
+  "workflow_states": ["proposed", "under_review", "accepted", "rejected", "in_progress", "done", "superseded"],
+  "validator": "check-implementation-suggestions-pipeline"
+}

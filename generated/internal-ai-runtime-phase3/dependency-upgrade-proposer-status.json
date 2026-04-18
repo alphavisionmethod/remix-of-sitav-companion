@@ -1,0 +1,20 @@
+{
+  "phase": "3",
+  "component": "dependency-upgrade-proposer",
+  "status": "GREEN",
+  "edge_function": "internal-agent-dependency-scanner",
+  "findings_table": "dependency_upgrade_findings",
+  "findings_unique_constraint": "(package, advisory_id)",
+  "input_contract": "npm audit --json (real, no synthetic samples)",
+  "fail_on_empty_input": true,
+  "suggestion_linkage": {
+    "rpc": "propose_implementation_suggestion",
+    "change_type": "dependency_upgrade",
+    "source_signal_ref_pattern": "npm-advisory-{id}",
+    "severity_threshold": "moderate"
+  },
+  "admin_page": "/admin/ai-runtime/dependency-findings",
+  "ci_hook": "scripts/runtime/post-dependency-audit.ts",
+  "runbook": "docs/runbooks/dependency-upgrade-proposer.md",
+  "validator": "check-dependency-upgrade-proposer"
+}
