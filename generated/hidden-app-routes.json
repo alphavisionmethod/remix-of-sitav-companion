@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:28:49.226Z",
+  "generatedAt": "2026-04-18T12:29:50.086Z",
   "gate": "hidden-app-routes",
-  "level": "warn",
-  "budget": 5,
+  "level": "block",
+  "budget": 0,
   "hiddenCount": 0,
   "sample": [],
   "ok": true

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:28:47.256Z",
+  "generatedAt": "2026-04-18T12:29:45.770Z",
   "gate": "launcher-registry-completeness",
-  "level": "warn",
-  "budget": 5,
+  "level": "block",
+  "budget": 0,
   "offenderCount": 0,
   "manifestOrphans": [],
   "offenders": [],

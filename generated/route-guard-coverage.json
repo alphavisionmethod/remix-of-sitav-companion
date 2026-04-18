@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:28:53.117Z",
+  "generatedAt": "2026-04-18T12:30:00.924Z",
   "gate": "route-guard-coverage",
-  "level": "warn",
-  "budget": 200,
+  "level": "block",
+  "budget": 0,
   "adminRouteTotal": 191,
   "unguardedCount": 0,
   "unguardedSample": [],
