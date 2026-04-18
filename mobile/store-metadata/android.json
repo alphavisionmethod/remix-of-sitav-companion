@@ -1,0 +1,23 @@
+{
+  "title": "SITA OS",
+  "shortDescription": "Sovereign AI operating system. Calm intelligence, every day.",
+  "fullDescription": "SITA OS is a premium, dark-first AI operating system for owner-operators, founders, and family principals.\n\nIt turns scattered work, money, and life signals into a calm, advised flow:\n\n• Boardroom — strategic council that reviews your operating reality\n• Business — pipeline, accounts, and outcomes in one dignified workspace\n• Money — reserves, runway, and tax posture explained in plain language\n• Concierge — 24/7 advisor presence across every surface\n• Files — encrypted vault with semantic search and proof-grade AI summaries\n\nDesigned for calm, not noise. End-to-end encryption. No ads. No data resale. Your sovereign operating layer.",
+  "category": "PRODUCTIVITY",
+  "tags": ["AI", "Productivity", "Business", "Advisor", "Wealth"],
+  "contentRating": "Everyone",
+  "containsAds": false,
+  "containsInAppPurchases": true,
+  "website": "https://sita.os",
+  "email": "support@sita.os",
+  "privacyPolicyUrl": "https://sita.os/legal/privacy",
+  "termsUrl": "https://sita.os/legal/terms",
+  "translations": {
+    "es-ES": { "title": "SITA OS", "shortDescription": "Sistema operativo de IA soberano." },
+    "fr-FR": { "title": "SITA OS", "shortDescription": "Système d'exploitation IA souverain." },
+    "de-DE": { "title": "SITA OS", "shortDescription": "Souveränes KI-Betriebssystem." }
+  },
+  "submission": {
+    "tier": "ready-on-keystore",
+    "blocker": "Awaiting Google Play Console publisher account + upload keystore — see mobile/android/SIGNING.md"
+  }
+}

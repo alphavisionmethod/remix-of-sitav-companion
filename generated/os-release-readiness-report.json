@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:08:31.307Z",
+  "generatedAt": "2026-04-18T02:15:02.078Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -97,6 +97,20 @@
     {
       "file": "generated/operator-readiness-report.json",
       "gate": "operator-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-store-readiness-report.json",
+      "gate": "mobile-store-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-build-pipeline-report.json",
+      "gate": "mobile-build-pipeline",
       "ok": true,
       "errors": 0,
       "warnings": 0

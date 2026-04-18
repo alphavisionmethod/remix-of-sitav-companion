@@ -1,0 +1,19 @@
+{
+  "android": {
+    "policy": "Adaptive icon — foreground + background layers. Generated via npx capacitor-assets.",
+    "source": "mobile/icons/source-icon-1024.png",
+    "densities": [
+      { "name": "mdpi",     "size": 48,  "path": "mipmap-mdpi/ic_launcher.png" },
+      { "name": "hdpi",     "size": 72,  "path": "mipmap-hdpi/ic_launcher.png" },
+      { "name": "xhdpi",    "size": 96,  "path": "mipmap-xhdpi/ic_launcher.png" },
+      { "name": "xxhdpi",   "size": 144, "path": "mipmap-xxhdpi/ic_launcher.png" },
+      { "name": "xxxhdpi",  "size": 192, "path": "mipmap-xxxhdpi/ic_launcher.png" }
+    ],
+    "adaptive": {
+      "foreground": "mipmap-anydpi-v26/ic_launcher_foreground.xml",
+      "background": "#0a0a0f",
+      "monochrome": "mipmap-anydpi-v26/ic_launcher_monochrome.xml"
+    },
+    "info": "Materialized into android/app/src/main/res/ at capacitor sync."
+  }
+}

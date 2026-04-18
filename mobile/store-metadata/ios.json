@@ -1,0 +1,37 @@
+{
+  "name": "SITA OS",
+  "subtitle": "Sovereign AI Operating System",
+  "shortDescription": "Your sovereign AI operating system. Calm intelligence, every day.",
+  "description": "SITA OS is a premium, dark-first AI operating system that turns scattered work, money, and life signals into a calm, advised flow.\n\nKey capabilities:\n• Boardroom — strategic council that reviews your operating reality\n• Business — pipeline, accounts, and outcomes in one dignified workspace\n• Money — reserves, runway, and tax posture explained in plain language\n• Concierge — 24/7 advisor presence across every surface\n• Files — encrypted vault with semantic search and proof-grade AI summaries\n\nDesigned for owner-operators, founders, and family principals who deserve calm, not noise.",
+  "keywords": "ai,operating system,assistant,advisor,founder,wealth,boardroom,calm productivity,family office,sovereign ai",
+  "primaryCategory": "PRODUCTIVITY",
+  "secondaryCategory": "BUSINESS",
+  "supportUrl": "https://sita.os/support",
+  "marketingUrl": "https://sita.os",
+  "privacyUrl": "https://sita.os/legal/privacy",
+  "termsUrl": "https://sita.os/legal/terms",
+  "copyright": "© SITA OS",
+  "ageRating": "4+",
+  "contentAdvisory": {
+    "violence": "NONE",
+    "sexualContent": "NONE",
+    "profanity": "NONE",
+    "alcoholTobaccoDrugs": "NONE",
+    "matureSuggestive": "NONE",
+    "horror": "NONE",
+    "gambling": "NONE",
+    "medical": "NONE",
+    "userGeneratedContent": "INFREQUENT_MILD",
+    "unrestrictedWebAccess": false
+  },
+  "languages": ["en-US", "es-ES", "fr-FR", "de-DE", "ar"],
+  "exportCompliance": {
+    "encryptionUsage": true,
+    "exemptions": ["proprietary"],
+    "encryptionDeclaration": "App uses standard encryption only (HTTPS/TLS, OS-provided keychain/biometric APIs)"
+  },
+  "submission": {
+    "tier": "deferred",
+    "deferralReason": "Apple Developer Program membership not yet active — see mobile/ios/SIGNING.md"
+  }
+}

@@ -45,6 +45,9 @@ const REQUIRED_GATES = [
   "app-plane-map",
   "user-profile-readiness",
   "operator-readiness",
+  // Part 3 — Mobile distribution gates
+  "mobile-store-readiness",
+  "mobile-build-pipeline",
 ];
 
 const GENERATED_DIR = "generated";

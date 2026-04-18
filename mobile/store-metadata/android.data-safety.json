@@ -1,0 +1,47 @@
+{
+  "version": "2024.06",
+  "dataCollected": [
+    {
+      "type": "EMAIL",
+      "purpose": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY"],
+      "shared": false,
+      "ephemeral": false,
+      "userControl": "REQUIRED"
+    },
+    {
+      "type": "USER_ID",
+      "purpose": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY", "ANALYTICS"],
+      "shared": false,
+      "ephemeral": false,
+      "userControl": "REQUIRED"
+    },
+    {
+      "type": "DEVICE_ID",
+      "purpose": ["FRAUD_PREVENTION", "APP_FUNCTIONALITY"],
+      "shared": false,
+      "ephemeral": false,
+      "userControl": "OPTIONAL"
+    },
+    {
+      "type": "APP_INTERACTIONS",
+      "purpose": ["ANALYTICS", "APP_FUNCTIONALITY"],
+      "shared": false,
+      "ephemeral": false,
+      "userControl": "OPTIONAL"
+    },
+    {
+      "type": "CRASH_LOGS",
+      "purpose": ["DIAGNOSTICS"],
+      "shared": false,
+      "ephemeral": false,
+      "userControl": "OPTIONAL"
+    }
+  ],
+  "encryptionInTransit": true,
+  "encryptionAtRest": true,
+  "userDeletionRequestUrl": "https://sita.os/account/delete",
+  "complianceWith": ["GDPR", "CCPA", "PIPEDA"],
+  "soundsAndVoiceRecording": false,
+  "playPolicyAcknowledged": true,
+  "familiesPolicyApplicable": false
+}

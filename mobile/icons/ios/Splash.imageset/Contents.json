@@ -1,0 +1,13 @@
+{
+  "ios": {
+    "policy": "Launch screen storyboard, not raster splash. Storyboard generated at sync time.",
+    "source": "mobile/icons/source-splash-2732.png",
+    "imagesets": [
+      { "name": "Splash.imageset", "filename": "splash.png" },
+      { "name": "Splash.imageset", "filename": "splash@2x.png" },
+      { "name": "Splash.imageset", "filename": "splash@3x.png" }
+    ],
+    "background": "#0a0a0f",
+    "info": "Materialized into ios/App/App/Assets.xcassets/Splash.imageset/ at capacitor sync."
+  }
+}

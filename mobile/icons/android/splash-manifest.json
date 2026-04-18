@@ -1,0 +1,19 @@
+{
+  "android": {
+    "policy": "Splash drawables across density buckets + Android 12+ splash API.",
+    "source": "mobile/icons/source-splash-2732.png",
+    "drawables": [
+      { "density": "mdpi",    "path": "drawable-mdpi/splash.png" },
+      { "density": "hdpi",    "path": "drawable-hdpi/splash.png" },
+      { "density": "xhdpi",   "path": "drawable-xhdpi/splash.png" },
+      { "density": "xxhdpi",  "path": "drawable-xxhdpi/splash.png" },
+      { "density": "xxxhdpi", "path": "drawable-xxxhdpi/splash.png" }
+    ],
+    "android12Splash": {
+      "windowSplashScreenBackground": "#0a0a0f",
+      "windowSplashScreenAnimatedIcon": "@drawable/splash_icon",
+      "windowSplashScreenAnimationDuration": 1000
+    },
+    "info": "Materialized into android/app/src/main/res/ at capacitor sync."
+  }
+}
