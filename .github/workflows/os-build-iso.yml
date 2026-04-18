@@ -125,7 +125,7 @@ jobs:
       - name: Upload ISO + attestation + supply-chain artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sita-os-iso
+          name: sita-os-iso-${{ matrix.profile }}
           path: |
             out/*.iso
             out/*.img
@@ -164,15 +164,19 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   smoke-test:
-    name: QEMU Smoke Test
+    name: QEMU Smoke Test (${{ matrix.profile }})
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [user, operator]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: sita-os-iso
+          name: sita-os-iso-${{ matrix.profile }}
           path: out/
 
       - name: Install QEMU + OVMF
