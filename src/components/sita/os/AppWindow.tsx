@@ -264,6 +264,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
       >
         {win.component}
       </div>
+      {/* Snap zone overlay — renders only while dragging into a snap zone */}
+      {isDragging && <SnapGuideOverlay guide={snap.snapGuide} />}
     </div>
   );
 }
