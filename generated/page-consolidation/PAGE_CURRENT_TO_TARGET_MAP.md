@@ -1,5 +1,5 @@
 # Page Current → Target Map
-> Generated: 2026-04-18T11:43:37.839Z
+> Generated: 2026-04-18T11:46:12.783Z
 > Source: `scripts/architecture/audits/page-consolidation-audit.ts`
 > Status: **read-only audit** (Phase 0). Zero code/route changes.
 
@@ -132,7 +132,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `FeatureIntakeDesk` | _(unmounted)_ | `/admin/config/eature-intake-desk` | DETAIL_EXPLORER |  |  | 157 |
 | `FeatureLifecycleBoard` | _(unmounted)_ | `/admin/config/eature-lifecycle-board` | DETAIL_EXPLORER |  |  | 128 |
 | `FeatureRealityDetail` | _(unmounted)_ | `/admin/config/eature-reality-detail` | DETAIL_EXPLORER |  |  | 160 |
-| `MCKnowledgeBase` | _(unmounted)_ | `/admin/config/knowledge` | SECONDARY_SUBVIEW | ✓ |  | 161 |
+| `MCKnowledgeBase` | _(unmounted)_ | `/admin/config/knowledge` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `ClientCapabilityAdmin` | _(unmounted)_ | `/admin/config/lient-capability-admin` | DETAIL_EXPLORER |  |  | 209 |
 | `ConfigChangeHistory` | _(unmounted)_ | `/admin/config/onfig-change-history` | DETAIL_EXPLORER |  |  | 107 |
 | `EnvironmentsHome` | _(unmounted)_ | `/admin/environments` | PRIMARY_DOMAIN_ENTRY | ✓ |  | 79 |
@@ -140,8 +140,8 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `EnvironmentAppliancePage` | _(unmounted)_ | `/admin/environments/nvironment-appliance` | DETAIL_EXPLORER |  |  | 190 |
 | `EnvironmentSwitcher` | _(unmounted)_ | `/admin/environments/nvironment-switcher` | DETAIL_EXPLORER |  |  | 104 |
 | `UserSeedHealth` | _(unmounted)_ | `/admin/environments/ser-seed-health` | DETAIL_EXPLORER |  |  | 188 |
-| `TeamManagement` | _(unmounted)_ | `/admin/environments/teams` | SECONDARY_SUBVIEW | ✓ |  | 475 |
-| `UserManagement` | _(unmounted)_ | `/admin/environments/users` | SECONDARY_SUBVIEW | ✓ |  | 153 |
+| `TeamManagement` | _(unmounted)_ | `/admin/environments/teams` | SECONDARY_SUBVIEW | ✓ |  | 8 |
+| `UserManagement` | _(unmounted)_ | `/admin/environments/users` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `MCUsersCenter` | _(unmounted)_ | `/admin/environments/users` | DUPLICATE_MERGE_REQUIRED | ✓ | `UserManagement` | 145 |
 | `SystemArchitecture` | _(unmounted)_ | `/admin/environments/ystem-architecture` | DETAIL_EXPLORER |  |  | 32 |
 | `SystemManagement` | _(unmounted)_ | `/admin/environments/ystem-management` | DETAIL_EXPLORER |  |  | 223 |
@@ -313,7 +313,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `AdminSafetyRails` | _(unmounted)_ | `/admin/overview/dmin-safety-rails` | DETAIL_EXPLORER |  |  | 159 |
 | `AdminTokenManager` | _(unmounted)_ | `/admin/overview/dmin-token-manager` | DETAIL_EXPLORER |  |  | 155 |
 | `AdminTruthClaims` | _(unmounted)_ | `/admin/overview/dmin-truth-claims` | DETAIL_EXPLORER |  |  | 179 |
-| `GeneratedTruthDashboard` | _(unmounted)_ | `/admin/overview/generated-truth` | SECONDARY_SUBVIEW | ✓ |  | 393 |
+| `GeneratedTruthDashboard` | _(unmounted)_ | `/admin/overview/generated-truth` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `PlatformMaturityDashboard` | _(unmounted)_ | `/admin/overview/latform-maturity` | DETAIL_EXPLORER |  |  | 120 |
 | `PlatformPlaneOverview` | _(unmounted)_ | `/admin/overview/latform-plane-overview` | DETAIL_EXPLORER |  |  | 158 |
 | `PlatformReadinessScorecard` | _(unmounted)_ | `/admin/overview/latform-readiness-scorecard` | DETAIL_EXPLORER |  |  | 183 |
@@ -359,7 +359,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `ISA01IdentityProviderRegistryBoard` | _(unmounted)_ | `/admin/releases/identity-provider-registry-board` | DETAIL_EXPLORER |  |  | 255 |
 | `MigrationWavePlanner` | _(unmounted)_ | `/admin/releases/igration-wave-planner` | DETAIL_EXPLORER |  |  | 99 |
 | `LT05LaunchGateBoard` | _(unmounted)_ | `/admin/releases/launch-gate-board` | DETAIL_EXPLORER |  |  | 156 |
-| `LaunchReadinessBoard` | _(unmounted)_ | `/admin/releases/launch-readiness` | SECONDARY_SUBVIEW | ✓ |  | 198 |
+| `LaunchReadinessBoard` | _(unmounted)_ | `/admin/releases/launch-readiness` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `LAUNCH06NarrativeGuide` | _(unmounted)_ | `/admin/releases/narrative-guide` | DETAIL_EXPLORER |  |  | 64 |
 | `UAO04NotificationRouter` | _(unmounted)_ | `/admin/releases/notification-router` | DETAIL_EXPLORER |  |  | 115 |
 | `ISA03OAuthClientRegistryConsole` | _(unmounted)_ | `/admin/releases/o-auth-client-registry-console` | DETAIL_EXPLORER |  |  | 178 |
@@ -371,7 +371,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `LT07TruthRegressionRadar` | _(unmounted)_ | `/admin/releases/truth-regression-radar` | DETAIL_EXPLORER |  |  | 115 |
 | `ISA06UnifiedAccountGraphExplorer` | _(unmounted)_ | `/admin/releases/unified-account-graph-explorer` | DETAIL_EXPLORER |  |  | 163 |
 | `AND02WearOSExperience` | _(unmounted)_ | `/admin/releases/wear-o-s-experience` | DETAIL_EXPLORER |  |  | 145 |
-| `MCSupport` | _(unmounted)_ | `/admin/support` | SECONDARY_SUBVIEW | ✓ |  | 146 |
+| `MCSupport` | _(unmounted)_ | `/admin/support` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `SRE06AutoRollbackCenter` | _(unmounted)_ | `/admin/support/auto-rollback` | DETAIL_EXPLORER |  |  | 164 |
 | `SRE02BuilderCriticConsole` | _(unmounted)_ | `/admin/support/builder-critic-console` | DETAIL_EXPLORER |  |  | 191 |
 | `FCC03CICDPipelineBoard` | _(unmounted)_ | `/admin/support/c-i-c-d-pipeline-board` | DETAIL_EXPLORER |  |  | 206 |
@@ -433,7 +433,7 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `EpistemicFirewallBoard` | _(unmounted)_ | `/admin/trust-security/pistemic-firewall-board` | DETAIL_EXPLORER |  |  | 351 |
 | `SEC01PostureExecutive` | _(unmounted)_ | `/admin/trust-security/posture-executive` | DETAIL_EXPLORER |  |  | 134 |
 | `SEC02PrivilegedActions` | _(unmounted)_ | `/admin/trust-security/privileged-actions` | DETAIL_EXPLORER |  |  | 56 |
-| `AdminRBACConsole` | _(unmounted)_ | `/admin/trust-security/rbac` | SECONDARY_SUBVIEW | ✓ |  | 129 |
+| `AdminRBACConsole` | _(unmounted)_ | `/admin/trust-security/rbac` | SECONDARY_SUBVIEW | ✓ |  | 7 |
 | `ProofMatrixExplorer` | _(unmounted)_ | `/admin/trust-security/roof-matrix-explorer` | DETAIL_EXPLORER |  |  | 263 |
 | `TrustSecurityHome` | _(unmounted)_ | `/admin/trust-security/rust-security-home` | DETAIL_EXPLORER |  |  | 104 |
 | `TrustStateRegistry` | _(unmounted)_ | `/admin/trust-security/rust-state-registry` | DETAIL_EXPLORER |  |  | 241 |
@@ -493,8 +493,8 @@ For every admin page on disk: what is its current path, what is its canonical ta
 | `AR08KillSwitchCenter` | _(unmounted)_ | `/admin/verification/kill-switch` | DETAIL_EXPLORER |  |  | 152 |
 | `CJ04LaunchBlockerView` | _(unmounted)_ | `/admin/verification/launch-blocker-view` | DETAIL_EXPLORER |  |  | 256 |
 | `V07LaunchBlockerBoard` | _(unmounted)_ | `/admin/verification/launch-blockers` | SECONDARY_SUBVIEW | ✓ |  | 6 |
-| `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 104 |
-| `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 210 |
+| `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 8 |
+| `LaunchHonestyBoard` | _(unmounted)_ | `/admin/verification/launch-honesty` | SECONDARY_SUBVIEW | ✓ |  | 8 |
 | `V04ModeVerificationBoard` | _(unmounted)_ | `/admin/verification/mode-verification` | SECONDARY_SUBVIEW | ✓ |  | 6 |
 | `FIPIntakeDesk` | _(unmounted)_ | `/admin/verification/ntake-desk` | DETAIL_EXPLORER |  |  | 168 |
 | `InvestorProofLedger` | _(unmounted)_ | `/admin/verification/nvestor-proof-ledger` | DETAIL_EXPLORER |  |  | 215 |

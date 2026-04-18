@@ -11,3 +11,4 @@ export { default as V03P0JourneyBoard } from "./V03P0JourneyBoard";
 export { default as V04ModeVerificationBoard } from "./V04ModeVerificationBoard";
 export { default as V06EvidenceExplorer } from "./V06EvidenceExplorer";
 export { default as V07LaunchBlockerBoard } from "./V07LaunchBlockerBoard";
+export { default as LaunchHonestyBoard } from "./LaunchHonestyBoard";

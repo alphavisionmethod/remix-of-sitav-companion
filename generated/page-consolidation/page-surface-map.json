@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T11:43:37.839Z",
+  "generatedAt": "2026-04-18T11:46:12.783Z",
   "totals": {
     "onDisk": 1042,
     "mountedRoutes": 661,
@@ -3779,8 +3779,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 393,
-      "imports": 15,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/overview/generated-truth"
     },
     {
@@ -4208,8 +4208,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 104,
-      "imports": 8,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/verification/launch-honesty"
     },
     {
@@ -4220,8 +4220,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 198,
-      "imports": 11,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/releases/launch-readiness"
     },
     {
@@ -5467,8 +5467,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 475,
-      "imports": 23,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/environments/teams"
     },
     {
@@ -5609,8 +5609,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 153,
-      "imports": 14,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/environments/users"
     },
     {
@@ -5764,8 +5764,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 129,
-      "imports": 7,
+      "loc": 7,
+      "imports": 0,
       "targetRoute": "/admin/trust-security/rbac",
       "notes": "RBAC console — under trust-security hub."
     },
@@ -7363,8 +7363,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 161,
-      "imports": 8,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/config/knowledge"
     },
     {
@@ -7453,8 +7453,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 146,
-      "imports": 8,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/support"
     },
     {
@@ -7700,8 +7700,8 @@
       "pageClass": "SECONDARY_SUBVIEW",
       "curated": true,
       "mountedRoutes": [],
-      "loc": 210,
-      "imports": 7,
+      "loc": 8,
+      "imports": 0,
       "targetRoute": "/admin/verification/launch-honesty"
     },
     {

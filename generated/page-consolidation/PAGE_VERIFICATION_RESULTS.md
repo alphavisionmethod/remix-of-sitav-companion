@@ -1,5 +1,5 @@
 # Page Verification Results
-> Generated: 2026-04-18T11:43:50.703Z
+> Generated: 2026-04-18T11:46:26.547Z
 > Source: `scripts/architecture/audits/page-verification-runner.ts`
 > Status: ✅ **ALL CHECKS PASS**
 
@@ -7,14 +7,14 @@
 
 | Check | Result | Duration |
 |---|---|---:|
-| `audit` | ✅ pass | 2177ms |
-| `admin-classification-coverage` | ✅ pass | 2185ms |
-| `admin-domain-budget` | ✅ pass | 1982ms |
-| `admin-route-coherence` | ✅ pass | 1996ms |
-| `redirect-coverage` | ✅ pass | 1972ms |
-| `experimental-isolation` | ✅ pass | 1896ms |
-| `page-registry-completeness` | ✅ pass | 1975ms |
-| `typecheck` | ✅ pass | 792ms |
+| `audit` | ✅ pass | 2097ms |
+| `admin-classification-coverage` | ✅ pass | 2198ms |
+| `admin-domain-budget` | ✅ pass | 1897ms |
+| `admin-route-coherence` | ✅ pass | 1908ms |
+| `redirect-coverage` | ✅ pass | 2184ms |
+| `experimental-isolation` | ✅ pass | 1981ms |
+| `page-registry-completeness` | ✅ pass | 2449ms |
+| `typecheck` | ✅ pass | 1082ms |
 
 ## Per-check tail output
 
@@ -87,26 +87,42 @@ Registered: 22
 ```
 
 
-## Phase 5 — Wave 1 Shipped (Verification sub-boards)
+## Phase 5 — Wave 2 Shipped (Curated admin sub-views)
 
-Six pages classified `SECONDARY_SUBVIEW` with curated `targetRoute`s
-were physically relocated to their canonical home and replaced with
-thin re-export shims so all current importers (route registry,
-verification index barrel, vitest batches) keep working.
+Nine more curated `SECONDARY_SUBVIEW` pages physically relocated to
+their canonical `src/admin/modules/<domain>/views/` homes. Originals
+are now thin re-export shims so all legacy importers keep working.
 
-| Old path (now shim) | Canonical home |
-|---|---|
-| `src/pages/admin/verification/V01SurfaceInventoryBoard.tsx` | `src/admin/modules/verification/views/V01SurfaceInventoryBoard.tsx` |
-| `src/pages/admin/verification/V02InteractionCoverageBoard.tsx` | `src/admin/modules/verification/views/V02InteractionCoverageBoard.tsx` |
-| `src/pages/admin/verification/V03P0JourneyBoard.tsx` | `src/admin/modules/verification/views/V03P0JourneyBoard.tsx` |
-| `src/pages/admin/verification/V04ModeVerificationBoard.tsx` | `src/admin/modules/verification/views/V04ModeVerificationBoard.tsx` |
-| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | `src/admin/modules/verification/views/V06EvidenceExplorer.tsx` |
-| `src/pages/admin/verification/V07LaunchBlockerBoard.tsx` | `src/admin/modules/verification/views/V07LaunchBlockerBoard.tsx` |
+| Old path (now shim) | Canonical home | Domain |
+|---|---|---|
+| `pages/admin/GeneratedTruthDashboard.tsx` | `admin/modules/overview/views/GeneratedTruthDashboard.tsx` | overview |
+| `pages/admin/LaunchHonestyBoard.tsx` | `admin/modules/verification/views/LaunchHonestyBoard.tsx` | verification |
+| `pages/admin/reality-audit/LaunchHonestyBoard.tsx` | `admin/modules/verification/views/LaunchHonestyBoard.tsx` (dedup) | verification |
+| `pages/admin/LaunchReadinessBoard.tsx` | `admin/modules/releases/views/LaunchReadinessBoard.tsx` | releases |
+| `pages/admin/TeamManagement.tsx` | `admin/modules/environments/views/TeamManagement.tsx` | environments |
+| `pages/admin/UserManagement.tsx` | `admin/modules/environments/views/UserManagement.tsx` | environments |
+| `pages/admin/cloud/AdminRBACConsole.tsx` | `admin/modules/trust-security/views/AdminRBACConsole.tsx` | trust-security |
+| `pages/admin/modules/MCKnowledgeBase.tsx` | `admin/modules/config/views/MCKnowledgeBase.tsx` | config |
+| `pages/admin/modules/MCSupport.tsx` | `admin/modules/support/views/MCSupport.tsx` | support |
 
-A new barrel `src/admin/modules/verification/views/index.ts` exposes
-the canonical imports. Future waves should follow this exact pattern
-(copy → shim → barrel → verify) per domain so each is independently
-revertible by deleting the canonical file and inlining the shim.
+New per-domain barrels published at:
+- `src/admin/modules/overview/views/index.ts`
+- `src/admin/modules/releases/views/index.ts`
+- `src/admin/modules/environments/views/index.ts`
+- `src/admin/modules/trust-security/views/index.ts`
+- `src/admin/modules/config/views/index.ts`
+- `src/admin/modules/support/views/index.ts`
+- `src/admin/modules/verification/views/index.ts` (extended)
 
-**Wave 1 status:** ✅ 8/8 verification gates pass, TypeScript clean,
-zero broken imports, zero route changes.
+### Issues caught and fixed during wave 2
+1. `GeneratedTruthDashboard` had relative imports of `generated/*.json` —
+   rewritten to alias-based paths so the file is location-independent.
+2. `AdminRBACConsole` exported only a named binding — shim now re-exports
+   `{ AdminRBACConsole, AdminRBACConsole as default }` to preserve
+   both default-import and named-import call sites.
+
+**Cumulative Phase 5 status:** 15 / 15 curated pages migrated across
+6 domains. ✅ 8/8 verification gates pass, TypeScript clean, zero broken
+imports, zero route changes. Future waves can target the 500 uncurated
+`SECONDARY_SUBVIEW` entries once their `targetRoute` values are
+hand-curated in `admin-page-consolidation-map.ts`.
