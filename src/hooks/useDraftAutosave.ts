@@ -101,8 +101,8 @@ export function useDraftAutosave<T extends Record<string, any>>(
         localStorage.setItem(storageKey, JSON.stringify(toSave));
         setHasDraft(true);
       } catch { /* localStorage full — IndexedDB backup still attempted below */ }
-      // IndexedDB durable backup (fire-and-forget)
-      cacheSet(storageKey, toSave, DRAFT_BACKUP_TTL_DAYS * 24 * 60).catch(() => {/* non-fatal */});
+      // IndexedDB durable backup (fire-and-forget) — TTL in ms
+      cacheSet(storageKey, toSave, DRAFT_BACKUP_TTL_DAYS * 24 * 60 * 60 * 1000).catch(() => {/* non-fatal */});
     }, debounceMs);
   }, [storageKey, appId, draftKey, debounceMs]);
 
