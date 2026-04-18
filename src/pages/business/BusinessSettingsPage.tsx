@@ -14,6 +14,7 @@ import {
 import { Toggle, SingleSelect, SectionTitle } from "@/pages/revenue-office/onboarding/primitives";
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { getRecommendedJourney } from "@/lib/business-journey-config";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";
 import { toast } from "sonner";
@@ -171,10 +172,14 @@ export default function BusinessSettingsPage() {
     }
   }, [localState.businessTypes, prevTypes, localState.journeyTemplate]);
 
+  // Phase T: durable autosave (localStorage + IndexedDB) for in-progress edits.
+  const { updateDraft, clearDraft } = useDraftAutosave<Partial<OnboardingState>>("business:settings:edit", "business");
+
   const update = useCallback((partial: Partial<OnboardingState>) => {
     setLocalState(prev => ({ ...prev, ...partial }));
     setHasChanges(true);
-  }, []);
+    updateDraft(partial);
+  }, [updateDraft]);
 
   const toggleInArray = useCallback((field: keyof OnboardingState, value: string) => {
     setLocalState(prev => {
@@ -200,6 +205,7 @@ export default function BusinessSettingsPage() {
     setPrevTypes(localState.businessTypes);
     setJourneyNeedsUpdate(false);
     setSaveState("saved");
+    clearDraft();
     toast.success("Business settings saved successfully");
     setTimeout(() => setSaveState("idle"), 2000);
   };
