@@ -105,7 +105,7 @@ export default function SuggestionsBoard() {
     if (itemsRes.error) toast.error("Suggestions load failed", { description: itemsRes.error.message });
     else setItems((itemsRes.data ?? []) as Suggestion[]);
     if (summRes.error) toast.error("Summary load failed", { description: summRes.error.message });
-    else setSummary((summRes.data ?? []) as SummaryRow[]);
+    else setSummary(((summRes.data ?? []) as unknown) as SummaryRow[]);
     setLoading(false);
   }, []);
 

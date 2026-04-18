@@ -192,6 +192,9 @@ const VerificationHome = lazy(() => import("@/pages/admin/verification/Verificat
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
 const InternalAgentIntentTimeline = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentIntentTimeline"));
 const ReflectionBoard = lazy(() => import("@/pages/admin/ai-runtime/ReflectionBoard"));
+const SuggestionsBoard = lazy(() => import("@/pages/admin/ai-runtime/SuggestionsBoard"));
+const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"));
+const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
 const PolicyDraftReviewBoard = lazy(() => import("@/pages/admin/ai-runtime/PolicyDraftReviewBoard"));
 const TrustLadderBoard = lazy(() => import("@/pages/admin/ai-runtime/TrustLadderBoard"));
 const CrossCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/CrossCouncilBoard"));
@@ -253,6 +256,9 @@ export function getAdminRoutes() {
     <Route key="hub-airuntime" path="/admin/ai-runtime" element={gated("flags.view", <AIRuntimeHome />)} />,
     <Route key="ws-airuntime-intents" path="/admin/ai-runtime/internal-agent-intents" element={gated("audit.view", <InternalAgentIntentTimeline />)} />,
     <Route key="ws-airuntime-reflection" path="/admin/ai-runtime/reflection-board" element={gated("audit.view", <ReflectionBoard />)} />,
+    <Route key="ws-airuntime-suggestions" path="/admin/ai-runtime/suggestions" element={gated("audit.view", <SuggestionsBoard />)} />,
+    <Route key="ws-airuntime-weekly-digest" path="/admin/ai-runtime/weekly-digest" element={gated("audit.view", <WeeklyDigestBoard />)} />,
+    <Route key="ws-airuntime-dep-findings" path="/admin/ai-runtime/dependency-findings" element={gated("audit.view", <DependencyFindingsBoard />)} />,
     <Route key="ws-airuntime-policy-drafts" path="/admin/ai-runtime/policy-drafts" element={gated("audit.view", <PolicyDraftReviewBoard />)} />,
     <Route key="ws-airuntime-trust-ladder" path="/admin/ai-runtime/trust-ladder" element={gated("audit.view", <TrustLadderBoard />)} />,
     <Route key="ws-airuntime-cross-council" path="/admin/ai-runtime/cross-council" element={gated("audit.view", <CrossCouncilBoard />)} />,
