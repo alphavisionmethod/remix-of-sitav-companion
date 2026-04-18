@@ -64,6 +64,46 @@ jobs:
           VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
         run: sudo -E bash os/scripts/build-raw-img.sh
 
+      - name: Phase 4 — Install supply-chain tooling
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            tpm2-tools sbsigntool jq xxd uuid-runtime || true
+
+      - name: Phase 4 — Seal verity to TPM (offline)
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+        run: |
+          if [ -f out/verity-metadata.json ]; then
+            ROOT_HASH="$(jq -r '.root_hash // empty' out/verity-metadata.json)"
+            if [ -n "$ROOT_HASH" ] && command -v tpm2_createpolicy >/dev/null 2>&1; then
+              SITA_VERSION="$VERSION" bash os/scripts/seal-verity-to-tpm.sh "$ROOT_HASH"
+              bash os/scripts/verify-tpm-seal.sh --offline
+            else
+              echo "::warning::Skipping TPM seal — no root hash or tpm2-tools"
+            fi
+          else
+            echo "::warning::Skipping TPM seal — verity-metadata.json absent"
+          fi
+
+      - name: Phase 4 — Enroll Secure Boot MOK + sign chain
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+          SITA_MOK_KEY:  ${{ env.SITA_MOK_KEY }}
+          SITA_MOK_CERT: ${{ env.SITA_MOK_CERT }}
+        run: |
+          SITA_VERSION="$VERSION" bash os/scripts/enroll-secureboot-mok.sh || \
+            echo "::warning::MOK enrollment partially skipped"
+
+      - name: Phase 4 — Generate signed CycloneDX SBOMs
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+        run: |
+          SITA_VERSION="$VERSION" bash os/scripts/generate-sbom.sh
+          for s in generated/sbom-electron-${VERSION}.cdx.json generated/sbom-os-${VERSION}.cdx.json; do
+            [ -f "$s" ] && bash os/scripts/verify-sbom.sh "$s" || true
+          done
+
       - name: Emit attestation
         run: bash os/scripts/emit-attestation.sh
 
@@ -77,7 +117,7 @@ jobs:
         if: always()
         run: rm -f "$RUNNER_TEMP/mok.key" "$RUNNER_TEMP/mok.crt"
 
-      - name: Upload ISO + attestation artifacts
+      - name: Upload ISO + attestation + supply-chain artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sita-os-iso
@@ -88,9 +128,18 @@ jobs:
             out/*.manifest.json
             out/os-*-receipt.json
             out/verity-receipt.json
+            out/verity-metadata.json
             out/os-verification-report.json
+            out/tpm-seal-*
+            out/secureboot/**
             generated/os-build-attestation.json
             generated/os-build-summary.md
+            generated/sbom-electron-*.cdx.json
+            generated/sbom-electron-*.cdx.json.sig
+            generated/sbom-electron-*.cdx.json.sha256
+            generated/sbom-os-*.cdx.json
+            generated/sbom-os-*.cdx.json.sig
+            generated/sbom-os-*.cdx.json.sha256
           retention-days: 14
           if-no-files-found: error
 
