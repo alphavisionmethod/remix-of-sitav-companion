@@ -42,18 +42,23 @@ const outDir = resolve(process.cwd(), "generated");
 mkdirSync(outDir, { recursive: true });
 const report = {
   generatedAt: new Date().toISOString(),
+  gate: "app-plane-map",
+  phase: "phase-12-native-deployability",
+  ok: errors.length === 0,
+  errorCount: errors.length,
+  warningCount: warns.length,
   totalApps: APP_PLANE_MAP.length,
   byPlane: APP_PLANE_MAP.reduce((acc, a) => { acc[a.plane] = (acc[a.plane] || 0) + 1; return acc; }, {} as Record<string, number>),
   byProfile: {
     user:     APP_PLANE_MAP.filter(a => a.profiles.includes("user")).length,
     operator: APP_PLANE_MAP.filter(a => a.profiles.includes("operator")).length,
   },
-  errors: errors.length,
-  warnings: warns.length,
   issues,
   apps: APP_PLANE_MAP,
 };
-writeFileSync(resolve(outDir, "app-plane-map.json"), JSON.stringify(report, null, 2));
+// Emit BOTH the data file (consumed by app/UI) and the gate report (consumed by aggregator).
+writeFileSync(resolve(outDir, "app-plane-map.json"),         JSON.stringify(report, null, 2));
+writeFileSync(resolve(outDir, "app-plane-map-report.json"),  JSON.stringify(report, null, 2));
 
 console.log(`[check-app-plane-coverage] ${APP_PLANE_MAP.length} apps · ${errors.length} errors · ${warns.length} warnings`);
 if (errors.length > 0) {
