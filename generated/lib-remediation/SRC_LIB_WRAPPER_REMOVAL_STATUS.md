@@ -1,28 +1,54 @@
-# SITA OS — Wrapper Removal Status (Wave 4)
+# SITA OS — Wave 5 Wrapper Removal Status (Revised)
 
 Generated: 2026-04-18
 
-## Current count
+## Outcome: 0 wrappers removed (safety-preserved)
 
-- Total wrappers in `src/lib/` carrying `// @lovable:migrated-wrapper`: **188** (was 174; +14 from Phase 1 duplicate consolidation).
+Wave 5 attempted bulk removal of wrappers with zero detected consumers. **Two sequential passes (5a + 5b) both broke the build.** Each time the wrappers were restored from sibling-file canonical matches, returning the build to green (0 TS errors).
 
-## Removal policy
+## Why removal was unsafe
 
-A wrapper may be removed only when **both** conditions hold:
+The static-text consumer scan (literal `"@/lib/<path>"` match across all of `src/`) does **not** detect:
 
-1. `check-legacy-wrapper-usage.ts` reports **0 remaining external consumers** for that exact path.
-2. The removal-condition recorded in `src-lib-wrapper-map.json` is satisfied.
+- Dynamic imports built from templated path strings.
+- Re-exports through barrel files that compose the import path at build time.
+- Path resolution chains routed through Vite plugins or tsconfig path aliases other than `@/`.
+- Test fixtures and storybook autoloads.
 
-## Wave 4 stance
+The 160 wrappers Wave 5b "removed" turned out to be referenced by ≥90 consumers via paths the scan didn't recognize. Restoring all 160 from sibling canonical matches returned the build to clean.
 
-No wrappers were removed this wave. Rationale:
+## Final Wave 5 ledger
 
-- The 14 newly created wrappers (Phase 1) cannot be removed yet — they preserve back-compat for any consumer still importing the `services/` path.
-- A bulk zero-consumer removal pass requires regenerating `legacy-wrapper-usage-report.json` after the rewire and is queued as a discrete Wave 5 task to avoid coupling unrelated risk into this wave.
+| Pass | Wrappers removed | Build errors after | Action |
+|---|---|---|---|
+| 5a (excluded src/lib from scan) | 176 | 346 | Restored from siblings (fallback to `core-services` ↔ `services` swap). |
+| 5b (full repo scan) | 160 | 90 | Restored from siblings. |
+| **Net Wave 5** | **0** | **0** | All wrappers retained; build green. |
 
-## Tracked next steps (Wave 5)
+## Implications for the canonical ownership model
 
-1. Run `check-legacy-wrapper-usage.ts`.
-2. For each wrapper with count = 0, delete the wrapper file and update `src-lib-wrapper-map.json` (`status: removed`).
-3. Re-run `tsc --noEmit` to confirm no broken imports.
-4. Update this document with removal counts.
+Wrappers cannot be removed by static analysis alone. **A safe removal pass requires either:**
+
+1. **AST-based import resolution** (e.g., ts-morph) that resolves dynamic imports and barrel re-exports.
+2. **Build-time tree-shake telemetry**: instrument Vite/Rollup output to record which `@/lib/*` paths are actually emitted, and treat anything missing as truly dead.
+3. **Manual per-folder audits** as folders are physically migrated to canonical homes — at which point each wrapper's removal is gated on the folder's own migration sign-off.
+
+Approach 3 is the safest and aligns with the existing wave-by-wave migration cadence. Wave 5's attempt to bulk-remove wrappers without folder migration was the wrong abstraction.
+
+## Wave 5 deliverables that DID succeed
+
+- `scripts/architecture/wave5b-remove-zero-consumer-wrappers.ts` — the corrected scan (kept for forensic reference).
+- This report documenting why bulk removal is unsafe.
+- Build remains green at 0 TS errors.
+
+## Recommended Wave 6 path
+
+Skip bulk wrapper removal. Instead:
+
+1. Pick **one** physical folder (e.g., `src/lib/persistence/` → `src/data/persistence/`).
+2. Move all files; update wrappers to point at the new canonical home.
+3. Run the consumer rewire wave for that folder only.
+4. Once all consumers point at the new canonical, delete the wrappers for that folder specifically.
+5. Repeat for one folder per wave.
+
+This preserves build safety wave-over-wave and avoids the failure mode Wave 5 hit.
