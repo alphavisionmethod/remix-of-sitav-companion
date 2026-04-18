@@ -17414,6 +17414,10 @@ export type Database = {
       }
     }
     Functions: {
+      acknowledge_error_patrol_detection: {
+        Args: { _detection_id: string }
+        Returns: Json
+      }
       brd_followthrough_transition: {
         Args: {
           _correlation_id: string
@@ -17467,6 +17471,31 @@ export type Database = {
         Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
       }
+      mute_error_patrol_pattern: {
+        Args: { _hours?: number; _pattern_key: string }
+        Returns: Json
+      }
+      record_error_patrol_detection: {
+        Args: {
+          _affected_resource_id?: string
+          _affected_resource_type?: string
+          _follow_up_recommendation?: string
+          _linked_agent_action_id?: string
+          _linked_incident_id?: string
+          _linked_intent_id?: string
+          _pattern_key: string
+          _raw_signal?: Json
+          _severity: string
+          _signature_hash: string
+          _subsystem: string
+          _user_id?: string
+        }
+        Returns: string
+      }
+      resolve_error_patrol_detection: {
+        Args: { _detection_id: string; _notes?: string }
+        Returns: Json
+      }
       seed_default_budget_classes: {
         Args: { _user_id: string }
         Returns: undefined
@@ -17476,6 +17505,10 @@ export type Database = {
         Returns: undefined
       }
       seed_internal_agents_from_json: { Args: { _agents: Json }; Returns: Json }
+      seed_master_internal_agent_kill_switch: {
+        Args: { _user_id: string }
+        Returns: string
+      }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
         Returns: number
