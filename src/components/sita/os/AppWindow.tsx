@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
