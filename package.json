@@ -86,7 +86,8 @@
     "brd:l7:verify": "npm run brd:l7:subs ; npm run brd:l7:gate",
     "release:readiness": "npx tsx scripts/architecture/checks/check-os-release-readiness.ts",
     "claim-safety:run-all": "npx tsx scripts/validation/check-os-claim-safety.ts; npx tsx scripts/validation/check-track-b-language-boundaries.ts; npx tsx scripts/validation/check-no-prohibited-native-claims.ts; npx tsx scripts/validation/check-demo-only-surface-badging.ts; npx tsx scripts/validation/check-future-vision-route-containment.ts; npx tsx scripts/validation/check-device-surface-claim-safety.ts; npx tsx scripts/validation/check-deployment-wording-safety.ts; npx tsx scripts/validation/check-launch-honesty-alignment.ts; npx tsx scripts/validation/check-qualifier-required-claims.ts; true",
-    "release:readiness:full": "npm run claim-safety:run-all && npm run release:readiness"
+    "release:readiness:full": "npm run claim-safety:run-all && npm run final-proof:run-all && npm run release:readiness",
+    "final-proof:run-all": "npx tsx scripts/validation/check-gate-meaningfulness.ts; npx tsx scripts/validation/check-app-store-lifecycle-reality.ts; npx tsx scripts/validation/check-frontend-polish-coverage.ts; npx tsx scripts/validation/check-admin-operator-coherence.ts; npx tsx scripts/validation/check-human-use-operational-readiness.ts; true"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
