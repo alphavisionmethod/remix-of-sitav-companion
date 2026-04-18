@@ -10776,6 +10776,191 @@ export type Database = {
           },
         ]
       }
+      internal_agent_consensus_sessions: {
+        Row: {
+          action_class: string
+          ceiling_capped: boolean
+          conflict_detected: boolean
+          created_at: string
+          effective_autonomy_level: number
+          expires_at: string
+          id: string
+          initiating_agent_id: string
+          participating_agent_ids: string[]
+          participating_councils: string[]
+          proposed_autonomy_level: number
+          quorum_required: number
+          resolution_payload: Json | null
+          resolution_summary: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          session_key: string
+          status: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          action_class?: string
+          ceiling_capped?: boolean
+          conflict_detected?: boolean
+          created_at?: string
+          effective_autonomy_level?: number
+          expires_at?: string
+          id?: string
+          initiating_agent_id: string
+          participating_agent_ids?: string[]
+          participating_councils?: string[]
+          proposed_autonomy_level?: number
+          quorum_required?: number
+          resolution_payload?: Json | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          session_key: string
+          status?: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          action_class?: string
+          ceiling_capped?: boolean
+          conflict_detected?: boolean
+          created_at?: string
+          effective_autonomy_level?: number
+          expires_at?: string
+          id?: string
+          initiating_agent_id?: string
+          participating_agent_ids?: string[]
+          participating_councils?: string[]
+          proposed_autonomy_level?: number
+          quorum_required?: number
+          resolution_payload?: Json | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          session_key?: string
+          status?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_consensus_votes: {
+        Row: {
+          agent_id: string
+          cast_at: string
+          confidence: number
+          council: string
+          evidence_refs: Json
+          expires_at: string
+          id: string
+          position: string
+          rationale: string
+          session_id: string
+        }
+        Insert: {
+          agent_id: string
+          cast_at?: string
+          confidence?: number
+          council: string
+          evidence_refs?: Json
+          expires_at?: string
+          id?: string
+          position: string
+          rationale?: string
+          session_id: string
+        }
+        Update: {
+          agent_id?: string
+          cast_at?: string
+          confidence?: number
+          council?: string
+          evidence_refs?: Json
+          expires_at?: string
+          id?: string
+          position?: string
+          rationale?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_consensus_votes_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_consensus_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internal_agent_cost_proposals: {
+        Row: {
+          created_at: string
+          current_state: Json
+          decided_at: string | null
+          decision_notes: string | null
+          estimated_monthly_savings_usd: number
+          estimated_quality_delta: number
+          evidence_refs: Json
+          expires_at: string
+          id: string
+          proposal_key: string
+          proposal_type: string
+          proposed_state: Json
+          proposing_agent_id: string
+          rationale: string
+          reviewer_user_id: string | null
+          risk_assessment: string
+          scope: string
+          status: string
+          target_capability: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_state?: Json
+          decided_at?: string | null
+          decision_notes?: string | null
+          estimated_monthly_savings_usd?: number
+          estimated_quality_delta?: number
+          evidence_refs?: Json
+          expires_at?: string
+          id?: string
+          proposal_key: string
+          proposal_type: string
+          proposed_state?: Json
+          proposing_agent_id: string
+          rationale: string
+          reviewer_user_id?: string | null
+          risk_assessment?: string
+          scope?: string
+          status?: string
+          target_capability?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_state?: Json
+          decided_at?: string | null
+          decision_notes?: string | null
+          estimated_monthly_savings_usd?: number
+          estimated_quality_delta?: number
+          evidence_refs?: Json
+          expires_at?: string
+          id?: string
+          proposal_key?: string
+          proposal_type?: string
+          proposed_state?: Json
+          proposing_agent_id?: string
+          rationale?: string
+          reviewer_user_id?: string | null
+          risk_assessment?: string
+          scope?: string
+          status?: string
+          target_capability?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       internal_agent_definitions: {
         Row: {
           agent_id: string
@@ -11170,6 +11355,110 @@ export type Database = {
             columns: ["intent_id"]
             isOneToOne: false
             referencedRelation: "internal_agent_action_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internal_agent_runbook_bindings: {
+        Row: {
+          agent_id: string
+          created_at: string
+          enabled: boolean
+          id: string
+          max_autonomy_level: number
+          prerequisites: Json
+          rollback_required: boolean
+          runbook_id: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          max_autonomy_level?: number
+          prerequisites?: Json
+          rollback_required?: boolean
+          runbook_id: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          max_autonomy_level?: number
+          prerequisites?: Json
+          rollback_required?: boolean
+          runbook_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_runbook_executions: {
+        Row: {
+          agent_id: string
+          autonomy_level_used: number
+          binding_id: string | null
+          ceiling_capped: boolean
+          completed_at: string | null
+          duration_ms: number | null
+          execution_key: string
+          expires_at: string
+          id: string
+          outcome_status: string
+          outcome_summary: string | null
+          rollback_data: Json | null
+          runbook_id: string
+          started_at: string
+          steps_executed: Json
+          trigger_evidence_refs: Json
+          trigger_reason: string
+        }
+        Insert: {
+          agent_id: string
+          autonomy_level_used?: number
+          binding_id?: string | null
+          ceiling_capped?: boolean
+          completed_at?: string | null
+          duration_ms?: number | null
+          execution_key: string
+          expires_at?: string
+          id?: string
+          outcome_status?: string
+          outcome_summary?: string | null
+          rollback_data?: Json | null
+          runbook_id: string
+          started_at?: string
+          steps_executed?: Json
+          trigger_evidence_refs?: Json
+          trigger_reason: string
+        }
+        Update: {
+          agent_id?: string
+          autonomy_level_used?: number
+          binding_id?: string | null
+          ceiling_capped?: boolean
+          completed_at?: string | null
+          duration_ms?: number | null
+          execution_key?: string
+          expires_at?: string
+          id?: string
+          outcome_status?: string
+          outcome_summary?: string | null
+          rollback_data?: Json | null
+          runbook_id?: string
+          started_at?: string
+          steps_executed?: Json
+          trigger_evidence_refs?: Json
+          trigger_reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_runbook_executions_binding_id_fkey"
+            columns: ["binding_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_runbook_bindings"
             referencedColumns: ["id"]
           },
         ]
@@ -17748,6 +18037,18 @@ export type Database = {
         }
         Returns: undefined
       }
+      cast_internal_agent_consensus_vote: {
+        Args: {
+          p_agent_id: string
+          p_confidence: number
+          p_council: string
+          p_evidence_refs?: Json
+          p_position: string
+          p_rationale: string
+          p_session_id: string
+        }
+        Returns: string
+      }
       check_ai_budget_policies: {
         Args: {
           p_capability_key: string
@@ -17837,6 +18138,36 @@ export type Database = {
         Args: { _hours?: number; _pattern_key: string }
         Returns: Json
       }
+      open_internal_agent_consensus: {
+        Args: {
+          p_action_class: string
+          p_initiating_agent_id: string
+          p_participating_agent_ids: string[]
+          p_participating_councils: string[]
+          p_proposed_autonomy_level: number
+          p_quorum_required: number
+          p_session_key: string
+          p_topic: string
+        }
+        Returns: string
+      }
+      propose_internal_cost_optimization: {
+        Args: {
+          p_current_state: Json
+          p_estimated_monthly_savings_usd: number
+          p_estimated_quality_delta: number
+          p_evidence_refs?: Json
+          p_proposal_key: string
+          p_proposal_type: string
+          p_proposed_state: Json
+          p_proposing_agent_id: string
+          p_rationale: string
+          p_risk_assessment?: string
+          p_scope: string
+          p_target_capability: string
+        }
+        Returns: string
+      }
       publish_agent_learning: {
         Args: {
           _applies_to_agents?: string[]
@@ -17880,6 +18211,22 @@ export type Database = {
         }
         Returns: string
       }
+      record_internal_runbook_execution: {
+        Args: {
+          p_agent_id: string
+          p_duration_ms: number
+          p_execution_key: string
+          p_outcome_status: string
+          p_outcome_summary: string
+          p_requested_autonomy_level: number
+          p_rollback_data: Json
+          p_runbook_id: string
+          p_steps_executed: Json
+          p_trigger_evidence_refs: Json
+          p_trigger_reason: string
+        }
+        Returns: string
+      }
       record_policy_draft_decision: {
         Args: {
           _action: string
@@ -17891,6 +18238,10 @@ export type Database = {
       }
       resolve_error_patrol_detection: {
         Args: { _detection_id: string; _notes?: string }
+        Returns: Json
+      }
+      resolve_internal_agent_consensus: {
+        Args: { p_resolved_by?: string; p_session_id: string }
         Returns: Json
       }
       seed_default_budget_classes: {
