@@ -16,5 +16,6 @@
     "boardroom-followthrough-runbook-drill"
   ],
   "categories": ["disaster-recovery", "connector-health", "release", "governance", "ux", "operator-readiness"],
+  "categoriesCovered": ["restore", "connector-refresh", "release-artifact", "baseline-seal", "notification-calmness", "admin-golden-path"],
   "ok": true
 }

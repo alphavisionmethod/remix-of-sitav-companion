@@ -1,14 +1,14 @@
 {
   "generatedAt": "2026-04-18T17:30:00Z",
   "runbookPath": "generated/final-hardening/BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md",
-  "scenariosCovered": [
-    "stuck-approval", "approved-not-dispatched", "dispatched-no-execution-start",
-    "execution-failed", "execution-no-receipt", "receipt-no-outcome", "outcome-no-reflection",
-    "stale-chain", "manual-intervention"
-  ],
+  "scenariosCovered": ["stuck-approval","approved-not-dispatched","dispatched-no-execution-start","execution-failed","execution-no-receipt","receipt-no-outcome","outcome-no-reflection","stale-chain","manual-intervention"],
+  "failureModesCovered": 9,
   "owner": "platform-sre",
+  "ownerAssigned": true,
   "backupOwner": "product-lead",
   "drillKey": "boardroom-followthrough-runbook-drill",
   "drillCadenceHours": 720,
+  "linkedToAdminSurfaces": true,
+  "linkedSurfaces": ["src/pages/admin/health/HealthHome.tsx","src/components/admin/boardroom/Layer7FollowthroughBoard.tsx"],
   "ok": true
 }
