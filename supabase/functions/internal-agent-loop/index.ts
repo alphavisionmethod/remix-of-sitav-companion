@@ -642,18 +642,18 @@ async function bridgeSpendControl(supabase: any): Promise<BridgeResult> {
     return result;
   }
 
+  // Use the canonical service-role helper so every bridge discovery
+  // path is auditable and uniform across agents.
+  const { data: unhealthy, error: unhealthyError } = await supabase.rpc("list_unhealthy_connector_accounts");
+  if (unhealthyError) {
+    result.errors.push(`rpc:list_unhealthy_connector_accounts:${unhealthyError.message}`);
+    return result;
+  }
+
   for (const a of alerts ?? []) {
-    // For each critical budget alert, find the most-recently unhealthy connector
+    // Pair each critical budget alert with the most-recently unhealthy connector
     // owned by the same user and propose disabling it (forces approval at 0.72).
-    const { data: bad } = await supabase
-      .from("connector_accounts")
-      .select("id,connector_type,display_name,status,last_health_status")
-      .eq("user_id", a.user_id)
-      .in("status", ["error", "degraded", "expired"])
-      .eq("demo_mode", false)
-      .order("last_health_at", { ascending: false, nullsFirst: false })
-      .limit(1);
-    const target = bad?.[0];
+    const target = (unhealthy ?? []).find((c: any) => c.user_id === a.user_id);
     if (!target) continue;
 
     result.signalsProcessed++;
