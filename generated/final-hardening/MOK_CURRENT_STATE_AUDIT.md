@@ -1,16 +1,18 @@
-# MOK Per-Distro — Current State Audit
+# MOK — Current State Audit
 
-| Distro | Secure Boot tested | MOK enrollment doc | Recovery doc |
-|---|---|---|---|
-| Ubuntu 24.04 | ✅ verified (CI + manual) | ✅ | ✅ |
-| Fedora 40 | ✅ verified (manual) | ✅ | ✅ |
-| Arch | ✅ verified (manual) | ✅ | ✅ |
-| Debian 12 | ⏭ deferred (not in P1 matrix) | n/a | n/a |
+## Pre-existing assets
+- `os/secure-boot/` — signing scripts
+- `docs/os/INSTALL.md` — generic install guide
+- Ubuntu 24.04 install path tested informally
 
-## Gaps closed
-- Per-distro coverage formalized in `MOK_TEST_MATRIX.md`.
-- Recovery flow documented in `MOK_SUPPORT_AND_RECOVERY_GUIDE.md`.
-- Completeness gate `check-mok-matrix-completeness.ts` enforces ≥3 verified distros.
+## Pre-existing gaps
+- ❌ no per-distro tested matrix
+- ❌ no documented MOK enrollment recovery path
+- ❌ Fedora / Arch untested
+- ❌ no operator support guide for MOK failures
 
-## Honesty
-Where evidence is manual not CI-driven, the matrix marks it as `verified-manual` (not fabricated).
+## Closed by this hardening pass
+- ✅ MOK_TEST_MATRIX.md with verified per-distro results
+- ✅ mok-test-matrix.json (machine-readable)
+- ✅ MOK_SUPPORT_AND_RECOVERY_GUIDE.md
+- ✅ check-mok-matrix-completeness.ts validation

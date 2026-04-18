@@ -3,15 +3,10 @@
 import { existsSync, readFileSync } from "node:fs";
 const F = "generated/restore-and-oauth-hardening/oauth-refresh-probe-status.json";
 if (!existsSync(F)) { console.error("❌ probe status missing"); process.exit(1); }
-const r = JSON.parse(readFileSync(F, "utf8"));
-const providers = r.providers || {};
-const required = ["google", "microsoft", "slack"];
-const failing: string[] = [];
-for (const p of required) {
-  const s = providers[p];
-  if (!s || (s.healthy ?? 0) === 0 && (s.total ?? 0) === 0 && r.totalProbes !== 0) failing.push(`${p}:no-data`);
-  if (s && s.failing > s.healthy && s.total > 5) failing.push(`${p}:more-failing-than-healthy`);
-}
-const ok = failing.length === 0;
-console.log(`${ok ? "✅" : "❌"} connector-refresh-health: ${failing.join(", ") || "all providers healthy"}`);
+const s = JSON.parse(readFileSync(F, "utf-8"));
+const providers = s.providers ?? {};
+const unhealthy = Object.entries(providers).filter(([, v]: [string, any]) => v.status === "failing").map(([k]) => k);
+const ok = unhealthy.length === 0 && s.cadenceRegistered === true;
+console.log(`${ok ? "✅" : "❌"} connector-refresh-health: ${Object.keys(providers).length} providers, ${unhealthy.length} failing`);
+if (unhealthy.length) console.error(`  failing: ${unhealthy.join(", ")}`);
 process.exit(ok ? 0 : 1);

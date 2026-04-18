@@ -1,19 +1,29 @@
 # MOK Support & Recovery Guide
 
-## Symptoms → Action
+## Common failure modes
 
-| Symptom | Distro hint | Action |
-|---|---|---|
-| Boot fails after install with "Secure Boot violation" | any | Reboot, on shim prompt choose "Enroll MOK" → "Continue" → enter MOK password |
-| `mokutil --enable-validation` rejected | Ubuntu/Debian | Re-enroll: `sudo mokutil --import /var/lib/shim-signed/mok/MOK.der` then reboot |
-| Initramfs panic: "verity hash mismatch" | any | Recovery shell → `sita-ops repair --verity` |
-| MOK enrollment screen never appears | Fedora | Disable Secure Boot temporarily in firmware → re-run `mokutil --import` → re-enable |
-| Lost MOK password | any | Generate new MOK pair via `sita-ops repair --regenerate-mok` (requires recovery USB) |
+### 1. MOK enrollment prompt not shown
+- **Symptom:** kernel module fails to load, no shim prompt
+- **Cause:** Secure Boot disabled OR shim not installed
+- **Fix:** Verify `mokutil --sb-state`; reinstall `shim-signed`
+
+### 2. MOK password forgotten
+- **Symptom:** can't complete enrollment after reboot
+- **Fix:** `mokutil --reset` → reboot → re-enroll with new password
+
+### 3. Signed module rejected after kernel update
+- **Symptom:** module load fails after `dnf/apt upgrade`
+- **Cause:** kernel signature changed
+- **Fix:** Re-run `os/secure-boot/sign-modules.sh`; reboot
+
+### 4. Arch — no shim by default
+- **Fix:** install `shim-signed` from AUR; follow Arch wiki Secure Boot guide
+
+### 5. Boot fails after enrollment
+- **Recovery:** boot rescue media → chroot → restore `/boot/efi/EFI/<distro>/grubx64.efi.bak`
 
 ## Escalation
-- L1: operator runs `sita-ops support-bundle`, attaches to incident.
-- L2: DR engineer reissues signed shim/grub via release pipeline.
-- L3: revoke compromised MOK via `os/scripts/revoke-mok.sh`.
+After 2 failed recovery attempts → escalate to platform-support with `sita-ops support-bundle` output.
 
-## Honesty
-Recovery instructions are validated against real test runs. Where a step is distro-specific, the matrix marks the caveat.
+## Honesty preservation
+Never claim Secure Boot is "guaranteed working" on a distro that hasn't been tested. Reflect actual matrix state in support replies.

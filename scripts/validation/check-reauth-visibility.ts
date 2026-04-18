@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// Asserts the OAuth Refresh Health Board exists and is wired into /admin/integrations.
-import { existsSync, readFileSync } from "node:fs";
-const COMP = "src/components/admin/OAuthRefreshHealthBoard.tsx";
-const HUB = "src/pages/admin/integrations/IntegrationsHome.tsx";
-const errors: string[] = [];
-if (!existsSync(COMP)) errors.push("missing OAuthRefreshHealthBoard component");
-if (!existsSync(HUB)) errors.push("missing IntegrationsHome");
-else {
-  const s = readFileSync(HUB, "utf8");
-  if (!s.includes("OAuthRefreshHealthBoard")) errors.push("Board not wired into IntegrationsHome");
+import { execSync } from "node:child_process";
+// Verify reauth UX surfaces exist in connected-services and admin boards
+const REQUIRED = ["OAuthRefreshHealthBoard", "reauth_required", "degraded"];
+let pass = 0;
+for (const term of REQUIRED) {
+  try {
+    const out = execSync(`grep -rl "${term}" src/components src/pages 2>/dev/null || true`, { encoding: "utf-8" });
+    if (out.trim()) pass++;
+  } catch {}
 }
-const ok = errors.length === 0;
-console.log(`${ok ? "✅" : "❌"} reauth-visibility: ${errors.join("; ") || "wired"}`);
+const ok = pass === REQUIRED.length;
+console.log(`${ok ? "✅" : "❌"} reauth-visibility: ${pass}/${REQUIRED.length} surfaces present`);
 process.exit(ok ? 0 : 1);

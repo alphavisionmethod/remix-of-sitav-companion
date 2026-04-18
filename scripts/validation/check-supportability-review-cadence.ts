@@ -3,8 +3,11 @@
 import { existsSync, readFileSync } from "node:fs";
 const F = "generated/final-hardening/drill-cadence-status.json";
 if (!existsSync(F)) { console.error("❌ cadence status missing"); process.exit(1); }
-const r = JSON.parse(readFileSync(F, "utf8"));
-const overdue = (r.drills || []).filter((d: any) => d.overdue && d.severity === "block");
-const ok = overdue.length === 0;
-console.log(`${ok ? "✅" : "❌"} supportability-review-cadence: ${overdue.length} block-level overdue`);
+const s = JSON.parse(readFileSync(F, "utf-8"));
+const required = ["restore", "connector-refresh", "release-artifact", "baseline-seal", "notification-calmness", "admin-golden-path"];
+const present = new Set(s.categoriesCovered ?? []);
+const missing = required.filter(r => !present.has(r));
+const ok = missing.length === 0;
+console.log(`${ok ? "✅" : "❌"} supportability-cadence: ${present.size}/${required.length} categories`);
+if (missing.length) console.error(`  missing: ${missing.join(", ")}`);
 process.exit(ok ? 0 : 1);

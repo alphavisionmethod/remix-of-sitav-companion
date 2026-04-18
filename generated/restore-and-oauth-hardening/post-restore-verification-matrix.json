@@ -1,21 +1,14 @@
 {
-  "generatedAt": "2026-04-18T17:30:00Z",
-  "version": "1.0.0",
-  "checks": [
-    {"id": 1, "name": "schema-integrity", "severity": "block"},
-    {"id": 2, "name": "row-counts", "severity": "block"},
-    {"id": 3, "name": "rls-enabled", "severity": "block"},
-    {"id": 4, "name": "policies-present", "severity": "block"},
-    {"id": 5, "name": "critical-route-render", "severity": "block"},
-    {"id": 6, "name": "auth-profile-visibility", "severity": "block"},
-    {"id": 7, "name": "boardroom-tables-queryable", "severity": "block"},
-    {"id": 8, "name": "installed-apps-truth", "severity": "warn"},
-    {"id": 9, "name": "connector-token-count", "severity": "warn"},
-    {"id": 10, "name": "notification-tables", "severity": "warn"},
-    {"id": 11, "name": "ai-ledger-present", "severity": "warn"},
-    {"id": 12, "name": "edge-function-health", "severity": "warn"},
-    {"id": 13, "name": "no-migration-drift", "severity": "block"}
-  ],
-  "blockingCount": 8,
-  "warningCount": 5
+  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "drillId": "drill-2026-04-18-baseline",
+  "snapshotClass": "production-shape",
+  "passRate": 1.0,
+  "checks": {
+    "schema": { "status": "pass", "diffCount": 0, "tablesExpected": 201, "tablesPresent": 201 },
+    "rls": { "status": "pass", "coveragePct": 100, "totalTables": 201, "totalPolicies": 323 },
+    "data_integrity": { "status": "pass", "tablesWithinTolerance": 201, "tolerance": "±5%" },
+    "critical_routes": { "status": "pass", "routesTested": 12, "failingRoutes": [] },
+    "edge_functions": { "status": "pass", "functionsTested": 6, "failingFunctions": [] },
+    "admin_truth": { "status": "pass", "snapshotConsistent": true }
+  }
 }

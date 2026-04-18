@@ -1,13 +1,19 @@
-# Boardroom Layer 7 Follow-through — Current State
+# Boardroom Follow-Through Runbook — Current State
 
-## What exists
-- 11-state lifecycle in `followthrough-engine.ts`
-- Admin board `Layer7FollowthroughBoard` at `/admin/approvals`
-- `boardroom_followthrough_dispatches`, `boardroom_outcome_records`, extended `advisor_board_reflections`
-- SQL transition function `brd_followthrough_transition()`
-- BLOCK-level release gate `boardroom-layer7-closure`
+## Existing visibility
+- `Layer7FollowthroughBoard` — admin oversight component
+- `BoardroomFollowthroughView` — user-facing
+- `boardroom_followthrough_dispatches` table — state machine
+- `boardroom_outcome_records` — outcomes
+- `advisor_board_reflections` — reflections
+- 5 Layer 7 validation gates (state, linkage, proof, outcome, reflection)
 
-## Gaps closed by this track
-- Operator runbook (`BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md`) now wired into supportability.
-- Linkage gate `check-boardroom-runbook-linkage.ts` validates discoverability.
-- Owner + escalation path documented.
+## Pre-existing gaps
+- ❌ no operator runbook for stuck states
+- ❌ no failure-mode → recovery-action mapping
+- ❌ no escalation matrix
+
+## Closed by BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md
+- ✅ 9 failure modes with explicit recovery steps
+- ✅ owner + backup owner assigned
+- ✅ linked from Admin Support / Admin Health

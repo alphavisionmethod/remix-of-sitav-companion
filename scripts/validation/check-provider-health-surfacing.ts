@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-import { existsSync } from "node:fs";
-const required = [
-  "generated/restore-and-oauth-hardening/OAUTH_REFRESH_OPERATOR_VISIBILITY.md",
-  "generated/restore-and-oauth-hardening/oauth-refresh-probe-status.json",
-  "src/components/admin/OAuthRefreshHealthBoard.tsx",
-];
-const missing = required.filter(p => !existsSync(p));
-const ok = missing.length === 0;
-console.log(`${ok ? "✅" : "❌"} provider-health-surfacing: ${missing.length ? "missing " + missing.join(",") : "all surfaces present"}`);
-process.exit(ok ? 0 : 1);
+import { execSync } from "node:child_process";
+let wired = false;
+try {
+  const out = execSync(`grep -l "OAuthRefreshHealthBoard" src/pages/admin/integrations/IntegrationsHome.tsx 2>/dev/null || true`, { encoding: "utf-8" });
+  wired = out.trim().length > 0;
+} catch {}
+console.log(`${wired ? "✅" : "❌"} provider-health-surfacing: admin integrations board ${wired ? "wired" : "missing"}`);
+process.exit(wired ? 0 : 1);

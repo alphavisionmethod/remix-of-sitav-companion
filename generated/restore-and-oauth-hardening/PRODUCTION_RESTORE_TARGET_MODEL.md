@@ -1,33 +1,46 @@
 # Production Restore — Target Model
 
-## Canonical model
+## Canonical drill phases
 
-```
-snapshot → preflight → restore → schema-verify → data-verify
-        → object-verify → RLS-verify → app-usability-verify
-        → runtime-truth-verify → final-summary → durable-receipt
-```
+1. **preflight** — verify snapshot artifact integrity (sha256), target env empty/seedable
+2. **restore_execute** — `pg_restore` with `--clean --if-exists --no-owner`
+3. **schema_verify** — diff against canonical manifest (`generated/db-truth/`)
+4. **rls_verify** — every public table has ≥1 policy AND `rowsecurity = true`
+5. **data_integrity** — row counts within ±5% of snapshot manifest, FK constraints valid
+6. **critical_routes** — 12 flagship routes return 200 with seeded auth
+7. **edge_functions** — 6 critical edge functions respond to health probe
+8. **admin_truth** — `get_db_truth_snapshot('summary')` returns consistent counts
+9. **finalize** — write `restore_drill_receipts` row with phase timings, status, evidence
 
-## Phases
+## Pass / fail criteria
 
-| # | Phase | Tooling | Pass criteria |
+| Dimension | Pass | Amber | Red |
 |---|---|---|---|
-| 1 | Snapshot selection | scrubbed prod-shape fixtures | snapshot exists, hash matches manifest |
-| 2 | Preflight | drill script | target env empty/restorable |
-| 3 | Restore execution | pg_restore / migration replay | exit 0, no errors |
-| 4 | Schema verify | introspection | tables/views/functions/triggers all present |
-| 5 | Data integrity | row-count ranges, FK joins | within tolerance |
-| 6 | Object verify | indexes/triggers/policies | all expected objects present |
-| 7 | RLS verify | `check-post-restore-rls-integrity.ts` | 100% coverage |
-| 8 | App usability | `check-post-restore-critical-routes.ts` | golden-path routes return 200 |
-| 9 | Runtime truth | manifests refreshed | no drift |
-| 10 | Final summary | report + receipt row | persisted |
+| schema diff | 0 | ≤2 | >2 |
+| RLS coverage | 100% | ≥98% | <98% |
+| data integrity | within ±5% | ±10% | >±10% |
+| route check | 12/12 | 11/12 | <11 |
+| edge fn | 6/6 | 5/6 | <5 |
+| total duration | <20 min | <40 min | ≥40 min |
 
-## Receipt schema (`restore_drill_receipts`)
-- `id`, `started_at`, `finished_at`, `status` (pass/fail/degraded)
-- `snapshot_class`, `phase_durations` (jsonb)
-- `failed_phases` (jsonb), `match_percent`, `evidence_url`
-- `runner_user_id`
+## Receipt model
+
+```ts
+interface RestoreDrillReceipt {
+  id: uuid;
+  snapshot_class: 'production-shape' | 'schema-only' | 'synthetic';
+  environment: 'staging' | 'preview';
+  started_at: timestamptz;
+  finished_at: timestamptz;
+  status: 'pass' | 'amber' | 'fail';
+  phase_durations_ms: Record<phase, number>;
+  match_percent: number;
+  failed_phases: string[];
+  evidence_url: text;
+  operator: uuid;
+}
+```
 
 ## Cadence
-Monthly (≤35 days between successful drills) — enforced by `check-production-restore-drill.ts`.
+
+Monthly (≤35d freshness gate); auto-triggered before any major release.

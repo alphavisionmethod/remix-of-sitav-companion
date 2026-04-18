@@ -1,13 +1,35 @@
 # OAuth Refresh — Operator Visibility
 
-## Surfaces
-- **Primary:** `/admin/integrations` → OAuth Refresh Health module (`OAuthRefreshHealthBoard`)
-- **Secondary:** `/admin/health` → Incidents (when failing)
-- **Truth artifact:** `generated/restore-and-oauth-hardening/oauth-refresh-probe-status.json`
+## Admin surfaces
 
-## What operators see
-- Per-provider rollup (Google / Microsoft / Slack)
-- Failing accounts / connections list
-- Last successful refresh timestamp
-- Repeat-failure counts
-- Reauth-required accounts
+| Surface | Path | Component |
+|---|---|---|
+| Admin Integrations | `/admin/integrations` | `OAuthRefreshHealthBoard` |
+| Admin Health | `/admin/health` | `DrillCadenceBoard` (cadence row) |
+
+## Board contents
+- per-provider table: total tokens, healthy, degraded, failing, reauth_required
+- last probe timestamp per provider
+- failing tokens drilldown
+- retry/backoff state
+
+## User-facing surface
+- `connected-services` page shows per-connection badge:
+  - 🟢 connected
+  - 🟡 degraded (retrying)
+  - 🟠 reauth required (CTA: Reconnect)
+  - 🔴 disconnected
+
+## Queries
+
+```sql
+-- provider health rollup
+SELECT provider, lifecycle_status, count(*)
+FROM oauth_refresh_probe_results r
+JOIN LATERAL (
+  SELECT lifecycle_status FROM oauth_refresh_probe_results
+  WHERE connector_token_id = r.connector_token_id
+  ORDER BY probed_at DESC LIMIT 1
+) latest ON true
+GROUP BY provider, lifecycle_status;
+```

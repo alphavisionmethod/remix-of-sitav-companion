@@ -1,39 +1,40 @@
-# Production Restore — Operator Runbook
+# Production Restore Drill — Operator Runbook
 
-## Trigger
-- Monthly cadence (1st Monday)
-- After major schema migration
-- After incident in DR domain
+## When to run
+- Monthly (1st Tuesday)
+- Before any release that touches schema
+- After any disaster recovery test
 
-## Steps
-1. **Preflight**
-   ```bash
-   npx tsx scripts/db/restore/production-shape-restore-drill.ts --preflight
-   ```
-2. **Run drill**
-   ```bash
-   npx tsx scripts/db/restore/production-shape-restore-drill.ts --run --snapshot=prod-shape-latest
-   ```
-3. **Verify**
-   ```bash
-   npx tsx scripts/validation/check-production-restore-drill.ts
-   npx tsx scripts/validation/check-post-restore-rls-integrity.ts
-   npx tsx scripts/validation/check-post-restore-critical-routes.ts
-   npx tsx scripts/validation/check-restore-verification-matrix.ts
-   ```
-4. **Inspect** the receipt at `/admin/health` → Drill Cadence Board.
-5. **On failure** — see Failure Modes below.
+## How to run
 
-## Failure modes
-| Symptom | Action |
+```bash
+npx tsx scripts/drills/production-shape-restore-drill.ts \
+  --snapshot=production-shape-latest \
+  --env=staging \
+  --operator=$USER
+```
+
+## Flow
+
+1. Drill acquires lock in `drill_cadence_registry`
+2. Restores latest production-shape snapshot to staging DB
+3. Runs 6-dim verification matrix
+4. Writes `restore_drill_receipts` row + `generated/production-restore-status.json`
+5. Posts result to Admin Health → DrillCadenceBoard
+
+## Failure response
+
+| Symptom | Runbook step |
 |---|---|
-| Restore exits non-zero | inspect `phase_durations.restore.error`, re-run with `--verbose` |
-| RLS regression | diff `policies` snapshot pre/post; open incident `IR-RLS-DRIFT` |
-| Critical route 500 | check edge function logs; if migration drift, rollback |
-| Stale receipt (>35d) | cadence breach — block release until rerun |
+| Schema diff > 2 | Compare `generated/db-truth/canonical-schema.json`; rerun migrations on snapshot |
+| RLS coverage drop | Inspect `get_db_truth_snapshot('drift')`; reapply missing policies |
+| Route failure | Check edge function logs; verify seeded auth token validity |
+| Timeout >40 min | Check pg_stat_activity; consider snapshot pruning |
 
-## Owner
-Primary: DR lead. Backup: Platform on-call.
+## Rollback
+Drill runs in isolated staging DB — no production rollback needed.
+Failed receipts stay in `restore_drill_receipts` for audit.
 
-## Evidence
-All runs persisted in `restore_drill_receipts` and surfaced in the Drill Cadence Board. Latest summary: `generated/restore-and-oauth-hardening/production-restore-status.json`.
+## Escalation
+RED → page on-call SRE within 30 min.
+AMBER → owner triages within 24h.

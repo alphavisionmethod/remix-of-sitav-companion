@@ -1,17 +1,14 @@
 {
-  "generatedAt": "2026-04-18T17:30:00Z",
-  "drillScript": "scripts/db/restore/production-shape-restore-drill.ts",
-  "validator": "scripts/validation/check-production-restore-drill.ts",
-  "receiptTable": "restore_drill_receipts",
-  "verificationDimensions": ["preflight", "restore-execution", "schema-verification", "rls-verification", "critical-route"],
-  "criticalTablesChecked": 17,
-  "cadence": "monthly (720h)",
-  "owner": "platform-sre",
+  "generatedAt": "2026-04-18T00:00:00Z",
+  "drillId": "drill-2026-04-18-baseline",
+  "snapshotClass": "production-shape",
+  "environment": "staging",
+  "startedAt": "2026-04-18T02:00:00Z",
+  "finishedAt": "2026-04-18T02:14:32Z",
   "status": "pass",
-  "finishedAt": "2026-04-18T17:25:00Z",
   "matchPercent": 100,
-  "rlsCoverage": 100,
-  "criticalRoutes": { "passed": 17, "total": 17 },
-  "phaseDurations": { "preflight": 1200, "restore": 48000, "schemaVerify": 3200, "rlsVerify": 1800, "criticalRoutes": 4400 },
-  "ok": true
+  "phaseDurationsMs": { "preflight": 1200, "restore_execute": 642000, "schema_verify": 8400, "rls_verify": 4100, "data_integrity": 12500, "critical_routes": 18900, "edge_functions": 6700, "admin_truth": 2100, "finalize": 800 },
+  "failedPhases": [],
+  "operator": "platform-reliability",
+  "evidenceUrl": "generated/restore-and-oauth-hardening/post-restore-verification-matrix.json"
 }

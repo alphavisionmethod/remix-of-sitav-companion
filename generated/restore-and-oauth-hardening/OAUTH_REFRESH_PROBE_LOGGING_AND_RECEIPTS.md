@@ -1,15 +1,40 @@
 # OAuth Refresh — Logging & Receipts
 
 ## Persistence
-Table: `oauth_refresh_probe_results`
-Columns: `id, provider, account_id, probed_at, attempt_result, failure_reason, retry_count, lifecycle_status, alert_state, evidence_url, user_id`.
+
+Every probe writes one row to `oauth_refresh_probe_results`:
+
+| Column | Purpose |
+|---|---|
+| id | uuid PK |
+| provider | google/microsoft/slack |
+| user_id | RLS scope |
+| connector_token_id | FK to connector_tokens |
+| probed_at | event time |
+| result | enum |
+| latency_ms | observability |
+| failure_reason | text (null on success) |
+| retry_count | for backoff calc |
+| lifecycle_status | derived state |
+| evidence | jsonb (provider response excerpt, scrubbed) |
+
+## RLS
+- users see their own probe results
+- admins (via `has_role(uid, 'admin')`) see all
 
 ## Retention
-90 days, trimmed nightly.
+- 90 days default; archived to cold storage after.
 
-## Receipts
-Each probe writes one row. Aggregate per-provider summary mirrored to `generated/restore-and-oauth-hardening/oauth-refresh-probe-status.json`.
+## Edge function
 
-## Alerts
-- 3 consecutive failures → incident raised via `raiseAlert`
-- reauth_required → user-facing connected services banner
+`supabase/functions/oauth-refresh-probe/index.ts`:
+1. Reads due tokens from `connector_tokens` (next_probe_at ≤ now)
+2. Calls provider refresh endpoint
+3. Updates token row
+4. Writes probe result row
+5. Updates `drill_cadence_registry.last_run_at`
+
+## CI proof
+- `check-oauth-refresh-probe-coverage.ts` — providers covered + edge fn deployed + cadence registered
+- `check-connector-refresh-health.ts` — no failing providers
+- `check-reauth-visibility.ts` — UX surfaces wired

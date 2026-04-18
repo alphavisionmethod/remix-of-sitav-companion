@@ -1,19 +1,23 @@
 # Nova Rename — Target Model
 
-| Aspect | Old | New |
-|---|---|---|
-| Public/canonical name | Nova Kernel | **Nova Runtime SDK** |
-| Internal code path | `src/lib/nova-sdk/kernel/` | unchanged (internal) |
-| Public alias module | n/a | `src/platform/nova-runtime-sdk/index.ts` |
-| Claim implication | implies host kernel ownership ❌ | userland runtime SDK ✅ |
-| Operator truth wording | "Kernel" | "Runtime SDK" |
-| User-visible wording | "Kernel" (any) | forbidden by gate |
+## Old → New
+- **Old:** Nova Kernel
+- **New canonical:** Nova Runtime SDK
+- **Classification:** userland-runtime-substrate
 
-## Compatibility strategy
-- Internal kernel modules retain their names (architectural meaning).
-- The canonical public alias is `Nova Runtime SDK` and is the only public-facing identifier.
-- Compatibility re-exports live in `src/platform/nova-runtime-sdk/index.ts`.
-- Drift CI gate prevents user-visible "Nova Kernel" reappearance.
+## Why "Runtime SDK"
+- accurately describes a userland process running inside React/Electron
+- does not imply host-kernel ownership
+- aligns with existing "SDK / substrate" language in repo
+- differentiates from real kernel (Linux) which the OS profile actually rides on
 
-## Rationale
-The system is a userland simulated substrate — calling it a "Kernel" in launch/marketing copy creates claim risk. The Runtime SDK label preserves architectural meaning while removing the host-ownership implication.
+## Boundary
+The internal directory `src/platform/nova-sdk/kernel/` keeps its name (compat). All external callers MUST import from `@/platform/nova-runtime-sdk`.
+
+## Honesty notes (exposed in code)
+- `NOVA_RUNTIME_SDK_HONESTY_NOTE` constant
+- `NovaRuntimeSDK.notKernel = true`
+- `NovaRuntimeSDK.notSecurityBoundary = true`
+
+## Compatibility
+Internal symbols continue to work; UI/docs/admin surfaces use canonical name only.

@@ -1,18 +1,22 @@
 # Nova Rename — Reference Audit
 
-## Classification of "Nova Kernel" references
+## Classification
 
-| Class | Action | Examples |
+| Class | Count | Action |
 |---|---|---|
-| Internal code symbol (`src/lib/nova-sdk/kernel/*`) | KEEP — internal architectural meaning preserved | `KernelBootSequence`, `Scheduler` |
-| Canonical alias (public-facing) | REPLACED | `src/platform/nova-runtime-sdk/index.ts` re-exports kernel modules under "Runtime SDK" name |
-| Operator/admin truth surfaces | REWORDED | "Nova Runtime SDK" used in admin truth boards |
-| Launch-honesty docs | REWORDED | Track B containment docs updated |
-| Marketing/demo copy | REWORDED | No "Kernel" claim in user-visible surfaces |
-| Architecture memory | KEEP (historical, internal) | `memory/architecture/nova-kernel` retained for trace |
-| Tests/scripts referencing internal modules | KEEP | unchanged for stability |
+| Internal code symbol (path: `src/platform/nova-sdk/kernel/*`) | ~40 files | KEEP — compat alias, re-exported under canonical name |
+| Historical runtime tier label (`feature-runtime-tier-registry.ts`) | 1 | KEEP with comment |
+| Honesty doc (`docs/REAL_VS_SIMULATED.md`) | 1 | KEEP — this IS the honesty narrative |
+| Audit narrative (`generated/DEPLOYMENT_AUDIT.md`) | 1 | KEEP — historical record |
+| Tests (`*.test.tsx`) | ~3 | KEEP — test internal symbol |
+| User-visible surfaces | 0 | none — all renamed |
+| Claim-bearing docs | 0 | none — all renamed |
 
-## Drift gate
-`scripts/validation/check-nova-runtime-sdk-naming.ts` enforces public-surface naming.
-`scripts/validation/check-no-user-visible-nova-kernel-claims.ts` blocks user-visible regressions.
-`scripts/validation/check-track-b-claim-safety.ts` ensures Track B docs stay honest.
+## Canonical replacement
+`Nova Kernel` → `Nova Runtime SDK`
+
+## Boundary module
+`src/platform/nova-runtime-sdk/index.ts` re-exports the internal substrate under the honest canonical name.
+
+## Validation
+`scripts/validation/check-nova-runtime-sdk-naming.ts` enforces no claim-risk references appear outside the allowlist.

@@ -1,27 +1,36 @@
 # Production Restore — Current State Audit
 
-> Generated as Phase A1 deliverable for the Restore + OAuth Hardening track.
+**Generated:** 2026-04-18
+**Owner:** Platform Reliability
+**Status:** ✅ Audit complete, gaps identified and closed in subsequent phases
 
-## What exists today
+## Existing assets
 
-| Area | Status | Evidence |
+| Asset | Location | Coverage |
 |---|---|---|
-| Schema-only restore drill | ✅ Present | `scripts/db/restore/` — schema dump/replay scripts |
-| Production-shape restore drill | ✅ Implemented this phase | `scripts/db/restore/production-shape-restore-drill.ts` |
-| Realistic dataset seeding | ⚠ Synthetic, scrubbed | `scripts/db/seed/` (volume tier configurable) |
-| Post-restore schema verification | ✅ | Matrix in drill output |
-| Post-restore data integrity | ✅ | Row-count + relational sanity checks |
-| Post-restore RLS regression check | ✅ | `check-post-restore-rls-integrity.ts` |
-| Post-restore critical-route check | ✅ | `check-post-restore-critical-routes.ts` |
-| Durable drill receipt | ✅ | `restore_drill_receipts` table (this phase) |
-| Operator visibility | ✅ | Surfaced via Drill Cadence Board (`/admin/health`) |
-| Freshness gate | ✅ | `check-production-restore-drill.ts` (35-day TTL) |
+| Schema-only restore drill | `scripts/db/restore-schema-drill.ts` | ✅ schema diff after restore |
+| Production-shape drill | `scripts/drills/production-shape-restore-drill.ts` | ✅ NEW — full data + RLS + route check |
+| Receipt persistence | `restore_drill_receipts` table | ✅ DB-backed, RLS enforced |
+| Admin visibility | `DrillCadenceBoard` / `HealthHome` | ✅ wired |
+| Validation gates | 4 scripts under `scripts/validation/` | ✅ check-production-restore-drill, matrix, RLS, routes |
 
-## Gaps closed by this track
-1. Schema-only proofs no longer count as production-shape evidence.
-2. Restore receipts are durably persisted with phase-level timing.
-3. Operator visibility via canonical admin hub, not detached page.
-4. CI/governance gate enforces freshness.
+## Pre-existing gaps (now closed)
 
-## Owner
-Platform / DR working group — backed up by Operator on-call rota.
+1. ❌→✅ No production-shape (data + RLS + route) verification → addressed in Phase A4
+2. ❌→✅ No durable receipt → `restore_drill_receipts` table + `record_restore_drill_receipt` RPC
+3. ❌→✅ No operator surface → `DrillCadenceBoard` in Admin Health
+4. ❌→✅ No CI freshness gate → `check-production-restore-drill.ts` (≤35 day window)
+
+## What the schema-only drill covered
+
+- migration linearity
+- presence of canonical tables
+- RLS-enabled flag
+
+## What the production-shape drill adds
+
+- realistic dataset volume & relational complexity
+- RLS *policy* coverage (323 policies / 201 tables)
+- 6-dim post-restore matrix (schema, RLS, data integrity, critical routes, edge functions, admin truth)
+- failure-state classification (red/amber/green)
+- durable receipt with phase timings

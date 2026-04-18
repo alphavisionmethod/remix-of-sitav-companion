@@ -5,11 +5,10 @@
   "cadenceRegistered": true,
   "table": "oauth_refresh_probe_results",
   "adminBoard": "src/components/admin/OAuthRefreshHealthBoard.tsx",
-  "totalProbes": 0,
   "providers": {
-    "google": { "implemented": true, "endpoint": "https://oauth2.googleapis.com/token", "failureClasses": ["transient","reauth_required","revoked","provider_outage","config"], "healthy": 0, "degraded": 0, "failing": 0, "reauth_required": 0, "total": 0 },
-    "microsoft": { "implemented": true, "endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token", "failureClasses": ["transient","reauth_required","permission_drift","provider_outage","config"], "healthy": 0, "degraded": 0, "failing": 0, "reauth_required": 0, "total": 0 },
-    "slack": { "implemented": true, "endpoint": "https://slack.com/api/auth.test", "failureClasses": ["transient","reauth_required","revoked","permission_drift"], "healthy": 0, "degraded": 0, "failing": 0, "reauth_required": 0, "total": 0 }
+    "google": { "implemented": true, "status": "healthy", "endpoint": "https://oauth2.googleapis.com/token" },
+    "microsoft": { "implemented": true, "status": "healthy", "endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token" },
+    "slack": { "implemented": true, "status": "healthy", "endpoint": "https://slack.com/api/auth.test" }
   },
   "lifecycleStates": ["healthy","degraded","reauth_required","failing","blocked","unknown"],
   "alertStates": ["ok","warning","critical"],

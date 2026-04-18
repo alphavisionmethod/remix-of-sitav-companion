@@ -1,15 +1,10 @@
 {
   "generatedAt": "2026-04-18T17:30:00Z",
-  "matrix": [
-    { "distro": "Ubuntu 24.04", "version": "24.04 LTS", "secureBoot": "verified", "mokEnrollment": "verified", "status": "verified", "notes": "Primary supported target." },
-    { "distro": "Fedora 40", "version": "40", "secureBoot": "verified", "mokEnrollment": "verified", "status": "verified", "notes": "Same shim chain." },
-    { "distro": "Arch Linux", "version": "rolling", "secureBoot": "verified-with-caveat", "mokEnrollment": "verified", "status": "verified-manual", "notes": "Manual sbctl setup." }
-  ],
-  "distros": [
-    { "name": "Ubuntu 24.04", "status": "verified" },
-    { "name": "Fedora 40", "status": "verified" },
-    { "name": "Arch Linux", "status": "verified-manual" }
-  ],
+  "distros": {
+    "ubuntu-24.04": { "secureBootTested": true, "mokEnrollmentTested": true, "status": "GREEN", "notes": "Primary supported target." },
+    "fedora-40": { "secureBootTested": true, "mokEnrollmentTested": true, "status": "GREEN", "notes": "Same shim chain." },
+    "arch": { "secureBootTested": true, "mokEnrollmentTested": true, "status": "AMBER", "notes": "Requires manual sbctl setup." }
+  },
   "verifiedCount": 3,
   "ok": true
 }

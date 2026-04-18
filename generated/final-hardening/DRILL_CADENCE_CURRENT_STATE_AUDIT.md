@@ -1,16 +1,22 @@
 # Drill Cadence — Current State Audit
 
-| Drill | Cadence | Owner | Evidence | Status |
-|---|---|---|---|---|
-| Production restore | 35d | DR lead | `restore_drill_receipts` | ✅ wired |
-| OAuth refresh probe | hourly | Integrations | `oauth_refresh_probe_results` | ✅ wired (pg_cron) |
-| Release artifact verification | per release | Release captain | `os-release-readiness-report.json` | ✅ wired |
-| Sealed baseline review | 30d | Security | `baseline.sealed.json` | ✅ wired |
-| Notification calmness review | 14d | UX-Ops | notification audit | ✅ wired |
-| Operator golden path drill | 30d | Operator on-call | golden-path receipts | ✅ wired |
-| Kill-switch TTL expiry | nightly | Platform | `kill_switch_audit_log` | ✅ wired (pg_cron) |
-| Connector health review | 7d | Integrations | connector dashboard | ✅ wired |
-| Edge function governance | weekly | Platform | governance gate | ✅ wired |
+## Pre-existing one-off proofs
+- restore drill (schema only) — manual
+- connector refresh — informal
+- release artifact verification — manual
+- baseline seal verification — sealed but not re-reviewed
+- notification calmness — no review
+- admin/operator golden path — informal
 
-Registry: `drill_cadence_registry` (9 canonical entries).
-Freshness gate: `check-drill-cadence-freshness.ts`.
+## Pre-existing gaps
+- ❌ no central registry of drill cadence
+- ❌ no owner per drill
+- ❌ no freshness enforcement
+- ❌ no admin visibility of last-run
+
+## Closed by this hardening pass
+- ✅ `drill_cadence_registry` DB table (RLS-enforced)
+- ✅ 9 canonical drills registered (see DRILL_CADENCE_MODEL.md)
+- ✅ `DrillCadenceBoard` admin surface
+- ✅ `check-drill-cadence-freshness.ts` CI gate
+- ✅ `check-supportability-review-cadence.ts` CI gate (categories)

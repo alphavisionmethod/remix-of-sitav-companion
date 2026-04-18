@@ -1,25 +1,16 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// Forbids "Nova Kernel" in user-visible TSX/JSX strings.
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
-const ROOT = "src";
-const ALLOWED = /\/(nova-sdk\/kernel|platform\/nova-runtime-sdk)\//;
-const issues: string[] = [];
-function walk(d: string) {
-  for (const f of readdirSync(d)) {
-    const p = join(d, f);
-    const st = statSync(p);
-    if (st.isDirectory()) { walk(p); continue; }
-    if (!/\.(tsx|jsx)$/.test(f)) continue;
-    if (ALLOWED.test(p)) continue;
-    const s = readFileSync(p, "utf8");
-    // Look for the literal in JSX text or string literals
-    if (/["'>]\s*Nova Kernel\s*[<"']/.test(s)) issues.push(p);
-  }
+// Stricter sibling of nova-runtime-sdk-naming: scoped only to user-facing surfaces.
+import { execSync } from "node:child_process";
+const SCOPE = ["src/pages/", "src/components/", "src/app/"];
+let hits: string[] = [];
+for (const dir of SCOPE) {
+  try {
+    const out = execSync(`grep -rln "Nova Kernel" ${dir} --include="*.tsx" --include="*.ts" 2>/dev/null || true`, { encoding: "utf-8" });
+    out.split("\n").filter(Boolean).forEach(f => { if (!/\.test\.tsx?$/.test(f)) hits.push(f); });
+  } catch {}
 }
-walk(ROOT);
-const ok = issues.length === 0;
-console.log(`${ok ? "✅" : "❌"} no-user-visible-nova-kernel-claims: ${issues.length} occurrence(s)`);
-if (!ok) issues.slice(0, 10).forEach(p => console.log("  - " + p));
+const ok = hits.length === 0;
+console.log(`${ok ? "✅" : "❌"} no-user-visible-nova-kernel: ${hits.length} surfaces`);
+hits.slice(0, 20).forEach(h => console.error(`   ${h}`));
 process.exit(ok ? 0 : 1);

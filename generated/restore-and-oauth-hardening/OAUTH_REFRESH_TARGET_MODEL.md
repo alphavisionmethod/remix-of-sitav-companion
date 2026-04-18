@@ -1,22 +1,41 @@
-# OAuth Refresh — Target Model
+# OAuth Refresh Probe — Target Model
 
-## Probe lifecycle
-```
-schedule (hourly) → enumerate connector_tokens
-  → per-token: refresh attempt → classify result
-  → write oauth_refresh_probe_results row
-  → if degraded/failing: raise alert + flip connector status
-  → operator sees row in /admin/integrations → OAuth Refresh Health
-```
+## Probe model
 
-## States
-| State | Meaning |
-|---|---|
-| healthy | refresh ok, token valid, next deadline > 0 |
-| degraded | transient failure, retry pending |
-| failing | repeated failure, circuit open |
-| reauth_required | refresh token revoked/expired |
-| blocked | provider outage suspected |
+```ts
+interface OAuthRefreshProbeResult {
+  id: uuid;
+  provider: 'google' | 'microsoft' | 'slack';
+  user_id: uuid;
+  connector_token_id: uuid;
+  probed_at: timestamptz;
+  result: 'success' | 'transient_failure' | 'reauth_required' | 'permission_drift' | 'revoked' | 'provider_outage';
+  latency_ms: int;
+  failure_reason: text | null;
+  retry_count: int;
+  next_probe_at: timestamptz;
+  lifecycle_status: 'healthy' | 'degraded' | 'failing' | 'reauth_required' | 'blocked';
+  alert_state: 'ok' | 'amber' | 'red';
+}
+```
 
 ## Cadence
-Hourly via `pg_cron` job `oauth-refresh-probe-hourly` (cron `7 * * * *`).
+- hourly probe via `pg_cron` (calls `oauth-refresh-probe` edge fn)
+- per-token cadence configurable in `drill_cadence_registry`
+
+## State transitions
+
+```
+healthy → degraded   : 2 consecutive failures
+degraded → failing   : 5 consecutive failures
+* → reauth_required  : refresh returns invalid_grant
+* → blocked          : explicit operator action
+```
+
+## Operator visibility
+- `OAuthRefreshHealthBoard` in Admin Integrations
+- per-user `connected-services` shows lifecycle_status
+
+## Alert routing
+- amber: stale > 6h → Slack
+- red: failing OR reauth_required > 1h → page on-call

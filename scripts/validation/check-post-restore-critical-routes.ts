@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// Validates the post-restore critical-route smoke section of the latest receipt.
 import { existsSync, readFileSync } from "node:fs";
-const F = "generated/restore-and-oauth-hardening/production-restore-status.json";
-if (!existsSync(F)) { console.error("❌ restore status missing"); process.exit(1); }
-const r = JSON.parse(readFileSync(F, "utf8"));
-const passed = r.criticalRoutes?.passed ?? r.matchPercent ?? 0;
-const total = r.criticalRoutes?.total ?? 100;
-const pct = total > 0 ? (Number(passed) / Number(total)) * 100 : 0;
-const ok = pct >= 95;
-console.log(`${ok ? "✅" : "❌"} post-restore-critical-routes: ${passed}/${total} (${pct.toFixed(1)}%)`);
+const F = "generated/restore-and-oauth-hardening/post-restore-verification-matrix.json";
+if (!existsSync(F)) { console.error("❌ matrix missing"); process.exit(1); }
+const m = JSON.parse(readFileSync(F, "utf-8"));
+const r = m.checks?.critical_routes;
+const ok = r?.status === "pass" && (r?.failingRoutes?.length ?? 0) === 0;
+console.log(`${ok ? "✅" : "❌"} post-restore-routes: tested=${r?.routesTested ?? 0} failing=${r?.failingRoutes?.length ?? 0}`);
 process.exit(ok ? 0 : 1);

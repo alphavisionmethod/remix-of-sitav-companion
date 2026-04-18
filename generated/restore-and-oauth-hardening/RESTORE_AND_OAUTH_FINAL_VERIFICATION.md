@@ -1,30 +1,34 @@
-# Restore + OAuth — Final Verification
+# Restore + OAuth Hardening — Final Verification
 
-| Track | Required deliverable | Status |
+## Gates (all passing)
+
+| Gate | Script | Status |
 |---|---|---|
-| Restore | Audit doc | ✅ |
-| Restore | Target model | ✅ |
-| Restore | Drill runbook | ✅ |
-| Restore | Verification matrix doc | ✅ |
-| Restore | Operator visibility doc | ✅ |
-| Restore | Drill script | ✅ `scripts/db/restore/production-shape-restore-drill.ts` |
-| Restore | Receipts table | ✅ `restore_drill_receipts` |
-| Restore | Freshness gate | ✅ `check-production-restore-drill.ts` |
-| Restore | RLS post-check | ✅ `check-post-restore-rls-integrity.ts` |
-| Restore | Critical-route post-check | ✅ `check-post-restore-critical-routes.ts` |
-| Restore | Matrix gate | ✅ `check-restore-verification-matrix.ts` |
-| Restore | Operator surface | ✅ `DrillCadenceBoard` in `/admin/health` |
-| OAuth | Audit doc | ✅ |
-| OAuth | Target model | ✅ |
-| OAuth | Logging doc | ✅ |
-| OAuth | Operator visibility doc | ✅ |
-| OAuth | Probe edge function | ✅ `oauth-refresh-probe` |
-| OAuth | Receipts table | ✅ `oauth_refresh_probe_results` |
-| OAuth | pg_cron schedule | ✅ `oauth-refresh-probe-hourly` |
-| OAuth | Probe coverage gate | ✅ `check-oauth-refresh-probe-coverage.ts` |
-| OAuth | Connector health gate | ✅ `check-connector-refresh-health.ts` |
-| OAuth | Reauth visibility gate | ✅ `check-reauth-visibility.ts` |
-| OAuth | Provider surfacing gate | ✅ `check-provider-health-surfacing.ts` |
-| OAuth | Operator surface | ✅ `OAuthRefreshHealthBoard` in `/admin/integrations` |
+| Restore drill freshness | check-production-restore-drill | ✅ |
+| Restore matrix completeness | check-restore-verification-matrix | ✅ |
+| Post-restore RLS | check-post-restore-rls-integrity | ✅ |
+| Post-restore routes | check-post-restore-critical-routes | ✅ |
+| OAuth probe coverage | check-oauth-refresh-probe-coverage | ✅ |
+| Connector refresh health | check-connector-refresh-health | ✅ |
+| Reauth visibility | check-reauth-visibility | ✅ |
+| Provider health surfacing | check-provider-health-surfacing | ✅ |
 
-**Verdict:** GREEN — both tracks complete, integrated, durable, operator-visible.
+## Integration map
+
+```
+Restore Drill ──► restore_drill_receipts ──► DrillCadenceBoard ──► Admin Health
+              └─► drill_cadence_registry  ──┘
+
+OAuth Probe   ──► oauth_refresh_probe_results ──► OAuthRefreshHealthBoard ──► Admin Integrations
+              └─► connector_tokens (update)   ──► connected-services UX
+              └─► drill_cadence_registry      ──► DrillCadenceBoard
+```
+
+## Deployment readiness
+- ✅ DB migrations applied
+- ✅ Edge function `oauth-refresh-probe` deployed
+- ✅ pg_cron hourly schedule active
+- ✅ Admin boards wired
+- ✅ User UX wired
+- ✅ 8 validation gates GREEN
+- ✅ 0 stubs remaining

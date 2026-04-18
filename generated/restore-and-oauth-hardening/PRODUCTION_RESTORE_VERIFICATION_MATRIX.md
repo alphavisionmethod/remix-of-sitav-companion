@@ -1,19 +1,22 @@
-# Production Restore — Post-Restore Verification Matrix
+# Post-Restore Verification Matrix
 
-| # | Check | Tool | Severity |
+| Dim | Check | Method | Pass criteria |
 |---|---|---|---|
-| 1 | Schema integrity (all expected tables/views) | introspection | BLOCK |
-| 2 | Row counts within tolerance per table class | drill | BLOCK |
-| 3 | RLS enabled on every table | `check-post-restore-rls-integrity.ts` | BLOCK |
-| 4 | Policies present where expected | linter | BLOCK |
-| 5 | Critical route renders | `check-post-restore-critical-routes.ts` | BLOCK |
-| 6 | Auth/profile visibility intact | smoke test | BLOCK |
-| 7 | Boardroom tables queryable | drill | BLOCK |
-| 8 | App install truth (`installed_apps`) | drill | WARN |
-| 9 | Connector tokens visible (count) | drill | WARN |
-| 10 | Notification tables ready | drill | WARN |
-| 11 | AI ledger present | drill | WARN |
-| 12 | Edge function /health | curl | WARN |
-| 13 | No migration drift | manifest diff | BLOCK |
+| schema | All canonical tables present | pg_tables vs `generated/db-truth/` | 201/201 |
+| schema | All canonical functions present | pg_proc vs manifest | 22/22 |
+| rls | RLS enabled on all public tables | `rowsecurity = true` | 100% |
+| rls | ≥1 policy per table | pg_policies count | 100% |
+| data_integrity | Row counts within ±5% | manifest snapshot vs live | All tables |
+| data_integrity | No orphan FKs | constraint validation | 0 violations |
+| critical_routes | Boardroom load | GET /boardroom + auth | 200 |
+| critical_routes | Admin Health load | GET /admin/health + auth | 200 |
+| critical_routes | App launcher | GET /apps + auth | 200 |
+| critical_routes | (+9 more flagship) | GET … | 12/12 |
+| edge_functions | admin-bff-gateway | health probe | 200 |
+| edge_functions | agent-executor | health probe | 200 |
+| edge_functions | oauth-refresh-probe | health probe | 200 |
+| edge_functions | (+3 more) | health probe | 6/6 |
+| admin_truth | DB summary RPC | `get_db_truth_snapshot()` | counts match |
+| admin_truth | Drill registry visible | DrillCadenceBoard renders | ✅ |
 
-Source of truth: `generated/restore-and-oauth-hardening/post-restore-verification-matrix.json`.
+Receipt JSON written to `generated/restore-and-oauth-hardening/post-restore-verification-matrix.json` after each drill.
