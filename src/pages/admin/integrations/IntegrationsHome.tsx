@@ -10,6 +10,7 @@ import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainH
 const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 const MCSyncCloud = lazy(() => import("@/pages/admin/modules/MCSyncCloud"));
 const IntegrationConciergePage = lazy(() => import("@/pages/admin/IntegrationConciergePage"));
+const OAuthRefreshHealthBoard = lazy(() => import("@/components/admin/OAuthRefreshHealthBoard"));
 
 function ModuleFallback() {
   return (
@@ -44,6 +45,12 @@ export default function IntegrationsHome() {
       label: "Integration Concierge",
       description: "Operator-assisted integration triage.",
       render: wrap(IntegrationConciergePage),
+    },
+    {
+      id: "oauth-refresh-health",
+      label: "OAuth Refresh Health",
+      description: "Live Google/Microsoft/Slack token refresh probe results.",
+      render: wrap(OAuthRefreshHealthBoard),
     },
   ];
 

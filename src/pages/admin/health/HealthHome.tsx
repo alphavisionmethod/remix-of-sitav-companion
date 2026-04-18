@@ -19,6 +19,7 @@ const BackendTopologyDashboard = lazy(() => import("@/pages/admin/BackendTopolog
 const EFH01EdgeFunctionHealthCenter = lazy(
   () => import("@/pages/admin/EFH01EdgeFunctionHealthCenter"),
 );
+const DrillCadenceBoard = lazy(() => import("@/components/admin/DrillCadenceBoard"));
 
 function ModuleFallback() {
   return (
@@ -95,6 +96,12 @@ export default function HealthHome() {
       description: "Mission-control system health module.",
       legacyPath: "/admin/mc/system-health",
       render: wrap(MCSystemHealth),
+    },
+    {
+      id: "drill-cadence",
+      label: "Drill Cadence",
+      description: "Recurring operational drills (restore, refresh, baseline, calmness, golden paths).",
+      render: wrap(DrillCadenceBoard),
     },
   ];
 
