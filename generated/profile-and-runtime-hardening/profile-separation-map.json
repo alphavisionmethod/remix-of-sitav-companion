@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-18T12:25:41.144Z",
+  "sharedComponentLeakage": [],
+  "manifestMismatches": [],
+  "summary": {
+    "leakageCount": 0,
+    "manifestMismatchCount": 0,
+    "userProfileApps": 10,
+    "operatorProfileApps": 13,
+    "appPlaneMapEntries": 19
+  }
+}

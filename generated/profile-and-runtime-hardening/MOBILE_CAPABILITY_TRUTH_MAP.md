@@ -1,0 +1,40 @@
+# Mobile Capability Truth Map (Phase A)
+Generated: 2026-04-18T12:25:41.145Z
+| File | Feature | Class | Persistence | Auth | Biometric | Notes |
+|---|---|---|---|---|---|---|
+| `src/pages/mobile/MobileAIChat.tsx` | MobileAIChat | mock | none | — | — | — |
+| `src/pages/mobile/MobileAlerts.tsx` | MobileAlerts | partial | none | — | — | — |
+| `src/pages/mobile/MobileApprovalDetail.tsx` | MobileApprovalDetail | partial | none | — | — | — |
+| `src/pages/mobile/MobileApprovals.tsx` | MobileApprovals | partial | none | — | — | — |
+| `src/pages/mobile/MobileBoardroom.tsx` | MobileBoardroom | partial | none | — | — | — |
+| `src/pages/mobile/MobileBusiness.tsx` | MobileBusiness | partial | none | — | — | — |
+| `src/pages/mobile/MobileCommand.tsx` | MobileCommand | mock | none | — | — | — |
+| `src/pages/mobile/MobileConcierge.tsx` | MobileConcierge | partial | none | — | — | — |
+| `src/pages/mobile/MobileDeviceTrust.tsx` | MobileDeviceTrust | partial | none | — | Y | — |
+| `src/pages/mobile/MobileEmergencyActions.tsx` | MobileEmergencyActions | partial | none | — | — | — |
+| `src/pages/mobile/MobileFiles.tsx` | MobileFiles | partial | none | — | — | — |
+| `src/pages/mobile/MobileHome.tsx` | MobileHome | partial | none | — | — | — |
+| `src/pages/mobile/MobileInbox.tsx` | MobileInbox | mock | none | — | — | — |
+| `src/pages/mobile/MobileInvestment.tsx` | MobileInvestment | partial | none | — | — | — |
+| `src/pages/mobile/MobileMoney.tsx` | MobileMoney | partial | none | — | — | — |
+| `src/pages/mobile/MobileMore.tsx` | MobileMore | partial | none | — | — | — |
+| `src/pages/mobile/MobileNotificationCenter.tsx` | MobileNotificationCenter | partial | none | — | — | — |
+| `src/pages/mobile/MobileProof.tsx` | MobileProof | partial | none | — | — | — |
+| `src/pages/mobile/MobileQuickCapture.tsx` | MobileQuickCapture | mock | none | — | — | — |
+| `src/pages/mobile/MobileReceiptDetail.tsx` | MobileReceiptDetail | partial | none | — | — | — |
+| `src/pages/mobile/MobileSettings.tsx` | MobileSettings | partial | none | Y | Y | — |
+| `src/pages/mobile/MobileSyncControl.tsx` | MobileSyncControl | partial | none | — | — | — |
+| `src/pages/mobile/MobileSystemMonitor.tsx` | MobileSystemMonitor | partial | none | — | — | — |
+| `src/pages/mobile/MobileTimeline.tsx` | MobileTimeline | mock | none | — | — | — |
+| `src/pages/mobile/MobileWorkflowDetail.tsx` | MobileWorkflowDetail | partial | none | — | — | — |
+| `src/components/mobile/AlertCard.tsx` | AlertCard | partial | none | — | — | — |
+| `src/components/mobile/ApprovalCard.tsx` | ApprovalCard | partial | none | — | — | — |
+| `src/components/mobile/MobileCapabilityBanner.tsx` | MobileCapabilityBanner | planned | none | — | — | — |
+| `src/components/mobile/MobileShell.tsx` | MobileShell | partial | none | — | — | — |
+| `src/components/mobile/MobileTabBar.tsx` | MobileTabBar | partial | none | — | — | — |
+| `src/components/mobile/ProofCard.tsx` | ProofCard | partial | none | — | — | — |
+| `src/components/mobile/PulseCard.tsx` | PulseCard | partial | none | — | — | — |
+| `src/hooks/use-mobile.tsx` | use-mobile | responsive-only | none | — | — | — |
+| `src/lib/core-services/security/mobile-agent-hardening.ts` | mobile-agent-hardening | partial | none | — | Y | — |
+| `src/lib/devices/mobile-device-capabilities.ts` | mobile-device-capabilities | partial | none | Y | Y | biometric-used-without-enrollment-flow |
+| `src/lib/mock-data/mobile.ts` | mobile | mock | none | — | — | — |

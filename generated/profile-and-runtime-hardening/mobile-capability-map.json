@@ -1,0 +1,485 @@
+{
+  "generatedAt": "2026-04-18T12:25:41.094Z",
+  "totalFiles": 36,
+  "features": [
+    {
+      "file": "src/pages/mobile/MobileAIChat.tsx",
+      "feature": "MobileAIChat",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": true,
+      "classification": "mock",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileAlerts.tsx",
+      "feature": "MobileAlerts",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileApprovalDetail.tsx",
+      "feature": "MobileApprovalDetail",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileApprovals.tsx",
+      "feature": "MobileApprovals",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileBoardroom.tsx",
+      "feature": "MobileBoardroom",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileBusiness.tsx",
+      "feature": "MobileBusiness",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileCommand.tsx",
+      "feature": "MobileCommand",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": true,
+      "classification": "mock",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileConcierge.tsx",
+      "feature": "MobileConcierge",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileDeviceTrust.tsx",
+      "feature": "MobileDeviceTrust",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": true,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileEmergencyActions.tsx",
+      "feature": "MobileEmergencyActions",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileFiles.tsx",
+      "feature": "MobileFiles",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileHome.tsx",
+      "feature": "MobileHome",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileInbox.tsx",
+      "feature": "MobileInbox",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "mock",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileInvestment.tsx",
+      "feature": "MobileInvestment",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileMoney.tsx",
+      "feature": "MobileMoney",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileMore.tsx",
+      "feature": "MobileMore",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileNotificationCenter.tsx",
+      "feature": "MobileNotificationCenter",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileProof.tsx",
+      "feature": "MobileProof",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileQuickCapture.tsx",
+      "feature": "MobileQuickCapture",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "mock",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileReceiptDetail.tsx",
+      "feature": "MobileReceiptDetail",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileSettings.tsx",
+      "feature": "MobileSettings",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": true,
+      "usesBiometric": true,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileSyncControl.tsx",
+      "feature": "MobileSyncControl",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": true,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileSystemMonitor.tsx",
+      "feature": "MobileSystemMonitor",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileTimeline.tsx",
+      "feature": "MobileTimeline",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": true,
+      "classification": "mock",
+      "notes": []
+    },
+    {
+      "file": "src/pages/mobile/MobileWorkflowDetail.tsx",
+      "feature": "MobileWorkflowDetail",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/AlertCard.tsx",
+      "feature": "AlertCard",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/ApprovalCard.tsx",
+      "feature": "ApprovalCard",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/MobileCapabilityBanner.tsx",
+      "feature": "MobileCapabilityBanner",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "planned",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/MobileShell.tsx",
+      "feature": "MobileShell",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/MobileTabBar.tsx",
+      "feature": "MobileTabBar",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/ProofCard.tsx",
+      "feature": "ProofCard",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/components/mobile/PulseCard.tsx",
+      "feature": "PulseCard",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/hooks/use-mobile.tsx",
+      "feature": "use-mobile",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "responsive-only",
+      "notes": []
+    },
+    {
+      "file": "src/lib/core-services/security/mobile-agent-hardening.ts",
+      "feature": "mobile-agent-hardening",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": true,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": []
+    },
+    {
+      "file": "src/lib/devices/mobile-device-capabilities.ts",
+      "feature": "mobile-device-capabilities",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": true,
+      "usesBiometric": true,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "partial",
+      "notes": [
+        "biometric-used-without-enrollment-flow"
+      ]
+    },
+    {
+      "file": "src/lib/mock-data/mobile.ts",
+      "feature": "mobile",
+      "persistence": [
+        "none"
+      ],
+      "usesAuth": false,
+      "usesBiometric": false,
+      "hasSearch": false,
+      "hasOfflineQueue": false,
+      "classification": "mock",
+      "notes": []
+    }
+  ],
+  "summary": {
+    "live": 0,
+    "partial": 28,
+    "responsiveOnly": 1,
+    "mock": 6,
+    "planned": 1,
+    "usingLocalStorage": 0,
+    "withBiometric": 4
+  }
+}

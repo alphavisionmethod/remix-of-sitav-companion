@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-18T12:25:43.277Z",
+  "gate": "launcher-registry-completeness",
+  "level": "warn",
+  "budget": 5,
+  "offenderCount": 0,
+  "manifestOrphans": [],
+  "offenders": [],
+  "ok": true
+}
