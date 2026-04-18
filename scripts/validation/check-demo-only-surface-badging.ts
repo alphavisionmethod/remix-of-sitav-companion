@@ -5,6 +5,7 @@
 // MUST import DemoOnlyBanner. Fails if any registered surface drops the banner.
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const REGISTRY_PATH = "src/lib/claim-safety/demo-only-surface-registry.ts";
 
@@ -39,4 +40,10 @@ for (const s of surfaces) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} demo-only-surface-badging: ${surfaces.length} surfaces, ${violations.length} unbadged`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "demo-only-surface-badging",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "demo-badge", message: v })),
+  extra: { surfacesScanned: surfaces.length },
+});
 process.exit(ok ? 0 : 1);

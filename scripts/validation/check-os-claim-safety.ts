@@ -4,6 +4,7 @@
 // Fails if prohibited "custom kernel / our bootloader / native OS kernel / full OS from scratch"
 // phrases appear in src/, docs/ (excluding Track-B), or root READMEs.
 import { execSync } from "node:child_process";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const PROHIBITED = [
   "custom kernel",
@@ -52,4 +53,9 @@ for (const term of PROHIBITED) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} os-claim-safety: ${violations.length} prohibited claims`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "os-claim-safety",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "os-claim", message: v })),
+});
 process.exit(ok ? 0 : 1);

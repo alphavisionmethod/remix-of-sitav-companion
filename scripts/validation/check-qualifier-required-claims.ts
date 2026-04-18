@@ -5,6 +5,7 @@
 // (Ubuntu-native / userland / signed Linux substrate) within the same paragraph.
 import * as fs from "node:fs";
 import * as cp from "node:child_process";
+import { emitGateReport } from "./_lib/emit-gate-report";
 
 const QUALIFIERS_REQUIRED: Record<string, string[]> = {
   "operating system": ["Ubuntu", "userland", "signed substrate", "AI-first", "Track A", "AI operating"],
@@ -59,4 +60,9 @@ for (const [phrase, qualifiers] of Object.entries(QUALIFIERS_REQUIRED)) {
 const ok = violations.length === 0;
 console.log(`${ok ? "✅" : "❌"} qualifier-required-claims: ${violations.length} unqualified uses`);
 violations.slice(0, 15).forEach((v) => console.error(`   ${v}`));
+emitGateReport({
+  gate: "qualifier-required-claims",
+  ok,
+  issues: violations.map((v) => ({ severity: "error", area: "qualifier", message: v })),
+});
 process.exit(ok ? 0 : 1);
