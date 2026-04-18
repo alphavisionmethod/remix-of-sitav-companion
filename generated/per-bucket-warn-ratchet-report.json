@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-04-18T14:13:12.699Z",
+  "generatedAt": "2026-04-18T14:21:02.913Z",
   "gate": "per-bucket-warn-ratchet",
   "level": "warn",
   "buckets": [
     {
       "gate": "lib-decomposition-readiness",
       "observed": 1731,
-      "ceiling": 1750,
+      "ceiling": 1740,
       "ok": true,
-      "headroom": 19
+      "headroom": 9
     },
     {
       "gate": "legacy-wrapper-usage",
       "observed": 1518,
-      "ceiling": 1550,
+      "ceiling": 1530,
       "ok": true,
-      "headroom": 32
+      "headroom": 12
     },
     {
       "gate": "lib-ownership-drift",
       "observed": 99,
-      "ceiling": 110,
+      "ceiling": 105,
       "ok": true,
-      "headroom": 11
+      "headroom": 6
     }
   ],
   "anyExceeded": false,
