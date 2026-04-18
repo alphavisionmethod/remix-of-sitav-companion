@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "generatedAt": "2026-04-18T13:03:48.664Z",
   "refreshWorker": true,
   "providerRegistry": "src/lib/services/connector-engine/connector-oauth-provider-registry.ts",
   "providerRegistryExists": true,

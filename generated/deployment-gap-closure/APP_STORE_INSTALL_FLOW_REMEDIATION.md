@@ -1,6 +1,6 @@
 # App Store Install Flow — Remediation Status
 
-_Generated: 2026-04-18T12:56:22.409Z_
+_Generated: 2026-04-18T13:03:48.664Z_
 
 ## Audit verdict: REAL (no rebuild required)
 
