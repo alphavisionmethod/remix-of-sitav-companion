@@ -521,6 +521,238 @@ async function processStaleEscalations(supabase: any) {
   return escalated;
 }
 
+// ─── Phase 2 priority-agent bridges ────────────────────────────
+// Real signal-to-action bridges for the 3 constrained-action-ready agents.
+// Every bridge calls the canonical internal-agent-execute-action edge function
+// over HTTPS with service-role auth — bridges CANNOT bypass the 7-gate
+// evaluate_action_safety_gates RPC (single safety brain).
+//
+// Confidence policy:
+//   - aw-incident-response: 0.85 (above any whitelist threshold → autoexec when allowed)
+//   - aw-ai-spend-control:  0.72 (below 0.75 threshold → forces approval queue)
+//   - aw-security-monitor:  N/A (escalate-only in Phase 2; never calls executor)
+// ───────────────────────────────────────────────────────────────
+interface BridgeResult {
+  agentId: string;
+  signalsProcessed: number;
+  actionsDispatched: number;
+  approvalsQueued: number;
+  escalationsCreated: number;
+  errors: string[];
+}
+
+async function callExecuteAction(
+  agentId: string,
+  actionClass: string,
+  targetId: string,
+  confidence: number,
+  precondition: Record<string, unknown>,
+  targetUserId?: string | null,
+): Promise<{ ok: boolean; status?: string; error?: string }> {
+  try {
+    const url = `${Deno.env.get("SUPABASE_URL")}/functions/v1/internal-agent-execute-action`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+        "x-internal-agent-loop": "true",
+      },
+      body: JSON.stringify({
+        agent_id: agentId,
+        action_class: actionClass,
+        target_id: targetId,
+        confidence,
+        precondition_evidence: precondition,
+        triggered_by: "agent",
+        target_user_id: targetUserId ?? null,
+        rationale: `priority-bridge:${agentId}:${actionClass}`,
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: json?.error ?? `HTTP ${res.status}` };
+    return { ok: true, status: json?.status ?? "dispatched" };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+async function bridgeIncidentResponse(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-incident-response",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Signal source: stale-locked workflow runs (last_progress_at > 30min)
+  const { data: stale, error } = await supabase.rpc("list_stale_locked_workflow_runs", {
+    _max_age_minutes: 30,
+  });
+  if (error) {
+    result.errors.push(`rpc:list_stale_locked_workflow_runs:${error.message}`);
+    return result;
+  }
+  for (const row of stale ?? []) {
+    result.signalsProcessed++;
+    const r = await callExecuteAction(
+      "aw-incident-response",
+      "clear_stale_lock",
+      row.id,
+      0.85,
+      {
+        signal: "stale_locked_workflow_run",
+        workflow_id: row.workflow_id,
+        last_progress_at: row.last_progress_at,
+        detected_by: "aw-incident-response.bridge",
+      },
+      row.user_id,
+    );
+    if (r.ok) {
+      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      else if (r.status === "executed") result.actionsDispatched++;
+    } else {
+      result.errors.push(`clear_stale_lock:${row.id}:${r.error}`);
+    }
+  }
+  return result;
+}
+
+async function bridgeSpendControl(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-ai-spend-control",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Signal source: critical AI budget alerts (alert_state=critical, last hour)
+  const { data: alerts, error } = await supabase
+    .from("ai_budget_alerts")
+    .select("id,user_id,scope_type,scope_ref,alert_state,observed_cost_usd,threshold_percent")
+    .eq("alert_state", "critical")
+    .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString())
+    .limit(10);
+  if (error) {
+    result.errors.push(`select:ai_budget_alerts:${error.message}`);
+    return result;
+  }
+
+  for (const a of alerts ?? []) {
+    // For each critical budget alert, find the most-recently unhealthy connector
+    // owned by the same user and propose disabling it (forces approval at 0.72).
+    const { data: bad } = await supabase
+      .from("connector_accounts")
+      .select("id,connector_type,display_name,status,last_health_status")
+      .eq("user_id", a.user_id)
+      .in("status", ["error", "degraded", "expired"])
+      .eq("demo_mode", false)
+      .order("last_health_at", { ascending: false, nullsFirst: false })
+      .limit(1);
+    const target = bad?.[0];
+    if (!target) continue;
+
+    result.signalsProcessed++;
+    const r = await callExecuteAction(
+      "aw-ai-spend-control",
+      "disable_unhealthy_connector",
+      target.id,
+      0.72, // below 0.75 → routes through approval queue
+      {
+        signal: "critical_budget_alert",
+        budget_alert_id: a.id,
+        observed_cost_usd: a.observed_cost_usd,
+        threshold_percent: a.threshold_percent,
+        target_connector: target.connector_type,
+        target_display_name: target.display_name,
+        target_status: target.status,
+        detected_by: "aw-ai-spend-control.bridge",
+      },
+      a.user_id,
+    );
+    if (r.ok) {
+      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      else if (r.status === "executed") result.actionsDispatched++;
+    } else {
+      result.errors.push(`disable_unhealthy_connector:${target.id}:${r.error}`);
+    }
+  }
+  return result;
+}
+
+async function bridgeSecurityMonitor(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-security-monitor",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Phase 2 policy: security-monitor is escalate-only. No calls to executor.
+  const { data: events, error } = await supabase.rpc("list_unescalated_security_events", {
+    _lookback_minutes: 60,
+  });
+  if (error) {
+    result.errors.push(`rpc:list_unescalated_security_events:${error.message}`);
+    return result;
+  }
+  for (const ev of events ?? []) {
+    result.signalsProcessed++;
+    const { data: esc, error: insErr } = await supabase
+      .from("council_escalations")
+      .insert({
+        source_agent_id: "aw-security-monitor",
+        source_council: "security-trust",
+        target_supervisor: "sup-security",
+        escalation_reason: `Security event: ${ev.action} (${ev.severity})`,
+        severity: ev.severity === "critical" ? "critical" : "high",
+        evidence: {
+          audit_id: ev.audit_id,
+          action: ev.action,
+          target_type: ev.target_type,
+          target_id: ev.target_id,
+          created_at: ev.created_at,
+          detected_by: "aw-security-monitor.bridge",
+          escalate_only: true,
+        } as never,
+        status: "open",
+      })
+      .select("id")
+      .single();
+    if (insErr) {
+      result.errors.push(`escalate:${ev.audit_id}:${insErr.message}`);
+    } else if (esc) {
+      result.escalationsCreated++;
+    }
+  }
+  return result;
+}
+
+async function runPriorityAgentBridges(supabase: any): Promise<BridgeResult[]> {
+  const out: BridgeResult[] = [];
+  for (const fn of [bridgeIncidentResponse, bridgeSpendControl, bridgeSecurityMonitor]) {
+    try {
+      out.push(await fn(supabase));
+    } catch (e) {
+      out.push({
+        agentId: fn.name,
+        signalsProcessed: 0,
+        actionsDispatched: 0,
+        approvalsQueued: 0,
+        escalationsCreated: 0,
+        errors: [e instanceof Error ? e.message : String(e)],
+      });
+    }
+  }
+  return out;
+}
+
 // ─── HTTP entry ────────────────────────────────────────────────
 serve(async (req) => {
   const cors = handleCors(req);
@@ -591,6 +823,10 @@ serve(async (req) => {
     // Stale escalation auto-routing (every tick)
     const escalated = await processStaleEscalations(supabase);
 
+    // Phase 2: priority-agent signal-to-action bridges
+    // (incident-response, ai-spend-control, security-monitor)
+    const bridges = await runPriorityAgentBridges(supabase);
+
     return corsResponse({
       ok: true,
       mode: "scheduled",
@@ -602,6 +838,7 @@ serve(async (req) => {
       blocked_count: results.filter((r) => r.status === "blocked").length,
       error_count: results.filter((r) => r.status === "error").length,
       meta_escalations_routed: escalated,
+      priority_bridges: bridges,
       results,
     });
   } catch (e) {
