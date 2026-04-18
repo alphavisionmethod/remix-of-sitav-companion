@@ -34,6 +34,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
   const draggingRef = useRef(false);
   const rafRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
+  const snap = useWindowSnap();
 
   // Keep ref in sync when external changes (e.g. cascade) come through
   useEffect(() => {
