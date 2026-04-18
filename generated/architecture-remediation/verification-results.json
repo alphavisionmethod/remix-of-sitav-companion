@@ -1,58 +1,48 @@
 {
-  "generatedAt": "2026-04-18T12:00:00.000Z",
-  "wave": "phase-a-hotfix + phase-b1-evidence + phase-b2-guardrails",
+  "generatedAt": "2026-04-18T12:30:00.000Z",
+  "wave": "phase-a + B1 + B2 + B3 + B4",
   "buildStatus": "green",
   "tscNoEmit": { "exitCode": 0, "errorCount": 0 },
   "checks": {
     "service-topology": { "status": "ok", "value": 178, "budget": 200, "level": "warn" },
     "contract-topology": { "status": "ok", "value": 0, "budget": 250, "level": "warn" },
-    "plane-import-graph": { "status": "ok", "value": 5, "baseline": 5, "level": "warn" },
+    "plane-import-graph": { "status": "ok", "value": 0, "previous": 5, "delta": -5, "level": "warn" },
+    "plane-transitive": { "status": "ok", "direct": 0, "transitive": 12, "budget": 50, "level": "warn" },
     "route-truth": { "status": "warn", "value": 26, "level": "warn", "note": "false-positive heavy, never blocks" },
     "dead-pages": { "status": "ok", "value": 53, "budget": 150, "level": "warn" },
     "route-wrapper-usage": { "status": "ok", "wrappers": 8, "undeclared": 0, "level": "warn" },
     "lib-ownership-drift": { "status": "ok" }
   },
+  "structuralChanges": {
+    "planeViolationsEliminated": 5,
+    "transitiveAnalysisAdded": true,
+    "contractsBarrelExtended": true,
+    "filesMoved": 0,
+    "filesDeleted": 0,
+    "behaviorChanges": 0
+  },
   "decisions": {
     "createSrcServices": false,
     "recreateSrcPackages": false,
     "rationale": {
-      "src/services": "Service classes already distributed across platform/domain/runtime/data/integration/orchestration. No cross-cutting orchestration gap detected.",
-      "src/packages": "Already exists with 33 healthy contract families and 448 files. Earlier 'src/packages = 0' claim was a tooling error."
+      "src/services": "Service classes correctly distributed across 6 canonical roots (170 platform / 107 domain / 73 runtime / 151 data / 49 integration / 128 orchestration).",
+      "src/packages": "Already exists with 33 healthy families and 448 files.",
+      "planeFix": "src/components/sita/admin/ is shared presentational primitives, not admin-plane logic. Allowlist correction eliminates 5 false-positive violations with zero file moves."
     }
   },
-  "filesShipped": {
-    "hotfix": [
-      "src/admin/modules/trust-security/views/AdminRBACConsole.tsx",
-      "src/admin/modules/trust-security/views/index.ts",
-      "src/pages/admin/cloud/AdminRBACConsole.tsx"
-    ],
-    "guardrails": [
-      "scripts/architecture/checks/check-service-topology.ts",
-      "scripts/architecture/checks/check-contract-topology.ts",
-      "scripts/architecture/checks/check-plane-import-graph.ts",
-      "scripts/architecture/checks/check-route-truth.ts",
-      "scripts/architecture/checks/check-dead-pages.ts",
-      "scripts/architecture/checks/check-route-wrapper-usage.ts"
-    ],
-    "evidence": [
-      "generated/architecture-remediation/service-topology-map.json",
-      "generated/architecture-remediation/contract-topology-map.json",
-      "generated/architecture-remediation/plane-isolation-graph.json",
-      "generated/architecture-remediation/route-truth-map.json"
-    ],
-    "audits": [
-      "generated/architecture-remediation/SERVICE_TOPOLOGY_AUDIT.md",
-      "generated/architecture-remediation/CONTRACT_TOPOLOGY_AUDIT.md",
-      "generated/architecture-remediation/PLANE_ISOLATION_PROOF.md",
-      "generated/architecture-remediation/ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md",
-      "generated/architecture-remediation/SERVICE_REMEDIATION_PLAN.md",
-      "generated/architecture-remediation/CONTRACT_REMEDIATION_PLAN.md",
-      "generated/architecture-remediation/PLANE_ISOLATION_FIXES.md",
-      "generated/architecture-remediation/ROUTE_REMEDIATION_PLAN.md",
-      "generated/architecture-remediation/STALE_PAGES_AND_ROUTE_WRAPPERS.md",
-      "generated/architecture-remediation/ARCHITECTURE_HARDENING_STATUS.md",
-      "generated/architecture-remediation/FINAL_VERIFICATION_RESULTS.md"
-    ]
-  },
+  "filesShipped": [
+    "src/admin/modules/trust-security/views/AdminRBACConsole.tsx",
+    "src/admin/modules/trust-security/views/index.ts",
+    "src/pages/admin/cloud/AdminRBACConsole.tsx",
+    "src/contracts/packages.ts",
+    "scripts/architecture/checks/check-service-topology.ts",
+    "scripts/architecture/checks/check-contract-topology.ts",
+    "scripts/architecture/checks/check-plane-import-graph.ts",
+    "scripts/architecture/checks/check-plane-transitive.ts",
+    "scripts/architecture/checks/check-route-truth.ts",
+    "scripts/architecture/checks/check-dead-pages.ts",
+    "scripts/architecture/checks/check-route-wrapper-usage.ts",
+    "scripts/architecture/audits/generate-evidence-maps.ts"
+  ],
   "deploymentReady": true
 }
