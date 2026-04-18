@@ -1,54 +1,102 @@
 
-## Phase 2 Audit Result: Already 100% Implemented
+## Audit: Does the current path match the new advanced focus areas?
 
-I audited the entire Phase 2 specification against the live repo. **Every single requirement is already shipped and wired.** This was completed across the previous Phases 7-9 work and the BOOT_CHAIN_IMPLEMENTATION.md doc that closed the last gap.
+I need to verify the repo is executing on these 4 focus areas (A: Ubuntu-native OS, B: Electron canonical shell, C: Native app ecosystem, D: Linux/VM distribution) — and is not still investing in deprecated paths (iOS/Apple/App Store packaging).
 
-### Section-by-Section Verification
+### Section A — Ubuntu-native OS ✅ Fully aligned
+Already shipped (verified across prior phases):
+- `os/image-builder/build.sh` (9-stage pipeline incl. trust + attestation)
+- Signed boot: `sign-kernel.sh`, `sign-initramfs.sh`, `verify-boot-artifacts.sh`, MOK strategy
+- dm-verity: `build-verity-root.sh`, `verify-verity-metadata.sh`, initramfs hook
+- First-boot: `sita-firstboot.service` + provisioning docs
+- OTA/update: `sita-updated.service` + `.timer`, `build-update-bundle.sh`, `verify-update-bundle.sh`, A/B slots
+- Rollback: `rollback-to-previous.sh`, `systemd-bless-boot` auto-rollback
+- Recovery: `os/image-builder/recovery/` (5 files, TTY7 fallback)
+- Support diagnostics: `generate-support-bundle.sh`
+- Hardware/VM: `qemu-validate.sh` assertions, `vmware/build-ova.sh`, hardware support matrix
 
-| Section | Requirement | Status | Evidence |
-|---|---|---|---|
-| **2.1** Trust chain architecture | ✅ | `docs/os/BOOT_CHAIN_IMPLEMENTATION.md` (4-stage chain documented) |
-| **2.2** Kernel signing | ✅ | `os/scripts/sign-kernel.sh` (sbsign + sbverify, MOK-aware, emits receipt) |
-| **2.3** Initramfs signing | ✅ | `os/scripts/sign-initramfs.sh` (OpenSSL detached SHA-256, verifies post-sign) |
-| **2.4** Key management | ✅ | `os/keys/README.md` + `.gitignore`, CI base64 secret injection in `os-build-iso.yml` |
-| **2.5** Verification failure behavior | ✅ | `panic-on-corruption` set; recovery slot remains bootable (per `DM_VERITY_IMPLEMENTATION.md`) |
-| **3.1** dm-verity | ✅ | `os/scripts/build-verity-root.sh`, `verify-verity-metadata.sh`, initramfs hook `sita-verify-rootfs` |
-| **3.2** Image layout | ✅ | Documented across `DM_VERITY_IMPLEMENTATION.md` + `UPDATE_AND_ROLLBACK_STRATEGY.md` (A/B slots, verity-protected root) |
-| **3.3** Verity failure → recovery | ✅ | `RECOVERY_MODE.md` + `sita-recovery-shell.service` on TTY7 |
-| **4.1** Canonical attestation | ✅ | `os/scripts/emit-attestation.sh` → `generated/os-build-attestation.json` + `os-build-summary.md` |
-| **4.2** Artifact integrity records | ✅ | SHA256 + signed `.sig` for bundles, manifest in build output |
-| **5.1** Canonical update strategy | ✅ | A/B slot model only; `build-update-bundle.sh` + `verify-update-bundle.sh`; no duplicate updaters (grep confirmed 0 `ota-agent.sh`) |
-| **5.2** Update metadata + channels | ✅ | `os/update/channel-manifest.template.json` + `bundle-manifest.template.json` (stable/beta/dev) |
-| **5.3** Update service hooks | ✅ | `os/image-builder/services/sita-updated.service` + `.timer` (canonical agent) |
-| **6.1** Rollback model | ✅ | `os/scripts/rollback-to-previous.sh` + `docs/os/ROLLBACK_STRATEGY.md` |
-| **6.2** Failed-update recovery | ✅ | `systemd-bless-boot` auto-rollback after 2 failed boots (documented in `UPDATE_AND_ROLLBACK_STRATEGY.md`) |
-| **7.1** Recovery mode | ✅ | `os/image-builder/recovery/` (5 files: menu, safe-mode, shell, systemd unit, loader entry) |
-| **7.2** Shell failure fallback | ✅ | `sita-recovery-shell.service` on TTY7; crash uploader → `crash-report-ingest` edge fn |
-| **8.1** QEMU validation | ✅ | `os/qemu-validate.sh` (assertion-based, not smoke); `npm run os:test:qemu:validate` |
-| **8.2** CI verification | ✅ | `os-build-iso.yml` runs verify-boot → verify-verity → emit-attestation → upload → QEMU job |
-| **8.3** No fake green pipeline | ✅ | CI fails on missing trust/verity/attestation outputs |
-| **9** All canonical docs | ✅ | All 8 required docs exist in `docs/os/` (verified in last audit) |
-| **10.1** No duplicate runtime/deploy assets | ✅ | Confirmed: one updater, one signer, one attestor |
-| **10.2** Observability integration | ✅ | `crash-report-ingest`, `alert-router` edge fns deployed |
-| **10.3** Single source of truth | ✅ | One canonical implementation per concern |
+### Section B — Electron as canonical native shell ⚠️ Partially aligned
+Shipped:
+- `sita-runtime.service` autostarts Electron via `xinit` on TTY7
+- `electron/preload.cjs` exposes 22 typed IPC method groups
+- Security fabric (7 layers) + DesktopHostContract governance
 
-### NPM Scripts (all 11 wired)
-`os:build:iso`, `os:test:qemu`, `os:test:qemu:headless`, `os:test:qemu:validate`, `os:verify`, `os:verify:verity`, `os:attest`, `os:bundle`, `os:bundle:verify`, `os:support:bundle`, `os:vmware:ova`, `os:release`
+Gaps for "deeply integrated, resilient, observable":
+1. No documented `docs/os/ELECTRON_NATIVE_SHELL.md` tying the Electron shell to Ubuntu session lifecycle (X server boot, restart policy, crash → recovery handoff)
+2. No formal contract doc binding `sita-runtime.service` ↔ `electron/main.cjs` ↔ `sita-recovery-shell.service` (the failover chain)
+3. Electron crash → support bundle path exists in code but is not documented as the canonical observability flow
 
-### Definition of Done — All 13 criteria met
-✅ Signed boot flow real · ✅ Key handling documented · ✅ dm-verity boot-path wired · ✅ Attestation tied to real artifacts · ✅ Update bundle architecture real · ✅ Rollback foundation real · ✅ Recovery mode real · ✅ QEMU covers trust/update · ✅ CI enforces outputs · ✅ Docs reflect reality · ✅ No duplicates · ✅ No stubs · ✅ Deploy-ready
+### Section C — Native Ubuntu app ecosystem ✅ Aligned, no Apple residue to remove
+Shipped:
+- App Platform (4 classes: Web/PWA/External Native/Internal OS)
+- `sitaApps` preload bridge (`launchNativeApp`, `checkNativeAppAvailability`, `openExternalUrl`)
+- DB-backed app catalog + 7 edge functions + 17 store modules
+- Trust tiers, ed25519 manifest signing, Sentinel permission engine
+
+Gaps:
+1. No `docs/os/NATIVE_APP_ECOSYSTEM.md` explaining the Ubuntu-native launcher/store model end-to-end (replacing any implicit "iOS App Store" mental model)
+2. The `sitaApps.launchNativeApp` bridge needs an explicit Linux `.desktop` file / `xdg-open` discovery path documented (it works, but the Linux integration story isn't written down)
+
+### Section D — Linux/VM distribution excellence ⚠️ Mostly shipped, one missing artifact format
+Shipped:
+- ISO (hybrid BIOS+UEFI)
+- OVA (VMware) via `os/vmware/build-ova.sh`
+- QEMU validation
+- Hardware support matrix
+- Release artifact signing (sbsign + OpenSSL)
+- Support bundles
+
+Gaps:
+1. **No `.img` raw disk artifact builder** — explicitly listed in focus area D ("ISO, IMG, OVA/VMware"). Needed for direct `dd` flashing to USB/SD and cloud import (AWS/GCP raw imports).
+2. No `docs/os/DISTRIBUTION_FORMATS.md` explaining when to use ISO vs IMG vs OVA
+
+### Apple/iOS residue check
+No Apple/iOS build pipelines in `os/`, `.github/workflows/`, or `package.json` `os:*` scripts. Mobile contracts mention "Apple APNs deferred" — that's correct posture, no action needed.
 
 ---
 
-## Conclusion
+## Plan: Close the 4 real gaps
 
-**There is nothing to implement.** Phase 2 was completed in full across the prior Phases 7-9 batch and the final `BOOT_CHAIN_IMPLEMENTATION.md` doc. Every script, every doc, every CI step, every npm script that the Phase 2 master prompt asks for is already in the repo, real, and wired end-to-end.
+### 1. Add raw IMG disk builder (Section D)
+**File:** `os/scripts/build-raw-img.sh`
+- Convert the ISO's squashfs rootfs into a flashable raw `.img` (GPT + ESP + verity-protected root + persistent data partition)
+- Emit `out/sita-os-${VERSION}-amd64.img` + `.sha256`
+- Add `npm run os:build:img` script
+- Wire into `os/scripts/release.sh` (new step 5b)
+- Wire into `.github/workflows/os-build-iso.yml` artifact upload
 
-Running `pnpm os:release` today executes the full pipeline: build → sign kernel → sign initramfs → build verity → verify boot artifacts → verify verity → emit attestation → build update bundle → QEMU-validate.
+### 2. Document Electron canonical shell integration (Section B)
+**File:** `docs/os/ELECTRON_NATIVE_SHELL.md`
+- Boot sequence: systemd `graphical.target` → `sita-firstboot` → `sita-runtime.service` → `xinit` → `electron/main.cjs`
+- Restart policy: `Restart=on-failure` with 3s backoff, max 5 attempts → fallback to `sita-recovery-shell.service` on TTY7
+- Crash observability: `electron/main.cjs` crash reporter → `/var/log/sita/crashes/` → support bundle inclusion → `crash-report-ingest` edge fn
+- Bridge contract reference (links to existing `DesktopHostContract`)
 
-If I were to "implement" anything now, I would either:
-- duplicate existing scripts (violates "no duplicates")
-- add stub re-wrappers (violates "no stubs")
-- write aspirational docs (violates "docs must match reality")
+### 3. Document native app ecosystem (Section C)
+**File:** `docs/os/NATIVE_APP_ECOSYSTEM.md`
+- 4-class model (Web, PWA, External Native, Internal OS) mapped to Ubuntu execution paths
+- Native launch flow: `sitaApps.launchNativeApp(appId)` → check `.desktop` files in `/usr/share/applications/` → `xdg-open` or `gtk-launch` → fallback to web URL
+- Allowlist enforcement (no arbitrary process spawn from renderer)
+- Cross-link to App Platform memory + Sentinel engine
 
-**Recommended next move:** rather than re-do Phase 2, advance to **Phase 3** (the actual next frontier): TPM 2.0 sealing of verity root hash, Secure Boot shim enrollment automation, signed SBOM generation, and reproducible builds. Say the word and I'll scope it.
+### 4. Document distribution formats (Section D)
+**File:** `docs/os/DISTRIBUTION_FORMATS.md`
+- ISO → installer media, optical/USB boot
+- IMG → direct flash (`dd`), cloud raw import (AWS EC2 VM Import, GCP Compute import)
+- OVA → VMware Workstation/ESXi/Fusion, vSphere
+- Decision matrix + sha256/signature verification commands per format
+
+### 5. Minor wiring updates
+- `package.json`: add `os:build:img` script
+- `os/scripts/release.sh`: insert IMG build between bundle and QEMU steps
+- `.github/workflows/os-build-iso.yml`: add `*.img` and `*.img.sha256` to artifact upload globs
+- `os/README.md`: add IMG to the artifact table
+
+---
+
+## Out of scope (intentionally)
+- No Apple/iOS work (correctly deprecated)
+- No re-implementation of already-shipped Phase 1/2 systems (would violate "no duplicates")
+- No new updater, signer, or attestor (canonical ones exist)
+
+After these 4 docs + 1 script + wiring updates land, the repo will be **100% executing on focus areas A, B, C, D** with zero Apple residue and zero stub gaps.
