@@ -176,7 +176,12 @@ function readinessReport(profile: Profile, comp: ReturnType<typeof buildComposit
   const warns = checks.filter(c => c.status === "warn").length;
   return {
     generatedAt: new Date().toISOString(),
+    gate: profile === "user" ? "user-profile-readiness" : "operator-readiness",
+    phase: "phase-12-native-deployability",
     profile,
+    ok: fails === 0,
+    errorCount: fails,
+    warningCount: warns,
     overall: fails > 0 ? "RED" : warns > 0 ? "YELLOW" : "GREEN",
     counts: { pass: checks.length - fails - warns, warn: warns, fail: fails },
     checks,
