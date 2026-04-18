@@ -27,6 +27,7 @@ interface AggregateReport {
   verdict: "GREEN" | "YELLOW" | "RED";
 }
 
+// Gate names match generated/<gate>-report.json
 const REQUIRED_GATES = [
   "os-build-pipeline",
   "os-trust-chain-readiness",
