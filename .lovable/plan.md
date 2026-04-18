@@ -1,76 +1,106 @@
 
-This is a massive verification + remediation prompt with 5 sections (A–E), 14 deliverable docs, 5 status JSONs, and 5 new validation scripts. Let me design a phased approach that is each-phase deployable.
+## Phase 1 Runtime Bridge — Internal AI Workforce → Real Operation
 
-Scope check:
-- 19 deliverables in `generated/final-proof-verification/` (14 .md + 5 .json + 1 summary)
-- 5 new validators in `scripts/validation/`
-- Integration into master release aggregator (BLOCK-level, mirrors prior claim-safety wiring)
-- Prior memory confirms: 35 master gates currently green, App Store has 7 edge functions + DB-backed install, 12 admin domains, 19 runbooks, 15 kill-switches, Boardroom L7 follow-through complete
+### Verified ground truth
+- **40 agents** exist as canonical specs in `src/lib/internal-agents/` (6 councils × P/B/S/R/A/K). Duplicate at `src/packages/internal-agent-config/` — will treat `src/lib/internal-agents/` as sole seed source (no new parallel registry).
+- **7 supervisors** + 6 councils already typed and exported.
+- **AI runtime tables** already real: `ai_workforce_invocations`, `ai_workforce_approval_queue`, `ai_workforce_budget_classes`, `agent_action_receipts`, `agent_signals`, `runtime_agents`, `agent_signals`. Reuse these — do NOT duplicate.
+- **Edge runtime patterns** proven in `agent-executor` (policy + budget + receipts + signals + tracing). The new loop will reuse `_shared/policy.ts`, `_shared/ai-budget-check.ts`, `_shared/ai-receipt-logger.ts`, AI gateway.
+- **Admin extension point**: `AIRuntimeHome` is a `DomainHubLayout` hub — adding 2 modules (`internal-agents`, `councils`) is the canonical, drift-free integration.
 
-Existing infra to leverage:
-- `scripts/validation/_lib/emit-gate-report.ts` (built last phase) — reuse for all 5 new gates
-- `check-os-release-readiness.ts` REQUIRED_GATES (currently 45) — append 5 → 50
-- `generated/app-install-truth-map.json` already exists (App Store evidence)
-- `generated/golden-paths-coverage.json`, runbook registries, kill-switch registry
+### Five deployable phases (each green-on-deploy)
 
-Each phase = atomic deployable unit (audit + remediation + validator + aggregator wiring per section).
+---
 
-### Phase 1 — Section A: Gate Meaningfulness (deployable)
-Audit all 45 currently-green master gates, classify each as meaningful / shallow / structural-only. Build:
-- `GATE_MEANINGFULNESS_AUDIT.md` — every gate × evidence × risk-coverage × verdict
-- `GATE_HARDENING_PLAN.md` — concrete strengthening for ≥3 weak gates (e.g., adopt deeper assertions in any "presence-only" check)
-- `gate-meaningfulness-status.json`
-- `scripts/validation/check-gate-meaningfulness.ts` — fails if any gate marked `shallow` lacks a hardening ticket
-- Wire into REQUIRED_GATES (46 total)
+### Phase 1 — DB Foundation (5 tables, RLS, indexes)
+Single migration. **No data writes yet, so can deploy without breaking anything.**
 
-### Phase 2 — Section B: App Store Lifecycle Reality (deployable)
-Independent verification of install/uninstall/update/launcher/profile/entitlements across Type A/B/C/D. Reuses existing `app-install-truth-map.json` as evidence, walks edge functions (`app-install`, `app-uninstall`, `app-update-check`, `app-manifest-sync`, `app-launch-resolve`), inspects `installed_apps` consumers.
-- `APP_STORE_REALITY_AUDIT.md`
-- `APP_STORE_TYPE_MATRIX.md` (4 types × 7 lifecycle steps)
-- `APP_STORE_REMEDIATION_AND_STATUS.md`
-- `app-store-reality-status.json`
-- `scripts/validation/check-app-store-lifecycle-reality.ts` — verifies all 5 edge functions exist, all 4 type handlers wired, ≥8 consumers of install state (matches existing baseline)
-- REQUIRED_GATES (47 total)
+| Table | Purpose | Key linkage |
+|---|---|---|
+| `internal_agent_definitions` | 40 agents seeded from `ALL_DETAILED_AGENTS` | unique `agent_id` |
+| `internal_agent_runtime_state` | Live mutable state per agent | FK → definitions |
+| `internal_agent_actions` | Every meaningful action | FK → definitions, `ai_workforce_invocations`, `agent_action_receipts`, `ai_workforce_approval_queue` |
+| `council_escalations` | Cross-agent + agent→supervisor | FK → definitions |
+| `supervisor_decisions` | Override/suspend/downgrade audit | FK → escalations + actions |
 
-### Phase 3 — Section C: Frontend Polish (deployable)
-Programmatic + manifest-driven completeness audit across flagship surfaces (Auth/Pulse, Files/AI, Boardroom, Connectors, App Store, key admin). No claim weakening — just exposure.
-- `FRONTEND_REALITY_AND_POLISH_AUDIT.md`
-- `FRONTEND_COMPLETENESS_MATRIX.md` (per-surface × 9 dimensions)
-- `FRONTEND_POLISH_GAP_REGISTER.md`
-- `frontend-completeness-status.json`
-- `scripts/validation/check-frontend-polish-coverage.ts` — every flagship surface declared in matrix must classify all 9 dimensions; fails if any `unknown`
-- REQUIRED_GATES (48 total)
+- RLS: admin-only via `has_role(_, 'admin')` for write; admin + service-role for read; service-role bypass for the runtime loop.
+- Indexes on `(council, is_active)`, `(agent_id)`, `(status, created_at DESC)`, `(supervisor_key)`.
+- Trigger: `update_updated_at_column` reused.
+- **Verification**: schema registry regenerates clean; `check-db-truth` passes; admin pages still render unchanged.
 
-### Phase 4 — Section D: Admin Coherence (deployable)
-Audit 12 admin domains as operator workspace using existing `admin-route-registry`, `admin-domain-nav`, `OwnerWorkflowSwitcher`. Classify registry-backed vs museum, actionable vs informational.
-- `ADMIN_SURFACE_COHERENCE_AUDIT.md`
-- `ADMIN_OPERATOR_USABILITY_MATRIX.md` (12 domains × 9 criteria)
-- `ADMIN_REMEDIATION_PRIORITY_PLAN.md`
-- `admin-operator-coherence-status.json`
-- `scripts/validation/check-admin-operator-coherence.ts` — every domain must have ≥1 actionable surface + registry binding
-- REQUIRED_GATES (49 total)
+---
 
-### Phase 5 — Section E: Human-Use Operational + Final Summary (deployable)
-Walk operator scenarios against current incident-classifier + runbook registry + kill-switch flows. Validates alert→runbook linkage, kill-switch execution path, evidence visibility, recovery confirmation.
-- `HUMAN_USE_OPERATIONAL_SCENARIOS.md` (6 scenario types)
-- `OPERATOR_FLOW_VALIDATION_REPORT.md`
-- `OPERATIONAL_FRICTION_AND_GAP_REGISTER.md`
-- `operational-readiness-status.json`
-- `FINAL_PROOF_VERIFICATION_SUMMARY.md` — rolls up all 5 sections
-- `scripts/validation/check-human-use-operational-readiness.ts` — every kill-switch must link to ≥1 runbook + every runbook must declare detection signal + recovery confirmation step
-- REQUIRED_GATES (50 total)
-- Refresh `generated/os-release-readiness-report.json` with full 50/50
+### Phase 2 — Seed Bridge + Definition Sync
+- New script `scripts/seed/seed-internal-agents.ts` reads `ALL_DETAILED_AGENTS` + `SUPERVISORS` and upserts into `internal_agent_definitions` (idempotent, by `agent_id`).
+- New service `src/lib/internal-agents/runtime/internal-agent-registry.ts` — single source for the runtime loop + admin UI to read combined `definition + state`.
+- Auto-seed migration: SECURITY DEFINER function `seed_internal_agent_definitions()` invoked once via insert, embedding the 40-agent payload generated from spec at build time.
+- Empty runtime_state rows auto-created for each definition (one per agent).
+- Validators: `check-internal-agent-registry.ts` + `check-internal-agent-seed-integrity.ts` (BLOCK gates) — fail if DB count ≠ spec count, or any `agent_id` missing.
+- **Verification**: 40 definitions + 40 runtime_state rows present; admin UI (Phase 4) will read from this even when empty.
 
-### Cross-cutting rules
-- Reuse `emit-gate-report.ts` shared helper — no duplication
-- No new components, no DB changes, no UI changes (this is governance + evidence)
-- All 5 new gates use BLOCK severity, mirror existing claim-safety wiring pattern
-- All status JSONs are machine-readable for the aggregator
-- No stubs: every audit doc enumerates every item in its scope (no "etc." placeholders)
-- No duplication: scans `generated/` first, refuses to recreate existing reality artifacts; if `app-install-truth-map.json` exists, the new App Store audit references it instead of forking
+---
 
-### Technical notes
-- All deliverables land under exact path: `generated/final-proof-verification/`
-- Each validator follows the established `scripts/validation/check-*.ts` pattern: scan → emit `GateReport` → exit 0/1
-- Master aggregator gate count: 45 → 46 → 47 → 48 → 49 → 50 (one per phase, each phase deployable on its own)
-- No changes to runtime code paths, no DB migrations, no edge function changes
+### Phase 3 — `internal-agent-loop` Edge Function (the bridge core)
+Single edge function `supabase/functions/internal-agent-loop/index.ts` with:
+- **Due-agent evaluator**: parses `schedule_cron` against `last_run_at` + `cooldown_until`; respects `is_active`, suspension, kill-switches.
+- **Per-agent runner** (reuses canonical infra):
+  1. Load definition + state (single join query)
+  2. Check `automation_kill_switches` for `internal-agents.<council>.<agent_id>` scope
+  3. Call existing `checkAIBudget` → respect downgrade
+  4. Call AI gateway via existing pattern (no parallel client)
+  5. Insert `ai_workforce_invocations` row (canonical receipt)
+  6. Insert `internal_agent_actions` row linked to invocation
+  7. Decision branch by `current_autonomy_level`:
+     - `observe`/`diagnose`/`recommend`/`draft` → record action only
+     - `simulate` → record + simulation_result
+     - `approval-ready` → also insert into `ai_workforce_approval_queue` with `recommendation_id` link
+     - `constrained-action` → execute scoped tool only if confidence ≥ `confidence_threshold_act`
+  8. On confidence < threshold OR consecutive failures ≥ 3 → insert `council_escalations` row routed to agent's `escalation_target` supervisor
+  9. Update `internal_agent_runtime_state` (last_run_at, last_success_at/last_failure_at, consecutive_failures, total_*, trust_score recalc)
+- **pg_cron** every 5 min calls the loop with service role; loop internally evaluates which agents are due.
+- Idempotency key: `agent_id + minute-bucket`; rate limit reused from `_shared/rate-limit.ts`.
+- **Verification**: invoking the loop with one due agent writes invocation + action + state; second invocation within cooldown is skipped.
+
+---
+
+### Phase 4 — Admin UI: 2 New Hub Modules + Drilldowns
+Extend `AIRuntimeHome.tsx` with two new modules (no new shell):
+- **`internal-agents` tab**: `InternalAgentsBoard.tsx`
+  - Live table from `internal_agent_definitions LEFT JOIN internal_agent_runtime_state`
+  - Columns: agent, council, status, current_autonomy/max, trust_score, last_run, consecutive_failures, recent actions count
+  - Row drilldown drawer: full definition + last 20 `internal_agent_actions` (linked to invocation/receipt) + escalations
+  - Operator actions (gated by `has_admin_permission(_, 'ai_workforce.manage')`): manual trigger (calls `internal-agent-loop` with `agent_id`), suspend/resume, autonomy downgrade
+  - Filters: council, status, suspended-only
+- **`councils` tab**: `CouncilsBoard.tsx`
+  - 6 panels (one per council) — agent count, active/paused, recent actions/escalations, supervisor status from `supervisor_decisions`
+  - Per-council drilldown shows pending escalations + last supervisor decisions
+- Realtime: subscribe to `internal_agent_runtime_state` + `council_escalations` so the boards reflect loop activity live.
+- Route registration in `ADMIN_ROUTE_REGISTRY` (ai-runtime domain).
+- **Verification**: `/admin/ai-runtime` shows 2 new tabs, populated with the 40 seeded agents; manual trigger of an agent updates the row in real time.
+
+---
+
+### Phase 5 — Supervisor Runtime + Validators + Final Wiring
+- Server-side action helpers in `src/lib/internal-agents/runtime/supervisor-actions.ts` for `approve/reject/override/suspend/downgrade/escalate-meta` — each writes `supervisor_decisions` and mutates target `internal_agent_runtime_state` or `council_escalations` accordingly.
+- Meta-supervisor key: `chief-of-staff` already exists; escalations marked `severity='high'` or unresolved >24h auto-route to it via the loop.
+- New supervisor section in `CouncilsBoard` for resolving open escalations.
+- New BLOCK-level validators wired into master aggregator (50 → 56):
+  - `check-internal-agent-registry.ts`
+  - `check-internal-agent-runtime-coverage.ts`
+  - `check-internal-agent-admin-pages.ts`
+  - `check-internal-agent-escalation-runtime.ts`
+  - `check-internal-agent-seed-integrity.ts`
+  - `check-internal-agent-runtime-loop.ts`
+- All 12 deliverable docs + 4 status JSONs written to `generated/internal-ai-runtime-phase1/`.
+- Append `internal-agents:run-all` script + integrate into `release:readiness:full`.
+- **Verification**: `npm run release:readiness` shows 56/56 green; an injected escalation in DB appears in admin UI; a supervisor "suspend" action sets `current_status='suspended'` and the loop skips that agent next tick.
+
+---
+
+### Cross-cutting rules (enforced every phase)
+- **Zero duplication**: reuse `ai_workforce_invocations`, `ai_workforce_approval_queue`, `agent_action_receipts`, existing AI gateway, existing budget check, existing kill-switches, existing admin shell, existing `DomainHubLayout`.
+- **Zero stubs**: every new file has full implementation; validators run real checks.
+- **Wiring contracts**: `internal_agent_actions.invocation_id` FK enforces canonical receipt linkage; admin pages drill through to the existing receipts viewer.
+- **Spec-as-source**: 40 agents come from `src/lib/internal-agents/agents/*.ts` only; the parallel `src/packages/internal-agent-config/` is left untouched (it's a typed sub-package re-export) and explicitly noted in the audit doc as legacy contract types.
+- **Safety**: every loop tick is policy-checked, budget-checked, kill-switch-checked, idempotency-keyed; max autonomy `simulate` for any agent declared `simulate`/`draft`/`recommend`/`observe` (no agent in the spec is currently `constrained-action`, so first-day risk surface is observe→approval-ready only).
+- **Operator visibility**: every state change emits a `timeline_events` row using existing `brd_followthrough_transition`-style pattern adapted as `internal_agent.transition` so it appears in existing observability streams.
