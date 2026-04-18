@@ -17471,6 +17471,39 @@ export type Database = {
         Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
       }
+      list_stale_locked_workflow_runs: {
+        Args: { _max_age_minutes?: number }
+        Returns: {
+          id: string
+          last_progress_at: string
+          status: string
+          user_id: string
+          workflow_id: string
+        }[]
+      }
+      list_unescalated_security_events: {
+        Args: { _lookback_minutes?: number }
+        Returns: {
+          action: string
+          audit_id: string
+          created_at: string
+          severity: string
+          target_id: string
+          target_type: string
+        }[]
+      }
+      list_unhealthy_connector_accounts: {
+        Args: never
+        Returns: {
+          connector_type: string
+          display_name: string
+          id: string
+          last_health_at: string
+          last_health_status: string
+          status: string
+          user_id: string
+        }[]
+      }
       mute_error_patrol_pattern: {
         Args: { _hours?: number; _pattern_key: string }
         Returns: Json
