@@ -5,7 +5,7 @@
 // in route-plane-map.ts. Fails CI on uncovered routes.
 // ═══════════════════════════════════════════════════════════════
 
-import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 interface CoverageReport {
