@@ -15,6 +15,7 @@ import { Toggle, SingleSelect, SectionTitle } from "@/pages/revenue-office/onboa
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getRecommendedJourney } from "@/lib/business-journey-config";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";
 import { toast } from "sonner";
 
@@ -148,6 +149,8 @@ export default function BusinessSettingsPage() {
   const { isLoading, savedState, updateState, clearCompletion, markComplete } = useBusinessOnboarding();
   const { updateOverrides } = useBusinessProfile();
   const navigate = useNavigate();
+  // Phase S — autosave the in-progress edits so unsaved changes survive reload.
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<OnboardingState>("business:settings:edit", "business");
   const [localState, setLocalState] = useState<OnboardingState>(savedState);
   const [hasChanges, setHasChanges] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
@@ -156,10 +159,17 @@ export default function BusinessSettingsPage() {
 
   useEffect(() => {
     if (!isLoading) {
-      setLocalState(savedState);
-      setPrevTypes(savedState.businessTypes);
+      // Hydrate from saved state, then overlay any in-progress autosave draft.
+      const hydrated: OnboardingState = { ...savedState, ...(draft as Partial<OnboardingState>) };
+      setLocalState(hydrated);
+      setPrevTypes(hydrated.businessTypes);
+      if (Object.keys(draft).length > 0) setHasChanges(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, savedState]);
+
+  // Mirror local edits back into the autosaved draft.
+  useEffect(() => { if (hasChanges) updateDraft(localState as Partial<OnboardingState>); }, [localState, hasChanges, updateDraft]);
 
   // Detect business type changes that should trigger journey sync prompt
   useEffect(() => {
