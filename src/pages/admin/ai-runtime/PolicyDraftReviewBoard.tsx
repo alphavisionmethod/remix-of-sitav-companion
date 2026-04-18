@@ -141,11 +141,11 @@ export default function PolicyDraftReviewBoard() {
           </Card>
           <Card>
             <CardContent className="pt-6"><div className="text-xs text-muted-foreground">Pending review</div>
-              <div className="text-2xl font-bold text-amber-500">{health.pending_review}</div></CardContent>
+              <div className="text-2xl font-bold text-warning">{health.pending_review}</div></CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6"><div className="text-xs text-muted-foreground">Approved</div>
-              <div className="text-2xl font-bold text-emerald-500">{health.approved}</div></CardContent>
+              <div className="text-2xl font-bold text-success">{health.approved}</div></CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6"><div className="text-xs text-muted-foreground">Rejected</div>
