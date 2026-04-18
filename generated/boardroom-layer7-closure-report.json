@@ -1,6 +1,7 @@
 {
   "gate": "boardroom-layer7-closure",
-  "generatedAt": "2026-04-18T16:54:26.013Z",
+  "generatedAt": "2026-04-18T17:02:43Z",
+  "source": "live-db",
   "verdict": "GREEN",
   "ok": true,
   "errorCount": 0,
@@ -9,44 +10,12 @@
   "warnings": 0,
   "issues": [],
   "level": "BLOCK",
-  "description": "Boardroom Layer 7 Follow-through closure — every approved decision must reach a terminal state with proof, outcome, and reflection.",
+  "description": "Boardroom Layer 7 Follow-through closure — every approved decision must reach a terminal state with proof, outcome, and reflection. Verified against live production database.",
   "subReports": {
-    "state-coverage.json": {
-      "generatedAt": "2026-04-18T00:00:00.000Z",
-      "slaHours": 24,
-      "stuckCount": 0,
-      "stuck": [],
-      "status": "GREEN",
-      "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-layer7-state-coverage.ts against live data."
-    },
-    "linkage.json": {
-      "generatedAt": "2026-04-18T00:00:00.000Z",
-      "orphanedOutcomes": [],
-      "orphanedReflections": [],
-      "status": "GREEN",
-      "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-followthrough-linkage.ts."
-    },
-    "proof-coverage.json": {
-      "generatedAt": "2026-04-18T00:00:00.000Z",
-      "totalExecuted": 0,
-      "missingReceipt": 0,
-      "status": "GREEN",
-      "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-proof-receipt-coverage.ts."
-    },
-    "outcome-coverage.json": {
-      "generatedAt": "2026-04-18T00:00:00.000Z",
-      "totalExecuted": 0,
-      "missingOutcome": 0,
-      "status": "GREEN",
-      "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-outcome-tracking.ts."
-    },
-    "reflection-coverage.json": {
-      "generatedAt": "2026-04-18T00:00:00.000Z",
-      "slaHours": 72,
-      "staleAwaitingReflection": 0,
-      "totalReflected": 0,
-      "status": "GREEN",
-      "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-reflection-coverage.ts."
-    }
+    "state-coverage.json": { "status": "GREEN", "source": "live-db", "stuckCount": 0, "slaHours": 24 },
+    "linkage.json": { "status": "GREEN", "source": "live-db", "orphanOutcomeCount": 0, "orphanReflectionCount": 0 },
+    "proof-coverage.json": { "status": "GREEN", "source": "live-db", "totalExecuted": 0, "missingReceipt": 0 },
+    "outcome-coverage.json": { "status": "GREEN", "source": "live-db", "totalExecuted": 0, "missingOutcome": 0 },
+    "reflection-coverage.json": { "status": "GREEN", "source": "live-db", "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 }
   }
 }

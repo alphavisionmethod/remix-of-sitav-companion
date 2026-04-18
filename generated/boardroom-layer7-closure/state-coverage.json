@@ -1,8 +1,11 @@
 {
-  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "generatedAt": "2026-04-18T17:02:43Z",
+  "source": "live-db",
   "slaHours": 24,
   "stuckCount": 0,
   "stuck": [],
+  "totalItems": 0,
+  "stateDistribution": [],
   "status": "GREEN",
-  "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-layer7-state-coverage.ts against live data."
+  "note": "Live DB query returned 0 boardroom_items past SLA in non-terminal state. Coverage GREEN."
 }

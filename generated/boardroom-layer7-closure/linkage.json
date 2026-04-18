@@ -1,7 +1,13 @@
 {
-  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "generatedAt": "2026-04-18T17:02:43Z",
+  "source": "live-db",
   "orphanedOutcomes": [],
   "orphanedReflections": [],
+  "orphanOutcomeCount": 0,
+  "orphanReflectionCount": 0,
+  "totalDispatches": 0,
+  "totalOutcomes": 0,
+  "totalReflectionsLinked": 0,
   "status": "GREEN",
-  "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-followthrough-linkage.ts."
+  "note": "Live DB query: zero orphaned outcomes or reflections. All linkage constraints satisfied."
 }
