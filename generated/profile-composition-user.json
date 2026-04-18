@@ -1,0 +1,387 @@
+{
+  "generatedAt": "2026-04-18T02:05:25.032Z",
+  "profile": "user",
+  "manifest": {
+    "$schema": "../profile.schema.json",
+    "profile": "user",
+    "displayName": "SITA OS — User Edition",
+    "artifactName": "sita-os-user",
+    "description": "Standard end-user product experience. User Product Plane is default; admin surfaces hidden behind role gates.",
+    "defaultShellHome": "/desktop",
+    "enabledPlanes": [
+      "core-os",
+      "shell-runtime",
+      "user",
+      "backend-services"
+    ],
+    "adminPlaneAccess": "role-gated",
+    "allowedApps": [
+      "business-os",
+      "money-os",
+      "concierge",
+      "files",
+      "boardroom",
+      "workspace",
+      "app-store",
+      "settings",
+      "notifications"
+    ],
+    "featureFlags": {
+      "show.admin.nav": false,
+      "show.dev.tools": false,
+      "support.diagnostics.level": "user-self-service",
+      "branding.variant": "user"
+    },
+    "supportToolingLevel": "self-service",
+    "branding": {
+      "wordmarkSuffix": "",
+      "themeVariant": "user-default"
+    }
+  },
+  "enabledPlanes": [
+    "core-os",
+    "shell-runtime",
+    "user",
+    "backend-services"
+  ],
+  "planeDetails": [
+    {
+      "key": "core-os",
+      "label": "Core OS Platform",
+      "description": "Ubuntu-native substrate: image builder, boot/trust chain, dm-verity, A/B updates, recovery, diagnostics."
+    },
+    {
+      "key": "shell-runtime",
+      "label": "Shell Runtime",
+      "description": "Electron host, window manager, app launcher, notifications, command palette, IPC bridge — shared by all planes."
+    },
+    {
+      "key": "user",
+      "label": "User Product Plane",
+      "description": "End-user product surfaces: Business OS, Money, Concierge, Files, Boardroom, Workspace, Apps, Settings."
+    },
+    {
+      "key": "backend-services",
+      "label": "Backend Services Plane",
+      "description": "Supabase, edge functions, DB, storage, auth, AI gateway, sync — governed (not replaced) by the admin plane."
+    }
+  ],
+  "routes": {
+    "total": 16,
+    "byPlane": {
+      "user": 10,
+      "shell-runtime": 5,
+      "backend-services": 1
+    },
+    "entries": [
+      {
+        "prefix": "/desktop",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "User OS desktop home"
+      },
+      {
+        "prefix": "/business",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "Business OS app"
+      },
+      {
+        "prefix": "/money",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "Money / Finance OS app"
+      },
+      {
+        "prefix": "/concierge",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "AI Concierge app"
+      },
+      {
+        "prefix": "/files",
+        "plane": "user",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Files app (shared)"
+      },
+      {
+        "prefix": "/boardroom",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "Boardroom advisor surface"
+      },
+      {
+        "prefix": "/workspace",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "User workspace"
+      },
+      {
+        "prefix": "/apps",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "App store / launcher"
+      },
+      {
+        "prefix": "/cloud",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "Cloud surfaces"
+      },
+      {
+        "prefix": "/launcher",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Shared app launcher"
+      },
+      {
+        "prefix": "/notifications",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Shared notifications center"
+      },
+      {
+        "prefix": "/settings",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Shared settings (role-aware sections)"
+      },
+      {
+        "prefix": "/search",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Shared command/search"
+      },
+      {
+        "prefix": "/api",
+        "plane": "backend-services",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Backend-services HTTP/edge surfaces"
+      },
+      {
+        "prefix": "/auth",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "description": "Auth flows (shared)"
+      },
+      {
+        "prefix": "/",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "description": "Marketing / landing fallback"
+      }
+    ]
+  },
+  "apps": {
+    "total": 10,
+    "byPlane": {
+      "user": 6,
+      "shell-runtime": 4
+    },
+    "launcherVisible": 9,
+    "commandVisible": 10,
+    "defaultPinned": [
+      "business-os",
+      "money-os",
+      "concierge",
+      "boardroom",
+      "files"
+    ],
+    "entries": [
+      {
+        "appId": "business-os",
+        "displayName": "Business",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [
+          "user"
+        ],
+        "riskTier": "R1",
+        "description": "Business OS — operations, CRM, ops insight"
+      },
+      {
+        "appId": "money-os",
+        "displayName": "Money",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [
+          "user"
+        ],
+        "riskTier": "R2",
+        "description": "Finance OS — cashflow, taxes, accounts"
+      },
+      {
+        "appId": "concierge",
+        "displayName": "Concierge",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [
+          "user"
+        ],
+        "riskTier": "R1",
+        "description": "AI Concierge — chief of staff"
+      },
+      {
+        "appId": "boardroom",
+        "displayName": "Boardroom",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [
+          "user"
+        ],
+        "riskTier": "R2",
+        "description": "Advisor council & strategic decisions"
+      },
+      {
+        "appId": "workspace",
+        "displayName": "Workspace",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [],
+        "riskTier": "R0",
+        "description": "Personal workspace surface"
+      },
+      {
+        "appId": "app-store",
+        "displayName": "App Store",
+        "plane": "user",
+        "profiles": [
+          "user"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [],
+        "riskTier": "R1",
+        "description": "App platform store / catalog"
+      },
+      {
+        "appId": "files",
+        "displayName": "Files",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [
+          "user",
+          "operator"
+        ],
+        "riskTier": "R1",
+        "description": "Files browser (shared)"
+      },
+      {
+        "appId": "settings",
+        "displayName": "Settings",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [],
+        "riskTier": "R0",
+        "description": "Settings (role-aware sections)"
+      },
+      {
+        "appId": "notifications",
+        "displayName": "Notifications",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "launcherVisible": true,
+        "commandVisible": true,
+        "defaultPinned": [],
+        "riskTier": "R0",
+        "description": "Notifications center"
+      },
+      {
+        "appId": "search",
+        "displayName": "Search",
+        "plane": "shell-runtime",
+        "profiles": [
+          "user",
+          "operator"
+        ],
+        "launcherVisible": false,
+        "commandVisible": true,
+        "defaultPinned": [],
+        "riskTier": "R0",
+        "description": "Global command palette / search"
+      }
+    ]
+  },
+  "adminWorkflows": {
+    "total": 0,
+    "keys": []
+  },
+  "defaultShellHome": "/desktop",
+  "branding": {
+    "wordmarkSuffix": "",
+    "themeVariant": "user-default"
+  },
+  "supportToolingLevel": "self-service"
+}
