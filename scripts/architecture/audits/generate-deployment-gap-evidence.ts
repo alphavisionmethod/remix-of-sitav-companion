@@ -173,6 +173,7 @@ writeJsonOutput(path.join(OUT_DIR, "ai-cost-metering-map.json"), envelope({
 const refreshWorkerExists = fs.existsSync("supabase/functions/connector-token-refresh");
 const refreshWorkerSrc = readSafe("supabase/functions/connector-token-refresh/index.ts");
 const googleRefreshReal = /oauth2\.googleapis\.com\/token|googleapis.*refresh_token/i.test(refreshWorkerSrc);
+const microsoftRefreshReal = /login\.microsoftonline\.com.*token|refreshMicrosoft\b/i.test(refreshWorkerSrc);
 const providerRegistryPath = "src/lib/services/connector-engine/connector-oauth-provider-registry.ts";
 const providerRegistryExists = fs.existsSync(providerRegistryPath);
 
@@ -182,12 +183,14 @@ writeJsonOutput(path.join(OUT_DIR, "connector-oauth-rotation-map.json"), envelop
   providerRegistryExists,
   providers: {
     google: { status: googleRefreshReal ? "real-implementation" : "stub-pending-phase-M", scope: "drive,gmail,calendar" },
-    microsoft: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
+    microsoft: { status: microsoftRefreshReal ? "real-implementation" : "manual", reason: microsoftRefreshReal ? "Phase R: real Graph refresh wired" : "No active connector wiring; manual rotation by ops" },
     slack: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
     salesforce: { status: "manual", reason: "No active connector wiring; manual rotation by ops" },
   },
-  classification: googleRefreshReal ? "google-real-others-manual" : "rotation-gap-google-pending",
-  notes: "Google is the only provider with active wiring (provider-family-operations memory). Phase M implements real Google refresh; others register as 'manual' with truth label.",
+  classification:
+    googleRefreshReal && microsoftRefreshReal ? "google-and-microsoft-real-others-manual" :
+    googleRefreshReal ? "google-real-others-manual" : "rotation-gap-google-pending",
+  notes: "Google + Microsoft are wired with real refresh; Slack/Salesforce remain manual with truth labels.",
 }));
 
 // ── 9. FRONTEND ↔ BACKEND ↔ SUBSTRATE MATRIX ──────────────────
@@ -196,12 +199,13 @@ const matrix: Array<{ action: string; backend: string; substrate: string; status
   { action: "App uninstall", backend: "edge:app-uninstall", substrate: "db:installed_apps", status: "real" },
   { action: "App update check", backend: "edge:app-update-check", substrate: "db:installed_apps", status: "real" },
   { action: "AI inference", backend: "edge:ai-gateway", substrate: "db:ai_invocations + ai_usage_ledger", status: "real" },
-  { action: "Connector token refresh", backend: "edge:connector-token-refresh", substrate: "db:connector_tokens", status: googleRefreshReal ? "real-google-stub-others" : "stub-pending" },
+  { action: "Connector token refresh (Google)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: googleRefreshReal ? "real" : "stub-pending" },
+  { action: "Connector token refresh (Microsoft)", backend: "edge:connector-token-refresh", substrate: "db:connector_oauth_tokens", status: microsoftRefreshReal ? "real" : "manual" },
   { action: "Connector OAuth init", backend: "edge:connector-oauth", substrate: "db:connector_credentials", status: "real" },
   { action: "Global search", backend: "rpc:supabase tables", substrate: "db:multi-domain", status: "real" },
-  { action: "Draft autosave", backend: "client-only", substrate: "localStorage (Phase M → IndexedDB)", status: "client-real-storage-upgrading" },
+  { action: "Draft autosave", backend: "client-only", substrate: "localStorage + IndexedDB (offline-db.ts)", status: "real" },
   { action: "File picker", backend: "client-only", substrate: "FilePickerService context", status: "real" },
-  { action: "Window snap", backend: "client-only", substrate: "WindowContext", status: "real" },
+  { action: "Window snap", backend: "client-only", substrate: "WindowContext + SnapGuideOverlay", status: "real" },
   { action: "Offline queue (web)", backend: "client-sync", substrate: "IndexedDB:offline-db.ts", status: "real" },
   { action: "Offline queue (mobile)", backend: "n/a", substrate: "n/a", status: "archived-honestly" },
   { action: "Approval requests", backend: "edge:approval-engine", substrate: "db:approval_decisions", status: "real" },
@@ -213,7 +217,7 @@ writeJsonOutput(path.join(OUT_DIR, "frontend-backend-substrate-matrix.json"), en
   totalActions: matrix.length,
   realActions: matrix.filter(m => m.status === "real").length,
   archivedActions: matrix.filter(m => m.status.includes("archived")).length,
-  pendingActions: matrix.filter(m => m.status.includes("pending") || m.status.includes("upgrading")).length,
+  pendingActions: matrix.filter(m => m.status.includes("pending") || m.status.includes("upgrading") || m.status === "manual").length,
 }));
 
 // ── 10. DB TRUTH CLOSURE ──────────────────────────────────────

@@ -28,10 +28,11 @@ export const CONNECTOR_OAUTH_PROVIDER_REGISTRY: readonly ConnectorOAuthProvider[
   },
   {
     key: "microsoft",
-    displayName: "Microsoft 365",
-    status: "manual",
-    scopes: ["graph"],
-    notes: "No active connector wiring; manual rotation by ops team. Honestly classified — see CONNECTOR_OAUTH_HARDENING.md.",
+    displayName: "Microsoft 365 (Graph)",
+    status: "real",
+    refreshEndpoint: "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
+    scopes: ["offline_access", "graph"],
+    notes: "Real refresh implemented in connector-token-refresh edge function (Phase R). Uses MICROSOFT_CONNECTOR_CLIENT_ID, MICROSOFT_CONNECTOR_CLIENT_SECRET, MICROSOFT_CONNECTOR_TENANT_ID secrets.",
   },
   {
     key: "slack",
