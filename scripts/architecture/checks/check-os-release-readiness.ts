@@ -48,6 +48,10 @@ const REQUIRED_GATES = [
   // Part 3 — Mobile distribution gates
   "mobile-store-readiness",
   "mobile-build-pipeline",
+  // Phase 14 — Production launch hardening
+  "ks-payments-auth-readiness",
+  "ci-artifacts-proof",
+  "electron-signing-readiness",
 ];
 
 const GENERATED_DIR = "generated";
