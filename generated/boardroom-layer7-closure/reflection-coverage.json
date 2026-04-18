@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T17:02:43Z",
+  "generatedAt": "2026-04-18T17:14:02Z",
   "source": "live-db",
   "slaHours": 72,
   "staleAwaitingReflection": 0,
   "totalReflected": 0,
   "status": "GREEN",
-  "note": "Live DB: 0 outcome_tracked dispatches stale beyond 72h SLA. Reflection cadence GREEN."
+  "note": "Live DB query (production hardening pass): 0 outcome_tracked dispatches stale beyond 72h SLA. Reflection cadence GREEN."
 }
