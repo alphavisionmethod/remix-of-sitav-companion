@@ -48,7 +48,7 @@ let totalErrors = 0;
 let totalWarnings = 0;
 
 const filesPresent = existsSync(GENERATED_DIR)
-  ? readdirSync(GENERATED_DIR).filter(f => f.endsWith("-readiness-report.json"))
+  ? readdirSync(GENERATED_DIR).filter(f => f.endsWith("-report.json"))
   : [];
 
 const gateToFile = new Map<string, string>();
