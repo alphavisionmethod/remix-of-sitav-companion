@@ -53,7 +53,8 @@ const consumerCount = new Map<string, number>();
 for (const w of wrappers) consumerCount.set(w.importPath, 0);
 
 walk("src", (file) => {
-  if (file.startsWith("src/lib/") || file.startsWith(`src${require("node:path").sep}lib${require("node:path").sep}`)) return;
+  const norm = file.replace(/\\/g, "/");
+  if (norm.startsWith("src/lib/")) return;
   const content = readFileSync(file, "utf8");
   for (const w of wrappers) {
     if (content.includes(`"${w.importPath}"`) || content.includes(`'${w.importPath}'`)) {
