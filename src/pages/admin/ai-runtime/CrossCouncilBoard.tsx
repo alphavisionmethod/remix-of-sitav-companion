@@ -261,7 +261,7 @@ export default function CrossCouncilBoard() {
               <CardContent className="space-y-3">
                 <p className="text-sm">{p.rationale}</p>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-emerald-500 font-semibold">
+                  <span className="text-primary font-semibold">
                     ~${p.estimated_monthly_savings_usd.toFixed(2)}/mo savings
                   </span>
                   <span className="text-muted-foreground">
