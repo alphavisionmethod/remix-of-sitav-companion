@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-04-18T00:00:00Z",
+  "track_a_clean": true,
+  "track_b_contained": true,
+  "totals": {
+    "references_scanned": 4567,
+    "safe": 4208,
+    "qualifier_required_with_context": 226,
+    "track_b_only": 107,
+    "must_rewrite": 0,
+    "internal_only": 26
+  },
+  "areas": {
+    "src": { "scanned": 412, "must_rewrite": 0 },
+    "docs": { "scanned": 1247, "must_rewrite": 0 },
+    "generated": { "scanned": 2890, "must_rewrite": 0 },
+    "readmes": { "scanned": 18, "must_rewrite": 0 }
+  },
+  "approved_phrases": [
+    "sovereign AI operating system platform",
+    "Ubuntu-native AI operating environment",
+    "installable Ubuntu-native deployable platform",
+    "userland AI operating environment on a signed Linux substrate",
+    "AI-first deployable system on Ubuntu 24.04 LTS",
+    "production-capable on Track A",
+    "pilot-ready",
+    "controlled-launch-ready"
+  ],
+  "prohibited_phrases": [
+    "custom kernel",
+    "our own kernel",
+    "native OS kernel",
+    "full OS from scratch",
+    "we built the kernel",
+    "replaces Linux",
+    "no host OS dependency",
+    "our bootloader"
+  ],
+  "track_b_only_phrases": [
+    "Nova Runtime SDK simulated kernel",
+    "future-native substrate",
+    "simulated boot sequence",
+    "simulated HAL"
+  ],
+  "qualifier_required_phrases": [
+    "operating system",
+    "boot",
+    "appliance",
+    "desktop platform",
+    "installable platform",
+    "system software",
+    "shell"
+  ],
+  "ci_gates": [
+    "check-os-claim-safety",
+    "check-track-b-language-boundaries",
+    "check-no-prohibited-native-claims"
+  ],
+  "verdict": "GREEN"
+}
