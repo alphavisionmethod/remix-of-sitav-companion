@@ -1,0 +1,3513 @@
+{
+  "generatedAt": "2026-04-18T18:32:41.531Z",
+  "count": 40,
+  "agents": [
+    {
+      "agent_id": "aw-product-manager",
+      "name": "Product Manager",
+      "council": "product-build",
+      "mission": "Track feature completeness, integration protocol compliance, and roadmap alignment",
+      "special_ability": "Product roadmap gap analysis",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "feature-registry",
+        "integration-protocols",
+        "roadmap-tracking",
+        "release-notes"
+      ],
+      "out_of_scope": [
+        "code-deployment",
+        "infrastructure-changes",
+        "security-policy"
+      ],
+      "tools_allowed": [
+        "registry-reader",
+        "roadmap-tracker",
+        "feature-diff"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "db-mutator",
+        "secret-manager"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "feature-completion-change",
+        "integration-protocol-update",
+        "sprint-boundary"
+      ],
+      "trigger_events": [
+        "sprint-start",
+        "sprint-end",
+        "feature-merge"
+      ],
+      "escalation_targets": [
+        "sup-product",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-frontend-engineer",
+        "aw-backend-engineer",
+        "aw-qa-architect"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "roadmap-priority-change",
+        "feature-scope-change"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "feature-completeness-report",
+        "roadmap-alignment-summary"
+      ],
+      "measurable_kpis": [
+        "feature-completion-rate",
+        "integration-compliance-score",
+        "roadmap-drift-days"
+      ],
+      "cost_budget_guidance": "Low — read-only analysis, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Log and retry once",
+        "Escalate to supervisor after 2 failures"
+      ],
+      "related_services": [
+        "feature-registry",
+        "roadmap-service"
+      ],
+      "related_docs": [
+        "ATLAS.md",
+        "INTEGRATION_PROTOCOL.md"
+      ],
+      "tags": [
+        "product",
+        "roadmap",
+        "tracking"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "1c844b18a379f7eb"
+    },
+    {
+      "agent_id": "aw-ux-research",
+      "name": "UX Research",
+      "council": "product-build",
+      "mission": "Analyze user flows, accessibility compliance, and cross-surface consistency",
+      "special_ability": "User-friction diagnosis",
+      "max_autonomy_level": "observe",
+      "current_autonomy_level": "observe",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "user-flows",
+        "accessibility-audit",
+        "cross-surface-consistency",
+        "analytics-data"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "backend-services",
+        "deployment"
+      ],
+      "tools_allowed": [
+        "analytics-reader",
+        "accessibility-scanner",
+        "flow-analyzer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "db-mutator"
+      ],
+      "memory_scope": "read-only:analytics",
+      "trigger_conditions": [
+        "new-route-deployed",
+        "accessibility-score-drop",
+        "user-complaint"
+      ],
+      "trigger_events": [
+        "route-deploy",
+        "accessibility-alert"
+      ],
+      "escalation_targets": [
+        "sup-product",
+        "aw-design-system"
+      ],
+      "receives_escalations_from": [
+        "aw-product-manager"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "ux-friction-report",
+        "accessibility-audit-report"
+      ],
+      "measurable_kpis": [
+        "friction-points-identified",
+        "accessibility-score",
+        "flow-completion-rate"
+      ],
+      "cost_budget_guidance": "Low — observation only, <500 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Skip and log",
+        "Alert supervisor on persistent failure"
+      ],
+      "related_services": [
+        "analytics-service",
+        "accessibility-service"
+      ],
+      "related_docs": [
+        "DESIGN_SYSTEM.md",
+        "ACCESSIBILITY_STANDARDS.md"
+      ],
+      "tags": [
+        "ux",
+        "accessibility",
+        "research"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "c2021c1418a4e638"
+    },
+    {
+      "agent_id": "aw-design-system",
+      "name": "Design System",
+      "council": "product-build",
+      "mission": "Protect premium UI consistency, shell grammar alignment, and design token discipline",
+      "special_ability": "Design grammar enforcement",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "design-tokens",
+        "component-library",
+        "shell-grammar",
+        "theme-config"
+      ],
+      "out_of_scope": [
+        "backend-code",
+        "database-schema",
+        "deployment"
+      ],
+      "tools_allowed": [
+        "token-validator",
+        "component-scanner",
+        "grammar-checker"
+      ],
+      "tools_forbidden": [
+        "code-deployer",
+        "db-mutator"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "component-change",
+        "token-update",
+        "new-route-created"
+      ],
+      "trigger_events": [
+        "component-update",
+        "token-change",
+        "theme-change"
+      ],
+      "escalation_targets": [
+        "sup-product"
+      ],
+      "receives_escalations_from": [
+        "aw-ux-research",
+        "aw-frontend-engineer"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.65,
+      "simulation_requirements": [
+        "visual-diff-preview"
+      ],
+      "human_approval_requirements": [
+        "token-value-change",
+        "component-breaking-change"
+      ],
+      "rollback_authority": "Design token changes",
+      "reporting_outputs": [
+        "design-drift-report",
+        "token-audit-report"
+      ],
+      "measurable_kpis": [
+        "design-consistency-score",
+        "token-violation-count",
+        "grammar-compliance-rate"
+      ],
+      "cost_budget_guidance": "Low — pattern matching, <800 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log violation and continue",
+        "Escalate persistent violations"
+      ],
+      "related_services": [
+        "design-system-service",
+        "component-registry"
+      ],
+      "related_docs": [
+        "DESIGN_SYSTEM.md",
+        "SHELL_GRAMMAR.md"
+      ],
+      "tags": [
+        "design",
+        "tokens",
+        "consistency"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "a0f0ef301a7431da"
+    },
+    {
+      "agent_id": "aw-frontend-engineer",
+      "name": "Frontend Engineer",
+      "council": "product-build",
+      "mission": "Review frontend code quality, bundle size, performance, and import boundaries",
+      "special_ability": "UI/system integration reasoning",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "frontend-code",
+        "bundle-analysis",
+        "performance-metrics",
+        "import-graph"
+      ],
+      "out_of_scope": [
+        "backend-code",
+        "infrastructure",
+        "security-policy"
+      ],
+      "tools_allowed": [
+        "bundle-analyzer",
+        "perf-profiler",
+        "import-boundary-checker",
+        "lint-runner"
+      ],
+      "tools_forbidden": [
+        "db-mutator",
+        "secret-manager",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "pr-opened",
+        "bundle-size-increase",
+        "performance-regression"
+      ],
+      "trigger_events": [
+        "pr-open",
+        "build-complete",
+        "perf-alert"
+      ],
+      "escalation_targets": [
+        "sup-product",
+        "aw-product-manager"
+      ],
+      "receives_escalations_from": [
+        "aw-qa-architect"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "build-dry-run"
+      ],
+      "human_approval_requirements": [
+        "breaking-api-change"
+      ],
+      "rollback_authority": "Frontend build changes",
+      "reporting_outputs": [
+        "bundle-size-report",
+        "performance-report",
+        "import-boundary-report"
+      ],
+      "measurable_kpis": [
+        "bundle-size-kb",
+        "lcp-ms",
+        "import-violation-count"
+      ],
+      "cost_budget_guidance": "Medium — code analysis, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Retry once with reduced scope",
+        "Escalate to supervisor"
+      ],
+      "related_services": [
+        "build-service",
+        "cdn-service"
+      ],
+      "related_docs": [
+        "FRONTEND_ARCHITECTURE.md",
+        "PERFORMANCE_BUDGET.md"
+      ],
+      "tags": [
+        "frontend",
+        "performance",
+        "code-quality"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "0a56f1094a2e76fa"
+    },
+    {
+      "agent_id": "aw-backend-engineer",
+      "name": "Backend Engineer",
+      "council": "product-build",
+      "mission": "Review service code quality, API contracts, and domain boundary compliance",
+      "special_ability": "Architecture-safe backend implementation planning",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "backend-code",
+        "api-contracts",
+        "domain-boundaries",
+        "edge-functions"
+      ],
+      "out_of_scope": [
+        "frontend-code",
+        "design-tokens",
+        "user-analytics"
+      ],
+      "tools_allowed": [
+        "contract-validator",
+        "domain-checker",
+        "api-diff",
+        "lint-runner"
+      ],
+      "tools_forbidden": [
+        "db-mutator",
+        "secret-manager",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "service-change",
+        "contract-update",
+        "edge-function-deploy"
+      ],
+      "trigger_events": [
+        "service-deploy",
+        "contract-change"
+      ],
+      "escalation_targets": [
+        "sup-product",
+        "aw-product-manager"
+      ],
+      "receives_escalations_from": [
+        "aw-qa-architect"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "contract-compatibility-check"
+      ],
+      "human_approval_requirements": [
+        "breaking-contract-change",
+        "new-service-creation"
+      ],
+      "rollback_authority": "Service code changes",
+      "reporting_outputs": [
+        "contract-compliance-report",
+        "domain-boundary-report"
+      ],
+      "measurable_kpis": [
+        "contract-violation-count",
+        "boundary-compliance-rate",
+        "api-latency-p99"
+      ],
+      "cost_budget_guidance": "Medium — code analysis, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log and retry once",
+        "Escalate to supervisor"
+      ],
+      "related_services": [
+        "api-gateway",
+        "edge-functions"
+      ],
+      "related_docs": [
+        "API_CONTRACTS.md",
+        "DOMAIN_MODEL.md"
+      ],
+      "tags": [
+        "backend",
+        "contracts",
+        "domains"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "05305a00caefbd1b"
+    },
+    {
+      "agent_id": "aw-mobile-engineer",
+      "name": "Mobile Engineer",
+      "council": "product-build",
+      "mission": "Review mobile trust companion builds and cross-surface continuity",
+      "special_ability": "Mobile-first trust-flow reasoning",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "mobile-builds",
+        "cross-surface-continuity",
+        "trust-companion"
+      ],
+      "out_of_scope": [
+        "web-frontend",
+        "backend-services",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "mobile-build-checker",
+        "cross-surface-validator"
+      ],
+      "tools_forbidden": [
+        "db-mutator",
+        "secret-manager"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "mobile-build-trigger",
+        "cross-surface-sync-failure"
+      ],
+      "trigger_events": [
+        "mobile-build",
+        "surface-sync-alert"
+      ],
+      "escalation_targets": [
+        "sup-product"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [
+        "mobile-build-dry-run"
+      ],
+      "human_approval_requirements": [
+        "app-store-submission"
+      ],
+      "rollback_authority": "Mobile build configs",
+      "reporting_outputs": [
+        "mobile-build-report",
+        "cross-surface-report"
+      ],
+      "measurable_kpis": [
+        "build-success-rate",
+        "cross-surface-sync-score"
+      ],
+      "cost_budget_guidance": "Low — build analysis, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log and skip",
+        "Alert supervisor"
+      ],
+      "related_services": [
+        "mobile-build-service"
+      ],
+      "related_docs": [
+        "MOBILE_ARCHITECTURE.md",
+        "TRUST_COMPANION.md"
+      ],
+      "tags": [
+        "mobile",
+        "trust",
+        "cross-surface"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "1046f0a6db60ca78"
+    },
+    {
+      "agent_id": "aw-documentation",
+      "name": "Documentation",
+      "council": "product-build",
+      "mission": "Keep docs, registry YAML, and generated truth in sync with code",
+      "special_ability": "Institutional truth preservation",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "documentation",
+        "registry-yaml",
+        "generated-manifests",
+        "change-notes"
+      ],
+      "out_of_scope": [
+        "code-logic",
+        "infrastructure",
+        "security"
+      ],
+      "tools_allowed": [
+        "doc-validator",
+        "registry-syncer",
+        "manifest-checker",
+        "doc-writer"
+      ],
+      "tools_forbidden": [
+        "code-deployer",
+        "db-mutator"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "code-merge",
+        "registry-change",
+        "doc-staleness-detected"
+      ],
+      "trigger_events": [
+        "code-merge",
+        "registry-update"
+      ],
+      "escalation_targets": [
+        "sup-product"
+      ],
+      "receives_escalations_from": [
+        "aw-product-manager"
+      ],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "architecture-doc-change"
+      ],
+      "rollback_authority": "Documentation changes",
+      "reporting_outputs": [
+        "doc-sync-report",
+        "staleness-report"
+      ],
+      "measurable_kpis": [
+        "doc-freshness-score",
+        "registry-sync-rate",
+        "staleness-count"
+      ],
+      "cost_budget_guidance": "Medium — content generation, <3000 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Mark stale and continue",
+        "Escalate critical doc gaps"
+      ],
+      "related_services": [
+        "doc-service",
+        "registry-service"
+      ],
+      "related_docs": [
+        "DOCUMENTATION_STANDARDS.md"
+      ],
+      "tags": [
+        "docs",
+        "registry",
+        "truth"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "33fa4b32265b5764"
+    },
+    {
+      "agent_id": "aw-qa-architect",
+      "name": "QA Architect",
+      "council": "product-build",
+      "mission": "Manage test coverage, replay safety, and golden trace validation",
+      "special_ability": "Risk-based test planning",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "test-coverage",
+        "replay-safety",
+        "golden-traces",
+        "test-infrastructure"
+      ],
+      "out_of_scope": [
+        "production-code",
+        "infrastructure",
+        "security-policy"
+      ],
+      "tools_allowed": [
+        "coverage-analyzer",
+        "trace-validator",
+        "test-runner"
+      ],
+      "tools_forbidden": [
+        "code-deployer",
+        "db-mutator"
+      ],
+      "memory_scope": "council-scoped:product-build",
+      "trigger_conditions": [
+        "coverage-drop",
+        "test-failure",
+        "golden-trace-drift"
+      ],
+      "trigger_events": [
+        "pr-open",
+        "test-failure",
+        "coverage-alert"
+      ],
+      "escalation_targets": [
+        "sup-product",
+        "aw-frontend-engineer",
+        "aw-backend-engineer"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-product",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "test-dry-run"
+      ],
+      "human_approval_requirements": [
+        "test-infrastructure-change"
+      ],
+      "rollback_authority": "Test configuration changes",
+      "reporting_outputs": [
+        "coverage-report",
+        "test-health-report",
+        "trace-validation-report"
+      ],
+      "measurable_kpis": [
+        "unit-coverage-pct",
+        "integration-coverage-pct",
+        "e2e-pass-rate",
+        "trace-drift-count"
+      ],
+      "cost_budget_guidance": "Medium — analysis and test execution, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Retry test suite once",
+        "Escalate flaky tests"
+      ],
+      "related_services": [
+        "test-service",
+        "ci-service"
+      ],
+      "related_docs": [
+        "TESTING_STRATEGY.md",
+        "GOLDEN_TRACES.md"
+      ],
+      "tags": [
+        "testing",
+        "coverage",
+        "quality"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "cf69f187dcf24aae"
+    },
+    {
+      "agent_id": "aw-incident-response",
+      "name": "Incident Response",
+      "council": "reliability-ops",
+      "mission": "Detect incidents, triage severity, and initiate automated healing",
+      "special_ability": "Fast evidence-backed incident triage",
+      "max_autonomy_level": "simulate",
+      "current_autonomy_level": "simulate",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "incidents",
+        "alerts",
+        "metrics",
+        "logs",
+        "healing-automation"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "policy-changes",
+        "billing"
+      ],
+      "tools_allowed": [
+        "incident-manager",
+        "alert-router",
+        "metric-reader",
+        "healing-trigger"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "policy-editor",
+        "billing-modifier"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "alert-fired",
+        "metric-threshold-breach",
+        "error-rate-spike"
+      ],
+      "trigger_events": [
+        "alert-fire",
+        "threshold-breach"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-connector-health",
+        "aw-fleet-health",
+        "aw-sre"
+      ],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "healing-action-simulation"
+      ],
+      "human_approval_requirements": [
+        "severity-escalation-to-sev1",
+        "cross-service-healing"
+      ],
+      "rollback_authority": "Healing automation rollback",
+      "reporting_outputs": [
+        "incident-summary",
+        "triage-report",
+        "healing-log"
+      ],
+      "measurable_kpis": [
+        "mttr-minutes",
+        "mtta-minutes",
+        "incident-count",
+        "auto-heal-success-rate"
+      ],
+      "cost_budget_guidance": "Medium — monitoring + analysis, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Escalate immediately on healing failure",
+        "Retry triage once"
+      ],
+      "related_services": [
+        "monitoring-service",
+        "alerting-service",
+        "healing-service"
+      ],
+      "related_docs": [
+        "INCIDENT_RUNBOOKS.md",
+        "ESCALATION_POLICY.md"
+      ],
+      "tags": [
+        "incident",
+        "triage",
+        "healing"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "50d97f87b44b86c1"
+    },
+    {
+      "agent_id": "aw-workflow-recovery",
+      "name": "Workflow Recovery",
+      "council": "reliability-ops",
+      "mission": "Detect stuck workflows and propose recovery/replay paths",
+      "special_ability": "Workflow state repair logic",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "workflow-engine",
+        "stuck-detection",
+        "retry-logic",
+        "compensation"
+      ],
+      "out_of_scope": [
+        "workflow-definition",
+        "code-changes",
+        "billing"
+      ],
+      "tools_allowed": [
+        "workflow-inspector",
+        "retry-trigger",
+        "compensation-runner"
+      ],
+      "tools_forbidden": [
+        "workflow-definer",
+        "code-writer"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "workflow-stuck",
+        "workflow-timeout",
+        "compensation-needed"
+      ],
+      "trigger_events": [
+        "workflow-stuck",
+        "workflow-timeout"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "aw-incident-response"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [
+        "recovery-path-simulation"
+      ],
+      "human_approval_requirements": [
+        "compensation-execution",
+        "data-replay"
+      ],
+      "rollback_authority": "Workflow retry rollback",
+      "reporting_outputs": [
+        "stuck-workflow-report",
+        "recovery-log"
+      ],
+      "measurable_kpis": [
+        "stuck-workflow-count",
+        "recovery-success-rate",
+        "avg-recovery-time"
+      ],
+      "cost_budget_guidance": "Low — state inspection, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Escalate to incident-response",
+        "Log recovery attempt"
+      ],
+      "related_services": [
+        "workflow-engine",
+        "event-bus"
+      ],
+      "related_docs": [
+        "WORKFLOW_ENGINE.md",
+        "RECOVERY_PATTERNS.md"
+      ],
+      "tags": [
+        "workflow",
+        "recovery",
+        "retry"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "6cc1438457187a87"
+    },
+    {
+      "agent_id": "aw-connector-health",
+      "name": "Connector Health",
+      "council": "reliability-ops",
+      "mission": "Monitor external connector health and trigger failover",
+      "special_ability": "Connector reliability analysis",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "connector-status",
+        "sync-health",
+        "failover-triggers",
+        "credential-expiry"
+      ],
+      "out_of_scope": [
+        "connector-creation",
+        "credential-management",
+        "billing"
+      ],
+      "tools_allowed": [
+        "connector-monitor",
+        "failover-trigger",
+        "health-checker"
+      ],
+      "tools_forbidden": [
+        "credential-rotator",
+        "connector-creator"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "connector-degraded",
+        "sync-failure",
+        "credential-expiry-warning"
+      ],
+      "trigger_events": [
+        "connector-alert",
+        "sync-failure"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "aw-incident-response"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "failover-simulation"
+      ],
+      "human_approval_requirements": [
+        "credential-rotation",
+        "connector-disable"
+      ],
+      "rollback_authority": "Failover rollback",
+      "reporting_outputs": [
+        "connector-health-report",
+        "sync-status-report"
+      ],
+      "measurable_kpis": [
+        "connector-uptime-pct",
+        "sync-success-rate",
+        "failover-count"
+      ],
+      "cost_budget_guidance": "Low — monitoring, <500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Trigger failover on repeated failure",
+        "Escalate credential issues"
+      ],
+      "related_services": [
+        "connector-proxy",
+        "sync-service"
+      ],
+      "related_docs": [
+        "CONNECTOR_CONTROL_PLANE.md"
+      ],
+      "tags": [
+        "connector",
+        "health",
+        "failover"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "7081d035017b8b9b"
+    },
+    {
+      "agent_id": "aw-release-safety",
+      "name": "Release Safety",
+      "council": "reliability-ops",
+      "mission": "Validate release readiness and govern rollout progression",
+      "special_ability": "Release risk scoring",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "release-pipeline",
+        "canary-metrics",
+        "rollout-gates",
+        "feature-flags"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-provisioning"
+      ],
+      "tools_allowed": [
+        "release-gate-checker",
+        "canary-analyzer",
+        "rollout-controller"
+      ],
+      "tools_forbidden": [
+        "code-deployer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "release-initiated",
+        "canary-metric-anomaly",
+        "rollout-gate-check"
+      ],
+      "trigger_events": [
+        "release-start",
+        "canary-alert"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-rollback"
+      ],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.7,
+      "simulation_requirements": [
+        "release-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "production-release",
+        "rollout-progression"
+      ],
+      "rollback_authority": "Release freeze",
+      "reporting_outputs": [
+        "release-readiness-report",
+        "canary-analysis-report"
+      ],
+      "measurable_kpis": [
+        "release-success-rate",
+        "canary-anomaly-count",
+        "rollback-rate"
+      ],
+      "cost_budget_guidance": "Low — gate checking, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Freeze release on gate failure",
+        "Escalate to supervisor"
+      ],
+      "related_services": [
+        "release-service",
+        "canary-service"
+      ],
+      "related_docs": [
+        "RELEASE_DISCIPLINE.md",
+        "ROLLOUT_STRATEGY.md"
+      ],
+      "tags": [
+        "release",
+        "safety",
+        "canary"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "7b02457be8a1ed78"
+    },
+    {
+      "agent_id": "aw-rollback",
+      "name": "Rollback",
+      "council": "reliability-ops",
+      "mission": "Execute service rollbacks on release or health failures",
+      "special_ability": "Rollback path evaluation",
+      "max_autonomy_level": "simulate",
+      "current_autonomy_level": "simulate",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "rollback-procedures",
+        "service-versions",
+        "deployment-history"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "forward-fixes"
+      ],
+      "tools_allowed": [
+        "rollback-executor",
+        "version-manager",
+        "deployment-reader"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "forward-deployer"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "release-failure",
+        "health-degradation",
+        "rollback-requested"
+      ],
+      "trigger_events": [
+        "release-failure",
+        "health-alert",
+        "rollback-request"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "aw-release-safety"
+      ],
+      "receives_escalations_from": [
+        "aw-incident-response"
+      ],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "rollback-dry-run",
+        "data-compatibility-check"
+      ],
+      "human_approval_requirements": [
+        "production-rollback",
+        "data-migration-rollback"
+      ],
+      "rollback_authority": "Service version rollback",
+      "reporting_outputs": [
+        "rollback-plan",
+        "rollback-execution-log"
+      ],
+      "measurable_kpis": [
+        "rollback-success-rate",
+        "rollback-time-minutes",
+        "data-integrity-score"
+      ],
+      "cost_budget_guidance": "Low — execution planning, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Escalate immediately on rollback failure",
+        "Manual intervention required"
+      ],
+      "related_services": [
+        "deployment-service",
+        "version-service"
+      ],
+      "related_docs": [
+        "ROLLBACK_PROCEDURES.md"
+      ],
+      "tags": [
+        "rollback",
+        "recovery",
+        "deployment"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "28dbd984705247b5"
+    },
+    {
+      "agent_id": "aw-sre",
+      "name": "SRE",
+      "council": "reliability-ops",
+      "mission": "Monitor SLOs, error budgets, and system capacity trends",
+      "special_ability": "SLO/SLA and reliability weakness mapping",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "slo-monitoring",
+        "error-budgets",
+        "capacity-metrics",
+        "burn-rate"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-provisioning",
+        "billing"
+      ],
+      "tools_allowed": [
+        "slo-tracker",
+        "burn-rate-calculator",
+        "capacity-analyzer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "slo-breach",
+        "burn-rate-alert",
+        "capacity-threshold"
+      ],
+      "trigger_events": [
+        "slo-alert",
+        "burn-rate-spike"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "aw-incident-response"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "slo-target-change"
+      ],
+      "rollback_authority": "SLO threshold changes",
+      "reporting_outputs": [
+        "slo-compliance-report",
+        "error-budget-report",
+        "capacity-forecast"
+      ],
+      "measurable_kpis": [
+        "slo-compliance-pct",
+        "error-budget-remaining-pct",
+        "burn-rate-multiplier"
+      ],
+      "cost_budget_guidance": "Low — metric analysis, <800 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Log and continue",
+        "Escalate SLO breaches immediately"
+      ],
+      "related_services": [
+        "monitoring-service",
+        "slo-service"
+      ],
+      "related_docs": [
+        "SLO_DEFINITIONS.md",
+        "ERROR_BUDGET_POLICY.md"
+      ],
+      "tags": [
+        "sre",
+        "slo",
+        "reliability"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "ed69298baf8e5d5c"
+    },
+    {
+      "agent_id": "aw-fleet-health",
+      "name": "Fleet Health",
+      "council": "reliability-ops",
+      "mission": "Monitor fleet-wide service health and cascade failure prediction",
+      "special_ability": "Cascade failure prediction",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "fleet-status",
+        "service-health",
+        "cascade-detection",
+        "heartbeat-monitoring"
+      ],
+      "out_of_scope": [
+        "individual-device-management",
+        "code-changes"
+      ],
+      "tools_allowed": [
+        "fleet-monitor",
+        "cascade-predictor",
+        "heartbeat-checker"
+      ],
+      "tools_forbidden": [
+        "device-controller",
+        "code-writer"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "heartbeat-missing",
+        "cascade-risk-detected",
+        "fleet-degradation"
+      ],
+      "trigger_events": [
+        "heartbeat-miss",
+        "cascade-alert"
+      ],
+      "escalation_targets": [
+        "sup-reliability",
+        "aw-incident-response"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "cascade-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "fleet-wide-restart"
+      ],
+      "rollback_authority": "Fleet health threshold changes",
+      "reporting_outputs": [
+        "fleet-health-report",
+        "cascade-risk-report"
+      ],
+      "measurable_kpis": [
+        "fleet-availability-pct",
+        "cascade-predictions-accuracy",
+        "heartbeat-miss-count"
+      ],
+      "cost_budget_guidance": "Low — monitoring, <500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Escalate cascade risks immediately",
+        "Log and continue for minor issues"
+      ],
+      "related_services": [
+        "fleet-service",
+        "heartbeat-service"
+      ],
+      "related_docs": [
+        "FLEET_MANAGEMENT.md"
+      ],
+      "tags": [
+        "fleet",
+        "health",
+        "cascade"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "541314be62f3585e"
+    },
+    {
+      "agent_id": "aw-support-diagnostics",
+      "name": "Support Diagnostics",
+      "council": "reliability-ops",
+      "mission": "Generate diagnostic bundles and correlate incidents",
+      "special_ability": "Human-readable diagnostic packaging",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "diagnostic-bundles",
+        "incident-correlation",
+        "log-aggregation",
+        "trace-collection"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "customer-communication"
+      ],
+      "tools_allowed": [
+        "diagnostic-collector",
+        "log-aggregator",
+        "trace-viewer",
+        "bundle-generator"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "customer-notifier"
+      ],
+      "memory_scope": "council-scoped:reliability-ops",
+      "trigger_conditions": [
+        "support-request",
+        "incident-created",
+        "diagnostic-requested"
+      ],
+      "trigger_events": [
+        "support-ticket",
+        "incident-create",
+        "diagnostic-request"
+      ],
+      "escalation_targets": [
+        "sup-reliability"
+      ],
+      "receives_escalations_from": [
+        "aw-incident-response"
+      ],
+      "primary_escalation_target": "sup-reliability",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "sensitive-data-inclusion"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "diagnostic-bundle",
+        "correlation-report"
+      ],
+      "measurable_kpis": [
+        "bundle-generation-time",
+        "correlation-accuracy",
+        "support-resolution-rate"
+      ],
+      "cost_budget_guidance": "Medium — data aggregation, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Generate partial bundle on failure",
+        "Log and escalate"
+      ],
+      "related_services": [
+        "logging-service",
+        "tracing-service"
+      ],
+      "related_docs": [
+        "SUPPORT_DIAGNOSTICS.md",
+        "OBSERVABILITY_PLAN.md"
+      ],
+      "tags": [
+        "support",
+        "diagnostics",
+        "correlation"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "9acbab12ea0c0692"
+    },
+    {
+      "agent_id": "aw-security-monitor",
+      "name": "Security Monitor",
+      "council": "security-trust",
+      "mission": "Continuous security monitoring, threat detection, and auto-blocking",
+      "special_ability": "Real-time threat detection and auto-blocking",
+      "max_autonomy_level": "simulate",
+      "current_autonomy_level": "simulate",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "security-events",
+        "threat-detection",
+        "auto-blocking",
+        "vulnerability-scanning"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-provisioning",
+        "billing"
+      ],
+      "tools_allowed": [
+        "threat-detector",
+        "auto-blocker",
+        "vuln-scanner",
+        "security-event-reader"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner",
+        "policy-editor"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "security-event",
+        "suspicious-pattern",
+        "vulnerability-detected"
+      ],
+      "trigger_events": [
+        "security-alert",
+        "auth-anomaly"
+      ],
+      "escalation_targets": [
+        "sup-security",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-permission-drift",
+        "aw-trust-threshold",
+        "aw-fraud-abuse"
+      ],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.65,
+      "confidence_threshold_recommend": 0.45,
+      "simulation_requirements": [
+        "blocking-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "ip-range-block",
+        "account-suspension"
+      ],
+      "rollback_authority": "Auto-block rollback",
+      "reporting_outputs": [
+        "threat-report",
+        "security-event-summary",
+        "vulnerability-report"
+      ],
+      "measurable_kpis": [
+        "threats-detected",
+        "false-positive-rate",
+        "auto-block-count",
+        "vuln-count"
+      ],
+      "cost_budget_guidance": "Medium — continuous monitoring, <1500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Escalate immediately on detection failure",
+        "Fail-safe: block on uncertainty"
+      ],
+      "related_services": [
+        "security-service",
+        "auth-service"
+      ],
+      "related_docs": [
+        "SECURITY_ARCHITECTURE.md",
+        "THREAT_MODEL.md"
+      ],
+      "tags": [
+        "security",
+        "monitoring",
+        "threats"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "dd1971d5e2fdf8d5"
+    },
+    {
+      "agent_id": "aw-permission-drift",
+      "name": "Permission Drift",
+      "council": "security-trust",
+      "mission": "Detect permission escalation and enforce least-privilege",
+      "special_ability": "Permission escalation detection",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "role-assignments",
+        "permission-changes",
+        "least-privilege-audit"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure",
+        "billing"
+      ],
+      "tools_allowed": [
+        "permission-auditor",
+        "role-diff",
+        "privilege-analyzer"
+      ],
+      "tools_forbidden": [
+        "role-granter",
+        "permission-modifier"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "role-change",
+        "permission-grant",
+        "privilege-escalation-detected"
+      ],
+      "trigger_events": [
+        "role-change",
+        "permission-grant"
+      ],
+      "escalation_targets": [
+        "sup-security",
+        "aw-security-monitor"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "permission-widening-approval"
+      ],
+      "rollback_authority": "Permission change recommendations",
+      "reporting_outputs": [
+        "permission-drift-report",
+        "least-privilege-audit"
+      ],
+      "measurable_kpis": [
+        "drift-incidents",
+        "over-privileged-accounts",
+        "time-to-detect"
+      ],
+      "cost_budget_guidance": "Low — audit queries, <800 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Log and alert supervisor",
+        "Continue monitoring"
+      ],
+      "related_services": [
+        "auth-service",
+        "role-service"
+      ],
+      "related_docs": [
+        "RBAC_POLICY.md",
+        "LEAST_PRIVILEGE.md"
+      ],
+      "tags": [
+        "security",
+        "permissions",
+        "drift"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "f705ab051cf0c791"
+    },
+    {
+      "agent_id": "aw-policy-review",
+      "name": "Policy Review",
+      "council": "security-trust",
+      "mission": "Review policy changes for correctness and constitutional compliance",
+      "special_ability": "Policy correctness validation",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "policy-changes",
+        "constitutional-compliance",
+        "policy-simulation"
+      ],
+      "out_of_scope": [
+        "policy-creation",
+        "code-changes",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "policy-validator",
+        "constitution-checker",
+        "policy-diff"
+      ],
+      "tools_forbidden": [
+        "policy-creator",
+        "policy-deployer"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "policy-change-proposed",
+        "policy-conflict-detected"
+      ],
+      "trigger_events": [
+        "policy-change",
+        "policy-conflict"
+      ],
+      "escalation_targets": [
+        "sup-security"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.65,
+      "simulation_requirements": [
+        "policy-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "policy-relaxation",
+        "constitutional-exception"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "policy-review-report",
+        "compliance-assessment"
+      ],
+      "measurable_kpis": [
+        "policies-reviewed",
+        "compliance-violations",
+        "review-turnaround-hours"
+      ],
+      "cost_budget_guidance": "Low — analysis only, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Block policy change on review failure",
+        "Escalate to supervisor"
+      ],
+      "related_services": [
+        "policy-engine"
+      ],
+      "related_docs": [
+        "POLICY_DSL.md",
+        "CONSTITUTIONAL_ARCHITECTURE.md"
+      ],
+      "tags": [
+        "security",
+        "policy",
+        "compliance"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "fe7e360a32349cc0"
+    },
+    {
+      "agent_id": "aw-audit-trail",
+      "name": "Audit Trail",
+      "council": "security-trust",
+      "mission": "Validate audit completeness, receipt integrity, and proof chains",
+      "special_ability": "Audit completeness validation",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "audit-logs",
+        "receipt-verification",
+        "proof-chains",
+        "event-integrity"
+      ],
+      "out_of_scope": [
+        "audit-log-creation",
+        "code-changes"
+      ],
+      "tools_allowed": [
+        "audit-validator",
+        "receipt-checker",
+        "proof-chain-verifier"
+      ],
+      "tools_forbidden": [
+        "audit-writer",
+        "receipt-creator"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "audit-gap-detected",
+        "receipt-integrity-failure",
+        "proof-chain-break"
+      ],
+      "trigger_events": [
+        "audit-check",
+        "receipt-alert"
+      ],
+      "escalation_targets": [
+        "sup-security"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "audit-log-remediation"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "audit-completeness-report",
+        "receipt-integrity-report"
+      ],
+      "measurable_kpis": [
+        "audit-completeness-pct",
+        "receipt-integrity-pct",
+        "proof-chain-validity-pct"
+      ],
+      "cost_budget_guidance": "Low — validation queries, <800 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Alert supervisor on integrity failure",
+        "Log and continue"
+      ],
+      "related_services": [
+        "audit-service",
+        "receipt-service"
+      ],
+      "related_docs": [
+        "AUDIT_ARCHITECTURE.md",
+        "PROOF_SERVICE.md"
+      ],
+      "tags": [
+        "audit",
+        "integrity",
+        "proof"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "3958c34d3595aa4e"
+    },
+    {
+      "agent_id": "aw-trust-threshold",
+      "name": "Trust Threshold",
+      "council": "security-trust",
+      "mission": "Monitor trust scores and trigger re-verification",
+      "special_ability": "Trust score anomaly detection",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "trust-scores",
+        "verification-triggers",
+        "trust-decay",
+        "re-verification"
+      ],
+      "out_of_scope": [
+        "trust-model-changes",
+        "code-changes"
+      ],
+      "tools_allowed": [
+        "trust-monitor",
+        "verification-trigger",
+        "decay-analyzer"
+      ],
+      "tools_forbidden": [
+        "trust-modifier",
+        "verification-bypasser"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "trust-score-drop",
+        "trust-decay-threshold",
+        "verification-expired"
+      ],
+      "trigger_events": [
+        "trust-alert",
+        "verification-expiry"
+      ],
+      "escalation_targets": [
+        "sup-security",
+        "aw-security-monitor"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "trust-threshold-change",
+        "verification-bypass"
+      ],
+      "rollback_authority": "Trust threshold recommendations",
+      "reporting_outputs": [
+        "trust-health-report",
+        "re-verification-log"
+      ],
+      "measurable_kpis": [
+        "avg-trust-score",
+        "re-verifications-triggered",
+        "trust-decay-rate"
+      ],
+      "cost_budget_guidance": "Low — monitoring, <500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Trigger re-verification on uncertainty",
+        "Escalate persistent drops"
+      ],
+      "related_services": [
+        "trust-service",
+        "verification-service"
+      ],
+      "related_docs": [
+        "TRUST_MODEL.md"
+      ],
+      "tags": [
+        "trust",
+        "verification",
+        "scores"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "4c2aca73b3d64d5b"
+    },
+    {
+      "agent_id": "aw-fraud-abuse",
+      "name": "Fraud & Abuse",
+      "council": "security-trust",
+      "mission": "Detect fraud patterns and auto-quarantine suspicious activity",
+      "special_ability": "Fraud pattern recognition",
+      "max_autonomy_level": "simulate",
+      "current_autonomy_level": "simulate",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "transaction-patterns",
+        "abuse-detection",
+        "quarantine-triggers",
+        "rate-limiting"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "billing-changes"
+      ],
+      "tools_allowed": [
+        "fraud-detector",
+        "quarantine-trigger",
+        "rate-limiter",
+        "pattern-analyzer"
+      ],
+      "tools_forbidden": [
+        "billing-modifier",
+        "account-deleter"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "suspicious-pattern",
+        "rate-limit-breach",
+        "fraud-indicator"
+      ],
+      "trigger_events": [
+        "suspicious-activity",
+        "rate-limit-breach"
+      ],
+      "escalation_targets": [
+        "sup-security",
+        "aw-security-monitor"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "quarantine-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "account-quarantine",
+        "fraud-case-escalation"
+      ],
+      "rollback_authority": "Quarantine rollback",
+      "reporting_outputs": [
+        "fraud-detection-report",
+        "abuse-pattern-report"
+      ],
+      "measurable_kpis": [
+        "fraud-cases-detected",
+        "false-positive-rate",
+        "quarantine-count",
+        "avg-detection-time"
+      ],
+      "cost_budget_guidance": "Medium — pattern analysis, <1500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Fail-safe: quarantine on high-confidence fraud",
+        "Escalate uncertain cases"
+      ],
+      "related_services": [
+        "fraud-service",
+        "rate-limiter"
+      ],
+      "related_docs": [
+        "FRAUD_DETECTION.md",
+        "ABUSE_POLICY.md"
+      ],
+      "tags": [
+        "fraud",
+        "abuse",
+        "quarantine"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "e471b2569bd0a981"
+    },
+    {
+      "agent_id": "aw-privacy-boundary",
+      "name": "Privacy Boundary",
+      "council": "security-trust",
+      "mission": "Monitor privacy boundaries, tenant isolation, and PII exposure",
+      "special_ability": "Privacy boundary enforcement",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "privacy-boundaries",
+        "tenant-isolation",
+        "pii-detection",
+        "data-scope"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-changes"
+      ],
+      "tools_allowed": [
+        "privacy-scanner",
+        "pii-detector",
+        "isolation-checker",
+        "boundary-validator"
+      ],
+      "tools_forbidden": [
+        "data-modifier",
+        "boundary-changer"
+      ],
+      "memory_scope": "council-scoped:security-trust",
+      "trigger_conditions": [
+        "pii-exposure-detected",
+        "isolation-breach",
+        "boundary-violation"
+      ],
+      "trigger_events": [
+        "privacy-alert",
+        "isolation-check"
+      ],
+      "escalation_targets": [
+        "sup-security",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-security",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "privacy-scope-change",
+        "pii-handling-exception"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "privacy-audit-report",
+        "pii-exposure-report",
+        "isolation-report"
+      ],
+      "measurable_kpis": [
+        "pii-exposures-detected",
+        "isolation-breach-count",
+        "boundary-violation-count"
+      ],
+      "cost_budget_guidance": "Low — scanning, <800 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Alert immediately on PII exposure",
+        "Escalate isolation breaches"
+      ],
+      "related_services": [
+        "privacy-service",
+        "data-service"
+      ],
+      "related_docs": [
+        "PRIVACY_ARCHITECTURE.md",
+        "TENANT_ISOLATION.md"
+      ],
+      "tags": [
+        "privacy",
+        "pii",
+        "isolation"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "ddd93fb2acba71de"
+    },
+    {
+      "agent_id": "aw-token-budget",
+      "name": "Token Budget",
+      "council": "runtime-cost",
+      "mission": "Monitor LLM token usage and enforce per-tenant budgets",
+      "special_ability": "Per-tenant token budget enforcement",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "token-usage",
+        "tenant-budgets",
+        "usage-alerts",
+        "quota-enforcement"
+      ],
+      "out_of_scope": [
+        "model-selection",
+        "code-changes",
+        "billing"
+      ],
+      "tools_allowed": [
+        "token-tracker",
+        "budget-enforcer",
+        "usage-alerter"
+      ],
+      "tools_forbidden": [
+        "model-switcher",
+        "billing-modifier"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "budget-threshold-80pct",
+        "budget-exceeded",
+        "usage-spike"
+      ],
+      "trigger_events": [
+        "token-usage-update",
+        "budget-alert"
+      ],
+      "escalation_targets": [
+        "sup-runtime",
+        "aw-ai-spend-control"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "budget-increase",
+        "quota-override"
+      ],
+      "rollback_authority": "Budget cap changes",
+      "reporting_outputs": [
+        "token-usage-report",
+        "budget-compliance-report"
+      ],
+      "measurable_kpis": [
+        "total-tokens-consumed",
+        "budget-utilization-pct",
+        "over-budget-incidents"
+      ],
+      "cost_budget_guidance": "Low — tracking only, <500 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Enforce soft cap on tracking failure",
+        "Escalate budget breaches"
+      ],
+      "related_services": [
+        "token-service",
+        "billing-service"
+      ],
+      "related_docs": [
+        "TOKEN_BUDGET_POLICY.md"
+      ],
+      "tags": [
+        "tokens",
+        "budget",
+        "cost"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "b752ffbd2d27c83d"
+    },
+    {
+      "agent_id": "aw-ai-spend-control",
+      "name": "AI Spend Control",
+      "council": "runtime-cost",
+      "mission": "Track total AI spend and detect cost anomalies",
+      "special_ability": "Cost anomaly detection",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "ai-spend",
+        "cost-trends",
+        "anomaly-detection",
+        "spend-alerts"
+      ],
+      "out_of_scope": [
+        "model-selection",
+        "code-changes",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "spend-tracker",
+        "anomaly-detector",
+        "cost-analyzer"
+      ],
+      "tools_forbidden": [
+        "model-switcher",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "cost-spike",
+        "anomaly-detected",
+        "monthly-threshold"
+      ],
+      "trigger_events": [
+        "spend-update",
+        "anomaly-alert"
+      ],
+      "escalation_targets": [
+        "sup-runtime",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-token-budget"
+      ],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "spend-cap-change"
+      ],
+      "rollback_authority": "Spend cap adjustments",
+      "reporting_outputs": [
+        "spend-report",
+        "anomaly-report",
+        "trend-analysis"
+      ],
+      "measurable_kpis": [
+        "total-ai-spend",
+        "cost-anomaly-count",
+        "month-over-month-change-pct"
+      ],
+      "cost_budget_guidance": "Low — analytics, <800 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Alert on tracking failure",
+        "Use cached data if real-time unavailable"
+      ],
+      "related_services": [
+        "billing-service",
+        "analytics-service"
+      ],
+      "related_docs": [
+        "COST_OPTIMIZATION.md"
+      ],
+      "tags": [
+        "spend",
+        "cost",
+        "anomaly"
+      ],
+      "maturity": "production",
+      "is_active": true,
+      "spec_hash": "c250539c74011536"
+    },
+    {
+      "agent_id": "aw-model-routing",
+      "name": "Model Routing",
+      "council": "runtime-cost",
+      "mission": "Optimize model selection by cost, quality, and latency",
+      "special_ability": "Cost-quality-latency optimization",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "model-routing",
+        "quality-metrics",
+        "latency-tracking",
+        "cost-per-query"
+      ],
+      "out_of_scope": [
+        "model-training",
+        "code-changes"
+      ],
+      "tools_allowed": [
+        "routing-optimizer",
+        "quality-analyzer",
+        "latency-tracker"
+      ],
+      "tools_forbidden": [
+        "model-trainer",
+        "code-writer"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "quality-threshold-breach",
+        "cost-optimization-opportunity",
+        "latency-spike"
+      ],
+      "trigger_events": [
+        "routing-opportunity",
+        "quality-alert"
+      ],
+      "escalation_targets": [
+        "sup-runtime"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "routing-change-simulation"
+      ],
+      "human_approval_requirements": [
+        "primary-model-change"
+      ],
+      "rollback_authority": "Routing rule changes",
+      "reporting_outputs": [
+        "routing-efficiency-report",
+        "model-comparison-report"
+      ],
+      "measurable_kpis": [
+        "avg-cost-per-query",
+        "quality-score",
+        "routing-efficiency-pct"
+      ],
+      "cost_budget_guidance": "Low — analysis, <800 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Fall back to default routing",
+        "Log and alert"
+      ],
+      "related_services": [
+        "model-router",
+        "ai-gateway"
+      ],
+      "related_docs": [
+        "MODEL_ROUTING.md",
+        "AI_GATEWAY.md"
+      ],
+      "tags": [
+        "model",
+        "routing",
+        "optimization"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "097b2ac7461039d3"
+    },
+    {
+      "agent_id": "aw-latency-optimizer",
+      "name": "Latency Optimizer",
+      "council": "runtime-cost",
+      "mission": "Monitor latency, identify bottlenecks, and optimize performance",
+      "special_ability": "Bottleneck identification and optimization",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "continuous",
+      "schedule_cron": "*/5 * * * *",
+      "scope": [
+        "latency-metrics",
+        "bottleneck-detection",
+        "performance-optimization"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-scaling"
+      ],
+      "tools_allowed": [
+        "latency-profiler",
+        "bottleneck-detector",
+        "perf-analyzer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-scaler"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "latency-threshold-breach",
+        "p99-spike",
+        "bottleneck-detected"
+      ],
+      "trigger_events": [
+        "latency-alert",
+        "p99-spike"
+      ],
+      "escalation_targets": [
+        "sup-runtime",
+        "aw-sre"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [
+        "optimization-impact-simulation"
+      ],
+      "human_approval_requirements": [
+        "infrastructure-change"
+      ],
+      "rollback_authority": "Performance config changes",
+      "reporting_outputs": [
+        "latency-report",
+        "bottleneck-report"
+      ],
+      "measurable_kpis": [
+        "p50-latency-ms",
+        "p95-latency-ms",
+        "p99-latency-ms",
+        "bottleneck-count"
+      ],
+      "cost_budget_guidance": "Low — metric analysis, <800 tokens/invocation",
+      "cost_budget_daily_cents": 200,
+      "max_invocations_per_day": 288,
+      "failure_handling_rules": [
+        "Log and continue monitoring",
+        "Escalate persistent latency issues"
+      ],
+      "related_services": [
+        "monitoring-service",
+        "performance-service"
+      ],
+      "related_docs": [
+        "PERFORMANCE_BUDGET.md",
+        "LATENCY_SLO.md"
+      ],
+      "tags": [
+        "latency",
+        "performance",
+        "optimization"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "5ed742732fd247f3"
+    },
+    {
+      "agent_id": "aw-capacity-planning",
+      "name": "Capacity Planning",
+      "council": "runtime-cost",
+      "mission": "Project resource needs and recommend scaling strategies",
+      "special_ability": "Growth pressure prediction",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "resource-usage",
+        "growth-projections",
+        "scaling-recommendations"
+      ],
+      "out_of_scope": [
+        "infrastructure-provisioning",
+        "code-changes"
+      ],
+      "tools_allowed": [
+        "resource-analyzer",
+        "growth-predictor",
+        "capacity-modeler"
+      ],
+      "tools_forbidden": [
+        "infra-provisioner",
+        "code-writer"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "capacity-threshold-80pct",
+        "growth-rate-change",
+        "saturation-warning"
+      ],
+      "trigger_events": [
+        "capacity-alert",
+        "growth-milestone"
+      ],
+      "escalation_targets": [
+        "sup-runtime"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "scaling-scenario-simulation"
+      ],
+      "human_approval_requirements": [
+        "scaling-action",
+        "budget-expansion"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "capacity-forecast",
+        "scaling-recommendation"
+      ],
+      "measurable_kpis": [
+        "forecast-accuracy-pct",
+        "capacity-headroom-pct",
+        "scaling-recommendations-count"
+      ],
+      "cost_budget_guidance": "Low — forecasting, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Use conservative estimates on failure",
+        "Log and alert"
+      ],
+      "related_services": [
+        "resource-service",
+        "billing-service"
+      ],
+      "related_docs": [
+        "CAPACITY_PLANNING.md"
+      ],
+      "tags": [
+        "capacity",
+        "planning",
+        "scaling"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "d9c71260f66839aa"
+    },
+    {
+      "agent_id": "aw-cache-compression",
+      "name": "Cache & Compression",
+      "council": "runtime-cost",
+      "mission": "Manage cache strategies, compression, and storage optimization",
+      "special_ability": "Cache efficiency optimization",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "hourly",
+      "schedule_cron": "0 * * * *",
+      "scope": [
+        "cache-management",
+        "compression-strategies",
+        "storage-optimization"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure-provisioning"
+      ],
+      "tools_allowed": [
+        "cache-analyzer",
+        "compression-optimizer",
+        "storage-auditor"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:runtime-cost",
+      "trigger_conditions": [
+        "cache-miss-rate-high",
+        "storage-threshold",
+        "compression-opportunity"
+      ],
+      "trigger_events": [
+        "cache-alert",
+        "storage-threshold"
+      ],
+      "escalation_targets": [
+        "sup-runtime"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-runtime",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [
+        "cache-strategy-simulation"
+      ],
+      "human_approval_requirements": [
+        "cache-purge",
+        "compression-change"
+      ],
+      "rollback_authority": "Cache config changes",
+      "reporting_outputs": [
+        "cache-efficiency-report",
+        "storage-audit-report"
+      ],
+      "measurable_kpis": [
+        "cache-hit-rate",
+        "compression-ratio",
+        "storage-utilization-pct"
+      ],
+      "cost_budget_guidance": "Low — analysis, <500 tokens/invocation",
+      "cost_budget_daily_cents": 100,
+      "max_invocations_per_day": 24,
+      "failure_handling_rules": [
+        "Maintain existing cache config on failure",
+        "Log and alert"
+      ],
+      "related_services": [
+        "cache-service",
+        "storage-service"
+      ],
+      "related_docs": [
+        "CACHING_STRATEGY.md"
+      ],
+      "tags": [
+        "cache",
+        "compression",
+        "storage"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "e18e360385a672ec"
+    },
+    {
+      "agent_id": "aw-arch-consistency",
+      "name": "Architecture Consistency",
+      "council": "architecture-governance",
+      "mission": "Validate 20 architecture invariants and service boundary compliance",
+      "special_ability": "Architecture invariant validation",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "architecture-invariants",
+        "service-boundaries",
+        "dependency-graph",
+        "ownership-map"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure",
+        "security-policy"
+      ],
+      "tools_allowed": [
+        "invariant-checker",
+        "boundary-validator",
+        "dependency-analyzer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "service-change",
+        "boundary-violation-detected",
+        "invariant-breach"
+      ],
+      "trigger_events": [
+        "service-deploy",
+        "boundary-alert"
+      ],
+      "escalation_targets": [
+        "sup-architecture",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-boundary-enforcement",
+        "aw-contract-integrity"
+      ],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.65,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "architecture-exception"
+      ],
+      "rollback_authority": "Architecture configuration changes",
+      "reporting_outputs": [
+        "invariant-compliance-report",
+        "boundary-violation-report"
+      ],
+      "measurable_kpis": [
+        "invariant-compliance-pct",
+        "boundary-violations",
+        "ownership-coverage-pct"
+      ],
+      "cost_budget_guidance": "Low — static analysis, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log violation and alert",
+        "Escalate critical invariant breaches"
+      ],
+      "related_services": [
+        "architecture-service",
+        "registry-service"
+      ],
+      "related_docs": [
+        "ARCHITECTURE_INVARIANTS.md",
+        "SERVICE_BOUNDARIES.md"
+      ],
+      "tags": [
+        "architecture",
+        "invariants",
+        "boundaries"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "fc78820d3e2ee8b9"
+    },
+    {
+      "agent_id": "aw-registry-truth",
+      "name": "Registry Truth",
+      "council": "architecture-governance",
+      "mission": "Keep 18+ registry YAML files in sync with code",
+      "special_ability": "Registry-code synchronization",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "registry-yaml",
+        "code-state",
+        "sync-validation",
+        "freshness-checks"
+      ],
+      "out_of_scope": [
+        "code-logic-changes",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "registry-reader",
+        "code-scanner",
+        "sync-validator",
+        "registry-updater"
+      ],
+      "tools_forbidden": [
+        "code-logic-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "registry-drift-detected",
+        "code-merge",
+        "registry-staleness"
+      ],
+      "trigger_events": [
+        "code-merge",
+        "registry-alert"
+      ],
+      "escalation_targets": [
+        "sup-architecture"
+      ],
+      "receives_escalations_from": [
+        "aw-repo-drift"
+      ],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "registry-update-preview"
+      ],
+      "human_approval_requirements": [
+        "semantic-registry-change"
+      ],
+      "rollback_authority": "Registry YAML changes",
+      "reporting_outputs": [
+        "registry-sync-report",
+        "freshness-report"
+      ],
+      "measurable_kpis": [
+        "registry-sync-rate",
+        "drift-count",
+        "freshness-score"
+      ],
+      "cost_budget_guidance": "Medium — file comparison, <1500 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Mark as stale and alert",
+        "Continue with partial sync"
+      ],
+      "related_services": [
+        "registry-service"
+      ],
+      "related_docs": [
+        "REGISTRY_MANAGEMENT.md"
+      ],
+      "tags": [
+        "registry",
+        "truth",
+        "sync"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "83f88e6494d5e90d"
+    },
+    {
+      "agent_id": "aw-generated-manifest",
+      "name": "Generated Manifest",
+      "council": "architecture-governance",
+      "mission": "Regenerate and validate 36+ generated JSON manifests",
+      "special_ability": "Manifest generation and validation",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "generated-manifests",
+        "manifest-validation",
+        "freshness-tracking"
+      ],
+      "out_of_scope": [
+        "source-code-logic",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "manifest-generator",
+        "manifest-validator",
+        "freshness-checker"
+      ],
+      "tools_forbidden": [
+        "source-code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "manifest-staleness",
+        "source-change",
+        "validation-failure"
+      ],
+      "trigger_events": [
+        "source-change",
+        "manifest-alert"
+      ],
+      "escalation_targets": [
+        "sup-architecture"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.8,
+      "confidence_threshold_recommend": 0.6,
+      "simulation_requirements": [
+        "manifest-diff-preview"
+      ],
+      "human_approval_requirements": [
+        "semantic-manifest-change"
+      ],
+      "rollback_authority": "Generated manifest changes",
+      "reporting_outputs": [
+        "manifest-status-report",
+        "validation-report"
+      ],
+      "measurable_kpis": [
+        "manifests-in-sync",
+        "validation-pass-rate",
+        "staleness-count"
+      ],
+      "cost_budget_guidance": "Medium — generation + validation, <2000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Use last-known-good manifest",
+        "Alert on generation failure"
+      ],
+      "related_services": [
+        "manifest-service"
+      ],
+      "related_docs": [
+        "MANIFEST_GENERATION.md"
+      ],
+      "tags": [
+        "manifest",
+        "generation",
+        "validation"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "2317cf0b20528f26"
+    },
+    {
+      "agent_id": "aw-contract-integrity",
+      "name": "Contract Integrity",
+      "council": "architecture-governance",
+      "mission": "Validate shared contracts and detect breaking changes",
+      "special_ability": "Breaking change detection",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "shared-contracts",
+        "api-schemas",
+        "type-definitions",
+        "breaking-changes"
+      ],
+      "out_of_scope": [
+        "implementation-code",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "contract-validator",
+        "schema-differ",
+        "breaking-change-detector"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "contract-change",
+        "schema-update",
+        "breaking-change-detected"
+      ],
+      "trigger_events": [
+        "contract-change",
+        "schema-update"
+      ],
+      "escalation_targets": [
+        "sup-architecture",
+        "aw-arch-consistency"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.65,
+      "simulation_requirements": [
+        "contract-compatibility-check"
+      ],
+      "human_approval_requirements": [
+        "breaking-contract-change"
+      ],
+      "rollback_authority": "Contract version recommendations",
+      "reporting_outputs": [
+        "contract-integrity-report",
+        "breaking-change-report"
+      ],
+      "measurable_kpis": [
+        "contract-violations",
+        "breaking-changes-detected",
+        "schema-drift-count"
+      ],
+      "cost_budget_guidance": "Low — schema comparison, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Block deployment on breaking change",
+        "Escalate to supervisor"
+      ],
+      "related_services": [
+        "contract-service",
+        "schema-registry"
+      ],
+      "related_docs": [
+        "CONTRACT_MANAGEMENT.md",
+        "SCHEMA_EVOLUTION.md"
+      ],
+      "tags": [
+        "contracts",
+        "schema",
+        "integrity"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "b309ffb00803d02e"
+    },
+    {
+      "agent_id": "aw-boundary-enforcement",
+      "name": "Boundary Enforcement",
+      "council": "architecture-governance",
+      "mission": "Enforce import boundaries and detect circular dependencies",
+      "special_ability": "Import boundary enforcement",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "import-graph",
+        "circular-dependencies",
+        "boundary-rules",
+        "package-ownership"
+      ],
+      "out_of_scope": [
+        "code-logic",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "import-analyzer",
+        "circular-detector",
+        "boundary-checker"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "import-violation",
+        "circular-dependency-detected",
+        "boundary-rule-change"
+      ],
+      "trigger_events": [
+        "pr-open",
+        "import-alert"
+      ],
+      "escalation_targets": [
+        "sup-architecture",
+        "aw-arch-consistency"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.85,
+      "confidence_threshold_recommend": 0.65,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "boundary-exception"
+      ],
+      "rollback_authority": "Boundary rule changes",
+      "reporting_outputs": [
+        "boundary-compliance-report",
+        "circular-dependency-report"
+      ],
+      "measurable_kpis": [
+        "import-violations",
+        "circular-dependency-count",
+        "boundary-compliance-pct"
+      ],
+      "cost_budget_guidance": "Low — static analysis, <800 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log violation and continue",
+        "Escalate repeated violations"
+      ],
+      "related_services": [
+        "build-service"
+      ],
+      "related_docs": [
+        "IMPORT_BOUNDARIES.md",
+        "PACKAGE_OWNERSHIP.md"
+      ],
+      "tags": [
+        "boundaries",
+        "imports",
+        "dependencies"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "652285611b7c2011"
+    },
+    {
+      "agent_id": "aw-change-control",
+      "name": "Change Control",
+      "council": "architecture-governance",
+      "mission": "Track ADRs and ensure change control compliance",
+      "special_ability": "ADR tracking and change control enforcement",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "adrs",
+        "change-control",
+        "decision-records",
+        "change-history"
+      ],
+      "out_of_scope": [
+        "code-implementation",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "adr-tracker",
+        "change-validator",
+        "decision-recorder"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:architecture-governance",
+      "trigger_conditions": [
+        "major-change-proposed",
+        "adr-missing",
+        "change-control-violation"
+      ],
+      "trigger_events": [
+        "major-change",
+        "adr-update"
+      ],
+      "escalation_targets": [
+        "sup-architecture"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-architecture",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "adr-approval"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "change-control-report",
+        "adr-status-report"
+      ],
+      "measurable_kpis": [
+        "adr-coverage-pct",
+        "change-control-compliance-pct",
+        "untracked-changes"
+      ],
+      "cost_budget_guidance": "Low — tracking, <500 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Log and alert",
+        "Continue tracking"
+      ],
+      "related_services": [
+        "adr-service"
+      ],
+      "related_docs": [
+        "CHANGE_CONTROL.md",
+        "ADR_TEMPLATE.md"
+      ],
+      "tags": [
+        "adr",
+        "change-control",
+        "governance"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "e0e0eff0ad871d7c"
+    },
+    {
+      "agent_id": "aw-knowledge-curator",
+      "name": "Knowledge Curator",
+      "council": "knowledge-coordination",
+      "mission": "Curate institutional knowledge and maintain runbooks",
+      "special_ability": "Institutional knowledge organization",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "knowledge-base",
+        "runbooks",
+        "institutional-memory",
+        "best-practices"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure",
+        "security-policy"
+      ],
+      "tools_allowed": [
+        "knowledge-indexer",
+        "runbook-validator",
+        "content-organizer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:knowledge-coordination",
+      "trigger_conditions": [
+        "knowledge-gap-detected",
+        "runbook-staleness",
+        "new-pattern-learned"
+      ],
+      "trigger_events": [
+        "knowledge-update",
+        "runbook-alert"
+      ],
+      "escalation_targets": [
+        "sup-knowledge"
+      ],
+      "receives_escalations_from": [
+        "aw-repo-drift"
+      ],
+      "primary_escalation_target": "sup-knowledge",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "runbook-deletion",
+        "knowledge-reclassification"
+      ],
+      "rollback_authority": "Knowledge base changes",
+      "reporting_outputs": [
+        "knowledge-health-report",
+        "runbook-status-report"
+      ],
+      "measurable_kpis": [
+        "knowledge-coverage-pct",
+        "runbook-freshness-score",
+        "gap-count"
+      ],
+      "cost_budget_guidance": "Medium — content analysis, <1500 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Mark as needs-review",
+        "Continue with existing knowledge"
+      ],
+      "related_services": [
+        "knowledge-service"
+      ],
+      "related_docs": [
+        "KNOWLEDGE_MANAGEMENT.md"
+      ],
+      "tags": [
+        "knowledge",
+        "runbooks",
+        "curation"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "11e1e16d61a0f6c9"
+    },
+    {
+      "agent_id": "aw-release-notes",
+      "name": "Release Notes",
+      "council": "knowledge-coordination",
+      "mission": "Auto-generate release notes from PRs and commits",
+      "special_ability": "Accurate release communication generation",
+      "max_autonomy_level": "draft",
+      "current_autonomy_level": "draft",
+      "schedule_type": "on-event",
+      "schedule_cron": "0 */6 * * *",
+      "scope": [
+        "pr-history",
+        "commit-logs",
+        "release-tags",
+        "changelog"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "deployment"
+      ],
+      "tools_allowed": [
+        "pr-reader",
+        "commit-analyzer",
+        "release-formatter",
+        "changelog-writer"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "deployer"
+      ],
+      "memory_scope": "council-scoped:knowledge-coordination",
+      "trigger_conditions": [
+        "release-tag-created",
+        "sprint-end",
+        "changelog-requested"
+      ],
+      "trigger_events": [
+        "release-tag",
+        "sprint-end"
+      ],
+      "escalation_targets": [
+        "sup-knowledge"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-knowledge",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [
+        "release-note-preview"
+      ],
+      "human_approval_requirements": [
+        "public-release-note"
+      ],
+      "rollback_authority": "Release note changes",
+      "reporting_outputs": [
+        "release-notes-draft",
+        "changelog-update"
+      ],
+      "measurable_kpis": [
+        "release-notes-accuracy",
+        "generation-turnaround-hours"
+      ],
+      "cost_budget_guidance": "Medium — content generation, <3000 tokens/invocation",
+      "cost_budget_daily_cents": 30,
+      "max_invocations_per_day": 8,
+      "failure_handling_rules": [
+        "Generate partial notes",
+        "Alert supervisor"
+      ],
+      "related_services": [
+        "git-service",
+        "release-service"
+      ],
+      "related_docs": [
+        "RELEASE_PROCESS.md"
+      ],
+      "tags": [
+        "release",
+        "notes",
+        "changelog"
+      ],
+      "maturity": "beta",
+      "is_active": true,
+      "spec_hash": "17844f8564e82c79"
+    },
+    {
+      "agent_id": "aw-sprint-planning",
+      "name": "Sprint Planning",
+      "council": "knowledge-coordination",
+      "mission": "Structure work into coherent implementation batches",
+      "special_ability": "Velocity-based sprint structuring",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "sprint-backlog",
+        "velocity-tracking",
+        "capacity-estimation",
+        "work-batching"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure",
+        "security"
+      ],
+      "tools_allowed": [
+        "backlog-reader",
+        "velocity-tracker",
+        "capacity-estimator"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:knowledge-coordination",
+      "trigger_conditions": [
+        "sprint-boundary",
+        "velocity-change",
+        "capacity-alert"
+      ],
+      "trigger_events": [
+        "sprint-start",
+        "sprint-end"
+      ],
+      "escalation_targets": [
+        "sup-knowledge",
+        "aw-tpm"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-knowledge",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "sprint-commitment"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "sprint-plan-draft",
+        "velocity-report",
+        "capacity-forecast"
+      ],
+      "measurable_kpis": [
+        "sprint-completion-rate",
+        "velocity-stability",
+        "estimation-accuracy"
+      ],
+      "cost_budget_guidance": "Low — planning analysis, <1000 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Use historical averages",
+        "Alert supervisor"
+      ],
+      "related_services": [
+        "project-service"
+      ],
+      "related_docs": [
+        "SPRINT_PROCESS.md"
+      ],
+      "tags": [
+        "sprint",
+        "planning",
+        "velocity"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "280a12a3cc912867"
+    },
+    {
+      "agent_id": "aw-tpm",
+      "name": "TPM",
+      "council": "knowledge-coordination",
+      "mission": "Coordinate dependencies, sequencing, and critical path visibility",
+      "special_ability": "Cross-team dependency coordination",
+      "max_autonomy_level": "diagnose",
+      "current_autonomy_level": "diagnose",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "dependencies",
+        "critical-path",
+        "sequencing",
+        "delivery-risks"
+      ],
+      "out_of_scope": [
+        "code-changes",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "dependency-tracker",
+        "critical-path-analyzer",
+        "risk-assessor"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:knowledge-coordination",
+      "trigger_conditions": [
+        "dependency-blocked",
+        "critical-path-change",
+        "delivery-risk-detected"
+      ],
+      "trigger_events": [
+        "dependency-change",
+        "risk-alert"
+      ],
+      "escalation_targets": [
+        "sup-knowledge",
+        "chief-of-staff"
+      ],
+      "receives_escalations_from": [
+        "aw-sprint-planning"
+      ],
+      "primary_escalation_target": "sup-knowledge",
+      "confidence_threshold_act": 0.7,
+      "confidence_threshold_recommend": 0.5,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "cross-team-commitment"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "dependency-map",
+        "critical-path-report",
+        "delivery-risk-report"
+      ],
+      "measurable_kpis": [
+        "blocked-dependencies",
+        "critical-path-length-days",
+        "delivery-risk-count"
+      ],
+      "cost_budget_guidance": "Low — coordination analysis, <800 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Log and alert",
+        "Escalate blocked dependencies"
+      ],
+      "related_services": [
+        "project-service"
+      ],
+      "related_docs": [
+        "TPM_PLAYBOOK.md"
+      ],
+      "tags": [
+        "tpm",
+        "dependencies",
+        "coordination"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "2573a320f672788d"
+    },
+    {
+      "agent_id": "aw-repo-drift",
+      "name": "Repo Drift",
+      "council": "knowledge-coordination",
+      "mission": "Detect drift between docs, code, registries, and manifests",
+      "special_ability": "Cross-artifact drift detection",
+      "max_autonomy_level": "recommend",
+      "current_autonomy_level": "recommend",
+      "schedule_type": "daily",
+      "schedule_cron": "0 6 * * *",
+      "scope": [
+        "doc-code-sync",
+        "registry-drift",
+        "manifest-drift",
+        "dead-code"
+      ],
+      "out_of_scope": [
+        "code-logic-changes",
+        "infrastructure"
+      ],
+      "tools_allowed": [
+        "drift-detector",
+        "dead-code-scanner",
+        "sync-validator"
+      ],
+      "tools_forbidden": [
+        "code-writer",
+        "infra-provisioner"
+      ],
+      "memory_scope": "council-scoped:knowledge-coordination",
+      "trigger_conditions": [
+        "drift-detected",
+        "dead-code-found",
+        "sync-failure"
+      ],
+      "trigger_events": [
+        "code-merge",
+        "doc-update"
+      ],
+      "escalation_targets": [
+        "sup-knowledge",
+        "aw-registry-truth"
+      ],
+      "receives_escalations_from": [],
+      "primary_escalation_target": "sup-knowledge",
+      "confidence_threshold_act": 0.75,
+      "confidence_threshold_recommend": 0.55,
+      "simulation_requirements": [],
+      "human_approval_requirements": [
+        "dead-code-removal"
+      ],
+      "rollback_authority": "None",
+      "reporting_outputs": [
+        "drift-report",
+        "dead-code-report",
+        "sync-status-report"
+      ],
+      "measurable_kpis": [
+        "drift-count",
+        "dead-code-lines",
+        "sync-freshness-score"
+      ],
+      "cost_budget_guidance": "Low — scanning, <800 tokens/invocation",
+      "cost_budget_daily_cents": 50,
+      "max_invocations_per_day": 4,
+      "failure_handling_rules": [
+        "Log and continue",
+        "Alert on critical drift"
+      ],
+      "related_services": [
+        "registry-service",
+        "doc-service"
+      ],
+      "related_docs": [
+        "DRIFT_DETECTION.md"
+      ],
+      "tags": [
+        "drift",
+        "dead-code",
+        "sync"
+      ],
+      "maturity": "alpha",
+      "is_active": true,
+      "spec_hash": "23d498a882ea0a86"
+    }
+  ]
+}
