@@ -8,8 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Check, Clock, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
-import { NotificationService, type SystemNotification } from "@/lib/nova-sdk/services/notification-service";
-import { NovaEvents } from "@/lib/nova-sdk/input/events";
+import { NotificationService, type SystemNotification } from "@/platform/nova-sdk/services/notification-service";
+import { NovaEvents } from "@/platform/nova-sdk/input/events";
 
 interface NotificationDropdownProps {
   open: boolean;

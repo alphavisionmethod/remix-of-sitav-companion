@@ -22,12 +22,12 @@ import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
-import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
-import { Scheduler, type SchedulerStats, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler";
-import { MemoryManager, type MemoryStats, PAGE_SIZE } from "@/lib/nova-sdk/kernel/memory-manager";
-import { ProcessTable, type Process, type PriorityBand } from "@/lib/nova-sdk/kernel/process-manager";
-import { getSyscallStats, getSyscallLog, getSyscallMetrics, type SyscallLogEntry, type SyscallTypeMetrics } from "@/lib/nova-sdk/kernel/syscall";
-import { DriverManager, type DeviceDriver } from "@/lib/nova-sdk/kernel/drivers";
+import type { NovaColor } from "@/platform/nova-sdk/graphics/context";
+import { Scheduler, type SchedulerStats, type SchedulerEvent } from "@/platform/nova-sdk/kernel/scheduler";
+import { MemoryManager, type MemoryStats, PAGE_SIZE } from "@/platform/nova-sdk/kernel/memory-manager";
+import { ProcessTable, type Process, type PriorityBand } from "@/platform/nova-sdk/kernel/process-manager";
+import { getSyscallStats, getSyscallLog, getSyscallMetrics, type SyscallLogEntry, type SyscallTypeMetrics } from "@/platform/nova-sdk/kernel/syscall";
+import { DriverManager, type DeviceDriver } from "@/platform/nova-sdk/kernel/drivers";
 
 // ── Colors ───────────────────────────────────────────────────
 

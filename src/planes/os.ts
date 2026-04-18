@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — OS Plane Public API (Complete)
 // Kernel, runtime, SDK, shell, security, recovery.
-// Direct imports from @/lib/nova-sdk/ are forbidden outside this barrel.
+// Direct imports from @/platform/nova-sdk/ are forbidden outside this barrel.
 // ═══════════════════════════════════════════════════════════════
 
 // ── Nova SDK (full barrel) ──
@@ -10,32 +10,32 @@ export {
   AppRegistry,
   useAppRuntime,
   useNovaApp,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 export type {
   AppManifest,
   NovaPermissionId,
   RegisteredApp,
   AppRuntimeState,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 // ── Nova SDK UI Components ──
 export {
   NovaText, NovaButton, NovaInput, NovaCard, NovaList, NovaModal,
   NovaSidebar, NovaSectionLabel, NovaToggle, NovaSlider, NovaTextArea,
   NovaToolbar, NovaBadge, NovaAvatar,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 // ── Nova SDK Layout ──
 export {
   VStack, HStack, Spacer, Divider, SplitView, AppLayout, NovaScrollArea,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 // ── Nova SDK Services ──
 export {
   ServiceManager, FileSystemService, WindowServer,
   InputService, NotificationService, SettingsService,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 export type {
   SystemService, ServiceDescriptor, ServiceLogEntry, ServiceStatus, RestartPolicy,
@@ -44,32 +44,32 @@ export type {
   ModifierState, HotkeyBinding, GestureState, InputRecording, AccessibilityConfig,
   SystemNotification, NotificationAction, NotificationGroup, DNDConfig,
   SettingsSchema, SettingsLayer,
-} from "@/lib/nova-sdk";
+} from "@/platform/nova-sdk";
 
 // ── Nova SDK System ──
-export { createWindowAPI } from "@/lib/nova-sdk/system/window-api";
-export type { NovaWindowOptions, NovaWindowHandle } from "@/lib/nova-sdk/system/window-api";
-export { NovaBridge } from "@/lib/nova-sdk/system/bridge";
+export { createWindowAPI } from "@/platform/nova-sdk/system/window-api";
+export type { NovaWindowOptions, NovaWindowHandle } from "@/platform/nova-sdk/system/window-api";
+export { NovaBridge } from "@/platform/nova-sdk/system/bridge";
 
 // ── Kernel subsystems ──
-export { NovaKernel } from "@/lib/nova-sdk/kernel/boot";
-export { Compositor } from "@/lib/nova-sdk/kernel/compositor";
-export { Scheduler } from "@/lib/nova-sdk/kernel/scheduler";
-export { Syscall, ERRNO } from "@/lib/nova-sdk/kernel/syscall";
-export { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
+export { NovaKernel } from "@/platform/nova-sdk/kernel/boot";
+export { Compositor } from "@/platform/nova-sdk/kernel/compositor";
+export { Scheduler } from "@/platform/nova-sdk/kernel/scheduler";
+export { Syscall, ERRNO } from "@/platform/nova-sdk/kernel/syscall";
+export { MemoryManager } from "@/platform/nova-sdk/kernel/memory-manager";
 
 // ── Nova SDK Extensions ──
 export {
   PluginRegistry, WidgetRegistry, IntegrationRegistry,
   auditAnimationConsistency, auditSoundCoverage, auditInteractionFeedback, getPolishScore,
-} from "@/lib/nova-sdk/extensions";
+} from "@/platform/nova-sdk/extensions";
 export type {
   PluginManifest, ExtensionPoint, PluginLifecycle, ExtensionHandler,
   InstalledPlugin, TrustLevel,
   WidgetManifest, WidgetProps, WidgetPlacement, WidgetSize, WidgetCategory,
   IntegrationManifest, IntegrationInstance, IntegrationType, IntegrationStatus,
   AuditResult, PolishScore,
-} from "@/lib/nova-sdk/extensions";
+} from "@/platform/nova-sdk/extensions";
 
 // ── OS Security Subsystem (all 17 modules) ──
 export {

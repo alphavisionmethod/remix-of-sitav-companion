@@ -19,13 +19,13 @@ import {
 import { APP_COMPONENTS } from "@/platform/design-system/app-window-system";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
-import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
+import type { NovaColor } from "@/platform/nova-sdk/graphics/context";
 import {
   getSyscallStats, getSyscallLog, getSyscallMetrics,
   getRateLimitStatus, getMutexStatus,
   type SyscallLogEntry, type SyscallTypeMetrics,
-} from "@/lib/nova-sdk/kernel/syscall";
-import { IPCManager } from "@/lib/nova-sdk/kernel/ipc";
+} from "@/platform/nova-sdk/kernel/syscall";
+import { IPCManager } from "@/platform/nova-sdk/kernel/ipc";
 
 const MAX_HISTORY = 60;
 function pushHistory(arr: number[], val: number): number[] {

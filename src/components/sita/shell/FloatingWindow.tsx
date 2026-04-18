@@ -17,7 +17,7 @@ import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
 import { WindowErrorBoundary } from "./WindowErrorBoundary";
-import { WindowPerformanceMonitor } from "@/lib/nova-sdk/kernel/window-perf";
+import { WindowPerformanceMonitor } from "@/platform/nova-sdk/kernel/window-perf";
 import {
   findMagneticEdges,
   applyMagneticSnap,

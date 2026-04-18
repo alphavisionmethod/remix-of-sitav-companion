@@ -7,10 +7,10 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { PluginRegistry, type InstalledPlugin } from "@/lib/nova-sdk/extensions/plugin-registry";
-import { WidgetRegistry, type WidgetManifest } from "@/lib/nova-sdk/extensions/widget-registry";
-import { IntegrationRegistry, type IntegrationInstance } from "@/lib/nova-sdk/extensions/integration-registry";
-import { getPolishScore } from "@/lib/nova-sdk/extensions/polish-audit";
+import { PluginRegistry, type InstalledPlugin } from "@/platform/nova-sdk/extensions/plugin-registry";
+import { WidgetRegistry, type WidgetManifest } from "@/platform/nova-sdk/extensions/widget-registry";
+import { IntegrationRegistry, type IntegrationInstance } from "@/platform/nova-sdk/extensions/integration-registry";
+import { getPolishScore } from "@/platform/nova-sdk/extensions/polish-audit";
 import { Puzzle, LayoutGrid, Link2, Sparkles, Shield, ShieldCheck, ShieldAlert, CircleHelp } from "lucide-react";
 
 const trustIcons: Record<string, typeof Shield> = {

@@ -89,7 +89,7 @@ describe("Integration: System Update Service", () => {
 
 describe("Integration: Console Capture → Filter → Clear", () => {
   it("full capture lifecycle", async () => {
-    const { consoleCapture } = await import("@/lib/nova-sdk/services/console-capture");
+    const { consoleCapture } = await import("@/platform/nova-sdk/services/console-capture");
     consoleCapture.startCapture();
     console.log("integration-test-msg");
     console.warn("integration-warn");

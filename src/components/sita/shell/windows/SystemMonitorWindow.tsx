@@ -21,9 +21,9 @@ import { APP_COMPONENTS } from "@/platform/design-system/app-window-system";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
-import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
-import { ServiceManager, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
-import { PowerManager } from "@/lib/nova-sdk/kernel/power-manager";
+import type { NovaColor } from "@/platform/nova-sdk/graphics/context";
+import { ServiceManager, type ServiceLogEntry } from "@/platform/nova-sdk/services/service-manager";
+import { PowerManager } from "@/platform/nova-sdk/kernel/power-manager";
 
 // ── Types ────────────────────────────────────────────────────
 

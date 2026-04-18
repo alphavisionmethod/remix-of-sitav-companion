@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect } from "react";
-import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
+import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
 
 const ACCENT_MAP: Record<string, string> = {
   "hsl(265, 55%, 58%)": "265 55% 58%",

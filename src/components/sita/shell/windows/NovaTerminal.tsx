@@ -8,10 +8,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useCallback, useState } from "react";
-import { NovaContext, type NovaColor } from "@/lib/nova-sdk/graphics/context";
-import { NovaEvents } from "@/lib/nova-sdk/input/events";
-import { lifecycleManager, type NovaAppLifecycle } from "@/lib/nova-sdk/runtime/lifecycle";
-import { NovaBridge } from "@/lib/nova-sdk/system/bridge";
+import { NovaContext, type NovaColor } from "@/platform/nova-sdk/graphics/context";
+import { NovaEvents } from "@/platform/nova-sdk/input/events";
+import { lifecycleManager, type NovaAppLifecycle } from "@/platform/nova-sdk/runtime/lifecycle";
+import { NovaBridge } from "@/platform/nova-sdk/system/bridge";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 
 // ── Manifest ──────────────────────────────────────────────
