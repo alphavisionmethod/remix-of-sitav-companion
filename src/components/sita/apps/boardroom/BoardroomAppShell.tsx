@@ -21,7 +21,7 @@ import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
 import { BoardroomLineageView } from "./BoardroomLineageView";
 import { BoardroomCrossAppImpact } from "./BoardroomCrossAppImpact";
 import { BoardroomExplainability } from "./BoardroomExplainability";
-import { BoardroomFollowthroughPanel } from "./BoardroomFollowthroughPanel";
+import { BoardroomFollowthroughView } from "./BoardroomFollowthroughView";
 import { useBoardroomSession } from "@/hooks/useBoardroomSession";
 
 const MODULES = [
@@ -234,7 +234,7 @@ export function BoardroomAppShell() {
       );
       case "simulation": return <BoardroomSimulationView {...viewProps} />;
       case "approvals": return <BoardroomApprovalView {...viewProps} />;
-      case "followthrough": return <BoardroomFollowthroughPanel scope={scope} />;
+      case "followthrough": return <BoardroomFollowthroughView scope={scope} />;
       case "lineage": return <BoardroomLineageView />;
       case "impact": return <BoardroomCrossAppImpact scope={scope} />;
       case "explainability": return <BoardroomExplainability scope={scope} />;
