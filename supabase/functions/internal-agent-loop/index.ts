@@ -880,6 +880,9 @@ serve(async (req) => {
     // Stale escalation auto-routing (every tick)
     const escalated = await processStaleEscalations(supabase);
 
+    // Phase 2 — Signal→Action bridges for the 3 priority agents
+    const bridgeOutcomes = await runPriorityAgentBridges(supabase);
+
     return corsResponse({
       ok: true,
       mode: "scheduled",
@@ -891,6 +894,7 @@ serve(async (req) => {
       blocked_count: results.filter((r) => r.status === "blocked").length,
       error_count: results.filter((r) => r.status === "error").length,
       meta_escalations_routed: escalated,
+      priority_bridges: bridgeOutcomes,
       results,
     });
   } catch (e) {
