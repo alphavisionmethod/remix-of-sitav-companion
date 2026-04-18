@@ -1,26 +1,38 @@
 
 
-The user wants a comprehensive audit document called `THE ULTIMATE SITA OS AUDIT.md` placed in `/mnt/documents/` (the Files/Documents folder). They've provided an extremely detailed spec — basically the master audit blueprint plus the v3+ "elite operator-grade" additions (Sections 36-49, Parts 12-17).
+User wants me to massively expand THE ULTIMATE SITA OS AUDIT.md — every section enhanced, no skipping, all files/info required, and add missing sections. The existing v7.0.0 file is ~44KB. Target: make it the definitive 150KB+ dossier.
 
-This is a content-generation task (one large markdown artifact), not a code-modification task. The user has been doing audit/governance work for many phases (K through AA) and has rich context to draw from:
+What's missing or thin in v7.0.0 vs the master prompt + v3+ additions:
+1. Reports 10 (Contracts), 17 (Docs), 18 (Tests) are barely covered — need full sections
+2. Section 3 (Feature catalog) only lists ~14 features — need ALL 30+ feature families
+3. Section 8 (FE↔BE↔DB matrix) lists 10 — need 25+
+4. Section 9 (Edge functions) only lists ~10 of 84+ — need full classification table
+5. Section 10 (DB) is a single small table — need per-domain table breakdown
+6. Section 11 (Contracts) entirely missing detail
+7. Section 12 (Manifests) needs full 94-artifact catalog
+8. Section 13 (Scripts) needs the 17-domain breakdown with examples
+9. Section 14 (Deployment) needs full ISO/IMG/OVA flow per artifact
+10. Section 15 (Supportability) needs all 19 runbooks + 15 kill-switches
+11. Section 16 (AI governance) needs full prompt family + capability registry
+12. Section 17 (Security) needs the 9-gate pipeline + 7 layers in depth
+13. Section 18 (Docs) entirely thin
+14. Section 19 (Tests) entirely thin
+15. Sections 36-49 are present but compact — expand each into full sub-tables
+16. Add the JSON appendix index (16 JSON artifacts the prompt requires)
+17. Add Special Analyses A-F as their own dedicated full sections
+18. Add per-flagship-loop deep dive (5 loops)
+19. Add the 10 Feature Integration Protocol gates as audit lens
+20. Add Phase Ledger detail (K→AA with what each phase delivered)
+21. Add Per-Domain reality matrix (10 user + 12 admin)
+22. Add Connector Provider matrix (Google/MS/Slack + manual list)
+23. Add the Nova Kernel + 7-layer Electron security in depth
+24. Add full Plane↔Domain↔Profile↔Route trace for all 22 domains
 
-- 35-36 master release gates GREEN, deployable=true
-- 17/17 deployment-gap gates green
-- Sealed HMAC-SHA256 baseline
-- 5-plane architecture, 2-profile model
-- ~1,042 pages, 956+ in catalog
-- 201 tables / 100% RLS
-- 84+ edge functions, 6 canonical roles
-- Mobile honestly archived (Ubuntu-native primary)
-- Track B native-OS gaps classified
-- Phase Z + AA certification complete
+Source material I have rich context on (from memories): all of the above.
 
-The output needs to live at `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` so it shows up alongside the user's other open files (BUSINESS_PLAN.md, PROJECT_TREE.md, etc.).
+Plan: One mega-rewrite of the file at /mnt/documents/THE ULTIMATE SITA OS AUDIT.md. Bump version to v8.0.0 ULTIMATE-EXPANDED. Keep all original v7 content, expand every thin section, add new sections, add JSON appendix index referencing the 16 required JSON files (with note that they live in `generated/total-system-audit/`), provide downloadable artifact tag.
 
-The user wants ALL the upgrades:
-- Sections 1-23 from base spec (executive summary through findings index)
-- Sections 36-49 (meta-sections: confidence, claim safety, evidence matrix, ownership, leverage, 14-day plan, profiles, flagship chain, blast radius, shadow paths, demo contamination, future containment, do-not-build, must-perfect)
-- Parts 13-17 (extra columns, classification tags, wow features, executive header, instructions)
+This is a write-only content task — no code changes needed. Just one large markdown file regen.
 
-Plan keeps it tight: one phase, one deliverable, downloadable artifact.
+Concise plan output:
 
