@@ -1,0 +1,392 @@
+{
+  "generatedAt": "2026-04-18T11:59:31.305Z",
+  "totalRoutes": 491,
+  "totalPages": 1047,
+  "orphanedPageCount": 135,
+  "wrapperPageCount": 7,
+  "orphanedPages": [
+    "src/app/index.ts",
+    "src/pages/AdminCenter.tsx",
+    "src/pages/ConnectorHub.tsx",
+    "src/pages/EnterpriseMaturityDashboard.tsx",
+    "src/pages/GlobalBoardroom.tsx",
+    "src/pages/GovernanceDashboard.tsx",
+    "src/pages/IntegrationConcierge.tsx",
+    "src/pages/LandingPage.tsx",
+    "src/pages/LearnLaterPage.tsx",
+    "src/pages/NotFound.tsx",
+    "src/pages/ObservabilityPage.tsx",
+    "src/pages/Onboarding.tsx",
+    "src/pages/OnboardingWrapper.tsx",
+    "src/pages/PermissionsCenter.tsx",
+    "src/pages/PolicyEditor.tsx",
+    "src/pages/PolicySimulatorHub.tsx",
+    "src/pages/ProductivityHub.tsx",
+    "src/pages/RevenueCallingPage.tsx",
+    "src/pages/ServiceArchitectureDashboard.tsx",
+    "src/pages/UsersAdminPage.tsx",
+    "src/pages/WorkflowReplayHub.tsx",
+    "src/pages/__tests__/Boardroom.test.tsx",
+    "src/pages/__tests__/BusinessCenter.test.tsx",
+    "src/pages/__tests__/DailyPulse.test.tsx",
+    "src/pages/__tests__/MoneyCenter.test.tsx",
+    "src/pages/__tests__/NotFound.test.tsx",
+    "src/pages/__tests__/NotFoundExtended.test.tsx",
+    "src/pages/__tests__/PersonalBrain.test.tsx",
+    "src/pages/__tests__/SettingsPage.test.tsx",
+    "src/pages/__tests__/admin-pages-batch1.test.tsx",
+    "src/pages/__tests__/admin-pages-batch10.test.tsx",
+    "src/pages/__tests__/admin-pages-batch11.test.tsx",
+    "src/pages/__tests__/admin-pages-batch12.test.tsx",
+    "src/pages/__tests__/admin-pages-batch13.test.tsx",
+    "src/pages/__tests__/admin-pages-batch14.test.tsx",
+    "src/pages/__tests__/admin-pages-batch2.test.tsx",
+    "src/pages/__tests__/admin-pages-batch3.test.tsx",
+    "src/pages/__tests__/admin-pages-batch4.test.tsx",
+    "src/pages/__tests__/admin-pages-batch5.test.tsx",
+    "src/pages/__tests__/admin-pages-batch6.test.tsx",
+    "src/pages/__tests__/admin-pages-batch7.test.tsx",
+    "src/pages/__tests__/admin-pages-batch8.test.tsx",
+    "src/pages/__tests__/admin-pages-batch9.test.tsx",
+    "src/pages/__tests__/admin-subdirs-batch14.test.tsx",
+    "src/pages/__tests__/admin-subdirs-batch15.test.tsx",
+    "src/pages/__tests__/admin-subdirs-batch16.test.tsx",
+    "src/pages/__tests__/admin-subdirs-batch17.test.tsx",
+    "src/pages/__tests__/admin-subdirs-batch18.test.tsx",
+    "src/pages/__tests__/atlas-mission-pages.test.tsx",
+    "src/pages/__tests__/auth-pages.test.tsx",
+    "src/pages/__tests__/business-pages-remaining.test.tsx",
+    "src/pages/__tests__/business-pages.test.tsx",
+    "src/pages/__tests__/concierge-pages.test.tsx",
+    "src/pages/__tests__/core-pages.test.tsx",
+    "src/pages/__tests__/digital-presence-pages.test.tsx",
+    "src/pages/__tests__/intelligence-pages.test.tsx",
+    "src/pages/__tests__/investment-pages.test.tsx",
+    "src/pages/__tests__/misc-domain-pages.test.tsx",
+    "src/pages/__tests__/mobile-pages-remaining.test.tsx",
+    "src/pages/__tests__/mobile-pages.test.tsx",
+    "src/pages/__tests__/money-pages-remaining.test.tsx",
+    "src/pages/__tests__/money-pages.test.tsx",
+    "src/pages/__tests__/owner-settings-pages.test.tsx",
+    "src/pages/__tests__/pages-structure.test.ts",
+    "src/pages/__tests__/revenue-office-pages-remaining.test.tsx",
+    "src/pages/__tests__/revenue-office-pages.test.tsx",
+    "src/pages/__tests__/root-pages-remaining.test.tsx",
+    "src/pages/__tests__/settings-pages-remaining.test.tsx",
+    "src/pages/__tests__/store-apps-pages.test.tsx",
+    "src/pages/__tests__/workspace-pages.test.tsx",
+    "src/pages/admin/AIPromptFamiliesExplorer.tsx",
+    "src/pages/admin/AdminKillSwitches.tsx",
+    "src/pages/admin/ErrorEventsExplorer.tsx",
+    "src/pages/auth/ForgotPassword.tsx",
+    "src/pages/auth/Login.tsx",
+    "src/pages/auth/ResetPassword.tsx",
+    "src/pages/auth/Signup.tsx",
+    "src/pages/concierge/AppointmentsPrep.tsx",
+    "src/pages/concierge/ConciergeBoardroom.tsx",
+    "src/pages/concierge/ConciergeFiles.tsx",
+    "src/pages/concierge/ConciergeOverview.tsx",
+    "src/pages/concierge/ConciergeProof.tsx",
+    "src/pages/concierge/ConciergeSettings.tsx",
+    "src/pages/concierge/ConciergeWorkflows.tsx",
+    "src/pages/concierge/ErrandsLogistics.tsx",
+    "src/pages/concierge/EventsGifts.tsx",
+    "src/pages/concierge/FamilyBoardroom.tsx",
+    "src/pages/concierge/FamilyCalendar.tsx",
+    "src/pages/concierge/GroceryPlanning.tsx",
+    "src/pages/concierge/HouseholdCommandCenter.tsx",
+    "src/pages/concierge/HouseholdTasks.tsx",
+    "src/pages/concierge/LifeAdminCenter.tsx",
+    "src/pages/concierge/MonthGridCalendar.tsx",
+    "src/pages/concierge/RecurringObligations.tsx",
+    "src/pages/concierge/SchoolActivities.tsx",
+    "src/pages/concierge/ServiceProviders.tsx",
+    "src/pages/concierge/TravelPlanning.tsx",
+    "src/pages/concierge/UpcomingNeeds.tsx",
+    "src/pages/digital-presence/DPOSubNav.tsx",
+    "src/pages/files/FilesAll.tsx"
+  ],
+  "wrapperPages": [
+    "src/app/index.ts",
+    "src/pages/admin/cloud/AdminRBACConsole.tsx",
+    "src/pages/admin/verification/V02InteractionCoverageBoard.tsx",
+    "src/pages/admin/verification/V03P0JourneyBoard.tsx",
+    "src/pages/admin/verification/V04ModeVerificationBoard.tsx",
+    "src/pages/admin/verification/V06EvidenceExplorer.tsx",
+    "src/pages/admin/verification/V07LaunchBlockerBoard.tsx"
+  ],
+  "routeFiles": [
+    "src/admin/routes/index.ts",
+    "src/components/auth/AdminRoute.tsx",
+    "src/components/auth/PermissionGatedRoute.tsx",
+    "src/routes/AdminRootLanding.tsx",
+    "src/routes/AdminRoutes.tsx",
+    "src/routes/MobileRoutes.tsx",
+    "src/routes/OwnerRoutes.tsx",
+    "src/routes/advisor-routes.tsx",
+    "src/routes/apps-routes.tsx",
+    "src/routes/boardroom-routes.tsx",
+    "src/routes/business-routes.tsx",
+    "src/routes/communications-routes.tsx",
+    "src/routes/concierge-routes.tsx",
+    "src/routes/experimental-routes.tsx",
+    "src/routes/files-routes.tsx",
+    "src/routes/investment-routes.tsx",
+    "src/routes/money-routes.tsx",
+    "src/routes/os-routes.tsx",
+    "src/routes/redirects/user-redirect-map.ts",
+    "src/routes/settings-routes.tsx"
+  ],
+  "routeSample": [
+    {
+      "path": "/admin/overview",
+      "element": "OverviewHome",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/alerts",
+      "element": "AlertsHome",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin",
+      "element": "AdminRootLanding",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/overview/generated-truth",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/intelligence/efficiency",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/costs",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/users",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/devices",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support/cases",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/mobile-parity",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/rollback",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/policies",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/proofs",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/permissions",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/sensitive-actions",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta-arch",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/dashboard",
+      "element": "AdminDashboard",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence-efficiency",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mobile-parity",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mobile/store-readiness",
+      "element": "Navigate",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/mobile",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/business",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/money",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/concierge",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/approvals",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/proof",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/alerts",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/boardroom",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/workflow/:id",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/receipt/:id",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/approval/:id",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/settings",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/device-trust",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/emergency",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/capture",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/more",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/investment",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/files",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/command",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/ai-chat",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/system-monitor",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/sync",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/notifications",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/timeline",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/inbox",
+      "element": "ProtectedRoute",
+      "sourceFile": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/owner",
+      "element": "OwnerCenter",
+      "sourceFile": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/home",
+      "element": "Navigate",
+      "sourceFile": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/health",
+      "element": "Navigate",
+      "sourceFile": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/pulse",
+      "element": "OwnerPulsePage",
+      "sourceFile": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/trust",
+      "element": "Navigate",
+      "sourceFile": "src/routes/OwnerRoutes.tsx"
+    }
+  ]
+}

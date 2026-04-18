@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Shield, Users, ChevronRight, Check, X } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { PERMISSION_CATEGORIES, type PermissionCategory } from "@/lib/platform-plane";
@@ -55,7 +54,6 @@ export function AdminRBACConsole() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {/* Role List */}
         <div className="space-y-1">
           {roles.map((role) => {
             const info = ROLE_LABELS[role];
@@ -79,7 +77,6 @@ export function AdminRBACConsole() {
           })}
         </div>
 
-        {/* Permission Matrix */}
         <div className="md:col-span-3 space-y-4">
           <Card className="border-border/50 bg-card/50">
             <CardHeader className="pb-2">
@@ -126,3 +123,5 @@ export function AdminRBACConsole() {
     </div>
   );
 }
+
+export default AdminRBACConsole;

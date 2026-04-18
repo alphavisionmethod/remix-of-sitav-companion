@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T12:02:51.669Z",
+  "gate": "contract-topology-drift",
+  "leakedNamedFamilyCount": 0,
+  "budget": 250,
+  "level": "warn",
+  "ok": true,
+  "sample": []
+}

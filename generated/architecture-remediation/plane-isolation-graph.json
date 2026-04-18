@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-04-18T11:59:31.222Z",
+  "edgesByPlane": {
+    "core->shared": 561,
+    "core->shell": 1,
+    "core->admin": 4,
+    "core->core": 30,
+    "admin->admin": 1031,
+    "admin->shared": 3486,
+    "admin->core": 4,
+    "user->core": 52,
+    "user->shared": 3166,
+    "shared->shared": 7725,
+    "shared->core": 44,
+    "shared->shell": 1,
+    "shared->user": 89,
+    "core->user": 74,
+    "shared->admin": 4,
+    "user->user": 116,
+    "user->admin": 5,
+    "shell->shared": 8
+  },
+  "directViolationCount": 5,
+  "directViolations": [
+    {
+      "from": "src/pages/ObservabilityPage.tsx",
+      "to": "src/components/sita/admin/index.ts",
+      "fromPlane": "user",
+      "toPlane": "admin",
+      "spec": "@/components/sita/admin"
+    },
+    {
+      "from": "src/pages/PolicySimulatorHub.tsx",
+      "to": "src/components/sita/admin/index.ts",
+      "fromPlane": "user",
+      "toPlane": "admin",
+      "spec": "@/components/sita/admin"
+    },
+    {
+      "from": "src/pages/UsersAdminPage.tsx",
+      "to": "src/components/sita/admin/index.ts",
+      "fromPlane": "user",
+      "toPlane": "admin",
+      "spec": "@/components/sita/admin"
+    },
+    {
+      "from": "src/pages/WorkflowReplayHub.tsx",
+      "to": "src/components/sita/admin/index.ts",
+      "fromPlane": "user",
+      "toPlane": "admin",
+      "spec": "@/components/sita/admin"
+    },
+    {
+      "from": "src/pages/owner-mode/OwnerModePage.tsx",
+      "to": "src/components/sita/admin/index.ts",
+      "fromPlane": "user",
+      "toPlane": "admin",
+      "spec": "@/components/sita/admin"
+    }
+  ],
+  "forbiddenEdges": [
+    [
+      "user",
+      "admin"
+    ],
+    [
+      "admin",
+      "user"
+    ]
+  ]
+}

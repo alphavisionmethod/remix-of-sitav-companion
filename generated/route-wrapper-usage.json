@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-18T12:03:02.908Z",
+  "gate": "route-wrapper-usage",
+  "wrapperCount": 8,
+  "undeclaredCount": 0,
+  "knownWrapperCount": 16,
+  "level": "warn",
+  "ok": true,
+  "undeclared": [],
+  "wrappers": [
+    "src/pages/admin/cloud/AdminRBACConsole.tsx",
+    "src/pages/admin/verification/V01SurfaceInventoryBoard.tsx",
+    "src/pages/admin/verification/V02InteractionCoverageBoard.tsx",
+    "src/pages/admin/verification/V03P0JourneyBoard.tsx",
+    "src/pages/admin/verification/V04ModeVerificationBoard.tsx",
+    "src/pages/admin/verification/V06EvidenceExplorer.tsx",
+    "src/pages/admin/verification/V07LaunchBlockerBoard.tsx",
+    "src/app/index.ts"
+  ]
+}
