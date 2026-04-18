@@ -169,14 +169,17 @@ function extractRoutes(): RouteDecl[] {
     let m: RegExpExecArray | null;
     while ((m = re.exec(c))) {
       const path = m[1];
-      // Look at surrounding 400 chars for guard wrappers
-      const start = Math.max(0, m.index - 400);
-      const end = Math.min(c.length, m.index + 400);
+      // Look at surrounding 600 chars for guard wrappers / helpers
+      const start = Math.max(0, m.index - 600);
+      const end = Math.min(c.length, m.index + 600);
       const ctx = c.slice(start, end);
       const guards: string[] = [];
       if (/AdminRoute/.test(ctx)) guards.push("AdminRoute");
       if (/PermissionGatedRoute/.test(ctx)) guards.push("PermissionGatedRoute");
       if (/ProtectedRoute/.test(ctx)) guards.push("ProtectedRoute");
+      // Local helpers used in route files
+      if (/\bgated\s*\(/.test(ctx)) guards.push("gated()");
+      if (/\brequirePermission\s*\(/.test(ctx)) guards.push("requirePermission()");
       out.push({ path, file: relative(".", f), guards });
     }
   }
