@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:52:08.800Z",
+  "edgeFunctions": [
+    "app-ingest-pwa",
+    "app-ingest-web",
+    "app-install",
+    "app-launch-resolve",
+    "app-manifest-sync",
+    "app-permissions-sync",
+    "app-screenshot-capture",
+    "app-store-api",
+    "app-store-catalog",
+    "app-uninstall",
+    "app-update-check"
+  ],
+  "installServiceExists": true,
+  "consumers": [
+    "src/contexts/AppPlatformContext.tsx",
+    "src/hooks/use-app-platform.ts",
+    "src/integrations/supabase/types.ts",
+    "src/lib/app-platform/db-app-adapter.ts",
+    "src/lib/db/migration-registry.ts",
+    "src/lib/services/app-store/install.service.ts",
+    "src/lib/services/app-store/launch.service.ts",
+    "src/lib/services/app-store/recents.service.ts"
+  ],
+  "consumerCount": 8,
+  "launcherIntegrations": [
+    "src/components/sita/shell/AppLauncherPanel.tsx",
+    "src/components/sita/shell/ShellLiveLayer.tsx",
+    "src/lib/surfaces/shell-surface-map.ts",
+    "src/runtimes/shell/index.ts"
+  ],
+  "status": "real-production-grade",
+  "classification": "real",
+  "notes": "App Store install flow uses real edge functions (app-install, app-uninstall, app-update-check) and DB tables (installed_apps). Not a mock."
+}

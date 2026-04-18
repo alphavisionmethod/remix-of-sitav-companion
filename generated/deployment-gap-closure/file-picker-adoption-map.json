@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:52:08.800Z",
+  "canonicalProvider": "src/components/sita/shell/FilePickerService.tsx",
+  "providerExists": true,
+  "rawFileInputSites": [
+    {
+      "file": "src/components/business/CRMImportWizard.tsx",
+      "line": 332
+    },
+    {
+      "file": "src/components/sita/shell/windows/settings/AccountSections.tsx",
+      "line": 100
+    },
+    {
+      "file": "src/pages/MediaWorkspace.tsx",
+      "line": 114
+    },
+    {
+      "file": "src/pages/UserProfilePage.tsx",
+      "line": 131
+    },
+    {
+      "file": "src/pages/mobile/MobileQuickCapture.tsx",
+      "line": 74
+    },
+    {
+      "file": "src/runtimes/desktop/desktop-fallbacks.ts",
+      "line": 20
+    }
+  ],
+  "rawFileInputCount": 6,
+  "canonicalConsumers": [
+    "src/components/sita/ShellLayout.tsx",
+    "src/lib/system-menu/menu-actions.ts"
+  ],
+  "canonicalConsumerCount": 2,
+  "classification": "adoption-gap",
+  "notes": "6 ad-hoc file inputs vs 2 canonical consumers. Low-level upload flows acceptably bypass picker; UI surfaces should adopt."
+}
