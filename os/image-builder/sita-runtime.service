@@ -21,13 +21,20 @@ Environment=NODE_ENV=production
 Environment=SITA_RUNTIME_MODE=desktop
 WorkingDirectory=/opt/sita/shell
 
-# Start X server then launch Electron shell
+# Start X server then hand off to the canonical shell launcher
+# (launch.sh → shell-watchdog.sh → /usr/bin/sita-shell)
 ExecStartPre=/usr/bin/install -d -m 0700 -o sita -g sita /run/user/1000
 ExecStart=/usr/bin/xinit /opt/sita/shell/launch.sh -- :0 vt7 -nolisten tcp
+ExecStartPost=/bin/sh -c 'sleep 5 && /opt/sita/runtime/check-shell-health.sh || true'
 
+# Crash policy: systemd handles burst rate; shell-watchdog escalates to
+# safe-mode and then to sita-recovery-shell.service on repeated failures.
 Restart=on-failure
 RestartSec=3
+StartLimitIntervalSec=120
+StartLimitBurst=5
 TimeoutStartSec=60
+OnFailure=sita-recovery-shell.service
 
 # Hardening
 NoNewPrivileges=true
