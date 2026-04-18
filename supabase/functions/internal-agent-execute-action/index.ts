@@ -394,7 +394,6 @@ serve(async (req) => {
     })
     .eq("id", intent.id);
 
-  await admin.rpc("noop").catch(() => {});
   await admin
     .from("internal_agent_runtime_state")
     .update({
