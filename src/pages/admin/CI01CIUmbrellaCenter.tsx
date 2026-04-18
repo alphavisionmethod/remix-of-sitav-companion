@@ -25,7 +25,7 @@ const PHASE_TITLES: Record<CIGatePhase, string> = {
   "phase-8-ci-umbrella": "8 — CI Umbrella",
   "phase-9-reality-deployability": "9 — Reality & Deployability",
   "phase-10-completeness": "10 — Completeness",
-  "phase-12-mobile-deployability": "12 — Mobile Deployability",
+  "phase-12-native-deployability": "12 — Native Deployability (Ubuntu OS)",
   "phase-13-web-deployability": "13 — Web Deployability",
   "phase-14-desktop-deployability": "14 — Desktop Deployability",
   "phase-15-appliance-deployability": "15 — Appliance Deployability",
