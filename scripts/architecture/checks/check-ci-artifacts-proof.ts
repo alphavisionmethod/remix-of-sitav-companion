@@ -48,7 +48,9 @@ for (const file of files) {
   const hasArtifactName = /name:\s*[\w\-./${}]+/.test(content) && content.includes("upload-artifact");
   const hasConcurrency = /concurrency:/.test(content);
   const hasNodeSetup = /actions\/setup-node@v4/.test(content);
-  const usesNode20Plus = /node-version:\s*['"]?(2[0-9]|[3-9][0-9])/.test(content);
+  const usesNode20Plus = /node-version:\s*['"]?(2[0-9]|[3-9][0-9])/.test(content) ||
+    /node-version:\s*\$\{\{\s*env\.NODE_VERSION\s*\}\}/.test(content) ||
+    /NODE_VERSION:\s*['"]?(2[0-9]|[3-9][0-9])/.test(content);
 
   seen.push({ workflow: file, checks: {
     uploadV4: hasUploadV4 || !content.includes("upload-artifact"),
