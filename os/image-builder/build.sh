@@ -135,6 +135,16 @@ systemctl enable systemd-networkd
 systemctl enable systemd-resolved
 systemctl set-default graphical.target
 
+# Phase 3 — canonical command symlinks (one path each, no aliases that drift)
+install -d /usr/local/bin
+ln -sf /opt/sita/bin/generate-support-bundle.sh   /usr/local/bin/sita-support-bundle
+ln -sf /opt/sita/bin/rollback-to-previous.sh      /usr/local/bin/sita-rollback
+ln -sf /opt/sita/recovery/recovery-entry.sh       /usr/local/bin/sita-recovery
+ln -sf /opt/sita/recovery/recovery-status.sh      /usr/local/bin/sita-recovery-status
+ln -sf /opt/sita/recovery/recovery-collect.sh     /usr/local/bin/sita-recovery-collect
+ln -sf /opt/sita/runtime/check-shell-health.sh    /usr/local/bin/sita-shell-health
+install -d /var/lib/sita/state /var/lib/sita/diagnostics /var/log/sita/crashes
+
 # Default user (replaced during install / first-boot)
 useradd -m -s /bin/bash -G sudo,audio,video,plugdev sita || true
 echo 'sita:sita' | chpasswd
