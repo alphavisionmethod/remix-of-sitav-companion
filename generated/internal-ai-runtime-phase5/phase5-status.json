@@ -1,0 +1,27 @@
+{
+  "phase": "phase-5-trust-ladder",
+  "status": "CLOSED",
+  "block_gates": 6,
+  "block_gates_green": 6,
+  "aggregator_required_gates": 85,
+  "tables": [
+    "internal_agent_trust_ladder",
+    "internal_agent_ladder_history",
+    "internal_agent_knowledge_bus"
+  ],
+  "rpcs": [
+    "evaluate_internal_agent_ladder",
+    "publish_agent_learning",
+    "summarize_trust_ladder"
+  ],
+  "edge_functions": ["internal-agent-trust-evaluator"],
+  "admin_pages": ["/admin/ai-runtime/trust-ladder"],
+  "safety_invariants": [
+    "never_auto_promote_past_human_threshold",
+    "promotion_lock_honored",
+    "no_self_promote_outside_rpc",
+    "no_undisciplined_knowledge_writes",
+    "supervisor_readout_via_rpc_only",
+    "edge_function_cannot_ddl"
+  ]
+}

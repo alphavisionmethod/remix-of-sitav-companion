@@ -10902,6 +10902,99 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_agent_knowledge_bus: {
+        Row: {
+          applies_to_agents: string[]
+          applies_to_councils: string[]
+          confidence: number
+          consumed_by: Json
+          created_at: string
+          expires_at: string
+          id: string
+          learning_summary: string
+          pattern_tag: string
+          recommended_guard: string | null
+          source_agent_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          applies_to_agents?: string[]
+          applies_to_councils?: string[]
+          confidence?: number
+          consumed_by?: Json
+          created_at?: string
+          expires_at?: string
+          id?: string
+          learning_summary: string
+          pattern_tag: string
+          recommended_guard?: string | null
+          source_agent_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          applies_to_agents?: string[]
+          applies_to_councils?: string[]
+          confidence?: number
+          consumed_by?: Json
+          created_at?: string
+          expires_at?: string
+          id?: string
+          learning_summary?: string
+          pattern_tag?: string
+          recommended_guard?: string | null
+          source_agent_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_ladder_history: {
+        Row: {
+          agent_id: string
+          created_at: string
+          direction: string
+          evaluator: string
+          from_rung: number
+          human_approved: boolean
+          human_approver_user_id: string | null
+          id: string
+          metadata: Json
+          reason: string
+          to_rung: number
+          trust_score_at_change: number
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          direction: string
+          evaluator?: string
+          from_rung: number
+          human_approved?: boolean
+          human_approver_user_id?: string | null
+          id?: string
+          metadata?: Json
+          reason: string
+          to_rung: number
+          trust_score_at_change: number
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          direction?: string
+          evaluator?: string
+          from_rung?: number
+          human_approved?: boolean
+          human_approver_user_id?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string
+          to_rung?: number
+          trust_score_at_change?: number
+        }
+        Relationships: []
+      }
       internal_agent_policy_drafts: {
         Row: {
           agent_id: string
@@ -11170,6 +11263,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      internal_agent_trust_ladder: {
+        Row: {
+          agent_id: string
+          created_at: string
+          current_rung: number
+          human_approval_required_above_rung: number
+          id: string
+          last_evaluated_at: string
+          previous_rung: number
+          promotion_lock_reason: string | null
+          promotion_locked: boolean
+          reflection_count: number
+          rung_reason: string
+          trust_score: number
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          current_rung?: number
+          human_approval_required_above_rung?: number
+          id?: string
+          last_evaluated_at?: string
+          previous_rung?: number
+          promotion_lock_reason?: string | null
+          promotion_locked?: boolean
+          reflection_count?: number
+          rung_reason?: string
+          trust_score?: number
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          current_rung?: number
+          human_approval_required_above_rung?: number
+          id?: string
+          last_evaluated_at?: string
+          previous_rung?: number
+          promotion_lock_reason?: string | null
+          promotion_locked?: boolean
+          reflection_count?: number
+          rung_reason?: string
+          trust_score?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       investment_theses: {
         Row: {
@@ -17625,6 +17766,15 @@ export type Database = {
         }
         Returns: Json
       }
+      evaluate_internal_agent_ladder: {
+        Args: {
+          _agent_id: string
+          _hint_reason?: string
+          _reflection_count: number
+          _trust_score: number
+        }
+        Returns: Json
+      }
       expire_overdue_kill_switches: { Args: never; Returns: number }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
@@ -17686,6 +17836,18 @@ export type Database = {
       mute_error_patrol_pattern: {
         Args: { _hours?: number; _pattern_key: string }
         Returns: Json
+      }
+      publish_agent_learning: {
+        Args: {
+          _applies_to_agents?: string[]
+          _applies_to_councils?: string[]
+          _confidence?: number
+          _learning_summary: string
+          _pattern_tag: string
+          _recommended_guard?: string
+          _source_agent_id: string
+        }
+        Returns: string
       }
       record_error_patrol_detection: {
         Args: {
@@ -17759,6 +17921,7 @@ export type Database = {
         }[]
       }
       summarize_policy_draft_health: { Args: never; Returns: Json }
+      summarize_trust_ladder: { Args: never; Returns: Json }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
         Returns: number

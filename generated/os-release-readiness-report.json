@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T18:20:55.094Z",
+  "generatedAt": "2026-04-18T20:24:19.328Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -352,11 +352,179 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-registry-report.json",
+      "gate": "internal-agent-registry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-runtime-loop-report.json",
+      "gate": "internal-agent-runtime-loop",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-execute-action-report.json",
+      "gate": "internal-agent-execute-action",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-safety-gates-report.json",
+      "gate": "autonomous-action-safety-gates",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-receipts-report.json",
+      "gate": "autonomous-action-receipts",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-rollback-coverage-report.json",
+      "gate": "autonomous-action-rollback-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/error-patrol-triage-page-report.json",
+      "gate": "error-patrol-triage-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/agent-primitive-wiring-report.json",
+      "gate": "agent-primitive-wiring",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/priority-bridge-wiring-report.json",
+      "gate": "priority-bridge-wiring",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/kill-switch-backfill-report.json",
+      "gate": "kill-switch-backfill",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-reflection-table-report.json",
+      "gate": "internal-agent-reflection-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-reflect-function-report.json",
+      "gate": "internal-agent-reflect-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/reflection-board-page-report.json",
+      "gate": "reflection-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-policy-drafts-table-report.json",
+      "gate": "internal-agent-policy-drafts-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-policy-architect-function-report.json",
+      "gate": "internal-agent-policy-architect-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/policy-draft-review-page-report.json",
+      "gate": "policy-draft-review-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/policy-draft-never-auto-apply-report.json",
+      "gate": "policy-draft-never-auto-apply",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-trust-ladder-table-report.json",
+      "gate": "internal-agent-trust-ladder-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-trust-evaluator-function-report.json",
+      "gate": "internal-agent-trust-evaluator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-board-page-report.json",
+      "gate": "trust-ladder-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-never-self-promote-report.json",
+      "gate": "trust-ladder-never-self-promote",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/knowledge-bus-write-discipline-report.json",
+      "gate": "knowledge-bus-write-discipline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-supervisor-readout-report.json",
+      "gate": "trust-ladder-supervisor-readout",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
   "totalErrors": 0,
   "totalWarnings": 3348,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "YELLOW"
+  "missingGates": [
+    "internal-agent-runtime-coverage",
+    "internal-agent-admin-pages",
+    "internal-agent-escalation-runtime",
+    "internal-agent-seed-integrity",
+    "admin-ai-runtime-drilldowns",
+    "admin-integrations-health-visibility"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }
