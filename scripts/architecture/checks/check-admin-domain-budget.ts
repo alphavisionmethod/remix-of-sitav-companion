@@ -9,7 +9,7 @@ import { ViolationCollector } from "../lib/utils";
 
 const vc = new ViolationCollector();
 
-const REGISTRY_PATH = "src/lib/architecture/admin-route-registry.ts";
+const REGISTRY_PATH = "src/platform/architecture/admin-route-registry.ts";
 
 if (!fs.existsSync(REGISTRY_PATH)) {
   vc.add(REGISTRY_PATH, "missing-registry", "admin-route-registry.ts not found");

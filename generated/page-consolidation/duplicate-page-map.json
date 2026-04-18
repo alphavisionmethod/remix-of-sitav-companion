@@ -1,0 +1,156 @@
+{
+  "generatedAt": "2026-04-18T11:33:37.229Z",
+  "totalGroups": 18,
+  "groups": [
+    {
+      "canonical": "ApprovalsHome",
+      "duplicates": [
+        "AIApprovalDesk",
+        "HQApprovalQueue"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "approvals"
+    },
+    {
+      "canonical": "AIG07LaunchTruth",
+      "duplicates": [
+        "AIG06LaunchTruth"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "ai-runtime"
+    },
+    {
+      "canonical": "OverviewHome",
+      "duplicates": [
+        "AdminDashboard",
+        "AdminOperationsHub",
+        "MissionControlHome"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "overview"
+    },
+    {
+      "canonical": "HealthHome",
+      "duplicates": [
+        "SystemHealthDashboard",
+        "MCSystemHealth"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "health"
+    },
+    {
+      "canonical": "AIRuntimeHome",
+      "duplicates": [
+        "MCAIControl"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "ai-runtime"
+    },
+    {
+      "canonical": "AIT05CostEfficiency",
+      "duplicates": [
+        "MCCostsAIBudgets"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "ai-runtime"
+    },
+    {
+      "canonical": "ReleasesHome",
+      "duplicates": [
+        "MCReleasesUpdates"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "releases"
+    },
+    {
+      "canonical": "TrustSecurityHome",
+      "duplicates": [
+        "MCTrustSecurity"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "trust-security"
+    },
+    {
+      "canonical": "UserManagement",
+      "duplicates": [
+        "MCUsersCenter"
+      ],
+      "reason": "Curated merge target.",
+      "domain": "environments"
+    },
+    {
+      "canonical": "/admin/approvals",
+      "duplicates": [
+        "AIApprovalDesk",
+        "HQApprovalQueue"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/ai-runtime/launch-truth",
+      "duplicates": [
+        "AIG06LaunchTruth",
+        "AIG07LaunchTruth",
+        "AIT08LaunchTruthPage"
+      ],
+      "reason": "3 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/overview",
+      "duplicates": [
+        "AdminDashboard",
+        "AdminOperationsHub",
+        "MissionControlHome"
+      ],
+      "reason": "3 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/releases/deployability",
+      "duplicates": [
+        "DSK01DeployabilityCenter",
+        "WEB01DeployabilityCenter"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/verification/launch-honesty",
+      "duplicates": [
+        "LaunchHonestyBoard",
+        "LaunchHonestyBoard"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/verification/ock-replacement-program",
+      "duplicates": [
+        "MockReplacementProgram",
+        "MockReplacementProgram"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/verification/eality-classification-matrix",
+      "duplicates": [
+        "RealityClassificationMatrix",
+        "RealityClassificationMatrix"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/health",
+      "duplicates": [
+        "SystemHealthDashboard",
+        "MCSystemHealth"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    },
+    {
+      "canonical": "/admin/environments/users",
+      "duplicates": [
+        "UserManagement",
+        "MCUsersCenter"
+      ],
+      "reason": "2 admin pages converge on the same target route."
+    }
+  ]
+}

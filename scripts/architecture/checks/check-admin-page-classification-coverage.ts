@@ -14,7 +14,7 @@ import {
   ADMIN_PAGE_CONSOLIDATION_MAP,
   CLUSTER_DOMAIN_MAP,
   isClassifiable,
-} from "../../../src/lib/architecture/admin-page-consolidation-map";
+} from "../../../src/platform/architecture/admin-page-consolidation-map";
 
 const vc = new ViolationCollector();
 const PAGES_DIR = "src/pages/admin";

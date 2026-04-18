@@ -15,9 +15,9 @@
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { CANONICAL_PLANES, type CanonicalPlaneKey } from "../../../src/lib/architecture/plane-registry";
-import { ROUTE_PLANE_MAP } from "../../../src/lib/architecture/route-plane-map";
-import { APP_PLANE_MAP } from "../../../src/lib/architecture/app-plane-map";
+import { CANONICAL_PLANES, type CanonicalPlaneKey } from "../../../src/platform/architecture/plane-registry";
+import { ROUTE_PLANE_MAP } from "../../../src/platform/architecture/route-plane-map";
+import { APP_PLANE_MAP } from "../../../src/platform/architecture/app-plane-map";
 import { ADMIN_WORKFLOWS } from "../../../src/lib/admin/admin-workflow-registry";
 
 type Profile = "user" | "operator";

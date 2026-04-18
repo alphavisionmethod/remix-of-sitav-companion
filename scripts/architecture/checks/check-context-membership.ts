@@ -7,13 +7,13 @@
 
 import { writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { dirname } from "node:path";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 import {
   ROUTE_CONTEXT_BINDINGS,
   findDuplicateMemberships,
   membershipStats,
   resolveEdgeFunctionContext,
-} from "../../../src/lib/architecture/context-membership-map";
+} from "../../../src/platform/architecture/context-membership-map";
 
 const issues: { kind: string; identifier: string; reason: string }[] = [];
 

@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { APP_PLANE_MAP } from "../../../src/lib/architecture/app-plane-map";
-import { CANONICAL_PLANES } from "../../../src/lib/architecture/plane-registry";
+import { APP_PLANE_MAP } from "../../../src/platform/architecture/app-plane-map";
+import { CANONICAL_PLANES } from "../../../src/platform/architecture/plane-registry";
 
 interface Issue { appId: string; severity: "error" | "warn"; message: string; }
 const issues: Issue[] = [];

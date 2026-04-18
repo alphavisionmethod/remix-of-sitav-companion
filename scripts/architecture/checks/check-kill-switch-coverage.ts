@@ -21,7 +21,7 @@ import { KILL_SWITCH_REGISTRY } from "../../../src/lib/control-plane/kill-switch
 import { KILL_SWITCH_ENFORCEMENT_MAP } from "../../../src/lib/control-plane/kill-switch-enforcement-map";
 import { KILL_SWITCH_DEPENDENCY_MAP } from "../../../src/lib/control-plane/kill-switch-dependency-map";
 import { KILL_SWITCH_CONSEQUENCE_MAP } from "../../../src/lib/control-plane/kill-switch-runtime-consequence";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 import { RUNBOOK_REGISTRY } from "../../../src/lib/support/runbook-registry";
 
 const REPO_ROOT = path.resolve(__dirname, "../../..");

@@ -13,7 +13,7 @@ const SCRIPT = "check-bounded-context-coverage";
 const violations = new ViolationCollector();
 
 // ── Load registry by parsing source (avoid TS runtime in node script) ──
-const registryPath = "src/lib/architecture/bounded-context-registry.ts";
+const registryPath = "src/platform/architecture/bounded-context-registry.ts";
 const efContextPath = "src/lib/backend-topology/edge-function-bounded-contexts.ts";
 const typesPath = "src/integrations/supabase/types.ts";
 

@@ -10,11 +10,11 @@ import * as path from "path";
 import { ViolationCollector } from "../lib/utils";
 import { GOLDEN_PATH_REGISTRY } from "../../../src/lib/operations/golden-path-registry";
 import { getMissingVerifications } from "../../../src/lib/operations/golden-path-verification-map";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 import { KILL_SWITCH_REGISTRY } from "../../../src/lib/control-plane/kill-switch-registry";
 import { RUNBOOK_REGISTRY } from "../../../src/lib/support/runbook-registry";
 import { EDGE_FUNCTION_REGISTRY } from "../../../src/lib/backend-topology/edge-function-registry";
-import { CANONICAL_SERVICES } from "../../../src/lib/architecture/canonical-service-registry";
+import { CANONICAL_SERVICES } from "../../../src/platform/architecture/canonical-service-registry";
 import { DB_SCHEMA_REGISTRY } from "../../../src/lib/db/schema-registry";
 
 const vc = new ViolationCollector();
@@ -139,7 +139,7 @@ for (const ctx of BOUNDED_CONTEXT_REGISTRY) {
   for (const journeyId of ctx.criticalJourneys) {
     if (!goldenPathIds.has(journeyId as any)) {
       vc.add(
-        "src/lib/architecture/bounded-context-registry.ts",
+        "src/platform/architecture/bounded-context-registry.ts",
         "golden-path-ref",
         `${ctx.contextId}: criticalJourneys references unknown "${journeyId}"`
       );

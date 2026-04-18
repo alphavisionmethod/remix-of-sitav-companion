@@ -1,0 +1,2797 @@
+{
+  "generatedAt": "2026-04-18T11:33:37.229Z",
+  "domains": [
+    {
+      "domain": "overview",
+      "label": "Overview",
+      "hub": "/admin/overview",
+      "pages": [
+        {
+          "component": "AdminDashboard",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/overview",
+          "mergeInto": "OverviewHome"
+        },
+        {
+          "component": "AdminDeploymentRings",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-deployment-rings"
+        },
+        {
+          "component": "AdminKillSwitches",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-kill-switches"
+        },
+        {
+          "component": "AdminMutationAudit",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-mutation-audit"
+        },
+        {
+          "component": "AdminOperationsHub",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/overview",
+          "mergeInto": "OverviewHome"
+        },
+        {
+          "component": "AdminProjectionModels",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-projection-models"
+        },
+        {
+          "component": "AdminRunbookViewerPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-runbook-viewer"
+        },
+        {
+          "component": "AdminTruthClaims",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-truth-claims"
+        },
+        {
+          "component": "GeneratedTruthDashboard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/overview/generated-truth"
+        },
+        {
+          "component": "MissionControlHome",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/overview",
+          "mergeInto": "OverviewHome"
+        },
+        {
+          "component": "OperatorHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin"
+        },
+        {
+          "component": "PlatformMaturityDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/latform-maturity"
+        },
+        {
+          "component": "PlatformReadinessScorecard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/latform-readiness-scorecard"
+        },
+        {
+          "component": "AdminAuditExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-audit-explorer"
+        },
+        {
+          "component": "AdminSafetyRails",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-safety-rails"
+        },
+        {
+          "component": "AdminTokenManager",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/dmin-token-manager"
+        },
+        {
+          "component": "PlatformPlaneOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/latform-plane-overview"
+        },
+        {
+          "component": "OverviewHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/overview"
+        },
+        {
+          "component": "OperatorTasteDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/overview/perator-taste"
+        }
+      ]
+    },
+    {
+      "domain": "alerts",
+      "label": "Alerts",
+      "hub": "/admin/alerts",
+      "pages": [
+        {
+          "component": "AlertTriageBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/lert-triage-board"
+        },
+        {
+          "component": "ErrorEventsExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/rror-events-explorer"
+        },
+        {
+          "component": "IncidentCommandCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/ncident-command"
+        },
+        {
+          "component": "IncidentDashboardPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/ncident"
+        },
+        {
+          "component": "AlertsHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/alerts"
+        },
+        {
+          "component": "EscalationControlCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/scalation-control"
+        },
+        {
+          "component": "MCIncidents",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/alerts/ncidents"
+        }
+      ]
+    },
+    {
+      "domain": "approvals",
+      "label": "Approvals",
+      "hub": "/admin/approvals",
+      "pages": [
+        {
+          "component": "AIApprovalDesk",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/approvals",
+          "mergeInto": "ApprovalsHome"
+        },
+        {
+          "component": "AIT07ApprovalQueuePage",
+          "pageClass": "WORKFLOW_TOOL",
+          "targetRoute": "/admin/approvals/ai-team"
+        },
+        {
+          "component": "AdvisorActionApprovalAdmin",
+          "pageClass": "WORKFLOW_TOOL",
+          "targetRoute": "/admin/approvals/advisor"
+        },
+        {
+          "component": "HQApprovalQueue",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/approvals",
+          "mergeInto": "ApprovalsHome"
+        },
+        {
+          "component": "ApprovalsHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/approvals"
+        }
+      ]
+    },
+    {
+      "domain": "environments",
+      "label": "Environments",
+      "hub": "/admin/environments",
+      "pages": [
+        {
+          "component": "EnvironmentAppliancePage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/nvironment-appliance"
+        },
+        {
+          "component": "SystemArchitecture",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/ystem-architecture"
+        },
+        {
+          "component": "SystemManagement",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/ystem-management"
+        },
+        {
+          "component": "TeamManagement",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/environments/teams"
+        },
+        {
+          "component": "UserManagement",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/environments/users"
+        },
+        {
+          "component": "UserSeedHealth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/ser-seed-health"
+        },
+        {
+          "component": "EnvironmentSwitcher",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/nvironment-switcher"
+        },
+        {
+          "component": "EnvironmentsHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/environments"
+        },
+        {
+          "component": "MCDevicesCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/environments/evices"
+        },
+        {
+          "component": "MCUsersCenter",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/environments/users",
+          "mergeInto": "UserManagement"
+        }
+      ]
+    },
+    {
+      "domain": "ai-runtime",
+      "label": "AI Runtime",
+      "hub": "/admin/ai-runtime",
+      "pages": [
+        {
+          "component": "AIAgentDebate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/gent-debate"
+        },
+        {
+          "component": "AIChangePlanViewer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/hange-plan-viewer"
+        },
+        {
+          "component": "AIDesignDiffTheater",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/esign-diff-theater"
+        },
+        {
+          "component": "AIDesignStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/esign-studio"
+        },
+        {
+          "component": "AIEngineeringBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ngineering-board"
+        },
+        {
+          "component": "AIEvidenceBundleComposer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/vidence-bundle-composer"
+        },
+        {
+          "component": "AIFixCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ix"
+        },
+        {
+          "component": "AIG01ProviderRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/provider-registry"
+        },
+        {
+          "component": "AIG02ModelRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/model-registry"
+        },
+        {
+          "component": "AIG03RoutingMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/routing-matrix"
+        },
+        {
+          "component": "AIG04BudgetCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/budget"
+        },
+        {
+          "component": "AIG05ReceiptsExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/receipts-explorer"
+        },
+        {
+          "component": "AIG05UsageLedgerExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/usage-ledger-explorer"
+        },
+        {
+          "component": "AIG06LaunchTruth",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/ai-runtime/launch-truth",
+          "mergeInto": "AIG07LaunchTruth"
+        },
+        {
+          "component": "AIG07LaunchTruth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/launch-truth"
+        },
+        {
+          "component": "AIG08DegradedDiagnostics",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/degraded-diagnostics"
+        },
+        {
+          "component": "AIG09RuntimeVerification",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/runtime-verification"
+        },
+        {
+          "component": "AIGovernancePage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/overnance"
+        },
+        {
+          "component": "AIHumanBoundaryControls",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/uman-boundary-controls"
+        },
+        {
+          "component": "AILearningCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/earning"
+        },
+        {
+          "component": "AIMissionCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ission"
+        },
+        {
+          "component": "AIPromptFamiliesExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/rompt-families-explorer"
+        },
+        {
+          "component": "AIReleasesCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/eleases"
+        },
+        {
+          "component": "AIRootCauseGraph",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/oot-cause-graph"
+        },
+        {
+          "component": "AIRuntimeStatus",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/untime-status"
+        },
+        {
+          "component": "AISelfHealing",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/elf-healing"
+        },
+        {
+          "component": "AISelfLearningLedger",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/elf-learning-ledger"
+        },
+        {
+          "component": "AIT01TeamOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/team-overview"
+        },
+        {
+          "component": "AIT02RoleRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/role-registry"
+        },
+        {
+          "component": "AIT03TaskInvocation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/task-invocation"
+        },
+        {
+          "component": "AIT04ActivityFeedPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/activity-feed"
+        },
+        {
+          "component": "AIT04to08Boards",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/to08-boards"
+        },
+        {
+          "component": "AIT05CostEfficiency",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/cost-efficiency"
+        },
+        {
+          "component": "AIT06RecommendationsPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/recommendations"
+        },
+        {
+          "component": "AIT08LaunchTruthPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/launch-truth"
+        },
+        {
+          "component": "AITSetupChecklist",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/etup-checklist"
+        },
+        {
+          "component": "AITeamRoster",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/eam-roster"
+        },
+        {
+          "component": "AITimeMachine",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ime-machine"
+        },
+        {
+          "component": "AITokenDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/oken"
+        },
+        {
+          "component": "AdvisorAgentDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-agent"
+        },
+        {
+          "component": "AdvisorAutonomyPolicyEditor",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-autonomy-policy-editor"
+        },
+        {
+          "component": "AdvisorBoardCatalog",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-board-catalog"
+        },
+        {
+          "component": "AdvisorMemoryInspector",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-memory-inspector"
+        },
+        {
+          "component": "AdvisorProfitabilityDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-profitability"
+        },
+        {
+          "component": "AdvisorRecommendationMonitor",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/dvisor-recommendation-monitor"
+        },
+        {
+          "component": "BrainCoreDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/rain-core"
+        },
+        {
+          "component": "CAI01PersonalGraphExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/personal-graph-explorer"
+        },
+        {
+          "component": "CAI02IntentTraceBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/intent-trace-board"
+        },
+        {
+          "component": "CAI03AttentionCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/attention"
+        },
+        {
+          "component": "CAI04ContinuityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/continuity"
+        },
+        {
+          "component": "CAI05TrustActionsBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/trust-actions-board"
+        },
+        {
+          "component": "CAI06ChiefOfStaffCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/chief-of-staff"
+        },
+        {
+          "component": "CAI07TimingStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/timing-studio"
+        },
+        {
+          "component": "CAI08RelationshipCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/relationship"
+        },
+        {
+          "component": "CAI09DigestConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/digest-console"
+        },
+        {
+          "component": "CAI10ModesCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/modes"
+        },
+        {
+          "component": "CAI11InterfaceProfiler",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/interface-profiler"
+        },
+        {
+          "component": "CAI12OpportunityBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/opportunity-board"
+        },
+        {
+          "component": "CAI13MemoryGovernance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/memory-governance"
+        },
+        {
+          "component": "CAI14BoundaryControl",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/boundary-control"
+        },
+        {
+          "component": "CAI15SignatureStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/signature-studio"
+        },
+        {
+          "component": "ComputeGovernanceBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ompute-governance-board"
+        },
+        {
+          "component": "ConciergeRuntimeBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/oncierge-runtime-board"
+        },
+        {
+          "component": "GraphIntelligencePage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/raph-intelligence"
+        },
+        {
+          "component": "IntelligenceArtifactLibrary",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-artifact-library"
+        },
+        {
+          "component": "IntelligenceDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence"
+        },
+        {
+          "component": "MemoryContinuityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/emory-continuity"
+        },
+        {
+          "component": "OutcomeEconomicsDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/utcome-economics"
+        },
+        {
+          "component": "REX01RecommendationIntelligence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/recommendation-intelligence"
+        },
+        {
+          "component": "REX02ApprovalQueueCompletion",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/approval-queue-completion"
+        },
+        {
+          "component": "REX03RecommendationExecution",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/recommendation-execution"
+        },
+        {
+          "component": "REX04RemediationPrograms",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/remediation-programs"
+        },
+        {
+          "component": "REX05OutcomeVerification",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/outcome-verification"
+        },
+        {
+          "component": "RevenueAutopilotMonitor",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/evenue-autopilot-monitor"
+        },
+        {
+          "component": "SimulationCenterPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/imulation"
+        },
+        {
+          "component": "AIRuntimeHome",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/untime-home"
+        },
+        {
+          "component": "AIEfficiencyScoreboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/fficiency-scoreboard"
+        },
+        {
+          "component": "DifferentialReasoningExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ifferential-reasoning-explorer"
+        },
+        {
+          "component": "IntelligenceAssetLibrary",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-asset-library"
+        },
+        {
+          "component": "IntelligenceLayerAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-layer-admin"
+        },
+        {
+          "component": "IntelligencePacketInspector",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-packet-inspector"
+        },
+        {
+          "component": "IntelligenceReuseOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-reuse-overview"
+        },
+        {
+          "component": "OutcomeEconomicsBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/utcome-economics-board"
+        },
+        {
+          "component": "PatternLearningCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/attern-learning"
+        },
+        {
+          "component": "ZeroWastePromptView",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ero-waste-prompt-view"
+        },
+        {
+          "component": "MCAIControl",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/ai-runtime",
+          "mergeInto": "AIRuntimeHome"
+        },
+        {
+          "component": "MCCostsAIBudgets",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/ai-runtime/costs",
+          "mergeInto": "AIT05CostEfficiency"
+        },
+        {
+          "component": "SAGBuilderConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/uilder-console"
+        },
+        {
+          "component": "SAGComplianceGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ompliance-gate"
+        },
+        {
+          "component": "SAGCostConfidenceLab",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ost-confidence-lab"
+        },
+        {
+          "component": "SAGEconomicsBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/conomics-board"
+        },
+        {
+          "component": "SAGFallbackCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/allback"
+        },
+        {
+          "component": "SAGModelRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/odel-registry"
+        },
+        {
+          "component": "SAGMultiStageExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ulti-stage-explorer"
+        },
+        {
+          "component": "SAGOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/verview"
+        },
+        {
+          "component": "SAGPromptRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/rompt-registry"
+        },
+        {
+          "component": "SAGProviderHealth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/rovider-health"
+        },
+        {
+          "component": "SAGReceiptExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/eceipt-explorer"
+        },
+        {
+          "component": "SAGRoutingPolicy",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/outing-policy"
+        },
+        {
+          "component": "CostToConfidenceDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ost-to-confidence"
+        },
+        {
+          "component": "DecayMonitorDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ecay-monitor"
+        },
+        {
+          "component": "IntelligenceCapitalDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-capital"
+        },
+        {
+          "component": "IntelligenceInsuranceDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-insurance"
+        },
+        {
+          "component": "IntelligenceMarketDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/ntelligence-market"
+        },
+        {
+          "component": "ReasoningReplayDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/ai-runtime/easoning-replay"
+        }
+      ]
+    },
+    {
+      "domain": "integrations",
+      "label": "Integrations",
+      "hub": "/admin/integrations",
+      "pages": [
+        {
+          "component": "CN01ConnectorRealityOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-reality-overview"
+        },
+        {
+          "component": "CN02ConnectorRegistryConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-registry-console"
+        },
+        {
+          "component": "CN03AccountLinkageBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/account-linkage-board"
+        },
+        {
+          "component": "CN04SyncTruthCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/sync-truth"
+        },
+        {
+          "component": "CN05ConnectorHealthBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-health-board"
+        },
+        {
+          "component": "CN06ConnectorDemoReview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-demo-review"
+        },
+        {
+          "component": "CN07ConnectorLaunchGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-launch-gate"
+        },
+        {
+          "component": "CommunicationHub",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/ommunication-hub"
+        },
+        {
+          "component": "ConnectorGovernanceCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/onnector-governance"
+        },
+        {
+          "component": "ECO01EcosystemCommand",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/ecosystem-command"
+        },
+        {
+          "component": "GoogleProviderFamilyDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/oogle-provider-family"
+        },
+        {
+          "component": "IntegrationConciergePage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/ntegration-concierge"
+        },
+        {
+          "component": "OS01PlatformCommandCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/platform-command"
+        },
+        {
+          "component": "PFA01ProviderFamilyRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/provider-family-registry"
+        },
+        {
+          "component": "PFA02ProviderCapabilityMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/provider-capability-matrix"
+        },
+        {
+          "component": "PFA03OAuthClientRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/o-auth-client-registry"
+        },
+        {
+          "component": "PFA04ConsentLedgerExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/consent-ledger-explorer"
+        },
+        {
+          "component": "PFA05ScopePolicyMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/scope-policy-matrix"
+        },
+        {
+          "component": "PFA06PermissionUpgradeCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/permission-upgrade"
+        },
+        {
+          "component": "PFA07ConnectorHealthDrift",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connector-health-drift"
+        },
+        {
+          "component": "PFA08AccountGraphExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/account-graph-explorer"
+        },
+        {
+          "component": "PFA09ConnectedAccountsCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/connected-accounts"
+        },
+        {
+          "component": "PFA10IntegrationLaunchHonesty",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/integration-launch-honesty"
+        },
+        {
+          "component": "ApiGatewayRoutesAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/pi-gateway-routes-admin"
+        },
+        {
+          "component": "CloudActivityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-activity-admin"
+        },
+        {
+          "component": "CloudAdminLayout",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-admin-layout"
+        },
+        {
+          "component": "CloudAuditAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-audit-admin"
+        },
+        {
+          "component": "CloudBackboneAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-backbone-admin"
+        },
+        {
+          "component": "CloudBootstrapAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-bootstrap-admin"
+        },
+        {
+          "component": "CloudCollaborationAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-collaboration-admin"
+        },
+        {
+          "component": "CloudComplianceAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-compliance-admin"
+        },
+        {
+          "component": "CloudCostCapacityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-cost-capacity-admin"
+        },
+        {
+          "component": "CloudDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud"
+        },
+        {
+          "component": "CloudDeviceIdentityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-device-identity-admin"
+        },
+        {
+          "component": "CloudDevicesAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-devices-admin"
+        },
+        {
+          "component": "CloudEncryptionAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-encryption-admin"
+        },
+        {
+          "component": "CloudFeatureFlagsAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-feature-flags-admin"
+        },
+        {
+          "component": "CloudGovernanceAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-governance-admin"
+        },
+        {
+          "component": "CloudIntegrityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-integrity-admin"
+        },
+        {
+          "component": "CloudJobsAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-jobs-admin"
+        },
+        {
+          "component": "CloudLifecycleAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-lifecycle-admin"
+        },
+        {
+          "component": "CloudMaintenanceModeAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-maintenance-mode-admin"
+        },
+        {
+          "component": "CloudMonitoringAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-monitoring-admin"
+        },
+        {
+          "component": "CloudNamespacesAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-namespaces-admin"
+        },
+        {
+          "component": "CloudObservabilityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-observability-admin"
+        },
+        {
+          "component": "CloudPolicyAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-policy-admin"
+        },
+        {
+          "component": "CloudRecoveryAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-recovery-admin"
+        },
+        {
+          "component": "CloudSharingAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-sharing-admin"
+        },
+        {
+          "component": "CloudStorageAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-storage-admin"
+        },
+        {
+          "component": "CloudStorageHealthAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-storage-health-admin"
+        },
+        {
+          "component": "CloudSupportConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-support-console"
+        },
+        {
+          "component": "CloudSyncAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-sync-admin"
+        },
+        {
+          "component": "CloudSyncObjectsAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-sync-objects-admin"
+        },
+        {
+          "component": "CloudTenantAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-tenant-admin"
+        },
+        {
+          "component": "CloudUsersAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-users-admin"
+        },
+        {
+          "component": "CloudWorkerOpsAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/loud-worker-ops-admin"
+        },
+        {
+          "component": "ITC01Overview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/overview"
+        },
+        {
+          "component": "ITC02SpecRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/spec-registry"
+        },
+        {
+          "component": "ITC03ContractVerification",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/contract-verification"
+        },
+        {
+          "component": "ITC04WiringGraph",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/wiring-graph"
+        },
+        {
+          "component": "ITC05ReadinessScoreboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/readiness-scoreboard"
+        },
+        {
+          "component": "ITC06DriftRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/drift-radar"
+        },
+        {
+          "component": "ITC07ImplementationMap",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/implementation-map"
+        },
+        {
+          "component": "ITC08ArchitectureCompliance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/architecture-compliance"
+        },
+        {
+          "component": "ITC09RouteInventory",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/route-inventory"
+        },
+        {
+          "component": "ITC10RuntimeEvidence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/runtime-evidence"
+        },
+        {
+          "component": "ITC11PromptTraceability",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/prompt-traceability"
+        },
+        {
+          "component": "ITC12ValidationPipeline",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/validation-pipeline"
+        },
+        {
+          "component": "ITC13LaunchTruthGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/launch-truth-gate"
+        },
+        {
+          "component": "ITC14ManifestExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/manifest-explorer"
+        },
+        {
+          "component": "IntegrationsHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/integrations"
+        },
+        {
+          "component": "JVC01JourneyVerificationOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/journey-verification-overview"
+        },
+        {
+          "component": "JVC04ButtonCTAHealth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/button-c-t-a-health"
+        },
+        {
+          "component": "JVC05RedirectIntegrityMap",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/redirect-integrity-map"
+        },
+        {
+          "component": "JVC06PageLoadIntegrity",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/page-load-integrity"
+        },
+        {
+          "component": "JVC07FormVerificationCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/form-verification"
+        },
+        {
+          "component": "JVC08ModalDrawerBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/modal-drawer-board"
+        },
+        {
+          "component": "JVC09KeyboardCommandBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/keyboard-command-board"
+        },
+        {
+          "component": "JVC10RuntimeProbeCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/runtime-probe"
+        },
+        {
+          "component": "JVC11JourneyReplay",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/journey-replay"
+        },
+        {
+          "component": "JVC13InteractionDriftRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/interaction-drift-radar"
+        },
+        {
+          "component": "JVC14LaunchInteractionGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/integrations/launch-interaction-gate"
+        }
+      ]
+    },
+    {
+      "domain": "trust-security",
+      "label": "Trust & Security",
+      "hub": "/admin/trust-security",
+      "pages": [
+        {
+          "component": "AuditComplianceWorkspace",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/udit-compliance-workspace"
+        },
+        {
+          "component": "ConscienceGateDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/onscience-gate"
+        },
+        {
+          "component": "MSA01MultiSurfaceOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/multi-surface-overview"
+        },
+        {
+          "component": "MSA02CoreSurfaceBoundary",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/core-surface-boundary"
+        },
+        {
+          "component": "MSA03CapabilityPortability",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/capability-portability"
+        },
+        {
+          "component": "MSA04SurfaceAdapterRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/surface-adapter-registry"
+        },
+        {
+          "component": "MSA05CompatibilityRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/compatibility-radar"
+        },
+        {
+          "component": "PolicyDecisionLedger",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/olicy-decision-ledger"
+        },
+        {
+          "component": "PolicySimulator",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/olicy-simulator"
+        },
+        {
+          "component": "ProofMatrixExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/roof-matrix-explorer"
+        },
+        {
+          "component": "SEC01SessionSecrets",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/session-secrets"
+        },
+        {
+          "component": "SEC02SecurityFoundation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/security-foundation"
+        },
+        {
+          "component": "SecurityCommandCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/ecurity-command"
+        },
+        {
+          "component": "SecurityPostureBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/ecurity-posture-board"
+        },
+        {
+          "component": "TrustStateRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/rust-state-registry"
+        },
+        {
+          "component": "EpistemicFirewallBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/pistemic-firewall-board"
+        },
+        {
+          "component": "AdminRBACConsole",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/trust-security/rbac"
+        },
+        {
+          "component": "MCEmergencyAuthority",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/mergency-authority"
+        },
+        {
+          "component": "MCEventRouting",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/vent-routing"
+        },
+        {
+          "component": "MCPlatformAdaptation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/latform-adaptation"
+        },
+        {
+          "component": "MCPoliciesFlags",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/olicies-flags"
+        },
+        {
+          "component": "MCTrustSecurity",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/trust-security",
+          "mergeInto": "TrustSecurityHome"
+        },
+        {
+          "component": "PLE01Overview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/overview"
+        },
+        {
+          "component": "PLE02LawRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/law-registry"
+        },
+        {
+          "component": "PLE03ScaffoldRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/scaffold-registry"
+        },
+        {
+          "component": "PLE04CIGateMonitor",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/c-i-gate-monitor"
+        },
+        {
+          "component": "PLE05ManifestEnforcer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/manifest-enforcer"
+        },
+        {
+          "component": "PLE06OwnershipBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/ownership-board"
+        },
+        {
+          "component": "PLE07ComplianceDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/compliance"
+        },
+        {
+          "component": "PLT05ViolationTriage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/violation-triage"
+        },
+        {
+          "component": "PLT06FeatureCompliance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/feature-compliance"
+        },
+        {
+          "component": "PLT08LaunchEnforcement",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/launch-enforcement"
+        },
+        {
+          "component": "PLT10DriftRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/drift-radar"
+        },
+        {
+          "component": "SEC01PostureExecutive",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/posture-executive"
+        },
+        {
+          "component": "SEC02PrivilegedActions",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/privileged-actions"
+        },
+        {
+          "component": "SEC03SensitiveAssets",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/sensitive-assets"
+        },
+        {
+          "component": "SEC04EdgeFunctionAudit",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/edge-function-audit"
+        },
+        {
+          "component": "SEC05ClaimSafety",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/claim-safety"
+        },
+        {
+          "component": "SEC06IncidentRecovery",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/incident-recovery"
+        },
+        {
+          "component": "TrustSecurityHome",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/trust-security/rust-security-home"
+        }
+      ]
+    },
+    {
+      "domain": "health",
+      "label": "Health",
+      "hub": "/admin/health",
+      "pages": [
+        {
+          "component": "BAP01BackendApiDeployabilityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/backend-api-deployability"
+        },
+        {
+          "component": "BackendTopologyDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ackend-topology"
+        },
+        {
+          "component": "DRS01RealityModeOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/reality-mode-overview"
+        },
+        {
+          "component": "DRS02ModeRegistryConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/mode-registry-console"
+        },
+        {
+          "component": "DRS03ScenarioLibrary",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/scenario-library"
+        },
+        {
+          "component": "DRS04ScenarioEntityGraph",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/scenario-entity-graph"
+        },
+        {
+          "component": "DRS05ProviderConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/provider-console"
+        },
+        {
+          "component": "DRS06DemoPolicySafety",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/demo-policy-safety"
+        },
+        {
+          "component": "DRS07DemoAIControl",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/demo-a-i-control"
+        },
+        {
+          "component": "DRS08AnalyticsSegregation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/analytics-segregation"
+        },
+        {
+          "component": "DRS09TruthLabeling",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/truth-labeling"
+        },
+        {
+          "component": "DRS10DualRealityLaunchGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/dual-reality-launch-gate"
+        },
+        {
+          "component": "DWE01ConnectedDevicesCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/connected-devices"
+        },
+        {
+          "component": "DWE02PresenceContinuityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/presence-continuity"
+        },
+        {
+          "component": "DWE03WearableSignalsCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/wearable-signals"
+        },
+        {
+          "component": "DWE04NotificationRoutingStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/notification-routing-studio"
+        },
+        {
+          "component": "DWE05DeviceTrustApprovalsCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/device-trust-approvals"
+        },
+        {
+          "component": "DWE06AmbientAssistantCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ambient-assistant"
+        },
+        {
+          "component": "DWE07DeviceLaunchHonestyBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/device-launch-honesty-board"
+        },
+        {
+          "component": "EFH01EdgeFunctionHealthCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/edge-function-health"
+        },
+        {
+          "component": "EventStreamExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/vent-stream-explorer"
+        },
+        {
+          "component": "FL01FlagshipLoopsExecutive",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/flagship-loops-executive"
+        },
+        {
+          "component": "FL02FlagshipLoopDetail",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/flagship-loop-detail"
+        },
+        {
+          "component": "FL03FlagshipPrioritization",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/flagship-prioritization"
+        },
+        {
+          "component": "FleetHealthPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/leet-health"
+        },
+        {
+          "component": "HRS01HealthConsentCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/health-consent"
+        },
+        {
+          "component": "HRS02SignalSourcesBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/signal-sources-board"
+        },
+        {
+          "component": "HRS03ReadinessExplanation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/readiness-explanation"
+        },
+        {
+          "component": "HRS04NotificationInfluence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/notification-influence"
+        },
+        {
+          "component": "HRS05AssistantTimingBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/assistant-timing-board"
+        },
+        {
+          "component": "HRS06SignalLaunchHonesty",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/signal-launch-honesty"
+        },
+        {
+          "component": "InfraRealityClassificationBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/nfra-reality-classification-board"
+        },
+        {
+          "component": "IngressTopologyViewer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ngress-topology-viewer"
+        },
+        {
+          "component": "NRC01RoutingStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/routing-studio"
+        },
+        {
+          "component": "NRC02CalmnessCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/calmness"
+        },
+        {
+          "component": "NRC03FatigueBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/fatigue-board"
+        },
+        {
+          "component": "NRC04QueueInterruptMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/queue-interrupt-matrix"
+        },
+        {
+          "component": "NRC05CrossDeviceDelivery",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/cross-device-delivery"
+        },
+        {
+          "component": "NRC06NotificationLaunchHonesty",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/notification-launch-honesty"
+        },
+        {
+          "component": "NSS01StrategyBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/strategy-board"
+        },
+        {
+          "component": "NSS02CapabilityMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/capability-matrix"
+        },
+        {
+          "component": "NSS03TrustContinuity",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/trust-continuity"
+        },
+        {
+          "component": "NSS04MobileLaunchHonesty",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/mobile-launch-honesty"
+        },
+        {
+          "component": "PersistenceDriftRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ersistence-drift-radar"
+        },
+        {
+          "component": "PersistenceStatus",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ersistence-status"
+        },
+        {
+          "component": "RuntimeContinuityBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/untime-continuity-board"
+        },
+        {
+          "component": "RuntimeRealityValidation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/untime-reality-validation"
+        },
+        {
+          "component": "RuntimeTierGovernanceDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/untime-tier-governance"
+        },
+        {
+          "component": "RuntimeTruthCoverageDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/untime-truth-coverage"
+        },
+        {
+          "component": "SERV01ServiceOwnership",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/service-ownership"
+        },
+        {
+          "component": "SERV02DomainOwnership",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/domain-ownership"
+        },
+        {
+          "component": "SERV03RouteServiceTrace",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/route-service-trace"
+        },
+        {
+          "component": "SERV04ServiceDuplication",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/service-duplication"
+        },
+        {
+          "component": "SERV05CanonicalActions",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/canonical-actions"
+        },
+        {
+          "component": "SERV06FlagshipTraceability",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/flagship-traceability"
+        },
+        {
+          "component": "SystemHealthDashboard",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/health",
+          "mergeInto": "HealthHome"
+        },
+        {
+          "component": "FE01QualityMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/quality-matrix"
+        },
+        {
+          "component": "FE02DesignGovernance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/design-governance"
+        },
+        {
+          "component": "HealthHome",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ealth-home"
+        },
+        {
+          "component": "MCJobsMaintenance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/obs-maintenance"
+        },
+        {
+          "component": "MCStateAuthority",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/tate-authority"
+        },
+        {
+          "component": "MCStorageCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/torage"
+        },
+        {
+          "component": "MCSyncCloud",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/ync-cloud"
+        },
+        {
+          "component": "MCSystemHealth",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/health",
+          "mergeInto": "HealthHome"
+        },
+        {
+          "component": "MCWorkspacesContinuity",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/orkspaces-continuity"
+        },
+        {
+          "component": "RCP01Overview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/overview"
+        },
+        {
+          "component": "RCP03FeatureDetail",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/feature-detail"
+        },
+        {
+          "component": "RCP05MockSourceInventory",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/mock-source-inventory"
+        },
+        {
+          "component": "RCP07RouteHeatmap",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/route-heatmap"
+        },
+        {
+          "component": "RCP08ContractReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/contract-readiness"
+        },
+        {
+          "component": "RCP10WavePlanner",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/wave-planner"
+        },
+        {
+          "component": "RCP11ProgressTimeline",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/progress-timeline"
+        },
+        {
+          "component": "RuntimeTruthGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/health/untime-truth-gate"
+        }
+      ]
+    },
+    {
+      "domain": "releases",
+      "label": "Releases",
+      "hub": "/admin/releases",
+      "pages": [
+        {
+          "component": "AND01AndroidEcosystemCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/android-ecosystem"
+        },
+        {
+          "component": "AND02WearOSExperience",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/wear-o-s-experience"
+        },
+        {
+          "component": "AND03AndroidTrustApprovals",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/android-trust-approvals"
+        },
+        {
+          "component": "AND04AndroidHealthConsent",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/android-health-consent"
+        },
+        {
+          "component": "AND05AndroidLaunchReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/android-launch-readiness"
+        },
+        {
+          "component": "APL01AppleEcosystemCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-ecosystem"
+        },
+        {
+          "component": "APL02AppleDevicesTrust",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-devices-trust"
+        },
+        {
+          "component": "APL03AppleWatchExperience",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-watch-experience"
+        },
+        {
+          "component": "APL04AppleIdentityAccounts",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-identity-accounts"
+        },
+        {
+          "component": "APL05AppleHealthConsent",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-health-consent"
+        },
+        {
+          "component": "APL06AppleLaunchReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/apple-launch-readiness"
+        },
+        {
+          "component": "APP01ApplianceDeployabilityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/appliance-deployability"
+        },
+        {
+          "component": "CI01CIUmbrellaCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/c-i-umbrella"
+        },
+        {
+          "component": "DSK01DeployabilityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/deployability"
+        },
+        {
+          "component": "DeliveryReadinessBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/elivery-readiness-board"
+        },
+        {
+          "component": "DeliveryWavePlanner",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/elivery-wave-planner"
+        },
+        {
+          "component": "DeploymentUnitExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/eployment-unit-explorer"
+        },
+        {
+          "component": "ISA01IdentityProviderRegistryBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/identity-provider-registry-board"
+        },
+        {
+          "component": "ISA02ConnectorProviderRegistryBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/connector-provider-registry-board"
+        },
+        {
+          "component": "ISA03OAuthClientRegistryConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/o-auth-client-registry-console"
+        },
+        {
+          "component": "ISA04ConsentLedgerExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/consent-ledger-explorer"
+        },
+        {
+          "component": "ISA05ScopePolicyMatrixBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/scope-policy-matrix-board"
+        },
+        {
+          "component": "ISA06UnifiedAccountGraphExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/unified-account-graph-explorer"
+        },
+        {
+          "component": "ISA07AuthConnectorTruthBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/auth-connector-truth-board"
+        },
+        {
+          "component": "LT01BehavioralTruthOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/behavioral-truth-overview"
+        },
+        {
+          "component": "LT02CIPipelineCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/c-i-pipeline"
+        },
+        {
+          "component": "LT03E2EJourneyBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/e2-e-journey-board"
+        },
+        {
+          "component": "LT04RuntimeProbeCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/runtime-probe"
+        },
+        {
+          "component": "LT05LaunchGateBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/launch-gate-board"
+        },
+        {
+          "component": "LT06RouteInteractionTruth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/route-interaction-truth"
+        },
+        {
+          "component": "LT07TruthRegressionRadar",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/truth-regression-radar"
+        },
+        {
+          "component": "LaunchReadinessBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/releases/launch-readiness"
+        },
+        {
+          "component": "MigrationWavePlanner",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/igration-wave-planner"
+        },
+        {
+          "component": "ReleaseEngineeringPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/elease-engineering"
+        },
+        {
+          "component": "ReleaseRingCommandBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/elease-ring-command-board"
+        },
+        {
+          "component": "UAO01PresenceContinuity",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/presence-continuity"
+        },
+        {
+          "component": "UAO02ConnectedDevices",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/connected-devices"
+        },
+        {
+          "component": "UAO03AmbientTeamControl",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/ambient-team-control"
+        },
+        {
+          "component": "UAO04NotificationRouter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/notification-router"
+        },
+        {
+          "component": "UAO05HealthReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/health-readiness"
+        },
+        {
+          "component": "UAO06DeviceTrust",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/device-trust"
+        },
+        {
+          "component": "UAO07CrossSurfaceJourney",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/cross-surface-journey"
+        },
+        {
+          "component": "UAO08AmbientLaunchReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/ambient-launch-readiness"
+        },
+        {
+          "component": "WEB01DeployabilityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/deployability"
+        },
+        {
+          "component": "ReleaseGovernanceAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/elease-governance-admin"
+        },
+        {
+          "component": "LAUNCH01ReadinessExecutive",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/readiness-executive"
+        },
+        {
+          "component": "LAUNCH02FlagshipReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/flagship-readiness"
+        },
+        {
+          "component": "LAUNCH03ClaimSafetyMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/claim-safety-matrix"
+        },
+        {
+          "component": "LAUNCH04BlockerCommand",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/blocker-command"
+        },
+        {
+          "component": "LAUNCH06NarrativeGuide",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/narrative-guide"
+        },
+        {
+          "component": "LAUNCH07GoNoGo",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/releases/go-no-go"
+        },
+        {
+          "component": "MCReleasesUpdates",
+          "pageClass": "DUPLICATE_MERGE_REQUIRED",
+          "targetRoute": "/admin/releases",
+          "mergeInto": "ReleasesHome"
+        },
+        {
+          "component": "ReleasesHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/releases"
+        }
+      ]
+    },
+    {
+      "domain": "verification",
+      "label": "Verification",
+      "hub": "/admin/verification",
+      "pages": [
+        {
+          "component": "AR01AutomationOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/automation-overview"
+        },
+        {
+          "component": "AR02ScheduledJobRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/scheduled-job-registry"
+        },
+        {
+          "component": "AR03SelfHealingBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/self-healing-board"
+        },
+        {
+          "component": "AR04AgentScheduler",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/agent-scheduler"
+        },
+        {
+          "component": "AR05SystemMaintenanceBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/system-maintenance-board"
+        },
+        {
+          "component": "AR06ExecutionTraceExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/execution-trace-explorer"
+        },
+        {
+          "component": "AR07RetryFailureCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/retry-failure"
+        },
+        {
+          "component": "AR08KillSwitchCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/kill-switch"
+        },
+        {
+          "component": "AR09AutomationLaunchGate",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/automation-launch-gate"
+        },
+        {
+          "component": "ActionLineageExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ction-lineage-explorer"
+        },
+        {
+          "component": "ActionStateDriftViewer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ction-state-drift-viewer"
+        },
+        {
+          "component": "CanonicalChainExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/anonical-chain-explorer"
+        },
+        {
+          "component": "ChangeImpactAnalyzer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/hange-impact-analyzer"
+        },
+        {
+          "component": "CompositorDebugPage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ompositor-debug"
+        },
+        {
+          "component": "ContractBackendReadiness",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ontract-backend-readiness"
+        },
+        {
+          "component": "CorePersistenceOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ore-persistence-overview"
+        },
+        {
+          "component": "CoreServiceMigrationBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ore-service-migration-board"
+        },
+        {
+          "component": "CrossDomainMemoryExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ross-domain-memory-explorer"
+        },
+        {
+          "component": "DbTruthExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/b-truth-explorer"
+        },
+        {
+          "component": "DependencyMapViewer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ependency-map-viewer"
+        },
+        {
+          "component": "DesktopHostCapabilityExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/esktop-host-capability-explorer"
+        },
+        {
+          "component": "DomainManifestDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/omain-manifest"
+        },
+        {
+          "component": "DomainMethodologyPacks",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/omain-methodology-packs"
+        },
+        {
+          "component": "DomainRealityBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/omain-reality-board"
+        },
+        {
+          "component": "InvestorProofLedger",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/nvestor-proof-ledger"
+        },
+        {
+          "component": "KernelDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ernel"
+        },
+        {
+          "component": "LaunchHonestyBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/launch-honesty"
+        },
+        {
+          "component": "META01ArchitectureAtlas",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/architecture-atlas"
+        },
+        {
+          "component": "META02ControlPlaneCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/control-plane"
+        },
+        {
+          "component": "META03GoldenPathHealth",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/golden-path-health"
+        },
+        {
+          "component": "META04ProductReality",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/product-reality"
+        },
+        {
+          "component": "META05CompletenessMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/completeness-matrix"
+        },
+        {
+          "component": "ManifestDriftTriage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/anifest-drift-triage"
+        },
+        {
+          "component": "ManifestTruthDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/anifest-truth"
+        },
+        {
+          "component": "MockEliminationCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ock-elimination"
+        },
+        {
+          "component": "MockReplacementProgram",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ock-replacement-program"
+        },
+        {
+          "component": "MockSourceInventory",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ock-source-inventory"
+        },
+        {
+          "component": "RealityClassificationMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eality-classification-matrix"
+        },
+        {
+          "component": "RealityConversionOverview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eality-conversion-overview"
+        },
+        {
+          "component": "RealityProgressTimeline",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eality-progress-timeline"
+        },
+        {
+          "component": "RouteRealityHeatmap",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/oute-reality-heatmap"
+        },
+        {
+          "component": "RouteSourceDiagnostics",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/oute-source-diagnostics"
+        },
+        {
+          "component": "SYS01SystemIntelligence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/system-intelligence"
+        },
+        {
+          "component": "SimulatedCoreServicesBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/imulated-core-services-board"
+        },
+        {
+          "component": "TruthIndexDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ruth-index"
+        },
+        {
+          "component": "WorkflowReplayAudit",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/orkflow-replay-audit"
+        },
+        {
+          "component": "ArchitectureBoundaryBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/rchitecture-boundary-board"
+        },
+        {
+          "component": "GodTierIntegrationBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/od-tier-integration-board"
+        },
+        {
+          "component": "GodTierRuntimeBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/od-tier-runtime-board"
+        },
+        {
+          "component": "DomainOwnershipAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/omain-ownership-admin"
+        },
+        {
+          "component": "ReadModelSnapshotsAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ead-model-snapshots-admin"
+        },
+        {
+          "component": "ServiceIdentityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ervice-identity-admin"
+        },
+        {
+          "component": "CJ01ExecutiveReport",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/executive-report"
+        },
+        {
+          "component": "CJ02JourneyTruthMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/journey-truth-matrix"
+        },
+        {
+          "component": "CJ03JourneyDetailView",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/journey-detail-view"
+        },
+        {
+          "component": "CJ04LaunchBlockerView",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/launch-blocker-view"
+        },
+        {
+          "component": "CJ05DemoVsRealComparison",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/demo-vs-real-comparison"
+        },
+        {
+          "component": "CJ06BrokenClicksExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/broken-clicks-explorer"
+        },
+        {
+          "component": "CJ07OwnerRemediationView",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/owner-remediation-view"
+        },
+        {
+          "component": "CJ08RouteActionCoverage",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/route-action-coverage"
+        },
+        {
+          "component": "CJ09RecentVerificationRuns",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/recent-verification-runs"
+        },
+        {
+          "component": "FIPBuilderConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/uilder-console"
+        },
+        {
+          "component": "FIPCapabilityRegistry",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/apability-registry"
+        },
+        {
+          "component": "FIPComplianceBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ompliance-board"
+        },
+        {
+          "component": "FIPDeprecationManager",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eprecation-manager"
+        },
+        {
+          "component": "FIPExecutionExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/xecution-explorer"
+        },
+        {
+          "component": "FIPGeneratedTruthBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/enerated-truth-board"
+        },
+        {
+          "component": "FIPIntakeDesk",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ntake-desk"
+        },
+        {
+          "component": "FIPMemoryGraphStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/emory-graph-studio"
+        },
+        {
+          "component": "FIPObservabilityCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/bservability"
+        },
+        {
+          "component": "FIPOwnerBoundary",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/wner-boundary"
+        },
+        {
+          "component": "FIPPolicyTrustBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/olicy-trust-board"
+        },
+        {
+          "component": "FIPReadinessGateReview",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eadiness-gate-review"
+        },
+        {
+          "component": "FIPRolloutPlanner",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ollout-planner"
+        },
+        {
+          "component": "FIPSpecStudio",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/pec-studio"
+        },
+        {
+          "component": "CrossTenantGovernance",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ross-tenant-governance"
+        },
+        {
+          "component": "MCApprovalFlow",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/pproval-flow"
+        },
+        {
+          "component": "MCArchitectureDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/rchitecture"
+        },
+        {
+          "component": "MCArchitectureTests",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/rchitecture-tests"
+        },
+        {
+          "component": "MCAuthorityMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/uthority-matrix"
+        },
+        {
+          "component": "MCCommandRouting",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ommand-routing"
+        },
+        {
+          "component": "MCControlReceipts",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ontrol-receipts"
+        },
+        {
+          "component": "MCFailureRecovery",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ailure-recovery"
+        },
+        {
+          "component": "MCFeatureOwnership",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eature-ownership"
+        },
+        {
+          "component": "CoreServicePersistence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ore-service-persistence"
+        },
+        {
+          "component": "LaunchHonestyBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/launch-honesty"
+        },
+        {
+          "component": "MockReplacementProgram",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ock-replacement-program"
+        },
+        {
+          "component": "RealityClassificationMatrix",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/eality-classification-matrix"
+        },
+        {
+          "component": "BenchmarkLabDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/enchmark-lab"
+        },
+        {
+          "component": "PortfolioAllocationDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ortfolio-allocation"
+        },
+        {
+          "component": "QualityFloorDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/uality-floor"
+        },
+        {
+          "component": "TimeToTruthDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/ime-to-truth"
+        },
+        {
+          "component": "ValueRiskDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/alue-risk"
+        },
+        {
+          "component": "V01SurfaceInventoryBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/surface-inventory"
+        },
+        {
+          "component": "V02InteractionCoverageBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/interaction-coverage"
+        },
+        {
+          "component": "V03P0JourneyBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/p0-journeys"
+        },
+        {
+          "component": "V04ModeVerificationBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/mode-verification"
+        },
+        {
+          "component": "V05FailureTriageBoard",
+          "pageClass": "WORKFLOW_TOOL",
+          "targetRoute": "/admin/verification/failure-triage"
+        },
+        {
+          "component": "V06EvidenceExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/evidence"
+        },
+        {
+          "component": "V07LaunchBlockerBoard",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/verification/launch-blockers"
+        },
+        {
+          "component": "VerificationHome",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/verification/erification-home"
+        }
+      ]
+    },
+    {
+      "domain": "config",
+      "label": "Config",
+      "hub": "/admin/config",
+      "pages": [
+        {
+          "component": "DataRetentionDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/ata-retention"
+        },
+        {
+          "component": "FeatureFactoryConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/eature-factory-console"
+        },
+        {
+          "component": "FeatureIntakeDesk",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/eature-intake-desk"
+        },
+        {
+          "component": "FeatureLifecycleBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/eature-lifecycle-board"
+        },
+        {
+          "component": "FeatureRealityDetail",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/eature-reality-detail"
+        },
+        {
+          "component": "ClientCapabilityAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/lient-capability-admin"
+        },
+        {
+          "component": "ConfigChangeHistory",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/onfig-change-history"
+        },
+        {
+          "component": "DataFlowMapAdmin",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/config/ata-flow-map-admin"
+        },
+        {
+          "component": "ConfigHome",
+          "pageClass": "PRIMARY_DOMAIN_ENTRY",
+          "targetRoute": "/admin/config"
+        },
+        {
+          "component": "MCKnowledgeBase",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/config/knowledge"
+        }
+      ]
+    },
+    {
+      "domain": "support",
+      "label": "Support",
+      "hub": "/admin/support",
+      "pages": [
+        {
+          "component": "BuilderKnowledgeBase",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/uilder-knowledge-base"
+        },
+        {
+          "component": "FCC01FounderCommandConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/founder-command-console"
+        },
+        {
+          "component": "FCC02TaskDecompositionGraph",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/task-decomposition-graph"
+        },
+        {
+          "component": "FCC03CICDPipelineBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/c-i-c-d-pipeline-board"
+        },
+        {
+          "component": "FCC04RunbookCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/runbook"
+        },
+        {
+          "component": "FCC05FounderDashboard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/founder"
+        },
+        {
+          "component": "FCC06ProgramManagementBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/program-management-board"
+        },
+        {
+          "component": "FCC07PlatformCostCapacity",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/platform-cost-capacity"
+        },
+        {
+          "component": "FCC08SyncStorageOps",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/sync-storage-ops"
+        },
+        {
+          "component": "FCC09SecurityRiskCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/security-risk"
+        },
+        {
+          "component": "FCC10HumanOversightEscalation",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/human-oversight-escalation"
+        },
+        {
+          "component": "FCC11IncidentResponseTimeline",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/incident-response-timeline"
+        },
+        {
+          "component": "FCC12KnowledgeMemorySystem",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/knowledge-memory-system"
+        },
+        {
+          "component": "FounderCouncilBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/ounder-council-board"
+        },
+        {
+          "component": "NOT01NotificationRuntimeVerification",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/notification-runtime-verification"
+        },
+        {
+          "component": "NOT02NotificationRoutingBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/notification-routing-board"
+        },
+        {
+          "component": "NOT03DeliveryReceiptsExplorer",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/delivery-receipts-explorer"
+        },
+        {
+          "component": "NOT04CalmPolicyBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/calm-policy-board"
+        },
+        {
+          "component": "NOT05NotificationPreferencesBoard",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/notification-preferences-board"
+        },
+        {
+          "component": "ReplayRecoveryConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/eplay-recovery-console"
+        },
+        {
+          "component": "SRE01ValidationCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/validation"
+        },
+        {
+          "component": "SRE02BuilderCriticConsole",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/builder-critic-console"
+        },
+        {
+          "component": "SRE03SimulationLab",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/simulation-lab"
+        },
+        {
+          "component": "SRE04CodeStandardsTestGen",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/code-standards-test-gen"
+        },
+        {
+          "component": "SRE05ChaosTestingFramework",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/chaos-testing-framework"
+        },
+        {
+          "component": "SRE06AutoRollbackCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/auto-rollback"
+        },
+        {
+          "component": "SRE07VersionIntelligence",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/version-intelligence"
+        },
+        {
+          "component": "SRE08SelfOptimizationBudgets",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/self-optimization-budgets"
+        },
+        {
+          "component": "SupportCaseManager",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/upport-case-manager"
+        },
+        {
+          "component": "SupportConsoleSafe",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/upport-console-safe"
+        },
+        {
+          "component": "SmartDigestCenter",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/mart-digest"
+        },
+        {
+          "component": "MCLogsAudit",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/ogs-audit"
+        },
+        {
+          "component": "MCSupport",
+          "pageClass": "SECONDARY_SUBVIEW",
+          "targetRoute": "/admin/support"
+        },
+        {
+          "component": "SupportHome",
+          "pageClass": "DETAIL_EXPLORER",
+          "targetRoute": "/admin/support/upport-home"
+        }
+      ]
+    }
+  ]
+}

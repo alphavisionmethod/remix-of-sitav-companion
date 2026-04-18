@@ -12,7 +12,7 @@
 
 import * as fs from "fs";
 import { ViolationCollector, scanDir } from "../lib/utils";
-import { VALID_SUFFIXES } from "../../../src/lib/architecture/component-registry";
+import { VALID_SUFFIXES } from "../../../src/platform/architecture/component-registry";
 
 const REGISTRY_PATH = "generated/component-registry.json";
 const vc = new ViolationCollector();

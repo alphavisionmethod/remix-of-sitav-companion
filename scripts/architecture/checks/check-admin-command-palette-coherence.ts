@@ -13,7 +13,7 @@ import * as path from "path";
 const vc = new ViolationCollector();
 
 const palettePath = "src/components/admin/AdminCommandPalette.tsx";
-const registryPath = "src/lib/architecture/admin-route-registry.ts";
+const registryPath = "src/platform/architecture/admin-route-registry.ts";
 
 if (!fs.existsSync(palettePath)) {
   vc.add(palettePath, "missing-palette", "AdminCommandPalette.tsx not found", "warning");
@@ -36,7 +36,7 @@ if (!fs.existsSync(palettePath)) {
   }
 
   // Confirm the palette imports from the registry.
-  if (!paletteSrc.includes("@/lib/architecture/admin-route-registry")) {
+  if (!paletteSrc.includes("@/platform/architecture/admin-route-registry")) {
     vc.add(palettePath, "no-registry-import", "Palette must import from admin-route-registry");
   }
 

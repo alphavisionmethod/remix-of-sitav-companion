@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import {
   SYSTEM_LAYER_REGISTRY,
   validateSystemStack,
-} from "../../../src/lib/architecture/system-layer-registry";
+} from "../../../src/platform/architecture/system-layer-registry";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

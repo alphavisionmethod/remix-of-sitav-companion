@@ -20,7 +20,7 @@ interface CoverageReport {
 }
 
 const PAGES_DIR = "src/pages";
-const MAP_FILE = "src/lib/architecture/route-plane-map.ts";
+const MAP_FILE = "src/platform/architecture/route-plane-map.ts";
 const OUT_DIR = "generated";
 
 mkdirSync(OUT_DIR, { recursive: true });

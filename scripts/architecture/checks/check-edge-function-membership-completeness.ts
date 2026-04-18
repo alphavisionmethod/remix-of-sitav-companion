@@ -7,7 +7,7 @@
 
 import { existsSync, readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/lib/architecture/bounded-context-registry";
+import { BOUNDED_CONTEXT_REGISTRY } from "../../../src/platform/architecture/bounded-context-registry";
 
 const FUNCTIONS_DIR = "supabase/functions";
 const REPORT_PATH = "generated/edge-function-membership-report.json";

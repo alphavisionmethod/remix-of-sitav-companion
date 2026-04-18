@@ -12,7 +12,7 @@ import { ViolationCollector, scanDir } from "../lib/utils";
 import {
   DUPLICATE_FAMILIES,
   allKnownNameCollisions,
-} from "../../../src/lib/architecture/component-duplication-map";
+} from "../../../src/platform/architecture/component-duplication-map";
 
 const vc = new ViolationCollector();
 const COMPONENT_ROOT = "src/components";
