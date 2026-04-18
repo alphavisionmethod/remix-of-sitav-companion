@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-04-18T18:04:57.408Z",
+  "generatedAt": "2026-04-18T23:52:19.191Z",
   "gate": "launch-honesty-alignment",
-  "ok": true,
-  "errorCount": 0,
+  "ok": false,
+  "errorCount": 2,
   "warningCount": 0,
-  "issues": [],
-  "claimBearingDocs": 18
+  "issues": [
+    {
+      "severity": "error",
+      "area": "launch-honesty",
+      "message": "generated/internal-ai-runtime-phase2/PHASE2_CLOSURE_AUDIT.md: missing \"## Active Caveats\" block"
+    },
+    {
+      "severity": "error",
+      "area": "launch-honesty",
+      "message": "generated/internal-ai-runtime-phase6/PHASE6_CLOSURE_AUDIT.md: missing \"## Active Caveats\" block"
+    }
+  ],
+  "claimBearingDocs": 20
 }

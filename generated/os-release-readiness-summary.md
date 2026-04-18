@@ -1,16 +1,16 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T23:20:39.307Z
-> Verdict: **YELLOW** ⚠️
+> Generated: 2026-04-18T23:55:01.758Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 117 |
-| Gates present  | 117 |
+| Gates required | 124 |
+| Gates present  | 124 |
 | Gates missing  | 0 |
-| Total errors   | 0 |
+| Total errors   | 2 |
 | Total warnings | 3348 |
 
 ## Per-gate results
@@ -60,7 +60,7 @@
 | `future-vision-route-containment` | ✅ | 0 | 0 |
 | `device-surface-claim-safety` | ✅ | 0 | 0 |
 | `deployment-wording-safety` | ✅ | 0 | 0 |
-| `launch-honesty-alignment` | ✅ | 0 | 0 |
+| `launch-honesty-alignment` | ❌ | 2 | 0 |
 | `qualifier-required-claims` | ✅ | 0 | 0 |
 | `gate-meaningfulness` | ✅ | 0 | 0 |
 | `app-store-lifecycle-reality` | ✅ | 0 | 0 |
@@ -83,9 +83,16 @@
 | `agent-primitive-wiring` | ✅ | 0 | 0 |
 | `priority-bridge-wiring` | ✅ | 0 | 0 |
 | `kill-switch-backfill` | ✅ | 0 | 0 |
+| `bridge-status-contract` | ✅ | 0 | 0 |
 | `internal-agent-reflection-table` | ✅ | 0 | 0 |
 | `internal-agent-reflect-function` | ✅ | 0 | 0 |
 | `reflection-board-page` | ✅ | 0 | 0 |
+| `implementation-suggestions-pipeline` | ✅ | 0 | 0 |
+| `suggestion-generator-function` | ✅ | 0 | 0 |
+| `weekly-digest-generation` | ✅ | 0 | 0 |
+| `dependency-upgrade-proposer` | ✅ | 0 | 0 |
+| `trust-score-update-logic` | ✅ | 0 | 0 |
+| `reflection-to-action-linkage` | ✅ | 0 | 0 |
 | `internal-agent-policy-drafts-table` | ✅ | 0 | 0 |
 | `internal-agent-policy-architect-function` | ✅ | 0 | 0 |
 | `policy-draft-review-page` | ✅ | 0 | 0 |
@@ -137,7 +144,7 @@
 
 ## Verdict
 
-⚠️ All required gates passed, but 3348 warning(s) present. Release is cuttable but review warnings.
+❌ Release is **NOT cuttable**. Fix 2 error(s) and resolve 0 missing gate(s).
 
 ## Related
 
