@@ -1,0 +1,140 @@
+{
+  "generatedAt": "2026-04-18T12:02:57.051Z",
+  "gate": "route-truth",
+  "totalRoutes": 493,
+  "unresolvedCount": 26,
+  "level": "warn",
+  "ok": false,
+  "issues": [
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/MobileRoutes.tsx",
+      "element": "ProtectedRoute",
+      "reason": "element not imported in route file"
+    },
+    {
+      "file": "src/routes/experimental-routes.tsx",
+      "element": "RevenueOfficeModeLayout",
+      "reason": "element not imported in route file"
+    }
+  ]
+}
