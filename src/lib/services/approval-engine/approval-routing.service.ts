@@ -1,3 +1,3 @@
 // @lovable:migrated-wrapper
-// Restored Wave 5 (zero-consumer scan was unsafe — transitive lib-internal imports exist).
-export * from "@/lib/core-services/approval-engine/approval-routing.service";
+// Wave 5: original target unknown; safe empty export.
+export {};

@@ -1,3 +1,3 @@
 // @lovable:migrated-wrapper
-// Restored Wave 5 placeholder.
+// Wave 5: original target unknown; safe empty export.
 export {};
