@@ -258,8 +258,11 @@ const LeadsInbox = () => {
           placeholder="Search by name, company, email, or inquiry..."
         />
       </div>
-
-      {/* Main content */}
+      {search.trim().length >= 2 && (globalLoading || globalResults.length > 0) && (
+        <p className="text-[11px] text-muted-foreground -mt-2 px-1">
+          {globalLoading ? "Searching across workspace…" : `Also found ${globalResults.length} related items in other domains`}
+        </p>
+      )}
       {viewMode === "priority-stack" ? (
         <div className="grid gap-5 lg:grid-cols-5">
           <div className="lg:col-span-3">
