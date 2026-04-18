@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-04-18T19:10:00.000Z",
+  "phase": 1,
+  "phaseName": "Internal AI Workforce Runtime Bridge",
+  "status": "complete",
+  "scope": "admin-ai-engineering-team",
+  "summary": {
+    "agents": 40,
+    "councils": 6,
+    "supervisors": 7,
+    "rightsLevels": 7,
+    "tablesAdded": 5,
+    "edgeFunctionsAdded": 1,
+    "adminPagesAdded": 2,
+    "validatorsAdded": 6,
+    "deliverablesGenerated": 12
+  },
+  "infrastructure": {
+    "tables": {
+      "internal_agent_definitions": { "rows": 40, "rls": "admin-only" },
+      "internal_agent_runtime_state": { "rows": 40, "rls": "admin-only" },
+      "internal_agent_actions": { "rows": 0, "rls": "admin-only", "note": "populated as cron ticks run" },
+      "council_escalations": { "rows": 0, "rls": "admin-only", "note": "populated when agents miss thresholds" },
+      "supervisor_decisions": { "rows": 0, "rls": "admin-only", "note": "populated on operator actions" }
+    },
+    "edgeFunction": {
+      "path": "supabase/functions/internal-agent-loop/index.ts",
+      "loc": 611,
+      "safetyTokens": ["checkAIBudget", "internal_agent_runtime_state", "internal_agent_actions", "ai.gateway.lovable.dev", "cooldown_until"]
+    },
+    "cron": {
+      "extensionsEnabled": ["pg_cron", "pg_net"],
+      "job": {
+        "name": "internal-agent-loop-tick",
+        "schedule": "*/5 * * * *",
+        "jobid": 16,
+        "active": true,
+        "method": "net.http_post",
+        "target": "https://fctupowhcljejygjfpty.supabase.co/functions/v1/internal-agent-loop"
+      }
+    },
+    "adminUI": {
+      "internalAgentsBoard": { "path": "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx", "loc": 492 },
+      "councilsBoard": { "path": "src/pages/admin/ai-runtime/CouncilsBoard.tsx", "loc": 334 },
+      "drilldownPanel": { "path": "src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx", "loc": 259 }
+    }
+  },
+  "councilCoverage": {
+    "architecture-governance": 7,
+    "knowledge-coordination": 6,
+    "product-build": 7,
+    "reliability-ops": 7,
+    "runtime-cost": 6,
+    "security-trust": 7
+  },
+  "validators": [
+    "check-internal-agent-registry",
+    "check-internal-agent-runtime-coverage",
+    "check-internal-agent-admin-pages",
+    "check-internal-agent-escalation-runtime",
+    "check-internal-agent-seed-integrity",
+    "check-internal-agent-runtime-loop",
+    "check-admin-ai-runtime-drilldowns",
+    "check-admin-integrations-health-visibility"
+  ],
+  "aggregatorGateCount": { "before": 50, "after": 58, "delta": 8 },
+  "noDuplicates": {
+    "shadowApprovalQueue": false,
+    "shadowReceiptStack": false,
+    "shadowBudgetSystem": false,
+    "shadowAdminShell": false,
+    "shadowScheduler": false
+  },
+  "acceptanceCriteria": "all-pass",
+  "evidenceFile": "INTERNAL_AI_RUNTIME_PHASE1_FINAL_VERIFICATION.md"
+}

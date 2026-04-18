@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-04-18T19:10:00.000Z",
+  "function": {
+    "name": "internal-agent-loop",
+    "path": "supabase/functions/internal-agent-loop/index.ts",
+    "loc": 611,
+    "verifyJwt": false,
+    "deployStatus": "deployed"
+  },
+  "schedule": {
+    "extension": "pg_cron",
+    "transport": "pg_net.http_post",
+    "jobName": "internal-agent-loop-tick",
+    "cron": "*/5 * * * *",
+    "jobid": 16,
+    "active": true,
+    "targetUrl": "https://fctupowhcljejygjfpty.supabase.co/functions/v1/internal-agent-loop",
+    "auth": "anon-key bearer",
+    "body": { "trigger": "cron", "at": "now()" }
+  },
+  "cadenceMap": {
+    "continuous": "every 5 minutes (cron tick)",
+    "hourly": "due if last_run_at < now() - 1 hour",
+    "daily": "due if last_run_at < now() - 24 hours",
+    "on-event": "skipped in cron tick; event-driven only"
+  },
+  "safetyTokens": {
+    "budgetGate": "checkAIBudget",
+    "stateUpdate": "internal_agent_runtime_state",
+    "actionPersistence": "internal_agent_actions",
+    "canonicalGateway": "ai.gateway.lovable.dev",
+    "killSwitchOrCooldown": "cooldown_until"
+  },
+  "manualTrigger": {
+    "from": "InternalAgentsBoard 'Run now' button",
+    "method": "POST",
+    "body": { "trigger": "manual", "agent_id": "<agent-id>" }
+  },
+  "failureContainment": {
+    "perAgentTryCatch": true,
+    "autoSuspendThreshold": 5,
+    "autoEscalateOnSuspend": "council_escalations severity=high",
+    "budgetExhaustionFallback": "check_ai_budget_policies.fallback_model_id",
+    "killSwitchScopeId": "internal-agent-loop"
+  },
+  "validatorReports": [
+    "generated/internal-agent-runtime-loop-report.json"
+  ]
+}
