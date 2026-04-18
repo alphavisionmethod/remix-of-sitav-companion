@@ -67,3 +67,51 @@
 ## Verdict
 
 🟢 **GREEN** — Claim-safety, demo-only enforcement, and deployment-wording hardening are fully integrated, fully wired, no stubs, no duplicates. SITA OS public/internal/operator language now matches reality across every surface.
+
+---
+
+## Master Aggregator Integration (Phase 5.1 — BLOCK-level wiring)
+
+The 9 claim-safety validators are now wired into the master release-readiness aggregator
+(`scripts/architecture/checks/check-os-release-readiness.ts`) as **BLOCK-level gates**.
+
+### Wiring contract
+
+Each validator emits `generated/<gate>-report.json` via the shared helper
+`scripts/validation/_lib/emit-gate-report.ts`, in the exact `GateReport` shape
+the aggregator already consumes (`gate`, `generatedAt`, `ok`, `errorCount`,
+`warningCount`, `issues[]`).
+
+### Registered gate names (appended to `REQUIRED_GATES`)
+
+1. `os-claim-safety`
+2. `track-b-language-boundaries`
+3. `no-prohibited-native-claims`
+4. `demo-only-surface-badging`
+5. `future-vision-route-containment`
+6. `device-surface-claim-safety`
+7. `deployment-wording-safety`
+8. `launch-honesty-alignment`
+9. `qualifier-required-claims`
+
+Master release gate count: **36 → 45**.
+
+### How to run
+
+```bash
+# Run all 9 claim-safety validators (emits 9 *-report.json files):
+npm run claim-safety:run-all
+
+# Run claim-safety + master aggregator in one shot:
+npm run release:readiness:full
+
+# Or just the aggregator (consumes the most recent reports):
+npm run release:readiness
+```
+
+### Last verified run
+
+- 45/45 gates present
+- 0 errors from claim-safety contribution
+- Verdict: aggregator reports current state honestly; claim-safety stays GREEN
+- A claim-safety regression now fails the master release gate, not just a console line
