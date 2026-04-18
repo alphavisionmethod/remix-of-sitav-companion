@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Presentation, Briefcase, TrendingUp, Users,
   Brain, CheckSquare, FlaskConical, History, Crown,
-  Eye, GitBranch, Globe, HelpCircle, Menu,
+  Eye, GitBranch, Globe, HelpCircle, Menu, Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
