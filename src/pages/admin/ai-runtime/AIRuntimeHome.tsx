@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Runtime Hub (Phase 25)
+// SITA OS — AI Runtime Hub (Phase 25 + Phase 1 Internal Agents wiring)
 // Canonical entry for /admin/ai-runtime.
+// Adds: internal-agents + councils tabs (Phase 1 closure).
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
@@ -20,6 +21,8 @@ const AIG03RoutingMatrix = lazy(() => import("@/pages/admin/AIG03RoutingMatrix")
 const AIG04BudgetCenter = lazy(() => import("@/pages/admin/AIG04BudgetCenter"));
 const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const AdvisorBoardCatalog = lazy(() => import("@/pages/admin/AdvisorBoardCatalog"));
+const InternalAgentsBoard = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentsBoard"));
+const CouncilsBoard = lazy(() => import("@/pages/admin/ai-runtime/CouncilsBoard"));
 
 function ModuleFallback() {
   return (
@@ -41,6 +44,20 @@ export default function AIRuntimeHome() {
       description: "AI team status and KPIs.",
       legacyPath: "/admin/ai-team/overview",
       render: wrap(AIT01TeamOverview),
+    },
+    {
+      id: "internal-agents",
+      label: "Internal Agents",
+      description: "40 internal AI workforce agents — runtime state, drilldowns, supervisor controls.",
+      legacyPath: "/admin/ai-runtime/internal-agents",
+      render: wrap(InternalAgentsBoard),
+    },
+    {
+      id: "councils",
+      label: "Councils",
+      description: "6 councils + supervisor escalations.",
+      legacyPath: "/admin/ai-runtime/councils",
+      render: wrap(CouncilsBoard),
     },
     {
       id: "efficiency",
