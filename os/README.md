@@ -65,6 +65,8 @@ sudo dd if=out/sita-os-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 | 7 | Canonical signing pipeline + verity verifier + attestation emitter | ✅ shipped |
 | 8 | A/B update bundle builder + rollback + support bundle | ✅ shipped |
 | 9 | QEMU production validator + VMware OVA + release artifact model | ✅ shipped |
+| 10 | Recovery mode + native diagnostics + VM/HW validation matrix | ✅ shipped |
+| 11 | TPM 2.0 sealing + Secure Boot MOK signing + signed CycloneDX SBOMs + reproducible builds | ✅ shipped (Phase 4 trusted supply chain — see [`docs/os/PHASE_4_TRUSTED_SUPPLY_CHAIN.md`](../docs/os/PHASE_4_TRUSTED_SUPPLY_CHAIN.md)) |
 
 ## Build environment
 
