@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-18T02:14:58.924Z",
+  "gate": "mobile-store-readiness",
+  "phase": "phase-13-mobile-distribution",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "infoCount": 0,
+  "totals": {
+    "requirements": 20,
+    "satisfied": 20,
+    "deferred": 0,
+    "blockerMissing": 0
+  },
+  "bySurface": {
+    "ios": 8,
+    "android": 9,
+    "shared": 3
+  },
+  "byCategory": {
+    "manifest": 3,
+    "icons": 2,
+    "splash": 2,
+    "store-metadata": 2,
+    "privacy": 2,
+    "signing": 2,
+    "screenshots": 1,
+    "permissions": 2,
+    "compliance": 2,
+    "build-pipeline": 2
+  },
+  "satisfied": [
+    "ios-capacitor-config",
+    "ios-app-icon-set",
+    "ios-launch-storyboard",
+    "ios-info-plist-skeleton",
+    "ios-store-metadata",
+    "ios-privacy-manifest",
+    "ios-signing-config",
+    "ios-store-screenshots-spec",
+    "android-capacitor-config",
+    "android-icon-set",
+    "android-splash-set",
+    "android-manifest-permissions",
+    "android-store-metadata",
+    "android-data-safety",
+    "android-signing-config",
+    "android-target-sdk-policy",
+    "android-fcm-service-account",
+    "shared-build-pipeline",
+    "shared-store-pipeline-doc",
+    "shared-runtime-contract-honest"
+  ],
+  "deferred": [],
+  "issues": []
+}

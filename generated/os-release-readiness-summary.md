@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T02:08:31.307Z
+> Generated: 2026-04-18T02:15:02.078Z
 > Verdict: **GREEN** ✅
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 14 |
-| Gates present  | 14 |
+| Gates required | 16 |
+| Gates present  | 16 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 0 |
@@ -31,6 +31,8 @@
 | `app-plane-map` | ✅ | 0 | 0 |
 | `user-profile-readiness` | ✅ | 0 | 0 |
 | `operator-readiness` | ✅ | 0 | 0 |
+| `mobile-store-readiness` | ✅ | 0 | 0 |
+| `mobile-build-pipeline` | ✅ | 0 | 0 |
 
 ## Verdict
 

@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-18T02:15:00.442Z",
+  "gate": "mobile-build-pipeline",
+  "phase": "phase-13-mobile-distribution",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "workflowFile": ".github/workflows/mobile-build.yml",
+  "workflowPresent": true,
+  "pipelines": {
+    "android": {
+      "runner": "ubuntu-latest",
+      "produces": "AAB",
+      "signed": "if-secret-present"
+    },
+    "ios": {
+      "runner": "macos-14",
+      "produces": "xcarchive (signed IPA if cert secret present)",
+      "signed": "deferred"
+    }
+  },
+  "issues": []
+}
