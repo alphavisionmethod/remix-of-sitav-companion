@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-18T12:24:54.319Z",
+  "generatedAt": "2026-04-18T12:25:54.494Z",
   "gate": "command-palette-profile-leakage",
-  "level": "warn",
+  "level": "block",
   "budget": 0,
   "leakCount": 0,
   "leaks": [],

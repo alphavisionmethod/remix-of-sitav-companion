@@ -30,7 +30,7 @@ const ok = lyingLive.length <= BUDGET;
 writeFileSync(join(OUT, "mobile-capability-truth.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "mobile-capability-truth",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   lyingLiveCount: lyingLive.length,
   offenders: lyingLive,
@@ -38,4 +38,4 @@ writeFileSync(join(OUT, "mobile-capability-truth.json"), JSON.stringify({
 }, null, 2));
 
 console.log(`mobile-capability-truth: ${lyingLive.length} "live" features without backing (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+process.exit(ok ? 0 : 1); // block-level — graduated

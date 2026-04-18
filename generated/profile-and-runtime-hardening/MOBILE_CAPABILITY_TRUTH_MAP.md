@@ -1,5 +1,5 @@
 # Mobile Capability Truth Map (Phase A)
-Generated: 2026-04-18T12:24:29.787Z
+Generated: 2026-04-18T12:25:41.145Z
 | File | Feature | Class | Persistence | Auth | Biometric | Notes |
 |---|---|---|---|---|---|---|
 | `src/pages/mobile/MobileAIChat.tsx` | MobileAIChat | mock | none | — | — | — |
@@ -29,6 +29,7 @@ Generated: 2026-04-18T12:24:29.787Z
 | `src/pages/mobile/MobileWorkflowDetail.tsx` | MobileWorkflowDetail | partial | none | — | — | — |
 | `src/components/mobile/AlertCard.tsx` | AlertCard | partial | none | — | — | — |
 | `src/components/mobile/ApprovalCard.tsx` | ApprovalCard | partial | none | — | — | — |
+| `src/components/mobile/MobileCapabilityBanner.tsx` | MobileCapabilityBanner | planned | none | — | — | — |
 | `src/components/mobile/MobileShell.tsx` | MobileShell | partial | none | — | — | — |
 | `src/components/mobile/MobileTabBar.tsx` | MobileTabBar | partial | none | — | — | — |
 | `src/components/mobile/ProofCard.tsx` | ProofCard | partial | none | — | — | — |

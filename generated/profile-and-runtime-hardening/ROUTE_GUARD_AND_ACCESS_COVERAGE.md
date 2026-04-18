@@ -1,58 +1,9 @@
 # Route Guard & Access Coverage (Phase A)
-Generated: 2026-04-18T12:24:29.787Z
+Generated: 2026-04-18T12:25:41.145Z
 ## Coverage
 - Total routes: **673**
 - Admin-plane routes: **191**
-- Admin routes with guards (AdminRoute or PermissionGatedRoute): **5**
-- Admin routes WITHOUT guards: **186**
+- Admin routes with guards (AdminRoute or PermissionGatedRoute): **191**
+- Admin routes WITHOUT guards: **0**
 ## Unguarded Admin Routes
-- `/admin/releases` (src/routes/AdminRoutes.tsx)
-- `/admin/support` (src/routes/AdminRoutes.tsx)
-- `/admin/health` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security` (src/routes/AdminRoutes.tsx)
-- `/admin/verification` (src/routes/AdminRoutes.tsx)
-- `/admin/ai-runtime` (src/routes/AdminRoutes.tsx)
-- `/admin/integrations` (src/routes/AdminRoutes.tsx)
-- `/admin/config` (src/routes/AdminRoutes.tsx)
-- `/admin` (src/routes/AdminRoutes.tsx)
-- `/admin/health/incidents` (src/routes/AdminRoutes.tsx)
-- `/admin/releases/launch-readiness` (src/routes/AdminRoutes.tsx)
-- `/admin/overview/generated-truth` (src/routes/AdminRoutes.tsx)
-- `/admin/ai-runtime/intelligence/efficiency` (src/routes/AdminRoutes.tsx)
-- `/admin/verification/launch-honesty` (src/routes/AdminRoutes.tsx)
-- `/admin/ai-runtime/costs` (src/routes/AdminRoutes.tsx)
-- `/admin/environments/users` (src/routes/AdminRoutes.tsx)
-- `/admin/environments/devices` (src/routes/AdminRoutes.tsx)
-- `/admin/environments/integration-state` (src/routes/AdminRoutes.tsx)
-- `/admin/environments/workflow-state` (src/routes/AdminRoutes.tsx)
-- `/admin/support/cases` (src/routes/AdminRoutes.tsx)
-- `/admin/support/replay` (src/routes/AdminRoutes.tsx)
-- `/admin/support/recovery` (src/routes/AdminRoutes.tsx)
-- `/admin/releases/mobile-parity` (src/routes/AdminRoutes.tsx)
-- `/admin/releases/deployment-rings` (src/routes/AdminRoutes.tsx)
-- `/admin/releases/rollback` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security/policies` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security/proofs` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security/permissions` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security/sensitive-actions` (src/routes/AdminRoutes.tsx)
-- `/admin/trust-security/audit` (src/routes/AdminRoutes.tsx)
-- `/admin/data-retention` (src/routes/AdminRoutes.tsx)
-- `/admin/user-seed-health` (src/routes/AdminRoutes.tsx)
-- `/admin/readiness` (src/routes/AdminRoutes.tsx)
-- `/admin/incidents/dashboard` (src/routes/AdminRoutes.tsx)
-- `/admin/meta-arch` (src/routes/AdminRoutes.tsx)
-- `/admin/meta-arch/atlas` (src/routes/AdminRoutes.tsx)
-- `/admin/meta-arch/control-plane` (src/routes/AdminRoutes.tsx)
-- `/admin/meta-arch/golden-paths` (src/routes/AdminRoutes.tsx)
-- `/admin/meta/reality` (src/routes/AdminRoutes.tsx)
-- `/admin/meta/completeness` (src/routes/AdminRoutes.tsx)
-- `/admin/ci/umbrella` (src/routes/AdminRoutes.tsx)
-- `/admin/generated-truth` (src/routes/AdminRoutes.tsx)
-- `/admin/runtime-tier-governance` (src/routes/AdminRoutes.tsx)
-- `/admin/fleet-health` (src/routes/AdminRoutes.tsx)
-- `/admin/dashboard` (src/routes/AdminRoutes.tsx)
-- `/admin/team` (src/routes/AdminRoutes.tsx)
-- `/admin/system` (src/routes/AdminRoutes.tsx)
-- `/admin/users` (src/routes/AdminRoutes.tsx)
-- `/admin/ai-tokens` (src/routes/AdminRoutes.tsx)
-- `/admin/intelligence-efficiency` (src/routes/AdminRoutes.tsx)
+✅ _All admin routes are guarded._

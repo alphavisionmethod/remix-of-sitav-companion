@@ -25,7 +25,7 @@ const ok = data.sharedComponentLeakage.length <= BUDGET;
 writeFileSync(join(OUT, "shared-component-profile-pollution.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "shared-component-profile-pollution",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   leakageCount: data.sharedComponentLeakage.length,
   leakage: data.sharedComponentLeakage,
@@ -33,4 +33,4 @@ writeFileSync(join(OUT, "shared-component-profile-pollution.json"), JSON.stringi
 }, null, 2));
 
 console.log(`shared-component-profile-pollution: ${data.sharedComponentLeakage.length} (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+process.exit(ok ? 0 : 1); // block-level — graduated

@@ -28,7 +28,7 @@ const ok = leaks.length <= BUDGET;
 writeFileSync(join(OUT, "command-palette-profile-leakage.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "command-palette-profile-leakage",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   leakCount: leaks.length,
   leaks,
@@ -36,4 +36,4 @@ writeFileSync(join(OUT, "command-palette-profile-leakage.json"), JSON.stringify(
 }, null, 2));
 
 console.log(`command-palette-profile-leakage: ${leaks.length} (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+process.exit(ok ? 0 : 1); // block-level — graduated

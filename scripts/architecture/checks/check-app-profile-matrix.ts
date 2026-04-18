@@ -22,7 +22,7 @@ const ok = data.manifestMismatches.length <= BUDGET;
 writeFileSync(join(OUT, "app-profile-matrix.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "app-profile-matrix",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   mismatchCount: data.manifestMismatches.length,
   mismatches: data.manifestMismatches,
@@ -30,4 +30,4 @@ writeFileSync(join(OUT, "app-profile-matrix.json"), JSON.stringify({
 }, null, 2));
 
 console.log(`app-profile-matrix: ${data.manifestMismatches.length} mismatches (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+process.exit(ok ? 0 : 1); // block-level — graduated

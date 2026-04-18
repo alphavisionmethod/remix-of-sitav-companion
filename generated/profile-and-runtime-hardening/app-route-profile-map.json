@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-04-18T12:24:29.693Z",
+  "generatedAt": "2026-04-18T12:25:41.049Z",
   "totalRoutes": 673,
   "routes": [
     {
       "path": "/admin/overview",
       "file": "src/routes/AdminRoutes.tsx",
       "guards": [
-        "AdminRoute"
+        "AdminRoute",
+        "gated()"
       ],
       "plane": "admin",
       "profiles": [
@@ -21,7 +22,8 @@
       "path": "/admin/alerts",
       "file": "src/routes/AdminRoutes.tsx",
       "guards": [
-        "AdminRoute"
+        "AdminRoute",
+        "gated()"
       ],
       "plane": "admin",
       "profiles": [
@@ -36,7 +38,8 @@
       "path": "/admin/approvals",
       "file": "src/routes/AdminRoutes.tsx",
       "guards": [
-        "AdminRoute"
+        "AdminRoute",
+        "gated()"
       ],
       "plane": "admin",
       "profiles": [
@@ -51,7 +54,8 @@
       "path": "/admin/environments",
       "file": "src/routes/AdminRoutes.tsx",
       "guards": [
-        "AdminRoute"
+        "AdminRoute",
+        "gated()"
       ],
       "plane": "admin",
       "profiles": [
@@ -65,7 +69,10 @@
     {
       "path": "/admin/releases",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "AdminRoute",
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -74,14 +81,15 @@
       "appBacked": true,
       "appId": "release-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/support",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "AdminRoute",
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -90,14 +98,14 @@
       "appBacked": true,
       "appId": "support-diagnostics",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/health",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -105,14 +113,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -120,14 +128,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/verification",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -136,14 +144,14 @@
       "appBacked": true,
       "appId": "verification-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-runtime",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -151,14 +159,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/integrations",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -166,14 +174,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/config",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -181,14 +189,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -196,14 +204,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/health/incidents",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -211,14 +219,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/releases/launch-readiness",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -227,14 +235,14 @@
       "appBacked": true,
       "appId": "release-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/overview/generated-truth",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -242,14 +250,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-runtime/intelligence/efficiency",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -257,14 +265,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/verification/launch-honesty",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -273,14 +281,14 @@
       "appBacked": true,
       "appId": "verification-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-runtime/costs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -288,14 +296,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/environments/users",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -303,14 +311,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/environments/devices",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -318,14 +326,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/environments/integration-state",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -333,14 +341,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/environments/workflow-state",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -348,14 +356,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/support/cases",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -364,14 +372,14 @@
       "appBacked": true,
       "appId": "support-diagnostics",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/support/replay",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -380,14 +388,14 @@
       "appBacked": true,
       "appId": "support-diagnostics",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/support/recovery",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -396,14 +404,14 @@
       "appBacked": true,
       "appId": "support-diagnostics",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/releases/mobile-parity",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -412,14 +420,14 @@
       "appBacked": true,
       "appId": "release-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/releases/deployment-rings",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -428,14 +436,14 @@
       "appBacked": true,
       "appId": "release-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/releases/rollback",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -444,14 +452,14 @@
       "appBacked": true,
       "appId": "release-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security/policies",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -459,14 +467,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security/proofs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -474,14 +482,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security/permissions",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -489,14 +497,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security/sensitive-actions",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -504,14 +512,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/trust-security/audit",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -519,14 +527,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/data-retention",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -534,14 +542,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/user-seed-health",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -549,14 +557,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/readiness",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -564,14 +572,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/incidents/dashboard",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -580,14 +588,14 @@
       "appBacked": true,
       "appId": "incident-triage",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta-arch",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -595,14 +603,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta-arch/atlas",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -610,14 +618,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta-arch/control-plane",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -625,14 +633,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta-arch/golden-paths",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -640,14 +648,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta/reality",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -655,14 +663,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/meta/completeness",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -670,14 +678,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ci/umbrella",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -685,14 +693,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/generated-truth",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -700,14 +708,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/runtime-tier-governance",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -715,14 +723,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/fleet-health",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -730,14 +738,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/dashboard",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -745,14 +753,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/team",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -760,14 +768,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/system",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -776,14 +784,14 @@
       "appBacked": true,
       "appId": "observability",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/users",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -792,14 +800,14 @@
       "appBacked": true,
       "appId": "user-org-intervention",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-tokens",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -807,14 +815,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence-efficiency",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -822,14 +830,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/truth-indices",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -837,14 +845,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/overview",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -852,14 +860,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/roles",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -867,14 +875,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/invoke",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -882,14 +890,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/activity",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -897,14 +905,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/cost",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -912,14 +920,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/recommendations",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -927,14 +935,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/approvals",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -942,14 +950,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/launch-truth",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -957,14 +965,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/approval-queue",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -972,14 +980,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-team/setup-checklist",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -987,14 +995,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/reuse",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1002,14 +1010,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/assets",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1017,14 +1025,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/differential",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1032,14 +1040,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/packets",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1047,14 +1055,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/efficiency",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1062,14 +1070,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/outcomes",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1077,14 +1085,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/escalation",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1092,14 +1100,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/patterns",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1107,14 +1115,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/prompts",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1122,14 +1130,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/digests",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1137,14 +1145,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/cross-tenant",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1152,14 +1160,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/intelligence/layer",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1167,14 +1175,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/providers",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1182,14 +1190,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/models",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1197,14 +1205,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/routing",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1212,14 +1220,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/budget",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1227,14 +1235,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/receipts",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1242,14 +1250,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/honesty",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1257,14 +1265,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/launch-truth",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1272,14 +1280,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/diagnostics",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1287,14 +1295,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-gateway/verification",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1302,14 +1310,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/capital",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1317,14 +1325,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/cost-confidence",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1332,14 +1340,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/quality-floor",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1347,14 +1355,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/insurance",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1362,14 +1370,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/market",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1377,14 +1385,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/time-to-truth",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1392,14 +1400,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/reasoning-replay",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1407,14 +1415,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/decay",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1422,14 +1430,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/portfolio",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1437,14 +1445,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/benchmark",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1452,14 +1460,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/value-risk",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1467,14 +1475,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/strategic/operator-taste",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1482,14 +1490,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/graph",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1497,14 +1505,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/intent",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1512,14 +1520,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/attention",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1527,14 +1535,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/continuity",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1542,14 +1550,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/trust-actions",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1557,14 +1565,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/chief-of-staff",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1572,14 +1580,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/timing",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1587,14 +1595,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/relationships",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1602,14 +1610,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/digest",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1617,14 +1625,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/modes",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1632,14 +1640,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/interface",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1647,14 +1655,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/opportunities",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1662,14 +1670,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/memory",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1677,14 +1685,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/boundaries",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1692,14 +1700,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cai/signature",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1707,14 +1715,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ecosystem/command",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1722,14 +1730,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/security/sessions",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1738,14 +1746,14 @@
       "appBacked": true,
       "appId": "kill-switch-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/security/foundation",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1754,14 +1762,14 @@
       "appBacked": true,
       "appId": "kill-switch-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/security/command-center",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1770,14 +1778,14 @@
       "appBacked": true,
       "appId": "kill-switch-center",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/system-intelligence",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1785,14 +1793,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/os-platform",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1800,14 +1808,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/cloud-backbone",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1815,14 +1823,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/communication-hub",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1830,14 +1838,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/command",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1845,14 +1853,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/tasks",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1860,14 +1868,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/cicd",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1875,14 +1883,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/runbooks",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1890,14 +1898,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/support/runbooks/:id",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1906,14 +1914,14 @@
       "appBacked": true,
       "appId": "support-diagnostics",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/dashboard",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1921,14 +1929,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/programs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1936,14 +1944,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/cost",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1951,14 +1959,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/sync-ops",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1966,14 +1974,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/security",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1981,14 +1989,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/oversight",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -1996,14 +2004,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/incidents",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2011,14 +2019,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/founder/knowledge",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2026,14 +2034,14 @@
       "requiredPermission": "founder.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/validation",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2041,14 +2049,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/builder-critic",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2056,14 +2064,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/simulation",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2071,14 +2079,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/standards",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2086,14 +2094,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/chaos",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2101,14 +2109,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/rollback",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2116,14 +2124,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/version-intel",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2131,14 +2139,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/engineering/optimization",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2146,14 +2154,14 @@
       "requiredPermission": "engineering.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/devices",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2161,14 +2169,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/storage",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2176,14 +2184,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/users",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2191,14 +2199,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/workspaces",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2206,14 +2214,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/sync-cloud",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2221,14 +2229,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/jobs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2236,14 +2244,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/trust-security",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2251,14 +2259,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/releases",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2266,14 +2274,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/ai-control",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2281,14 +2289,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/incidents",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2296,14 +2304,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/policies",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2311,14 +2319,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/costs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2326,14 +2334,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/logs",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2341,14 +2349,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/support",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2356,14 +2364,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/knowledge",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2371,14 +2379,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/system-health",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2386,14 +2394,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/authority-matrix",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2401,14 +2409,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/control-receipts",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2416,14 +2424,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/emergency",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2431,14 +2439,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/platform-adaptation",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2446,14 +2454,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/state-authority",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2461,14 +2469,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/architecture",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2476,14 +2484,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/feature-ownership",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2491,14 +2499,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/command-routing",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2506,14 +2514,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/approval-flow",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2521,14 +2529,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/failure-recovery",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2536,14 +2544,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/event-routing",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2551,14 +2559,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mc/architecture-tests",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2566,14 +2574,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/catalog",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2581,14 +2589,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/recommendations",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2596,14 +2604,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/actions",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2611,14 +2619,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/memory",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2626,14 +2634,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/autonomy",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2641,14 +2649,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/advisor-board/profitability",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2656,14 +2664,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/release-engineering",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2671,14 +2679,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/graph-intelligence",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2686,14 +2694,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/ai-governance",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2702,14 +2710,14 @@
       "appBacked": true,
       "appId": "ai-governance",
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/simulation-center",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2717,14 +2725,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/backend-topology",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2732,14 +2740,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/db-truth-explorer",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2747,14 +2755,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mobile-parity",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2762,14 +2770,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/mobile/store-readiness",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2777,14 +2785,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/web/deployability",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2792,14 +2800,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/desktop/deployability",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2807,14 +2815,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/appliance/deployability",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2822,14 +2830,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/backend-api/deployability",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2837,14 +2845,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/edge-functions/health",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2852,14 +2860,14 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/admin/automation/kill-switches",
       "file": "src/routes/AdminRoutes.tsx",
-      "guards": [],
+      "guards": [
+        "gated()"
+      ],
       "plane": "admin",
       "profiles": [
         "operator"
@@ -2867,9 +2875,7 @@
       "requiredPermission": "admin.view",
       "appBacked": false,
       "hiddenAppLike": false,
-      "drift": [
-        "admin-route-unguarded"
-      ]
+      "drift": []
     },
     {
       "path": "/mobile",
@@ -8814,7 +8820,9 @@
     {
       "path": "/",
       "file": "src/App.tsx",
-      "guards": [],
+      "guards": [
+        "ProtectedRoute"
+      ],
       "plane": "user",
       "profiles": [
         "user"
@@ -8826,7 +8834,9 @@
     {
       "path": "/*",
       "file": "src/App.tsx",
-      "guards": [],
+      "guards": [
+        "ProtectedRoute"
+      ],
       "plane": null,
       "profiles": [],
       "appBacked": false,
@@ -8925,7 +8935,7 @@
   ],
   "driftSummary": {
     "routeNotInPlaneMap": 323,
-    "adminRouteUnguarded": 186,
+    "adminRouteUnguarded": 0,
     "hiddenAppLike": 1
   }
 }

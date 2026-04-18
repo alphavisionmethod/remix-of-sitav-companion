@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-18T12:24:45.289Z",
+  "generatedAt": "2026-04-18T12:25:45.647Z",
   "gate": "app-profile-matrix",
-  "level": "warn",
+  "level": "block",
   "budget": 0,
   "mismatchCount": 0,
   "mismatches": [],
