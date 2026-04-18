@@ -14,9 +14,11 @@ import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, 
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useActionFn } from "@/hooks/use-action";
+import { useFilePicker } from "@/components/sita/shell/FilePickerService";
 
 const UserProfilePage = () => {
   const { user } = useAuth();
+  const { pickFiles } = useFilePicker();
   const { profile: canonicalProfile, isLoading: profileLoading } = useProfile();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -83,9 +85,22 @@ const UserProfilePage = () => {
     setSaving(false);
   };
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
+  // Phase S — migrated to canonical OS-level useFilePicker()
+  const handleAvatarUpload = async () => {
+    if (!user) return;
+    let picked;
+    try {
+      picked = await pickFiles({
+        accept: ["image/*"],
+        multiple: false,
+        title: "Choose avatar image",
+        sources: ["local", "recent"],
+      });
+    } catch {
+      return; // cancelled
+    }
+    const file = picked[0]?.file;
+    if (!file) return;
     setUploading(true);
     const ext = file.name.split(".").pop();
     const path = `${user.id}/avatar.${ext}`;
@@ -124,12 +139,9 @@ const UserProfilePage = () => {
               <AvatarImage src={profile.avatar_url} />
               <AvatarFallback className="text-lg">{initials}</AvatarFallback>
             </Avatar>
-            <label className="cursor-pointer">
-              <Button variant="outline" size="sm" disabled={uploading} asChild>
-                <span>{uploading ? "Uploading…" : "Change Photo"}</span>
-              </Button>
-              <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
-            </label>
+            <Button variant="outline" size="sm" disabled={uploading} onClick={handleAvatarUpload}>
+              {uploading ? "Uploading…" : "Change Photo"}
+            </Button>
           </div>
           <div className="flex-1 space-y-1">
             <h2 className="text-xl font-semibold">{profile.display_name || "Unnamed"}</h2>
