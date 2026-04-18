@@ -1,10 +1,10 @@
 # App ↔ Route ↔ Profile Cross-Map (Phase A)
-Generated: 2026-04-18T12:25:41.144Z
+Generated: 2026-04-18T12:28:37.203Z
 ## Totals
 - Total declared routes: **673**
 - Routes not in route-plane-map: **323**
 - Admin routes without guards: **0**
-- Hidden app-like routes (top-level, user-plane, no app backing): **1**
+- Hidden app-like routes (top-level, user-plane, no app backing): **0**
 ## Hidden App-Like Routes
-- `/desktop` (src/routes/os-routes.tsx)
+_none_
 See `app-route-profile-map.json` for full detail.

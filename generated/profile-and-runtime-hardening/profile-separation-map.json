@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-18T12:25:41.144Z",
+  "generatedAt": "2026-04-18T12:28:37.202Z",
   "sharedComponentLeakage": [],
   "manifestMismatches": [],
   "summary": {
     "leakageCount": 0,
     "manifestMismatchCount": 0,
-    "userProfileApps": 10,
-    "operatorProfileApps": 13,
-    "appPlaneMapEntries": 19
+    "userProfileApps": 11,
+    "operatorProfileApps": 14,
+    "appPlaneMapEntries": 20
   }
 }
