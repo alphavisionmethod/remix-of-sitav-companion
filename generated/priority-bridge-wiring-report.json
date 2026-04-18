@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-18T19:57:54.447Z",
+  "gate": "priority-bridge-wiring",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "bridges",
+      "message": "bridge aw-ai-spend-control missing token: list_unhealthy_connector_accounts"
+    }
+  ]
+}
