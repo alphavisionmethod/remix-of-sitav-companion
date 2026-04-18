@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T12:10:36.487Z",
+  "generatedAt": "2026-04-18T12:11:03.446Z",
   "gate": "service-topology-drift",
   "hiddenServiceCount": 178,
-  "budget": 200,
+  "budget": 185,
   "level": "warn",
   "ok": true,
   "sample": [
