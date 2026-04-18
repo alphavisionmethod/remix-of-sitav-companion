@@ -104,6 +104,8 @@ stage_install_packages() {
   done
   install -m 0755 "${REPO_ROOT}/os/runtime/shell-watchdog.sh"          "${ROOT_DIR}/opt/sita/runtime/shell-watchdog.sh"
   install -m 0755 "${REPO_ROOT}/os/runtime/check-shell-health.sh"      "${ROOT_DIR}/opt/sita/runtime/check-shell-health.sh"
+  install -m 0755 -d "${ROOT_DIR}/opt/sita/shell"
+  install -m 0755 "${SCRIPT_DIR}/launch.sh"                            "${ROOT_DIR}/opt/sita/shell/launch.sh"
 
   # Run package install + service enable inside chroot
   cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'
