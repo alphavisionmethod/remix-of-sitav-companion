@@ -1,5 +1,5 @@
 # Shared Component Profile Leakage (Phase A)
-Generated: 2026-04-18T12:41:39.927Z
+Generated: 2026-04-18T12:44:03.442Z
 ## Findings
 - Total shared files scanned: **1098**
 - With admin-only imports: **0**

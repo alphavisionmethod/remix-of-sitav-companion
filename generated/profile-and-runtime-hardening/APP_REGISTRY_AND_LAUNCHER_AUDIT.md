@@ -1,5 +1,5 @@
 # App Registry & Launcher Audit (Phase A)
-Generated: 2026-04-18T12:41:39.926Z
+Generated: 2026-04-18T12:44:03.440Z
 ## Coverage
 - Apps in registry: **20**
 - Routes scanned: **673**
