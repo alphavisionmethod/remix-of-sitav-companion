@@ -10902,6 +10902,113 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_agent_policy_drafts: {
+        Row: {
+          agent_id: string
+          applied_externally_at: string | null
+          applied_externally_evidence: string | null
+          created_at: string
+          current_state: Json
+          draft_kind: string
+          evidence: Json
+          id: string
+          proposed_state: Json
+          rationale: string
+          reviewed_at: string | null
+          reviewer_notes: string | null
+          reviewer_user_id: string | null
+          risk_assessment: string
+          sql_preview: string
+          status: string
+          target_resource: string
+          target_schema: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id?: string
+          applied_externally_at?: string | null
+          applied_externally_evidence?: string | null
+          created_at?: string
+          current_state?: Json
+          draft_kind: string
+          evidence?: Json
+          id?: string
+          proposed_state?: Json
+          rationale?: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          reviewer_user_id?: string | null
+          risk_assessment?: string
+          sql_preview?: string
+          status?: string
+          target_resource: string
+          target_schema?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          applied_externally_at?: string | null
+          applied_externally_evidence?: string | null
+          created_at?: string
+          current_state?: Json
+          draft_kind?: string
+          evidence?: Json
+          id?: string
+          proposed_state?: Json
+          rationale?: string
+          reviewed_at?: string | null
+          reviewer_notes?: string | null
+          reviewer_user_id?: string | null
+          risk_assessment?: string
+          sql_preview?: string
+          status?: string
+          target_resource?: string
+          target_schema?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_policy_review_log: {
+        Row: {
+          action: string
+          created_at: string
+          draft_id: string
+          evidence: Json
+          id: string
+          notes: string | null
+          reviewer_user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          draft_id: string
+          evidence?: Json
+          id?: string
+          notes?: string | null
+          reviewer_user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          draft_id?: string
+          evidence?: Json
+          id?: string
+          notes?: string | null
+          reviewer_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internal_agent_policy_review_log_draft_id_fkey"
+            columns: ["draft_id"]
+            isOneToOne: false
+            referencedRelation: "internal_agent_policy_drafts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internal_agent_reflections: {
         Row: {
           action_class: string
@@ -17611,6 +17718,15 @@ export type Database = {
         }
         Returns: string
       }
+      record_policy_draft_decision: {
+        Args: {
+          _action: string
+          _draft_id: string
+          _evidence?: Json
+          _notes?: string
+        }
+        Returns: Json
+      }
       resolve_error_patrol_detection: {
         Args: { _detection_id: string; _notes?: string }
         Returns: Json
@@ -17642,6 +17758,7 @@ export type Database = {
           trust_score: number
         }[]
       }
+      summarize_policy_draft_health: { Args: never; Returns: Json }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
         Returns: number
