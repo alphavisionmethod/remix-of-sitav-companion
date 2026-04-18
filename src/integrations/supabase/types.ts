@@ -3551,6 +3551,48 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_export_bundles: {
+        Row: {
+          bundle_key: string
+          created_at: string
+          exported_at: string | null
+          id: string
+          period_end: string
+          period_start: string
+          record_count: number
+          sha256: string
+          signature: string
+          status: string
+          storage_path: string | null
+        }
+        Insert: {
+          bundle_key: string
+          created_at?: string
+          exported_at?: string | null
+          id?: string
+          period_end: string
+          period_start: string
+          record_count?: number
+          sha256: string
+          signature: string
+          status?: string
+          storage_path?: string | null
+        }
+        Update: {
+          bundle_key?: string
+          created_at?: string
+          exported_at?: string | null
+          id?: string
+          period_end?: string
+          period_start?: string
+          record_count?: number
+          sha256?: string
+          signature?: string
+          status?: string
+          storage_path?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -8973,6 +9015,66 @@ export type Database = {
           plane?: string
           status?: string
           team?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dr_drills: {
+        Row: {
+          created_at: string
+          data_integrity_pct: number | null
+          drill_key: string
+          drill_type: string
+          evidence: Json
+          finished_at: string | null
+          id: string
+          notes: string | null
+          rpo_actual_seconds: number | null
+          rpo_target_seconds: number
+          rto_actual_seconds: number | null
+          rto_target_seconds: number
+          scheduled_at: string
+          scope: string
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_integrity_pct?: number | null
+          drill_key: string
+          drill_type?: string
+          evidence?: Json
+          finished_at?: string | null
+          id?: string
+          notes?: string | null
+          rpo_actual_seconds?: number | null
+          rpo_target_seconds?: number
+          rto_actual_seconds?: number | null
+          rto_target_seconds?: number
+          scheduled_at?: string
+          scope?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_integrity_pct?: number | null
+          drill_key?: string
+          drill_type?: string
+          evidence?: Json
+          finished_at?: string | null
+          id?: string
+          notes?: string | null
+          rpo_actual_seconds?: number | null
+          rpo_target_seconds?: number
+          rto_actual_seconds?: number | null
+          rto_target_seconds?: number
+          scheduled_at?: string
+          scope?: string
+          started_at?: string | null
+          status?: string
           updated_at?: string
         }
         Relationships: []
@@ -15584,6 +15686,51 @@ export type Database = {
         }
         Relationships: []
       }
+      region_failover_events: {
+        Row: {
+          approval_request_id: string | null
+          created_at: string
+          data_loss_seconds: number | null
+          duration_seconds: number | null
+          from_region: string
+          id: string
+          notes: string | null
+          staged_payload: Json
+          status: string
+          to_region: string
+          trigger_kind: string
+          updated_at: string
+        }
+        Insert: {
+          approval_request_id?: string | null
+          created_at?: string
+          data_loss_seconds?: number | null
+          duration_seconds?: number | null
+          from_region: string
+          id?: string
+          notes?: string | null
+          staged_payload?: Json
+          status?: string
+          to_region: string
+          trigger_kind: string
+          updated_at?: string
+        }
+        Update: {
+          approval_request_id?: string | null
+          created_at?: string
+          data_loss_seconds?: number | null
+          duration_seconds?: number | null
+          from_region?: string
+          id?: string
+          notes?: string | null
+          staged_payload?: Json
+          status?: string
+          to_region?: string
+          trigger_kind?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       release_artifacts: {
         Row: {
           artifact_key: string
@@ -16650,6 +16797,51 @@ export type Database = {
           trusted?: boolean | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      signed_release_artifacts: {
+        Row: {
+          artifact_kind: string
+          artifact_name: string
+          attestation: Json
+          created_at: string
+          id: string
+          release_tag: string
+          sha256: string
+          signature: string
+          signed_by: string
+          size_bytes: number
+          verified: boolean
+          verified_at: string | null
+        }
+        Insert: {
+          artifact_kind: string
+          artifact_name: string
+          attestation?: Json
+          created_at?: string
+          id?: string
+          release_tag: string
+          sha256: string
+          signature: string
+          signed_by?: string
+          size_bytes?: number
+          verified?: boolean
+          verified_at?: string | null
+        }
+        Update: {
+          artifact_kind?: string
+          artifact_name?: string
+          attestation?: Json
+          created_at?: string
+          id?: string
+          release_tag?: string
+          sha256?: string
+          signature?: string
+          signed_by?: string
+          size_bytes?: number
+          verified?: boolean
+          verified_at?: string | null
         }
         Relationships: []
       }
@@ -18815,6 +19007,7 @@ export type Database = {
         Args: { p_requested_level: number }
         Returns: number
       }
+      clamp_dr_action_autonomy: { Args: { requested: number }; Returns: number }
       clamp_tenant_action_autonomy: {
         Args: { p_requested_level: number }
         Returns: number
