@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T14:13:12.699Z",
+  "generatedAt": "2026-04-18T14:19:43.024Z",
   "gate": "per-bucket-warn-ratchet",
   "level": "warn",
   "buckets": [
