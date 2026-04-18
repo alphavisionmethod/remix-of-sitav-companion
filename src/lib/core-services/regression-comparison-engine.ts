@@ -16,7 +16,7 @@ import type {
 } from "@/packages/contracts/runtime/regression-comparison-runtime";
 import { DEFAULT_REGRESSION_THRESHOLDS } from "@/packages/contracts/runtime/regression-comparison-runtime";
 import { mean, standardDeviation, zScore, detectTrend } from "@/lib/observability/anomaly-detection";
-import { EventBus, createEventBus } from "./event-bus";
+import { EventBus, createEventBus } from "@/platform/core-services/event-bus";
 import { ReceiptService, createReceiptService } from "./receipt-service";
 
 // ── Helpers ────────────────────────────────────────────────

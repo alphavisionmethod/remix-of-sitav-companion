@@ -12,7 +12,7 @@ import {
   ESCALATION_RULES, ROOT_CAUSE_HEALING_MAP, AUTO_ALLOWED_ACTIONS,
   HEALING_CAPABILITY_MAP,
 } from "./types";
-import type { EventBus } from "../event-bus";
+import type { EventBus } from "@/platform/core-services/event-bus";
 import type { ReceiptService } from "../receipt-service";
 
 // ── Constants ───────────────────────────────────────────────────

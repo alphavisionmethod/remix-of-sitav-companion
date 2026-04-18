@@ -1,1 +1,1 @@
-export * from "./platform-law-registry";
+export * from "@/platform/governance/platform-law-registry";

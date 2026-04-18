@@ -4,7 +4,7 @@
 // tied to user + advisor + intent + systems + time + spend cap
 // ═══════════════════════════════════════════════════════════════
 
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 import { ReceiptService } from "./receipt-service";
 
 // ── Types ───────────────────────────────────────────────────────
