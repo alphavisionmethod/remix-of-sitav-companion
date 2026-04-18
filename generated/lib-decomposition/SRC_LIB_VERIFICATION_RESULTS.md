@@ -1,6 +1,6 @@
 # SITA OS — src/lib Decomposition Verification
 
-> Generated: 2026-04-18T02:57:17.739Z
+> Generated: 2026-04-18T02:58:45.297Z
 > Gate: `lib-decomposition-readiness`  Verdict: 🟡 YELLOW (in-migration)
 
 ## Counts
