@@ -6,7 +6,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
+import { useVerificationSurfaces, useVerificationRuns } from "@/platform/verification/verification-hooks";
 import { AlertTriangle, XCircle } from "lucide-react";
 
 

@@ -15,7 +15,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
 import { CRMNextBestAction } from "@/components/business/crm/CRMNextBestAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer, getStatusWord } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer, getStatusWord } from "@/domains/engines/business-identity-layers";
 
 type HealthBucket = { label: string; icon: React.ElementType; color: string; bg: string; border: string; min: number; max: number; description: string };
 

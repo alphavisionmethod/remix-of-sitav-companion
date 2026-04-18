@@ -10,11 +10,11 @@ import {
   FileText, RotateCcw, Archive, ChevronRight, Heart, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { RecoveryCandidate } from "@/lib/engines/lead-recovery-engine";
-import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/lib/engines/lead-recovery-engine";
+import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/domains/engines/lead-recovery-engine";
 import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
 import { EscalationPacketPreview } from "@/components/business/advisor-board/EscalationPacketPreview";
-import { generateRecoveryAdvisors, buildEscalationPacket } from "@/lib/engines/business-advisor-engine";
+import { generateRecoveryAdvisors, buildEscalationPacket } from "@/domains/engines/business-advisor-engine";
 
 const CHANNEL_ICONS: Record<string, typeof Mail> = { email: Mail, phone: Phone, linkedin: Linkedin, sms: MessageSquare };
 const CHANNEL_LABELS: Record<string, string> = { email: "Email", phone: "Phone", linkedin: "LinkedIn", sms: "SMS" };

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 interface KPIMetric {
   id: string;

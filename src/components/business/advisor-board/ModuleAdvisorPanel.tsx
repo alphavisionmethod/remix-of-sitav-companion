@@ -6,7 +6,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, ChevronDown, ChevronUp, Shield, AlertTriangle, Zap, ArrowUpRight, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { AdvisorOutput } from "@/lib/engines/business-advisor-engine";
+import type { AdvisorOutput } from "@/domains/engines/business-advisor-engine";
 
 interface Props {
   advisors: AdvisorOutput[];

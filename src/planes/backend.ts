@@ -40,7 +40,7 @@ export type { Metric, MetricAggregation, UsageReport } from "@/lib/core-services
 export type { BillingAccount, BillingLimits } from "@/lib/core-services/billing-service";
 
 // ── Event Bus ──
-export { EventBus, getEventBus } from "@/lib/core-services/event-bus";
+export { EventBus, getEventBus } from "@/platform/core-services/event-bus";
 
 // ── Executor Service ──
 export { ExecutorService } from "@/lib/core-services/executor-service";

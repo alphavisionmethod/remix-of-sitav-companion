@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { BUSINESS_ADVISORS } from "@/lib/engines/business-advisor-personas";
+import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import { SparklineChart } from "./SparklineChart";
 

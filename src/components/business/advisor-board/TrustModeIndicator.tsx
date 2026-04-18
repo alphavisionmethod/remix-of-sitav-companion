@@ -1,5 +1,5 @@
 import { Shield, Pause, Play } from "lucide-react";
-import { AUTONOMY_LEVELS, type TrustModeState } from "@/lib/engines/business-autonomy-engine";
+import { AUTONOMY_LEVELS, type TrustModeState } from "@/domains/engines/business-autonomy-engine";
 import { Button } from "@/components/ui/button";
 
 interface Props {

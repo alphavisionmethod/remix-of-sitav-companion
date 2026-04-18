@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sun, Moon, Target, AlertTriangle, TrendingUp } from "lucide-react";
-import type { ProfitabilityBrief } from "@/lib/engines/business-profitability-engine";
+import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
 
 interface Props {

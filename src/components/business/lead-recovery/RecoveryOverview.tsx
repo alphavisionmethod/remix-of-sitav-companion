@@ -5,8 +5,8 @@
 import { motion } from "framer-motion";
 import { DollarSign, Target, Flame, TrendingUp, Shield, AlertTriangle, Crown, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { RecoveryCandidate } from "@/lib/engines/lead-recovery-engine";
-import { getRecoveryStats, getTopPriorityRescues, FAILURE_MODE_META, SUCCESS_BAND_META } from "@/lib/engines/lead-recovery-engine";
+import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import { getRecoveryStats, getTopPriorityRescues, FAILURE_MODE_META, SUCCESS_BAND_META } from "@/domains/engines/lead-recovery-engine";
 import { AdvisorCard } from "@/components/sita/cards";
 
 interface Props {

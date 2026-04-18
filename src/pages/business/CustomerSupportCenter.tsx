@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

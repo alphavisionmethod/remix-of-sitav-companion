@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, ChevronDown, ArrowUpRight } from "lucide-react";
-import type { AdvisorDisagreement } from "@/lib/engines/business-advisor-engine";
+import type { AdvisorDisagreement } from "@/domains/engines/business-advisor-engine";
 
 interface Props {
   disagreement: AdvisorDisagreement;

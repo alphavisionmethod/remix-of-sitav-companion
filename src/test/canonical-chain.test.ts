@@ -567,7 +567,7 @@ describe("Event Sourcing & Projections", () => {
 // EVENT BUS TESTS
 // ═══════════════════════════════════════════════════════════════
 
-import { EventBus, createEventBus } from "@/lib/core-services/event-bus";
+import { EventBus, createEventBus } from "@/platform/core-services/event-bus";
 
 describe("EventBus", () => {
   let bus: EventBus;

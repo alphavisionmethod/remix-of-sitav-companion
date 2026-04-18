@@ -12,9 +12,9 @@ import {
   Zap, BarChart3, Clock,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface ContextConfig {
   icon: React.ElementType;

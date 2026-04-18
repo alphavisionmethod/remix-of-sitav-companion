@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { EventBus, type BusEvent } from "@/lib/core-services/event-bus";
+import { EventBus, type BusEvent } from "@/platform/core-services/event-bus";
 
 describe("Event Bus Wiring — Integration", () => {
   let bus: EventBus;

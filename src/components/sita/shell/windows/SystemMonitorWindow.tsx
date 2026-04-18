@@ -12,11 +12,11 @@ import {
 import {
   AppLayout,
   VStack, HStack, Divider,
-} from "@/lib/nova-sdk/ui/layout";
+} from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaList,
   NovaSectionLabel, NovaBadge,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";

@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { SURFACE_REGISTRY, type SurfaceEntry } from "@/lib/verification/surface-registry";
-import { useVerificationRuns } from "@/lib/verification/verification-hooks";
+import { SURFACE_REGISTRY, type SurfaceEntry } from "@/platform/verification/surface-registry";
+import { useVerificationRuns } from "@/platform/verification/verification-hooks";
 import { ArrowRight, AlertTriangle, GitBranch, Search, Shield, XCircle, CheckCircle2, RotateCcw } from "lucide-react";
 
 const ALL_ROUTES = [...new Set(SURFACE_REGISTRY.filter(s => s.surfaceClass === "page").map(s => s.routePath))];

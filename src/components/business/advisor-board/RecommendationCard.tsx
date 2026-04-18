@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
-import { BUSINESS_ADVISORS } from "@/lib/engines/business-advisor-personas";
+import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 
 interface Props {
   recommendation: AIRecommendation;

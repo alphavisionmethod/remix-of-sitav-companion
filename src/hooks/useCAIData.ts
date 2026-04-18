@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery } from "@tanstack/react-query";
-import { caiQueries } from "@/lib/persistence/cai-persistence-bridge";
+import { caiQueries } from "@/data/persistence/cai-persistence-bridge";
 
 type QueryFilters = { limit?: number; since?: string };
 

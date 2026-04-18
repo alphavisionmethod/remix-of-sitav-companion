@@ -6,7 +6,7 @@
 import { useEffect, useRef } from "react";
 import { initAdvisorConsumer } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { initAppBoardSynthesizer, shouldAutoEscalate } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
-import { getEventBus, type BusEvent } from "@/lib/core-services/event-bus";
+import { getEventBus, type BusEvent } from "@/platform/core-services/event-bus";
 import { escalateToBoardroom } from "@/lib/services/boardroom-bridge";
 import { registerItem, transitionState } from "@/lib/services/orchestration-pipeline/issue-lifecycle";
 import type { AppBoardSynthesis, Domain } from "@/lib/services/orchestration-pipeline/types";

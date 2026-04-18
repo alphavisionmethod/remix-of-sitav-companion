@@ -12,11 +12,11 @@ import {
 import {
   AppLayout,
   VStack, HStack,
-} from "@/lib/nova-sdk/ui/layout";
+} from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard,
   NovaSectionLabel, NovaBadge,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { cn } from "@/lib/utils";

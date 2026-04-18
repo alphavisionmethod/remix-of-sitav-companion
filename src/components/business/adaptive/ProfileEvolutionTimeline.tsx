@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import {
   analyzeProfileEvolution,
   generateMockSignals,
   type EvolutionInsight,
 } from "@/lib/engines/profile-evolution-engine";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 const ARCHETYPE_LABELS: Record<string, string> = {
   ecommerce: "E-Commerce", "brick-and-mortar": "Brick & Mortar", service: "Service",

@@ -9,7 +9,7 @@ import { Scale, MessageSquare, ThumbsUp, ThumbsDown, Gavel, CheckCircle } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BUSINESS_ADVISORS } from "@/lib/engines/business-advisor-personas";
+import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 

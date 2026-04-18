@@ -13,7 +13,7 @@ import {
   getPendingActions,
   startSyncManager,
   stopSyncManager,
-} from '@/lib/offline-db';
+} from '@/data/persistence/offline-db';
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 // Mobile-platform archived. Ubuntu-native is canonical native platform.
 type OfflineMutation = { status: string };

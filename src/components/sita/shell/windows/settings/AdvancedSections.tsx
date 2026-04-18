@@ -8,11 +8,11 @@ import {
   RefreshCw, Clock, HelpCircle, Wrench, FileText, AlertTriangle,
   Wifi, Cpu, CheckCircle, Info, ChevronRight, Check,
 } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaAvatar,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
 import { toast } from "sonner";

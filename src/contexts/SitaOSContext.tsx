@@ -36,7 +36,7 @@ import { createWorkspaceIntelligence, type WorkspaceIntelligenceService } from "
 import {
   persistIntentResolution, persistOperatingMode, persistPrioritySnapshot,
   persistAttentionDecision, persistOpportunitySignal, persistDigestCompilation,
-} from "@/lib/persistence/cai-persistence-bridge";
+} from "@/data/persistence/cai-persistence-bridge";
 
 // ── Kernel Shape ─────────────────────────────────────────────────
 

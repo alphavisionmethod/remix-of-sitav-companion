@@ -13,7 +13,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { useCommunications } from "@/hooks/use-sita-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";

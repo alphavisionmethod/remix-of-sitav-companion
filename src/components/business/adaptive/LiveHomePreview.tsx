@@ -11,7 +11,7 @@ import {
   Heart, FileText, Bot,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer, getTimeAwareGreeting } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import { getTopWidgets } from "./BusinessHomeWidgetRegistry";
 import { getStatCardsForProfile, getQuickActionsForProfile } from "./AdaptiveCRMConfig";
 

@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { AppLayout } from "@/lib/nova-sdk/ui/layout";
-import { NovaText, NovaButton, NovaSectionLabel, NovaInput } from "@/lib/nova-sdk/ui/components";
+import { AppLayout } from "@/platform/nova-sdk/ui/layout";
+import { NovaText, NovaButton, NovaSectionLabel, NovaInput } from "@/platform/nova-sdk/ui/components";
 import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";

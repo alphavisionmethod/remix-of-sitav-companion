@@ -9,7 +9,7 @@ import {
   Search, Grid3X3, List, Pin, Globe, Monitor, Package, ArrowRight,
   Check, Clock, Shield, Building, RefreshCw, Layers, Sparkles, ExternalLink,
 } from "lucide-react";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition } from "@/domains/apps/types";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";

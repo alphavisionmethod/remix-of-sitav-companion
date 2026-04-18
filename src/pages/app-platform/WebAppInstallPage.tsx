@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_DETECTED_SITES } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

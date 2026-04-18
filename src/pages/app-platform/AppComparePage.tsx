@@ -8,7 +8,7 @@ import { ArrowLeft, Check, X, Minus, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_COMPARE_PAIRS } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

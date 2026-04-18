@@ -3,11 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Bell, BellOff, Smartphone, Volume2 } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { SettingRow, ResetSectionButton } from "./shared";

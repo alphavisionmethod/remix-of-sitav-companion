@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Settings, RotateCcw, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { ALL_ARCHETYPES, type ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { ALL_ARCHETYPES, type ProfileArchetype } from "@/domains/engines/business-profile-engine";
 import { Slider } from "@/components/ui/slider";
 
 const ARCHETYPE_LABELS: Record<ProfileArchetype, string> = {

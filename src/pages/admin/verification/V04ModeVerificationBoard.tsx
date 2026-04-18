@@ -5,8 +5,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
-import { useVerificationSurfaces } from "@/lib/verification/verification-hooks";
+import { SURFACE_REGISTRY } from "@/platform/verification/surface-registry";
+import { useVerificationSurfaces } from "@/platform/verification/verification-hooks";
 import { Layers } from "lucide-react";
 
 const modes = ["real", "demo", "degraded", "unavailable"];

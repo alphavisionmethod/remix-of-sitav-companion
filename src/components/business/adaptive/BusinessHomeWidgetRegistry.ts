@@ -4,7 +4,7 @@
 // The engine picks top-N based on weighted profile match.
 // ═══════════════════════════════════════════════════════════════
 
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 export interface HomeWidget {
   id: string;

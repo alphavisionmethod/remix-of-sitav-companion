@@ -11,7 +11,7 @@ import {
   Shield, MapPin, Heart, Zap,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 const MODE_ICONS: Record<string, React.ElementType> = {
   ShoppingCart, Briefcase, Building2, Users, Calendar, Crown, Shield, MapPin, Heart, Zap,

@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import { SparklineChart } from "./SparklineChart";
-import type { ProfitabilityBrief } from "@/lib/engines/business-profitability-engine";
+import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
 import type { ProfitLoopSummary } from "@/lib/engines/continuous-profit-engine";
 import type { ReflectionSummary } from "@/lib/engines/advisor-reflection-engine";
 import ReactMarkdown from "react-markdown";

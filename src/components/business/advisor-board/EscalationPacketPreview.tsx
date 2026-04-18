@@ -9,7 +9,7 @@ import {
   Shield, AlertTriangle, Target, ArrowUpRight, Check, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { EscalationPacket } from "@/lib/engines/business-advisor-engine";
+import type { EscalationPacket } from "@/domains/engines/business-advisor-engine";
 import { AdvisorDisagreementCard } from "./AdvisorDisagreementCard";
 import { toast } from "sonner";
 

@@ -13,8 +13,8 @@ import {
   Package, Heart, MapPin, Bot, Globe, ClipboardList,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface CommandItem {
   id: string;

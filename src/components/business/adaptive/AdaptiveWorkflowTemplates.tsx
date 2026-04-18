@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 import { Zap, Play, Shield, Clock, Mail, Phone, RotateCcw, CalendarDays, ShoppingCart, Users, FileText, Bell, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface WorkflowTemplate {
   id: string;

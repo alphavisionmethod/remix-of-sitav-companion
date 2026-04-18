@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
-import { useVerificationRuns } from "@/lib/verification/verification-hooks";
+import { SURFACE_REGISTRY } from "@/platform/verification/surface-registry";
+import { useVerificationRuns } from "@/platform/verification/verification-hooks";
 import { FileText, CheckCircle2, XCircle, Shield, Database, ArrowRight, AlertTriangle } from "lucide-react";
 
 export default function JVC07FormVerificationCenter() {

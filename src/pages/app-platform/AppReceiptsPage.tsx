@@ -8,7 +8,7 @@ import { ArrowLeft, Shield, Clock, Download, Check, AlertTriangle, FileText, Ref
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
+import type { AppLifecycleReceipt } from "@/domains/apps/types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppReceiptsPage = () => {

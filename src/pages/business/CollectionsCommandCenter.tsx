@@ -6,7 +6,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
   DollarSign, AlertTriangle, Clock, CheckCircle, ArrowRight, Zap,

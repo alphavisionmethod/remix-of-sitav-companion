@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Plus, DollarSign, CheckCircle, Send, X, Trash2 } from "lucide-react";
 import { toast } from "sonner";

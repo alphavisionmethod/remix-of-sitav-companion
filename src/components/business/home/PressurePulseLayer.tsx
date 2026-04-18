@@ -6,7 +6,7 @@ import {
   FileText, Layers, Package, Clock as ClockIcon
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 interface PressureDomain {
   id: string;

@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useSitaKernel } from "@/contexts/SitaKernelContext";
-import type { BusEvent } from "@/lib/core-services/event-bus";
+import type { BusEvent } from "@/platform/core-services/event-bus";
 
 /**
  * Subscribe to a specific event topic on the shared kernel EventBus.

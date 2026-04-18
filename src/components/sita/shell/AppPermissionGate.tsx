@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Shield, ShieldAlert, ShieldCheck, X } from "lucide-react";
 import { APP_TYPE, APP_COMPONENTS, APP_ACCENTS } from "@/lib/design-system/app-window-system";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
-import type { AppPermission } from "@/lib/app-platform/types";
+import type { AppPermission } from "@/domains/apps/types";
 
 interface AppPermissionGateProps {
   appId: string;

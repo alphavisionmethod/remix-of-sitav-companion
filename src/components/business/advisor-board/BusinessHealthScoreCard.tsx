@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import type { BusinessHealthScore } from "@/lib/engines/business-profitability-engine";
+import type { BusinessHealthScore } from "@/domains/engines/business-profitability-engine";
 
 interface Props {
   score: BusinessHealthScore;

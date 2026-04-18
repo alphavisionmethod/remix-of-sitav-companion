@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 type TemplateCategory = "pipeline" | "quotes" | "communications" | "dashboard" | "boardroom" | "starter-pack";
 

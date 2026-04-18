@@ -31,7 +31,7 @@ import type {
   AppDefinition, AppInstallStatus, AppInstallScope,
   AppSandboxLevel, AppSourceOrigin,
   AppLifecycleReceipt,
-} from "@/lib/app-platform/types";
+} from "@/domains/apps/types";
 
 // ── Context shape (PUBLIC API — DO NOT BREAK) ───────────────────
 

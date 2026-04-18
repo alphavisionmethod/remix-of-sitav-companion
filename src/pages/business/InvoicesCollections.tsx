@@ -11,7 +11,7 @@ import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 // New design system
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";

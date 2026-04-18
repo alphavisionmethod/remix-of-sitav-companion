@@ -15,7 +15,7 @@ import {
 import type {
   AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus,
   AppPermission, AppSourceOrigin, AppSandboxLevel, AppInstallScope, AppPackageType,
-} from "@/lib/app-platform/types";
+} from "@/domains/apps/types";
 
 // ── Trust Badge ──
 

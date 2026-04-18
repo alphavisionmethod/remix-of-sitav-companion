@@ -9,8 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useVerificationRuns } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY } from "@/platform/verification/surface-registry";
 import {
   Radar, Zap, CheckCircle2, XCircle, Clock, AlertTriangle, Shield, Play, BarChart3, RefreshCw
 } from "lucide-react";

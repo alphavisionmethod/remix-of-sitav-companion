@@ -11,8 +11,8 @@ import {
   CheckCircle, ArrowRight, Sparkles, Package, Star, Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ProfileArchetype, BusinessProfileResult } from "@/lib/engines/business-profile-engine";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import type { ProfileArchetype, BusinessProfileResult } from "@/domains/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 const MODE_ICONS: Record<string, React.ElementType> = {
   ShoppingCart, Briefcase, Building2, Users, Calendar, Crown, Shield, MapPin, Heart,

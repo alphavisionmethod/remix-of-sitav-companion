@@ -4,7 +4,7 @@
 // Consumed by CRMHome, CRMContacts, CRMPipeline
 // ═══════════════════════════════════════════════════════════════
 
-import type { CRMAdaptation, ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import type { CRMAdaptation, ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 // Re-export for convenience — the engine already has full configs,
 // this file provides quick-access helpers and extension points.

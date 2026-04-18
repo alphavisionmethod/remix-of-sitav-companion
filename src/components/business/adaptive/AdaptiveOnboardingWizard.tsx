@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React, { useState, useCallback, useMemo } from "react";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart, Briefcase, Building2, Users, Calendar,
@@ -14,8 +14,8 @@ import {
   CheckCircle, Sparkles, ArrowLeft, Package, Heart,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
-import type { ProfileArchetype } from "@/lib/engines/business-profile-engine";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface WizardStep {
   question: string;

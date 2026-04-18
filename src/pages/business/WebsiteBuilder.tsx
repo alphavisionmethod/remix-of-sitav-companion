@@ -4,7 +4,7 @@ import { Globe, Layout, FileText, BarChart3, Zap, Eye, Plus, ExternalLink, Trend
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 
 /* ── Revenue-attributed sites ── */
 const sites = [

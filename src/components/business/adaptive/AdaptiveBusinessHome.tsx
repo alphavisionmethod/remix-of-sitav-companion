@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
-import { getIdentityLayer, getTimeAwareGreeting } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import AdaptiveSmartSuggestions from "./AdaptiveSmartSuggestions";
 
 const ICON_MAP: Record<string, React.ElementType> = {

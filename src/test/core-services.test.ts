@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { ReceiptService, createReceiptService } from "@/lib/core-services/receipt-service";
 import { evaluatePolicy } from "@/lib/core-services/policy-engine";
-import { EventBus, createEventBus } from "@/lib/core-services/event-bus";
+import { EventBus, createEventBus } from "@/platform/core-services/event-bus";
 import { WorkflowEngine, createWorkflowEngine } from "@/lib/core-services/workflow-engine";
 
 describe("Core Services", () => {

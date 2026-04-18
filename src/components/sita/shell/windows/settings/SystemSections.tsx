@@ -7,11 +7,11 @@ import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
 } from "lucide-react";
-import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
+import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaSlider, NovaBadge,
-} from "@/lib/nova-sdk/ui/components";
+} from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { toast } from "sonner";

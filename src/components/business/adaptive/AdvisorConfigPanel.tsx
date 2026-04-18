@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bot, ToggleLeft, ToggleRight, ChevronDown, ChevronUp, Zap, Shield, TrendingUp, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { Slider } from "@/components/ui/slider";
 
 type FocusMode = "risk" | "growth" | "execution" | "strategic";

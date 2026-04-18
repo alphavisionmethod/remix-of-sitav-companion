@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
-import { SURFACE_REGISTRY, type SurfaceEntry } from "@/lib/verification/surface-registry";
+import { useVerificationSurfaces, useVerificationRuns } from "@/platform/verification/verification-hooks";
+import { SURFACE_REGISTRY, type SurfaceEntry } from "@/platform/verification/surface-registry";
 import {
   MousePointerClick, AlertTriangle, Shield, Search, CheckCircle2, XCircle, Ghost, Target, Zap
 } from "lucide-react";

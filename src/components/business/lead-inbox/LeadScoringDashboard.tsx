@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { LeadScoreResult, PriorityTier } from "@/lib/engines/lead-scoring-engine";
-import { PRIORITY_TIER_META } from "@/lib/engines/lead-scoring-engine";
+import type { LeadScoreResult, PriorityTier } from "@/domains/engines/lead-scoring-engine";
+import { PRIORITY_TIER_META } from "@/domains/engines/lead-scoring-engine";
 import type { InboxItem } from "./mock-inbox-data";
 import { LeadScoreRadar } from "./LeadScoreRadar";
 import { LeadConversionFunnel } from "./LeadConversionFunnel";
@@ -10,7 +10,7 @@ import { LeadValuePipeline } from "./LeadValuePipeline";
 import { LeadHeatMap } from "./LeadHeatMap";
 import { LeadInboxOverviewCards } from "./LeadInboxOverviewCards";
 import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
-import { runScoringAdvisor, runConversionAdvisor, runTimingAdvisor, type AdvisorOutput } from "@/lib/engines/business-advisor-engine";
+import { runScoringAdvisor, runConversionAdvisor, runTimingAdvisor, type AdvisorOutput } from "@/domains/engines/business-advisor-engine";
 import { Flame, TrendingUp, AlertTriangle, RotateCcw, Star, Target } from "lucide-react";
 
 interface Props {
