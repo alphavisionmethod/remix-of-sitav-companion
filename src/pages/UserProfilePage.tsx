@@ -14,6 +14,7 @@ import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, 
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useActionFn } from "@/hooks/use-action";
+import { useFilePicker } from "@/components/sita/shell/FilePickerService";
 
 const UserProfilePage = () => {
   const { user } = useAuth();
