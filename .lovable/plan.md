@@ -1,195 +1,115 @@
 
-Let me first explore the relevant areas of the codebase to ground the plan in current truth.
-<lov-tool-use id="toolu_vrtx_01X9a1iGAZuv9w8b7hWt24VL" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/platform/architecture\"}">
-</lov-tool-use>
+## Plan: Deployment Gap Closure & Hidden Risk Remediation
 
-<lov-tool-use id="toolu_vrtx_01G2HCvB45d7Z8RcL8yM2pCr" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"os/profiles\"}">
-</lov-tool-use>
+### Strategy
+The codebase already has the **canonical systems** for every claimed gap (install flow, autosave hook, file picker provider, global search hook, AI usage ledger, connector token refresh worker, IndexedDB offline cache, manifest/DB truth registries). The real gaps are **adoption coverage**, **provider-specific implementations**, and **truth classification** — not foundational rebuilds. Per the original prompt's rules: do NOT replace mock with mock, do NOT rebuild what exists, do NOT damage wiring. Audit-first, then targeted fixes, then truth-classify the rest, then guardrail.
 
-<lov-tool-use id="toolu_vrtx_0131pzCRaupTXsSUpcDic6he" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/components/mobile\"}">
-</lov-tool-use>
+### Phase K — Evidence Maps (read-only, no code changes)
+Create `scripts/architecture/audits/generate-deployment-gap-evidence.ts` emitting 12 JSON maps + 14 Markdown reports under `generated/deployment-gap-closure/`. Each map cross-references real implementation against canonical systems:
 
-<lov-tool-use id="toolu_vrtx_01SKe91b5GAE7rU42GjNsbGK" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/shell-runtime\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_014qokXvCT1qBvwRg7pkCwuE" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"scripts/architecture/checks\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01KG5HYAEiM8ouhyqPH4bpNF" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/platform/architecture\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01AYiTKJvrr3UVWazDCKhLno" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"os/profiles\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01ArCAwwBJDQBVzR9HzEeMDt" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/components/mobile\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_019DuMGtXQwZNT124tBva53J" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/shell-runtime\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01BPXtNQG2kqJ5L7Y85Gr3tp" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"scripts/architecture/checks\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_012YyhEhi76FJdYdFQ5RzHjm" name="code--view" integration-id="code" data="{\"file_path\": \"src/platform/architecture/app-plane-map.ts\"}">
-</lov-tool-use>
-I have enough context to present a focused, evidence-driven plan. Let me check a couple more critical artifacts.
-<lov-tool-use id="toolu_vrtx_011kxuZSMYJnqfDxmT6eGSQb" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/pages/mobile\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_01DmUTiLqWvRVYjaABJSXReH" name="code--search_files" integration-id="code" data="{\"query\": \"localStorage\", \"include_patterns\": \"src/**/mobile*/**/*.ts,src/**/mobile*/**/*.tsx,src/hooks/useMobile*.ts\"}">
-</lov-tool-use>
-
-<lov-tool-use id="toolu_vrtx_0171hdF6AWafWh9FQ6K5Ku5H" name="code--view" integration-id="code" data="{\"file_path\": \"os/profiles/operator.profile.json\"}">
-</lov-tool-use>
-I have enough context. Presenting the plan now.
-
-<lov-plan>
-## Plan: App Registry, Launcher Truth, Mobile Hardening, Profile Separation
-
-### Evidence-driven, 5 phases. Read-only audits first, then minimal targeted fixes, then guardrails.
-
----
-
-### Phase A — Evidence Maps (read-only, no code changes)
-
-Create `scripts/architecture/audits/generate-runtime-evidence-maps.ts` to emit 4 JSON evidence files into `generated/profile-and-runtime-hardening/`:
-
-1. **`app-registry-map.json`** — every entry in `APP_PLANE_MAP` cross-referenced with:
-   - Route resolution (does its expected route exist in `src/routes/**`?)
-   - Profile manifests (`os/profiles/{user,operator}.profile.json` `allowedApps[]` arrays)
-   - Launcher visibility (`launcher-profile.ts` filter results for both profiles)
-   - Command palette visibility (`command-profile.ts` filter results)
-   - Drift flags: `missing-route`, `not-in-profile-manifest`, `manifest-app-not-in-map`, `pinned-but-not-allowed`
-
-2. **`app-route-profile-map.json`** — for every `<Route path>` declared under `src/routes/**`:
-   - Owning plane (from `route-plane-map.ts`)
-   - Allowed profiles
-   - Whether it's app-backed (matches an `APP_PLANE_MAP` entry) or hidden app-like (looks like an app surface but unregistered: heuristic = top-level route with shell layout + 3+ subviews)
-   - Guard component wrapping it (`AdminRoute`, `PermissionGatedRoute`, none)
-
-3. **`mobile-capability-map.json`** — scan all 25 files in `src/pages/mobile/` + `src/components/mobile/` + mobile hooks/services. For each:
-   - Persistence model (localStorage / IndexedDB / Supabase / none)
-   - Auth/biometric usage (WebAuthn, Capacitor biometric, none)
-   - Search wiring (real source vs static)
-   - Offline queue presence
-   - Classification: `live` / `partial` / `responsive-only` / `mock` / `planned`
-
-4. **`profile-separation-map.json`** — graph analysis:
-   - Routes exposed in the user profile that import admin-only modules (transitive, 1-hop through shared)
-   - Shared components (under `src/components/`, `src/shell-runtime/`) that import from `src/admin/**` or `src/pages/admin/**`
-   - Profile manifest `allowedApps[]` ↔ `APP_PLANE_MAP.profiles[]` mismatches
-   - Launcher/palette entries surfaced when they shouldn't be (run filter functions for both profiles)
-
-**Deliverable:** 4 JSON maps + 4 audit Markdown reports (`APP_REGISTRY_AND_LAUNCHER_AUDIT.md`, `MOBILE_RUNTIME_READINESS_AUDIT.md`, `MOBILE_CAPABILITY_TRUTH_MAP.md`, `USER_OPERATOR_PROFILE_SEPARATION_AUDIT.md`, plus `APP_ROUTE_PROFILE_CROSSMAP.md`, `SHARED_COMPONENT_PROFILE_LEAKAGE.md`, `ROUTE_GUARD_AND_ACCESS_COVERAGE.md`). **Zero code changes.**
-
----
-
-### Phase B — Guardrail Checks (additive, warn-level first)
-
-Add 8 new CI checks under `scripts/architecture/checks/`, all warn-level on first run:
-
-| Check | Purpose |
+| Map | What it proves |
 |---|---|
-| `check-launcher-registry-completeness.ts` | Every `APP_PLANE_MAP` entry has a resolvable route + appears in declared profile manifests |
-| `check-app-profile-matrix.ts` | `APP_PLANE_MAP.profiles[]` ↔ `os/profiles/*.json allowedApps[]` parity |
-| `check-hidden-app-routes.ts` | Top-level shell-mounted routes with no `APP_PLANE_MAP` entry |
-| `check-mobile-capability-truth.ts` | Mobile features marked "live" must have real persistence/auth/search backing |
-| `check-profile-route-coverage.ts` | Every route's plane allowed by at least one profile manifest |
-| `check-command-palette-profile-leakage.ts` | Operator-only entries never returned by user-profile palette filter |
-| `check-shared-component-profile-pollution.ts` | Files under `src/components/`, `src/shell-runtime/` cannot import from `src/admin/**` |
-| `check-route-guard-coverage.ts` | Every `admin` plane route is wrapped by `AdminRoute` or `PermissionGatedRoute` |
+| `app-install-truth-map.json` | All `installed_apps` consumers; install/uninstall/update edge function call sites; launcher sync; profile awareness |
+| `file-picker-adoption-map.json` | Every `<input type="file">` and ad-hoc file dialog vs `useFilePicker` adoption |
+| `autosave-adoption-map.json` | All editable surfaces (forms, editors, composers) vs `useDraftAutosave` adoption |
+| `window-snap-adoption-map.json` | All `AppWindow` mounts vs snap-zone integration |
+| `mobile-offline-truth-map.json` | Confirms mobile is archived (Ubuntu-native canonical); web offline = IndexedDB; classifies honestly |
+| `search-wiring-map.json` | All shells vs `useGlobalSearch` integration; result source coverage |
+| `ai-cost-metering-map.json` | All `ai-gateway` invocations vs ledger writes; capability/feature coverage |
+| `connector-oauth-rotation-map.json` | Per-provider refresh implementation status (stub vs real) |
+| `frontend-backend-substrate-matrix.json` | Each major user action → edge function/DB table/local substrate owner |
+| `db-truth-closure-map.json` | Builds on existing `db-truth-registry`: feature→table→RLS→tenancy→migration ownership |
+| `manifest-truth-closure-map.json` | All 70+ generated artifacts: owner/generator/validator/CI gate/freshness |
+| `supportability-coverage-map.json` | Runbook↔alert linkage, golden-path coverage, diagnostic bundle completeness |
 
-All start warn-level with budgets equal to current discovered counts (baselined). No build break on first run.
+**Deliverable:** All 14 required `.md` reports + 12 `.json` maps. Zero code changes.
 
----
-
-### Phase C — Targeted Structural Fixes (only what Phase A proves)
-
-Based on `app-registry-map.json` drift flags:
-- **Add missing `APP_PLANE_MAP` entries** for hidden app-like routes (or explicitly mark them `launcherVisible: false, commandVisible: false` if they're internal sub-surfaces, not apps)
-- **Fix manifest mismatches**: align `os/profiles/user.profile.json allowedApps[]` and `operator.profile.json allowedApps[]` with `APP_PLANE_MAP.profiles[]` (single source of truth = `APP_PLANE_MAP`; manifest gets regenerated)
-- **Add `roleRequired` to operator apps** that lack it
-- **Fix any stale route targets** by updating the route value or the registry entry
-
-For profile leakage (only if `profile-separation-map.json` proves real violations):
-- Move polluted shared components to plane-correct locations OR introduce adapter interfaces
-- Add missing `AdminRoute` / `PermissionGatedRoute` wrappers around any unguarded admin routes
-
-For mobile (decision-gated by `mobile-capability-map.json`):
-- **Honest classification first:** add `mobile-feature-truth-registry.ts` declaring each mobile feature as `live` / `partial` / `responsive-only` / `planned`
-- **Quick wins only** in this wave:
-  - Wire mobile search to existing global search service (if not already)
-  - Replace any `localStorage`-based offline queue with IndexedDB-backed wrapper using existing `NovaFS` if applicable
-  - Add `MobileCapabilityBanner` to surfaces classified `partial` so users see honest status
-- **Defer (with truth labels):** APNs/FCM push, biometric WebAuthn enrollment — already documented as deferred in mobile-store-readiness; keep that posture
-
-**Decision gates** before C executes:
-- If hidden app routes exist → register them in `APP_PLANE_MAP`, do NOT delete
-- If profile leakage exists in shared shell → adapter pattern, do NOT split shared shell
-- If mobile features are partial → truth-label them, do NOT silently downgrade
-
----
-
-### Phase D — Verification & Graduation
-
-1. Run full 8 new checks + existing 14 architectural gates + `tsc --noEmit`
-2. Emit `FINAL_VERIFICATION_RESULTS.md` and `verification-results.json`
-3. Where Phase C cleanly resolves a check to zero, graduate it to **block-level** (matches the established Phase B5 ratchet pattern):
-   - `check-shared-component-profile-pollution.ts` → block at 0
-   - `check-command-palette-profile-leakage.ts` → block at 0
-   - `check-app-profile-matrix.ts` → block at 0 once manifests realigned
-
----
-
-### Phase E — Reports (final deliverables)
-
-All under `generated/profile-and-runtime-hardening/`:
+### Phase L — 12 New Guardrail Checks (warn-level first, baselined)
+Under `scripts/architecture/checks/`:
 
 ```
-APP_REGISTRY_AND_LAUNCHER_AUDIT.md
-APP_ROUTE_PROFILE_CROSSMAP.md
-MOBILE_RUNTIME_READINESS_AUDIT.md
-MOBILE_CAPABILITY_TRUTH_MAP.md
-USER_OPERATOR_PROFILE_SEPARATION_AUDIT.md
-SHARED_COMPONENT_PROFILE_LEAKAGE.md
-ROUTE_GUARD_AND_ACCESS_COVERAGE.md
-HARDENING_REMEDIATION_PLAN.md
-FINAL_VERIFICATION_RESULTS.md
-app-registry-map.json
-app-route-profile-map.json
-mobile-capability-map.json
-profile-separation-map.json
-verification-results.json
+check-app-store-install-flow.ts
+check-file-picker-adoption.ts
+check-autosave-adoption.ts
+check-window-snap-integration.ts
+check-mobile-offline-persistence.ts
+check-search-source-coverage.ts
+check-ai-cost-metering.ts
+check-connector-oauth-hardening.ts
+check-frontend-backend-substrate-map.ts
+check-db-truth-completeness.ts
+check-manifest-truth-completeness.ts
+check-supportability-coverage.ts
 ```
+All start warn-level with budgets baselined from Phase K evidence. No build break on first run.
 
----
+### Phase M — Targeted Real Fixes (only what evidence proves fixable)
 
-### What this plan explicitly will NOT do
-- ❌ Mark mobile as "production-ready" globally — only honestly classify per-feature
-- ❌ Remove apps from launcher without a registered canonical replacement
-- ❌ Split shared shell components unless leakage is graph-proven
-- ❌ Add fake biometric/push implementations to inflate scores
-- ❌ Touch `/files` or other intentionally-shared routes
+**M1 — App Store install flow (already real):** Phase K will likely show this is already production-grade. If gaps exist, add: `app-install-receipts` table writes confirmation, `installed_apps_status_history` for audit trail, launcher real-time refresh on install. **No rebuild.**
+
+**M2 — File picker adoption:** Migrate the top ~10 highest-traffic `<input type="file">` sites identified in Phase K to `useFilePicker`. Leave intentional fallbacks (e.g., low-level upload streams) and document in adoption map.
+
+**M3 — Autosave adoption:** Wire `useDraftAutosave` into the top ~10 highest-value editable surfaces (invoice forms, message composers, settings panels, app config editors). Upgrade hook persistence from localStorage → IndexedDB via existing `offline-db.ts` for durability.
+
+**M4 — Window snap:** Already implemented in `WindowContext.snapWindow`. Add visible snap-guide overlay component (`SnapGuideOverlay.tsx`) consumed by `AppWindow` during drag. Truth-classify any non-snappable surfaces.
+
+**M5 — Mobile offline:** Already correct. Mobile platform is **archived** (Ubuntu-native canonical per memory `features/platform-runtimes`). Truth-classify in evidence map; no code change needed beyond honest labeling.
+
+**M6 — Search wiring:** Audit shows `UniversalCommandSurface` + `SearchPage` already consume `useGlobalSearch`. Add missing app-shell integrations identified in Phase K (likely Files, Communications shells).
+
+**M7 — AI cost metering:** Already real via `ai_usage_ledger` + `ai_invocations`. Add: missing capability instrumentation found in Phase K, admin spend rollup view (if not present), and `ai_cost_alerts` threshold triggers.
+
+**M8 — Connector OAuth rotation:** Current `connector-token-refresh` worker is honestly stubbed (no provider impl). Implement **real Google OAuth refresh** (only provider with active wiring per `provider-family-operations`). Other providers: register in `connector-oauth-provider-registry.ts` with `status: 'manual'` truth label.
+
+**M9 — DB truth:** Run existing `db-truth-registry` validators; emit `DB_TRUTH_CLOSURE.md` with feature↔table↔RLS↔tenancy↔migration matrix.
+
+**M10 — Manifest truth:** Use existing `manifest-registry.ts`; add freshness check + orphan detector.
+
+**M11 — Supportability:** Use existing runbook registry; add alert↔runbook link validator + missing-link report.
+
+### Phase N — Truth Classification (where M cannot fully close)
+For every gap M does not fully resolve, write to `generated/deployment-gap-closure/truth-classifications.json`:
+- Gap, current status, why-not-fixed-now, classification (`partial` | `deferred` | `archived`), surface labels required
+- Update `mobile-feature-truth-registry.ts`, `launch-honesty.service.ts`, admin truth boards accordingly
+- No silent downgrades
+
+### Phase O — Verification, Aggregator Wiring, Graduation
+1. Run all 12 new checks + existing 36 master gates + `tsc --noEmit`
+2. Add `run-all-deployment-gap-gates.ts` orchestrator (mirrors `run-all-profile-runtime-gates.ts` pattern)
+3. Add 13 entries to `check-os-release-readiness.ts REQUIRED_GATES` (12 gates + 1 orchestrator)
+4. Graduate to **block-level** any check that resolves cleanly to zero
+5. Emit `FINAL_DEPLOYMENT_CLOSURE_STATUS.md` + `final-deployment-closure-status.json` + `PHASE_K_O_DEPLOYMENT_CERTIFICATE.md`
+
+### Phase P — Seal & Sign (extend existing attestation)
+1. Re-seal hardening baseline to include new evidence files (already-existing `seal-profile-runtime-baseline.ts`)
+2. Re-sign attestation (already-existing `sign-profile-runtime-attestation.ts`)
+3. Add 4 new npm scripts: `gap-closure:evidence`, `gap-closure:gates`, `gap-closure:verify`, `gap-closure:reseal`
+4. Operator runbook addendum for new failure modes
+
+### Final State
+- 49 master release gates GREEN (36 existing + 12 new + 1 orchestrator)
+- All 14 required `.md` deliverables emitted with real evidence
+- 12 new validation scripts integrated and baselined
+- Real fixes applied where Phase K proves feasible; honest truth-classification elsewhere
+- Sealed + signed baseline extended to cover new surface
+- `deployable=true` maintained, materially closer to true 100% deployment readiness
+
+### Explicitly will NOT do
+- ❌ Rebuild App Store install flow (already real per migrations + edge functions)
+- ❌ Replace `offline-db.ts` IndexedDB layer (already correct, mobile archived)
+- ❌ Build new search/picker/autosave systems (canonical ones exist)
 - ❌ Promote new checks to block-level on first run
-- ❌ Edit `src/integrations/supabase/{client,types}.ts` or `.env`
-
-### What changes vs prior plans
-- Mobile is treated as a **runtime**, not a responsive surface — capability classification is mandatory
-- Single source of truth for app/profile mapping = `APP_PLANE_MAP`; manifests align to it
-- Profile separation is proven via **graph analysis** (transitive imports), not just direct
-- All check budgets are baselined from real evidence in Phase A — no guesses
+- ❌ Implement fake provider OAuth refresh (Google real, others labeled `manual`)
+- ❌ Touch `src/integrations/supabase/{client,types}.ts` or `.env`
+- ❌ Mark anything "production-ready" without code-level proof in Phase K
 
 ### Ship order
 ```
-A (evidence, ~5 min, additive)
-   ↓
-B (8 guardrails warn-level, ~5 min, additive)
-   ↓
-C (targeted fixes — scope = Phase A evidence only)
-   ↓
-D (verify + graduate stable checks to block)
-   ↓
-E (final reports + deployment certificate update)
+K (evidence, ~5 min, additive) →
+L (12 guardrails warn-level, ~5 min, additive) →
+M (targeted real fixes — scope = K evidence only) →
+N (truth-classify residuals) →
+O (verify + graduate stable checks + aggregator wire) →
+P (re-seal + re-sign + npm scripts + runbook)
 ```
-
-After approval I execute A → B → C → D → E in a single wave.
+After approval I execute K → P in a single wave.
