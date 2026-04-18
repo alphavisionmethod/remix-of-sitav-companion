@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sita-os/profile.schema.json",
+  "title": "SITA OS Deployment Profile",
+  "type": "object",
+  "required": ["profile", "displayName", "artifactName", "defaultShellHome", "enabledPlanes", "allowedApps", "featureFlags"],
+  "properties": {
+    "profile": { "enum": ["user", "operator"] },
+    "displayName": { "type": "string" },
+    "artifactName": { "type": "string", "pattern": "^sita-os-[a-z]+$" },
+    "description": { "type": "string" },
+    "defaultShellHome": { "type": "string", "pattern": "^/" },
+    "enabledPlanes": {
+      "type": "array",
+      "items": { "enum": ["core-os", "shell-runtime", "user", "admin", "backend-services"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "adminPlaneAccess": { "enum": ["default", "role-gated", "disabled"] },
+    "allowedApps": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "featureFlags": { "type": "object" },
+    "supportToolingLevel": { "enum": ["self-service", "operator-full"] },
+    "branding": {
+      "type": "object",
+      "properties": {
+        "wordmarkSuffix": { "type": "string" },
+        "themeVariant": { "type": "string" }
+      }
+    }
+  }
+}

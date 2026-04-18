@@ -1,0 +1,32 @@
+{
+  "$schema": "../profile.schema.json",
+  "profile": "user",
+  "displayName": "SITA OS — User Edition",
+  "artifactName": "sita-os-user",
+  "description": "Standard end-user product experience. User Product Plane is default; admin surfaces hidden behind role gates.",
+  "defaultShellHome": "/desktop",
+  "enabledPlanes": ["core-os", "shell-runtime", "user", "backend-services"],
+  "adminPlaneAccess": "role-gated",
+  "allowedApps": [
+    "business-os",
+    "money-os",
+    "concierge",
+    "files",
+    "boardroom",
+    "workspace",
+    "app-store",
+    "settings",
+    "notifications"
+  ],
+  "featureFlags": {
+    "show.admin.nav": false,
+    "show.dev.tools": false,
+    "support.diagnostics.level": "user-self-service",
+    "branding.variant": "user"
+  },
+  "supportToolingLevel": "self-service",
+  "branding": {
+    "wordmarkSuffix": "",
+    "themeVariant": "user-default"
+  }
+}
