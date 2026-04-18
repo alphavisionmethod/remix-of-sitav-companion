@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T12:43:50.250Z",
+  "generatedAt": "2026-04-18T12:45:26.150Z",
   "gate": "profile-runtime-baseline-drift",
   "level": "block",
-  "baselineSealedAt": "2026-04-18T12:40:26.063Z",
-  "baselineFingerprint": "91b177808d601fc9703344784363dcdcc65ce7c189b924f5388d37146947c127",
+  "baselineSealedAt": "2026-04-18T12:44:05.980Z",
+  "baselineFingerprint": "2b1291bc831907d88ff954f144ccdf63f4c9983624ef87bdebb70ed69ae8c9df",
   "ok": true,
   "hardFailures": [],
   "totalSoftDrift": 0,
