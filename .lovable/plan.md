@@ -1,187 +1,109 @@
 
 
-# SITA OS — Page & Route Surface Consolidation (Phased Plan)
+## Immediate fix + larger remediation plan
 
-## Audit Findings (the real numbers)
+### Build error root cause
+During Wave 2 of Phase 5 (page migration), the AdminRBACConsole shim was created at `src/pages/admin/cloud/AdminRBACConsole.tsx` pointing to `@/admin/modules/trust-security/views/AdminRBACConsole`, but the target file was **never actually created** (it shows in the prior summary, but is not on disk). Three consumers import `AdminRBACConsole` as a **named export**:
+- `src/admin/pages/fleet/index.ts` line 34
+- `src/pages/admin/cloud/CloudBackboneAdmin.tsx` line 38
+- The shim itself only re-exports `default`
 
-| Metric | Value |
-|---|---|
-| Pages on disk (`src/pages/**`) | **1,042** |
-| Admin pages | 539 (319 flat at `src/pages/admin/*.tsx` + 220 in subdirs) |
-| Mounted routes (generated manifest) | **811** |
-| AdminRoutes.tsx routes | 190 |
-| experimental-routes.tsx routes | 121 |
-| os-routes.tsx routes | 107 |
-| Owner workflow `platform-admin` routes | **353** |
-| Existing consolidation map coverage | 27 / 539 admin pages (5%) |
-| Existing redirects in route families | only 16 in AdminRoutes; 0 in user-domain families |
+### Phase A — Hotfix (unblocks build, ~2 min)
 
-**Existing assets to reuse (do not rebuild):**
-- `src/platform/architecture/admin-route-registry.ts` (12-domain IA, page classes)
-- `src/platform/architecture/admin-page-consolidation-map.ts` (sparse — must be completed)
-- `src/platform/architecture/route-plane-map.ts`, `route-registry.ts`
-- 17 CI checks under `scripts/architecture/checks/` already gating `check-admin-domain-budget`, `check-admin-page-classification-coverage`, `check-admin-route-coherence`, etc.
+1. Create the missing target file `src/admin/modules/trust-security/views/AdminRBACConsole.tsx` with the full component body (move it from `src/pages/admin/cloud/AdminRBACConsole.tsx`).
+2. Update the shim at `src/pages/admin/cloud/AdminRBACConsole.tsx` to re-export both named + default:
+   ```ts
+   export { AdminRBACConsole, AdminRBACConsole as default } from "@/admin/modules/trust-security/views/AdminRBACConsole";
+   ```
+3. Add the entry to `src/admin/modules/trust-security/views/index.ts` barrel.
+4. Run `tsc --noEmit` to confirm green.
 
-**Real risks identified:**
-1. AdminRoutes is a 446-line "museum" with one route per page.
-2. 121 investment-office pages mounted as flat routes under `experimental-routes.tsx`.
-3. User domain route families have zero redirects — moves will break bookmarks.
-4. No `generated/page-consolidation/` outputs exist yet.
-5. `src/admin/modules/` directory exists but is empty of canonical module pages.
+### Phase B — Architecture Remediation (4 ordered phases, each independently deployable)
 
----
+**B1 — Evidence Maps (read-only, no code changes)**
+Build four JSON evidence graphs under `generated/architecture-remediation/`:
+- `service-topology-map.json` — every file in `src/lib/`, `src/platform/`, `src/data*/`, `src/integrations/`, `src/domains/` classified as platform-svc / domain-svc / runtime-svc / data-svc / integration-svc / orchestration-svc / not-a-service, with import-graph evidence.
+- `contract-topology-map.json` — every type/schema/event file classified as canonical-contract (in `src/contracts`) vs leaked-contract (elsewhere), with target home.
+- `plane-isolation-graph.json` — full directed import graph keyed by plane (user/admin/shell/backend/core), flagging direct AND transitive cross-plane edges.
+- `route-truth-map.json` — for every `<Route>` and every page file: route↔target↔plane↔nav-reference↔test-reference, flagging dead/orphaned/duplicate/wrapper.
 
-## Phase 0 — Truth Baseline (read-only, deploy-safe)
+Deliverable: 4 audit MDs (`SERVICE_TOPOLOGY_AUDIT.md`, `CONTRACT_TOPOLOGY_AUDIT.md`, `PLANE_ISOLATION_PROOF.md`, `ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md`). Zero code changes.
 
-**Goal:** establish ground truth before any code moves.
+**B2 — Guardrail Checks (additive only)**
+Add 6 new CI checks under `scripts/architecture/checks/`:
+- `check-service-topology.ts` — fails on hidden-service drift in `src/lib/`
+- `check-contract-topology.ts` — fails on contract leakage outside `src/contracts/`
+- `check-plane-import-graph.ts` — graph-aware boundary check (transitive)
+- `check-route-truth.ts` — every `<Route>` resolves to an existing canonical target
+- `check-dead-pages.ts` — flags pages not referenced by any route
+- `check-route-wrapper-usage.ts` — flags undeclared route wrappers/aliases
 
-1. Generate `generated/page-consolidation/PAGE_SURFACE_AUDIT.md` + `page-surface-map.json` by extending `scripts/architecture/checks/check-page-registry-completeness.ts` to emit a full classification table.
-2. Auto-classify every page by:
-   - filename prefix (matches existing `CLUSTER_DOMAIN_MAP`)
-   - import graph (is it referenced by a `<Route>`? by nav? by command palette?)
-   - LOC + dependency count (thin pages are merge candidates)
-3. Write 4 base outputs: `PAGE_CURRENT_TO_TARGET_MAP.md`, `DUPLICATE_AND_OVERLAPPING_PAGES.md`, `EXPERIMENTAL_AND_PHASED_SURFACES.md`, `CANONICAL_ROUTE_OWNERSHIP.md`.
-4. **Zero code changes. Zero route changes.** Build passes unchanged.
+All start as **warning-level** (matches the existing `check-5-plane-boundaries.ts` pattern) so they don't break the build.
 
-**Deployable:** ✅ Pure additive artifacts.
+**B3 — Targeted Structural Fixes (only what evidence demands)**
+Based on B1 results, perform low-risk fixes:
+- Move provably-hidden service files from `src/lib/` to their canonical home (platform/domain/data/integration), leaving thin re-export shims only where consumers exist outside our control.
+- Move leaked contracts into `src/contracts/<family>/`, update import surfaces.
+- Fix only the plane-isolation violations the graph proves are real (not declared); use adapter interfaces where breaking the import would lose behavior.
+- Convert dead routes to redirects via the existing `admin-redirect-map.ts` / `user-redirect-map.ts` rather than deleting.
 
----
+**Decision gates** (set before B3 starts, decided by B1 evidence):
+- Whether to create a small `src/services/` layer — only if B1 proves true cross-cutting orchestration services exist with no canonical home.
+- Whether to recreate `src/packages/` — default is **no**; `src/contracts/` stays canonical unless B1 proves a packaging boundary is needed.
 
-## Phase 1 — Complete the Admin Consolidation Map (governance only)
+**B4 — Verification**
+Run the full 8-gate suite + 6 new checks + `tsc --noEmit`. Emit `FINAL_VERIFICATION_RESULTS.md` and `verification-results.json`.
 
-**Goal:** every one of the 539 admin pages has a registry entry so CI gate `check-admin-page-classification-coverage` covers 100% (currently 5%).
+### What this plan explicitly will NOT do
+- ❌ Recreate `src/services/` or `src/packages/` without evidence
+- ❌ Mass-move files based on naming alone
+- ❌ Delete any service/contract/page without a redirect or canonical replacement
+- ❌ Promote new checks to error-level on first run (warn-first, then graduate)
+- ❌ Touch the user/operator profile model or plane registry
 
-1. Bulk-populate `admin-page-consolidation-map.ts` using the auto-classifier from Phase 0 — one entry per page with `targetDomain`, `targetRoute`, `pageClass`, `mergeInto`.
-2. Hand-curate the ~50 ambiguous entries (AIG/AIT/MC/SAG clusters with overlapping domains).
-3. Emit `ADMIN_SURFACE_CONSOLIDATION.md` showing: which 12 stay as `PRIMARY_DOMAIN_ENTRY`, which become `SECONDARY_SUBVIEW`, which become `DETAIL_EXPLORER`, which become `DUPLICATE_MERGE_REQUIRED`.
-4. **No file moves. No route changes.** Only the registry grows.
+### Files produced
+```
+generated/architecture-remediation/
+├─ SERVICE_TOPOLOGY_AUDIT.md
+├─ CONTRACT_TOPOLOGY_AUDIT.md
+├─ PLANE_ISOLATION_PROOF.md
+├─ ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md
+├─ SERVICE_REMEDIATION_PLAN.md
+├─ CONTRACT_REMEDIATION_PLAN.md
+├─ PLANE_ISOLATION_FIXES.md
+├─ ROUTE_REMEDIATION_PLAN.md
+├─ STALE_PAGES_AND_ROUTE_WRAPPERS.md
+├─ ARCHITECTURE_HARDENING_STATUS.md
+├─ FINAL_VERIFICATION_RESULTS.md
+├─ service-topology-map.json
+├─ contract-topology-map.json
+├─ plane-isolation-graph.json
+├─ route-truth-map.json
+└─ verification-results.json
 
-**Deployable:** ✅ Registry-only change.
+scripts/architecture/checks/
+├─ check-service-topology.ts        (new, warn-level)
+├─ check-contract-topology.ts       (new, warn-level)
+├─ check-plane-import-graph.ts      (new, warn-level)
+├─ check-route-truth.ts             (new, warn-level)
+├─ check-dead-pages.ts              (new, warn-level)
+└─ check-route-wrapper-usage.ts     (new, warn-level)
 
----
-
-## Phase 2 — Redirect & Alias Layer (zero-deletion bookmark safety)
-
-**Goal:** make every legacy admin route URL resolve to its canonical target *before* any page moves.
-
-1. Create `src/admin/redirects/admin-redirect-map.ts` — generated from `admin-page-consolidation-map.ts` where `pageClass ∈ {DUPLICATE_MERGE_REQUIRED, DEPRECATE_WITH_REDIRECT}`.
-2. In `AdminRoutes.tsx`, mount these as `<Route path={old} element={<Navigate to={canonical} replace />} />` *alongside* (not replacing) existing routes.
-3. Same pattern for user domains: add `src/routes/redirects/user-redirect-map.ts` mounted in each route family.
-4. Emit `REDIRECT_AND_ALIAS_MAP.md` + `redirect-alias-map.json`.
-5. Add CI gate `check-redirect-coverage.ts` ensuring every consolidation-map entry marked deprecated has a live redirect.
-
-**Deployable:** ✅ Both old and new URLs work; nothing broken; bookmarks safe forever.
-
----
-
-## Phase 3 — Canonical Admin Module Pages (12 hubs)
-
-**Goal:** mount the 12 canonical `PRIMARY_DOMAIN_ENTRY` pages as proper hubs at `/admin/<domain>`.
-
-1. For each of the 12 domains (overview, alerts, approvals, environments, ai-runtime, integrations, trust-security, health, releases, verification, config, support):
-   - Use existing hub page if classified `PRIMARY_DOMAIN_ENTRY`, else create `src/admin/modules/<domain>/<Domain>HubPage.tsx`.
-   - Hub composes existing pages as **lazy-loaded subview tabs** via existing `DomainHubLayout` + `WorkflowStepStub` components (already in `src/components/admin/hubs/`).
-2. Subviews are rendered via `<Outlet />` so `/admin/ai-runtime/providers` still deep-links.
-3. Existing flat routes remain mounted (Phase 2 redirects already point them here).
-4. Run `check-admin-domain-budget` (≤12) + `check-admin-shell-consistency`.
-
-**Deployable:** ✅ Hubs ship; legacy routes still work via redirects from Phase 2.
-
----
-
-## Phase 4 — User Domain Shell Pages
-
-**Goal:** apply the same shell+views pattern to user domains where sprawl is highest (investment-office: 121 routes, business: 46, money: 37, concierge: 20).
-
-1. **Investment Office (highest priority):** create `src/features/investment-office/pages/InvestmentShellPage.tsx`. Most of the 41 listed pages (BeginnerMode, AdvancedMode, OperatingModes, etc.) become tabs/views under `/investment` with deep-linkable sub-routes; only 8–10 remain as standalone pages (Boardroom, MarketExplorer, PortfolioOffice, ExecutionDesk, RiskOffice, ResearchLibrary, FamilyOffice, KnowledgeGraph).
-2. Repeat lighter consolidation for `business`, `money`, `concierge`, `files`, `boardroom`.
-3. Emit `USER_DOMAIN_SURFACE_CONSOLIDATION.md`.
-4. Wire all old paths through Phase 2 redirect map.
-
-**Deployable:** ✅ Each domain ships independently; nothing forces all-or-nothing.
-
----
-
-## Phase 5 — Convert Thin Pages to Embedded Views
-
-**Goal:** physically relocate pages classified `SECONDARY_SUBVIEW` / `DETAIL_EXPLORER` from `src/pages/**` into their owning hub's `views/` directory.
-
-1. Move file (no logic changes, only path).
-2. Update import in the hub.
-3. Remove the standalone `<Route>` entry (the Phase 2 redirect now becomes the only public path).
-4. Strict per-domain batches (one PR-sized wave per domain) so each wave is independently revertible.
-5. Run full CI per wave: `check-admin-route-coherence`, `check-page-registry-completeness`, `check-route-page-contract-layer-usage`, `check-surface-ownership`, build, type-check, route-coverage.test.ts.
-
-**Deployable:** ✅ Each wave ships green; redirects keep deep links alive.
-
----
-
-## Phase 6 — Experimental & Flag-Gated Surfaces
-
-**Goal:** correctly classify surfaces that exist but should not count as launch surfaces.
-
-1. Walk `src/routes/experimental-routes.tsx` — flag every entry as either `live` (move to canonical family) or `experimental` (gate behind `check-launch-honesty-rules`).
-2. Emit `EXPERIMENTAL_AND_PHASED_SURFACES.md`.
-3. Add CI gate `check-experimental-isolation.ts` — experimental routes must not appear in launcher, command palette, or default nav.
-
-**Deployable:** ✅ Pure governance/gating change.
-
----
-
-## Phase 7 — Final Verification & Cleanup
-
-**Goal:** prove zero regressions and tighten the bundle.
-
-1. Generate `PAGE_VERIFICATION_RESULTS.md` + `page-verification-results.json` covering: route integrity, build integrity, import integrity, redirect integrity, admin nav integrity, command palette integrity, route manifest integrity.
-2. Add lazy boundaries per domain shell (manualChunks in `vite.config.ts` keyed by plane).
-3. Only after CI green for two waves: process `REMOVE_AFTER_SAFE_MIGRATION` entries (still preserves the redirect — only the duplicate physical file leaves).
-
-**Deployable:** ✅ Final state — same functionality, materially fewer canonical routes, every old URL still resolves.
-
----
-
-## What is *not* in this plan (explicit)
-
-- ❌ No mass page deletion.
-- ❌ No removal of any operator workflow.
-- ❌ No collapse of investment-office into one mega-page.
-- ❌ No breaking of `/admin/<legacy>` URLs — every one is redirected.
-- ❌ No edits to the user/operator profile model or plane registry.
-
-## Files / artifacts produced
-
-```text
-generated/page-consolidation/
-├─ PAGE_SURFACE_AUDIT.md
-├─ PAGE_CURRENT_TO_TARGET_MAP.md
-├─ CANONICAL_ROUTE_OWNERSHIP.md
-├─ REDIRECT_AND_ALIAS_MAP.md
-├─ ADMIN_SURFACE_CONSOLIDATION.md
-├─ USER_DOMAIN_SURFACE_CONSOLIDATION.md
-├─ DUPLICATE_AND_OVERLAPPING_PAGES.md
-├─ EXPERIMENTAL_AND_PHASED_SURFACES.md
-├─ PAGE_VERIFICATION_RESULTS.md
-├─ page-surface-map.json
-├─ canonical-route-map.json
-├─ redirect-alias-map.json
-├─ duplicate-page-map.json
-└─ page-verification-results.json
-
-src/admin/redirects/admin-redirect-map.ts            (Phase 2)
-src/routes/redirects/user-redirect-map.ts            (Phase 2)
-src/admin/modules/<12 domains>/<Domain>HubPage.tsx   (Phase 3)
-src/features/<domain>/pages/<Domain>ShellPage.tsx    (Phase 4)
-scripts/architecture/checks/check-redirect-coverage.ts        (new)
-scripts/architecture/checks/check-experimental-isolation.ts   (new)
+src/admin/modules/trust-security/views/AdminRBACConsole.tsx   (Phase A hotfix)
 ```
 
-## Phase ship order (each independently deploy-ready)
-
-```text
-P0 audit  →  P1 registry  →  P2 redirects  →  P3 admin hubs
-        ↘                                  ↘
-         P6 experimental gating             P4 user shells  →  P5 view migration  →  P7 verify
+### Ship order
+```
+A (hotfix, ~2 min, unblocks build)
+   ↓
+B1 (evidence, ~5 min, additive)
+   ↓
+B2 (guardrails, ~5 min, additive warn-level)
+   ↓
+B3 (targeted fixes — scope determined by B1 evidence)
+   ↓
+B4 (verification)
 ```
 
-After approval I'll start with **Phase 0 + Phase 1** in the same wave (lowest risk, biggest visibility win).
+After approval I will execute Phase A first to clear the build error, then proceed straight into B1 → B2 → B3 → B4 in the same wave.
 
