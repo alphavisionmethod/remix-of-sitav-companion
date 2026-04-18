@@ -426,6 +426,22 @@ export const ADMIN_PAGE_CONSOLIDATION_MAP: PageConsolidationEntry[] = [
     targetRoute: "/admin/config/knowledge",
     pageClass: "SECONDARY_SUBVIEW",
   },
+
+  // ── Phase 1 expansion: hub & single-letter cluster pages ──
+  { component: "AdminRBACConsole", filePath: "cloud/AdminRBACConsole.tsx", targetDomain: "trust-security", targetRoute: "/admin/trust-security/rbac", pageClass: "SECONDARY_SUBVIEW", notes: "RBAC console — under trust-security hub." },
+  { component: "V01SurfaceInventoryBoard", filePath: "verification/V01SurfaceInventoryBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/surface-inventory", pageClass: "SECONDARY_SUBVIEW" },
+  { component: "V02InteractionCoverageBoard", filePath: "verification/V02InteractionCoverageBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/interaction-coverage", pageClass: "SECONDARY_SUBVIEW" },
+  { component: "V03P0JourneyBoard", filePath: "verification/V03P0JourneyBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/p0-journeys", pageClass: "SECONDARY_SUBVIEW" },
+  { component: "V04ModeVerificationBoard", filePath: "verification/V04ModeVerificationBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/mode-verification", pageClass: "SECONDARY_SUBVIEW" },
+  { component: "V05FailureTriageBoard", filePath: "verification/V05FailureTriageBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/failure-triage", pageClass: "WORKFLOW_TOOL" },
+  { component: "V06EvidenceExplorer", filePath: "verification/V06EvidenceExplorer.tsx", targetDomain: "verification", targetRoute: "/admin/verification/evidence", pageClass: "DETAIL_EXPLORER" },
+  { component: "V07LaunchBlockerBoard", filePath: "verification/V07LaunchBlockerBoard.tsx", targetDomain: "verification", targetRoute: "/admin/verification/launch-blockers", pageClass: "SECONDARY_SUBVIEW" },
+
+  // ── Phase 1 expansion: canonical hub pages discovered on disk ──
+  { component: "ConfigHome", targetDomain: "config", targetRoute: "/admin/config", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical config hub." },
+  { component: "IntegrationsHome", targetDomain: "integrations", targetRoute: "/admin/integrations", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical integrations hub." },
+  { component: "ReleasesHome", targetDomain: "releases", targetRoute: "/admin/releases", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Phase 3 canonical releases hub." },
+  { component: "OperatorHome", targetDomain: "overview", targetRoute: "/admin", pageClass: "PRIMARY_DOMAIN_ENTRY", notes: "Operator-profile landing — composed in AdminRootLanding." },
 ];
 
 // ─── Inference fallback for uncurated pages ──────────────────────
