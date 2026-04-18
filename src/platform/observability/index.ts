@@ -7,4 +7,3 @@ export * from "@/hooks/useOrchestrationHealth";
 
 // Layer 3 truth re-exports — uses the lib wrapper which forwards to canonical
 export * from "@/lib/platform/observability/index";
-export type { ObservabilityService } from "@/lib/observability";

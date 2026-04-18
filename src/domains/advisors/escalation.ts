@@ -4,7 +4,7 @@
 // hit confidence floor, or encounter policy violations
 // ═══════════════════════════════════════════════════════════════
 
-import type { CouncilRecommendation } from "./index";
+import type { CouncilRecommendation } from "@/lib/advisor-intelligence/types";
 
 // ── Escalation Types ─────────────────────────────────────────
 

@@ -9,4 +9,4 @@ export {
   generateBoardroomProjection,
   generateProofProjection,
   generateStoreProjection,
-} from "@/lib/projections";
+} from "@/lib/services/projection-service";
