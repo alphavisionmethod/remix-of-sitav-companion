@@ -1,17 +1,39 @@
 # SRC_LIB Wrapper Removal Status
 
-_Last updated: Wave 10 complete — sync-engine layer fully migrated to canonical home_
+_Last updated: Wave 11 complete — orchestration layer fully migrated to canonical home_
 
 ## Cumulative Summary
 
-| Metric | Wave 8 End | Wave 9 End | **Wave 10 End** |
+| Metric | Wave 9 End | Wave 10 End | **Wave 11 End** |
 |---|---|---|---|
 | `@lovable:migrated-wrapper` files | 0 | 0 | **0** |
 | TS errors | 0 | 0 | **0** |
-| Vite build | ✅ 53s | ✅ 52.5s | **✅ 53.7s** |
-| `src/lib` top-level entries | 96 | 95 | **94** |
-| `src/lib/sync-engine` files | 38 | 38 | **0 (deleted)** |
-| `src/platform/sync-engine` files | 0 | 0 | **38** |
+| Vite build | ✅ 52.5s | ✅ 53.7s | **✅ 45.5s** |
+| `src/lib` top-level entries | 95 | 94 | **93** |
+| `src/lib/orchestration` files | 47 | 47 | **0 (deleted)** |
+| `src/platform/orchestration` files | 1 | 1 | **47** |
+
+## Wave 11 — Orchestration Folder Promotion ✅
+
+**Folder:** `src/lib/orchestration/` → `src/platform/orchestration/`
+
+### Steps Executed
+1. **Conflict scan:** Only `index.ts` collided — destination held the empty Wave 1 placeholder barrel; replaced with the live 80-LOC source barrel exporting the 4-Layer Canonical Spine (Intent → Planning → Execution → Proof) plus Facade, IDs, Errors, Registry, and Migration mapping.
+2. **Physical migration:** Moved all 47 files preserving the 6-subfolder structure (`shared/`, `intent/`, `planning/`, `execution/` (incl. `__tests__/`), `proof/`, `migration/`) plus 2 root files (`orchestration-facade.ts`, `index.ts`).
+3. **Bulk rewire:** Single sed pass rewrote 12 consumer files from `@/lib/orchestration/*` → `@/platform/orchestration/*`.
+4. **Folder deletion:** `src/lib/orchestration/` removed atomically.
+
+### Verification
+
+```
+$ grep -rn "@/lib/orchestration" src   → 0 hits
+$ npx tsc --noEmit                     → 0 errors
+$ npx vite build                       → ✅ built in 45.49s
+```
+
+## Architectural Position
+
+The 4-Layer Canonical Spine (Intent, Planning, Execution, Proof) and the singleton `OrchestrationFacade` — the **sole authoritative entry point** per the Orchestration Authority constitution — now live at `src/platform/orchestration/`. This eliminates the legacy `@/lib/orchestration/*` deep-import path and aligns with the Canonical Ownership Model (platform-layer service: Execution + Proof governance).
 
 ## Wave 10 — Sync-Engine Folder Promotion ✅
 
