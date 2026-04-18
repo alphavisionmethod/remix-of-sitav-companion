@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "drillId": "drill-2026-04-18-baseline",
+  "snapshotClass": "production-shape",
+  "passRate": 1.0,
+  "checks": {
+    "schema": { "status": "pass", "diffCount": 0, "tablesExpected": 201, "tablesPresent": 201 },
+    "rls": { "status": "pass", "coveragePct": 100, "totalTables": 201, "totalPolicies": 323 },
+    "data_integrity": { "status": "pass", "tablesWithinTolerance": 201, "tolerance": "±5%" },
+    "critical_routes": { "status": "pass", "routesTested": 12, "failingRoutes": [] },
+    "edge_functions": { "status": "pass", "functionsTested": 6, "failingFunctions": [] },
+    "admin_truth": { "status": "pass", "snapshotConsistent": true }
+  }
+}
