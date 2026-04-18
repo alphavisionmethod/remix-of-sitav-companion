@@ -73,6 +73,16 @@ const REQUIRED_GATES = [
   "profile-runtime-baseline-drift",
   // Boardroom Layer 7 — Follow-through closure (BLOCK gate)
   "boardroom-layer7-closure",
+  // Claim-Safety Hardening — 9 BLOCK gates (Phase 5)
+  "os-claim-safety",
+  "track-b-language-boundaries",
+  "no-prohibited-native-claims",
+  "demo-only-surface-badging",
+  "future-vision-route-containment",
+  "device-surface-claim-safety",
+  "deployment-wording-safety",
+  "launch-honesty-alignment",
+  "qualifier-required-claims",
 ];
 
 const GENERATED_DIR = "generated";
