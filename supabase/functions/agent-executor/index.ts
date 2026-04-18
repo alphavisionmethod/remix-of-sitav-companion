@@ -350,6 +350,19 @@ serve(async (req) => {
 
     // ── Input ──
     const body = await req.json();
+
+    // ═══════════════════════════════════════════════════════════════
+    // Boardroom Layer 7 Follow-Through branch (early route)
+    // Triggered when the dispatch edge function calls us with source flag.
+    // ═══════════════════════════════════════════════════════════════
+    if (body && body.source === "boardroom-followthrough") {
+      const result = await handleBoardroomFollowthrough(supabase, body, user.id);
+      return new Response(JSON.stringify(result), {
+        status: result.ok ? 200 : 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const BodySchema = z.object({
       agent_id: z.string().min(1),
       action: z.string().min(1).default("diagnose"),
