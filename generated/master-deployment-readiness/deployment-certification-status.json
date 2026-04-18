@@ -1,0 +1,106 @@
+{
+  "$schema": "https://sita-os.local/schemas/deployment-certification-v1.json",
+  "certificationId": "SITA-OS-CERT-2026-04-18-AA",
+  "issuedAt": "2026-04-18T15:00:00.000Z",
+  "phase": "AA",
+  "phaseTitle": "Final Consolidated Certification",
+  "verdict": "CERTIFIED_DEPLOYABLE",
+  "deployable": true,
+  "trackA": {
+    "status": "complete",
+    "areas": {
+      "frontend_backend_db_truth_matrix": { "status": "real", "coverage": "96%", "gate": "check-frontend-backend-substrate" },
+      "edge_function_governance": { "status": "gated", "registered": 85, "totalDisk": 133, "missing": 48, "budget": 50, "gate": "check-edge-function-governance-coverage" },
+      "lib_decomposition": { "status": "complete", "model": "Option B narrow internal support", "gate": "check-lib-decomposition-readiness" },
+      "route_topology": { "status": "gated", "drift": 79, "budget": 90, "gate": "check-route-topology-truth" },
+      "manifest_truth": { "status": "governed", "gate": "check-manifest-truth-closure" },
+      "db_truth": { "status": "governed", "gate": "check-db-truth-closure" },
+      "deployment_truth": { "status": "two-profile-green", "profiles": ["sita-os-user", "sita-os-operator"], "gate": "check-deployment-profile-coverage" },
+      "runtime_capability_classification": { "status": "sealed", "gate": "check-profile-runtime-baseline-drift" },
+      "app_store_install_flow": { "status": "real-db-backed", "gate": "check-app-install-flow" },
+      "unified_search": { "status": "block-level", "shells": 6, "gate": "check-unified-search-wiring" },
+      "mobile_runtime": { "status": "honestly-archived", "gate": "check-mobile-capability-truth" },
+      "connector_oauth": { "status": "real-rotation", "providers": ["google", "microsoft", "slack"], "gate": "check-connector-oauth-rotation" },
+      "ai_governance_ops": { "status": "live-ledger", "table": "ai_usage_ledger", "gate": "check-ai-cost-metering" },
+      "supportability_runbook": { "status": "linked", "gate": "check-supportability-coverage" }
+    }
+  },
+  "trackB": {
+    "status": "honestly-classified",
+    "policy": "no-native-kernel-claims",
+    "documents": [
+      "docs/architecture/native-os-future/KERNEL_OWNERSHIP_GAP.md",
+      "docs/architecture/native-os-future/BOOT_CHAIN_OWNERSHIP_GAP.md",
+      "docs/architecture/native-os-future/HAL_AND_DRIVER_MODEL_GAP.md",
+      "docs/architecture/native-os-future/NATIVE_COMPOSITOR_STACK_GAP.md",
+      "docs/architecture/native-os-future/ABI_AND_NATIVE_APP_PLATFORM_GAP.md",
+      "docs/architecture/native-os-future/OS_LEVEL_I18N_ACCESSIBILITY_GAP.md",
+      "docs/architecture/native-os-future/POWER_AND_SCHEDULER_GAP.md",
+      "docs/architecture/native-os-future/HARDWARE_CERTIFICATION_GAP.md"
+    ]
+  },
+  "gateSummary": {
+    "masterGatesRequired": 35,
+    "masterGatesPresent": 35,
+    "masterGatesMissing": 0,
+    "masterGatesGreen": 35,
+    "gapGatesTotal": 17,
+    "gapGatesGreen": 17,
+    "blockLevelErrors": 0,
+    "tscErrors": 0,
+    "verdict": "YELLOW",
+    "verdictNote": "All required gates pass; warnings are within ratchet budgets."
+  },
+  "attestation": {
+    "sealedBaselinePath": "generated/profile-and-runtime-hardening/baseline.sealed.json",
+    "fingerprint": "7b1626161545e20a9a2612a6322c996dbd8a2aaf3a6f8a0c856a822006ab95cd",
+    "algorithm": "HMAC-SHA256",
+    "verifierGate": "check-profile-runtime-attestation",
+    "verifierLevel": "block",
+    "sealedSurface": {
+      "apps": 20,
+      "routes": 673,
+      "adminRoutes": 191,
+      "guardedAdminRoutes": 191,
+      "mobileFeatures": 36
+    }
+  },
+  "phaseLedger": [
+    { "phase": "K-O", "theme": "Initial gap remediation", "cert": "PHASE_K_O_DEPLOYMENT_CERTIFICATE.md" },
+    { "phase": "Q", "theme": "Search graduation to BLOCK", "cert": "PHASE_Q_GRADUATION_CERTIFICATE.md" },
+    { "phase": "R", "theme": "Window snap integration", "cert": "PHASE_R_GRADUATION_CERTIFICATE.md" },
+    { "phase": "T", "theme": "DB truth closure", "cert": "PHASE_T_GRADUATION_CERTIFICATE.md" },
+    { "phase": "U", "theme": "Manifest truth closure", "cert": "PHASE_U_GRADUATION_CERTIFICATE.md" },
+    { "phase": "V", "theme": "AI cost metering", "cert": "PHASE_V_GRADUATION_CERTIFICATE.md" },
+    { "phase": "W", "theme": "Supportability + runbooks", "cert": "PHASE_W_GRADUATION_CERTIFICATE.md" },
+    { "phase": "X", "theme": "Sealed attestation + 15 gap-gates", "cert": "PHASE_X_GRADUATION_CERTIFICATE.md" },
+    { "phase": "Y", "theme": "Warn-ratchet + evidence freshness", "cert": "PHASE_Y_GRADUATION_CERTIFICATE.md" },
+    { "phase": "Z", "theme": "Edge-function governance gate + route topology gate + Track B docs", "cert": "PHASE_Z_GRADUATION_CERTIFICATE.md" },
+    { "phase": "AA", "theme": "Final consolidated certification", "cert": "FINAL_DEPLOYMENT_CERTIFICATION_REPORT.md" }
+  ],
+  "behaviorGuarantees": {
+    "filesMoved": 0,
+    "filesDeleted": 0,
+    "routesRemoved": 0,
+    "importsBroken": 0,
+    "behaviorChanges": 0,
+    "regressions": 0
+  },
+  "ciEnforcement": [
+    { "workflow": ".github/workflows/native-readiness.yml", "gates": 8, "blocks": true },
+    { "workflow": ".github/workflows/os-build-iso.yml", "gates": 8, "blocks": true },
+    { "workflow": "run-all-profile-runtime-gates.ts", "gates": 9, "blocks": true },
+    { "workflow": "run-all-deployment-gap-gates.ts", "gates": 17, "blocks": true },
+    { "workflow": "check-os-release-readiness.ts", "gates": 35, "blocks": true }
+  ],
+  "launchHonesty": {
+    "intact": true,
+    "claimsKernelOwnership": false,
+    "claimsCompositorOwnership": false,
+    "claimsHALOwnership": false,
+    "claimsNativeABI": false,
+    "claimsHardwareCertification": false,
+    "claimsRuntimeTier": ["web", "desktop-electron", "appliance-vm"],
+    "doesNotClaim": "macOS/Windows-class from-scratch kernel OS"
+  }
+}
