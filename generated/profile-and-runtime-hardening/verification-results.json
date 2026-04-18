@@ -1,12 +1,22 @@
 {
-  "generatedAt": "2026-04-18T13:00:00.000Z",
+  "generatedAt": "2026-04-18T13:30:00.000Z",
   "wave": "profile-and-runtime-hardening",
-  "phases": ["A-evidence", "B-guardrails", "C-fixes", "D-verification", "E-graduation", "F-final-ratchet"],
+  "phases": ["A-evidence", "B-guardrails", "C-fixes", "D-verification", "E-graduation", "F-final-ratchet", "G-ci-orchestration"],
   "deployable": true,
   "tscErrors": 0,
   "totalGates": 8,
   "blockGates": 8,
   "warnGates": 0,
+  "ciIntegration": {
+    "orchestratorScript": "scripts/architecture/checks/run-all-profile-runtime-gates.ts",
+    "masterAggregator": "scripts/architecture/checks/check-os-release-readiness.ts",
+    "aggregatorRequiredGates": 34,
+    "aggregatorPresentGates": 34,
+    "aggregatorMissingGates": 0,
+    "aggregatorErrors": 0,
+    "phaseGGatesInAggregator": 9,
+    "phaseGGatesAllGreen": true
+  },
   "blockGateNames": [
     "check-launcher-registry-completeness",
     "check-app-profile-matrix",
@@ -46,14 +56,19 @@
     "componentsSplit": 0,
     "behaviorChanges": 0
   },
-  "phaseFChanges": {
-    "appsRegistered": ["desktop"],
-    "manifestsUpdated": ["os/profiles/user.profile.json", "os/profiles/operator.profile.json"],
-    "checksGraduatedToBlock": [
-      "check-launcher-registry-completeness",
-      "check-hidden-app-routes",
-      "check-profile-route-coverage",
-      "check-route-guard-coverage"
+  "phaseGChanges": {
+    "scriptsCreated": ["scripts/architecture/checks/run-all-profile-runtime-gates.ts"],
+    "scriptsModified": ["scripts/architecture/checks/check-os-release-readiness.ts"],
+    "aggregatorGatesAdded": [
+      "profile-runtime-hardening",
+      "launcher-registry-completeness",
+      "app-profile-matrix",
+      "hidden-app-routes",
+      "mobile-capability-truth",
+      "profile-route-coverage",
+      "command-palette-profile-leakage",
+      "shared-component-profile-pollution",
+      "route-guard-coverage"
     ]
   }
 }
