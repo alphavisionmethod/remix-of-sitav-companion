@@ -140,6 +140,11 @@ const COLLECTORS: Record<string, (sb: SB) => Promise<Snapshot>> = {
   },
 };
 
+async function sha256Hex(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
@@ -160,14 +165,30 @@ Deno.serve(async (req) => {
       }
       try {
         const snap = await fn(sb);
-        await sb.from("compliance_evidence").insert({
+        const payload = {
           framework: row.framework,
-          control_id: row.control_id,
           collector_key: key,
-          evidence_payload: snap as unknown as Record<string, unknown>,
+          ...snap,
+        };
+        const payloadStr = JSON.stringify(payload);
+        const digest = await sha256Hex(payloadStr);
+        // pass = numeric snapshots <= 30 days OR string-valued positive evidence.
+        let pass = true;
+        if (typeof snap.value === "number" && snap.unit === "days") pass = snap.value <= 30;
+        else if (typeof snap.value === "number" && snap.unit === "hours") pass = snap.value <= 48;
+        else if (typeof snap.value === "number" && snap.unit === "%") pass = snap.value >= 80;
+        else if (typeof snap.value === "string") pass = !["unreadable", "missing", "failed"].includes(snap.value);
+
+        await sb.from("compliance_evidence").insert({
+          control_id: row.control_id,
+          evidence_kind: key,
+          payload,
+          sha256: digest,
+          pass,
+          failure_reason: pass ? null : `value=${snap.value} ${snap.unit ?? ""}`.trim(),
           collected_at: new Date().toISOString(),
         });
-        results.push({ key, ok: true, value: snap.value, unit: snap.unit });
+        results.push({ key, ok: true, pass, value: snap.value, unit: snap.unit });
       } catch (e) {
         results.push({ key, ok: false, error: e instanceof Error ? e.message : String(e) });
       }
