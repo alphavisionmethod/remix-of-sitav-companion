@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useGlobalSearch } from "@/platform/search";
 import { toast } from "sonner";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
