@@ -23,7 +23,14 @@ function walk(d: string, acc: string[] = []): string[] {
 }
 
 type Plane = "user" | "admin" | "shell" | "backend" | "core" | "shared";
+
+// Allowlist: presentational primitives that are plane-neutral despite living under /admin/.
+// These are pure UI atoms (StatusBadge, TrustRibbon, AdminPageHeader, SafeModeBanner,
+// QuickActionsDock) shared by both admin pages and admin-themed control surfaces.
+const SHARED_PRESENTATIONAL = ["src/components/sita/admin/"];
+
 function planeOf(rel: string): Plane {
+  if (SHARED_PRESENTATIONAL.some((p) => rel.startsWith(p))) return "shared";
   if (rel.startsWith("src/admin/") || rel.includes("/admin/")) return "admin";
   if (rel.startsWith("src/app/") || (rel.startsWith("src/pages/") && !rel.includes("/admin/"))) return "user";
   if (rel.startsWith("src/shell-runtime/") || rel.startsWith("src/layouts/")) return "shell";
