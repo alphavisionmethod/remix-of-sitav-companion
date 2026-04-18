@@ -5,4 +5,4 @@
 // ═══════════════════════════════════════════════════════════════
 export * from "./layout";
 export * from "./components";
-export { default as NovaThemeProvider } from "./NovaThemeProvider";
+export { NovaThemeProvider, useNovaTheme, type NovaThemeTokens } from "./NovaThemeProvider";
