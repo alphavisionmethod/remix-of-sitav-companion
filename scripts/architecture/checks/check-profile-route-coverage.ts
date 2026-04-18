@@ -18,18 +18,18 @@ const data = JSON.parse(readFileSync(SRC, "utf-8")) as {
 };
 
 const orphans = data.routes.filter((r) => r.plane && (!r.profiles || r.profiles.length === 0));
-const BUDGET = Number(process.env.PROFILE_ROUTE_COVERAGE_BUDGET ?? 5);
+const BUDGET = Number(process.env.PROFILE_ROUTE_COVERAGE_BUDGET ?? 0);
 const ok = orphans.length <= BUDGET;
 
 writeFileSync(join(OUT, "profile-route-coverage.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "profile-route-coverage",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   orphanCount: orphans.length,
   sample: orphans.slice(0, 20),
   ok,
 }, null, 2));
 
-console.log(`profile-route-coverage: ${orphans.length} routes with no profile (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+console.log(`profile-route-coverage: ${orphans.length} routes with no profile (budget ${BUDGET}) — ${ok ? "OK" : "FAIL"}`);
+process.exit(ok ? 0 : 1); // block-level — graduated

@@ -17,18 +17,18 @@ const data = JSON.parse(readFileSync(SRC, "utf-8")) as {
 };
 
 const hidden = data.routes.filter((r) => r.hiddenAppLike);
-const BUDGET = Number(process.env.HIDDEN_APP_ROUTES_BUDGET ?? 5);
+const BUDGET = Number(process.env.HIDDEN_APP_ROUTES_BUDGET ?? 0);
 const ok = hidden.length <= BUDGET;
 
 writeFileSync(join(OUT, "hidden-app-routes.json"), JSON.stringify({
   generatedAt: new Date().toISOString(),
   gate: "hidden-app-routes",
-  level: "warn",
+  level: "block",
   budget: BUDGET,
   hiddenCount: hidden.length,
   sample: hidden.slice(0, 30),
   ok,
 }, null, 2));
 
-console.log(`hidden-app-routes: ${hidden.length} (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0); // warn-level
+console.log(`hidden-app-routes: ${hidden.length} (budget ${BUDGET}) — ${ok ? "OK" : "FAIL"}`);
+process.exit(ok ? 0 : 1); // block-level — graduated
