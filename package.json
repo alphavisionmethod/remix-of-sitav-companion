@@ -34,6 +34,7 @@
     "drill:recovery": "bash scripts/support/drills/disaster-recovery-drill.sh",
     "drill:backup-restore": "npx tsx scripts/db/backup/verify-backup-restore.ts",
     "os:build:iso": "sudo -E bash os/image-builder/build.sh",
+    "os:build:img": "sudo -E bash os/scripts/build-raw-img.sh",
     "os:test:qemu": "bash os/qemu-test.sh",
     "os:test:qemu:headless": "bash os/qemu-test.sh --headless",
     "os:verify": "bash os/scripts/verify-boot-artifacts.sh out",

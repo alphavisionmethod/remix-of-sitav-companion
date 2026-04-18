@@ -59,6 +59,11 @@ jobs:
       - name: Verify verity metadata
         run: sudo -E bash os/scripts/verify-verity-metadata.sh out || echo "::warning::verity verification skipped (artifacts not present in this build profile)"
 
+      - name: Build raw IMG (flashable + cloud import)
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+        run: sudo -E bash os/scripts/build-raw-img.sh
+
       - name: Emit attestation
         run: bash os/scripts/emit-attestation.sh
 
@@ -78,6 +83,7 @@ jobs:
           name: sita-os-iso
           path: |
             out/*.iso
+            out/*.img
             out/*.sha256
             out/*.manifest.json
             out/os-*-receipt.json

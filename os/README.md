@@ -20,6 +20,7 @@ sudo dd if=out/sita-os-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 | Script | Purpose |
 |---|---|
 | `os:build:iso` | build the hybrid BIOS+UEFI ISO |
+| `os:build:img` | build a flashable raw GPT disk image (`dd` / cloud import) |
 | `os:verify` | verify signatures + verity + checksum on boot artifacts |
 | `os:verify:verity` | re-run `veritysetup verify` against built hash tree |
 | `os:attest` | emit `generated/os-build-attestation.json` + summary |
@@ -39,6 +40,9 @@ sudo dd if=out/sita-os-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 | `out/sita-os-<version>-amd64.iso` | hybrid BIOS+UEFI bootable ISO |
 | `out/sita-os-<version>-amd64.iso.sha256` | integrity checksum |
 | `out/sita-os-<version>-amd64.iso.manifest.json` | build provenance |
+| `out/sita-os-<version>-amd64.img` | flashable raw GPT disk (USB/SD/cloud) |
+| `out/sita-os-<version>-amd64.img.sha256` | IMG integrity checksum |
+| `out/sita-os-<version>-amd64.img.manifest.json` | IMG layout + cloud import commands |
 | `out/os-signing-receipt.json` | kernel signing receipt |
 | `out/os-initramfs-signing-receipt.json` | initramfs signing receipt |
 | `out/verity-receipt.json` | dm-verity root hash |
@@ -105,3 +109,6 @@ Push to `main` → `.github/workflows/os-build-iso.yml`:
 - [`docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md`](../docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md)
 - [`docs/os/RELEASE_ARTIFACT_MODEL.md`](../docs/os/RELEASE_ARTIFACT_MODEL.md)
 - [`docs/os/FIRST_BOOT_AND_PROVISIONING.md`](../docs/os/FIRST_BOOT_AND_PROVISIONING.md)
+- [`docs/os/DISTRIBUTION_FORMATS.md`](../docs/os/DISTRIBUTION_FORMATS.md)
+- [`docs/os/ELECTRON_NATIVE_SHELL.md`](../docs/os/ELECTRON_NATIVE_SHELL.md)
+- [`docs/os/NATIVE_APP_ECOSYSTEM.md`](../docs/os/NATIVE_APP_ECOSYSTEM.md)
