@@ -49,6 +49,18 @@ cp -r /etc/sita                state/etc-sita    2>/dev/null || true
 cp /var/log/sita-firstboot.log state/            2>/dev/null || true
 ls -la /boot/efi/loader/entries 2>/dev/null > state/boot-entries.txt || true
 
+# 3a. Phase 3 — canonical native diagnostics + crash logs + recovery snapshot
+mkdir -p diagnostics crashes
+# Run all collectors fresh (best-effort; fall back to existing files)
+for c in collect-boot-health collect-runtime-health collect-update-health collect-service-failures; do
+  [[ -x "/opt/sita/diagnostics/${c}.sh" ]] && bash "/opt/sita/diagnostics/${c}.sh" >/dev/null 2>&1 || true
+done
+[[ -x /opt/sita/recovery/recovery-status.sh ]] && \
+  bash /opt/sita/recovery/recovery-status.sh > diagnostics/recovery-status.txt 2>/dev/null || true
+cp -r /var/lib/sita/diagnostics/. diagnostics/ 2>/dev/null || true
+cp -r /var/log/sita/crashes/.     crashes/     2>/dev/null || true
+cp -r /var/lib/sita/state/.       state/native-state/ 2>/dev/null || true
+
 # 4. attestation + verity status
 [[ -f /etc/sita/attestation.json ]] && cp /etc/sita/attestation.json meta/
 veritysetup status sita_root 2>/dev/null > meta/verity-status.txt || true

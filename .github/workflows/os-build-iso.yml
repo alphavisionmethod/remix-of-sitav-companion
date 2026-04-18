@@ -137,5 +137,6 @@ jobs:
           path: |
             out/qemu-validation.log
             out/qemu-validation-report.json
+            out/qemu-validation-report.md
           retention-days: 14
           if-no-files-found: warn

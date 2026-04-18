@@ -80,12 +80,32 @@ stage_install_packages() {
 
   # Copy SITA assets into chroot
   install -m 0755 -d "${ROOT_DIR}/opt/sita" "${ROOT_DIR}/etc/sita"
+  install -m 0755 -d "${ROOT_DIR}/opt/sita/bin" "${ROOT_DIR}/opt/sita/recovery" \
+                     "${ROOT_DIR}/opt/sita/diagnostics" "${ROOT_DIR}/opt/sita/runtime"
   cp -r "${SCRIPT_DIR}/branding"     "${ROOT_DIR}/opt/sita/branding"
   cp     "${SCRIPT_DIR}/first-boot.sh"          "${ROOT_DIR}/opt/sita/first-boot.sh"
   cp     "${SCRIPT_DIR}/sita-runtime.service"   "${ROOT_DIR}/etc/systemd/system/sita-runtime.service"
   cp     "${SCRIPT_DIR}/sita-firstboot.service" "${ROOT_DIR}/etc/systemd/system/sita-firstboot.service"
   install -m 0644 "${SCRIPT_DIR}/branding/os-release" "${ROOT_DIR}/etc/os-release"
   install -m 0644 "${SCRIPT_DIR}/packages.list"        "${ROOT_DIR}/tmp/packages.list"
+
+  # Phase 3 — recovery + diagnostics + runtime watchdog (canonical paths)
+  REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+  install -m 0755 "${REPO_ROOT}/os/scripts/generate-support-bundle.sh" "${ROOT_DIR}/opt/sita/bin/generate-support-bundle.sh"
+  install -m 0755 "${REPO_ROOT}/os/scripts/rollback-to-previous.sh"    "${ROOT_DIR}/opt/sita/bin/rollback-to-previous.sh"
+  cp -r "${SCRIPT_DIR}/recovery/."                                     "${ROOT_DIR}/opt/sita/recovery/"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-entry.sh"         "${ROOT_DIR}/opt/sita/recovery/recovery-entry.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-status.sh"        "${ROOT_DIR}/opt/sita/recovery/recovery-status.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-collect.sh"       "${ROOT_DIR}/opt/sita/recovery/recovery-collect.sh"
+  install -m 0755 "${REPO_ROOT}/os/recovery/recovery-menu.sh"          "${ROOT_DIR}/opt/sita/recovery/recovery-menu.sh"
+  install -m 0644 "${REPO_ROOT}/os/diagnostics/_lib.sh"                "${ROOT_DIR}/opt/sita/diagnostics/_lib.sh"
+  for f in collect-boot-health collect-runtime-health collect-update-health collect-service-failures emit-runtime-status; do
+    install -m 0755 "${REPO_ROOT}/os/diagnostics/${f}.sh" "${ROOT_DIR}/opt/sita/diagnostics/${f}.sh"
+  done
+  install -m 0755 "${REPO_ROOT}/os/runtime/shell-watchdog.sh"          "${ROOT_DIR}/opt/sita/runtime/shell-watchdog.sh"
+  install -m 0755 "${REPO_ROOT}/os/runtime/check-shell-health.sh"      "${ROOT_DIR}/opt/sita/runtime/check-shell-health.sh"
+  install -m 0755 -d "${ROOT_DIR}/opt/sita/shell"
+  install -m 0755 "${SCRIPT_DIR}/launch.sh"                            "${ROOT_DIR}/opt/sita/shell/launch.sh"
 
   # Run package install + service enable inside chroot
   cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'
@@ -116,6 +136,16 @@ systemctl enable sita-runtime.service
 systemctl enable systemd-networkd
 systemctl enable systemd-resolved
 systemctl set-default graphical.target
+
+# Phase 3 — canonical command symlinks (one path each, no aliases that drift)
+install -d /usr/local/bin
+ln -sf /opt/sita/bin/generate-support-bundle.sh   /usr/local/bin/sita-support-bundle
+ln -sf /opt/sita/bin/rollback-to-previous.sh      /usr/local/bin/sita-rollback
+ln -sf /opt/sita/recovery/recovery-entry.sh       /usr/local/bin/sita-recovery
+ln -sf /opt/sita/recovery/recovery-status.sh      /usr/local/bin/sita-recovery-status
+ln -sf /opt/sita/recovery/recovery-collect.sh     /usr/local/bin/sita-recovery-collect
+ln -sf /opt/sita/runtime/check-shell-health.sh    /usr/local/bin/sita-shell-health
+install -d /var/lib/sita/state /var/lib/sita/diagnostics /var/log/sita/crashes
 
 # Default user (replaced during install / first-boot)
 useradd -m -s /bin/bash -G sudo,audio,video,plugdev sita || true

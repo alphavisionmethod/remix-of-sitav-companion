@@ -10,13 +10,17 @@
 
 `sita-recovery.target` brings up a minimal console with these tools on PATH:
 
-| Tool | Purpose |
-|---|---|
-| `sita-rollback` | flip to the previous slot (`os/scripts/rollback-to-previous.sh`) |
-| `sita-support-bundle` | collect diagnostics (`os/scripts/generate-support-bundle.sh`) |
-| `sita-safe-mode` | start runtime without Electron (`os/image-builder/recovery/safe-mode.sh`) |
-| `sita-verify` | run `veritysetup verify` against the active slot |
-| `cryptsetup` | unlock `/var` and `/home` for read-only inspection |
+| Command | Canonical script | Purpose |
+|---|---|---|
+| `sita-recovery` | `os/recovery/recovery-entry.sh` → `os/image-builder/recovery/sita-recovery.sh menu` | Recovery TUI |
+| `sita-recovery-status` | `os/recovery/recovery-status.sh` | Print + JSON snapshot of boot/update/verity/shell state |
+| `sita-recovery-collect` | `os/recovery/recovery-collect.sh` | Generate support bundle from recovery |
+| `sita-rollback` | `os/scripts/rollback-to-previous.sh` | Flip to the previous A/B slot |
+| `sita-support-bundle` | `os/scripts/generate-support-bundle.sh` | Collect diagnostics tarball |
+| `sita-shell-health` | `os/runtime/check-shell-health.sh` | One-shot Electron shell health probe |
+| `sita-safe-mode` | `os/image-builder/recovery/safe-mode.sh` | Start runtime without Electron extensions |
+| `sita-verify` | `veritysetup verify sita_root` | Verify the active slot |
+| `cryptsetup` | system | Unlock `/var` and `/home` for read-only inspection |
 
 ## Fallback shell (Electron crash)
 

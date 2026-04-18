@@ -55,6 +55,17 @@ if [ -n "$LAST_BACKUP" ]; then
   BACKUP_AGE_HOURS=$(( (NOW_EPOCH - BACKUP_EPOCH) / 3600 ))
 fi
 
+# ── Native OS runtime status (Phase 3) ────────────────────────────────
+# Fold the canonical native runtime heartbeat into THIS metrics payload
+# (no second metrics agent). Source: os/diagnostics/emit-runtime-status.sh
+# installed at /opt/sita/diagnostics/emit-runtime-status.sh on the device.
+NATIVE_STATUS='{}'
+if [ -x /opt/sita/diagnostics/emit-runtime-status.sh ]; then
+  if NS_PATH=$(/opt/sita/diagnostics/emit-runtime-status.sh 2>/dev/null) && [ -f "$NS_PATH" ]; then
+    NATIVE_STATUS=$(cat "$NS_PATH")
+  fi
+fi
+
 # Send to cloud
 PAYLOAD=$(cat <<EOF
 {
@@ -67,7 +78,8 @@ PAYLOAD=$(cat <<EOF
   "uptime_seconds": ${UPTIME_SECONDS},
   "docker_containers": ${DOCKER_CONTAINERS},
   "tls_expiry_days": ${TLS_EXPIRY_DAYS},
-  "backup_age_hours": ${BACKUP_AGE_HOURS}
+  "backup_age_hours": ${BACKUP_AGE_HOURS},
+  "native_runtime": ${NATIVE_STATUS}
 }
 EOF
 )
