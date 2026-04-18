@@ -99,21 +99,23 @@ Deno.serve(async (req) => {
       })
       .eq("id", body.boardroom_item_id);
 
-    // 2. Create os_commands + command_step
+    // 2. Create os_commands + command_step (canonical execution chain)
     const { data: cmd, error: cmdErr } = await admin
       .from("os_commands")
       .insert({
         user_id: userId,
+        actor_user_id: userId,
         command_type: "boardroom_followthrough",
-        payload: {
+        origin: "boardroom",
+        safety_mode: body.risk_tier === "critical" ? "strict" : "standard",
+        correlation_id: correlationId,
+        structured_command: {
           boardroom_item_id: body.boardroom_item_id,
           dispatch_id: dispatch.id,
           action_type: body.action_type,
           action_payload: body.action_payload,
-          correlation_id: correlationId,
         },
-        status: "pending",
-        priority: body.risk_tier === "critical" ? "high" : "normal",
+        status: "created",
       })
       .select("id")
       .single();
