@@ -1,6 +1,6 @@
 # Connector OAuth Hardening
 
-_Generated: 2026-04-18T13:13:53.078Z_
+_Generated: 2026-04-18T13:42:32.439Z_
 
 ## Refresh worker
 - ✅ `supabase/functions/connector-token-refresh`

@@ -1,6 +1,6 @@
 # Frontend ↔ Backend ↔ Substrate Matrix
 
-_Generated: 2026-04-18T13:13:53.078Z_
+_Generated: 2026-04-18T13:42:32.439Z_
 
 ## Action coverage: 16 actions
 
