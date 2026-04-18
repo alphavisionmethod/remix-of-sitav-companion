@@ -67,17 +67,38 @@ jobs:
       - name: Emit attestation
         run: bash os/scripts/emit-attestation.sh
 
+      - name: Phase 4 — Seal verity root to TPM 2.0 (simulated on CI)
+        run: bash os/scripts/seal-verity-to-tpm.sh
+
+      - name: Phase 4 — Enroll Secure Boot / MOK shim chain
+        run: |
+          sudo apt-get install -y shim-signed sbsigntool grub-efi-amd64-bin || true
+          bash os/scripts/enroll-secureboot-mok.sh
+
+      - name: Phase 4 — Generate + sign CycloneDX SBOMs
+        env:
+          VERSION: ${{ github.event.inputs.version || format('0.1.0-dev+{0}', github.run_number) }}
+        run: bash os/scripts/generate-sbom.sh
+
+      - name: Phase 4 — Verify TPM seal + SBOM signatures
+        run: |
+          bash os/scripts/verify-tpm-seal.sh out
+          bash os/scripts/verify-sbom.sh     out
+
       - name: Inspect output
         run: |
           ls -lh out/ generated/ || true
           cat out/*.manifest.json
+          cat out/tpm-seal.manifest.json   2>/dev/null || true
+          cat out/shim/mok-enroll.json     2>/dev/null || true
+          cat out/sbom.manifest.json       2>/dev/null || true
           cat generated/os-build-summary.md || true
 
       - name: Cleanup MOK
         if: always()
         run: rm -f "$RUNNER_TEMP/mok.key" "$RUNNER_TEMP/mok.crt"
 
-      - name: Upload ISO + attestation artifacts
+      - name: Upload ISO + attestation + Phase 4 artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sita-os-iso
@@ -89,6 +110,17 @@ jobs:
             out/os-*-receipt.json
             out/verity-receipt.json
             out/os-verification-report.json
+            out/tpm-seal.manifest.json
+            out/tpm-seal.policy
+            out/tpm-seal.pub
+            out/tpm-seal.priv
+            out/shim/mok-enroll.json
+            out/shim/MOK.cer
+            out/shim/MOK.fingerprint
+            out/sbom-app.cdx.json
+            out/sbom-os.cdx.json
+            out/sbom-os.cdx.json.sig
+            out/sbom.manifest.json
             generated/os-build-attestation.json
             generated/os-build-summary.md
           retention-days: 14

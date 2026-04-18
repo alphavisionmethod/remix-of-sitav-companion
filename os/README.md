@@ -65,6 +65,9 @@ sudo dd if=out/sita-os-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 | 7 | Canonical signing pipeline + verity verifier + attestation emitter | ✅ shipped |
 | 8 | A/B update bundle builder + rollback + support bundle | ✅ shipped |
 | 9 | QEMU production validator + VMware OVA + release artifact model | ✅ shipped |
+| 10 | Recovery TUI + diagnostics + shell watchdog + VM validator | ✅ shipped |
+| 11 | Raw IMG builder + native app launcher + Electron shell docs | ✅ shipped |
+| 12 | TPM 2.0 sealing + Secure Boot MOK + signed SBOM + reproducible builds | ✅ shipped |
 
 ## Build environment
 
@@ -112,3 +115,4 @@ Push to `main` → `.github/workflows/os-build-iso.yml`:
 - [`docs/os/DISTRIBUTION_FORMATS.md`](../docs/os/DISTRIBUTION_FORMATS.md)
 - [`docs/os/ELECTRON_NATIVE_SHELL.md`](../docs/os/ELECTRON_NATIVE_SHELL.md)
 - [`docs/os/NATIVE_APP_ECOSYSTEM.md`](../docs/os/NATIVE_APP_ECOSYSTEM.md)
+- [`docs/os/PHASE_4_TRUSTED_SUPPLY_CHAIN.md`](../docs/os/PHASE_4_TRUSTED_SUPPLY_CHAIN.md)

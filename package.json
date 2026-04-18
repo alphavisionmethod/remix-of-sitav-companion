@@ -54,6 +54,13 @@
     "os:diag:all": "bash os/diagnostics/collect-boot-health.sh && bash os/diagnostics/collect-runtime-health.sh && bash os/diagnostics/collect-update-health.sh && bash os/diagnostics/collect-service-failures.sh",
     "os:vm:validate": "bash os/vm/validate-vm-profile.sh",
     "os:vmware:ova": "bash os/vmware/build-ova.sh",
+    "os:tpm:seal": "bash os/scripts/seal-verity-to-tpm.sh",
+    "os:tpm:verify": "bash os/scripts/verify-tpm-seal.sh",
+    "os:secureboot:enroll": "bash os/scripts/enroll-secureboot-mok.sh",
+    "os:sbom:generate": "bash os/scripts/generate-sbom.sh",
+    "os:sbom:verify": "bash os/scripts/verify-sbom.sh",
+    "os:reproducible:env": ". os/scripts/reproducible-build-env.sh",
+    "os:reproducible:verify": "bash os/scripts/verify-reproducibility.sh",
     "os:release": "bash os/scripts/release.sh"
   },
   "dependencies": {
