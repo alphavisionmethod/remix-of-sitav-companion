@@ -6,8 +6,8 @@
 // This binds the policy matrix to the Phase 2 surface registry.
 // ═══════════════════════════════════════════════════════════════
 
-import type { CanonicalSurface } from "@/lib/runtime/surface-types";
-import { CANONICAL_SURFACES } from "@/lib/runtime/surface-types";
+import type { CanonicalSurface } from "@/runtimes/surface-types";
+import { CANONICAL_SURFACES } from "@/runtimes/surface-types";
 import type { PolicyDomainKey } from "./policy-domain-map";
 import { ALL_POLICY_DOMAINS } from "./policy-domain-map";
 

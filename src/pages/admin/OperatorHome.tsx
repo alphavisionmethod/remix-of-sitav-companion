@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ADMIN_WORKFLOWS } from "@/lib/admin/admin-workflow-registry";
-import { getDeploymentProfile } from "@/lib/runtime/deployment-profile";
+import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 import { ChevronRight, ShieldAlert, Activity, GitBranch, LifeBuoy, Lock } from "lucide-react";
 
 const SIGNAL_TILES = [

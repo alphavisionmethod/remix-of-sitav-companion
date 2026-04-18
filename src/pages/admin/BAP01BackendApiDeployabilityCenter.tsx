@@ -28,7 +28,7 @@ import {
   backendApiReadinessSummary,
   type BackendApiReadinessItem,
   type BackendApiReadinessStatus,
-} from "@/lib/runtime/backend/release";
+} from "@/runtimes/backend/release";
 import {
   EDGE_FUNCTION_REGISTRY,
   policyCoverageSummary,

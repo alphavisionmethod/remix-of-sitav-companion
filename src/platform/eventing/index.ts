@@ -3,5 +3,5 @@
 // Canonical import: @/platform/eventing
 // ═══════════════════════════════════════════════════════════════
 
-export * from "@/lib/runtime/runtime-message-registry";
-export * from "@/lib/runtime/event-classification-map";
+export * from "@/runtimes/runtime-message-registry";
+export * from "@/runtimes/event-classification-map";

@@ -8,8 +8,8 @@ import type { RuntimeEvidenceRecord } from "../runtime-evidence-types";
 import {
   RUNTIME_TIERS,
   type RuntimeTier,
-} from "@/lib/runtime/runtime-tier-model";
-import { detectActiveRuntimeTier } from "@/lib/runtime/runtime-detection";
+} from "@/runtimes/runtime-tier-model";
+import { detectActiveRuntimeTier } from "@/runtimes/runtime-detection";
 
 /**
  * The tier-governance manifest is fed by `scripts/runtime/run-runtime-tier-governance.ts`,

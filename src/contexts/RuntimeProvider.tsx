@@ -7,7 +7,7 @@ import { type ReactNode } from "react";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
 import { SitaOSProvider } from "@/contexts/SitaOSContext";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
-import { RuntimeTierProvider } from "@/lib/runtime/runtime-context";
+import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
 
 /** Boots the orchestration pipeline inside the provider tree */

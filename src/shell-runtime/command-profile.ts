@@ -7,7 +7,7 @@
 
 import type { DeploymentProfileKey } from "@/lib/architecture/route-plane-map";
 import { ROUTE_PLANE_MAP } from "@/lib/architecture/route-plane-map";
-import { getDeploymentProfile } from "@/lib/runtime/deployment-profile";
+import { getDeploymentProfile } from "@/runtimes/deployment-profile";
 
 export interface CommandEntry {
   id: string;

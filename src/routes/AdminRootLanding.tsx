@@ -8,7 +8,7 @@
 
 import { Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { isOperatorProfile } from "@/lib/runtime/deployment-profile";
+import { isOperatorProfile } from "@/runtimes/deployment-profile";
 
 const OperatorHome = lazy(() => import("@/pages/admin/OperatorHome"));
 

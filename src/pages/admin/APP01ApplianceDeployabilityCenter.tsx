@@ -15,12 +15,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle2, AlertCircle, Clock, XCircle, HardDrive, Network } from "lucide-react";
-import { applianceReadinessSummary } from "@/lib/runtime/appliance/release";
+import { applianceReadinessSummary } from "@/runtimes/appliance/release";
 import type {
   ApplianceReadinessItem,
   ApplianceReadinessStatus,
-} from "@/lib/runtime/appliance/release";
-import { APPLIANCE_RUNTIME_CONTRACT } from "@/lib/runtime/appliance/appliance-runtime-contract";
+} from "@/runtimes/appliance/release";
+import { APPLIANCE_RUNTIME_CONTRACT } from "@/runtimes/appliance/appliance-runtime-contract";
 
 const STATUS_VARIANT: Record<ApplianceReadinessStatus, "default" | "secondary" | "outline" | "destructive"> = {
   ready: "default",

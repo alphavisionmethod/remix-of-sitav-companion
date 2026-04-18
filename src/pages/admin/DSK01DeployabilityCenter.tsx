@@ -15,12 +15,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Monitor, CheckCircle2, AlertCircle, Clock, XCircle, Shield, Lock } from "lucide-react";
-import { desktopReadinessSummary } from "@/lib/runtime/desktop/release";
+import { desktopReadinessSummary } from "@/runtimes/desktop/release";
 import type {
   DesktopReadinessItem,
   DesktopReadinessStatus,
-} from "@/lib/runtime/desktop/release";
-import { BRIDGE_METHOD_COUNT } from "@/lib/runtime/desktop/electron-bridge-contract";
+} from "@/runtimes/desktop/release";
+import { BRIDGE_METHOD_COUNT } from "@/runtimes/desktop/electron-bridge-contract";
 
 const STATUS_VARIANT: Record<DesktopReadinessStatus, "default" | "secondary" | "outline" | "destructive"> = {
   ready: "default",

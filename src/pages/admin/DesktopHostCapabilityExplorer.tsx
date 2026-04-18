@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DESKTOP_CAPABILITIES, probeDesktopCapabilities, type CapabilityStatus } from "@/lib/runtime/desktop/desktop-host-capabilities";
-import { DESKTOP_SECURITY_BOUNDARIES, getSecurityPostureSummary } from "@/lib/runtime/desktop/desktop-security-boundaries";
-import { RELEASE_CHANNELS, getCurrentReleaseChannel } from "@/lib/runtime/desktop/desktop-release-channel-map";
-import { isElectronRuntime } from "@/lib/runtime/desktop/desktop-runtime-detection";
+import { DESKTOP_CAPABILITIES, probeDesktopCapabilities, type CapabilityStatus } from "@/runtimes/desktop/desktop-host-capabilities";
+import { DESKTOP_SECURITY_BOUNDARIES, getSecurityPostureSummary } from "@/runtimes/desktop/desktop-security-boundaries";
+import { RELEASE_CHANNELS, getCurrentReleaseChannel } from "@/runtimes/desktop/desktop-release-channel-map";
+import { isElectronRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
 
 const DesktopHostCapabilityExplorer = () => {
   const [capStatuses, setCapStatuses] = useState<Map<string, CapabilityStatus>>(new Map());

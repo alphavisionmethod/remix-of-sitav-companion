@@ -20,7 +20,7 @@ export const PORTABILITY_RULES: readonly PortabilityRule[] = [
     description: "Web pages MUST NOT import appliance-runtime modules directly.",
     sourcePrefix: "src/pages/",
     forbiddenImportPatterns: [
-      "@/lib/runtime/appliance/",
+      "@/runtimes/appliance/",
       "scripts/release/appliance/",
     ],
     severity: "error",
@@ -39,7 +39,7 @@ export const PORTABILITY_RULES: readonly PortabilityRule[] = [
     ],
     severity: "error",
     remediation:
-      "Use the typed desktop bridge surface from `@/lib/runtime/desktop/electron-bridge-contract`.",
+      "Use the typed desktop bridge surface from `@/runtimes/desktop/electron-bridge-contract`.",
   },
   {
     id: "appliance-modules-cannot-import-pages",
@@ -60,8 +60,8 @@ export const PORTABILITY_RULES: readonly PortabilityRule[] = [
     sourcePrefix: "src/lib/runtime/simulation/",
     forbiddenImportPatterns: [
       "electron/",
-      "@/lib/runtime/desktop/electron-bridge-contract",
-      "@/lib/runtime/appliance/",
+      "@/runtimes/desktop/electron-bridge-contract",
+      "@/runtimes/appliance/",
     ],
     severity: "warning",
     remediation: "Consume capabilities via `useCapability()` from runtime-context.",
