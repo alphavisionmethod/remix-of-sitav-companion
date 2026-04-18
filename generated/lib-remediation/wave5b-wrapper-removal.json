@@ -1,0 +1,283 @@
+{
+  "generatedAt": "2026-04-18T03:54:57.539Z",
+  "wave": "5b",
+  "totalWrappers": 188,
+  "removed": 160,
+  "kept": 28,
+  "removedFiles": [
+    "src/lib/advisor-topology.ts",
+    "src/lib/app-platform/types.ts",
+    "src/lib/cloud-backbone/cloud-abuse-service.ts",
+    "src/lib/cloud-backbone/cloud-audit-service.ts",
+    "src/lib/cloud-backbone/cloud-device-service.ts",
+    "src/lib/cloud-backbone/cloud-lifecycle-service.ts",
+    "src/lib/cloud-backbone/cloud-quota-service.ts",
+    "src/lib/cloud-backbone/cloud-storage-service.ts",
+    "src/lib/cloud-backbone/cloud-support-service.ts",
+    "src/lib/cloud-backbone/cloud-sync-service.ts",
+    "src/lib/cloud-backbone/cloud-tenant-service.ts",
+    "src/lib/cloud-backbone/cloud-worker-service.ts",
+    "src/lib/customer-journey/ai-journey-classifier.ts",
+    "src/lib/customer-journey/blocker-scoring-engine.ts",
+    "src/lib/customer-journey/journey-coverage-hooks.ts",
+    "src/lib/customer-journey/journey-evidence-hooks.ts",
+    "src/lib/customer-journey/journey-hooks.ts",
+    "src/lib/customer-journey/journey-ingestion-hooks.ts",
+    "src/lib/customer-journey/journey-registry-seeder.ts",
+    "src/lib/customer-journey/journey-registry.ts",
+    "src/lib/customer-journey/journey-scoring-hooks.ts",
+    "src/lib/data-services/ai-ops-data-service.ts",
+    "src/lib/data-services/cai-data-service.ts",
+    "src/lib/data-services/capability-launch-data-service.ts",
+    "src/lib/data-services/connector-ops-data-service.ts",
+    "src/lib/data-services/crm-data-service.ts",
+    "src/lib/data-services/demo-governance-data-service.ts",
+    "src/lib/data-services/digital-presence-data-service.ts",
+    "src/lib/data-services/feature-lifecycle-data-service.ts",
+    "src/lib/data-services/file-explorer-service.ts",
+    "src/lib/data-services/health-signal-data-service.ts",
+    "src/lib/data-services/integration-ops-data-service.ts",
+    "src/lib/data-services/intelligence-ops-data-service.ts",
+    "src/lib/data-services/investment-ops-data-service.ts",
+    "src/lib/data-services/native-shell-data-service.ts",
+    "src/lib/data-services/notification-calm-data-service.ts",
+    "src/lib/data-services/platform-ops-data-service.ts",
+    "src/lib/data-services/surface-mode-data-service.ts",
+    "src/lib/data-services/system-misc-data-service.ts",
+    "src/lib/data-services/unified-calendar-service.ts",
+    "src/lib/demo-data/admin-intelligence.ts",
+    "src/lib/demo-data/admin-platform.tsx",
+    "src/lib/demo-data/app-receipts.ts",
+    "src/lib/demo-data/approval-chamber.ts",
+    "src/lib/demo-data/apps.ts",
+    "src/lib/demo-data/atlas.ts",
+    "src/lib/demo-data/business.ts",
+    "src/lib/demo-data/calendar-workspace.ts",
+    "src/lib/demo-data/communications.ts",
+    "src/lib/demo-data/concierge.ts",
+    "src/lib/demo-data/connectors.ts",
+    "src/lib/demo-data/core-pages.ts",
+    "src/lib/demo-data/digital-presence.ts",
+    "src/lib/demo-data/durability.ts",
+    "src/lib/demo-data/enterprise.ts",
+    "src/lib/demo-data/health-signals.ts",
+    "src/lib/demo-data/import-export.ts",
+    "src/lib/demo-data/incidents.ts",
+    "src/lib/demo-data/integrations.ts",
+    "src/lib/demo-data/investment.ts",
+    "src/lib/demo-data/media.ts",
+    "src/lib/demo-data/native-shell.ts",
+    "src/lib/demo-data/notes.ts",
+    "src/lib/demo-data/notification-calm.ts",
+    "src/lib/demo-data/outcome-engine.ts",
+    "src/lib/demo-data/owner-center-costs.ts",
+    "src/lib/demo-data/revenue-office.ts",
+    "src/lib/demo-data/system-status.ts",
+    "src/lib/design-system/domain-atmospheres.ts",
+    "src/lib/design-system/nova-os.ts",
+    "src/lib/design-system/sita-design-tokens.ts",
+    "src/lib/design-system/snap-zones.ts",
+    "src/lib/engines/action-state-machine.ts",
+    "src/lib/engines/adaptive-advisor-roster.ts",
+    "src/lib/engines/adaptive-boardroom-framing.ts",
+    "src/lib/engines/adaptive-notification-engine.ts",
+    "src/lib/engines/adaptive-sidebar-intelligence.ts",
+    "src/lib/engines/adaptive-workflow-templates.ts",
+    "src/lib/engines/advisor-memory-engine.ts",
+    "src/lib/engines/advisor-orchestration.ts",
+    "src/lib/engines/advisor-performance-engine.ts",
+    "src/lib/engines/advisor-reflection-engine.ts",
+    "src/lib/engines/advisor-tool-execution-engine.ts",
+    "src/lib/engines/ai-governance-engine.ts",
+    "src/lib/engines/business-action-pipeline.ts",
+    "src/lib/engines/business-advisor-engine.ts",
+    "src/lib/engines/business-advisor-personas.ts",
+    "src/lib/engines/business-archetype-engine.ts",
+    "src/lib/engines/business-autonomy-engine.ts",
+    "src/lib/engines/business-context-graph.ts",
+    "src/lib/engines/business-identity-layers.ts",
+    "src/lib/engines/business-module-adaptations.ts",
+    "src/lib/engines/business-profile-engine.ts",
+    "src/lib/engines/business-profitability-engine.ts",
+    "src/lib/engines/business-radar-engine.ts",
+    "src/lib/engines/client-intelligence-engine.ts",
+    "src/lib/engines/confidence-risk-scorer.ts",
+    "src/lib/engines/connector-concierge.ts",
+    "src/lib/engines/continuous-profit-engine.ts",
+    "src/lib/engines/cross-advisor-coordinator.ts",
+    "src/lib/engines/cross-os-integration.ts",
+    "src/lib/engines/decision-journal-engine.ts",
+    "src/lib/engines/delegation-engine.ts",
+    "src/lib/engines/digital-twin.ts",
+    "src/lib/engines/drag-engine.ts",
+    "src/lib/engines/economic-intelligence-engine.ts",
+    "src/lib/engines/enterprise-maturity.ts",
+    "src/lib/engines/entity-role-graph.ts",
+    "src/lib/engines/execution-debt-engine.ts",
+    "src/lib/engines/founder-bottleneck-engine.ts",
+    "src/lib/engines/graph-engine.ts",
+    "src/lib/engines/invisible-labor-engine.ts",
+    "src/lib/engines/lead-recovery-engine.ts",
+    "src/lib/engines/lead-scoring-engine.ts",
+    "src/lib/engines/memory-governance.ts",
+    "src/lib/engines/meta-governance-engine.ts",
+    "src/lib/engines/policy-depth-engine.ts",
+    "src/lib/engines/profile-evolution-engine.ts",
+    "src/lib/engines/readiness-engine.ts",
+    "src/lib/engines/release-engine.ts",
+    "src/lib/engines/revenue-opportunity.ts",
+    "src/lib/engines/setup-orchestration-engine.ts",
+    "src/lib/engines/setup-phase-definitions.ts",
+    "src/lib/engines/shared/aging.ts",
+    "src/lib/engines/shared/index.ts",
+    "src/lib/engines/simulation-engine.ts",
+    "src/lib/engines/strategic-planning-engine.ts",
+    "src/lib/engines/token-governance.ts",
+    "src/lib/engines/trust-debt-engine.ts",
+    "src/lib/engines/workspace-view-engine.ts",
+    "src/lib/integrations/reality-integration-hub.ts",
+    "src/lib/investment-office/mock-data.ts",
+    "src/lib/investment-office/types.ts",
+    "src/lib/nova-sdk/ui/NovaThemeProvider.tsx",
+    "src/lib/nova-sdk/ui/components.tsx",
+    "src/lib/nova-sdk/ui/layout.tsx",
+    "src/lib/offline-db.ts",
+    "src/lib/persistence/cai-persistence-bridge.ts",
+    "src/lib/persistence/mock-replacement-persistence.ts",
+    "src/lib/persistence/persistable.ts",
+    "src/lib/persistence/reality-classification-persistence.ts",
+    "src/lib/platform-law/platform-law-registry.ts",
+    "src/lib/reality-audit/reality-audit-registry.ts",
+    "src/lib/services/approval-engine/approval-history.service.ts",
+    "src/lib/services/approval-engine/approval-routing.service.ts",
+    "src/lib/services/approval-engine/escalation-rules.service.ts",
+    "src/lib/services/brain-core/build-approval-package.ts",
+    "src/lib/services/brain-core/build-boardroom-request.ts",
+    "src/lib/services/brain-core/build-explanation.ts",
+    "src/lib/services/brain-core/build-simulation-request.ts",
+    "src/lib/services/brain-core/choose-advisors.ts",
+    "src/lib/services/brain-core/choose-execution-mode.ts",
+    "src/lib/services/brain-core/councils.ts",
+    "src/lib/services/brain-core/model-router.ts",
+    "src/lib/services/brain-core/orchestrate-intent.ts",
+    "src/lib/services/conscience-gate/conscience-gate.ts",
+    "src/lib/sound-engine.ts",
+    "src/lib/storage/storage-topology-registry.ts",
+    "src/lib/verification/surface-registry.ts",
+    "src/lib/verification/verification-hooks.ts"
+  ],
+  "keptTop": [
+    {
+      "path": "@/lib/persistence/universal-service-persistence",
+      "consumers": 123
+    },
+    {
+      "path": "@/lib/core-services/event-bus",
+      "consumers": 7
+    },
+    {
+      "path": "@/lib/persistence/engine-persistence-adapter",
+      "consumers": 4
+    },
+    {
+      "path": "@/lib/persistence/event-bus-persistence",
+      "consumers": 3
+    },
+    {
+      "path": "@/lib/persistence/supabase-adapters",
+      "consumers": 3
+    },
+    {
+      "path": "@/lib/persistence/action-lineage-persistence",
+      "consumers": 2
+    },
+    {
+      "path": "@/lib/persistence/memory-service-persistence",
+      "consumers": 2
+    },
+    {
+      "path": "@/lib/persistence/policy-engine-persistence",
+      "consumers": 2
+    },
+    {
+      "path": "@/lib/data-services/activity-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/admin-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/business-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/calendar-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/files-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/investment-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/mission-control-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/mobile-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/money-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/owner-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/revenue-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/revenue-ops-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/data-services/workspace-data-service",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/design-system/app-window-system",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/engines/replay-recovery",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/persistence/compute-governance-persistence",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/persistence/intelligence-asset-persistence",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/persistence/operator-taste-persistence",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/persistence/quality-floor-persistence",
+      "consumers": 1
+    },
+    {
+      "path": "@/lib/services/conscience-gate/critique-loop",
+      "consumers": 1
+    }
+  ]
+}

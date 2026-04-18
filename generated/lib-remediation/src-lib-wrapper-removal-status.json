@@ -1,8 +1,14 @@
 {
-  "wave": 4,
+  "wave": 5,
   "generatedAt": "2026-04-18",
-  "wrapperCount": 188,
-  "removedThisWave": 0,
-  "policy": "Wrappers removed only when consumer count = 0 AND removal-condition satisfied. Bulk removal queued for Wave 5.",
-  "queuedForWave5": true
+  "outcome": "no-net-removal",
+  "wrappersRemovedNet": 0,
+  "tsErrorsAfter": 0,
+  "buildSafe": true,
+  "lessonLearned": "Static-text consumer scans miss dynamic imports and barrel re-exports. Bulk wrapper removal requires AST resolution or per-folder migration sign-off, not pattern matching.",
+  "passes": [
+    { "id": "5a", "criterion": "scan excluded src/lib", "removed": 176, "tsErrorsAfter": 346, "rolledBack": true },
+    { "id": "5b", "criterion": "full repo scan including src/lib", "removed": 160, "tsErrorsAfter": 90, "rolledBack": true }
+  ],
+  "recommendedNextWave": "per-folder physical migration with bound wrapper deletion"
 }

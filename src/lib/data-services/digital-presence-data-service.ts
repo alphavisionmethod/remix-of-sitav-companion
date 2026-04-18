@@ -1,3 +1,2 @@
 // @lovable:migrated-wrapper
-// Wave 5: original target unknown; safe empty export.
-export {};
+export * from "@/data/repositories/digital-presence-data-service";
