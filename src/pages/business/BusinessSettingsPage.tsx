@@ -14,8 +14,8 @@ import {
 import { Toggle, SingleSelect, SectionTitle } from "@/pages/revenue-office/onboarding/primitives";
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getRecommendedJourney } from "@/lib/business-journey-config";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { getRecommendedJourney } from "@/lib/business-journey-config";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";
 import { toast } from "sonner";
 
@@ -149,8 +149,6 @@ export default function BusinessSettingsPage() {
   const { isLoading, savedState, updateState, clearCompletion, markComplete } = useBusinessOnboarding();
   const { updateOverrides } = useBusinessProfile();
   const navigate = useNavigate();
-  // Phase S — autosave the in-progress edits so unsaved changes survive reload.
-  const { draft, updateDraft, clearDraft } = useDraftAutosave<OnboardingState>("business:settings:edit", "business");
   const [localState, setLocalState] = useState<OnboardingState>(savedState);
   const [hasChanges, setHasChanges] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
@@ -159,17 +157,10 @@ export default function BusinessSettingsPage() {
 
   useEffect(() => {
     if (!isLoading) {
-      // Hydrate from saved state, then overlay any in-progress autosave draft.
-      const hydrated: OnboardingState = { ...savedState, ...(draft as Partial<OnboardingState>) };
-      setLocalState(hydrated);
-      setPrevTypes(hydrated.businessTypes);
-      if (Object.keys(draft).length > 0) setHasChanges(true);
+      setLocalState(savedState);
+      setPrevTypes(savedState.businessTypes);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, savedState]);
-
-  // Mirror local edits back into the autosaved draft.
-  useEffect(() => { if (hasChanges) updateDraft(localState as Partial<OnboardingState>); }, [localState, hasChanges, updateDraft]);
 
   // Detect business type changes that should trigger journey sync prompt
   useEffect(() => {
@@ -181,10 +172,14 @@ export default function BusinessSettingsPage() {
     }
   }, [localState.businessTypes, prevTypes, localState.journeyTemplate]);
 
+  // Phase T: durable autosave (localStorage + IndexedDB) for in-progress edits.
+  const { updateDraft, clearDraft } = useDraftAutosave<Partial<OnboardingState>>("business:settings:edit", "business");
+
   const update = useCallback((partial: Partial<OnboardingState>) => {
     setLocalState(prev => ({ ...prev, ...partial }));
     setHasChanges(true);
-  }, []);
+    updateDraft(partial);
+  }, [updateDraft]);
 
   const toggleInArray = useCallback((field: keyof OnboardingState, value: string) => {
     setLocalState(prev => {
@@ -210,7 +205,7 @@ export default function BusinessSettingsPage() {
     setPrevTypes(localState.businessTypes);
     setJourneyNeedsUpdate(false);
     setSaveState("saved");
-    clearDraft(); // Phase S — autosaved draft is now redundant
+    clearDraft();
     toast.success("Business settings saved successfully");
     setTimeout(() => setSaveState("idle"), 2000);
   };

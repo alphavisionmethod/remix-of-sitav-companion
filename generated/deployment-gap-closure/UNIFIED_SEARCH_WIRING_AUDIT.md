@@ -1,6 +1,6 @@
 # Unified Search Wiring Audit
 
-_Generated: 2026-04-18T13:29:53.432Z_
+_Generated: 2026-04-18T13:42:32.439Z_
 
 ## Canonical hook
 - ✅ `src/hooks/use-global-search.ts`
@@ -8,8 +8,10 @@ _Generated: 2026-04-18T13:29:53.432Z_
 ## Shell integration
 - UniversalCommandSurface: ✅
 
-## Consumers (4)
+## Consumers (6)
 - `src/components/sita/shell/UniversalCommandSurface.tsx`
+- `src/pages/ApprovalsCenter.tsx`
+- `src/pages/InboxCapture.tsx`
 - `src/pages/SearchPage.tsx`
 - `src/pages/business/LeadsInbox.tsx`
 - `src/pages/files/FilesSearch.tsx`

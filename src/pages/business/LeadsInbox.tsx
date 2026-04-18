@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGlobalSearch } from "@/platform/search";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
@@ -20,7 +21,6 @@ import { ScoreExplainabilityDrawer } from "@/components/business/lead-inbox/Scor
 import { LeadScoreComparison } from "@/components/business/lead-inbox/LeadScoreComparison";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
-import { useGlobalSearch } from "@/platform/search";
 
 import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
 import { toast } from "sonner";
@@ -60,14 +60,6 @@ const LeadsInbox = () => {
   } = useLeadInbox();
 
   const stats = getInboxStats(items);
-
-  // Phase S — federated cross-domain search via canonical OS hook.
-  // Local `setSearch` filters the inbox; `useGlobalSearch` surfaces
-  // related entities (customers, tasks, invoices) for context.
-  const { search: globalSearch, results: globalResults, loading: globalLoading } = useGlobalSearch();
-  useEffect(() => {
-    if (search.trim().length >= 2) globalSearch(search.trim()).catch(() => {/* non-fatal */});
-  }, [search, globalSearch]);
 
   // Compare mode: when exactly 2 items are checked
   const compareLeads = useMemo(() => {
@@ -170,6 +162,7 @@ const LeadsInbox = () => {
       <PageTruthBanner />
 
       {/* Top bar */}
+      <FederatedLeadsHints query={search} />
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex-1 min-w-0">
           <p className="text-sm text-muted-foreground leading-relaxed">{summary}</p>
@@ -258,11 +251,8 @@ const LeadsInbox = () => {
           placeholder="Search by name, company, email, or inquiry..."
         />
       </div>
-      {search.trim().length >= 2 && (globalLoading || globalResults.length > 0) && (
-        <p className="text-[11px] text-muted-foreground -mt-2 px-1">
-          {globalLoading ? "Searching across workspace…" : `Also found ${globalResults.length} related items in other domains`}
-        </p>
-      )}
+
+      {/* Main content */}
       {viewMode === "priority-stack" ? (
         <div className="grid gap-5 lg:grid-cols-5">
           <div className="lg:col-span-3">
@@ -356,5 +346,29 @@ const LeadsInbox = () => {
     </motion.div>
   );
 };
+
+// Federated cross-domain hints (Phase S/T) — surfaces non-lead matches inline.
+function FederatedLeadsHints({ query }: { query: string }) {
+  const { results, search, clearResults } = useGlobalSearch();
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (query.trim().length >= 2) search(query);
+      else clearResults();
+    }, 250);
+    return () => clearTimeout(t);
+  }, [query, search, clearResults]);
+  const cross = results.filter((r) => r.type !== "lead").slice(0, 4);
+  if (!query.trim() || cross.length === 0) return null;
+  return (
+    <div className="rounded-lg border border-border/40 bg-secondary/30 p-2.5 text-[11px]">
+      <span className="text-muted-foreground mr-2">Also matches in other apps:</span>
+      {cross.map((r) => (
+        <span key={`${r.type}:${r.id}`} className="mr-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+          {r.domain}/{r.type}: {r.title.slice(0, 32)}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export default LeadsInbox;

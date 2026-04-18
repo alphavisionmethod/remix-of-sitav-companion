@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +18,7 @@ import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
-
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
@@ -29,18 +28,13 @@ const QuotesWorkspace = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
-  // Phase S — autosave new-quote drafts via canonical hook (localStorage + IndexedDB)
-  const { draft, updateDraft, clearDraft, hasDraft } = useDraftAutosave<{
-    title: string; total: string; expiry_date: string; notes: string;
-  }>("business:quote:new", "business");
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<{ title: string; total: string; expiry_date: string; notes: string }>("business:quote:new", "business");
   const [form, setForm] = useState({
     title: draft.title ?? "",
     total: draft.total ?? "",
     expiry_date: draft.expiry_date ?? "",
     notes: draft.notes ?? "",
   });
-  // Sync form edits → autosave draft
-  useEffect(() => { updateDraft(form); }, [form, updateDraft]);
 
   const { data: quotes = [], isLoading } = useQuery({
     queryKey: ["quotes", user?.id],
@@ -105,12 +99,11 @@ const QuotesWorkspace = () => {
                 <span className="text-[12px] font-semibold text-[hsl(0_0%_85%)]">New Quote</span>
                 <button onClick={() => setShowAdd(false)} className="text-[hsl(0_0%_50%)]"><X className="h-4 w-4" /></button>
               </div>
-              <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Quote title *" className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" />
+              <input value={form.title} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, title: v })); updateDraft({ title: v }); }} placeholder="Quote title *" className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" />
               <div className="grid grid-cols-2 gap-3">
-                <input type="number" value={form.total} onChange={e => setForm({ ...form, total: e.target.value })} placeholder="Total ($)" className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
-                <input type="date" value={form.expiry_date} onChange={e => setForm({ ...form, expiry_date: e.target.value })} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
+                <input type="number" value={form.total} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, total: v })); updateDraft({ total: v }); }} placeholder="Total ($)" className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
+                <input type="date" value={form.expiry_date} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, expiry_date: v })); updateDraft({ expiry_date: v }); }} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
               </div>
-              {hasDraft && <p className="text-[10px] text-[hsl(265_55%_68%)]">✓ Draft autosaved</p>}
               <button onClick={() => { addQuote.mutate({ title: form.title.trim(), total: form.total ? parseFloat(form.total) : null, expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft" }); clearDraft(); setForm({ title: "", total: "", expiry_date: "", notes: "" }); setShowAdd(false); }} disabled={!form.title.trim()} className="px-4 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-white text-xs font-medium hover:bg-[hsl(265_55%_50%)] disabled:opacity-50 transition-colors micro-press">Create Quote</button>
             </AppSurface>
           </motion.div>

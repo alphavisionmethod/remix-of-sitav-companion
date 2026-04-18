@@ -3,8 +3,9 @@ import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard
 import { useInboxItems } from "@/hooks/use-domain-data";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGlobalSearch } from "@/platform/search";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -39,6 +40,15 @@ const InboxCapture = () => {
   const isDemoMode = isDemo;
   const qc = useQueryClient();
   const [quickInput, setQuickInput] = useState("");
+  // Phase T: federated search across all domains for capture matching.
+  const { results: federatedMatches, search: searchAll, clearResults: clearFederated } = useGlobalSearch();
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (quickInput.trim().length >= 2) searchAll(quickInput);
+      else clearFederated();
+    }, 250);
+    return () => clearTimeout(t);
+  }, [quickInput, searchAll, clearFederated]);
 
   const activeTab = (() => {
   const { isDemo: isDemoMode } = useAuth();

@@ -13,7 +13,6 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useCreateContact } from "@/hooks/use-crm-data";
 import { supabase } from "@/integrations/supabase/client";
-import { useFilePicker } from "@/components/sita/shell/FilePickerService";
 
 interface Props {
   onClose: () => void;
@@ -108,7 +107,6 @@ const CRMImportWizard = ({ onClose }: Props) => {
   const [importResult, setImportResult] = useState<{ created: number; updated: number; skipped: number; errors: number } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const createContact = useCreateContact();
-  const { pickFiles } = useFilePicker();
 
   const stepIndex = STEPS.findIndex(s => s.key === step);
 
@@ -153,20 +151,10 @@ const CRMImportWizard = ({ onClose }: Props) => {
     if (file) processFile(file);
   }, [processFile]);
 
-  // Phase S — canonical file picker for the "Browse Files" path.
-  // Drag-and-drop on the dropzone still uses native DataTransfer (intentional).
-  const handleBrowse = useCallback(async () => {
-    try {
-      const picked = await pickFiles({
-        accept: [".csv", ".tsv", ".txt", ".xlsx", ".xls"],
-        multiple: false,
-        title: "Choose contacts file",
-        sources: ["local", "recent"],
-      });
-      const file = picked[0]?.file;
-      if (file) processFile(file);
-    } catch { /* cancelled */ }
-  }, [pickFiles, processFile]);
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+  }, [processFile]);
 
   const mappedFields = Object.values(mapping).filter(v => v !== "skip");
   const hasName = mappedFields.includes("first_name") || mappedFields.includes("last_name");
@@ -336,15 +324,16 @@ const CRMImportWizard = ({ onClose }: Props) => {
                   onDrop={handleDrop}
                   onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                   onDragLeave={() => setDragOver(false)}
-                  onClick={handleBrowse}
+                  onClick={() => fileRef.current?.click()}
                   className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 cursor-pointer transition-all ${
                     dragOver ? "border-primary bg-primary/5" : "border-border hover:border-primary/40 hover:bg-secondary/30"
                   }`}
                 >
+                  <input ref={fileRef} type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" className="hidden" onChange={handleFileSelect} />
                   <Upload className="h-10 w-10 text-muted-foreground mb-3" />
                   <p className="text-sm font-medium text-foreground">Drop your file here</p>
                   <p className="text-xs text-muted-foreground mt-1">CSV, Excel (.xlsx) — up to 10,000 rows</p>
-                  <SitaButton variant="secondary" size="sm" className="mt-4" onClick={(e) => { e.stopPropagation(); handleBrowse(); }}>Browse Files</SitaButton>
+                  <SitaButton variant="secondary" size="sm" className="mt-4">Browse Files</SitaButton>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2">
                   <Download className="h-3.5 w-3.5 text-muted-foreground" />

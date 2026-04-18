@@ -1,8 +1,8 @@
 # Frontend ↔ Backend ↔ Substrate Matrix
 
-_Generated: 2026-04-18T13:29:53.432Z_
+_Generated: 2026-04-18T13:42:32.439Z_
 
-## Action coverage: 17 actions
+## Action coverage: 16 actions
 
 | Action | Backend | Substrate | Status |
 |--------|---------|-----------|--------|
@@ -12,7 +12,6 @@ _Generated: 2026-04-18T13:29:53.432Z_
 | AI inference | edge:ai-gateway | db:ai_invocations + ai_usage_ledger | real |
 | Connector token refresh (Google) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
 | Connector token refresh (Microsoft) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
-| Connector token refresh (Slack) | edge:connector-token-refresh | db:connector_oauth_tokens | real |
 | Connector OAuth init | edge:connector-oauth | db:connector_credentials | real |
 | Global search | rpc:supabase tables | db:multi-domain | real |
 | Draft autosave | client-only | localStorage + IndexedDB (offline-db.ts) | real |
@@ -25,7 +24,7 @@ _Generated: 2026-04-18T13:29:53.432Z_
 | Kill-switch arm | edge:kill-switch-control | db:kill_switch_audit_log | real |
 
 ## Summary
-- **Real:** 16
+- **Real:** 15
 - **Honestly archived:** 1
 - **Pending real implementation:** 0
 

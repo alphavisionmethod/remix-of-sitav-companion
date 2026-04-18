@@ -1,6 +1,6 @@
 # Final Deployment Closure Status — Phase K Snapshot
 
-_Generated: 2026-04-18T13:29:53.432Z_
+_Generated: 2026-04-18T13:42:32.439Z_
 
 ## After Phase K (audit-only)
 
@@ -16,7 +16,7 @@ _Generated: 2026-04-18T13:29:53.432Z_
 - Connector OAuth for Microsoft/Slack/Salesforce (manual)
 
 ### Pending Phase M targeted fixes
-- File picker adoption (5 sites)
+- File picker adoption (6 sites)
 - Draft autosave adoption (8 consumers, 14 candidates)
 - Window snap overlay AppWindow integration
 - Google OAuth real refresh implementation

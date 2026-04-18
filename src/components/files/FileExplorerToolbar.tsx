@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   FolderPlus, Upload, LayoutGrid, List, ArrowLeft, Trash2,
 } from "lucide-react";
-import { useFilePicker } from "@/components/sita/shell/FilePickerService";
 
 export type ViewMode = "grid" | "list";
 export type SortKey = "name" | "date" | "size" | "type";
@@ -19,29 +18,10 @@ interface Props {
   showingTrash: boolean;
 }
 
-/**
- * Phase S — Migrated from raw <input type="file"> to canonical OS-level
- * useFilePicker(). The picker context handles multi-source selection
- * (local / cloud / recent) and validates accept/maxFiles before resolving.
- */
 export function FileExplorerToolbar({
   viewMode, onViewModeChange, onNewFolder, onUpload, onBack, onTrash, canGoBack, showingTrash,
 }: Props) {
-  const { pickFiles } = useFilePicker();
-
-  const handleUploadClick = async () => {
-    try {
-      const picked = await pickFiles({
-        multiple: true,
-        title: "Upload to Files",
-        sources: ["local", "cloud", "recent"],
-      });
-      const files = picked.map(p => p.file).filter((f): f is File => !!f);
-      if (files.length) onUpload(files);
-    } catch {
-      // User cancelled — silent
-    }
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
@@ -56,9 +36,20 @@ export function FileExplorerToolbar({
           <Button variant="outline" size="sm" onClick={onNewFolder}>
             <FolderPlus className="h-4 w-4 mr-1" /> New Folder
           </Button>
-          <Button variant="outline" size="sm" onClick={handleUploadClick}>
+          <Button variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
             <Upload className="h-4 w-4 mr-1" /> Upload
           </Button>
+          <input
+            ref={inputRef}
+            type="file"
+            multiple
+            className="hidden"
+            onChange={(e) => {
+              const fl = Array.from(e.target.files || []);
+              if (fl.length) onUpload(fl);
+              e.target.value = "";
+            }}
+          />
         </>
       )}
 
