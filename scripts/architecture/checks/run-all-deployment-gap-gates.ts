@@ -16,6 +16,7 @@ const GATES = [
   "check-db-truth-completeness",
   "check-manifest-truth-completeness",
   "check-supportability-coverage",
+  "check-warn-ratchet",
 ];
 
 let pass = 0, fail = 0;
