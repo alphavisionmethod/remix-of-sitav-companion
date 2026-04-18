@@ -1,0 +1,26 @@
+{
+  "wave": 4,
+  "generatedAt": "2026-04-18",
+  "phases": {
+    "0_unblock_build": "complete",
+    "1_consolidate_duplicates": "complete",
+    "2_rewire_consumers": "complete",
+    "3_remove_wrappers": "deferred-wave-5",
+    "4_finish_ownership_migration": "deferred-wave-5",
+    "5_stale_reference_cleanup": "partial",
+    "6_remediation_reports": "complete",
+    "7_hardening_guardrails": "complete",
+    "8_define_lib_role": "complete-option-B",
+    "9_final_verification": "complete"
+  },
+  "metrics": {
+    "tsErrors": 0,
+    "duplicateGroupsBefore": 14,
+    "duplicateGroupsAfter": 0,
+    "wrappersBefore": 174,
+    "wrappersAfter": 188,
+    "libTopLevelEntries": 103,
+    "rewireSitesThisWave": 4
+  },
+  "deploymentSafe": true
+}
