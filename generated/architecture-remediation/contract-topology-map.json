@@ -1,0 +1,181 @@
+{
+  "generatedAt": "2026-04-18T11:59:31.053Z",
+  "canonicalCount": 390,
+  "leakedCount": 1138,
+  "leakedByFamily": {
+    "misc": {
+      "count": 873,
+      "sample": [
+        "src/admin/redirects/admin-redirect-map.ts",
+        "src/components/admin/hubs/DomainHubLayout.tsx",
+        "src/components/admin/shells/AdminShell.tsx",
+        "src/components/admin/shells/SurfaceAuthorityMatrix.tsx",
+        "src/components/admin-ai/AIWorkforceScoreForm.tsx",
+        "src/components/business/adaptive/AdaptiveCRMConfig.ts",
+        "src/components/business/adaptive/AdaptiveContactLayout.tsx",
+        "src/components/business/adaptive/BusinessHomeWidgetRegistry.ts",
+        "src/components/business/lead-inbox/mock-inbox-data.ts",
+        "src/components/concierge/ConciergeEmptyState.tsx"
+      ]
+    },
+    "types-leak": {
+      "count": 59,
+      "sample": [
+        "src/components/sita/money-onboarding/types.ts",
+        "src/data/persistence/event-bus-persistence.ts",
+        "src/integrations/supabase/types.ts",
+        "src/lib/advisor-intelligence/types.ts",
+        "src/lib/ai/ai-state-types.ts",
+        "src/lib/api/schemas.ts",
+        "src/lib/app-platform/manifest-schema.ts",
+        "src/lib/app-platform/package-schema.ts",
+        "src/lib/backend-topology/edge-function-contract-map.ts",
+        "src/lib/boardroom/types.ts"
+      ]
+    },
+    "advisors-contracts": {
+      "count": 1,
+      "sample": [
+        "src/domains/advisors/topology.ts"
+      ]
+    },
+    "apps-contracts": {
+      "count": 1,
+      "sample": [
+        "src/domains/apps/types.ts"
+      ]
+    },
+    "customer-journey-contracts": {
+      "count": 4,
+      "sample": [
+        "src/domains/customer-journey/ai-journey-classifier.ts",
+        "src/domains/customer-journey/blocker-scoring-engine.ts",
+        "src/domains/customer-journey/journey-registry-seeder.ts",
+        "src/domains/customer-journey/journey-registry.ts"
+      ]
+    },
+    "engines-contracts": {
+      "count": 37,
+      "sample": [
+        "src/domains/engines/adaptive-advisor-roster.ts",
+        "src/domains/engines/adaptive-boardroom-framing.ts",
+        "src/domains/engines/adaptive-notification-engine.ts",
+        "src/domains/engines/adaptive-sidebar-intelligence.ts",
+        "src/domains/engines/advisor-memory-engine.ts",
+        "src/domains/engines/advisor-performance-engine.ts",
+        "src/domains/engines/advisor-reflection-engine.ts",
+        "src/domains/engines/advisor-tool-execution-engine.ts",
+        "src/domains/engines/ai-governance-engine.ts",
+        "src/domains/engines/business-action-pipeline.ts"
+      ]
+    },
+    "investment-contracts": {
+      "count": 2,
+      "sample": [
+        "src/domains/investment/mock-data.ts",
+        "src/domains/investment/types.ts"
+      ]
+    },
+    "architecture-contracts": {
+      "count": 38,
+      "sample": [
+        "src/platform/architecture/admin-page-consolidation-map.ts",
+        "src/platform/architecture/admin-route-registry.ts",
+        "src/platform/architecture/advisor-orchestration.ts",
+        "src/platform/architecture/app-plane-map.ts",
+        "src/platform/architecture/approval-tiers.ts",
+        "src/platform/architecture/boardroom-architecture.ts",
+        "src/platform/architecture/bounded-context-types.ts",
+        "src/platform/architecture/canonical-execution-chain.ts",
+        "src/platform/architecture/canonical-pipeline.ts",
+        "src/platform/architecture/canonical-service-registry.ts"
+      ]
+    },
+    "cloud-contracts": {
+      "count": 9,
+      "sample": [
+        "src/platform/cloud/cloud-audit-service.ts",
+        "src/platform/cloud/cloud-device-service.ts",
+        "src/platform/cloud/cloud-lifecycle-service.ts",
+        "src/platform/cloud/cloud-quota-service.ts",
+        "src/platform/cloud/cloud-storage-service.ts",
+        "src/platform/cloud/cloud-support-service.ts",
+        "src/platform/cloud/cloud-sync-service.ts",
+        "src/platform/cloud/cloud-tenant-service.ts",
+        "src/platform/cloud/cloud-worker-service.ts"
+      ]
+    },
+    "core-services-contracts": {
+      "count": 1,
+      "sample": [
+        "src/platform/core-services/event-bus.ts"
+      ]
+    },
+    "design-system-contracts": {
+      "count": 3,
+      "sample": [
+        "src/platform/design-system/domain-atmospheres.ts",
+        "src/platform/design-system/sita-design-tokens.ts",
+        "src/platform/design-system/snap-zones.ts"
+      ]
+    },
+    "governance-contracts": {
+      "count": 1,
+      "sample": [
+        "src/platform/governance/platform-law-registry.ts"
+      ]
+    },
+    "nova-sdk-contracts": {
+      "count": 35,
+      "sample": [
+        "src/platform/nova-sdk/core/design-contract.ts",
+        "src/platform/nova-sdk/core/enforcement.ts",
+        "src/platform/nova-sdk/core/manifest.ts",
+        "src/platform/nova-sdk/core/registry.ts",
+        "src/platform/nova-sdk/extensions/integration-registry.ts",
+        "src/platform/nova-sdk/extensions/plugin-registry.ts",
+        "src/platform/nova-sdk/extensions/polish-audit.ts",
+        "src/platform/nova-sdk/extensions/widget-registry.ts",
+        "src/platform/nova-sdk/graphics/context.ts",
+        "src/platform/nova-sdk/input/events.ts"
+      ]
+    },
+    "orchestration-contracts": {
+      "count": 36,
+      "sample": [
+        "src/platform/orchestration/execution/compensation-handler-registry.ts",
+        "src/platform/orchestration/execution/connector-executor.ts",
+        "src/platform/orchestration/execution/execution-router.ts",
+        "src/platform/orchestration/execution/job-dispatcher.ts",
+        "src/platform/orchestration/execution/postcondition-checker.ts",
+        "src/platform/orchestration/execution/retry-engine.ts",
+        "src/platform/orchestration/execution/rollback-engine.ts",
+        "src/platform/orchestration/execution/workflow-step-runner.ts",
+        "src/platform/orchestration/intent/decision-router.ts",
+        "src/platform/orchestration/intent/escalation-router.ts"
+      ]
+    },
+    "sync-engine-contracts": {
+      "count": 37,
+      "sample": [
+        "src/platform/sync-engine/adapters/app-state-adapter.ts",
+        "src/platform/sync-engine/adapters/file-watch-adapter.ts",
+        "src/platform/sync-engine/adapters/session-sync-adapter.ts",
+        "src/platform/sync-engine/adapters/settings-sync-adapter.ts",
+        "src/platform/sync-engine/adapters/sync-cache-db.ts",
+        "src/platform/sync-engine/app-sdk.ts",
+        "src/platform/sync-engine/collaboration/activity-journal.ts",
+        "src/platform/sync-engine/collaboration/content-classifier.ts",
+        "src/platform/sync-engine/collaboration/sharing-engine.ts",
+        "src/platform/sync-engine/collaboration/version-history.ts"
+      ]
+    },
+    "verification-contracts": {
+      "count": 1,
+      "sample": [
+        "src/platform/verification/surface-registry.ts"
+      ]
+    }
+  },
+  "totalContracts": 1528
+}
