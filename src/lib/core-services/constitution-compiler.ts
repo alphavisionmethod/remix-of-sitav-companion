@@ -5,7 +5,7 @@
 // notification rules, approval thresholds, and memory sharing
 // ═══════════════════════════════════════════════════════════════
 
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 import { ReceiptService } from "./receipt-service";
 
 // ── Types ───────────────────────────────────────────────────────

@@ -46,7 +46,7 @@ export * from "./workflow-engine";
 export * from "./projection-service";
 export * from "./identity-graph";
 export { type ConnectorStatus, type ConnectorMode, type ConnectorDefinition, type HealthMetrics, type CanonicalIntegrationStatus, calculateHealthScore, qualifiesForLive, ConnectorControlPlane, createConnectorControlPlane } from "./connector-control";
-export * from "./event-bus";
+export * from "@/platform/core-services/event-bus";
 export * from "./memory-service";
 export * from "./approval-service";
 export * from "./trust-state-service";

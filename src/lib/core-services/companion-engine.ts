@@ -12,7 +12,7 @@ import { AgentOrchestrator, createAgentOrchestrator, type FleetStatus } from "./
 import { ErrorPatrol, createErrorPatrol, type HealthReport } from "./error-patrol";
 import { CloudSyncManager, createCloudSyncManager, type SyncStatus } from "./cloud-sync-manager";
 import { SelfLearningEngine, createSelfLearningEngine, type SystemLearnings } from "./self-learning-engine";
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 
 // ── Types ───────────────────────────────────────────────────────
 

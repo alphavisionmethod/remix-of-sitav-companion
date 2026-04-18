@@ -22,7 +22,7 @@ import {
   type PromotionRule,
   type DemotionTrigger,
 } from "@/lib/internal-agents/rights";
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 import { ReceiptService, createReceiptService } from "./receipt-service";
 
 // ── Types ───────────────────────────────────────────────────────

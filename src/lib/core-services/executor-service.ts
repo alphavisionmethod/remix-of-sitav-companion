@@ -7,7 +7,7 @@
 
 import type { ExecutionMode as CanonicalExecutionMode, ExecutionStatus as CanonicalExecutionStatus } from "@/packages/contracts";
 import { getActionLineageService } from "./action-lineage-service";
-import { getEventBus } from "./event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 
 export type { CanonicalExecutionMode, CanonicalExecutionStatus };
 

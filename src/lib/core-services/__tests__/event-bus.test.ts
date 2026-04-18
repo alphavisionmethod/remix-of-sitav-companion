@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { EventBus, createEventBus } from "../event-bus";
+import { EventBus, createEventBus } from "@/platform/core-services/event-bus";
 
 vi.mock("@/lib/persistence/event-bus-persistence", () => ({
   persistEvent: vi.fn().mockResolvedValue(undefined),
