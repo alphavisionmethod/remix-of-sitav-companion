@@ -220,6 +220,10 @@ const matrix: Array<{ action: string; backend: string; substrate: string; status
   { action: "Kill-switch arm", backend: "edge:kill-switch-control", substrate: "db:kill_switch_audit_log", status: "real" },
   { action: "Admin action audit", backend: "trigger+rls", substrate: "db:admin_action_audit", status: "real" },
   { action: "AI budget alerting", backend: "edge:ai-gateway", substrate: "db:ai_budget_alerts", status: "real" },
+  { action: "Advisor recommendation", backend: "edge:advisor-loop", substrate: "db:advisor_board_recommendations", status: "real" },
+  { action: "Advisor action queue", backend: "edge:advisor-loop", substrate: "db:advisor_action_queue", status: "real" },
+  { action: "AI prompt invocation log", backend: "edge:ai-gateway", substrate: "db:ai_prompt_invocations", status: "real" },
+  { action: "AI inference receipt", backend: "edge:ai-gateway", substrate: "db:ai_inference_receipts", status: "real" },
 ];
 writeJsonOutput(path.join(OUT_DIR, "frontend-backend-substrate-matrix.json"), envelope({
   matrix,

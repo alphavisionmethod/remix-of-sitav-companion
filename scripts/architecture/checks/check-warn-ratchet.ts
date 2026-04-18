@@ -6,7 +6,7 @@
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
 
 const REPORT = "generated/os-release-readiness-report.json";
-const CEILING = Number(process.env.OS_WARNING_CEILING ?? 3500); // current 3348 with headroom
+const CEILING = Number(process.env.OS_WARNING_CEILING ?? 3400); // Phase W ratchet: 3500→3400 (current 3348, headroom 52)
 const MIN_BUDGET_FOR_BLOCK = 1000; // when warnings ≤ 1000, this gate becomes hard block
 
 if (!existsSync(REPORT)) {

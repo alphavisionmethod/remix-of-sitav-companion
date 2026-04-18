@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:52:40.158Z",
+  "generatedAt": "2026-04-18T14:07:07.137Z",
   "aiGatewayEdgeFunction": true,
   "capabilityConsumers": [
     "src/lib/ai/ai-capability-client.ts",

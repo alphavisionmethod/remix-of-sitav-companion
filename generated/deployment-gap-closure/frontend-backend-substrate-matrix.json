@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:52:40.158Z",
+  "generatedAt": "2026-04-18T14:07:07.137Z",
   "matrix": [
     {
       "action": "App install",
@@ -121,10 +121,34 @@
       "backend": "edge:ai-gateway",
       "substrate": "db:ai_budget_alerts",
       "status": "real"
+    },
+    {
+      "action": "Advisor recommendation",
+      "backend": "edge:advisor-loop",
+      "substrate": "db:advisor_board_recommendations",
+      "status": "real"
+    },
+    {
+      "action": "Advisor action queue",
+      "backend": "edge:advisor-loop",
+      "substrate": "db:advisor_action_queue",
+      "status": "real"
+    },
+    {
+      "action": "AI prompt invocation log",
+      "backend": "edge:ai-gateway",
+      "substrate": "db:ai_prompt_invocations",
+      "status": "real"
+    },
+    {
+      "action": "AI inference receipt",
+      "backend": "edge:ai-gateway",
+      "substrate": "db:ai_inference_receipts",
+      "status": "real"
     }
   ],
-  "totalActions": 20,
-  "realActions": 19,
+  "totalActions": 24,
+  "realActions": 23,
   "archivedActions": 1,
   "pendingActions": 0
 }

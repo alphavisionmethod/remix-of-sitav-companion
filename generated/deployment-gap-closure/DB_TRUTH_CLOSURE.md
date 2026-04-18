@@ -1,6 +1,6 @@
 # Database Truth Closure
 
-_Generated: 2026-04-18T13:52:40.158Z_
+_Generated: 2026-04-18T14:07:07.137Z_
 
 ## Registry components (14)
 - `src/lib/db/cross-domain-write-exemptions.ts`
