@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T12:24:54.319Z",
+  "gate": "command-palette-profile-leakage",
+  "level": "warn",
+  "budget": 0,
+  "leakCount": 0,
+  "leaks": [],
+  "ok": true
+}

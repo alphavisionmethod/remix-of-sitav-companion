@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T12:24:56.816Z",
+  "gate": "shared-component-profile-pollution",
+  "level": "warn",
+  "budget": 0,
+  "leakageCount": 0,
+  "leakage": [],
+  "ok": true
+}
