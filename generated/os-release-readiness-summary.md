@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T18:20:55.094Z
-> Verdict: **YELLOW** ⚠️
+> Generated: 2026-04-18T20:23:35.423Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 50 |
-| Gates present  | 50 |
-| Gates missing  | 0 |
+| Gates required | 79 |
+| Gates present  | 73 |
+| Gates missing  | 6 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
 
@@ -67,10 +67,39 @@
 | `frontend-polish-coverage` | ✅ | 0 | 0 |
 | `admin-operator-coherence` | ✅ | 0 | 0 |
 | `human-use-operational-readiness` | ✅ | 0 | 0 |
+| `internal-agent-registry` | ✅ | 0 | 0 |
+| `internal-agent-runtime-loop` | ✅ | 0 | 0 |
+| `internal-agent-execute-action` | ✅ | 0 | 0 |
+| `autonomous-action-safety-gates` | ✅ | 0 | 0 |
+| `autonomous-action-receipts` | ✅ | 0 | 0 |
+| `autonomous-action-rollback-coverage` | ✅ | 0 | 0 |
+| `error-patrol-triage-page` | ✅ | 0 | 0 |
+| `agent-primitive-wiring` | ✅ | 0 | 0 |
+| `priority-bridge-wiring` | ✅ | 0 | 0 |
+| `kill-switch-backfill` | ✅ | 0 | 0 |
+| `internal-agent-reflection-table` | ✅ | 0 | 0 |
+| `internal-agent-reflect-function` | ✅ | 0 | 0 |
+| `reflection-board-page` | ✅ | 0 | 0 |
+| `internal-agent-policy-drafts-table` | ✅ | 0 | 0 |
+| `internal-agent-policy-architect-function` | ✅ | 0 | 0 |
+| `policy-draft-review-page` | ✅ | 0 | 0 |
+| `policy-draft-never-auto-apply` | ✅ | 0 | 0 |
+| `internal-agent-trust-ladder-table` | ✅ | 0 | 0 |
+| `internal-agent-trust-evaluator-function` | ✅ | 0 | 0 |
+| `trust-ladder-board-page` | ✅ | 0 | 0 |
+| `trust-ladder-never-self-promote` | ✅ | 0 | 0 |
+| `knowledge-bus-write-discipline` | ✅ | 0 | 0 |
+| `trust-ladder-supervisor-readout` | ✅ | 0 | 0 |
+| `internal-agent-runtime-coverage` | ❌ MISSING | — | — |
+| `internal-agent-admin-pages` | ❌ MISSING | — | — |
+| `internal-agent-escalation-runtime` | ❌ MISSING | — | — |
+| `internal-agent-seed-integrity` | ❌ MISSING | — | — |
+| `admin-ai-runtime-drilldowns` | ❌ MISSING | — | — |
+| `admin-integrations-health-visibility` | ❌ MISSING | — | — |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3348 warning(s) present. Release is cuttable but review warnings.
+❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 6 missing gate(s).
 
 ## Related
 
