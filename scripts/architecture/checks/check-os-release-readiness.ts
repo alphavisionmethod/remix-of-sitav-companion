@@ -132,6 +132,13 @@ const REQUIRED_GATES = [
   "cost-proposals-never-auto-apply",
   "self-healer-safe-catalogue",
   "cross-council-board-page",
+  // Internal AI Workforce — Phase 7 closure (6 BLOCK gates)
+  "internal-agent-phase7-tables",
+  "tenant-l3-ceiling",
+  "owner-copilot-bff-readonly",
+  "tenant-kill-switch-justification",
+  "slo-evaluator-function",
+  "phase7-admin-pages",
 ];
 
 const GENERATED_DIR = "generated";

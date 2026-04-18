@@ -10776,6 +10776,96 @@ export type Database = {
           },
         ]
       }
+      internal_agent_anomaly_signals: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          agent_id: string | null
+          council: string | null
+          created_at: string
+          detected_at: string
+          id: string
+          metric_payload: Json
+          severity: string
+          signal_kind: string
+          status: string
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          agent_id?: string | null
+          council?: string | null
+          created_at?: string
+          detected_at?: string
+          id?: string
+          metric_payload?: Json
+          severity?: string
+          signal_kind: string
+          status?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          agent_id?: string | null
+          council?: string | null
+          created_at?: string
+          detected_at?: string
+          id?: string
+          metric_payload?: Json
+          severity?: string
+          signal_kind?: string
+          status?: string
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      internal_agent_canary_runs: {
+        Row: {
+          created_at: string
+          expected: Json
+          failure_reason: string | null
+          finished_at: string | null
+          golden_path_id: string
+          id: string
+          observed: Json
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expected?: Json
+          failure_reason?: string | null
+          finished_at?: string | null
+          golden_path_id: string
+          id?: string
+          observed?: Json
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expected?: Json
+          failure_reason?: string | null
+          finished_at?: string | null
+          golden_path_id?: string
+          id?: string
+          observed?: Json
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       internal_agent_consensus_sessions: {
         Row: {
           action_class: string
@@ -11084,6 +11174,45 @@ export type Database = {
           trigger_conditions?: Json
           trigger_events?: Json
           updated_at?: string
+        }
+        Relationships: []
+      }
+      internal_agent_drift_findings: {
+        Row: {
+          created_at: string
+          detector_key: string
+          drift_score: number
+          expected: Json
+          id: string
+          observed: Json
+          severity: string
+          status: string
+          tenant_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detector_key: string
+          drift_score?: number
+          expected?: Json
+          id?: string
+          observed?: Json
+          severity?: string
+          status?: string
+          tenant_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detector_key?: string
+          drift_score?: number
+          expected?: Json
+          id?: string
+          observed?: Json
+          severity?: string
+          status?: string
+          tenant_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -11552,6 +11681,180 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      internal_agent_slo_snapshots: {
+        Row: {
+          action_count: number
+          agent_id: string | null
+          cost_cents: number
+          council: string | null
+          created_at: string
+          escalation_rate: number
+          id: string
+          p50_latency_ms: number
+          p95_latency_ms: number
+          slo_status: string
+          success_rate: number
+          tenant_id: string | null
+          user_id: string
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          action_count?: number
+          agent_id?: string | null
+          cost_cents?: number
+          council?: string | null
+          created_at?: string
+          escalation_rate?: number
+          id?: string
+          p50_latency_ms?: number
+          p95_latency_ms?: number
+          slo_status?: string
+          success_rate?: number
+          tenant_id?: string | null
+          user_id: string
+          window_end: string
+          window_start: string
+        }
+        Update: {
+          action_count?: number
+          agent_id?: string | null
+          cost_cents?: number
+          council?: string | null
+          created_at?: string
+          escalation_rate?: number
+          id?: string
+          p50_latency_ms?: number
+          p95_latency_ms?: number
+          slo_status?: string
+          success_rate?: number
+          tenant_id?: string | null
+          user_id?: string
+          window_end?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      internal_agent_tenant_kill_switches: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          active: boolean
+          created_at: string
+          expires_at: string | null
+          id: string
+          justification: string
+          switch_key: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          justification: string
+          switch_key: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          justification?: string
+          switch_key?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      internal_agent_tenant_quotas: {
+        Row: {
+          consumed_actions_hour: number
+          consumed_cents_today: number
+          daily_cents_cap: number
+          day_window_start: string
+          hour_window_start: string
+          id: string
+          max_actions_per_hour: number
+          tenant_id: string
+          updated_at: string
+          user_id: string
+          weekly_cents_cap: number
+        }
+        Insert: {
+          consumed_actions_hour?: number
+          consumed_cents_today?: number
+          daily_cents_cap?: number
+          day_window_start?: string
+          hour_window_start?: string
+          id?: string
+          max_actions_per_hour?: number
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+          weekly_cents_cap?: number
+        }
+        Update: {
+          consumed_actions_hour?: number
+          consumed_cents_today?: number
+          daily_cents_cap?: number
+          day_window_start?: string
+          hour_window_start?: string
+          id?: string
+          max_actions_per_hour?: number
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+          weekly_cents_cap?: number
+        }
+        Relationships: []
+      }
+      internal_agent_tenant_scopes: {
+        Row: {
+          agent_id: string
+          created_at: string
+          enabled: boolean
+          id: string
+          notes: string | null
+          tenant_id: string
+          trust_rung: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          notes?: string | null
+          tenant_id: string
+          trust_rung?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          notes?: string | null
+          tenant_id?: string
+          trust_rung?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       internal_agent_trust_ladder: {
         Row: {
@@ -13702,6 +14005,89 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_recommendation_closure_summary"
             referencedColumns: ["recommendation_id"]
+          },
+        ]
+      }
+      owner_copilot_briefings: {
+        Row: {
+          body: string
+          confidence: number
+          created_at: string
+          evidence: Json
+          id: string
+          source_kind: string
+          source_ref: string | null
+          status: string
+          summary: string
+          tenant_id: string | null
+          tenant_owner_id: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          id?: string
+          source_kind?: string
+          source_ref?: string | null
+          status?: string
+          summary: string
+          tenant_id?: string | null
+          tenant_owner_id: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          id?: string
+          source_kind?: string
+          source_ref?: string | null
+          status?: string
+          summary?: string
+          tenant_id?: string | null
+          tenant_owner_id?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      owner_copilot_handoffs: {
+        Row: {
+          briefing_id: string
+          created_at: string
+          decision: string
+          id: string
+          rationale: string | null
+          tenant_owner_id: string
+        }
+        Insert: {
+          briefing_id: string
+          created_at?: string
+          decision: string
+          id?: string
+          rationale?: string | null
+          tenant_owner_id: string
+        }
+        Update: {
+          briefing_id?: string
+          created_at?: string
+          decision?: string
+          id?: string
+          rationale?: string | null
+          tenant_owner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_copilot_handoffs_briefing_id_fkey"
+            columns: ["briefing_id"]
+            isOneToOne: false
+            referencedRelation: "owner_copilot_briefings"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -18057,6 +18443,10 @@ export type Database = {
         }
         Returns: Json
       }
+      clamp_tenant_action_autonomy: {
+        Args: { p_requested_level: number }
+        Returns: number
+      }
       evaluate_action_safety_gates: {
         Args: {
           _action_class: string
@@ -18224,6 +18614,14 @@ export type Database = {
           p_steps_executed: Json
           p_trigger_evidence_refs: Json
           p_trigger_reason: string
+        }
+        Returns: string
+      }
+      record_owner_copilot_handoff: {
+        Args: {
+          p_briefing_id: string
+          p_decision: string
+          p_rationale?: string
         }
         Returns: string
       }
