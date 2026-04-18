@@ -79,9 +79,68 @@ async function refreshMicrosoft(refreshToken: string): Promise<RefreshOutcome> {
   };
 }
 
+async function refreshSlack(refreshToken: string): Promise<RefreshOutcome> {
+  const clientId = Deno.env.get("SLACK_CONNECTOR_CLIENT_ID");
+  const clientSecret = Deno.env.get("SLACK_CONNECTOR_CLIENT_SECRET");
+  if (!clientId || !clientSecret) throw new Error("missing-slack-oauth-secrets");
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+  });
+  const resp = await fetch("https://slack.com/api/oauth.v2.access", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`slack-refresh-failed:${resp.status}:${text.slice(0, 120)}`);
+  }
+  const data = await resp.json();
+  if (!data.ok) throw new Error(`slack-refresh-error:${data.error ?? "unknown"}`);
+  return {
+    newAccessToken: data.access_token,
+    newRefreshToken: data.refresh_token,
+    expiresInSec: typeof data.expires_in === "number" ? data.expires_in : 43200,
+  };
+}
+
+async function refreshSalesforce(refreshToken: string): Promise<RefreshOutcome> {
+  const clientId = Deno.env.get("SALESFORCE_CONNECTOR_CLIENT_ID");
+  const clientSecret = Deno.env.get("SALESFORCE_CONNECTOR_CLIENT_SECRET");
+  const loginUrl = Deno.env.get("SALESFORCE_CONNECTOR_LOGIN_URL") ?? "https://login.salesforce.com";
+  if (!clientId || !clientSecret) throw new Error("missing-salesforce-oauth-secrets");
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+  });
+  const resp = await fetch(`${loginUrl}/services/oauth2/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`salesforce-refresh-failed:${resp.status}:${text.slice(0, 120)}`);
+  }
+  const data = await resp.json();
+  // Salesforce refresh tokens are long-lived; access tokens typically last ~2h
+  return {
+    newAccessToken: data.access_token,
+    newRefreshToken: data.refresh_token,
+    expiresInSec: typeof data.expires_in === "number" ? data.expires_in : 7200,
+  };
+}
+
 async function refreshForProvider(provider: string, refreshToken: string): Promise<{ outcome: RefreshOutcome; mode: "real" | "noop" }> {
   if (provider === "google") return { outcome: await refreshGoogle(refreshToken), mode: "real" };
   if (provider === "microsoft") return { outcome: await refreshMicrosoft(refreshToken), mode: "real" };
+  if (provider === "slack") return { outcome: await refreshSlack(refreshToken), mode: "real" };
+  if (provider === "salesforce") return { outcome: await refreshSalesforce(refreshToken), mode: "real" };
   return { outcome: { newAccessToken: "", expiresInSec: 3600 }, mode: "noop" };
 }
 
