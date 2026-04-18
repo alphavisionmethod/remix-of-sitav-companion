@@ -37,17 +37,19 @@ for (const f of walk("src")) {
   if (NAMED_FAMILIES.some((re) => re.test(rel))) leaks.push(rel);
 }
 
-const BUDGET = 250;
+// Phase B5 — graduated to BLOCK level. Current value is 0; any new contract
+// drift outside src/contracts/ or src/packages/ is now a constitutional violation.
+const BUDGET = 0;
 const ok = leaks.length <= BUDGET;
 const report = {
   generatedAt: new Date().toISOString(),
   gate: "contract-topology-drift",
   leakedNamedFamilyCount: leaks.length,
   budget: BUDGET,
-  level: "warn",
+  level: "block",
   ok,
   sample: leaks.slice(0, 30),
 };
 writeFileSync(join(OUT, "contract-topology-drift.json"), JSON.stringify(report, null, 2));
-console.log(`contract-topology: ${leaks.length} leaked named-family contracts (budget ${BUDGET}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0);
+console.log(`contract-topology: ${leaks.length} leaked named-family contracts (budget ${BUDGET}) — ${ok ? "OK" : "BLOCK"}`);
+process.exit(ok ? 0 : 1);

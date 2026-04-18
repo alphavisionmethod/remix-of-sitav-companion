@@ -1,48 +1,23 @@
 {
-  "generatedAt": "2026-04-18T12:30:00.000Z",
-  "wave": "phase-a + B1 + B2 + B3 + B4",
+  "generatedAt": "2026-04-18T13:00:00.000Z",
+  "wave": "phase-a + B1 + B2 + B3 + B4 + B5",
   "buildStatus": "green",
   "tscNoEmit": { "exitCode": 0, "errorCount": 0 },
   "checks": {
-    "service-topology": { "status": "ok", "value": 178, "budget": 200, "level": "warn" },
-    "contract-topology": { "status": "ok", "value": 0, "budget": 250, "level": "warn" },
-    "plane-import-graph": { "status": "ok", "value": 0, "previous": 5, "delta": -5, "level": "warn" },
-    "plane-transitive": { "status": "ok", "direct": 0, "transitive": 12, "budget": 50, "level": "warn" },
-    "route-truth": { "status": "warn", "value": 26, "level": "warn", "note": "false-positive heavy, never blocks" },
-    "dead-pages": { "status": "ok", "value": 53, "budget": 150, "level": "warn" },
-    "route-wrapper-usage": { "status": "ok", "wrappers": 8, "undeclared": 0, "level": "warn" },
-    "lib-ownership-drift": { "status": "ok" }
+    "service-topology":     { "status": "ok", "value": 178, "budget": 200, "level": "warn"  },
+    "contract-topology":    { "status": "ok", "value": 0,   "budget": 0,   "level": "block" },
+    "plane-import-graph":   { "status": "ok", "value": 0,   "baseline": 0, "level": "block" },
+    "plane-transitive":     { "status": "ok", "direct": 0, "transitive": 12, "budget": 50, "level": "warn" },
+    "route-truth":          { "status": "warn", "value": 26, "level": "warn", "note": "false-positive heavy, never blocks" },
+    "dead-pages":           { "status": "ok", "value": 53,  "budget": 150, "level": "warn"  },
+    "route-wrapper-usage":  { "status": "ok", "wrappers": 8, "undeclared": 0, "level": "block" },
+    "lib-ownership-drift":  { "status": "ok" }
   },
-  "structuralChanges": {
-    "planeViolationsEliminated": 5,
-    "transitiveAnalysisAdded": true,
-    "contractsBarrelExtended": true,
-    "filesMoved": 0,
-    "filesDeleted": 0,
-    "behaviorChanges": 0
+  "graduations": {
+    "plane-import-graph":   { "from": "warn", "to": "block", "previousBaseline": 5, "newBaseline": 0 },
+    "contract-topology":    { "from": "warn", "to": "block", "previousBudget": 250, "newBudget": 0 },
+    "route-wrapper-usage":  { "from": "warn", "to": "block" }
   },
-  "decisions": {
-    "createSrcServices": false,
-    "recreateSrcPackages": false,
-    "rationale": {
-      "src/services": "Service classes correctly distributed across 6 canonical roots (170 platform / 107 domain / 73 runtime / 151 data / 49 integration / 128 orchestration).",
-      "src/packages": "Already exists with 33 healthy families and 448 files.",
-      "planeFix": "src/components/sita/admin/ is shared presentational primitives, not admin-plane logic. Allowlist correction eliminates 5 false-positive violations with zero file moves."
-    }
-  },
-  "filesShipped": [
-    "src/admin/modules/trust-security/views/AdminRBACConsole.tsx",
-    "src/admin/modules/trust-security/views/index.ts",
-    "src/pages/admin/cloud/AdminRBACConsole.tsx",
-    "src/contracts/packages.ts",
-    "scripts/architecture/checks/check-service-topology.ts",
-    "scripts/architecture/checks/check-contract-topology.ts",
-    "scripts/architecture/checks/check-plane-import-graph.ts",
-    "scripts/architecture/checks/check-plane-transitive.ts",
-    "scripts/architecture/checks/check-route-truth.ts",
-    "scripts/architecture/checks/check-dead-pages.ts",
-    "scripts/architecture/checks/check-route-wrapper-usage.ts",
-    "scripts/architecture/audits/generate-evidence-maps.ts"
-  ],
-  "deploymentReady": true
+  "deploymentReady": true,
+  "constitutionalEnforcement": "active"
 }

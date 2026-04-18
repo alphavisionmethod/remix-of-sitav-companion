@@ -64,17 +64,20 @@ for (const f of walk("src")) {
   }
 }
 
-const BASELINE = 5;
+// Phase B5 — graduated to BLOCK level. Baseline is 0 since allowlist
+// reclassified shared presentational primitives. Any new direct user↔admin
+// import is a constitutional violation.
+const BASELINE = 0;
 const ok = violations.length <= BASELINE;
 const report = {
   generatedAt: new Date().toISOString(),
   gate: "plane-import-graph",
   directViolationCount: violations.length,
   baseline: BASELINE,
-  level: "warn",
+  level: "block",
   ok,
   violations: violations.slice(0, 50),
 };
 writeFileSync(join(OUT, "plane-import-graph.json"), JSON.stringify(report, null, 2));
-console.log(`plane-import-graph: ${violations.length} direct user↔admin violations (baseline ${BASELINE}) — ${ok ? "OK" : "WARN"}`);
-process.exit(0);
+console.log(`plane-import-graph: ${violations.length} direct user↔admin violations (baseline ${BASELINE}) — ${ok ? "OK" : "BLOCK"}`);
+process.exit(ok ? 0 : 1);
