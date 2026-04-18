@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Integrations Hub (Phase 25)
+// SITA OS — Integrations Hub (Phase 25 + Phase 4 closure)
 // Canonical entry for /admin/integrations.
+// Adds: 7-day refresh streak panel; OAuth board uses canonical
+// ConnectorStateBadge + receipt drawer + reauth CTA.
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
@@ -11,6 +13,9 @@ const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneA
 const MCSyncCloud = lazy(() => import("@/pages/admin/modules/MCSyncCloud"));
 const IntegrationConciergePage = lazy(() => import("@/pages/admin/IntegrationConciergePage"));
 const OAuthRefreshHealthBoard = lazy(() => import("@/components/admin/OAuthRefreshHealthBoard"));
+const IntegrationStreakPanel = lazy(() =>
+  import("@/components/admin/integrations/IntegrationStreakPanel"),
+);
 
 function ModuleFallback() {
   return (
@@ -49,8 +54,14 @@ export default function IntegrationsHome() {
     {
       id: "oauth-refresh-health",
       label: "OAuth Refresh Health",
-      description: "Live Google/Microsoft/Slack token refresh probe results.",
+      description: "Live Google/Microsoft/Slack token refresh probe results with reauth CTA.",
       render: wrap(OAuthRefreshHealthBoard),
+    },
+    {
+      id: "refresh-streak",
+      label: "7-Day Streak",
+      description: "Per-provider refresh streak (worst-of-day) sourced from real probe receipts.",
+      render: wrap(IntegrationStreakPanel),
     },
   ];
 

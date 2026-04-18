@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, AlertTriangle, CheckCircle2, ShieldAlert } from "lucide-react";
+import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { IntegrationReceiptDrawer, ReauthCTAButton } from "@/components/admin/integrations/IntegrationReceiptDrawer";
+import { RefreshCw, AlertTriangle, CheckCircle2, ShieldAlert, FileText } from "lucide-react";
 
 interface ProbeRow {
   id: string;
@@ -20,21 +21,14 @@ interface ProbeRow {
   probe_finished_at: string | null;
 }
 
-const lifecycleColor = (s: string) => {
-  switch (s) {
-    case "healthy": return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
-    case "degraded": return "bg-amber-500/10 text-amber-500 border-amber-500/20";
-    case "reauth_required": return "bg-orange-500/10 text-orange-500 border-orange-500/20";
-    case "failing":
-    case "blocked": return "bg-destructive/10 text-destructive border-destructive/20";
-    default: return "bg-muted text-muted-foreground border-border";
-  }
-};
-
 export default function OAuthRefreshHealthBoard() {
   const [rows, setRows] = useState<ProbeRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [triggering, setTriggering] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerAccountId, setDrawerAccountId] = useState<string | null>(null);
+  const [drawerProvider, setDrawerProvider] = useState<string | null>(null);
+  const [drawerLabel, setDrawerLabel] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -55,6 +49,13 @@ export default function OAuthRefreshHealthBoard() {
       await supabase.functions.invoke("oauth-refresh-probe", { body: {} });
       await load();
     } finally { setTriggering(false); }
+  };
+
+  const openDrawer = (r: ProbeRow) => {
+    setDrawerAccountId(r.account_id);
+    setDrawerProvider(r.provider);
+    setDrawerLabel(r.account_id ?? r.user_id.slice(0, 8));
+    setDrawerOpen(true);
   };
 
   const byProvider = ["google", "microsoft", "slack"].map(p => {
@@ -107,16 +108,37 @@ export default function OAuthRefreshHealthBoard() {
           {rows.length > 0 && (
             <div className="space-y-2">
               {rows.slice(0, 50).map(r => (
-                <div key={r.id} className="flex items-center justify-between border-b border-border py-2 text-sm">
-                  <div className="flex items-center gap-3">
-                    <Badge variant="outline" className="capitalize">{r.provider}</Badge>
-                    <Badge className={lifecycleColor(r.lifecycle_state)}>{r.lifecycle_state}</Badge>
-                    {r.reauth_required && <Badge variant="destructive">reauth</Badge>}
-                    <span className="text-muted-foreground text-xs">{r.account_id ?? r.user_id.slice(0, 8)}</span>
+                <div key={r.id} className="flex items-center justify-between border-b border-border py-2 text-sm gap-2">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="capitalize text-xs font-medium w-20">{r.provider}</span>
+                    <ConnectorStateBadge
+                      state={r.reauth_required ? "reauth_required" : r.lifecycle_state}
+                      size="xs"
+                    />
+                    <span className="text-muted-foreground text-xs font-mono">
+                      {r.account_id ?? r.user_id.slice(0, 8)}
+                    </span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {r.failure_class && <span className="mr-2">{r.failure_class}</span>}
-                    {r.probe_finished_at && new Date(r.probe_finished_at).toLocaleString()}
+                  <div className="flex items-center gap-2">
+                    {r.failure_class && (
+                      <span className="text-xs text-muted-foreground">{r.failure_class}</span>
+                    )}
+                    {r.probe_finished_at && (
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(r.probe_finished_at).toLocaleString()}
+                      </span>
+                    )}
+                    {r.reauth_required && r.account_id && (
+                      <ReauthCTAButton accountId={r.account_id} />
+                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 px-2 text-[10px]"
+                      onClick={() => openDrawer(r)}
+                    >
+                      <FileText className="h-3 w-3 mr-1" /> Receipts
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -124,6 +146,14 @@ export default function OAuthRefreshHealthBoard() {
           )}
         </CardContent>
       </Card>
+
+      <IntegrationReceiptDrawer
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        accountId={drawerAccountId}
+        provider={drawerProvider}
+        fallbackLabel={drawerLabel}
+      />
     </div>
   );
 }
