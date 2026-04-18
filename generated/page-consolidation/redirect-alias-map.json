@@ -1,0 +1,136 @@
+{
+  "generatedAt": "2026-04-18T11:38:28.102Z",
+  "admin": [
+    {
+      "from": "/admin/dashboard",
+      "to": "/admin/overview",
+      "reason": "duplicate-merge",
+      "sourceComponent": "AdminDashboard"
+    },
+    {
+      "from": "/admin/operations-hub",
+      "to": "/admin/overview",
+      "reason": "duplicate-merge",
+      "sourceComponent": "AdminOperationsHub"
+    },
+    {
+      "from": "/admin/ai-team/approval-queue",
+      "to": "/admin/approvals",
+      "reason": "duplicate-merge",
+      "sourceComponent": "HQApprovalQueue"
+    },
+    {
+      "from": "/admin/ai-gateway/honesty",
+      "to": "/admin/ai-runtime/launch-truth",
+      "reason": "duplicate-merge",
+      "sourceComponent": "AIG06LaunchTruth"
+    },
+    {
+      "from": "/admin/operations-hub",
+      "to": "/admin/overview",
+      "reason": "duplicate-merge",
+      "sourceComponent": "AdminOperationsHub"
+    },
+    {
+      "from": "/admin/mission-control",
+      "to": "/admin/overview",
+      "reason": "duplicate-merge",
+      "sourceComponent": "MissionControlHome"
+    },
+    {
+      "from": "/admin/system-health",
+      "to": "/admin/health",
+      "reason": "duplicate-merge",
+      "sourceComponent": "SystemHealthDashboard"
+    },
+    {
+      "from": "/admin/intelligence",
+      "to": "/admin/intelligence/efficiency",
+      "reason": "deprecate",
+      "sourceComponent": "IntelligenceLayerAdmin"
+    },
+    {
+      "from": "/admin/ai",
+      "to": "/admin/ai-runtime",
+      "reason": "deprecate",
+      "sourceComponent": "AIRuntimeHome"
+    }
+  ],
+  "user": [
+    {
+      "from": "/investments",
+      "to": "/investment",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/boardroom",
+      "to": "/investment/boardroom",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/markets",
+      "to": "/investment/markets",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/portfolio",
+      "to": "/investment/portfolio",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/strategy",
+      "to": "/investment/strategy",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/execute",
+      "to": "/investment/execute",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/research",
+      "to": "/investment/research",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/risk",
+      "to": "/investment/risk",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/family-office",
+      "to": "/investment/family-office",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/board",
+      "to": "/boardroom",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/file",
+      "to": "/files",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/finance",
+      "to": "/money",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/overview",
+      "to": "/money/overview",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/bills",
+      "to": "/money/bills",
+      "reason": "domain-rename"
+    }
+  ],
+  "totals": {
+    "admin": 9,
+    "user": 14,
+    "all": 23
+  }
+}

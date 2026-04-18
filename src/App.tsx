@@ -51,6 +51,7 @@ import { getBoardroomRoutes } from "@/routes/boardroom-routes";
 import { getAdvisorRoutes } from "@/routes/advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getInvestmentRoutes } from "@/routes/investment-routes";
+import { USER_REDIRECTS } from "@/routes/redirects/user-redirect-map";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
 import { getCommunicationsRoutes } from "@/routes/communications-routes";
@@ -268,6 +269,15 @@ const App = () => (
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}
+
+                        {/* Phase 2 (Page Consolidation): user-domain redirect layer */}
+                        {USER_REDIRECTS.map((r) => (
+                          <Route
+                            key={`user-redirect-${r.from}`}
+                            path={r.from}
+                            element={<Navigate to={r.to} replace />}
+                          />
+                        ))}
 
                         {/* Owner workspace */}
                         {getOwnerRoutes()}
