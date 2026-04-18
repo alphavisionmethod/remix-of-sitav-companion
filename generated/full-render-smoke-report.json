@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-04-18T02:23:58.435Z",
+  "gate": "full-render-smoke",
+  "phase": "phase-16-render-smoke",
+  "ok": false,
+  "errorCount": 6,
+  "warningCount": 0,
+  "totals": {
+    "discovered": 993,
+    "passed": 987,
+    "failed": 6,
+    "coveragePct": 99.4
+  },
+  "failures": [
+    {
+      "page": "ClipboardHistory.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=55 close=53)"
+    },
+    {
+      "page": "MediaWorkspace.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=135 close=136)"
+    },
+    {
+      "page": "UserProfilePage.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=73 close=74)"
+    },
+    {
+      "page": "admin/LT04RuntimeProbeCenter.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=56 close=57)"
+    },
+    {
+      "page": "admin/cloud/CloudStorageHealthAdmin.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=38 close=35)"
+    },
+    {
+      "page": "revenue-office/onboarding/screens/URLIntakeScreen.tsx",
+      "ok": false,
+      "reason": "unbalanced braces (open=30 close=24)"
+    }
+  ]
+}
