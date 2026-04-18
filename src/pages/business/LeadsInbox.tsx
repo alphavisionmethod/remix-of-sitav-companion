@@ -20,6 +20,7 @@ import { ScoreExplainabilityDrawer } from "@/components/business/lead-inbox/Scor
 import { LeadScoreComparison } from "@/components/business/lead-inbox/LeadScoreComparison";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
+import { useGlobalSearch } from "@/platform/search";
 
 import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
 import { toast } from "sonner";
