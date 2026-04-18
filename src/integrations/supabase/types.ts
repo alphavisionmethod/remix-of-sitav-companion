@@ -814,50 +814,89 @@ export type Database = {
       advisor_board_reflections: {
         Row: {
           advisor_id: string
+          boardroom_item_id: string | null
           created_at: string
+          dispatch_id: string | null
+          execution_fitness_score: number | null
           id: string
           lesson_learned: string | null
           outcome_observed: string | null
           outcome_quality: number | null
+          outcome_record_id: string | null
           owner_action: string
           owner_feedback: string | null
           pattern_tags: Json | null
           recommendation_id: string | null
+          recommendation_quality_score: number | null
           should_repeat: boolean | null
           updated_at: string
+          usefulness_score: number | null
           user_id: string
         }
         Insert: {
           advisor_id: string
+          boardroom_item_id?: string | null
           created_at?: string
+          dispatch_id?: string | null
+          execution_fitness_score?: number | null
           id?: string
           lesson_learned?: string | null
           outcome_observed?: string | null
           outcome_quality?: number | null
+          outcome_record_id?: string | null
           owner_action?: string
           owner_feedback?: string | null
           pattern_tags?: Json | null
           recommendation_id?: string | null
+          recommendation_quality_score?: number | null
           should_repeat?: boolean | null
           updated_at?: string
+          usefulness_score?: number | null
           user_id: string
         }
         Update: {
           advisor_id?: string
+          boardroom_item_id?: string | null
           created_at?: string
+          dispatch_id?: string | null
+          execution_fitness_score?: number | null
           id?: string
           lesson_learned?: string | null
           outcome_observed?: string | null
           outcome_quality?: number | null
+          outcome_record_id?: string | null
           owner_action?: string
           owner_feedback?: string | null
           pattern_tags?: Json | null
           recommendation_id?: string | null
+          recommendation_quality_score?: number | null
           should_repeat?: boolean | null
           updated_at?: string
+          usefulness_score?: number | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "advisor_board_reflections_brd_item_fk"
+            columns: ["boardroom_item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "advisor_board_reflections_dispatch_fk"
+            columns: ["dispatch_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_followthrough_dispatches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "advisor_board_reflections_outcome_fk"
+            columns: ["outcome_record_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_outcome_records"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "advisor_board_reflections_recommendation_id_fkey"
             columns: ["recommendation_id"]
@@ -3869,6 +3908,95 @@ export type Database = {
           },
         ]
       }
+      boardroom_followthrough_dispatches: {
+        Row: {
+          action_payload: Json
+          action_type: string
+          approval_queue_id: string | null
+          approved_at: string
+          approved_by: string | null
+          boardroom_item_id: string
+          command_id: string | null
+          command_step_id: string | null
+          correlation_id: string
+          created_at: string
+          execution_completed_at: string | null
+          execution_result: Json | null
+          execution_started_at: string | null
+          failure_reason: string | null
+          id: string
+          metadata: Json
+          outcome_record_id: string | null
+          receipt_id: string | null
+          recommendation_id: string | null
+          retry_count: number
+          risk_tier: string
+          state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_payload?: Json
+          action_type: string
+          approval_queue_id?: string | null
+          approved_at?: string
+          approved_by?: string | null
+          boardroom_item_id: string
+          command_id?: string | null
+          command_step_id?: string | null
+          correlation_id: string
+          created_at?: string
+          execution_completed_at?: string | null
+          execution_result?: Json | null
+          execution_started_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          metadata?: Json
+          outcome_record_id?: string | null
+          receipt_id?: string | null
+          recommendation_id?: string | null
+          retry_count?: number
+          risk_tier?: string
+          state?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_payload?: Json
+          action_type?: string
+          approval_queue_id?: string | null
+          approved_at?: string
+          approved_by?: string | null
+          boardroom_item_id?: string
+          command_id?: string | null
+          command_step_id?: string | null
+          correlation_id?: string
+          created_at?: string
+          execution_completed_at?: string | null
+          execution_result?: Json | null
+          execution_started_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          metadata?: Json
+          outcome_record_id?: string | null
+          receipt_id?: string | null
+          recommendation_id?: string | null
+          retry_count?: number
+          risk_tier?: string
+          state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_followthrough_dispatches_boardroom_item_id_fkey"
+            columns: ["boardroom_item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boardroom_items: {
         Row: {
           advisor_summaries: Json
@@ -3876,12 +4004,20 @@ export type Database = {
           confidence_state: Json
           created_at: string
           description: string
+          dispatch_id: string | null
           domain: string
           escalation_reason: string | null
           evidence_refs: Json
+          execution_command_step_id: string | null
+          followthrough_failure_reason: string | null
+          followthrough_state: string
           freshness_state: Json
           id: string
+          last_followthrough_event_at: string | null
+          outcome_recorded_at: string | null
+          outcome_status: string | null
           recommendation_state: string
+          reflection_id: string | null
           session_id: string | null
           severity: string
           simulation_state: string
@@ -3897,12 +4033,20 @@ export type Database = {
           confidence_state?: Json
           created_at?: string
           description?: string
+          dispatch_id?: string | null
           domain?: string
           escalation_reason?: string | null
           evidence_refs?: Json
+          execution_command_step_id?: string | null
+          followthrough_failure_reason?: string | null
+          followthrough_state?: string
           freshness_state?: Json
           id?: string
+          last_followthrough_event_at?: string | null
+          outcome_recorded_at?: string | null
+          outcome_status?: string | null
           recommendation_state?: string
+          reflection_id?: string | null
           session_id?: string | null
           severity?: string
           simulation_state?: string
@@ -3918,12 +4062,20 @@ export type Database = {
           confidence_state?: Json
           created_at?: string
           description?: string
+          dispatch_id?: string | null
           domain?: string
           escalation_reason?: string | null
           evidence_refs?: Json
+          execution_command_step_id?: string | null
+          followthrough_failure_reason?: string | null
+          followthrough_state?: string
           freshness_state?: Json
           id?: string
+          last_followthrough_event_at?: string | null
+          outcome_recorded_at?: string | null
+          outcome_status?: string | null
           recommendation_state?: string
+          reflection_id?: string | null
           session_id?: string | null
           severity?: string
           simulation_state?: string
@@ -3939,6 +4091,78 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "boardroom_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_outcome_records: {
+        Row: {
+          actual_outcome: string
+          affected_entities: Json
+          boardroom_item_id: string
+          confidence: number
+          created_at: string
+          dispatch_id: string
+          expected_outcome: string
+          id: string
+          metadata: Json
+          notes: string | null
+          outcome_status: string
+          retry_required: boolean
+          updated_at: string
+          user_id: string
+          verification_source: string
+          verified_by: string | null
+        }
+        Insert: {
+          actual_outcome?: string
+          affected_entities?: Json
+          boardroom_item_id: string
+          confidence?: number
+          created_at?: string
+          dispatch_id: string
+          expected_outcome?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          outcome_status?: string
+          retry_required?: boolean
+          updated_at?: string
+          user_id: string
+          verification_source?: string
+          verified_by?: string | null
+        }
+        Update: {
+          actual_outcome?: string
+          affected_entities?: Json
+          boardroom_item_id?: string
+          confidence?: number
+          created_at?: string
+          dispatch_id?: string
+          expected_outcome?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          outcome_status?: string
+          retry_required?: boolean
+          updated_at?: string
+          user_id?: string
+          verification_source?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_outcome_records_boardroom_item_id_fkey"
+            columns: ["boardroom_item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boardroom_outcome_records_dispatch_id_fkey"
+            columns: ["dispatch_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_followthrough_dispatches"
             referencedColumns: ["id"]
           },
         ]
@@ -16033,6 +16257,16 @@ export type Database = {
       }
     }
     Functions: {
+      brd_followthrough_transition: {
+        Args: {
+          _correlation_id: string
+          _failure_reason?: string
+          _item_id: string
+          _metadata?: Json
+          _to_state: string
+        }
+        Returns: undefined
+      }
       check_ai_budget_policies: {
         Args: {
           p_capability_key: string
