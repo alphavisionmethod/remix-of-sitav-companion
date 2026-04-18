@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:55:01.758Z",
+  "generatedAt": "2026-04-18T23:55:34.539Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -307,8 +307,8 @@
     {
       "file": "generated/launch-honesty-alignment-report.json",
       "gate": "launch-honesty-alignment",
-      "ok": false,
-      "errors": 2,
+      "ok": true,
+      "errors": 0,
       "warnings": 0
     },
     {
@@ -872,9 +872,9 @@
       "warnings": 0
     }
   ],
-  "totalErrors": 2,
+  "totalErrors": 0,
   "totalWarnings": 3348,
   "missingGates": [],
-  "ok": false,
-  "verdict": "RED"
+  "ok": true,
+  "verdict": "YELLOW"
 }
