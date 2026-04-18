@@ -1,82 +1,140 @@
 
 
-User wants Part 2 architecture work, but I just shipped exactly this in the previous turn (5 phases approved, all files created, readiness YELLOW). Re-implementing would duplicate. Better: audit what's actually there vs. what this prompt asks for, identify real gaps, propose a tight delta plan.
+Let me explore the current state of `src/lib` to understand the scope before planning.
+<lov-tool-use id="toolu_vrtx_01U3JFZtf2URFFDA2zUbxbhN" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/lib\"}">
+</lov-tool-use>
 
-Let me check what exists.
+<lov-tool-use id="toolu_vrtx_01FssmwsNdNG5sVc2GZ1f97n" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src\"}">
+</lov-tool-use>
 
-Already shipped (confirmed from history + visible files):
-- `os/profiles/{user,operator}.profile.json` + `profile.schema.json` ✅
-- `src/lib/architecture/plane-registry.ts` ✅
-- `src/lib/architecture/route-plane-map.ts` ✅
-- `src/lib/runtime/deployment-profile.ts` ✅
-- `src/runtimes/shell/ShellComposer.tsx` ✅
-- `src/lib/admin/admin-workflow-registry.ts` ✅ (8 workflows)
-- `os/image-builder/build.sh --profile=user|operator` ✅
-- `.github/workflows/os-build-iso.yml` matrix build ✅
-- 7 docs (CORE_OS_USER_ADMIN_BACKEND_MODEL, DEPLOYMENT_PROFILES, USER_PROFILE_DEPLOYMENT, OPERATOR_PROFILE_DEPLOYMENT, SHARED_VS_PROFILE_SPECIFIC_COMPONENTS, ADMIN_CONTROL_PLANE_GOLDEN_PATHS, ROUTE_AND_APP_PLANE_MAP) ✅
-- 3 CI gates: check-5-plane-boundaries, check-route-plane-coverage, check-deployment-profile-coverage ✅
-- `generated/{5-plane-boundaries,deployment-profile-coverage,route-plane-coverage}-report.json` ✅
-- `PlaneBoundaryGuard` updated to 5-plane keys with shim ✅
+<lov-tool-use id="toolu_vrtx_01MqND14NuDxLo5RNBgcQVFi" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src/lib\"}">
+</lov-tool-use>
 
-Real gaps from Part 2 prompt (not yet shipped):
-1. **App-plane map** — only route-plane-map exists; app registry entries don't yet declare `plane` + `profiles[]` fields. Prompt explicitly asks for `src/lib/app-plane-map.ts` + `generated/app-plane-map.json`.
-2. **Profile-aware launcher composition** — launcher reads `allowedApps` from profile manifest but no `launcher-profile.ts` or visible filtering in launcher UI yet.
-3. **Profile-aware command palette / search** — commands aren't filtered by profile.
-4. **Profile-aware settings sections** — settings page doesn't hide operator-only sections in user profile.
-5. **Generated profile composition reports** — `generated/profile-composition-{user,operator}.json` + `profile-visibility-report.json` + `operator-readiness-report.json` + `user-profile-readiness-report.json` not yet emitted.
-6. **`docs/os/BUILD_AND_RELEASE_PROFILES.md`** — referenced in prompt §11, not yet created.
-7. **Operator workflow landing page** — `AdminControlPlaneShell` has 8-workflow nav but no dedicated `/admin` operator-home that surfaces "open incidents / release gate status / trust alerts / support queue" as first view (prompt §7.2).
-8. **Profile injection into Electron runtime** — `electron/main.cjs` doesn't yet read `/etc/sita/deployment-profile.json` and inject into `window.__SITA_DEPLOYMENT_PROFILE__` (the runtime reader expects it but preload doesn't populate it).
-9. **Support bundle capturing active profile** — `os/scripts/generate-support-bundle.sh` doesn't include `deployment-profile.json`.
-10. **CI profile-aware readiness** — `os-release-readiness-report.json` was updated to per-profile, but no separate `operator-readiness-report.json` / `user-profile-readiness-report.json` artifacts.
+<lov-tool-use id="toolu_vrtx_013WaisrobS3TUBNwLmQGoCa" name="code--list_dir" integration-id="code" data="{\"dir_path\": \"src\"}">
+</lov-tool-use>
 
-Plan: tight delta, 4 phases, each independently deployable. No duplication of Phase 1-5 already shipped.
+<lov-tool-use id="toolu_vrtx_01RWBapXA92iLytBgxpEsBYT" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== src/lib file count ===\\\"; find src/lib -type f | wc -l; echo \\\"=== src/lib subfolder file counts ===\\\"; for d in src/lib/*/; do n=$(find \\\"$d\\\" -type f | wc -l); printf \\\"%5d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -50; echo \\\"=== top-level loose files ===\\\"; find src/lib -maxdepth 1 -type f\", \"user_facing_description\": \"Surveying src/lib size and shape\"}">
+</lov-tool-use>
 
-## Part 2 Delta — App-Plane Wiring + Profile-Aware Composition + Generated Reports
+<lov-tool-use id="toolu_vrtx_012nWH6ihPfDAPpwEetbCh77" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== existing src/data ===\\\"; ls src/data 2>/dev/null; echo; echo \\\"=== existing src/platform ===\\\"; ls src/platform 2>/dev/null; echo; echo \\\"=== existing src/runtimes ===\\\"; ls src/runtimes 2>/dev/null; echo; echo \\\"=== existing src/integrations ===\\\"; ls src/integrations 2>/dev/null; echo; echo \\\"=== existing src/contracts ===\\\"; ls src/contracts 2>/dev/null; echo; echo \\\"=== existing src/features ===\\\"; ls src/features 2>/dev/null; echo; echo \\\"=== src/planes ===\\\"; ls src/planes 2>/dev/null\", \"user_facing_description\": \"Checking existing canonical destinations\"}">
+</lov-tool-use>
 
-### Phase A — App-Plane Map & Launcher Composition
-- `src/lib/architecture/app-plane-map.ts` — every app id → `{ plane, profiles[], roleRequired, launcherVisible, defaultPinned }`. Single source of truth, no fork of existing app registry.
-- `src/shell-runtime/launcher-profile.ts` — pure helper: `filterAppsForProfile(apps, profile, role)`. Reused by launcher, command palette, app store.
-- Update existing launcher component to call `filterAppsForProfile()` — no new launcher; just one filter hook plugged in.
-- Update existing app store grid to respect profile visibility.
-- `scripts/architecture/checks/check-app-plane-coverage.ts` — fails CI if any app in registry lacks plane/profile assignment.
-- `generated/app-plane-map.json` — emitted from check.
+<lov-tool-use id="toolu_vrtx_01TctV2TMPSeo9X8RcKDZqGY" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== Import graph: how many files import from @/lib/* ===\\\"; grep -rEho \\\"from ['\\\\\\\"]@/lib/[^'\\\\\\\"]+\\\" src 2>/dev/null | sort -u | wc -l; echo \\\"=== Sample top-imported lib paths ===\\\"; grep -rEho \\\"from ['\\\\\\\"]@/lib/[^'\\\\\\\"]+\\\" src 2>/dev/null | sort | uniq -c | sort -rn | head -40; echo; echo \\\"=== Total consuming files ===\\\"; grep -rEl \\\"from ['\\\\\\\"]@/lib/\\\" src 2>/dev/null | wc -l\", \"user_facing_description\": \"Measuring blast radius of any src/lib move\"}">
+</lov-tool-use>
 
-### Phase B — Profile-Aware Command Palette, Settings, Search
-- `src/shell-runtime/command-profile.ts` — filters command palette entries by `profile + role`.
-- `src/shell-runtime/settings-profile.ts` — filters settings sections (operator-only sections hidden in user profile).
-- Wire both into existing command palette + settings page (no duplication; minimal call-site changes).
-- Same for search results scoping (respect plane visibility).
+<lov-tool-use id="toolu_vrtx_0198BWu1X22TZ2uoHfozy948" name="code--exec" integration-id="code" data="{\"command\": \"echo \\\"=== src/lib/services subdir summary ===\\\"; for d in src/lib/services/*/; do n=$(find \\\"$d\\\" -type f 2>/dev/null | wc -l); printf \\\"%4d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -30; echo; echo \\\"=== src/lib/core-services subdir summary ===\\\"; for d in src/lib/core-services/*/; do n=$(find \\\"$d\\\" -type f 2>/dev/null | wc -l); printf \\\"%4d  %s\\\\n\\\" \\\"$n\\\" \\\"$d\\\"; done | sort -rn | head -30\", \"user_facing_description\": \"Inspecting two largest folders\"}">
+</lov-tool-use>
+I have enough to design a safe, phased plan. The scale is massive — 1,768 files in `src/lib`, 2,115 consumer files, 863 unique import paths — and many destinations (`src/data`, `src/contracts`) are essentially empty barrels today. A "move everything" sweep would be catastrophic. The plan must be wave-based, audit-first, wrapper-heavy, and verification-gated.
 
-### Phase C — Operator Home Landing + Electron Profile Injection
-- `src/pages/admin/OperatorHome.tsx` — workflow-first landing surfacing: open incidents, release gate status, verification alerts, support queue, kill-switch posture. Reuses existing widgets from the 8 workflow pages — composition only, zero new business logic.
-- Wire `/admin` route to render `OperatorHome` for operator profile (user profile keeps existing admin behavior gated by role).
-- `electron/preload.cjs` (update) — read `/etc/sita/deployment-profile.json` at startup, expose as `window.__SITA_DEPLOYMENT_PROFILE__` so the runtime reader works in packaged Electron.
-- `os/scripts/generate-support-bundle.sh` (update) — include `deployment-profile.json` + active profile id in bundle metadata.
+<lov-plan>
 
-### Phase D — Generated Composition/Readiness Reports + Final Doc
-- `scripts/architecture/checks/emit-profile-composition.ts` — emits:
-  - `generated/profile-composition-user.json`
-  - `generated/profile-composition-operator.json`
-  - `generated/profile-visibility-report.json`
-  - `generated/operator-readiness-report.json`
-  - `generated/user-profile-readiness-report.json`
-- All derived from real registries (plane-registry, app-plane-map, route-plane-map, profile manifests). No hand-authored JSON.
-- Wire emitter into `.github/workflows/native-readiness.yml` + `check-os-release-readiness.ts` aggregator.
-- `docs/os/BUILD_AND_RELEASE_PROFILES.md` — final missing canonical doc (build commands, CI matrix, signing, attestation per profile).
+# src/lib Decomposition — Safe, Phased Migration Plan
 
-### Constraints reaffirmed
-- Reuse existing `plane-registry`, `route-plane-map`, `admin-workflow-registry`, `AdminControlPlaneShell`, image builder, Electron host. **Zero forks.**
-- No new launcher, no new command palette, no new settings page, no new admin shell — only filter helpers + call-site wiring.
-- App registry rows untouched; new `app-plane-map.ts` is a sidecar that the existing registry resolves against.
-- All new generated reports come from validation scripts, not authored.
+## Reality Check (from audit)
 
-### Files (scope summary)
-- **Create code (8):** app-plane-map.ts, launcher-profile.ts, command-profile.ts, settings-profile.ts, OperatorHome.tsx, check-app-plane-coverage.ts, emit-profile-composition.ts, (1 small filter wiring helper if needed)
-- **Update (4):** existing launcher component, command palette, settings page, electron/preload.cjs + os/scripts/generate-support-bundle.sh
-- **Create generated (5):** app-plane-map.json, profile-composition-{user,operator}.json, profile-visibility-report.json, operator-readiness-report.json, user-profile-readiness-report.json
-- **Create docs (1):** BUILD_AND_RELEASE_PROFILES.md
-- **CI updates (2):** native-readiness.yml + check-os-release-readiness.ts wire new emitter & gate
+- **`src/lib`: 1,768 files across 88 subfolders** + 18 loose top-level files
+- **2,115 files** in the project import from `@/lib/*` across **863 distinct import paths**
+- Hottest paths: `@/lib/utils` (763 importers), `@/lib/supabase-helpers` (366), `@/lib/persistence/universal-service-persistence` (121)
+- Largest folders: `services/` (498), `core-services/` (220), `runtime/` (63), `engines/` (60), `nova-sdk/` (55)
+- Destinations `src/data/`, `src/contracts/` are nearly empty barrels; `src/platform/`, `src/runtimes/` already exist with structure
+- Memory: existing FIP, Service Constitution, and Layer Boundary checks already constrain this — refactor must respect them
 
-Result: Part 2 prompt is fully satisfied without re-shipping Phase 1-5 (which is already in the repo and validated YELLOW). System remains deploy-ready for both `sita-os-user` and `sita-os-operator` artifacts with end-to-end profile-aware composition.
+**Risk if done naively:** thousands of broken imports, build collapse, lost ownership. We will **NOT** mass-move. Every wave is audit → wrapper → rewire → verify.
+
+## Strategy: Audit-First, Wrapper-Bridged, Wave-Based
+
+```text
+Wave 0 → AUDIT     (read-only, generates classification map, no code moves)
+Wave 1 → SCAFFOLD  (create destination folders + ownership registry)
+Wave 2-7 → MIGRATE (one folder family per wave, each: move → wrapper-shim → rewire → verify)
+Wave 8 → GUARDRAILS (CI checks to prevent regression)
+Wave 9 → REPORT    (final verification + deliverables)
+```
+
+Every migrated file leaves behind a **deprecated wrapper shim** at its old `src/lib` path that re-exports from the canonical home. This guarantees zero broken imports during the multi-wave migration. Wrappers are tracked in `src-lib-wrapper-map.json` and removed in a future cleanup pass once consumers are rewired.
+
+## Phase 1 — Wave 0: Full Audit (read-only)
+
+Build `scripts/architecture/audit-src-lib.ts` that walks every file in `src/lib`, and for each emits:
+- current path, exports, line count
+- importer count + top consumers
+- heuristic classification (domain | platform | runtime | data | integration | contract | legacy | shared-internal)
+- duplicate detection (fingerprint by export shape)
+- recommended target path
+
+**Deliverables:**
+- `generated/lib-decomposition/SRC_LIB_FULL_CLASSIFICATION_AUDIT.md`
+- `generated/lib-decomposition/src-lib-classification-map.json`
+- `generated/lib-decomposition/SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`
+
+## Phase 2 — Wave 1: Scaffold Destinations + Ownership Map
+
+- Build out skeleton in `src/domains/{business,finance,concierge,boardroom,files,identity,mission-control,proof,workflows,ai-workforce,shared}/`
+- Expand `src/data/{clients,repositories,projections,persistence,adapters,sync}/`
+- Verify `src/platform/`, `src/runtimes/`, `src/integrations/` subtrees exist and have index barrels
+- Generate `generated/lib-decomposition/src-lib-target-map.json` and `SRC_LIB_CURRENT_TO_TARGET_MAP.md` — every file gets a planned destination *before* anything moves
+- Create `docs/architecture/SRC_LIB_DECOMPOSITION_MODEL.md` and `CANONICAL_OWNERSHIP_MODEL.md`
+
+## Phase 3 — Migration Waves (one family per wave)
+
+Each wave follows the **same safe pattern**:
+1. Move files to canonical home (preserve content exactly)
+2. Replace each old `src/lib/...` file with a thin re-export wrapper + `@deprecated` JSDoc
+3. Rewire **high-traffic consumers** (top 20 importers) to canonical paths
+4. Run `tsc --noEmit`, build, and architecture checks
+5. Update `src-lib-wrapper-map.json`
+
+**Wave order (low-risk → high-risk):**
+
+| Wave | Source family | → Destination | Files | Notes |
+|------|---------------|---------------|-------|-------|
+| 2 | `lib/persistence/`, `lib/sync-engine/`, `lib/db/`, `lib/data-services/`, `lib/storage/`, `lib/offline-db.ts` | `src/data/` | ~125 | Pure data layer; high-impact (`universal-service-persistence` = 121 importers) — wrapper essential |
+| 3 | `lib/runtime/`, `lib/devices/`, `lib/surfaces/`, `lib/dual-reality/`, `lib/reality/`, `lib/reality-audit/`, `lib/reality-records/`, `lib/detection/` | `src/runtimes/` | ~150 | Runtime/substrate logic |
+| 4 | `lib/policy/`, `lib/observability/`, `lib/security/`, `lib/os-security/`, `lib/support/`, `lib/sovereign-ai-gateway/`, `lib/ai-gateway/`, `lib/ai/`, `lib/no-hallucination/`, `lib/verification/`, `lib/control-plane/`, `lib/cloud-backbone/`, `lib/platform/`, `lib/platform-plane/`, `lib/platform-law/`, `lib/orchestration/`, `lib/operations/`, `lib/incidents/`, `lib/compute-governance/`, `lib/capabilities/`, `lib/fip/`, `lib/ci/`, `lib/deploy/`, `lib/deployment/`, `lib/migration/`, `lib/architecture/`, `lib/meta-arch/`, `lib/truth-manifests/`, `lib/backend-topology/` | `src/platform/` | ~350 | Platform/governance — largest wave; sub-batched by subdomain |
+| 5 | `lib/services/business-os/`, `engines/`, `domain-engines/`, `domain-system/`, `boardroom/`, `investment-office/`, `advisor-intelligence/`, `advisor-protocol/`, `strategic-intelligence/`, `intelligence-architecture/`, `customer-journey/`, `setup/`, `internal-agents/`, `admin-ai/`, `app-platform/`, `pack-store/`, `ux-trust/`, `delivery-methodology/`, `business-launcher.ts`, `finance-launcher.ts`, `concierge-launcher.ts`, `mission-control-launcher.ts`, `app-store-launcher.ts`, `business-journey-config.ts`, `advisor-topology.ts`, `cross-domain.ts`, `continuity-engine.ts`, `export-engine.ts` | `src/domains/{business,finance,concierge,boardroom,investment,mission-control,advisors,...}/` | ~400 | Domain logic — sub-waved per bounded context |
+| 6 | `lib/integrations/`, `lib/shopify/`, `lib/api/`, `lib/supabase-helpers.ts` | `src/integrations/` | ~50 | External providers; `supabase-helpers` (366 importers) needs wrapper |
+| 7 | `lib/contracts/`, `lib/types/`, `lib/constants/` | `src/contracts/` & `src/types/` | ~40 | Type/contract consolidation |
+| 7b | `lib/services/` remainder (~350), `lib/core-services/` (220), `lib/nova-sdk/` (55), `lib/os-services/` | mixed → `src/platform/`, `src/domains/`, `src/runtimes/` per audit | ~625 | The hard cases — split per file based on Wave-0 classification, not folder name |
+
+**Stays in place** (or moves to `src/lib/internal/`): `lib/utils.ts` (763 importers — keep canonical here), `lib/utils/`, `lib/hooks/` (move to `src/hooks/`), `lib/__tests__/`, `lib/demo-data/`, `lib/mock-data/`, `lib/seed/`, `lib/demo-scenarios/` (these become `src/data/seed/` later).
+
+**Goes to `src/legacy/`:** anything in audit flagged as duplicate, unused, or experimental-non-canonical (e.g. likely candidates: `lib/canonical-backend/`, `lib/simulation/` if unused, dead engine experiments). Each entry gets a documented reason in `SRC_LIB_WRAPPER_MAP.md`.
+
+## Phase 4 — Wave 8: Guardrails
+
+Add CI scripts to prevent regression:
+- `scripts/architecture/checks/check-lib-ownership-drift.ts` — fails if new files are added to `src/lib/` outside an allowlist (utils, hooks, internal)
+- `scripts/architecture/checks/check-misplaced-runtime-logic.ts` — flags runtime imports in `src/domains/`
+- `scripts/architecture/checks/check-misplaced-data-logic.ts` — flags DB calls outside `src/data/` or `src/integrations/`
+- `scripts/architecture/checks/check-misplaced-domain-logic.ts` — flags business-context strings in `src/platform/`
+- `scripts/architecture/checks/check-legacy-wrapper-usage.ts` — counts remaining wrapper imports, fails CI if growing
+- Wire all into the OS release readiness aggregator as new gates
+
+## Phase 5 — Wave 9: Verification + Final Reports
+
+- Run full `tsc --noEmit`, `npm run build`, all architecture checks
+- Run `full-render-smoke` gate to confirm all 993 pages still render
+- Generate final deliverables in `generated/lib-decomposition/`:
+  - `SRC_LIB_FULL_CLASSIFICATION_AUDIT.md`
+  - `SRC_LIB_CURRENT_TO_TARGET_MAP.md`
+  - `SRC_LIB_MIGRATION_PLAN.md`
+  - `SRC_LIB_WRAPPER_MAP.md`
+  - `SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`
+  - `SRC_LIB_SECONDARY_REFACTOR_DISCOVERIES.md`
+  - `SRC_LIB_VERIFICATION_RESULTS.md`
+  - JSON counterparts for each
+- Update `os-release-readiness-report.json` with new `lib-decomposition-readiness` gate
+
+## No-Loss Safety Contract
+
+- **No file deleted** in this refactor — moved or wrapped, never dropped
+- **No import broken** — wrappers ensure old paths resolve until consumers migrate
+- **No empty destination folders** — only created when files arrive
+- **All wrappers tracked** in `src-lib-wrapper-map.json` with removal conditions
+- **Build runs after every wave** — broken wave is reverted before proceeding
+- `src/lib/utils.ts` (the 763-importer hot path) **stays put** — it's a true shared utility, not misplaced logic
+
+## Realistic Scope Note
+
+This is a multi-day, multi-wave refactor touching 1,768 source files and 2,115 consumers. Each wave will be its own implementation pass. I will execute **Wave 0 (audit) + Wave 1 (scaffold + ownership map)** in the first implementation turn — that produces the full classification, target map, and destination skeleton without moving a single canonical file, giving you a complete picture and approval gate before the actual code moves begin in subsequent waves.
 
