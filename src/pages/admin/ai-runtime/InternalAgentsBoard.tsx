@@ -36,6 +36,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  AIRuntimeDrilldownPanel,
+  NightlyProofBadge,
+} from "@/components/admin/ai-runtime/AIRuntimeDrilldownPanel";
 import {
   loadAllAgentsWithState,
   loadAgentDetail,
@@ -141,6 +146,13 @@ export default function InternalAgentsBoard() {
 
   return (
     <div className="space-y-3">
+      {/* Header strip with nightly proof */}
+      <div className="flex items-center justify-between">
+        <p className="text-[11px] text-muted-foreground">
+          Internal AI workforce — 40 agents · live runtime state
+        </p>
+        <NightlyProofBadge />
+      </div>
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
         <KpiCard icon={<Activity className="h-3.5 w-3.5" />} label="Total" value={counts.total} />
@@ -281,6 +293,7 @@ function AgentDetailSheet({
   onOpenChange: (open: boolean) => void;
 }) {
   const qc = useQueryClient();
+  const { user } = useAuth();
   const [rationale, setRationale] = useState("");
   const { data, isLoading } = useQuery({
     queryKey: ["internal-agent-detail", agentId],
@@ -440,31 +453,8 @@ function AgentDetailSheet({
               </div>
             </section>
 
-            {/* Recent actions */}
-            <section>
-              <p className="text-[10px] uppercase text-muted-foreground tracking-wide mb-1">
-                Recent actions ({data?.recentActions.length ?? 0})
-              </p>
-              <div className="space-y-1.5 max-h-72 overflow-y-auto">
-                {(data?.recentActions ?? []).map((a) => (
-                  <Card key={a.id} className="p-2 text-[11px]">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{a.action_type}</span>
-                      <span className="text-muted-foreground">{relTime(a.created_at)}</span>
-                    </div>
-                    {a.summary && <p className="mt-1 text-muted-foreground line-clamp-2">{a.summary}</p>}
-                    <div className="flex items-center gap-2 mt-1 text-[10px] text-muted-foreground">
-                      <span>conf {Math.round(Number(a.confidence) * 100)}%</span>
-                      <span>· {a.status}</span>
-                      {a.duration_ms != null && <span>· {a.duration_ms}ms</span>}
-                    </div>
-                  </Card>
-                ))}
-                {(data?.recentActions.length ?? 0) === 0 && (
-                  <p className="text-[11px] text-muted-foreground italic">No actions recorded yet</p>
-                )}
-              </div>
-            </section>
+            {/* Canonical drilldown — Actions / Budget / Health */}
+            <AIRuntimeDrilldownPanel agentId={def.agent_id} userId={user?.id ?? null} />
 
             {/* Open escalations */}
             {(data?.openEscalations.length ?? 0) > 0 && (
