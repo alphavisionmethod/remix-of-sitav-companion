@@ -50,6 +50,8 @@ for (const f of walk("src/pages").concat(walk("src/app"))) {
   }
 }
 
+// Phase B5 — graduated to BLOCK level. All wrappers must be declared in
+// KNOWN_WRAPPERS so route topology stays auditable.
 const ok = undeclared.length === 0;
 const report = {
   generatedAt: new Date().toISOString(),
@@ -57,11 +59,11 @@ const report = {
   wrapperCount: wrappers.length,
   undeclaredCount: undeclared.length,
   knownWrapperCount: KNOWN_WRAPPERS.size,
-  level: "warn",
+  level: "block",
   ok,
   undeclared,
   wrappers,
 };
 writeFileSync(join(OUT, "route-wrapper-usage.json"), JSON.stringify(report, null, 2));
-console.log(`route-wrapper-usage: ${wrappers.length} wrappers, ${undeclared.length} undeclared — ${ok ? "OK" : "WARN"}`);
-process.exit(0);
+console.log(`route-wrapper-usage: ${wrappers.length} wrappers, ${undeclared.length} undeclared — ${ok ? "OK" : "BLOCK"}`);
+process.exit(ok ? 0 : 1);
