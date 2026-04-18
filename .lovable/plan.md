@@ -1,122 +1,187 @@
 
 
-The user wants the post-decomposition remediation pass for `src/lib`. This is the second-round closure work after the initial migration. Looking at the build errors and current state:
+# SITA OS — Page & Route Surface Consolidation (Phased Plan)
 
-1. There are still active build errors with `src/domains/engines/shared/aging.ts` and several engine type imports.
-2. ~1,499 legacy wrapper imports remain across the codebase.
-3. ~1,172 deprecated wrapper shims exist in `src/lib`.
-4. 14 known duplicate fingerprint groups (core-services vs services).
-5. No `generated/lib-remediation/` artifacts exist yet.
-
-I need to present a focused, phased plan in chat mode (read-only).
-
-# SITA OS — `src/lib` Post-Decomposition Remediation Plan
-
-## Current State Snapshot
+## Audit Findings (the real numbers)
 
 | Metric | Value |
 |---|---|
-| Files migrated to canonical roots | ~1,000 |
-| Wrapper shims remaining in `src/lib` | ~1,172 |
-| Active legacy wrapper imports | 1,499 |
-| Known duplicate fingerprint groups | 14 (core-services ↔ services) |
-| Active TypeScript build errors | 43 (engine type resolution + arithmetic) |
-| Existing remediation reports | 0 |
+| Pages on disk (`src/pages/**`) | **1,042** |
+| Admin pages | 539 (319 flat at `src/pages/admin/*.tsx` + 220 in subdirs) |
+| Mounted routes (generated manifest) | **811** |
+| AdminRoutes.tsx routes | 190 |
+| experimental-routes.tsx routes | 121 |
+| os-routes.tsx routes | 107 |
+| Owner workflow `platform-admin` routes | **353** |
+| Existing consolidation map coverage | 27 / 539 admin pages (5%) |
+| Existing redirects in route families | only 16 in AdminRoutes; 0 in user-domain families |
 
-## Active Build Blockers (must fix first)
+**Existing assets to reuse (do not rebuild):**
+- `src/platform/architecture/admin-route-registry.ts` (12-domain IA, page classes)
+- `src/platform/architecture/admin-page-consolidation-map.ts` (sparse — must be completed)
+- `src/platform/architecture/route-plane-map.ts`, `route-registry.ts`
+- 17 CI checks under `scripts/architecture/checks/` already gating `check-admin-domain-budget`, `check-admin-page-classification-coverage`, `check-admin-route-coherence`, etc.
 
-The errors all trace to two root causes:
+**Real risks identified:**
+1. AdminRoutes is a 446-line "museum" with one route per page.
+2. 121 investment-office pages mounted as flat routes under `experimental-routes.tsx`.
+3. User domain route families have zero redirects — moves will break bookmarks.
+4. No `generated/page-consolidation/` outputs exist yet.
+5. `src/admin/modules/` directory exists but is empty of canonical module pages.
 
-1. **`src/domains/engines/shared/aging.ts` line 7** imports `../../types/meta-governance.types` — that file IS the wrapper, so it should import directly from `@/lib/types/meta-governance.types` (or the canonical resolved type).
-2. **`readiness-engine.ts` / `invisible-labor-engine.ts`** have `unknown`-typed arithmetic. Root cause: `Object.entries(record)` returns `unknown` values when the source type isn't properly threaded through the wrapper chain. Wrappers re-export `* from "@/lib/types/..."` but type narrowing context can be lost.
+---
 
-These will be fixed in Phase 0.
+## Phase 0 — Truth Baseline (read-only, deploy-safe)
 
-## Remediation Phases
+**Goal:** establish ground truth before any code moves.
 
-### Phase 0 — Unblock the build (immediate)
-- Rewrite `src/domains/engines/shared/aging.ts` to use absolute `@/lib/types/...` import (avoids relative path through wrapper folder).
-- Fix `readiness-engine.ts` and `invisible-labor-engine.ts` `unknown` type issues by adding explicit type assertions on `Object.entries`/record iteration where needed.
-- Confirm all 19 wrapper files in `src/domains/types/` resolve via tsconfig path mapping.
+1. Generate `generated/page-consolidation/PAGE_SURFACE_AUDIT.md` + `page-surface-map.json` by extending `scripts/architecture/checks/check-page-registry-completeness.ts` to emit a full classification table.
+2. Auto-classify every page by:
+   - filename prefix (matches existing `CLUSTER_DOMAIN_MAP`)
+   - import graph (is it referenced by a `<Route>`? by nav? by command palette?)
+   - LOC + dependency count (thin pages are merge candidates)
+3. Write 4 base outputs: `PAGE_CURRENT_TO_TARGET_MAP.md`, `DUPLICATE_AND_OVERLAPPING_PAGES.md`, `EXPERIMENTAL_AND_PHASED_SURFACES.md`, `CANONICAL_ROUTE_OWNERSHIP.md`.
+4. **Zero code changes. Zero route changes.** Build passes unchanged.
 
-### Phase 1 — Resolve 14 duplicate fingerprint groups
-Each pair (e.g., `src/lib/core-services/approval-engine/*` vs `src/lib/services/approval-engine/*`) is byte-identical. Plan:
-- Pick canonical home per architecture rules: approval-engine → `src/platform/governance/`; brain-core → `src/platform/orchestration/`; conscience-gate → `src/platform/policy/`.
-- Move canonical implementation; replace BOTH old paths with thin wrappers.
-- Run `rewire-consumers` to update all importers.
+**Deployable:** ✅ Pure additive artifacts.
 
-### Phase 2 — Consumer rewire wave 4 (target: 1,499 → <500)
-- Re-run universal `rewire-consumers-wave3.ts` engine across all `// @lovable:migrated-wrapper` files.
-- Manually rewire the top 30 most-imported legacy paths (from `legacy-wrapper-usage-report.json`).
+---
 
-### Phase 3 — Wrapper removal pass
-- For every wrapper with **0 remaining consumers**, delete the wrapper file.
-- Update `src-lib-wrapper-map.json` with `removed` status.
-- Target: reduce wrapper count from ~1,172 toward <300.
+## Phase 1 — Complete the Admin Consolidation Map (governance only)
 
-### Phase 4 — Finish ownership migration for unclassified `src/lib` residents
-Run `classify-services-unclassified.ts` for any remaining un-migrated subtrees:
-- `src/lib/app-platform/` → `src/platform/app-platform/`
-- `src/lib/storage/` → `src/data/persistence/`
-- `src/lib/customer-journey/` → `src/domains/customer-journey/`
-- `src/lib/integrations/` → `src/integrations/external/`
-- Any leftover engines → `src/domains/engines/`
+**Goal:** every one of the 539 admin pages has a registry entry so CI gate `check-admin-page-classification-coverage` covers 100% (currently 5%).
 
-### Phase 5 — Stale reference cleanup
-Repo-wide grep + rewrite for remaining old-path imports in:
-- `scripts/**` (especially `scripts/architecture/checks/`)
-- `src/test/**` and `src/__tests__/**`
-- `docs/**` markdown references
-- Admin dashboards reading from `generated/` paths
-- CI workflows in `.github/`
+1. Bulk-populate `admin-page-consolidation-map.ts` using the auto-classifier from Phase 0 — one entry per page with `targetDomain`, `targetRoute`, `pageClass`, `mergeInto`.
+2. Hand-curate the ~50 ambiguous entries (AIG/AIT/MC/SAG clusters with overlapping domains).
+3. Emit `ADMIN_SURFACE_CONSOLIDATION.md` showing: which 12 stay as `PRIMARY_DOMAIN_ENTRY`, which become `SECONDARY_SUBVIEW`, which become `DETAIL_EXPLORER`, which become `DUPLICATE_MERGE_REQUIRED`.
+4. **No file moves. No route changes.** Only the registry grows.
 
-### Phase 6 — Generate remediation report bundle
-Create `generated/lib-remediation/` with all 12 required artifacts:
-- `SRC_LIB_REMEDIATION_PLAN.md`
-- `SRC_LIB_WRAPPER_REMOVAL_STATUS.md`
-- `SRC_LIB_DUPLICATE_RESOLUTION_REPORT.md`
-- `SRC_LIB_REMAINING_LEGACY_JUSTIFICATION.md`
-- `SRC_LIB_CANONICAL_OWNERSHIP_FINAL.md`
-- `SRC_LIB_STALE_REFERENCE_CLEANUP.md`
-- `SRC_LIB_HARDENING_STATUS.md`
-- `SRC_LIB_FINAL_VERIFICATION_RESULTS.md`
-- 4 corresponding `.json` machine-readable companions.
+**Deployable:** ✅ Registry-only change.
 
-### Phase 7 — Add hardening guardrails
-New CI checks:
-- `check-residual-lib-canonicality.ts` — fails if any non-allowlisted file appears in `src/lib/`.
-- Tighten existing `check-lib-ownership-drift.ts` to error (not warn) on new additions.
-- Wire all 6 lib-decomposition checks into `check-os-release-readiness.ts` aggregator as **error gates** (currently advisory).
+---
 
-### Phase 8 — Define final role of `src/lib`
-Adopt **Option B** (narrow shared utility layer):
-- Allowed: `utils.ts`, `utils/`, `internal/` (migration bridges), `hooks/` (legacy hooks pending move).
-- Everything else → wrapper or removed.
-- Update `docs/architecture/CANONICAL_OWNERSHIP_MODEL.md` to lock this in.
+## Phase 2 — Redirect & Alias Layer (zero-deletion bookmark safety)
 
-### Phase 9 — Final verification
-- `tsc --noEmit` clean
-- All architecture checks green
-- `legacy-wrapper-usage-report.json` shows downward trend confirmed
-- All 12 remediation reports generated and consistent
+**Goal:** make every legacy admin route URL resolve to its canonical target *before* any page moves.
 
-## Expected End State
+1. Create `src/admin/redirects/admin-redirect-map.ts` — generated from `admin-page-consolidation-map.ts` where `pageClass ∈ {DUPLICATE_MERGE_REQUIRED, DEPRECATE_WITH_REDIRECT}`.
+2. In `AdminRoutes.tsx`, mount these as `<Route path={old} element={<Navigate to={canonical} replace />} />` *alongside* (not replacing) existing routes.
+3. Same pattern for user domains: add `src/routes/redirects/user-redirect-map.ts` mounted in each route family.
+4. Emit `REDIRECT_AND_ALIAS_MAP.md` + `redirect-alias-map.json`.
+5. Add CI gate `check-redirect-coverage.ts` ensuring every consolidation-map entry marked deprecated has a live redirect.
 
-| Metric | Before | After (target) |
-|---|---|---|
-| TS errors | 43 | 0 |
-| Duplicate groups | 14 | 0 |
-| Wrapper shims | ~1,172 | <300 |
-| Legacy imports | 1,499 | <500 |
-| `src/lib/` top-level entries | 30+ | ≤4 (allowlisted) |
-| Remediation reports | 0 | 12 |
-| Hardening checks (errors not warnings) | 0 | 6 |
+**Deployable:** ✅ Both old and new URLs work; nothing broken; bookmarks safe forever.
 
-## Technical Notes
+---
 
-- All wrapper files use the `// @lovable:migrated-wrapper` marker, which the universal rewire engine auto-detects — no manual config needed per file.
-- Phase 1 duplicate consolidation is safe because fingerprints are byte-identical (verified in `SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md`).
-- Phase 3 wrapper removal is gated on zero-consumer detection; no aggressive deletion.
-- The `tsconfig.json` `paths` mapping for `@/*` already resolves both `src/lib/*` and canonical roots, so wrapper indirection has no runtime cost — only build-time.
-- No database migrations required; this is pure code architecture work.
+## Phase 3 — Canonical Admin Module Pages (12 hubs)
+
+**Goal:** mount the 12 canonical `PRIMARY_DOMAIN_ENTRY` pages as proper hubs at `/admin/<domain>`.
+
+1. For each of the 12 domains (overview, alerts, approvals, environments, ai-runtime, integrations, trust-security, health, releases, verification, config, support):
+   - Use existing hub page if classified `PRIMARY_DOMAIN_ENTRY`, else create `src/admin/modules/<domain>/<Domain>HubPage.tsx`.
+   - Hub composes existing pages as **lazy-loaded subview tabs** via existing `DomainHubLayout` + `WorkflowStepStub` components (already in `src/components/admin/hubs/`).
+2. Subviews are rendered via `<Outlet />` so `/admin/ai-runtime/providers` still deep-links.
+3. Existing flat routes remain mounted (Phase 2 redirects already point them here).
+4. Run `check-admin-domain-budget` (≤12) + `check-admin-shell-consistency`.
+
+**Deployable:** ✅ Hubs ship; legacy routes still work via redirects from Phase 2.
+
+---
+
+## Phase 4 — User Domain Shell Pages
+
+**Goal:** apply the same shell+views pattern to user domains where sprawl is highest (investment-office: 121 routes, business: 46, money: 37, concierge: 20).
+
+1. **Investment Office (highest priority):** create `src/features/investment-office/pages/InvestmentShellPage.tsx`. Most of the 41 listed pages (BeginnerMode, AdvancedMode, OperatingModes, etc.) become tabs/views under `/investment` with deep-linkable sub-routes; only 8–10 remain as standalone pages (Boardroom, MarketExplorer, PortfolioOffice, ExecutionDesk, RiskOffice, ResearchLibrary, FamilyOffice, KnowledgeGraph).
+2. Repeat lighter consolidation for `business`, `money`, `concierge`, `files`, `boardroom`.
+3. Emit `USER_DOMAIN_SURFACE_CONSOLIDATION.md`.
+4. Wire all old paths through Phase 2 redirect map.
+
+**Deployable:** ✅ Each domain ships independently; nothing forces all-or-nothing.
+
+---
+
+## Phase 5 — Convert Thin Pages to Embedded Views
+
+**Goal:** physically relocate pages classified `SECONDARY_SUBVIEW` / `DETAIL_EXPLORER` from `src/pages/**` into their owning hub's `views/` directory.
+
+1. Move file (no logic changes, only path).
+2. Update import in the hub.
+3. Remove the standalone `<Route>` entry (the Phase 2 redirect now becomes the only public path).
+4. Strict per-domain batches (one PR-sized wave per domain) so each wave is independently revertible.
+5. Run full CI per wave: `check-admin-route-coherence`, `check-page-registry-completeness`, `check-route-page-contract-layer-usage`, `check-surface-ownership`, build, type-check, route-coverage.test.ts.
+
+**Deployable:** ✅ Each wave ships green; redirects keep deep links alive.
+
+---
+
+## Phase 6 — Experimental & Flag-Gated Surfaces
+
+**Goal:** correctly classify surfaces that exist but should not count as launch surfaces.
+
+1. Walk `src/routes/experimental-routes.tsx` — flag every entry as either `live` (move to canonical family) or `experimental` (gate behind `check-launch-honesty-rules`).
+2. Emit `EXPERIMENTAL_AND_PHASED_SURFACES.md`.
+3. Add CI gate `check-experimental-isolation.ts` — experimental routes must not appear in launcher, command palette, or default nav.
+
+**Deployable:** ✅ Pure governance/gating change.
+
+---
+
+## Phase 7 — Final Verification & Cleanup
+
+**Goal:** prove zero regressions and tighten the bundle.
+
+1. Generate `PAGE_VERIFICATION_RESULTS.md` + `page-verification-results.json` covering: route integrity, build integrity, import integrity, redirect integrity, admin nav integrity, command palette integrity, route manifest integrity.
+2. Add lazy boundaries per domain shell (manualChunks in `vite.config.ts` keyed by plane).
+3. Only after CI green for two waves: process `REMOVE_AFTER_SAFE_MIGRATION` entries (still preserves the redirect — only the duplicate physical file leaves).
+
+**Deployable:** ✅ Final state — same functionality, materially fewer canonical routes, every old URL still resolves.
+
+---
+
+## What is *not* in this plan (explicit)
+
+- ❌ No mass page deletion.
+- ❌ No removal of any operator workflow.
+- ❌ No collapse of investment-office into one mega-page.
+- ❌ No breaking of `/admin/<legacy>` URLs — every one is redirected.
+- ❌ No edits to the user/operator profile model or plane registry.
+
+## Files / artifacts produced
+
+```text
+generated/page-consolidation/
+├─ PAGE_SURFACE_AUDIT.md
+├─ PAGE_CURRENT_TO_TARGET_MAP.md
+├─ CANONICAL_ROUTE_OWNERSHIP.md
+├─ REDIRECT_AND_ALIAS_MAP.md
+├─ ADMIN_SURFACE_CONSOLIDATION.md
+├─ USER_DOMAIN_SURFACE_CONSOLIDATION.md
+├─ DUPLICATE_AND_OVERLAPPING_PAGES.md
+├─ EXPERIMENTAL_AND_PHASED_SURFACES.md
+├─ PAGE_VERIFICATION_RESULTS.md
+├─ page-surface-map.json
+├─ canonical-route-map.json
+├─ redirect-alias-map.json
+├─ duplicate-page-map.json
+└─ page-verification-results.json
+
+src/admin/redirects/admin-redirect-map.ts            (Phase 2)
+src/routes/redirects/user-redirect-map.ts            (Phase 2)
+src/admin/modules/<12 domains>/<Domain>HubPage.tsx   (Phase 3)
+src/features/<domain>/pages/<Domain>ShellPage.tsx    (Phase 4)
+scripts/architecture/checks/check-redirect-coverage.ts        (new)
+scripts/architecture/checks/check-experimental-isolation.ts   (new)
+```
+
+## Phase ship order (each independently deploy-ready)
+
+```text
+P0 audit  →  P1 registry  →  P2 redirects  →  P3 admin hubs
+        ↘                                  ↘
+         P6 experimental gating             P4 user shells  →  P5 view migration  →  P7 verify
+```
+
+After approval I'll start with **Phase 0 + Phase 1** in the same wave (lowest risk, biggest visibility win).
 
