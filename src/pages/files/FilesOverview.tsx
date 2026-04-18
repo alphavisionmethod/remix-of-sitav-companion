@@ -5,7 +5,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { UniversalIntakeBox, WorkflowSuggestionCard, ConnectorStatusCard } from "@/components/sita/FilesComponents";
 import { FileUploader } from "@/components/sita/FileUploader";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { Upload, FolderOpen, Brain, Shield, FileText, Sparkles, Link2, Calendar } from "lucide-react";
 import { useState, useMemo } from "react";

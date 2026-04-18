@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, RotateCcw, File } from "lucide-react";
-import type { ExplorerFile } from "@/lib/data-services/file-explorer-service";
+import type { ExplorerFile } from "@/data/repositories/file-explorer-service";
 import { useTrash, useRestoreFile, usePermanentDeleteFile, useEmptyTrash } from "@/hooks/use-file-explorer";
 
 export function FileExplorerTrash() {

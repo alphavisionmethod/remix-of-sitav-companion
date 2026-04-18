@@ -23,10 +23,10 @@ import {
 import {
   getWatchlist, getTradeReviewPackets, getExecutionIntents,
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
-} from "@/lib/demo-data/investment";
+} from "@/data/seed/investment";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/lib/mock-data/investment";
-import { INVESTMENT_POLICY_RULES } from "@/lib/demo-data/investment";
+import { INVESTMENT_POLICY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Derived Data (computed from hook data in main component, passed via context) ──

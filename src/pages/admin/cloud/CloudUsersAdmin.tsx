@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Search, ChevronRight, Ban, UserCheck, Download, Trash2, X } from "lucide-react";
-import { cloudQuotaService, type UserPlanAssignment } from "@/lib/cloud-backbone/cloud-quota-service";
-import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
+import { cloudQuotaService, type UserPlanAssignment } from "@/platform/cloud/cloud-quota-service";
+import { cloudDeviceService } from "@/platform/cloud/cloud-device-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 import { toast } from "sonner";
 
 export function CloudUsersAdmin() {

@@ -1,12 +1,7 @@
+// @lovable:migrated-wrapper
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Data Facade: Connector Health
-// Pages import from here instead of core-services directly
+// SITA OS — Deprecated wrapper. Canonical home: @/data/seed/connectors
+// This file exists only to bridge legacy imports during decomposition.
+// New code must import directly from the canonical path.
 // ═══════════════════════════════════════════════════════════════
-
-export {
-  fetchConnectorHealth,
-} from "@/lib/core-services/connector-health-service";
-
-export type {
-  ConnectorHealthResult,
-} from "@/lib/core-services/connector-health-service";
+export * from "@/data/seed/connectors";

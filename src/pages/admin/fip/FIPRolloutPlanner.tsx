@@ -4,7 +4,7 @@ import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lu
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
-import { DEMO_KILL_CLASSES, DEMO_ROLLOUT_RINGS } from "@/lib/demo-data/admin-platform";
+import { DEMO_KILL_CLASSES, DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

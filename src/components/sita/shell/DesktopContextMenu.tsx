@@ -6,7 +6,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { APP_TYPE } from "@/lib/design-system/app-window-system";
+import { APP_TYPE } from "@/platform/design-system/app-window-system";
 import {
   FolderPlus, ArrowDownAZ, Image, Monitor, LayoutGrid,
 } from "lucide-react";

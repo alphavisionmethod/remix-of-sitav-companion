@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, AlertTriangle, Search, Eye, KeyRound, Activity } from "lucide-react";
-import { cloudAuditService, type AuditSeverity } from "@/lib/cloud-backbone/cloud-audit-service";
+import { cloudAuditService, type AuditSeverity } from "@/platform/cloud/cloud-audit-service";
 
 function timeSince(dateStr: string) {
   const ms = Date.now() - new Date(dateStr).getTime();

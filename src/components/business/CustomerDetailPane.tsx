@@ -8,7 +8,7 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { TimelineItem } from "@/components/sita/SitaComponents";
 import { RelationshipGraphPanel } from "@/components/business/RelationshipGraphPanel";
-import type { MockCustomer } from "@/lib/data-services/business-data-service";
+import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 interface CustomerDetailPaneProps {

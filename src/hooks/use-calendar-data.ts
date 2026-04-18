@@ -1,7 +1,7 @@
 // SITA OS — Mode-Aware Calendar Data Hook
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { fetchCalendarEvents, type CalendarEventItem } from "@/lib/data-services/calendar-data-service";
+import { fetchCalendarEvents, type CalendarEventItem } from "@/data/repositories/calendar-data-service";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 
 export function useCalendarEvents(year: number, month: number) {

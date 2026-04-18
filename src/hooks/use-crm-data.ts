@@ -18,7 +18,7 @@ import {
   createCRMMergeLog,
   createCRMContactCompanyLink, deleteCRMContactCompanyLink,
   createCRMAutomation, updateCRMAutomation, deleteCRMAutomation,
-} from "@/lib/data-services/crm-data-service";
+} from "@/data/repositories/crm-data-service";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 
 function useCRMQuery<T>(key: string, fetcher: (mode: RealityModeKey) => Promise<{ data: T; source: string }>, mode: RealityModeKey = "demo") {

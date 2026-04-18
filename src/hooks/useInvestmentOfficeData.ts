@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useDataMode } from "@/contexts/DataModeContext";
-import * as mockData from "@/lib/investment-office/mock-data";
+import * as mockData from "@/domains/investment/mock-data";
 
 // ── Named re-exports for module-scope usage ──
 export const INSTRUMENTS = mockData.INSTRUMENTS;

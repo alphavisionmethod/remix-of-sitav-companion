@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import type { MemoryItem, MemoryLayer, MemorySnapshot } from "@/lib/engines/advisor-memory-engine";
+import type { MemoryItem, MemoryLayer, MemorySnapshot } from "@/domains/engines/advisor-memory-engine";
 
 interface Props {
   snapshot: MemorySnapshot;

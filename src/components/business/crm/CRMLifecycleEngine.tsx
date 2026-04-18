@@ -10,7 +10,7 @@ import {
   XCircle, RefreshCw, ArrowRight, ChevronRight, Sparkles, Users, Zap
 } from "lucide-react";
 import { motion } from "framer-motion";
-import type { CRMContact } from "@/lib/data-services/crm-data-service";
+import type { CRMContact } from "@/data/repositories/crm-data-service";
 
 export const LIFECYCLE_STAGES = [
   { key: "new", label: "New", icon: UserPlus, color: "hsl(210 80% 60%)", description: "Just entered the system", nextActions: ["Verify contact info", "Assign owner", "Schedule first touch"] },

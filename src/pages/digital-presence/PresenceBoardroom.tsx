@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/lib/demo-data/digital-presence";
+import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

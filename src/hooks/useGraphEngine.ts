@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useMemo } from "react";
-import { getGraphEngine } from "@/lib/engines/graph-engine";
+import { getGraphEngine } from "@/domains/engines/graph-engine";
 import type { GraphNode, GraphNodeType } from "@/packages/graph-contracts/node-types";
 import type { GraphEdge, GraphEdgeType } from "@/packages/graph-contracts/edge-types";
 import type { GraphTraversalQuery, EvidencePackRequest } from "@/packages/graph-contracts/retrieval-types";

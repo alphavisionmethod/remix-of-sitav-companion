@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow, format, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMOpportunities, useCreateCommunication, useCreateTask, useCreateNote, useUpdateContact } from "@/hooks/use-crm-data";
-import type { CRMContact, CRMCompany } from "@/lib/data-services/crm-data-service";
+import type { CRMContact, CRMCompany } from "@/data/repositories/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 import { CRMMeetingPrep } from "./CRMMeetingPrep";
 import { CRMNextBestAction } from "./CRMNextBestAction";

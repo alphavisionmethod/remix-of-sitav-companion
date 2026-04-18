@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileCheck, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import { CONTRACT_READINESS, getContractReadinessStats } from "@/lib/reality-audit/reality-audit-registry";
+import { CONTRACT_READINESS, getContractReadinessStats } from "@/runtimes/reality/reality-audit-registry";
 
 const Indicator = ({ ok }: { ok: boolean }) => ok
   ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />

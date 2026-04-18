@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Search, Command } from "lucide-react";
-import { APP_CHROME } from "@/lib/design-system/app-window-system";
+import { APP_CHROME } from "@/platform/design-system/app-window-system";
 import type { DomainConfig } from "./DomainAppShell";
 
 interface AppToolbarProps {

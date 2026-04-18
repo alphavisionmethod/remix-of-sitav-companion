@@ -16,7 +16,7 @@ import { getModuleAdaptation } from "@/domains/engines/business-module-adaptatio
 import { Receipt, Shield, CheckCircle, Clock, Eye, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 interface ProofItem {
   id: number; action: string; customer: string; workflow: string; policy: string;

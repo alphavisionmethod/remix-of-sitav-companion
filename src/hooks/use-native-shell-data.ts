@@ -8,7 +8,7 @@ import {
   fetchNativeShellPlatforms,
   fetchCapabilitySurfaceBindings,
   fetchNssLaunchReadiness,
-} from "@/lib/data-services/native-shell-data-service";
+} from "@/data/repositories/native-shell-data-service";
 
 export function useNativeShellPlatforms() {
   const { isDemoMode } = useDataMode();

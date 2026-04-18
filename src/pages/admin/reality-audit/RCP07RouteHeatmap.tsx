@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Map, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getRouteHeatmapData, type RealityState, type LaunchCriticality } from "@/lib/reality-audit/reality-audit-registry";
+import { getRouteHeatmapData, type RealityState, type LaunchCriticality } from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<RealityState, string> = {
   presentational: "bg-red-500/20 border-red-500/40 text-red-400",

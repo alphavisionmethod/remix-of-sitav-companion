@@ -6,7 +6,7 @@ import { Clock, ArrowRight, Flag, GitBranch, Rocket } from "lucide-react";
 import {
   getProgressTimeline, getRealityDistribution, REALITY_TRANSITIONS,
   MOCK_SOURCE_INVENTORY, type RealityState
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const typeIcons: Record<string, typeof Clock> = {
   transition: GitBranch,

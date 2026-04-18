@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle, Star, Search, Filter, Archive, Edit3, AlertTriangle, Users, ChevronRight, Inbox, FileText, ArrowRight, RotateCcw, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { DEMO_COMMUNICATIONS, type DemoCommunicationEntry as CommunicationEntry, type ChannelType, type MessageStatus } from "@/lib/demo-data/communications";
+import { DEMO_COMMUNICATIONS, type DemoCommunicationEntry as CommunicationEntry, type ChannelType, type MessageStatus } from "@/data/seed/communications";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";

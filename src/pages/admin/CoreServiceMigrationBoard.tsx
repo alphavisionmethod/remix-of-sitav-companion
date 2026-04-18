@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle, ArrowRight, Database, Shield, Zap } from "lucide-react";
-import { DEMO_ADMIN_SERVICES as DEMO_SERVICES } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_SERVICES as DEMO_SERVICES } from "@/data/seed/admin-platform";
 import CPSSubNav from "@/components/admin/CPSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

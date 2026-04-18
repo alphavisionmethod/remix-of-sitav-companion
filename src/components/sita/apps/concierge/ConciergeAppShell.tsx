@@ -19,7 +19,7 @@ import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 import { ConciergeNavigationContext } from "@/contexts/ConciergeNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getConciergeAdaptation } from "@/lib/engines/cross-os-integration";
+import { getConciergeAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";

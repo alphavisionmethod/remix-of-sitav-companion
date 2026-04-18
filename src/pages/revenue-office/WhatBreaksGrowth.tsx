@@ -11,7 +11,7 @@ import {
   Wrench, CheckCircle, ArrowRight, Brain, TrendingDown, XCircle, Shield,
   Eye, BarChart3, RefreshCw, Package, Mail, Phone, Star, Heart
 } from "lucide-react";
-import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/lib/demo-data/revenue-office";
+import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

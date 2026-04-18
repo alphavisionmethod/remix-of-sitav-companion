@@ -8,7 +8,7 @@ import {
   Shield, RefreshCw, Heart, MessageSquare
 } from "lucide-react";
 import { differenceInDays, isPast } from "date-fns";
-import type { CRMContact } from "@/lib/data-services/crm-data-service";
+import type { CRMContact } from "@/data/repositories/crm-data-service";
 
 interface NextBestActionProps {
   contact?: CRMContact | null;

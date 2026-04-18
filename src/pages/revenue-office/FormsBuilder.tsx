@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_REV_STATS_FORMS_BUILDER as DEMO_STATS, DEMO_SAMPLE_FIELDS } from "@/lib/demo-data/revenue-office";
+import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_REV_STATS_FORMS_BUILDER as DEMO_STATS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function FormsBuilder() {

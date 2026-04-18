@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { DEMO_CATALYST_EVENTS } from "@/lib/demo-data/investment";
+import { DEMO_CATALYST_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TYPE_COLORS: Record<string, string> = {

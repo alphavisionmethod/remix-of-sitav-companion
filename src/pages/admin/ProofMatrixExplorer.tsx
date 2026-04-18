@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
-import { DEMO_PROOFS } from "@/lib/demo-data/admin-platform";
+import { DEMO_PROOFS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface ProofRecord {

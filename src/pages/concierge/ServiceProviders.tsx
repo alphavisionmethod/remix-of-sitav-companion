@@ -1,5 +1,5 @@
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
 import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
-import { DEMO_CONC_categories_SERVICE_PROVIDERS as DEMO_categories } from "@/lib/demo-data/concierge";
+import { DEMO_CONC_categories_SERVICE_PROVIDERS as DEMO_categories } from "@/data/seed/concierge";
 
 interface ServiceRecord {
   date: string;

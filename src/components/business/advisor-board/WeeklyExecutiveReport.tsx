@@ -13,8 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import { SparklineChart } from "./SparklineChart";
 import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
-import type { ProfitLoopSummary } from "@/lib/engines/continuous-profit-engine";
-import type { ReflectionSummary } from "@/lib/engines/advisor-reflection-engine";
+import type { ProfitLoopSummary } from "@/domains/engines/continuous-profit-engine";
+import type { ReflectionSummary } from "@/domains/engines/advisor-reflection-engine";
 import ReactMarkdown from "react-markdown";
 
 interface Props {

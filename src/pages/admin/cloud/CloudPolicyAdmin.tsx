@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Settings2, Flag, Shield, HardDrive, RefreshCw, DollarSign, Lock } from "lucide-react";
-import { cloudQuotaService, type CloudPlan } from "@/lib/cloud-backbone/cloud-quota-service";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
+import { cloudQuotaService, type CloudPlan } from "@/platform/cloud/cloud-quota-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 import { toast } from "sonner";
 
 interface FeatureFlag {

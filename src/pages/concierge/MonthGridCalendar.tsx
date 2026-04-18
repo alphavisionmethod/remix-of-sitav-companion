@@ -8,7 +8,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
 import { generateCalendarDemoEvents } from "@/lib/mock-data/calendar";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";

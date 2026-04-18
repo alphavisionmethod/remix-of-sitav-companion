@@ -16,8 +16,8 @@ import {
   HEALING_CAPABILITY_MAP,
   ESCALATION_RULES,
   DEGRADED_MODES,
-} from "@/lib/demo-data/system-status";
-import type { Incident, ServiceHealthRecord, QuarantineRecord, CircuitBreakerState } from "@/lib/demo-data/system-status";
+} from "@/data/seed/system-status";
+import type { Incident, ServiceHealthRecord, QuarantineRecord, CircuitBreakerState } from "@/data/seed/system-status";
 import {
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock,
   Server, RefreshCw, Zap, Globe, Key, ExternalLink, Gauge,
@@ -25,7 +25,7 @@ import {
   AlertCircle, ArrowRightLeft, Timer, BarChart3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/lib/demo-data/core-pages";
+import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Initialize services with demo data ──────────────────────────

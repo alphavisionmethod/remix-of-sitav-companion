@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useCallback, type ReactNode } from "react";
-import { getDomainSpring } from "@/lib/design-system/sita-design-tokens";
+import { getDomainSpring } from "@/platform/design-system/sita-design-tokens";
 import type { DomainId } from "@/components/sita/shell/DomainAppShell";
 
 interface DetailDrawerProps {

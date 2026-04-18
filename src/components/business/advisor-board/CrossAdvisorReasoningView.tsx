@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { Users, Star, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import type { CoordinatedRecommendation } from "@/lib/engines/cross-advisor-coordinator";
+import type { CoordinatedRecommendation } from "@/domains/engines/cross-advisor-coordinator";
 import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 
 interface Props {

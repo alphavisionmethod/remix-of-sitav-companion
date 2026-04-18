@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
-import { SURFACE_TOKENS, type SurfaceLevel } from "@/lib/design-system/sita-design-tokens";
+import { SURFACE_TOKENS, type SurfaceLevel } from "@/platform/design-system/sita-design-tokens";
 import type { ReactNode, CSSProperties } from "react";
 
 interface AppSurfaceProps {

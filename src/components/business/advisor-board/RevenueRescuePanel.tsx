@@ -8,7 +8,7 @@ import { PhoneCall, Mail, Calendar, AlertTriangle, DollarSign, ArrowRight } from
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { ProfitSignal } from "@/lib/engines/continuous-profit-engine";
+import type { ProfitSignal } from "@/domains/engines/continuous-profit-engine";
 
 interface Props {
   signals: ProfitSignal[];

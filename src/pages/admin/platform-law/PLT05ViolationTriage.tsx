@@ -11,7 +11,7 @@ import {
   VALIDATION_VIOLATIONS, WAIVERS,
   getOpenViolations, getRepeatViolators, getViolationAge, getWaiverForViolation,
   type ValidationViolationRecord, type ViolationStatus
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const PLT05ViolationTriage = () => {
   const [search, setSearch] = useState("");

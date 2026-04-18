@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_OUTCOMES as DEMO_OUTCOMES, DEMO_ADMIN_PATTERNS as DEMO_PATTERNS, DEMO_CALIBRATION } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_OUTCOMES as DEMO_OUTCOMES, DEMO_ADMIN_PATTERNS as DEMO_PATTERNS, DEMO_CALIBRATION } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AILearningCenter = () => {

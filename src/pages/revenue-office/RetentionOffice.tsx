@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTION, DEMO_NPS_DATA } from "@/lib/demo-data/revenue-office";
+import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTION, DEMO_NPS_DATA } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

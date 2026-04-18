@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useSites } from "@/hooks/use-digital-presence";
-import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/lib/demo-data/digital-presence";
+import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

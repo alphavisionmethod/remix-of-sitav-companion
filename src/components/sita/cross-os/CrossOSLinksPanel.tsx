@@ -12,7 +12,7 @@ import {
   RefreshCw, Home, ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getCrossOSLinks, crossNavigate, type CrossOSLink } from "@/lib/engines/cross-os-integration";
+import { getCrossOSLinks, crossNavigate, type CrossOSLink } from "@/domains/engines/cross-os-integration";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 const ICON_MAP: Record<string, React.ElementType> = {

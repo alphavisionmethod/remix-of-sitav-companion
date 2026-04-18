@@ -12,7 +12,7 @@ import {
   Brain, Shield, Heart, TrendingUp, Phone, DollarSign, AlertTriangle,
   Users, Sparkles, RefreshCw, ChevronRight, Target, Zap, Clock
 } from "lucide-react";
-import type { CRMContact, CRMCompany, CRMOpportunity, CRMCommunication, CRMTask } from "@/lib/data-services/crm-data-service";
+import type { CRMContact, CRMCompany, CRMOpportunity, CRMCommunication, CRMTask } from "@/data/repositories/crm-data-service";
 import { differenceInDays, isPast } from "date-fns";
 
 // ─── 8 Advisor Roles ────────────────────────────────────────

@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 import { useSetupOrchestration } from "@/hooks/useSetupOrchestration";
-import { SetupOrchestrationEngine } from "@/lib/engines/setup-orchestration-engine";
+import { SetupOrchestrationEngine } from "@/domains/engines/setup-orchestration-engine";
 import type { SetupPhaseId, SetupPhaseStatus } from "@/packages/contracts/specialized/setup-orchestration";
 import { SetupStyleChooser } from "@/components/sita/onboarding/SetupStyleChooser";
 import { LearningPanel } from "@/components/sita/onboarding/LearningPanel";

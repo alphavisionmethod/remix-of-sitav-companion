@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
-import { DEMO_VIOLATION_TYPES } from "@/lib/demo-data/admin-platform";
+import { DEMO_VIOLATION_TYPES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

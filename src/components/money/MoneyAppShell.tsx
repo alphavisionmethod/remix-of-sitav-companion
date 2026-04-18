@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
-import { APP_MATERIALS, APP_SHADOWS, APP_COMPONENTS, APP_TYPE } from "@/lib/design-system/app-window-system";
+import { APP_MATERIALS, APP_SHADOWS, APP_COMPONENTS, APP_TYPE } from "@/platform/design-system/app-window-system";
 import { DollarSign, ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";

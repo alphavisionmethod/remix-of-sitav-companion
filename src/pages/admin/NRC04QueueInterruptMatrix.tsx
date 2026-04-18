@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LayoutGrid } from "lucide-react";
 import { useInterruptionPolicies } from "@/hooks/use-notification-calm-data";
-import { DEMO_DELIVERY_TYPES, DEMO_QUICK_ACTIONS } from "@/lib/demo-data/notification-calm";
+import { DEMO_DELIVERY_TYPES, DEMO_QUICK_ACTIONS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

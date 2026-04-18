@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { getProviderById } from "@/lib/demo-data/integrations";
-import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
+import { getProviderById } from "@/data/seed/integrations";
+import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

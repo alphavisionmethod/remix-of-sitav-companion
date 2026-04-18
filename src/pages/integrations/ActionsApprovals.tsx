@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Eye, Play, Ban } from "lucide-react";
-import { DEMO_ACTION_REQUESTS } from "@/lib/demo-data/integrations";
-import type { DemoActionRequest } from "@/lib/demo-data/integrations";
+import { DEMO_ACTION_REQUESTS } from "@/data/seed/integrations";
+import type { DemoActionRequest } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

@@ -12,7 +12,7 @@ import {
   Eye, Search, TrendingUp, BarChart3
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/lib/demo-data/revenue-office";
+import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const RECENTLY_USED = [

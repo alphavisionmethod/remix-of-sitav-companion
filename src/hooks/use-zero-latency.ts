@@ -8,7 +8,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { predictivePrefetch } from "@/lib/services/predictive-prefetch";
 import { ambientContext } from "@/lib/services/ambient-context-engine";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 
 // ── Transition State ──────────────────────────────────────────
 

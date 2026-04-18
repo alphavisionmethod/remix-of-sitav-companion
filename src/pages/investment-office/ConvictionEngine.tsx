@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { DEMO_DIMS, DEMO_POSITIONS } from "@/lib/demo-data/investment";
+import { DEMO_DIMS, DEMO_POSITIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ConvictionEngine() {

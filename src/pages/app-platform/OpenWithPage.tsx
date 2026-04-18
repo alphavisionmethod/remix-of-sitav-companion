@@ -8,7 +8,7 @@ import { ArrowLeft, FileText, Star, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_FILES } from "@/lib/demo-data/core-pages";
+import { DEMO_FILES } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

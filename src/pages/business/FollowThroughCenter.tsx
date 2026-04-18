@@ -7,7 +7,7 @@ import { UrgencyBadge, ExecutionBadge } from "@/components/sita/badges";
 import { HeroCard, SummaryCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
   Phone, Mail, Clock, AlertCircle, SkipForward, AlarmClock,

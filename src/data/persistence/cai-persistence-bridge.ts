@@ -4,7 +4,7 @@
 // Called by SitaOSContext after mutations for durable audit trail
 // ═══════════════════════════════════════════════════════════════
 
-import * as cai from "@/lib/data-services/cai-data-service";
+import * as cai from "@/data/repositories/cai-data-service";
 
 // ── Debounce helper (fire-and-forget, non-blocking) ─────────────
 const pending = new Map<string, ReturnType<typeof setTimeout>>();

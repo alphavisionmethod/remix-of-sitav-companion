@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, CheckCircle2, Clock, XCircle, TrendingUp, ChevronDown, ChevronUp, Lightbulb, DollarSign, Filter } from "lucide-react";
-import type { DecisionJournalSnapshot, DecisionEntry, DecisionCategory } from "@/lib/engines/decision-journal-engine";
+import type { DecisionJournalSnapshot, DecisionEntry, DecisionCategory } from "@/domains/engines/decision-journal-engine";
 
 interface Props {
   snapshot: DecisionJournalSnapshot;

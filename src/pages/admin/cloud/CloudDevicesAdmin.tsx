@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Search, ShieldOff, KeyRound, Smartphone, Monitor, Globe, Laptop } from "lucide-react";
-import { cloudDeviceService, type CloudDevice, type TrustState } from "@/lib/cloud-backbone/cloud-device-service";
+import { cloudDeviceService, type CloudDevice, type TrustState } from "@/platform/cloud/cloud-device-service";
 import { toast } from "sonner";
 
 function timeSince(dateStr: string) {

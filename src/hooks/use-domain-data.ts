@@ -1,24 +1,24 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
-import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
+import { fetchCustomers, fetchCollections } from "@/data/repositories/business-data-service";
+import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/data/repositories/files-data-service";
 import {
   fetchReservesSavings, fetchFinancialAccounts, fetchMoneyPolicies, fetchMoneyApprovals,
   fetchMoneyProof, fetchFinancialDocuments, fetchCashTimingWindows, fetchMoneyKPIs,
   toggleMoneyPolicy, approveMoneyAction, rejectMoneyAction,
   createFinancialAccount, updateFinancialAccount, deleteFinancialAccount,
   createMoneyPolicy, updateMoneyPolicy, deleteMoneyPolicy,
-} from "@/lib/data-services/money-data-service";
-import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/lib/data-services/mobile-data-service";
-import { fetchLeases, fetchOwnerApprovals, fetchPricingItems } from "@/lib/data-services/owner-data-service";
-import { fetchDocs, fetchSheets, fetchDecks } from "@/lib/data-services/workspace-data-service";
-import { fetchAdvisorProfiles, fetchRecommendations, fetchSynthesis, fetchApprovals, fetchProofHistory } from "@/lib/data-services/mission-control-data-service";
-import { fetchCalendarEvents } from "@/lib/data-services/calendar-data-service";
-import { fetchInboxItems, fetchActivityTimeline } from "@/lib/data-services/activity-data-service";
-import { fetchAutomationRules, fetchDelegations, fetchReplayableWorkflows, fetchAdminUsers, fetchTokenUsages, fetchAdminIncidents } from "@/lib/data-services/admin-data-service";
-import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
-import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
+} from "@/data/repositories/money-data-service";
+import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/data/repositories/mobile-data-service";
+import { fetchLeases, fetchOwnerApprovals, fetchPricingItems } from "@/data/repositories/owner-data-service";
+import { fetchDocs, fetchSheets, fetchDecks } from "@/data/repositories/workspace-data-service";
+import { fetchAdvisorProfiles, fetchRecommendations, fetchSynthesis, fetchApprovals, fetchProofHistory } from "@/data/repositories/mission-control-data-service";
+import { fetchCalendarEvents } from "@/data/repositories/calendar-data-service";
+import { fetchInboxItems, fetchActivityTimeline } from "@/data/repositories/activity-data-service";
+import { fetchAutomationRules, fetchDelegations, fetchReplayableWorkflows, fetchAdminUsers, fetchTokenUsages, fetchAdminIncidents } from "@/data/repositories/admin-data-service";
+import { fetchRevenueLeakage } from "@/data/repositories/revenue-data-service";
+import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/data/repositories/investment-data-service";
 
 // Helper: unwrap ModeAwareResult to just the data for backward compat
 const unwrap = async (fn: (...args: any[]) => Promise<{ data: any }>, ...args: any[]): Promise<any> => {

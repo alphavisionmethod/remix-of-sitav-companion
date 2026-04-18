@@ -7,8 +7,8 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
 import { Clock, Layers, Archive, ArrowDown, ArrowUp, RefreshCw } from "lucide-react";
-import { cloudLifecycleService } from "@/lib/cloud-backbone/cloud-lifecycle-service";
-import type { StorageTier, ArchiveJob } from "@/lib/cloud-backbone/cloud-lifecycle-service";
+import { cloudLifecycleService } from "@/platform/cloud/cloud-lifecycle-service";
+import type { StorageTier, ArchiveJob } from "@/platform/cloud/cloud-lifecycle-service";
 import { toast } from "sonner";
 
 export function CloudLifecycleAdmin() {

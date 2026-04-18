@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileCode, AlertTriangle, ShieldAlert, Ban } from "lucide-react";
-import { MOCK_SOURCE_INVENTORY, getMockSourceStats, type PromiseSeverity } from "@/lib/reality-audit/reality-audit-registry";
+import { MOCK_SOURCE_INVENTORY, getMockSourceStats, type PromiseSeverity } from "@/runtimes/reality/reality-audit-registry";
 
 const critColors: Record<PromiseSeverity, string> = {
   critical: "text-red-400 bg-red-500/10",

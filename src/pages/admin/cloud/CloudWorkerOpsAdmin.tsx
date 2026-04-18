@@ -8,8 +8,8 @@ import {
 import {
   Cog, Play, Pause, RotateCcw, AlertTriangle, CheckCircle, Clock, Inbox
 } from "lucide-react";
-import { cloudWorkerService } from "@/lib/cloud-backbone/cloud-worker-service";
-import type { WorkerJob, WorkerQueueStats } from "@/lib/cloud-backbone/cloud-worker-service";
+import { cloudWorkerService } from "@/platform/cloud/cloud-worker-service";
+import type { WorkerJob, WorkerQueueStats } from "@/platform/cloud/cloud-worker-service";
 import { toast } from "sonner";
 
 export function CloudWorkerOpsAdmin() {

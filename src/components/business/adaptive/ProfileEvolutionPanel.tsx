@@ -13,7 +13,7 @@ import {
   analyzeProfileEvolution,
   generateMockSignals,
   type EvolutionInsight,
-} from "@/lib/engines/profile-evolution-engine";
+} from "@/domains/engines/profile-evolution-engine";
 
 const SEVERITY_STYLES: Record<string, { bg: string; border: string; icon: React.ElementType }> = {
   significant: { bg: "bg-amber-500/10", border: "border-amber-500/30", icon: TrendingUp },

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
 import { useBehavioralSignals, useInvestmentConstitution } from "@/hooks/use-investment-memory";
 import { assessBehavioralFirewall } from "@/lib/services/finance-os/investment-memory.service";
-import { DEMO_BEHAVIORAL_SIGNALS } from "@/lib/demo-data/investment";
+import { DEMO_BEHAVIORAL_SIGNALS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const FIREWALL_STATUS = {

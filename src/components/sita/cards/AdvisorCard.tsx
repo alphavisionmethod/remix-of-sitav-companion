@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { motion } from "framer-motion";
 import { Brain } from "lucide-react";
 import type { ReactNode } from "react";

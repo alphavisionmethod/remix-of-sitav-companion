@@ -15,7 +15,7 @@ import {
   getCIGatePassRate, getManifestCompletionRate, getOwnerComplianceAverage, getEnforcementLayerAverage,
   getRecentValidationRuns, getUnresolvedDrift, getOpenViolations,
   getDomainComplianceScores, getLaunchBlockers, getFeatureComplianceScore
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 import { LaunchBlockerPanel, type LaunchBlocker } from "@/components/sita/truth/LaunchBlockerPanel";
 
 const PLE01Overview = () => {

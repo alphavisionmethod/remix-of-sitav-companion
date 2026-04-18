@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMContacts, useCRMCompanies, useCRMPipelineStages, useUpdateOpportunity, useCreateTask, useCreateNote } from "@/hooks/use-crm-data";
-import type { CRMOpportunity } from "@/lib/data-services/crm-data-service";
+import type { CRMOpportunity } from "@/data/repositories/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 
 const healthColor = (p: number) => p >= 70 ? "text-green-400" : p >= 40 ? "text-yellow-400" : "text-red-400";

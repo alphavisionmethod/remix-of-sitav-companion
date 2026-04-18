@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import * as cai from "@/lib/data-services/cai-data-service";
+import * as cai from "@/data/repositories/cai-data-service";
 
 function useCaiList(key: string, fetcher: (f?: any) => Promise<any[]>) {
   return useQuery({ queryKey: [key], queryFn: () => fetcher() });

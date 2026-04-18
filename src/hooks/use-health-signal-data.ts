@@ -12,7 +12,7 @@ import {
   fetchSignalSubsystemReadiness,
   fetchInterruptionPosture,
   fetchVisibilityPolicies,
-} from "@/lib/data-services/health-signal-data-service";
+} from "@/data/repositories/health-signal-data-service";
 
 export function useWearableProviders() {
   const { isDemoMode } = useDataMode();

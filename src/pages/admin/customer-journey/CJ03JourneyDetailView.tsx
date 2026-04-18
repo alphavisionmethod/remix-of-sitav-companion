@@ -5,9 +5,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
-import { useStepResults, useEvidenceAssets } from "@/lib/customer-journey/journey-evidence-hooks";
-import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { useCustomerJourneys, useCustomerJourneyRuns } from "@/domains/customer-journey/journey-hooks";
+import { useStepResults, useEvidenceAssets } from "@/domains/customer-journey/journey-evidence-hooks";
+import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/domains/customer-journey/journey-registry";
 import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertCircle, Layers, Wrench } from "lucide-react";
 import { useState } from "react";
 

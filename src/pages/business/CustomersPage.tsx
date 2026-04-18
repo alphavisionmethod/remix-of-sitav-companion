@@ -24,11 +24,11 @@ import {
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
 import { useCustomers } from "@/hooks/use-domain-data";
-import type { MockCustomer } from "@/lib/data-services/business-data-service";
+import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 

@@ -3,7 +3,7 @@ import { Rocket, CheckCircle, AlertTriangle, Clock, Layout, FileText, Eye, Shopp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/lib/demo-data/digital-presence";
+import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

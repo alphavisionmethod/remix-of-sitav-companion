@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_EVENTS } from "@/lib/demo-data/investment";
+import { DEMO_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function EventProbabilityLab() {

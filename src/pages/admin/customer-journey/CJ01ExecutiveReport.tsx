@@ -6,9 +6,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCustomerJourneys, useSeedJourneys, useJourneyStats, useCustomerJourneyBlockers } from "@/lib/customer-journey/journey-hooks";
-import { useJourneySummaryView, useSeedJourneyRegistry, useRecentFailures, useModeDeltas } from "@/lib/customer-journey/journey-ingestion-hooks";
-import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { useCustomerJourneys, useSeedJourneys, useJourneyStats, useCustomerJourneyBlockers } from "@/domains/customer-journey/journey-hooks";
+import { useJourneySummaryView, useSeedJourneyRegistry, useRecentFailures, useModeDeltas } from "@/domains/customer-journey/journey-ingestion-hooks";
+import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/domains/customer-journey/journey-registry";
 import { ClipboardCheck, AlertTriangle, Shield, BarChart3, Loader2, Database, GitCompare, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useMemo } from "react";

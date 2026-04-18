@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { DEMO_PENDING_DECISIONS } from "@/lib/demo-data/investment";
+import { DEMO_PENDING_DECISIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const VERDICT_CONFIG = {

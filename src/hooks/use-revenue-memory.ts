@@ -6,7 +6,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { computeWhatChanged, inferGrowthDNA, assessGrowthFirewall, buildTimeMachineSnapshot, getAdvisorMemory } from "@/lib/services/finance-os/revenue-memory.service";
-import { revenueAdvisorStances, revenueMemoryEvents, revenueRetentionSignals, revenueCampaigns, revenueFunnels, revenueFunnelSteps, revenueOffers, revenueOfferSales, revenueBookings, revenueReviews, revenueSegments, revenueReputationMetrics, revenueWinbackQueue, revenueExperiments, revenueExperimentVariants, revenueJourneyTouchpoints } from "@/lib/data-services/revenue-ops-data-service";
+import { revenueAdvisorStances, revenueMemoryEvents, revenueRetentionSignals, revenueCampaigns, revenueFunnels, revenueFunnelSteps, revenueOffers, revenueOfferSales, revenueBookings, revenueReviews, revenueSegments, revenueReputationMetrics, revenueWinbackQueue, revenueExperiments, revenueExperimentVariants, revenueJourneyTouchpoints } from "@/data/repositories/revenue-ops-data-service";
 
 function useUserId() {
   const { user } = useAuth();

@@ -11,7 +11,7 @@ import { BarChart3, Calendar, CheckCircle, Clock, ChevronRight, Target } from "l
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DEMO_SESSIONS } from "@/lib/demo-data/core-pages";
+import { DEMO_SESSIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

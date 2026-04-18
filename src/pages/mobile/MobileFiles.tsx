@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useFolderContents, useCreateFolder, useDeleteFile, useDeleteFolder, useUploadToFolder } from "@/hooks/use-file-explorer";
-import type { ExplorerFile, ExplorerFolder } from "@/lib/data-services/file-explorer-service";
+import type { ExplorerFile, ExplorerFolder } from "@/data/repositories/file-explorer-service";
 import { NewFolderDialog } from "@/components/files/NewFolderDialog";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,

@@ -14,7 +14,7 @@ import { Wrench, AlertTriangle, Shield, CheckCircle, Activity, Eye, Unlock, Bell
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import type { GovernanceBoardroomSection } from "@/packages/contracts";
-import type { ReadinessInput } from "@/lib/engines/readiness-engine";
+import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEFAULT_READINESS_INPUT: ReadinessInput = {

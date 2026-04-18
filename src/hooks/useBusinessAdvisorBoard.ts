@@ -19,21 +19,21 @@ import {
   getActionStats, getPendingApprovals,
   type BusinessAction,
 } from "@/domains/engines/business-action-pipeline";
-import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
-import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/lib/engines/advisor-tool-execution-engine";
+import { getAdvisorMemoryEngine } from "@/domains/engines/advisor-memory-engine";
+import { getAdvisorToolExecutionEngine, ADVISOR_TOOLS } from "@/domains/engines/advisor-tool-execution-engine";
 import { getBusinessRadarEngine } from "@/domains/engines/business-radar-engine";
-import { getStrategicPlanningEngine } from "@/lib/engines/strategic-planning-engine";
-import { getClientIntelligenceEngine } from "@/lib/engines/client-intelligence-engine";
-import { getAdvisorPerformanceEngine } from "@/lib/engines/advisor-performance-engine";
-import { getDecisionJournalEngine } from "@/lib/engines/decision-journal-engine";
-import type { DecisionOutcome } from "@/lib/engines/decision-journal-engine";
-import type { MilestoneStatus } from "@/lib/engines/strategic-planning-engine";
+import { getStrategicPlanningEngine } from "@/domains/engines/strategic-planning-engine";
+import { getClientIntelligenceEngine } from "@/domains/engines/client-intelligence-engine";
+import { getAdvisorPerformanceEngine } from "@/domains/engines/advisor-performance-engine";
+import { getDecisionJournalEngine } from "@/domains/engines/decision-journal-engine";
+import type { DecisionOutcome } from "@/domains/engines/decision-journal-engine";
+import type { MilestoneStatus } from "@/domains/engines/strategic-planning-engine";
 import { getBusinessContextGraph } from "@/domains/engines/business-context-graph";
 import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/domains/engines/business-archetype-engine";
-import { getCrossAdvisorCoordinator } from "@/lib/engines/cross-advisor-coordinator";
-import { getConfidenceRiskScorer } from "@/lib/engines/confidence-risk-scorer";
-import { getContinuousProfitEngine } from "@/lib/engines/continuous-profit-engine";
-import { getAdvisorReflectionEngine } from "@/lib/engines/advisor-reflection-engine";
+import { getCrossAdvisorCoordinator } from "@/domains/engines/cross-advisor-coordinator";
+import { getConfidenceRiskScorer } from "@/domains/engines/confidence-risk-scorer";
+import { getContinuousProfitEngine } from "@/domains/engines/continuous-profit-engine";
+import { getAdvisorReflectionEngine } from "@/domains/engines/advisor-reflection-engine";
 import { BoardAPI, type BoardRecommendation, type BoardAction as PersistentAction, type AutonomyPolicy } from "@/lib/services/board-api-client";
 
 export interface AIRecommendation {

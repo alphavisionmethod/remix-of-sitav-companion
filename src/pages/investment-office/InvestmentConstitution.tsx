@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/investment";
+import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Rule {

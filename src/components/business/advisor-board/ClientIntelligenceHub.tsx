@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, AlertTriangle, TrendingUp, Heart, Shield, ArrowUpRight, ArrowDownRight, Eye, Star } from "lucide-react";
-import type { ClientIntelligenceSnapshot, ClientProfile, HealthSignal } from "@/lib/engines/client-intelligence-engine";
+import type { ClientIntelligenceSnapshot, ClientProfile, HealthSignal } from "@/domains/engines/client-intelligence-engine";
 
 interface Props {
   snapshot: ClientIntelligenceSnapshot;

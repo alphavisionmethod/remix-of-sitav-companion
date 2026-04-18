@@ -4,8 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
-import { POST_TRADE_REVIEWS } from "@/lib/investment-office/mock-data";
+import { DEMO_RECEIPTS } from "@/data/seed/investment";
+import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const isDemoMode = true; // Safe default for demo mode

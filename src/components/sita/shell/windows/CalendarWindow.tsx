@@ -13,7 +13,7 @@ import {
   Calendar as CalIcon, LayoutGrid, List, MapPin, Pencil,
   Eye, EyeOff, RotateCcw,
 } from "lucide-react";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import {
   useUnifiedCalendar,
   useCalendarSources,

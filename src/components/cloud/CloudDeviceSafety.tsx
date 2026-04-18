@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, Smartphone, AlertTriangle, Pause, LogOut, Lock, Eye, CheckCircle
 } from "lucide-react";
-import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
+import { cloudDeviceService } from "@/platform/cloud/cloud-device-service";
 import { toast } from "sonner";
 
 export function CloudDeviceSafety() {

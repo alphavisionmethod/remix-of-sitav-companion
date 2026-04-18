@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock, Calendar, BarChart3, Zap } from "lucide-react";
-import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/lib/demo-data/revenue-office";
+import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const memberships = [

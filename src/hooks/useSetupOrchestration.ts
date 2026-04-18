@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { SetupOrchestrationEngine } from "@/lib/engines/setup-orchestration-engine";
+import { SetupOrchestrationEngine } from "@/domains/engines/setup-orchestration-engine";
 import type {
   SetupPhaseId, SetupPhaseStatus, SetupBackgroundTask, SetupBranchPath,
   SetupSession,

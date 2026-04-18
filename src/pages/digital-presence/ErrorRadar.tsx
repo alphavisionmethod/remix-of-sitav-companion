@@ -3,7 +3,7 @@ import { AlertTriangle, Link2, Image, Clock, MousePointer, Shield, Smartphone, S
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DEMO_ERRORS, DEMO_OPPORTUNITIES } from "@/lib/demo-data/digital-presence";
+import { DEMO_ERRORS, DEMO_OPPORTUNITIES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

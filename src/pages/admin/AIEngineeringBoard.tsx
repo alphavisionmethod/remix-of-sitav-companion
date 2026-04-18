@@ -25,7 +25,7 @@ import {
   DEMO_LEARNING_HIGHLIGHTS,
   DEMO_OVERVIEW_BAND,
   DEMO_RECENT_HEALS,
-} from "@/lib/demo-data/admin-platform";
+} from "@/data/seed/admin-platform";
 
 const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
 

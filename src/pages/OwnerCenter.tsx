@@ -7,7 +7,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
-import { FounderBottleneckEngine } from "@/lib/engines/founder-bottleneck-engine";
+import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
+import { DEMO_ENGINE_COSTS } from "@/data/seed/core-pages";
 // Demo simulation helper (inline — no mock-data import)
 interface SimPolicyResult {
   policy_name: string;

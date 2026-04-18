@@ -2,7 +2,7 @@ import { HeroCard, SummaryCard, StatusCard, AdvisorCard } from "@/components/sit
 import { TrustBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ReserveProgressChart, ReserveOverTimeChart } from "@/components/sita/SitaCharts";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { PiggyBank, Target, Shield, TrendingUp, Plus, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";

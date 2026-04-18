@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DEMO_auditTimeline, DEMO_connectors } from "@/lib/demo-data/atlas";
+import { DEMO_auditTimeline, DEMO_connectors } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();

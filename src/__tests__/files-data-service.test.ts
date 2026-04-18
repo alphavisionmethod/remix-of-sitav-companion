@@ -26,7 +26,7 @@ import {
   fetchAllFiles,
   fetchFilesOverview,
   fetchFilesProcessing,
-} from "@/lib/data-services/files-data-service";
+} from "@/data/repositories/files-data-service";
 
 const mocks = (supabase as any);
 

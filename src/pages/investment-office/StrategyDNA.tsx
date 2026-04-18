@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
 import { useStrategyDnaProfile, useDecisionRecords, useThesisRecords, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
 import { inferStrategyDNA } from "@/lib/services/finance-os/investment-memory.service";
-import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
+import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";

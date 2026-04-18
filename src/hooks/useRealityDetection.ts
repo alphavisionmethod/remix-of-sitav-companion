@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { runFullDetection, type DetectionReport } from "@/lib/detection/reality-detection-engine";
-import { getIntegrationStatuses, computeLaunchHonesty, fetchRouteInventory, getCoreServiceReality } from "@/lib/integrations/reality-integration-hub";
+import { getIntegrationStatuses, computeLaunchHonesty, fetchRouteInventory, getCoreServiceReality } from "@/integrations/external/reality-integration-hub";
 
 export function useDetectionReport() {
   return useQuery<DetectionReport>({

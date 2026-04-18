@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-04-18T03:02:55.364Z",
+  "generatedAt": "2026-04-18T03:07:38.043Z",
   "gate": "legacy-wrapper-usage",
-  "scannedFiles": 2946,
-  "totalLegacyImports": 1980,
-  "distinctLegacyPaths": 688,
+  "scannedFiles": 3081,
+  "totalLegacyImports": 1499,
+  "distinctLegacyPaths": 588,
   "topPaths": [
     {
       "path": "@/lib/supabase-helpers",
-      "count": 243,
+      "count": 289,
       "topConsumers": [
         "src/components/admin/panels/IncidentSummaryPanel.tsx",
         "src/components/business/CustomerHealthDashboard.tsx",
@@ -17,113 +17,14 @@
       ]
     },
     {
-      "path": "@/lib/demo-data/admin-platform",
-      "count": 75,
-      "topConsumers": [
-        "src/pages/admin/AIAgentDebate.tsx",
-        "src/pages/admin/AIApprovalDesk.tsx",
-        "src/pages/admin/AIChangePlanViewer.tsx",
-        "src/pages/admin/AIDesignDiffTheater.tsx",
-        "src/pages/admin/AIDesignStudio.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/design-system/sita-design-tokens",
-      "count": 50,
-      "topConsumers": [
-        "src/components/sita/PremiumEmptyState.tsx",
-        "src/components/sita/badges/DomainBadge.tsx",
-        "src/components/sita/cards/ActionCard.tsx",
-        "src/components/sita/cards/AdvisorCard.tsx",
-        "src/components/sita/cards/ComparisonCard.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/demo-data/revenue-office",
-      "count": 35,
-      "topConsumers": [
-        "src/pages/revenue-office/AutomationHealth.tsx",
-        "src/pages/revenue-office/AutomationOffice.tsx",
-        "src/pages/revenue-office/AutomationPolicy.tsx",
-        "src/pages/revenue-office/AutomationReceipts.tsx",
-        "src/pages/revenue-office/AutomationTemplates.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/demo-data/investment",
-      "count": 27,
-      "topConsumers": [
-        "src/pages/investment-office/BeginnerMode.tsx",
-        "src/pages/investment-office/BehavioralFirewall.tsx",
-        "src/pages/investment-office/CapitalPurpose.tsx",
-        "src/pages/investment-office/CapitalTwin.tsx",
-        "src/pages/investment-office/CatalystWarRoom.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/demo-data/core-pages",
-      "count": 26,
-      "topConsumers": [
-        "src/pages/AIWorkforcePage.tsx",
-        "src/pages/CapitalAllocationPage.tsx",
-        "src/pages/CustomerDetail.tsx",
-        "src/pages/IntegrationConcierge.tsx",
-        "src/pages/MyActivity.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/design-system/app-window-system",
-      "count": 20,
-      "topConsumers": [
-        "src/components/concierge/ConciergeAppShell.tsx",
-        "src/components/money/MoneyAppShell.tsx",
-        "src/components/sita/shell/AppPermissionGate.tsx",
-        "src/components/sita/shell/AppSidebarNav.tsx",
-        "src/components/sita/shell/AppStateWrapper.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/demo-data/digital-presence",
-      "count": 18,
-      "topConsumers": [
-        "src/pages/digital-presence/AIWebTeam.tsx",
-        "src/pages/digital-presence/AppExperienceStudio.tsx",
-        "src/pages/digital-presence/BrandStudio.tsx",
-        "src/pages/digital-presence/CROOffice.tsx",
-        "src/pages/digital-presence/ConnectedSites.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/customer-journey/journey-registry",
-      "count": 14,
-      "topConsumers": [
-        "src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx",
-        "src/pages/admin/customer-journey/CJ02JourneyTruthMatrix.tsx",
-        "src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx",
-        "src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx",
-        "src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/design-system/nova-os",
+      "path": "@/lib/dual-reality/reality-mode-registry",
       "count": 13,
       "topConsumers": [
-        "src/components/sita/shell/AppPermissionGate.tsx",
-        "src/components/sita/shell/AppSwitcher.tsx",
-        "src/components/sita/shell/BootSplash.tsx",
-        "src/components/sita/shell/ControlCenter.tsx",
-        "src/components/sita/shell/DesktopIconGrid.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/reality-audit/reality-audit-registry",
-      "count": 13,
-      "topConsumers": [
-        "src/pages/admin/reality-audit/CoreServicePersistence.tsx",
-        "src/pages/admin/reality-audit/LaunchHonestyBoard.tsx",
-        "src/pages/admin/reality-audit/MockReplacementProgram.tsx",
-        "src/pages/admin/reality-audit/RCP01Overview.tsx",
-        "src/pages/admin/reality-audit/RCP03FeatureDetail.tsx"
+        "src/data/repositories/activity-data-service.ts",
+        "src/data/repositories/business-data-service.ts",
+        "src/data/repositories/calendar-data-service.ts",
+        "src/data/repositories/crm-data-service.ts",
+        "src/data/repositories/investment-data-service.ts"
       ]
     },
     {
@@ -138,39 +39,6 @@
       ]
     },
     {
-      "path": "@/lib/data-services/crm-data-service",
-      "count": 12,
-      "topConsumers": [
-        "src/components/business/crm/CRMAdvisorInsight.tsx",
-        "src/components/business/crm/CRMCompanyDetail.tsx",
-        "src/components/business/crm/CRMContactDetail.tsx",
-        "src/components/business/crm/CRMContactForm.tsx",
-        "src/components/business/crm/CRMDealDetail.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/investment-office/mock-data",
-      "count": 12,
-      "topConsumers": [
-        "src/hooks/useInvestmentOfficeData.ts",
-        "src/pages/investment-office/InstrumentDetail.tsx",
-        "src/pages/investment-office/IntelligenceDossier.tsx",
-        "src/pages/investment-office/InvestmentBoardroom.tsx",
-        "src/pages/investment-office/InvestmentReceipts.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/sound-engine",
-      "count": 11,
-      "topConsumers": [
-        "src/components/sita/DesktopDock.tsx",
-        "src/components/sita/shell/AppLauncherPanel.tsx",
-        "src/components/sita/shell/FloatingWindow.tsx",
-        "src/components/sita/shell/FlowSpace.tsx",
-        "src/components/sita/shell/windows/CalendarWindow.tsx"
-      ]
-    },
-    {
       "path": "@/lib/persistence",
       "count": 11,
       "topConsumers": [
@@ -179,28 +47,6 @@
         "src/pages/admin/EventStreamExplorer.tsx",
         "src/pages/admin/IntelligenceArtifactLibrary.tsx",
         "src/pages/admin/MemoryContinuityCenter.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/platform-law/platform-law-registry",
-      "count": 11,
-      "topConsumers": [
-        "src/pages/admin/platform-law/PLE01Overview.tsx",
-        "src/pages/admin/platform-law/PLE02LawRegistry.tsx",
-        "src/pages/admin/platform-law/PLE03ScaffoldRegistry.tsx",
-        "src/pages/admin/platform-law/PLE04CIGateMonitor.tsx",
-        "src/pages/admin/platform-law/PLE05ManifestEnforcer.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/cloud-backbone/cloud-storage-service",
-      "count": 10,
-      "topConsumers": [
-        "src/components/cloud/CloudFileBrowser.tsx",
-        "src/components/cloud/CloudTrashManager.tsx",
-        "src/components/cloud/CloudVersionHistory.tsx",
-        "src/pages/admin/cloud/CloudCostCapacityAdmin.tsx",
-        "src/pages/admin/cloud/CloudDashboard.tsx"
       ]
     },
     {
@@ -226,17 +72,6 @@
       ]
     },
     {
-      "path": "@/lib/demo-data/integrations",
-      "count": 10,
-      "topConsumers": [
-        "src/pages/integrations/ActionsApprovals.tsx",
-        "src/pages/integrations/ConnectionDetail.tsx",
-        "src/pages/integrations/ConnectionsList.tsx",
-        "src/pages/integrations/IntegrationsCatalog.tsx",
-        "src/pages/integrations/ProviderDetail.tsx"
-      ]
-    },
-    {
       "path": "@/lib/pack-store",
       "count": 9,
       "topConsumers": [
@@ -256,39 +91,6 @@
         "src/planes/backend.ts",
         "src/test/canonical-chain.test.ts",
         "src/test/core-services.test.ts"
-      ]
-    },
-    {
-      "path": "@/lib/customer-journey/journey-hooks",
-      "count": 9,
-      "topConsumers": [
-        "src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx",
-        "src/pages/admin/customer-journey/CJ02JourneyTruthMatrix.tsx",
-        "src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx",
-        "src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx",
-        "src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/data-services/file-explorer-service",
-      "count": 8,
-      "topConsumers": [
-        "src/components/files/FileExplorerBreadcrumb.tsx",
-        "src/components/files/FileExplorerGrid.tsx",
-        "src/components/files/FileExplorerProperties.tsx",
-        "src/components/files/FileExplorerSidebar.tsx",
-        "src/components/files/FileExplorerTrash.tsx"
-      ]
-    },
-    {
-      "path": "@/lib/demo-data/admin-intelligence",
-      "count": 8,
-      "topConsumers": [
-        "src/hooks/use-intelligence-screen-data.ts",
-        "src/pages/admin/intelligence/CrossTenantGovernance.tsx",
-        "src/pages/admin/intelligence/DifferentialReasoningExplorer.tsx",
-        "src/pages/admin/intelligence/EscalationControlCenter.tsx",
-        "src/pages/admin/intelligence/IntelligencePacketInspector.tsx"
       ]
     },
     {
@@ -334,9 +136,201 @@
         "src/components/ai/AIStateBadge.tsx",
         "src/components/ai/AIWorkforceInvocationPanel.tsx"
       ]
+    },
+    {
+      "path": "@/lib/domain-engines/autopilot-engine",
+      "count": 7,
+      "topConsumers": [
+        "src/components/autopilot/AutopilotCommandCenter.tsx",
+        "src/components/autopilot/AutopilotWizard.tsx",
+        "src/components/autopilot/CustomerAutopilotPanel.tsx",
+        "src/pages/business/AutopilotHub.tsx",
+        "src/pages/business/PlaybookBuilder.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/simulation/monte-carlo-engine",
+      "count": 7,
+      "topConsumers": [
+        "src/components/simulation/ComparisonOverlay.tsx",
+        "src/components/simulation/CustomScenarioBuilder.tsx",
+        "src/components/simulation/SimulationAdvisor.tsx",
+        "src/components/simulation/SimulationCanvas.tsx",
+        "src/components/simulation/SimulationControls.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/mock-data/advisor-mission-control",
+      "count": 7,
+      "topConsumers": [
+        "src/components/sita/AdvisorComponents.tsx",
+        "src/components/sita/MissionControlComponents.tsx",
+        "src/data/repositories/mission-control-data-service.ts",
+        "src/hooks/use-mission-control-views.ts",
+        "src/hooks/useAdvisorMissionControl.ts"
+      ]
+    },
+    {
+      "path": "@/lib/core-services/receipt-service",
+      "count": 7,
+      "topConsumers": [
+        "src/contexts/SitaKernelContext.tsx",
+        "src/hooks/use-brain-core.ts",
+        "src/hooks/use-proof-timeline.ts",
+        "src/planes/backend.ts",
+        "src/test/canonical-chain.test.ts"
+      ]
+    },
+    {
+      "path": "@/lib/services/board-api-client",
+      "count": 7,
+      "topConsumers": [
+        "src/hooks/useBusinessAdvisorBoard.ts",
+        "src/pages/admin/AdvisorActionApprovalAdmin.tsx",
+        "src/pages/admin/AdvisorAutonomyPolicyEditor.tsx",
+        "src/pages/admin/AdvisorBoardCatalog.tsx",
+        "src/pages/admin/AdvisorMemoryInspector.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/core-services/ai-workforce/workforce-orchestrator",
+      "count": 7,
+      "topConsumers": [
+        "src/pages/admin/AIT01TeamOverview.tsx",
+        "src/pages/admin/AIT02RoleRegistry.tsx",
+        "src/pages/admin/AIT03TaskInvocation.tsx",
+        "src/pages/admin/AIT04to08Boards.tsx",
+        "src/pages/admin/AIT05CostEfficiency.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/types/dwe-types",
+      "count": 7,
+      "topConsumers": [
+        "src/pages/admin/DWE01ConnectedDevicesCenter.tsx",
+        "src/pages/admin/DWE02PresenceContinuityCenter.tsx",
+        "src/pages/admin/DWE03WearableSignalsCenter.tsx",
+        "src/pages/admin/DWE04NotificationRoutingStudio.tsx",
+        "src/pages/admin/DWE05DeviceTrustApprovalsCenter.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/core-services/security",
+      "count": 7,
+      "topConsumers": [
+        "src/planes/backend.ts"
+      ]
+    },
+    {
+      "path": "@/lib/dual-reality",
+      "count": 6,
+      "topConsumers": [
+        "src/components/admin-os/DiagnosticsContextBar.tsx",
+        "src/components/admin-os/RealityModeIndicator.tsx",
+        "src/components/reality/ModeResolutionBanner.tsx",
+        "src/hooks/use-google-provider-family.ts",
+        "src/planes/backend.ts"
+      ]
+    },
+    {
+      "path": "@/lib/os-security",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/PlatformInit.tsx",
+        "src/components/sita/shell/EnhancedLockScreen.tsx",
+        "src/components/sita/shell/desktop/DesktopSystemWidget.tsx",
+        "src/hooks/useOSSecurity.ts",
+        "src/planes/os.ts"
+      ]
+    },
+    {
+      "path": "@/lib/system-menu/menu-actions",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/ShellLayout.tsx",
+        "src/components/sita/shell/AboutDialog.tsx",
+        "src/components/sita/shell/LockScreenOverlay.tsx",
+        "src/components/sita/shell/ShortcutsDialog.tsx",
+        "src/components/sita/shell/SystemMenuBar.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/advisor-protocol",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/SitaTopBar.tsx",
+        "src/contexts/AppearanceContext.tsx",
+        "src/pages/Boardroom.tsx",
+        "src/planes/backend.ts",
+        "src/test/advisor-council-protocol.test.ts"
+      ]
+    },
+    {
+      "path": "@/lib/boardroom/types",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/WarRoomPresentation.tsx",
+        "src/pages/Boardroom.tsx",
+        "src/test/advisor-council-protocol.test.ts",
+        "src/test/boardroom.test.ts"
+      ]
+    },
+    {
+      "path": "@/lib/services/orchestration-pipeline/module-advisor-consumer",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/apps/boardroom/BoardroomAdvisorCouncil.tsx",
+        "src/components/sita/apps/business/BusinessAppShell.tsx",
+        "src/components/sita/apps/concierge/ConciergeAppShell.tsx",
+        "src/components/sita/apps/finance/FinanceAppShell.tsx",
+        "src/hooks/useOrchestrationHealth.ts"
+      ]
+    },
+    {
+      "path": "@/lib/nova-sdk/kernel/memory-manager",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/shell/EdgePanels.tsx",
+        "src/components/sita/shell/ShellWindowLayer.tsx",
+        "src/components/sita/shell/windows/DevToolsWindow.tsx",
+        "src/components/sita/shell/windows/KernelDashboardWindow.tsx",
+        "src/pages/admin/KernelDashboard.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/os-security/types",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/shell/SecurePrompt.tsx",
+        "src/components/sita/shell/SecurePromptProvider.tsx",
+        "src/components/sita/shell/windows/SecurityAccountsPanel.tsx",
+        "src/hooks/useOSSecurity.ts",
+        "src/pages/admin/SEC01SessionSecrets.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/nova-sdk/graphics/context",
+      "count": 6,
+      "topConsumers": [
+        "src/components/sita/shell/windows/KernelDashboardWindow.tsx",
+        "src/components/sita/shell/windows/NovaCanvasBars.tsx",
+        "src/components/sita/shell/windows/NovaCanvasChart.tsx",
+        "src/components/sita/shell/windows/NovaTerminal.tsx",
+        "src/components/sita/shell/windows/SyscallDashboardWindow.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/mock-data/workspace",
+      "count": 6,
+      "topConsumers": [
+        "src/data/repositories/workspace-data-service.ts",
+        "src/pages/workspace/DocsWorkspace.tsx",
+        "src/pages/workspace/SheetsWorkspace.tsx",
+        "src/pages/workspace/SlidesWorkspace.tsx"
+      ]
     }
   ],
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1980
+  "warningCount": 1499
 }

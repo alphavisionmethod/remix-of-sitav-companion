@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/lib/demo-data/admin-intelligence";
+import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {

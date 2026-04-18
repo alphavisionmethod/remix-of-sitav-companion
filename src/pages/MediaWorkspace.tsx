@@ -23,7 +23,7 @@ import {
   Eye, Download, Tag, Link, Trash2, MoreHorizontal, Filter, FolderOpen,
   Plus, FileText, X, ZoomIn, ChevronLeft, ChevronRight, Edit3,
 } from "lucide-react";
-import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
+import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const isDemoMode = true; // Safe default for demo mode

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RefreshCw, AlertTriangle, CheckCircle, Clock, Wifi, Activity } from "lucide-react";
-import { cloudSyncService } from "@/lib/cloud-backbone/cloud-sync-service";
+import { cloudSyncService } from "@/platform/cloud/cloud-sync-service";
 import { toast } from "sonner";
 
 function timeSince(dateStr: string) {

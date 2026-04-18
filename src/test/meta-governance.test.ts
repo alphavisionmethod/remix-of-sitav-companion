@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { TrustDebtEngine } from "@/lib/engines/trust-debt-engine";
-import { ExecutionDebtEngine } from "@/lib/engines/execution-debt-engine";
-import { DragEngine } from "@/lib/engines/drag-engine";
-import { ReadinessEngine } from "@/lib/engines/readiness-engine";
-import { InvisibleLaborEngine } from "@/lib/engines/invisible-labor-engine";
-import { FounderBottleneckEngine } from "@/lib/engines/founder-bottleneck-engine";
-import { DelegationEngine } from "@/lib/engines/delegation-engine";
-import { WorkspaceViewEngine } from "@/lib/engines/workspace-view-engine";
-import { MetaGovernanceEngine } from "@/lib/engines/meta-governance-engine";
+import { TrustDebtEngine } from "@/domains/engines/trust-debt-engine";
+import { ExecutionDebtEngine } from "@/domains/engines/execution-debt-engine";
+import { DragEngine } from "@/domains/engines/drag-engine";
+import { ReadinessEngine } from "@/domains/engines/readiness-engine";
+import { InvisibleLaborEngine } from "@/domains/engines/invisible-labor-engine";
+import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
+import { DelegationEngine } from "@/domains/engines/delegation-engine";
+import { WorkspaceViewEngine } from "@/domains/engines/workspace-view-engine";
+import { MetaGovernanceEngine } from "@/domains/engines/meta-governance-engine";
 import type { OSEntityScope as EntityScope, ActionRecord } from "@/packages/contracts";
 
 const SCOPE: EntityScope = { ownerId: "user1", visibility: "private" };

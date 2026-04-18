@@ -6,7 +6,7 @@ import { Settings, Upload, Brain, Shield, Clock, Zap, Eye, Globe, Lock } from "l
 import { motion } from "framer-motion";
 import { useFileSettings } from "@/hooks/use-domain-data";
 import { useQueryClient } from "@tanstack/react-query";
-import { upsertFileSettings } from "@/lib/data-services/files-data-service";
+import { upsertFileSettings } from "@/data/repositories/files-data-service";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

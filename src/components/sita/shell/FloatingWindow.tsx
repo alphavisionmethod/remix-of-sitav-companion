@@ -7,12 +7,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect, useMemo, useDeferredValue, type ReactNode } from "react";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/lib/design-system/nova-os";
-import { APP_SHADOWS, APP_ACCENTS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
-import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/design-system/snap-zones";
+import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/platform/design-system/nova-os";
+import { APP_SHADOWS, APP_ACCENTS, APP_CHROME, APP_TYPE } from "@/platform/design-system/app-window-system";
+import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/platform/design-system/snap-zones";
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";

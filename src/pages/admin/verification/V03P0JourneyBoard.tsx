@@ -14,7 +14,7 @@ import {
   CUSTOMER_JOURNEY_REGISTRY,
   type JourneyDefinition,
   type LaunchImpact,
-} from "@/lib/customer-journey/journey-registry";
+} from "@/domains/customer-journey/journey-registry";
 import {
   ShieldCheck, CheckCircle2, XCircle, Clock, Search, ChevronDown, ChevronRight,
   AlertTriangle, Target, Users

@@ -8,7 +8,7 @@ import { ArrowLeft, FileText, Link2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/lib/demo-data/core-pages";
+import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppAssociationsPage = () => {

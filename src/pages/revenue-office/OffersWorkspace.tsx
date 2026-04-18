@@ -12,7 +12,7 @@ import {
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,
   DEMO_PRICING_EXPERIMENTS,
-} from "@/lib/demo-data/revenue-office";
+} from "@/data/seed/revenue-office";
 
 export default function OffersWorkspace() {
   const [tab, setTab] = useState("catalog");

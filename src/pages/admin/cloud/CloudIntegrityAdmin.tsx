@@ -8,8 +8,8 @@ import {
 import {
   ShieldCheck, AlertTriangle, CheckCircle, RefreshCw, Database, Search as SearchIcon
 } from "lucide-react";
-import { cloudLifecycleService } from "@/lib/cloud-backbone/cloud-lifecycle-service";
-import type { ReconciliationRun } from "@/lib/cloud-backbone/cloud-lifecycle-service";
+import { cloudLifecycleService } from "@/platform/cloud/cloud-lifecycle-service";
+import type { ReconciliationRun } from "@/platform/cloud/cloud-lifecycle-service";
 import { toast } from "sonner";
 
 export function CloudIntegrityAdmin() {

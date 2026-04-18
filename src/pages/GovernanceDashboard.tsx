@@ -12,7 +12,7 @@ import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, D
 import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
 import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ReadinessInput } from "@/lib/engines/readiness-engine";
+import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

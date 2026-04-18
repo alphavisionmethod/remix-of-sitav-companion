@@ -12,8 +12,8 @@ import {
   FileText, Image, Music, Video, Database, Globe, Sparkles,
   Download, Users, Activity, Wrench, Search, Files, Bell, LifeBuoy
 } from "lucide-react";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
-import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
+import { cloudDeviceService } from "@/platform/cloud/cloud-device-service";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";

@@ -7,7 +7,7 @@ import { useState, useMemo } from "react";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { NovaText, NovaButton, NovaSectionLabel } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
-import { APP_TYPE, APP_COMPONENTS, SPACE } from "@/lib/design-system/app-window-system";
+import { APP_TYPE, APP_COMPONENTS, SPACE } from "@/platform/design-system/app-window-system";
 import { MapPin, Droplets, Wind, Eye, Thermometer, Sun, Cloud, CloudRain, CloudSnow, CloudLightning } from "lucide-react";
 
 export const WEATHER_MANIFEST = {

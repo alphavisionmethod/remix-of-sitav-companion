@@ -1,0 +1,496 @@
+{
+  "generatedAt": "2026-04-18T03:07:15.573Z",
+  "summary": {
+    "skipped-source-is-wrapper": 1,
+    "moved": 77,
+    "skipped-source-missing": 3
+  },
+  "results": [
+    {
+      "from": "src/lib/demo-data/packs.ts",
+      "to": "src/data/seed/packs.ts",
+      "canonicalImport": "@/data/seed/packs",
+      "status": "skipped-source-is-wrapper"
+    },
+    {
+      "from": "src/lib/demo-data/investment.ts",
+      "to": "src/data/seed/investment.ts",
+      "canonicalImport": "@/data/seed/investment",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/sound-engine.ts",
+      "to": "src/platform/runtime/sound-engine.ts",
+      "canonicalImport": "@/platform/runtime/sound-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/advisor-topology.ts",
+      "to": "src/domains/advisors/topology.ts",
+      "canonicalImport": "@/domains/advisors/topology",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/pack-store.ts",
+      "to": "src/domains/apps/pack-store.ts",
+      "canonicalImport": "@/domains/apps/pack-store",
+      "status": "skipped-source-missing"
+    },
+    {
+      "from": "src/lib/data-services/activity-data-service.ts",
+      "to": "src/data/repositories/activity-data-service.ts",
+      "canonicalImport": "@/data/repositories/activity-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/admin-data-service.ts",
+      "to": "src/data/repositories/admin-data-service.ts",
+      "canonicalImport": "@/data/repositories/admin-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/ai-ops-data-service.ts",
+      "to": "src/data/repositories/ai-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/ai-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/business-data-service.ts",
+      "to": "src/data/repositories/business-data-service.ts",
+      "canonicalImport": "@/data/repositories/business-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/cai-data-service.ts",
+      "to": "src/data/repositories/cai-data-service.ts",
+      "canonicalImport": "@/data/repositories/cai-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/calendar-data-service.ts",
+      "to": "src/data/repositories/calendar-data-service.ts",
+      "canonicalImport": "@/data/repositories/calendar-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/capability-launch-data-service.ts",
+      "to": "src/data/repositories/capability-launch-data-service.ts",
+      "canonicalImport": "@/data/repositories/capability-launch-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/connector-ops-data-service.ts",
+      "to": "src/data/repositories/connector-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/connector-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/demo-governance-data-service.ts",
+      "to": "src/data/repositories/demo-governance-data-service.ts",
+      "canonicalImport": "@/data/repositories/demo-governance-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/digital-presence-data-service.ts",
+      "to": "src/data/repositories/digital-presence-data-service.ts",
+      "canonicalImport": "@/data/repositories/digital-presence-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/feature-lifecycle-data-service.ts",
+      "to": "src/data/repositories/feature-lifecycle-data-service.ts",
+      "canonicalImport": "@/data/repositories/feature-lifecycle-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/files-data-service.ts",
+      "to": "src/data/repositories/files-data-service.ts",
+      "canonicalImport": "@/data/repositories/files-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/health-signal-data-service.ts",
+      "to": "src/data/repositories/health-signal-data-service.ts",
+      "canonicalImport": "@/data/repositories/health-signal-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/integration-ops-data-service.ts",
+      "to": "src/data/repositories/integration-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/integration-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/intelligence-ops-data-service.ts",
+      "to": "src/data/repositories/intelligence-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/intelligence-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/investment-data-service.ts",
+      "to": "src/data/repositories/investment-data-service.ts",
+      "canonicalImport": "@/data/repositories/investment-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/investment-ops-data-service.ts",
+      "to": "src/data/repositories/investment-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/investment-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/mission-control-data-service.ts",
+      "to": "src/data/repositories/mission-control-data-service.ts",
+      "canonicalImport": "@/data/repositories/mission-control-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/mobile-data-service.ts",
+      "to": "src/data/repositories/mobile-data-service.ts",
+      "canonicalImport": "@/data/repositories/mobile-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/money-data-service.ts",
+      "to": "src/data/repositories/money-data-service.ts",
+      "canonicalImport": "@/data/repositories/money-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/native-shell-data-service.ts",
+      "to": "src/data/repositories/native-shell-data-service.ts",
+      "canonicalImport": "@/data/repositories/native-shell-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/notification-calm-data-service.ts",
+      "to": "src/data/repositories/notification-calm-data-service.ts",
+      "canonicalImport": "@/data/repositories/notification-calm-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/owner-data-service.ts",
+      "to": "src/data/repositories/owner-data-service.ts",
+      "canonicalImport": "@/data/repositories/owner-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/platform-ops-data-service.ts",
+      "to": "src/data/repositories/platform-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/platform-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/revenue-data-service.ts",
+      "to": "src/data/repositories/revenue-data-service.ts",
+      "canonicalImport": "@/data/repositories/revenue-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/revenue-ops-data-service.ts",
+      "to": "src/data/repositories/revenue-ops-data-service.ts",
+      "canonicalImport": "@/data/repositories/revenue-ops-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/surface-mode-data-service.ts",
+      "to": "src/data/repositories/surface-mode-data-service.ts",
+      "canonicalImport": "@/data/repositories/surface-mode-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/system-misc-data-service.ts",
+      "to": "src/data/repositories/system-misc-data-service.ts",
+      "canonicalImport": "@/data/repositories/system-misc-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/unified-calendar-service.ts",
+      "to": "src/data/repositories/unified-calendar-service.ts",
+      "canonicalImport": "@/data/repositories/unified-calendar-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/workspace-data-service.ts",
+      "to": "src/data/repositories/workspace-data-service.ts",
+      "canonicalImport": "@/data/repositories/workspace-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/advisor-orchestration.ts",
+      "to": "src/domains/engines/advisor-orchestration.ts",
+      "canonicalImport": "@/domains/engines/advisor-orchestration",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/advisor-memory-engine.ts",
+      "to": "src/domains/engines/advisor-memory-engine.ts",
+      "canonicalImport": "@/domains/engines/advisor-memory-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/advisor-performance-engine.ts",
+      "to": "src/domains/engines/advisor-performance-engine.ts",
+      "canonicalImport": "@/domains/engines/advisor-performance-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/advisor-reflection-engine.ts",
+      "to": "src/domains/engines/advisor-reflection-engine.ts",
+      "canonicalImport": "@/domains/engines/advisor-reflection-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/advisor-tool-execution-engine.ts",
+      "to": "src/domains/engines/advisor-tool-execution-engine.ts",
+      "canonicalImport": "@/domains/engines/advisor-tool-execution-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/ai-governance-engine.ts",
+      "to": "src/domains/engines/ai-governance-engine.ts",
+      "canonicalImport": "@/domains/engines/ai-governance-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/client-intelligence-engine.ts",
+      "to": "src/domains/engines/client-intelligence-engine.ts",
+      "canonicalImport": "@/domains/engines/client-intelligence-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/confidence-risk-scorer.ts",
+      "to": "src/domains/engines/confidence-risk-scorer.ts",
+      "canonicalImport": "@/domains/engines/confidence-risk-scorer",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/connector-concierge.ts",
+      "to": "src/domains/engines/connector-concierge.ts",
+      "canonicalImport": "@/domains/engines/connector-concierge",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/continuous-profit-engine.ts",
+      "to": "src/domains/engines/continuous-profit-engine.ts",
+      "canonicalImport": "@/domains/engines/continuous-profit-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/cross-advisor-coordinator.ts",
+      "to": "src/domains/engines/cross-advisor-coordinator.ts",
+      "canonicalImport": "@/domains/engines/cross-advisor-coordinator",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/cross-os-integration.ts",
+      "to": "src/domains/engines/cross-os-integration.ts",
+      "canonicalImport": "@/domains/engines/cross-os-integration",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/decision-journal-engine.ts",
+      "to": "src/domains/engines/decision-journal-engine.ts",
+      "canonicalImport": "@/domains/engines/decision-journal-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/delegation-engine.ts",
+      "to": "src/domains/engines/delegation-engine.ts",
+      "canonicalImport": "@/domains/engines/delegation-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/digital-twin.ts",
+      "to": "src/domains/engines/digital-twin.ts",
+      "canonicalImport": "@/domains/engines/digital-twin",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/drag-engine.ts",
+      "to": "src/domains/engines/drag-engine.ts",
+      "canonicalImport": "@/domains/engines/drag-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/economic-intelligence-engine.ts",
+      "to": "src/domains/engines/economic-intelligence-engine.ts",
+      "canonicalImport": "@/domains/engines/economic-intelligence-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/enterprise-maturity.ts",
+      "to": "src/domains/engines/enterprise-maturity.ts",
+      "canonicalImport": "@/domains/engines/enterprise-maturity",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/entity-role-graph.ts",
+      "to": "src/domains/engines/entity-role-graph.ts",
+      "canonicalImport": "@/domains/engines/entity-role-graph",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/execution-debt-engine.ts",
+      "to": "src/domains/engines/execution-debt-engine.ts",
+      "canonicalImport": "@/domains/engines/execution-debt-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/founder-bottleneck-engine.ts",
+      "to": "src/domains/engines/founder-bottleneck-engine.ts",
+      "canonicalImport": "@/domains/engines/founder-bottleneck-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/graph-engine.ts",
+      "to": "src/domains/engines/graph-engine.ts",
+      "canonicalImport": "@/domains/engines/graph-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/invisible-labor-engine.ts",
+      "to": "src/domains/engines/invisible-labor-engine.ts",
+      "canonicalImport": "@/domains/engines/invisible-labor-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/memory-governance.ts",
+      "to": "src/domains/engines/memory-governance.ts",
+      "canonicalImport": "@/domains/engines/memory-governance",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/meta-governance-engine.ts",
+      "to": "src/domains/engines/meta-governance-engine.ts",
+      "canonicalImport": "@/domains/engines/meta-governance-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/playbook-simulator.ts",
+      "to": "src/domains/engines/playbook-simulator.ts",
+      "canonicalImport": "@/domains/engines/playbook-simulator",
+      "status": "skipped-source-missing"
+    },
+    {
+      "from": "src/lib/engines/policy-depth-engine.ts",
+      "to": "src/domains/engines/policy-depth-engine.ts",
+      "canonicalImport": "@/domains/engines/policy-depth-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/profile-evolution-engine.ts",
+      "to": "src/domains/engines/profile-evolution-engine.ts",
+      "canonicalImport": "@/domains/engines/profile-evolution-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/readiness-engine.ts",
+      "to": "src/domains/engines/readiness-engine.ts",
+      "canonicalImport": "@/domains/engines/readiness-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/release-engine.ts",
+      "to": "src/domains/engines/release-engine.ts",
+      "canonicalImport": "@/domains/engines/release-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/replay-recovery.ts",
+      "to": "src/domains/engines/replay-recovery.ts",
+      "canonicalImport": "@/domains/engines/replay-recovery",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/revenue-opportunity.ts",
+      "to": "src/domains/engines/revenue-opportunity.ts",
+      "canonicalImport": "@/domains/engines/revenue-opportunity",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/revenue-autopilot.ts",
+      "to": "src/domains/engines/revenue-autopilot.ts",
+      "canonicalImport": "@/domains/engines/revenue-autopilot",
+      "status": "skipped-source-missing"
+    },
+    {
+      "from": "src/lib/engines/setup-orchestration-engine.ts",
+      "to": "src/domains/engines/setup-orchestration-engine.ts",
+      "canonicalImport": "@/domains/engines/setup-orchestration-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/setup-phase-definitions.ts",
+      "to": "src/domains/engines/setup-phase-definitions.ts",
+      "canonicalImport": "@/domains/engines/setup-phase-definitions",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/simulation-engine.ts",
+      "to": "src/domains/engines/simulation-engine.ts",
+      "canonicalImport": "@/domains/engines/simulation-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/strategic-planning-engine.ts",
+      "to": "src/domains/engines/strategic-planning-engine.ts",
+      "canonicalImport": "@/domains/engines/strategic-planning-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/token-governance.ts",
+      "to": "src/domains/engines/token-governance.ts",
+      "canonicalImport": "@/domains/engines/token-governance",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/trust-debt-engine.ts",
+      "to": "src/domains/engines/trust-debt-engine.ts",
+      "canonicalImport": "@/domains/engines/trust-debt-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/workspace-view-engine.ts",
+      "to": "src/domains/engines/workspace-view-engine.ts",
+      "canonicalImport": "@/domains/engines/workspace-view-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/action-state-machine.ts",
+      "to": "src/domains/engines/action-state-machine.ts",
+      "canonicalImport": "@/domains/engines/action-state-machine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/adaptive-advisor-roster.ts",
+      "to": "src/domains/engines/adaptive-advisor-roster.ts",
+      "canonicalImport": "@/domains/engines/adaptive-advisor-roster",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/adaptive-boardroom-framing.ts",
+      "to": "src/domains/engines/adaptive-boardroom-framing.ts",
+      "canonicalImport": "@/domains/engines/adaptive-boardroom-framing",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/adaptive-notification-engine.ts",
+      "to": "src/domains/engines/adaptive-notification-engine.ts",
+      "canonicalImport": "@/domains/engines/adaptive-notification-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/adaptive-sidebar-intelligence.ts",
+      "to": "src/domains/engines/adaptive-sidebar-intelligence.ts",
+      "canonicalImport": "@/domains/engines/adaptive-sidebar-intelligence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/engines/adaptive-workflow-templates.ts",
+      "to": "src/domains/engines/adaptive-workflow-templates.ts",
+      "canonicalImport": "@/domains/engines/adaptive-workflow-templates",
+      "status": "moved"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import { Activity, CheckCircle2, XCircle, Wrench, FileSearch, RotateCcw } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
-import { DEMO_OBSERVABILITY_FIELDS } from "@/lib/demo-data/admin-platform";
+import { DEMO_OBSERVABILITY_FIELDS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

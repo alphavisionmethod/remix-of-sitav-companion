@@ -1,0 +1,357 @@
+{
+  "generatedAt": "2026-04-18T03:05:23.292Z",
+  "summary": {
+    "moved": 57,
+    "skipped-source-is-wrapper": 1
+  },
+  "results": [
+    {
+      "from": "src/lib/demo-data/admin-platform.tsx",
+      "to": "src/data/seed/admin-platform.tsx",
+      "canonicalImport": "@/data/seed/admin-platform",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/revenue-office.ts",
+      "to": "src/data/seed/revenue-office.ts",
+      "canonicalImport": "@/data/seed/revenue-office",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/core-pages.ts",
+      "to": "src/data/seed/core-pages.ts",
+      "canonicalImport": "@/data/seed/core-pages",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/digital-presence.ts",
+      "to": "src/data/seed/digital-presence.ts",
+      "canonicalImport": "@/data/seed/digital-presence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/integrations.ts",
+      "to": "src/data/seed/integrations.ts",
+      "canonicalImport": "@/data/seed/integrations",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/admin-intelligence.ts",
+      "to": "src/data/seed/admin-intelligence.ts",
+      "canonicalImport": "@/data/seed/admin-intelligence",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/atlas.ts",
+      "to": "src/data/seed/atlas.ts",
+      "canonicalImport": "@/data/seed/atlas",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/approval-chamber.ts",
+      "to": "src/data/seed/approval-chamber.ts",
+      "canonicalImport": "@/data/seed/approval-chamber",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/app-receipts.ts",
+      "to": "src/data/seed/app-receipts.ts",
+      "canonicalImport": "@/data/seed/app-receipts",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/apps.ts",
+      "to": "src/data/seed/apps.ts",
+      "canonicalImport": "@/data/seed/apps",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/business.ts",
+      "to": "src/data/seed/business.ts",
+      "canonicalImport": "@/data/seed/business",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/calendar-workspace.ts",
+      "to": "src/data/seed/calendar-workspace.ts",
+      "canonicalImport": "@/data/seed/calendar-workspace",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/communications.ts",
+      "to": "src/data/seed/communications.ts",
+      "canonicalImport": "@/data/seed/communications",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/concierge.ts",
+      "to": "src/data/seed/concierge.ts",
+      "canonicalImport": "@/data/seed/concierge",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/connectors.ts",
+      "to": "src/data/seed/connectors.ts",
+      "canonicalImport": "@/data/seed/connectors",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/durability.ts",
+      "to": "src/data/seed/durability.ts",
+      "canonicalImport": "@/data/seed/durability",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/enterprise.ts",
+      "to": "src/data/seed/enterprise.ts",
+      "canonicalImport": "@/data/seed/enterprise",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/health-signals.ts",
+      "to": "src/data/seed/health-signals.ts",
+      "canonicalImport": "@/data/seed/health-signals",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/import-export.ts",
+      "to": "src/data/seed/import-export.ts",
+      "canonicalImport": "@/data/seed/import-export",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/incidents.ts",
+      "to": "src/data/seed/incidents.ts",
+      "canonicalImport": "@/data/seed/incidents",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/media.ts",
+      "to": "src/data/seed/media.ts",
+      "canonicalImport": "@/data/seed/media",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/native-shell.ts",
+      "to": "src/data/seed/native-shell.ts",
+      "canonicalImport": "@/data/seed/native-shell",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/notes.ts",
+      "to": "src/data/seed/notes.ts",
+      "canonicalImport": "@/data/seed/notes",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/notification-calm.ts",
+      "to": "src/data/seed/notification-calm.ts",
+      "canonicalImport": "@/data/seed/notification-calm",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/outcome-engine.ts",
+      "to": "src/data/seed/outcome-engine.ts",
+      "canonicalImport": "@/data/seed/outcome-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/owner-center-costs.ts",
+      "to": "src/data/seed/owner-center-costs.ts",
+      "canonicalImport": "@/data/seed/owner-center-costs",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/demo-data/packs.ts",
+      "to": "src/data/seed/packs.ts",
+      "canonicalImport": "@/data/seed/packs",
+      "status": "skipped-source-is-wrapper"
+    },
+    {
+      "from": "src/lib/demo-data/system-status.ts",
+      "to": "src/data/seed/system-status.ts",
+      "canonicalImport": "@/data/seed/system-status",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/design-system/sita-design-tokens.ts",
+      "to": "src/platform/design-system/sita-design-tokens.ts",
+      "canonicalImport": "@/platform/design-system/sita-design-tokens",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/design-system/app-window-system.ts",
+      "to": "src/platform/design-system/app-window-system.ts",
+      "canonicalImport": "@/platform/design-system/app-window-system",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/design-system/nova-os.ts",
+      "to": "src/platform/design-system/nova-os.ts",
+      "canonicalImport": "@/platform/design-system/nova-os",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/design-system/domain-atmospheres.ts",
+      "to": "src/platform/design-system/domain-atmospheres.ts",
+      "canonicalImport": "@/platform/design-system/domain-atmospheres",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/design-system/snap-zones.ts",
+      "to": "src/platform/design-system/snap-zones.ts",
+      "canonicalImport": "@/platform/design-system/snap-zones",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/crm-data-service.ts",
+      "to": "src/data/repositories/crm-data-service.ts",
+      "canonicalImport": "@/data/repositories/crm-data-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/data-services/file-explorer-service.ts",
+      "to": "src/data/repositories/file-explorer-service.ts",
+      "canonicalImport": "@/data/repositories/file-explorer-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-registry.ts",
+      "to": "src/domains/customer-journey/journey-registry.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-registry",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-hooks.ts",
+      "to": "src/domains/customer-journey/journey-hooks.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-ingestion-hooks.ts",
+      "to": "src/domains/customer-journey/journey-ingestion-hooks.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-ingestion-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-scoring-hooks.ts",
+      "to": "src/domains/customer-journey/journey-scoring-hooks.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-scoring-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-coverage-hooks.ts",
+      "to": "src/domains/customer-journey/journey-coverage-hooks.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-coverage-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-evidence-hooks.ts",
+      "to": "src/domains/customer-journey/journey-evidence-hooks.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-evidence-hooks",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/ai-journey-classifier.ts",
+      "to": "src/domains/customer-journey/ai-journey-classifier.ts",
+      "canonicalImport": "@/domains/customer-journey/ai-journey-classifier",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/blocker-scoring-engine.ts",
+      "to": "src/domains/customer-journey/blocker-scoring-engine.ts",
+      "canonicalImport": "@/domains/customer-journey/blocker-scoring-engine",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/customer-journey/journey-registry-seeder.ts",
+      "to": "src/domains/customer-journey/journey-registry-seeder.ts",
+      "canonicalImport": "@/domains/customer-journey/journey-registry-seeder",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/investment-office/mock-data.ts",
+      "to": "src/domains/investment/mock-data.ts",
+      "canonicalImport": "@/domains/investment/mock-data",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-storage-service.ts",
+      "to": "src/platform/cloud/cloud-storage-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-storage-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-lifecycle-service.ts",
+      "to": "src/platform/cloud/cloud-lifecycle-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-lifecycle-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-abuse-service.ts",
+      "to": "src/platform/cloud/cloud-abuse-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-abuse-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-audit-service.ts",
+      "to": "src/platform/cloud/cloud-audit-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-audit-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-device-service.ts",
+      "to": "src/platform/cloud/cloud-device-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-device-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-quota-service.ts",
+      "to": "src/platform/cloud/cloud-quota-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-quota-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-support-service.ts",
+      "to": "src/platform/cloud/cloud-support-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-support-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-sync-service.ts",
+      "to": "src/platform/cloud/cloud-sync-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-sync-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-tenant-service.ts",
+      "to": "src/platform/cloud/cloud-tenant-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-tenant-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/cloud-backbone/cloud-worker-service.ts",
+      "to": "src/platform/cloud/cloud-worker-service.ts",
+      "canonicalImport": "@/platform/cloud/cloud-worker-service",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/reality-audit/reality-audit-registry.ts",
+      "to": "src/runtimes/reality/reality-audit-registry.ts",
+      "canonicalImport": "@/runtimes/reality/reality-audit-registry",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/platform-law/platform-law-registry.ts",
+      "to": "src/platform/governance/platform-law-registry.ts",
+      "canonicalImport": "@/platform/governance/platform-law-registry",
+      "status": "moved"
+    },
+    {
+      "from": "src/lib/integrations/reality-integration-hub.ts",
+      "to": "src/integrations/external/reality-integration-hub.ts",
+      "canonicalImport": "@/integrations/external/reality-integration-hub",
+      "status": "moved"
+    }
+  ]
+}

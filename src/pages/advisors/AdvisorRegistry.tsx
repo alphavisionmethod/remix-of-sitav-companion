@@ -25,7 +25,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_AUTONOMY_LEVELS } from "@/lib/demo-data/core-pages";
+import { DEMO_AUTONOMY_LEVELS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Maturity color mapping ──────────────────────────────────

@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
+import { ICON_GRADIENTS } from "@/platform/design-system/nova-os";
 import {
   Folder, Download, FileText, StickyNote, Trash2,
   Code2, FileDown, FileStack, Briefcase, BarChart3,

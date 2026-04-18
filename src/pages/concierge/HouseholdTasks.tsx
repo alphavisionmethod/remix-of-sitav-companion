@@ -15,7 +15,7 @@ import {
   Users, GraduationCap, Stethoscope, ArrowUpRight, RotateCcw, Sparkles, Shield, X, Trash2, Check
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";
 

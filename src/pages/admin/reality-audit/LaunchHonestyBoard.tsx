@@ -7,7 +7,7 @@ import { Megaphone, ShieldAlert, ShieldCheck, AlertTriangle } from "lucide-react
 import {
   computeLaunchHonestyBoard, getLaunchHonestySummary, getRealityDistribution, getDomainRealityRollups,
   type RealityState
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<RealityState, string> = {
   presentational: "text-red-400 bg-red-500/10",

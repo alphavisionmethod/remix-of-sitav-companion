@@ -19,7 +19,7 @@ import {
   aiApprovals,
   aiAuditTimeline,
   aiSelfHealingRules,
-} from "@/lib/data-services/ai-ops-data-service";
+} from "@/data/repositories/ai-ops-data-service";
 
 export type AIEngDomain =
   | "missions"

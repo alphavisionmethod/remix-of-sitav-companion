@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CUSTOMER_JOURNEY_REGISTRY } from "@/lib/customer-journey/journey-registry";
+import { CUSTOMER_JOURNEY_REGISTRY } from "@/domains/customer-journey/journey-registry";
 
 describe("Customer Journey Pipeline — Integration", () => {
   it("has a non-empty journey registry", () => {

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Wrench, Play, CheckCircle, AlertTriangle, Clock, Loader2 } from "lucide-react";
-import { cloudSyncService, type SyncJob } from "@/lib/cloud-backbone/cloud-sync-service";
+import { cloudSyncService, type SyncJob } from "@/platform/cloud/cloud-sync-service";
 import { toast } from "sonner";
 
 const jobDescriptions: Record<string, { label: string; desc: string; icon: string }> = {

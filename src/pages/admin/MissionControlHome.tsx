@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
-import { DEMO_MUTATIONS } from "@/lib/demo-data/durability";
+import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/data/seed/admin-platform";
+import { DEMO_MUTATIONS } from "@/data/seed/durability";
 import {
   RevenueSummaryPanel,
   RiskSummaryPanel,

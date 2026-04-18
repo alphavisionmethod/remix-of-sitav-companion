@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "@/hooks/useLauncherViewModel";
 import type { AppCategory } from "@/domains/apps/types";
-import { SoundEngine } from "@/lib/sound-engine";
+import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface AppLauncherPanelProps {

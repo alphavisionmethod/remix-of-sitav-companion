@@ -5,7 +5,7 @@ import { Crown, TrendingUp, AlertTriangle, Lightbulb, Users, CheckCircle, HelpCi
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { DEMO_CHIEF_HISTORICAL } from "@/lib/demo-data/revenue-office";
+import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const synthesis = {

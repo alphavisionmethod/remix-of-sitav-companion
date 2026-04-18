@@ -8,7 +8,7 @@ import { ArrowLeft, CheckCircle, XCircle, Shield, FileCode, Database, Zap, Arrow
 import {
   getFeatureById, getMockReplacementsForFeature, MOCK_SOURCE_INVENTORY,
   type RealityState, type FeatureRealityRecord
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<RealityState, string> = {
   presentational: "bg-red-500/15 text-red-400 border-red-500/30",

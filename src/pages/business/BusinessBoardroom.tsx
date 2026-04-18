@@ -6,15 +6,15 @@ import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { BarChart3, AlertTriangle, Target, Sparkles, Clock, ArrowRight, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getTopAdvisors } from "@/lib/engines/adaptive-advisor-roster";
-import { getBoardroomAgenda } from "@/lib/engines/adaptive-boardroom-framing";
+import { getTopAdvisors } from "@/domains/engines/adaptive-advisor-roster";
+import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing";
 
 const BusinessBoardroom = () => {
   const { isDemo: isDemoMode } = useAuth();

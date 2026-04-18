@@ -13,7 +13,7 @@ import {
   getManifestCompletionRate,
   type FeatureManifestRecord, type InteractionManifestRecord, type JourneyManifestRecord,
   type ContractManifestRecord
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const PLE05ManifestEnforcer = () => {
   const [selectedFM, setSelectedFM] = useState<FeatureManifestRecord | null>(null);

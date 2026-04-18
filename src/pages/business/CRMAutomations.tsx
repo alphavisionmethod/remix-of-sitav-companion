@@ -15,10 +15,10 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation } from "@/hooks/use-crm-data";
-import type { CRMAutomation } from "@/lib/data-services/crm-data-service";
+import type { CRMAutomation } from "@/data/repositories/crm-data-service";
 import { format, formatDistanceToNow } from "date-fns";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getWorkflowSuggestions } from "@/lib/engines/adaptive-workflow-templates";
+import { getWorkflowSuggestions } from "@/domains/engines/adaptive-workflow-templates";
 
 // ─── Constants ──────────────────────────────────────────────
 const TRIGGER_TYPES = [

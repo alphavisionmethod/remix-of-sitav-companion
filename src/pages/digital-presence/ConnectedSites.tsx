@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSites } from "@/hooks/use-digital-presence";
-import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS, DEMO_DPO_PLATFORMS as DEMO_PLATFORMS } from "@/lib/demo-data/digital-presence";
+import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS, DEMO_DPO_PLATFORMS as DEMO_PLATFORMS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

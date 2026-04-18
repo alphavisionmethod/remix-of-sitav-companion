@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
-import { DEMO_ALLOCATIONS } from "@/lib/demo-data/core-pages";
+import { DEMO_ALLOCATIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

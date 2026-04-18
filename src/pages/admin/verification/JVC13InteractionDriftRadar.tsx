@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SURFACE_REGISTRY, type SurfaceEntry } from "@/platform/verification/surface-registry";
-import { CUSTOMER_JOURNEY_REGISTRY } from "@/lib/customer-journey/journey-registry";
+import { CUSTOMER_JOURNEY_REGISTRY } from "@/domains/customer-journey/journey-registry";
 import { useVerificationSurfaces } from "@/platform/verification/verification-hooks";
 import { Radar, AlertTriangle, CheckCircle2, XCircle, GitBranch, Clock, Shield, ArrowRight } from "lucide-react";
 

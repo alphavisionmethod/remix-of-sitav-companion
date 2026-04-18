@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar, Heart, Activity } from "lucide-react";
 import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
-import { DEMO_JOURNAL_ENTRIES } from "@/lib/demo-data/investment";
+import { DEMO_JOURNAL_ENTRIES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ThesisJournal() {

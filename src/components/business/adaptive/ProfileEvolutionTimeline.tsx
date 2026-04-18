@@ -15,7 +15,7 @@ import {
   analyzeProfileEvolution,
   generateMockSignals,
   type EvolutionInsight,
-} from "@/lib/engines/profile-evolution-engine";
+} from "@/domains/engines/profile-evolution-engine";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 const ARCHETYPE_LABELS: Record<string, string> = {

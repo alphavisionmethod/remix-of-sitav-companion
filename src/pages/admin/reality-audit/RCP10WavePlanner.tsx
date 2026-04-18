@@ -2,7 +2,7 @@ import RCPSubNav from "@/components/admin/RCPSubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Waves, ArrowRight, Users, Clock, TrendingUp } from "lucide-react";
-import { MIGRATION_WAVES, type MigrationStatus } from "@/lib/reality-audit/reality-audit-registry";
+import { MIGRATION_WAVES, type MigrationStatus } from "@/runtimes/reality/reality-audit-registry";
 
 const statusColors: Record<MigrationStatus, string> = {
   identified: "text-muted-foreground bg-muted/30",

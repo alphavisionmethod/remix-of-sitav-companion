@@ -7,8 +7,8 @@ import {
   Wifi, RotateCcw, Clock, CheckCircle, Gauge, TrendingUp,
   ArrowUpRight, ArrowDownRight, Bell
 } from "lucide-react";
-import { cloudSyncService } from "@/lib/cloud-backbone/cloud-sync-service";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
+import { cloudSyncService } from "@/platform/cloud/cloud-sync-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 
 const spark = () => Array.from({ length: 24 }, () => Math.floor(Math.random() * 100));
 

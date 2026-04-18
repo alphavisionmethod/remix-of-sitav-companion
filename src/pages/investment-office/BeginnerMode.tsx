@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign, CheckCircle2, BarChart3, Wallet } from "lucide-react";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { DEMO_LEARN_TOPICS } from "@/lib/demo-data/investment";
+import { DEMO_LEARN_TOPICS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;

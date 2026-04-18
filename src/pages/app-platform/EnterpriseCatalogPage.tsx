@@ -7,7 +7,7 @@ import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle, Downloa
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_ENTERPRISE_APPS } from "@/lib/demo-data/core-pages";
+import { DEMO_ENTERPRISE_APPS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

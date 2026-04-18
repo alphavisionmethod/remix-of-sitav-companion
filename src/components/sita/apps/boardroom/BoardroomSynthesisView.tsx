@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, CheckCircle, Scale, ChevronDown, ChevronRight, MessageCircle, Users, Shield, Lock, HelpCircle, XCircle } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
-import { getAdvisorRoster, ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
+import { getAdvisorRoster, ADVISOR_ROSTERS, type AdvisorRole } from "@/domains/advisors/topology";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
 import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";

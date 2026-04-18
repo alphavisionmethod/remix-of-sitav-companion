@@ -27,7 +27,7 @@ export type {
 export * as DualReality from "@/lib/dual-reality";
 
 // ── Reality Audit (namespaced — overlaps with reality-records) ──
-export * as RealityAudit from "@/lib/reality-audit/reality-audit-registry";
+export * as RealityAudit from "@/runtimes/reality/reality-audit-registry";
 
 // ── Reality Records (namespaced — overlaps with reality-audit) ──
 export * as RealityRecords from "@/lib/reality-records/canonical-records";

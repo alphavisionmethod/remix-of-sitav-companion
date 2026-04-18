@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, AlertTriangle, Zap, Clock, Target, Server, BarChart3, Bell, CheckCircle, RefreshCw, Play, Gauge, Database, ArrowRight, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_RUNBOOKS, DEMO_SLOS } from "@/lib/demo-data/admin-platform";
+import { DEMO_RUNBOOKS, DEMO_SLOS } from "@/data/seed/admin-platform";
 import { supabase } from "@/integrations/supabase/client";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

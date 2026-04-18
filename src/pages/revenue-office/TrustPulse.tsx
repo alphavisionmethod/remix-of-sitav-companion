@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DEMO_CLIENTS, DEMO_REV_ALERTS as DEMO_ALERTS, DEMO_TRUST_DIMENSIONS, DEMO_SENTIMENT_TREND } from "@/lib/demo-data/revenue-office";
+import { DEMO_CLIENTS, DEMO_REV_ALERTS as DEMO_ALERTS, DEMO_TRUST_DIMENSIONS, DEMO_SENTIMENT_TREND } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
