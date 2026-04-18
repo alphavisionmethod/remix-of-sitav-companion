@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-18T14:06:22.635Z",
+  "generatedAt": "2026-04-18T14:07:38.159Z",
   "gate": "warn-ratchet",
   "level": "warn",
-  "ceiling": 3500,
+  "ceiling": 3400,
   "observedWarnings": 3348,
   "observedErrors": 0,
-  "headroom": 152,
+  "headroom": 52,
   "ok": true
 }

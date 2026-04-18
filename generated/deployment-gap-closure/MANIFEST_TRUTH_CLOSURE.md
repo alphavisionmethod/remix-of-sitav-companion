@@ -1,6 +1,6 @@
 # Manifest Truth Closure
 
-_Generated: 2026-04-18T13:52:40.158Z_
+_Generated: 2026-04-18T14:07:07.137Z_
 
 ## Registry components (11)
 - `src/lib/truth-manifests/manifest-ci-gate-map.ts`
@@ -16,7 +16,7 @@ _Generated: 2026-04-18T13:52:40.158Z_
 - `src/lib/truth-manifests/manifest-validator-map.ts`
 
 ## Generated artifacts under governance
-**162** JSON artifacts in `generated/`.
+**163** JSON artifacts in `generated/`.
 
 ## Governance fabric
 - Manifest registry: ✅

@@ -1,8 +1,8 @@
 # Frontend ↔ Backend ↔ Substrate Matrix
 
-_Generated: 2026-04-18T13:52:40.158Z_
+_Generated: 2026-04-18T14:07:07.137Z_
 
-## Action coverage: 20 actions
+## Action coverage: 24 actions
 
 | Action | Backend | Substrate | Status |
 |--------|---------|-----------|--------|
@@ -26,9 +26,13 @@ _Generated: 2026-04-18T13:52:40.158Z_
 | Kill-switch arm | edge:kill-switch-control | db:kill_switch_audit_log | real |
 | Admin action audit | trigger+rls | db:admin_action_audit | real |
 | AI budget alerting | edge:ai-gateway | db:ai_budget_alerts | real |
+| Advisor recommendation | edge:advisor-loop | db:advisor_board_recommendations | real |
+| Advisor action queue | edge:advisor-loop | db:advisor_action_queue | real |
+| AI prompt invocation log | edge:ai-gateway | db:ai_prompt_invocations | real |
+| AI inference receipt | edge:ai-gateway | db:ai_inference_receipts | real |
 
 ## Summary
-- **Real:** 19
+- **Real:** 23
 - **Honestly archived:** 1
 - **Pending real implementation:** 0
 
