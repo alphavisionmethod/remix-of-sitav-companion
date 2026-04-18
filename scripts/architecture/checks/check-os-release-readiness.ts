@@ -99,6 +99,15 @@ const REQUIRED_GATES = [
   // Flagship Surface Closure — Admin AI Engineering scope (2 BLOCK gates)
   "admin-ai-runtime-drilldowns",
   "admin-integrations-health-visibility",
+  // Internal AI Workforce — Phase 2 closure (8 BLOCK gates)
+  "internal-agent-execute-action",
+  "autonomous-action-safety-gates",
+  "autonomous-action-receipts",
+  "autonomous-action-rollback-coverage",
+  "error-patrol-triage-page",
+  "agent-primitive-wiring",
+  "priority-bridge-wiring",
+  "kill-switch-backfill",
 ];
 
 const GENERATED_DIR = "generated";

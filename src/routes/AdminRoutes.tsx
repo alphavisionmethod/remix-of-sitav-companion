@@ -190,6 +190,7 @@ const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoar
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
 const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
+const InternalAgentIntentTimeline = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentIntentTimeline"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
