@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T20:24:19.328Z",
+  "generatedAt": "2026-04-18T23:08:01.227Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -361,8 +361,50 @@
       "warnings": 0
     },
     {
+      "file": "generated/internal-agent-runtime-coverage-report.json",
+      "gate": "internal-agent-runtime-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-admin-pages-report.json",
+      "gate": "internal-agent-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-escalation-runtime-report.json",
+      "gate": "internal-agent-escalation-runtime",
+      "ok": false,
+      "errors": 19,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-seed-integrity-report.json",
+      "gate": "internal-agent-seed-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/internal-agent-runtime-loop-report.json",
       "gate": "internal-agent-runtime-loop",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-ai-runtime-drilldowns-report.json",
+      "gate": "admin-ai-runtime-drilldowns",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-integrations-health-visibility-report.json",
+      "gate": "admin-integrations-health-visibility",
       "ok": true,
       "errors": 0,
       "warnings": 0
@@ -513,18 +555,277 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-consensus-tables-report.json",
+      "gate": "internal-agent-consensus-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-cost-proposals-table-report.json",
+      "gate": "internal-agent-cost-proposals-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-runbook-tables-report.json",
+      "gate": "internal-agent-runbook-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cross-council-l3-ceiling-report.json",
+      "gate": "cross-council-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cost-proposals-never-auto-apply-report.json",
+      "gate": "cost-proposals-never-auto-apply",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/self-healer-safe-catalogue-report.json",
+      "gate": "self-healer-safe-catalogue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cross-council-board-page-report.json",
+      "gate": "cross-council-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase7-tables-report.json",
+      "gate": "internal-agent-phase7-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-l3-ceiling-report.json",
+      "gate": "tenant-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/owner-copilot-bff-readonly-report.json",
+      "gate": "owner-copilot-bff-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-kill-switch-justification-report.json",
+      "gate": "tenant-kill-switch-justification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/slo-evaluator-function-report.json",
+      "gate": "slo-evaluator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase7-admin-pages-report.json",
+      "gate": "phase7-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase8-tables-report.json",
+      "gate": "internal-agent-phase8-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/assurance-l3-ceiling-report.json",
+      "gate": "assurance-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/chaos-safe-catalogue-report.json",
+      "gate": "chaos-safe-catalogue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/external-workforce-api-readonly-report.json",
+      "gate": "external-workforce-api-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/webhook-hmac-signing-report.json",
+      "gate": "webhook-hmac-signing",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/federation-optin-required-report.json",
+      "gate": "federation-optin-required",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dp-noise-floor-report.json",
+      "gate": "dp-noise-floor",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/knowledge-anonymization-report.json",
+      "gate": "knowledge-anonymization",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase8-admin-pages-report.json",
+      "gate": "phase8-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase9-tables-report.json",
+      "gate": "internal-agent-phase9-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dr-l3-ceiling-report.json",
+      "gate": "dr-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/signed-release-artifacts-report.json",
+      "gate": "signed-release-artifacts",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/audit-export-immutable-report.json",
+      "gate": "audit-export-immutable",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-self-service-isolation-report.json",
+      "gate": "tenant-self-service-isolation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-quota-hard-ceiling-report.json",
+      "gate": "tenant-quota-hard-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/compliance-evidence-allowlisted-report.json",
+      "gate": "compliance-evidence-allowlisted",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/attestation-packet-signed-report.json",
+      "gate": "attestation-packet-signed",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase9-admin-pages-report.json",
+      "gate": "phase9-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-admin-role-gate-report.json",
+      "gate": "tenant-admin-role-gate",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dp-epsilon-budget-ledger-report.json",
+      "gate": "dp-epsilon-budget-ledger",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/webhook-retry-queue-report.json",
+      "gate": "webhook-retry-queue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/compliance-collector-allowlist-report.json",
+      "gate": "compliance-collector-allowlist",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/pg-cron-schedules-report.json",
+      "gate": "pg-cron-schedules",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/pg-extensions-enabled-report.json",
+      "gate": "pg-extensions-enabled",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/release-artifact-signer-report.json",
+      "gate": "release-artifact-signer",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
-  "totalErrors": 0,
+  "totalErrors": 19,
   "totalWarnings": 3348,
-  "missingGates": [
-    "internal-agent-runtime-coverage",
-    "internal-agent-admin-pages",
-    "internal-agent-escalation-runtime",
-    "internal-agent-seed-integrity",
-    "admin-ai-runtime-drilldowns",
-    "admin-integrations-health-visibility"
-  ],
+  "missingGates": [],
   "ok": false,
   "verdict": "RED"
 }
