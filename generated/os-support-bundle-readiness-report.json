@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-18T01:29:02.144Z",
+  "gate": "os-support-bundle-readiness",
+  "phase": "phase-12-native-deployability",
+  "errorCount": 0,
+  "warningCount": 1,
+  "ok": true,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "docs",
+      "message": "Missing doc: docs/os/SUPPORT_BUNDLE.md"
+    }
+  ]
+}
