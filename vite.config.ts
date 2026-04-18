@@ -120,6 +120,27 @@ export default defineConfig(({ mode }) => ({
           if (id.includes("node_modules/date-fns")) return "vendor-date-fns";
           // Form handling
           if (id.includes("node_modules/react-hook-form") || id.includes("node_modules/@hookform") || id.includes("node_modules/zod")) return "vendor-forms";
+
+          // ── Phase 7: Plane-keyed app-code chunking ──────────────────
+          // Split admin control plane into per-domain chunks so an
+          // operator opening /admin/security never downloads /admin/ai-runtime.
+          if (id.includes("/src/admin/modules/")) {
+            const m = id.match(/\/src\/admin\/modules\/([^/]+)\//);
+            if (m) return `admin-mod-${m[1]}`;
+          }
+          if (id.includes("/src/pages/admin/")) return "admin-legacy-pages";
+          if (id.includes("/src/routes/AdminRoutes")) return "admin-router";
+
+          // User-domain features: keep each shell in its own chunk.
+          if (id.includes("/src/features/")) {
+            const m = id.match(/\/src\/features\/([^/]+)\//);
+            if (m) return `feature-${m[1]}`;
+          }
+          // Investment-office page family is the largest single user surface (121 routes).
+          if (id.includes("/src/pages/investment-office/")) return "feature-investment-office";
+
+          // Architecture & generated truth artifacts should never ship to user bundles.
+          if (id.includes("/src/platform/architecture/")) return "platform-architecture";
         },
       },
     },
