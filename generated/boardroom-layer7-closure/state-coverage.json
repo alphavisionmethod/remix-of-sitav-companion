@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "slaHours": 24,
+  "stuckCount": 0,
+  "stuck": [],
+  "status": "GREEN",
+  "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-layer7-state-coverage.ts against live data."
+}

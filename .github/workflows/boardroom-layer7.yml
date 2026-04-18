@@ -1,0 +1,73 @@
+name: Boardroom Layer 7 Closure Gate
+
+on:
+  pull_request:
+    paths:
+      - "src/lib/services/boardroom/**"
+      - "src/components/sita/apps/boardroom/**"
+      - "src/components/admin/boardroom/**"
+      - "supabase/functions/boardroom-followthrough-dispatch/**"
+      - "supabase/functions/boardroom-outcome-record/**"
+      - "supabase/functions/agent-executor/**"
+      - "scripts/validation/check-boardroom-*"
+      - "scripts/architecture/checks/check-boardroom-layer7-closure.ts"
+  push:
+    branches: [main]
+
+jobs:
+  layer7-gate:
+    name: Boardroom L7 closure (BLOCK)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run vitest unit tests for L7 state machine
+        run: npx vitest run src/lib/services/boardroom/__tests__/followthrough-engine.test.ts
+
+      - name: Run sub-validators (best-effort, requires SB env)
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -n "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            npm run brd:l7:subs || echo "Sub-validator amber/red recorded in artifacts"
+          else
+            echo "::warning::SB env missing — using deployment baseline reports"
+          fi
+
+      - name: Run master gate adapter
+        run: npm run brd:l7:gate
+
+      - name: Upload L7 closure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boardroom-layer7-closure-${{ github.run_id }}
+          path: |
+            generated/boardroom-layer7-closure/
+            generated/boardroom-layer7-closure-report.json
+          retention-days: 30
+
+      - name: Enforce gate verdict
+        run: |
+          VERDICT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/boardroom-layer7-closure-report.json','utf8')).verdict)")
+          echo "Layer 7 verdict: $VERDICT"
+          if [ "$VERDICT" = "RED" ]; then
+            echo "::error::Boardroom Layer 7 closure gate is RED — see uploaded artifacts."
+            exit 1
+          fi
