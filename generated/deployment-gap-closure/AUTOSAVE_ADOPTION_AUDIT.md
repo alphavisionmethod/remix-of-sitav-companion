@@ -1,6 +1,6 @@
 # Draft Autosave Adoption Audit
 
-_Generated: 2026-04-18T13:12:36.736Z_
+_Generated: 2026-04-18T13:13:53.078Z_
 
 ## Canonical hook
 - ✅ `src/hooks/useDraftAutosave.ts`

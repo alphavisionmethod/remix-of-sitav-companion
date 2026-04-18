@@ -1,6 +1,6 @@
 # Deployment Gap Backlog
 
-_Generated: 2026-04-18T13:12:36.736Z_
+_Generated: 2026-04-18T13:13:53.078Z_
 
 This backlog merges all admitted P0/P1 gaps with hidden risks discovered during audit.
 
