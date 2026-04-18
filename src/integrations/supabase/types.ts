@@ -7128,6 +7128,39 @@ export type Database = {
           },
         ]
       }
+      compliance_evidence_collectors: {
+        Row: {
+          collector_key: string
+          control_id: string | null
+          created_at: string
+          description: string | null
+          display_name: string
+          framework: string
+          id: string
+          is_active: boolean
+        }
+        Insert: {
+          collector_key: string
+          control_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_name: string
+          framework: string
+          id?: string
+          is_active?: boolean
+        }
+        Update: {
+          collector_key?: string
+          control_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          framework?: string
+          id?: string
+          is_active?: boolean
+        }
+        Relationships: []
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
@@ -17533,6 +17566,36 @@ export type Database = {
         }
         Relationships: []
       }
+      tenant_dp_epsilon_ledger: {
+        Row: {
+          capability_key: string
+          created_at: string
+          epsilon_spent: number
+          id: string
+          period_start: string
+          request_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          epsilon_spent: number
+          id?: string
+          period_start?: string
+          request_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          epsilon_spent?: number
+          id?: string
+          period_start?: string
+          request_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       tenant_federation_optins: {
         Row: {
           created_at: string
@@ -17565,6 +17628,42 @@ export type Database = {
           revoked_at?: string | null
           scope?: string
           tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tenant_kill_switches: {
+        Row: {
+          created_at: string
+          disabled_at: string | null
+          enabled: boolean
+          enabled_at: string | null
+          id: string
+          justification: string | null
+          switch_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          disabled_at?: string | null
+          enabled?: boolean
+          enabled_at?: string | null
+          id?: string
+          justification?: string | null
+          switch_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          disabled_at?: string | null
+          enabled?: boolean
+          enabled_at?: string | null
+          id?: string
+          justification?: string | null
+          switch_key?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -17604,6 +17703,30 @@ export type Database = {
           reset_period?: string
           tenant_id?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tenant_roles: {
+        Row: {
+          created_at: string
+          granted_by: string | null
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          role?: string
           user_id?: string
         }
         Relationships: []
@@ -18663,6 +18786,51 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_retry_queue: {
+        Row: {
+          attempt_count: number
+          created_at: string
+          event_type: string
+          id: string
+          last_error: string | null
+          max_attempts: number
+          next_attempt_at: string
+          payload: Json
+          status: string
+          subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempt_count?: number
+          created_at?: string
+          event_type: string
+          id?: string
+          last_error?: string | null
+          max_attempts?: number
+          next_attempt_at?: string
+          payload?: Json
+          status?: string
+          subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempt_count?: number
+          created_at?: string
+          event_type?: string
+          id?: string
+          last_error?: string | null
+          max_attempts?: number
+          next_attempt_at?: string
+          payload?: Json
+          status?: string
+          subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       workflow_receipts: {
         Row: {
           action: string
@@ -19322,6 +19490,7 @@ export type Database = {
         Args: { _org_id: string; _user_id: string }
         Returns: boolean
       }
+      is_tenant_admin: { Args: { _user_id: string }; Returns: boolean }
       is_tenant_member: {
         Args: { _tenant_id: string; _user_id: string }
         Returns: boolean
@@ -19404,6 +19573,15 @@ export type Database = {
           _source_agent_id: string
         }
         Returns: string
+      }
+      record_dp_epsilon_spend: {
+        Args: {
+          _capability_key: string
+          _epsilon: number
+          _max_per_day?: number
+          _request_ref?: string
+        }
+        Returns: Json
       }
       record_error_patrol_detection: {
         Args: {

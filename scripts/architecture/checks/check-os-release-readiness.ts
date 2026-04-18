@@ -159,6 +159,14 @@ const REQUIRED_GATES = [
   "compliance-evidence-allowlisted",
   "attestation-packet-signed",
   "phase9-admin-pages",
+  // Phase 9 hardening — Cutover, hardening, polish (7 BLOCK gates)
+  "tenant-admin-role-gate",
+  "dp-epsilon-budget-ledger",
+  "webhook-retry-queue",
+  "compliance-collector-allowlist",
+  "pg-cron-schedules",
+  "pg-extensions-enabled",
+  "release-artifact-signer",
 ];
 
 const GENERATED_DIR = "generated";
