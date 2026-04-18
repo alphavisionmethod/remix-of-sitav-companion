@@ -124,6 +124,14 @@ const REQUIRED_GATES = [
   "trust-ladder-never-self-promote",
   "knowledge-bus-write-discipline",
   "trust-ladder-supervisor-readout",
+  // Internal AI Workforce — Phase 6 closure (7 BLOCK gates)
+  "internal-agent-consensus-tables",
+  "internal-agent-cost-proposals-table",
+  "internal-agent-runbook-tables",
+  "cross-council-l3-ceiling",
+  "cost-proposals-never-auto-apply",
+  "self-healer-safe-catalogue",
+  "cross-council-board-page",
 ];
 
 const GENERATED_DIR = "generated";

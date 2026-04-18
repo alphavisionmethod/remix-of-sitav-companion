@@ -1,0 +1,11 @@
+{
+  "gate": "internal-agent-runbook-tables",
+  "level": "BLOCK",
+  "ok": true,
+  "required": [
+    "internal_agent_runbook_bindings",
+    "internal_agent_runbook_executions"
+  ],
+  "missing": [],
+  "generated_at": "2026-04-18T20:34:32.531Z"
+}

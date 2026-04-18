@@ -1,0 +1,11 @@
+{
+  "gate": "internal-agent-consensus-tables",
+  "level": "BLOCK",
+  "ok": true,
+  "required_tables": [
+    "internal_agent_consensus_sessions",
+    "internal_agent_consensus_votes"
+  ],
+  "missing": [],
+  "generated_at": "2026-04-18T20:34:27.211Z"
+}
