@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "runbookFiles": [
+    "index.ts",
+    "runbook-drill-status.ts",
+    "runbook-loader.ts",
+    "runbook-registry.ts",
+    "runbook-resolver.ts",
+    "runbook-subsystem-map.ts",
+    "runbook-types.ts"
+  ],
+  "runbookFileCount": 7,
+  "components": {
+    "runbookRegistry": true,
+    "runbookResolver": true,
+    "runbookSubsystemMap": true,
+    "incidentClassifier": true,
+    "killSwitchRegistry": true,
+    "diagnosticBundle": true
+  },
+  "classification": "operationally-mature",
+  "notes": "Runbook ↔ incident ↔ kill-switch linkage is real and operator-facing."
+}

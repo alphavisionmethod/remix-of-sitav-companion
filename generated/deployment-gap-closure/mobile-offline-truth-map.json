@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "mobilePlatformStatus": "archived",
+  "mobileArchivedEvidence": true,
+  "canonicalRuntime": "Ubuntu 24.04 LTS + Electron",
+  "webOfflinePersistence": "missing",
+  "webOfflineDbExists": false,
+  "legacyLocalStorageMobileConsumers": [],
+  "classification": "honestly-archived",
+  "notes": "Mobile (Capacitor) is archived per features/platform-runtimes memory. Web offline uses IndexedDB. No mobile-runtime code path remains active."
+}

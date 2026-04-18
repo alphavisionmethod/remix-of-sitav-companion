@@ -70,7 +70,11 @@
     "os:readiness:shell": "npx tsx scripts/architecture/checks/check-electron-shell-session-readiness.ts",
     "os:readiness:qemu": "npx tsx scripts/architecture/checks/check-qemu-vm-readiness.ts",
     "os:readiness:support": "npx tsx scripts/architecture/checks/check-os-support-bundle-readiness.ts",
-    "os:readiness:observability": "npx tsx scripts/architecture/checks/check-native-observability-readiness.ts"
+    "os:readiness:observability": "npx tsx scripts/architecture/checks/check-native-observability-readiness.ts",
+    "gap-closure:evidence": "tsx scripts/architecture/audits/generate-deployment-gap-evidence.ts",
+    "gap-closure:gates": "tsx scripts/architecture/checks/run-all-deployment-gap-gates.ts",
+    "gap-closure:verify": "npm run gap-closure:evidence && npm run gap-closure:gates",
+    "gap-closure:reseal": "npm run gap-closure:evidence && npm run gap-closure:gates"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",

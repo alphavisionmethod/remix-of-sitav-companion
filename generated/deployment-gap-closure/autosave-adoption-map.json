@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "canonicalHook": "src/hooks/useDraftAutosave.ts",
+  "hookExists": true,
+  "consumers": [],
+  "consumerCount": 0,
+  "candidateEditableSurfaces": 14,
+  "storageLayer": "localStorage (Phase M will upgrade to IndexedDB via offline-db.ts)",
+  "classification": "adoption-gap-critical",
+  "notes": "Hook exists but only 0/14 editable surfaces adopt it. Phase M will migrate top-value surfaces."
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "registryFiles": [
+    "cross-domain-write-exemptions.ts",
+    "db-audit-registry.ts",
+    "db-dependency-map.ts",
+    "db-health-engine.ts",
+    "db-runtime-consequence-map.ts",
+    "db-truth-registry.ts",
+    "index.ts",
+    "migration-registry.ts",
+    "non-edge-table-io-sources.ts",
+    "rls-policy-registry.ts",
+    "schema-registry.ts",
+    "table-ownership-map.ts",
+    "table-writer-reader-map.ts",
+    "tenancy-boundary-map.ts"
+  ],
+  "registryCount": 14,
+  "components": {
+    "schemaRegistry": true,
+    "rlsRegistry": true,
+    "tenancyMap": true,
+    "migrationRegistry": true,
+    "truthRegistry": true,
+    "ownershipMap": true,
+    "healthEngine": true
+  },
+  "classification": "complete",
+  "notes": "DB truth fabric is operationally complete: schema, RLS, tenancy, migrations, ownership, and health all governed."
+}

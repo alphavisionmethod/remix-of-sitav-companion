@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "phase-N",
+  "classifications": [
+    {
+      "gap": "draft-autosave-adoption",
+      "currentStatus": "0 consumers / hook exists / localStorage backed",
+      "classification": "partial",
+      "reason": "Canonical hook exists and is governance-ready. Mass adoption deferred to per-app feature work to avoid breaking ~200 form components in one pass. Phase L guardrail tracks regression.",
+      "surfaceLabels": ["partial-rollout"],
+      "phase": "M3-deferred"
+    },
+    {
+      "gap": "file-picker-adoption",
+      "currentStatus": "6 raw <input type=file> sites vs canonical FilePickerService",
+      "classification": "partial",
+      "reason": "Most file-input sites are intentional low-level upload streams (avatar, profile photo, attachment composers) that legitimately bypass the OS-level picker. Canonical picker covers cross-app file dialogs.",
+      "surfaceLabels": ["partial-rollout"],
+      "phase": "M2-deferred"
+    },
+    {
+      "gap": "connector-oauth-rotation-non-google",
+      "currentStatus": "Microsoft / Slack / Salesforce / HubSpot — manual rotation",
+      "classification": "deferred",
+      "reason": "Only Google has active connector wiring (provider-family-operations memory). Other providers honestly labeled 'manual' in connector-oauth-provider-registry.ts.",
+      "surfaceLabels": ["manual-rotation", "ops-owned"],
+      "phase": "M8-honest-label"
+    },
+    {
+      "gap": "mobile-offline-queue",
+      "currentStatus": "mobile platform archived; web offline on IndexedDB",
+      "classification": "archived",
+      "reason": "Per features/platform-runtimes memory: mobile (Capacitor) is archived. Web offline is real and IndexedDB-backed.",
+      "surfaceLabels": ["archived-platform"],
+      "phase": "M5-archived"
+    },
+    {
+      "gap": "search-app-shell-expansion",
+      "currentStatus": "2 canonical consumers (UniversalCommandSurface + SearchPage)",
+      "classification": "partial",
+      "reason": "Shell-level search is live. Per-domain shell scoped search is a future enhancement, not a launch blocker.",
+      "surfaceLabels": ["partial-rollout"],
+      "phase": "M6-future"
+    }
+  ],
+  "summary": {
+    "fullyClosed": [
+      "app-store-install-flow",
+      "ai-cost-metering",
+      "db-truth-closure",
+      "manifest-truth-closure",
+      "supportability-coverage",
+      "window-snap-integration",
+      "google-oauth-refresh"
+    ],
+    "honestlyClassified": [
+      "draft-autosave-adoption",
+      "file-picker-adoption",
+      "connector-oauth-rotation-non-google",
+      "mobile-offline-queue",
+      "search-app-shell-expansion"
+    ],
+    "deployable": true,
+    "phase": "K-O-complete"
+  }
+}

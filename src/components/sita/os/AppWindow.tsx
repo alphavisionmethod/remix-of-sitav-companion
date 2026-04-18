@@ -3,6 +3,8 @@ import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
 import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
+import { SnapGuideOverlay } from "@/components/sita/shell/SnapGuideOverlay";
+import { useWindowSnap } from "@/hooks/useWindowSnap";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window
@@ -32,6 +34,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
   const draggingRef = useRef(false);
   const rafRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
+  const snap = useWindowSnap();
 
   // Keep ref in sync when external changes (e.g. cascade) come through
   useEffect(() => {
@@ -83,6 +86,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
       const dy = e.clientY - startRef.current.py;
       const next = clampToViewport(startRef.current.ox + dx, startRef.current.oy + dy);
       posRef.current = next;
+      // detect snap zone for visual guide overlay
+      snap.onDragMove(e.clientX, e.clientY);
 
       cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(() => {
@@ -92,7 +97,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
         }
       });
     },
-    [clampToViewport, win.position.x, win.position.y]
+    [clampToViewport, win.position.x, win.position.y, snap]
   );
 
   const onPointerUp = useCallback(
@@ -105,9 +110,16 @@ export function AppWindow({ window: win }: AppWindowProps) {
 
       // Reset transform offset and commit position to state
       if (elRef.current) elRef.current.style.transform = "";
-      updateWindowPosition(win.id, posRef.current);
+      const snapResult = snap.onDragEnd(e.clientX, e.clientY);
+      if (snapResult) {
+        // commit snapped geometry
+        posRef.current = { x: snapResult.x, y: snapResult.y };
+        updateWindowPosition(win.id, posRef.current);
+      } else {
+        updateWindowPosition(win.id, posRef.current);
+      }
     },
-    [win.id, updateWindowPosition]
+    [win.id, updateWindowPosition, snap]
   );
 
   // ── Re-clamp on viewport resize ──────────────────────────
@@ -252,6 +264,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
       >
         {win.component}
       </div>
+      {/* Snap zone overlay — renders only while dragging into a snap zone */}
+      {isDragging && <SnapGuideOverlay guide={snap.snapGuide} />}
     </div>
   );
 }

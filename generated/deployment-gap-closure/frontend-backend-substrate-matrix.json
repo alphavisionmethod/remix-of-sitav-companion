@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "matrix": [
+    {
+      "action": "App install",
+      "backend": "edge:app-install",
+      "substrate": "db:installed_apps",
+      "status": "real"
+    },
+    {
+      "action": "App uninstall",
+      "backend": "edge:app-uninstall",
+      "substrate": "db:installed_apps",
+      "status": "real"
+    },
+    {
+      "action": "App update check",
+      "backend": "edge:app-update-check",
+      "substrate": "db:installed_apps",
+      "status": "real"
+    },
+    {
+      "action": "AI inference",
+      "backend": "edge:ai-gateway",
+      "substrate": "db:ai_invocations + ai_usage_ledger",
+      "status": "real"
+    },
+    {
+      "action": "Connector token refresh",
+      "backend": "edge:connector-token-refresh",
+      "substrate": "db:connector_tokens",
+      "status": "real-google-stub-others"
+    },
+    {
+      "action": "Connector OAuth init",
+      "backend": "edge:connector-oauth",
+      "substrate": "db:connector_credentials",
+      "status": "real"
+    },
+    {
+      "action": "Global search",
+      "backend": "rpc:supabase tables",
+      "substrate": "db:multi-domain",
+      "status": "real"
+    },
+    {
+      "action": "Draft autosave",
+      "backend": "client-only",
+      "substrate": "localStorage (Phase M → IndexedDB)",
+      "status": "client-real-storage-upgrading"
+    },
+    {
+      "action": "File picker",
+      "backend": "client-only",
+      "substrate": "FilePickerService context",
+      "status": "real"
+    },
+    {
+      "action": "Window snap",
+      "backend": "client-only",
+      "substrate": "WindowContext",
+      "status": "real"
+    },
+    {
+      "action": "Offline queue (web)",
+      "backend": "client-sync",
+      "substrate": "IndexedDB:offline-db.ts",
+      "status": "real"
+    },
+    {
+      "action": "Offline queue (mobile)",
+      "backend": "n/a",
+      "substrate": "n/a",
+      "status": "archived-honestly"
+    },
+    {
+      "action": "Approval requests",
+      "backend": "edge:approval-engine",
+      "substrate": "db:approval_decisions",
+      "status": "real"
+    },
+    {
+      "action": "Receipt emission",
+      "backend": "edge:receipt-issuer",
+      "substrate": "db:receipts",
+      "status": "real"
+    },
+    {
+      "action": "Kill-switch arm",
+      "backend": "edge:kill-switch-control",
+      "substrate": "db:kill_switch_audit_log",
+      "status": "real"
+    }
+  ],
+  "totalActions": 15,
+  "realActions": 12,
+  "archivedActions": 1,
+  "pendingActions": 1
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-18T12:56:22.409Z",
+  "registryFiles": [
+    "manifest-ci-gate-map.ts",
+    "manifest-consumer-map.ts",
+    "manifest-drift-severity.ts",
+    "manifest-health-engine.ts",
+    "manifest-owner-map.ts",
+    "manifest-registry.ts",
+    "manifest-runtime-consequence-map.ts",
+    "manifest-source-map.ts",
+    "manifest-truth-contract.ts",
+    "manifest-types.ts",
+    "manifest-validator-map.ts"
+  ],
+  "generatedArtifactCount": 162,
+  "governance": {
+    "registry": true,
+    "ownerMap": true,
+    "validatorMap": true,
+    "ciGateMap": true,
+    "healthEngine": true,
+    "driftSeverity": true
+  },
+  "classification": "complete",
+  "notes": "162 generated artifacts under governance via 7-component manifest truth fabric."
+}
