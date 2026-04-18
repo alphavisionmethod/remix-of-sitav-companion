@@ -1,0 +1,789 @@
+{
+  "generatedAt": "2026-04-18T02:57:17.739Z",
+  "wrappers": [
+    {
+      "path": "src/lib/admin-ai/index.ts",
+      "loc": 7,
+      "reExportsFrom": "./admin-ai-workforce-client"
+    },
+    {
+      "path": "src/lib/advisor-intelligence/index.ts",
+      "loc": 15,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/ai-engineering/index.ts",
+      "loc": 22,
+      "reExportsFrom": "./observation-layer"
+    },
+    {
+      "path": "src/lib/api/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./edge-client"
+    },
+    {
+      "path": "src/lib/app-platform/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/backend-topology/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./edge-function-registry"
+    },
+    {
+      "path": "src/lib/boardroom/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/capabilities/index.ts",
+      "loc": 16,
+      "reExportsFrom": "./capability-registry"
+    },
+    {
+      "path": "src/lib/cloud-backbone/index.ts",
+      "loc": 20,
+      "reExportsFrom": "./cloud-storage-service"
+    },
+    {
+      "path": "src/lib/constants/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./ui-config"
+    },
+    {
+      "path": "src/lib/contracts/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./global-contracts-registry"
+    },
+    {
+      "path": "src/lib/core-services/ai-gateway/diagnostics.service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-gateway/diagnostics.service"
+    },
+    {
+      "path": "src/lib/core-services/ai-gateway/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-gateway"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/admin-budget-routing-policy.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce/admin-budget-routing-policy"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce"
+    },
+    {
+      "path": "src/lib/core-services/ai-workforce/workforce-orchestrator.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ai-workforce/workforce-orchestrator"
+    },
+    {
+      "path": "src/lib/core-services/approval-engine/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./approval-history.service"
+    },
+    {
+      "path": "src/lib/core-services/architecture/god-tier-integration-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/architecture/god-tier-integration-engine"
+    },
+    {
+      "path": "src/lib/core-services/architecture/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./god-tier-integration-engine"
+    },
+    {
+      "path": "src/lib/core-services/biometric-auth/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/biometric-auth"
+    },
+    {
+      "path": "src/lib/core-services/brain-core/index.ts",
+      "loc": 9,
+      "reExportsFrom": "./orchestrate-intent"
+    },
+    {
+      "path": "src/lib/core-services/canonical-pipeline/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/canonical-pipeline"
+    },
+    {
+      "path": "src/lib/core-services/capability-router/index.ts",
+      "loc": 4,
+      "reExportsFrom": "../capability-router"
+    },
+    {
+      "path": "src/lib/core-services/capability-router/pack-enablement.service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/capability-router/pack-enablement.service"
+    },
+    {
+      "path": "src/lib/core-services/ci-launch-gate-service/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/ci-launch-gate-service"
+    },
+    {
+      "path": "src/lib/core-services/connector-health-service/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/connector-health-service"
+    },
+    {
+      "path": "src/lib/core-services/conscience-gate/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./conscience-gate"
+    },
+    {
+      "path": "src/lib/core-services/device-presence-service/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/device-presence-service"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/assumption-registry.ts",
+      "loc": 2,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/assumption-registry"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/cortex-loop.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/cortex-loop"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/evidence-grader.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/evidence-grader"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/epistemic-firewall"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/negative-receipt.ts",
+      "loc": 2,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/negative-receipt"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/sentinel-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/sentinel-engine"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall/tool-grounding.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/epistemic-firewall/tool-grounding"
+    },
+    {
+      "path": "src/lib/core-services/event-bus/index.ts",
+      "loc": 4,
+      "reExportsFrom": "../event-bus"
+    },
+    {
+      "path": "src/lib/core-services/finance-os/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/finance-os"
+    },
+    {
+      "path": "src/lib/core-services/finance-os/investment-office.service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/finance-os/investment-office.service"
+    },
+    {
+      "path": "src/lib/core-services/flagship-loops/flagship-loop-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/flagship-loops/flagship-loop-service"
+    },
+    {
+      "path": "src/lib/core-services/flagship-loops/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./flagship-loop-service"
+    },
+    {
+      "path": "src/lib/core-services/frontend/frontend-quality-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/frontend/frontend-quality-engine"
+    },
+    {
+      "path": "src/lib/core-services/frontend/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./frontend-quality-engine"
+    },
+    {
+      "path": "src/lib/core-services/google-provider-family/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/google-provider-family"
+    },
+    {
+      "path": "src/lib/core-services/google-provider-family/types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/google-provider-family/types"
+    },
+    {
+      "path": "src/lib/core-services/handoff/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/handoff"
+    },
+    {
+      "path": "src/lib/core-services/identity-auth/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/identity-auth"
+    },
+    {
+      "path": "src/lib/core-services/inference-gateway/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./inference-gateway"
+    },
+    {
+      "path": "src/lib/core-services/integration-hub/demo-connections.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/integration-hub/demo-connections"
+    },
+    {
+      "path": "src/lib/core-services/integration-hub/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/integration-hub"
+    },
+    {
+      "path": "src/lib/core-services/integration-hub/providers.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/integration-hub/providers"
+    },
+    {
+      "path": "src/lib/core-services/launch-readiness/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./launch-readiness-engine"
+    },
+    {
+      "path": "src/lib/core-services/launch-readiness/launch-readiness-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/launch-readiness/launch-readiness-engine"
+    },
+    {
+      "path": "src/lib/core-services/life-simulation/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/life-simulation"
+    },
+    {
+      "path": "src/lib/core-services/memory-service/index.ts",
+      "loc": 7,
+      "reExportsFrom": "../memory-service"
+    },
+    {
+      "path": "src/lib/core-services/mnemosyne/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./mnemosyne"
+    },
+    {
+      "path": "src/lib/core-services/model-router/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./model-router"
+    },
+    {
+      "path": "src/lib/core-services/policy-engine/index.ts",
+      "loc": 5,
+      "reExportsFrom": "../policy-engine"
+    },
+    {
+      "path": "src/lib/core-services/projection-service/index.ts",
+      "loc": 1,
+      "reExportsFrom": "../projection-service"
+    },
+    {
+      "path": "src/lib/core-services/receipt-service/index.ts",
+      "loc": 5,
+      "reExportsFrom": "../receipt-service"
+    },
+    {
+      "path": "src/lib/core-services/recommendation-execution/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./recommendation-loop-service"
+    },
+    {
+      "path": "src/lib/core-services/recommendation-execution/recommendation-loop-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/recommendation-execution/recommendation-loop-service"
+    },
+    {
+      "path": "src/lib/core-services/security/index.ts",
+      "loc": 20,
+      "reExportsFrom": "./intrusion-detection-engine"
+    },
+    {
+      "path": "src/lib/core-services/security/security-posture-engine.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/security/security-posture-engine"
+    },
+    {
+      "path": "src/lib/core-services/self-healing/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/core-services/service-registry/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/service-registry"
+    },
+    {
+      "path": "src/lib/core-services/service-registry/route-to-service-inventory.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/service-registry/route-to-service-inventory"
+    },
+    {
+      "path": "src/lib/core-services/service-registry/service-ownership-registry.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/service-registry/service-ownership-registry"
+    },
+    {
+      "path": "src/lib/core-services/system-updates/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/system-updates"
+    },
+    {
+      "path": "src/lib/core-services/trust-governor/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./trust-governor"
+    },
+    {
+      "path": "src/lib/core-services/truth-indices/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./truth-index-aggregator"
+    },
+    {
+      "path": "src/lib/core-services/truth-indices/truth-index-aggregator.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/services/truth-indices/truth-index-aggregator"
+    },
+    {
+      "path": "src/lib/core-services/verification-engine/index.ts",
+      "loc": 6,
+      "reExportsFrom": "../verification-engine"
+    },
+    {
+      "path": "src/lib/core-services/workflow-engine/index.ts",
+      "loc": 1,
+      "reExportsFrom": "../workflow-engine"
+    },
+    {
+      "path": "src/lib/data-services/index.ts",
+      "loc": 10,
+      "reExportsFrom": "./activity-data-service"
+    },
+    {
+      "path": "src/lib/db/index.ts",
+      "loc": 13,
+      "reExportsFrom": "./schema-registry"
+    },
+    {
+      "path": "src/lib/delivery-methodology/index.ts",
+      "loc": 7,
+      "reExportsFrom": "./feature-lifecycle"
+    },
+    {
+      "path": "src/lib/demo-data/packs.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/capability-router/pack-enablement.service"
+    },
+    {
+      "path": "src/lib/deployment/index.ts",
+      "loc": 11,
+      "reExportsFrom": "./deployment-unit-registry"
+    },
+    {
+      "path": "src/lib/detection/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./reality-detection-engine"
+    },
+    {
+      "path": "src/lib/domain-engines/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./business-os"
+    },
+    {
+      "path": "src/lib/domain-system/index.ts",
+      "loc": 9,
+      "reExportsFrom": "./domain-manifest"
+    },
+    {
+      "path": "src/lib/dual-reality/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./reality-mode-registry"
+    },
+    {
+      "path": "src/lib/engine/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./compositor-sim"
+    },
+    {
+      "path": "src/lib/engines/shared/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./aging"
+    },
+    {
+      "path": "src/lib/migration/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./service-authority-map"
+    },
+    {
+      "path": "src/lib/no-hallucination/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/nova-sdk/extensions/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./plugin-registry"
+    },
+    {
+      "path": "src/lib/nova-sdk/services/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./service-manager"
+    },
+    {
+      "path": "src/lib/observability/index.ts",
+      "loc": 12,
+      "reExportsFrom": "./structured-logger"
+    },
+    {
+      "path": "src/lib/orchestration/execution/execution-types.ts",
+      "loc": 7,
+      "reExportsFrom": "./execution-router"
+    },
+    {
+      "path": "src/lib/orchestration/intent/intent-types.ts",
+      "loc": 6,
+      "reExportsFrom": "./intent-orchestrator"
+    },
+    {
+      "path": "src/lib/orchestration/migration/legacy-orchestrator-map.ts",
+      "loc": 1,
+      "reExportsFrom": "../shared/orchestration-registry"
+    },
+    {
+      "path": "src/lib/orchestration/planning/planning-types.ts",
+      "loc": 6,
+      "reExportsFrom": "./workflow-planner"
+    },
+    {
+      "path": "src/lib/orchestration/proof/proof-types.ts",
+      "loc": 6,
+      "reExportsFrom": "./receipt-builder"
+    },
+    {
+      "path": "src/lib/platform/auth/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./auth-runtime"
+    },
+    {
+      "path": "src/lib/platform/execution/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./execution-registry"
+    },
+    {
+      "path": "src/lib/platform/index.ts",
+      "loc": 6,
+      "reExportsFrom": "./auth"
+    },
+    {
+      "path": "src/lib/platform/notifications/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./notification-topology"
+    },
+    {
+      "path": "src/lib/platform/observability/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./observability-registry"
+    },
+    {
+      "path": "src/lib/platform/proof/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./proof-registry"
+    },
+    {
+      "path": "src/lib/platform/sync/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./sync-topology-registry"
+    },
+    {
+      "path": "src/lib/platform-law/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./platform-law-registry"
+    },
+    {
+      "path": "src/lib/platform-plane/index.ts",
+      "loc": 18,
+      "reExportsFrom": "./plane-registry"
+    },
+    {
+      "path": "src/lib/runtime/index.ts",
+      "loc": 21,
+      "reExportsFrom": "./product-reality-tiers"
+    },
+    {
+      "path": "src/lib/service-facade.ts",
+      "loc": 2,
+      "reExportsFrom": "@/lib/core-services"
+    },
+    {
+      "path": "src/lib/services/ai-workforce/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./workforce-service"
+    },
+    {
+      "path": "src/lib/services/approval-engine/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/approval-engine"
+    },
+    {
+      "path": "src/lib/services/boardroom-service/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./packets/business-packet.service"
+    },
+    {
+      "path": "src/lib/services/brain-core/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/brain-core"
+    },
+    {
+      "path": "src/lib/services/canonical-pipeline/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./pipeline-orchestrator"
+    },
+    {
+      "path": "src/lib/services/capability-router/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./capability-registry.service"
+    },
+    {
+      "path": "src/lib/services/concierge-os/index.ts",
+      "loc": 20,
+      "reExportsFrom": "./household-ops.service"
+    },
+    {
+      "path": "src/lib/services/connector-control-plane/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./connectors/gmail.connector"
+    },
+    {
+      "path": "src/lib/services/conscience-gate/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/conscience-gate"
+    },
+    {
+      "path": "src/lib/services/constitution-compiler/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/constitution-compiler"
+    },
+    {
+      "path": "src/lib/services/desk/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./desk-executor"
+    },
+    {
+      "path": "src/lib/services/event-bus/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./event-envelope"
+    },
+    {
+      "path": "src/lib/services/executor-service/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./execute-action.service"
+    },
+    {
+      "path": "src/lib/services/inference-gateway/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/inference-gateway"
+    },
+    {
+      "path": "src/lib/services/integration-hub/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./connector-sdk"
+    },
+    {
+      "path": "src/lib/services/lease-manager/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/lease-manager"
+    },
+    {
+      "path": "src/lib/services/life-growth/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./financial-literacy-engine"
+    },
+    {
+      "path": "src/lib/services/life-simulation/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./life-shock-simulator"
+    },
+    {
+      "path": "src/lib/services/memory-service/index.ts",
+      "loc": 6,
+      "reExportsFrom": "./profile-memory.service"
+    },
+    {
+      "path": "src/lib/services/meta-governance/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./collector.service"
+    },
+    {
+      "path": "src/lib/services/mnemosyne/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/mnemosyne"
+    },
+    {
+      "path": "src/lib/services/model-router/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/model-router"
+    },
+    {
+      "path": "src/lib/services/os-awareness/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./ambient-intelligence"
+    },
+    {
+      "path": "src/lib/services/os-orchestration/index.ts",
+      "loc": 12,
+      "reExportsFrom": "../personal-graph/personal-operating-graph"
+    },
+    {
+      "path": "src/lib/services/policy-engine/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./truth-boundaries.service"
+    },
+    {
+      "path": "src/lib/services/projection-service/index.ts",
+      "loc": 1,
+      "reExportsFrom": "../projections"
+    },
+    {
+      "path": "src/lib/services/projections/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./home/home-projection.service"
+    },
+    {
+      "path": "src/lib/services/receipt-service/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./receipts.service"
+    },
+    {
+      "path": "src/lib/services/revenue-growth/index.ts",
+      "loc": 3,
+      "reExportsFrom": "./income-discovery-engine"
+    },
+    {
+      "path": "src/lib/services/setup/index.ts",
+      "loc": 9,
+      "reExportsFrom": "./hardware-capability-service"
+    },
+    {
+      "path": "src/lib/services/sovereign-calculation/index.ts",
+      "loc": 6,
+      "reExportsFrom": "./reserves/reserve-calculator.service"
+    },
+    {
+      "path": "src/lib/services/trust-governor/index.ts",
+      "loc": 1,
+      "reExportsFrom": "@/lib/core-services/trust-governor"
+    },
+    {
+      "path": "src/lib/services/verification-engine/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./verification.service"
+    },
+    {
+      "path": "src/lib/shopify/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./config"
+    },
+    {
+      "path": "src/lib/sovereign-ai-gateway/index.ts",
+      "loc": 1,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/strategic-intelligence/index.ts",
+      "loc": 24,
+      "reExportsFrom": "./intelligence-capital-index"
+    },
+    {
+      "path": "src/lib/types/admin-view-models.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/admin-view-models"
+    },
+    {
+      "path": "src/lib/types/advisor-orchestration.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/advisor-orchestration"
+    },
+    {
+      "path": "src/lib/types/digital-twin.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/digital-twin"
+    },
+    {
+      "path": "src/lib/types/domain-types.ts",
+      "loc": 4,
+      "reExportsFrom": "@/lib/mock-data/collections"
+    },
+    {
+      "path": "src/lib/types/dwe-types.ts",
+      "loc": 18
+    },
+    {
+      "path": "src/lib/types/entity-graph.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/entity-graph"
+    },
+    {
+      "path": "src/lib/types/index.ts",
+      "loc": 10,
+      "reExportsFrom": "./admin-view-models"
+    },
+    {
+      "path": "src/lib/types/memory-governance.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/memory-governance"
+    },
+    {
+      "path": "src/lib/types/meta-governance.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/meta-governance"
+    },
+    {
+      "path": "src/lib/types/mission-control.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/mission-control"
+    },
+    {
+      "path": "src/lib/types/os-unified.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/os-unified"
+    },
+    {
+      "path": "src/lib/types/policy-depth.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/policy-depth"
+    },
+    {
+      "path": "src/lib/types/replay-recovery.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/replay-recovery"
+    },
+    {
+      "path": "src/lib/types/revenue-engine.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/revenue-engine"
+    },
+    {
+      "path": "src/lib/types/token-governance.types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/packages/contracts/domain-types/token-governance"
+    },
+    {
+      "path": "src/lib/verification/index.ts",
+      "loc": 2,
+      "reExportsFrom": "./surface-registry"
+    }
+  ]
+}

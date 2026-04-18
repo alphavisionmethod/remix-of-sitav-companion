@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:21:44.649Z",
+  "generatedAt": "2026-04-18T02:57:19.349Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -135,11 +135,53 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/lib-decomposition-readiness-report.json",
+      "gate": "lib-decomposition-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1731
+    },
+    {
+      "file": "generated/lib-ownership-drift-report.json",
+      "gate": "lib-ownership-drift",
+      "ok": true,
+      "errors": 0,
+      "warnings": 99
+    },
+    {
+      "file": "generated/misplaced-runtime-logic-report.json",
+      "gate": "misplaced-runtime-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/misplaced-data-logic-report.json",
+      "gate": "misplaced-data-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/misplaced-domain-logic-report.json",
+      "gate": "misplaced-domain-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/legacy-wrapper-usage-report.json",
+      "gate": "legacy-wrapper-usage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2198
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 0,
+  "totalWarnings": 4028,
   "missingGates": [],
   "ok": true,
-  "verdict": "GREEN"
+  "verdict": "YELLOW"
 }

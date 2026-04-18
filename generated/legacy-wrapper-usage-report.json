@@ -1,0 +1,342 @@
+{
+  "generatedAt": "2026-04-18T02:57:15.982Z",
+  "gate": "legacy-wrapper-usage",
+  "scannedFiles": 2908,
+  "totalLegacyImports": 2198,
+  "distinctLegacyPaths": 710,
+  "topPaths": [
+    {
+      "path": "@/lib/supabase-helpers",
+      "count": 229,
+      "topConsumers": [
+        "src/components/admin/panels/IncidentSummaryPanel.tsx",
+        "src/components/business/CustomerHealthDashboard.tsx",
+        "src/components/business/crm/CRMEscalateToBoardroom.tsx",
+        "src/components/business/lead-inbox/useLeadInbox.ts",
+        "src/components/cloud/CloudActivityTimeline.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/demo-data/admin-platform",
+      "count": 75,
+      "topConsumers": [
+        "src/pages/admin/AIAgentDebate.tsx",
+        "src/pages/admin/AIApprovalDesk.tsx",
+        "src/pages/admin/AIChangePlanViewer.tsx",
+        "src/pages/admin/AIDesignDiffTheater.tsx",
+        "src/pages/admin/AIDesignStudio.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/design-system/sita-design-tokens",
+      "count": 50,
+      "topConsumers": [
+        "src/components/sita/PremiumEmptyState.tsx",
+        "src/components/sita/badges/DomainBadge.tsx",
+        "src/components/sita/cards/ActionCard.tsx",
+        "src/components/sita/cards/AdvisorCard.tsx",
+        "src/components/sita/cards/ComparisonCard.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/demo-data/revenue-office",
+      "count": 35,
+      "topConsumers": [
+        "src/pages/revenue-office/AutomationHealth.tsx",
+        "src/pages/revenue-office/AutomationOffice.tsx",
+        "src/pages/revenue-office/AutomationPolicy.tsx",
+        "src/pages/revenue-office/AutomationReceipts.tsx",
+        "src/pages/revenue-office/AutomationTemplates.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-identity-layers",
+      "count": 32,
+      "topConsumers": [
+        "src/components/business/adaptive/AdaptiveBusinessHome.tsx",
+        "src/components/business/adaptive/AdaptiveCommandPalette.tsx",
+        "src/components/business/adaptive/AdaptiveEmptyState.tsx",
+        "src/components/business/adaptive/AdaptiveKPIDashboard.tsx",
+        "src/components/business/adaptive/AdaptiveNotificationCenter.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/demo-data/investment",
+      "count": 27,
+      "topConsumers": [
+        "src/pages/investment-office/BeginnerMode.tsx",
+        "src/pages/investment-office/BehavioralFirewall.tsx",
+        "src/pages/investment-office/CapitalPurpose.tsx",
+        "src/pages/investment-office/CapitalTwin.tsx",
+        "src/pages/investment-office/CatalystWarRoom.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/demo-data/core-pages",
+      "count": 26,
+      "topConsumers": [
+        "src/pages/AIWorkforcePage.tsx",
+        "src/pages/CapitalAllocationPage.tsx",
+        "src/pages/CustomerDetail.tsx",
+        "src/pages/IntegrationConcierge.tsx",
+        "src/pages/MyActivity.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/lead-scoring-engine",
+      "count": 23,
+      "topConsumers": [
+        "src/components/business/lead-inbox/LeadConfidenceDisplay.tsx",
+        "src/components/business/lead-inbox/LeadConversionFunnel.tsx",
+        "src/components/business/lead-inbox/LeadDetailPanel.tsx",
+        "src/components/business/lead-inbox/LeadHeatIndicator.tsx",
+        "src/components/business/lead-inbox/LeadHeatMap.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/nova-sdk/ui/layout",
+      "count": 21,
+      "topConsumers": [
+        "src/components/sita/shell/windows/CalendarWindow.tsx",
+        "src/components/sita/shell/windows/CloudSyncWindow.tsx",
+        "src/components/sita/shell/windows/DevToolsWindow.tsx",
+        "src/components/sita/shell/windows/FinderWindow.tsx",
+        "src/components/sita/shell/windows/KernelDashboardWindow.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/nova-sdk/ui/components",
+      "count": 21,
+      "topConsumers": [
+        "src/components/sita/shell/windows/CalendarWindow.tsx",
+        "src/components/sita/shell/windows/CloudSyncWindow.tsx",
+        "src/components/sita/shell/windows/DevToolsWindow.tsx",
+        "src/components/sita/shell/windows/FinderWindow.tsx",
+        "src/components/sita/shell/windows/KernelDashboardWindow.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/demo-data/digital-presence",
+      "count": 18,
+      "topConsumers": [
+        "src/pages/digital-presence/AIWebTeam.tsx",
+        "src/pages/digital-presence/AppExperienceStudio.tsx",
+        "src/pages/digital-presence/BrandStudio.tsx",
+        "src/pages/digital-presence/CROOffice.tsx",
+        "src/pages/digital-presence/ConnectedSites.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/design-system/app-window-system",
+      "count": 17,
+      "topConsumers": [
+        "src/components/concierge/ConciergeAppShell.tsx",
+        "src/components/money/MoneyAppShell.tsx",
+        "src/components/sita/shell/AppPermissionGate.tsx",
+        "src/components/sita/shell/AppSidebarNav.tsx",
+        "src/components/sita/shell/AppStateWrapper.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-module-adaptations",
+      "count": 16,
+      "topConsumers": [
+        "src/components/business/adaptive/AdaptiveBoardroomAgenda.tsx",
+        "src/components/business/adaptive/AdaptiveOnboardingWizard.tsx",
+        "src/components/business/home/AdvisorSynthesisZone.tsx",
+        "src/pages/business/AppointmentsScheduling.tsx",
+        "src/pages/business/BusinessDocuments.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-profile-engine",
+      "count": 16,
+      "topConsumers": [
+        "src/components/business/adaptive/AdaptiveBoardroomAgenda.tsx",
+        "src/components/business/adaptive/AdaptiveCRMConfig.ts",
+        "src/components/business/adaptive/AdaptiveCommandPalette.tsx",
+        "src/components/business/adaptive/AdaptiveContactLayout.tsx",
+        "src/components/business/adaptive/AdaptiveEmptyState.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/app-platform/types",
+      "count": 14,
+      "topConsumers": [
+        "src/components/sita/DesktopDock.tsx",
+        "src/components/sita/app-platform/AppStoreComponents.tsx",
+        "src/components/sita/shell/AppLauncherPanel.tsx",
+        "src/components/sita/shell/AppPermissionGate.tsx",
+        "src/components/sita/shell/RecentFlowStrip.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/customer-journey/journey-registry",
+      "count": 14,
+      "topConsumers": [
+        "src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx",
+        "src/pages/admin/customer-journey/CJ02JourneyTruthMatrix.tsx",
+        "src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx",
+        "src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx",
+        "src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/verification/verification-hooks",
+      "count": 14,
+      "topConsumers": [
+        "src/pages/admin/verification/JVC01JourneyVerificationOverview.tsx",
+        "src/pages/admin/verification/JVC04ButtonCTAHealth.tsx",
+        "src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx",
+        "src/pages/admin/verification/JVC06PageLoadIntegrity.tsx",
+        "src/pages/admin/verification/JVC07FormVerificationCenter.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/reality-audit/reality-audit-registry",
+      "count": 13,
+      "topConsumers": [
+        "src/pages/admin/reality-audit/CoreServicePersistence.tsx",
+        "src/pages/admin/reality-audit/LaunchHonestyBoard.tsx",
+        "src/pages/admin/reality-audit/MockReplacementProgram.tsx",
+        "src/pages/admin/reality-audit/RCP01Overview.tsx",
+        "src/pages/admin/reality-audit/RCP03FeatureDetail.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/verification/surface-registry",
+      "count": 13,
+      "topConsumers": [
+        "src/pages/admin/verification/JVC01JourneyVerificationOverview.tsx",
+        "src/pages/admin/verification/JVC04ButtonCTAHealth.tsx",
+        "src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx",
+        "src/pages/admin/verification/JVC06PageLoadIntegrity.tsx",
+        "src/pages/admin/verification/JVC07FormVerificationCenter.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/compute-governance",
+      "count": 12,
+      "topConsumers": [
+        "src/components/admin/compute-governance/CG06MissionCostTab.tsx",
+        "src/components/admin/compute-governance/CG10PricingSimulatorTab.tsx",
+        "src/components/admin/compute-governance/shared.ts",
+        "src/hooks/use-compute-governance.ts",
+        "src/pages/admin/ComputeGovernanceBoard.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/data-services/crm-data-service",
+      "count": 12,
+      "topConsumers": [
+        "src/components/business/crm/CRMAdvisorInsight.tsx",
+        "src/components/business/crm/CRMCompanyDetail.tsx",
+        "src/components/business/crm/CRMContactDetail.tsx",
+        "src/components/business/crm/CRMContactForm.tsx",
+        "src/components/business/crm/CRMDealDetail.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/design-system/nova-os",
+      "count": 12,
+      "topConsumers": [
+        "src/components/sita/shell/AppPermissionGate.tsx",
+        "src/components/sita/shell/AppSwitcher.tsx",
+        "src/components/sita/shell/BootSplash.tsx",
+        "src/components/sita/shell/ControlCenter.tsx",
+        "src/components/sita/shell/DesktopIconGrid.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/investment-office/mock-data",
+      "count": 12,
+      "topConsumers": [
+        "src/hooks/useInvestmentOfficeData.ts",
+        "src/pages/investment-office/InstrumentDetail.tsx",
+        "src/pages/investment-office/IntelligenceDossier.tsx",
+        "src/pages/investment-office/InvestmentBoardroom.tsx",
+        "src/pages/investment-office/InvestmentReceipts.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-advisor-engine",
+      "count": 11,
+      "topConsumers": [
+        "src/components/business/LeadRecoveryPane.tsx",
+        "src/components/business/advisor-board/AdvisorDisagreementCard.tsx",
+        "src/components/business/advisor-board/BusinessAdvisorBoardPanel.tsx",
+        "src/components/business/advisor-board/EscalationPacketPreview.tsx",
+        "src/components/business/advisor-board/ModuleAdvisorPanel.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/sound-engine",
+      "count": 11,
+      "topConsumers": [
+        "src/components/sita/DesktopDock.tsx",
+        "src/components/sita/shell/AppLauncherPanel.tsx",
+        "src/components/sita/shell/FloatingWindow.tsx",
+        "src/components/sita/shell/FlowSpace.tsx",
+        "src/components/sita/shell/windows/CalendarWindow.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/persistence",
+      "count": 11,
+      "topConsumers": [
+        "src/pages/admin/ActionLineageExplorer.tsx",
+        "src/pages/admin/CorePersistenceOverview.tsx",
+        "src/pages/admin/EventStreamExplorer.tsx",
+        "src/pages/admin/IntelligenceArtifactLibrary.tsx",
+        "src/pages/admin/MemoryContinuityCenter.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/platform-law/platform-law-registry",
+      "count": 11,
+      "topConsumers": [
+        "src/pages/admin/platform-law/PLE01Overview.tsx",
+        "src/pages/admin/platform-law/PLE02LawRegistry.tsx",
+        "src/pages/admin/platform-law/PLE03ScaffoldRegistry.tsx",
+        "src/pages/admin/platform-law/PLE04CIGateMonitor.tsx",
+        "src/pages/admin/platform-law/PLE05ManifestEnforcer.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-advisor-personas",
+      "count": 10,
+      "topConsumers": [
+        "src/components/business/advisor-board/AdvisorConversation.tsx",
+        "src/components/business/advisor-board/AdvisorDebateView.tsx",
+        "src/components/business/advisor-board/AdvisorDetailSheet.tsx",
+        "src/components/business/advisor-board/AdvisorNotificationSystem.tsx",
+        "src/components/business/advisor-board/AdvisorPresenceBar.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/engines/business-profitability-engine",
+      "count": 10,
+      "topConsumers": [
+        "src/components/business/advisor-board/BoardroomModuleGrid.tsx",
+        "src/components/business/advisor-board/BusinessHealthScoreCard.tsx",
+        "src/components/business/advisor-board/DailyBriefView.tsx",
+        "src/components/business/advisor-board/ExecutiveBriefCard.tsx",
+        "src/components/business/advisor-board/MorningExecutiveBrief.tsx"
+      ]
+    },
+    {
+      "path": "@/lib/cloud-backbone/cloud-storage-service",
+      "count": 10,
+      "topConsumers": [
+        "src/components/cloud/CloudFileBrowser.tsx",
+        "src/components/cloud/CloudTrashManager.tsx",
+        "src/components/cloud/CloudVersionHistory.tsx",
+        "src/pages/admin/cloud/CloudCostCapacityAdmin.tsx",
+        "src/pages/admin/cloud/CloudDashboard.tsx"
+      ]
+    }
+  ],
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 2198
+}
