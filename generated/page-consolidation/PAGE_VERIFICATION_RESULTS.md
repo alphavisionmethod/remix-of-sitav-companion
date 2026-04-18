@@ -86,3 +86,27 @@ Registered: 22
 
 ```
 
+
+## Phase 5 — Wave 1 Shipped (Verification sub-boards)
+
+Six pages classified `SECONDARY_SUBVIEW` with curated `targetRoute`s
+were physically relocated to their canonical home and replaced with
+thin re-export shims so all current importers (route registry,
+verification index barrel, vitest batches) keep working.
+
+| Old path (now shim) | Canonical home |
+|---|---|
+| `src/pages/admin/verification/V01SurfaceInventoryBoard.tsx` | `src/admin/modules/verification/views/V01SurfaceInventoryBoard.tsx` |
+| `src/pages/admin/verification/V02InteractionCoverageBoard.tsx` | `src/admin/modules/verification/views/V02InteractionCoverageBoard.tsx` |
+| `src/pages/admin/verification/V03P0JourneyBoard.tsx` | `src/admin/modules/verification/views/V03P0JourneyBoard.tsx` |
+| `src/pages/admin/verification/V04ModeVerificationBoard.tsx` | `src/admin/modules/verification/views/V04ModeVerificationBoard.tsx` |
+| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | `src/admin/modules/verification/views/V06EvidenceExplorer.tsx` |
+| `src/pages/admin/verification/V07LaunchBlockerBoard.tsx` | `src/admin/modules/verification/views/V07LaunchBlockerBoard.tsx` |
+
+A new barrel `src/admin/modules/verification/views/index.ts` exposes
+the canonical imports. Future waves should follow this exact pattern
+(copy → shim → barrel → verify) per domain so each is independently
+revertible by deleting the canonical file and inlining the shim.
+
+**Wave 1 status:** ✅ 8/8 verification gates pass, TypeScript clean,
+zero broken imports, zero route changes.
