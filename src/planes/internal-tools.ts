@@ -34,7 +34,7 @@ export * as RealityRecords from "@/lib/reality-records/canonical-records";
 export * as TruthVocabulary from "@/lib/reality-records/truth-vocabulary";
 
 // ── Demo Data ──
-export * as DemoData from "@/lib/demo-data";
+export * as DemoData from "@/data/seed";
 
 // ── Seed ──
 export * as SeedScripts from "@/lib/seed";
