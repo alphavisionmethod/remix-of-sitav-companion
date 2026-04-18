@@ -24,21 +24,21 @@ const BUCKETS: BucketDef[] = [
   {
     gate: "lib-decomposition-readiness",
     reportFile: "generated/lib-decomposition-readiness-report.json",
-    ceiling: Number(process.env.LIB_DECOMP_CEILING ?? 1750),
+    ceiling: Number(process.env.LIB_DECOMP_CEILING ?? 1740), // Phase Y: 1750→1740 (current 1731, headroom 9)
     envOverride: "LIB_DECOMP_CEILING",
     tightenedThreshold: 500,
   },
   {
     gate: "legacy-wrapper-usage",
     reportFile: "generated/legacy-wrapper-usage-report.json",
-    ceiling: Number(process.env.LEGACY_WRAPPER_CEILING ?? 1550),
+    ceiling: Number(process.env.LEGACY_WRAPPER_CEILING ?? 1530), // Phase Y: 1550→1530 (current 1518, headroom 12)
     envOverride: "LEGACY_WRAPPER_CEILING",
     tightenedThreshold: 400,
   },
   {
     gate: "lib-ownership-drift",
     reportFile: "generated/lib-ownership-drift-report.json",
-    ceiling: Number(process.env.LIB_OWNERSHIP_CEILING ?? 110),
+    ceiling: Number(process.env.LIB_OWNERSHIP_CEILING ?? 105), // Phase Y: 110→105 (current 99, headroom 6)
     envOverride: "LIB_OWNERSHIP_CEILING",
     tightenedThreshold: 30,
   },

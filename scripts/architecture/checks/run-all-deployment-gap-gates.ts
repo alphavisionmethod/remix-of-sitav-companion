@@ -18,6 +18,7 @@ const GATES = [
   "check-supportability-coverage",
   "check-warn-ratchet",
   "check-per-bucket-warn-ratchet",
+  "check-evidence-freshness",
 ];
 
 let pass = 0, fail = 0;
