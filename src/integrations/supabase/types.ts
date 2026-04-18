@@ -19470,6 +19470,7 @@ export type Database = {
         Returns: Json
       }
       expire_overdue_kill_switches: { Args: never; Returns: number }
+      get_compliance_rls_summary: { Args: never; Returns: Json }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
