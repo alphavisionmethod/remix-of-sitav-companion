@@ -59,7 +59,7 @@ export default function CN05ConnectorHealthBoard() {
                       <Activity className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">{key.slice(0, 8)}...</span>
                     </div>
-                    <Badge className={statusColors[latest.health_status] || ""}>{latest.health_status}</Badge>
+                    <ConnectorStateBadge state={latest.health_status} size="xs" />
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                     <div>Latency: {latest.latency_ms ? `${latest.latency_ms}ms` : "—"}</div>
