@@ -8,8 +8,8 @@ import type {
   TrustDebtRecord, TrustDebtCategory, TrustDimension,
   DebtSource, DebtEvidence,
   TrendDirection, TrendWindow, GovernanceBoardroomSection, RemediationStatus,
-} from "../types/meta-governance.types";
-import type { EntityScope, OSDomain, ProofRecord, ActionRecord } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { EntityScope, OSDomain, ProofRecord, ActionRecord } from "@/lib/types/os-unified.types";
 import { computeAging, TRUST_AGING_MS } from "./shared/aging";
 
 export class TrustDebtEngine {

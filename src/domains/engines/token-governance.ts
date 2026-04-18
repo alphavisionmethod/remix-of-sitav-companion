@@ -7,7 +7,7 @@ import type {
   ModelRoute, ModelTier, ModelRoutingDecision, TokenBudget,
   TokenUsageRecord, InferenceAnomaly, ContextCompression,
   TokenSpendDashboard, TokenGovernanceConfig,
-} from "../types/token-governance.types";
+} from "@/lib/types/token-governance.types";
 
 const DEFAULT_ROUTES: ModelRoute[] = [
   { id: "structured", name: "No LLM (Structured)", tier: "no_llm", provider: "local", model: "structured-state", costPer1kTokens: 0, latencyMs: 1, capabilities: ["lookup", "calculation", "state_transition"], maxContextTokens: 0, suitableFor: ["status_check", "calculation", "lookup", "state_transition"], active: true },

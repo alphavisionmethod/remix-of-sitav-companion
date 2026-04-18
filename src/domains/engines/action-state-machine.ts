@@ -4,7 +4,7 @@
 // NOW with durable persistence to os_action_lineage
 // ═══════════════════════════════════════════════════════════════
 
-import type { ActionState, ActionStateTransition, ActionRecord, OSDomain, EntityScope } from "../types/os-unified.types";
+import type { ActionState, ActionStateTransition, ActionRecord, OSDomain, EntityScope } from "@/lib/types/os-unified.types";
 import {
   persistActionRecord,
   persistActionTransition,

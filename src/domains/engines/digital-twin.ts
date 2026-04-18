@@ -8,7 +8,7 @@ import type {
   BoardroomSession, BoardroomType, BoardroomAgendaItem, BoardroomDecision,
   BoardroomAction, BoardroomTemplate, BoardroomPacket,
   ScenarioSimulation, ScenarioType, ScenarioOutcome, ScenarioTemplate,
-} from "../types/digital-twin.types";
+} from "@/lib/types/digital-twin.types";
 
 // ── Digital Twin Engine ─────────────────────────────────────────
 export class DigitalTwinEngine {

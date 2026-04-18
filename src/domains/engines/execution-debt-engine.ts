@@ -8,8 +8,8 @@ import type {
   ExecutionDebtRecord, ExecutionDebtCategory,
   DebtSource, DebtEvidence,
   GovernanceBoardroomSection, RemediationStatus,
-} from "../types/meta-governance.types";
-import type { ActionState, ActionRecord, EntityScope, OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { ActionState, ActionRecord, EntityScope, OSDomain } from "@/lib/types/os-unified.types";
 import { computeAging, EXECUTION_AGING_MS } from "./shared/aging";
 
 export class ExecutionDebtEngine {

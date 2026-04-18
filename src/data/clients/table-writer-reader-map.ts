@@ -17,8 +17,8 @@ import {
   EDGE_FUNCTION_TABLE_IO,
   getReadersFor,
   getWritersFor,
-} from "../backend-topology/edge-function-table-io-map";
-import { EDGE_FUNCTION_OWNER_MAP, type OwnerTeam } from "../backend-topology/edge-function-owner-map";
+} from "@/lib/backend-topology/edge-function-table-io-map";
+import { EDGE_FUNCTION_OWNER_MAP, type OwnerTeam } from "@/lib/backend-topology/edge-function-owner-map";
 import { NON_EDGE_TABLE_IO, type TableIOSource } from "./non-edge-table-io-sources";
 import {
   isExemptedCrossDomainWriter,

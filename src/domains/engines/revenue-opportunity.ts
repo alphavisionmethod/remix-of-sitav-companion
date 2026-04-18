@@ -7,7 +7,7 @@ import type {
   LeakageSignal, LeakageType, RecoveredValue, RecoveredValueLedger,
   OpportunityRanking, CapacitySlot, NegotiationOpportunity,
   RevenueAutopilotConfig, OutcomeRecord,
-} from "../types/revenue-engine.types";
+} from "@/lib/types/revenue-engine.types";
 
 const DEFAULT_CONFIG: RevenueAutopilotConfig = {
   enabled: true,

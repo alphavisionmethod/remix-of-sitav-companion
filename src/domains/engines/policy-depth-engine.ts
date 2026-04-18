@@ -7,7 +7,7 @@ import type {
   PolicyRule, PolicyCondition, PolicyInheritanceChain, PolicyConflict,
   PolicyEffect, PolicyScope, PolicyAuditEntry, ConsentRecord, ConsentMode,
   EmergencyPolicyFreeze, PolicyTemplate,
-} from "../types/policy-depth.types";
+} from "@/lib/types/policy-depth.types";
 
 const SCOPE_PRIORITY: Record<PolicyScope, number> = {
   global: 100,

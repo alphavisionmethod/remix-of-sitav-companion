@@ -7,9 +7,9 @@
 import type {
   RecurringDelegationRecord, DelegationTier, DelegationProofRequirement,
   GovernanceBoardroomSection,
-} from "../types/meta-governance.types";
-import type { EntityScope, OSDomain } from "../types/os-unified.types";
-import type { ReadinessScore } from "../types/meta-governance.types";
+} from "@/lib/types/meta-governance.types";
+import type { EntityScope, OSDomain } from "@/lib/types/os-unified.types";
+import type { ReadinessScore } from "@/lib/types/meta-governance.types";
 
 const TIER_ORDER: DelegationTier[] = [
   "observe", "suggest", "draft", "approval_every",

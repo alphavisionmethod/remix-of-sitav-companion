@@ -8,7 +8,7 @@ import type {
   GraphRoleAssignment, GraphDelegatedAuthority, VisibilityBoundary,
   RelationshipEdge, PermissionQuery, PermissionResult,
   HouseholdRole, OrgRole,
-} from "../types/entity-graph.types";
+} from "@/lib/types/entity-graph.types";
 
 export class EntityRoleGraph {
   private entities: Map<string, Entity> = new Map();

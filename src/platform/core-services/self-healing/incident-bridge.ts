@@ -6,7 +6,7 @@
 
 import type { FleetHealthService } from "./fleet-health";
 import type { SelfHealingService } from "./service";
-import type { IncidentManagementService, IncidentSeverity } from "../../services/incident-management";
+import type { IncidentManagementService, IncidentSeverity } from "@/lib/services/incident-management";
 import type { ServiceHealthStatus, ServiceMetrics, SelfHealingIncidentSeverity, RootCauseCategory } from "./types";
 
 // ── Severity Mapping ────────────────────────────────────────────

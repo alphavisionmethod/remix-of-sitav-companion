@@ -4,7 +4,7 @@
 // execution debt, and founder bottleneck engines.
 // ═══════════════════════════════════════════════════════════════
 
-import type { AgingModel, AgingTier } from "../../types/meta-governance.types";
+import type { AgingModel, AgingTier } from "@/lib/types/meta-governance.types";
 
 export interface AgingThresholds {
   aging: number;

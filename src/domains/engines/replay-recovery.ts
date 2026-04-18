@@ -7,8 +7,8 @@ import type {
   ReplayPacket, ReplayTimelineEntry, RollbackPacket, RollbackStep,
   RecoveryAction, RecoveryDiagnosticBundle, VerificationResult,
   ApprovalChainEntry, ConnectorActionRecord, PolicySnapshotRef,
-} from "../types/replay-recovery.types";
-import type { ActionRecord, OSDomain, EntityScope } from "../types/os-unified.types";
+} from "@/lib/types/replay-recovery.types";
+import type { ActionRecord, OSDomain, EntityScope } from "@/lib/types/os-unified.types";
 
 export class ReplayRecoveryEngine {
   private packets: Map<string, ReplayPacket> = new Map();

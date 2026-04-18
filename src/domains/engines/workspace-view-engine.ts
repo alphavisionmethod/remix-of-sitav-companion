@@ -7,8 +7,8 @@
 import type {
   WorkspaceViewMode, ViewModelFilter, WorkspaceHandoff,
   EscalationRecord, GovernanceBoardroomSection,
-} from "../types/meta-governance.types";
-import type { OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { OSDomain } from "@/lib/types/os-unified.types";
 
 const DEFAULT_PRINCIPAL_FILTER: ViewModelFilter = {
   viewMode: "principal",

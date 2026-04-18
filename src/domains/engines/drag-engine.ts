@@ -8,8 +8,8 @@ import type {
   DragDimension, DragEvent, DragDimensionScore, DragIndex,
   DragRecommendation, DragEvidence, TrendDirection, TrendWindow,
   GovernanceBoardroomSection,
-} from "../types/meta-governance.types";
-import type { EntityScope, OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { EntityScope, OSDomain } from "@/lib/types/os-unified.types";
 
 const DIMENSION_WEIGHTS: Record<DragDimension, number> = {
   tool_switching: 0.06,

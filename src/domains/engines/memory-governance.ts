@@ -8,7 +8,7 @@ import type {
   MemoryForgetRequest, MemoryPersistenceRule, MemoryGovernanceConfig,
   MemoryConflictResolution, MemoryType, MemoryPrivacy, MemorySource,
   MemoryAuditEntry,
-} from "../types/memory-governance.types";
+} from "@/lib/types/memory-governance.types";
 
 const DEFAULT_CONFIG: MemoryGovernanceConfig = {
   globalRules: [

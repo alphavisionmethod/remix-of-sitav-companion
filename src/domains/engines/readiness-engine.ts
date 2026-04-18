@@ -7,8 +7,8 @@
 import type {
   ReadinessScore, ReadinessSubscore, DelegationTier,
   GovernanceBoardroomSection, TrendDirection,
-} from "../types/meta-governance.types";
-import type { EntityScope } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { EntityScope } from "@/lib/types/os-unified.types";
 import { TrustDebtEngine } from "./trust-debt-engine";
 import { ExecutionDebtEngine } from "./execution-debt-engine";
 

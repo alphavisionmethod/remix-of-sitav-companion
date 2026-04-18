@@ -9,8 +9,8 @@ import type {
   FounderBottleneckEvent, FounderBottleneckType, CostModel,
   DelegationCandidate, DelegationTier, DebtEvidence,
   GovernanceBoardroomSection,
-} from "../types/meta-governance.types";
-import type { ActionRecord, EntityScope, OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { ActionRecord, EntityScope, OSDomain } from "@/lib/types/os-unified.types";
 import { computeAging, EXECUTION_AGING_MS } from "./shared/aging";
 
 export class FounderBottleneckEngine {

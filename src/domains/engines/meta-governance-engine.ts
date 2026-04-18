@@ -13,8 +13,8 @@ import { InvisibleLaborEngine } from "./invisible-labor-engine";
 import { FounderBottleneckEngine } from "./founder-bottleneck-engine";
 import { DelegationEngine } from "./delegation-engine";
 import { WorkspaceViewEngine } from "./workspace-view-engine";
-import type { GovernanceBoardroomSection } from "../types/meta-governance.types";
-import type { EntityScope, ActionRecord, ProofRecord } from "../types/os-unified.types";
+import type { GovernanceBoardroomSection } from "@/lib/types/meta-governance.types";
+import type { EntityScope, ActionRecord, ProofRecord } from "@/lib/types/os-unified.types";
 
 export class MetaGovernanceEngine {
   readonly trustDebt: TrustDebtEngine;

@@ -9,8 +9,8 @@ import type {
   InvisibleLaborEvent, InvisibleLaborType, LaborBurdenScore,
   LaborEqualizationSuggestion, LaborTrackingConsent,
   DebtEvidence, GovernanceBoardroomSection,
-} from "../types/meta-governance.types";
-import type { OSDomain } from "../types/os-unified.types";
+} from "@/lib/types/meta-governance.types";
+import type { OSDomain } from "@/lib/types/os-unified.types";
 
 const LABOR_TYPE_LABELS: Record<InvisibleLaborType, string> = {
   reminder_origination: "Creating reminders",

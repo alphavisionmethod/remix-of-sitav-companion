@@ -7,7 +7,7 @@ import type {
   AdvisorId, AdvisorDefinition, AdvisorCapability, EscalationRule,
   HandoffProtocol, CollaborationFrame, AdvisorContribution,
   AdvisorConsensus, AdvisorDisagreement, AdvisorPerformance,
-} from "../types/advisor-orchestration.types";
+} from "@/lib/types/advisor-orchestration.types";
 
 const CORE_ADVISORS: AdvisorDefinition[] = [
   { id: "business-advisor", name: "Business Advisor", tier: "core", domains: ["business", "crm", "revenue"], capabilities: [], trustThreshold: 0.7, memoryScopes: ["business", "crm"], toolAccess: ["crm", "email", "calendar"], toolForbidden: ["payment", "bank"], explanationStyle: "plain_english", escalationTargets: ["money-advisor", "risk-advisor"], receivesEscalationsFrom: ["growth-advisor", "execution-advisor"], maxAutonomy: "draft", simulationRequired: ["bulk_email", "pricing_change"], performanceKpis: ["leads_converted", "revenue_recovered", "pipeline_growth"], active: true },
