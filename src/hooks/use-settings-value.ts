@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
-import { SettingsService, type SettingsSchema } from "@/lib/nova-sdk/services/settings-service";
+import { SettingsService, type SettingsSchema } from "@/platform/nova-sdk/services/settings-service";
 
 type SettingsKey = keyof SettingsSchema | `apps.${string}`;
 

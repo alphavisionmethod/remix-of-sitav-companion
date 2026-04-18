@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
-import { ServiceManager, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
+import { ServiceManager, type ServiceLogEntry } from "@/platform/nova-sdk/services/service-manager";
 import logo from "@/assets/logo.webp";
 
 interface BootSplashProps {

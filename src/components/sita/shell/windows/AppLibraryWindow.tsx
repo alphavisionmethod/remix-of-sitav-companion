@@ -5,8 +5,8 @@
 
 import { useState, useMemo, useCallback, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
-import { AppRegistry } from "@/lib/nova-sdk/core/registry";
-import type { RegisteredApp } from "@/lib/nova-sdk/core/registry";
+import { AppRegistry } from "@/platform/nova-sdk/core/registry";
+import type { RegisteredApp } from "@/platform/nova-sdk/core/registry";
 import { APP_TYPE, APP_MATERIALS, APP_COMPONENTS } from "@/platform/design-system/app-window-system";
 import { Search, Grid, List, Shield, Play, CheckCircle, XCircle, Layers } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";

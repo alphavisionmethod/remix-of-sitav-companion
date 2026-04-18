@@ -12,9 +12,9 @@ import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel, NovaBadge, NovaToolbar, NovaInput,
 } from "@/platform/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
-import { consoleCapture, type CapturedEntry } from "@/lib/nova-sdk/services/console-capture";
-import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
-import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
+import { consoleCapture, type CapturedEntry } from "@/platform/nova-sdk/services/console-capture";
+import { ProcessTable } from "@/platform/nova-sdk/kernel/process-manager";
+import { MemoryManager } from "@/platform/nova-sdk/kernel/memory-manager";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { cn } from "@/lib/utils";
 

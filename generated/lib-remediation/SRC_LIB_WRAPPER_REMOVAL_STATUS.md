@@ -1,17 +1,45 @@
 # SRC_LIB Wrapper Removal Status
 
-_Last updated: Wave 11 complete — orchestration layer fully migrated to canonical home_
+_Last updated: Wave 12 complete — nova-sdk merged into canonical home_
 
 ## Cumulative Summary
 
-| Metric | Wave 9 End | Wave 10 End | **Wave 11 End** |
+| Metric | Wave 10 End | Wave 11 End | **Wave 12 End** |
 |---|---|---|---|
 | `@lovable:migrated-wrapper` files | 0 | 0 | **0** |
 | TS errors | 0 | 0 | **0** |
-| Vite build | ✅ 52.5s | ✅ 53.7s | **✅ 45.5s** |
-| `src/lib` top-level entries | 95 | 94 | **93** |
-| `src/lib/orchestration` files | 47 | 47 | **0 (deleted)** |
-| `src/platform/orchestration` files | 1 | 1 | **47** |
+| Vite build | ✅ 53.7s | ✅ 45.5s | **✅ 47.2s** |
+| `src/lib` top-level entries | 94 | 93 | **92** |
+| `src/lib/nova-sdk` files | 55 | 55 | **0 (deleted)** |
+| `src/platform/nova-sdk` files | 5 | 5 | **56** |
+
+## Wave 12 — Nova SDK Merge (the parallel-canonical case) ✅
+
+**Folder:** `src/lib/nova-sdk/` → `src/platform/nova-sdk/` (merge, not promote)
+
+### Pattern Variant: Parallel-Canonical Merge
+
+Unlike Waves 8–11 (which moved into empty placeholder destinations), this wave handled a **partial pre-existing canonical home**. `src/platform/nova-sdk/ui/` already held three live canonical UI files (`NovaThemeProvider.tsx`, `components.tsx`, `layout.tsx`), and the matching `src/lib/nova-sdk/ui/*` files were thin shim re-exports pointing to those canonicals. Both consumer sets (`@/lib/nova-sdk` × 24 and `@/platform/nova-sdk` × 24) had been growing in parallel.
+
+### Steps Executed
+1. **Conflict scan:** 4 file-name overlaps (`index.ts`, `ui/NovaThemeProvider.tsx`, `ui/components.tsx`, `ui/layout.tsx`).
+2. **Shim deletion:** Removed the 3 `ui/*` shim files from `src/lib/nova-sdk/ui/` — canonical bodies remain untouched in `src/platform/nova-sdk/ui/`.
+3. **Barrel handoff:** Replaced the empty Wave 1 placeholder `src/platform/nova-sdk/index.ts` with the live 100-LOC barrel (covering Core, UI, Services, System, Input, Graphics, Runtime, Hooks, Design Contract, Theme Provider, Kernel, Privilege, Wayland, Drivers, Extensions, Polish Audit).
+4. **Physical migration:** Moved all 51 remaining files (10 subfolders: `core/`, `extensions/`, `graphics/`, `hooks/`, `input/`, `kernel/__tests__/`, `runtime/__tests__/`, `services/__tests__/`, `system/`).
+5. **Bulk rewire:** Single sed pass rewrote 24 lib-side consumer files from `@/lib/nova-sdk/*` → `@/platform/nova-sdk/*`. Total `@/platform/nova-sdk` consumers now 38 (24 migrated + 14 pre-existing).
+6. **Folder deletion:** `src/lib/nova-sdk/` removed atomically.
+
+### Verification
+
+```
+$ grep -rn "@/lib/nova-sdk" src   → 0 hits
+$ npx tsc --noEmit                → 0 errors
+$ npx vite build                  → ✅ built in 47.18s
+```
+
+## Architectural Position
+
+The full Nova SDK micro-OS surface — kernel (process/memory/syscall/scheduler/compositor/wayland/drivers/privilege), runtime (lifecycle/loader/managed-runtime), services (filesystem/window-server/input/notification/permission-monitor/settings), system bridges, input/graphics primitives, hooks, design contract enforcement, theme provider, UI component library, layout primitives, and the 3-tier extensibility system (plugins/widgets/integrations) — now lives entirely under `src/platform/nova-sdk/`. The platform-as-first-class-OS contract is unified: zero parallel canonicals remain.
 
 ## Wave 11 — Orchestration Folder Promotion ✅
 

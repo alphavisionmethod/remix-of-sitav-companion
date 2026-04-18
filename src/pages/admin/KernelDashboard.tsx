@@ -21,14 +21,14 @@ import {
 import { cn } from "@/lib/utils";
 import { PriorityBand as KernelPriorityBand, BAND_CONFIG } from "@/lib/core-services/kernel/process-scheduler";
 import { TrustRing, RING_CONFIG } from "@/lib/core-services/kernel/sandbox-engine";
-import { ProcessTable, type Process, type PriorityBand as NovaPriorityBand } from "@/lib/nova-sdk/kernel/process-manager";
-import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
-import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler";
-import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
-import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
-import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
-import { WaylandServer, type WaylandClient, type WaylandStats } from "@/lib/nova-sdk/kernel/wayland";
-import { ServiceManager, type ServiceStatus, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
+import { ProcessTable, type Process, type PriorityBand as NovaPriorityBand } from "@/platform/nova-sdk/kernel/process-manager";
+import { MemoryManager } from "@/platform/nova-sdk/kernel/memory-manager";
+import { Scheduler, type SchedulerEvent } from "@/platform/nova-sdk/kernel/scheduler";
+import { Compositor } from "@/platform/nova-sdk/kernel/compositor";
+import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/platform/nova-sdk/kernel/power-manager";
+import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/platform/nova-sdk/kernel/privilege";
+import { WaylandServer, type WaylandClient, type WaylandStats } from "@/platform/nova-sdk/kernel/wayland";
+import { ServiceManager, type ServiceStatus, type ServiceLogEntry } from "@/platform/nova-sdk/services/service-manager";
 
 // ── Animation Variants ───────────────────────────────────────
 

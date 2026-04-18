@@ -8,8 +8,8 @@ import { VStack, HStack } from "@/platform/nova-sdk/ui/layout";
 import { NovaText, NovaButton, NovaCard } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
-import type { SettingsSchema } from "@/lib/nova-sdk/services/settings-service";
+import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
+import type { SettingsSchema } from "@/platform/nova-sdk/services/settings-service";
 
 export function SettingRow({ label, description, icon, children }: {
   label: string; description?: string; icon?: React.ReactNode; children: React.ReactNode;

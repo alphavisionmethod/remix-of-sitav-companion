@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useRef, useEffect, useCallback } from "react";
-import { NovaContext, type NovaColor } from "@/lib/nova-sdk/graphics/context";
+import { NovaContext, type NovaColor } from "@/platform/nova-sdk/graphics/context";
 
 export interface ChartSeries {
   key: string;

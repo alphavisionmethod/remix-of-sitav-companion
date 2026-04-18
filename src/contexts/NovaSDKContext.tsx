@@ -5,15 +5,15 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createContext, useContext, useMemo, useEffect, useRef } from "react";
-import { AppRegistry, type RegisteredApp } from "@/lib/nova-sdk/core/registry";
-import { NovaBridge } from "@/lib/nova-sdk/system/bridge";
-import { NovaEvents } from "@/lib/nova-sdk/input/events";
-import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
-import { AppLoader, type AppBundle } from "@/lib/nova-sdk/runtime/loader";
-import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
-import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
+import { AppRegistry, type RegisteredApp } from "@/platform/nova-sdk/core/registry";
+import { NovaBridge } from "@/platform/nova-sdk/system/bridge";
+import { NovaEvents } from "@/platform/nova-sdk/input/events";
+import { lifecycleManager } from "@/platform/nova-sdk/runtime/lifecycle";
+import { AppLoader, type AppBundle } from "@/platform/nova-sdk/runtime/loader";
+import { NovaFS } from "@/platform/nova-sdk/system/filesystem";
+import { NovaNotify } from "@/platform/nova-sdk/system/notifications";
 import { SoundEngine } from "@/platform/runtime/sound-engine";
-import { NovaKernel } from "@/lib/nova-sdk/kernel/boot";
+import { NovaKernel } from "@/platform/nova-sdk/kernel/boot";
 
 interface NovaSDKContextType {
   registry: typeof AppRegistry;

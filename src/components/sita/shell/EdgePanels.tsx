@@ -12,10 +12,10 @@ import {
   Cpu, MemoryStick, HardDrive, Activity,
   X, GripVertical,
 } from "lucide-react";
-import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
-import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
-import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
-import { Scheduler } from "@/lib/nova-sdk/kernel/scheduler";
+import { ProcessTable } from "@/platform/nova-sdk/kernel/process-manager";
+import { MemoryManager } from "@/platform/nova-sdk/kernel/memory-manager";
+import { Compositor } from "@/platform/nova-sdk/kernel/compositor";
+import { Scheduler } from "@/platform/nova-sdk/kernel/scheduler";
 
 // ── Types ────────────────────────────────────────────────────
 

@@ -14,7 +14,7 @@ import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { AppLayout } from "@/platform/nova-sdk/ui/layout";
 import { NovaList, NovaSectionLabel, NovaText, NovaCard, NovaToolbar, NovaBadge } from "@/platform/nova-sdk/ui/components";
 import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
-import { FileSystemService, type FSNode, type MountPoint } from "@/lib/nova-sdk/services/filesystem-service";
+import { FileSystemService, type FSNode, type MountPoint } from "@/platform/nova-sdk/services/filesystem-service";
 import { toast } from "sonner";
 
 // ── Icon helpers ─────────────────────────────────────────────
