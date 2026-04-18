@@ -39,21 +39,25 @@ bash "${REPO}/os/scripts/verify-verity-metadata.sh" "${OUT_DIR}" || echo "  (ski
 step "4/7  Emit attestation"
 SITA_OUT_DIR="${OUT_DIR}" bash "${REPO}/os/scripts/emit-attestation.sh"
 
-step "5/7  Build update bundle"
+step "5/8  Build update bundle"
 SITA_OUT_DIR="${OUT_DIR}" bash "${REPO}/os/scripts/build-update-bundle.sh" "${VERSION}" "${CHANNEL}"
 
-step "6/7  Verify update bundle"
+step "6/8  Verify update bundle"
 SITA_INSTALLED_VERSION="${SITA_INSTALLED_VERSION:-0.0.0}" \
   bash "${REPO}/os/scripts/verify-update-bundle.sh" \
     "${OUT_DIR}/sita-os-${VERSION}.bundle" \
     "${OUT_DIR}/channel-${CHANNEL}.json"
 
-step "7/7  QEMU validation"
+step "7/8  Build raw IMG (flashable disk + cloud import)"
+SITA_OUT_DIR="${OUT_DIR}" VERSION="${VERSION}" sudo -E bash "${REPO}/os/scripts/build-raw-img.sh"
+
+step "8/8  QEMU validation"
 SITA_QEMU_TIMEOUT="${SITA_QEMU_TIMEOUT:-180}" bash "${REPO}/os/qemu-validate.sh"
 
 echo
 echo "✅ release pipeline complete"
 echo "   ISO:        ${OUT_DIR}/sita-os-${VERSION}-amd64.iso"
+echo "   IMG:        ${OUT_DIR}/sita-os-${VERSION}-amd64.img"
 echo "   Bundle:     ${OUT_DIR}/sita-os-${VERSION}.bundle"
 echo "   Channel:    ${OUT_DIR}/channel-${CHANNEL}.json"
 echo "   Attest:     generated/os-build-attestation.json"
