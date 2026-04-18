@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useVerificationSurfaces, useVerificationBlockers } from "@/platform/verification/verification-hooks";
 import { SURFACE_REGISTRY, getVerificationStats } from "@/platform/verification/surface-registry";
-import { CUSTOMER_JOURNEY_REGISTRY, getLaunchBlockerJourneys } from "@/lib/customer-journey/journey-registry";
+import { CUSTOMER_JOURNEY_REGISTRY, getLaunchBlockerJourneys } from "@/domains/customer-journey/journey-registry";
 import { fromTable } from "@/lib/supabase-helpers";
 import {
   Target, Shield, CheckCircle2, XCircle, AlertTriangle, Rocket, Ban,

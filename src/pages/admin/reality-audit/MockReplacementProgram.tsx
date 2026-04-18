@@ -7,7 +7,7 @@ import { Replace, CheckCircle, XCircle, AlertTriangle, ChevronDown, ChevronRight
 import {
   MOCK_REPLACEMENT_PROGRAM, getMockReplacementProgress,
   type MigrationStatus, type MockType
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const contractColors: Record<string, string> = {
   absent: "text-red-400 bg-red-500/10",

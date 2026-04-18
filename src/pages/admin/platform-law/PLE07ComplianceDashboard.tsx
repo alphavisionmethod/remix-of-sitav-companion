@@ -13,7 +13,7 @@ import {
   getEnforcementLayerAverage, getOverallComplianceScore,
   getTotalViolations, getCIGatePassRate, getManifestCompletionRate,
   getRecentValidationRuns, getOpenViolations, getUnresolvedDrift, getBlockingDrift
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 type ComplianceMode = "strict" | "advisory" | "learning";
 

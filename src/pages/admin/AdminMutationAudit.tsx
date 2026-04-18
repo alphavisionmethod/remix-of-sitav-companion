@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Database, CheckCircle, AlertTriangle, XCircle, Clock, Shield, RefreshCw, Eye, Undo2, GitBranch, Layers, ArrowRight, FileCheck } from "lucide-react";
-import { DEMO_MUTATIONS, type DemoMutationRecord, type DurabilityStatus } from "@/lib/demo-data/durability";
+import { DEMO_MUTATIONS, type DemoMutationRecord, type DurabilityStatus } from "@/data/seed/durability";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

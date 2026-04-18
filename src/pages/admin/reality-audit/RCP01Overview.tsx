@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getOverviewStats, getDomainRealityRollups, REALITY_TRANSITIONS,
   FEATURE_REALITY_MATRIX, type RealityState
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<RealityState, string> = {
   presentational: "bg-red-500",

@@ -16,7 +16,7 @@ import { useRealityClassifications, useUpsertClassification, useDeleteClassifica
 import { Shield, Eye, Cpu, CheckCircle2, Plus, Trash2, Search, BarChart3, Pencil, Rocket, AlertTriangle, Info, ArrowRight, Layers, Target } from "lucide-react";
 import type { RealityClassification } from "@/data/persistence/reality-classification-persistence";
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
-import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
+import { DEMO_CONTRACT_STATUSES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CLASSIFICATION_CONFIG = {

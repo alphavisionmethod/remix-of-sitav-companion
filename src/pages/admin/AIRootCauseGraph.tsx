@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
+import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 

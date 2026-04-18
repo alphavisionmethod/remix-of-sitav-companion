@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_REV_SEGMENTS_SEGMENTATION_ENGINE as DEMO_SEGMENTS, DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/lib/demo-data/revenue-office";
+import { DEMO_REV_SEGMENTS_SEGMENTATION_ENGINE as DEMO_SEGMENTS, DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function SegmentationEngine() {

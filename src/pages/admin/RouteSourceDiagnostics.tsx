@@ -12,7 +12,7 @@ import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";
-import { DEMO_ROUTES } from "@/lib/demo-data/admin-platform";
+import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";

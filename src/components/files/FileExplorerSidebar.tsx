@@ -1,7 +1,7 @@
 import React from "react";
 import { Folder, Home, Trash2, Clock, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ExplorerFolder } from "@/lib/data-services/file-explorer-service";
+import type { ExplorerFolder } from "@/data/repositories/file-explorer-service";
 
 interface Props {
   folders: ExplorerFolder[];

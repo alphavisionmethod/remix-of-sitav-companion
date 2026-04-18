@@ -10,7 +10,7 @@ import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useConciergeNavigation } from "@/contexts/ConciergeNavigationContext";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";

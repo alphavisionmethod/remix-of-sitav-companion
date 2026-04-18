@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Layers, CheckCircle, AlertTriangle, Download, RefreshCw, GitBranch, Shield, Undo2, FileText, Eye, Scale, Clock } from "lucide-react";
-import { DEMO_PROOF_ENTRIES } from "@/lib/demo-data/admin-platform";
+import { DEMO_PROOF_ENTRIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

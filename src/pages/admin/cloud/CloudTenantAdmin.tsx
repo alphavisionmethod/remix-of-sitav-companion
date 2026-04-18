@@ -9,8 +9,8 @@ import {
 import {
   Building2, Users, Globe, Shield, Plus, Search, Settings
 } from "lucide-react";
-import { cloudTenantService } from "@/lib/cloud-backbone/cloud-tenant-service";
-import type { CloudTenant } from "@/lib/cloud-backbone/cloud-tenant-service";
+import { cloudTenantService } from "@/platform/cloud/cloud-tenant-service";
+import type { CloudTenant } from "@/platform/cloud/cloud-tenant-service";
 import { toast } from "sonner";
 
 export function CloudTenantAdmin() {

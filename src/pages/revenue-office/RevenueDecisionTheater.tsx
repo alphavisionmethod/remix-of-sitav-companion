@@ -5,7 +5,7 @@ import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, Ar
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/lib/demo-data/revenue-office";
+import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

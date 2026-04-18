@@ -3,7 +3,7 @@ import {
   useFolderContents, useBreadcrumbs, useAllFolders,
   useRenameFolder, useDeleteFolder, useRenameFile, useDeleteFile, useUploadToFolder,
 } from "@/hooks/use-file-explorer";
-import { downloadFile, type ExplorerFile } from "@/lib/data-services/file-explorer-service";
+import { downloadFile, type ExplorerFile } from "@/data/repositories/file-explorer-service";
 import { FileExplorerBreadcrumb } from "@/components/files/FileExplorerBreadcrumb";
 import { FileExplorerToolbar, type ViewMode } from "@/components/files/FileExplorerToolbar";
 import { FileExplorerSidebar } from "@/components/files/FileExplorerSidebar";

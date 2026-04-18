@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/lib/demo-data/digital-presence";
+import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

@@ -4,7 +4,7 @@ import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Cl
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
+import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

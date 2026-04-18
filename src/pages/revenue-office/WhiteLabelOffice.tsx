@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/lib/demo-data/revenue-office";
+import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CLIENT_HEALTH_BY_PARTNER = [

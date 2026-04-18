@@ -6,10 +6,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
-import { useModeComparisons, useUpsertModeComparison } from "@/lib/customer-journey/journey-scoring-hooks";
-import { useModeDeltas } from "@/lib/customer-journey/journey-ingestion-hooks";
-import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { useCustomerJourneys, useCustomerJourneyRuns } from "@/domains/customer-journey/journey-hooks";
+import { useModeComparisons, useUpsertModeComparison } from "@/domains/customer-journey/journey-scoring-hooks";
+import { useModeDeltas } from "@/domains/customer-journey/journey-ingestion-hooks";
+import { JOURNEY_STATUS_CONFIG } from "@/domains/customer-journey/journey-registry";
 import { GitCompare, Loader2, AlertTriangle, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 

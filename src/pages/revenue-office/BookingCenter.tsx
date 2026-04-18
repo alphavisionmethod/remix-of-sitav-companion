@@ -18,7 +18,7 @@ import {
   DEMO_BOOKING_ANALYTICS,
   DEMO_NOSHOW_RECOVERY,
   DEMO_PREP_CHECKLISTS,
-} from "@/lib/demo-data/revenue-office";
+} from "@/data/seed/revenue-office";
 
 
 export default function BookingCenter() {

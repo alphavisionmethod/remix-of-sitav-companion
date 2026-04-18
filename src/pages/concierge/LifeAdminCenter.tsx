@@ -7,7 +7,7 @@ import { QueueCard, ActionCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { LifeAdminQueueCard } from "@/components/concierge";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, CheckCircle,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Shield, AlertTriangle, BarChart3, PieChart, Eye, Settings, Zap } from "lucide-react";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
-import { STRESS_SCENARIOS, RISK_POLICIES } from "@/lib/investment-office/mock-data";
+import { STRESS_SCENARIOS, RISK_POLICIES } from "@/domains/investment/mock-data";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

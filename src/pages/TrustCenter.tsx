@@ -23,7 +23,7 @@ import {
 import { HeroCard, StatusCard, ProofCard, AdvisorCard } from "@/components/sita/cards";
 import { TrustBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -11,7 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/lib/demo-data/revenue-office";
+import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/data/seed/revenue-office";
 import { clientSentimentService } from "@/lib/services/client-sentiment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

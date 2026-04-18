@@ -10,7 +10,7 @@ import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
   Layers, AlertTriangle, Users, Clock, Zap, ShieldAlert, GitBranch, Timer,

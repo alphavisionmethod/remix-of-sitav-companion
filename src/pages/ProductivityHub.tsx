@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
-import { DEMO_RECENT_DOCS } from "@/lib/demo-data/core-pages";
+import { DEMO_RECENT_DOCS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));

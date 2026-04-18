@@ -1,5 +1,5 @@
 import { ConciergePageWrapper } from "@/components/concierge";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

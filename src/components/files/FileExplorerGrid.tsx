@@ -8,7 +8,7 @@ import {
   Pencil, Trash2, FolderInput, Download, Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ExplorerFolder, ExplorerFile } from "@/lib/data-services/file-explorer-service";
+import type { ExplorerFolder, ExplorerFile } from "@/data/repositories/file-explorer-service";
 import type { ViewMode } from "./FileExplorerToolbar";
 import { Input } from "@/components/ui/input";
 

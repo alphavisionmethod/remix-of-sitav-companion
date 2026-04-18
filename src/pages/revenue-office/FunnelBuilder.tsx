@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DEMO_FUNNELS, DEMO_FUNNEL_STEP_ANALYTICS, DEMO_FUNNEL_TRIGGERS } from "@/lib/demo-data/revenue-office";
+import { DEMO_FUNNELS, DEMO_FUNNEL_STEP_ANALYTICS, DEMO_FUNNEL_TRIGGERS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STEP_TYPES = [

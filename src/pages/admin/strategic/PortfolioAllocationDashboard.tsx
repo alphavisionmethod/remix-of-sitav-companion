@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
-import { DEMO_DEFAULT_CATEGORIES } from "@/lib/demo-data/admin-platform";
+import { DEMO_DEFAULT_CATEGORIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PortfolioAllocationDashboard = () => {

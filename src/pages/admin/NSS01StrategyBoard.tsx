@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Layers, Smartphone, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
-import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/lib/demo-data/native-shell";
+import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/data/seed/native-shell";
 import NSSSubNav from "@/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

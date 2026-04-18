@@ -9,7 +9,7 @@ import {
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

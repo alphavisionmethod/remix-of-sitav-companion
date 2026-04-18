@@ -6,9 +6,9 @@ import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, Rotate
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
-import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
+import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/data/seed/concierge";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;

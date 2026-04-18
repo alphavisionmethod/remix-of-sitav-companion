@@ -7,8 +7,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Maximize2, Play, Pause, SkipForward } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
-import { APP_ACCENTS } from "@/lib/design-system/app-window-system";
+import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
+import { APP_ACCENTS } from "@/platform/design-system/app-window-system";
 
 export interface PiPWindow {
   id: string;

@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
-import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/lib/demo-data/incidents";
+import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/data/seed/incidents";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

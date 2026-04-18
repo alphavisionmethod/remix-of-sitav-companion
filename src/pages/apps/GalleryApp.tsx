@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, X, Heart, Share2, Download, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { DEMO_PHOTOS, DEMO_albums, DEMO_placeholderColors } from "@/lib/demo-data/apps";
+import { DEMO_PHOTOS, DEMO_albums, DEMO_placeholderColors } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Photo {

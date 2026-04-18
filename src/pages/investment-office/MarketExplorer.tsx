@@ -4,7 +4,7 @@ import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, Chevro
 import type { AssetClass } from "@/lib/investment-office/types";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
+import { SPARKLINE_DATA } from "@/domains/investment/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_CLASS_TABS } from "@/lib/demo-data/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

@@ -11,7 +11,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import CNSubNav from "@/components/admin/CNSubNav";
-import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

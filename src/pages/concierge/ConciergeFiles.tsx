@@ -5,7 +5,7 @@ import type { EssentialDoc } from "@/components/concierge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 interface HouseholdFile {
   id: string;

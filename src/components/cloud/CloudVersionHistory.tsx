@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { History, RotateCcw, RefreshCw, Smartphone, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

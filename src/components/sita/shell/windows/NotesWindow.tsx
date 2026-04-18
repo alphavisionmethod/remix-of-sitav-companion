@@ -18,7 +18,7 @@ import {
   Heading2, Quote, CheckSquare, Minus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_TYPE, APP_COMPONENTS } from "@/lib/design-system/app-window-system";
+import { APP_TYPE, APP_COMPONENTS } from "@/platform/design-system/app-window-system";
 import { SoundEngine } from "@/lib/sound-engine";
 import ReactMarkdown from "react-markdown";
 

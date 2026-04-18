@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics, DEMO_DOMAIN_HEALTH } from "@/lib/demo-data/revenue-office";
+import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics, DEMO_DOMAIN_HEALTH } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };

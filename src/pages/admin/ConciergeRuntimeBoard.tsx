@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, CheckCircle, AlertTriangle, Clock, Users, Plane, Home, RefreshCw, FileCheck, Target, XCircle, CalendarCheck } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_TASKS } from "@/lib/demo-data/admin-platform";
+import { DEMO_TASKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

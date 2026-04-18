@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useBrandAssets } from "@/hooks/use-digital-presence";
-import { DEMO_BRAND_ASSETS, DEMO_BRAND_COLORS, DEMO_REUSABLE_BLOCKS, DEMO_TYPOGRAPHY } from "@/lib/demo-data/digital-presence";
+import { DEMO_BRAND_ASSETS, DEMO_BRAND_COLORS, DEMO_REUSABLE_BLOCKS, DEMO_TYPOGRAPHY } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

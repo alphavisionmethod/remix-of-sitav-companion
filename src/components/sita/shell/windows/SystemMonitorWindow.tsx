@@ -17,7 +17,7 @@ import {
   NovaText, NovaButton, NovaCard, NovaList,
   NovaSectionLabel, NovaBadge,
 } from "@/platform/nova-sdk/ui/components";
-import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
+import { APP_COMPONENTS } from "@/platform/design-system/app-window-system";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";

@@ -5,7 +5,7 @@ import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { ContextDrawer } from "@/components/sita/SitaComponents";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

@@ -20,7 +20,7 @@ import {
   DEMO_DOMAIN_REUSE,
   DEMO_INVALIDATION_FEED,
   DEMO_CONFIDENCE_TREND,
-} from "@/lib/demo-data/admin-intelligence";
+} from "@/data/seed/admin-intelligence";
 
 // ── Types ────────────────────────────────────────────────────────
 

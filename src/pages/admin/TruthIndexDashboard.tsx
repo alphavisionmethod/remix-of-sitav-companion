@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { computeTruthIndices, type TruthIndexSummary } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DEMO_INDEX_CONFIG } from "@/lib/demo-data/admin-platform";
+import { DEMO_INDEX_CONFIG } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function getScoreColor(score: number): string {

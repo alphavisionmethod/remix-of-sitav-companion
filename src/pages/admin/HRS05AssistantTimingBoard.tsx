@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Timer, BrainCircuit, Calendar, AlertTriangle, Loader2 } from "lucide-react";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
-import { DEMO_TIMING_RULES, DEMO_BRIEFING_WINDOWS, DEMO_HOLD_VS_ACT } from "@/lib/demo-data/health-signals";
+import { DEMO_TIMING_RULES, DEMO_BRIEFING_WINDOWS, DEMO_HOLD_VS_ACT } from "@/data/seed/health-signals";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

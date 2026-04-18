@@ -8,7 +8,7 @@ import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFrom
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/lib/demo-data/import-export";
+import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/data/seed/import-export";
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

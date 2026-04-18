@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Check, Clock, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
+import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
 import { NotificationService, type SystemNotification } from "@/lib/nova-sdk/services/notification-service";
 import { NovaEvents } from "@/lib/nova-sdk/input/events";
 

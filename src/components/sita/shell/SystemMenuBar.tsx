@@ -14,7 +14,7 @@ import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { useUnreadCount } from "../NotificationPanel";
 import { TrustPostureChip } from "./TrustPostureChip";
 import { useShellIndicators } from "@/hooks/use-shell-indicators";
-import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
+import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
 import logo from "@/assets/logo.webp";
 import {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,

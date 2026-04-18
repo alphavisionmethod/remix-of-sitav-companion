@@ -9,7 +9,7 @@ import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvi
 import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecords, useRolloutRecords } from "@/hooks/use-fip-data";
 import { READINESS_STAGES } from "@/lib/fip/types";
-import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const FIPBuilderConsole = () => {

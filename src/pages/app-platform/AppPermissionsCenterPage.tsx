@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_PERMISSION_DOMAINS } from "@/lib/demo-data/core-pages";
+import { DEMO_PERMISSION_DOMAINS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppPermissionsCenterPage = () => {

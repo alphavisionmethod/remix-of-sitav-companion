@@ -6,11 +6,11 @@ import {
   Users, HardDrive, RefreshCw, Wifi, AlertTriangle, Smartphone,
   ArrowUpRight, ArrowDownRight, CheckCircle, Activity
 } from "lucide-react";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
-import { cloudSyncService } from "@/lib/cloud-backbone/cloud-sync-service";
-import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
-import { cloudQuotaService } from "@/lib/cloud-backbone/cloud-quota-service";
-import { cloudAuditService } from "@/lib/cloud-backbone/cloud-audit-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
+import { cloudSyncService } from "@/platform/cloud/cloud-sync-service";
+import { cloudDeviceService } from "@/platform/cloud/cloud-device-service";
+import { cloudQuotaService } from "@/platform/cloud/cloud-quota-service";
+import { cloudAuditService } from "@/platform/cloud/cloud-audit-service";
 
 const sparkData = () => Array.from({ length: 12 }, () => Math.floor(Math.random() * 100));
 

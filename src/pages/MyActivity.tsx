@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/lib/demo-data/core-pages";
+import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

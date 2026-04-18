@@ -12,7 +12,7 @@ import {
   VALIDATION_VIOLATIONS, DRIFT_RECORDS, JOURNEY_MANIFESTS,
   getLaunchBlockers, getBlockingDrift, getOpenViolations,
   type LaunchGateManifestRecord
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const PLT08LaunchEnforcement = () => {
   const navigate = useNavigate();

@@ -7,8 +7,8 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
 import { Headset, Search, Wrench, Eye, Clock, CheckCircle } from "lucide-react";
-import { cloudSupportService } from "@/lib/cloud-backbone/cloud-support-service";
-import type { SupportSession } from "@/lib/cloud-backbone/cloud-support-service";
+import { cloudSupportService } from "@/platform/cloud/cloud-support-service";
+import type { SupportSession } from "@/platform/cloud/cloud-support-service";
 import { toast } from "sonner";
 
 export function CloudSupportConsole() {

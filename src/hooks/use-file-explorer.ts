@@ -14,7 +14,7 @@ import {
   fetchTrash,
   emptyTrash,
   fetchAllFolders,
-} from "@/lib/data-services/file-explorer-service";
+} from "@/data/repositories/file-explorer-service";
 import { toast } from "sonner";
 
 export function useFolderContents(folderId: string | null) {

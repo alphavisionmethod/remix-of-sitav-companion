@@ -3,7 +3,7 @@ import { Target, MousePointer, Shield, Smartphone, FormInput, TrendingUp, AlertT
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/lib/demo-data/digital-presence";
+import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

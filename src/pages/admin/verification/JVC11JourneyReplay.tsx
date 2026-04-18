@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CUSTOMER_JOURNEY_REGISTRY, JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
-import { useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
+import { CUSTOMER_JOURNEY_REGISTRY, JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/domains/customer-journey/journey-registry";
+import { useCustomerJourneyRuns } from "@/domains/customer-journey/journey-hooks";
 import { Play, CheckCircle2, XCircle, Clock, ArrowRight, ChevronDown, ChevronRight, Image, FileText, RotateCcw } from "lucide-react";
 
 export default function JVC11JourneyReplay() {

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, MoreVertical, CheckCheck } from "lucide-react";
 import { useState } from "react";
-import { DEMO_CHATS, DEMO_MESSAGES } from "@/lib/demo-data/apps";
+import { DEMO_CHATS, DEMO_MESSAGES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Chat {

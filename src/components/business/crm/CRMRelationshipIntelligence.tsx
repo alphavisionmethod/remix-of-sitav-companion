@@ -10,7 +10,7 @@ import {
   Activity, Eye, Phone, HeadphonesIcon, X, BarChart3
 } from "lucide-react";
 import { differenceInDays, isPast } from "date-fns";
-import type { CRMContact } from "@/lib/data-services/crm-data-service";
+import type { CRMContact } from "@/data/repositories/crm-data-service";
 
 interface RelationshipIntelligenceProps {
   contacts: CRMContact[];

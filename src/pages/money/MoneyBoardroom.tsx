@@ -4,7 +4,7 @@ import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { TrustBadge } from "@/components/sita/badges";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

@@ -3,7 +3,7 @@ import { Layers, ArrowRight, Zap, DollarSign, CheckCircle2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies } from "@/hooks/use-sag-data";
-import { DEMO_EXAMPLE_STAGES } from "@/lib/demo-data/admin-platform";
+import { DEMO_EXAMPLE_STAGES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

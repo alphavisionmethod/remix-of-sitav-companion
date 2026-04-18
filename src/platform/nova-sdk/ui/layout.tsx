@@ -5,7 +5,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { SPACE } from "@/lib/design-system/app-window-system";
+import { SPACE } from "@/platform/design-system/app-window-system";
 
 type SpaceKey = keyof typeof SPACE;
 

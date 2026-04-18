@@ -12,4 +12,4 @@ export * from "@/lib/data-services/cai-data-service";
 export * from "@/lib/data-services/calendar-data-service";
 export * from "@/lib/data-services/capability-launch-data-service";
 export * from "@/lib/data-services/connector-ops-data-service";
-export * from "@/lib/data-services/crm-data-service";
+export * from "@/data/repositories/crm-data-service";

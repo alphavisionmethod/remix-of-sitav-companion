@@ -23,7 +23,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
-import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle, Pin, ListChecks, Filter } from "lucide-react";
-import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/lib/demo-data/revenue-office";
+import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

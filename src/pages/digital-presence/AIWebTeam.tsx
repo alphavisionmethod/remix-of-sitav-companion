@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
-import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
+import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

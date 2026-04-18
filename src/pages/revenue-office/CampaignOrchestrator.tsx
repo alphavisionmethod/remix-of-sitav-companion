@@ -17,7 +17,7 @@ import {
   DEMO_CAMPAIGN_ATTRIBUTION,
   DEMO_CAMPAIGN_FATIGUE,
   DEMO_DELIVERABILITY,
-} from "@/lib/demo-data/revenue-office";
+} from "@/data/seed/revenue-office";
 interface AttributionRow {
   campaign: string;
   channel: string;

@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Plus, Zap, FileText } from "lucide-react";
 import { useCreateContact } from "@/hooks/use-crm-data";
-import type { CRMCompany } from "@/lib/data-services/crm-data-service";
+import type { CRMCompany } from "@/data/repositories/crm-data-service";
 
 interface CRMContactFormProps {
   open: boolean;

@@ -82,7 +82,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
 ];
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
-import { DEMO_BIZ_CATEGORIES as DEMO_CATEGORIES, DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/lib/demo-data/business";
+import { DEMO_BIZ_CATEGORIES as DEMO_CATEGORIES, DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/data/seed/business";
 
 // ── Helpers ──────────────────────────────────────────────────────
 

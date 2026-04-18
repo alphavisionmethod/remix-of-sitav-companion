@@ -1,14 +1,14 @@
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { StatusCard, SummaryCard } from "@/components/sita/cards";
 import { Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, Link, AlertTriangle, CheckCircle, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/lib/demo-data/core-pages";
+import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/data/seed/core-pages";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
 const iconMap: Record<string, typeof Shield> = {

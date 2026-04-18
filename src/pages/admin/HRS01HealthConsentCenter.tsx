@@ -6,8 +6,8 @@ import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
 import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
-import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
-import { DEMO_PRINCIPLES } from "@/lib/demo-data/admin-platform";
+import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/data/seed/health-signals";
+import { DEMO_PRINCIPLES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

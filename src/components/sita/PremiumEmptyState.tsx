@@ -5,7 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DOMAIN_ATMOSPHERE, SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { DOMAIN_ATMOSPHERE, SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import type { DomainId } from "@/components/sita/shell/DomainAppShell";
 import type { LucideIcon } from "lucide-react";
 import { 

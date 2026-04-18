@@ -10,7 +10,7 @@ import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/lib/demo-data/revenue-office";
+import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

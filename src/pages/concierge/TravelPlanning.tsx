@@ -6,12 +6,12 @@ import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { SitaTabs, SectionHeader } from "@/components/sita/SitaComponents";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
 import { ConciergePageWrapper, ConciergeEmptyState, TravelReadinessCard, ReservationStatusCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
-import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
+import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/data/seed/concierge";
 
 
 interface Trip {

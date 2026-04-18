@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { HardDrive, AlertTriangle, CheckCircle, RefreshCw, Database } from "lucide-react";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 import { toast } from "sonner";
 
 export function CloudStorageAdmin() {

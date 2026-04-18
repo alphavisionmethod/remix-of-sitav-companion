@@ -9,7 +9,7 @@ import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
   AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
 } from "lucide-react";
-import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
+import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Mock customer data keyed by ID

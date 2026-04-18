@@ -2,7 +2,7 @@ import RCPSubNav from "@/components/admin/RCPSubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Database, AlertTriangle, ArrowRight } from "lucide-react";
-import { CORE_SERVICE_PERSISTENCE, getCoreServiceHealth, type PromiseSeverity } from "@/lib/reality-audit/reality-audit-registry";
+import { CORE_SERVICE_PERSISTENCE, getCoreServiceHealth, type PromiseSeverity } from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<string, string> = {
   "in-memory": "text-red-400 bg-red-500/10 border-red-500/30",

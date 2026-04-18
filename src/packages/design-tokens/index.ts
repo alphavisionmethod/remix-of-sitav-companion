@@ -159,4 +159,4 @@ export {
   NOVA_MOTION,
   TRAFFIC_LIGHTS,
   NOVA_SHADOWS,
-} from "@/lib/design-system/nova-os";
+} from "@/platform/design-system/nova-os";

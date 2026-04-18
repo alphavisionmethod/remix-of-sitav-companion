@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";

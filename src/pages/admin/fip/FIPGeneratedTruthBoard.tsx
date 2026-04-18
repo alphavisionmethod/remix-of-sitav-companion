@@ -4,7 +4,7 @@ import { Database, CheckCircle2, XCircle, AlertTriangle, FileJson } from "lucide
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
-import { DEMO_GENERATED_ARTIFACTS } from "@/lib/demo-data/admin-platform";
+import { DEMO_GENERATED_ARTIFACTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

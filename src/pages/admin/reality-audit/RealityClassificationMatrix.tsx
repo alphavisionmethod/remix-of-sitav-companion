@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FEATURE_REALITY_MATRIX, getRealityDistribution, getDomainRealityRollups,
   type FeatureRealityRecord, type RealityState, type ScopeLevel
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const stateColors: Record<RealityState, string> = {
   presentational: "bg-red-500/15 text-red-400 border-red-500/30",

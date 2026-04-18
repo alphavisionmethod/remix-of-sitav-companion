@@ -3,7 +3,7 @@ import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
   BreadcrumbSeparator, BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import type { BreadcrumbItem as BCItem } from "@/lib/data-services/file-explorer-service";
+import type { BreadcrumbItem as BCItem } from "@/data/repositories/file-explorer-service";
 
 interface Props {
   items: BCItem[];

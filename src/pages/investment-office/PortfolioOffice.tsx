@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA, PERFORMANCE_TIMELINE } from "@/lib/investment-office/mock-data";
+import { SPARKLINE_DATA, PERFORMANCE_TIMELINE } from "@/domains/investment/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

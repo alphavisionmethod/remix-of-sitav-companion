@@ -12,7 +12,7 @@ import {
   DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS,
   DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
   DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
-} from "@/lib/demo-data/revenue-office";
+} from "@/data/seed/revenue-office";
 
 export default function ReputationEngine() {
   const [tab, setTab] = useState("reviews");

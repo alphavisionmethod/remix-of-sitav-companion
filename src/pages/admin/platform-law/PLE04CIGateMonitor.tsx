@@ -8,7 +8,7 @@ import { GitBranch, Search, CheckCircle, XCircle, Clock, Shield, AlertTriangle, 
 import {
   CI_GATE_REGISTRY, VALIDATION_RUNS, VALIDATION_VIOLATIONS, getCIGatePassRate, getRecentValidationRuns,
   type CIGateEntry, type ValidationRunRecord
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const PLE04CIGateMonitor = () => {
   const [search, setSearch] = useState("");

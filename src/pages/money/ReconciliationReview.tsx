@@ -2,7 +2,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { QueueCard } from "@/components/sita/cards";
 import { useState } from "react";
 import {

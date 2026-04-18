@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DollarSign, TrendingUp, HardDrive, Users, BarChart3, Layers } from "lucide-react";
-import { cloudLifecycleService } from "@/lib/cloud-backbone/cloud-lifecycle-service";
-import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
-import type { StorageTier } from "@/lib/cloud-backbone/cloud-lifecycle-service";
+import { cloudLifecycleService } from "@/platform/cloud/cloud-lifecycle-service";
+import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
+import type { StorageTier } from "@/platform/cloud/cloud-lifecycle-service";
 
 export function CloudCostCapacityAdmin() {
   const [tiers, setTiers] = useState<StorageTier[]>([]);

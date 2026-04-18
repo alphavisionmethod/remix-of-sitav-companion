@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route, Smartphone, Watch, Monitor } from "lucide-react";
 import { useAttentionDecisions } from "@/hooks/use-notification-calm-data";
-import { DEMO_CHANNEL_SPECS, DEMO_DELIVERY_PRINCIPLES } from "@/lib/demo-data/notification-calm";
+import { DEMO_CHANNEL_SPECS, DEMO_DELIVERY_PRINCIPLES } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

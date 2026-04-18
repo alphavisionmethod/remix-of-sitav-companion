@@ -20,7 +20,7 @@ import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocatio
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
+import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIT03TaskInvocation() {

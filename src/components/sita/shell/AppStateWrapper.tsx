@@ -5,7 +5,7 @@
 
 import { type ReactNode, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { APP_TYPE, APP_COMPONENTS, SPACE } from "@/lib/design-system/app-window-system";
+import { APP_TYPE, APP_COMPONENTS, SPACE } from "@/platform/design-system/app-window-system";
 import { AlertCircle, RefreshCw, Inbox } from "lucide-react";
 
 type AppState = "loading" | "empty" | "ready" | "error";

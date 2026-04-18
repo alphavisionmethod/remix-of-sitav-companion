@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_receipts, DEMO_WHY_SENT } from "@/lib/demo-data/revenue-office";
+import { DEMO_receipts, DEMO_WHY_SENT } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const categoryIcons: Record<string, typeof Mail> = {

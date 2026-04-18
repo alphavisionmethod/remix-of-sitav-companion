@@ -5,9 +5,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useCustomerJourneys } from "@/lib/customer-journey/journey-hooks";
-import { useJourneySummaryView } from "@/lib/customer-journey/journey-ingestion-hooks";
-import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { useCustomerJourneys } from "@/domains/customer-journey/journey-hooks";
+import { useJourneySummaryView } from "@/domains/customer-journey/journey-ingestion-hooks";
+import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/domains/customer-journey/journey-registry";
 import { Table, Loader2, Filter } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";

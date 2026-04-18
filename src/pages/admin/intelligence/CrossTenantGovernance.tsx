@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DEMO_ENTERPRISE_EXCLUSIONS, DEMO_INTEL_PATTERNS as DEMO_PATTERNS, DEMO_RESTRICTED_DOMAINS } from "@/lib/demo-data/admin-intelligence";
+import { DEMO_ENTERPRISE_EXCLUSIONS, DEMO_INTEL_PATTERNS as DEMO_PATTERNS, DEMO_RESTRICTED_DOMAINS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CrossTenantGovernance = () => {

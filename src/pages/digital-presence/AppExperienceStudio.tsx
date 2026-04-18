@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { DEMO_EXISTING_EXPERIENCES, DEMO_EXPERIENCE_TYPES, DEMO_PORTAL_FEATURES, DEMO_PWA_SETTINGS } from "@/lib/demo-data/digital-presence";
+import { DEMO_EXISTING_EXPERIENCES, DEMO_EXPERIENCE_TYPES, DEMO_PORTAL_FEATURES, DEMO_PWA_SETTINGS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

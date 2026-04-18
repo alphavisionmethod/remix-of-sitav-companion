@@ -4,7 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { RecurringAdminItem } from "@/components/concierge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, Calendar, Clock, AlertCircle, CheckCircle, Sparkles, TrendingDown, Zap, Shield, FileText } from "lucide-react";

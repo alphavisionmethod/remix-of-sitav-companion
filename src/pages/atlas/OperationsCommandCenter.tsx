@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DEMO_alerts, DEMO_incidents, DEMO_runbooks, DEMO_services, DEMO_slos } from "@/lib/demo-data/atlas";
+import { DEMO_alerts, DEMO_incidents, DEMO_runbooks, DEMO_services, DEMO_slos } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();

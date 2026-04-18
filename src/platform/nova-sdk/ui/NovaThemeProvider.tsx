@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React, { createContext, useContext, useMemo, type ReactNode } from "react";
-import { SPACE, TYPE, APP_MATERIALS, APP_SHADOWS, APP_CHROME } from "@/lib/design-system/app-window-system";
-import { NOVA_MOTION, NOVA_SHADOWS, MATERIALS, DEPTH_LAYERS } from "@/lib/design-system/nova-os";
+import { SPACE, TYPE, APP_MATERIALS, APP_SHADOWS, APP_CHROME } from "@/platform/design-system/app-window-system";
+import { NOVA_MOTION, NOVA_SHADOWS, MATERIALS, DEPTH_LAYERS } from "@/platform/design-system/nova-os";
 
 // ── Theme Token Interface ────────────────────────────────────
 

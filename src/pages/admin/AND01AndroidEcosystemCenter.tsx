@@ -17,7 +17,7 @@ import {
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
-import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
+import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

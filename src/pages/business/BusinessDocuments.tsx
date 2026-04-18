@@ -18,7 +18,7 @@ import {
   Download, Star, Tag, Link2, Grid3X3, List, Share2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 type Tab = "all" | "quotes" | "invoices" | "contracts" | "attachments" | "images";
 type ViewMode = "grid" | "list";

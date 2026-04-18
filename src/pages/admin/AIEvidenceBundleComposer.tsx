@@ -8,7 +8,7 @@ import {
   FileJson, BookOpen, GitBranch, Users, Sparkles, RotateCcw, Eye
 } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
+import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";

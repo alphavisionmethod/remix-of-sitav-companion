@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, ChevronRight, Play, Sliders, Layers, Sparkles, MessageSquare } from "lucide-react";
 import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
-import { STRATEGY_TEMPLATES, STRATEGY_ADVISOR_COMMENTS } from "@/lib/investment-office/mock-data";
+import { STRATEGY_TEMPLATES, STRATEGY_ADVISOR_COMMENTS } from "@/domains/investment/mock-data";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import AllocationRebalancer from "@/components/investment/AllocationRebalancer";
 import { toast } from "sonner";

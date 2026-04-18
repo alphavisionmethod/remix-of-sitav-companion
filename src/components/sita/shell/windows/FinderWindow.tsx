@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
+import { ICON_GRADIENTS } from "@/platform/design-system/nova-os";
 import {
   Folder, Image, Music, AppWindow, Code, StickyNote, ChevronRight,
   Monitor, FileText, Download, File, HardDrive, ChevronLeft,

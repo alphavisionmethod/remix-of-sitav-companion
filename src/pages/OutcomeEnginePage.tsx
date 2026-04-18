@@ -17,7 +17,7 @@ import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/pri
 import { KPITile, SectionHeader, EmptyState } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-data/outcome-engine";
+import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/data/seed/outcome-engine";
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

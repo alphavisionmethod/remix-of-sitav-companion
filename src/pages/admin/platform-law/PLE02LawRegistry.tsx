@@ -8,7 +8,7 @@ import { Scale, Search, Shield, AlertTriangle, CheckCircle, ExternalLink, Cpu, W
 import {
   PLATFORM_LAWS, LAW_PACKS, type PlatformLaw, type LawCategory, type LawSeverity, type EnforcementMode,
   getBlockingLaws, getViolatedLaws, getMachineCheckableLaws, getLawsByPack
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const CATEGORIES: LawCategory[] = ["domain-purity", "execution-chain", "proof-requirement", "route-ownership", "contract-ownership", "manifest-requirement", "interaction-requirement", "shell-requirement", "import-boundary", "test-id-convention", "naming-convention", "prompt-traceability", "memory-governance", "service-budget", "connector-governance", "approval-governance", "capability-contract", "truth-requirement", "policy-governance", "cost-governance"];
 const SEVERITIES: LawSeverity[] = ["critical", "high", "medium", "low"];

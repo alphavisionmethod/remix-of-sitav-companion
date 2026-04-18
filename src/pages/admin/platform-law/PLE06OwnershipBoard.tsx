@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, CheckCircle, TrendingDown, ArrowUpRight, AlertTriangle, Clock, ArrowRight } from "lucide-react";
-import { OWNERSHIP_REGISTRY, getOwnerComplianceAverage, getNoOwnerGaps, getOwnerMTTR, type OwnershipEntry } from "@/lib/platform-law/platform-law-registry";
+import { OWNERSHIP_REGISTRY, getOwnerComplianceAverage, getNoOwnerGaps, getOwnerMTTR, type OwnershipEntry } from "@/platform/governance/platform-law-registry";
 
 const PLE06OwnershipBoard = () => {
   const [typeFilter, setTypeFilter] = useState<"all" | OwnershipEntry["type"]>("all");

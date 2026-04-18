@@ -7,7 +7,7 @@ import { ShieldCheck, CheckCircle, XCircle, AlertTriangle, Activity } from "luci
 import {
   computeRuntimeTruthGate, getRuntimeTruthSummary,
   POST_MIGRATION_VALIDATIONS
-} from "@/lib/reality-audit/reality-audit-registry";
+} from "@/runtimes/reality/reality-audit-registry";
 
 const gateColors: Record<string, string> = {
   pass: "text-emerald-400 bg-emerald-500/10",

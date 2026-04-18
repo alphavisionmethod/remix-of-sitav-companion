@@ -13,7 +13,7 @@ import {
   getFeatureComplianceScore, getInteractionsByFeature, getJourneysByFeature,
   getRuntimeEvidenceByFeature, getReadinessForFeature,
   type FeatureManifestRecord
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const PLT06FeatureCompliance = () => {
   const [selected, setSelected] = useState<FeatureManifestRecord | null>(null);

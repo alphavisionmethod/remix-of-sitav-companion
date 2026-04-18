@@ -8,7 +8,7 @@ import {
   MessageSquare, Heart, Shield
 } from "lucide-react";
 import { formatDistanceToNow, differenceInDays } from "date-fns";
-import type { CRMContact, CRMCompany } from "@/lib/data-services/crm-data-service";
+import type { CRMContact, CRMCompany } from "@/data/repositories/crm-data-service";
 
 interface MeetingPrepProps {
   contact?: CRMContact | null;

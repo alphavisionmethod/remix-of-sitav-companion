@@ -1,5 +1,5 @@
 import { ConciergePageWrapper } from "@/components/concierge";
-import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { ConciergeAdvisorInsightCard } from "@/components/concierge";

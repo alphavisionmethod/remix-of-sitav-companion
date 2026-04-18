@@ -21,7 +21,7 @@ import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06Mi
 import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
 import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
-import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/lib/demo-data/admin-platform";
+import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Mock Data ───────────────────────────────────────────────

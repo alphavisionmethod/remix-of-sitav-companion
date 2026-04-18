@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Cpu, Search, CheckCircle, Clock, Archive, FileCode, XCircle } from "lucide-react";
-import { SCAFFOLD_REGISTRY, type ScaffoldEntry } from "@/lib/platform-law/platform-law-registry";
+import { SCAFFOLD_REGISTRY, type ScaffoldEntry } from "@/platform/governance/platform-law-registry";
 
 const PLE03ScaffoldRegistry = () => {
   const [search, setSearch] = useState("");

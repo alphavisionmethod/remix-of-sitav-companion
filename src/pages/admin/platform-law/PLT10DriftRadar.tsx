@@ -9,7 +9,7 @@ import {
 import {
   DRIFT_RECORDS, getUnresolvedDrift, getBlockingDrift, getDriftByCategory, getDriftTimeline,
   type DriftEnforcementRecord, type DriftType
-} from "@/lib/platform-law/platform-law-registry";
+} from "@/platform/governance/platform-law-registry";
 
 const DRIFT_TYPES: DriftType[] = ["spec_code", "contract_code", "route_shell", "manifest_impl", "runtime_claim", "prompt_impl", "docs_runtime", "selector_drift", "journey_drift", "other"];
 

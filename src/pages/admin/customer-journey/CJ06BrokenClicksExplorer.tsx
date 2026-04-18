@@ -5,8 +5,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
-import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { useCustomerJourneyRuns } from "@/domains/customer-journey/journey-hooks";
+import { JOURNEY_STATUS_CONFIG } from "@/domains/customer-journey/journey-registry";
 import { Bug, Loader2 } from "lucide-react";
 
 

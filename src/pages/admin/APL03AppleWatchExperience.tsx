@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
-import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/lib/demo-data/admin-platform";
+import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
