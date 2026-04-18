@@ -1,5 +1,5 @@
 # User vs Operator Profile Separation Audit (Phase A)
-Generated: 2026-04-18T12:33:02.705Z
+Generated: 2026-04-18T12:40:23.313Z
 ## Manifest Alignment
 - App-plane-map entries: **20**
 - User profile allowedApps: **11**

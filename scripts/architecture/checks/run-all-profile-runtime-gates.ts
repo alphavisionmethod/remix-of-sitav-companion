@@ -29,6 +29,7 @@ interface RawGate {
   leakCount?: number;
   leakageCount?: number;
   unguardedCount?: number;
+  totalSoftDrift?: number;
 }
 
 interface AggregatorReport {
