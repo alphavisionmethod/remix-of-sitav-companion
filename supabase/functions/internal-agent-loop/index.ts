@@ -487,302 +487,6 @@ async function runAgent(
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Phase 2 — Signal→Action Bridge for the 3 priority agents
-//
-// After each scheduled tick, the bridge inspects real system signals
-// for the 3 production-autonomy agents and (when justified) invokes
-// the canonical `internal-agent-execute-action` edge function.
-//
-// Single safety brain: every call goes through evaluate_action_safety_gates
-// inside the executor. The bridge NEVER bypasses the 7 gates.
-//
-// Wired agents:
-//   • aw-incident-response  → restart_workflow / clear_stale_lock
-//   • aw-ai-spend-control   → disable_unhealthy_connector (cost containment)
-//   • aw-security-monitor   → escalate-only (council_escalations row)
-// ═══════════════════════════════════════════════════════════════
-interface BridgeOutcome {
-  agentId: string;
-  signalCount: number;
-  attempted: number;
-  executed: number;
-  approvalQueued: number;
-  denied: number;
-  escalated: number;
-  errors: string[];
-}
-
-async function callExecutor(
-  supabase: any,
-  payload: {
-    agent_id: string;
-    action_class: string;
-    target_id: string;
-    confidence: number;
-    precondition_evidence: Record<string, unknown>;
-    correlation_id: string;
-  },
-): Promise<{ ok: boolean; status: string; reason?: string }> {
-  try {
-    const url = `${Deno.env.get("SUPABASE_URL")}/functions/v1/internal-agent-execute-action`;
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
-      },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json().catch(() => ({}));
-    return {
-      ok: res.ok && data?.ok !== false,
-      status: data?.status ?? (res.ok ? "executed" : "error"),
-      reason: data?.denial_reason ?? data?.error ?? undefined,
-    };
-  } catch (e) {
-    return { ok: false, status: "error", reason: e instanceof Error ? e.message : String(e) };
-  }
-}
-
-// ─── Bridge: incident-response → restart_workflow / clear_stale_lock ──
-async function bridgeIncidentResponse(supabase: any): Promise<BridgeOutcome> {
-  const out: BridgeOutcome = {
-    agentId: "aw-incident-response",
-    signalCount: 0,
-    attempted: 0,
-    executed: 0,
-    approvalQueued: 0,
-    denied: 0,
-    escalated: 0,
-    errors: [],
-  };
-
-  // Signal 1: open incidents with no agent attribution
-  const { data: incidents } = await supabase
-    .from("incidents")
-    .select("id, title, severity, subsystem, metadata, created_at")
-    .eq("status", "open")
-    .is("agent_id", null)
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  out.signalCount = incidents?.length ?? 0;
-
-  for (const inc of incidents ?? []) {
-    out.attempted++;
-    const meta = (inc.metadata ?? {}) as Record<string, unknown>;
-    const targetId = String(meta.workflow_run_id ?? meta.workflow_id ?? inc.id);
-    const actionClass = meta.lock_holder ? "clear_stale_lock" : "restart_workflow";
-    const confidence =
-      inc.severity === "critical" ? 0.78
-      : inc.severity === "high" ? 0.82
-      : 0.88;
-
-    const result = await callExecutor(supabase, {
-      agent_id: "aw-incident-response",
-      action_class: actionClass,
-      target_id: targetId,
-      confidence,
-      precondition_evidence: {
-        incident_id: inc.id,
-        severity: inc.severity,
-        subsystem: inc.subsystem,
-        signal_source: "incidents_table",
-        detected_at: inc.created_at,
-      },
-      correlation_id: `incident-${inc.id}`,
-    });
-
-    if (result.ok && result.status === "executed") out.executed++;
-    else if (result.status === "approval_pending") out.approvalQueued++;
-    else if (result.status === "denied") {
-      out.denied++;
-      // Escalate denial → council_escalations
-      await supabase.from("council_escalations").insert({
-        source_agent_id: "aw-incident-response",
-        source_council: "reliability-ops",
-        target_supervisor: "reliability-ops-supervisor",
-        escalation_reason: `Auto-action denied: ${result.reason}`,
-        severity: inc.severity ?? "moderate",
-        evidence: { incident_id: inc.id, denial_reason: result.reason } as never,
-        status: "open",
-      });
-      out.escalated++;
-    } else if (!result.ok) {
-      out.errors.push(`${inc.id}:${result.reason ?? "unknown"}`);
-    }
-  }
-  return out;
-}
-
-// ─── Bridge: ai-spend-control → disable_unhealthy_connector on cost spikes ──
-async function bridgeSpendControl(supabase: any): Promise<BridgeOutcome> {
-  const out: BridgeOutcome = {
-    agentId: "aw-ai-spend-control",
-    signalCount: 0,
-    attempted: 0,
-    executed: 0,
-    approvalQueued: 0,
-    denied: 0,
-    escalated: 0,
-    errors: [],
-  };
-
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const { data: alerts } = await supabase
-    .from("ai_budget_alerts")
-    .select("id, scope_type, scope_ref, alert_state, observed_cost_usd, threshold_percent, period_class")
-    .in("alert_state", ["warning", "critical"])
-    .gte("created_at", oneHourAgo)
-    .limit(10);
-
-  out.signalCount = alerts?.length ?? 0;
-
-  // Correlate with fallback events to identify the worst offender
-  const { data: fallbacks } = await supabase
-    .from("ai_fallback_events")
-    .select("capability_key, fallback_reason")
-    .gte("created_at", oneHourAgo)
-    .limit(50);
-
-  const offenderMap = new Map<string, number>();
-  for (const f of fallbacks ?? []) {
-    offenderMap.set(f.capability_key, (offenderMap.get(f.capability_key) ?? 0) + 1);
-  }
-
-  for (const alert of alerts ?? []) {
-    if (alert.alert_state !== "critical") continue; // Only act on critical
-    out.attempted++;
-
-    const target = alert.scope_ref ?? "ai-gateway";
-    const result = await callExecutor(supabase, {
-      agent_id: "aw-ai-spend-control",
-      action_class: "disable_unhealthy_connector",
-      target_id: target,
-      confidence: 0.72, // sub-threshold → routes to approval queue
-      precondition_evidence: {
-        alert_id: alert.id,
-        scope_type: alert.scope_type,
-        observed_cost_usd: alert.observed_cost_usd,
-        threshold_percent: alert.threshold_percent,
-        period_class: alert.period_class,
-        fallback_count_last_hour: Array.from(offenderMap.values()).reduce((a, b) => a + b, 0),
-        signal_source: "ai_budget_alerts",
-      },
-      correlation_id: `budget-alert-${alert.id}`,
-    });
-
-    if (result.ok && result.status === "executed") out.executed++;
-    else if (result.status === "approval_pending") out.approvalQueued++;
-    else if (result.status === "denied") out.denied++;
-    else if (!result.ok) out.errors.push(`${alert.id}:${result.reason ?? "unknown"}`);
-  }
-  return out;
-}
-
-// ─── Bridge: security-monitor → escalate-only (Phase 2 scope) ──
-async function bridgeSecurityMonitor(supabase: any): Promise<BridgeOutcome> {
-  const out: BridgeOutcome = {
-    agentId: "aw-security-monitor",
-    signalCount: 0,
-    attempted: 0,
-    executed: 0,
-    approvalQueued: 0,
-    denied: 0,
-    escalated: 0,
-    errors: [],
-  };
-
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-
-  // Signal 1: rapid kill-switch toggles (≥3 in 1h on the same switch)
-  const { data: switchAudit } = await supabase
-    .from("kill_switch_audit_log")
-    .select("switch_id, action, actor_user_id, created_at")
-    .gte("created_at", oneHourAgo)
-    .limit(200);
-
-  const toggleMap = new Map<string, number>();
-  for (const row of switchAudit ?? []) {
-    if (row.action === "activated" || row.action === "deactivated") {
-      toggleMap.set(row.switch_id, (toggleMap.get(row.switch_id) ?? 0) + 1);
-    }
-  }
-  const rapidToggles = Array.from(toggleMap.entries()).filter(([, count]) => count >= 3);
-
-  // Signal 2: off-hours admin actions (UTC 02:00–06:00)
-  const nowHour = new Date().getUTCHours();
-  const isOffHours = nowHour >= 2 && nowHour < 6;
-  let offHoursCount = 0;
-  if (isOffHours) {
-    const { count } = await supabase
-      .from("admin_action_audit")
-      .select("id", { count: "exact", head: true })
-      .gte("created_at", oneHourAgo);
-    offHoursCount = count ?? 0;
-  }
-
-  out.signalCount = rapidToggles.length + (offHoursCount > 5 ? 1 : 0);
-
-  for (const [switchId, toggleCount] of rapidToggles) {
-    out.attempted++;
-    const { data: esc } = await supabase
-      .from("council_escalations")
-      .insert({
-        source_agent_id: "aw-security-monitor",
-        source_council: "security-trust",
-        target_supervisor: "security-trust-supervisor",
-        escalation_reason: `Rapid kill-switch toggling detected: ${switchId} toggled ${toggleCount}× in 1h`,
-        severity: toggleCount >= 5 ? "high" : "moderate",
-        evidence: {
-          switch_id: switchId,
-          toggle_count: toggleCount,
-          window_minutes: 60,
-          signal_source: "kill_switch_audit_log",
-        } as never,
-        status: "open",
-      })
-      .select("id")
-      .single();
-    if (esc) out.escalated++;
-  }
-
-  if (offHoursCount > 5) {
-    out.attempted++;
-    const { data: esc } = await supabase
-      .from("council_escalations")
-      .insert({
-        source_agent_id: "aw-security-monitor",
-        source_council: "security-trust",
-        target_supervisor: "security-trust-supervisor",
-        escalation_reason: `Anomalous off-hours admin activity: ${offHoursCount} actions in last hour (UTC ${nowHour}:00)`,
-        severity: offHoursCount > 15 ? "high" : "moderate",
-        evidence: {
-          off_hours_count: offHoursCount,
-          utc_hour: nowHour,
-          signal_source: "admin_action_audit",
-        } as never,
-        status: "open",
-      })
-      .select("id")
-      .single();
-    if (esc) out.escalated++;
-  }
-  return out;
-}
-
-async function runPriorityAgentBridges(supabase: any): Promise<BridgeOutcome[]> {
-  const outcomes: BridgeOutcome[] = [];
-  try { outcomes.push(await bridgeIncidentResponse(supabase)); }
-  catch (e) { outcomes.push({ agentId: "aw-incident-response", signalCount: 0, attempted: 0, executed: 0, approvalQueued: 0, denied: 0, escalated: 0, errors: [String(e)] }); }
-  try { outcomes.push(await bridgeSpendControl(supabase)); }
-  catch (e) { outcomes.push({ agentId: "aw-ai-spend-control", signalCount: 0, attempted: 0, executed: 0, approvalQueued: 0, denied: 0, escalated: 0, errors: [String(e)] }); }
-  try { outcomes.push(await bridgeSecurityMonitor(supabase)); }
-  catch (e) { outcomes.push({ agentId: "aw-security-monitor", signalCount: 0, attempted: 0, executed: 0, approvalQueued: 0, denied: 0, escalated: 0, errors: [String(e)] }); }
-  return outcomes;
-}
-
 // ─── Auto-escalate stale escalations to meta-supervisor ────────
 async function processStaleEscalations(supabase: any) {
   const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -815,6 +519,238 @@ async function processStaleEscalations(supabase: any) {
     escalated++;
   }
   return escalated;
+}
+
+// ─── Phase 2 priority-agent bridges ────────────────────────────
+// Real signal-to-action bridges for the 3 constrained-action-ready agents.
+// Every bridge calls the canonical internal-agent-execute-action edge function
+// over HTTPS with service-role auth — bridges CANNOT bypass the 7-gate
+// evaluate_action_safety_gates RPC (single safety brain).
+//
+// Confidence policy:
+//   - aw-incident-response: 0.85 (above any whitelist threshold → autoexec when allowed)
+//   - aw-ai-spend-control:  0.72 (below 0.75 threshold → forces approval queue)
+//   - aw-security-monitor:  N/A (escalate-only in Phase 2; never calls executor)
+// ───────────────────────────────────────────────────────────────
+interface BridgeResult {
+  agentId: string;
+  signalsProcessed: number;
+  actionsDispatched: number;
+  approvalsQueued: number;
+  escalationsCreated: number;
+  errors: string[];
+}
+
+async function callExecuteAction(
+  agentId: string,
+  actionClass: string,
+  targetId: string,
+  confidence: number,
+  precondition: Record<string, unknown>,
+  targetUserId?: string | null,
+): Promise<{ ok: boolean; status?: string; error?: string }> {
+  try {
+    const url = `${Deno.env.get("SUPABASE_URL")}/functions/v1/internal-agent-execute-action`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+        "x-internal-agent-loop": "true",
+      },
+      body: JSON.stringify({
+        agent_id: agentId,
+        action_class: actionClass,
+        target_id: targetId,
+        confidence,
+        precondition_evidence: precondition,
+        triggered_by: "agent",
+        target_user_id: targetUserId ?? null,
+        rationale: `priority-bridge:${agentId}:${actionClass}`,
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: json?.error ?? `HTTP ${res.status}` };
+    return { ok: true, status: json?.status ?? "dispatched" };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+async function bridgeIncidentResponse(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-incident-response",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Signal source: stale-locked workflow runs (last_progress_at > 30min)
+  const { data: stale, error } = await supabase.rpc("list_stale_locked_workflow_runs", {
+    _max_age_minutes: 30,
+  });
+  if (error) {
+    result.errors.push(`rpc:list_stale_locked_workflow_runs:${error.message}`);
+    return result;
+  }
+  for (const row of stale ?? []) {
+    result.signalsProcessed++;
+    const r = await callExecuteAction(
+      "aw-incident-response",
+      "clear_stale_lock",
+      row.id,
+      0.85,
+      {
+        signal: "stale_locked_workflow_run",
+        workflow_id: row.workflow_id,
+        last_progress_at: row.last_progress_at,
+        detected_by: "aw-incident-response.bridge",
+      },
+      row.user_id,
+    );
+    if (r.ok) {
+      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      else if (r.status === "executed") result.actionsDispatched++;
+    } else {
+      result.errors.push(`clear_stale_lock:${row.id}:${r.error}`);
+    }
+  }
+  return result;
+}
+
+async function bridgeSpendControl(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-ai-spend-control",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Signal source: critical AI budget alerts (alert_state=critical, last hour)
+  const { data: alerts, error } = await supabase
+    .from("ai_budget_alerts")
+    .select("id,user_id,scope_type,scope_ref,alert_state,observed_cost_usd,threshold_percent")
+    .eq("alert_state", "critical")
+    .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString())
+    .limit(10);
+  if (error) {
+    result.errors.push(`select:ai_budget_alerts:${error.message}`);
+    return result;
+  }
+
+  for (const a of alerts ?? []) {
+    // For each critical budget alert, find the most-recently unhealthy connector
+    // owned by the same user and propose disabling it (forces approval at 0.72).
+    const { data: bad } = await supabase
+      .from("connector_accounts")
+      .select("id,connector_type,display_name,status,last_health_status")
+      .eq("user_id", a.user_id)
+      .in("status", ["error", "degraded", "expired"])
+      .eq("demo_mode", false)
+      .order("last_health_at", { ascending: false, nullsFirst: false })
+      .limit(1);
+    const target = bad?.[0];
+    if (!target) continue;
+
+    result.signalsProcessed++;
+    const r = await callExecuteAction(
+      "aw-ai-spend-control",
+      "disable_unhealthy_connector",
+      target.id,
+      0.72, // below 0.75 → routes through approval queue
+      {
+        signal: "critical_budget_alert",
+        budget_alert_id: a.id,
+        observed_cost_usd: a.observed_cost_usd,
+        threshold_percent: a.threshold_percent,
+        target_connector: target.connector_type,
+        target_display_name: target.display_name,
+        target_status: target.status,
+        detected_by: "aw-ai-spend-control.bridge",
+      },
+      a.user_id,
+    );
+    if (r.ok) {
+      if (r.status === "queued_for_approval") result.approvalsQueued++;
+      else if (r.status === "executed") result.actionsDispatched++;
+    } else {
+      result.errors.push(`disable_unhealthy_connector:${target.id}:${r.error}`);
+    }
+  }
+  return result;
+}
+
+async function bridgeSecurityMonitor(supabase: any): Promise<BridgeResult> {
+  const result: BridgeResult = {
+    agentId: "aw-security-monitor",
+    signalsProcessed: 0,
+    actionsDispatched: 0,
+    approvalsQueued: 0,
+    escalationsCreated: 0,
+    errors: [],
+  };
+
+  // Phase 2 policy: security-monitor is escalate-only. No calls to executor.
+  const { data: events, error } = await supabase.rpc("list_unescalated_security_events", {
+    _lookback_minutes: 60,
+  });
+  if (error) {
+    result.errors.push(`rpc:list_unescalated_security_events:${error.message}`);
+    return result;
+  }
+  for (const ev of events ?? []) {
+    result.signalsProcessed++;
+    const { data: esc, error: insErr } = await supabase
+      .from("council_escalations")
+      .insert({
+        source_agent_id: "aw-security-monitor",
+        source_council: "security-trust",
+        target_supervisor: "sup-security",
+        escalation_reason: `Security event: ${ev.action} (${ev.severity})`,
+        severity: ev.severity === "critical" ? "critical" : "high",
+        evidence: {
+          audit_id: ev.audit_id,
+          action: ev.action,
+          target_type: ev.target_type,
+          target_id: ev.target_id,
+          created_at: ev.created_at,
+          detected_by: "aw-security-monitor.bridge",
+          escalate_only: true,
+        } as never,
+        status: "open",
+      })
+      .select("id")
+      .single();
+    if (insErr) {
+      result.errors.push(`escalate:${ev.audit_id}:${insErr.message}`);
+    } else if (esc) {
+      result.escalationsCreated++;
+    }
+  }
+  return result;
+}
+
+async function runPriorityAgentBridges(supabase: any): Promise<BridgeResult[]> {
+  const out: BridgeResult[] = [];
+  for (const fn of [bridgeIncidentResponse, bridgeSpendControl, bridgeSecurityMonitor]) {
+    try {
+      out.push(await fn(supabase));
+    } catch (e) {
+      out.push({
+        agentId: fn.name,
+        signalsProcessed: 0,
+        actionsDispatched: 0,
+        approvalsQueued: 0,
+        escalationsCreated: 0,
+        errors: [e instanceof Error ? e.message : String(e)],
+      });
+    }
+  }
+  return out;
 }
 
 // ─── HTTP entry ────────────────────────────────────────────────
@@ -887,8 +823,9 @@ serve(async (req) => {
     // Stale escalation auto-routing (every tick)
     const escalated = await processStaleEscalations(supabase);
 
-    // Phase 2 — Signal→Action bridges for the 3 priority agents
-    const bridgeOutcomes = await runPriorityAgentBridges(supabase);
+    // Phase 2: priority-agent signal-to-action bridges
+    // (incident-response, ai-spend-control, security-monitor)
+    const bridges = await runPriorityAgentBridges(supabase);
 
     return corsResponse({
       ok: true,
@@ -901,7 +838,7 @@ serve(async (req) => {
       blocked_count: results.filter((r) => r.status === "blocked").length,
       error_count: results.filter((r) => r.status === "error").length,
       meta_escalations_routed: escalated,
-      priority_bridges: bridgeOutcomes,
+      priority_bridges: bridges,
       results,
     });
   } catch (e) {

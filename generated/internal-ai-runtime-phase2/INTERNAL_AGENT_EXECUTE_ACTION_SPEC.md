@@ -1,67 +1,48 @@
-# Internal Agent Execute Action — Canonical Spec
+# internal-agent-execute-action — Spec
 
-## Function
-`supabase/functions/internal-agent-execute-action/index.ts`
+## Role
+Sole canonical constrained-action execution path for internal agents. **No bypass.**
 
-## Purpose
-Sole canonical entry point for constrained autonomous action execution by
-internal agents. Every autonomous action across the SITA OS internal AI
-workforce passes through this function.
+## Endpoint
+`POST {SUPABASE_URL}/functions/v1/internal-agent-execute-action`
 
-## Contract
-**Input** (POST JSON):
+## Auth
+- **Service role** (called by `internal-agent-loop`): JWT header `Authorization: Bearer <SERVICE_ROLE>` + `x-internal-agent-loop: 1`
+- **Admin user** (rollback button on `/admin/health/error-patrol`): user JWT, `has_role(uid, 'admin')` checked
+
+## Body
 ```json
 {
   "agent_id": "aw-incident-response",
   "action_class": "restart_workflow",
-  "target_id": "<workflow_run_id>",
-  "confidence": 0.85,
-  "precondition_evidence": { "incident_id": "...", "severity": "high" },
-  "correlation_id": "incident-<id>"
+  "target_id": "<workflow_run.id>",
+  "confidence": 0.92,
+  "precondition_evidence": { "stuck_for_minutes": 47, "last_progress_at": "..." },
+  "rationale": "Workflow stuck >45min with no progress",
+  "triggered_by": "agent",
+  "correlation_id": "...optional...",
+  "rollback_intent_id": "...optional, set on rollback button..."
 }
 ```
 
-**Output**:
-```json
-{
-  "ok": true,
-  "status": "executed | approval_pending | denied | error",
-  "intent_id": "<uuid>",
-  "action_id": "<uuid>",
-  "receipt_id": "<uuid>",
-  "denial_reason": "<text or null>",
-  "gate_results": [ { "gate": "...", "passed": true } ]
-}
-```
+## Allowed action classes (whitelist-enforced)
+| class | reversible | reverse class | rate/h | approval≥conf |
+|---|---|---|---|---|
+| restart_workflow | yes | cancel_workflow_run | 10 | 0.95 |
+| replay_workflow | yes | cancel_workflow_run | 10 | 0.95 |
+| clear_stale_lock | no | — | 20 | 0.99 |
+| rotate_expired_token | no | — | 30 | 0.99 |
+| disable_unhealthy_connector | yes | enable_connector | 5 | 0.85 |
+| trigger_safe_repair_path | no | — | 10 | 0.90 |
 
 ## Pipeline
-1. Validate JWT or service-role caller
-2. Load agent definition + whitelist row
-3. Call `evaluate_action_safety_gates` RPC (7 gates)
-4. If `requires_approval` → insert into `ai_workforce_approval_queue`, return `approval_pending`
-5. If allowed → write `internal_agent_action_intents` (rollback_plan populated)
-6. Execute handler (one of 6 canonical primitives)
-7. Write `internal_agent_actions` + `ai_action_receipts`
-8. Update intent → `executed | failed`
-
-## Action Handlers (8 total)
-| action_class | Reverses | Real primitive |
-|---|---|---|
-| restart_workflow | — | workflow-runner repair endpoint |
-| replay_workflow | — | workflow replay service |
-| clear_stale_lock | cancel_workflow_run | `workflow_runs.status` update + audit |
-| rotate_expired_token | — | connector token refresh |
-| disable_unhealthy_connector | enable_connector | `connector_accounts.status='paused'` + timeline |
-| trigger_safe_repair_path | — | self-healing `runRepairPath()` |
-| enable_connector | — | rollback handler |
-| cancel_workflow_run | — | rollback handler |
-
-## Hard Caps
-- Rate: 10 actions/hour/agent
-- Master kill-switch: `KS-INTERNAL-AGENTS-EXECUTE` (checked first)
-- Autonomy: ≥ `constrained_action_ready` required
-- No bypass possible — all 7 gates evaluated server-side in `SECURITY DEFINER` RPC
-
-## Auth
-- `verify_jwt = false` for human-triggered admin calls (in-code admin check)
-- Service-role bypass for runtime-loop calls (signed with service-role JWT)
+1. Auth (service-role OR admin)
+2. Body validation (action_class ∈ whitelist set)
+3. `evaluate_action_safety_gates` RPC → 7 gates
+4. **Denied** → write `internal_agent_action_intents{status='denied'}` + return
+5. **Requires approval** → enqueue `ai_workforce_approval_queue` + intent `status='approval_pending'`
+6. **Allowed** → intent `status='executing'` with `rollback_plan` pre-populated
+7. Dispatch to canonical primitive (workflow_runs / connector_accounts / incidents)
+8. Write `internal_agent_actions` + `ai_action_receipts`
+9. Update intent → `executed`/`failed`, link receipt + action ids
+10. Emit `timeline_events` row + mark linked `error_patrol_detections.status='agent_acted'`

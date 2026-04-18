@@ -1,39 +1,24 @@
 {
-  "phase": "phase-2-safe-autonomous-actions",
-  "component": "agent-primitive-wiring",
-  "status": "complete",
-  "loop_path": "supabase/functions/internal-agent-loop/index.ts",
-  "bridges": [
-    {
-      "agent_id": "aw-incident-response",
-      "bridge_function": "bridgeIncidentResponse",
-      "signal_sources": ["incidents"],
-      "action_classes": ["restart_workflow", "clear_stale_lock"],
-      "autonomy_level": "constrained_action_ready",
-      "execution_mode": "auto-with-7-gates",
-      "denial_routing": "council_escalations → reliability-ops-supervisor"
+  "agents": {
+    "aw-incident-response": {
+      "wiring": "execute",
+      "signal_sources": ["incidents", "workflow_runs"],
+      "allowed_classes": ["restart_workflow", "replay_workflow", "clear_stale_lock", "trigger_safe_repair_path"],
+      "phase2_status": "wired"
     },
-    {
-      "agent_id": "aw-ai-spend-control",
-      "bridge_function": "bridgeSpendControl",
-      "signal_sources": ["ai_budget_alerts", "ai_fallback_events"],
-      "action_classes": ["disable_unhealthy_connector"],
-      "autonomy_level": "constrained_action_ready",
-      "execution_mode": "approval-gated (confidence 0.72 < 0.80 threshold)",
-      "denial_routing": "council_escalations → runtime-cost-supervisor"
+    "aw-ai-spend-control": {
+      "wiring": "execute+approval",
+      "signal_sources": ["ai_budget_alerts", "ai_fallback_events", "ai_usage_ledger"],
+      "allowed_classes": ["disable_unhealthy_connector", "trigger_safe_repair_path"],
+      "phase2_status": "wired"
     },
-    {
-      "agent_id": "aw-security-monitor",
-      "bridge_function": "bridgeSecurityMonitor",
+    "aw-security-monitor": {
+      "wiring": "escalate-only",
       "signal_sources": ["kill_switch_audit_log", "admin_action_audit"],
-      "action_classes": [],
-      "autonomy_level": "recommend",
-      "execution_mode": "escalate-only",
-      "denial_routing": "council_escalations → security-trust-supervisor"
+      "allowed_classes": [],
+      "phase2_status": "wired (escalate-only by Phase 2 design)"
     }
-  ],
-  "executor_invocation": "HTTP POST to internal-agent-execute-action with service-role auth",
-  "safety_bypass_possible": false,
-  "verified_at": "2026-04-18T19:35:00Z",
-  "ok": true
+  },
+  "single_safety_brain": "evaluate_action_safety_gates",
+  "shared_kill_switch": "KS-INTERNAL-AGENTS-EXECUTE"
 }

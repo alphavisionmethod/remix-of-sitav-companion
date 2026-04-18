@@ -186,6 +186,7 @@ const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/Environme
 const ReleasesHome = lazy(() => import("@/pages/admin/releases/ReleasesHome"));
 const SupportHome = lazy(() => import("@/pages/admin/support/SupportHome"));
 const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
+const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
 const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
@@ -221,9 +222,6 @@ const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
 // ── Phase 33: Platform Readiness + Live Incident Dashboard ──
 const PlatformReadinessScorecard = lazy(() => import("@/pages/admin/PlatformReadinessScorecard"));
 const IncidentDashboardPage = lazy(() => import("@/pages/admin/IncidentDashboardPage"));
-
-// ── Phase 2: Safe Autonomous Actions — Error Patrol Triage Board ──
-const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
 
 export function getAdminRoutes() {
   return [

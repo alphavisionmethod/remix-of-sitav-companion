@@ -1,30 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Health · Error Patrol Triage Board (Phase 2)
-//
-// Operator-grade triage surface for autonomous remediation activity.
-// Reads from the canonical `error_patrol_triage_view` and exposes the
-// 4 operator actions defined in Phase 2:
-//   • Acknowledge a detection
-//   • Trigger rollback (calls internal-agent-execute-action with the
-//     reverse class — no second action stack)
-//   • Open the linked incident (deep-link)
-//   • Mute the pattern for 24h
-//
-// Reuses, never duplicates:
-//   - admin shell layout (gated route in AdminRoutes)
-//   - Card / Badge / Button / Tabs / Drawer primitives
-//   - Triage data layer (single view query)
-//   - internal-agent-execute-action edge function for rollback
+// SITA OS — /admin/health/error-patrol
+// Operator triage surface for autonomous + human-handled detections.
+// Reads error_patrol_triage_view; rollback button calls
+// internal-agent-execute-action with the reverse class.
 // ═══════════════════════════════════════════════════════════════
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/platform/auth";
-import { useToast } from "@/hooks/use-toast";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Sheet,
   SheetContent,
@@ -32,508 +24,453 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
-  CheckCircle2,
-  Clock,
-  ExternalLink,
-  RotateCcw,
-  ShieldAlert,
   ShieldCheck,
-  VolumeX,
   Activity,
-  RefreshCcw,
+  RotateCcw,
+  ExternalLink,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
+import { toast } from "sonner";
 
-// ─── Types from error_patrol_triage_view ────────────────────────
-interface TriageRow {
-  id: string;
+interface DetectionRow {
+  detection_id: string;
   pattern_key: string;
+  severity: "low" | "medium" | "high" | "critical";
   subsystem: string;
-  severity: "low" | "moderate" | "high" | "critical";
-  status: "open" | "acknowledged" | "muted" | "resolved";
+  first_seen: string;
+  last_seen: string;
   frequency: number;
-  first_seen_at: string;
-  last_seen_at: string;
+  status: string;
   follow_up_recommendation: string | null;
-  affected_resource_type: string | null;
-  affected_resource_id: string | null;
+  target_id: string | null;
   linked_incident_id: string | null;
   linked_agent_action_id: string | null;
-  linked_intent_id: string | null;
-  acknowledged_at: string | null;
-  muted_until: string | null;
-  resolved_at: string | null;
-  incident_title: string | null;
-  incident_severity: string | null;
-  responding_agent_id: string | null;
-  responding_agent_council: string | null;
-  agent_action_type: string | null;
-  agent_confidence: number | null;
-  agent_action_status: string | null;
-  intent_action_class: string | null;
-  intent_status: string | null;
-  rollback_capable: boolean | null;
-  rolled_back_at: string | null;
-  intent_receipt_id: string | null;
-  intent_executed_at: string | null;
-  rollback_availability: "available" | "not_applicable" | "already_rolled_back" | string;
+  agent_id: string | null;
+  action_class: string | null;
+  action_status: string | null;
+  receipt_id: string | null;
+  intent_id: string | null;
+  rollback_plan: Record<string, unknown> | null;
+  rollback_available: "available" | "none" | "already_rolled_back" | null;
+  gate_results: unknown;
+  precondition_evidence: unknown;
+  triggered_by: string | null;
+  is_reversible: boolean | null;
+  reverse_action_class: string | null;
+  detection_created_at: string;
 }
 
 interface KillSwitchRow {
-  id: string;
   enabled: boolean;
-  expires_at: string | null;
   reason: string | null;
 }
 
-const SEVERITY_TONE: Record<string, string> = {
+const severityColor: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive border-destructive/30",
-  high: "bg-orange-500/15 text-orange-600 border-orange-500/30",
-  moderate: "bg-amber-500/15 text-amber-600 border-amber-500/30",
+  high: "bg-warning/15 text-warning border-warning/30",
+  medium: "bg-accent/30 text-accent-foreground border-accent",
   low: "bg-muted text-muted-foreground border-border",
 };
 
-const STATUS_TONE: Record<string, string> = {
-  open: "bg-destructive/10 text-destructive border-destructive/20",
-  acknowledged: "bg-primary/10 text-primary border-primary/20",
-  muted: "bg-muted text-muted-foreground border-border",
-  resolved: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30",
-};
-
-function relTime(iso: string | null): string {
-  if (!iso) return "never";
-  const ms = Date.now() - new Date(iso).getTime();
-  if (ms < 0) return "just now";
-  const s = Math.floor(ms / 1000);
-  if (s < 60) return `${s}s ago`;
-  const m = Math.floor(s / 60);
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.floor(h / 24)}d ago`;
-}
-
 export default function ErrorPatrolBoard() {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [rows, setRows] = useState<TriageRow[]>([]);
+  const [rows, setRows] = useState<DetectionRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<TriageRow | null>(null);
+  const [selected, setSelected] = useState<DetectionRow | null>(null);
   const [killSwitch, setKillSwitch] = useState<KillSwitchRow | null>(null);
-  const [actionInFlight, setActionInFlight] = useState<string | null>(null);
+  const [acting, setActing] = useState(false);
 
   async function load() {
     setLoading(true);
-    const [{ data: triage }, { data: ks }] = await Promise.all([
-      supabase
-        .from("error_patrol_triage_view" as any)
-        .select("*")
-        .order("severity", { ascending: false })
-        .order("last_seen_at", { ascending: false })
-        .limit(200),
-      supabase
-        .from("automation_kill_switches")
-        .select("id, enabled, expires_at, reason")
-        .eq("switch_id", "KS-INTERNAL-AGENTS-EXECUTE")
-        .eq("user_id", user?.id ?? "")
-        .maybeSingle(),
-    ]);
-    setRows((triage as any as TriageRow[]) ?? []);
-    setKillSwitch((ks as any as KillSwitchRow) ?? null);
+    const { data, error } = await supabase
+      .from("error_patrol_triage_view" as never)
+      .select("*")
+      .order("detection_created_at", { ascending: false })
+      .limit(200);
+
+    if (error) {
+      toast.error(`Failed to load detections: ${error.message}`);
+    } else {
+      setRows((data as DetectionRow[]) ?? []);
+    }
+
+    const { data: ks } = await supabase
+      .from("automation_kill_switches")
+      .select("enabled,reason")
+      .eq("switch_id", "KS-INTERNAL-AGENTS-EXECUTE")
+      .limit(1)
+      .maybeSingle();
+    setKillSwitch((ks as KillSwitchRow) ?? null);
     setLoading(false);
   }
 
   useEffect(() => {
-    void load();
-    // Realtime: refresh on detection changes
-    const channel = supabase
-      .channel("error-patrol-board")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "error_patrol_detections" },
-        () => void load(),
-      )
-      .subscribe();
-    return () => { void supabase.removeChannel(channel); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
+    load();
+  }, []);
 
-  const counters = useMemo(() => {
-    const out = { critical: 0, high: 0, moderate: 0, low: 0, open: 0, acted: 0, rollback_ready: 0 };
-    for (const r of rows) {
-      if (r.status === "resolved" || r.status === "muted") continue;
-      out[r.severity as keyof typeof out] = (out[r.severity as keyof typeof out] ?? 0) + 1;
-      if (r.status === "open") out.open++;
-      if (r.responding_agent_id) out.acted++;
-      if (r.rollback_availability === "available") out.rollback_ready++;
-    }
-    return out;
+  const counts = useMemo(() => {
+    const c = { critical: 0, high: 0, medium: 0, low: 0 };
+    for (const r of rows) c[r.severity] = (c[r.severity] ?? 0) + 1;
+    return c;
   }, [rows]);
 
-  const filteredRows = (status: "active" | "all") =>
-    status === "active"
-      ? rows.filter((r) => r.status === "open" || r.status === "acknowledged")
-      : rows;
-
-  async function acknowledge(id: string) {
-    setActionInFlight(id);
-    const { error } = await supabase.rpc("acknowledge_error_patrol_detection" as any, {
-      _detection_id: id,
-    });
-    setActionInFlight(null);
-    if (error) {
-      toast({ title: "Acknowledge failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Detection acknowledged" });
-      void load();
-    }
-  }
-
-  async function mute(patternKey: string) {
-    setActionInFlight(patternKey);
-    const { error } = await supabase.rpc("mute_error_patrol_pattern" as any, {
-      _pattern_key: patternKey, _hours: 24,
-    });
-    setActionInFlight(null);
-    if (error) {
-      toast({ title: "Mute failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Pattern muted for 24h" });
-      void load();
-    }
-  }
-
-  async function resolve(id: string) {
-    setActionInFlight(id);
-    const { error } = await supabase.rpc("resolve_error_patrol_detection" as any, {
-      _detection_id: id, _notes: "Resolved from triage board",
-    });
-    setActionInFlight(null);
-    if (error) {
-      toast({ title: "Resolve failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Detection resolved" });
-      setSelected(null);
-      void load();
-    }
-  }
-
-  async function triggerRollback(row: TriageRow) {
-    if (row.rollback_availability !== "available") return;
-    if (!row.linked_intent_id || !row.linked_agent_action_id) {
-      toast({ title: "Rollback unavailable", description: "Missing intent linkage", variant: "destructive" });
+  async function triggerRollback(row: DetectionRow) {
+    if (!row.reverse_action_class || !row.target_id || !row.intent_id) {
+      toast.error("Rollback metadata missing");
       return;
     }
-    setActionInFlight(row.id);
-    // Look up the original intent's reverse class via the whitelist
-    const { data: intent } = await supabase
-      .from("internal_agent_action_intents")
-      .select("agent_id, action_class, target_id, rollback_plan")
-      .eq("id", row.linked_intent_id)
-      .maybeSingle();
-    if (!intent || !intent.rollback_plan) {
-      setActionInFlight(null);
-      toast({ title: "Rollback unavailable", description: "No rollback plan recorded", variant: "destructive" });
-      return;
-    }
-    const plan: any = intent.rollback_plan;
-    const reverseClass = plan.reverse_action_class;
-    const reverseTarget = plan.target_id ?? intent.target_id;
-    if (!reverseClass) {
-      setActionInFlight(null);
-      toast({ title: "Rollback unavailable", description: "No reverse class defined", variant: "destructive" });
-      return;
-    }
-    const { data, error } = await supabase.functions.invoke("internal-agent-execute-action", {
+    setActing(true);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const res = await supabase.functions.invoke("internal-agent-execute-action", {
       body: {
-        agent_id: intent.agent_id,
-        action_class: reverseClass,
-        target_id: reverseTarget,
+        agent_id: row.agent_id ?? "operator-rollback",
+        action_class: row.reverse_action_class,
+        target_id: row.target_id,
         confidence: 1.0,
-        precondition_evidence: { rollback_for_intent_id: row.linked_intent_id, triggered_by_operator: user?.id ?? null },
-        correlation_id: `rollback-${row.linked_intent_id}`,
+        precondition_evidence: {
+          rollback_of_intent: row.intent_id,
+          original_action: row.action_class,
+          operator_initiated: true,
+        },
+        triggered_by: "operator",
+        rollback_intent_id: row.intent_id,
+        rationale: `Operator rollback of ${row.action_class} on ${row.target_id}`,
       },
+      headers: session?.access_token
+        ? { Authorization: `Bearer ${session.access_token}` }
+        : undefined,
     });
-    setActionInFlight(null);
-    if (error || !data?.ok) {
-      toast({ title: "Rollback failed", description: error?.message ?? data?.error ?? data?.denial_reason ?? "Unknown error", variant: "destructive" });
+    setActing(false);
+    if (res.error) {
+      toast.error(`Rollback failed: ${res.error.message}`);
     } else {
-      toast({ title: "Rollback executed", description: `Action ${data.action_id} succeeded` });
-      // Mark the original intent as rolled back
-      await supabase
-        .from("internal_agent_action_intents")
-        .update({ status: "rolled_back", rolled_back_at: new Date().toISOString(), rolled_back_by: user?.id, rollback_intent_id: data.intent_id })
-        .eq("id", row.linked_intent_id);
-      void load();
+      toast.success(`Rollback dispatched: ${(res.data as { status?: string })?.status ?? "queued"}`);
+      setSelected(null);
+      load();
+    }
+  }
+
+  async function acknowledge(row: DetectionRow) {
+    const { error } = await supabase
+      .from("error_patrol_detections")
+      .update({ status: "acknowledged", updated_at: new Date().toISOString() })
+      .eq("id", row.detection_id);
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Acknowledged");
+      load();
+    }
+  }
+
+  async function mute24h(row: DetectionRow) {
+    const { error } = await supabase
+      .from("error_patrol_detections")
+      .update({
+        status: "muted",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("pattern_key", row.pattern_key);
+    if (error) toast.error(error.message);
+    else {
+      toast.success(`Pattern ${row.pattern_key} muted`);
+      load();
     }
   }
 
   return (
-    <div className="container max-w-7xl mx-auto p-6 space-y-6">
-      {/* Header */}
+    <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-3">
-            <ShieldAlert className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-semibold tracking-tight">Error Patrol — Triage Board</h1>
-          </div>
-          <p className="text-sm text-muted-foreground mt-1">
-            Operator-grade view of detected error patterns and autonomous-agent remediation activity.
+          <h1 className="text-3xl font-bold tracking-tight">Error Patrol</h1>
+          <p className="text-muted-foreground mt-1">
+            Triage autonomous + human-handled detections across the OS.
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {killSwitch && (
-            <Badge
-              variant="outline"
-              className={killSwitch.enabled
-                ? "bg-destructive/15 text-destructive border-destructive/30"
-                : "bg-emerald-500/15 text-emerald-600 border-emerald-500/30"}
-            >
-              {killSwitch.enabled
-                ? <><ShieldAlert className="h-3 w-3 mr-1" /> Master kill-switch ACTIVE</>
-                : <><ShieldCheck className="h-3 w-3 mr-1" /> Master kill-switch off</>}
-            </Badge>
+        <Badge
+          variant="outline"
+          className={
+            killSwitch?.enabled
+              ? "border-destructive/40 text-destructive bg-destructive/10"
+              : "border-primary/30 text-primary bg-primary/10"
+          }
+        >
+          {killSwitch?.enabled ? (
+            <>
+              <VolumeX className="w-3.5 h-3.5 mr-1.5" />
+              KS-INTERNAL-AGENTS-EXECUTE: HALTED
+            </>
+          ) : (
+            <>
+              <Volume2 className="w-3.5 h-3.5 mr-1.5" />
+              KS-INTERNAL-AGENTS-EXECUTE: live
+            </>
           )}
-          <Button size="sm" variant="outline" onClick={() => void load()} disabled={loading}>
-            <RefreshCcw className={`h-3.5 w-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-        </div>
+        </Badge>
       </div>
 
-      {/* Severity counters */}
-      <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
-        <CounterCard label="Critical" value={counters.critical} tone="critical" />
-        <CounterCard label="High" value={counters.high} tone="high" />
-        <CounterCard label="Moderate" value={counters.moderate} tone="moderate" />
-        <CounterCard label="Low" value={counters.low} tone="low" />
-        <CounterCard label="Open" value={counters.open} tone="open" />
-        <CounterCard label="Agent acted" value={counters.acted} tone="acted" />
-        <CounterCard label="Rollback ready" value={counters.rollback_ready} tone="rollback" />
-      </div>
-
-      {/* Triage table */}
-      <Tabs defaultValue="active" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="active">Active ({filteredRows("active").length})</TabsTrigger>
-          <TabsTrigger value="all">All ({rows.length})</TabsTrigger>
-        </TabsList>
-        {(["active", "all"] as const).map((tab) => (
-          <TabsContent key={tab} value={tab}>
-            <Card className="overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
-                    <tr>
-                      <th className="text-left p-3">Pattern</th>
-                      <th className="text-left p-3">Severity</th>
-                      <th className="text-left p-3">Subsystem</th>
-                      <th className="text-right p-3">Freq</th>
-                      <th className="text-left p-3">Last seen</th>
-                      <th className="text-left p-3">Agent</th>
-                      <th className="text-left p-3">Action</th>
-                      <th className="text-left p-3">Rollback</th>
-                      <th className="text-left p-3">Status</th>
-                      <th className="text-right p-3">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading && (
-                      <tr><td colSpan={10} className="p-6 text-center text-muted-foreground">Loading…</td></tr>
-                    )}
-                    {!loading && filteredRows(tab).length === 0 && (
-                      <tr><td colSpan={10} className="p-6 text-center text-muted-foreground">
-                        <CheckCircle2 className="h-5 w-5 inline mr-2 text-emerald-500" />
-                        No detections in this view.
-                      </td></tr>
-                    )}
-                    {filteredRows(tab).map((r) => (
-                      <tr
-                        key={r.id}
-                        className="border-t border-border hover:bg-muted/30 cursor-pointer transition-colors"
-                        onClick={() => setSelected(r)}
-                      >
-                        <td className="p-3 font-mono text-xs">{r.pattern_key}</td>
-                        <td className="p-3">
-                          <Badge variant="outline" className={SEVERITY_TONE[r.severity]}>{r.severity}</Badge>
-                        </td>
-                        <td className="p-3 text-xs text-muted-foreground">{r.subsystem}</td>
-                        <td className="p-3 text-right tabular-nums">{r.frequency}</td>
-                        <td className="p-3 text-xs text-muted-foreground">{relTime(r.last_seen_at)}</td>
-                        <td className="p-3 text-xs">{r.responding_agent_id ?? <span className="text-muted-foreground">—</span>}</td>
-                        <td className="p-3 text-xs">
-                          {r.intent_action_class ?? r.agent_action_type ?? <span className="text-muted-foreground">—</span>}
-                        </td>
-                        <td className="p-3">
-                          <Badge variant="outline" className={
-                            r.rollback_availability === "available" ? "bg-primary/10 text-primary border-primary/20"
-                            : r.rollback_availability === "already_rolled_back" ? "bg-muted text-muted-foreground"
-                            : "bg-muted/40 text-muted-foreground border-border"
-                          }>
-                            {r.rollback_availability}
-                          </Badge>
-                        </td>
-                        <td className="p-3">
-                          <Badge variant="outline" className={STATUS_TONE[r.status]}>{r.status}</Badge>
-                        </td>
-                        <td className="p-3 text-right">
-                          {r.status === "open" && (
-                            <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); void acknowledge(r.id); }}
-                              disabled={actionInFlight === r.id}>
-                              Ack
-                            </Button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
-          </TabsContent>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {(["critical", "high", "medium", "low"] as const).map((s) => (
+          <Card key={s}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                {s}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{counts[s]}</div>
+            </CardContent>
+          </Card>
         ))}
-      </Tabs>
+      </div>
 
-      {/* Drilldown drawer */}
-      <Sheet open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Activity className="w-4 h-4" />
+            Detections
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="text-muted-foreground text-sm">Loading…</div>
+          ) : rows.length === 0 ? (
+            <div className="text-muted-foreground text-sm py-8 text-center">
+              <ShieldCheck className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              No active detections. The error patrol surface aggregates incidents,
+              self-healing detections, and agent-handled actions as they appear.
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Pattern</TableHead>
+                  <TableHead>Severity</TableHead>
+                  <TableHead>Subsystem</TableHead>
+                  <TableHead>Freq</TableHead>
+                  <TableHead>Last seen</TableHead>
+                  <TableHead>Agent action</TableHead>
+                  <TableHead>Rollback</TableHead>
+                  <TableHead className="text-right">Inspect</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r) => (
+                  <TableRow key={r.detection_id} className="cursor-pointer">
+                    <TableCell className="font-mono text-xs">{r.pattern_key}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={severityColor[r.severity]}>
+                        {r.severity}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm">{r.subsystem}</TableCell>
+                    <TableCell className="text-sm tabular-nums">{r.frequency}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {new Date(r.last_seen).toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {r.action_class ? (
+                        <span className="font-mono text-xs">
+                          {r.agent_id} → {r.action_class}{" "}
+                          <Badge variant="secondary" className="ml-1 text-[10px]">
+                            {r.action_status}
+                          </Badge>
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">no action</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {r.rollback_available === "available" && (
+                        <Badge className="bg-primary/15 text-primary border-primary/30" variant="outline">
+                          available
+                        </Badge>
+                      )}
+                      {r.rollback_available === "already_rolled_back" && (
+                        <Badge variant="outline" className="text-muted-foreground">
+                          rolled back
+                        </Badge>
+                      )}
+                      {(r.rollback_available === "none" || r.rollback_available === null) && (
+                        <Badge variant="outline" className="text-muted-foreground">
+                          —
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" variant="ghost" onClick={() => setSelected(r)}>
+                        Inspect
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+
+      <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
           {selected && (
             <>
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <Activity className="h-4 w-4" /> {selected.pattern_key}
+                  <AlertTriangle className="w-4 h-4" />
+                  {selected.pattern_key}
                 </SheetTitle>
                 <SheetDescription>
-                  Detection drilldown · {selected.subsystem} · seen {selected.frequency}× since {relTime(selected.first_seen_at)}
+                  {selected.subsystem} · {selected.severity} · seen {selected.frequency}× since{" "}
+                  {new Date(selected.first_seen).toLocaleString()}
                 </SheetDescription>
               </SheetHeader>
-              <Tabs defaultValue="detection" className="mt-4">
+
+              <Tabs defaultValue="detection" className="mt-6">
                 <TabsList className="grid grid-cols-3 w-full">
                   <TabsTrigger value="detection">Detection</TabsTrigger>
-                  <TabsTrigger value="action">Action</TabsTrigger>
-                  <TabsTrigger value="receipt">Receipt & Rollback</TabsTrigger>
+                  <TabsTrigger value="action">Agent action</TabsTrigger>
+                  <TabsTrigger value="receipt">Receipt &amp; rollback</TabsTrigger>
                 </TabsList>
-                <TabsContent value="detection" className="space-y-3 mt-4 text-sm">
-                  <KV label="Severity"><Badge variant="outline" className={SEVERITY_TONE[selected.severity]}>{selected.severity}</Badge></KV>
-                  <KV label="Status"><Badge variant="outline" className={STATUS_TONE[selected.status]}>{selected.status}</Badge></KV>
-                  <KV label="Subsystem">{selected.subsystem}</KV>
-                  <KV label="Affected resource">
-                    {selected.affected_resource_type ? `${selected.affected_resource_type}/${selected.affected_resource_id ?? "?"}` : "—"}
-                  </KV>
-                  <KV label="First seen">{relTime(selected.first_seen_at)}</KV>
-                  <KV label="Last seen">{relTime(selected.last_seen_at)}</KV>
-                  <KV label="Frequency">{selected.frequency}</KV>
-                  {selected.linked_incident_id && (
-                    <KV label="Linked incident">
-                      <Link to={`/admin/health/incidents`} className="text-primary hover:underline inline-flex items-center gap-1">
-                        {selected.incident_title ?? selected.linked_incident_id}
-                        <ExternalLink className="h-3 w-3" />
-                      </Link>
-                    </KV>
-                  )}
-                  {selected.follow_up_recommendation && (
-                    <div className="bg-muted/40 rounded p-3 text-xs">
-                      <div className="text-muted-foreground uppercase tracking-wider mb-1">Follow-up</div>
-                      <div>{selected.follow_up_recommendation}</div>
+
+                <TabsContent value="detection" className="space-y-3 mt-4">
+                  <div className="rounded-lg border bg-muted/30 p-4 space-y-2 text-sm">
+                    <div>
+                      <b>Status:</b> {selected.status}
+                    </div>
+                    <div>
+                      <b>Target:</b>{" "}
+                      <code className="text-xs">{selected.target_id ?? "—"}</code>
+                    </div>
+                    <div>
+                      <b>Linked incident:</b>{" "}
+                      {selected.linked_incident_id ? (
+                        <a
+                          className="underline inline-flex items-center gap-1 text-primary"
+                          href="/admin/health/incidents"
+                        >
+                          {selected.linked_incident_id.slice(0, 8)}…
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      ) : (
+                        "—"
+                      )}
+                    </div>
+                    {selected.follow_up_recommendation && (
+                      <div>
+                        <b>Recommendation:</b> {selected.follow_up_recommendation}
+                      </div>
+                    )}
+                  </div>
+                  <pre className="text-[11px] bg-muted/30 p-3 rounded border overflow-auto max-h-64">
+                    {JSON.stringify(selected.precondition_evidence ?? {}, null, 2)}
+                  </pre>
+                </TabsContent>
+
+                <TabsContent value="action" className="space-y-3 mt-4">
+                  {selected.action_class ? (
+                    <>
+                      <div className="rounded-lg border bg-muted/30 p-4 text-sm space-y-1">
+                        <div>
+                          <b>Agent:</b> <code className="text-xs">{selected.agent_id}</code>
+                        </div>
+                        <div>
+                          <b>Action class:</b>{" "}
+                          <code className="text-xs">{selected.action_class}</code>
+                        </div>
+                        <div>
+                          <b>Triggered by:</b> {selected.triggered_by ?? "agent"}
+                        </div>
+                        <div>
+                          <b>Outcome:</b> {selected.action_status}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-muted-foreground mb-1">
+                          Safety gate results
+                        </div>
+                        <pre className="text-[11px] bg-muted/30 p-3 rounded border overflow-auto max-h-64">
+                          {JSON.stringify(selected.gate_results ?? [], null, 2)}
+                        </pre>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-sm text-muted-foreground">
+                      No agent action recorded for this detection.
                     </div>
                   )}
                 </TabsContent>
-                <TabsContent value="action" className="space-y-3 mt-4 text-sm">
-                  {selected.responding_agent_id ? (
-                    <>
-                      <KV label="Responding agent">{selected.responding_agent_id}</KV>
-                      <KV label="Council">{selected.responding_agent_council}</KV>
-                      <KV label="Action class">{selected.intent_action_class ?? selected.agent_action_type}</KV>
-                      <KV label="Confidence">{selected.agent_confidence?.toFixed(2) ?? "—"}</KV>
-                      <KV label="Action status">
-                        <Badge variant="outline">{selected.agent_action_status ?? "—"}</Badge>
-                      </KV>
-                      <KV label="Intent status">
-                        <Badge variant="outline">{selected.intent_status ?? "—"}</Badge>
-                      </KV>
-                      <KV label="Executed at">{relTime(selected.intent_executed_at)}</KV>
-                    </>
-                  ) : (
-                    <div className="text-muted-foreground text-sm">No agent has acted on this detection yet.</div>
+
+                <TabsContent value="receipt" className="space-y-3 mt-4">
+                  <div className="rounded-lg border bg-muted/30 p-4 text-sm space-y-1">
+                    <div>
+                      <b>Receipt:</b>{" "}
+                      {selected.receipt_id ? (
+                        <code className="text-xs">{selected.receipt_id}</code>
+                      ) : (
+                        "—"
+                      )}
+                    </div>
+                    <div>
+                      <b>Intent:</b>{" "}
+                      {selected.intent_id ? (
+                        <code className="text-xs">{selected.intent_id}</code>
+                      ) : (
+                        "—"
+                      )}
+                    </div>
+                    <div>
+                      <b>Reversible:</b> {selected.is_reversible ? "yes" : "no"}
+                    </div>
+                    <div>
+                      <b>Reverse action:</b>{" "}
+                      <code className="text-xs">
+                        {selected.reverse_action_class ?? "—"}
+                      </code>
+                    </div>
+                  </div>
+
+                  {selected.rollback_plan && (
+                    <pre className="text-[11px] bg-muted/30 p-3 rounded border overflow-auto max-h-48">
+                      {JSON.stringify(selected.rollback_plan, null, 2)}
+                    </pre>
                   )}
-                </TabsContent>
-                <TabsContent value="receipt" className="space-y-3 mt-4 text-sm">
-                  <KV label="Rollback available">
-                    <Badge variant="outline" className={
-                      selected.rollback_availability === "available" ? "bg-primary/10 text-primary border-primary/20"
-                      : "bg-muted text-muted-foreground"
-                    }>
-                      {selected.rollback_availability}
-                    </Badge>
-                  </KV>
-                  <KV label="Rolled back at">{relTime(selected.rolled_back_at)}</KV>
-                  <KV label="Receipt ID">
-                    {selected.intent_receipt_id ? (
-                      <code className="text-xs">{selected.intent_receipt_id.slice(0, 12)}…</code>
-                    ) : "—"}
-                  </KV>
-                  {selected.rollback_availability === "available" && (
+
+                  <div className="flex flex-wrap gap-2 pt-3">
                     <Button
-                      className="w-full mt-3"
-                      onClick={() => void triggerRollback(selected)}
-                      disabled={actionInFlight === selected.id}
+                      variant="default"
+                      size="sm"
+                      disabled={
+                        acting ||
+                        selected.rollback_available !== "available" ||
+                        !selected.reverse_action_class
+                      }
+                      onClick={() => triggerRollback(selected)}
                     >
-                      <RotateCcw className="h-4 w-4 mr-2" />
+                      <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
                       Trigger rollback
                     </Button>
-                  )}
+                    <Button variant="outline" size="sm" onClick={() => acknowledge(selected)}>
+                      Acknowledge
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => mute24h(selected)}>
+                      Mute pattern
+                    </Button>
+                    {selected.linked_incident_id && (
+                      <Button variant="ghost" size="sm" asChild>
+                        <a href="/admin/health/incidents">Open incident →</a>
+                      </Button>
+                    )}
+                  </div>
                 </TabsContent>
               </Tabs>
-              <div className="flex gap-2 mt-6 pt-4 border-t border-border">
-                {selected.status === "open" && (
-                  <Button size="sm" variant="outline" onClick={() => void acknowledge(selected.id)}
-                    disabled={actionInFlight === selected.id}>
-                    <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Acknowledge
-                  </Button>
-                )}
-                <Button size="sm" variant="outline" onClick={() => void mute(selected.pattern_key)}
-                  disabled={actionInFlight === selected.pattern_key}>
-                  <VolumeX className="h-3.5 w-3.5 mr-1" /> Mute pattern 24h
-                </Button>
-                {selected.status !== "resolved" && (
-                  <Button size="sm" variant="ghost" onClick={() => void resolve(selected.id)}
-                    disabled={actionInFlight === selected.id}>
-                    Resolve
-                  </Button>
-                )}
-              </div>
             </>
           )}
         </SheetContent>
       </Sheet>
-    </div>
-  );
-}
-
-function CounterCard({ label, value, tone }: { label: string; value: number; tone: string }) {
-  const toneClass: Record<string, string> = {
-    critical: "border-destructive/30 bg-destructive/5",
-    high: "border-orange-500/30 bg-orange-500/5",
-    moderate: "border-amber-500/30 bg-amber-500/5",
-    low: "border-border",
-    open: "border-primary/30 bg-primary/5",
-    acted: "border-emerald-500/30 bg-emerald-500/5",
-    rollback: "border-primary/30 bg-primary/5",
-  };
-  return (
-    <Card className={`p-3 ${toneClass[tone] ?? ""}`}>
-      <div className="text-xs text-muted-foreground uppercase tracking-wider">{label}</div>
-      <div className="text-2xl font-semibold tabular-nums mt-1">{value}</div>
-    </Card>
-  );
-}
-
-function KV({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-3 gap-2 items-center">
-      <div className="text-xs text-muted-foreground uppercase tracking-wider">{label}</div>
-      <div className="col-span-2">{children}</div>
     </div>
   );
 }

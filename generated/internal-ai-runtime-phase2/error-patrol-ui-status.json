@@ -1,26 +1,10 @@
 {
-  "phase": "phase-2-safe-autonomous-actions",
-  "component": "error-patrol-triage-board",
-  "status": "complete",
-  "page_path": "src/pages/admin/health/ErrorPatrolBoard.tsx",
-  "route": "/admin/health/error-patrol",
-  "permission_gate": "maintenance.view",
-  "data_source_view": "error_patrol_triage_view",
-  "rpcs_used": [
-    "acknowledge_error_patrol_detection",
-    "mute_error_patrol_pattern",
-    "resolve_error_patrol_detection",
-    "record_error_patrol_detection"
-  ],
-  "operator_actions": [
-    {"action": "acknowledge", "type": "rpc"},
-    {"action": "trigger_rollback", "type": "edge-function", "function": "internal-agent-execute-action"},
-    {"action": "open_linked_incident", "type": "deep-link", "target": "/admin/health/incidents/:id"},
-    {"action": "mute_pattern_24h", "type": "rpc"}
-  ],
-  "drilldown_tabs": ["Detection", "Action", "Receipt & Rollback"],
-  "registered_in_admin_routes": true,
-  "uses_canonical_useauth": true,
-  "verified_at": "2026-04-18T19:35:00Z",
-  "ok": true
+  "page": "/admin/health/error-patrol",
+  "component": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+  "data_source": "error_patrol_triage_view",
+  "permission": "maintenance.view",
+  "actions": ["acknowledge", "mute_pattern", "trigger_rollback", "open_incident"],
+  "rollback_endpoint": "internal-agent-execute-action",
+  "kill_switch_indicator": "KS-INTERNAL-AGENTS-EXECUTE",
+  "registered_in_admin_routes": true
 }

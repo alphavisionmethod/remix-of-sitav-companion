@@ -1,11 +1,7 @@
 {
-  "phase": "phase-2-safe-autonomous-actions",
-  "component": "internal-agent-execute-action",
-  "status": "complete",
-  "function_path": "supabase/functions/internal-agent-execute-action/index.ts",
-  "verify_jwt": false,
-  "auth_model": "in-code admin check + service-role bypass",
-  "handlers": [
+  "function": "internal-agent-execute-action",
+  "deployed": true,
+  "allowed_action_classes": [
     "restart_workflow",
     "replay_workflow",
     "clear_stale_lock",
@@ -15,14 +11,21 @@
     "enable_connector",
     "cancel_workflow_run"
   ],
-  "safety_brain": "evaluate_action_safety_gates RPC (SECURITY DEFINER)",
-  "gate_count": 7,
-  "rate_limit_per_agent_per_hour": 10,
-  "master_kill_switch": "KS-INTERNAL-AGENTS-EXECUTE",
-  "approval_queue_table": "ai_workforce_approval_queue",
-  "intent_table": "internal_agent_action_intents",
-  "action_table": "internal_agent_actions",
-  "receipt_table": "ai_action_receipts",
-  "verified_at": "2026-04-18T19:35:00Z",
-  "ok": true
+  "safety_gates": [
+    "whitelist",
+    "agent_exists",
+    "precondition",
+    "rollback_plan",
+    "receipt_required",
+    "rate_limit",
+    "kill_switch",
+    "autonomy",
+    "suspension",
+    "approval_threshold"
+  ],
+  "kill_switch": "KS-INTERNAL-AGENTS-EXECUTE",
+  "approval_queue": "ai_workforce_approval_queue (reused)",
+  "receipt_store": "ai_action_receipts (reused)",
+  "intent_ledger": "internal_agent_action_intents",
+  "auth": ["service-role (loop)", "admin user (operator rollback)"]
 }
