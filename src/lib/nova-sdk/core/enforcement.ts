@@ -3,7 +3,7 @@
 // Runtime checks to ensure apps comply with OS design rules
 // ═══════════════════════════════════════════════════════════════
 
-import { SPACE, TYPE } from "@/lib/design-system/app-window-system";
+import { SPACE, TYPE } from "@/platform/design-system/app-window-system";
 import { auditColor, auditMotion, auditShadow, auditComponent } from "./design-contract";
 
 export interface DesignViolation {

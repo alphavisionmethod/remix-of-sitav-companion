@@ -124,7 +124,7 @@ export {
   cloudQuotaService, cloudAuditService, cloudTenantService,
   cloudWorkerService, cloudLifecycleService, cloudAbuseService,
   cloudSupportService,
-} from "@/lib/cloud-backbone";
+} from "@/platform/cloud";
 export type {
   StorageUsageRecord, StorageHealthReport, BucketStats,
   SyncHealthReport, SyncConflict, SyncJob, DelayedUser,
@@ -136,7 +136,7 @@ export type {
   LifecycleRule, ArchiveJob, StorageTier, AccountClosureRequest, ReconciliationRun,
   AbuseEvent, AbuseSummary,
   SupportSession,
-} from "@/lib/cloud-backbone";
+} from "@/platform/cloud";
 
 // ── Persistence Layer ──
 export {
