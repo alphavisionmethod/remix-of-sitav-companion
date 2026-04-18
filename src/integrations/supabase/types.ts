@@ -7325,6 +7325,13 @@ export type Database = {
             referencedRelation: "connector_accounts"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "connector_oauth_tokens_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "connector_effective_state"
+            referencedColumns: ["account_id"]
+          },
         ]
       }
       connector_receipts: {
@@ -7458,6 +7465,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "connector_accounts"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_sync_cursors_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_effective_state"
+            referencedColumns: ["account_id"]
           },
         ]
       }
@@ -16844,6 +16858,27 @@ export type Database = {
             referencedColumns: ["recommendation_id"]
           },
         ]
+      }
+      connector_effective_state: {
+        Row: {
+          account_email: string | null
+          account_id: string | null
+          account_status: string | null
+          connector_type: string | null
+          demo_mode: boolean | null
+          display_name: string | null
+          effective_state: string | null
+          last_health_at: string | null
+          provider_health_status: string | null
+          provider_last_probed_at: string | null
+          token_expires_at: string | null
+          token_id: string | null
+          token_last_refreshed_at: string | null
+          token_reauth_required: boolean | null
+          token_rotation_count: number | null
+          user_id: string | null
+        }
+        Relationships: []
       }
       uptime_status: {
         Row: {
