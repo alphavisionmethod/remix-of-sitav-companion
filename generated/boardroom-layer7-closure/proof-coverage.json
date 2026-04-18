@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "totalExecuted": 0,
+  "missingReceipt": 0,
+  "status": "GREEN",
+  "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-proof-receipt-coverage.ts."
+}

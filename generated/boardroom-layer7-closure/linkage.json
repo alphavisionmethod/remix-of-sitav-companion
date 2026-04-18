@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-04-18T00:00:00.000Z",
+  "orphanedOutcomes": [],
+  "orphanedReflections": [],
+  "status": "GREEN",
+  "note": "Deployment baseline — populated at runtime by scripts/validation/check-boardroom-followthrough-linkage.ts."
+}
