@@ -1,18 +1,46 @@
 {
   "gate": "boardroom-layer7-closure",
-  "generatedAt": "2026-04-18T16:30:00.000Z",
-  "verdict": "GREEN",
-  "ok": true,
-  "errors": 0,
+  "generatedAt": "2026-04-18T16:52:18.473Z",
+  "verdict": "RED",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "errors": 1,
   "warnings": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "state-coverage",
+      "message": "missing sub-report state-coverage.json"
+    },
+    {
+      "severity": "error",
+      "area": "linkage",
+      "message": "missing sub-report linkage.json"
+    },
+    {
+      "severity": "error",
+      "area": "proof-coverage",
+      "message": "missing sub-report proof-coverage.json"
+    },
+    {
+      "severity": "error",
+      "area": "outcome-coverage",
+      "message": "missing sub-report outcome-coverage.json"
+    },
+    {
+      "severity": "error",
+      "area": "reflection-coverage",
+      "message": "missing sub-report reflection-coverage.json"
+    }
+  ],
   "level": "BLOCK",
   "description": "Boardroom Layer 7 Follow-through closure — every approved decision must reach a terminal state with proof, outcome, and reflection.",
   "subReports": {
-    "state-coverage.json": { "status": "GREEN", "stuckCount": 0, "slaHours": 24 },
-    "linkage.json": { "status": "GREEN", "orphanedOutcomes": [], "orphanedReflections": [] },
-    "proof-coverage.json": { "status": "GREEN", "totalExecuted": 0, "missingReceipt": 0 },
-    "outcome-coverage.json": { "status": "GREEN", "totalExecuted": 0, "missingOutcome": 0 },
-    "reflection-coverage.json": { "status": "GREEN", "staleAwaitingReflection": 0, "totalReflected": 0, "slaHours": 72 }
-  },
-  "notes": "Initial baseline. Subsequent runs of `deno run -A scripts/architecture/checks/check-boardroom-layer7-closure.ts` (after running the 5 sub-validators) will regenerate this file with live database evidence."
+    "state-coverage.json": null,
+    "linkage.json": null,
+    "proof-coverage.json": null,
+    "outcome-coverage.json": null,
+    "reflection-coverage.json": null
+  }
 }
