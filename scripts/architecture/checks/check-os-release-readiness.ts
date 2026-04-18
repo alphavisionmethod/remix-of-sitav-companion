@@ -149,6 +149,16 @@ const REQUIRED_GATES = [
   "dp-noise-floor",
   "knowledge-anonymization",
   "phase8-admin-pages",
+  // Phase 9 closure — Sovereign DR + Tenant Console + Compliance (9 BLOCK gates)
+  "internal-agent-phase9-tables",
+  "dr-l3-ceiling",
+  "signed-release-artifacts",
+  "audit-export-immutable",
+  "tenant-self-service-isolation",
+  "tenant-quota-hard-ceiling",
+  "compliance-evidence-allowlisted",
+  "attestation-packet-signed",
+  "phase9-admin-pages",
 ];
 
 const GENERATED_DIR = "generated";

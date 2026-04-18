@@ -202,6 +202,9 @@ const TenantFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/Tenant
 const AssuranceChaosBoard = lazy(() => import("@/pages/admin/ai-runtime/AssuranceChaosBoard"));
 const ExternalWorkforceApiBoard = lazy(() => import("@/pages/admin/ai-runtime/ExternalWorkforceApiBoard"));
 const KnowledgeFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/KnowledgeFederationBoard"));
+const SovereignDeploymentDRBoard = lazy(() => import("@/pages/admin/ai-runtime/SovereignDeploymentDRBoard"));
+const ComplianceAttestationBoard = lazy(() => import("@/pages/admin/ai-runtime/ComplianceAttestationBoard"));
+const TenantSelfServiceConsole = lazy(() => import("@/pages/tenant/TenantSelfServiceConsole"));
 const IntegrationsHome = lazy(() => import("@/pages/admin/integrations/IntegrationsHome"));
 const ConfigHome = lazy(() => import("@/pages/admin/config/ConfigHome"));
 
@@ -259,6 +262,9 @@ export function getAdminRoutes() {
     <Route key="ws-airuntime-assurance" path="/admin/ai-runtime/assurance" element={gated("audit.view", <AssuranceChaosBoard />)} />,
     <Route key="ws-airuntime-external-api" path="/admin/ai-runtime/external-api" element={gated("flags.rollout", <ExternalWorkforceApiBoard />)} />,
     <Route key="ws-airuntime-federation" path="/admin/ai-runtime/federation" element={gated("flags.rollout", <KnowledgeFederationBoard />)} />,
+    <Route key="ws-airuntime-sovereign-dr" path="/admin/ai-runtime/sovereign-dr" element={gated("flags.rollout", <SovereignDeploymentDRBoard />)} />,
+    <Route key="ws-airuntime-compliance" path="/admin/ai-runtime/compliance" element={gated("audit.view", <ComplianceAttestationBoard />)} />,
+    <Route key="ws-tenant-self-service" path="/admin/tenant-console" element={gated("audit.view", <TenantSelfServiceConsole />)} />,
     <Route key="hub-integrations" path="/admin/integrations" element={gated("maintenance.view", <IntegrationsHome />)} />,
     <Route key="hub-config" path="/admin/config" element={gated("maintenance.view", <ConfigHome />)} />,
     // /admin → profile-aware landing (operator → OperatorHome, user → /admin/overview)
