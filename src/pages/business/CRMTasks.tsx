@@ -15,6 +15,7 @@ import { format, isPast, formatDistanceToNow, isToday, isTomorrow, isThisWeek, d
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const PRIORITY_META: Record<string, { color: string; bg: string; icon: React.ElementType }> = {
   high: { color: "text-red-400", bg: "bg-red-500/10", icon: Flag },
@@ -45,10 +46,11 @@ const CRMTasks = () => {
   const [filter, setFilter] = useState<FilterType>("pending");
   const [showAdd, setShowAdd] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(["overdue", "today", "upcoming"]));
-  const [form, setForm] = useState({
-    title: "", description: "", priority: "medium", due_date: "",
-    task_type: "follow-up", contact_id: "", company_id: "", opportunity_id: ""
-  });
+  type TaskForm = { title: string; description: string; priority: string; due_date: string; task_type: string; contact_id: string; company_id: string; opportunity_id: string };
+  const EMPTY_TASK_FORM: TaskForm = { title: "", description: "", priority: "medium", due_date: "", task_type: "follow-up", contact_id: "", company_id: "", opportunity_id: "" };
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<TaskForm>("business:crm:task:new", "business");
+  const [form, setForm] = useState<TaskForm>(() => ({ ...EMPTY_TASK_FORM, ...draft }));
+  React.useEffect(() => { updateDraft(form); }, [form, updateDraft]);
 
   const contactMap = useMemo(() => {
     const m: Record<string, string> = {};
@@ -114,7 +116,8 @@ const CRMTasks = () => {
       });
       toast.success("Task created");
       setShowAdd(false);
-      setForm({ title: "", description: "", priority: "medium", due_date: "", task_type: "follow-up", contact_id: "", company_id: "", opportunity_id: "" });
+      setForm(EMPTY_TASK_FORM);
+      clearDraft();
     } catch { toast.error("Failed to create task"); }
   };
 

@@ -1,15 +1,15 @@
 # Draft Autosave Adoption Audit
 
-_Generated: 2026-04-18T13:03:48.664Z_
+_Generated: 2026-04-18T13:13:53.078Z_
 
 ## Canonical hook
 - ✅ `src/hooks/useDraftAutosave.ts`
 
 ## Adoption metrics
-- Consumers: **2**
+- Consumers: **5**
 - Candidate editable surfaces: **14**
 - Storage layer: localStorage (Phase M upgrades to IndexedDB)
 
 ## Classification
-**PARTIAL ADOPTION** — 2/14 surfaces adopt. Phase M expands.
+**PARTIAL ADOPTION** — 5/14 surfaces adopt. Phase M expands.
 

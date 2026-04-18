@@ -1,6 +1,6 @@
 # Final Deployment Closure Status — Phase K Snapshot
 
-_Generated: 2026-04-18T13:03:48.664Z_
+_Generated: 2026-04-18T13:13:53.078Z_
 
 ## After Phase K (audit-only)
 
@@ -17,7 +17,7 @@ _Generated: 2026-04-18T13:03:48.664Z_
 
 ### Pending Phase M targeted fixes
 - File picker adoption (6 sites)
-- Draft autosave adoption (2 consumers, 14 candidates)
+- Draft autosave adoption (5 consumers, 14 candidates)
 - Window snap overlay AppWindow integration
 - Google OAuth real refresh implementation
 - Search shell expansion (optional)

@@ -4,7 +4,7 @@
 // Asserts adoption never regresses below baseline.
 import { readJsonSafe } from "../lib/utils";
 
-const MIN_CONSUMERS = 2; // Phase Q baseline: CRMNotes + CommunicationsCenter
+const MIN_CONSUMERS = 5; // Phase R baseline: CRMNotes, CommunicationsCenter, CRMTasks, CRMCompanies, PolicyEditor
 const data = readJsonSafe<{ consumerCount: number; classification: string }>(
   "generated/deployment-gap-closure/autosave-adoption-map.json"
 );

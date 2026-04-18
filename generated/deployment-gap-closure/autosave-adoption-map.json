@@ -1,15 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-18T13:03:48.664Z",
+  "generatedAt": "2026-04-18T13:13:53.078Z",
   "canonicalHook": "src/hooks/useDraftAutosave.ts",
   "hookExists": true,
   "consumers": [
+    "src/pages/PolicyEditor.tsx",
+    "src/pages/business/CRMCompanies.tsx",
     "src/pages/business/CRMNotes.tsx",
+    "src/pages/business/CRMTasks.tsx",
     "src/pages/business/CommunicationsCenter.tsx"
   ],
-  "consumerCount": 2,
+  "consumerCount": 5,
   "candidateEditableSurfaces": 14,
   "storageLayer": "localStorage (Phase M will upgrade to IndexedDB via offline-db.ts)",
   "classification": "partial-adoption",
-  "notes": "Hook exists but only 2/14 editable surfaces adopt it. Phase M will migrate top-value surfaces."
+  "notes": "Hook exists but only 5/14 editable surfaces adopt it. Phase M will migrate top-value surfaces."
 }

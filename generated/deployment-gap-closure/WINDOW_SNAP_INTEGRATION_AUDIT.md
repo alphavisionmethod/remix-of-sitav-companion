@@ -1,6 +1,6 @@
 # Window Snap Integration Audit
 
-_Generated: 2026-04-18T13:03:48.664Z_
+_Generated: 2026-04-18T13:13:53.078Z_
 
 ## Components
 - WindowContext.snapWindow: ✅
