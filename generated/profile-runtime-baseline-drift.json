@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-18T12:36:35.493Z",
+  "gate": "profile-runtime-baseline-drift",
+  "level": "block",
+  "baselineSealedAt": "2026-04-18T12:36:33.219Z",
+  "baselineFingerprint": "7b1626161545e20a9a2612a6322c996dbd8a2aaf3a6f8a0c856a822006ab95cd",
+  "ok": true,
+  "hardFailures": [],
+  "drift": {
+    "apps": {
+      "added": [],
+      "removed": []
+    },
+    "routes": {
+      "addedCount": 0,
+      "removedCount": 0,
+      "sampleAdded": [],
+      "sampleRemoved": []
+    },
+    "adminRoutes": {
+      "added": [],
+      "removed": []
+    },
+    "guardedAdmin": {
+      "added": [],
+      "removed": []
+    },
+    "profileMutations": [],
+    "mobileRegressions": [],
+    "newUnguardedAdmin": []
+  },
+  "totalSoftDrift": 0,
+  "guidance": "no drift detected"
+}
