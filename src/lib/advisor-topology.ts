@@ -1,3 +1,3 @@
 // @lovable:migrated-wrapper
-// Wave 5: original target unknown; safe empty export.
+// No sibling target found.
 export {};
