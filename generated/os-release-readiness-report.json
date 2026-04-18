@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:05:45.002Z",
+  "generatedAt": "2026-04-18T02:07:35.265Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -50,7 +50,7 @@
       "gate": "os-support-bundle-readiness",
       "ok": true,
       "errors": 0,
-      "warnings": 1
+      "warnings": 0
     },
     {
       "file": "generated/native-observability-readiness-report.json",
@@ -79,11 +79,27 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/user-profile-readiness-report.json",
+      "gate": "user-profile-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/operator-readiness-report.json",
+      "gate": "operator-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 1,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "YELLOW"
+  "totalWarnings": 0,
+  "missingGates": [
+    "app-plane-map"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }
