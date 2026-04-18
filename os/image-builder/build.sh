@@ -126,6 +126,11 @@ stage_install_packages() {
   install -m 0755 -d "${ROOT_DIR}/opt/sita/shell"
   install -m 0755 "${SCRIPT_DIR}/launch.sh"                            "${ROOT_DIR}/opt/sita/shell/launch.sh"
 
+  # ── Embed deployment profile manifest (Part 3) ───────────────────────
+  install -m 0644 "${PROFILE_MANIFEST}" "${ROOT_DIR}/etc/sita/deployment-profile.json"
+  ok "embedded deployment profile: ${SITA_PROFILE}"
+
+
   # Run package install + service enable inside chroot
   cat > "${ROOT_DIR}/tmp/install.sh" <<'CHROOT'
 #!/usr/bin/env bash
