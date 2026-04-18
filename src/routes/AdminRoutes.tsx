@@ -3,6 +3,7 @@ import { lazy } from "react";
 import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
 import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
 import AdminRootLanding from "@/routes/AdminRootLanding";
+import { ADMIN_REDIRECTS } from "@/admin/redirects/admin-redirect-map";
 
 /** Helper to wrap a page element with a permission gate */
 function gated(permission: string, element: React.ReactNode) {
@@ -442,5 +443,17 @@ export function getAdminRoutes() {
     <Route key="efh01" path="/admin/edge-functions/health" element={gated("maintenance.view", <EFH01EdgeFunctionHealthCenter />)} />,
     // ── Phase 27: Kill-Switch & Safety Center ──
     <Route key="ar08-kill-switches" path="/admin/automation/kill-switches" element={gated("flags.view", <AR08KillSwitchCenter />)} />,
+
+    // ── Phase 2 (Page Consolidation): Auto-generated redirect & alias layer ──
+    // Every duplicate / deprecated admin URL resolves to its canonical target.
+    // Source: src/admin/redirects/admin-redirect-map.ts (derived from
+    // admin-page-consolidation-map.ts). Bookmark-safe forever.
+    ...ADMIN_REDIRECTS.map((r) => (
+      <Route
+        key={`redirect-${r.from}`}
+        path={r.from}
+        element={<Navigate to={r.to} replace />}
+      />
+    )),
   ];
 }
