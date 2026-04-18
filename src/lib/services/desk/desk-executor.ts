@@ -5,7 +5,7 @@
 // Now emits structured NegativeReceipts on gate refusal.
 // ═══════════════════════════════════════════════════════════════
 
-import { conscienceGate, type GateRequest } from "@/lib/services/conscience-gate";
+import { conscienceGate, type GateRequest } from "@/lib/core-services/conscience-gate";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
 import { createNegativeReceipt, type NegativeReceipt } from "@/lib/services/epistemic-firewall";
 

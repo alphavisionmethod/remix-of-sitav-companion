@@ -4,9 +4,9 @@
 // MetaGovernanceEngine. Engines are pure; this is effectful.
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus } from "../../core-services/event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 import { getMetaGovernanceEngine } from "@/domains/engines/meta-governance-engine";
-import type { BusEvent } from "../../core-services/event-bus";
+import type { BusEvent } from "@/platform/core-services/event-bus";
 import type { DebtEvidence } from "../../types/meta-governance.types";
 import type { OSDomain, EntityScope } from "../../types/os-unified.types";
 

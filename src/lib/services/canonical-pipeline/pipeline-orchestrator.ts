@@ -4,8 +4,8 @@
 // sentinel checks, and tool grounding wired into the live runtime
 // ═══════════════════════════════════════════════════════════════
 
-import { conscienceGate, type GateVerdict, type GateRequest } from "@/lib/services/conscience-gate";
-import { runCritique, logCritique, type CritiqueResult, type EvidenceSource } from "@/lib/services/conscience-gate/critique-loop";
+import { conscienceGate, type GateVerdict, type GateRequest } from "@/lib/core-services/conscience-gate";
+import { runCritique, logCritique, type CritiqueResult, type EvidenceSource } from "@/lib/core-services/conscience-gate/critique-loop";
 import { getTaskContractOrThrow, getTaskContract } from "@/lib/contracts/global-contracts-registry";
 import { callAIGateway } from "@/lib/services/ai-gateway/callable";
 import {

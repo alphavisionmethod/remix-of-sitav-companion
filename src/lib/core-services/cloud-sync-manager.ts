@@ -4,7 +4,7 @@
 // and update propagation for distributed instances
 // ═══════════════════════════════════════════════════════════════
 
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 
 // ── Types ───────────────────────────────────────────────────────
 

@@ -15,7 +15,7 @@ import type { UpdateManifest, UpdateInstallState } from "@/packages/protocols/up
 import type { TimelineEvent, TimelineQuery } from "@/packages/protocols/timeline-protocol";
 import type { CompatibilityCheck, VersionCompatibility } from "@/packages/protocols/compatibility-protocol";
 
-import { createApprovalRequest, addDecision, getRequest } from "@/lib/services/approval-engine/approval-requests.service";
+import { createApprovalRequest, addDecision, getRequest } from "@/lib/core-services/approval-engine/approval-requests.service";
 import { executeAction, type ExecutionEnvelope } from "@/lib/services/executor-service/execute-action.service";
 import { degradedModeService } from "@/lib/services/degraded-mode";
 

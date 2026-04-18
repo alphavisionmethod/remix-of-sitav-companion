@@ -1,2 +1,2 @@
-// @lovable:migrated-wrapper
+// @lovable:type-forwarder
 export * from "@/domains/apps/types";

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { AgentOrchestrator, FleetStatus } from "./agent-orchestrator";
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 import { ReceiptService, createReceiptService } from "./receipt-service";
 
 // ── Types ───────────────────────────────────────────────────────

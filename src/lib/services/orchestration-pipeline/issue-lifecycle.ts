@@ -3,7 +3,7 @@
 // Manages item transitions through the full pipeline
 // ═══════════════════════════════════════════════════════════════
 
-import { getEventBus } from "@/lib/core-services/event-bus";
+import { getEventBus } from "@/platform/core-services/event-bus";
 import type { IssueLifecycleState } from "./types";
 
 // ── Valid Transitions ───────────────────────────────────────────

@@ -4,7 +4,7 @@
 // and autonomy recommendations with exponential decay
 // ═══════════════════════════════════════════════════════════════
 
-import { EventBus } from "./event-bus";
+import { EventBus } from "@/platform/core-services/event-bus";
 import { MemoryService } from "./memory-service";
 
 // ── Types ───────────────────────────────────────────────────────

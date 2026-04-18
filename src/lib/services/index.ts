@@ -43,9 +43,9 @@ export { generateExecutionReceipt, generateBatchExecutionReceipts } from "./rece
 export { verify, getVerificationHistory, getVerificationStats } from "./verification-engine";
 export { detectRollbackCondition, generateRollbackProof } from "./verification-engine";
 export { createPostconditionCheck, runPostconditionChecks, summarizeChecks } from "./verification-engine";
-export { createEventEnvelope, markDelivered, markDeadLettered, incrementRetry } from "./event-bus";
-export { publish, publishBatch, getEventLog, getDeadLetterQueue } from "./event-bus";
-export { subscribe, unsubscribe, listSubscriptions, clearSubscriptions, subscribeOnce } from "./event-bus";
+export { createEventEnvelope, markDelivered, markDeadLettered, incrementRetry } from "@/platform/core-services/event-bus";
+export { publish, publishBatch, getEventLog, getDeadLetterQueue } from "@/platform/core-services/event-bus";
+export { subscribe, unsubscribe, listSubscriptions, clearSubscriptions, subscribeOnce } from "@/platform/core-services/event-bus";
 export { generateHomePulse } from "./projections";
 export { generateBusinessProjection } from "./projections";
 export { generateMoneyProjection } from "./projections";
