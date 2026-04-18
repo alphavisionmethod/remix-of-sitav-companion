@@ -1,0 +1,39 @@
+name: full-render-smoke
+
+on:
+  pull_request:
+    paths:
+      - 'src/pages/**'
+      - 'scripts/deployment/checks/full-render-smoke.ts'
+      - '.github/workflows/full-render-smoke.yml'
+  push:
+    branches: [main]
+
+concurrency:
+  group: full-render-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Full Render Smoke Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci --no-audit --no-fund || npm i --no-audit --no-fund
+      - name: Run full-render-smoke gate
+        run: npx tsx scripts/deployment/checks/full-render-smoke.ts
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-render-smoke-report
+          path: generated/full-render-smoke-report.json
+          if-no-files-found: warn

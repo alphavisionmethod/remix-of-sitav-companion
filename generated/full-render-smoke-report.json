@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-18T02:25:52.839Z",
+  "gate": "full-render-smoke",
+  "phase": "phase-16-render-smoke",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "totals": {
+    "discovered": 993,
+    "passed": 993,
+    "failed": 0,
+    "coveragePct": 100
+  },
+  "failures": []
+}

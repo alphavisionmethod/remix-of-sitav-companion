@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-18T02:18:49.166Z",
+  "generatedAt": "2026-04-18T02:25:49.612Z",
   "gate": "ci-artifacts-proof",
   "phase": "phase-14-production-launch-hardening",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 4,
+  "warningCount": 0,
   "totals": {
     "workflowsExpected": 9,
     "workflowsPresent": 9,
@@ -27,7 +27,7 @@
         "uploadV4": true,
         "noUploadV3": true,
         "artifactNamePresent": true,
-        "concurrencyGroup": false,
+        "concurrencyGroup": true,
         "node20Plus": true
       }
     },
@@ -37,7 +37,7 @@
         "uploadV4": true,
         "noUploadV3": true,
         "artifactNamePresent": true,
-        "concurrencyGroup": false,
+        "concurrencyGroup": true,
         "node20Plus": true
       }
     },
@@ -67,7 +67,7 @@
         "uploadV4": true,
         "noUploadV3": true,
         "artifactNamePresent": true,
-        "concurrencyGroup": false,
+        "concurrencyGroup": true,
         "node20Plus": true
       }
     },
@@ -77,7 +77,7 @@
         "uploadV4": true,
         "noUploadV3": true,
         "artifactNamePresent": true,
-        "concurrencyGroup": false,
+        "concurrencyGroup": true,
         "node20Plus": true
       }
     },
@@ -102,30 +102,5 @@
       }
     }
   ],
-  "findings": [
-    {
-      "workflow": "deploy-backend.yml",
-      "severity": "warning",
-      "rule": "concurrency",
-      "message": "no concurrency group declared (thundering-herd risk)"
-    },
-    {
-      "workflow": "deploy-frontend.yml",
-      "severity": "warning",
-      "rule": "concurrency",
-      "message": "no concurrency group declared (thundering-herd risk)"
-    },
-    {
-      "workflow": "native-readiness.yml",
-      "severity": "warning",
-      "rule": "concurrency",
-      "message": "no concurrency group declared (thundering-herd risk)"
-    },
-    {
-      "workflow": "os-build-iso.yml",
-      "severity": "warning",
-      "rule": "concurrency",
-      "message": "no concurrency group declared (thundering-herd risk)"
-    }
-  ]
+  "findings": []
 }

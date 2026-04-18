@@ -52,6 +52,8 @@ const REQUIRED_GATES = [
   "ks-payments-auth-readiness",
   "ci-artifacts-proof",
   "electron-signing-readiness",
+  // Phase 16 — Full render smoke (P0)
+  "full-render-smoke",
 ];
 
 const GENERATED_DIR = "generated";
