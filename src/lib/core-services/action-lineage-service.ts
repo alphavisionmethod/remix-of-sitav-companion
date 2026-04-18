@@ -17,7 +17,7 @@ import {
   fetchActionLineage,
   getActionExplanation,
   findStuckActions,
-} from "@/lib/persistence/action-lineage-persistence";
+} from "@/data/persistence/action-lineage-persistence";
 
 export class ActionLineageService {
   private activeActions = new Map<string, ActionRecord>();

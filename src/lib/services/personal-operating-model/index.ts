@@ -1,5 +1,5 @@
 // SITA OS — Personal Operating Model (merge: owner-control-room)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface OperatingModel { userId: string; priorities: string[]; routines: Routine[]; goals: ModelGoal[]; energyPattern: string; preferredWorkHours: { start: string; end: string }; }
 export interface Routine { id: string; name: string; frequency: string; time: string; active: boolean; }

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Lightbulb, RefreshCw, Recycle, TrendingUp, AlertTriangle, DollarSign } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
-import { fetchIntelligenceAssets, getAssetStats, invalidateAsset, type IntelligenceAssetRow } from "@/lib/persistence";
+import { fetchIntelligenceAssets, getAssetStats, invalidateAsset, type IntelligenceAssetRow } from "@/data/persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };

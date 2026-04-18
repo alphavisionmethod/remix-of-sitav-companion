@@ -3,7 +3,7 @@
 // Multi-cloud region management, provider abstraction, failover
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type RegionStatus = "active" | "degraded" | "offline" | "draining" | "provisioning";
 export type CloudProviderType = "aws" | "azure" | "gcp" | "on-prem" | "edge";

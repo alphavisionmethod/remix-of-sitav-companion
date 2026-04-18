@@ -4,7 +4,7 @@
 // Distinct from TrustedDeviceService (trust/attestation)
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type EdgeCapability = "compute" | "storage" | "gpu" | "sensor" | "camera" | "biometric" | "secure-enclave" | "offline-exec";
 export type EdgeRuntimeStatus = "online" | "offline" | "degraded" | "syncing" | "updating";

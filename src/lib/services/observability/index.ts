@@ -12,7 +12,7 @@ import type {
   AlertSeverity,
 } from "@/packages/contracts/specialized/observability-metric-contracts";
 import type { DomainId } from "@/packages/contracts";
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 
 // ── Types ───────────────────────────────────────────────────────

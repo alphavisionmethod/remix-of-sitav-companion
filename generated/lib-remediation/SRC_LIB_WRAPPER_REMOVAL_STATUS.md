@@ -1,49 +1,56 @@
 # SRC_LIB Wrapper Removal Status
 
-_Last updated: Wave 6a complete_
+_Last updated: Wave 6b complete_
 
-## Summary
+## Cumulative Summary
 
-| Metric | Wave 4 End | Wave 5 (Aborted) | Wave 6a End |
-|---|---|---|---|
-| Wrappers remaining | 188 | 188 (restored) | **129** |
-| TS errors | 0 | 0 (after restore) | **0** |
-| Net wrappers removed | 0 | 0 | **59** |
+| Metric | Wave 4 End | Wave 5 (Aborted) | Wave 6a End | Wave 6b End |
+|---|---|---|---|---|
+| Wrappers remaining | 188 | 188 (restored) | 129 | **114** |
+| TS errors | 0 | 0 (after restore) | 0 | **0** |
+| Net wrappers removed | 0 | 0 | 59 | **74** |
+| `src/lib` top-level entries | 103 | 103 | 102 | **101** |
+| Total `src/lib` files | 1767 | 1767 | 1707 | **1687** |
+
+## Wave 6b — Persistence Folder Migration ✅
+
+**Folder:** `src/lib/persistence/` → `src/data/persistence/`
+
+**Steps executed:**
+1. Verified canonical destination has all 15 wrapper siblings + 2 extras (`offline-db.ts`, `storage-topology-registry.ts`).
+2. Bulk-rewrote 142 consumer files using sed: `@/lib/persistence/X` → `@/data/persistence/X` (both single and double quoted forms).
+3. Fixed 2 dynamic imports in `src/lib/hooks/useOSRuntime.tsx` (different quoting pattern).
+4. Added legacy alias to canonical barrel: `export { getMemoryStats as getScopedMemoryStats }` to preserve API used by 4 admin pages.
+5. Deleted entire `src/lib/persistence/` directory (15 wrappers + index + tests = 17+ files).
+6. Verified `tsc --noEmit` returns 0 errors.
+
+**Outcome:** 0 legacy `@/lib/persistence/*` imports remain. Persistence layer is now exclusively under `src/data/persistence/`.
 
 ## Wave 6a — Engines Folder Migration ✅
 
-**Strategy:** Per-folder physical migration (not bulk static deletion).
+**Folder:** `src/lib/engines/` → `src/domains/engines/`
 
-**Steps executed:**
-1. Verified `src/domains/engines/` had 58 canonical implementation files (all 57 wrappers' siblings + index).
-2. Promoted `src/domains/engines/index.ts` from a 13-export partial barrel to a complete 50+ export barrel matching the legacy `src/lib/engines/index.ts`.
-3. Rewired 4 stale consumers:
-   - `src/lib/hooks/useOSRuntime.tsx` (2 imports)
-   - `src/test/engines.test.ts`
-   - `src/lib/hooks/use-meta-governance.ts` (2 imports)
-   - `src/lib/services/meta-governance/collector.service.ts`
-   - `src/components/sita/OSSetupExperience.tsx` (dynamic import)
-4. Deleted entire `src/lib/engines/` directory (57 wrapper files + index.ts + shared/ folder = 59 files).
-5. Verified `tsc --noEmit` returns 0 errors.
+- Promoted partial 13-export barrel to complete 50+ export barrel.
+- Rewired 5 consumer files (1 component, 2 hooks, 1 service, 1 test).
+- Deleted 59 wrapper files atomically.
 
-**Outcome:** Engines are now exclusively under `src/domains/engines/` with a complete public barrel. No legacy `@/lib/engines/*` import paths remain.
+## Verified Pattern (Wave 6 success formula)
 
-## Wave 5 (Aborted) — Lessons Learned
+1. **Audit** canonical destination has ALL needed files
+2. **Promote** canonical barrel to be export-complete (preserve aliases)
+3. **Bulk rewire** consumers via sed (both quote styles)
+4. **Hunt dynamic imports** (`import("@/lib/...")` patterns)
+5. **Delete** folder atomically
+6. **Verify** `tsc --noEmit` → 0 errors immediately
 
-Static text-scan-based bulk removal failed twice (~346 and ~90 errors respectively) because:
-- Dynamic imports (`await import("@/lib/...")`) were missed.
-- Templated path strings escaped the regex.
-- Internal `src/lib/` consumers required full repo scan.
+## Next Targets (Wave 6c+)
 
-**Resolution:** Adopted per-folder migration with explicit consumer audit, used successfully in Wave 6a.
+| Folder | Wrappers | External Consumers | Risk | Strategy |
+|---|---|---|---|---|
+| `src/lib/customer-journey/` | 9 | TBD | Low | Wave 6 pattern |
+| `src/lib/data-services/` | 21 | TBD | Medium | Wave 6 pattern |
+| `src/lib/demo-data/` | 30 | TBD | Low | Wave 6 pattern |
+| `src/lib/cloud-backbone/` | ~10 | TBD | Medium | Wave 6 pattern |
+| `src/lib/design-system/` | 5 | TBD | Low | Wave 6 pattern |
 
-## Next Targets (Wave 6b/6c)
-
-| Folder | Wrappers | External Consumers | Risk |
-|---|---|---|---|
-| `src/lib/persistence/` | 15 | 146 | Medium (high consumer count, needs systematic rewire) |
-| `src/lib/customer-journey/` | 9 | TBD | Low–Medium |
-| `src/lib/data-services/` | 21 | TBD | Medium |
-| `src/lib/demo-data/` | 30 | TBD | Low (demo only) |
-
-Each will follow the Wave 6a pattern: barrel completion → consumer rewire → folder deletion → tsc verification.
+Each will follow the proven Wave 6 pattern: barrel completion → consumer rewire → folder deletion → tsc verification.

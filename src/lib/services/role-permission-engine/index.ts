@@ -1,5 +1,5 @@
 // SITA OS — Role Permission Engine
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface RoleDefinition { id: string; name: string; permissions: string[]; inherits?: string[]; }
 export class RolePermissionEngineService {

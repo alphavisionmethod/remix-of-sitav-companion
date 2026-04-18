@@ -5,7 +5,7 @@
 // from the canonical RUNBOOK_REGISTRY when an incident is declared.
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import { resolveRunbooksForIncident } from "@/lib/support/runbook-resolver";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type IncidentSeverity = "critical" | "high" | "medium" | "low";

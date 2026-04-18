@@ -1,47 +1,47 @@
 {
-  "wave": "6a",
+  "wave": "6b",
   "status": "success",
-  "strategy": "per-folder-physical-migration",
+  "strategy": "per-folder-physical-migration-with-bulk-sed-rewire",
   "metrics": {
-    "wrappers_before": 188,
-    "wrappers_after": 129,
-    "net_removed": 59,
+    "wrappers_before_wave_6": 188,
+    "wrappers_after_wave_6a": 129,
+    "wrappers_after_wave_6b": 114,
+    "net_removed_total": 74,
     "ts_errors": 0,
-    "build_state": "green"
+    "build_state": "green",
+    "src_lib_top_level_entries": 101,
+    "src_lib_total_files": 1687
   },
   "completed_migrations": [
     {
+      "wave": "6a",
       "folder": "src/lib/engines",
       "canonical_target": "src/domains/engines",
       "files_removed": 59,
-      "consumers_rewired": 5,
-      "consumer_files": [
-        "src/lib/hooks/useOSRuntime.tsx",
-        "src/lib/hooks/use-meta-governance.ts",
-        "src/lib/services/meta-governance/collector.service.ts",
-        "src/components/sita/OSSetupExperience.tsx",
-        "src/test/engines.test.ts"
-      ]
+      "consumers_rewired": 5
+    },
+    {
+      "wave": "6b",
+      "folder": "src/lib/persistence",
+      "canonical_target": "src/data/persistence",
+      "files_removed": 17,
+      "consumers_rewired": 142,
+      "barrel_alias_added": "getScopedMemoryStats -> getMemoryStats"
     }
   ],
   "next_targets": [
-    { "folder": "src/lib/persistence", "wrappers": 15, "external_consumers": 146 },
     { "folder": "src/lib/customer-journey", "wrappers": 9 },
     { "folder": "src/lib/data-services", "wrappers": 21 },
-    { "folder": "src/lib/demo-data", "wrappers": 30 }
+    { "folder": "src/lib/demo-data", "wrappers": 30 },
+    { "folder": "src/lib/cloud-backbone", "wrappers": 10 },
+    { "folder": "src/lib/design-system", "wrappers": 5 }
   ],
-  "lessons_learned": {
-    "wave_5_failure_root_causes": [
-      "Static text scans miss dynamic imports",
-      "Templated path strings escape regex",
-      "Internal src/lib consumers require full repo scan"
-    ],
-    "wave_6_winning_pattern": [
-      "Audit canonical destination has all needed files",
-      "Promote canonical barrel to be export-complete",
-      "Rewire ALL consumers (including internal src/lib ones)",
-      "Delete folder atomically",
-      "Verify tsc immediately"
-    ]
-  }
+  "winning_pattern": [
+    "Verify canonical destination has all needed sibling files",
+    "Promote canonical barrel to be export-complete (preserve legacy aliases)",
+    "Bulk sed rewrite for both single and double quoted import forms",
+    "Hunt dynamic imports separately (import('@/lib/...') pattern)",
+    "Delete folder atomically",
+    "tsc --noEmit verification"
+  ]
 }

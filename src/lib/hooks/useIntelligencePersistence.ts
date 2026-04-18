@@ -10,23 +10,23 @@ import {
   createIntelligenceAsset,
   getAssetStats,
   type IntelligenceAssetRow,
-} from "@/lib/persistence/intelligence-asset-persistence";
+} from "@/data/persistence/intelligence-asset-persistence";
 import {
   fetchQualityFloors,
   upsertQualityFloor,
   type QualityFloorConfigRow,
-} from "@/lib/persistence/quality-floor-persistence";
+} from "@/data/persistence/quality-floor-persistence";
 import {
   fetchComputeSnapshots,
   getLatestSnapshot,
   createComputeSnapshot,
   type ComputeBudgetSnapshotRow,
-} from "@/lib/persistence/compute-governance-persistence";
+} from "@/data/persistence/compute-governance-persistence";
 import {
   fetchTasteProfiles,
   upsertTasteProfile,
   type OperatorTasteRow,
-} from "@/lib/persistence/operator-taste-persistence";
+} from "@/data/persistence/operator-taste-persistence";
 
 // ── Intelligence Assets ─────────────────────────────────────────
 export function useIntelligenceAssets(filters?: { domain?: string; asset_type?: string }) {

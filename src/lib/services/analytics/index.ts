@@ -2,7 +2,7 @@
 // SITA OS — Analytics Service (merge target: observability)
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface AnalyticsEvent { name: string; domain: string; properties: Record<string, unknown>; timestamp: string; userId: string; sessionId: string; }
 export interface AnalyticsMetric { name: string; value: number; unit: string; dimensions: Record<string, string>; recordedAt: string; }

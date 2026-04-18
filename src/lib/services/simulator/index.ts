@@ -1,5 +1,5 @@
 // SITA OS — Simulator (merge: workflow-engine)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface SimulationRun { id: string; scenario: string; inputs: Record<string, unknown>; outputs: Record<string, unknown>; duration: number; status: 'running' | 'completed' | 'failed'; startedAt: string; }
 export class SimulatorService {

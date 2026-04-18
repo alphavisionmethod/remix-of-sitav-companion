@@ -187,7 +187,7 @@ export function OSRuntimeProvider({
     };
 
     // Load persisted states for all engines
-    import("@/lib/persistence/engine-persistence-adapter").then(
+    import("@/data/persistence/engine-persistence-adapter").then(
       async ({ loadAllEngineStates, debouncedPersistEngineState }) => {
         if (cancelled) return;
         const states = await loadAllEngineStates();
@@ -238,7 +238,7 @@ export function OSRuntimeProvider({
       for (const [name, engine] of Object.entries(ENGINE_MAP)) {
         if (typeof engine.serialize === "function") {
           try {
-            import("@/lib/persistence/engine-persistence-adapter").then(({ persistEngineState }) => {
+            import("@/data/persistence/engine-persistence-adapter").then(({ persistEngineState }) => {
               persistEngineState(name, {
                 ...engine.serialize(),
                 _lastPersisted: new Date().toISOString(),

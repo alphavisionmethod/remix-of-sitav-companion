@@ -3,7 +3,7 @@
 // Knowledge graph for entities, relationships, and context
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface GraphEntity { id: string; type: string; name: string; properties: Record<string, unknown>; createdAt: string; updatedAt: string; }
 export interface GraphRelation { id: string; fromId: string; toId: string; type: string; weight: number; properties: Record<string, unknown>; createdAt: string; }

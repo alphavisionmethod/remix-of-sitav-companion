@@ -3,7 +3,7 @@
 // Customer/entity digital twin management and simulation
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface DigitalTwin { id: string; entityType: string; name: string; segment: string; healthScore: number; churnProbability: number; predictedRevenue: number; revenueAtRisk: number; trend: 'improving' | 'stable' | 'declining'; lastActivity?: string; signals: TwinSignal[]; projections: TwinProjection[]; updatedAt: string; }
 export interface TwinSignal { type: string; value: number; source: string; timestamp: string; }

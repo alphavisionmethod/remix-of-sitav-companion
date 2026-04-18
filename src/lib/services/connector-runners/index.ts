@@ -1,5 +1,5 @@
 // SITA OS — Connector Runners (merge: connector-control-plane)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface ConnectorRunner { id: string; connectorId: string; status: 'idle' | 'running' | 'error'; lastRunAt?: string; nextRunAt?: string; config: Record<string, unknown>; }
 export class ConnectorRunnersService {

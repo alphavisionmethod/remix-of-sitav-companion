@@ -7,7 +7,7 @@ import {
   loadServiceState,
   saveServiceState,
   debouncedSaveServiceState,
-} from "@/lib/persistence/universal-service-persistence";
+} from "@/data/persistence/universal-service-persistence";
 import type {
   ReleaseRecord,
   ReleasePromotionEvent,

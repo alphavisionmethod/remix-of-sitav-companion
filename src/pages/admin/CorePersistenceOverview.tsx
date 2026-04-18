@@ -11,7 +11,7 @@ import {
   fetchPolicyEvaluations, getPolicyEvaluationStats,
   fetchActionLineage, findStuckActions,
   fetchIntelligenceAssets, getAssetStats,
-} from "@/lib/persistence";
+} from "@/data/persistence";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

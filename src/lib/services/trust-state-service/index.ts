@@ -1,5 +1,5 @@
 // SITA OS — Trust State Service (target parent: trust-evaluation-consolidation)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface TrustScore { entityId: string; entityType: string; score: number; level: 'full' | 'elevated' | 'standard' | 'reduced' | 'untrusted'; factors: TrustFactor[]; computedAt: string; }
 export interface TrustFactor { name: string; weight: number; value: number; source: string; }

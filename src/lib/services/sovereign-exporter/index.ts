@@ -3,7 +3,7 @@
 // GDPR data export, portable archive, table-by-table extraction
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export type ExportStatus = "pending" | "extracting" | "packaging" | "completed" | "failed";
 export type ExportFormat = "json" | "csv" | "sqlite" | "zip";

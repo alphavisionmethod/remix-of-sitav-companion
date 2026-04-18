@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { RiskTier as CanonicalRiskTier } from "@/packages/contracts";
-import { persistPolicyEvaluation } from "@/lib/persistence/policy-engine-persistence";
+import { persistPolicyEvaluation } from "@/data/persistence/policy-engine-persistence";
 
 export type { CanonicalRiskTier };
 

@@ -3,7 +3,7 @@
 // Active intelligence for cross-surface workspace continuity
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import type { DomainId } from "@/packages/contracts/_contract-scaffold";
 
 // ── Types ────────────────────────────────────────────────────────

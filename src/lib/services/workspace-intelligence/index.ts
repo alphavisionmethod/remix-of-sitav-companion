@@ -3,7 +3,7 @@
 // Context-aware workspace policies, automations, and suggestions
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 
 const SERVICE_KEY = "workspace-intelligence";
 

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Activity, Search, RotateCcw, AlertTriangle, Link2, Filter } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPersistedEvents, fetchDeadLetters, getEventLineage, markEventReplayed, type PersistedEvent } from "@/lib/persistence";
+import { fetchPersistedEvents, fetchDeadLetters, getEventLineage, markEventReplayed, type PersistedEvent } from "@/data/persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };

@@ -3,7 +3,7 @@
 // Confidence, freshness, correction, forgetting, contradiction
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import type { MemoryType, MemoryPrivacy, MemorySource, MemoryContradiction, MemoryCorrection, MemoryForgetRequest, MemoryPersistenceRule, MemoryGovernanceConfig } from "@/packages/contracts/domain-types/memory-governance";
 
 // ── Types ────────────────────────────────────────────────────────

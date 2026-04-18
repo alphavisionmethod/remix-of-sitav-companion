@@ -3,7 +3,7 @@
 // Agent lifecycle, task assignment, capability matching, teams
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 import type {
   AgentDefinition, AgentTask, AgentTeam, AgentCapability,
   AgentStatus, AgentAutonomyLevel, CouncilDefinition, AgentKPI,

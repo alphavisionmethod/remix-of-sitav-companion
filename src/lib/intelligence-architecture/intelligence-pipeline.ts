@@ -13,7 +13,7 @@ import { evaluateOutcomeEconomics, type OutcomeEconomicsInput, type OutcomeEcono
 import { generalizePattern } from "./cross-tenant-generalization";
 import type { IntelligenceAsset, ReuseCandidate } from "./intelligence-reuse-engine";
 import { computeEfficiencyScore, type EfficiencyScore } from "./efficiency-scoring";
-import { appendEngineEvent } from "@/lib/persistence/engine-persistence-adapter";
+import { appendEngineEvent } from "@/data/persistence/engine-persistence-adapter";
 
 // ── Pipeline Result ─────────────────────────────────────────
 

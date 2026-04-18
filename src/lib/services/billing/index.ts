@@ -3,7 +3,7 @@
 // Usage metering, subscription management, invoice generation
 // ═══════════════════════════════════════════════════════════════
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface BillingPlan { id: string; name: string; tier: 'free' | 'starter' | 'pro' | 'enterprise'; price: number; currency: string; features: string[]; limits: Record<string, number>; }
 export interface UsageRecord { metricName: string; quantity: number; recordedAt: string; userId: string; }

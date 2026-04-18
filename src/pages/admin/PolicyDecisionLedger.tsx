@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Shield, AlertTriangle, CheckCircle, Link2, RefreshCw, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPolicyEvaluations, getPolicyEvaluationStats, type PersistedPolicyEvaluation } from "@/lib/persistence";
+import { fetchPolicyEvaluations, getPolicyEvaluationStats, type PersistedPolicyEvaluation } from "@/data/persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };

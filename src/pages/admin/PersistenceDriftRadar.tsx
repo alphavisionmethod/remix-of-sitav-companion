@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Radar, AlertTriangle, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPersistedEvents, getScopedMemoryStats, getPolicyEvaluationStats, fetchActionLineage, getAssetStats } from "@/lib/persistence";
+import { fetchPersistedEvents, getScopedMemoryStats, getPolicyEvaluationStats, fetchActionLineage, getAssetStats } from "@/data/persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };

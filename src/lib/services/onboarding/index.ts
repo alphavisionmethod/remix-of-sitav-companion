@@ -1,5 +1,5 @@
 // SITA OS — Onboarding Service (merge: enterprise-control-plane)
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface OnboardingSession { id: string; userId: string; currentStep: string; completedSteps: string[]; preferences: Record<string, unknown>; startedAt: string; completedAt?: string; }
 export class OnboardingService {

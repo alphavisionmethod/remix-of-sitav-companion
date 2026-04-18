@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
-import { fetchEngineEvents, loadEngineState } from "@/lib/persistence/engine-persistence-adapter";
+import { fetchEngineEvents, loadEngineState } from "@/data/persistence/engine-persistence-adapter";
 
 export interface EngineEventRow {
   id: string;
