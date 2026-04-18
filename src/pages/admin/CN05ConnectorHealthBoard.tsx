@@ -1,26 +1,14 @@
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
-import { toast } from "sonner";
 import CNSubNav from "@/components/admin/CNSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
-
-
-const statusColors: Record<string, string> = {
-  healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400",
-  unhealthy: "bg-red-500/20 text-red-400", token_expired: "bg-red-500/20 text-red-400",
-  reauth_required: "bg-orange-500/20 text-orange-400", not_configured: "bg-muted text-muted-foreground",
-  demo_simulated: "bg-purple-500/20 text-purple-400", internal_test: "bg-blue-500/20 text-blue-400",
-  shell_only: "bg-muted text-muted-foreground", unknown: "bg-muted text-muted-foreground",
-};
 
 export default function CN05ConnectorHealthBoard() {
   const queryClient = useQueryClient();
@@ -59,7 +47,7 @@ export default function CN05ConnectorHealthBoard() {
                       <Activity className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">{key.slice(0, 8)}...</span>
                     </div>
-                    <Badge className={statusColors[latest.health_status] || ""}>{latest.health_status}</Badge>
+                    <ConnectorStateBadge state={latest.health_status} size="xs" />
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                     <div>Latency: {latest.latency_ms ? `${latest.latency_ms}ms` : "—"}</div>
@@ -67,7 +55,7 @@ export default function CN05ConnectorHealthBoard() {
                     <div>Failures: {latest.consecutive_failures}</div>
                     <div>Last Sync: {latest.last_successful_sync ? new Date(latest.last_successful_sync).toLocaleDateString() : "Never"}</div>
                   </div>
-                  {latest.error_message && <p className="text-xs text-red-400 mt-2">{latest.error_message}</p>}
+                  {latest.error_message && <p className="text-xs text-destructive mt-2">{latest.error_message}</p>}
                 </CardContent>
               </Card>
             );

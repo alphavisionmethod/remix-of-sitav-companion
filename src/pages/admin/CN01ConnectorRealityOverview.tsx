@@ -13,17 +13,9 @@ import { toast } from "sonner";
 import CNSubNav from "@/components/admin/CNSubNav";
 import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
 
-
-const statusColors: Record<string, string> = {
-  healthy: "bg-emerald-500/15 text-emerald-400", connected: "bg-emerald-500/15 text-emerald-400",
-  degraded: "bg-amber-500/15 text-amber-400", reauth_required: "bg-orange-500/15 text-orange-400",
-  unhealthy: "bg-destructive/15 text-destructive", token_expired: "bg-destructive/15 text-destructive",
-  demo_simulated: "bg-purple-500/15 text-purple-400", internal_test: "bg-blue-500/15 text-blue-400",
-  shell_only: "bg-muted text-muted-foreground", not_configured: "bg-muted text-muted-foreground",
-  live_verified: "bg-emerald-500/15 text-emerald-400", partial: "bg-amber-500/15 text-amber-400",
-};
 
 const statusBadge = (ok: boolean, label: string) => (
   <Badge variant="outline" className={`text-[10px] ${ok ? "bg-emerald-500/15 text-emerald-400" : "bg-muted text-muted-foreground"}`}>
@@ -216,7 +208,7 @@ export default function CN01ConnectorRealityOverview() {
                         <TableCell>{statusBadge(isConnected, isConnected ? "Yes" : "No")}</TableCell>
                         <TableCell>{statusBadge(hasReauth, hasReauth ? "Yes" : "—")}</TableCell>
                         <TableCell>{statusBadge(hasDisconnect, hasDisconnect ? "Yes" : "—")}</TableCell>
-                        <TableCell><Badge variant="outline" className={statusColors[status] || "bg-muted text-muted-foreground"}>{status}</Badge></TableCell>
+                        <TableCell><ConnectorStateBadge state={status} size="xs" /></TableCell>
                       </TableRow>
                     );
                   })}
@@ -275,7 +267,7 @@ export default function CN01ConnectorRealityOverview() {
                       return (
                         <TableRow key={a.id}>
                           <TableCell className="font-medium text-sm">{a.provider || a.connector_type || "—"}</TableCell>
-                          <TableCell><Badge variant="outline" className={statusColors[a.status] || ""}>{a.status}</Badge></TableCell>
+                          <TableCell><ConnectorStateBadge state={a.status} size="xs" /></TableCell>
                           <TableCell className="text-xs max-w-[200px] truncate">{token?.scopes?.join(", ") || "—"}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">{a.connected_at ? new Date(a.connected_at).toLocaleString() : "—"}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">{token?.expires_at ? new Date(token.expires_at).toLocaleString() : "—"}</TableCell>
@@ -322,7 +314,7 @@ export default function CN01ConnectorRealityOverview() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className={statusColors[c.launch_stage] || ""}>{c.launch_stage}</Badge>
+                          <Badge variant="outline" className="text-[10px]">{c.launch_stage}</Badge>
                           {lr && (
                             <div className="flex items-center gap-1">
                               {lr.oauth_working ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-destructive" />}
@@ -367,7 +359,7 @@ export default function CN01ConnectorRealityOverview() {
                 <div className="space-y-2">
                   {healthRecords.slice(0, 10).map((h: Record<string, any>) => (
                     <div key={h.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
-                      <Badge className={statusColors[h.health_status] || ""}>{h.health_status}</Badge>
+                      <ConnectorStateBadge state={h.health_status} size="xs" />
                       <span className="text-xs text-muted-foreground">{h.latency_ms ? `${h.latency_ms}ms` : "—"}</span>
                       <span className="text-xs text-muted-foreground">{new Date(h.checked_at).toLocaleString()}</span>
                     </div>

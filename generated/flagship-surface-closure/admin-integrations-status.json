@@ -1,0 +1,17 @@
+{
+  "surface": "admin-integrations",
+  "status": "complete",
+  "scope": "admin-ai-engineering",
+  "modules": ["cloud-backbone", "sync", "concierge", "oauth-refresh-health", "refresh-streak"],
+  "canonicalBadge": "ConnectorStateBadge",
+  "states": ["connected", "degraded", "reauth_required", "failing", "manual", "demo_simulated"],
+  "effectiveStateView": "connector_effective_state",
+  "reauthFlow": "requestProviderReauth + timeline_events emit",
+  "validator": "admin-integrations-health-visibility",
+  "refactoredSurfaces": [
+    "src/components/admin/OAuthRefreshHealthBoard.tsx",
+    "src/pages/admin/CN01ConnectorRealityOverview.tsx",
+    "src/pages/admin/CN05ConnectorHealthBoard.tsx",
+    "src/pages/admin/integrations/IntegrationsHome.tsx"
+  ]
+}

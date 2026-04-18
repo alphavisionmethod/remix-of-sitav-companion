@@ -1,0 +1,17 @@
+{
+  "surface": "admin-ai-runtime",
+  "status": "complete",
+  "scope": "admin-ai-engineering",
+  "wiredModules": ["internal-agents", "councils"],
+  "drilldownTabs": ["actions", "budget", "health"],
+  "nightlyProofBadge": true,
+  "validator": "admin-ai-runtime-drilldowns",
+  "dataSources": [
+    "internal_agent_actions",
+    "ai_workforce_invocations",
+    "ai_usage_ledger",
+    "ai_workforce_budget_classes",
+    "ai_fallback_events",
+    "ai_provider_health"
+  ]
+}
