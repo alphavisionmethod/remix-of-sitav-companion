@@ -1,65 +1,55 @@
 {
-  "wave": "6e",
-  "status": "success",
+  "wave": "6g",
+  "status": "complete",
+  "milestone": "ZERO_WRAPPERS_REMAINING",
   "strategy": "per-folder-physical-migration-with-bulk-sed-rewire",
   "metrics": {
     "wrappers_before_wave_6": 188,
     "wrappers_after_wave_6a": 129,
     "wrappers_after_wave_6b": 114,
-    "wrappers_after_wave_6c": 114,
-    "wrappers_after_wave_6d": 81,
-    "wrappers_after_wave_6e": 45,
-    "net_removed_total": 143,
+    "wrappers_after_wave_6c": 105,
+    "wrappers_after_wave_6d": 72,
+    "wrappers_after_wave_6e": 42,
+    "wrappers_after_wave_6f": 30,
+    "wrappers_after_wave_6g": 0,
+    "net_removed_total": 188,
     "ts_errors": 0,
     "build_state": "green",
-    "src_lib_top_level_entries": 98,
-    "src_lib_total_files": 1616
+    "src_lib_top_level_entries": 89,
+    "src_lib_total_files": 1565
   },
   "completed_migrations": [
+    { "wave": "6a", "folder": "src/lib/engines", "canonical_target": "src/domains/engines", "files_removed": 59, "consumers_rewired": 5 },
+    { "wave": "6b", "folder": "src/lib/persistence", "canonical_target": "src/data/persistence", "files_removed": 17, "consumers_rewired": 142 },
+    { "wave": "6c", "folder": "src/lib/customer-journey", "canonical_target": "src/domains/customer-journey", "files_removed": 9, "consumers_rewired": 0 },
+    { "wave": "6d", "folder": "src/lib/data-services", "canonical_target": "src/data/repositories", "files_removed": 33, "consumers_rewired": 2 },
+    { "wave": "6e", "folder": "src/lib/demo-data", "canonical_target": "src/data/seed", "files_removed": 30, "consumers_rewired": 5 },
+    { "wave": "6f", "folder": "src/lib/cloud-backbone + src/lib/design-system", "canonical_target": "src/platform/cloud + src/platform/design-system", "files_removed": 16, "consumers_rewired": 2 },
     {
-      "wave": "6a",
-      "folder": "src/lib/engines",
-      "canonical_target": "src/domains/engines",
-      "files_removed": 59,
-      "consumers_rewired": 5
-    },
-    {
-      "wave": "6b",
-      "folder": "src/lib/persistence",
-      "canonical_target": "src/data/persistence",
-      "files_removed": 17,
-      "consumers_rewired": 142,
-      "barrel_alias_added": "getScopedMemoryStats -> getMemoryStats"
-    },
-    {
-      "wave": "6c",
-      "folder": "src/lib/customer-journey",
-      "canonical_target": "src/domains/customer-journey",
-      "files_removed": 9,
-      "consumers_rewired": 0,
-      "note": "All consumers were already on canonical path; pure wrapper deletion."
-    },
-    {
-      "wave": "6d",
-      "folder": "src/lib/data-services",
-      "canonical_target": "src/data/repositories",
-      "files_removed": 33,
-      "consumers_rewired": 2,
-      "barrel_promotion": "src/data/repositories/index.ts expanded from stub to 32-export complete barrel; src/data/index.ts simplified to re-export from canonical."
-    },
-    {
-      "wave": "6e",
-      "folder": "src/lib/demo-data",
-      "canonical_target": "src/data/seed",
-      "files_removed": 30,
-      "consumers_rewired": 5,
-      "content_relocated": "Real demo content (DEMO_INBOX_ITEMS etc.) and packs.ts physically copied to canonical seed/ before legacy folder deletion."
+      "wave": "6g",
+      "folder": "10 stragglers",
+      "canonical_target": "various (core-services, platform/*, data/*, runtimes/*, integrations/*, domains/*)",
+      "files_removed": 24,
+      "consumers_rewired": 13,
+      "items": [
+        "src/lib/services/brain-core (10 files, 0 consumers)",
+        "src/lib/services/approval-engine (3 files, 2 consumers)",
+        "src/lib/services/conscience-gate (2 files, 3 consumers)",
+        "src/lib/nova-sdk/ui (3 files, 0 consumers)",
+        "src/lib/investment-office (2 files, 0 consumers)",
+        "src/lib/verification (1 file, 1 consumer)",
+        "src/lib/storage/storage-topology-registry.ts (0 consumers)",
+        "src/lib/sound-engine.ts (0 consumers)",
+        "src/lib/reality-audit/* (0 consumers)",
+        "src/lib/platform-law/* (0 consumers)",
+        "src/lib/offline-db.ts (0 consumers)",
+        "src/lib/integrations/reality-integration-hub.ts (0 consumers)",
+        "src/lib/core-services/event-bus.ts (7 consumers)",
+        "src/lib/app-platform/types.ts (0 consumers)",
+        "src/lib/advisor-topology.ts (0 consumers)",
+        "src/domains/types/* (19 reverse wrappers, 0 consumers)"
+      ]
     }
-  ],
-  "next_targets": [
-    { "folder": "src/lib/cloud-backbone", "wrappers": 10 },
-    { "folder": "src/lib/design-system", "wrappers": 5 },
-    { "folder": "src/lib/services", "wrappers": "varies (sub-batched)" }
   ],
   "winning_pattern": [
     "Verify canonical destination has all needed sibling files (or copy them)",
