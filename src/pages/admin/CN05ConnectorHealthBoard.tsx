@@ -55,7 +55,7 @@ export default function CN05ConnectorHealthBoard() {
                     <div>Failures: {latest.consecutive_failures}</div>
                     <div>Last Sync: {latest.last_successful_sync ? new Date(latest.last_successful_sync).toLocaleDateString() : "Never"}</div>
                   </div>
-                  {latest.error_message && <p className="text-xs text-red-400 mt-2">{latest.error_message}</p>}
+                  {latest.error_message && <p className="text-xs text-destructive mt-2">{latest.error_message}</p>}
                 </CardContent>
               </Card>
             );
