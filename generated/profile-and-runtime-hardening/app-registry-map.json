@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T12:22:03.192Z",
+  "generatedAt": "2026-04-18T12:24:29.685Z",
   "totalApps": 19,
   "apps": [
     {
@@ -349,12 +349,9 @@
       "routeMatches": [
         "/search"
       ],
-      "inUserManifest": false,
-      "inOperatorManifest": false,
-      "drift": [
-        "user-manifest-missing",
-        "operator-manifest-missing"
-      ]
+      "inUserManifest": true,
+      "inOperatorManifest": true,
+      "drift": []
     },
     {
       "appId": "observability",
@@ -371,12 +368,12 @@
       ],
       "riskTier": "R2",
       "description": "Fleet health, traces, signals",
-      "routeMatches": [],
+      "routeMatches": [
+        "/admin/system"
+      ],
       "inUserManifest": false,
       "inOperatorManifest": true,
-      "drift": [
-        "missing-route"
-      ]
+      "drift": []
     },
     {
       "appId": "release-center",
@@ -393,12 +390,16 @@
       ],
       "riskTier": "R3",
       "description": "Release readiness gates & rings",
-      "routeMatches": [],
+      "routeMatches": [
+        "/admin/releases",
+        "/admin/releases/launch-readiness",
+        "/admin/releases/mobile-parity",
+        "/admin/releases/deployment-rings",
+        "/admin/releases/rollback"
+      ],
       "inUserManifest": false,
       "inOperatorManifest": true,
-      "drift": [
-        "missing-route"
-      ]
+      "drift": []
     },
     {
       "appId": "verification-center",
@@ -506,12 +507,12 @@
       "defaultPinned": [],
       "riskTier": "R4",
       "description": "Cloud, connectors, infra control",
-      "routeMatches": [],
+      "routeMatches": [
+        "/admin/system"
+      ],
       "inUserManifest": false,
       "inOperatorManifest": true,
-      "drift": [
-        "missing-route"
-      ]
+      "drift": []
     },
     {
       "appId": "user-org-intervention",
@@ -558,9 +559,9 @@
   ],
   "manifestOrphans": [],
   "driftSummary": {
-    "missingRoute": 3,
-    "userManifestMissing": 1,
-    "operatorManifestMissing": 1,
+    "missingRoute": 0,
+    "userManifestMissing": 0,
+    "operatorManifestMissing": 0,
     "adminMissingRole": 0
   }
 }

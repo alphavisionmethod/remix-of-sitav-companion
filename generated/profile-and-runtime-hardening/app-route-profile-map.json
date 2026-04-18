@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T12:22:03.200Z",
+  "generatedAt": "2026-04-18T12:24:29.693Z",
   "totalRoutes": 673,
   "routes": [
     {
@@ -71,7 +71,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "release-center",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"
@@ -223,7 +224,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "release-center",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"
@@ -407,7 +409,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "release-center",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"
@@ -422,7 +425,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "release-center",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"
@@ -437,7 +441,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "release-center",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"
@@ -768,7 +773,8 @@
         "operator"
       ],
       "requiredPermission": "admin.view",
-      "appBacked": false,
+      "appBacked": true,
+      "appId": "observability",
       "hiddenAppLike": false,
       "drift": [
         "admin-route-unguarded"

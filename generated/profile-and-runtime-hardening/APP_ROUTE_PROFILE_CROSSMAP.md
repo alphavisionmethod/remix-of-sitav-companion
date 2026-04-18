@@ -1,5 +1,5 @@
 # App ↔ Route ↔ Profile Cross-Map (Phase A)
-Generated: 2026-04-18T12:22:03.292Z
+Generated: 2026-04-18T12:24:29.785Z
 ## Totals
 - Total declared routes: **673**
 - Routes not in route-plane-map: **323**

@@ -1,21 +1,12 @@
 {
-  "generatedAt": "2026-04-18T12:22:03.291Z",
+  "generatedAt": "2026-04-18T12:24:29.784Z",
   "sharedComponentLeakage": [],
-  "manifestMismatches": [
-    {
-      "appId": "search",
-      "issue": "declared user-profile but missing from user.profile.json allowedApps"
-    },
-    {
-      "appId": "search",
-      "issue": "declared operator-profile but missing from operator.profile.json allowedApps"
-    }
-  ],
+  "manifestMismatches": [],
   "summary": {
     "leakageCount": 0,
-    "manifestMismatchCount": 2,
-    "userProfileApps": 9,
-    "operatorProfileApps": 12,
+    "manifestMismatchCount": 0,
+    "userProfileApps": 10,
+    "operatorProfileApps": 13,
     "appPlaneMapEntries": 19
   }
 }

@@ -1,13 +1,12 @@
 # User vs Operator Profile Separation Audit (Phase A)
-Generated: 2026-04-18T12:22:03.293Z
+Generated: 2026-04-18T12:24:29.787Z
 ## Manifest Alignment
 - App-plane-map entries: **19**
-- User profile allowedApps: **9**
-- Operator profile allowedApps: **12**
-- Manifest mismatches: **2**
+- User profile allowedApps: **10**
+- Operator profile allowedApps: **13**
+- Manifest mismatches: **0**
 ### Mismatches
-- `search` — declared user-profile but missing from user.profile.json allowedApps
-- `search` — declared operator-profile but missing from operator.profile.json allowedApps
+_none_
 ## Shared Component Plane Pollution
 - Shared files importing admin-only modules (excluding allowlisted `sita/admin`): **0**
 _none — shared layer is clean_
