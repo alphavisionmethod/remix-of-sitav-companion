@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Phase 5 wave 2 re-export shim. Canonical:
 //   @/admin/modules/trust-security/views/AdminRBACConsole
-// Logic moved to canonical module home; this shim preserves all
-// legacy imports (route registry, page barrels, vitest batches).
+// AdminRBACConsole is a NAMED export — re-export named + default.
 // ═══════════════════════════════════════════════════════════════
-export { default } from "@/admin/modules/trust-security/views/AdminRBACConsole";
+export { AdminRBACConsole, AdminRBACConsole as default } from "@/admin/modules/trust-security/views/AdminRBACConsole";
