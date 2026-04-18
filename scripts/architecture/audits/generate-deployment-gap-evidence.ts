@@ -117,7 +117,11 @@ writeJsonOutput(path.join(OUT_DIR, "window-snap-adoption-map.json"), envelope({
 
 // ── 5. MOBILE OFFLINE TRUTH (archived per platform-runtimes memory) ──
 const mobileArchived = fs.existsSync("archive/mobile") || !fs.existsSync("src/lib/mobile");
-const offlineDb = "src/lib/offline/offline-db.ts";
+const offlineDbCandidates = [
+  "src/data/persistence/offline-db.ts",
+  "src/lib/offline/offline-db.ts",
+];
+const offlineDb = offlineDbCandidates.find(p => fs.existsSync(p)) ?? offlineDbCandidates[0];
 const offlineDbExists = fs.existsSync(offlineDb);
 const localStorageMobileQueue = findConsumers(/MobileOfflineQueue|mobile.*localStorage.*queue/i);
 
