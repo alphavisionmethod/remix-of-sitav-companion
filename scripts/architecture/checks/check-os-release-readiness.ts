@@ -69,6 +69,8 @@ const REQUIRED_GATES = [
   "command-palette-profile-leakage",
   "shared-component-profile-pollution",
   "route-guard-coverage",
+  // Phase H — Baseline drift detection (sealed surface guard)
+  "profile-runtime-baseline-drift",
 ];
 
 const GENERATED_DIR = "generated";
