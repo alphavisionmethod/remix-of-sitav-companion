@@ -365,6 +365,25 @@ export const RUNBOOK_REGISTRY: readonly RunbookEntry[] = [
     boundedContextId: "cloud-control-plane", subsystem: "ingress", markdownRef: "docs/runbooks/ingress-failure.md",
   },
 
+  // ═══ RB-020 — Boardroom Layer 7 Stuck Follow-Through ═══
+  {
+    runbookId: "RB-020", title: "Boardroom Layer 7 — Stuck Follow-Through Recovery",
+    description: "Recover a Boardroom approved decision whose follow-through dispatch breached its SLA window (e.g., outcome_pending > 72h)",
+    severity: "high", status: "reviewed",
+    triggerCondition: "boardroom-followthrough-sla edge function pages a warning/critical bucket via alert-router",
+    affectedServices: ["boardroom-service", "agent-executor", "boardroom-followthrough-dispatch", "boardroom-outcome-record"],
+    killSwitchRef: "KS-WORKFLOW", messageCodeRef: "BOARD-007",
+    steps: [
+      { order: 1, action: "Open Layer 7 admin board at /admin/boardroom-layer7 and filter by state=outcome_pending or executing, sorted by oldest updated_at", command: null, expectedOutcome: "Breaching dispatch row visible at top", rollbackAction: null, timeoutMs: 60_000 },
+      { order: 2, action: "Inspect dispatch evidence (correlation_id, retry_count, execution_result, linked receipt)", command: null, expectedOutcome: "Root cause classified: real failure, missed outcome write, or external blocker", rollbackAction: null, timeoutMs: 180_000 },
+      { order: 3, action: "Choose remediation path: (A) record outcome if execution actually completed, (B) mark dispatch failed and roll back, (C) toggle KS-WORKFLOW only if many dispatches are stuck", command: null, expectedOutcome: "Dispatch advances or is safely terminated", rollbackAction: "Revert dispatch state via admin tooling", timeoutMs: 600_000 },
+      { order: 4, action: "Confirm closure: dispatch reaches outcome_tracked → reflected → closed and boardroom_items.followthrough_state matches", command: null, expectedOutcome: "Lifecycle terminal state reached", rollbackAction: null, timeoutMs: 300_000 },
+      { order: 5, action: "Acknowledge the boardroom_followthrough_sla_alerts row (sets acknowledged_at) so cooldown applies and no re-page fires", command: null, expectedOutcome: "Alert row acknowledged, no re-page within cooldown", rollbackAction: null, timeoutMs: 60_000 },
+    ],
+    escalationTarget: "admin", estimatedResolutionMs: 1_200_000, lastTestedAt: null, owner: "boardroom",
+    boundedContextId: "boardroom", subsystem: "boardroom-followthrough", markdownRef: "docs/runbooks/boardroom-l7-stuck.md",
+  },
+
 ] as const;
 
 // ── Query Functions ────────────────────────────────────────────
