@@ -6,7 +6,7 @@
 
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
-import { useDragIndex, useDragRecommendations } from "@/lib/hooks/use-meta-governance";
+import { useDragIndex, useDragRecommendations } from "@/hooks/use-meta-governance";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 import { Gauge, ArrowRight, Zap } from "lucide-react";

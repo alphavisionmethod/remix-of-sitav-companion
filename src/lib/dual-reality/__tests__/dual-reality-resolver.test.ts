@@ -81,7 +81,7 @@ describe("Reality Mode Resolver", () => {
 
 describe("Reality Provider Hook", () => {
   it("resolveByMode returns demo data in demo mode", async () => {
-    const { resolveByMode } = await import("@/lib/hooks/useRealityProvider");
+    const { resolveByMode } = await import("@/hooks/useRealityProvider");
     const result = resolveByMode({
       mode: "demo",
       realData: null,
@@ -94,7 +94,7 @@ describe("Reality Provider Hook", () => {
   });
 
   it("resolveByMode returns real data in real mode", async () => {
-    const { resolveByMode } = await import("@/lib/hooks/useRealityProvider");
+    const { resolveByMode } = await import("@/hooks/useRealityProvider");
     const result = resolveByMode({
       mode: "real",
       realData: [{ id: 2 }],
@@ -107,7 +107,7 @@ describe("Reality Provider Hook", () => {
   });
 
   it("resolveByMode returns empty default when no real data", async () => {
-    const { resolveByMode } = await import("@/lib/hooks/useRealityProvider");
+    const { resolveByMode } = await import("@/hooks/useRealityProvider");
     const result = resolveByMode({
       mode: "real",
       realData: null,
@@ -120,7 +120,7 @@ describe("Reality Provider Hook", () => {
   });
 
   it("resolveByMode treats empty array as empty state", async () => {
-    const { resolveByMode } = await import("@/lib/hooks/useRealityProvider");
+    const { resolveByMode } = await import("@/hooks/useRealityProvider");
     const result = resolveByMode({
       mode: "real",
       realData: [],
@@ -131,7 +131,7 @@ describe("Reality Provider Hook", () => {
   });
 
   it("sandbox mode is treated as demo", async () => {
-    const { resolveByMode } = await import("@/lib/hooks/useRealityProvider");
+    const { resolveByMode } = await import("@/hooks/useRealityProvider");
     const result = resolveByMode({
       mode: "sandbox",
       realData: null,

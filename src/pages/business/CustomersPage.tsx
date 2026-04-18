@@ -16,7 +16,7 @@ import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton"
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/useAction";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, Plus, X, Plug

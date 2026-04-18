@@ -9,7 +9,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useWorkspaceView, useMetaGovernanceBoardroom } from "@/lib/hooks/use-meta-governance";
+import { useWorkspaceView, useMetaGovernanceBoardroom } from "@/hooks/use-meta-governance";
 import { TrustDebtPanel, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { motion } from "framer-motion";
 import { Crown, Shield, AlertTriangle, ArrowRight, Bell, CheckCircle, Eye, Lock, Zap } from "lucide-react";

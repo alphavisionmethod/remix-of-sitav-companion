@@ -6,7 +6,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useState, useEffect, useMemo } from "react";
-import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";

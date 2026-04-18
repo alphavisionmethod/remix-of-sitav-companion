@@ -101,7 +101,7 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
 }));
 
 // Mock OS runtime
-vi.mock("@/lib/hooks/useOSRuntime", () => ({
+vi.mock("@/hooks/useOSRuntime", () => ({
   useOSRuntime: () => ({ ready: true }),
   OSRuntimeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));

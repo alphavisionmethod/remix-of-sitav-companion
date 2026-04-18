@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useOperatorTaste } from "@/lib/hooks/useIntelligencePersistence";
+import { useOperatorTaste } from "@/hooks/useIntelligencePersistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const OperatorTasteDashboard = () => {

@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import type { Position, CapitalBucket, Thesis } from "@/lib/domain-engines/investment-office";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
-import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
+import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
 const DEMO_CAPITAL_BUCKETS: CapitalBucket[] = [
   { id: "b1", name: "Growth Portfolio", type: "personal-cash", balance: 450000, targetBalance: 500000, currency: "USD", entityOwner: "Personal", ringfenced: false },

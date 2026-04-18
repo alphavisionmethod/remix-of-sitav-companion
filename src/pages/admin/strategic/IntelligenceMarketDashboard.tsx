@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
-import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
+import { useEngineEvents } from "@/hooks/useEngineEventsData";
+import { useIntelligenceAssets } from "@/hooks/useIntelligencePersistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const IntelligenceMarketDashboard = () => {

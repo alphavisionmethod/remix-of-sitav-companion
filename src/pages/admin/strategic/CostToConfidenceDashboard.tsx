@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
-import { useIntelligenceOverview, useEfficiencyScores } from "@/lib/hooks/useIntelligenceAPI";
+import { useEngineEvents } from "@/hooks/useEngineEventsData";
+import { useIntelligenceOverview, useEfficiencyScores } from "@/hooks/useIntelligenceAPI";
 import { Progress } from "@/components/ui/progress";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
