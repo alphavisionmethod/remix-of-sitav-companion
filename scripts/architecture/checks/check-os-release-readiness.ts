@@ -108,6 +108,10 @@ const REQUIRED_GATES = [
   "agent-primitive-wiring",
   "priority-bridge-wiring",
   "kill-switch-backfill",
+  // Internal AI Workforce — Phase 3 closure (3 BLOCK gates)
+  "internal-agent-reflection-table",
+  "internal-agent-reflect-function",
+  "reflection-board-page",
 ];
 
 const GENERATED_DIR = "generated";
