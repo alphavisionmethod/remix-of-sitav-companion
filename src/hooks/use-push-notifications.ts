@@ -15,7 +15,10 @@ import {
   getPermissionState,
   type PushTokenRecord,
 } from "@/lib/services/push-notification/push-registration-service";
-import { useMobileRuntime, useMobileCapability } from "@/lib/mobile-platform";
+// Mobile-platform archived. Ubuntu-native is canonical native platform.
+// Web push only on web; Electron/desktop uses realtime channels.
+const useMobileRuntime = () => ({ os: "web" as const, isFirstClassMobile: false });
+const useMobileCapability = (_key: string): "supported" | "unsupported" => "unsupported";
 
 export type PushTransport = "apns" | "fcm" | "web" | "none";
 

@@ -168,8 +168,8 @@ const ReleaseEngineeringPage = lazy(() => import("@/pages/admin/ReleaseEngineeri
 const GraphIntelligencePage = lazy(() => import("@/pages/admin/GraphIntelligencePage"));
 const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
 const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPage"));
-const MobileParityDashboard = lazy(() => import("@/pages/admin/MobileParityDashboard"));
-const MOB01StoreReadinessCenter = lazy(() => import("@/pages/admin/MOB01StoreReadinessCenter"));
+// MobileParityDashboard + MOB01StoreReadinessCenter archived (Ubuntu-native canonical).
+// Routes redirected to /admin/web/deployability + /admin/desktop/deployability.
 const WEB01DeployabilityCenter = lazy(() => import("@/pages/admin/WEB01DeployabilityCenter"));
 const DSK01DeployabilityCenter = lazy(() => import("@/pages/admin/DSK01DeployabilityCenter"));
 const APP01ApplianceDeployabilityCenter = lazy(() => import("@/pages/admin/APP01ApplianceDeployabilityCenter"));
@@ -252,7 +252,7 @@ export function getAdminRoutes() {
     <Route key="ws-support-cases" path="/admin/support/cases" element={<Navigate to="/admin/mc/support" replace />} />,
     <Route key="ws-support-replay" path="/admin/support/replay" element={gated("support.view", <WorkflowStepStub domain="support" heading="Session Replay" intent="Replay an environment session for diagnosis." />)} />,
     <Route key="ws-support-recovery" path="/admin/support/recovery" element={gated("support.view", <MCFailureRecovery />)} />,
-    <Route key="ws-rel-mobile" path="/admin/releases/mobile-parity" element={<Navigate to="/admin/mobile-parity" replace />} />,
+    <Route key="ws-rel-mobile" path="/admin/releases/mobile-parity" element={<Navigate to="/admin/web/deployability" replace />} />,
     <Route key="ws-rel-rings" path="/admin/releases/deployment-rings" element={gated("flags.rollout", <AdminDeploymentRings />)} />,
     <Route key="ws-rel-rollback" path="/admin/releases/rollback" element={<Navigate to="/admin/engineering/rollback" replace />} />,
     <Route key="ws-ts-policies" path="/admin/trust-security/policies" element={<Navigate to="/admin/mc/policies" replace />} />,
@@ -431,9 +431,9 @@ export function getAdminRoutes() {
     // ── Backend Topology & DB Health ──
     <Route key="bt01" path="/admin/backend-topology" element={gated("maintenance.view", <BackendTopologyDashboard />)} />,
     <Route key="bt02" path="/admin/db-truth-explorer" element={gated("audit.view", <DbTruthExplorer />)} />,
-    // ── Mobile Platform Truth ──
-    <Route key="mob01" path="/admin/mobile-parity" element={gated("audit.view", <MobileParityDashboard />)} />,
-    <Route key="mob02" path="/admin/mobile/store-readiness" element={gated("audit.view", <MOB01StoreReadinessCenter />)} />,
+    // ── Mobile platform archived (Ubuntu-native canonical). Legacy redirects:
+    <Route key="mob01" path="/admin/mobile-parity" element={<Navigate to="/admin/web/deployability" replace />} />,
+    <Route key="mob02" path="/admin/mobile/store-readiness" element={<Navigate to="/admin/desktop/deployability" replace />} />,
     <Route key="web01" path="/admin/web/deployability" element={gated("audit.view", <WEB01DeployabilityCenter />)} />,
     <Route key="dsk01" path="/admin/desktop/deployability" element={gated("audit.view", <DSK01DeployabilityCenter />)} />,
     <Route key="app01" path="/admin/appliance/deployability" element={gated("audit.view", <APP01ApplianceDeployabilityCenter />)} />,
