@@ -3,7 +3,6 @@
 // Phase 5 Gate 2: Track-B Language Boundaries
 // Ensures Track-B-only phrases (Nova Runtime SDK simulated kernel, future-native substrate, simulated boot)
 // stay inside docs/nova/, src/lib/nova-sdk/, or files explicitly marked <!-- track-b -->.
-import { execSync, readFileSync } from "node:child_process" as never;
 import * as cp from "node:child_process";
 import * as fs from "node:fs";
 
