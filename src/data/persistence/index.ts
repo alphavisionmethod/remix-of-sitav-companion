@@ -20,3 +20,6 @@ export * from "./quality-floor-persistence";
 export * from "./reality-classification-persistence";
 export * from "./offline-db";
 export * from "./storage-topology-registry";
+
+// ── Legacy aliases (preserved from src/lib/persistence barrel) ─
+export { getMemoryStats as getScopedMemoryStats } from "./memory-service-persistence";
