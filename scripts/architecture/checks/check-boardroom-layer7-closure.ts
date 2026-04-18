@@ -51,13 +51,42 @@ const errors = verdict === "RED" ? 1 : 0;
 const warnings = verdict === "AMBER" ? 1 : 0;
 const ok = verdict === "GREEN";
 
+// Build issue list so the master aggregator can surface real reasons.
+const issues: Array<{ severity: string; area: string; message: string }> = [];
+for (const [name, sub] of Object.entries(subs)) {
+  if (!sub) {
+    issues.push({
+      severity: "error",
+      area: name.replace(".json", ""),
+      message: `missing sub-report ${name}`,
+    });
+  } else if (sub.status === "RED") {
+    issues.push({
+      severity: "error",
+      area: name.replace(".json", ""),
+      message: `sub-report ${name} reported RED`,
+    });
+  } else if (sub.status === "AMBER") {
+    issues.push({
+      severity: "warning",
+      area: name.replace(".json", ""),
+      message: `sub-report ${name} reported AMBER`,
+    });
+  }
+}
+
 const report = {
   gate: "boardroom-layer7-closure",
   generatedAt: new Date().toISOString(),
   verdict,
   ok,
+  // Fields read by the master release aggregator
+  errorCount: errors,
+  warningCount: warnings,
+  // Back-compat fields kept for any older readers
   errors,
   warnings,
+  issues,
   level: "BLOCK",
   description:
     "Boardroom Layer 7 Follow-through closure — every approved decision must reach a terminal state with proof, outcome, and reflection.",
