@@ -74,7 +74,17 @@
     "gap-closure:evidence": "tsx scripts/architecture/audits/generate-deployment-gap-evidence.ts",
     "gap-closure:gates": "tsx scripts/architecture/checks/run-all-deployment-gap-gates.ts",
     "gap-closure:verify": "npm run gap-closure:evidence && npm run gap-closure:gates",
-    "gap-closure:reseal": "npm run gap-closure:evidence && npm run gap-closure:gates"
+    "gap-closure:reseal": "npm run gap-closure:evidence && npm run gap-closure:gates",
+    "brd:l7:state": "deno run -A scripts/validation/check-boardroom-layer7-state-coverage.ts",
+    "brd:l7:linkage": "deno run -A scripts/validation/check-boardroom-followthrough-linkage.ts",
+    "brd:l7:proof": "deno run -A scripts/validation/check-boardroom-proof-receipt-coverage.ts",
+    "brd:l7:outcome": "deno run -A scripts/validation/check-boardroom-outcome-tracking.ts",
+    "brd:l7:reflection": "deno run -A scripts/validation/check-boardroom-reflection-coverage.ts",
+    "brd:l7:e2e": "deno run -A scripts/validation/check-boardroom-layer7-e2e.ts",
+    "brd:l7:subs": "npm run brd:l7:state && npm run brd:l7:linkage && npm run brd:l7:proof && npm run brd:l7:outcome && npm run brd:l7:reflection && npm run brd:l7:e2e",
+    "brd:l7:gate": "deno run -A scripts/architecture/checks/check-boardroom-layer7-closure.ts",
+    "brd:l7:verify": "npm run brd:l7:subs ; npm run brd:l7:gate",
+    "release:readiness": "npx tsx scripts/architecture/checks/check-os-release-readiness.ts"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
