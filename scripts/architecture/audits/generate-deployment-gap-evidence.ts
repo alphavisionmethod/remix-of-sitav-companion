@@ -59,7 +59,9 @@ writeJsonOutput(path.join(OUT_DIR, "app-install-truth-map.json"), envelope({
 
 // ── 2. FILE PICKER ADOPTION ───────────────────────────────────
 const rawFileInputs: Array<{ file: string; line: number }> = [];
+const RAW_INPUT_EXCLUDED = /FilePickerService\.tsx$|FileExplorerToolbar\.tsx$|__tests__|\.test\./;
 for (const f of tsFiles) {
+  if (RAW_INPUT_EXCLUDED.test(f)) continue;
   const lines = readSafe(f).split("\n");
   lines.forEach((ln, i) => {
     if (/<input[^>]+type=["']file["']/.test(ln)) rawFileInputs.push({ file: rel(f), line: i + 1 });
