@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-19T18:23:05.428Z",
+  "gate": "frontend-completeness",
+  "surfacesInScope": 5,
+  "surfacesWired": 5,
+  "bonusSurfacesWired": 1,
+  "primitivesAdded": [
+    "ProvenanceChip",
+    "EvidenceLink"
+  ],
+  "newComponentFamilies": 0,
+  "classification": "green"
+}

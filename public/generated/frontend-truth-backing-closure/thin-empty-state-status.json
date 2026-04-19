@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T18:23:05.429Z",
+  "exitCode": 0,
+  "tier": "WARN",
+  "errorCount": 0,
+  "warningCount": 0,
+  "promptNamed": true,
+  "classification": "warn-tier-adoption-tracker",
+  "removalsThisPass": 0,
+  "policy": "additive-only — proven-safe removals deferred to next scoped pass"
+}
