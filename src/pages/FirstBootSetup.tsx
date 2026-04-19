@@ -95,7 +95,7 @@ export default function FirstBootSetupExperience() {
   const [biometricEnrolled, setBiometricEnrolled] = useState(false);
   const [privacy, setPrivacy] = useState({ telemetry: false, cloudSync: true, shieldDefaults: true, notifPrivacy: true });
   const [protection, setProtection] = useState({ firewall: true, vpnPublicWifi: true, smartBlocking: true, quietSchedule: false });
-  const [optimization, setOptimization] = useState({ batteryOpt: true, calmMode: false });
+  const [optimization, setOptimization] = useState({ batteryOpt: true, calmMode: true });
   const [checkingUpdates, setCheckingUpdates] = useState(false);
   const [updatesChecked, setUpdatesChecked] = useState(false);
 
