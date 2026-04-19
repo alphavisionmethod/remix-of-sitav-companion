@@ -27,6 +27,14 @@ import {
 } from "lucide-react";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 
+interface BucketState {
+  before?: number;
+  after?: number;
+  status?: string;
+  wrapped?: number;
+  rationale?: string;
+}
+
 interface VerificationJson {
   generatedAt?: string;
   scope?: string;
@@ -44,6 +52,11 @@ interface VerificationJson {
   newComponentFamilies?: number;
   duplicates?: number;
   scopeDiscipline?: Record<string, unknown>;
+  postCleanupAudit?: {
+    ranAt?: string;
+    buckets?: Record<string, BucketState>;
+    validatorResults?: Record<string, { exitCode: number; offenders: number; tier?: string; classification?: string }>;
+  };
 }
 
 const VERIFICATION_PATH =
