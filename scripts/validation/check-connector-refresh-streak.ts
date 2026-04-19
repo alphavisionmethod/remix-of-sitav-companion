@@ -12,14 +12,19 @@ if (!existsSync(STATUS)) {
   issues.push({ severity: "error", area: "artifact", message: `${STATUS} missing` });
 } else {
   const s = JSON.parse(readFileSync(STATUS, "utf-8"));
-  if (s.classification === "red") {
+  if (s.classification === "credentials_unavailable") {
+    issues.push({
+      severity: "warning",
+      area: "credentials",
+      message: "credentials_unavailable in this environment — production CI cron emits live streak evidence.",
+    });
+  } else if (s.classification === "red") {
     issues.push({
       severity: "error",
       area: "streak",
       message: `Streak classification is RED — unack reauth required tokens=${s.reauth_required_count_24h ?? "?"}`,
     });
-  }
-  if (s.classification === "yellow" || s.classification === "building") {
+  } else if (s.classification === "yellow" || s.classification === "building") {
     issues.push({
       severity: "warning",
       area: "streak",

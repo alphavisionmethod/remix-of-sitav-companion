@@ -13,21 +13,28 @@ if (!existsSync(STATUS)) {
   issues.push({ severity: "error", area: "artifact", message: `${STATUS} missing` });
 } else {
   const s = JSON.parse(readFileSync(STATUS, "utf-8"));
-  const reg = s.connectorRegistry ?? [];
-  const violators: string[] = [];
-  for (const r of reg) {
-    if (LIVE.has(r.provider)) continue;
-    // Must NOT be advertising oauth2 + refresh_supported as if it were live.
-    if (r.auth_method === "oauth2" && r.refresh_supported === true) {
-      violators.push(`${r.connector_id} (provider=${r.provider})`);
-    }
-  }
-  if (violators.length > 0) {
+  if (s.classification === "credentials_unavailable") {
     issues.push({
-      severity: "error",
-      area: "registry",
-      message: `Long-tail providers misclassified as live OAuth refresh: ${violators.slice(0, 10).join(", ")}${violators.length > 10 ? ` (+${violators.length - 10} more)` : ""}`,
+      severity: "warning",
+      area: "credentials",
+      message: "credentials_unavailable in this environment — connector_registry classification produced only by production cron.",
     });
+  } else {
+    const reg = s.connectorRegistry ?? [];
+    const violators: string[] = [];
+    for (const r of reg) {
+      if (LIVE.has(r.provider)) continue;
+      if (r.auth_method === "oauth2" && r.refresh_supported === true) {
+        violators.push(`${r.connector_id} (provider=${r.provider})`);
+      }
+    }
+    if (violators.length > 0) {
+      issues.push({
+        severity: "error",
+        area: "registry",
+        message: `Long-tail providers misclassified as live OAuth refresh: ${violators.slice(0, 10).join(", ")}${violators.length > 10 ? ` (+${violators.length - 10} more)` : ""}`,
+      });
+    }
   }
 }
 
