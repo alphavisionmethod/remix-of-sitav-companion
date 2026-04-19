@@ -282,6 +282,14 @@ const REQUIRED_GATES = [
 // (mobile-scope-closure) replace them with stricter drift-prevention.
 const MOBILE_WARN_GATES: string[] = [];
 
+// Admin AI Engineer Hub Hardening — Phase 3-6 (WARN-tier; promotes to BLOCK after sweep).
+const ADMIN_AI_ENGINEER_WARN_GATES: string[] = [
+  "ai-engineer-tab-registry",
+  "ai-engineer-wiring-coverage",
+  "ai-engineer-primitive-coverage",
+  "ai-engineer-action-coverage",
+];
+
 const GENERATED_DIR = "generated";
 mkdirSync(GENERATED_DIR, { recursive: true });
 
@@ -344,6 +352,31 @@ for (const gate of MOBILE_WARN_GATES) {
 }
 inputs.push(...mobileInputs);
 totalWarnings += mobileWarnings;
+
+// Admin AI Engineer Hub WARN-tier gates — same handling pattern as mobile.
+const adminAIEngineerInputs: AggregateReport["inputs"] = [];
+let adminAIEngineerWarnings = 0;
+for (const gate of ADMIN_AI_ENGINEER_WARN_GATES) {
+  const file = gateToFile.get(gate);
+  if (!file || !existsSync(file)) {
+    adminAIEngineerInputs.push({ file: "", gate: `${gate} (warn)`, ok: false, errors: 0, warnings: 1 });
+    adminAIEngineerWarnings += 1;
+    continue;
+  }
+  try {
+    const data = JSON.parse(readFileSync(file, "utf8")) as GateReport;
+    const errors = data.errorCount ?? 0;
+    const warnings = data.warningCount ?? 0;
+    const ok = (data.ok ?? errors === 0) && errors === 0;
+    adminAIEngineerInputs.push({ file, gate: `${gate} (warn)`, ok, errors: 0, warnings: errors + warnings });
+    adminAIEngineerWarnings += errors + warnings;
+  } catch {
+    adminAIEngineerInputs.push({ file, gate: `${gate} (warn)`, ok: false, errors: 0, warnings: 1 });
+    adminAIEngineerWarnings += 1;
+  }
+}
+inputs.push(...adminAIEngineerInputs);
+totalWarnings += adminAIEngineerWarnings;
 
 const ok = missingGates.length === 0 && totalErrors === 0;
 const verdict: AggregateReport["verdict"] =
