@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T00:44:37.194Z
+> Generated: 2026-04-19T00:45:31.081Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -11,7 +11,7 @@
 | Gates present  | 130 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3354 |
+| Total warnings | 3352 |
 
 ## Per-gate results
 
@@ -143,14 +143,14 @@
 | `release-artifact-signer` | ✅ | 0 | 0 |
 | `mobile-canonical-stack (warn)` | ❌ | 0 | 1 |
 | `no-flutter-mobile-truth-drift (warn)` | ❌ | 0 | 1 |
-| `android-release-path (warn)` | ❌ | 0 | 1 |
-| `ios-release-path (warn)` | ❌ | 0 | 1 |
-| `mobile-push-claim-safety (warn)` | ❌ | 0 | 1 |
-| `mobile-submission-blockers (warn)` | ❌ | 0 | 1 |
+| `android-release-path (warn)` | ✅ | 0 | 0 |
+| `ios-release-path (warn)` | ❌ | 0 | 2 |
+| `mobile-push-claim-safety (warn)` | ✅ | 0 | 0 |
+| `mobile-submission-blockers (warn)` | ✅ | 0 | 0 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3354 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3352 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
