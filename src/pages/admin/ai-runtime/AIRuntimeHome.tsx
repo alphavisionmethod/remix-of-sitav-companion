@@ -34,6 +34,7 @@ const FrontendPolishTruthPanel = lazy(() => import("@/components/admin/ai-runtim
 const AdminValidationTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminValidationTruthPanel"));
 const HardwareAndOperatorTruthPanel = lazy(() => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"));
 const SecurityAndPortabilityTruthPanel = lazy(() => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"));
+const ArchitecturalCleanupTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -146,6 +147,13 @@ export default function AIRuntimeHome() {
       description: "Live secret-rotation cadence (DB-backed), adversarial proof status (RLS/Electron/debugger/session), and portability boundary status — honest WARN-tier classification for partner-blocked / pending-execution evidence.",
       legacyPath: "/admin/ai-runtime/security-portability-truth",
       render: wrap(SecurityAndPortabilityTruthPanel),
+    },
+    {
+      id: "architectural-cleanup-truth",
+      label: "Architectural Cleanup Truth",
+      description: "Live portability boundary status, edge-function structured-logging coverage, and truth-manifest health — additive, audit-first pass with honest WARN-tier classification and zero deletions.",
+      legacyPath: "/admin/ai-runtime/architectural-cleanup-truth",
+      render: wrap(ArchitecturalCleanupTruthPanel),
     },
     {
       id: "efficiency",
