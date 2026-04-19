@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T13:24:31.161Z",
+  "generatedAt": "2026-04-19T13:25:32.726Z",
   "ok": false,
   "status": "RED",
   "scope": "admin/ai-runtime",
@@ -8,7 +8,7 @@
   "empty_state_violations": 0,
   "cta_violations": 0,
   "shell_only_violations": 0,
-  "state_handling_violations": 7,
+  "state_handling_violations": 1,
   "trust_copy_violations": 0,
   "responsive_violations": 0,
   "acceptance": {

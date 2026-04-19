@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T13:24:31.161Z",
+  "generatedAt": "2026-04-19T13:25:32.726Z",
   "scope": "admin/ai-runtime",
   "boards": [
     {
@@ -12,7 +12,7 @@
     {
       "surface": "ComplianceAttestationBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -26,7 +26,7 @@
     {
       "surface": "CrossCouncilBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -68,7 +68,7 @@
     {
       "surface": "PolicyDraftReviewBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -82,7 +82,7 @@
     {
       "surface": "SLOObservabilityBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -96,7 +96,7 @@
     {
       "surface": "SovereignDeploymentDRBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -117,7 +117,7 @@
     {
       "surface": "TrustLadderBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
