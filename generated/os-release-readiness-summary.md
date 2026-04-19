@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T01:16:13.811Z
-> Verdict: **YELLOW** ⚠️
+> Generated: 2026-04-19T13:28:30.749Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 124 |
-| Gates present  | 140 |
-| Gates missing  | 0 |
+| Gates required | 156 |
+| Gates present  | 141 |
+| Gates missing  | 15 |
 | Total errors   | 0 |
-| Total warnings | 3350 |
+| Total warnings | 3348 |
 
 ## Per-gate results
 
@@ -31,8 +31,6 @@
 | `app-plane-map` | ✅ | 0 | 0 |
 | `user-profile-readiness` | ✅ | 0 | 0 |
 | `operator-readiness` | ✅ | 0 | 0 |
-| `mobile-store-readiness` | ✅ | 0 | 0 |
-| `mobile-build-pipeline` | ✅ | 0 | 0 |
 | `ks-payments-auth-readiness` | ✅ | 0 | 0 |
 | `ci-artifacts-proof` | ✅ | 0 | 0 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
@@ -46,7 +44,6 @@
 | `launcher-registry-completeness` | ✅ | 0 | 0 |
 | `app-profile-matrix` | ✅ | 0 | 0 |
 | `hidden-app-routes` | ✅ | 0 | 0 |
-| `mobile-capability-truth` | ✅ | 0 | 0 |
 | `profile-route-coverage` | ✅ | 0 | 0 |
 | `command-palette-profile-leakage` | ✅ | 0 | 0 |
 | `shared-component-profile-pollution` | ✅ | 0 | 0 |
@@ -141,26 +138,45 @@
 | `pg-cron-schedules` | ✅ | 0 | 0 |
 | `pg-extensions-enabled` | ✅ | 0 | 0 |
 | `release-artifact-signer` | ✅ | 0 | 0 |
-| `mobile-canonical-stack (warn)` | ✅ | 0 | 0 |
-| `no-flutter-mobile-truth-drift (warn)` | ✅ | 0 | 0 |
-| `android-release-path (warn)` | ✅ | 0 | 0 |
-| `ios-release-path (warn)` | ✅ | 0 | 0 |
-| `mobile-push-claim-safety (warn)` | ✅ | 0 | 0 |
-| `mobile-submission-blockers (warn)` | ✅ | 0 | 0 |
-| `mobile-project-identification (warn)` | ✅ | 0 | 0 |
-| `mobile-identity-source-of-truth (warn)` | ✅ | 0 | 0 |
-| `no-flutter-stack-drift (warn)` | ✅ | 0 | 0 |
-| `capacitor-mobile-truth (warn)` | ✅ | 0 | 0 |
-| `android-native-generation (warn)` | ✅ | 0 | 0 |
-| `ios-native-generation (warn)` | ✅ | 0 | 0 |
-| `native-project-generation-contract (warn)` | ✅ | 0 | 0 |
-| `mobile-bootstrap-contract (warn)` | ✅ | 0 | 0 |
-| `mobile-build-model-consistency (warn)` | ✅ | 0 | 0 |
-| `mobile-env-strategy-consistency (warn)` | ✅ | 0 | 2 |
+| `final-deployment-readiness` | ✅ | 0 | 0 |
+| `final-runtime-proof` | ✅ | 0 | 0 |
+| `final-ai-workforce-readiness` | ✅ | 0 | 0 |
+| `final-launch-honesty` | ✅ | 0 | 0 |
+| `final-supportability-readiness` | ✅ | 0 | 0 |
+| `final-gate-meaningfulness` | ✅ | 0 | 0 |
+| `ai-live-provider-nightly` | ✅ | 0 | 0 |
+| `ai-runtime-streak-health` | ✅ | 0 | 0 |
+| `mobile-native-out-of-scope-truth` | ✅ | 0 | 0 |
+| `no-active-native-mobile-claims` | ✅ | 0 | 0 |
+| `install-page-mobile-honesty` | ✅ | 0 | 0 |
+| `mobile-manifest-archive-classification` | ✅ | 0 | 0 |
+| `generated-mobile-truth-consistency` | ✅ | 0 | 0 |
+| `empty-state-coverage` | ✅ | 0 | 0 |
+| `cta-integrity` | ✅ | 0 | 0 |
+| `no-shell-only-production-pages` | ✅ | 0 | 0 |
+| `state-handling-consistency` | ✅ | 0 | 0 |
+| `admin-board-polish` | ✅ | 0 | 0 |
+| `trust-copy-quality` | ✅ | 0 | 0 |
+| `responsive-surface-integrity` | ✅ | 0 | 0 |
+| `mobile-store-readiness` | ❌ MISSING | — | — |
+| `mobile-build-pipeline` | ❌ MISSING | — | — |
+| `mobile-capability-truth` | ❌ MISSING | — | — |
+| `final-mobile-truth` | ❌ MISSING | — | — |
+| `ai-receipt-persistence` | ❌ MISSING | — | — |
+| `ai-ledger-write-verification` | ❌ MISSING | — | — |
+| `ai-fallback-verification` | ❌ MISSING | — | — |
+| `ai-budget-enforcement-under-load` | ❌ MISSING | — | — |
+| `google-refresh-nightly` | ❌ MISSING | — | — |
+| `microsoft-refresh-nightly` | ❌ MISSING | — | — |
+| `slack-refresh-nightly` | ❌ MISSING | — | — |
+| `connector-health-state-consistency` | ❌ MISSING | — | — |
+| `no-ambiguous-connected-state` | ❌ MISSING | — | — |
+| `long-tail-provider-classification` | ❌ MISSING | — | — |
+| `connector-refresh-streak` | ❌ MISSING | — | — |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3350 warning(s) present. Release is cuttable but review warnings.
+❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 15 missing gate(s).
 
 ## Related
 

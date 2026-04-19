@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T01:16:13.811Z",
+  "generatedAt": "2026-04-19T13:28:30.749Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -102,20 +102,6 @@
       "warnings": 0
     },
     {
-      "file": "generated/mobile-store-readiness-report.json",
-      "gate": "mobile-store-readiness",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/mobile-build-pipeline-report.json",
-      "gate": "mobile-build-pipeline",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
       "file": "generated/ks-payments-auth-readiness-report.json",
       "gate": "ks-payments-auth-readiness",
       "ok": true,
@@ -202,13 +188,6 @@
     {
       "file": "generated/hidden-app-routes-report.json",
       "gate": "hidden-app-routes",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/mobile-capability-truth-report.json",
-      "gate": "mobile-capability-truth",
       "ok": true,
       "errors": 0,
       "warnings": 0
@@ -872,121 +851,165 @@
       "warnings": 0
     },
     {
-      "file": "generated/mobile-canonical-stack-report.json",
-      "gate": "mobile-canonical-stack (warn)",
+      "file": "generated/final-deployment-readiness-report.json",
+      "gate": "final-deployment-readiness",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/no-flutter-mobile-truth-drift-report.json",
-      "gate": "no-flutter-mobile-truth-drift (warn)",
+      "file": "generated/final-runtime-proof-report.json",
+      "gate": "final-runtime-proof",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/android-release-path-report.json",
-      "gate": "android-release-path (warn)",
+      "file": "generated/final-ai-workforce-readiness-report.json",
+      "gate": "final-ai-workforce-readiness",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/ios-release-path-report.json",
-      "gate": "ios-release-path (warn)",
+      "file": "generated/final-launch-honesty-report.json",
+      "gate": "final-launch-honesty",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-push-claim-safety-report.json",
-      "gate": "mobile-push-claim-safety (warn)",
+      "file": "generated/final-supportability-readiness-report.json",
+      "gate": "final-supportability-readiness",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-submission-blockers-report.json",
-      "gate": "mobile-submission-blockers (warn)",
+      "file": "generated/final-gate-meaningfulness-report.json",
+      "gate": "final-gate-meaningfulness",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-project-identification-report.json",
-      "gate": "mobile-project-identification (warn)",
+      "file": "generated/ai-live-provider-nightly-report.json",
+      "gate": "ai-live-provider-nightly",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-identity-source-of-truth-report.json",
-      "gate": "mobile-identity-source-of-truth (warn)",
+      "file": "generated/ai-runtime-streak-health-report.json",
+      "gate": "ai-runtime-streak-health",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/no-flutter-stack-drift-report.json",
-      "gate": "no-flutter-stack-drift (warn)",
+      "file": "generated/mobile-native-out-of-scope-truth-report.json",
+      "gate": "mobile-native-out-of-scope-truth",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/capacitor-mobile-truth-report.json",
-      "gate": "capacitor-mobile-truth (warn)",
+      "file": "generated/no-active-native-mobile-claims-report.json",
+      "gate": "no-active-native-mobile-claims",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/android-native-generation-report.json",
-      "gate": "android-native-generation (warn)",
+      "file": "generated/install-page-mobile-honesty-report.json",
+      "gate": "install-page-mobile-honesty",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/ios-native-generation-report.json",
-      "gate": "ios-native-generation (warn)",
+      "file": "generated/mobile-manifest-archive-classification-report.json",
+      "gate": "mobile-manifest-archive-classification",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/native-project-generation-contract-report.json",
-      "gate": "native-project-generation-contract (warn)",
+      "file": "generated/generated-mobile-truth-consistency-report.json",
+      "gate": "generated-mobile-truth-consistency",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-bootstrap-contract-report.json",
-      "gate": "mobile-bootstrap-contract (warn)",
+      "file": "generated/empty-state-coverage-report.json",
+      "gate": "empty-state-coverage",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-build-model-consistency-report.json",
-      "gate": "mobile-build-model-consistency (warn)",
+      "file": "generated/cta-integrity-report.json",
+      "gate": "cta-integrity",
       "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "generated/mobile-env-strategy-consistency-report.json",
-      "gate": "mobile-env-strategy-consistency (warn)",
+      "file": "generated/no-shell-only-production-pages-report.json",
+      "gate": "no-shell-only-production-pages",
       "ok": true,
       "errors": 0,
-      "warnings": 2
+      "warnings": 0
+    },
+    {
+      "file": "generated/state-handling-consistency-report.json",
+      "gate": "state-handling-consistency",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-board-polish-report.json",
+      "gate": "admin-board-polish",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-copy-quality-report.json",
+      "gate": "trust-copy-quality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/responsive-surface-integrity-report.json",
+      "gate": "responsive-surface-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3350,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "YELLOW"
+  "totalWarnings": 3348,
+  "missingGates": [
+    "mobile-store-readiness",
+    "mobile-build-pipeline",
+    "mobile-capability-truth",
+    "final-mobile-truth",
+    "ai-receipt-persistence",
+    "ai-ledger-write-verification",
+    "ai-fallback-verification",
+    "ai-budget-enforcement-under-load",
+    "google-refresh-nightly",
+    "microsoft-refresh-nightly",
+    "slack-refresh-nightly",
+    "connector-health-state-consistency",
+    "no-ambiguous-connected-state",
+    "long-tail-provider-classification",
+    "connector-refresh-streak"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }
