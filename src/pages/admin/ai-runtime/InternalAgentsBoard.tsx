@@ -63,6 +63,7 @@ import {
   TrendingDown,
   Zap,
 } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 const STATUS_TONE: Record<string, string> = {
   idle: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
@@ -225,11 +226,12 @@ export default function InternalAgentsBoard() {
             )}
             {!isLoading && filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={9} className="py-6">
-                  <div className="text-center text-xs text-muted-foreground">
-                    <div className="font-medium text-foreground">No agents match the current filter</div>
-                    <div className="mt-1">Adjust the search term or council filter above to see agents in another scope. The full registry contains 40 internal agents across 6 councils.</div>
-                  </div>
+                <TableCell colSpan={9} className="py-2">
+                  <EmptyState
+                    icon={<ShieldAlert className="h-5 w-5" />}
+                    title="No agents match the current filter"
+                    description="Adjust the search term or council filter to see agents in another scope. The full registry contains 40 internal agents across 6 councils."
+                  />
                 </TableCell>
               </TableRow>
             )}

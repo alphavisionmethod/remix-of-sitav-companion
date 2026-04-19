@@ -18,6 +18,7 @@ import {
   Lightbulb, RefreshCw, Sparkles, Filter, CheckCircle2,
   XCircle, PlayCircle, Award, Inbox,
 } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -241,10 +242,11 @@ export default function SuggestionsBoard() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <Card><CardContent className="p-12 text-center text-sm text-muted-foreground">
-          <Inbox className="h-10 w-10 mx-auto mb-3 opacity-40" />
-          {loading ? "Loading…" : "No suggestions match the filter. Run the generator to ingest the latest signals."}
-        </CardContent></Card>
+        <EmptyState
+          icon={<Inbox className="h-5 w-5" />}
+          title={loading ? "Loading suggestions…" : "No suggestions match the filter"}
+          description={loading ? "Fetching the latest implementation proposals from the AI workforce." : "Run the suggestion generator or relax the filter to surface fresh proposals."}
+        />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {filtered.map((s) => (

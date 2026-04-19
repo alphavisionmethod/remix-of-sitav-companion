@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface AgentSummary {
   agent_id: string;
@@ -212,7 +213,11 @@ export default function ReflectionBoard() {
 
         <TabsContent value="agents" className="mt-4">
           {summary.length === 0 ? (
-            <Card><CardContent className="p-8 text-center text-sm text-muted-foreground">{loading ? "Loading…" : "No reflections in this window. Run a reflection pass to populate."}</CardContent></Card>
+            <EmptyState
+              icon={<Brain className="h-5 w-5" />}
+              title={loading ? "Loading reflections…" : "No reflections in this window"}
+              description={loading ? "Fetching the latest agent self-assessments." : "Run a reflection pass to populate this window with outcome quality and trust signals."}
+            />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {summary.map((s) => {
@@ -266,7 +271,11 @@ export default function ReflectionBoard() {
             <Badge variant="outline" className="ml-auto">{filteredReflections.length} shown</Badge>
           </div>
           {filteredReflections.length === 0 ? (
-            <Card><CardContent className="p-8 text-center text-sm text-muted-foreground">No reflections match the filter.</CardContent></Card>
+            <EmptyState
+              icon={<Brain className="h-5 w-5" />}
+              title="No reflections match the filter"
+              description="Switch the agent filter or trigger a fresh reflection pass to surface new entries."
+            />
           ) : filteredReflections.map((r) => {
             const repeatBadge = r.should_repeat === true
               ? <Badge className="bg-green-500/15 text-green-400 border-green-500/30">Repeat</Badge>

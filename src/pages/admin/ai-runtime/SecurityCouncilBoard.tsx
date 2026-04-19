@@ -25,6 +25,7 @@ import {
   Shield, RefreshCw, ShieldAlert, ShieldCheck, ShieldX,
   Activity, Eye, BellOff, AlertTriangle, Clock, ExternalLink,
 } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -342,9 +343,12 @@ export default function SecurityCouncilBoard() {
                 <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">Loading…</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    <AlertTriangle className="h-5 w-5 mx-auto mb-2 opacity-50" />
-                    No findings in this view. Run a tick or check back after the next hourly cron.
+                  <TableCell colSpan={6} className="py-2">
+                    <EmptyState
+                      icon={<AlertTriangle className="h-5 w-5" />}
+                      title="No findings in this view"
+                      description="Run a Security Council tick or wait for the next hourly cron to detect fresh signals."
+                    />
                   </TableCell>
                 </TableRow>
               ) : (
