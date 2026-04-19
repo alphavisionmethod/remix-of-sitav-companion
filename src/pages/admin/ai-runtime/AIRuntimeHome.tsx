@@ -41,6 +41,7 @@ const ArchitecturalCleanupTruthPanel = lazy(() => import("@/components/admin/ai-
 const EconomicTrustFutureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"));
 const ArchitectureHardeningTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"));
 const FlagshipSurfaceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"));
+const AdminEmptyStateClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -181,6 +182,13 @@ export default function AIRuntimeHome() {
       description: "Admin AI flagship closure: 2 in-scope GREEN BLOCK gates (admin-ai-runtime, admin-integrations) + 4 honest WARN-tier deferrals (onboarding, boardroom-briefing, concierge, communications) cross-referenced to user-flagship-pass. Zero fake-green.",
       legacyPath: "/admin/ai-runtime/flagship-surface-closure-truth",
       render: wrap(FlagshipSurfaceClosureTruthPanel),
+    },
+    {
+      id: "admin-empty-state-closure-truth",
+      label: "Admin Empty-State Closure",
+      description: "Admin empty-state closure: 3 canonical primitives (EmptyState, PremiumEmptyState, BoardSection) confirmed reusable + 3 surfaces honestly deferred to verification/health/releases domain passes (cross-domain-coherence, cost-spotlight, sbom-history). 4 honest WARN-tier validators wired into release aggregator. Zero fake-green, zero duplicates.",
+      legacyPath: "/admin/ai-runtime/admin-empty-state-closure-truth",
+      render: wrap(AdminEmptyStateClosureTruthPanel),
     },
     {
       id: "efficiency",

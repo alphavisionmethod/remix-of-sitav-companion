@@ -1,0 +1,15 @@
+{
+  "surface": "/admin/releases/sbom-history",
+  "status": "deferred-out-of-admin-ai-scope",
+  "scope": "releases-domain-pass",
+  "classification": "honest-warn-deferred",
+  "validator": "check-sbom-history-empty-state",
+  "deferralDoc": "generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/releases/SbomHistory.tsx",
+  "canonicalAlternatives": [
+    { "label": "Releases Home", "path": "/admin/releases" },
+    { "label": "AI Releases Center", "path": "/admin/ai-releases-center" }
+  ],
+  "requiredForGreen": "Page file exists, imports PremiumEmptyState/EmptyState, includes canonical destination links to Releases Home + AI Releases Center.",
+  "generatedAt": "2026-04-19"
+}
