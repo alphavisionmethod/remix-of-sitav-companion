@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T19:36:12.147Z",
+  "generatedAt": "2026-04-19T19:41:42.016Z",
   "totalTabs": 43,
   "requiringOperatorAction": 24,
-  "compliantTabs": 3,
-  "coveragePct": 13,
+  "compliantTabs": 6,
+  "coveragePct": 25,
   "panels": [
     {
       "tabId": "team",
@@ -19,9 +19,9 @@
       "componentPath": "@/pages/admin/ai-runtime/InternalAgentsBoard",
       "requiresOperatorAction": true,
       "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "importsOperatorActionPanel": true,
+      "composesOperatorActionPanel": true,
+      "ok": true
     },
     {
       "tabId": "internal-agent-intents",
@@ -37,16 +37,16 @@
       "componentPath": "@/pages/admin/ai-runtime/CouncilsBoard",
       "requiresOperatorAction": true,
       "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "importsOperatorActionPanel": true,
+      "composesOperatorActionPanel": true,
+      "ok": true
     },
     {
       "tabId": "trust-ladder",
       "componentPath": "@/pages/admin/ai-runtime/TrustLadderBoard",
       "requiresOperatorAction": true,
       "fileExists": true,
-      "importsOperatorActionPanel": false,
+      "importsOperatorActionPanel": true,
       "composesOperatorActionPanel": false,
       "ok": false
     },
@@ -100,9 +100,9 @@
       "componentPath": "@/pages/admin/ai-runtime/CrossCouncilBoard",
       "requiresOperatorAction": true,
       "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "importsOperatorActionPanel": true,
+      "composesOperatorActionPanel": true,
+      "ok": true
     },
     {
       "tabId": "tenant-federation",

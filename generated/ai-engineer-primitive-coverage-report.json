@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T19:36:10.255Z",
+  "generatedAt": "2026-04-19T19:41:42.021Z",
   "gate": "ai-engineer-primitive-coverage",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 81,
+  "warningCount": 72,
   "issues": [
     {
       "severity": "warning",
@@ -23,21 +23,6 @@
     {
       "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"internal-agents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-sky-500/15, text-amber-400, +7 more in @/pages/admin/ai-runtime/InternalAgentsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"internal-agents\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/InternalAgentsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"internal-agents\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/InternalAgentsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "color-literal",
       "message": "Tab \"internal-agent-intents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-amber-500/15, bg-blue-500/15, bg-green-500/10, +17 more in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
@@ -53,32 +38,12 @@
     {
       "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"councils\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-orange-500/15, border-amber-500/40, +10 more in @/pages/admin/ai-runtime/CouncilsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"councils\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/CouncilsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"councils\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/CouncilsBoard"
+      "message": "Tab \"councils\" uses raw status-color literals (must go through StatusTone): border-amber-500/40, border-emerald-500/30, text-amber-500, text-emerald-500, +1 more in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
       "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"trust-ladder\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-orange-500/10, +11 more in @/pages/admin/ai-runtime/TrustLadderBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"trust-ladder\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/TrustLadderBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"trust-ladder\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/TrustLadderBoard"
+      "message": "Tab \"trust-ladder\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-emerald-500, text-red-500 in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
       "severity": "warning",
@@ -109,16 +74,6 @@
       "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"dependency-findings\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/DependencyFindingsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"cross-council\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/CrossCouncilBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"cross-council\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/CrossCouncilBoard"
     },
     {
       "severity": "warning",
@@ -415,8 +370,8 @@
   "promotionTier": "BLOCK",
   "scope": "admin-ai-engineer-team",
   "totalTabs": 43,
-  "tabsWithStatusBadge": 8,
-  "tabsWithOperatorActionPanel": 3,
-  "tabsWithAITruthDisclosure": 4,
-  "tabsWithForbiddenColors": 25
+  "tabsWithStatusBadge": 12,
+  "tabsWithOperatorActionPanel": 7,
+  "tabsWithAITruthDisclosure": 8,
+  "tabsWithForbiddenColors": 24
 }

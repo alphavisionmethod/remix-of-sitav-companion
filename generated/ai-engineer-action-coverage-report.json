@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T19:36:12.148Z",
+  "generatedAt": "2026-04-19T19:41:42.017Z",
   "gate": "ai-engineer-action-coverage",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 21,
+  "warningCount": 18,
   "issues": [
     {
       "severity": "warning",
@@ -13,17 +13,7 @@
     {
       "severity": "warning",
       "area": "operator-action-missing",
-      "message": "Tab \"internal-agents\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/InternalAgentsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
       "message": "Tab \"internal-agent-intents\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
-      "message": "Tab \"councils\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
       "severity": "warning",
@@ -34,11 +24,6 @@
       "severity": "warning",
       "area": "operator-action-missing",
       "message": "Tab \"dependency-findings\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/DependencyFindingsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
-      "message": "Tab \"cross-council\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/CrossCouncilBoard"
     },
     {
       "severity": "warning",
@@ -115,6 +100,6 @@
   "promotionTier": "BLOCK",
   "scope": "admin-ai-engineer-team",
   "requiringOperatorAction": 24,
-  "compliantTabs": 3,
-  "coveragePct": 13
+  "compliantTabs": 6,
+  "coveragePct": 25
 }
