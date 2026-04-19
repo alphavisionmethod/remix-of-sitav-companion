@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T14:11:16.012Z",
+  "gate": "operator-drill-execution",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "drills",
+      "message": "No operator drill executions recorded — pending human execution"
+    }
+  ],
+  "drills": 0,
+  "level": "warn",
+  "classification": "pending-human-execution"
+}

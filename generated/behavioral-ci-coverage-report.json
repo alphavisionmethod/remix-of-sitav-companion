@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T14:11:31.991Z",
+  "gate": "behavioral-ci-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "areasDeclared": 12,
+  "requiredAreas": 10
+}

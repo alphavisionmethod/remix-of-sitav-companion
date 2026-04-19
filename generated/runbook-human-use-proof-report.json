@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T14:11:20.664Z",
+  "gate": "runbook-human-use-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "runbooks",
+      "message": "Runbook human-use proof pending first drill executions"
+    }
+  ],
+  "classification": "pending-human-execution"
+}

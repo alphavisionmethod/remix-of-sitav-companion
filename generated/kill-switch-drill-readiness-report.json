@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T14:11:22.885Z",
+  "gate": "kill-switch-drill-readiness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "kill-switches",
+      "message": "Kill-switch drill readiness pending first drill executions"
+    }
+  ],
+  "classification": "pending-drill"
+}

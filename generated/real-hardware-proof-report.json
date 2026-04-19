@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T14:11:13.879Z",
+  "gate": "real-hardware-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "hardware-runs",
+      "message": "No real-device runs recorded yet — partner-blocked"
+    }
+  ],
+  "runs": 0,
+  "level": "warn",
+  "classification": "partner-blocked"
+}
