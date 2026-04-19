@@ -3401,6 +3401,48 @@ export type Database = {
         }
         Relationships: []
       }
+      app_sdk_extension_events: {
+        Row: {
+          app_id: string
+          created_at: string
+          event_type: string
+          evidence: Json
+          extension_id: string
+          extension_kind: string
+          id: string
+          installed_by: string | null
+          occurred_at: string
+          signature_hash: string | null
+          version: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          event_type: string
+          evidence?: Json
+          extension_id: string
+          extension_kind: string
+          id?: string
+          installed_by?: string | null
+          occurred_at?: string
+          signature_hash?: string | null
+          version?: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          event_type?: string
+          evidence?: Json
+          extension_id?: string
+          extension_kind?: string
+          id?: string
+          installed_by?: string | null
+          occurred_at?: string
+          signature_hash?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       app_sdk_extensions: {
         Row: {
           app_id: string
@@ -4292,6 +4334,42 @@ export type Database = {
           public_key?: string
           sign_count?: number
           status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      boardroom_cockpit_tab_views: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          engagement_score: number | null
+          id: string
+          metadata: Json
+          opened_at: string
+          session_id: string | null
+          tab_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          engagement_score?: number | null
+          id?: string
+          metadata?: Json
+          opened_at?: string
+          session_id?: string | null
+          tab_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          engagement_score?: number | null
+          id?: string
+          metadata?: Json
+          opened_at?: string
+          session_id?: string | null
+          tab_key?: string
           user_id?: string
         }
         Relationships: []
@@ -14203,6 +14281,45 @@ export type Database = {
         }
         Relationships: []
       }
+      mobile_deferral_attestations: {
+        Row: {
+          archive_path: string
+          attested_at: string
+          attested_by: string
+          created_at: string
+          evidence_hash: string
+          id: string
+          metadata: Json
+          notes: string | null
+          posture: string
+          signature: string
+        }
+        Insert: {
+          archive_path?: string
+          attested_at?: string
+          attested_by: string
+          created_at?: string
+          evidence_hash: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          posture?: string
+          signature: string
+        }
+        Update: {
+          archive_path?: string
+          attested_at?: string
+          attested_by?: string
+          created_at?: string
+          evidence_hash?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          posture?: string
+          signature?: string
+        }
+        Relationships: []
+      }
       mobile_push_tokens: {
         Row: {
           app_version: string | null
@@ -14586,6 +14703,42 @@ export type Database = {
           value?: number
           window_end?: string | null
           window_start?: string | null
+        }
+        Relationships: []
+      }
+      onboarding_branch_events: {
+        Row: {
+          branch_path: string
+          created_at: string
+          event_type: string
+          id: string
+          occurred_at: string
+          payload: Json
+          screen_index: number
+          screen_key: string
+          user_id: string
+        }
+        Insert: {
+          branch_path?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          screen_index: number
+          screen_key: string
+          user_id: string
+        }
+        Update: {
+          branch_path?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          screen_index?: number
+          screen_key?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -17161,6 +17314,45 @@ export type Database = {
           gate_name?: string
           id?: string
           release_id?: string
+        }
+        Relationships: []
+      }
+      release_evidence_graph_snapshots: {
+        Row: {
+          coverage_pct: number
+          created_at: string
+          edge_count: number
+          evidence: Json
+          graph_hash: string
+          id: string
+          manifest_count: number
+          node_count: number
+          release_tag: string | null
+          snapshot_at: string
+        }
+        Insert: {
+          coverage_pct?: number
+          created_at?: string
+          edge_count?: number
+          evidence?: Json
+          graph_hash: string
+          id?: string
+          manifest_count?: number
+          node_count?: number
+          release_tag?: string | null
+          snapshot_at?: string
+        }
+        Update: {
+          coverage_pct?: number
+          created_at?: string
+          edge_count?: number
+          evidence?: Json
+          graph_hash?: string
+          id?: string
+          manifest_count?: number
+          node_count?: number
+          release_tag?: string | null
+          snapshot_at?: string
         }
         Relationships: []
       }
