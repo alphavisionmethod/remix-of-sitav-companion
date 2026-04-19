@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T01:12:41.600Z",
+  "gate": "mobile-project-identification",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalAppId": "com.sita.os",
+  "canonicalAppName": "SITA OS",
+  "surfacesChecked": 4
+}

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-19T01:12:53.650Z",
+  "gate": "mobile-env-strategy-consistency",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 2,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "env-coverage",
+      "message": "mobile/android/SIGNING.md (Android signing doc) does not reference signing var: ANDROID_KEYSTORE_PATH"
+    },
+    {
+      "severity": "warning",
+      "area": "env-coverage",
+      "message": "mobile/android/SIGNING.md (Android signing doc) does not reference signing var: ANDROID_PACKAGE_NAME"
+    }
+  ],
+  "model": "generated/mobile-identity-reconciliation/MOBILE_ENV_AND_SECRET_STRATEGY_MODEL.md",
+  "zones": 4,
+  "signingVarsAndroid": 5,
+  "signingVarsIos": 7,
+  "forbiddenExtensions": [
+    ".p8",
+    ".p12",
+    ".jks",
+    ".keystore",
+    ".mobileprovision"
+  ],
+  "forbiddenHits": 0
+}

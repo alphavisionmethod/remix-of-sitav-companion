@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T01:12:37.682Z",
+  "gate": "capacitor-mobile-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalWrapper": "Capacitor 6",
+  "forbiddenStackPatterns": 9
+}

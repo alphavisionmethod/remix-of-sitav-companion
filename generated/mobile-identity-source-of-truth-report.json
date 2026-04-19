@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T01:12:43.480Z",
+  "gate": "mobile-identity-source-of-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "sourceOfTruthDoc": "generated/mobile-identity-reconciliation/MOBILE_IDENTITY_SOURCE_OF_TRUTH.md",
+  "requiredFields": 11
+}
