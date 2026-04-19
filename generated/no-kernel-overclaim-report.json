@@ -1,23 +1,12 @@
 {
-  "generatedAt": "2026-04-19T16:21:46.811Z",
+  "generatedAt": "2026-04-19T16:23:03.197Z",
   "gate": "no-kernel-overclaim",
-  "ok": false,
-  "errorCount": 2,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/lib/migration/runtime-conflict-map.ts",
-      "message": "Kernel overclaim phrase: matches \\breal\\s+kernel\\b"
-    },
-    {
-      "severity": "error",
-      "area": "src/runtimes/appliance-runtime-contract.ts",
-      "message": "Kernel overclaim phrase: matches \\breal\\s+kernel\\b"
-    }
-  ],
+  "issues": [],
   "scanned": 5183,
-  "violations": 2,
+  "violations": 0,
   "permittedRoots": [
     "docs/architecture/native-os-future/",
     "archive/",
