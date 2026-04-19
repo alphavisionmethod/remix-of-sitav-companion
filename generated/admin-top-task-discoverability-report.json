@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T14:22:04.823Z",
+  "gate": "admin-top-task-discoverability",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "taskCount": 10,
+  "pathfindingTaskCount": 10,
+  "clickCeiling": 3,
+  "findCeiling": 30
+}

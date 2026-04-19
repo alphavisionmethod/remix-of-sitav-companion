@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T14:22:16.284Z",
+  "gate": "evidence-freshness-blocking",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "observation-window",
+      "message": "0/30 clean days; failure-in-window=false — staying WARN until promotion eligible"
+    }
+  ],
+  "cleanDaysConsecutive": 0,
+  "requiredCleanDays": 30,
+  "eligibleForBlock": false,
+  "level": "warn"
+}

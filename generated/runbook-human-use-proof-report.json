@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-19T14:21:56.783Z",
+  "gate": "runbook-human-use-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "registry",
+      "message": "No runbooks found in registry"
+    }
+  ],
+  "totalRunbooks": 0,
+  "coveredRunbooks": 0,
+  "coveragePct": 0,
+  "drillSource": "live-db",
+  "classification": "no-registry",
+  "perRunbook": []
+}

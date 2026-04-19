@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-04-19T14:22:02.324Z",
+  "gate": "supportability-freshness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "no-data",
+      "message": "10 categories have no execution data: hardware, restore, runbook, kill-switch, operator-readiness, connector-refresh, release, baseline-seal, notification-calmness, admin-golden-path"
+    }
+  ],
+  "cadenceCategories": 10,
+  "fresh": 0,
+  "stale": 0,
+  "expired": 0,
+  "noData": 10,
+  "classification": "no-data",
+  "perCategory": [
+    {
+      "category": "hardware",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "restore",
+      "windowDays": 7,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "runbook",
+      "windowDays": 90,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "kill-switch",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "operator-readiness",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "connector-refresh",
+      "windowDays": 7,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "release",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "baseline-seal",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "notification-calmness",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    },
+    {
+      "category": "admin-golden-path",
+      "windowDays": 30,
+      "ageDays": null,
+      "lastExecutionAt": null,
+      "status": "no-data"
+    }
+  ]
+}

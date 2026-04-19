@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T14:21:49.033Z",
+  "gate": "attestation-evidence-freshness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "freshness",
+      "message": "No attestation runs to evaluate freshness — partner-blocked"
+    }
+  ],
+  "totalRuns": 0,
+  "deviceClasses": 0,
+  "windowHours": 720,
+  "classification": "partner-blocked",
+  "perDevice": []
+}
