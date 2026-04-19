@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-04-19T19:27:56.321Z",
+  "gate": "ai-engineer-action-coverage",
+  "ok": false,
+  "errorCount": 24,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"team\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIT01TeamOverview"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"internal-agents\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/InternalAgentsBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"internal-agent-intents\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"councils\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/CouncilsBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"trust-ladder\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/TrustLadderBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"suggestions\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SuggestionsBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"dependency-findings\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/DependencyFindingsBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"policy-drafts\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"cross-council\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/CrossCouncilBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"tenant-federation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/TenantFederationBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"security-council\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SecurityCouncilBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"providers\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG01ProviderRegistry"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"routing\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG03RoutingMatrix"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"budget\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG04BudgetCenter"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"slo-observability\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SLOObservabilityBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"cost\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIT05CostEfficiency"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"assurance-chaos\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/AssuranceChaosBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"external-workforce-api\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"knowledge-federation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"sovereign-dr\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"compliance-attestation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"owner-copilot\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"nightly-truth\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
+    },
+    {
+      "severity": "error",
+      "area": "operator-action-missing",
+      "message": "Tab \"connector-truth\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+    }
+  ],
+  "tier": "BLOCK",
+  "scope": "admin-ai-engineer-team",
+  "requiringOperatorAction": 24,
+  "compliantTabs": 0
+}
