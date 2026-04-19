@@ -203,6 +203,9 @@ const TrustLadderBoard = lazy(() => import("@/pages/admin/ai-runtime/TrustLadder
 const CrossCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/CrossCouncilBoard"));
 const SLOObservabilityBoard = lazy(() => import("@/pages/admin/ai-runtime/SLOObservabilityBoard"));
 const OwnerCopilotBriefings = lazy(() => import("@/pages/admin/ai-runtime/OwnerCopilotBriefings"));
+const OwnerCopilotSessionConsole = lazy(() => import("@/pages/admin/ai-runtime/OwnerCopilotSessionConsole"));
+const ProductionLaunchAttestationConsole = lazy(() => import("@/pages/admin/ai-runtime/ProductionLaunchAttestationConsole"));
+const BoardroomSLADrillDown = lazy(() => import("@/pages/admin/ai-runtime/BoardroomSLADrillDown"));
 const TenantFederationBoard = lazy(() => import("@/pages/admin/ai-runtime/TenantFederationBoard"));
 // ── Phase 8: Continuous Assurance, External API, Knowledge Federation ──
 const AssuranceChaosBoard = lazy(() => import("@/pages/admin/ai-runtime/AssuranceChaosBoard"));
@@ -267,6 +270,9 @@ export function getAdminRoutes() {
     <Route key="ws-airuntime-cross-council" path="/admin/ai-runtime/cross-council" element={gated("audit.view", <CrossCouncilBoard />)} />,
     <Route key="ws-airuntime-observatory" path="/admin/ai-runtime/observatory" element={gated("audit.view", <SLOObservabilityBoard />)} />,
     <Route key="ws-airuntime-owner-copilot" path="/admin/ai-runtime/owner-copilot" element={gated("audit.view", <OwnerCopilotBriefings />)} />,
+    <Route key="ws-airuntime-owner-copilot-sessions" path="/admin/ai-runtime/owner-copilot-sessions" element={gated("audit.view", <OwnerCopilotSessionConsole />)} />,
+    <Route key="ws-airuntime-launch-attestation" path="/admin/ai-runtime/launch-attestation" element={gated("audit.view", <ProductionLaunchAttestationConsole />)} />,
+    <Route key="ws-airuntime-boardroom-sla" path="/admin/ai-runtime/boardroom-sla" element={gated("audit.view", <BoardroomSLADrillDown />)} />,
     <Route key="ws-airuntime-tenant-federation" path="/admin/ai-runtime/tenant-federation" element={gated("flags.rollout", <TenantFederationBoard />)} />,
     <Route key="ws-airuntime-assurance" path="/admin/ai-runtime/assurance" element={gated("audit.view", <AssuranceChaosBoard />)} />,
     <Route key="ws-airuntime-external-api" path="/admin/ai-runtime/external-api" element={gated("flags.rollout", <ExternalWorkforceApiBoard />)} />,

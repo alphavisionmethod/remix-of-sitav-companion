@@ -536,6 +536,52 @@ export const AI_ENGINEER_HUB_TABS: readonly AIEngineerTabSpec[] = [
     evidence: "generated/owner-copilot-bff-readonly-report.json",
     requiresOperatorAction: true,
   },
+  {
+    id: "owner-copilot-sessions",
+    label: "Copilot Sessions",
+    description: "Phase 16 — Read-only telemetry of Owner Copilot session lifecycle (start/end, prompt counts).",
+    cluster: "advisors",
+    owner: "ai-advisors",
+    componentPath: "@/pages/admin/ai-runtime/OwnerCopilotSessionConsole",
+    legacyPath: "/admin/ai-runtime/owner-copilot-sessions",
+    dataSources: [
+      { table: "owner_copilot_sessions" },
+      { edgeFunction: "owner-copilot-session-tracker" },
+    ],
+    realtime: false,
+    evidence: "generated/owner-copilot-readonly-report.json",
+    requiresOperatorAction: false,
+  },
+  {
+    id: "production-launch-attestation",
+    label: "Launch Attestation",
+    description: "Phase 16 — Operator console for signing production launch postures per surface (append-only, SHA-256).",
+    cluster: "assurance",
+    owner: "ai-assurance",
+    componentPath: "@/pages/admin/ai-runtime/ProductionLaunchAttestationConsole",
+    legacyPath: "/admin/ai-runtime/launch-attestation",
+    dataSources: [
+      { table: "production_launch_attestations" },
+      { edgeFunction: "production-launch-attestor" },
+    ],
+    realtime: false,
+    evidence: "generated/production-launch-attestation-report.json",
+    requiresOperatorAction: true,
+  },
+  {
+    id: "boardroom-sla-drilldown",
+    label: "Boardroom SLA",
+    description: "Phase 16 — Live drill-down of stuck/failed Boardroom L7 follow-through dispatches with runbook RB-020.",
+    cluster: "observability",
+    owner: "ai-runtime",
+    componentPath: "@/pages/admin/ai-runtime/BoardroomSLADrillDown",
+    legacyPath: "/admin/ai-runtime/boardroom-sla",
+    dataSources: [
+      { table: "boardroom_followthrough_dispatches" },
+    ],
+    realtime: false,
+    requiresOperatorAction: true,
+  },
 
   // ────────────────────── truth-closure ────────────────────────
   {

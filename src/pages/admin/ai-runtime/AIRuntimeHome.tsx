@@ -108,6 +108,12 @@ const LOADERS: Record<string, Loader> = {
     () => import("@/pages/admin/AdvisorBoardCatalog"),
   "@/pages/admin/ai-runtime/OwnerCopilotBriefings":
     () => import("@/pages/admin/ai-runtime/OwnerCopilotBriefings"),
+  "@/pages/admin/ai-runtime/OwnerCopilotSessionConsole":
+    () => import("@/pages/admin/ai-runtime/OwnerCopilotSessionConsole"),
+  "@/pages/admin/ai-runtime/ProductionLaunchAttestationConsole":
+    () => import("@/pages/admin/ai-runtime/ProductionLaunchAttestationConsole"),
+  "@/pages/admin/ai-runtime/BoardroomSLADrillDown":
+    () => import("@/pages/admin/ai-runtime/BoardroomSLADrillDown"),
 
   // truth-closure
   "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel":
