@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T02:44:57.347Z",
+  "gate": "connector-truth-artifacts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "building",
+  "providers": [
+    "google",
+    "microsoft",
+    "slack"
+  ],
+  "lastRunStatus": "fail"
+}

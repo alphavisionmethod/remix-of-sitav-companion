@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T02:45:13.286Z",
+  "gate": "connector-refresh-streak",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "streak",
+      "message": "Streak still building: classification=building, min_streak_days=0"
+    }
+  ]
+}

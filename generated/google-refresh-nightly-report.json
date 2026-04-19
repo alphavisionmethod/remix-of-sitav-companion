@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T02:45:00.164Z",
+  "gate": "google-refresh-nightly",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "google",
+      "message": "google has 0 connector tokens — nothing to probe (launch-honest WARN, not failure)"
+    }
+  ]
+}
