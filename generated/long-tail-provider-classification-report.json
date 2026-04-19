@@ -1,14 +1,8 @@
 {
-  "generatedAt": "2026-04-19T02:41:53.712Z",
+  "generatedAt": "2026-04-19T02:43:21.298Z",
   "gate": "long-tail-provider-classification",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "registry",
-      "message": "Long-tail providers misclassified as live OAuth refresh: plaid (provider=plaid), quickbooks (provider=intuit), instacart (provider=instacart), hubspot (provider=hubspot), dropbox (provider=dropbox)"
-    }
-  ]
+  "issues": []
 }

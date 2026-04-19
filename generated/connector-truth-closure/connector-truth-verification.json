@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T02:41:36.583Z",
+  "generatedAt": "2026-04-19T02:43:10.491Z",
   "lastRun": {
     "run_id": "connector-nightly-2026-04-19T02-39-32-779Z",
     "status": "fail",
@@ -60,28 +60,12 @@
       "connector_class": "cloud-storage"
     },
     {
-      "connector_id": "plaid",
-      "provider": "plaid",
-      "auth_method": "oauth2",
-      "refresh_supported": true,
-      "launch_stage": "beta",
-      "connector_class": "banking"
-    },
-    {
       "connector_id": "stripe",
       "provider": "stripe",
       "auth_method": "api_key",
       "refresh_supported": false,
       "launch_stage": "beta",
       "connector_class": "payments"
-    },
-    {
-      "connector_id": "quickbooks",
-      "provider": "intuit",
-      "auth_method": "oauth2",
-      "refresh_supported": true,
-      "launch_stage": "planned",
-      "connector_class": "accounting"
     },
     {
       "connector_id": "twilio",
@@ -100,22 +84,6 @@
       "connector_class": "communication"
     },
     {
-      "connector_id": "instacart",
-      "provider": "instacart",
-      "auth_method": "oauth2",
-      "refresh_supported": true,
-      "launch_stage": "planned",
-      "connector_class": "commerce"
-    },
-    {
-      "connector_id": "hubspot",
-      "provider": "hubspot",
-      "auth_method": "oauth2",
-      "refresh_supported": true,
-      "launch_stage": "planned",
-      "connector_class": "crm"
-    },
-    {
       "connector_id": "slack",
       "provider": "slack",
       "auth_method": "oauth2",
@@ -124,10 +92,42 @@
       "connector_class": "communication"
     },
     {
+      "connector_id": "plaid",
+      "provider": "plaid",
+      "auth_method": "oauth2",
+      "refresh_supported": false,
+      "launch_stage": "beta",
+      "connector_class": "banking"
+    },
+    {
+      "connector_id": "quickbooks",
+      "provider": "intuit",
+      "auth_method": "oauth2",
+      "refresh_supported": false,
+      "launch_stage": "planned",
+      "connector_class": "accounting"
+    },
+    {
+      "connector_id": "instacart",
+      "provider": "instacart",
+      "auth_method": "oauth2",
+      "refresh_supported": false,
+      "launch_stage": "planned",
+      "connector_class": "commerce"
+    },
+    {
+      "connector_id": "hubspot",
+      "provider": "hubspot",
+      "auth_method": "oauth2",
+      "refresh_supported": false,
+      "launch_stage": "planned",
+      "connector_class": "crm"
+    },
+    {
       "connector_id": "dropbox",
       "provider": "dropbox",
       "auth_method": "oauth2",
-      "refresh_supported": true,
+      "refresh_supported": false,
       "launch_stage": "planned",
       "connector_class": "cloud-storage"
     }
