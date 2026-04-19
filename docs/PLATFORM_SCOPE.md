@@ -25,12 +25,18 @@
 
 | Surface | Reason | Archive location |
 |---|---|---|
-| iOS native runtime | Decision: not pursuing Apple distribution | `archive/ios-templates/`, `docs/archive/ios/`, `scripts/archive/ios/` |
-| Android native runtime | Decision: not pursuing Play Store | `archive/android-templates/` |
-| Capacitor bridge | Removed alongside iOS/Android | Deleted `capacitor.config.ts` + 12 `@capacitor/*` deps |
+| iOS native runtime | Decision: not pursuing Apple distribution | `archive/mobile/ios/`, `archive/capacitor/` |
+| Android native runtime | Decision: not pursuing Play Store | `archive/mobile/android/`, `archive/capacitor/` |
+| Capacitor bridge | Native channel archived 2026-04-19 | `archive/capacitor/capacitor.config.ts`; 8 `@capacitor/*` deps removed from `package.json` |
+| Mobile build manifest | Native channel archived 2026-04-19 | `archive/infra/mobile.yaml` |
 | App Store / TestFlight | Not active distribution channel | n/a |
 | Apple Developer enrollment | Not a project blocker | n/a |
 | APNs push (Apple) | Replaced by Web Push (VAPID) | n/a |
+| FCM push (Google) | Replaced by Web Push (VAPID) | n/a |
+
+> **Single source of mobile truth:** `docs/MOBILE_HONESTY.md`
+> **Reactivation checklist:** `generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md`
+> **Operator surface:** `/admin/ai-runtime` → "Mobile Scope Truth" tab
 
 ## Decision boundary rules
 
