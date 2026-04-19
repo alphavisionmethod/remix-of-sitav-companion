@@ -273,6 +273,17 @@ const REQUIRED_GATES = [
   "mobile-archived-scope",
   "no-kernel-overclaim",
   "doc-canonicality",
+  // Phase 0–4 Evidence Persistence Closure (5 BLOCK gates)
+  "canonical-paths",
+  "5-plane-boundaries",
+  "evidence-graph-completeness",
+  "cron-execution-evidence",
+  "release-decision-persistence",
+  // Phase 5–9 Closure Pack (4 BLOCK gates)
+  "ai-receipt-completeness",
+  "connector-reauth-telemetry",
+  "security-fabric-probes",
+  "app-sdk-extension-registry",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
