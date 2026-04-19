@@ -9,7 +9,7 @@ import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { ConciergePageWrapper } from "@/components/concierge";
-import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
 import { useState } from "react";
 import { Heart, Home } from "lucide-react";
@@ -31,9 +31,8 @@ const ConciergeBoardroom = () => {
           <PageTruthBanner />
 
           <div className="flex flex-wrap items-center gap-2">
-            <ProvenanceChip
-              source="AI gateway · live"
-              tone="success"
+            <AITruthDisclosure
+              mode="live-gateway"
               verifiedAt={new Date().toISOString()}
               to="/admin/ai-runtime/nightly-truth"
             />
