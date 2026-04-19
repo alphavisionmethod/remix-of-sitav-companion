@@ -7805,6 +7805,102 @@ export type Database = {
         }
         Relationships: []
       }
+      connector_refresh_nightly_runs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          evidence: Json
+          expiry_pressure_passed: boolean
+          failure_summary: string | null
+          id: string
+          providers_failed: string[]
+          providers_passed: string[]
+          providers_reauth_required: string[]
+          run_id: string
+          started_at: string
+          state_consistency_passed: boolean
+          status: string
+          triggered_by: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json
+          expiry_pressure_passed?: boolean
+          failure_summary?: string | null
+          id?: string
+          providers_failed?: string[]
+          providers_passed?: string[]
+          providers_reauth_required?: string[]
+          run_id: string
+          started_at?: string
+          state_consistency_passed?: boolean
+          status?: string
+          triggered_by?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json
+          expiry_pressure_passed?: boolean
+          failure_summary?: string | null
+          id?: string
+          providers_failed?: string[]
+          providers_passed?: string[]
+          providers_reauth_required?: string[]
+          run_id?: string
+          started_at?: string
+          state_consistency_passed?: boolean
+          status?: string
+          triggered_by?: string
+        }
+        Relationships: []
+      }
+      connector_refresh_streak_state: {
+        Row: {
+          current_streak_days: number
+          id: string
+          last_fail_at: string | null
+          last_failure_class: string | null
+          last_pass_at: string | null
+          last_run_id: string | null
+          longest_streak_days: number
+          provider: string
+          streak_started_at: string | null
+          successful_runs_7d: number
+          total_runs_7d: number
+          updated_at: string
+        }
+        Insert: {
+          current_streak_days?: number
+          id?: string
+          last_fail_at?: string | null
+          last_failure_class?: string | null
+          last_pass_at?: string | null
+          last_run_id?: string | null
+          longest_streak_days?: number
+          provider: string
+          streak_started_at?: string | null
+          successful_runs_7d?: number
+          total_runs_7d?: number
+          updated_at?: string
+        }
+        Update: {
+          current_streak_days?: number
+          id?: string
+          last_fail_at?: string | null
+          last_failure_class?: string | null
+          last_pass_at?: string | null
+          last_run_id?: string | null
+          longest_streak_days?: number
+          provider?: string
+          streak_started_at?: string | null
+          successful_runs_7d?: number
+          total_runs_7d?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       connector_registry: {
         Row: {
           auth_method: string
@@ -20027,6 +20123,7 @@ export type Database = {
       expire_overdue_kill_switches: { Args: never; Returns: number }
       get_ai_runtime_streak_summary: { Args: never; Returns: Json }
       get_compliance_rls_summary: { Args: never; Returns: Json }
+      get_connector_refresh_streak_summary: { Args: never; Returns: Json }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
