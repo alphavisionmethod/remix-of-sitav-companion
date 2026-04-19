@@ -13,6 +13,13 @@ interface TruthPanelActionsProps {
   refreshing?: boolean;
   sourcePath: string; // e.g. "/generated/architecture-hardening/"
   sourceLabel?: string;
+  /**
+   * Optional pass-through click handler. Kept on the props interface so that
+   * panels can attach extra observability (analytics, audit pings) at the
+   * action-bar level without breaking type-safety. Does not replace the
+   * built-in Refresh handler — both fire if both are wired.
+   */
+  onClick?: () => void;
 }
 
 export function TruthPanelActions({
@@ -20,14 +27,19 @@ export function TruthPanelActions({
   refreshing = false,
   sourcePath,
   sourceLabel = "View source evidence",
+  onClick,
 }: TruthPanelActionsProps) {
+  const handleRefresh = () => {
+    onClick?.();
+    onRefresh();
+  };
   return (
     <div className="flex items-center gap-2">
       <Button
         type="button"
         size="sm"
         variant="outline"
-        onClick={onRefresh}
+        onClick={handleRefresh}
         disabled={refreshing}
         aria-label="Refresh truth panel evidence"
       >

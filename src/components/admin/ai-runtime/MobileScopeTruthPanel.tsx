@@ -12,8 +12,10 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Smartphone, ShieldCheck, Archive, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Smartphone, ShieldCheck, Archive, ExternalLink, BookOpen } from "lucide-react";
 import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationDoc {
@@ -96,7 +98,19 @@ export default function MobileScopeTruthPanel() {
                 {doc.status}
               </Badge>
             )}
-            <TruthPanelActions onClick={() => undefined}
+            <Link to="/docs/MOBILE_HONESTY.md" target="_blank" rel="noopener noreferrer">
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                onClick={() => undefined}
+                aria-label="Open MOBILE_HONESTY.md"
+              >
+                <BookOpen className="mr-1 h-3 w-3" />
+                Open MOBILE_HONESTY.md
+              </Button>
+            </Link>
+            <TruthPanelActions
               onRefresh={() => setReloadTick((t) => t + 1)}
               refreshing={loading}
               sourcePath={VERIFICATION_URL}

@@ -11,8 +11,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Sparkles, ShieldCheck, Layers, FileCheck2 } from "lucide-react";
+import { Sparkles, ShieldCheck, Layers, FileCheck2, RefreshCw } from "lucide-react";
 import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationDoc {
@@ -92,7 +93,18 @@ export default function FrontendPolishTruthPanel() {
                 {doc.status}
               </Badge>
             )}
-            <TruthPanelActions onClick={() => undefined}
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              onClick={() => setReloadTick((t) => t + 1)}
+              disabled={loading}
+              aria-label="Refresh polish verification"
+            >
+              <RefreshCw className={`mr-1 h-3 w-3 ${loading ? "animate-spin" : ""}`} />
+              Refresh polish verification
+            </Button>
+            <TruthPanelActions
               onRefresh={() => setReloadTick((t) => t + 1)}
               refreshing={loading}
               sourcePath={VERIFICATION_URL}
