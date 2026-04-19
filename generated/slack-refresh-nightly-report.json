@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T13:29:13.809Z",
+  "gate": "slack-refresh-nightly",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/connector-truth-closure/connector-provider-status.json missing — run npm run connector:truth:emit"
+    }
+  ]
+}

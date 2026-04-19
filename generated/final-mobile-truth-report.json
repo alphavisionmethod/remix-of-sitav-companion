@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-04-19T13:29:03.627Z",
+  "gate": "final-mobile-truth",
+  "ok": false,
+  "errorCount": 0,
+  "warningCount": 16,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-canonical-stack-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/no-flutter-mobile-truth-drift-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/no-flutter-stack-drift-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/capacitor-mobile-truth-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-project-identification-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-identity-source-of-truth-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/android-native-generation-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/ios-native-generation-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/native-project-generation-contract-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-bootstrap-contract-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-build-model-consistency-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-env-strategy-consistency-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/android-release-path-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/ios-release-path-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-push-claim-safety-report.json not yet produced"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-mobile-gate",
+      "message": "generated/mobile-submission-blockers-report.json not yet produced"
+    }
+  ],
+  "okGates": 0,
+  "warnGates": 16,
+  "errGates": 0,
+  "totalGates": 16
+}

@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T13:28:59.312Z",
+  "gate": "connector-health-state-consistency",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/connector-truth-closure/connector-truth-verification.json missing"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T13:29:07.508Z",
+  "gate": "long-tail-provider-classification",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/connector-truth-closure/connector-truth-verification.json missing"
+    }
+  ]
+}
