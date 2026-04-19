@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T00:30:00.000Z",
+  "gate": "mobile-push-claim-safety",
+  "ok": true,
+  "decision": "Path-B-explicit-gating",
+  "transports": {
+    "web": { "name": "vapid", "status": "active" },
+    "ubuntu_native": { "name": "electron-notification", "status": "active" },
+    "ios": { "name": "apns", "status": "deferred", "blocker": "apple-developer-membership" },
+    "android": { "name": "fcm", "status": "deferred", "blocker": "google-services-json" }
+  },
+  "realPushTransport": "web-vapid",
+  "fallback": "ubuntu-native + web-vapid cover all push needs until mobile credentials provisioned",
+  "uiClaimsAudit": "no false mobile-push claims in store metadata or src/components/mobile/",
+  "validators": ["check-mobile-push-claim-safety"]
+}

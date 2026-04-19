@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-19T00:30:00.000Z",
+  "gate": "android-release-path",
+  "ok": true,
+  "blockerClass": "secret-blocked",
+  "artifacts": {
+    "bootstrap": "scripts/android/bootstrap.sh",
+    "release": "scripts/release/android/build-android.sh",
+    "signing": "mobile/android/SIGNING.md",
+    "fcm": "mobile/android/FCM.md",
+    "manifest": "mobile/android/AndroidManifest.permissions.xml",
+    "storeMetadata": "mobile/store-metadata/android.json",
+    "dataSafety": "mobile/store-metadata/android.data-safety.json"
+  },
+  "envVarContract": [
+    "ANDROID_KEYSTORE_PATH",
+    "ANDROID_KEYSTORE_PASSWORD",
+    "ANDROID_KEY_ALIAS",
+    "ANDROID_KEY_PASSWORD",
+    "ANDROID_PACKAGE_NAME"
+  ],
+  "blockers": [
+    { "type": "secret-blocked", "name": "upload-keystore", "remediation": "keytool genkeypair → CI secret mount" },
+    { "type": "metadata-blocked", "name": "screenshots", "remediation": "capture per mobile/store-metadata/android.screenshots.json matrix" }
+  ],
+  "fcm": { "status": "deferred", "fallback": "web-vapid" },
+  "submissionTier": "ready-on-keystore"
+}

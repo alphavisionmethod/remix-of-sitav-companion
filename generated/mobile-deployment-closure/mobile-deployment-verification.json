@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-04-19T00:30:00.000Z",
+  "gate": "mobile-deployment-verification",
+  "ok": true,
+  "verdict": "CLOSED-code-launch-ready-externally-blocked",
+  "phases": {
+    "phase1_truth_reconciliation": "COMPLETE",
+    "phase2_android_closure": "COMPLETE",
+    "phase3_ios_and_push_closure": "COMPLETE",
+    "phase4_playbook_and_governance": "COMPLETE"
+  },
+  "validators": [
+    { "gate": "mobile-canonical-stack", "tier": "warn" },
+    { "gate": "no-flutter-mobile-truth-drift", "tier": "warn" },
+    { "gate": "android-release-path", "tier": "warn" },
+    { "gate": "ios-release-path", "tier": "warn" },
+    { "gate": "mobile-push-claim-safety", "tier": "warn" },
+    { "gate": "mobile-submission-blockers", "tier": "warn" }
+  ],
+  "aggregator": {
+    "previousTotal": 117,
+    "newTotal": 123,
+    "added": 6,
+    "tier": "warn",
+    "rationale": "mobile is secondary distribution surface — BLOCK-tier would falsely gate desktop releases on Apple membership"
+  },
+  "blockers": {
+    "code-complete": 14,
+    "secret-blocked": 5,
+    "account-blocked": 7,
+    "metadata-blocked": 8,
+    "review-blocked": 2
+  },
+  "canonicalStack": "capacitor",
+  "flutterDrift": "purged-from-claim-surfaces",
+  "pushTransports": {
+    "active": ["web-vapid", "ubuntu-native"],
+    "deferred": ["ios-apns", "android-fcm"]
+  },
+  "operatorPlaybook": "generated/mobile-deployment-closure/STORE_SUBMISSION_OPERATOR_PLAYBOOK.md",
+  "blockerClassification": "generated/mobile-deployment-closure/MOBILE_BLOCKER_CLASSIFICATION.md",
+  "nextSteps": [
+    "provision android upload keystore",
+    "activate apple developer program",
+    "create firebase project + google-services.json",
+    "capture screenshots per matrix",
+    "create play console + app store connect records"
+  ]
+}

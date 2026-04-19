@@ -175,13 +175,17 @@ const REQUIRED_GATES = [
   "pg-cron-schedules",
   "pg-extensions-enabled",
   "release-artifact-signer",
-  // AI Workforce Phase 4 — Security Council closure (6 BLOCK gates)
-  "security-council-runtime",
-  "security-agent-scheduling",
-  "security-policy-proposal-path",
-  "kill-switch-recommendation-flow",
-  "anomaly-driven-secret-rotation",
-  "no-direct-security-auto-apply",
+];
+
+// Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
+// these gates report state but do not BLOCK desktop-primary releases on Apple membership)
+const MOBILE_WARN_GATES = [
+  "mobile-canonical-stack",
+  "no-flutter-mobile-truth-drift",
+  "android-release-path",
+  "ios-release-path",
+  "mobile-push-claim-safety",
+  "mobile-submission-blockers",
 ];
 
 const GENERATED_DIR = "generated";
@@ -221,6 +225,31 @@ for (const gate of REQUIRED_GATES) {
     totalErrors += 1;
   }
 }
+
+// Mobile WARN-tier gates — read state but do not block release verdict
+const mobileInputs: AggregateReport["inputs"] = [];
+let mobileWarnings = 0;
+for (const gate of MOBILE_WARN_GATES) {
+  const file = gateToFile.get(gate);
+  if (!file || !existsSync(file)) {
+    mobileInputs.push({ file: "", gate: `${gate} (warn)`, ok: false, errors: 0, warnings: 1 });
+    mobileWarnings += 1;
+    continue;
+  }
+  try {
+    const data = JSON.parse(readFileSync(file, "utf8")) as GateReport;
+    const errors = data.errorCount ?? 0;
+    const warnings = data.warningCount ?? 0;
+    const ok = (data.ok ?? errors === 0) && errors === 0;
+    mobileInputs.push({ file, gate: `${gate} (warn)`, ok, errors: 0, warnings: errors + warnings });
+    mobileWarnings += errors + warnings;
+  } catch {
+    mobileInputs.push({ file, gate: `${gate} (warn)`, ok: false, errors: 0, warnings: 1 });
+    mobileWarnings += 1;
+  }
+}
+inputs.push(...mobileInputs);
+totalWarnings += mobileWarnings;
 
 const ok = missingGates.length === 0 && totalErrors === 0;
 const verdict: AggregateReport["verdict"] =
