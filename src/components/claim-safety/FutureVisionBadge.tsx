@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Badge } from "@/components/ui/badge";
-import { Beaker, AlertTriangle, Telescope } from "lucide-react";
+import { Beaker, AlertTriangle, Telescope, Archive } from "lucide-react";
 import type { ContainmentLevel } from "@/lib/claim-safety/demo-only-surface-registry";
 
 interface FutureVisionBadgeProps {
@@ -31,6 +31,11 @@ const CONFIG: Record<
     label: "Future Vision",
     icon: Telescope,
     className: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  },
+  archived: {
+    label: "Archived",
+    icon: Archive,
+    className: "bg-muted/50 text-muted-foreground border-border",
   },
 };
 
