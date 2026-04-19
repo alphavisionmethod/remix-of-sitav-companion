@@ -8,6 +8,7 @@ import {
   Download, FileText, Shield, Archive, Clock, CheckCircle2,
   AlertTriangle, Trash2, RefreshCw, HardDrive,
 } from "lucide-react";
+import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 
 const mockDownloads = [
   { id: "1", name: "Q1 Financial Report.pdf", type: "report", size: "2.4 MB", status: "complete" as const, date: "2026-04-08", expiresIn: "29 days" },
@@ -43,6 +44,8 @@ export default function DownloadsCenter() {
           <Trash2 className="h-4 w-4 mr-1.5" /> Clean Expired
         </Button>
       </SitaPageHeader>
+
+      <MobileHonestyNotice />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>

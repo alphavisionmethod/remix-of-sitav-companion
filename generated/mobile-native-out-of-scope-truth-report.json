@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T03:11:07.464Z",
+  "gate": "mobile-native-out-of-scope-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "honestyDoc": "docs/MOBILE_HONESTY.md",
+  "capacitorDepsFound": []
+}

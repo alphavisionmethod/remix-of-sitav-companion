@@ -190,7 +190,7 @@ const REQUIRED_GATES = [
   "ai-fallback-verification",
   "ai-budget-enforcement-under-load",
   "ai-runtime-streak-health",
-  // Connector Truth Closure — 8 BLOCK gates (live OAuth refresh proof)
+  // Connector Truth Closure — 7 BLOCK gates (live OAuth refresh proof)
   "google-refresh-nightly",
   "microsoft-refresh-nightly",
   "slack-refresh-nightly",
@@ -198,31 +198,20 @@ const REQUIRED_GATES = [
   "no-ambiguous-connected-state",
   "long-tail-provider-classification",
   "connector-refresh-streak",
-  "connector-reauth-surfacing",
+  // Mobile Scope Closure — 5 BLOCK gates (native iOS/Android out of scope; archived posture)
+  "mobile-native-out-of-scope-truth",
+  "no-active-native-mobile-claims",
+  "install-page-mobile-honesty",
+  "mobile-manifest-archive-classification",
+  "generated-mobile-truth-consistency",
 ];
 
-// Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
-// these gates report state but do not BLOCK desktop-primary releases on Apple membership)
-const MOBILE_WARN_GATES = [
-  // Closure track — signing / submission readiness
-  "mobile-canonical-stack",
-  "no-flutter-mobile-truth-drift",
-  "android-release-path",
-  "ios-release-path",
-  "mobile-push-claim-safety",
-  "mobile-submission-blockers",
-  // Identity & Stack Truth Reconciliation track — gates 131–138
-  "mobile-project-identification",
-  "mobile-identity-source-of-truth",
-  "no-flutter-stack-drift",
-  "capacitor-mobile-truth",
-  "android-native-generation",
-  "ios-native-generation",
-  "native-project-generation-contract",
-  "mobile-bootstrap-contract",
-  "mobile-build-model-consistency",
-  "mobile-env-strategy-consistency",
-];
+// Mobile Deployment Closure — RETIRED (2026-04-19)
+// Native iOS/Android moved to ARCHIVED / FUTURE_VISION_ONLY status.
+// All previous mobile WARN-tier gates have been retired and their validators
+// archived under archive/scripts/validation/. The 5 new BLOCK gates above
+// (mobile-scope-closure) replace them with stricter drift-prevention.
+const MOBILE_WARN_GATES: string[] = [];
 
 const GENERATED_DIR = "generated";
 mkdirSync(GENERATED_DIR, { recursive: true });

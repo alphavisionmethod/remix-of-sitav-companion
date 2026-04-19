@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-19T03:11:05.261Z",
+  "honesty_doc": "docs/MOBILE_HONESTY.md",
+  "honesty_doc_present": true,
+  "surfaces": [
+    {
+      "key": "download-page",
+      "path": "src/pages/DownloadPage.tsx",
+      "exists": true,
+      "links_honesty_doc": true
+    },
+    {
+      "key": "downloads-center",
+      "path": "src/pages/DownloadsCenter.tsx",
+      "exists": true,
+      "links_honesty_doc": true
+    },
+    {
+      "key": "external-installer",
+      "path": "src/pages/app-platform/ExternalInstallerPage.tsx",
+      "exists": true,
+      "links_honesty_doc": true
+    }
+  ],
+  "all_surfaces_linked": true
+}

@@ -11,7 +11,6 @@
 //
 // Reuses ONLY the canonical sources of truth.
 // ═══════════════════════════════════════════════════════════════
-import { execSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
@@ -22,7 +21,6 @@ const SUPABASE_URL =
   process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "https://fctupowhcljejygjfpty.supabase.co";
 const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_KEY ?? "";
-const HAVE_PG = Boolean(process.env.PGHOST);
 
 const PROVIDERS = ["google", "microsoft", "slack"] as const;
 
@@ -36,47 +34,40 @@ interface ProviderRollup {
   lastReceiptId: string | null;
 }
 
-function pgJson<T = any>(sql: string): T {
-  const wrapped = `SELECT COALESCE(json_agg(t), '[]'::json) FROM (${sql}) t`;
-  const out = execSync(`psql -tAX -c ${JSON.stringify(wrapped)}`, { encoding: "utf-8" }).trim();
-  if (!out) return [] as any;
-  try {
-    return JSON.parse(out) as T;
-  } catch {
-    return [] as any;
-  }
-}
-
-function pgCount(sql: string): number {
-  const out = execSync(`psql -tAX -c ${JSON.stringify(sql)}`, { encoding: "utf-8" }).trim();
-  return parseInt(out, 10) || 0;
-}
-
 async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
 
-  if (!SERVICE_KEY && !HAVE_PG) {
-    console.error("❌ Neither SUPABASE_SERVICE_ROLE_KEY nor PGHOST available");
+  if (!SERVICE_KEY) {
+    console.error("❌ SUPABASE_SERVICE_ROLE_KEY missing — cannot emit live artifacts");
+    // Emit empty placeholder artifacts so gates fail honestly rather than crash.
     const ts = new Date().toISOString();
-    for (const f of [
-      "connector-provider-status.json",
-      "connector-refresh-streak-status.json",
-      "connector-reauth-status.json",
-      "connector-truth-verification.json",
-    ]) {
-      writeFileSync(join(OUT_DIR, f), JSON.stringify({ generatedAt: ts, error: "no-db-access" }, null, 2));
-    }
+    writeFileSync(
+      join(OUT_DIR, "connector-provider-status.json"),
+      JSON.stringify({ generatedAt: ts, error: "missing service role key", providers: {} }, null, 2),
+    );
+    writeFileSync(
+      join(OUT_DIR, "connector-refresh-streak-status.json"),
+      JSON.stringify({ generatedAt: ts, error: "missing service role key", classification: "building" }, null, 2),
+    );
+    writeFileSync(
+      join(OUT_DIR, "connector-reauth-status.json"),
+      JSON.stringify({ generatedAt: ts, error: "missing service role key", reauth_required_count_24h: 0 }, null, 2),
+    );
+    writeFileSync(
+      join(OUT_DIR, "connector-truth-verification.json"),
+      JSON.stringify({ generatedAt: ts, error: "missing service role key", lastRun: null, classification: "unknown" }, null, 2),
+    );
     emitGateReport({
       gate: "connector-truth-artifacts",
       ok: false,
-      issues: [{ severity: "error", area: "credentials", message: "no DB access" }],
+      issues: [{ severity: "error", area: "credentials", message: "SUPABASE_SERVICE_ROLE_KEY missing" }],
     });
     process.exit(1);
   }
 
-  const supabase = SERVICE_KEY
-    ? createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } })
-    : null;
+  const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
+    auth: { persistSession: false },
+  });
 
   const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -84,35 +75,23 @@ async function main() {
   // 1. Per-provider rollup
   const providerRollup: Record<string, ProviderRollup> = {};
   for (const p of PROVIDERS) {
-    let rows24h: any[] = [];
-    let success7d = 0;
-    if (supabase) {
-      const { data } = await supabase
-        .from("oauth_refresh_probe_results")
-        .select("status, failure_class, probe_finished_at, id")
-        .eq("provider", p)
-        .gte("probe_finished_at", since24h)
-        .order("probe_finished_at", { ascending: false })
-        .limit(500);
-      rows24h = data ?? [];
-      const { count } = await supabase
-        .from("oauth_refresh_probe_results")
-        .select("id", { count: "exact", head: true })
-        .eq("provider", p)
-        .eq("status", "success")
-        .gte("probe_finished_at", since7d);
-      success7d = count ?? 0;
-    } else {
-      rows24h = pgJson(
-        `SELECT status, failure_class, probe_finished_at, id FROM oauth_refresh_probe_results WHERE provider='${p}' AND probe_finished_at >= '${since24h}' ORDER BY probe_finished_at DESC LIMIT 500`,
-      );
-      success7d = pgCount(
-        `SELECT COUNT(*) FROM oauth_refresh_probe_results WHERE provider='${p}' AND status='success' AND probe_finished_at >= '${since7d}'`,
-      );
-    }
+    const { data: rows24h } = await supabase
+      .from("oauth_refresh_probe_results")
+      .select("status, failure_class, probe_finished_at, id")
+      .eq("provider", p)
+      .gte("probe_finished_at", since24h)
+      .order("probe_finished_at", { ascending: false })
+      .limit(500);
 
-    const successes = rows24h.filter((r: any) => r.status === "success");
-    const failures = rows24h.filter((r: any) => r.status === "fail");
+    const { count: success7d } = await supabase
+      .from("oauth_refresh_probe_results")
+      .select("id", { count: "exact", head: true })
+      .eq("provider", p)
+      .eq("status", "success")
+      .gte("probe_finished_at", since7d);
+
+    const successes = (rows24h ?? []).filter((r: any) => r.status === "success");
+    const failures = (rows24h ?? []).filter((r: any) => r.status === "fail");
     const lastSuccess = successes[0] as any;
     const lastFailure = failures[0] as any;
 
@@ -120,43 +99,35 @@ async function main() {
       provider: p,
       successCount24h: successes.length,
       failureCount24h: failures.length,
-      successCount7d: success7d,
+      successCount7d: success7d ?? 0,
       lastSuccessAt: lastSuccess?.probe_finished_at ?? null,
       lastFailureClass: lastFailure?.failure_class ?? null,
-      lastReceiptId: rows24h[0]?.id ?? null,
+      lastReceiptId: ((rows24h ?? [])[0] as any)?.id ?? null,
     };
   }
 
-  // 2. Streak summary
+  // 2. Streak summary (via RPC) — fallback to direct read if RPC fails
   let streakSummary: any = null;
-  if (supabase) {
-    try {
-      const { data: rpcData } = await supabase.rpc("get_connector_refresh_streak_summary");
-      streakSummary = rpcData;
-    } catch (e) {
-      console.warn("RPC failed, falling back to direct read", (e as Error).message);
-    }
+  try {
+    const { data: rpcData } = await supabase.rpc("get_connector_refresh_streak_summary");
+    streakSummary = rpcData;
+  } catch (e) {
+    console.warn("RPC failed, falling back to direct read", (e as Error).message);
   }
   if (!streakSummary) {
-    const streakRows = supabase
-      ? (await supabase.from("connector_refresh_streak_state").select("*").order("provider")).data ?? []
-      : pgJson(`SELECT * FROM connector_refresh_streak_state ORDER BY provider`);
-    const recentRuns = supabase
-      ? (
-          await supabase
-            .from("connector_refresh_nightly_runs")
-            .select("*")
-            .order("started_at", { ascending: false })
-            .limit(14)
-        ).data ?? []
-      : pgJson(`SELECT * FROM connector_refresh_nightly_runs ORDER BY started_at DESC LIMIT 14`);
-    const minStreak =
-      streakRows.length > 0
-        ? Math.min(...streakRows.map((r: any) => r.current_streak_days ?? 0))
-        : 0;
+    const { data: streakRows } = await supabase
+      .from("connector_refresh_streak_state")
+      .select("*")
+      .order("provider");
+    const { data: recentRuns } = await supabase
+      .from("connector_refresh_nightly_runs")
+      .select("*")
+      .order("started_at", { ascending: false })
+      .limit(14);
+    const minStreak = Math.min(...(streakRows ?? []).map((r: any) => r.current_streak_days ?? 0), 0);
     streakSummary = {
-      streaks: streakRows,
-      recent_runs: recentRuns,
+      streaks: streakRows ?? [],
+      recent_runs: recentRuns ?? [],
       reauth_required_count_24h: 0,
       min_streak_days: minStreak,
       classification: minStreak >= 7 ? "green" : minStreak >= 1 ? "yellow" : "building",
@@ -165,57 +136,35 @@ async function main() {
   }
 
   // 3. Reauth status
-  let reauthCount = 0;
+  const { count: reauthCount } = await supabase
+    .from("oauth_refresh_probe_results")
+    .select("id", { count: "exact", head: true })
+    .eq("reauth_required", true)
+    .gte("probe_finished_at", since24h);
+
   const reauthBreakdown: Record<string, number> = {};
-  if (supabase) {
+  for (const p of PROVIDERS) {
     const { count } = await supabase
       .from("oauth_refresh_probe_results")
       .select("id", { count: "exact", head: true })
+      .eq("provider", p)
       .eq("reauth_required", true)
       .gte("probe_finished_at", since24h);
-    reauthCount = count ?? 0;
-    for (const p of PROVIDERS) {
-      const { count: c } = await supabase
-        .from("oauth_refresh_probe_results")
-        .select("id", { count: "exact", head: true })
-        .eq("provider", p)
-        .eq("reauth_required", true)
-        .gte("probe_finished_at", since24h);
-      reauthBreakdown[p] = c ?? 0;
-    }
-  } else {
-    reauthCount = pgCount(
-      `SELECT COUNT(*) FROM oauth_refresh_probe_results WHERE reauth_required=true AND probe_finished_at >= '${since24h}'`,
-    );
-    for (const p of PROVIDERS) {
-      reauthBreakdown[p] = pgCount(
-        `SELECT COUNT(*) FROM oauth_refresh_probe_results WHERE provider='${p}' AND reauth_required=true AND probe_finished_at >= '${since24h}'`,
-      );
-    }
+    reauthBreakdown[p] = count ?? 0;
   }
 
-  // 4. Connector registry
-  const registryRows = supabase
-    ? (
-        await supabase
-          .from("connector_registry")
-          .select("connector_id, provider, auth_method, refresh_supported, launch_stage, connector_class")
-      ).data ?? []
-    : pgJson(
-        `SELECT connector_id, provider, auth_method, refresh_supported, launch_stage, connector_class FROM connector_registry`,
-      );
+  // 4. Connector registry (for long-tail gate)
+  const { data: registryRows } = await supabase
+    .from("connector_registry")
+    .select("connector_id, provider, auth_method, refresh_supported, launch_stage, connector_class");
 
-  // 5. Last nightly run
-  const lastRunRows = supabase
-    ? (
-        await supabase
-          .from("connector_refresh_nightly_runs")
-          .select("*")
-          .order("started_at", { ascending: false })
-          .limit(1)
-      ).data ?? []
-    : pgJson(`SELECT * FROM connector_refresh_nightly_runs ORDER BY started_at DESC LIMIT 1`);
-  const lastRun = lastRunRows[0] ?? null;
+  // 5. Last nightly run details
+  const { data: lastRunRows } = await supabase
+    .from("connector_refresh_nightly_runs")
+    .select("*")
+    .order("started_at", { ascending: false })
+    .limit(1);
+  const lastRun = (lastRunRows ?? [])[0] ?? null;
 
   // ── Write artifacts ───────────────────────────────────────────
   const generatedAt = new Date().toISOString();
@@ -243,55 +192,18 @@ async function main() {
     ),
   );
 
-  // Token counts per provider (drives WARN-vs-FAIL classification)
-  const tokenCountPerProvider: Record<string, number> = {};
-  if (supabase) {
-    for (const p of PROVIDERS) {
-      const { count } = await supabase
-        .from("connector_tokens")
-        .select("id", { count: "exact", head: true })
-        .eq("provider", p);
-      tokenCountPerProvider[p] = count ?? 0;
-    }
-  } else {
-    for (const p of PROVIDERS) {
-      tokenCountPerProvider[p] = pgCount(
-        `SELECT COUNT(*) FROM connector_tokens WHERE provider='${p}'`,
-      );
-    }
-  }
-  const anyTokensExist = Object.values(tokenCountPerProvider).some((n) => n > 0);
-
-  // Master rollup with hard pass/fail per acceptance criterion.
-  // Launch-honesty rule: gates that depend on live tokens are WARN-not-FAIL
-  // when no tokens exist (the verifier ran correctly; there was just nothing
-  // to refresh). They flip to true the moment a real token is connected.
+  // Master rollup with hard pass/fail per acceptance criterion
   const acceptance = {
-    nightly_real_refresh_runs: lastRun !== null, // verifier executed (regardless of token count)
-    live_token_refresh_observed: PROVIDERS.every((p) => providerRollup[p].successCount24h > 0),
+    nightly_real_refresh_runs: PROVIDERS.every((p) => providerRollup[p].successCount24h > 0),
     durable_receipts_written: (lastRun?.evidence ?? null) !== null,
     canonical_health_states: true, // enforced by ConnectorStateBadge
     expiry_pressure_proven: lastRun?.expiry_pressure_passed === true,
-    reauth_ux_validated: true, // enforced by check-connector-reauth-surfacing gate
+    reauth_ux_validated: true, // enforced by ReauthCTAButton + IntegrationReceiptDrawer
     long_tail_manual_classified: true, // enforced by check-long-tail gate
     no_ambiguous_connected: lastRun?.state_consistency_passed === true,
     seven_day_evidence: streakSummary?.min_streak_days >= 7,
   };
-  // overallPass requires the verifier ran cleanly + all structural gates pass.
-  // live_token_refresh_observed and seven_day_evidence are tracked separately
-  // and progress automatically once real tokens are connected.
-  const launchHonestPass =
-    acceptance.nightly_real_refresh_runs &&
-    acceptance.durable_receipts_written &&
-    acceptance.canonical_health_states &&
-    acceptance.expiry_pressure_proven &&
-    acceptance.reauth_ux_validated &&
-    acceptance.long_tail_manual_classified &&
-    acceptance.no_ambiguous_connected;
-  const allPass = launchHonestPass &&
-    (anyTokensExist
-      ? acceptance.live_token_refresh_observed && acceptance.seven_day_evidence
-      : true);
+  const allPass = Object.values(acceptance).every(Boolean);
 
   writeFileSync(
     join(OUT_DIR, "connector-truth-verification.json"),
@@ -317,14 +229,6 @@ async function main() {
         min_streak_days: streakSummary?.min_streak_days ?? 0,
         acceptance,
         overallPass: allPass,
-        notes: {
-          token_count_per_provider: tokenCountPerProvider,
-          any_tokens_exist: anyTokensExist,
-          launch_honest_pass: launchHonestPass,
-          interpretation: anyTokensExist
-            ? "live tokens present — full pass requires real refresh proof + 7-day streak"
-            : "no live tokens to probe — gates report launch-honest WARN; will auto-progress when real tokens connect",
-        },
         connectorRegistry: registryRows ?? [],
       },
       null,

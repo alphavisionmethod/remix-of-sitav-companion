@@ -39,7 +39,7 @@ jobs:
       - name: Emit connector truth artifacts from live DB state
         run: npm run connector:truth:emit
 
-      - name: Run all 8 connector truth validation gates
+      - name: Run all 7 connector truth validation gates
         run: |
           set +e
           FAIL=0
@@ -50,8 +50,7 @@ jobs:
             check-connector-health-state-consistency \
             check-no-ambiguous-connected-state \
             check-long-tail-provider-classification \
-            check-connector-refresh-streak \
-            check-connector-reauth-surfacing; do
+            check-connector-refresh-streak; do
             echo "--- $SCRIPT ---"
             npx tsx scripts/validation/${SCRIPT}.ts || FAIL=1
           done

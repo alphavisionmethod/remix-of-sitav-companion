@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 
 type AnalysisState = "idle" | "analyzing" | "verified" | "unknown" | "blocked";
 
@@ -58,6 +59,8 @@ const ExternalInstallerPage = () => {
         <h1 className="font-display text-2xl font-bold text-foreground">Install External Package</h1>
         <p className="text-sm text-muted-foreground mt-1">Install software from outside the SITA App Store</p>
       </div>
+
+      <MobileHonestyNotice />
 
       {state === "idle" && (
         <>

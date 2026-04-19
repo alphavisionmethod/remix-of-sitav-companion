@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-04-19T03:11:05.260Z",
+  "status": "ARCHIVED",
+  "classification": "FUTURE_VISION_ONLY",
+  "active_deployment": false,
+  "active_surfaces": [
+    "web-spa",
+    "ubuntu-native-iso",
+    "electron-desktop-shell"
+  ],
+  "archived_surfaces": [
+    "native-ios-app",
+    "native-android-app",
+    "app-store",
+    "play-store",
+    "apns-push",
+    "fcm-push",
+    "capacitor-wrapper",
+    "mobile-build-manifest"
+  ],
+  "containment": {
+    "capacitor_config_at_root": false,
+    "capacitor_config_archived": true,
+    "mobile_dir_at_root": false,
+    "mobile_dir_archived": true,
+    "mobile_manifest_active": false,
+    "mobile_manifest_archived": true,
+    "capacitor_deps_in_package_json": [],
+    "honesty_doc_present": true
+  },
+  "reactivation_doc": "generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md",
+  "honesty_doc": "docs/MOBILE_HONESTY.md"
+}

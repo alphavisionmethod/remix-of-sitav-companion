@@ -1,7 +1,23 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — ARCHIVED / FUTURE_VISION_ONLY · NOT_LAUNCH_SURFACE
+// ═══════════════════════════════════════════════════════════════
+//
+// This file was the active Capacitor configuration. As of 2026-04-19 the
+// mobile-native channel is OUT OF SCOPE for the current deployment track.
+//
+//   Status:         ARCHIVED
+//   Classification: FUTURE_VISION_ONLY · NOT_LAUNCH_SURFACE
+//   Canonical doc:  docs/MOBILE_HONESTY.md
+//   Reactivation:   generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md
+//
+// DO NOT import or reference from any active build path. Drift protection:
+// scripts/validation/check-mobile-native-out-of-scope-truth.ts FAILS CI if
+// this file (or any `@capacitor/*` dep) returns to an active path.
+// ═══════════════════════════════════════════════════════════════
+// @ts-nocheck — archived; the @capacitor/cli type is intentionally absent.
 import type { CapacitorConfig } from "@capacitor/cli";
 
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Capacitor Configuration
+// SITA OS — Capacitor Configuration (archived original below)
 //
 // Bridges the SITA OS web SPA into native iOS/Android shells.
 // Honors the mobile runtime contract (mobile-runtime-contract.ts).
