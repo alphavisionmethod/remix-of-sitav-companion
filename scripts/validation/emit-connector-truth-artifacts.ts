@@ -11,6 +11,7 @@
 //
 // Reuses ONLY the canonical sources of truth.
 // ═══════════════════════════════════════════════════════════════
+import { execSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
@@ -21,6 +22,7 @@ const SUPABASE_URL =
   process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "https://fctupowhcljejygjfpty.supabase.co";
 const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_KEY ?? "";
+const HAVE_PG = Boolean(process.env.PGHOST);
 
 const PROVIDERS = ["google", "microsoft", "slack"] as const;
 
@@ -34,33 +36,40 @@ interface ProviderRollup {
   lastReceiptId: string | null;
 }
 
+function pgJson<T = any>(sql: string): T {
+  const wrapped = `SELECT COALESCE(json_agg(t), '[]'::json) FROM (${sql}) t`;
+  const out = execSync(`psql -tAX -c ${JSON.stringify(wrapped)}`, { encoding: "utf-8" }).trim();
+  if (!out) return [] as any;
+  try {
+    return JSON.parse(out) as T;
+  } catch {
+    return [] as any;
+  }
+}
+
+function pgCount(sql: string): number {
+  const out = execSync(`psql -tAX -c ${JSON.stringify(sql)}`, { encoding: "utf-8" }).trim();
+  return parseInt(out, 10) || 0;
+}
+
 async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
 
-  if (!SERVICE_KEY) {
-    console.error("❌ SUPABASE_SERVICE_ROLE_KEY missing — cannot emit live artifacts");
-    // Emit empty placeholder artifacts so gates fail honestly rather than crash.
+  if (!SERVICE_KEY && !HAVE_PG) {
+    console.error("❌ Neither SUPABASE_SERVICE_ROLE_KEY nor PGHOST available");
     const ts = new Date().toISOString();
-    writeFileSync(
-      join(OUT_DIR, "connector-provider-status.json"),
-      JSON.stringify({ generatedAt: ts, error: "missing service role key", providers: {} }, null, 2),
-    );
-    writeFileSync(
-      join(OUT_DIR, "connector-refresh-streak-status.json"),
-      JSON.stringify({ generatedAt: ts, error: "missing service role key", classification: "building" }, null, 2),
-    );
-    writeFileSync(
-      join(OUT_DIR, "connector-reauth-status.json"),
-      JSON.stringify({ generatedAt: ts, error: "missing service role key", reauth_required_count_24h: 0 }, null, 2),
-    );
-    writeFileSync(
-      join(OUT_DIR, "connector-truth-verification.json"),
-      JSON.stringify({ generatedAt: ts, error: "missing service role key", lastRun: null, classification: "unknown" }, null, 2),
-    );
+    for (const f of [
+      "connector-provider-status.json",
+      "connector-refresh-streak-status.json",
+      "connector-reauth-status.json",
+      "connector-truth-verification.json",
+    ]) {
+      writeFileSync(join(OUT_DIR, f), JSON.stringify({ generatedAt: ts, error: "no-db-access" }, null, 2));
+    }
     emitGateReport({
       gate: "connector-truth-artifacts",
       ok: false,
-      issues: [{ severity: "error", area: "credentials", message: "SUPABASE_SERVICE_ROLE_KEY missing" }],
+      issues: [{ severity: "error", area: "credentials", message: "no DB access" }],
     });
     process.exit(1);
   }
