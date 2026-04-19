@@ -66,3 +66,18 @@ actually works, with hard pass/fail evidence and operator visibility.
 Until 7 consecutive clean nights have run in production, the master
 release aggregator will report YELLOW for the AI runtime truth section.
 This is intentional and honest — one passing run is not proof.
+
+## CI / artifact cadence (added in closure pass)
+
+- **CI workflow**: `.github/workflows/ai-runtime-truth-nightly.yml`
+  - Schedule: `0 3 * * *` UTC (1h after pg_cron)
+  - Manual trigger: GitHub → Actions → "AI Runtime Truth — Nightly" → Run workflow
+  - Steps: trigger live verifier → wait 30s → emit JSON artifacts → run 6 gates → upload evidence (30d retention)
+- **Artifact emitter**: `scripts/validation/emit-ai-runtime-truth-artifacts.ts`
+  - npm script: `npm run ai:runtime:emit-truth`
+  - Combined: `npm run ai:runtime:truth:run-all`
+  - Reads canonical tables (`ai_runtime_nightly_runs`, `ai_runtime_streak_state`,
+    `ai_runtime_failure_alerts`, `ai_inference_receipts`, `ai_usage_ledger`,
+    `ai_fallback_events`, `ai_budget_alerts`) via service role
+  - Writes 4 canonical JSON files (live-provider, budget, streak, master rollup)
+- **Required GitHub Secrets**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
