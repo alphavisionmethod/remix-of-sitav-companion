@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T01:12:05.669Z",
+  "generatedAt": "2026-04-19T01:12:39.706Z",
   "gate": "mobile-build-model-consistency",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "deps",
-      "message": "No @capacitor/* deps in package.json"
-    }
-  ],
+  "issues": [],
   "model": "generated/mobile-identity-reconciliation/MOBILE_BUILD_AND_DEPENDENCY_MODEL.md",
   "tiers": [
     "web/Vite",

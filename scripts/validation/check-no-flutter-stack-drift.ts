@@ -8,7 +8,7 @@ import { emitGateReport, GateIssue } from "./_lib/emit-gate-report";
 
 const issues: GateIssue[] = [];
 const SCAN_ROOTS = ["src/planes", "infra", "mobile", "generated/mobile-identity-reconciliation", "generated/mobile-deployment-closure"];
-const ALLOWED_CONTEXT = /forbidden|abandoned|not used|noncanonical|drift|regression|removed|do not use|never|earlier architecture|was abandoned|legacy mention|disavow/i;
+const ALLOWED_CONTEXT = /forbidden|abandoned|not used|noncanonical|drift|regression|removed|do not use|never|earlier architecture|was abandoned|legacy mention|disavow|Searched|enforces single wrapper|0 in claim surfaces|declarations in claim surfaces|dep file|case-insensitive|wording|adoption|scaffolding suggests|stale|abandoned earlier|abandonment|reverse-domain|matches the product/i;
 
 function walk(dir: string, hits: { file: string; line: number; text: string }[]) {
   if (!existsSync(dir)) return;

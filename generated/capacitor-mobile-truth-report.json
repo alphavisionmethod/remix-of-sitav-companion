@@ -1,31 +1,10 @@
 {
-  "generatedAt": "2026-04-19T01:12:03.782Z",
+  "generatedAt": "2026-04-19T01:12:37.682Z",
   "gate": "capacitor-mobile-truth",
-  "ok": false,
-  "errorCount": 4,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "deps",
-      "message": "Required Capacitor dep missing: @capacitor/core"
-    },
-    {
-      "severity": "error",
-      "area": "deps",
-      "message": "Required Capacitor dep missing: @capacitor/cli"
-    },
-    {
-      "severity": "error",
-      "area": "deps",
-      "message": "Required Capacitor dep missing: @capacitor/ios"
-    },
-    {
-      "severity": "error",
-      "area": "deps",
-      "message": "Required Capacitor dep missing: @capacitor/android"
-    }
-  ],
+  "issues": [],
   "canonicalWrapper": "Capacitor 6",
   "forbiddenStackPatterns": 9
 }
