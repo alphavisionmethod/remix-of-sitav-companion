@@ -17,6 +17,7 @@ const DbTruthExplorer = lazy(() => import("@/pages/admin/DbTruthExplorer"));
 const MCArchitectureDashboard = lazy(
   () => import("@/pages/admin/modules/MCArchitectureDashboard"),
 );
+const CrossDomainCoherence = lazy(() => import("@/pages/admin/verification/CrossDomainCoherence"));
 
 function ModuleFallback() {
   return (
@@ -87,6 +88,13 @@ export default function VerificationHome() {
       description: "Database truth explorer.",
       legacyPath: "/admin/db-truth-explorer",
       render: wrap(DbTruthExplorer),
+    },
+    {
+      id: "cross-domain-coherence",
+      label: "Cross-Domain Coherence",
+      description: "Activates when verification, trust, or incident events span multiple domains.",
+      legacyPath: "/admin/verification/cross-domain-coherence",
+      render: wrap(CrossDomainCoherence),
     },
   ];
 
