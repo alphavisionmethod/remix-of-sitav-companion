@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T15:31:08.258Z
+> Generated: 2026-04-19T16:26:53.375Z
 > Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 193 |
-| Gates present  | 193 |
+| Gates required | 199 |
+| Gates present  | 199 |
 | Gates missing  | 0 |
-| Total errors   | 3 |
-| Total warnings | 3410 |
+| Total errors   | 6 |
+| Total warnings | 3448 |
 
 ## Per-gate results
 
@@ -174,7 +174,7 @@
 | `trust-copy-quality` | ✅ | 0 | 0 |
 | `responsive-surface-integrity` | ✅ | 0 | 0 |
 | `admin-top-task-discoverability` | ✅ | 0 | 0 |
-| `no-museum-boards` | ❌ | 2 | 0 |
+| `no-museum-boards` | ❌ | 5 | 0 |
 | `admin-action-orientation` | ❌ | 1 | 0 |
 | `edge-function-contract-coverage` | ✅ | 0 | 1 |
 | `warn-ratchet-meaningfulness` | ✅ | 0 | 0 |
@@ -210,10 +210,16 @@
 | `future-surfaces-registered` | ✅ | 0 | 0 |
 | `negative-receipts-emitted` | ✅ | 0 | 0 |
 | `economic-trust-future-closure` | ✅ | 0 | 0 |
+| `runtime-host-boundaries` | ✅ | 0 | 0 |
+| `shell-runtime-portability` | ✅ | 0 | 0 |
+| `edge-function-log-shape` | ✅ | 0 | 38 |
+| `mobile-archived-scope` | ✅ | 0 | 0 |
+| `no-kernel-overclaim` | ✅ | 0 | 0 |
+| `doc-canonicality` | ✅ | 0 | 0 |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 3 error(s) and resolve 0 missing gate(s).
+❌ Release is **NOT cuttable**. Fix 6 error(s) and resolve 0 missing gate(s).
 
 ## Related
 

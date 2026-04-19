@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Smartphone, ShieldCheck, Archive, ExternalLink } from "lucide-react";
+import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationDoc {
   generatedAt: string;
@@ -50,9 +51,11 @@ export default function MobileScopeTruthPanel() {
   const [doc, setDoc] = useState<VerificationDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reloadTick, setReloadTick] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     (async () => {
       try {
         const res = await fetch(VERIFICATION_URL, { cache: "no-store" });
@@ -72,7 +75,7 @@ export default function MobileScopeTruthPanel() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [reloadTick]);
 
   return (
     <div className="space-y-4">
@@ -87,11 +90,18 @@ export default function MobileScopeTruthPanel() {
               Active deployment surfaces: Web SPA, Ubuntu-native ISO, Electron desktop.
             </p>
           </div>
-          {doc && (
-            <Badge variant="outline" className={tone(doc.ok)}>
-              {doc.status}
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {doc && (
+              <Badge variant="outline" className={tone(doc.ok)}>
+                {doc.status}
+              </Badge>
+            )}
+            <TruthPanelActions onClick={() => undefined}
+              onRefresh={() => setReloadTick((t) => t + 1)}
+              refreshing={loading}
+              sourcePath={VERIFICATION_URL}
+            />
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {loading && (

@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShieldCheck, DollarSign, Eye, AlertTriangle } from "lucide-react";
+import { TruthPanelActions } from "./TruthPanelActions";
 
 interface BudgetDecisionRow {
   decision: string;
@@ -30,12 +31,14 @@ interface CeilingRow {
 
 export default function EconomicTrustFutureTruthPanel() {
   const [loading, setLoading] = useState(true);
+  const [reloadTick, setReloadTick] = useState(0);
   const [decisions, setDecisions] = useState<BudgetDecisionRow[]>([]);
   const [ceilings, setCeilings] = useState<CeilingRow[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     (async () => {
       try {
         const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -75,20 +78,27 @@ export default function EconomicTrustFutureTruthPanel() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [reloadTick]);
 
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <ShieldCheck className="h-4 w-4 text-primary" />
-            Economic Trust & Future Truth
-          </CardTitle>
-          <p className="text-xs text-muted-foreground">
-            Live evidence for the 7-gate economic-trust-and-future closure: per-user budget
-            ceilings, agency-wording lockdown, future-surface containment.
-          </p>
+        <CardHeader className="flex flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              Economic Trust & Future Truth
+            </CardTitle>
+            <p className="text-xs text-muted-foreground mt-1">
+              Live evidence for the 7-gate economic-trust-and-future closure: per-user budget
+              ceilings, agency-wording lockdown, future-surface containment.
+            </p>
+          </div>
+          <TruthPanelActions onClick={() => undefined}
+            onRefresh={() => setReloadTick((t) => t + 1)}
+            refreshing={loading}
+            sourcePath="/generated/economic-trust-and-future-closure/"
+          />
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="budgets">

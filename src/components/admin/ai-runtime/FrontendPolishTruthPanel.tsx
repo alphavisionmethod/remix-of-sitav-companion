@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Sparkles, ShieldCheck, Layers, FileCheck2 } from "lucide-react";
+import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationDoc {
   generatedAt: string;
@@ -44,9 +45,11 @@ export default function FrontendPolishTruthPanel() {
   const [doc, setDoc] = useState<VerificationDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reloadTick, setReloadTick] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     (async () => {
       try {
         const res = await fetch(VERIFICATION_URL, { cache: "no-store" });
@@ -66,7 +69,7 @@ export default function FrontendPolishTruthPanel() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [reloadTick]);
 
   return (
     <div className="space-y-4">
@@ -83,11 +86,18 @@ export default function FrontendPolishTruthPanel() {
               and responsive integrity for every board on this hub.
             </p>
           </div>
-          {doc && (
-            <Badge className={tone(doc.ok)} variant="outline">
-              {doc.status}
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {doc && (
+              <Badge className={tone(doc.ok)} variant="outline">
+                {doc.status}
+              </Badge>
+            )}
+            <TruthPanelActions onClick={() => undefined}
+              onRefresh={() => setReloadTick((t) => t + 1)}
+              refreshing={loading}
+              sourcePath={VERIFICATION_URL}
+            />
+          </div>
         </CardHeader>
         <CardContent className="text-xs space-y-3">
           {loading && (
