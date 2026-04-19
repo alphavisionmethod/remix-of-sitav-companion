@@ -175,6 +175,13 @@ const REQUIRED_GATES = [
   "pg-cron-schedules",
   "pg-extensions-enabled",
   "release-artifact-signer",
+  // AI Workforce Phase 4 — Security Council closure (6 BLOCK gates)
+  "security-council-runtime",
+  "security-agent-scheduling",
+  "security-policy-proposal-path",
+  "kill-switch-recommendation-flow",
+  "anomaly-driven-secret-rotation",
+  "no-direct-security-auto-apply",
 ];
 
 const GENERATED_DIR = "generated";

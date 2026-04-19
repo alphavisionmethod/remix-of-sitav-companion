@@ -1,0 +1,29 @@
+{
+  "phase": "ai-workforce-phase-4",
+  "component": "kill-switch-recommendation-flow",
+  "generated_at": "2026-04-19T00:00:00Z",
+  "ok": true,
+  "table": "kill_switch_recommendations",
+  "rpc": "propose_kill_switch_recommendation",
+  "edge_function": "security-kill-switch-recommender",
+  "operator_surface": "/admin/ai-runtime/kill-switch-recommendations",
+  "actual_arming_path": {
+    "surface": "/admin/health/kill-switches",
+    "table": "kill_switch_approvals",
+    "model": "existing dual-admin approval workflow"
+  },
+  "ai_arms_directly": false,
+  "guardrails": {
+    "banned_calls": [
+      "arm_kill_switch",
+      "activate_kill_switch",
+      "kill_switch_state",
+      "set_kill_switch_active"
+    ],
+    "enforced_by": "kill-switch-recommendation-flow"
+  },
+  "evidence_chain": {
+    "finding_to_recommendation": "kill_switch_recommendations.source_finding_id → security_council_findings.id",
+    "recommendation_to_approval": "kill_switch_recommendations.approval_id → kill_switch_approvals.id"
+  }
+}
