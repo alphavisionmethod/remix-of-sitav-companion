@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback, useEffect, useRef } from "react";
+import { useRuntimeHost } from "@/runtimes/runtime-host-adapter";
 
 export interface AppState {
   activePage: string;
@@ -80,6 +81,7 @@ export function restoreAppState(domain: string): AppState | null {
 export function useAppStatePersistence(domain: string, activePage: string) {
   const scrollRef = useRef(0);
   const mounted = useRef(true);
+  const host = useRuntimeHost();
 
   // Mark domain as running on mount
   useEffect(() => {
@@ -95,28 +97,27 @@ export function useAppStatePersistence(domain: string, activePage: string) {
     saveAppState(domain, { activePage });
   }, [domain, activePage]);
 
-  // Track scroll position
+  // Track scroll position via canonical runtime-host adapter
   useEffect(() => {
-    const handleScroll = () => {
-      scrollRef.current = window.scrollY;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const unsubscribe = host.addScrollListener(() => {
+      scrollRef.current = host.getScrollY();
+    });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
       // Persist scroll on unmount
       saveAppState(domain, { scrollY: scrollRef.current });
     };
-  }, [domain]);
+  }, [domain, host]);
 
   // Restore scroll on mount
   const restoreScroll = useCallback(() => {
     const state = restoreAppState(domain);
     if (state && state.scrollY > 0) {
       requestAnimationFrame(() => {
-        window.scrollTo({ top: state.scrollY, behavior: "instant" as ScrollBehavior });
+        host.setScrollY(state.scrollY, "instant");
       });
     }
-  }, [domain]);
+  }, [domain, host]);
 
   return { restoreScroll };
 }

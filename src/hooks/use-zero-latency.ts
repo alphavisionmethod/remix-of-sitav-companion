@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { predictivePrefetch } from "@/lib/services/predictive-prefetch";
 import { ambientContext } from "@/lib/services/ambient-context-engine";
 import { SoundEngine } from "@/platform/runtime/sound-engine";
+import { useRuntimeHost } from "@/runtimes/runtime-host-adapter";
 
 // ── Transition State ──────────────────────────────────────────
 
@@ -151,6 +152,7 @@ function completeProgressBar() {
 export function useRouteTransitionOrchestrator() {
   const location = useLocation();
   const prevPath = useRef(location.pathname);
+  const host = useRuntimeHost();
 
   useEffect(() => {
     const now = Date.now();
@@ -186,14 +188,14 @@ export function useRouteTransitionOrchestrator() {
 
     if (prevPath.current !== location.pathname) {
       ambientContext.saveContext(prevPath.current, {
-        scrollY: window.scrollY,
+        scrollY: host.getScrollY(),
       });
     }
 
     const savedCtx = ambientContext.getContext(location.pathname);
     if (savedCtx && savedCtx.scrollY > 0) {
       requestAnimationFrame(() => {
-        window.scrollTo({ top: savedCtx.scrollY, behavior: "instant" as ScrollBehavior });
+        host.setScrollY(savedCtx.scrollY, "instant");
       });
     }
 
@@ -212,7 +214,7 @@ export function useRouteTransitionOrchestrator() {
     }
 
     prevPath.current = location.pathname;
-  }, [location.pathname]);
+  }, [location.pathname, host]);
 }
 
 // ── Hover Intent Preloader ────────────────────────────────────

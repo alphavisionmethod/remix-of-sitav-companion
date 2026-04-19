@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { restoreSession, clearSession, type SessionState } from "@/lib/services/session-persistence";
+import { useRuntimeHost } from "@/runtimes/runtime-host-adapter";
 
 interface UseSessionRestoreOptions {
   onRestoreWindows?: (windows: SessionState["windows"]) => void;
@@ -15,6 +16,7 @@ interface UseSessionRestoreOptions {
 export function useSessionRestore({ onRestoreWindows }: UseSessionRestoreOptions = {}) {
   const navigate = useNavigate();
   const checked = useRef(false);
+  const host = useRuntimeHost();
 
   useEffect(() => {
     if (checked.current) return;
@@ -29,8 +31,8 @@ export function useSessionRestore({ onRestoreWindows }: UseSessionRestoreOptions
       action: {
         label: "Restore",
         onClick: () => {
-          // Restore route
-          if (session.route && session.route !== window.location.pathname) {
+          // Restore route — use canonical runtime-host adapter for current path
+          if (session.route && session.route !== host.getCurrentPath()) {
             navigate(session.route);
           }
           // Restore scroll positions
@@ -38,7 +40,7 @@ export function useSessionRestore({ onRestoreWindows }: UseSessionRestoreOptions
             const pos = session.scrollPositions[session.route];
             if (pos > 0) {
               requestAnimationFrame(() => {
-                window.scrollTo({ top: pos, behavior: "instant" as ScrollBehavior });
+                host.setScrollY(pos, "instant");
               });
             }
           }
@@ -54,5 +56,5 @@ export function useSessionRestore({ onRestoreWindows }: UseSessionRestoreOptions
         onClick: () => clearSession(),
       },
     });
-  }, [navigate, onRestoreWindows]);
+  }, [navigate, onRestoreWindows, host]);
 }

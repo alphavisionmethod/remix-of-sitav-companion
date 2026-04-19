@@ -176,6 +176,33 @@ Deno.serve(async (req) => {
     });
   } catch { /* non-fatal */ }
 
+  // Durable cadence evidence — write one row per planned secret into secret_rotation_log.
+  // This is the canonical proof read by emit-secret-rotation-status.ts.
+  // Cadence intervals mirror src/lib/security/secret-rotation-cadence.ts.
+  const CADENCE_INTERVAL_DAYS: Record<string, number> = {
+    push: 90, comms: 180, ai: 90, auth: 365, storage: 365, other: 90,
+  };
+  for (const step of plan) {
+    try {
+      const intervalDays = CADENCE_INTERVAL_DAYS[step.category] ?? 90;
+      const dueAt = new Date(Date.now() + intervalDays * 24 * 60 * 60 * 1000).toISOString();
+      await supa.from("secret_rotation_log" as never).insert({
+        secret_class: step.category,
+        secret_name: step.secret,
+        rotated_by: userData.user.id,
+        dry_run: receipt.dryRun,
+        result: {
+          receiptId: receipt.receiptId,
+          rotatable: step.rotatable,
+          blocker: step.blocker ?? null,
+          preChecks: step.preChecks,
+          postChecks: step.postChecks,
+        },
+        cadence_due_at: dueAt,
+      });
+    } catch { /* non-fatal — proof is best-effort, audit_trail covers gap */ }
+  }
+
   return new Response(JSON.stringify(receipt), {
     status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
   });

@@ -33,6 +33,7 @@ const MobileScopeTruthPanel = lazy(() => import("@/components/admin/ai-runtime/M
 const FrontendPolishTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FrontendPolishTruthPanel"));
 const AdminValidationTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminValidationTruthPanel"));
 const HardwareAndOperatorTruthPanel = lazy(() => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"));
+const SecurityAndPortabilityTruthPanel = lazy(() => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -138,6 +139,13 @@ export default function AIRuntimeHome() {
       description: "Real-device certification runs and human-use operator drill log with MTTR — honest WARN-tier classification until real-world evidence is recorded.",
       legacyPath: "/admin/ai-runtime/hardware-operator-truth",
       render: wrap(HardwareAndOperatorTruthPanel),
+    },
+    {
+      id: "security-portability-truth",
+      label: "Security & Portability Truth",
+      description: "Live secret-rotation cadence (DB-backed), adversarial proof status (RLS/Electron/debugger/session), and portability boundary status — honest WARN-tier classification for partner-blocked / pending-execution evidence.",
+      legacyPath: "/admin/ai-runtime/security-portability-truth",
+      render: wrap(SecurityAndPortabilityTruthPanel),
     },
     {
       id: "efficiency",

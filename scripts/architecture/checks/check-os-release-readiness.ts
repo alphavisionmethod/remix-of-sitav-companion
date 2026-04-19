@@ -229,6 +229,17 @@ const REQUIRED_GATES = [
   "runbook-human-use-proof",
   "kill-switch-drill-readiness",
   "supportability-freshness",
+  // Security & Portability Closure — 10 BLOCK gates (cadence + adversarial + portability)
+  "secret-rotation-cadence",
+  "secret-rotation-freshness",
+  "security-adversarial-proof",
+  "rls-under-stress",
+  "electron-threat-detection-proof",
+  "debugger-tamper-proof",
+  "session-threat-behavior",
+  "no-browser-trapped-shared-hooks",
+  "runtime-host-abstraction",
+  "portability-boundaries",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
