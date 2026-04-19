@@ -1,55 +1,71 @@
 
-The user wants me to update the MASTER_REMEDIATION_BLUEPRINT_v1.md document to reflect:
-1. All fixes shipped across Phases 0–16 (now complete)
-2. Honest residual gaps still outstanding
-3. Mark it as v2 / current state
 
-The doc lives at `/mnt/documents/MASTER_REMEDIATION_BLUEPRINT_v1.md` (and mirror in `public/generated/`). I need to write a fully updated v2 version reflecting current GREEN_ALL_PHASES_SHIPPED_PLUS_OPERATOR_SURFACES status.
+## Diagnosis
 
-Plan is documentation-only — generate updated artifact. No code changes.
+The codebase is fully wired and correct. The **document** `MASTER_REMEDIATION_BLUEPRINT_v2.md` (and its mirror in `public/generated/`) contains **fabricated paths and gate names** that don't match the real implementation. That mismatch is the only "issue remaining" — fixing the doc to reflect reality is the deployment-readiness fix.
 
-## Plan
+### Real codebase state (verified)
 
-**Update `MASTER_REMEDIATION_BLUEPRINT_v2.md`** (new versioned artifact, preserve v1 baseline) with:
+| Claim in doc | Reality |
+|---|---|
+| `scripts/validators/*.ts` (19 files) | ❌ Directory does not exist |
+| `scripts/aggregator/master-remediation-aggregator.ts` | ❌ File does not exist |
+| 19 BLOCK gates wired | ✅ All 19 wired, but in `scripts/architecture/checks/check-os-release-readiness.ts` lines 276–298 |
+| 19 validators exist | ✅ All exist, but as `scripts/architecture/checks/check-<gate>.ts` |
+| Generated reports per gate | ✅ All 19 `generated/<gate>-report.json` files present |
 
-### Section 1: Executive status
-- Verdict: GREEN — 16/16 phases shipped + Operator Surfaces
-- Totals: 21 tables, 12 edge functions, 19 validators, 19 aggregator BLOCK gates, 3 operator boards
-- Blueprint completion: 100% + extension
+### Gate-name corrections needed in doc
 
-### Section 2: Phase ship log (0–16)
-Per phase, list:
-- Status (SHIPPED)
-- Tables added with names
-- Edge functions deployed
-- Validators added
-- Operator UI (Phase 16 only)
+| Doc says (wrong) | Aggregator registers (real) |
+|---|---|
+| `evidence-persistence` | `evidence-graph-completeness` |
+| `release-graph-evidence` | `release-evidence-graph-snapshot` |
+| `owner-copilot-sessions` | `owner-copilot-readonly` |
+| `federation-optin-coverage` | `federation-optin-append-only` |
+| `dr-drill-execution` | `dr-drill-evidence` |
+| `chaos-drill-results` | `chaos-drill-classification` |
+| `production-launch-attestations` | `production-launch-attestation` |
+| `boardroom-tab-engagement` | `boardroom-cockpit-telemetry` |
+| `onboarding-branch-coverage` | `onboarding-branch-telemetry` |
+| Several Phase 0–9 names | See aggregator lines 276–286 for canonical list |
 
-### Section 3: 19 BLOCK gates registered in master aggregator
-Enumerated list with validator path
+## Plan: Rewrite blueprint to match reality (doc-only, zero code changes)
 
-### Section 4: Operator Surfaces (Phase 16)
-- 3 admin boards with routes
-- Tab registry entries
-- Lazy-load wiring
+### Step 1 — Rewrite `MASTER_REMEDIATION_BLUEPRINT_v2.md`
 
-### Section 5: Honest residual gaps (NOT in original blueprint)
-Categorized:
-- **External-blocked** (Apple/Google enrollment, custom domain DNS)
-- **Burn-in time required** (7-day uptime streak, AI provider health window, weekly DR drill cadence)
-- **Optional UX enhancements** (App Store install lifecycle polish, AI cost dashboards, federated search expansion, autosave hook coverage)
-- **Out-of-scope archived** (iOS/Android native, Capacitor, APNs/FCM)
+Replace fabricated paths/names with verified ones:
+- All validator paths → `scripts/architecture/checks/check-<gate>.ts`
+- Aggregator path → `scripts/architecture/checks/check-os-release-readiness.ts`
+- All 19 gate names corrected to match the `REQUIRED_GATES` array (lines 276–298)
+- Add a "Verification" section showing exact `npx tsx` command per validator + the `npm run release:readiness` aggregator command
+- Add a "Verified Against Codebase" footer with the file paths inspected
 
-### Section 6: Recommended next pack
-"Phase 17: Cost & Coverage" — AI cost analytics surface, federated search expansion to 16 surfaces, autosave to 15+ surfaces
+### Step 2 — Mirror to `public/generated/MASTER_REMEDIATION_BLUEPRINT_v2.md`
 
-### Section 7: Verification commands
-- `npm run release:readiness`
-- `npm run final:closure:run-all`
+Identical content, so the in-app reader and the document download stay in sync.
 
-## Output
-- New file: `/mnt/documents/MASTER_REMEDIATION_BLUEPRINT_v2.md`
-- Mirror: `public/generated/MASTER_REMEDIATION_BLUEPRINT_v2.md`
-- Single `<lov-artifact>` tag at end
+### Step 3 — Add a one-page `MASTER_REMEDIATION_VERIFICATION_v2.md`
 
-No app code changes. Pure documentation refresh.
+Lists each of the 19 gates with:
+- Real validator file path
+- Real generated report path
+- Real aggregator line number reference
+- Run command
+
+This becomes the "deployment evidence" companion to the blueprint.
+
+### What I will NOT change
+
+- No new tables, no new edge functions, no new validators — the implementation is complete and green.
+- No edits to `check-os-release-readiness.ts` — it's already correctly wired.
+- No edits to `master-remediation-progress.json` — already reflects GREEN.
+
+### Output artifacts
+
+- `/mnt/documents/MASTER_REMEDIATION_BLUEPRINT_v2.md` (rewritten, accurate)
+- `public/generated/MASTER_REMEDIATION_BLUEPRINT_v2.md` (mirror)
+- `/mnt/documents/MASTER_REMEDIATION_VERIFICATION_v2.md` (new evidence companion)
+- `public/generated/MASTER_REMEDIATION_VERIFICATION_v2.md` (mirror)
+
+After approval, the docs will accurately reflect the already-deployment-ready codebase, with zero broken path references.
+
