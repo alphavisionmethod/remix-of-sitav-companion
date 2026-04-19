@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T19:55:58.582Z
+> Generated: 2026-04-19T22:09:38.142Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 209 |
-| Gates present  | 213 |
+| Gates required | 230 |
+| Gates present  | 234 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3618 |
+| Total warnings | 3638 |
 
 ## Per-gate results
 
@@ -226,6 +226,27 @@
 | `mobile-archived-scope` | ✅ | 0 | 0 |
 | `no-kernel-overclaim` | ✅ | 0 | 0 |
 | `doc-canonicality` | ✅ | 0 | 0 |
+| `canonical-paths` | ✅ | 0 | 6 |
+| `5-plane-boundaries` | ✅ | 0 | 0 |
+| `evidence-graph-completeness` | ✅ | 0 | 1 |
+| `cron-execution-evidence` | ✅ | 0 | 12 |
+| `release-decision-persistence` | ✅ | 0 | 1 |
+| `ai-receipt-completeness` | ✅ | 0 | 0 |
+| `connector-reauth-telemetry` | ✅ | 0 | 0 |
+| `security-fabric-probes` | ✅ | 0 | 0 |
+| `app-sdk-extension-registry` | ✅ | 0 | 0 |
+| `boardroom-cockpit-telemetry` | ✅ | 0 | 0 |
+| `onboarding-branch-telemetry` | ✅ | 0 | 0 |
+| `mobile-deferral-attestation` | ✅ | 0 | 0 |
+| `app-sdk-extension-events` | ✅ | 0 | 0 |
+| `release-evidence-graph-snapshot` | ✅ | 0 | 0 |
+| `owner-copilot-readonly` | ✅ | 0 | 0 |
+| `federation-optin-append-only` | ✅ | 0 | 0 |
+| `dr-drill-evidence` | ✅ | 0 | 0 |
+| `chaos-drill-classification` | ✅ | 0 | 0 |
+| `production-launch-attestation` | ✅ | 0 | 0 |
+| `electron-domain-layout` | ✅ | 0 | 0 |
+| `os-ci-end-to-end` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
@@ -233,7 +254,7 @@
 
 ## Verdict
 
-⚠️ All required gates passed, but 3618 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3638 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
