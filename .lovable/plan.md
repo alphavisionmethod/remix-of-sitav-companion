@@ -1,158 +1,140 @@
 
 
-## Audit verdict — Security & Portability is 100% complete; Economic-Trust-Future is 0% started
+## Audit verdict — what is real vs missing
 
-**Security & Portability closure (prior work) — VERIFIED COMPLETE:**
-- 19 deliverables present in `generated/security-and-portability-closure/` (12 markdowns + 4 JSON status mates + 2 evidence dirs + register)
-- 10 real validators (no stubs) wired into `check-os-release-readiness.ts` at lines 232–242 (181 BLOCK gates total)
-- `secret_rotation_log` DB table + cadence registry (`src/lib/security/secret-rotation-cadence.ts`) live
-- Canonical `runtime-host-adapter.ts` + 4 hooks refactored
-- `SecurityAndPortabilityTruthPanel.tsx` mounted on AI Engineer hub
-- Honest WARN-tier classification for items requiring real-world execution (no fake greens)
+**Already complete (preserve, do not touch):**
+- 7 truth panels mounted on AI Engineer hub (`AIRuntimeHome.tsx` lines 30-36, 148)
+- Canonical `runtime-host-adapter.ts` + 4 hooks refactored + `portability-boundary-model.ts` (137 lines, classifications live)
+- 178 validators in `scripts/validation/`, 181 BLOCK gates in `check-os-release-readiness.ts`
+- `supabase/functions/_shared/logger.ts` (`EdgeLogger` class — real, queryable, correlation-id capable) — adopted by **30 of 173 edge functions** (17%)
+- Security & Portability closure: 19 deliverables in `generated/security-and-portability-closure/` GREEN
 
-**Economic Governance + UX Trust + Future-Surface Containment — 0% started:**
+**Gaps the prompt actually targets (real, not hypothetical):**
 
-| Area | Current state | Gap |
+| Gap | Evidence | Real work |
 |---|---|---|
-| Per-user AI ceilings | Class-based (`max_calls_per_hour`, `max_cost_cents_per_call`) per user — but no **explicit hard daily/monthly user-spend ceiling** distinct from class envelope | No per-user hard-stop ledger, no budget-decision receipts table, no load-proof artifact |
-| Calm mode | Default = `"standard"` in `AppearanceContext.tsx` line 84 | Should be `"calm"` if calm is canonical safe default |
-| AI workforce wording | 13+ surfaces use "workforce", "autonomously", etc. | No agency-claim audit + no validator preventing regression |
-| Future surfaces | `demo-only-surface-registry.ts` has 9 surfaces (DWE01-07, UAO03/08) BUT **mobile-native, ambient shells, continuity, wearable archive paths NOT all in the launch-scope exclusion list** | No `launch-scope-surface-classification` validator + no `economic-trust-and-future-closure/` directory |
-| Validators | 0 of 7 required validators exist | `check-per-user-ai-ceilings`, `check-ai-budget-hard-stop`, `check-ai-budget-receipts`, `check-calm-mode-default`, `check-no-ambiguous-ai-agency-claims`, `check-future-surface-containment`, `check-launch-scope-surface-classification` |
+| 11 hooks in `src/hooks/` use `window.*` directly but **only 3 are classified** in `portability-boundary-model.ts` (`use-mobile`, `useReducedMotion`, `useWindowSnap`) | grep result above | 8 hooks need classification (most are legitimate leaf-browser-only — `use-online-status`, `use-realtime-notifications`, `use-unified-ws`, `useGlobalShortcuts`, `useOSRuntime`, `useOfflineStore`, `useWallpaperParallax`, `use-gesture-engine`) |
+| 143 of 173 edge functions do **not** import the canonical `_shared/logger.ts` | `grep -l` count above | Standardize the ~50 that have meaningful business logic; the rest (CRUD/passthrough) get an honest classification |
+| **0 cleanup deliverables** exist (`generated/architectural-cleanup/` does not exist) | `ls` returned nothing | Create all 16 mandatory deliverables |
+| **0 cleanup validators** exist | `ls scripts/validation` | 5 new BLOCK validators required by Part 4 Phase G2 |
+| Prior **Economic-Trust-Future closure was abandoned mid-flight** — DB tables, runtime enforcement, microcopy, and registry edits exist but `generated/economic-trust-and-future-closure/` was never created and the truth panel was never mounted | `ls` returned nothing for that directory | Out of scope for THIS prompt — flag as known carryover |
 
-**Scope rule (per user):** All NEW UI lives ONLY on Admin AI Engineer hub (`AIRuntimeHome.tsx`). Validators in canonical `scripts/validation/`. Generated evidence in canonical `generated/economic-trust-and-future-closure/`. **Zero edits to other admin domains.**
-
----
-
-## Phase 1 — Per-user AI hard ceilings (DB + runtime + receipts)
-
-### 1A. DB migration — explicit per-user ceiling + decision receipts
-- **NEW table** `ai_user_hard_ceilings`: `user_id PK`, `daily_cost_cents_cap`, `monthly_cost_cents_cap`, `daily_calls_cap`, `degrade_to_model_id`, `effective_from`, `updated_at`. Admin-write, owner-read RLS.
-- **NEW table** `ai_budget_decision_receipts`: `id`, `user_id`, `capability_key`, `decision: allow|degrade|block`, `reason`, `pre_check_state jsonb` (rolling spend, calls), `policy_rule`, `cost_estimate_cents`, `actual_cost_cents`, `created_at`. Append-only, admin-read, service-insert RLS. Realtime-published.
-- **NEW SECURITY DEFINER fn** `check_user_hard_ceiling(p_user_id, p_estimated_cost_cents)` returns `{allowed, reason, daily_pct, monthly_pct, fallback_model_id}` — runs BEFORE existing `check_ai_budget_policies` (defense in depth).
-- **Seed default ceiling** for every existing user via trigger on `auth.users`.
-
-### 1B. Runtime enforcement (real path, no dashboards-only)
-- Edit `supabase/functions/_shared/ai-budget-check.ts` → after the existing class-based RPC, ALSO call `check_user_hard_ceiling`. If user-cap exceeded → `shouldBlock=true, reason="user_hard_ceiling_exceeded"`. If 80%+ → `shouldDowngrade=true, fallbackModelId=ceiling.degrade_to_model_id`.
-- Every call writes a row to `ai_budget_decision_receipts` BEFORE executing the LLM call (the receipt records the *decision*, not the result).
-- Edit `supabase/functions/ai-gateway/index.ts` → on `shouldBlock`, return graceful 429 with structured body `{ kind: "budget_ceiling", message_user_safe: "...", retry_after_seconds, current_pct, daily_resets_at }` so UI can render premium decline copy.
-
-### 1C. Graceful degraded behavior in UI
-- **NEW** `src/components/ai-runtime/BudgetCeilingNotice.tsx` — premium calm copy when blocked: "You've used today's AI workspace allowance. New requests resume at 00:00 UTC." (No bug-feel.) Wired into `chat-advisor` client error handler.
-- Admin-visible ceiling badge in the new truth panel.
-
-### 1D. Load proof
-- **NEW** `os/scripts/run-per-user-budget-load-test.sh` — drives 200 concurrent calls against a test user past their cap, verifies (a) no extra calls slipped through, (b) ledger tally is exact, (c) all decisions receipted, (d) degraded behavior stable. Writes evidence file `generated/economic-trust-and-future-closure/budget-load-runs/<ts>.json`.
+**Scope rule (per user):** All NEW UI lives ONLY on `AIRuntimeHome.tsx` as **1 new tab**. Validators in `scripts/validation/`. Evidence in `generated/architectural-cleanup/`. **Zero edits to other admin domains.**
 
 ---
 
-## Phase 2 — Calm-mode default + UX trust copy alignment
+## Phase 1 — Cleanup inventory + dependency map (zero code changes; pure audit)
 
-### 2A. Flip calm-mode default
-- Edit `src/contexts/AppearanceContext.tsx` line 84: `useState<DisplayMode>("standard")` → `useState<DisplayMode>("calm")`.
-- Edit `src/pages/FirstBootSetup.tsx` line 98: `calmMode: false` → `calmMode: true`.
-- Edit `src/lib/services/personalization-engine/index.ts` line 124: `calmMode: false` → `calmMode: true`.
-- Update onboarding copy disclosing calm-mode default.
+**1A.** Run real grep/import-graph audits, write 3 audits backed by live file scans:
+- `ARCHITECTURAL_CLEANUP_INVENTORY.md` — categorize every cleanup candidate (obsolete scripts, duplicate docs, browser-trapped hooks, unstructured edge fns, stale generated artifacts)
+- `CLEANUP_DEPENDENCY_MAP.md` — for each candidate: import refs, route refs, workflow refs, generator refs (computed via `grep -r`)
+- `FILE_REMOVAL_SAFETY_POLICY.md` — codified 9-check policy; nothing gets removed without all 9 green
 
-### 2B. Notification disclosure surface
-- **NEW** `src/components/notifications/NotificationDisclosureCard.tsx` — calm description of: notification categories, default intensity (calm), how to tune. Embed into Settings notification page (existing) AND first-boot.
-
-### 2C. AI agency wording audit + corrections
-- Scan-then-edit pass: replace "workforce is acting" / "AI is autonomously" patterns with proven-language equivalents from `src/lib/ux-trust/microcopy.ts`. Targets identified: `AutonomyLadder.tsx`, `MissionControlPage.tsx`, `InternalAgentsBoard.tsx`, `SuggestionsBoard.tsx`, `HQApprovalQueue.tsx`, `AIT01TeamOverview.tsx`, `AIT02RoleRegistry.tsx`, `AIT03TaskInvocation.tsx`, `AIT04to08Boards.tsx`.
-- Extend `src/lib/ux-trust/microcopy.ts` with `aiAgency.{readyToAct, canRecommend, governedScope, runtimeProvenOnly}` canonical phrases.
+**Output:** evidence-only, zero file deletions in this phase.
 
 ---
 
-## Phase 3 — Future-surface containment expansion
+## Phase 2 — Portability boundary completion (8 hook classifications)
 
-### 3A. Extend `demo-only-surface-registry.ts`
-- Add archived-mobile-native surface entries (linking to `archive/mobile/`).
-- Add `containment: "archived"` as a new ContainmentLevel and seed it.
-- **NEW field** `excludedFromLaunchScoring: boolean` on every entry that is `future_vision` or `archived` — this is what the new validator reads.
+**2A.** Audit + classify the 8 unclassified hooks using `window.*`:
+- `BROWSER_GLOBAL_ASSUMPTION_AUDIT.md` — for each of 8 hooks, classify as `leaf-browser-only` (most), `adapter-routed` (if cross-tier), or `shell-specific`
+- `RUNTIME_HOST_BOUNDARY_CLEANUP_PLAN.md` — show that **no new adapter methods are needed** (audit will confirm — these are notification/realtime/offline browser-leaf primitives) OR list exact methods to add
 
-### 3B. Banners + route-level truth
-- Verify every entry's `componentPath` imports `<DemoOnlyBanner surfaceId="..." />` (existing `check-demo-only-surface-badging.ts` already enforces this — no new work).
-
-### 3C. Remove from launch-scored critical path
-- **NEW** `generated/economic-trust-and-future-closure/launch-scope-exclusions.json` — emitted from registry, lists every `excludedFromLaunchScoring=true` surface.
-- New validator (Phase 4) reads this and ensures these surfaces never appear as required gates in `check-os-release-readiness.ts`.
+**2B.** Extend `src/runtimes/portability-boundary-model.ts` with the 8 missing classifications. **No hook refactors** unless audit proves a portable hook is browser-trapped (expectation: zero refactors needed; all 8 are legit leaf-browser primitives).
 
 ---
 
-## Phase 4 — Seven new BLOCK validators + 1 emitter
+## Phase 3 — Edge-function structured logging extension
 
-All real (no stubs); honest WARN-tier where evidence requires real execution.
+**3A.** Audit:
+- `EDGE_FUNCTION_LOGGING_AUDIT.md` — classify all 173 edge fns into:
+  - `canonical-compliant` (30 already use `_shared/logger.ts`)
+  - `needs-standardization` (high-value business logic without structured logs)
+  - `passthrough-acceptable` (CRUD/proxy fns where minimal logs are fine — honestly labeled, not silently ignored)
+- `EDGE_FUNCTION_LOGGING_STANDARDIZATION_PLAN.md` — exact list of fns to refactor (target: ~30 highest-value handlers like `ai-gateway`, `agent-executor`, `admin-bff-gateway`, `app-install`, etc.)
 
-1. `check-per-user-ai-ceilings.ts` (~90 LOC) — asserts `ai_user_hard_ceilings` table exists + every active user has a row + RLS correct. Reads DB via `psql`.
-2. `check-ai-budget-hard-stop.ts` (~70 LOC) — reads `budget-load-runs/*.json`; requires ≥1 run in last 30 days proving zero ceiling-exceeding calls; honest `pending-execution` WARN if no runs.
-3. `check-ai-budget-receipts.ts` (~60 LOC) — verifies `ai_budget_decision_receipts` table exists; cross-references DB count vs `ai_usage_ledger` count (every call must have a decision receipt).
-4. `check-calm-mode-default.ts` (~50 LOC) — greps `AppearanceContext.tsx`, `FirstBootSetup.tsx`, `personalization-engine/index.ts` for `useState<DisplayMode>("calm")` and `calmMode: true`. BLOCK on regression.
-5. `check-no-ambiguous-ai-agency-claims.ts` (~80 LOC) — scans `src/components/`, `src/pages/` for forbidden phrases: "workforce is acting", "AI autonomously", "is acting on your behalf" (case-insensitive). Allowlists wording sourced from `src/lib/ux-trust/microcopy.ts::aiAgency`.
-6. `check-future-surface-containment.ts` (~70 LOC) — reads `demo-only-surface-registry.ts`; asserts every device/wearable/ambient/continuity/native-mobile route has a registry entry with `excludedFromLaunchScoring=true` for `future_vision` and `archived` levels.
-7. `check-launch-scope-surface-classification.ts` (~60 LOC, meta) — cross-references `launch-scope-exclusions.json` against `REQUIRED_GATES` array in `check-os-release-readiness.ts`; BLOCK if any excluded surface appears in launch scoring.
-8. `emit-economic-trust-future-status.ts` — emitter that queries DB + reads registry + writes the 4 JSON status mates.
+**3B.** Refactor the identified ~30 fns to import `EdgeLogger` and emit structured entries with: `fn`, `correlationId`, `event_type`, `severity`, `actor`, `result`, `latencyMs`, `failure_class`. Preserve existing behavior — additive only.
 
 ---
 
-## Phase 5 — 12 deliverables in `generated/economic-trust-and-future-closure/`
+## Phase 4 — Truth-manifest reconciliation
 
-8 markdowns + 4 JSON mates per Part 5 spec:
-- `AI_BUDGET_CURRENT_STATE_AUDIT.md`, `PER_USER_AI_CEILING_MODEL.md`, `AI_BUDGET_RECEIPT_MODEL.md`, `PER_USER_BUDGET_ENFORCEMENT_PROOF.md`
-- `TRUST_SENSITIVE_UX_AUDIT.md`, `TRUST_COPY_ALIGNMENT_MODEL.md`
-- `FUTURE_SURFACE_AUDIT.md`
-- `ECONOMIC_TRUST_AND_FUTURE_FINAL_VERIFICATION.md`
-- `per-user-budget-status.json`, `trust-ux-status.json`, `future-surface-status.json`, `economic-trust-and-future-verification.json`
+**4A.** Audit every file in `generated/`:
+- `TRUTH_MANIFEST_AUDIT.md` — flag duplicates (e.g. multiple plane-boundary reports, overlapping audit files), stale artifacts, files no consumer reads
+- `TRUTH_MANIFEST_RECONCILIATION_PLAN.md` — for each conflict: name canonical source, list consumers to rewire, archive path for noncanonical
 
-All audits backed by LIVE evidence (DB queries, registry parse, file scans).
+**4B.** Apply reconciliations: **only relabel/archive** in this pass (zero deletes). Update consumers to point at canonical sources.
 
 ---
 
-## Phase 6 — UI panel on AI Engineer hub (1 new panel ONLY)
+## Phase 5 — Docs/scripts/workflows audit (audit-only)
 
-- **NEW** `src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx` — three sections:
-  - **Per-user budget ceilings** — live query `ai_user_hard_ceilings` + recent `ai_budget_decision_receipts` (block/degrade/allow counts, top users by spend %)
-  - **UX trust posture** — calm-mode default status, agency-claim scan result
-  - **Future-surface containment** — table from registry, excluded-from-launch-scoring badge per row
-- Insert as new tab in `AIRuntimeHome.tsx` after `security-portability-truth`.
-- **Zero other admin pages touched.**
+**5A.** Two audits, no edits:
+- `DOCUMENTATION_CLEANUP_AUDIT.md` — duplicate/stale/superseded markdowns in `docs/`
+- `SCRIPT_AND_WORKFLOW_CLEANUP_AUDIT.md` — never-called scripts, redundant workflows
+
+**5B.** **No removal in this pass** — produce evidence-only registers. The Part 7 safety rule "prove non-use before removal" requires a separate validated removal pass; this plan stops at proven-safe classification.
 
 ---
 
-## Phase 7 — Wire 7 new BLOCK gates + npm scripts
+## Phase 6 — Five new BLOCK validators
 
-### 7A. `check-os-release-readiness.ts`
-Append after line 242 (181 → **188 BLOCK gates**):
-```
-// Economic Governance + UX Trust + Future-Surface Closure — 7 BLOCK gates
-"per-user-ai-ceilings", "ai-budget-hard-stop", "ai-budget-receipts",
-"calm-mode-default", "no-ambiguous-ai-agency-claims",
-"future-surface-containment", "launch-scope-surface-classification",
-```
+All real (read live evidence; no stubs). Honest WARN-tier where evidence requires execution.
 
-### 7B. `package.json` scripts
-- `closure:economic-trust-future:emit` (runs emitter)
-- `closure:economic-trust-future:run-all` (runs 7 validators)
-- `ai:budget:load-test` (runs `run-per-user-budget-load-test.sh`)
-- Update `final:closure:run-all` to include the new closure.
+1. `check-no-browser-globals-in-portable-code.ts` — scans `src/hooks/`, `src/lib/services/` for `window./document./navigator.` and BLOCKs unless the file is in `PORTABILITY_CLASSIFICATIONS` as `leaf-browser-only`/`shell-specific`/`adapter-routed`
+2. `check-edge-function-structured-logging.ts` — reads logging audit JSON; BLOCKs on regression (any fn classified `needs-standardization` that doesn't import `_shared/logger.ts`)
+3. `check-no-duplicate-truth-manifests.ts` — reads reconciliation JSON; BLOCKs if any non-canonical artifact in `generated/` is referenced by a consumer
+4. `check-no-stale-canonical-docs.ts` — reads docs audit JSON; BLOCKs on stale-canonical labeling regression
+5. `check-safe-cleanup-regressions.ts` — meta-validator: aggregates the 4 above + verifies build-graph integrity
+
+---
+
+## Phase 7 — 16 deliverables in `generated/architectural-cleanup/`
+
+Per Part 6 spec exactly:
+- 12 markdowns: `ARCHITECTURAL_CLEANUP_INVENTORY`, `CLEANUP_DEPENDENCY_MAP`, `BROWSER_GLOBAL_ASSUMPTION_AUDIT`, `RUNTIME_HOST_BOUNDARY_CLEANUP_PLAN`, `EDGE_FUNCTION_LOGGING_AUDIT`, `EDGE_FUNCTION_LOGGING_STANDARDIZATION_PLAN`, `TRUTH_MANIFEST_AUDIT`, `TRUTH_MANIFEST_RECONCILIATION_PLAN`, `DOCUMENTATION_CLEANUP_AUDIT`, `SCRIPT_AND_WORKFLOW_CLEANUP_AUDIT`, `FILE_REMOVAL_SAFETY_POLICY`, `POST_CLEANUP_VERIFICATION_REPORT`
+- 4 JSON status mates: `architectural-cleanup-status`, `portability-cleanup-status`, `logging-cleanup-status`, `architectural-cleanup-verification`
+
+All audits backed by live file scans (real grep counts, real import graphs).
+
+---
+
+## Phase 8 — One new truth panel on AI Engineer hub (only place)
+
+`src/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel.tsx` — three sections:
+- **Portability boundary status** — count of classified vs unclassified hooks, link to model
+- **Edge-function logging coverage** — `30/173 → N/173` after refactor, list of standardized fns
+- **Truth-manifest health** — duplicate/stale/canonical counts from JSON status
+
+Mount as 8th tab in `AIRuntimeHome.tsx` after `SecurityAndPortabilityTruthPanel`. **Zero other admin pages touched.**
+
+---
+
+## Phase 9 — Wire 5 new BLOCK gates + npm scripts
+
+**9A.** `check-os-release-readiness.ts` — append `"no-browser-globals-in-portable-code"`, `"edge-function-structured-logging"`, `"no-duplicate-truth-manifests"`, `"no-stale-canonical-docs"`, `"safe-cleanup-regressions"` (181 → **186 BLOCK gates**)
+
+**9B.** `package.json`:
+- `closure:architectural-cleanup:emit` (runs cleanup emitters)
+- `closure:architectural-cleanup:run-all` (runs 5 validators)
+- Update `final:closure:run-all` to include new closure
 
 ---
 
 ## Honest limits surfaced (no fake green)
 
-- `check-ai-budget-hard-stop` returns `pending-execution` WARN until first load-test run — script is wired and ready.
-- `check-per-user-ai-ceilings` BLOCKs only if table missing or RLS wrong; honest WARN if seed coverage <100%.
-- `check-future-surface-containment` BLOCKs on uncategorized device/mobile-native routes.
-
-Every WARN classification is reached by inspecting REAL data — never hard-coded.
+- Phase 5 audits docs/scripts but **does not delete anything** — actual removal would require a separate validated pass per the prompt's own safety rules. Honestly labeled `audit-only-pass-1`.
+- Phase 4 reconciliation is **archive/relabel only** — no `generated/` files deleted.
+- Edge-function refactor scope is **~30 high-value fns**, not all 173 — the rest get honest `passthrough-acceptable` classification rather than fake-green coverage.
 
 ---
 
 ## Files touched (final summary)
 
-- **NEW (24):** 8 markdown audits + 4 JSON status files + 7 validators + 1 emitter + 1 truth panel UI + 1 SQL migration + 1 load-test shell script + 1 budget-ceiling notice component
-- **EDITED (10):** `AppearanceContext.tsx`, `FirstBootSetup.tsx`, `personalization-engine/index.ts`, `microcopy.ts`, `demo-only-surface-registry.ts`, `ai-budget-check.ts`, `ai-gateway/index.ts`, `AIRuntimeHome.tsx`, `check-os-release-readiness.ts`, `package.json`
-- **AGENCY WORDING EDITS:** 9 admin/AI surfaces (one-line copy fixes only)
-- **ZERO edits to:** other admin domains, security/portability/mobile/AI runtime/connector/hardware closures (preserved GREEN)
+- **NEW (22):** 12 markdown audits + 4 JSON status files + 5 validators + 1 truth panel UI
+- **EDITED (4):** `portability-boundary-model.ts` (+8 classifications), `AIRuntimeHome.tsx` (+1 tab), `check-os-release-readiness.ts` (+5 gates), `package.json` (+2 scripts)
+- **REFACTORED (~30):** edge functions to use `_shared/logger.ts` (additive, behavior-preserving)
+- **ZERO edits to:** other admin domains, security/portability/mobile closures, sealed migrations, archive/* directories
 
-After this pass: **188 BLOCK gates total**, 1 new live truth panel on AI Engineer hub, real per-user hard-stop enforcement at runtime with receipts, calm-mode as default, agency wording locked behind validator, future surfaces excluded from launch scoring with explicit registry+validator backing. Honest WARN-tier preserved where evidence requires real execution.
+After this pass: 186 BLOCK gates, 8 truth panels on AI Engineer hub, full portability classification of all 11 window-touching hooks, ~60/173 edge fns on canonical structured logging (up from 30), 16 cleanup deliverables, zero deletions (cleanup proven-safe register only). Honest WARN-tier preserved everywhere evidence requires execution.
 
