@@ -84,7 +84,13 @@ export default function SLOObservabilityBoard() {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Activity className="h-4 w-4" />Recent SLO snapshots</CardTitle></CardHeader>
             <CardContent className="space-y-2 text-xs">
-              {slos.length === 0 && <div className="text-muted-foreground">No snapshots yet. Run the evaluator.</div>}
+              {slos.length === 0 && (
+                <EmptyState
+                  icon={<Activity className="h-5 w-5" />}
+                  title="No SLO snapshots yet"
+                  description="Run the SLO evaluator to capture the first rolling window."
+                />
+              )}
               {slos.map(s => (
                 <div key={s.id} className="flex items-center justify-between border rounded p-2">
                   <div>
@@ -102,7 +108,13 @@ export default function SLOObservabilityBoard() {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4" />Open anomalies</CardTitle></CardHeader>
             <CardContent className="space-y-2 text-xs">
-              {anomalies.filter(a => a.status === "open").length === 0 && <div className="text-muted-foreground">No open anomalies.</div>}
+              {anomalies.filter(a => a.status === "open").length === 0 && (
+                <EmptyState
+                  icon={<AlertTriangle className="h-5 w-5" />}
+                  title="No open anomalies"
+                  description="The runtime is operating within expected behavioural envelopes."
+                />
+              )}
               {anomalies.map(a => (
                 <div key={a.id} className="flex items-center justify-between border rounded p-2">
                   <div>
@@ -118,7 +130,13 @@ export default function SLOObservabilityBoard() {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><GitBranch className="h-4 w-4" />Drift findings</CardTitle></CardHeader>
             <CardContent className="space-y-2 text-xs">
-              {drift.length === 0 && <div className="text-muted-foreground">No drift detected.</div>}
+              {drift.length === 0 && (
+                <EmptyState
+                  icon={<GitBranch className="h-5 w-5" />}
+                  title="No drift detected"
+                  description="Distribution detectors will surface here once a drift score exceeds threshold."
+                />
+              )}
               {drift.map(d => (
                 <div key={d.id} className="flex items-center justify-between border rounded p-2">
                   <div>
@@ -134,7 +152,13 @@ export default function SLOObservabilityBoard() {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Target className="h-4 w-4" />Canary runs (golden paths)</CardTitle></CardHeader>
             <CardContent className="space-y-2 text-xs">
-              {canaries.length === 0 && <div className="text-muted-foreground">No canary runs.</div>}
+              {canaries.length === 0 && (
+                <EmptyState
+                  icon={<Target className="h-5 w-5" />}
+                  title="No canary runs yet"
+                  description="Schedule the canary cron or trigger a golden-path probe to populate this panel."
+                />
+              )}
               {canaries.map(c => (
                 <div key={c.id} className="flex items-center justify-between border rounded p-2">
                   <div>
