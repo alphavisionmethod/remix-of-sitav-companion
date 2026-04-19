@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T15:26:44.492Z",
+  "gate": "no-duplicate-truth-manifests",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "generated/os-release-readiness-report.json, generated/os-release-readiness-summary.md",
+      "message": "Multiple canonical-level artifacts for concern \"release-readiness\": 2 found at generated/ root."
+    }
+  ],
+  "concernsChecked": 5,
+  "duplicates": 1
+}
