@@ -7,11 +7,18 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
+import {
+  riskTone,
+  policyDraftStatusTone,
+} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { ShieldAlert, FileWarning, KeyRound, CheckCircle2, XCircle, RefreshCw, Play, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -50,12 +57,7 @@ const KIND_ICON: Record<string, typeof FileWarning> = {
   column_grant_review: FileWarning,
 };
 
-const RISK_BADGE: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  low: "outline",
-  medium: "secondary",
-  high: "default",
-  critical: "destructive",
-};
+// Risk + status tones now flow through canonical StatusBadge + status-tone-maps.
 
 export default function PolicyDraftReviewBoard() {
   const [drafts, setDrafts] = useState<PolicyDraft[]>([]);

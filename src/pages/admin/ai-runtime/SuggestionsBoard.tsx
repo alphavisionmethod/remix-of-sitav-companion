@@ -8,7 +8,6 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
@@ -19,6 +18,15 @@ import {
   XCircle, PlayCircle, Award, Inbox,
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
+import {
+  suggestionStatusTone,
+  priorityTone,
+  outcomeTone,
+} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -52,34 +60,8 @@ interface SummaryRow {
   count: number;
 }
 
-const STATUS_TONE: Record<string, string> = {
-  proposed: "bg-blue-500/15 text-blue-400 border-blue-500/30",
-  under_review: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  accepted: "bg-green-500/15 text-green-400 border-green-500/30",
-  rejected: "bg-red-500/15 text-red-400 border-red-500/30",
-  in_progress: "bg-violet-500/15 text-violet-400 border-violet-500/30",
-  done: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  superseded: "bg-muted text-muted-foreground",
-};
-
-const PRIORITY_TONE: Record<string, string> = {
-  urgent: "bg-red-500/15 text-red-400 border-red-500/30",
-  high: "bg-orange-500/15 text-orange-400 border-orange-500/30",
-  normal: "bg-blue-500/15 text-blue-400 border-blue-500/30",
-  low: "bg-muted text-muted-foreground",
-};
-
-const TYPE_TONE: Record<string, string> = {
-  reliability: "bg-emerald-500/15 text-emerald-400",
-  governance: "bg-violet-500/15 text-violet-400",
-  cost: "bg-amber-500/15 text-amber-400",
-  security: "bg-red-500/15 text-red-400",
-  dependency_upgrade: "bg-cyan-500/15 text-cyan-400",
-  ops: "bg-blue-500/15 text-blue-400",
-  ux: "bg-pink-500/15 text-pink-400",
-  refactor: "bg-indigo-500/15 text-indigo-400",
-  new_feature: "bg-green-500/15 text-green-400",
-};
+// Status / priority / type tones now flow through canonical
+// StatusBadge + status-tone-maps. No raw color literals here.
 
 export default function SuggestionsBoard() {
   const [items, setItems] = useState<Suggestion[]>([]);
