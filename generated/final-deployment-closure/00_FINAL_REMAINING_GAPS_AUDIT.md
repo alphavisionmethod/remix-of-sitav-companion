@@ -1,65 +1,31 @@
 # 00 — Final Remaining Gaps Audit
 
-> Generated: 2026-04-19 · Owner: Release Engineering · Source: live system audit
+> Generated: 2026-04-19. Source: live aggregator + filesystem + cron audit.
 
-## Audit method
+## Aggregator state
 
-This audit cross-checked the master release aggregator (117 gates, all GREEN per
-`generated/os-release-readiness-report.json`) against the 18 closure scope items
-(A–R) declared in the final last-mile prompt. Each item was inspected against:
+- **Master aggregator verdict:** `YELLOW` (`ok=true`, `errors=0`, `warnings=3350`)
+- **Total downstream inputs:** 140 gates
+- **Missing inputs:** 0
+- **All 7 final closure meta-validators:** present and reporting
 
-1. **Code reality** — does the file/edge function/page exist?
-2. **Runtime reality** — is there a pg_cron schedule, persistent table, or live
-   route that proves it runs?
-3. **Operator reality** — can a human admin see and act on it?
-4. **Governance reality** — does a real validator emit a `*-report.json` artifact?
+## Real remaining gaps (this pass)
 
-## Results
+| # | Gap | Severity | Class | Evidence |
+|---|---|---|---|---|
+| 1 | 10 closure markdown deliverables (00–09) were declared in INDEX.md but not present on disk | HIGH | doc-truth | `ls generated/final-deployment-closure/` returned only `INDEX.md` before this pass |
+| 2 | `final-deployment-certification.json` was referenced but never emitted | HIGH | proof-truth | File absent until this pass |
+| 3 | Aggregator is `YELLOW`, not `GREEN` — 3350 warnings outstanding | MEDIUM | governance | `generated/os-release-readiness-report.json.totalWarnings=3350` |
+| 4 | Security Council has 0 findings recorded in 24h despite hourly cron firing successfully | LOW | runtime-evidence | `security_council_findings` count = 0; last cron run succeeded at 2026-04-19 01:00 UTC |
 
-| # | Scope item | Status before pass | Action this pass |
-|---|---|---|---|
-| A | Boardroom Layer 7 closure | ✅ Complete (memory: `features/boardroom-layer-7`) | None — re-asserted via `final-deployment-readiness` meta-gate |
-| B | Production-shape restore drill | ✅ Complete (weekly Sunday 05:00 UTC pg_cron) | None — re-asserted via `final-runtime-proof` |
-| C | OAuth refresh probe automation | ✅ Complete (hourly pg_cron, Google/MS/Slack) | None — re-asserted via `final-deployment-readiness` |
-| D | Nova Runtime SDK honesty | ✅ Complete (renamed from Nova Kernel; memory: `architecture/nova-runtime-sdk`) | None — re-asserted via `final-launch-honesty` |
-| E | MOK / Secure Boot installability | ✅ Complete (Ubuntu/Fedora/Arch matrix verified) | None — re-asserted via `final-supportability-readiness` |
-| F | Boardroom follow-through runbook | ✅ Complete (RB-020) | None |
-| G | Recurring drill cadence | ✅ Complete (8 pg_cron jobs cataloged in `docs/runbooks/pg-cron-schedules.md`) | +1 schedule: `sita-security-council-tick` (hourly) |
-| H | Claim-safety enforcement | ✅ Complete (8 claim-safety gates) | +1 meta-gate: `final-launch-honesty` |
-| I | Meaningful green gate verification | ✅ Complete (`gate-meaningfulness-report.json`) | +1 meta-gate: `final-gate-meaningfulness` (≤25% structural ceiling) |
-| J | App Store install lifecycle proof | ✅ Complete (DB-backed; memory: `architecture/deployment-gap-closure`) | None |
-| K | Frontend reality and polish | ✅ Complete (956 page render gate) | None |
-| L | Admin/operator coherence | ✅ Complete (12-domain IA, 5 workflows; memory: `architecture/admin-control-plane`) | None |
-| M | Restore/kill-switch human-use | ✅ Complete (`human-use-operational-readiness-report.json`) | None |
-| N | AI Workforce Phase 1 (runtime bridge) | ✅ Complete | None |
-| O | AI Workforce Phase 2 (constrained actions) | ✅ Complete | None |
-| P | AI Workforce Phase 3 (reflections + suggestions) | ✅ Complete | None |
-| Q | **AI Workforce Phase 4 (Security Council)** | ⚠️ Partial — DB + edge fn existed, **no UI, no cron** | **THIS PASS:** wired UI page, scheduled hourly cron, added operator action RPC |
-| R | Mobile deployment closure | ✅ Complete (140 mobile gates green) | None |
+## External (non-code) blockers
 
-## Real gap closed by this pass
+- Apple Developer membership (mobile submission)
+- Google Play Console account (mobile submission)
+- Cron-job verification from app sandbox (elevated DB role required)
 
-**Item Q — Security Council Phase 4 runtime UI + scheduling.**
-Before: `security-council-tick` edge function and `security_council_findings`
-table existed, but there was no admin board, no scheduled cron, and no operator
-RPC for finding lifecycle actions (acknowledge/resolve/mute). After: hourly
-`sita-security-council-tick` pg_cron job, `acknowledge_security_finding(uuid,
-text, text)` SECURITY DEFINER RPC, `SecurityCouncilBoard.tsx` wired into
-`/admin/ai-runtime` hub.
+## What this pass closes
 
-## Gaps that remain external
-
-These are not code gaps — they are credential / account gaps and are honestly
-classified as such throughout the mobile readiness gates.
-
-- Apple Developer Program membership ($99/yr) — required for App Store submission
-- Google Play Console account ($25 one-time) — required for Play submission
-- APNs push certificate — gated until iOS submission unblocks
-
-All three appear in `generated/mobile-submission-blockers-report.json` as
-WARN-tier, not BLOCK-tier, because the **code path** is complete.
-
-## Verdict
-
-**No undisclosed code gaps remain.** The 1 real runtime gap (Security Council)
-is closed by this pass; the 3 external gaps are correctly contained.
+1. Writes the 10 missing markdown deliverables with truthful content.
+2. Emits `final-deployment-certification.json` reflecting the **YELLOW** verdict honestly.
+3. Documents the warning surface so it can be triaged without false-green claims.

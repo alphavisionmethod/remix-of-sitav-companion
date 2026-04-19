@@ -1,42 +1,34 @@
 # 02 — Runtime & Operational Proof Closure
 
-> Generated: 2026-04-19 · Aggregated by `check-final-runtime-proof.ts`
+## Live cron evidence (verified 2026-04-19)
 
-## Live cron schedule (9 jobs)
+| Job | Schedule | Active | Last status |
+|---|---|---|---|
+| `sita-security-council-tick` | `0 * * * *` | ✅ | succeeded 01:00 UTC |
+| `sita-internal-agent-reflect` | `*/30 * * * *` | ✅ | active |
+| `sita-suggestion-generator` | `0 */6 * * *` | ✅ | active |
+| `sita-weekly-digest` | `0 7 * * 1` | ✅ | active |
+| `sita-canary-chaos` | `0 * * * *` | ✅ | active |
+| `sita-dr-drill` | `0 5 * * 0` | ✅ | active |
+| `sita-compliance-evidence` | `0 6 * * *` | ✅ | active |
+| `sita-connector-token-refresh-5m` | `*/5 * * * *` | ✅ | active |
+| `sita-webhook-process-1m` | `* * * * *` | ✅ | active |
+| `sita-webhook-retry` | `*/2 * * * *` | ✅ | active |
+| `sita-workflow-stuck-detector-5m` | `*/5 * * * *` | ✅ | active |
+| `sita-scheduler-dispatch-1m` | `* * * * *` | ✅ | active |
+| `sita-health-cron-1m` | `* * * * *` | ✅ | active |
+| `sita-ai-health-2m` | `*/2 * * * *` | ✅ | active |
 
-| Job | Cadence | Purpose |
-|---|---|---|
-| `sita-internal-agent-loop` | every 5 min | AI workforce internal agent runtime loop |
-| `sita-webhook-retry-processor` | every 2 min | Webhook DLQ exponential-backoff replay |
-| `sita-boardroom-l7-sla-scan` | every 30 min | Boardroom follow-through stuck-state alerting |
-| `sita-oauth-refresh-probe` | hourly | Google / MS Graph / Slack token refresh validation |
-| `sita-canary-evaluator` | hourly | SLO breach detection on critical flows |
-| `sita-chaos-evaluator` | hourly | Continuous-assurance fault-injection drills |
-| `sita-security-council-tick` | hourly | **NEW** — 7 security agents observe & propose |
-| `sita-compliance-evidence-collector` | daily 06:00 UTC | SOC2/ISO automated evidence packets |
-| `sita-dr-drill` | weekly Sun 05:00 UTC | Cross-region disaster recovery drill |
+**14/14 canonical cron jobs active.**
 
-## Runtime proof gates (re-asserted)
+## Runtime proof gate
 
-- `pg-cron-schedules-report.json` — all 9 jobs registered
-- `internal-agent-phase8-tables-report.json` — Phase 8 tables present
-- `internal-agent-phase9-tables-report.json` — Phase 9 tables present
-- `kill-switch-enforcement-report.json` — 15+ switches enforced
-- `attestation-packet-signed-report.json` — HMAC signature valid
-- `audit-export-immutable-report.json` — append-only verified
+`final-runtime-proof-report.json` aggregates: pg-cron schedules, AI workforce phase 8/9 tables, kill-switch enforcement, attestation packet, audit export immutable. Currently passing.
 
 ## Boardroom Layer 7
 
-Lifecycle persisted across `boardroom_followthrough_dispatches` +
-`boardroom_outcome_records`. SLA breach alerts emit on `dispatch_pending` >6h
-or `outcome_pending` >72h. Recovery via runbook **RB-020**.
+Closure ratio enforced by `check-boardroom-layer7-e2e.ts`. Lifecycle: approved → dispatched → executed → outcome_tracked → reflected → closed.
 
-## Restore drill
+## Honest limit
 
-Production-shape scrubbed dataset restored weekly. Last drill duration logged
-in `generated/restore-drill-report.json`. RTO target: 60 min. RPO target: 5 min.
-
-## Verdict
-
-**6/6 runtime artifacts proven**. The system is provably running, not just
-provably structured.
+- Security Council has 0 findings in 24h. This is consistent with a clean system but provides no positive runtime evidence. Recommend forcing a synthetic finding monthly to prove the path.

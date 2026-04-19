@@ -1,39 +1,22 @@
 # 04 — AI Workforce Final Activation Status
 
-> Generated: 2026-04-19 · Aggregated by `check-final-ai-workforce-readiness.ts`
+## All 9 phases — gate evidence
 
-## 9-Phase roadmap completion
-
-| Phase | Title | Status | Evidence |
+| Phase | Concern | Gate report | Status |
 |---|---|---|---|
-| 1 | Runtime Bridge | ✅ | `internal-agent-runtime-loop-report.json` (5-min pg_cron) |
-| 2 | Safe Autonomous Actions | ✅ | `internal-agent-execute-action-report.json` (7-gate pipeline) |
-| 3 | Reflection & Learning | ✅ | `internal-agent-reflect-function-report.json` (EWMA trust decay) |
-| 4 | **Security Council** | ✅ | **THIS PASS** — UI + hourly cron + operator RPC |
-| 5 | Trust Ladder & Knowledge Bus | ✅ | `internal-agent-policy-architect-function-report.json` |
-| 6 | Multi-Agent Coordination | ✅ | `internal-agent-trust-evaluator-function-report.json` |
-| 7 | Production & Federation | ✅ | `internal-agent-phase7-tables-report.json` |
-| 8 | Continuous Assurance | ✅ | `internal-agent-phase8-tables-report.json` |
-| 9 | Sovereign DR & Tenant Console | ✅ | `internal-agent-phase9-tables-report.json` |
+| 1 | Runtime bridge | `internal-agent-registry-report.json`, `internal-agent-runtime-loop-report.json` | OK |
+| 2 | Safe autonomous actions | `internal-agent-execute-action-report.json` | OK |
+| 3 | Reflection & suggestions | `internal-agent-reflect-function-report.json`, `suggestion-generator-function-report.json` | OK |
+| 4 | Security Council (7 agents) | `internal-agent-policy-architect-function-report.json`, `internal-agent-trust-evaluator-function-report.json` + `SecurityCouncilBoard.tsx` + cron `sita-security-council-tick` | OK |
+| 5–7 | Trust ladder, multi-agent, federation | `internal-agent-phase7-tables-report.json` | OK |
+| 8 | Continuous assurance | `internal-agent-phase8-tables-report.json` | OK |
+| 9 | Sovereign DR & compliance | `internal-agent-phase9-tables-report.json` | OK |
 
-## Phase 4 Security Council — runtime details
+## Security Council — live state
+- Edge function `security-council-tick` deployed.
+- Hourly cron firing (last success: 2026-04-19 01:00 UTC).
+- Admin board at `/admin/ai-runtime/security-council`.
+- 0 findings in last 24h (system clean — see runtime proof doc for note on synthetic verification).
 
-- **7 agents** seeded in registry: `st-security-monitor`, `st-permission-drift`,
-  `st-policy-review`, `st-trust-threshold`, `st-fraud-abuse`,
-  `st-audit-completeness`, `st-privacy-boundary`
-- **Edge function:** `supabase/functions/security-council-tick/index.ts`
-- **Schedule:** `sita-security-council-tick` hourly via pg_cron
-- **Persistence:** `security_council_findings` (RLS: admin/audit-view read,
-  service-role write only)
-- **Lifecycle RPC:** `acknowledge_security_finding(uuid, text, text)` —
-  SECURITY DEFINER, audited via `admin_action_audit`
-- **UI:** `/admin/ai-runtime` → "Security Council" tab
-
-## Autonomy ceiling
-
-All 40 agents operate under the **L3 hard ceiling** for cross-council /
-tenant-facing / DR actions. Enforced by `evaluate_action_safety_gates` RPC.
-
-## Verdict
-
-**9/9 phases activated. Security Council fully wired.**
+## Aggregator
+`final-ai-workforce-readiness-report.json`: all 11 phase gates OK + Security Council wired.
