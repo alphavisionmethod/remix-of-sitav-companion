@@ -161,6 +161,27 @@ export default function AIRuntimeNightlyTruthPanel() {
             Live-provider verification, receipt persistence, ledger writes, fallback path, and budget enforcement —
             run nightly at 02:00 UTC against the real Sovereign AI Gateway.
           </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <AITruthDisclosure
+              mode={
+                streak?.classification === "green" ? "live-gateway"
+                : streak?.classification === "yellow" ? "structural"
+                : streak?.classification === "red" ? "degraded"
+                : "structural"
+              }
+              verifiedAt={data.recentRuns[0]?.started_at ?? null}
+              to="/admin/ai-runtime"
+            />
+            <span className="text-[10px] text-muted-foreground">
+              {formatTrustLabel(
+                "proof",
+                streak?.classification === "green" ? "verified"
+                : streak?.classification === "red" ? "failed"
+                : streak?.classification === "yellow" ? "pending"
+                : "needs_evidence",
+              )}
+            </span>
+          </div>
           <p className="text-[10px] text-muted-foreground mt-1">
             Truth artifacts regenerated nightly at 03:00 UTC via GitHub Actions{" "}
             <code className="font-mono">ai-runtime-truth-nightly.yml</code> →{" "}
