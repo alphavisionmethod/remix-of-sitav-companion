@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { onNetworkChange, onVisibilityChange } from "@/components/sita/boot/bootStatePersistence";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { useRuntimeHost } from "@/runtimes/runtime-host-adapter";
 
 function getDeviceId(): string {
   let id = localStorage.getItem("sita-device-id");
@@ -100,12 +101,13 @@ export function useSetupOrchestration(): SetupOrchestrationHook {
     return () => { unsub(); clearInterval(dbInterval); };
   }, [engine]);
 
-  // Listen for interruptions
+  const host = useRuntimeHost();
+
+  // Listen for interruptions — beforeunload routed through canonical adapter
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const unsubBeforeUnload = host.addBeforeUnload(() => {
       engine.markInterrupted("reload");
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    });
 
     const unsubNetwork = onNetworkChange((online) => {
       if (!online) engine.markInterrupted("network-loss");
@@ -124,12 +126,12 @@ export function useSetupOrchestration(): SetupOrchestrationHook {
     });
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      unsubBeforeUnload();
       unsubNetwork();
       unsubVisibility();
       if (visibilityTimer) clearTimeout(visibilityTimer);
     };
-  }, [engine]);
+  }, [engine, host]);
 
   // Cleanup on unmount
   useEffect(() => {
