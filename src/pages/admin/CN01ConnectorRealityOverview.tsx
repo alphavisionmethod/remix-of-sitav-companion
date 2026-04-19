@@ -166,6 +166,7 @@ export default function CN01ConnectorRealityOverview() {
       <Tabs defaultValue="capabilities" className="space-y-4">
         <TabsList>
           <TabsTrigger value="capabilities">Per-Capability Matrix</TabsTrigger>
+          {/* allow-connected-literal: tab label, not a status badge */}
           <TabsTrigger value="accounts">Connected Accounts</TabsTrigger>
           <TabsTrigger value="registry">Registry</TabsTrigger>
           <TabsTrigger value="failures">Failure Diagnostics</TabsTrigger>
@@ -183,6 +184,7 @@ export default function CN01ConnectorRealityOverview() {
                     <TableHead>OAuth Client</TableHead>
                     <TableHead>Callback</TableHead>
                     <TableHead>Token</TableHead>
+                    {/* allow-connected-literal: column header, status driven by ConnectorStateBadge below */}
                     <TableHead>Connected</TableHead>
                     <TableHead>Reauth</TableHead>
                     <TableHead>Disconnect</TableHead>
@@ -220,6 +222,7 @@ export default function CN01ConnectorRealityOverview() {
 
         <TabsContent value="accounts">
           <Card>
+            {/* allow-connected-literal: card title, status driven by ConnectorStateBadge */}
             <CardHeader><CardTitle className="text-sm">Connected Account Diagnostics</CardTitle></CardHeader>
             <CardContent>
               {accounts.length === 0 ? (
