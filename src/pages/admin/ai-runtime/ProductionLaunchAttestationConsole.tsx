@@ -31,7 +31,7 @@ interface Attestation {
   created_at: string;
 }
 
-const POSTURES = ["green", "amber", "red", "deferred"] as const;
+const POSTURES = ["green", "yellow", "red", "deferred", "archived"] as const;
 const SURFACES = [
   "web-spa",
   "ubuntu-iso",
@@ -48,7 +48,7 @@ export default function ProductionLaunchAttestationConsole() {
   const [submitting, setSubmitting] = useState(false);
   const [surface, setSurface] = useState<string>(SURFACES[0]);
   const [posture, setPosture] = useState<string>("green");
-  const [notes, setNotes] = useState("");
+  const [releaseTag, setReleaseTag] = useState("");
   const [evidence, setEvidence] = useState("");
 
   const load = useCallback(async () => {
@@ -75,14 +75,14 @@ export default function ProductionLaunchAttestationConsole() {
       body: {
         surface_key: surface,
         launch_posture: posture,
-        notes: notes || null,
+        release_tag: releaseTag || null,
         evidence: evidence ? { raw: evidence } : null,
       },
     });
     if (error) toast.error(error.message);
     else {
       toast.success("Attestation signed and recorded");
-      setNotes("");
+      setReleaseTag("");
       setEvidence("");
       load();
     }
@@ -96,7 +96,7 @@ export default function ProductionLaunchAttestationConsole() {
   }, [items]);
 
   const postureTone = (p: string) =>
-    p === "green" ? "default" : p === "amber" ? "secondary" : p === "red" ? "destructive" : "outline";
+    p === "green" ? "default" : p === "yellow" ? "secondary" : p === "red" ? "destructive" : "outline";
 
   return (
     <AdminControlPlaneShell contextScope="AI Runtime · Production Launch Attestation">
@@ -144,12 +144,12 @@ export default function ProductionLaunchAttestationConsole() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Evidence reference (optional)</Label>
-              <Input value={evidence} onChange={e => setEvidence(e.target.value)} placeholder="e.g. release-decisions:abc123 or report path" />
+              <Label>Release tag (optional)</Label>
+              <Input value={releaseTag} onChange={e => setReleaseTag(e.target.value)} placeholder="e.g. v2026.04.19-rc1" />
             </div>
             <div className="space-y-2">
-              <Label>Notes</Label>
-              <Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Operator rationale, risk acceptance, blockers cleared…" rows={3} />
+              <Label>Evidence reference (optional)</Label>
+              <Textarea value={evidence} onChange={e => setEvidence(e.target.value)} placeholder="Paste evidence JSON, report path, or release-decisions ID…" rows={3} />
             </div>
             <div className="flex justify-end">
               <Button onClick={attest} disabled={submitting}>
