@@ -445,8 +445,8 @@ export default function SecurityCouncilBoard() {
                 </div>
 
                 {selected.routed_suggestion_id && (
-                  <div className="rounded-md border border-cyan-500/30 bg-cyan-500/5 p-3 text-xs">
-                    <div className="flex items-center gap-2 font-medium text-cyan-500 mb-1">
+                  <div className="rounded-md border border-info/30 bg-info/5 p-3 text-xs">
+                    <div className="flex items-center gap-2 font-medium text-info mb-1">
                       <ExternalLink className="h-3.5 w-3.5" />
                       Routed to implementation suggestion
                     </div>
