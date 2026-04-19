@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T16:26:53.375Z",
+  "generatedAt": "2026-04-19T19:52:21.242Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -405,6 +405,76 @@
     {
       "file": "generated/admin-integrations-health-visibility-report.json",
       "gate": "admin-integrations-health-visibility",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-simulated-persona-disclosure-report.json",
+      "gate": "onboarding-simulated-persona-disclosure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/boardroom-briefing-truth-alignment-report.json",
+      "gate": "boardroom-briefing-truth-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/concierge-ai-state-handling-report.json",
+      "gate": "concierge-ai-state-handling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/communications-connector-state-alignment-report.json",
+      "gate": "communications-connector-state-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/flagship-surface-trust-copy-report.json",
+      "gate": "flagship-surface-trust-copy",
+      "ok": true,
+      "errors": 0,
+      "warnings": 4
+    },
+    {
+      "file": "generated/flagship-surface-responsive-quality-report.json",
+      "gate": "flagship-surface-responsive-quality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 14
+    },
+    {
+      "file": "generated/admin-empty-state-patterns-report.json",
+      "gate": "admin-empty-state-patterns",
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    {
+      "file": "generated/cross-domain-coherence-empty-state-report.json",
+      "gate": "cross-domain-coherence-empty-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cost-spotlight-empty-state-report.json",
+      "gate": "cost-spotlight-empty-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/sbom-history-empty-state-report.json",
+      "gate": "sbom-history-empty-state",
       "ok": true,
       "errors": 0,
       "warnings": 0
@@ -888,9 +958,9 @@
     {
       "file": "generated/final-mobile-truth-report.json",
       "gate": "final-mobile-truth",
-      "ok": false,
+      "ok": true,
       "errors": 0,
-      "warnings": 16
+      "warnings": 0
     },
     {
       "file": "generated/final-ai-workforce-readiness-report.json",
@@ -1105,15 +1175,15 @@
     {
       "file": "generated/no-museum-boards-report.json",
       "gate": "no-museum-boards",
-      "ok": false,
-      "errors": 5,
+      "ok": true,
+      "errors": 0,
       "warnings": 0
     },
     {
       "file": "generated/admin-action-orientation-report.json",
       "gate": "admin-action-orientation",
-      "ok": false,
-      "errors": 1,
+      "ok": true,
+      "errors": 0,
       "warnings": 0
     },
     {
@@ -1395,11 +1465,39 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/ai-engineer-tab-registry-report.json",
+      "gate": "ai-engineer-tab-registry (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-engineer-wiring-coverage-report.json",
+      "gate": "ai-engineer-wiring-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 68
+    },
+    {
+      "file": "generated/ai-engineer-primitive-coverage-report.json",
+      "gate": "ai-engineer-primitive-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 72
+    },
+    {
+      "file": "generated/ai-engineer-action-coverage-report.json",
+      "gate": "ai-engineer-action-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 18
     }
   ],
-  "totalErrors": 6,
-  "totalWarnings": 3448,
+  "totalErrors": 0,
+  "totalWarnings": 3618,
   "missingGates": [],
-  "ok": false,
-  "verdict": "RED"
+  "ok": true,
+  "verdict": "YELLOW"
 }

@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T16:26:53.375Z
-> Verdict: **RED** ❌
+> Generated: 2026-04-19T19:52:21.242Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 199 |
-| Gates present  | 199 |
+| Gates required | 209 |
+| Gates present  | 213 |
 | Gates missing  | 0 |
-| Total errors   | 6 |
-| Total warnings | 3448 |
+| Total errors   | 0 |
+| Total warnings | 3618 |
 
 ## Per-gate results
 
@@ -75,6 +75,16 @@
 | `internal-agent-runtime-loop` | ✅ | 0 | 0 |
 | `admin-ai-runtime-drilldowns` | ✅ | 0 | 0 |
 | `admin-integrations-health-visibility` | ✅ | 0 | 0 |
+| `onboarding-simulated-persona-disclosure` | ✅ | 0 | 2 |
+| `boardroom-briefing-truth-alignment` | ✅ | 0 | 2 |
+| `concierge-ai-state-handling` | ✅ | 0 | 1 |
+| `communications-connector-state-alignment` | ✅ | 0 | 2 |
+| `flagship-surface-trust-copy` | ✅ | 0 | 4 |
+| `flagship-surface-responsive-quality` | ✅ | 0 | 14 |
+| `admin-empty-state-patterns` | ✅ | 0 | 3 |
+| `cross-domain-coherence-empty-state` | ✅ | 0 | 0 |
+| `cost-spotlight-empty-state` | ✅ | 0 | 0 |
+| `sbom-history-empty-state` | ✅ | 0 | 0 |
 | `internal-agent-execute-action` | ✅ | 0 | 0 |
 | `autonomous-action-safety-gates` | ✅ | 0 | 0 |
 | `autonomous-action-receipts` | ✅ | 0 | 0 |
@@ -143,7 +153,7 @@
 | `release-artifact-signer` | ✅ | 0 | 0 |
 | `final-deployment-readiness` | ✅ | 0 | 0 |
 | `final-runtime-proof` | ✅ | 0 | 0 |
-| `final-mobile-truth` | ❌ | 0 | 16 |
+| `final-mobile-truth` | ✅ | 0 | 0 |
 | `final-ai-workforce-readiness` | ✅ | 0 | 0 |
 | `final-launch-honesty` | ✅ | 0 | 0 |
 | `final-supportability-readiness` | ✅ | 0 | 0 |
@@ -174,8 +184,8 @@
 | `trust-copy-quality` | ✅ | 0 | 0 |
 | `responsive-surface-integrity` | ✅ | 0 | 0 |
 | `admin-top-task-discoverability` | ✅ | 0 | 0 |
-| `no-museum-boards` | ❌ | 5 | 0 |
-| `admin-action-orientation` | ❌ | 1 | 0 |
+| `no-museum-boards` | ✅ | 0 | 0 |
+| `admin-action-orientation` | ✅ | 0 | 0 |
 | `edge-function-contract-coverage` | ✅ | 0 | 1 |
 | `warn-ratchet-meaningfulness` | ✅ | 0 | 0 |
 | `evidence-freshness-blocking` | ✅ | 0 | 1 |
@@ -216,10 +226,14 @@
 | `mobile-archived-scope` | ✅ | 0 | 0 |
 | `no-kernel-overclaim` | ✅ | 0 | 0 |
 | `doc-canonicality` | ✅ | 0 | 0 |
+| `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
+| `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
+| `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
+| `ai-engineer-action-coverage (warn)` | ✅ | 0 | 18 |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 6 error(s) and resolve 0 missing gate(s).
+⚠️ All required gates passed, but 3618 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
