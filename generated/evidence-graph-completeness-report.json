@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T20:23:19.409Z",
+  "gate": "evidence-graph-completeness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "manifestEntries": 0,
+  "nodeCount": 0,
+  "coveragePct": 0,
+  "blockThresholdPct": 90,
+  "warnThresholdPct": 60,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "manifest-registry",
+      "message": "manifest-registry.json not found — coverage cannot be computed"
+    }
+  ]
+}

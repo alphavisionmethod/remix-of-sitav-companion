@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-19T20:23:16.918Z",
+  "gate": "canonical-paths",
+  "ok": false,
+  "errorCount": 4,
+  "warningCount": 2,
+  "sentinelsScanned": 13,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/architecture"
+    },
+    {
+      "severity": "error",
+      "area": "canonical-paths",
+      "message": "file missing: src/lib/architecture/route-plane-map.ts"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "file missing: src/lib/architecture/plane-registry.ts (checked but not BLOCK if alt path used)"
+    },
+    {
+      "severity": "error",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/runtime/desktop"
+    },
+    {
+      "severity": "error",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/nova-sdk"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "dir missing: electron/security (may be at electron/main/security)"
+    }
+  ]
+}
