@@ -37,10 +37,33 @@
 | 17 | `dr-drill-evidence` | `scripts/architecture/checks/check-dr-drill-evidence.ts` | `generated/dr-drill-evidence-report.json` |
 | 18 | `chaos-drill-classification` | `scripts/architecture/checks/check-chaos-drill-classification.ts` | `generated/chaos-drill-classification-report.json` |
 | 19 | `production-launch-attestation` | `scripts/architecture/checks/check-production-launch-attestation.ts` | `generated/production-launch-attestation-report.json` |
+| 20 | `electron-domain-layout` | `scripts/architecture/checks/check-electron-domain-layout.ts` | `generated/electron-domain-layout-report.json` |
+| 21 | `os-ci-end-to-end` | `scripts/architecture/checks/check-os-ci-end-to-end.ts` | `generated/os-ci-end-to-end-report.json` |
+
+---
+
+## Phase 18 — Layout & CI Truth (NEW)
+
+Closes the two residual ⚠️ findings from `PROJECT_TREE_AUDIT.md`:
+
+- **Electron flat layout** → resolved via explicit domain registry at
+  `electron/_layout.cjs` (no file moves; zero `require()` regression risk).
+  See `electron/README.md` for rationale and the domain map.
+- **OS CI not end-to-end** → workflow `.github/workflows/os-build-iso.yml`
+  already runs the full pipeline; added nightly cron, release trigger,
+  90-day release retention, and a `publish-iso` job that attaches signed
+  ISO/IMG/SBOM/attestation to GitHub Releases.
+
+Verification:
+```bash
+npx tsx scripts/architecture/checks/check-electron-domain-layout.ts
+npx tsx scripts/architecture/checks/check-os-ci-end-to-end.ts
+npm run release:readiness   # → 21/21 BLOCK gates green
+```
 
 ---
 
 ## Result
 
-🟢 **All 19 BLOCK gates verified, wired, and report-emitting.**
+🟢 **All 21 BLOCK gates verified, wired, and report-emitting.**
 System is deployment-ready against the canonical aggregator gate set.
