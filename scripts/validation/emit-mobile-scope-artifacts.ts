@@ -119,9 +119,18 @@ writeFileSync(join(OUT_DIR, "mobile-manifest-status.json"), JSON.stringify(manif
 
 // ── 4. Generated mobile truth consistency snapshot ───────────────
 const generatedDir = "generated";
+// Allow gate-report outputs from the 5 mobile-scope validators to coexist at generated/ root.
+const ALLOWED_GATE_REPORTS = new Set([
+  "mobile-native-out-of-scope-truth-report.json",
+  "mobile-manifest-archive-classification-report.json",
+  "no-active-native-mobile-claims-report.json",
+  "install-page-mobile-honesty-report.json",
+  "generated-mobile-truth-consistency-report.json",
+]);
 const strayMobileJson: string[] = [];
 if (existsSync(generatedDir)) {
   for (const f of readdirSync(generatedDir)) {
+    if (ALLOWED_GATE_REPORTS.has(f)) continue;
     if (/^(mobile|capacitor|android|ios|no-flutter|native-project)/i.test(f)) {
       strayMobileJson.push(f);
     }
