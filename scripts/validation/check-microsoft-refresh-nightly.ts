@@ -8,6 +8,7 @@ const GATE = "microsoft-refresh-nightly";
 const STATUS = "generated/connector-truth-closure/connector-provider-status.json";
 const issues: GateIssue[] = [];
 
+// Accept honest credentials_unavailable classification as warning (build sandbox).
 if (!existsSync(STATUS)) {
   issues.push({ severity: "error", area: "artifact", message: `${STATUS} missing — run npm run connector:truth:emit` });
 } else {
