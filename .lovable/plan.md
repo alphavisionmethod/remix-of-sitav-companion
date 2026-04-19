@@ -1,100 +1,85 @@
 
 
-## Verdict — closure is shippable in 5 phases
+## Verdict — closure is 90% shipped; 2 D-section primitives + 1 panel refresh missing
 
-The repo already has the canonical primitive layer (StatusBadge, ConnectorStateBadge, AIDegradedState, EmptyState, PremiumEmptyState, OperatorActionPanel, NeedsDataExplainer, NeedsTimeWindowExplainer, NeedsHistoricalReleasesExplainer, BoardSection) and the AI Engineer hub (`/admin/ai-runtime`) already has 21 truth tabs. The right move is **additive**: a new tab #22 + 2 new shared primitives (`ProvenanceChip`, `EvidenceLink`) + 6 new validators + the full doc bundle. **No deletions. No new component families beyond the 2 thin compositions. No App.tsx changes. No edge functions. No migrations.**
+The 5 in-scope surface wirings, 2 thin primitives (ProvenanceChip / EvidenceLink), 6 prompt-named WARN-tier validators, 12-file doc bundle, and Tab #22 are all on disk and wired. But the prompt's **Section D — Add Canonical Shared Components / Systems** lists 6 canonical systems, and 2 are still **not present as canonical artifacts**:
 
-## Phase 1 — Two thin canonical primitives (additive, zero duplication)
-
-Both are pure compositions of existing primitives — no new families.
-
-| File | Composes | Purpose |
+| Required (Section D) | On disk today | Status |
 |---|---|---|
-| `src/components/primitives/status/ProvenanceChip.tsx` | `StatusBadge` + `Link` | One-line "source • last verified" chip with optional drilldown route |
-| `src/components/primitives/actions/EvidenceLink.tsx` | `Button asChild` + `Link` | Canonical drilldown affordance: receipt / ledger / approval / proof bundle |
+| D1. Operator empty-state | `EmptyState` + `PremiumEmptyState` | shipped |
+| D2. Historical-data-pending | `NeedsHistoricalReleasesExplainer` + `NeedsTimeWindowExplainer` | shipped |
+| D3. Reauth/degraded provider | `ConnectorStateBadge` (6 states) | shipped |
+| **D4. AI truth/status disclosure** | only `AIDegradedState` (degraded-only) | **MISSING** |
+| D5. Admin remediation/next-action | `OperatorActionPanel` | shipped |
+| **D6. Trust-copy helper map** | none in `src/lib/` | **MISSING** |
 
-Add both to `src/components/primitives/index.ts`. Total: **2 new files, 1 edit**.
+Also: Tab #22 panel should re-read the verification JSON to reflect the now-complete D-section coverage after we land D4 + D6.
 
-## Phase 2 — Wire truth-backing into 5 in-scope surfaces
+## Phase 1 — D4: Canonical `AITruthDisclosure` primitive
 
-Add `ProvenanceChip` + `EvidenceLink` to summary cards on the 5 surfaces called out in the prompt. Pure additive — replaces no working logic, only adds drilldown affordances.
+Add `src/components/primitives/status/AITruthDisclosure.tsx`. Pure composition of `StatusBadge` (no new component family).
 
-| Surface | Add |
+**Modes** (drives tone + label, mirrors prompt verbatim):
+- `live-gateway` → tone=success, "Live · gateway-governed"
+- `degraded` → tone=warning, "Degraded · fallback active"
+- `structural` → tone=neutral, "Structurally wired · not behaviorally proven"
+- `preview` → tone=info, "Preview · demo data"
+- `archived` → tone=muted, "Archived · not in scope"
+
+Optional `verifiedAt` suffix and `to` drilldown (typically `/admin/ai-runtime`).
+
+Export from primitives barrel. Adopt on `ConciergeBoardroom.tsx` header (replaces ad-hoc "AI gateway · live" `ProvenanceChip` usage with the canonical disclosure).
+
+## Phase 2 — D6: Canonical trust-copy helper map
+
+Add `src/lib/trust-copy/trust-copy-map.ts` — pure data module, no React, no service imports.
+
+Exports:
+- `TRUST_COPY` — frozen record keyed by category × state:
+  - `ai`: live | degraded | structural | preview | archived
+  - `provider`: connected | degraded | reauth_required | failing | manual | not_connected
+  - `proof`: verified | pending | needs_evidence | failed
+  - `data`: live | simulated | demo | future | archived
+- `getTrustCopy(category, state)` typed accessor
+- `formatTrustLabel(category, state, opts?)` for "{label} · {ts}" composition
+
+Adopt across the 5 in-scope surfaces' badge/chip labels (zero new colors, zero behavior change — only wires labels through one source).
+
+## Phase 3 — Update Tab #22 truth panel + verification JSON
+
+- Update `FrontendTruthBackingClosureTruthPanel.tsx` to render D-section coverage row (6/6 instead of 4/6) and link to the new D4/D6 artifacts.
+- Update `frontend-truth-backing-verification.json` + `frontend-completeness-status.json` to reflect 6/6 D-section systems and `primitivesAdded = ["ProvenanceChip","EvidenceLink","AITruthDisclosure"]`.
+- Update `FRONTEND_TRUTH_BACKING_FINAL_VERIFICATION.md` Verdict table to GREEN with D4/D6 listed.
+- Mirror all updated artifacts into `public/generated/frontend-truth-backing-closure/`.
+
+## Phase 4 — Final verification
+
+- Run `tsc --noEmit` on touched files.
+- Run all 6 prompt-named validators in parallel; confirm `errorCount=0`.
+- Confirm Tab #22 renders honestly with the D4/D6 additions.
+
+## Files touched (~10)
+
+| Action | Path |
 |---|---|
-| `src/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel.tsx` | `EvidenceLink` → receipts, ledger, fallback events |
-| `src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx` | `EvidenceLink` → `/admin/integrations` per-provider |
-| `src/components/admin/integrations/IntegrationStreakPanel.tsx` | `ProvenanceChip` "oauth_refresh_probe_results · {ts}" + remediation `OperatorActionPanel` for reauth/degraded |
-| `src/pages/business/BoardroomBriefing.tsx` (or briefing root) | `EvidenceLink` to evidence/approval drilldown on each card |
-| `src/pages/concierge/ConciergeBoardroom.tsx` | `ProvenanceChip` "AI gateway · live" + degraded fallthrough already wired via `AIDegradedState` |
-| `src/pages/communications/*` flagship surfaces | `ConnectorStateBadge` + reauth `OperatorActionPanel` if missing |
-
-Estimated touch: ≤ 6 files, additive only.
-
-## Phase 3 — 6 new WARN-tier validators (prompt-named, first-class)
-
-All emit via shared `emitGateReport` to `generated/<gate>-report.json`.
-
-| Validator | Checks |
-|---|---|
-| `check-thin-admin-empty-states.ts` | Flags admin board files using raw `<div>No data</div>` instead of canonical empty-state primitives |
-| `check-no-dead-cta-on-production-surfaces.ts` | Flags `<Button>` without `onClick`/`href`/`asChild` on the 5 in-scope surfaces |
-| `check-qualified-surface-copy.ts` | Flags overclaim phrases ("fully autonomous", "always live", "100% verified") on qualified surfaces |
-| `check-provider-state-chip-consistency.ts` | Flags hardcoded provider state colors not driven by `ConnectorStateBadge` |
-| `check-responsive-admin-layout-integrity.ts` | Flags admin pages without responsive width guards (`max-w-*`, `min-w-0`, `overflow-x-auto` on tables) |
-| `check-simulation-disclosure-coverage.ts` | Flags surfaces with `simulated`/`demo`/`preview` data without explicit disclosure badge |
-
-All scoped strictly to the in-scope surface set. WARN-tier, errorCount=0 on first run.
-
-## Phase 4 — Generated doc bundle (12 files exact)
-
-Create `generated/frontend-truth-backing-closure/` with the exact file list from PART 5 of the prompt:
-
-```
-FRONTEND_TRUTH_LINKAGE_AUDIT.md
-FRONTEND_COMPLETENESS_MATRIX.md
-THIN_EMPTY_STATE_REMEDIATION_REPORT.md
-TRUST_COPY_ALIGNMENT_REPORT.md
-RESPONSIVE_ADMIN_SURFACE_AUDIT.md
-PARTIAL_SURFACE_CLOSURE_STATUS.md
-FRONTEND_TRUTH_BACKING_FINAL_VERIFICATION.md
-frontend-completeness-status.json
-thin-empty-state-status.json
-trust-copy-alignment-status.json
-responsive-admin-surface-status.json
-frontend-truth-backing-verification.json
-```
-
-Each backed by real validator output — no fake-green.
-
-## Phase 5 — Tab #22 + final verification
-
-- **New truth panel**: `src/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel.tsx` (mirrors structure of `TrustStateAndCopyClosureTruthPanel` — reads `frontend-truth-backing-verification.json`, renders 6-row validator table + primitive adoption + deliverables list).
-- **Mount as tab #22** in `AIRuntimeHome.tsx` (single insert, lazy-loaded, no route changes).
-- Run all 6 validators in parallel, confirm errorCount=0 each, run typecheck, render Tab #22.
-
-## Files touched
-
-| Action | Path | Count |
-|---|---|---|
-| CREATE primitive | `ProvenanceChip`, `EvidenceLink` | 2 |
-| EDIT primitive barrel | `src/components/primitives/index.ts` | 1 |
-| EDIT in-scope surfaces | 5 surfaces (additive only) | ≤ 6 |
-| CREATE validator | 6 prompt-named WARN-tier | 6 |
-| CREATE generated doc | 12 artifacts | 12 |
-| CREATE truth panel | `FrontendTruthBackingClosureTruthPanel.tsx` | 1 |
-| EDIT hub | `AIRuntimeHome.tsx` (add tab #22) | 1 |
-
-**Total: ~28-30 files**, scoped exclusively to the AI Engineer hub + canonical primitive layer. Zero deletions of working assets. Zero `/desktop` removal. Zero mobile-responsive removal. Zero disclosure-system removal. Zero edge functions. Zero migrations. Zero new component families (the 2 new primitives are thin compositions of existing ones).
+| CREATE | `src/components/primitives/status/AITruthDisclosure.tsx` |
+| CREATE | `src/lib/trust-copy/trust-copy-map.ts` |
+| EDIT | `src/components/primitives/index.ts` (export D4) |
+| EDIT | `src/pages/concierge/ConciergeBoardroom.tsx` (adopt D4) |
+| EDIT | `src/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel.tsx` (adopt D4 + trust-copy labels) |
+| EDIT | `src/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel.tsx` (D-coverage row) |
+| EDIT | `generated/frontend-truth-backing-closure/frontend-truth-backing-verification.json` |
+| EDIT | `generated/frontend-truth-backing-closure/frontend-completeness-status.json` |
+| EDIT | `generated/frontend-truth-backing-closure/FRONTEND_TRUTH_BACKING_FINAL_VERIFICATION.md` |
+| MIRROR | same 3 artifacts into `public/generated/frontend-truth-backing-closure/` |
 
 ## Discipline guarantees
 
-- All 5 in-scope surfaces (Boardroom, Concierge, Communications, Admin AI Runtime, Admin Integrations) gain visible provenance + evidence drilldowns wired to canonical sources
-- All status chips remain canonical (`ConnectorStateBadge` / `StatusBadge` / `AIStateBadge`) — no new color maps
-- All 6 prompt-named validators exist as physical files (not aliases)
-- Tab #22 honestly reflects validator state — no fake-green, no decorative trust signals
-- Master JSON matches validator reality
-- Removals limited to **zero** in this pass (the prompt explicitly says "very little should be deleted" — we delete nothing this pass; cleanup is captured in `THIN_EMPTY_STATE_REMEDIATION_REPORT.md` as tracked debt for a separate scoped pass)
-- AI Engineer hub remains single integration point per established scope
-
-After this pass: 22-tab AI Engineer hub, 6-of-6 frontend-truth-backing validators green, 12 canonical docs, 5 surfaces with visible provenance + evidence drilldowns, deployment-ready.
+- Zero new component families (D4 composes `StatusBadge`; D6 is pure data)
+- Zero deletions of working assets (`/desktop`, simulation/disclosure, mobile-responsive UI all preserved)
+- Zero `App.tsx` / route-table changes
+- Zero edge functions / migrations
+- Zero new color systems — D4 reuses canonical `StatusTone`s
+- All changes scoped to the AI Engineer hub + canonical primitive layer
+- After this pass: 6/6 Section-D canonical systems on disk, Tab #22 honestly green, deployment-ready
 
