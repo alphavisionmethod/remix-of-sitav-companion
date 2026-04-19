@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T15:31:08.258Z",
+  "generatedAt": "2026-04-19T16:26:46.763Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1106,7 +1106,7 @@
       "file": "generated/no-museum-boards-report.json",
       "gate": "no-museum-boards",
       "ok": false,
-      "errors": 2,
+      "errors": 5,
       "warnings": 0
     },
     {
@@ -1353,10 +1353,52 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/runtime-host-boundaries-report.json",
+      "gate": "runtime-host-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/shell-runtime-portability-report.json",
+      "gate": "shell-runtime-portability",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-log-shape-report.json",
+      "gate": "edge-function-log-shape",
+      "ok": true,
+      "errors": 0,
+      "warnings": 38
+    },
+    {
+      "file": "generated/mobile-archived-scope-report.json",
+      "gate": "mobile-archived-scope",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-kernel-overclaim-report.json",
+      "gate": "no-kernel-overclaim",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/doc-canonicality-report.json",
+      "gate": "doc-canonicality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     }
   ],
-  "totalErrors": 3,
-  "totalWarnings": 3410,
+  "totalErrors": 6,
+  "totalWarnings": 3448,
   "missingGates": [],
   "ok": false,
   "verdict": "RED"
