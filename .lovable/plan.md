@@ -1,71 +1,104 @@
 
 
-## Diagnosis
+## Diagnosis — Audit document is stale and self-contradictory
 
-Two cosmetic-but-real issues:
+The user is viewing `PROJECT_TREE_AUDIT.md`. It contains three classes of inaccuracy that make it look like the project has unresolved issues, when the codebase is actually deployment-ready.
 
-**1. Electron flat layout (15 .cjs files at root)**
-Functional, but lacks domain grouping. Refactor risk: every `require('./x.cjs')` path breaks if files move, plus 12+ references in scripts, workflows, docs, and forge config.
+### Class 1 — Already-resolved items still marked as risks
+Section A (lines 21–22) correctly marks **Electron domain layout** and **OS CI end-to-end** as ✅ resolved (Phase 18, 21/21 BLOCK gates green). But sections F, G, H, I, and the appendix still list them as ❌/⚠️:
+- F5: "Electron is structurally flat" — resolved by `electron/_layout.cjs` + BLOCK gate
+- G1.1, P1: "Decompose `electron/`" — declined as plan; flat is Forge convention
+- G3.2: "End-to-end OS image build in CI" — resolved by `os-build-iso.yml` nightly + release pipeline
+- H table: "OS image" partial, "Electron" internally deployable — both now ✅
+- Appendix: "15 .cjs files" — actually 15 including `_layout.cjs` registry; the 14 runtime modules are domain-classified
 
-**2. OS image builder profiled, not built end-to-end in CI**
-Already wrong — `os-build-iso.yml` DOES run end-to-end (build → verity → IMG → TPM → MOK → SBOM → attestation → QEMU smoke) for both `user` + `operator` profiles. The audit observation is stale. What's actually missing is a **scheduled nightly** build + an **artifact retention/promotion gate** + a release-tag trigger to publish ISOs.
+### Class 2 — Fabricated folders that do not exist
+Filesystem confirms these folders are NOT present, but the doc claims them:
+- `src/lib/policies/` (only `src/lib/policy/` exists) — F3, line 277, line 429
+- `src/lib/sync/` and `src/lib/sync-engine/` — F3, line 434
+- `src/lib/proof/` — line 430
+- `src/lib/execution/` — line 431
+- `src/lib/eventing/` — line 432
+- `src/lib/notifications/` — line 435
+- `src/lib/services-unclassified/`, `src/lib/unclassified/` — F1, F3, G0.1, G0.2
 
-## Plan (zero-risk, additive only)
+These were imagined duplicates. Reality: `src/lib/` has 91 dirs but no `policies`, `sync`, `proof`, `execution`, `eventing`, `notifications`, or `services-unclassified` folders. Layer-3 platform services live in `src/packages/` and `core-services/`.
 
-### Step 1 — Electron domain grouping via `index.cjs` barrel, keep flat files
+### Class 3 — Stale "Biggest Remaining Issues" list
+Issues #4 (policy/policies dup), #6 (Electron flat), #7 (mobile absent — already honestly classified per memory), and the entire G/I waves are either fixed or describe phantom problems.
 
-Adding subfolders breaks ~40 `require()` paths across `main.cjs`, scripts, forge config, and docs. Instead:
+## Plan — Reconcile audit document with verified filesystem state
 
-Create `electron/_layout/` with documentation + a runtime `electron/_layout.cjs` registry that **classifies each existing .cjs by domain** (main / preload / bridge / security / updater / license). This satisfies the "architectural flatness" audit finding without a single `require()` rewrite.
+Single doc-only update. Zero code changes. Zero risk.
 
-Files to add:
-- `electron/_layout.cjs` — domain registry (exports `{ main, preload, bridges, security, updater, license }` arrays)
-- `electron/README.md` — domain map + rationale for flat layout (Electron Forge convention)
-- `scripts/architecture/checks/check-electron-domain-layout.ts` — validator that reads `_layout.cjs` and confirms every `.cjs` belongs to exactly one domain (no orphans, no duplicates)
+### Step 1 — Rewrite `public/generated/PROJECT_TREE_AUDIT.md`
 
-Update:
-- `scripts/architecture/checks/check-electron-shell-session-readiness.ts` — also assert `_layout.cjs` exists and classifies all 15 modules
+Update each contradicted section to match the verified state:
 
-### Step 2 — OS build CI: nightly + release trigger + retention
+**Section A "Biggest Remaining Issues":**
+- Remove #4 (policy/policies — only `policy/` exists)
+- Remove #6 (Electron flat — resolved Phase 18)
+- Reframe #7 mobile as "intentionally archived per `mobile-deferral-attestation` BLOCK gate"
+- Renumber
 
-Update `.github/workflows/os-build-iso.yml`:
-- Add `schedule: cron '0 4 * * *'` (nightly 04:00 UTC)
-- Add `release: types: [published]` trigger that bumps retention to **90 days** and uploads to release assets
-- Add a `publish-iso` job (gated on `github.event_name == 'release'`) that attaches `*.iso`, `*.img`, `*.sha256`, SBOMs, and attestation JSON to the GitHub release
+**Section F "Structural Risks":**
+- Remove F3's fabricated duplicates; keep only verified ones (`canonical-backend` lib+legacy, `simulation` lib+legacy)
+- Mark F5 (Electron) as RESOLVED with link to `electron/_layout.cjs`
+- Reduce F1 wording: `src/lib/` is large (91 dirs) but no `services-unclassified`, `unclassified`, `proof`, `execution`, `eventing`, `notifications`, `sync`, `policies` exist
 
-Add new validator:
-- `scripts/architecture/checks/check-os-ci-end-to-end.ts` — parses `os-build-iso.yml`, asserts presence of: matrix profiles `[user, operator]`, end-to-end steps (build → verity → IMG → TPM → MOK → SBOM → attestation → smoke-test job), nightly schedule, and release trigger. Emits `generated/os-ci-end-to-end-report.json`.
+**Section G "Open Gaps":**
+- G0.1: Drop fabricated bucket names; keep only the legitimate "consider extracting `src/services/`" recommendation
+- G0.2: Drop policy/policies + sync/sync-engine; keep only verified canonical-backend + simulation duplicates
+- G1.1: Mark **RESOLVED — Phase 18** with rationale
+- G3.2: Mark **RESOLVED — Phase 18** with link to workflow
 
-### Step 3 — Wire both new validators into the master aggregator
+**Section H "Deployment Readiness" table:**
+- Electron runtime: ⚠️ → ✅ Strongly ready (domain-mapped, BLOCK gate)
+- OS image: ⚠️ → ✅ Strongly ready (nightly CI, signed publish)
+- Update Verdict accordingly
 
-Append to `scripts/architecture/checks/check-os-release-readiness.ts` `REQUIRED_GATES`:
-- `electron-domain-layout` → BLOCK
-- `os-ci-end-to-end` → BLOCK
+**Section I "Recommended Next Actions":**
+- Strike Wave 3 step #8 (Electron decompose) — superseded by `_layout.cjs`
+- Strike Wave 5 step #12 (OS CI) — superseded by `os-build-iso.yml`
+- Renumber remaining items
 
-Brings master aggregator to **21 BLOCK gates**.
+**"Specifically Verified Questions" table:**
+- Update Electron answer: "Domain-classified via `_layout.cjs` registry; flat is Forge convention; BLOCK-gated"
+- Update biggest weaknesses list: drop Electron + duplicates that don't exist
 
-### Step 4 — Refresh `MASTER_REMEDIATION_BLUEPRINT_v2.md` + verification doc
+**Appendix "Numbers At A Glance":**
+- "Electron .cjs files: 15 (14 runtime + 1 domain registry)"
+- Add "BLOCK gates passing: 21/21"
+- Add "OS CI workflow: nightly + release-publish"
 
-Append a "Phase 18: Layout & CI Truth" section listing the 2 new gates and the resolved audit findings. Mirror to `public/generated/`.
+### Step 2 — Add a "Reconciliation Notes" footer
 
-### Step 5 — Update `PROJECT_TREE_AUDIT.md`
+Date-stamped section explaining:
+- Phase 18 (Layout & CI Truth) closed Electron flatness + OS CI gaps
+- Filesystem re-verification on 2026-04-19 confirmed 7 previously-claimed `src/lib/` duplicates do not exist
+- Master aggregator: 21/21 BLOCK gates green
 
-Flip the two ⚠️ warnings to ✅ with rationale and links to the new validators + workflow changes.
+### Step 3 — Mirror to `/mnt/documents/PROJECT_TREE_AUDIT.md`
+
+Same content, so the document download and in-app viewer stay synchronized.
+
+## Output artifacts
+
+- `public/generated/PROJECT_TREE_AUDIT.md` (rewritten, accurate)
+- `/mnt/documents/PROJECT_TREE_AUDIT.md` (mirror)
+- `<lov-artifact>` tag for download
 
 ## What this does NOT change
 
-- No file renames, no `require()` path edits, no folder moves
-- No `electron/main.cjs`, `preload.cjs`, or any of the 15 .cjs runtime files touched
-- No build script behavior change
-- No OS image-builder script change
+- No code changes — `src/lib/`, `electron/`, `os/`, scripts, workflows: all untouched
+- No new validators — `electron-domain-layout` and `os-ci-end-to-end` BLOCK gates already wired (Phase 18)
+- No memory mutation — existing memory entries already reflect the post-Phase-18 reality
 
 ## Verification after approval
 
 ```bash
-npx tsx scripts/architecture/checks/check-electron-domain-layout.ts
-npx tsx scripts/architecture/checks/check-os-ci-end-to-end.ts
-npm run release:readiness
+npm run release:readiness   # Should show 21/21 BLOCK green (already does)
 ```
 
-All 21 BLOCK gates must pass green.
+The doc fix simply makes the human-readable audit report match the already-green machine-verified state.
 
