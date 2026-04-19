@@ -1,80 +1,91 @@
 
 
-## Audit verdict — apply the proven honest-deferral pattern, scoped to admin AI engineering only
+## Verdict — 3 surfaces are still unbuilt; deferral docs/validators exist but no real UI ships
 
-The 3 target pages (`/admin/verification/cross-domain-coherence`, `/admin/health/cost-spotlight`, `/admin/releases/sbom-history`) **do not exist** in the codebase — zero references found in any `.tsx` or `.ts` file. They live in the verification, health, and releases domains, which are **out of admin AI engineering scope** per the user's repeated constraint "only on the admin ai engineer team."
+Confirmed on disk:
+- `src/pages/admin/verification/` has no `CrossDomainCoherence.tsx`
+- `src/pages/admin/health/` has no `CostSpotlight.tsx`
+- `src/pages/admin/releases/` has no `SbomHistory.tsx`
+- The 4 WARN-tier validators all currently emit `page-not-built` warnings
+- The 3 hub files (`VerificationHome`, `HealthHome`, `ReleasesHome`) do not register these modules
 
-This is the same situation as the 4 deferred user-flagship surfaces from the prior pass (onboarding, boardroom-briefing, concierge, communications). The exact same proven pattern applies: **honest deferral docs + WARN-tier validators + a closure truth panel on the admin AI engineer hub**. Zero stubs, zero fake-green, zero edits to other admin domains.
+The previous pass intentionally deferred building the actual UI to stay inside "admin AI engineer scope." The current request explicitly overrides that constraint and asks for polished operator-grade boards. Time to build them for real.
 
-**What's NOT possible inside admin AI scope:**
-- Building the actual empty-state UI on `/admin/verification/cross-domain-coherence`, `/admin/health/cost-spotlight`, `/admin/releases/sbom-history` — those routes/pages don't exist and live in foreign domains.
+## Phase 1 — Build 3 real operator-grade pages using the canonical `PremiumEmptyState` primitive
 
-**What IS deliverable inside admin AI scope:**
-- 4 honest-deferral specs documenting the gap with cross-references to canonical destinations
-- 4 WARN-tier validators that refuse to fake-green when the underlying surfaces are unbuilt
-- 1 new `AdminEmptyStateClosureTruthPanel` mounted as tab #12 on the AI Engineer hub
-- Wiring into the master release readiness aggregator (211 → 215 gates)
+No new empty-state component (the primitive already exists with 9 variants, domain accents, motion, actions, tip slot — perfect fit). Each page composes `AdminControlPlaneShell` + a header card + `PremiumEmptyState` configured with:
 
----
+- **Title** (specific, not generic)
+- **Description** (what the board is for + why it's empty + what populates it)
+- **Actions** (real `<Link>`-wrapped buttons to canonical destinations — verified to exist via `useNavigate`)
+- **Tip** (operator next-step guidance)
+- **Variant**: `first-use` for sbom-history, `no-data` for cross-domain-coherence, `demo-preview` for cost-spotlight (with explicit non-live labeling)
 
-## Phase 1 — Emit 5 honest deferral docs (admin AI scope, audit-only)
+### 1a. `src/pages/admin/verification/CrossDomainCoherence.tsx`
+- Variant: `no-data`, icon: `Network`
+- Why-empty: "No cross-domain coherence signals have fired in the last 24h. This board activates when verification, trust, or incident events span more than one domain."
+- What populates it: list of source signal types
+- Actions: → `V01SurfaceInventoryBoard`, → `V05FailureTriageBoard`, → `LaunchHonestyBoard`, → `MCIncidents`
+- Tip: "Use Failure Triage and Incidents to inspect single-domain signals meanwhile."
 
-Create under `generated/admin-empty-state-closure/`:
-- `ADMIN_EMPTY_STATE_PATTERN_AUDIT.md` — confirms canonical primitives already exist (`EmptyState`, `PremiumEmptyState`, `BoardSection`); classifies these as the reusable pattern when verification/health/releases domains build the surfaces; explicit no-duplicates rule
-- `CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md` — documents that `/admin/verification/cross-domain-coherence` does not exist; cross-references existing `src/pages/admin/verification/V*.tsx` boards as canonical destinations meanwhile; classifies UX work as deferred-to-verification-domain-pass
-- `COST_SPOTLIGHT_EMPTY_STATE_SPEC.md` — documents that `/admin/health/cost-spotlight` does not exist; cross-references existing `AIG04BudgetCenter.tsx`, `AIG05UsageLedgerExplorer.tsx`, `AIT05CostEfficiency.tsx` as canonical cost surfaces meanwhile; classifies UX work as deferred-to-health-domain-pass
-- `SBOM_HISTORY_EMPTY_STATE_SPEC.md` — documents that `/admin/releases/sbom-history` does not exist; cross-references existing `src/pages/admin/releases/ReleasesHome.tsx` and `AIReleasesCenter.tsx` as canonical release evidence meanwhile; classifies UX work as deferred-to-releases-domain-pass
-- `ADMIN_EMPTY_STATE_FINAL_VERIFICATION.md` — the master closure record listing all 4 specs, all 4 validators, the truth panel mount path, the aggregator integration, and explicit "no-fake-green" markers
+### 1b. `src/pages/admin/health/CostSpotlight.tsx`
+- Header strip with **explicit `Preview · Non-live` chip** + 7-day window status (e.g. "2 of 7 days collected")
+- Variant: `demo-preview`
+- Description explains: 7-day cost history is still accumulating; current runtime cost is observable elsewhere
+- Optional sample sparkline rendered behind a labeled `Preview · sample data · non-live` overlay (not hidden, but unmistakably marked — satisfies the spec's preview-honesty rule). Uses real `Recharts` not fake bars.
+- Actions: → `AIG04BudgetCenter`, → `AIG05UsageLedgerExplorer`, → `AIT05CostEfficiency`, → `MCSystemHealth`
+- Tip: "Budget Center and Usage Ledger contain live cost data right now."
 
-Plus 4 status JSONs (`cross-domain-coherence-status.json`, `cost-spotlight-status.json`, `sbom-history-status.json`, `admin-empty-state-verification.json`) recording surface, status=`deferred-out-of-admin-ai-scope`, classification, validator, deferral doc, and required-for-green criteria.
+### 1c. `src/pages/admin/releases/SbomHistory.tsx`
+- Variant: `first-use`, icon: `History`
+- Why-empty: "Historical SBOM evidence accumulates after each release cycle. Only one release exists so far, so there is no history to compare against yet."
+- What counts as historical evidence: signed SBOM diffs across releases
+- Actions: → `ReleasesHome` (current SBOM/release evidence), → `LaunchReadinessBoard`, → `ReleaseEngineeringPage`, → `MCReleasesUpdates`
+- Tip: "Inspect the current release's SBOM via Release Engineering. History will populate after the next signed release."
 
-## Phase 2 — Add 4 honest WARN-tier validators
+## Phase 2 — Wire the 3 pages into their canonical hubs
 
-Create under `scripts/validation/`, all using the existing `emitGateReport` pattern from `_lib/emit-gate-report.ts`:
+Edit (not duplicate) the existing hubs to register the new modules:
 
-1. `check-admin-empty-state-patterns.ts` — verifies canonical primitives `EmptyState` (`src/components/primitives/feedback/EmptyState.tsx`) and `PremiumEmptyState` exist; passes when canonical patterns are present; WARNs that 3 deferred surfaces are awaiting domain-pass adoption
-2. `check-cross-domain-coherence-empty-state.ts` — checks for the page file at `src/pages/admin/verification/CrossDomainCoherence.tsx`; emits WARN with cross-ref to deferral doc when missing (never silent pass)
-3. `check-cost-spotlight-empty-state.ts` — checks for the page file at `src/pages/admin/health/CostSpotlight.tsx`; emits WARN with cross-ref to deferral doc when missing
-4. `check-sbom-history-empty-state.ts` — checks for the page file at `src/pages/admin/releases/SbomHistory.tsx`; emits WARN with cross-ref to deferral doc when missing
+- `src/pages/admin/verification/VerificationHome.tsx` — add `cross-domain-coherence` module (lazy import + entry in `modules[]`, with `legacyPath: "/admin/verification/cross-domain-coherence"`)
+- `src/pages/admin/health/HealthHome.tsx` — add `cost-spotlight` module
+- `src/pages/admin/releases/ReleasesHome.tsx` — add `sbom-history` module
 
-(The 5th proposed validator `check-no-generic-admin-empty-states.ts` is already covered by the existing `check-no-inline-empty-states.ts` and `check-empty-state-coverage.ts` — adding it would create duplication, which the spec explicitly forbids. This will be documented in the audit doc.)
+`DomainHubLayout` handles the legacyPath routing so the canonical `/admin/<domain>/<id>` URLs resolve. No changes to `App.tsx` route table needed.
 
-Wire all 4 into `scripts/architecture/checks/check-os-release-readiness.ts` (211 → 215 gates, all 4 honest WARN-tier).
+## Phase 3 — Flip the 4 validators from WARN to BLOCK-green
 
-## Phase 3 — New `AdminEmptyStateClosureTruthPanel` on AI Engineer hub
+The 4 validators already check exactly the right files and primitive-adoption pattern (`PremiumEmptyState` or `EmptyState`). Once the pages exist and import `PremiumEmptyState`, they auto-flip to `ok:true` with **0 errors and 0 warnings** (no more `page-not-built` warning). Two small additional checks added:
 
-Create `src/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel.tsx` mirroring the proven `FlagshipSurfaceClosureTruthPanel` pattern:
-- Reads all 4 status JSONs from `generated/admin-empty-state-closure/`
-- 2 tabs:
-  - **Canonical Pattern (In-Scope):** confirms `EmptyState` + `PremiumEmptyState` + `BoardSection` are wired and reusable
-  - **Deferred Surfaces:** honest list of 3 deferred surfaces with their cross-reference docs and "out-of-admin-AI-scope" classification, with **real `<Link>`** buttons to the canonical alternative destinations (e.g. ReleasesHome, BudgetCenter, V01SurfaceInventoryBoard) — these are real navigable routes, not dead links
-- Includes `TruthPanelActions` (Refresh + link to `ADMIN_EMPTY_STATE_FINAL_VERIFICATION.md`)
-- Real `<Button onClick={...}>` for "View deferral register" (satisfies `no-museum-boards` validator regex directly)
+- **Action-link presence**: each validator asserts the page contains `to="/admin/...` link patterns (real navigation, not dead text)
+- **Cost-spotlight preview honesty**: existing regex `non-?live|preview\s*·|sample\s*·` will pass once the chip is rendered
 
-Mount as tab **12** in `AIRuntimeHome.tsx` after `flagship-surface-closure` (single lazy import + single tab entry). **Zero edits to verification/health/releases domains. Zero edits to user surfaces.**
+## Phase 4 — Update deliverables + truth panel + aggregator
 
-## Phase 4 — Update aggregator + package.json + verification artifact
+- Update `generated/admin-empty-state-closure/*-status.json` (3 files): flip status from `deferred-out-of-admin-ai-scope` → `implemented-canonical-primitive-adopted`, list the canonical destination links shipped
+- Update `admin-empty-state-verification.json` master record: 3 surfaces implemented, 4 validators green (0 errors / 0 warnings), gate-tier remains WARN-tier in aggregator but reports clean
+- Update `ADMIN_EMPTY_STATE_FINAL_VERIFICATION.md` with the final shipped state
+- Update `AdminEmptyStateClosureTruthPanel.tsx` (already mounted as tab #12 on AI Engineer hub): each surface now shows `implemented` badge + opens the live route via `<Link>` instead of "deferred to domain pass"
+- Update the in-scope `AIRuntimeHome.tsx` tab description from "3 surfaces honestly deferred" → "3 surfaces shipped with canonical PremiumEmptyState"
+- Re-run all 4 validators to refresh report JSONs in `generated/`
 
-- Append all 4 new gates to `check-os-release-readiness.ts` gate list (lines ~107-108 area, after existing flagship-surface gates)
-- Add `closure:admin-empty-state:run-all` script to `package.json` running all 4 validators in sequence
-- Append the new script to the existing `final:closure:run-all` aggregator script
-- Run all 4 validators once to seed the report JSONs in `generated/`
-- Update `admin-empty-state-verification.json` to reflect final state (4 deferred-honest WARN, 4 validators wired, truth panel mount path, aggregator gate count delta)
+## Honest scope discipline preserved
 
-## Honest limits surfaced (preserved per no-fake-green policy)
+- **Zero new empty-state components** — `PremiumEmptyState` reused as the single canonical pattern (no duplicates, satisfies A1/A2 of the spec)
+- **Zero fake data** — cost-spotlight preview is rendered but explicitly labeled `Preview · Non-live`
+- **Zero dead links** — every action link points to a verified existing route in the canonical hubs
+- **Zero edits to other admin domains beyond the 3 hub registrations** — minimum-surface principle
+- **Zero edits to user routes, edge functions, sealed migrations, or the master `App.tsx`** — hub composition only
 
-- **0 actual page files created** — verification/health/releases domains are out of admin AI engineering scope; building UI there would violate the user's repeated "only on the admin ai engineer team" constraint
-- All 4 validators encode the deferral as **WARN-tier with explicit cross-references**, never silent passes
-- Total release gate count: 211 → **215** (4 new honest WARN additions for deferred surfaces)
-- The canonical empty-state primitives (`EmptyState`, `PremiumEmptyState`, `BoardSection`) already exist and are documented in the pattern audit — **zero duplicate empty-state systems introduced**
+## Files touched (final)
 
-## Files touched (final summary)
+- **NEW (3):** `CrossDomainCoherence.tsx`, `CostSpotlight.tsx`, `SbomHistory.tsx`
+- **EDITED (3):** `VerificationHome.tsx`, `HealthHome.tsx`, `ReleasesHome.tsx` (+1 module each)
+- **EDITED (1):** `AdminEmptyStateClosureTruthPanel.tsx` (deferred → implemented state)
+- **EDITED (1):** `AIRuntimeHome.tsx` (tab #12 description update)
+- **EDITED (4):** 4 validator scripts (add action-link assertion)
+- **REGENERATED (4):** validator report JSONs flip to `ok:true` 0 warnings
+- **UPDATED (4):** 3 status JSONs + master verification JSON + final markdown
 
-- **NEW (10):** 5 markdown deferral docs + 4 validators + 1 truth panel
-- **NEW (4):** 4 status JSONs in `generated/admin-empty-state-closure/`
-- **EDITED (3):** `AIRuntimeHome.tsx` (+1 lazy import + 1 tab), `check-os-release-readiness.ts` (+4 gates), `package.json` (+1 run-all script)
-- **REGENERATED (4):** 4 validator report JSONs in `generated/`
-- **ZERO edits to:** `/admin/verification/**`, `/admin/health/**`, `/admin/releases/**`, other admin domains, user routes, sealed migrations, edge functions
-
-After this pass: **215 release gates** (4 new honest WARN), **12 truth panels** on AI Engineer hub (was 11), **5 admin-empty-state-closure deliverables** (1 audit + 3 deferral specs + 1 final verification), **0 stubs, 0 fake-green, 0 duplicates, 0 cross-domain edits**, full integration with the proven `TruthPanelActions` + `emit-gate-report` patterns.
+After this pass: 3 polished operator-grade boards live in their canonical hubs, 4 closure validators green at zero warnings, truth panel reflects shipped state, no duplicates, no stubs, no fake-live content, deployment-ready.
 
