@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,6 +14,10 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, Users2, DollarSign, Wrench, AlertTriangle } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { outcomeTone, riskTone, policyDraftStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 
 interface ConsensusSession {
   id: string;

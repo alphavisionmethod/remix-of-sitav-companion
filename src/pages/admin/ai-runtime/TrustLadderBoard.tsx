@@ -9,12 +9,14 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge, type StatusTone } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
 import {
   ShieldCheck,
   RefreshCw,
@@ -74,17 +76,12 @@ interface Summary {
 
 const RUNG_LABELS = ["L0 Observe", "L1 Diagnose", "L2 Recommend", "L3 Draft", "L4 Simulate", "L5 Approval-ready", "L6 Constrained-action"];
 
-function rungBadge(rung: number) {
-  const colors = [
-    "bg-muted text-muted-foreground",
-    "bg-blue-500/10 text-blue-500 border-blue-500/30",
-    "bg-cyan-500/10 text-cyan-500 border-cyan-500/30",
-    "bg-emerald-500/10 text-emerald-500 border-emerald-500/30",
-    "bg-amber-500/10 text-amber-500 border-amber-500/30",
-    "bg-orange-500/10 text-orange-500 border-orange-500/30",
-    "bg-red-500/10 text-red-500 border-red-500/30",
-  ];
-  return colors[rung] ?? colors[0];
+function rungTone(rung: number): StatusTone {
+  if (rung <= 0) return "muted";
+  if (rung <= 2) return "info";
+  if (rung === 3) return "success";
+  if (rung === 4) return "warning";
+  return "danger";
 }
 
 export default function TrustLadderBoard() {
