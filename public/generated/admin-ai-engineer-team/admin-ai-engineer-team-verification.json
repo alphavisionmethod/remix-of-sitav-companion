@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "scope": "admin-ai-engineer-team",
+  "phase": "phase-3-6-hardening",
+  "verdict": "GREEN-WARN",
+  "promotionTarget": "BLOCK",
+  "tabRegistry": {
+    "totalTabs": 43,
+    "onDiskFiles": 36,
+    "archivedOrShared": 2,
+    "orphans": 0
+  },
+  "wiringCoverage": {
+    "totalTabs": 43,
+    "tabsWithRealWiring": 22,
+    "tabsWithRealtime": 8,
+    "tabsClaimingRealtime": 18,
+    "mismatches": 29,
+    "note": "Many panels resolve table reads via shared service modules (internal-agent-registry, kill-switch service); AST scan cannot follow indirection. Mismatches are honest debt, not breakage."
+  },
+  "primitiveCoverage": {
+    "totalTabs": 43,
+    "tabsWithStatusBadge": 5,
+    "tabsWithOperatorActionPanel": 0,
+    "tabsWithAITruthDisclosure": 1,
+    "tabsWithForbiddenColorLiterals": 27,
+    "averagePrimitiveScore": 0.51,
+    "maxScore": 6
+  },
+  "actionCoverage": {
+    "requiringOperatorAction": 24,
+    "compliantTabs": 0,
+    "coveragePct": 0
+  },
+  "validators": [
+    { "path": "scripts/validation/check-ai-engineer-tab-registry.ts", "tier": "BLOCK", "exitCode": 0 },
+    { "path": "scripts/validation/check-ai-engineer-wiring-coverage.ts", "tier": "WARN", "promotionTier": "BLOCK", "exitCode": 0 },
+    { "path": "scripts/validation/check-ai-engineer-primitive-coverage.ts", "tier": "WARN", "promotionTier": "BLOCK", "exitCode": 0 },
+    { "path": "scripts/validation/check-ai-engineer-action-coverage.ts", "tier": "WARN", "promotionTier": "BLOCK", "exitCode": 0 }
+  ],
+  "aggregatorWiring": {
+    "file": "scripts/architecture/checks/check-os-release-readiness.ts",
+    "tier": "WARN",
+    "gatesAdded": 4,
+    "totalGates": 128
+  },
+  "deliverables": {
+    "validators": [
+      "scripts/validation/check-ai-engineer-tab-registry.ts",
+      "scripts/validation/check-ai-engineer-wiring-coverage.ts",
+      "scripts/validation/check-ai-engineer-primitive-coverage.ts",
+      "scripts/validation/check-ai-engineer-action-coverage.ts"
+    ],
+    "generatedArtifacts": [
+      "generated/admin-ai-engineer-team/inventory.json",
+      "generated/admin-ai-engineer-team/wiring-coverage.json",
+      "generated/admin-ai-engineer-team/WIRING_PROOF_MATRIX.md",
+      "generated/admin-ai-engineer-team/primitive-coverage.json",
+      "generated/admin-ai-engineer-team/action-coverage.json",
+      "generated/admin-ai-engineer-team/CLOSURE_PHASE_1_2.md",
+      "generated/admin-ai-engineer-team/CLOSURE_PHASE_3_6.md",
+      "generated/admin-ai-engineer-team/FINAL_CLOSURE.md",
+      "generated/admin-ai-engineer-team/admin-ai-engineer-team-verification.json"
+    ]
+  },
+  "scopeDiscipline": {
+    "scopeLockedTo": [
+      "src/components/admin/ai-runtime/**",
+      "src/pages/admin/ai-runtime/**",
+      "src/lib/admin/ai-engineer-hub/**",
+      "scripts/validation/check-ai-engineer-*.ts",
+      "generated/admin-ai-engineer-team/**",
+      "public/generated/admin-ai-engineer-team/**"
+    ],
+    "noEditsTo": ["/desktop", "user-plane apps", "Electron", "OS image-builder", "App.tsx", "route table", "migrations"],
+    "newComponentFamilies": 0,
+    "newColorSystems": 0,
+    "l3CeilingPreserved": true,
+    "sovereignAIGatewayPreserved": true
+  },
+  "honestDebt": {
+    "panelsRequiringPrimitiveSweep": 38,
+    "panelsRequiringOperatorActionPanel": 24,
+    "panelsWithRawColorLiterals": 27,
+    "remediationPlan": "Each remaining panel needs a ≤8-line diff to swap raw Badge → StatusBadge and add OperatorActionPanel in degraded/empty branches. Validators stay at WARN until coverage = 100%, then promote to BLOCK in a single commit."
+  }
+}
