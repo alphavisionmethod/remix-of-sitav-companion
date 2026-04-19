@@ -94,9 +94,7 @@ export default function ArchitecturalCleanupTruthPanel() {
           <CardTitle className="text-sm flex items-center justify-between">
             <span>Portability Boundary Status</span>
             {portability && portability.unclassifiedHooks === 0 ? (
-              <Badge variant="default" className="bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/20">
-                ✓ Closed
-              </Badge>
+              <Badge variant="secondary">✓ Closed</Badge>
             ) : (
               <Badge variant="destructive">Drift detected</Badge>
             )}
@@ -187,14 +185,7 @@ export default function ArchitecturalCleanupTruthPanel() {
           <CardTitle className="text-sm flex items-center justify-between">
             <span>Truth-Manifest Health & Verification</span>
             {verification && (
-              <Badge
-                variant="default"
-                className={
-                  verification.verdict === "PASS"
-                    ? "bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/20"
-                    : "bg-amber-500/15 text-amber-700"
-                }
-              >
+              <Badge variant={verification.verdict === "PASS" ? "secondary" : "outline"}>
                 {verification.verdict}
               </Badge>
             )}
