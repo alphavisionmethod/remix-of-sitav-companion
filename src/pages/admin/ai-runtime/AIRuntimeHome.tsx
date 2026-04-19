@@ -30,6 +30,7 @@ const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/Securit
 const AIRuntimeNightlyTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"));
 const ConnectorTruthSummaryPanel = lazy(() => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"));
 const MobileScopeTruthPanel = lazy(() => import("@/components/admin/ai-runtime/MobileScopeTruthPanel"));
+const FrontendPolishTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FrontendPolishTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -114,6 +115,13 @@ export default function AIRuntimeHome() {
       description: "Native iOS/Android are ARCHIVED. Read-only canonical truth + reactivation conditions checklist.",
       legacyPath: "/admin/ai-runtime/mobile-scope-truth",
       render: wrap(MobileScopeTruthPanel),
+    },
+    {
+      id: "frontend-polish-truth",
+      label: "Frontend Polish Truth",
+      description: "Live verification of empty-state coverage, CTA integrity, state handling, trust copy, and responsive integrity for every board on this hub.",
+      legacyPath: "/admin/ai-runtime/frontend-polish-truth",
+      render: wrap(FrontendPolishTruthPanel),
     },
     {
       id: "efficiency",

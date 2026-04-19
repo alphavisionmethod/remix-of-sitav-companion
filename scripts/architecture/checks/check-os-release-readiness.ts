@@ -204,6 +204,14 @@ const REQUIRED_GATES = [
   "install-page-mobile-honesty",
   "mobile-manifest-archive-classification",
   "generated-mobile-truth-consistency",
+  // Frontend Polish Closure — 7 BLOCK gates (Admin AI Engineer hub polish)
+  "empty-state-coverage",
+  "cta-integrity",
+  "no-shell-only-production-pages",
+  "state-handling-consistency",
+  "admin-board-polish",
+  "trust-copy-quality",
+  "responsive-surface-integrity",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
