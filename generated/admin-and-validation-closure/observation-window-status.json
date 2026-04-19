@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "evidence-freshness-observation-window",
+  "policy": "30-day clean window required for BLOCK promotion",
+  "clean_days_consecutive": 0,
+  "started_at": "2026-04-19T13:56:00.000Z",
+  "next_evaluation_at": "2026-04-20T13:56:00.000Z",
+  "promotion_eligible_at": "2026-05-19T13:56:00.000Z",
+  "current_level": "warn",
+  "any_freshness_failure_in_window": false
+}

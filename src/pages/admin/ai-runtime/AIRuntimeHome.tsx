@@ -31,6 +31,8 @@ const AIRuntimeNightlyTruthPanel = lazy(() => import("@/components/admin/ai-runt
 const ConnectorTruthSummaryPanel = lazy(() => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"));
 const MobileScopeTruthPanel = lazy(() => import("@/components/admin/ai-runtime/MobileScopeTruthPanel"));
 const FrontendPolishTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FrontendPolishTruthPanel"));
+const AdminValidationTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminValidationTruthPanel"));
+const HardwareAndOperatorTruthPanel = lazy(() => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -122,6 +124,20 @@ export default function AIRuntimeHome() {
       description: "Live verification of empty-state coverage, CTA integrity, state handling, trust copy, and responsive integrity for every board on this hub.",
       legacyPath: "/admin/ai-runtime/frontend-polish-truth",
       render: wrap(FrontendPolishTruthPanel),
+    },
+    {
+      id: "admin-validation-truth",
+      label: "Admin & Validation Truth",
+      description: "Live truth view of admin top-task discoverability, museum-board absence, action-orientation, edge-function contract coverage, WARN-ratchet meaningfulness, evidence-freshness blocking, behavioral CI coverage, and gate-quality classification.",
+      legacyPath: "/admin/ai-runtime/admin-validation-truth",
+      render: wrap(AdminValidationTruthPanel),
+    },
+    {
+      id: "hardware-operator-truth",
+      label: "Hardware & Operator Truth",
+      description: "Real-device certification runs and human-use operator drill log with MTTR — honest WARN-tier classification until real-world evidence is recorded.",
+      legacyPath: "/admin/ai-runtime/hardware-operator-truth",
+      render: wrap(HardwareAndOperatorTruthPanel),
     },
     {
       id: "efficiency",

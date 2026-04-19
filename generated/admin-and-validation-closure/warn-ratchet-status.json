@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "warn-ratchet-meaningfulness",
+  "buckets": [
+    { "gate": "lib-decomposition-readiness", "current": 1731, "ceiling": 1740, "trend": "down", "classification": "transitional" },
+    { "gate": "legacy-wrapper-usage", "current": 1518, "ceiling": 1530, "trend": "down", "classification": "transitional" },
+    { "gate": "lib-ownership-drift", "current": 99, "ceiling": 105, "trend": "down", "classification": "transitional" },
+    { "gate": "evidence-freshness", "current": 0, "ceiling": null, "trend": "stable", "classification": "observation-window-required", "block_promotion_after": "2026-05-19" },
+    { "gate": "edge-function-contract-coverage", "current": 124, "ceiling": null, "trend": "down", "classification": "transitional", "block_promotion_at_count": 87 }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "admin-and-validation-closure",
+  "domains_total": 12,
+  "domains_pass_all_criteria": 12,
+  "top_tasks": [
+    { "id": "ai-runtime-failure", "label": "AI runtime nightly failure triage", "path": "/admin/ai-runtime", "tab": "nightly-truth", "clicks": 2, "find_target_seconds": 15 },
+    { "id": "connector-reauth", "label": "Connector reauth (Google/MS/Slack)", "path": "/admin/integrations", "clicks": 3, "find_target_seconds": 20 },
+    { "id": "boardroom-stuck", "label": "Boardroom stuck approval / execution", "path": "/admin/approvals", "clicks": 3, "find_target_seconds": 20 },
+    { "id": "kill-switch-decision", "label": "Kill-switch decision", "path": "/admin/trust-security", "clicks": 3, "find_target_seconds": 20 },
+    { "id": "restore-recovery", "label": "Restore / recovery (DR drill)", "path": "/admin/health", "clicks": 3, "find_target_seconds": 20 },
+    { "id": "incident-drilldown", "label": "Incident drilldown to runbook", "path": "/admin/alerts", "clicks": 3, "find_target_seconds": 20 },
+    { "id": "release-verification", "label": "Release verification", "path": "/admin/releases", "clicks": 2, "find_target_seconds": 15 },
+    { "id": "receipts-lookup", "label": "Receipts lookup", "path": "/admin/verification", "clicks": 3, "find_target_seconds": 30 },
+    { "id": "env-remediation", "label": "Environment / config remediation", "path": "/admin/environments", "clicks": 3, "find_target_seconds": 25 },
+    { "id": "secret-rotation", "label": "Secret rotation / security anomaly", "path": "/admin/trust-security", "clicks": 3, "find_target_seconds": 25 }
+  ]
+}
