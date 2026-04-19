@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
+import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server, Inbox } from "lucide-react";
 import { DEMO_AI_FEATURES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -127,7 +128,11 @@ export default function AIRuntimeStatus() {
                   <CheckRow key={fn} label={fn} ok={ok} />
                 ))}
                 {!health?.checks.edge_functions_healthy || Object.keys(health.checks.edge_functions_healthy).length === 0 ? (
-                  <p className="text-sm text-muted-foreground py-4 text-center">No data — run health check first</p>
+                  <EmptyState
+                    icon={<Inbox className="h-5 w-5" />}
+                    title="No edge function health data"
+                    description="Run a health check to populate per-function readiness signals."
+                  />
                 ) : null}
               </div>
             )}
