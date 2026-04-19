@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-19T14:45:23.456Z",
+  "gate": "electron-threat-detection-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 3,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "electron/runtime-shield.cjs",
+      "message": "Detection signature missing: \"vm-detect\""
+    },
+    {
+      "severity": "warning",
+      "area": "electron/runtime-shield.cjs",
+      "message": "Detection signature missing: \"preload-integrity\""
+    },
+    {
+      "severity": "warning",
+      "area": "drills",
+      "message": "partner-blocked — no Electron threat drills recorded. Drills must run on a real Electron build host."
+    }
+  ],
+  "drillCount": 0,
+  "hooks": 3
+}

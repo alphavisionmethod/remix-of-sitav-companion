@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T14:45:28.584Z",
+  "gate": "session-threat-behavior",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "evidence",
+      "message": "pending-execution — no session-threat runs recorded yet"
+    }
+  ],
+  "runCount": 0,
+  "detectorFound": true
+}

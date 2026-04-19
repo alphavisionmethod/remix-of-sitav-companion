@@ -1,21 +1,12 @@
 {
-  "generatedAt": "2026-04-19T00:00:00.000Z",
-  "ok": true,
+  "generatedAt": "2026-04-19T14:46:33.947Z",
+  "classified": 40,
+  "missing": 0,
   "violations": 0,
-  "classified": 4,
-  "adapterRouted": [
-    "src/hooks/useAppStatePersistence.ts",
-    "src/hooks/use-zero-latency.ts",
-    "src/hooks/use-session-restore.ts",
-    "src/hooks/useSetupOrchestration.ts"
-  ],
-  "leafBrowserOnly": [
-    "src/hooks/use-mobile.ts",
-    "src/hooks/useReducedMotion.ts"
-  ],
-  "shellSpecific": [
-    "src/hooks/useWindowSnap.ts",
-    "src/hooks/useElectronBridge.ts"
-  ],
-  "secondAbstractionDetected": false
+  "byBoundary": {
+    "leaf-browser-only": 31,
+    "shared-portable": 4,
+    "shell-specific": 1,
+    "adapter-routed": 4
+  }
 }
