@@ -26,6 +26,7 @@ const CouncilsBoard = lazy(() => import("@/pages/admin/ai-runtime/CouncilsBoard"
 const SuggestionsBoard = lazy(() => import("@/pages/admin/ai-runtime/SuggestionsBoard"));
 const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"));
 const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
+const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"));
 
 function ModuleFallback() {
   return (
@@ -82,6 +83,13 @@ export default function AIRuntimeHome() {
       description: "Phase 3 — normalized npm audit findings linked to upgrade suggestions.",
       legacyPath: "/admin/ai-runtime/dependency-findings",
       render: wrap(DependencyFindingsBoard),
+    },
+    {
+      id: "security-council",
+      label: "Security Council",
+      description: "Phase 4 — 7 security-trust agents observing runtime signals; live findings + drilldown.",
+      legacyPath: "/admin/ai-runtime/security-council",
+      render: wrap(SecurityCouncilBoard),
     },
     {
       id: "efficiency",
