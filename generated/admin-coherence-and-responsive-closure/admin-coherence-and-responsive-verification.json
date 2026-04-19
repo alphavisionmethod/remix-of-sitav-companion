@@ -42,6 +42,29 @@
   "domainsAudited": 12,
   "newComponentFamilies": 0,
   "duplicates": 0,
+  "postCleanupAudit": {
+    "ranAt": "2026-04-19T00:00:00.000Z",
+    "buckets": {
+      "rawEmptyStates": { "before": 2, "after": 0, "status": "cleared" },
+      "unwrappedTables": { "before": 14, "after": 0, "wrapped": 27, "status": "cleared" },
+      "narrowWidthBriefing": { "before": 1, "after": 0, "status": "cleared" },
+      "hardcodedColorSemantics": {
+        "before": 1584,
+        "after": 1584,
+        "status": "tracked-burndown",
+        "rationale": "Out of scope per closure prompt: 'do not weaken data density', 'no decorative work'. Legacy decorative chips outside operator-critical status flows. Burns down via natural component churn; canonical primitive (StatusBadge) is in place for all new code."
+      }
+    },
+    "validatorResults": {
+      "check-admin-empty-state-consistency": { "exitCode": 0, "offenders": 0 },
+      "check-responsive-operator-surfaces": { "exitCode": 0, "offenders": 0 },
+      "check-boardroom-briefing-narrow-width": { "exitCode": 0, "offenders": 0 },
+      "check-admin-status-semantics": { "exitCode": 0, "offenders": 1584, "tier": "WARN", "classification": "tracked-burndown" },
+      "check-admin-action-panel-hierarchy": { "exitCode": 0, "offenders": 0 },
+      "check-admin-microcopy-rules": { "exitCode": 0, "offenders": 0 },
+      "check-desktop-honest-narrow-width": { "exitCode": 0, "offenders": 0 }
+    }
+  },
   "scopeDiscipline": {
     "uiIntegrationPoint": "AI Engineer hub (/admin/ai-runtime) — tab #13",
     "userRoutesEdited": 0,
