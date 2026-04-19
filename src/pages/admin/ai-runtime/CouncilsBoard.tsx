@@ -16,7 +16,6 @@ import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclos
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
 import { severityTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { supabase } from "@/integrations/supabase/client";
-import { supabase } from "@/integrations/supabase/client";
 import {
   loadCouncilSummaries,
   loadOpenEscalations,
