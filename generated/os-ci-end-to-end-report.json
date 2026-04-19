@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-19T22:10:42.487Z",
+  "gate": "os-ci-end-to-end",
+  "phase": "phase-18-layout-and-ci-truth",
+  "workflowPath": ".github/workflows/os-build-iso.yml",
+  "requirementsChecked": 16,
+  "evidence": {
+    "trigger-push": true,
+    "trigger-schedule": true,
+    "trigger-release": true,
+    "trigger-dispatch": true,
+    "profile-matrix": true,
+    "step-build": true,
+    "step-verify-boot": true,
+    "step-verity": true,
+    "step-img": true,
+    "step-tpm": true,
+    "step-mok": true,
+    "step-sbom": true,
+    "step-attestation": true,
+    "job-smoke-test": true,
+    "job-publish": true,
+    "step-upload": true
+  },
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": []
+}

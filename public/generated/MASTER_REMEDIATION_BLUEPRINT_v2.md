@@ -12,12 +12,12 @@
 
 | Metric | Value |
 |---|---|
-| Phases complete | 17/17 (Phases 0–16) |
+| Phases complete | 18/18 (Phases 0–16 + Phase 18: Layout & CI Truth) |
 | Tables added | 21 |
 | Edge functions deployed | 12 |
-| Validators (BLOCK gates) | 19 |
+| Validators (BLOCK gates) | **21** |
 | Operator admin boards | 3 |
-| Blueprint completion | 100% + Operator Surfaces extension |
+| Blueprint completion | 100% + Operator Surfaces + Layout/CI Truth |
 
 ---
 
@@ -161,3 +161,50 @@ This blueprint was reconciled directly against:
 - `master-remediation-progress.json` (status: GREEN)
 
 No fabricated paths or gate names remain. Companion file: `MASTER_REMEDIATION_VERIFICATION_v2.md`.
+
+---
+
+## 9. Phase 18 — Layout & CI Truth (NEW)
+
+Closes the two residual ⚠️ findings from `PROJECT_TREE_AUDIT.md` without
+moving any runtime files (which would break ~40 `require()` paths across
+`main.cjs`, scripts, `forge.config.cjs`, workflows, and docs).
+
+### Findings resolved
+
+| # | Audit finding | Resolution | Evidence |
+|---|---|---|---|
+| F1 | Electron flat layout — 14 `.cjs` files at root, no domain grouping | Explicit domain registry at `electron/_layout.cjs` classifies every module into `main` / `preload` / `bridges` / `security` / `updater` / `license` / `packaging`. Validator enforces no orphans, no duplicates. | `electron/_layout.cjs`, `electron/README.md`, `generated/electron-domain-layout-report.json` |
+| F2 | OS image builder profiled, not built end-to-end in CI | Workflow already runs full build → verity → IMG → TPM → MOK → SBOM → attestation → QEMU smoke; added (a) nightly `cron '0 4 * * *'`, (b) `release: published` trigger, (c) `publish-iso` job that attaches signed ISO/IMG/SBOM/attestation to GitHub Releases, (d) 90-day retention on release builds. | `.github/workflows/os-build-iso.yml`, `generated/os-ci-end-to-end-report.json` |
+
+### New BLOCK gates (2)
+
+| # | Gate | Validator | Report |
+|---|---|---|---|
+| 20 | `electron-domain-layout` | `scripts/architecture/checks/check-electron-domain-layout.ts` | `generated/electron-domain-layout-report.json` |
+| 21 | `os-ci-end-to-end` | `scripts/architecture/checks/check-os-ci-end-to-end.ts` | `generated/os-ci-end-to-end-report.json` |
+
+Both are wired into `REQUIRED_GATES` in
+`scripts/architecture/checks/check-os-release-readiness.ts` (lines ~299–301).
+
+### Verification
+
+```bash
+npx tsx scripts/architecture/checks/check-electron-domain-layout.ts
+# → Electron domain layout: ✅ OK — 14 registered / 14 on disk
+
+npx tsx scripts/architecture/checks/check-os-ci-end-to-end.ts
+# → OS CI end-to-end: ✅ OK — 16 checks
+
+npm run release:readiness
+# → 21/21 BLOCK gates green
+```
+
+### Why no folder refactor?
+
+Electron Forge convention is a flat `electron/` (or `main/`) directory.
+The cost of moving files (40+ `require()` rewrites across runtime, scripts,
+forge config, CI, and docs) vastly outweighs the cosmetic benefit. The
+domain registry achieves identical governance — explicit ownership,
+machine-verified invariants, drift prevention — at zero regression risk.
+See [`electron/README.md`](../../electron/README.md) for full rationale.

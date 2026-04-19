@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T19:55:58.582Z",
+  "generatedAt": "2026-04-19T22:10:46.616Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1467,6 +1467,153 @@
       "warnings": 0
     },
     {
+      "file": "generated/canonical-paths-report.json",
+      "gate": "canonical-paths",
+      "ok": true,
+      "errors": 0,
+      "warnings": 6
+    },
+    {
+      "file": "generated/5-plane-boundaries-report.json",
+      "gate": "5-plane-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/evidence-graph-completeness-report.json",
+      "gate": "evidence-graph-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/cron-execution-evidence-report.json",
+      "gate": "cron-execution-evidence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 12
+    },
+    {
+      "file": "generated/release-decision-persistence-report.json",
+      "gate": "release-decision-persistence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/ai-receipt-completeness-report.json",
+      "gate": "ai-receipt-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/connector-reauth-telemetry-report.json",
+      "gate": "connector-reauth-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/security-fabric-probes-report.json",
+      "gate": "security-fabric-probes",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-sdk-extension-registry-report.json",
+      "gate": "app-sdk-extension-registry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/boardroom-cockpit-telemetry-report.json",
+      "gate": "boardroom-cockpit-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-branch-telemetry-report.json",
+      "gate": "onboarding-branch-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-deferral-attestation-report.json",
+      "gate": "mobile-deferral-attestation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-sdk-extension-events-report.json",
+      "gate": "app-sdk-extension-events",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/release-evidence-graph-snapshot-report.json",
+      "gate": "release-evidence-graph-snapshot",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/owner-copilot-readonly-report.json",
+      "gate": "owner-copilot-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/federation-optin-append-only-report.json",
+      "gate": "federation-optin-append-only",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dr-drill-evidence-report.json",
+      "gate": "dr-drill-evidence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/chaos-drill-classification-report.json",
+      "gate": "chaos-drill-classification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/production-launch-attestation-report.json",
+      "gate": "production-launch-attestation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/electron-domain-layout-report.json",
+      "gate": "electron-domain-layout",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-ci-end-to-end-report.json",
+      "gate": "os-ci-end-to-end",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/ai-engineer-tab-registry-report.json",
       "gate": "ai-engineer-tab-registry (warn)",
       "ok": true,
@@ -1496,7 +1643,7 @@
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3618,
+  "totalWarnings": 3638,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
