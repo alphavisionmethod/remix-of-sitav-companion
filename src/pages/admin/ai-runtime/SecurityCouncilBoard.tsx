@@ -207,17 +207,50 @@ export default function SecurityCouncilBoard() {
             Phase 4 — 7 security-trust agents observe runtime signals and propose policy/kill-switch actions.
             Findings never auto-execute; high/critical items route to the Suggestions queue for human review.
           </p>
+          <div className="mt-2">
+            <AITruthDisclosure
+              mode={summary?.generated_at ? "live-gateway" : "structural"}
+              verifiedAt={summary?.generated_at ?? null}
+              label={
+                summary?.generated_at
+                  ? formatTrustLabel("ai", "live", { verifiedAt: summary.generated_at })
+                  : undefined
+              }
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={cn("h-4 w-4 mr-2", loading && "animate-spin")} />
-            Refresh
-          </Button>
-          <Button size="sm" onClick={runTick} disabled={ticking}>
-            <Activity className={cn("h-4 w-4 mr-2", ticking && "animate-pulse")} />
-            Run tick now
-          </Button>
-        </div>
+        <OperatorActionPanel
+          ariaLabel="Security Council actions"
+          primary={{
+            label: ticking ? "Ticking…" : "Run tick now",
+            icon: Activity,
+            onClick: runTick,
+            disabled: ticking,
+          }}
+          next={[
+            {
+              label: loading ? "Refreshing…" : "Refresh",
+              icon: RefreshCw,
+              onClick: load,
+              disabled: loading,
+            },
+          ]}
+          evidence={[
+            {
+              label: "Open Suggestions",
+              icon: ExternalLink,
+              href: "/admin/ai-runtime?tab=suggestions",
+              asChild: (
+                <a
+                  href="/admin/ai-runtime?tab=suggestions"
+                  className="inline-flex items-center gap-1.5 rounded-md border bg-background h-8 px-3 text-xs hover:bg-muted"
+                >
+                  <ExternalLink className="h-3 w-3" /> Open Suggestions
+                </a>
+              ),
+            },
+          ]}
+        />
       </div>
 
       {/* Summary cards */}
@@ -229,7 +262,7 @@ export default function SecurityCouncilBoard() {
                 <p className="text-xs text-muted-foreground">Open findings</p>
                 <p className="text-2xl font-semibold">{summary?.open_findings ?? 0}</p>
               </div>
-              <Eye className="h-5 w-5 text-blue-500" />
+              <Eye className="h-5 w-5 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -251,7 +284,7 @@ export default function SecurityCouncilBoard() {
                 <p className="text-xs text-muted-foreground">Kill-switch recs (pending)</p>
                 <p className="text-2xl font-semibold">{summary?.kill_switch_recommendations?.pending ?? 0}</p>
               </div>
-              <ShieldX className="h-5 w-5 text-orange-500" />
+              <ShieldX className="h-5 w-5 text-warning" />
             </div>
           </CardContent>
         </Card>
@@ -290,7 +323,7 @@ export default function SecurityCouncilBoard() {
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">Open</span>
-                    <span className={cn("font-medium", stats.openCount > 0 && "text-orange-500")}>
+                    <span className={cn("font-medium", stats.openCount > 0 && "text-warning")}>
                       {stats.openCount}
                     </span>
                   </div>
@@ -363,14 +396,14 @@ export default function SecurityCouncilBoard() {
                     onClick={() => setSelected(f)}
                   >
                     <TableCell>
-                      <Badge variant="outline" className={SEVERITY_TONE[f.severity]}>
+                      <StatusBadge tone={severityTone(f.severity)} size="xs">
                         {f.severity}
-                      </Badge>
+                      </StatusBadge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className={STATUS_TONE[f.status]}>
+                      <StatusBadge tone={findingStatusTone(f.status)} size="xs">
                         {f.status}
-                      </Badge>
+                      </StatusBadge>
                     </TableCell>
                     <TableCell className="text-xs font-mono">{f.agent_id}</TableCell>
                     <TableCell className="text-sm max-w-md truncate">{f.title}</TableCell>
@@ -393,9 +426,9 @@ export default function SecurityCouncilBoard() {
             <>
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <Badge variant="outline" className={SEVERITY_TONE[selected.severity]}>
+                  <StatusBadge tone={severityTone(selected.severity)} size="sm">
                     {selected.severity}
-                  </Badge>
+                  </StatusBadge>
                   {selected.title}
                 </SheetTitle>
                 <SheetDescription>{selected.summary}</SheetDescription>
