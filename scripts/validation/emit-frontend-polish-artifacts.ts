@@ -42,13 +42,24 @@ interface BoardScan {
 }
 
 const FORBIDDEN = ["TODO", "FIXME", "lorem ipsum", "alert(", "console.log("];
-const RAW_NO_RE =
-  /<(p|div|span)[^>]*className=["'][^"']*text-muted-foreground[^"']*["'][^>]*>\s*No /gi;
+// Broader empty-state regex (Phase 4 — closes the 4-offender blind spot):
+//   1. <p|div|span ... text-muted-foreground ...> No <Word>
+//   2. <TableCell ... > No <Word>
+//   3. JSX text node "Loading…" / "Loading..." inside a Cell/div/p/span
+const RAW_NO_RE_A =
+  /<(p|div|span|TableCell)[^>]*className=["'][^"']*text-muted-foreground[^"']*["'][^>]*>\s*No\s+[A-Za-z]/gi;
+const RAW_NO_RE_B =
+  /<(p|div|span|TableCell)[^>]*>\s*No\s+(?:agents?|drafts?|drift|drills?|rungs?|learnings?|digests?|reflections?|findings?|suggestions?|intents?|results?|data|items?|records?)\b/gi;
+const RAW_LOADING_RE =
+  />\s*Loading\s*[…\.]{1,3}\s*</gi;
 const DEAD_CTA_RE =
   /onClick=\{\s*(\(\)\s*=>\s*\{\s*\}|\(\)\s*=>\s*null|undefined)\s*\}|href=["']#["']/g;
 
 function scanBoard(file: string): BoardScan {
   const src = readFileSync(join(BOARD_DIR, file), "utf-8");
+  const rawNoA = (src.match(RAW_NO_RE_A) ?? []).length;
+  const rawNoB = (src.match(RAW_NO_RE_B) ?? []).length;
+  const rawLoading = (src.match(RAW_LOADING_RE) ?? []).length;
   return {
     file,
     hasEmptyState: /from ["']@\/components\/primitives\/feedback\/EmptyState["']/.test(src) ||
@@ -64,7 +75,7 @@ function scanBoard(file: string): BoardScan {
       /\bLoader2\b/.test(src),
     hasErrorState:
       /catch\s*\(/.test(src) || /\.error/.test(src) || /useState[^;]*error/i.test(src),
-    rawNoTextCount: (src.match(RAW_NO_RE) ?? []).length,
+    rawNoTextCount: rawNoA + rawNoB + rawLoading,
     deadCtaCount: (src.match(DEAD_CTA_RE) ?? []).length,
     forbiddenPhrases: FORBIDDEN.filter((p) => src.includes(p)),
   };

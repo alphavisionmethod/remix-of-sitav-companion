@@ -26,6 +26,7 @@ import {
   Activity, Eye, BellOff, AlertTriangle, Clock, ExternalLink,
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -340,7 +341,15 @@ export default function SecurityCouncilBoard() {
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">Loading…</TableCell></TableRow>
+                <>
+                  {[0, 1, 2].map((i) => (
+                    <TableRow key={`sk-${i}`}>
+                      <TableCell colSpan={6} className="py-3">
+                        <Skeleton className="h-4 w-full" />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
               ) : filtered.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="py-2">
