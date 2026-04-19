@@ -1,21 +1,31 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/auth.ts";
-
+import { EdgeLogger } from "../_shared/logger.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 serve(async (req) => {
+  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
+  const log = new EdgeLogger("advisor-conversation", correlationId);
+  const t0 = performance.now();
+
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     // ── JWT AUTH (canonical) ───────────────────────────────────────
     const auth = await requireAuth(req);
-    if (auth instanceof Response) return auth;
+    if (auth instanceof Response) {
+      log.warn("auth_failed", { failure_class: "auth_invalid" });
+      return auth;
+    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    if (!LOVABLE_API_KEY) {
+      log.error("missing_api_key", { failure_class: "config_missing" });
+      throw new Error("LOVABLE_API_KEY not configured");
+    }
 
     const {
       advisorId, advisorName, advisorRole, personalityTraits, communicationStyle,
@@ -23,10 +33,12 @@ serve(async (req) => {
     } = await req.json();
 
     if (!userMessage || !advisorId) {
+      log.warn("invalid_input", { failure_class: "bad_request" });
       return new Response(JSON.stringify({ error: "Missing advisorId or userMessage" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    log.info("invocation_started", { event_type: "advisor_conversation", actor: auth.userId, target: advisorId });
 
     const systemPrompt = `You are ${advisorName}, a ${advisorRole} in the SITA Business OS Board of Advisors.
 
