@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadConnectorTruthSummary,
   type ConnectorTruthSummary,
@@ -81,9 +82,10 @@ export default function ConnectorTruthSummaryPanel() {
         <CardContent>
           {loading && <p className="text-sm text-muted-foreground">Loading connector truth…</p>}
           {!loading && !summary && (
-            <p className="text-sm text-muted-foreground">
-              No connector truth data available yet. Nightly verifier runs at 02:30 UTC.
-            </p>
+            <NeedsHistoricalReleasesExplainer
+              title="No connector truth recorded yet"
+              description="The connector truth verifier runs nightly at 02:30 UTC. Streaks, classification, and provider state appear after the first scheduled tick completes."
+            />
           )}
           {!loading && summary && (
             <div className="space-y-4">

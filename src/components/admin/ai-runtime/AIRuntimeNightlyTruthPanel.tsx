@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadNightlyTruthData,
   acknowledgeAlert,
@@ -136,7 +137,12 @@ export default function AIRuntimeNightlyTruthPanel() {
     return <p className="text-sm text-muted-foreground py-8 text-center">Loading nightly truth…</p>;
   }
   if (!data) {
-    return <p className="text-sm text-muted-foreground py-8 text-center">No nightly truth data available.</p>;
+    return (
+      <NeedsHistoricalReleasesExplainer
+        title="No nightly runs recorded yet"
+        description="The nightly AI runtime verifier (ai-runtime-nightly-verify) runs at 02:00 UTC. Truth data appears after the first scheduled tick completes."
+      />
+    );
   }
 
   const streak = data.streak;

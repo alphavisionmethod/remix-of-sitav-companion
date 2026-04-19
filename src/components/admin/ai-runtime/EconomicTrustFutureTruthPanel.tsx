@@ -161,7 +161,7 @@ export default function EconomicTrustFutureTruthPanel() {
                     No ceiling rows yet — table seeded on first AI invocation per user.
                   </div>
                 ) : (
-                  <div className="rounded border">
+                  <div className="rounded border overflow-x-auto">
                     <table className="w-full text-xs">
                       <thead className="bg-muted/50">
                         <tr>

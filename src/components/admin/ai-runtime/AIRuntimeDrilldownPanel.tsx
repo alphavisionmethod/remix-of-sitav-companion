@@ -23,7 +23,8 @@ import {
   type AgentDrilldownData,
   type NightlyProofStatus,
 } from "@/lib/internal-agents/runtime/agent-drilldown-data";
-import { Activity, Coins, ShieldAlert, ExternalLink, Clock } from "lucide-react";
+import { Activity, Coins, ShieldAlert, ExternalLink, Clock, Inbox } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface Props {
   agentId: string;
@@ -93,7 +94,13 @@ export function AIRuntimeDrilldownPanel({ agentId, userId }: Props) {
     return <p className="text-xs text-muted-foreground py-4">Loading drilldown…</p>;
   }
   if (!data) {
-    return <p className="text-xs text-muted-foreground py-4">No drilldown data available.</p>;
+    return (
+      <EmptyState
+        icon={<Inbox className="h-5 w-5" />}
+        title="No drilldown data yet"
+        description="This agent has no recorded actions, invocations, or fallback events in the current window. Drilldown populates after the first runtime tick."
+      />
+    );
   }
 
   return (
