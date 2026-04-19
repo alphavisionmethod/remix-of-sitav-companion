@@ -95,6 +95,7 @@ const HRS02SignalSourcesBoard = () => {
               <Card>
                 <CardHeader><CardTitle className="text-sm">Signal Type Coverage</CardTitle></CardHeader>
                 <CardContent>
+                  <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead><tr className="border-b"><th className="text-left p-2">Signal</th>{displayProviders.slice(0, 6).map((p: Record<string, any>) => <th key={p.key} className="p-2 text-center">{p.name.split(" ")[0]}</th>)}</tr></thead>
                     <tbody>
@@ -108,6 +109,7 @@ const HRS02SignalSourcesBoard = () => {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

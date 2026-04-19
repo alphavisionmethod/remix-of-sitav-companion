@@ -38,6 +38,7 @@ const HRS05AssistantTimingBoard = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><BrainCircuit className="h-4 w-4" />Timing Rule Engine</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Rule</th><th className="text-left p-2">Context</th><th className="p-2">Priority</th><th className="p-2">Override</th><th className="p-2">Category</th></tr></thead>
                 <tbody>
@@ -52,6 +53,7 @@ const HRS05AssistantTimingBoard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -82,6 +84,7 @@ const HRS05AssistantTimingBoard = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Hold vs Act Decision Matrix</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Scenario</th><th className="p-2">Decision</th><th className="text-left p-2">Reason</th><th className="text-left p-2">Timing</th></tr></thead>
                 <tbody>
@@ -95,6 +98,7 @@ const HRS05AssistantTimingBoard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

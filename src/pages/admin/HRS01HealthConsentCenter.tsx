@@ -94,6 +94,7 @@ const HRS01HealthConsentCenter = () => {
             <Card>
               <CardHeader><CardTitle className="text-sm">Active Consent Records</CardTitle></CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Signal Type</th><th className="text-left p-2">Scope</th><th className="p-2">Read</th><th className="p-2">Revoked</th><th className="text-left p-2">Granted</th></tr></thead>
                   <tbody>
@@ -108,6 +109,7 @@ const HRS01HealthConsentCenter = () => {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </CardContent>
             </Card>
           )}
@@ -128,6 +130,7 @@ const HRS01HealthConsentCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Trash2 className="h-4 w-4" />Revocation Actions</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Effect</th><th className="p-2">Timeline</th><th className="text-left p-2">Cascade</th></tr></thead>
                 <tbody>
@@ -141,6 +144,7 @@ const HRS01HealthConsentCenter = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

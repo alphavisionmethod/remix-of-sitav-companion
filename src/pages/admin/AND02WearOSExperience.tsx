@@ -53,6 +53,7 @@ const AND02WearOSExperience = () => (
         <Card>
           <CardHeader><CardTitle className="text-sm">Micro-Action Registry</CardTitle></CardHeader>
           <CardContent>
+            <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead><tr className="border-b">
                 <th className="text-left p-2">Action</th>
@@ -73,6 +74,7 @@ const AND02WearOSExperience = () => (
                 ))}
               </tbody>
             </table>
+            </div>
           </CardContent>
         </Card>
       </TabsContent>

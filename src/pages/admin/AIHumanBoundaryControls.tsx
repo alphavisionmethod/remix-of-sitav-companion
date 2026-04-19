@@ -104,6 +104,7 @@ const AIHumanBoundaryControls = () => {
 
         <TabsContent value="changes" className="mt-4">
           <div className="rounded-xl border border-border/40 bg-card overflow-hidden">
+            <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border/40 bg-muted/30">
                 <th className="text-left p-3">Change Type</th>
@@ -125,6 +126,7 @@ const AIHumanBoundaryControls = () => {
                 );
               })}</tbody>
             </table>
+            </div>
           </div>
         </TabsContent>
       </Tabs>

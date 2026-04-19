@@ -61,6 +61,7 @@ const NRC05CrossDeviceDelivery = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Delivery Rules Engine</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Rule</th><th className="text-left p-2">Description</th><th className="p-2">Enforcement</th><th className="p-2">Priority</th></tr></thead>
                 <tbody>
@@ -74,6 +75,7 @@ const NRC05CrossDeviceDelivery = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -82,6 +84,7 @@ const NRC05CrossDeviceDelivery = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Cross-Surface Handoff Flows</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">From</th><th className="p-2"><ArrowRight className="h-3 w-3 mx-auto" /></th><th className="text-left p-2">To</th><th className="text-left p-2">Context Transferred</th><th className="text-left p-2">Trigger</th><th className="text-left p-2">Method</th></tr></thead>
                 <tbody>
@@ -97,6 +100,7 @@ const NRC05CrossDeviceDelivery = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

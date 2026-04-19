@@ -33,6 +33,7 @@ const NSS03TrustContinuity = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Secure Action Model</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Risk</th><th className="text-left p-2">Device</th><th className="p-2">Biometric</th><th className="text-left p-2">Session</th><th className="text-left p-2">Examples</th></tr></thead>
                 <tbody>
@@ -47,6 +48,7 @@ const NSS03TrustContinuity = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -55,6 +57,7 @@ const NSS03TrustContinuity = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><ArrowRightLeft className="h-4 w-4" />Cross-Surface Continuity</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">From</th><th className="p-2"><ArrowRight className="h-3 w-3 mx-auto" /></th><th className="text-left p-2">To</th><th className="text-left p-2">Context</th><th className="text-left p-2">Method</th><th className="p-2">Latency</th><th className="p-2">State</th></tr></thead>
                 <tbody>
@@ -71,6 +74,7 @@ const NSS03TrustContinuity = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

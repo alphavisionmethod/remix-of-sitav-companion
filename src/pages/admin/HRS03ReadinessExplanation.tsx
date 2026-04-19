@@ -58,6 +58,7 @@ const HRS03ReadinessExplanation = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Readiness Level Registry</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Level</th><th className="text-left p-2">Description</th><th className="text-left p-2">Routing Effect</th></tr></thead>
                 <tbody>
@@ -70,6 +71,7 @@ const HRS03ReadinessExplanation = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -83,6 +85,7 @@ const HRS03ReadinessExplanation = () => {
             <Card>
               <CardHeader><CardTitle className="text-sm">Latest Readiness Derivations (DB)</CardTitle></CardHeader>
               <CardContent>
+                <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Level</th><th className="text-left p-2">Confidence</th><th className="text-left p-2">Source</th><th className="text-left p-2">Assessed</th></tr></thead>
                   <tbody>
@@ -96,6 +99,7 @@ const HRS03ReadinessExplanation = () => {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </CardContent>
             </Card>
           )}

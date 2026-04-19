@@ -70,6 +70,7 @@ export default function DbTruthExplorer() {
         <TabsContent value="schema">
           <Card><CardContent className="p-0">
             <ScrollArea className="h-[600px]">
+              <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-background border-b">
                   <tr className="text-left"><th className="p-2">Table</th><th className="p-2">Domain</th><th className="p-2">Class</th><th className="p-2">Tenancy</th><th className="p-2">Policies</th><th className="p-2">Sensitive</th></tr>
@@ -87,6 +88,7 @@ export default function DbTruthExplorer() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </ScrollArea>
           </CardContent></Card>
         </TabsContent>
@@ -136,6 +138,7 @@ export default function DbTruthExplorer() {
                     <div className="p-3 border rounded"><div className="text-xs text-muted-foreground">Unexempted</div><div className={`text-xl font-bold ${stats.unexemptedCrossDomainWriters > 0 ? "text-destructive" : ""}`}>{stats.unexemptedCrossDomainWriters}</div></div>
                   </div>
                   <ScrollArea className="h-[520px]">
+                    <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead className="sticky top-0 bg-background border-b">
                         <tr className="text-left"><th className="p-2">Table</th><th className="p-2">Owner</th><th className="p-2">Edge Writers</th><th className="p-2">Non-Edge Writers</th><th className="p-2">Readers</th><th className="p-2">Cross-Dom</th></tr>
@@ -165,6 +168,7 @@ export default function DbTruthExplorer() {
                         })}
                       </tbody>
                     </table>
+                    </div>
                   </ScrollArea>
                 </>
               );
@@ -175,6 +179,7 @@ export default function DbTruthExplorer() {
         <TabsContent value="migrations">
           <Card><CardContent className="p-0">
             <ScrollArea className="h-[600px]">
+              <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-background border-b">
                   <tr className="text-left"><th className="p-2">#</th><th className="p-2">Timestamp</th><th className="p-2">Category</th><th className="p-2">Domain</th><th className="p-2">Risk</th><th className="p-2">Tables</th></tr>
@@ -192,6 +197,7 @@ export default function DbTruthExplorer() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </ScrollArea>
           </CardContent></Card>
         </TabsContent>
@@ -202,6 +208,7 @@ export default function DbTruthExplorer() {
               {driftRows.length === 0 ? (
                 <div className="p-6 text-center text-muted-foreground">✅ No drift detected</div>
               ) : (
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="sticky top-0 bg-background border-b"><tr className="text-left"><th className="p-2">Table</th><th className="p-2">Issue</th><th className="p-2">Severity</th></tr></thead>
                   <tbody>
@@ -214,6 +221,7 @@ export default function DbTruthExplorer() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               )}
             </ScrollArea>
           </CardContent></Card>

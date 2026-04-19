@@ -80,6 +80,7 @@ const NRC02CalmnessCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Intervention Decision Model</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Scenario</th><th className="p-2">Role</th><th className="text-left p-2">Intervention</th><th className="p-2">Tone</th></tr></thead>
                 <tbody>
@@ -93,6 +94,7 @@ const NRC02CalmnessCenter = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
