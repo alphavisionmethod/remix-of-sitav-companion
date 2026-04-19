@@ -19811,6 +19811,10 @@ export type Database = {
         Args: { _detection_id: string }
         Returns: Json
       }
+      acknowledge_security_finding: {
+        Args: { _finding_id: string; _new_status: string; _notes?: string }
+        Returns: string
+      }
       brd_followthrough_transition: {
         Args: {
           _correlation_id: string
