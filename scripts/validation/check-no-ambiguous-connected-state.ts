@@ -25,7 +25,7 @@ const SAME_LINE_ALLOW = [
 for (const target of SEARCH_DIRS) {
   let out = "";
   try {
-    out = execSync(`grep -rn '>Connected<\\|>Connected ' ${target} 2>/dev/null || true`, {
+    out = execSync(`grep -rHn '>Connected<\\|>Connected ' ${target} 2>/dev/null || true`, {
       encoding: "utf-8",
     });
   } catch {}
