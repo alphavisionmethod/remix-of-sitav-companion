@@ -19,11 +19,11 @@ interface Session {
   id: string;
   user_id: string;
   tenant_id: string | null;
-  session_class: string | null;
-  started_at: string;
-  ended_at: string | null;
-  interactions_count: number | null;
-  metadata: Record<string, unknown> | null;
+  copilot_kind: string;
+  session_started_at: string;
+  session_ended_at: string | null;
+  prompt_count: number;
+  read_only_verified: boolean;
 }
 
 export default function OwnerCopilotSessionConsole() {
@@ -36,8 +36,8 @@ export default function OwnerCopilotSessionConsole() {
     setLoading(true);
     const { data, error } = await supabase
       .from("owner_copilot_sessions")
-      .select("*")
-      .order("started_at", { ascending: false })
+      .select("id, user_id, tenant_id, copilot_kind, session_started_at, session_ended_at, prompt_count, read_only_verified")
+      .order("session_started_at", { ascending: false })
       .limit(50);
     if (error) toast.error(error.message);
     else setItems((data ?? []) as Session[]);
@@ -66,8 +66,8 @@ export default function OwnerCopilotSessionConsole() {
     else { toast.success("Session ended"); load(); }
   }
 
-  const active = useMemo(() => items.filter(s => !s.ended_at), [items]);
-  const ended = useMemo(() => items.filter(s => s.ended_at), [items]);
+  const active = useMemo(() => items.filter(s => !s.session_ended_at), [items]);
+  const ended = useMemo(() => items.filter(s => s.session_ended_at), [items]);
 
   return (
     <AdminControlPlaneShell contextScope="AI Runtime · Owner Copilot Sessions">
@@ -137,9 +137,10 @@ export default function OwnerCopilotSessionConsole() {
               <div key={s.id} className="border rounded-md p-3 text-sm flex items-center justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <Badge>{s.session_class ?? "session"}</Badge>
+                    <Badge>{s.copilot_kind}</Badge>
+                    {s.read_only_verified && <Badge variant="outline">read-only</Badge>}
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Clock className="h-3 w-3" /> started {formatDistanceToNow(new Date(s.started_at), { addSuffix: true })}
+                      <Clock className="h-3 w-3" /> started {formatDistanceToNow(new Date(s.session_started_at), { addSuffix: true })}
                     </span>
                   </div>
                   <div className="text-xs font-mono text-muted-foreground">{s.id}</div>
@@ -162,11 +163,11 @@ export default function OwnerCopilotSessionConsole() {
               <div key={s.id} className="border rounded-md p-3 text-sm space-y-1">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">{s.session_class ?? "session"}</Badge>
-                    <Badge variant="secondary">{s.interactions_count ?? 0} interactions</Badge>
+                    <Badge variant="outline">{s.copilot_kind}</Badge>
+                    <Badge variant="secondary">{s.prompt_count} prompts</Badge>
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    ended {s.ended_at ? formatDistanceToNow(new Date(s.ended_at), { addSuffix: true }) : "—"}
+                    ended {s.session_ended_at ? formatDistanceToNow(new Date(s.session_ended_at), { addSuffix: true }) : "—"}
                   </span>
                 </div>
                 <div className="text-xs font-mono text-muted-foreground">{s.id}</div>

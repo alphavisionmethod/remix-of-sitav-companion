@@ -19,7 +19,7 @@ interface Dispatch {
   boardroom_item_id: string | null;
   state: string;
   correlation_id: string | null;
-  dispatched_at: string | null;
+  execution_completed_at: string | null;
   created_at: string;
   failure_reason: string | null;
 }
@@ -35,12 +35,12 @@ export default function BoardroomSLADrillDown() {
     setLoading(true);
     const { data, error } = await supabase
       .from("boardroom_followthrough_dispatches")
-      .select("id, boardroom_item_id, state, correlation_id, dispatched_at, created_at, failure_reason")
+      .select("id, boardroom_item_id, state, correlation_id, execution_completed_at, created_at, failure_reason")
       .in("state", STUCK_STATES)
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) toast.error(error.message);
-    else setItems((data ?? []) as Dispatch[]);
+    else setItems((data ?? []) as unknown as Dispatch[]);
     setLoading(false);
   }, []);
 

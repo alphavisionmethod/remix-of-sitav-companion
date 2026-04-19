@@ -25,7 +25,9 @@ interface Attestation {
   attested_by: string | null;
   evidence_hash: string | null;
   signature: string | null;
-  notes: string | null;
+  release_tag: string | null;
+  evidence: unknown;
+  attested_at: string;
   created_at: string;
 }
 
