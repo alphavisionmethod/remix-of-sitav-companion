@@ -16,7 +16,11 @@ const issues: GateIssue[] = [];
 const DEFERRAL_DOC = "generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOSURE_SPEC.md";
 
 // In-scope (admin AI): canonical layer7 status artifacts must be present.
+// Canonical boardroom Layer 7 backbone — at least one of these artifacts must
+// exist to confirm the admin AI scope is intact. The aggregate closure report
+// is the canonical signal; per-stage reports are accepted as additional proof.
 const REQUIRED_BACKBONE = [
+  "generated/boardroom-layer7-closure-report.json",
   "generated/boardroom-layer7-state-coverage-report.json",
   "generated/boardroom-outcome-tracking-report.json",
   "generated/boardroom-followthrough-linkage-report.json",
