@@ -44,7 +44,7 @@ Provide an installable mobile distribution of SITA OS for owner-operators who wa
 - The Lovable SPA verbatim (Capacitor wraps, does not fork)
 
 ## Forbidden dependencies
-- Any Flutter package
+- Any Flutter package (forbidden — Flutter was abandoned, Capacitor is canonical)
 - Any second mobile-architecture path
 - Hardcoded signing material, certificates, or service-account JSON
 - Direct mutation of native projects without going through the bootstrap script
