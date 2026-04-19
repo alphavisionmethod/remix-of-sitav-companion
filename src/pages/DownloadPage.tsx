@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Download, ShieldCheck, Cpu, HardDrive, KeyRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 
 type Channel = "stable" | "beta" | "dev";
 

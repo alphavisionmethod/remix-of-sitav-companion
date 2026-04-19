@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 
 type AnalysisState = "idle" | "analyzing" | "verified" | "unknown" | "blocked";
 

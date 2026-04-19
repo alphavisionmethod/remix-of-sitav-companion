@@ -8,6 +8,7 @@ import {
   Download, FileText, Shield, Archive, Clock, CheckCircle2,
   AlertTriangle, Trash2, RefreshCw, HardDrive,
 } from "lucide-react";
+import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 
 const mockDownloads = [
   { id: "1", name: "Q1 Financial Report.pdf", type: "report", size: "2.4 MB", status: "complete" as const, date: "2026-04-08", expiresIn: "29 days" },
