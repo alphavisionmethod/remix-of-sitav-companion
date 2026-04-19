@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "architecture-hardening",
+  "scope": "portability",
+  "ok": true,
+  "summary": {
+    "classifiedHooks": 11,
+    "leafBrowserOnly": 3,
+    "shellSpecific": 1,
+    "adapterRouted": 4,
+    "sharedPortable": "all-others",
+    "unclassifiedViolations": 0,
+    "shellRuntimeCrossImports": 0
+  },
+  "validators": {
+    "checkRuntimeHostBoundaries": "wired-block",
+    "checkShellRuntimePortability": "wired-block",
+    "checkNoBrowserTrappedSharedHooks": "wired-block-existing",
+    "checkRuntimeHostAbstraction": "wired-block-existing",
+    "checkPortabilityBoundaries": "wired-block-existing"
+  },
+  "canonicalAdapter": "src/runtimes/runtime-host-adapter.ts",
+  "implementations": [
+    "src/runtimes/web/web-host-adapter.ts",
+    "src/runtimes/noop/noop-host-adapter.ts"
+  ],
+  "refactoredHooks": [
+    "src/hooks/useAppStatePersistence.ts",
+    "src/hooks/use-zero-latency.ts",
+    "src/hooks/use-session-restore.ts",
+    "src/hooks/useSetupOrchestration.ts"
+  ],
+  "secondAbstractionPresent": false
+}
