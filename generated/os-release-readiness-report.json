@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:55:34.539Z",
+  "generatedAt": "2026-04-19T00:44:37.194Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -870,10 +870,52 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "mobile-canonical-stack (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "",
+      "gate": "no-flutter-mobile-truth-drift (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "",
+      "gate": "android-release-path (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "",
+      "gate": "ios-release-path (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "",
+      "gate": "mobile-push-claim-safety (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "",
+      "gate": "mobile-submission-blockers (warn)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 1
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3348,
+  "totalWarnings": 3354,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
