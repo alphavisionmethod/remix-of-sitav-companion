@@ -81,7 +81,15 @@ export const AppearanceProvider = ({ children }: { children: ReactNode }) => {
   const setTheme = (t: Theme) => setThemeState(t);
 
   // ── Display Mode ──
-  const [mode, setMode] = useState<DisplayMode>("standard");
+  // Calm-mode is the canonical safe default (Economic Trust closure 2026-04-19).
+  // Persisted preference can override; otherwise we open in calm posture.
+  const [mode, setMode] = useState<DisplayMode>(() => {
+    try {
+      const stored = localStorage.getItem("sita-display-mode");
+      if (stored === "standard" || stored === "focus" || stored === "calm") return stored;
+    } catch { /* ignore */ }
+    return "calm";
+  });
   const [missionModes, setMissionModes] = useState<MissionMode[]>(() => MISSION_MODES.map(m => ({ ...m })));
 
   const missionMode = missionModes.find(m => m.active) ?? missionModes[0];

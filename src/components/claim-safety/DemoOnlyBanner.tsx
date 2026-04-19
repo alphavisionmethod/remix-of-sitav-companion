@@ -4,7 +4,7 @@
 // Reads canonical truth from src/lib/claim-safety/demo-only-surface-registry.ts.
 // ═══════════════════════════════════════════════════════════════
 
-import { AlertTriangle, Beaker, Telescope } from "lucide-react";
+import { AlertTriangle, Beaker, Telescope, Archive } from "lucide-react";
 import {
   getDemoOnlySurface,
   type ContainmentLevel,
@@ -56,6 +56,15 @@ const CONTAINMENT_CONFIG: Record<
     borderClass: "border-amber-500/30",
     iconClass: "text-amber-400",
     textClass: "text-amber-100",
+  },
+  archived: {
+    icon: Archive,
+    label: "Archived",
+    primaryCopy: "Archived surface — preserved for reference; reactivation requires a documented checklist.",
+    bgClass: "bg-muted/40",
+    borderClass: "border-border",
+    iconClass: "text-muted-foreground",
+    textClass: "text-foreground",
   },
 };
 

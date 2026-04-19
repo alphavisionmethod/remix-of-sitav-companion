@@ -241,12 +241,28 @@ serve(async (req) => {
         error_summary: budgetResult.reason,
       });
 
+      // Premium-calm structured 429 so the client can render a graceful notice
+      // (not a bug-feeling error). Includes reset time + percent state.
+      const isUserCeiling = budgetResult.policyKey === "user_hard_ceiling";
+      const resetsAt = budgetResult.userCeiling?.resetsAt ?? null;
+      const retryAfterSeconds = resetsAt
+        ? Math.max(60, Math.floor((new Date(resetsAt).getTime() - Date.now()) / 1000))
+        : 3600;
+
       return corsResponse({
         status: "degraded",
+        kind: isUserCeiling ? "budget_ceiling" : "budget_policy",
         reason: budgetResult.reason,
         message: `AI budget exceeded: ${budgetResult.reason}`,
+        message_user_safe: isUserCeiling
+          ? "You've used today's AI workspace allowance. New requests resume shortly."
+          : "AI capacity is temporarily unavailable for this capability.",
         policyKey: budgetResult.policyKey,
         launchLevel: "unavailable",
+        retry_after_seconds: retryAfterSeconds,
+        daily_resets_at: resetsAt,
+        current_pct: budgetResult.userCeiling?.dailyPct ?? budgetResult.pct ?? null,
+        cap_kind: budgetResult.userCeiling?.capKind ?? null,
       }, 429);
     }
 

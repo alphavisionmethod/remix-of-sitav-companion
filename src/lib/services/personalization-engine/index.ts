@@ -121,7 +121,7 @@ export const DEFAULT_PREFERENCES: Omit<UserPreferences, "userId"> = {
     density: "comfortable",
     contentDensity: "balanced",
     animations: true,
-    calmMode: false,
+    calmMode: true,
     focusMode: false,
     chartStyle: "visual",
   },

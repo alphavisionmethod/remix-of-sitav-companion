@@ -1320,6 +1320,60 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_budget_decision_receipts: {
+        Row: {
+          actual_cost_cents: number | null
+          capability_key: string
+          correlation_id: string | null
+          cost_estimate_cents: number | null
+          created_at: string
+          daily_pct: number | null
+          decision: string
+          expires_at: string
+          fallback_model_id: string | null
+          id: string
+          monthly_pct: number | null
+          policy_rule: string
+          pre_check_state: Json
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          actual_cost_cents?: number | null
+          capability_key: string
+          correlation_id?: string | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          daily_pct?: number | null
+          decision: string
+          expires_at?: string
+          fallback_model_id?: string | null
+          id?: string
+          monthly_pct?: number | null
+          policy_rule: string
+          pre_check_state?: Json
+          reason: string
+          user_id: string
+        }
+        Update: {
+          actual_cost_cents?: number | null
+          capability_key?: string
+          correlation_id?: string | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          daily_pct?: number | null
+          decision?: string
+          expires_at?: string
+          fallback_model_id?: string | null
+          id?: string
+          monthly_pct?: number | null
+          policy_rule?: string
+          pre_check_state?: Json
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_capability_routing: {
         Row: {
           budget_class: string
@@ -2187,6 +2241,42 @@ export type Database = {
           request_class?: string | null
           status?: string
           total_tokens?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_user_hard_ceilings: {
+        Row: {
+          created_at: string
+          daily_calls_cap: number
+          daily_cost_cents_cap: number
+          degrade_to_model_id: string
+          effective_from: string
+          monthly_cost_cents_cap: number
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_calls_cap?: number
+          daily_cost_cents_cap?: number
+          degrade_to_model_id?: string
+          effective_from?: string
+          monthly_cost_cents_cap?: number
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_calls_cap?: number
+          daily_cost_cents_cap?: number
+          degrade_to_model_id?: string
+          effective_from?: string
+          monthly_cost_cents_cap?: number
+          notes?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -20265,6 +20355,10 @@ export type Database = {
         }
         Returns: Json
       }
+      check_user_hard_ceiling: {
+        Args: { p_estimated_cost_cents?: number; p_user_id: string }
+        Returns: Json
+      }
       clamp_assurance_action_autonomy: {
         Args: { p_requested_level: number }
         Returns: number
@@ -20433,6 +20527,7 @@ export type Database = {
         }
         Returns: string
       }
+      purge_expired_budget_decision_receipts: { Args: never; Returns: number }
       record_dp_epsilon_spend: {
         Args: {
           _capability_key: string
