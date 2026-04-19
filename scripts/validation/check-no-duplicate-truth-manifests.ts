@@ -56,14 +56,18 @@ for (const concern of CONCERN_KEYS) {
   }
   walk(ROOT);
   if (matches.length > 1) {
-    // Multiple files mention the concern — verify only ONE is canonical at root level
-    const rootLevel = matches.filter(m => m.split("/").length === 2);
-    if (rootLevel.length > 1) {
+    // A canonical generator may emit a JSON + companion MD with the same stem
+    // (e.g. os-release-readiness-report.json + os-release-readiness-summary.md).
+    // Count as a duplicate ONLY when two same-extension files exist at root.
+    const rootJson = matches.filter(m => m.split("/").length === 2 && m.endsWith(".json"));
+    const rootMd = matches.filter(m => m.split("/").length === 2 && m.endsWith(".md"));
+    if (rootJson.length > 1 || rootMd.length > 1) {
       duplicates++;
+      const offenders = (rootJson.length > 1 ? rootJson : rootMd).join(", ");
       issues.push({
         severity: "error",
-        area: rootLevel.join(", "),
-        message: `Multiple canonical-level artifacts for concern "${concern}": ${rootLevel.length} found at generated/ root.`,
+        area: offenders,
+        message: `Multiple same-extension canonical artifacts for concern "${concern}": ${offenders}`,
       });
     }
   }
