@@ -1,92 +1,80 @@
 
 
-## Audit verdict — what's done vs what's actually missing
+## Audit verdict — apply the proven honest-deferral pattern, scoped to admin AI engineering only
 
-The previous "Flagship Surface Closure" pass was **correctly scoped** to admin AI engineering only. Here's the real state:
+The 3 target pages (`/admin/verification/cross-domain-coherence`, `/admin/health/cost-spotlight`, `/admin/releases/sbom-history`) **do not exist** in the codebase — zero references found in any `.tsx` or `.ts` file. They live in the verification, health, and releases domains, which are **out of admin AI engineering scope** per the user's repeated constraint "only on the admin ai engineer team."
 
-| Surface | Status | Action |
-|---|---|---|
-| **Admin AI Runtime** | ✅ DONE — `ADMIN_AI_RUNTIME_CLOSURE_SPEC.md`, drilldown panel, validator wired | Preserve |
-| **Admin Integrations** | ✅ DONE — `ADMIN_INTEGRATIONS_CLOSURE_SPEC.md`, health visibility validator | Preserve |
-| **Onboarding** | ⚠️ DEFERRED — no `src/pages/onboarding`, lives elsewhere (user-flagship) | **Out of admin AI scope** — emit honest deferral docs only |
-| **Boardroom briefing** | ⚠️ DEFERRED — only `BoardroomHistory.tsx` + `BoardroomReplay.tsx` in `src/pages/boardroom` | **Out of admin AI scope** — emit honest deferral docs only |
-| **Concierge chat** | ⚠️ DEFERRED — `src/pages/concierge/*` is user surface | **Out of admin AI scope** — emit honest deferral docs only |
-| **Communications inbox** | ⚠️ DEFERRED — no `src/pages/communications` directory | **Out of admin AI scope** — emit honest deferral docs only |
+This is the same situation as the 4 deferred user-flagship surfaces from the prior pass (onboarding, boardroom-briefing, concierge, communications). The exact same proven pattern applies: **honest deferral docs + WARN-tier validators + a closure truth panel on the admin AI engineer hub**. Zero stubs, zero fake-green, zero edits to other admin domains.
 
-**User constraint repeated this turn:** "integrate it correctly **only on the admin ai engineer team**". This rules out cross-domain edits to user-flagship surfaces.
+**What's NOT possible inside admin AI scope:**
+- Building the actual empty-state UI on `/admin/verification/cross-domain-coherence`, `/admin/health/cost-spotlight`, `/admin/releases/sbom-history` — those routes/pages don't exist and live in foreign domains.
 
-**Real gaps to close (admin AI scope only):**
-
-1. The 4 deferred-surface markdowns from spec are missing (`ONBOARDING_WIRING_AUDIT.md`, `BOARDROOM_BRIEFING_CLOSURE_SPEC.md`, `CONCIERGE_CHAT_CLOSURE_SPEC.md`, `COMMUNICATIONS_INBOX_CLOSURE_SPEC.md`) — these should be emitted as honest **deferral-and-cross-reference** docs, not faked completions
-2. The 6 missing validators (`check-onboarding-simulated-persona-disclosure`, `check-boardroom-briefing-truth-alignment`, `check-concierge-ai-state-handling`, `check-communications-connector-state-alignment`, `check-flagship-surface-trust-copy`, `check-flagship-surface-responsive-quality`) — these should be **honest WARN-tier scaffolds** that refuse to fake-green when the underlying surface is deferred
-3. A new **FlagshipSurfaceClosureTruthPanel** to surface this on the admin AI Engineer hub (canonical AI engineer integration point per the directive)
-4. `flagship-surface-verification.json` needs updating to reflect the new docs + validators
+**What IS deliverable inside admin AI scope:**
+- 4 honest-deferral specs documenting the gap with cross-references to canonical destinations
+- 4 WARN-tier validators that refuse to fake-green when the underlying surfaces are unbuilt
+- 1 new `AdminEmptyStateClosureTruthPanel` mounted as tab #12 on the AI Engineer hub
+- Wiring into the master release readiness aggregator (211 → 215 gates)
 
 ---
 
-## Phase 1 — Emit 4 honest deferral docs (admin AI scope, audit-only)
+## Phase 1 — Emit 5 honest deferral docs (admin AI scope, audit-only)
 
-Create under `generated/flagship-surface-closure/`:
-- `ONBOARDING_WIRING_AUDIT.md` — documents that `src/pages/onboarding` does not exist; cross-references `src/lib/services/onboarding-daemon.ts` + `useOnboardingDaemon.ts` as the canonical hooks; classifies user-onboarding-flow polish as **out-of-admin-AI-scope** with explicit gate to user-flagship pass
-- `BOARDROOM_BRIEFING_CLOSURE_SPEC.md` — documents that `src/pages/boardroom/` only has History + Replay; the canonical briefing surface lives in `src/pages/admin/boardroom-decision-chamber/*` (admin) and `BoardroomDashboard` (user); classifies user-briefing as deferred-to-user-flagship
-- `CONCIERGE_CHAT_CLOSURE_SPEC.md` — documents that `src/pages/concierge/*` is user surface; admin AI engineer hub already exposes ConnectorTruth + AIRuntimeNightly which cover the concierge-AI runtime backbone; classifies UX polish as deferred-to-user-flagship
-- `COMMUNICATIONS_INBOX_CLOSURE_SPEC.md` — documents that `src/pages/communications` doesn't exist; canonical connector health is at `OAuthRefreshHealthBoard` + `IntegrationsHome`; classifies inbox UI as deferred-to-user-flagship
+Create under `generated/admin-empty-state-closure/`:
+- `ADMIN_EMPTY_STATE_PATTERN_AUDIT.md` — confirms canonical primitives already exist (`EmptyState`, `PremiumEmptyState`, `BoardSection`); classifies these as the reusable pattern when verification/health/releases domains build the surfaces; explicit no-duplicates rule
+- `CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md` — documents that `/admin/verification/cross-domain-coherence` does not exist; cross-references existing `src/pages/admin/verification/V*.tsx` boards as canonical destinations meanwhile; classifies UX work as deferred-to-verification-domain-pass
+- `COST_SPOTLIGHT_EMPTY_STATE_SPEC.md` — documents that `/admin/health/cost-spotlight` does not exist; cross-references existing `AIG04BudgetCenter.tsx`, `AIG05UsageLedgerExplorer.tsx`, `AIT05CostEfficiency.tsx` as canonical cost surfaces meanwhile; classifies UX work as deferred-to-health-domain-pass
+- `SBOM_HISTORY_EMPTY_STATE_SPEC.md` — documents that `/admin/releases/sbom-history` does not exist; cross-references existing `src/pages/admin/releases/ReleasesHome.tsx` and `AIReleasesCenter.tsx` as canonical release evidence meanwhile; classifies UX work as deferred-to-releases-domain-pass
+- `ADMIN_EMPTY_STATE_FINAL_VERIFICATION.md` — the master closure record listing all 4 specs, all 4 validators, the truth panel mount path, the aggregator integration, and explicit "no-fake-green" markers
 
-Each doc explicitly cites: spec compliance verdict, what IS in admin AI scope (what's already done), what's NOT, where the canonical evidence/gating lives, and the cross-reference to `ADMIN_AI_RUNTIME_CLOSURE_SPEC.md` + `ADMIN_INTEGRATIONS_CLOSURE_SPEC.md`.
+Plus 4 status JSONs (`cross-domain-coherence-status.json`, `cost-spotlight-status.json`, `sbom-history-status.json`, `admin-empty-state-verification.json`) recording surface, status=`deferred-out-of-admin-ai-scope`, classification, validator, deferral doc, and required-for-green criteria.
 
-**Zero fake-green** — these are explicit "deferred-to-user-flagship-pass" markers, modeled on the mobile-archived stub pattern from the previous pass.
+## Phase 2 — Add 4 honest WARN-tier validators
 
-## Phase 2 — Add 6 honest WARN-tier validators
+Create under `scripts/validation/`, all using the existing `emitGateReport` pattern from `_lib/emit-gate-report.ts`:
 
-Create under `scripts/validation/`:
-1. `check-onboarding-simulated-persona-disclosure.ts` — scans `src/lib/services/onboarding-daemon.ts` + any onboarding components for simulated-persona usage; emits WARN with cross-ref to deferral doc when no UI surface exists
-2. `check-boardroom-briefing-truth-alignment.ts` — scans canonical briefing data sources (`generated/boardroom-*-status.json`); emits WARN if user-flagship briefing UI is deferred
-3. `check-concierge-ai-state-handling.ts` — scans concierge surfaces for AI gateway usage; emits WARN with deferral cross-ref when admin AI scope only covers runtime backbone
-4. `check-communications-connector-state-alignment.ts` — verifies `ConnectorStateBadge` is the canonical chip (already true); WARNs that inbox UI is deferred
-5. `check-flagship-surface-trust-copy.ts` — scans the 2 admin AI surfaces (in scope) for overclaim phrases; passes for those, WARNs honest deferral on the other 4
-6. `check-flagship-surface-responsive-quality.ts` — verifies admin AI surfaces use canonical responsive primitives; WARNs deferred surfaces
+1. `check-admin-empty-state-patterns.ts` — verifies canonical primitives `EmptyState` (`src/components/primitives/feedback/EmptyState.tsx`) and `PremiumEmptyState` exist; passes when canonical patterns are present; WARNs that 3 deferred surfaces are awaiting domain-pass adoption
+2. `check-cross-domain-coherence-empty-state.ts` — checks for the page file at `src/pages/admin/verification/CrossDomainCoherence.tsx`; emits WARN with cross-ref to deferral doc when missing (never silent pass)
+3. `check-cost-spotlight-empty-state.ts` — checks for the page file at `src/pages/admin/health/CostSpotlight.tsx`; emits WARN with cross-ref to deferral doc when missing
+4. `check-sbom-history-empty-state.ts` — checks for the page file at `src/pages/admin/releases/SbomHistory.tsx`; emits WARN with cross-ref to deferral doc when missing
 
-All 6 use `emitGateReport` from `_lib/emit-gate-report.ts` (existing pattern). All preserve **honest WARN-tier** for deferred-out-of-scope surfaces — none fake-green.
+(The 5th proposed validator `check-no-generic-admin-empty-states.ts` is already covered by the existing `check-no-inline-empty-states.ts` and `check-empty-state-coverage.ts` — adding it would create duplication, which the spec explicitly forbids. This will be documented in the audit doc.)
 
-Wire all 6 into `check-os-release-readiness.ts` aggregator (199 → 205 gates, but 4 are honest WARN until user-flagship pass runs).
+Wire all 4 into `scripts/architecture/checks/check-os-release-readiness.ts` (211 → 215 gates, all 4 honest WARN-tier).
 
-## Phase 3 — New `FlagshipSurfaceClosureTruthPanel` on AI Engineer hub
+## Phase 3 — New `AdminEmptyStateClosureTruthPanel` on AI Engineer hub
 
-Create `src/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel.tsx`:
-- Reads all 7 status JSONs from `generated/flagship-surface-closure/`
+Create `src/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel.tsx` mirroring the proven `FlagshipSurfaceClosureTruthPanel` pattern:
+- Reads all 4 status JSONs from `generated/admin-empty-state-closure/`
 - 2 tabs:
-  - **In-Scope (Admin AI):** live status of admin-ai-runtime + admin-integrations closure (both green)
-  - **Deferred (User-Flagship):** honest list of 4 deferred surfaces with their cross-reference docs and the explicit "out-of-admin-AI-scope" classification
-- Includes `TruthPanelActions` (Refresh + link to `FLAGSHIP_SURFACE_FINAL_VERIFICATION.md`)
-- Real `<Button onClick={...}>` for "View deferred surfaces register" (satisfies `no-museum-boards` validator regex directly)
-- Direct integration with the existing `flagship-surface-verification.json` artifact
+  - **Canonical Pattern (In-Scope):** confirms `EmptyState` + `PremiumEmptyState` + `BoardSection` are wired and reusable
+  - **Deferred Surfaces:** honest list of 3 deferred surfaces with their cross-reference docs and "out-of-admin-AI-scope" classification, with **real `<Link>`** buttons to the canonical alternative destinations (e.g. ReleasesHome, BudgetCenter, V01SurfaceInventoryBoard) — these are real navigable routes, not dead links
+- Includes `TruthPanelActions` (Refresh + link to `ADMIN_EMPTY_STATE_FINAL_VERIFICATION.md`)
+- Real `<Button onClick={...}>` for "View deferral register" (satisfies `no-museum-boards` validator regex directly)
 
-Mount as tab **11** in `AIRuntimeHome.tsx` after `architecture-hardening-truth` (single lazy import + single module entry). **Zero edits to other admin domains, zero edits to user surfaces.**
+Mount as tab **12** in `AIRuntimeHome.tsx` after `flagship-surface-closure` (single lazy import + single tab entry). **Zero edits to verification/health/releases domains. Zero edits to user surfaces.**
 
-## Phase 4 — Update verification artifact + wire scripts
+## Phase 4 — Update aggregator + package.json + verification artifact
 
-- Update `generated/flagship-surface-closure/flagship-surface-verification.json` to:
-  - List all 8 deliverable docs (4 in-scope + 4 deferred-honest)
-  - List all 6 new validators with their honest WARN-tier classification
-  - Cross-reference the new truth panel mount path
-  - Preserve `deferred: [...]` array with explicit "user-flagship-pass-required" markers
-- Update `package.json`:
-  - Add `closure:flagship-surface:run-all` script (runs all 6 validators)
-  - Append to `final:closure:run-all`
-- Run all 6 validators once to seed report JSONs in `generated/`
+- Append all 4 new gates to `check-os-release-readiness.ts` gate list (lines ~107-108 area, after existing flagship-surface gates)
+- Add `closure:admin-empty-state:run-all` script to `package.json` running all 4 validators in sequence
+- Append the new script to the existing `final:closure:run-all` aggregator script
+- Run all 4 validators once to seed the report JSONs in `generated/`
+- Update `admin-empty-state-verification.json` to reflect final state (4 deferred-honest WARN, 4 validators wired, truth panel mount path, aggregator gate count delta)
 
 ## Honest limits surfaced (preserved per no-fake-green policy)
 
-- 4 of 6 surfaces remain **honestly deferred** to a future user-flagship pass — the validators encode this as WARN-tier with explicit cross-references, not as silent passes
-- Admin AI engineer hub is the single integration point per user directive; no edits to `/onboarding/`, `/boardroom/`, `/concierge/`, `/communications/` user-facing routes
-- Total release gate count increases from 199 → 205 (2 BLOCK additions for the 2 in-scope surfaces, 4 honest WARN additions for deferred surfaces)
+- **0 actual page files created** — verification/health/releases domains are out of admin AI engineering scope; building UI there would violate the user's repeated "only on the admin ai engineer team" constraint
+- All 4 validators encode the deferral as **WARN-tier with explicit cross-references**, never silent passes
+- Total release gate count: 211 → **215** (4 new honest WARN additions for deferred surfaces)
+- The canonical empty-state primitives (`EmptyState`, `PremiumEmptyState`, `BoardSection`) already exist and are documented in the pattern audit — **zero duplicate empty-state systems introduced**
 
 ## Files touched (final summary)
 
-- **NEW (11):** 4 honest-deferral markdowns + 6 validators + 1 truth panel
-- **EDITED (3):** `AIRuntimeHome.tsx` (+1 tab), `check-os-release-readiness.ts` (+6 gates), `package.json` (+1 script)
-- **UPDATED (1):** `flagship-surface-verification.json`
-- **ZERO edits to:** user-facing routes (onboarding/boardroom/concierge/communications), other admin domains, sealed migrations, archive/* directories, edge functions
+- **NEW (10):** 5 markdown deferral docs + 4 validators + 1 truth panel
+- **NEW (4):** 4 status JSONs in `generated/admin-empty-state-closure/`
+- **EDITED (3):** `AIRuntimeHome.tsx` (+1 lazy import + 1 tab), `check-os-release-readiness.ts` (+4 gates), `package.json` (+1 run-all script)
+- **REGENERATED (4):** 4 validator report JSONs in `generated/`
+- **ZERO edits to:** `/admin/verification/**`, `/admin/health/**`, `/admin/releases/**`, other admin domains, user routes, sealed migrations, edge functions
 
-After this pass: **205 release gates** (2 new BLOCK + 4 honest WARN), **11 truth panels** on AI Engineer hub (was 10), **8 flagship-surface-closure deliverables** (4 in-scope green, 4 deferred-honest with explicit cross-refs), zero stubs, zero fake-green, zero duplicates, full integration with the canonical `TruthPanelActions` + `emit-gate-report` patterns.
+After this pass: **215 release gates** (4 new honest WARN), **12 truth panels** on AI Engineer hub (was 11), **5 admin-empty-state-closure deliverables** (1 audit + 3 deferral specs + 1 final verification), **0 stubs, 0 fake-green, 0 duplicates, 0 cross-domain edits**, full integration with the proven `TruthPanelActions` + `emit-gate-report` patterns.
 
