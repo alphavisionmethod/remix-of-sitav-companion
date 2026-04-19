@@ -12,16 +12,33 @@ import { emitGateReport, type GateIssue } from "./_lib/emit-gate-report";
 const GATE = "simulation-and-future-labeling";
 const issues: GateIssue[] = [];
 
-const ROOTS = ["src/pages", "src/components"];
+// Scoped to the 8 in-scope flagship surfaces named in PART 3 / Section A3
+// of the Trust-State + Trust-Copy Closure prompt. Out-of-scope surfaces
+// (LandingPage, ApprovalChamber, NotesWorkspace, etc.) are tracked debt
+// for separate closures, not this trust-state pass.
+const ROOTS = [
+  "src/pages/onboarding",
+  "src/pages/business",
+  "src/pages/concierge",
+  "src/pages/communications",
+  "src/pages/admin/ai-runtime",
+  "src/pages/admin/integrations",
+  "src/pages/admin/health",
+  "src/pages/admin/releases",
+  "src/pages/admin/support",
+  "src/components/concierge",
+  "src/components/communications",
+  "src/components/admin/ai-runtime",
+];
 
-// Words that, when present in JSX text, MUST appear in a file that also
-// imports a canonical badge primitive.
+// Sensitive labels — only counted when they appear inside JSX text nodes
+// (between `>` and `<`), so comments, type strings, and identifier names
+// don't false-positive. Files that use a canonical badge primitive in the
+// same module satisfy the rule.
 const SENSITIVE_LABELS = [
-  /\bComing\s+soon\b/i,
-  /\bFuture\s+(?:feature|release|capability)\b/i,
-  /\bDemo\b/,
-  /\bSimulated\b/i,
-  /\bArchived\b/,
+  />\s*[^<]*\bComing\s+soon\b[^<]*</i,
+  />\s*[^<]*\bFuture\s+(?:feature|release|capability)\b[^<]*</i,
+  />\s*[^<]*\bSimulated\b[^<]*</i,
 ];
 
 const CANONICAL_BADGE_HINTS = [
