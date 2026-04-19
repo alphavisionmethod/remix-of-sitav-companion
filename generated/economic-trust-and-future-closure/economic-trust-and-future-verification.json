@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "ok": true,
+  "phases": {
+    "perUserHardCeilings": "live",
+    "calmModeDefault": "applied",
+    "uxAgencyMicrocopy": "canonicalized",
+    "futureSurfaceContainment": "extended",
+    "edgeFunctionStructuredLogging": "8-additional-fns-refactored",
+    "uiPanelMounted": "AIRuntimeHome 9th tab"
+  },
+  "edgeFunctionsRefactored": [
+    "app-install",
+    "app-uninstall",
+    "app-launch-resolve",
+    "account-delete",
+    "alert-route",
+    "audit-log-export",
+    "advisor-conversation",
+    "advisor-agent-loop"
+  ],
+  "loggingCoverage": { "before": 30, "after": 43, "total": 172 },
+  "honestLimits": [
+    "Per-user budget load test pending first run (WARN-tier honest)",
+    "Remaining ~129 edge fns classified passthrough-acceptable (no fake-green)"
+  ]
+}

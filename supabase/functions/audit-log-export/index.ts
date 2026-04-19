@@ -3,8 +3,10 @@
 // Streams a time-windowed slice of the kill_switch_audit_log +
 // admin_action_audit tables in newline-delimited JSON, suitable
 // for ingestion by Splunk / Datadog / Chronicle.
+// Structured logging via canonical EdgeLogger (Phase 33 cleanup).
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,6 +16,10 @@ const corsHeaders = {
 const MAX_WINDOW_HOURS = 24 * 30; // 30 days
 
 Deno.serve(async (req) => {
+  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
+  const log = new EdgeLogger("audit-log-export", correlationId);
+  const t0 = performance.now();
+
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   const url = new URL(req.url);
@@ -22,6 +28,7 @@ Deno.serve(async (req) => {
   const sources = (url.searchParams.get("sources") ?? "kill_switch_audit_log,admin_action_audit").split(",");
 
   if (!since) {
+    log.warn("missing_since", { failure_class: "bad_request" });
     return new Response(JSON.stringify({ error: "?since=ISO8601 required" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -29,12 +36,14 @@ Deno.serve(async (req) => {
   const sinceDate = new Date(since);
   const untilDate = new Date(until);
   if (Number.isNaN(sinceDate.getTime()) || Number.isNaN(untilDate.getTime())) {
+    log.warn("invalid_dates", { failure_class: "bad_request", since, until });
     return new Response(JSON.stringify({ error: "Invalid since/until" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
   const windowHours = (untilDate.getTime() - sinceDate.getTime()) / 3_600_000;
   if (windowHours > MAX_WINDOW_HOURS) {
+    log.warn("window_too_large", { failure_class: "policy_block", windowHours });
     return new Response(JSON.stringify({ error: `Window exceeds ${MAX_WINDOW_HOURS}h cap` }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -50,6 +59,7 @@ Deno.serve(async (req) => {
   // Verify admin
   const { data: userData, error: authErr } = await supa.auth.getUser();
   if (authErr || !userData?.user) {
+    log.warn("auth_failed", { failure_class: "auth_invalid" });
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -59,10 +69,16 @@ Deno.serve(async (req) => {
     _role: "admin",
   });
   if (!roleCheck) {
+    log.warn("admin_required", { failure_class: "policy_block", actor: userData.user.id });
     return new Response(JSON.stringify({ error: "admin role required" }), {
       status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+
+  log.info("export_started", {
+    event_type: "audit_export", actor: userData.user.id,
+    since, until, sources, windowHours: Math.round(windowHours),
+  });
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -97,6 +113,10 @@ Deno.serve(async (req) => {
         }
       }
       controller.close();
+      log.complete(200, Math.round(performance.now() - t0), {
+        event_type: "audit_export_complete", actor: userData.user.id,
+        sources_count: sources.length, result: "success",
+      });
     },
   });
 

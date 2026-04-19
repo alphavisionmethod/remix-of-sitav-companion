@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "ok": true,
+  "tables": {
+    "ai_user_hard_ceilings": { "exists": true, "rls": "owner-read,admin-write" },
+    "ai_budget_decision_receipts": { "exists": true, "rls": "append-only,admin-read,service-insert" }
+  },
+  "rpcs": {
+    "check_user_hard_ceiling": { "exists": true, "securityDefiner": true }
+  },
+  "runtime": {
+    "edgeFunction": "ai-gateway",
+    "gateOrder": ["class-budget", "user-hard-ceiling", "kill-switch"],
+    "decisionReceiptsWritten": "every-call",
+    "blockResponseShape": "{ kind: 'budget_ceiling', retry_after_seconds, current_pct, daily_resets_at }"
+  },
+  "ui": {
+    "BudgetCeilingNotice": "src/components/ai-runtime/BudgetCeilingNotice.tsx",
+    "wiredInto": "chat-advisor error handler"
+  },
+  "loadProofRuns": [],
+  "loadProofWarning": "No production load runs yet — pending-execution"
+}

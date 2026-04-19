@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "ok": true,
+  "containmentLevels": ["demo_only", "future_vision", "archived"],
+  "excludedFromLaunchScoringField": true,
+  "archivedSurfaces": ["mobile-native-paths", "wearable-paths", "ambient-shells", "continuity-handoff"],
+  "registry": "src/lib/claim-safety/demo-only-surface-registry.ts",
+  "banners": ["DemoOnlyBanner", "FutureVisionBadge"],
+  "launchScoringExclusion": "active"
+}

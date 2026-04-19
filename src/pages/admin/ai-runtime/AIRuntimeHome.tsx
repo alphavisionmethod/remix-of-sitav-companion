@@ -35,6 +35,7 @@ const AdminValidationTruthPanel = lazy(() => import("@/components/admin/ai-runti
 const HardwareAndOperatorTruthPanel = lazy(() => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"));
 const SecurityAndPortabilityTruthPanel = lazy(() => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"));
 const ArchitecturalCleanupTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"));
+const EconomicTrustFutureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -154,6 +155,13 @@ export default function AIRuntimeHome() {
       description: "Live portability boundary status, edge-function structured-logging coverage, and truth-manifest health — additive, audit-first pass with honest WARN-tier classification and zero deletions.",
       legacyPath: "/admin/ai-runtime/architectural-cleanup-truth",
       render: wrap(ArchitecturalCleanupTruthPanel),
+    },
+    {
+      id: "economic-trust-future-truth",
+      label: "Economic, Trust & Future Truth",
+      description: "Per-user AI hard ceilings (DB-backed), calm-mode default, agency-microcopy compliance, and future-surface containment with launch-scoring exclusion — runtime-enforced, receipt-backed.",
+      legacyPath: "/admin/ai-runtime/economic-trust-future-truth",
+      render: wrap(EconomicTrustFutureTruthPanel),
     },
     {
       id: "efficiency",

@@ -3,10 +3,11 @@
 // Soft-deletes (records request) with 30-day grace period.
 // Supports `request` and `cancel` operations.
 // Hard-deletion is performed by a separate cron worker after grace.
+// Structured logging via canonical EdgeLogger (Phase 33 cleanup).
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-
+import { EdgeLogger } from "../_shared/logger.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -20,11 +21,16 @@ interface RequestBody {
 }
 
 Deno.serve(async (req) => {
+  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
+  const log = new EdgeLogger("account-delete", correlationId);
+  const t0 = performance.now();
+
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   if (req.method !== "POST") {
+    log.warn("method_not_allowed", { method: req.method, failure_class: "bad_method" });
     return new Response(JSON.stringify({ error: "method_not_allowed" }), {
       status: 405,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -113,6 +119,10 @@ Deno.serve(async (req) => {
         );
       }
 
+      log.complete(200, Math.round(performance.now() - t0), {
+        event_type: "account_deletion_requested", actor: userId, target: data.id,
+        result: "success", grace_period_days: 30,
+      });
       return new Response(
         JSON.stringify({
           ok: true,
@@ -155,6 +165,9 @@ Deno.serve(async (req) => {
       );
     }
 
+    log.complete(200, Math.round(performance.now() - t0), {
+      event_type: "account_deletion_cancelled", actor: userId, target: data.id, result: "success",
+    });
     return new Response(
       JSON.stringify({
         ok: true,
@@ -168,7 +181,7 @@ Deno.serve(async (req) => {
       },
     );
   } catch (e) {
-    console.error("[account-delete] Unhandled error:", e);
+    log.error("unhandled_exception", { failure_class: "internal_error", error: String(e), latencyMs: Math.round(performance.now() - t0) });
     return new Response(
       JSON.stringify({ error: "internal_error", message: String(e) }),
       {
