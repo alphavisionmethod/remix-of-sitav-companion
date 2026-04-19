@@ -40,6 +40,7 @@ const SecurityAndPortabilityTruthPanel = lazy(() => import("@/components/admin/a
 const ArchitecturalCleanupTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"));
 const EconomicTrustFutureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"));
 const ArchitectureHardeningTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"));
+const FlagshipSurfaceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -173,6 +174,13 @@ export default function AIRuntimeHome() {
       description: "Architecture-hardening closure: 22 deliverables, 6 new BLOCK validators (runtime-host boundaries, shell/runtime portability, edge log shape, mobile archived scope, kernel overclaim, doc canonicality), canonical source-of-truth map, partial-surface closure register.",
       legacyPath: "/admin/ai-runtime/architecture-hardening-truth",
       render: wrap(ArchitectureHardeningTruthPanel),
+    },
+    {
+      id: "flagship-surface-closure-truth",
+      label: "Flagship Surface Closure",
+      description: "Admin AI flagship closure: 2 in-scope GREEN BLOCK gates (admin-ai-runtime, admin-integrations) + 4 honest WARN-tier deferrals (onboarding, boardroom-briefing, concierge, communications) cross-referenced to user-flagship-pass. Zero fake-green.",
+      legacyPath: "/admin/ai-runtime/flagship-surface-closure-truth",
+      render: wrap(FlagshipSurfaceClosureTruthPanel),
     },
     {
       id: "efficiency",
