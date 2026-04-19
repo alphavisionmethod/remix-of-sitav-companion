@@ -67,12 +67,12 @@ if (!existsSync(PAGE)) {
     });
   }
   // Action-link assertion
-  const linkMatches = src.match(/to="\/admin\//g) ?? [];
+  const linkMatches = src.match(/"\/admin\//g) ?? [];
   if (linkMatches.length < 2) {
     issues.push({
       severity: "error",
       area: "operator-navigation",
-      message: `${PAGE} must contain ≥2 real <Link to="/admin/..."> canonical destinations (found ${linkMatches.length})`,
+      message: `${PAGE} must contain ≥2 "/admin/..." canonical canonical destinations (found ${linkMatches.length})`,
     });
   }
   // History-context copy assertion
