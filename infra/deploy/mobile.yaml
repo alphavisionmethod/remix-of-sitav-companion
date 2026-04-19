@@ -1,15 +1,19 @@
 # SITA OS — Mobile Deployment Manifest
+# Canonical stack: Capacitor over Lovable SPA (NOT Flutter — Flutter was abandoned).
+# Posture: secondary supported distribution surface, honestly deferred on external blockers.
 apiVersion: deploy/v1
 kind: MobileDeployment
 metadata:
   name: sita-mobile
   plane: mobile
+  stack: capacitor
+  posture: secondary-distribution-surface
 
 spec:
   platform:
-    flutter:
-      version: "3.24"
-      dart_version: "3.5"
+    capacitor:
+      version: "6"
+      web_runtime: lovable-spa
       min_sdk:
         ios: "16.0"
         android: "26"
@@ -18,12 +22,18 @@ spec:
 
   build:
     ios:
+      runner: macos-14
+      bootstrap: scripts/release/ios/build-ios.sh
       signing:
         team_id: "${APPLE_TEAM_ID}"
-        provisioning_profile: "${IOS_PROVISIONING_PROFILE}"
-        certificate: "${IOS_DISTRIBUTION_CERT}"
+        provisioning_profile_b64: "${APPLE_PROVISIONING_PROFILE_BASE64}"
+        certificate_b64: "${APPLE_DISTRIBUTION_CERT_P12_BASE64}"
+        certificate_password: "${APPLE_DISTRIBUTION_CERT_PASSWORD}"
+        appstore_api_key_id: "${APP_STORE_CONNECT_API_KEY_ID}"
+        appstore_api_issuer_id: "${APP_STORE_CONNECT_API_ISSUER_ID}"
+        appstore_api_key_p8_b64: "${APP_STORE_CONNECT_API_KEY_P8_BASE64}"
       capabilities:
-        - push-notifications
+        - push-notifications  # gated until APNs key provisioned
         - associated-domains
         - keychain-sharing
         - face-id
@@ -31,11 +41,18 @@ spec:
         aps_environment: production
         keychain_access_groups:
           - "${APPLE_TEAM_ID}.com.sita.os"
+      blocker_class: account-blocked
 
     android:
+      runner: ubuntu-latest
+      bootstrap: scripts/android/bootstrap.sh
+      release: scripts/release/android/build-android.sh
       signing:
-        keystore: "${ANDROID_KEYSTORE_PATH}"
+        keystore_path: "${ANDROID_KEYSTORE_PATH}"
+        keystore_password: "${ANDROID_KEYSTORE_PASSWORD}"
         key_alias: "${ANDROID_KEY_ALIAS}"
+        key_password: "${ANDROID_KEY_PASSWORD}"
+        package_name: "${ANDROID_PACKAGE_NAME}"
       permissions:
         - android.permission.USE_BIOMETRIC
         - android.permission.USE_FINGERPRINT
@@ -45,14 +62,23 @@ spec:
       features:
         - android.hardware.fingerprint
         - android.hardware.camera
+      blocker_class: secret-blocked
 
   push_notifications:
+    transport_resolution:
+      web: vapid          # active
+      ios: apns           # deferred — gated on Apple membership
+      android: fcm        # deferred — gated on FCM credentials
     apns:
+      status: deferred
+      blocker: APNs key requires Apple Developer membership
       key_id: "${APNS_KEY_ID}"
       team_id: "${APPLE_TEAM_ID}"
       bundle_id: "com.sita.os"
       environment: production
     fcm:
+      status: deferred
+      blocker: google-services.json + service-account JSON (see mobile/android/FCM.md)
       project_id: "${FIREBASE_PROJECT_ID}"
       sender_id: "${FCM_SENDER_ID}"
 
@@ -82,19 +108,3 @@ spec:
     retry:
       max_attempts: 3
       backoff: exponential
-
-  ci:
-    ios:
-      runner: macos-latest
-      xcode_version: "16.0"
-      steps:
-        - flutter pub get
-        - flutter build ios --release
-        - fastlane ios release
-    android:
-      runner: ubuntu-latest
-      java_version: "17"
-      steps:
-        - flutter pub get
-        - flutter build appbundle --release
-        - fastlane android release
