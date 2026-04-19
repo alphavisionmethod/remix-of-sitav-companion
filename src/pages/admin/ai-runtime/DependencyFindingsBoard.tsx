@@ -12,6 +12,8 @@ import { ShieldAlert, RefreshCw, Filter, ExternalLink, Inbox } from "lucide-reac
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 
 interface Finding {
   id: string;
@@ -147,10 +149,23 @@ export default function DependencyFindingsBoard() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <Card><CardContent className="p-12 text-center text-sm text-muted-foreground">
-          <Inbox className="h-10 w-10 mx-auto mb-3 opacity-40" />
-          {loading ? "Loading…" : "No dependency findings yet. Run the scanner with real npm audit output (see runbook)."}
-        </CardContent></Card>
+        <Card>
+          <CardContent className="p-6 space-y-2">
+            {loading ? (
+              <>
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-1/3" />
+                <Skeleton className="h-4 w-2/5" />
+              </>
+            ) : (
+              <EmptyState
+                icon={<Inbox className="h-5 w-5" />}
+                title="No dependency findings in this view"
+                description="Findings appear after the dependency scanner ingests the latest npm audit output. If you expect results, run the scanner per the runbook or relax the severity / ecosystem filters above."
+              />
+            )}
+          </CardContent>
+        </Card>
       ) : (
         <div className="space-y-2">
           {filtered.map((f) => (
