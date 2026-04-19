@@ -92,7 +92,7 @@ export default function FrontendPolishTruthPanel() {
                 {doc.status}
               </Badge>
             )}
-            <TruthPanelActions
+            <TruthPanelActions onClick={() => undefined}
               onRefresh={() => setReloadTick((t) => t + 1)}
               refreshing={loading}
               sourcePath={VERIFICATION_URL}

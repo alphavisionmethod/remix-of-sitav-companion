@@ -84,7 +84,7 @@ export default function ArchitecturalCleanupTruthPanel() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <TruthPanelActions
+        <TruthPanelActions onClick={() => undefined}
           onRefresh={() => setReloadTick((t) => t + 1)}
           refreshing={!loaded}
           sourcePath="/generated/architectural-cleanup/"

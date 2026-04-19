@@ -94,7 +94,7 @@ export default function EconomicTrustFutureTruthPanel() {
               ceilings, agency-wording lockdown, future-surface containment.
             </p>
           </div>
-          <TruthPanelActions
+          <TruthPanelActions onClick={() => undefined}
             onRefresh={() => setReloadTick((t) => t + 1)}
             refreshing={loading}
             sourcePath="/generated/economic-trust-and-future-closure/"
