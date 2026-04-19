@@ -13,6 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import {
   ShieldCheck,
   RefreshCw,
@@ -22,6 +24,7 @@ import {
   Lock,
   Sparkles,
   AlertTriangle,
+  History,
 } from "lucide-react";
 import { toast } from "sonner";
 

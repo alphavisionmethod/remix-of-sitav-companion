@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { ShieldAlert, CloudCog, FileCheck2, RefreshCw } from "lucide-react";
+import { ShieldAlert, CloudCog, FileCheck2, RefreshCw, Archive } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { toast } from "sonner";
 
 interface Drill {
