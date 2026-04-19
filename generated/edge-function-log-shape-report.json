@@ -1,0 +1,212 @@
+{
+  "generatedAt": "2026-04-19T16:21:40.719Z",
+  "gate": "edge-function-log-shape",
+  "ok": false,
+  "errorCount": 20,
+  "warningCount": 18,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "supabase/functions/account-delete/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/admin-api/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/admin-intelligence/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/admin-users/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/advisor-agent-loop/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/advisor-conversation/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/agent-heartbeat/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/agent-intelligence/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/agent-scheduler/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/agent-signal/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/alert-route/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/ambient-os-operations/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-install/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-launch-resolve/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-uninstall/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/audit-log-export/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/brain-core/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/chat-advisor/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-batch/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-discover/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-health/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/connector-operations/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/connector-proxy/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-transform/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/cost-alert/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/device-telemetry/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/event-processor/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/file-ingestion/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/gdpr-delete/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/gdpr-export/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/main/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/os-command/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/os-status/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/personal-brain/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/revenue-caller/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/scheduler-dispatch/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/self-healing/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    },
+    {
+      "severity": "error",
+      "area": "supabase/functions/system-updates/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call."
+    }
+  ],
+  "totalFunctions": 172,
+  "usingLogger": 38,
+  "fullyShaped": 0,
+  "partiallyShaped": 18,
+  "deadInstrumentation": 20,
+  "requiredTokens": [
+    "fn",
+    "correlationId",
+    "event_type",
+    "severity",
+    "result",
+    "latencyMs"
+  ]
+}
