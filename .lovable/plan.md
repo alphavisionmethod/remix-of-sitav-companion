@@ -1,91 +1,149 @@
 
 
-## Audit Verdict — NOT 100% (was previously claimed GREEN, is actually RED)
+## Audit findings (live)
 
-Live evidence from `generated/frontend-polish-closure/frontend-polish-verification.json`:
-- `status: "RED"`, `ok: false`
-- 8/18 boards polished (10 still failing)
-- 13 raw empty-state violations
-- 7 loading-state violations
-- 2 acceptance checks failing: `every_board_has_empty_state_primitive`, `every_board_has_loading_skeleton`
+**Already in place — DO NOT duplicate:**
+- Admin AI Engineer hub at `src/pages/admin/ai-runtime/AIRuntimeHome.tsx` — 19 modules already including 4 truth panels (Nightly Truth, Connector Truth, Mobile Scope Truth, Frontend Polish Truth)
+- `BoardSection.tsx` shared helper in `_shared/`
+- `check-admin-operator-coherence.ts` (12-domain check) — GREEN
+- `check-human-use-operational-readiness.ts` (6 scenarios, KS+RB linkage) — GREEN
+- `check-drill-cadence-freshness.ts` (9 drills DB-backed) — GREEN
+- `check-supportability-review-cadence.ts` — GREEN
+- `check-evidence-freshness.ts` (WARN-tier today)
+- `check-final-gate-meaningfulness.ts`
+- 30+ behavioral validators (AI live-provider nightly, OAuth refresh nightly, connector streak)
+- `os/scripts/build-verity-root.sh`, `seal-verity-to-tpm.sh`, `verify-tpm-seal.sh`, `verify-verity-metadata.sh`
+- `os/image-builder/preflight/hardware-check.sh`
+- 21 edge function `_test.ts` files (out of 158 functions = ~13% coverage today)
+- `generated/final-hardening/drill-cadence-status.json` with 9 drills
+- 156 BLOCK gates already wired into `check-os-release-readiness.ts`
 
-Confirmed remaining raw "No …" / "Loading…" offenders (grep verified):
-| Board | Raw violations |
-|---|---|
-| `InternalAgentIntentTimeline.tsx` | line 293 (`Loading…` / `No intents`) |
-| `PolicyDraftReviewBoard.tsx` | 1 |
-| `SLOObservabilityBoard.tsx` | line 119 + 3 more |
-| `SovereignDeploymentDRBoard.tsx` | line 95 + 2 more |
-| `TrustLadderBoard.tsx` | lines 161, 239, 276 |
-| `WeeklyDigestBoard.tsx` | lines 113, 156 |
-| `InternalAgentsBoard.tsx` | line 230 (raw "No agents match" div) |
-| `ReflectionBoard.tsx` | lines 215, 269 (raw Card text) |
-| `SecurityCouncilBoard.tsx` | line 347 (raw text) |
-| `SuggestionsBoard.tsx` | line 246 (raw "Loading…/No suggestions") |
+**Real gaps (not yet implemented):**
 
-What IS already in place and correct:
-- All 7 validators present in `scripts/validation/`
-- Emitter present
-- All 7 wired as BLOCK gates in `check-os-release-readiness.ts` (lines 208-214)
-- npm scripts `polish:closure:emit` + `polish:closure:run-all` present
-- `BoardSection.tsx` shared helper present
-- `FrontendPolishTruthPanel` mounted in `AIRuntimeHome`
-- All 16 closure deliverables present in `generated/frontend-polish-closure/`
-- 0 dead CTAs, 0 forbidden copy, 0 shell-only pages, 0 responsive violations
+*Admin & Validation closure:*
+- 0 of 8 closure validators exist (museum-board, action-orientation, edge-function-contract-coverage, warn-ratchet-meaningfulness, evidence-freshness-blocking, behavioral-ci-coverage, gate-quality-classification, admin-top-task-discoverability)
+- 0 of 16 closure deliverables exist in `generated/admin-and-validation-closure/`
+- Edge-function contract coverage measured at ~13% (21/158) — needs honest baseline + path to >50%
+- Evidence freshness is WARN-only — needs policy + observation-window → BLOCK promotion
 
-## Closure Plan — Flip RED → GREEN
+*Hardware & Operator closure:*
+- 0 of 7 closure validators exist (real-hardware-proof, hardware-certification-matrix, attestation-evidence-freshness, operator-drill-execution, runbook-human-use-proof, kill-switch-drill-readiness, supportability-freshness)
+- 0 of 14 closure deliverables exist in `generated/hardware-and-operator-closure/`
+- No hardware certification matrix — only emulation/QEMU proof
+- No durable attestation evidence model
+- No operator MTTR/signoff capture model
 
-**Scope:** Locked to `src/pages/admin/ai-runtime/**`. No other domain touched.
+**Scope rule (per user):** All NEW UI surfacing lives on the **Admin AI Engineer hub** (`src/pages/admin/ai-runtime/AIRuntimeHome.tsx`) as 2 new truth-panel tabs. Validators live in the canonical `scripts/validation/` (platform-wide by definition). Generated evidence lives in canonical `generated/` paths. **Zero edits to other admin domains.**
 
-### Phase 1 — Replace 13 raw empty-state strings in 10 boards
+---
 
-For each offender, swap raw `<p>/<div>` "No …" / "Loading…" pattern with canonical `<EmptyState>` primitive (already imported pattern in 8 polished boards). Use trust-grade operator copy per board domain:
+## Phase 1 — Admin & Validation Truth Closure (10 deliverables)
 
-| Board | Replacement empty-state copy |
-|---|---|
-| `InternalAgentIntentTimeline` | "No intents in this window" / "Adjust the time-window or run an agent pass to populate the intent timeline." |
-| `PolicyDraftReviewBoard` | "No drafts awaiting review" / "Operators will see proposed policy diffs here when the council emits a draft." |
-| `SLOObservabilityBoard` | "No drift detected" + 3 more domain-specific states |
-| `SovereignDeploymentDRBoard` | "No DR drills run yet" + 2 more (snapshot/restore) |
-| `TrustLadderBoard` | 3× ("No agents on the ladder yet", "No rung changes yet", "No active learnings yet") with operator next-step |
-| `WeeklyDigestBoard` | "No digests generated yet" / "No digest selected" |
-| `InternalAgentsBoard` | "No agents match the current filter" — clear-filter CTA |
-| `ReflectionBoard` | 2× ("No reflections in this window" / "No reflections match the filter") |
-| `SecurityCouncilBoard` | "No findings in this view" with hourly-cron note |
-| `SuggestionsBoard` | "No suggestions match the filter" with run-generator hint |
+### 1A. Generate the 16 audit/status documents
+Create `generated/admin-and-validation-closure/` with all 11 markdown audits + 4 JSON status files + 1 final verification — using LIVE evidence from existing reports (read `admin-operator-coherence-report.json`, `human-use-operational-readiness-report.json`, `evidence-freshness-report.json`, etc.):
+- `ADMIN_CONTROL_PLANE_USABILITY_AUDIT.md` (12 domains × 9 criteria from existing status)
+- `OPERATOR_TOP_TASK_PATHFINDING_MODEL.md` (10 critical operator tasks: AI failure triage, connector reauth, Boardroom stuck, kill-switch decision, restore/recovery, incident drilldown, release verification, receipts lookup, env remediation, secret rotation)
+- `ADMIN_DOMAIN_CONSOLIDATION_AND_LINKAGE_PLAN.md` (no new domains; cross-link plan)
+- `OPERATOR_STRESS_TEST_REPORT.md` (8 scenario × find/interpret/action timing)
+- `MUSEUM_BOARD_AUDIT.md` (scan AI Engineer hub: classify each board on action-orientation + remediation)
+- `EDGE_FUNCTION_CONTRACT_COVERAGE_AUDIT.md` (live count: 21/158 covered today; gap list)
+- `EDGE_FUNCTION_CONTRACT_EXPANSION_PLAN.md` (priority list to reach 80/158 = >50%)
+- `WARN_GATE_AND_RATCHET_AUDIT.md` (read `per-bucket-warn-ratchet-report.json` + classify each WARN)
+- `EVIDENCE_FRESHNESS_POLICY.md` (define 9 freshness windows, 30-day clean-window observation policy)
+- `CI_BEHAVIORAL_TRUTH_AUDIT.md` (classify all 156 gates: structural / smoke / behavioral / E2E)
+- `GATE_TAXONOMY_AND_QUALITY_MODEL.md` (5-class taxonomy, per-gate classification table)
+- `ADMIN_AND_VALIDATION_FINAL_VERIFICATION.md`
+- 4 JSON status files (admin-usability, gate-quality, warn-ratchet, admin-and-validation-verification)
 
-### Phase 2 — Replace 7 raw `Loading…` patterns with canonical `Skeleton` rows
+### 1B. Implement the 8 NEW validators
+Each is real (not stub), exits non-zero on real violations, emits via `_lib/emit-gate-report.ts`:
+1. `check-admin-top-task-discoverability.ts` — asserts `admin-and-validation-closure/admin-usability-status.json` declares ≥10 top tasks each with ≤3-click path
+2. `check-no-museum-boards.ts` — scans `src/pages/admin/ai-runtime/**` requiring every Card with status display to also link to `useNavigate(...)` or `<Link>` to a remediation/drilldown route
+3. `check-admin-action-orientation.ts` — every AI Engineer board must contain ≥1 actionable element (Button, Link to remediation, refresh, etc.)
+4. `check-edge-function-contract-coverage.ts` — counts real `_test.ts` files in `supabase/functions/`, asserts ≥50% (≥80 of 158); emits coverage delta
+5. `check-warn-ratchet-meaningfulness.ts` — reads `per-bucket-warn-ratchet-report.json`; asserts every WARN bucket is either trending down OR explicitly classified `noncritical-acknowledged` in `gate-quality-status.json`
+6. `check-evidence-freshness-blocking.ts` — promotes `evidence-freshness-report.json` to BLOCK after 30-day clean observation window proven by `observation-window-status.json`
+7. `check-behavioral-ci-coverage.ts` — asserts every deployment-critical runtime-truth area (AI live-provider, OAuth refresh G/M/S, Boardroom L7, restore drill) has a behavioral validator (not synthetic)
+8. `check-gate-quality-classification.ts` — asserts every of 156 gates has explicit classification in `gate-quality-status.json` (`structural | smoke | behavioral | e2e | warn-only`)
 
-Boards needing skeleton: `AssuranceChaos`, `Compliance Attestation`, `CrossCouncil`, `PolicyDraftReview`, `SLOObservability`, `SovereignDeploymentDR`, `TrustLadder`. Pattern: 3-row `<Skeleton className="h-4 w-X" />` from `@/components/primitives/feedback/Skeleton` (already canonical, already used in `BoardSection`).
+### 1C. Wire into release readiness
+Add 8 new BLOCK gates to `scripts/architecture/checks/check-os-release-readiness.ts` REQUIRED_GATES array.
 
-### Phase 3 — Re-emit + verify
+### 1D. AI Engineer hub UI (1 new tab)
+- New `src/components/admin/ai-runtime/AdminValidationTruthPanel.tsx` — reads `generated/admin-and-validation-closure/admin-and-validation-verification.json` + per-gate classification; same shape as existing 4 truth panels
+- Insert as new `admin-validation-truth` module in `AIRuntimeHome.tsx` (after `frontend-polish-truth`)
 
-1. Run `npm run polish:closure:emit` → regenerates the 5 status JSON files from real scan
-2. Run all 7 validators → expect 7/7 GREEN
-3. Confirm `frontend-polish-verification.json` flips to `status: "GREEN"`, `ok: true`, `boards_polished: 18`, all `failed_checks: []`
-4. Update `FRONTEND_POLISH_FINAL_VERIFICATION.md` with live GREEN evidence table
+### 1E. Edge-function contract coverage hardening
+Add **20 new contract `_test.ts` files** prioritized by deployment-criticality (going from 21 to 41 → on path to 80; the validator fails warning-only at <50% but emits a clear roadmap). Targets: `internal-agent-execute-action`, `internal-agent-loop`, `internal-agent-reflect`, `internal-agent-policy-architect`, `internal-agent-trust-evaluator`, `internal-agent-self-healer`, `internal-agent-suggestion-generator`, `internal-agent-weekly-digest`, `internal-agent-dependency-scanner`, `internal-agent-cost-optimizer`, `internal-agent-slo-evaluator`, `internal-agent-consensus-engine`, `internal-agent-tenant-federation`, `security-council-tick`, `boardroom-followthrough-dispatch`, `boardroom-outcome-record`, `release-artifact-signer`, `release-artifact-verifier`, `attestation-packet-builder`, `audit-export-bundler`. Each test asserts: CORS, JWT validation, error-shape contract, success-shape contract.
 
-### Phase 4 — Tighten emitter scan (prevent future regressions)
+---
 
-Current emitter missed 4 raw-text offenders (InternalAgentsBoard, ReflectionBoard, SecurityCouncilBoard, SuggestionsBoard). Broaden the regex in `scripts/validation/emit-frontend-polish-artifacts.ts` to also flag:
-- raw `<div>…No <X>…</div>` (not just `<p>`)
-- ternaries containing `"Loading…"` or `"No "` literals inside JSX text nodes
-- JSX text children of `<CardContent>` containing those literals
+## Phase 2 — Hardware & Operator Readiness Closure (24 deliverables)
 
-Re-run after fix to confirm count is stable at 0.
+### 2A. Generate the 14 hardware/operator documents
+Create `generated/hardware-and-operator-closure/`:
+- `HARDWARE_PROOF_CURRENT_STATE_AUDIT.md` (honest: QEMU/OVMF only today; no real-device runs recorded)
+- `HARDWARE_PROOF_MODEL.md` (4 capabilities × 4 device classes proof matrix)
+- `HARDWARE_ATTESTATION_EVIDENCE_MODEL.md` (durable evidence schema: run_id, device_class, firmware, phase, pass/fail, attestation_quote, log_refs, timestamps, runner_id)
+- `HARDWARE_CERTIFICATION_MATRIX.md` (4 device classes × 5 capability columns; ALL marked `partner-blocked` honestly today)
+- `OPERATOR_READINESS_CURRENT_STATE_AUDIT.md` (existing 6 scenarios reviewed; 0 real-human-use logs to date)
+- `OPERATOR_DRILL_MODEL.md` (8 drill categories × 6 dimensions: detect, select-runbook, kill-switch, evidence, rollback, confirm)
+- `HUMAN_USE_DRILL_EXECUTION_REPORT.md` (initial template with `pending-execution` scenarios)
+- `OPERATOR_SIGNOFF_AND_MTTR_MODEL.md` (record schema: scenario, runner, MTTD, MTTR, friction)
+- `DRILL_CADENCE_AND_FRESHNESS_POLICY.md` (per-drill cadence: hardware monthly, restore weekly, runbook quarterly, kill-switch monthly)
+- `HARDWARE_AND_OPERATOR_FINAL_VERIFICATION.md`
+- 4 JSON status files (hardware-proof, hardware-certification, operator-readiness, hardware-and-operator-verification)
 
-### Guardrails (preserved, do NOT touch)
-- BoardSection.tsx — already canonical, reused
-- EmptyState / Skeleton primitives — already canonical, reused
-- 8 already-polished boards (ExternalWorkforce, TenantFederation, KnowledgeFederation, Councils, CrossCouncil, DependencyFindings, AssuranceChaos, ComplianceAttestation) — empty-state path preserved, only their loading skeletons may be added
-- All other domains in repo — zero edits
-- All other GREEN gates (mobile, connector, AI runtime) — untouched
+### 2B. Create canonical hardware proof DB tables (real, RLS-enforced)
+New migration creating:
+- `hardware_certification_runs` (run_id, device_class, firmware, secure_boot_pass, tpm_pass, dm_verity_pass, ab_rollback_pass, recovery_pass, attestation_quote_b64, log_refs JSONB, runner_id uuid, run_at timestamptz)
+- `operator_drill_executions` (drill_id, scenario, operator_id uuid, mttd_seconds, mttr_seconds, detect_pass, select_runbook_pass, kill_switch_pass, evidence_pass, rollback_pass, confirm_pass, friction_notes, signoff_at)
+- RLS: only `has_role(auth.uid(),'admin')` can SELECT/INSERT (uses existing `has_role` helper)
+- Both tables `ALTER PUBLICATION supabase_realtime ADD TABLE` for live AI Engineer hub updates
 
-### Files touched
-- **Edited (10 boards):** the 10 boards with remaining raw strings
-- **Edited (1):** `scripts/validation/emit-frontend-polish-artifacts.ts` (broader regex)
-- **Re-emitted (5):** the 5 JSON status files in `generated/frontend-polish-closure/`
-- **Edited (1):** `FRONTEND_POLISH_FINAL_VERIFICATION.md` with live GREEN evidence
+### 2C. Create real hardware proof emitter scripts
+- `os/scripts/record-hardware-certification-run.sh` (real: takes device-class arg, runs `verify-tpm-seal.sh` + `verify-verity-metadata.sh` locally, dumps JSON evidence into `generated/hardware-and-operator-closure/runs/<run-id>.json` AND inserts into DB if `PGHOST` available)
+- `scripts/validation/emit-hardware-and-operator-artifacts.ts` (regenerates the 4 JSON status files from DB rows + run files)
 
-After this pass: `frontend-polish-verification.json` reports `status: "GREEN"`, 18/18 polished, 0 violations, 7/7 BLOCK gates GREEN — true 100% closure (not the previously-claimed-but-false GREEN).
+### 2D. Implement the 7 NEW validators
+1. `check-real-hardware-proof.ts` — reads `hardware-proof-status.json`; honestly classifies state as `partner-blocked` (warn) until real evidence rows present, then promotes to BLOCK
+2. `check-hardware-certification-matrix.ts` — asserts matrix is current (per cadence policy); emits `partner-blocked` reason if no rows
+3. `check-attestation-evidence-freshness.ts` — asserts attestation runs within 30-day window when present
+4. `check-operator-drill-execution.ts` — reads DB rows from `operator_drill_executions` (or status file fallback); asserts ≥6 scenarios with executions in last 90 days
+5. `check-runbook-human-use-proof.ts` — every runbook in `runbook-registry.ts` must have ≥1 execution row OR explicit `pending-human-use` classification
+6. `check-kill-switch-drill-readiness.ts` — every KS in registry must have ≥1 drill execution OR `pending-drill` classification
+7. `check-supportability-freshness.ts` — extends existing cadence freshness check to enforce per-category staleness windows from policy
+
+### 2E. Wire into release readiness
+Add 7 hardware/operator gates to `check-os-release-readiness.ts` REQUIRED_GATES (15 new BLOCK gates total when combined with Phase 1).
+
+### 2F. AI Engineer hub UI (1 new tab)
+- New `src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx` — reads `hardware-and-operator-verification.json` + queries `hardware_certification_runs` and `operator_drill_executions` tables live
+- Three sections: Hardware certification matrix table | Operator drill log (latest 20 with MTTR) | Cadence freshness summary
+- Insert as new `hardware-operator-truth` module in `AIRuntimeHome.tsx`
+
+### 2G. Wire drill execution recording from existing surfaces
+- Edge function `runbook-drill` (already exists): extend to write into `operator_drill_executions` on completion
+- `dr-drill-runner` (already exists): extend to write certification rows when run with `--hardware` flag
+
+---
+
+## Phase 3 — npm scripts + final integration
+
+- Add `closure:admin-validation:emit`, `closure:admin-validation:run-all`, `closure:hardware-operator:emit`, `closure:hardware-operator:run-all` to `package.json`
+- Update `final:closure:run-all` to include both new closures
+- Run all 15 new gates → expect: Admin/Validation 8/8 GREEN, Hardware/Operator 4/7 GREEN + 3 honestly classified `partner-blocked` WARN (until real-device evidence is captured by operator)
+
+### Honest limits surfaced (no fake green)
+- `check-real-hardware-proof` and `check-hardware-certification-matrix` will return `partner-blocked` warn-tier until real-device runs are recorded (no synthetic proof)
+- `check-operator-drill-execution` will return `pending-human-execution` warn until human operator runs first drill (the runbook-drill function is wired and ready)
+- `check-edge-function-contract-coverage` returns warning at 41/158 (~26%) initially; gate explicitly flags target=>50% with named expansion plan
+- `check-evidence-freshness-blocking` stays WARN until 30-day clean observation window completes (no false BLOCK promotion)
+
+### Files touched (final summary)
+- **NEW (49):** 16 admin-validation deliverables + 14 hardware-operator deliverables + 8 admin validators + 7 hardware validators + 2 emitters + 2 truth panels (UI) + 20 contract tests + 1 hardware run script + 1 SQL migration
+- **EDITED (4):** `AIRuntimeHome.tsx` (+2 tabs), `check-os-release-readiness.ts` (+15 BLOCK gates), `package.json` (+4 scripts), `runbook-drill` and `dr-drill-runner` edge functions (+real DB writes)
+- **ZERO edits to:** any other admin domain, any user-facing surface, mobile/connector/AI runtime closures (preserved GREEN)
+
+After this pass: 171 BLOCK gates total (was 156), 2 new live truth panels on AI Engineer hub, real hardware/operator evidence schema in DB, honest WARN-tier classification for everything blocked by real-world execution (no synthetic green).
 
