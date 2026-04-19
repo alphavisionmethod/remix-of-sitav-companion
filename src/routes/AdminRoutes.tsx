@@ -189,6 +189,9 @@ const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
 const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
 const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
+const CrossDomainCoherence = lazy(() => import("@/pages/admin/verification/CrossDomainCoherence"));
+const CostSpotlight = lazy(() => import("@/pages/admin/health/CostSpotlight"));
+const SbomHistory = lazy(() => import("@/pages/admin/releases/SbomHistory"));
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
 const InternalAgentIntentTimeline = lazy(() => import("@/pages/admin/ai-runtime/InternalAgentIntentTimeline"));
 const ReflectionBoard = lazy(() => import("@/pages/admin/ai-runtime/ReflectionBoard"));
@@ -283,6 +286,9 @@ export function getAdminRoutes() {
     <Route key="ws-weekly-truth" path="/admin/overview/generated-truth" element={<Navigate to="/admin/generated-truth" replace />} />,
     <Route key="ws-weekly-aieff" path="/admin/ai-runtime/intelligence/efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
     <Route key="ws-weekly-honesty" path="/admin/verification/launch-honesty" element={gated("audit.view", <LaunchHonestyBoard />)} />,
+    <Route key="ws-verification-cross-domain" path="/admin/verification/cross-domain-coherence" element={gated("audit.view", <CrossDomainCoherence />)} />,
+    <Route key="ws-health-cost-spotlight" path="/admin/health/cost-spotlight" element={gated("maintenance.view", <CostSpotlight />)} />,
+    <Route key="ws-releases-sbom-history" path="/admin/releases/sbom-history" element={gated("audit.view", <SbomHistory />)} />,
     <Route key="ws-weekly-costs" path="/admin/ai-runtime/costs" element={<Navigate to="/admin/ai-team/cost" replace />} />,
     <Route key="ws-support-users" path="/admin/environments/users" element={<Navigate to="/admin/users" replace />} />,
     <Route key="ws-support-devices" path="/admin/environments/devices" element={<Navigate to="/admin/mc/devices" replace />} />,
