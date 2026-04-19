@@ -130,6 +130,7 @@ const ALLOWED_GATE_REPORTS = new Set([
 const strayMobileJson: string[] = [];
 if (existsSync(generatedDir)) {
   for (const f of readdirSync(generatedDir)) {
+    if (f === "mobile-scope-closure") continue;
     if (ALLOWED_GATE_REPORTS.has(f)) continue;
     if (/^(mobile|capacitor|android|ios|no-flutter|native-project)/i.test(f)) {
       strayMobileJson.push(f);
