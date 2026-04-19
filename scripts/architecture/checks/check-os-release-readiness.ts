@@ -106,6 +106,11 @@ const REQUIRED_GATES = [
   "communications-connector-state-alignment",
   "flagship-surface-trust-copy",
   "flagship-surface-responsive-quality",
+  // Admin Empty-State Closure — 4 honest WARN-tier hybrid validators (deferred-to-domain-pass)
+  "admin-empty-state-patterns",
+  "cross-domain-coherence-empty-state",
+  "cost-spotlight-empty-state",
+  "sbom-history-empty-state",
   // Internal AI Workforce — Phase 2 closure (8 BLOCK gates)
   "internal-agent-execute-action",
   "autonomous-action-safety-gates",

@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-19T17:07:38.639Z",
+  "gate": "sbom-history-empty-state",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "page-not-built",
+      "message": "Page does not exist yet: src/pages/admin/releases/SbomHistory.tsx. DEFERRED to releases-domain-pass. See generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md."
+    }
+  ],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/releases/SbomHistory.tsx",
+  "canonicalAlternativesPresent": 2,
+  "canonicalAlternativesExpected": 2,
+  "requiredForGreen": "releases-domain-pass: build SbomHistory.tsx + adopt PremiumEmptyState with link to ReleasesHome and AIReleasesCenter"
+}

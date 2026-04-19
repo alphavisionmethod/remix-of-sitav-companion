@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-19T17:07:31.819Z",
+  "gate": "admin-empty-state-patterns",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 3,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "deferred-adoption",
+      "message": "Surface awaits canonical primitive adoption: /admin/verification/cross-domain-coherence (verification-domain-pass). See generated/admin-empty-state-closure/ADMIN_EMPTY_STATE_PATTERN_AUDIT.md."
+    },
+    {
+      "severity": "warning",
+      "area": "deferred-adoption",
+      "message": "Surface awaits canonical primitive adoption: /admin/health/cost-spotlight (health-domain-pass). See generated/admin-empty-state-closure/ADMIN_EMPTY_STATE_PATTERN_AUDIT.md."
+    },
+    {
+      "severity": "warning",
+      "area": "deferred-adoption",
+      "message": "Surface awaits canonical primitive adoption: /admin/releases/sbom-history (releases-domain-pass). See generated/admin-empty-state-closure/ADMIN_EMPTY_STATE_PATTERN_AUDIT.md."
+    }
+  ],
+  "classification": "honest-warn-deferred",
+  "canonicalPrimitives": [
+    "EmptyState",
+    "PremiumEmptyState",
+    "BoardSection"
+  ],
+  "deferralDoc": "generated/admin-empty-state-closure/ADMIN_EMPTY_STATE_PATTERN_AUDIT.md",
+  "requiredForGreen": "verification/health/releases domain passes adopt PremiumEmptyState or EmptyState on their respective surfaces"
+}

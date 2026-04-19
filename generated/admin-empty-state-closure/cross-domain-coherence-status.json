@@ -1,0 +1,16 @@
+{
+  "surface": "/admin/verification/cross-domain-coherence",
+  "status": "deferred-out-of-admin-ai-scope",
+  "scope": "verification-domain-pass",
+  "classification": "honest-warn-deferred",
+  "validator": "check-cross-domain-coherence-empty-state",
+  "deferralDoc": "generated/admin-empty-state-closure/CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/verification/CrossDomainCoherence.tsx",
+  "canonicalAlternatives": [
+    { "label": "Surface Inventory Board (V01)", "path": "/admin/verification" },
+    { "label": "Security Council", "path": "/admin/ai-runtime/security-council" },
+    { "label": "Error Patrol", "path": "/admin/health/error-patrol" }
+  ],
+  "requiredForGreen": "Page file exists, imports PremiumEmptyState/EmptyState, includes operator next-action links to per-domain verification boards.",
+  "generatedAt": "2026-04-19"
+}
