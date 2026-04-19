@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T03:11:09.486Z",
+  "gate": "no-active-native-mobile-claims",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scannedDirs": [
+    "docs",
+    "src/pages",
+    "src/components"
+  ],
+  "forbiddenPatterns": 7
+}

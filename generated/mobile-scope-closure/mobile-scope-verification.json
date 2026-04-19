@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-19T03:11:05.262Z",
+  "ok": false,
+  "status": "RED",
+  "checks": {
+    "honesty_doc_present": true,
+    "capacitor_archived": true,
+    "mobile_manifest_archived": true,
+    "mobile_dir_archived": true,
+    "no_capacitor_deps": true,
+    "install_surfaces_linked": true,
+    "no_stray_generated_mobile_truth": false
+  },
+  "failed_checks": [
+    "no_stray_generated_mobile_truth"
+  ],
+  "stray_generated_mobile_truth": [
+    "mobile-scope-closure"
+  ],
+  "capacitor_deps_remaining": [],
+  "acceptance": {
+    "native_mobile_out_of_scope": false,
+    "no_maybe_ready_ambiguity": false,
+    "install_surfaces_honest": true,
+    "artifacts_safely_contained": true,
+    "reactivation_path_documented": true
+  }
+}
