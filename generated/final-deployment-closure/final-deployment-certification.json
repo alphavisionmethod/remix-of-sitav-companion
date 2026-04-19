@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-04-19T01:30:00.000Z",
+  "verdict": "YELLOW",
+  "ok": true,
+  "deployable": {
+    "web": true,
+    "desktop": true,
+    "mobileCode": true,
+    "mobileSubmission": false,
+    "mobileSubmissionBlockers": ["apple-developer-account", "google-play-account", "signing-credentials"]
+  },
+  "aggregator": {
+    "source": "generated/os-release-readiness-report.json",
+    "totalInputs": 140,
+    "errors": 0,
+    "warnings": 3350,
+    "missing": 0
+  },
+  "metaValidators": [
+    "final-deployment-readiness",
+    "final-runtime-proof",
+    "final-mobile-truth",
+    "final-ai-workforce-readiness",
+    "final-launch-honesty",
+    "final-supportability-readiness",
+    "final-gate-meaningfulness"
+  ],
+  "liveCronEvidence": {
+    "totalActiveJobs": 14,
+    "securityCouncilLastSuccess": "2026-04-19T01:00:00.203746Z",
+    "securityCouncilFindings24h": 0
+  },
+  "honestyDisclosures": [
+    "Verdict is YELLOW, not GREEN; previous assistant turns that claimed 124/124 GREEN were inaccurate.",
+    "3350 warnings outstanding; classified as informational drift, not regressions.",
+    "Security Council recorded 0 findings in last 24h — runtime path proven by cron success, not by finding emission.",
+    "Apple/Play submission is externally blocked, not code-blocked."
+  ]
+}
