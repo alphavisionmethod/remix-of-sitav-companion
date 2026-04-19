@@ -2,11 +2,9 @@
 // alert-route (Phase 20.D)
 // Reads alert_routes config and fans out new alerts to channels:
 // ui (always-on), push (via push-dispatch), webhook (Slack-shape).
-// Structured logging via canonical EdgeLogger (Phase 33 cleanup).
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { EdgeLogger } from "../_shared/logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -24,13 +22,8 @@ function matchesPattern(pattern: string, source: string): boolean {
 }
 
 Deno.serve(async (req) => {
-  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
-  const log = new EdgeLogger("alert-route", correlationId);
-  const t0 = performance.now();
-
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") {
-    log.warn("method_not_allowed", { method: req.method, failure_class: "bad_method" });
     return new Response("method-not-allowed", { status: 405, headers: corsHeaders });
   }
 
@@ -130,9 +123,6 @@ Deno.serve(async (req) => {
     }
   }
 
-  log.complete(200, Math.round(performance.now() - t0), {
-    event_type: "alerts_dispatched", target: `${ids.length}_alerts`, result: "success", dispatched,
-  });
   return new Response(JSON.stringify({ ok: true, dispatched }), {
     status: 200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },

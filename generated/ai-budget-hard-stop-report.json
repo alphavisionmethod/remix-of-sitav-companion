@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T15:25:27.039Z",
+  "gate": "ai-budget-hard-stop",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "no-load-runs",
+      "message": "WARN-tier: hard-stop logic is wired and emits receipts, but no real load-test run has been recorded yet. Run scripts/load-test/budget-load-test.sh against a deployed env."
+    }
+  ],
+  "validRuns": 0,
+  "ceilingViolations": 0
+}

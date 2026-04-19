@@ -1,17 +1,20 @@
 {
   "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "economic-trust-and-future",
+  "domain": "trust-ux-posture",
+  "status": "GREEN",
   "ok": true,
-  "calmModeDefault": {
-    "AppearanceContext.tsx": "calm",
-    "FirstBootSetup.tsx": true,
-    "personalization-engine/index.ts": true
+  "errorCount": 0,
+  "warningCount": 0,
+  "evidence": {
+    "calmModeDefault": true,
+    "calmModeHook": "src/hooks/use-calm-mode.ts",
+    "calmModeShell": "src/components/sita/ShellLayout.tsx",
+    "noSelfPromotionGate": "scripts/validation/check-trust-ladder-never-self-promote.ts",
+    "trustCopyQualityGate": "scripts/validation/check-trust-copy-quality.ts",
+    "agencyWordingLockedBy": "check-trust-copy-quality",
+    "negativeReceiptsActive": true,
+    "structuredRefusalsActive": true
   },
-  "microcopy": {
-    "aiAgencyCanonicalPhrases": ["readyToAct", "canRecommend", "governedScope", "runtimeProvenOnly"],
-    "forbiddenPhrases": ["workforce is acting", "AI autonomously", "is acting on your behalf"]
-  },
-  "components": {
-    "NotificationDisclosureCard": "src/components/notifications/NotificationDisclosureCard.tsx",
-    "BudgetCeilingNotice": "src/components/ai-runtime/BudgetCeilingNotice.tsx"
-  }
+  "honestLimit": "Calm-mode is the default surface posture; self-promotion is blocked at trust ladder level; agency wording is enforced by validator."
 }

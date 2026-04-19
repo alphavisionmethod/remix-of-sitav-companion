@@ -246,6 +246,14 @@ const REQUIRED_GATES = [
   "no-duplicate-truth-manifests",
   "no-stale-canonical-docs",
   "safe-cleanup-regressions",
+  // Economic-Trust-Future Closure — 7 BLOCK gates (per-user ceilings + trust UX + future containment)
+  "per-user-ai-ceilings",
+  "ai-budget-hard-stop",
+  "calm-mode-default-posture",
+  "agency-wording-lockdown",
+  "future-surfaces-registered",
+  "negative-receipts-emitted",
+  "economic-trust-future-closure",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

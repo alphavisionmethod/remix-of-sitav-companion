@@ -1,9 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // app-launch-resolve — return launch instruction + log launch event
-// Structured logging via canonical EdgeLogger (Phase 33 cleanup).
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { EdgeLogger } from "../_shared/logger.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -19,22 +18,12 @@ function json(body: unknown, status = 200) {
 }
 
 Deno.serve(async (req) => {
-  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
-  const log = new EdgeLogger("app-launch-resolve", correlationId);
-  const t0 = performance.now();
-
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  if (req.method !== "POST") {
-    log.warn("method_not_allowed", { method: req.method, failure_class: "bad_method" });
-    return json({ error: "method_not_allowed" }, 405);
-  }
+  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
   try {
     const auth = req.headers.get("Authorization");
-    if (!auth) {
-      log.warn("missing_auth", { failure_class: "auth_missing" });
-      return json({ error: "unauthorized" }, 401);
-    }
+    if (!auth) return json({ error: "unauthorized" }, 401);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -43,10 +32,7 @@ Deno.serve(async (req) => {
     );
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr || !userData?.user) {
-      log.warn("auth_failed", { failure_class: "auth_invalid" });
-      return json({ error: "unauthorized" }, 401);
-    }
+    if (userErr || !userData?.user) return json({ error: "unauthorized" }, 401);
     const userId = userData.user.id;
 
     const body = await req.json().catch(() => ({}));
@@ -55,10 +41,7 @@ Deno.serve(async (req) => {
     const launchContext = body.launch_context ?? {};
     const launchResult = (body.launch_result || "success").toString();
 
-    if (!appId) {
-      log.warn("invalid_input", { failure_class: "bad_request", actor: userId });
-      return json({ error: "app_id required" }, 400);
-    }
+    if (!appId) return json({ error: "app_id required" }, 400);
 
     const [{ data: app }, { data: installed }] = await Promise.all([
       supabase.from("apps").select("*").eq("app_id", appId).eq("enabled", true).maybeSingle(),
@@ -70,10 +53,7 @@ Deno.serve(async (req) => {
         .maybeSingle(),
     ]);
 
-    if (!app) {
-      log.warn("app_not_found", { failure_class: "not_found", actor: userId, target: appId });
-      return json({ error: "app_not_found" }, 404);
-    }
+    if (!app) return json({ error: "app_not_found" }, 404);
 
     // Auto-install preinstalled apps on first launch
     let installState = installed;
@@ -118,13 +98,8 @@ Deno.serve(async (req) => {
         .eq("app_id", appId);
     }
 
-    log.complete(200, Math.round(performance.now() - t0), {
-      event_type: "app_launch", actor: userId, target: appId, surface,
-      result: launchResult, launch_count: (installState?.launch_count ?? 0) + 1,
-    });
     return json({ ok: true, app, installed: installState });
   } catch (e) {
-    log.error("unhandled_exception", { failure_class: "internal_error", error: (e as Error).message });
     return json({ error: (e as Error).message }, 500);
   }
 });

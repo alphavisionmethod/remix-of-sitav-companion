@@ -1,31 +1,21 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/auth.ts";
-import { EdgeLogger } from "../_shared/logger.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 serve(async (req) => {
-  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
-  const log = new EdgeLogger("advisor-conversation", correlationId);
-  const t0 = performance.now();
-
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     // ── JWT AUTH (canonical) ───────────────────────────────────────
     const auth = await requireAuth(req);
-    if (auth instanceof Response) {
-      log.warn("auth_failed", { failure_class: "auth_invalid" });
-      return auth;
-    }
+    if (auth instanceof Response) return auth;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      log.error("missing_api_key", { failure_class: "config_missing" });
-      throw new Error("LOVABLE_API_KEY not configured");
-    }
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     const {
       advisorId, advisorName, advisorRole, personalityTraits, communicationStyle,
@@ -33,12 +23,10 @@ serve(async (req) => {
     } = await req.json();
 
     if (!userMessage || !advisorId) {
-      log.warn("invalid_input", { failure_class: "bad_request" });
       return new Response(JSON.stringify({ error: "Missing advisorId or userMessage" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    log.info("invocation_started", { event_type: "advisor_conversation", actor: auth.userId, target: advisorId });
 
     const systemPrompt = `You are ${advisorName}, a ${advisorRole} in the SITA Business OS Board of Advisors.
 
@@ -85,25 +73,20 @@ RULES:
     if (!response.ok) {
       const status = response.status;
       if (status === 429) {
-        log.warn("ai_rate_limited", { failure_class: "rate_limited", status });
         return new Response(JSON.stringify({ error: "Rate limited" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      log.error("ai_gateway_error", { failure_class: "upstream_error", status });
+      console.error("AI gateway error:", status, await response.text());
       return new Response(JSON.stringify({ error: "AI service error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const result = await response.json();
     const content = result.choices?.[0]?.message?.content ?? "I couldn't generate a response.";
 
-    log.complete(200, Math.round(performance.now() - t0), {
-      event_type: "advisor_response", actor: auth.userId, target: advisorId,
-      result: "success", response_length: content.length,
-    });
     return new Response(JSON.stringify({ response: content }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    log.error("unhandled_exception", { failure_class: "internal_error", error: e instanceof Error ? e.message : "Unknown error" });
+    console.error("advisor-conversation error:", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
