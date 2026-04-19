@@ -28,6 +28,7 @@ const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDige
 const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
 const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"));
 const AIRuntimeNightlyTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"));
+const ConnectorTruthSummaryPanel = lazy(() => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"));
 
 function ModuleFallback() {
   return (
@@ -98,6 +99,13 @@ export default function AIRuntimeHome() {
       description: "Live-provider verification, receipts, ledger, fallback, and budget proof — nightly streak tracking.",
       legacyPath: "/admin/ai-runtime/nightly-truth",
       render: wrap(AIRuntimeNightlyTruthPanel),
+    },
+    {
+      id: "connector-truth",
+      label: "Connector Truth",
+      description: "Live OAuth refresh truth (Google / Microsoft / Slack) — read-only summary; canonical control at Integrations Hub.",
+      legacyPath: "/admin/ai-runtime/connector-truth",
+      render: wrap(ConnectorTruthSummaryPanel),
     },
     {
       id: "efficiency",
