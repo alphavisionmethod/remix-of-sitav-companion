@@ -180,12 +180,24 @@ const REQUIRED_GATES = [
 // Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
 // these gates report state but do not BLOCK desktop-primary releases on Apple membership)
 const MOBILE_WARN_GATES = [
+  // Closure track — signing / submission readiness
   "mobile-canonical-stack",
   "no-flutter-mobile-truth-drift",
   "android-release-path",
   "ios-release-path",
   "mobile-push-claim-safety",
   "mobile-submission-blockers",
+  // Identity & Stack Truth Reconciliation track — gates 131–138
+  "mobile-project-identification",
+  "mobile-identity-source-of-truth",
+  "no-flutter-stack-drift",
+  "capacitor-mobile-truth",
+  "android-native-generation",
+  "ios-native-generation",
+  "native-project-generation-contract",
+  "mobile-bootstrap-contract",
+  "mobile-build-model-consistency",
+  "mobile-env-strategy-consistency",
 ];
 
 const GENERATED_DIR = "generated";
