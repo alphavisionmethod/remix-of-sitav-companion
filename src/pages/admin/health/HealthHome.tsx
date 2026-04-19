@@ -20,6 +20,7 @@ const EFH01EdgeFunctionHealthCenter = lazy(
   () => import("@/pages/admin/EFH01EdgeFunctionHealthCenter"),
 );
 const DrillCadenceBoard = lazy(() => import("@/components/admin/DrillCadenceBoard"));
+const CostSpotlight = lazy(() => import("@/pages/admin/health/CostSpotlight"));
 
 function ModuleFallback() {
   return (
@@ -102,6 +103,13 @@ export default function HealthHome() {
       label: "Drill Cadence",
       description: "Recurring operational drills (restore, refresh, baseline, calmness, golden paths).",
       render: wrap(DrillCadenceBoard),
+    },
+    {
+      id: "cost-spotlight",
+      label: "Cost Spotlight",
+      description: "7-day cost trend (history accumulating). Live cost data lives in Budget Center, Usage Ledger, and Cost Efficiency.",
+      legacyPath: "/admin/health/cost-spotlight",
+      render: wrap(CostSpotlight),
     },
   ];
 

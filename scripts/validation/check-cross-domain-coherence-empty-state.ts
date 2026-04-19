@@ -51,6 +51,24 @@ if (!existsSync(PAGE)) {
       message: `${PAGE} exists but does not adopt PremiumEmptyState or EmptyState`,
     });
   }
+  // Action-link assertion: must contain "/admin/..." canonical destinations
+  const linkMatches = src.match(/"\/admin\//g) ?? [];
+  if (linkMatches.length < 2) {
+    issues.push({
+      severity: "error",
+      area: "operator-navigation",
+      message: `${PAGE} must contain ≥2 "/admin/..." canonical canonical destinations (found ${linkMatches.length})`,
+    });
+  }
+  // Why-empty + next-step copy assertion
+  const hasWhyEmpty = /why|activates when|accumulating|history|cross-domain|signals/i.test(src);
+  if (!hasWhyEmpty) {
+    issues.push({
+      severity: "error",
+      area: "why-empty-copy",
+      message: `${PAGE} missing why-empty operator copy`,
+    });
+  }
 }
 
 const ok = issues.filter((i) => i.severity === "error").length === 0;

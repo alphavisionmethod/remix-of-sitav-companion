@@ -1,16 +1,29 @@
 {
   "surface": "/admin/health/cost-spotlight",
-  "status": "deferred-out-of-admin-ai-scope",
+  "status": "implemented-canonical-primitive-adopted",
   "scope": "health-domain-pass",
-  "classification": "honest-warn-deferred",
+  "classification": "shipped-operator-grade",
   "validator": "check-cost-spotlight-empty-state",
   "deferralDoc": "generated/admin-empty-state-closure/COST_SPOTLIGHT_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/health/CostSpotlight.tsx",
+  "implementedPagePath": "src/pages/admin/health/CostSpotlight.tsx",
+  "primitive": "PremiumEmptyState",
+  "variant": "demo-preview",
+  "previewHonesty": {
+    "previewContentRendered": true,
+    "explicitlyLabeledNonLive": true,
+    "labels": ["Preview · Non-live", "Preview · sample data · non-live", "shape only — not real spend"],
+    "validatorEnforced": "operator-navigation + preview-honesty assertions both pass"
+  },
+  "registeredInHub": "src/pages/admin/health/HealthHome.tsx#cost-spotlight",
+  "directRoute": "src/routes/AdminRoutes.tsx#ws-health-cost-spotlight",
   "canonicalAlternatives": [
-    { "label": "AI Budget Center (AIG04)", "path": "/admin/ai-gateway/budget-center" },
-    { "label": "Usage Ledger Explorer (AIG05)", "path": "/admin/ai-gateway/usage-ledger" },
-    { "label": "AI Cost Efficiency (AIT05)", "path": "/admin/ai-team/cost" }
+    { "label": "Budget Center", "path": "/admin/ai-runtime?tab=budget" },
+    { "label": "Usage Ledger", "path": "/admin/aig/usage-ledger" },
+    { "label": "Cost Efficiency", "path": "/admin/ai-runtime?tab=cost" },
+    { "label": "System Health", "path": "/admin/health" }
   ],
-  "requiredForGreen": "Page file exists, imports PremiumEmptyState/EmptyState, any sample/preview content explicitly labeled non-live, includes 3 canonical destination links.",
+  "validatorReport": { "ok": true, "errorCount": 0, "warningCount": 0 },
+  "requiredForGreen": "SHIPPED — page exists, adopts PremiumEmptyState, all preview content explicitly labeled non-live, contains 6 canonical /admin/* destinations, registered in HealthHome hub, direct-route mounted in AdminRoutes.",
   "generatedAt": "2026-04-19"
 }

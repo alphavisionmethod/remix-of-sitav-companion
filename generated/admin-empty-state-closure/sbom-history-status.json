@@ -1,15 +1,23 @@
 {
   "surface": "/admin/releases/sbom-history",
-  "status": "deferred-out-of-admin-ai-scope",
+  "status": "implemented-canonical-primitive-adopted",
   "scope": "releases-domain-pass",
-  "classification": "honest-warn-deferred",
+  "classification": "shipped-operator-grade",
   "validator": "check-sbom-history-empty-state",
   "deferralDoc": "generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/releases/SbomHistory.tsx",
+  "implementedPagePath": "src/pages/admin/releases/SbomHistory.tsx",
+  "primitive": "PremiumEmptyState",
+  "variant": "first-use",
+  "registeredInHub": "src/pages/admin/releases/ReleasesHome.tsx#sbom-history",
+  "directRoute": "src/routes/AdminRoutes.tsx#ws-releases-sbom-history",
   "canonicalAlternatives": [
-    { "label": "Releases Home", "path": "/admin/releases" },
-    { "label": "AI Releases Center", "path": "/admin/ai-releases-center" }
+    { "label": "Release Engineering", "path": "/admin/release-engineering" },
+    { "label": "Launch Readiness", "path": "/admin/releases/launch-readiness" },
+    { "label": "Updates & Rollback", "path": "/admin/mc/releases" },
+    { "label": "Deployment Rings", "path": "/admin/releases/deployment-rings" }
   ],
-  "requiredForGreen": "Page file exists, imports PremiumEmptyState/EmptyState, includes canonical destination links to Releases Home + AI Releases Center.",
+  "validatorReport": { "ok": true, "errorCount": 0, "warningCount": 0 },
+  "requiredForGreen": "SHIPPED — page exists, adopts PremiumEmptyState, contains 6 canonical /admin/* destinations, registered in ReleasesHome hub, direct-route mounted in AdminRoutes.",
   "generatedAt": "2026-04-19"
 }

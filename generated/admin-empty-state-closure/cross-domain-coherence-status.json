@@ -1,16 +1,27 @@
 {
   "surface": "/admin/verification/cross-domain-coherence",
-  "status": "deferred-out-of-admin-ai-scope",
+  "status": "implemented-canonical-primitive-adopted",
   "scope": "verification-domain-pass",
-  "classification": "honest-warn-deferred",
+  "classification": "shipped-operator-grade",
   "validator": "check-cross-domain-coherence-empty-state",
   "deferralDoc": "generated/admin-empty-state-closure/CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/verification/CrossDomainCoherence.tsx",
+  "implementedPagePath": "src/pages/admin/verification/CrossDomainCoherence.tsx",
+  "primitive": "PremiumEmptyState",
+  "variant": "no-data",
+  "registeredInHub": "src/pages/admin/verification/VerificationHome.tsx#cross-domain-coherence",
+  "directRoute": "src/routes/AdminRoutes.tsx#ws-verification-cross-domain",
   "canonicalAlternatives": [
-    { "label": "Surface Inventory Board (V01)", "path": "/admin/verification" },
-    { "label": "Security Council", "path": "/admin/ai-runtime/security-council" },
-    { "label": "Error Patrol", "path": "/admin/health/error-patrol" }
+    { "label": "Failure Triage", "path": "/admin/verification?tab=launch-honesty" },
+    { "label": "Active Incidents", "path": "/admin/health/incidents" },
+    { "label": "Error Patrol", "path": "/admin/health/error-patrol" },
+    { "label": "Surface Inventory", "path": "/admin/verification?tab=launch-honesty" }
   ],
-  "requiredForGreen": "Page file exists, imports PremiumEmptyState/EmptyState, includes operator next-action links to per-domain verification boards.",
+  "validatorReport": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0
+  },
+  "requiredForGreen": "SHIPPED — page exists, adopts PremiumEmptyState, contains 6 canonical /admin/* destinations, registered in VerificationHome hub, direct-route mounted in AdminRoutes.",
   "generatedAt": "2026-04-19"
 }

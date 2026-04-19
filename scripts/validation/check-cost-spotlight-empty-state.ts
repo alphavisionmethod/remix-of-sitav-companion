@@ -67,12 +67,23 @@ if (!existsSync(PAGE)) {
       message: `${PAGE} exists but does not adopt PremiumEmptyState or EmptyState`,
     });
   }
-  // Preview-content honesty (only when sample charts exist)
-  if (src.includes("preview") && !src.match(/non-?live|preview\s*·|sample\s*·/i)) {
+  // Action-link assertion: must contain "/admin/..." canonical destinations
+  const linkMatches = src.match(/"\/admin\//g) ?? [];
+  if (linkMatches.length < 2) {
     issues.push({
-      severity: "warning",
+      severity: "error",
+      area: "operator-navigation",
+      message: `${PAGE} must contain ≥2 "/admin/..." canonical canonical destinations (found ${linkMatches.length})`,
+    });
+  }
+  // Preview-content honesty: any preview content MUST be explicitly labeled non-live
+  const mentionsPreview = /preview|sample/i.test(src);
+  const explicitlyLabeled = /non-?live|preview\s*·|sample\s*·|Preview · Non-live|Preview · sample/i.test(src);
+  if (mentionsPreview && !explicitlyLabeled) {
+    issues.push({
+      severity: "error",
       area: "preview-honesty",
-      message: `Page contains 'preview' content — verify it is explicitly labeled non-live`,
+      message: `Page contains preview content but is NOT explicitly labeled non-live`,
     });
   }
 }

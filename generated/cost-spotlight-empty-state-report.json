@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T17:07:36.440Z",
+  "generatedAt": "2026-04-19T17:23:44.067Z",
   "gate": "cost-spotlight-empty-state",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "page-not-built",
-      "message": "Page does not exist yet: src/pages/admin/health/CostSpotlight.tsx. DEFERRED to health-domain-pass. See generated/admin-empty-state-closure/COST_SPOTLIGHT_EMPTY_STATE_SPEC.md."
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/admin-empty-state-closure/COST_SPOTLIGHT_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/health/CostSpotlight.tsx",

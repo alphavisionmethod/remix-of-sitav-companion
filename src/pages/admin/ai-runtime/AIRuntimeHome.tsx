@@ -186,7 +186,7 @@ export default function AIRuntimeHome() {
     {
       id: "admin-empty-state-closure-truth",
       label: "Admin Empty-State Closure",
-      description: "Admin empty-state closure: 3 canonical primitives (EmptyState, PremiumEmptyState, BoardSection) confirmed reusable + 3 surfaces honestly deferred to verification/health/releases domain passes (cross-domain-coherence, cost-spotlight, sbom-history). 4 honest WARN-tier validators wired into release aggregator. Zero fake-green, zero duplicates.",
+      description: "Admin empty-state closure: 3 canonical primitives confirmed reusable + 3 surfaces SHIPPED with PremiumEmptyState (cross-domain-coherence, cost-spotlight, sbom-history) — live in their canonical hubs with operator-grade copy and real /admin/* destinations. 4 validators green at 0 errors / 0 warnings. Zero duplicates, zero fake-live preview content.",
       legacyPath: "/admin/ai-runtime/admin-empty-state-closure-truth",
       render: wrap(AdminEmptyStateClosureTruthPanel),
     },

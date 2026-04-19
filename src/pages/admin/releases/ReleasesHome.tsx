@@ -14,6 +14,7 @@ const ReleaseEngineeringPage = lazy(() => import("@/pages/admin/ReleaseEngineeri
 // MobileParityDashboard archived — Ubuntu-native is canonical native platform.
 const MCReleasesUpdates = lazy(() => import("@/pages/admin/modules/MCReleasesUpdates"));
 const AdminDeploymentRings = lazy(() => import("@/pages/admin/AdminDeploymentRings"));
+const SbomHistory = lazy(() => import("@/pages/admin/releases/SbomHistory"));
 
 function ModuleFallback() {
   return (
@@ -64,6 +65,13 @@ export default function ReleasesHome() {
       description: "Release rollout, rollback, and update status.",
       legacyPath: "/admin/mc/releases",
       render: wrap(MCReleasesUpdates),
+    },
+    {
+      id: "sbom-history",
+      label: "SBOM History",
+      description: "Historical SBOM diffs across signed releases (accumulates after the next signed release).",
+      legacyPath: "/admin/releases/sbom-history",
+      render: wrap(SbomHistory),
     },
   ];
 
