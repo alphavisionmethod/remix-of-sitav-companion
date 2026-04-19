@@ -1,21 +1,10 @@
 {
-  "generatedAt": "2026-04-19T14:11:06.692Z",
+  "generatedAt": "2026-04-19T14:13:08.877Z",
   "gate": "no-museum-boards",
-  "ok": false,
-  "errorCount": 2,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/FrontendPolishTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    },
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/MobileScopeTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    }
-  ],
+  "issues": [],
   "filesScanned": 24,
-  "museumViolations": 2
+  "museumViolations": 0
 }

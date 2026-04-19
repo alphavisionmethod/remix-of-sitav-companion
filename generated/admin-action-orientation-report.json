@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T14:11:09.283Z",
+  "generatedAt": "2026-04-19T14:13:11.332Z",
   "gate": "admin-action-orientation",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx",
-      "message": "AI Engineer board has no actionable element"
-    }
-  ],
+  "issues": [],
   "totalBoards": 20,
-  "withAction": 19
+  "withAction": 20
 }
