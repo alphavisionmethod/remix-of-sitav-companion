@@ -17522,6 +17522,42 @@ export type Database = {
         }
         Relationships: []
       }
+      secret_rotation_log: {
+        Row: {
+          cadence_due_at: string | null
+          created_at: string
+          dry_run: boolean
+          id: string
+          result: Json
+          rotated_at: string
+          rotated_by: string | null
+          secret_class: string
+          secret_name: string
+        }
+        Insert: {
+          cadence_due_at?: string | null
+          created_at?: string
+          dry_run?: boolean
+          id?: string
+          result?: Json
+          rotated_at?: string
+          rotated_by?: string | null
+          secret_class: string
+          secret_name: string
+        }
+        Update: {
+          cadence_due_at?: string | null
+          created_at?: string
+          dry_run?: boolean
+          id?: string
+          result?: Json
+          rotated_at?: string
+          rotated_by?: string | null
+          secret_class?: string
+          secret_name?: string
+        }
+        Relationships: []
+      }
       secret_rotation_triggers: {
         Row: {
           anomaly_evidence: Json
