@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -233,6 +234,11 @@ export default function EconomicTrustFutureTruthPanel() {
                 Future-surface containment (excluded from launch scoring)
               </div>
               <div className="rounded border p-3">
+                <div className="mb-2">
+                  <StatusBadge tone="muted">
+                    Future / archived surfaces — excluded from launch scoring
+                  </StatusBadge>
+                </div>
                 <p className="text-xs">
                   Future-vision and archived surfaces are registered in{" "}
                   <code>src/runtimes/simulated-surface-registry.ts</code> and excluded from launch
