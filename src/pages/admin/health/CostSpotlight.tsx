@@ -75,10 +75,7 @@ export default function CostSpotlight() {
             <CardTitle className="flex items-center gap-2 text-base">
               <DollarSign className="h-4 w-4 text-primary" />
               Cost Spotlight
-              <Badge
-                variant="outline"
-                className="border-amber-500/50 text-amber-600 dark:text-amber-400"
-              >
+              <Badge variant="secondary" className="text-[10px]">
                 Preview · Non-live
               </Badge>
             </CardTitle>
@@ -116,18 +113,15 @@ export default function CostSpotlight() {
           />
 
           {/* Preview-shape education chart — explicitly labeled non-live, sample data only */}
-          <div className="relative rounded-lg border border-amber-500/40 bg-amber-500/5 p-4">
+          <div className="relative rounded-lg border border-dashed border-muted-foreground/40 bg-muted/30 p-4">
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Eye className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs font-medium text-muted-foreground">
                   Preview · sample data · non-live
                 </span>
               </div>
-              <Badge
-                variant="outline"
-                className="border-amber-500/50 text-[10px] text-amber-600 dark:text-amber-400"
-              >
+              <Badge variant="secondary" className="text-[10px]">
                 shape only — not real spend
               </Badge>
             </div>
@@ -166,7 +160,7 @@ export default function CostSpotlight() {
               </ResponsiveContainer>
             </div>
             <div className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <Sparkles className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+              <Sparkles className="h-3 w-3 text-primary" />
               Once {7 - daysCollected} more days of rollups land, this preview is replaced with
               live cost evidence — no UI change required.
             </div>
