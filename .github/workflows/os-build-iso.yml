@@ -10,6 +10,12 @@ on:
     paths:
       - 'os/**'
       - '.github/workflows/os-build-iso.yml'
+  schedule:
+    # Nightly end-to-end build at 04:00 UTC — produces fresh ISO/IMG + SBOM
+    # + attestation + QEMU smoke for both user and operator profiles.
+    - cron: '0 4 * * *'
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       version:
