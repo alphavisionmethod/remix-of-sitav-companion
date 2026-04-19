@@ -1,0 +1,79 @@
+# SITA OS — AI Runtime Truth Nightly CI Workflow
+# Triggers the live ai-runtime-nightly-verify edge function, regenerates the 4
+# canonical JSON artifacts from live DB state, runs all 6 validation gates,
+# and uploads evidence. Runs 1h after pg_cron so DB row already exists.
+name: AI Runtime Truth — Nightly
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 03:00 UTC daily (pg_cron fires at 02:00)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  ai-runtime-truth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Trigger live AI runtime verifier (real provider call)
+        id: trigger
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "::error::SUPABASE_SERVICE_ROLE_KEY missing — cannot trigger live verifier"
+            exit 1
+          fi
+          RESP=$(curl -fsS -X POST \
+            "${VITE_SUPABASE_URL}/functions/v1/ai-runtime-nightly-verify" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"triggered_by":"github-actions"}')
+          echo "Verifier response: $RESP"
+          echo "response=$RESP" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for run to settle
+        run: sleep 30
+
+      - name: Emit AI runtime truth JSON artifacts
+        run: npm run ai:runtime:emit-truth
+
+      - name: Run AI runtime validation gates
+        run: |
+          set +e
+          FAIL=0
+          for gate in \
+            check-ai-live-provider-nightly \
+            check-ai-receipt-persistence \
+            check-ai-ledger-write-verification \
+            check-ai-fallback-verification \
+            check-ai-budget-enforcement-under-load \
+            check-ai-runtime-streak-health
+          do
+            echo "── Running $gate ──"
+            npx tsx "scripts/validation/${gate}.ts" || FAIL=1
+          done
+          exit $FAIL
+
+      - name: Upload AI runtime truth artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-runtime-truth-closure-${{ github.run_id }}
+          path: generated/ai-runtime-truth-closure/
+          retention-days: 30
