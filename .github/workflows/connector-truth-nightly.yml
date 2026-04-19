@@ -1,0 +1,68 @@
+name: Connector Truth Nightly
+
+on:
+  schedule:
+    - cron: "30 3 * * *" # 03:30 UTC — 1h after pg_cron verifier
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  connector-truth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: https://fctupowhcljejygjfpty.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      VITE_SUPABASE_URL: https://fctupowhcljejygjfpty.supabase.co
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+
+      - name: Trigger live nightly verifier (real provider HTTP + sentinel expiry-pressure)
+        run: |
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"trigger":"github-actions"}' \
+            "${SUPABASE_URL}/functions/v1/connector-refresh-nightly-verify" \
+            | tee verifier-response.json
+          echo ""
+          # Verifier writes to DB; give the trigger a moment to propagate
+          sleep 5
+
+      - name: Emit connector truth artifacts from live DB state
+        run: npm run connector:truth:emit
+
+      - name: Run all 7 connector truth validation gates
+        run: |
+          set +e
+          FAIL=0
+          for SCRIPT in \
+            check-google-refresh-nightly \
+            check-microsoft-refresh-nightly \
+            check-slack-refresh-nightly \
+            check-connector-health-state-consistency \
+            check-no-ambiguous-connected-state \
+            check-long-tail-provider-classification \
+            check-connector-refresh-streak; do
+            echo "--- $SCRIPT ---"
+            npx tsx scripts/validation/${SCRIPT}.ts || FAIL=1
+          done
+          exit $FAIL
+
+      - name: Upload connector truth artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: connector-truth-${{ github.run_id }}
+          path: |
+            generated/connector-truth-closure/
+            generated/*-report.json
+            verifier-response.json
+          retention-days: 30
