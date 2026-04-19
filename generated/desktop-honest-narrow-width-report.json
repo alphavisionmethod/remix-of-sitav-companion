@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T17:33:39.426Z",
+  "gate": "desktop-honest-narrow-width",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "desktopPage": "src/pages/DesktopPage.tsx",
+  "classification": "block-tier-honest-disclosure",
+  "requiredCopyTokens": [
+    "Desktop view",
+    "open on a wider screen"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T17:33:37.034Z",
+  "gate": "boardroom-briefing-narrow-width",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "narrow-width-risk",
+      "message": "src/pages/business/MorningBriefing.tsx: no Card / responsive grid / overflow wrapper detected"
+    }
+  ],
+  "briefingFilesScanned": 2,
+  "responsiveOk": 1,
+  "offenderCount": 1,
+  "classification": "warn-tier-narrow-width-discipline"
+}
