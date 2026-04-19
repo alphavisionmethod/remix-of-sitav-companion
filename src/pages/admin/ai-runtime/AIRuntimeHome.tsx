@@ -10,6 +10,9 @@
 // under src/pages/admin/ai-runtime/** is either registered or
 // explicitly archived. Adding a panel without registering it fails
 // the build.
+//
+// Lazy loaders are mapped by component path so Vite can statically
+// analyze each chunk; the registry stays declarative & data-only.
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense, type ComponentType } from "react";
@@ -30,46 +33,142 @@ function ModuleFallback() {
   );
 }
 
-// Vite requires a literal-prefix glob for tree-shaking.
-// We split the registry into the two folders that contain panels.
-const componentLoaders = import.meta.glob<{ default: ComponentType }>([
-  "@/pages/admin/**/*.tsx",
-  "@/components/admin/ai-runtime/**/*.tsx",
-]);
+// ── Static loader table — keyed by componentPath in the registry. ──
+// Each entry MUST stay in sync with the registry. The CI gate
+// `check-ai-engineer-tab-registry` verifies parity.
+type Loader = () => Promise<{ default: ComponentType<unknown> }>;
 
-function loaderFor(spec: AIEngineerTabSpec) {
-  // Translate "@/pages/admin/x" → "/src/pages/admin/x.tsx"
-  const candidate = `/src/${spec.componentPath.replace(/^@\//, "")}.tsx`;
-  const loader = componentLoaders[candidate];
-  if (loader) return loader;
-  // Some pages use a named export — fall back to a hand-mapped loader.
-  return namedExportLoaders[spec.id] ?? null;
-}
+const LOADERS: Record<string, Loader> = {
+  // workforce
+  "@/pages/admin/AIT01TeamOverview":
+    () => import("@/pages/admin/AIT01TeamOverview"),
+  "@/pages/admin/ai-runtime/InternalAgentsBoard":
+    () => import("@/pages/admin/ai-runtime/InternalAgentsBoard"),
+  "@/pages/admin/ai-runtime/InternalAgentIntentTimeline":
+    () => import("@/pages/admin/ai-runtime/InternalAgentIntentTimeline"),
+  "@/pages/admin/ai-runtime/CouncilsBoard":
+    () => import("@/pages/admin/ai-runtime/CouncilsBoard"),
+  "@/pages/admin/ai-runtime/TrustLadderBoard":
+    () => import("@/pages/admin/ai-runtime/TrustLadderBoard"),
+  "@/pages/admin/ai-runtime/ReflectionBoard":
+    () => import("@/pages/admin/ai-runtime/ReflectionBoard"),
 
-// Hand-mapped loaders for components whose lazy() needs a named export
-// (so the registry can stay declarative).
-const namedExportLoaders: Record<string, () => Promise<{ default: ComponentType }>> = {
-  cost: () => import("@/pages/admin/AIT05CostEfficiency").then((m) => ({ default: m.AIT05CostEfficiency })),
+  // governance
+  "@/pages/admin/ai-runtime/SuggestionsBoard":
+    () => import("@/pages/admin/ai-runtime/SuggestionsBoard"),
+  "@/pages/admin/ai-runtime/WeeklyDigestBoard":
+    () => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"),
+  "@/pages/admin/ai-runtime/DependencyFindingsBoard":
+    () => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"),
+  "@/pages/admin/ai-runtime/PolicyDraftReviewBoard":
+    () => import("@/pages/admin/ai-runtime/PolicyDraftReviewBoard"),
+  "@/pages/admin/ai-runtime/CrossCouncilBoard":
+    () => import("@/pages/admin/ai-runtime/CrossCouncilBoard"),
+  "@/pages/admin/ai-runtime/TenantFederationBoard":
+    () => import("@/pages/admin/ai-runtime/TenantFederationBoard"),
+
+  // runtime
+  "@/pages/admin/ai-runtime/SecurityCouncilBoard":
+    () => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"),
+  "@/pages/admin/AIG01ProviderRegistry":
+    () => import("@/pages/admin/AIG01ProviderRegistry"),
+  "@/pages/admin/AIG02ModelRegistry":
+    () => import("@/pages/admin/AIG02ModelRegistry"),
+  "@/pages/admin/AIG03RoutingMatrix":
+    () => import("@/pages/admin/AIG03RoutingMatrix"),
+  "@/pages/admin/AIG04BudgetCenter":
+    () => import("@/pages/admin/AIG04BudgetCenter"),
+  "@/pages/admin/AIGovernancePage":
+    () => import("@/pages/admin/AIGovernancePage"),
+
+  // observability
+  "@/pages/admin/ai-runtime/SLOObservabilityBoard":
+    () => import("@/pages/admin/ai-runtime/SLOObservabilityBoard"),
+  "@/pages/admin/intelligence/AIEfficiencyScoreboard":
+    () => import("@/pages/admin/intelligence/AIEfficiencyScoreboard"),
+  "@/pages/admin/AIT05CostEfficiency":
+    () => import("@/pages/admin/AIT05CostEfficiency").then((m) => ({
+      default: m.AIT05CostEfficiency as ComponentType<unknown>,
+    })),
+
+  // assurance
+  "@/pages/admin/ai-runtime/AssuranceChaosBoard":
+    () => import("@/pages/admin/ai-runtime/AssuranceChaosBoard"),
+  "@/pages/admin/ai-runtime/ExternalWorkforceApiBoard":
+    () => import("@/pages/admin/ai-runtime/ExternalWorkforceApiBoard"),
+  "@/pages/admin/ai-runtime/KnowledgeFederationBoard":
+    () => import("@/pages/admin/ai-runtime/KnowledgeFederationBoard"),
+  "@/pages/admin/ai-runtime/SovereignDeploymentDRBoard":
+    () => import("@/pages/admin/ai-runtime/SovereignDeploymentDRBoard"),
+  "@/pages/admin/ai-runtime/ComplianceAttestationBoard":
+    () => import("@/pages/admin/ai-runtime/ComplianceAttestationBoard"),
+
+  // advisors
+  "@/pages/admin/AdvisorBoardCatalog":
+    () => import("@/pages/admin/AdvisorBoardCatalog"),
+  "@/pages/admin/ai-runtime/OwnerCopilotBriefings":
+    () => import("@/pages/admin/ai-runtime/OwnerCopilotBriefings"),
+
+  // truth-closure
+  "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel":
+    () => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"),
+  "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel":
+    () => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"),
+  "@/components/admin/ai-runtime/MobileScopeTruthPanel":
+    () => import("@/components/admin/ai-runtime/MobileScopeTruthPanel"),
+  "@/components/admin/ai-runtime/FrontendPolishTruthPanel":
+    () => import("@/components/admin/ai-runtime/FrontendPolishTruthPanel"),
+  "@/components/admin/ai-runtime/AdminValidationTruthPanel":
+    () => import("@/components/admin/ai-runtime/AdminValidationTruthPanel"),
+  "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel":
+    () => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"),
+  "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel":
+    () => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"),
+  "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel":
+    () => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"),
+  "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel":
+    () => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"),
+  "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel":
+    () => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"),
+  "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel":
+    () => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"),
+  "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel":
+    () => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"),
+  "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel":
+    () => import("@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"),
+  "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel":
+    () => import("@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"),
+  "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel":
+    () => import("@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel"),
 };
 
 function buildModule(spec: AIEngineerTabSpec): HubModule {
-  const loader = loaderFor(spec);
-  const Comp = loader ? lazy(loader as never) : null;
+  const loader = LOADERS[spec.componentPath];
+  if (!loader) {
+    return {
+      id: spec.id,
+      label: spec.label,
+      description: spec.description,
+      legacyPath: spec.legacyPath,
+      render: () => (
+        <div className="text-xs text-destructive py-12 text-center">
+          Registry mount error: tab <code>{spec.id}</code> declares{" "}
+          <code>{spec.componentPath}</code> but no loader is registered.
+        </div>
+      ),
+    };
+  }
+  const Comp = lazy(loader);
   return {
     id: spec.id,
     label: spec.label,
     description: spec.description,
     legacyPath: spec.legacyPath,
-    render: () =>
-      Comp ? (
-        <Suspense fallback={<ModuleFallback />}>
-          <Comp />
-        </Suspense>
-      ) : (
-        <div className="text-xs text-destructive py-12 text-center">
-          Tab "{spec.id}" registry mount failed: cannot resolve {spec.componentPath}
-        </div>
-      ),
+    render: () => (
+      <Suspense fallback={<ModuleFallback />}>
+        <Comp />
+      </Suspense>
+    ),
   };
 }
 
