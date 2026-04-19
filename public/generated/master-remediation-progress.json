@@ -1,0 +1,103 @@
+{
+  "generatedAt": "2026-04-19T20:30:00.000Z",
+  "blueprintRef": "MASTER_REMEDIATION_BLUEPRINT_v1.md",
+  "executionMode": "incremental-truthful",
+  "phaseStatus": {
+    "phaseA_truthPersistenceMigrations": {
+      "status": "shipped",
+      "scope": "7-table evidence persistence layer",
+      "evidence": [
+        "supabase/migrations/<timestamp>_add_evidence_persistence_layer.sql",
+        "generated/evidence-persistence-layer-status.json"
+      ]
+    },
+    "phaseB_evidenceCronEdgeFunctions": {
+      "status": "shipped",
+      "scope": "evidence-graph-builder, cron-receipt-collector, app-manifest-verifier",
+      "evidence": [
+        "supabase/functions/evidence-graph-builder/index.ts",
+        "supabase/functions/cron-receipt-collector/index.ts",
+        "supabase/functions/app-manifest-verifier/index.ts"
+      ]
+    },
+    "phaseC_phase04Validators": {
+      "status": "shipped",
+      "scope": "5 new validator scripts in scripts/architecture/checks/",
+      "evidence": [
+        "scripts/architecture/checks/check-canonical-paths.ts",
+        "scripts/architecture/checks/check-5-plane-boundaries.ts",
+        "scripts/architecture/checks/check-evidence-graph-completeness.ts",
+        "scripts/architecture/checks/check-cron-execution-evidence.ts",
+        "scripts/architecture/checks/check-release-decision-persistence.ts",
+        "scripts/architecture/checks/run-evidence-persistence-gates.ts"
+      ]
+    },
+    "phaseD_aggregatorWiring": {
+      "status": "partial-shipped",
+      "scope": "Aggregator script created; full wire-in to check-os-release-readiness.ts deferred to next pass to avoid touching the master release script",
+      "next": "Update scripts/release/checks/check-release-readiness.ts to invoke run-evidence-persistence-gates.ts and POST a release_decisions row"
+    }
+  },
+  "phasesDeferred": {
+    "phase5_aiRuntimeReceiptHardening": {
+      "status": "deferred",
+      "reason": "Already GREEN per nightly verifier; hardening pass scheduled for next closure pack"
+    },
+    "phase6_connectorReauthUx": {
+      "status": "deferred",
+      "reason": "Connector Truth nightly is GREEN; UX hardening tracked separately"
+    },
+    "phase7_securityFabricRuntimeProbes": {
+      "status": "deferred",
+      "reason": "7-layer fabric in place; live runtime probes scheduled for Phase 5–7 pack"
+    },
+    "phase8_desktopHostNovaSdk": {
+      "status": "no-action-needed",
+      "reason": "Native shell watchdog + 4-phase boot already canonical per memory:architecture/native-shell-runtime"
+    },
+    "phase9_appPlatformAppSdk": {
+      "status": "partial-shipped",
+      "reason": "installed_apps_receipts + app-manifest-verifier shipped; SDK plugin/widget extension manager remains future work"
+    },
+    "phase10_advisorBoardroom": {
+      "status": "no-action-needed",
+      "reason": "16-tab cockpit + L7 SLA already GREEN; proof-pack table now exists for receipt linkage"
+    },
+    "phase11_adminIaOperatorWorkflows": {
+      "status": "no-action-needed",
+      "reason": "12-domain IA + 8 workflows already canonical"
+    },
+    "phase12_onboarding29Screens": {
+      "status": "deferred",
+      "reason": "Branch telemetry + reflective copy engine require dedicated UX pass"
+    },
+    "phase13_mobileDefermentHardening": {
+      "status": "no-action-needed",
+      "reason": "Already at GREEN-fully-shipped per mobile-deployment-closure pack"
+    },
+    "phase14_releaseAggregatorEvidenceGraph": {
+      "status": "in-progress",
+      "reason": "Evidence graph tables + builder shipped; aggregator full integration in next pass"
+    },
+    "phase15_betterThanClaimedUpgrades": {
+      "status": "deferred",
+      "reason": "Optional uplifts; not blocking deployment"
+    }
+  },
+  "honestlyDeferredExternal": {
+    "aiRuntime7DayCleanStreak": "calendar-bound, cannot be force-finished",
+    "appleDeveloperEnrollment": "external account procurement",
+    "playConsoleEnrollment": "external account procurement"
+  },
+  "deploymentPosture": {
+    "desktopUbuntu": "GREEN — production-ready",
+    "webSpa": "GREEN — production-ready",
+    "electron": "GREEN — production-ready",
+    "mobile": "YELLOW — honestly-deferred (engineering-complete, account-blocked)",
+    "aiRuntime": "YELLOW → GREEN at 7-day streak"
+  },
+  "newGatesAdded": 5,
+  "newTablesAdded": 7,
+  "newEdgeFunctionsAdded": 3,
+  "newAppendOnlyEnforcers": 2
+}
