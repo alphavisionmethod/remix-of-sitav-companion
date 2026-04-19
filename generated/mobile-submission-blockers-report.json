@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T00:45:21.777Z",
+  "gate": "mobile-submission-blockers",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classes": [
+    "code-complete",
+    "secret-blocked",
+    "account-blocked",
+    "metadata-blocked",
+    "review-blocked"
+  ],
+  "requiredDocs": 3,
+  "requiredStatusJsons": 5
+}

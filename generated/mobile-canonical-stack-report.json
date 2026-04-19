@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19T00:45:09.985Z",
+  "gate": "mobile-canonical-stack",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "flutter-drift",
+      "message": "Flutter reference in claim surface: src/planes/MOBILE_MANIFEST.md:47 — - Any Flutter package"
+    }
+  ],
+  "canonicalStack": "capacitor",
+  "claimSurfacesScanned": [
+    "src/planes",
+    "infra/deploy",
+    "mobile"
+  ],
+  "flutterDriftHits": 1
+}
