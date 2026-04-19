@@ -1,396 +1,105 @@
 {
-  "generatedAt": "2026-04-19T19:36:12.147Z",
-  "totalTabs": 43,
-  "requiringOperatorAction": 24,
-  "compliantTabs": 3,
-  "coveragePct": 13,
-  "panels": [
+  "generatedAt": "2026-04-19T19:41:42.017Z",
+  "gate": "ai-engineer-action-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 18,
+  "issues": [
     {
-      "tabId": "team",
-      "componentPath": "@/pages/admin/AIT01TeamOverview",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"team\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "tabId": "internal-agents",
-      "componentPath": "@/pages/admin/ai-runtime/InternalAgentsBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"internal-agent-intents\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "tabId": "internal-agent-intents",
-      "componentPath": "@/pages/admin/ai-runtime/InternalAgentIntentTimeline",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"trust-ladder\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
-      "tabId": "councils",
-      "componentPath": "@/pages/admin/ai-runtime/CouncilsBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"dependency-findings\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "tabId": "trust-ladder",
-      "componentPath": "@/pages/admin/ai-runtime/TrustLadderBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"tenant-federation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/TenantFederationBoard"
     },
     {
-      "tabId": "reflection",
-      "componentPath": "@/pages/admin/ai-runtime/ReflectionBoard",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"providers\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "tabId": "suggestions",
-      "componentPath": "@/pages/admin/ai-runtime/SuggestionsBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": true,
-      "composesOperatorActionPanel": true,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"routing\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "tabId": "weekly-digest",
-      "componentPath": "@/pages/admin/ai-runtime/WeeklyDigestBoard",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"budget\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIG04BudgetCenter"
     },
     {
-      "tabId": "dependency-findings",
-      "componentPath": "@/pages/admin/ai-runtime/DependencyFindingsBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"slo-observability\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "tabId": "policy-drafts",
-      "componentPath": "@/pages/admin/ai-runtime/PolicyDraftReviewBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": true,
-      "composesOperatorActionPanel": true,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"cost\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "tabId": "cross-council",
-      "componentPath": "@/pages/admin/ai-runtime/CrossCouncilBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"assurance-chaos\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "tabId": "tenant-federation",
-      "componentPath": "@/pages/admin/ai-runtime/TenantFederationBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"external-workforce-api\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "tabId": "security-council",
-      "componentPath": "@/pages/admin/ai-runtime/SecurityCouncilBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": true,
-      "composesOperatorActionPanel": true,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"knowledge-federation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
     },
     {
-      "tabId": "providers",
-      "componentPath": "@/pages/admin/AIG01ProviderRegistry",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"sovereign-dr\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
     },
     {
-      "tabId": "models",
-      "componentPath": "@/pages/admin/AIG02ModelRegistry",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"compliance-attestation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
     },
     {
-      "tabId": "routing",
-      "componentPath": "@/pages/admin/AIG03RoutingMatrix",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"owner-copilot\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
     },
     {
-      "tabId": "budget",
-      "componentPath": "@/pages/admin/AIG04BudgetCenter",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"nightly-truth\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
     },
     {
-      "tabId": "governance",
-      "componentPath": "@/pages/admin/AIGovernancePage",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "slo-observability",
-      "componentPath": "@/pages/admin/ai-runtime/SLOObservabilityBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "efficiency",
-      "componentPath": "@/pages/admin/intelligence/AIEfficiencyScoreboard",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "cost",
-      "componentPath": "@/pages/admin/AIT05CostEfficiency",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "assurance-chaos",
-      "componentPath": "@/pages/admin/ai-runtime/AssuranceChaosBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "external-workforce-api",
-      "componentPath": "@/pages/admin/ai-runtime/ExternalWorkforceApiBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "knowledge-federation",
-      "componentPath": "@/pages/admin/ai-runtime/KnowledgeFederationBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "sovereign-dr",
-      "componentPath": "@/pages/admin/ai-runtime/SovereignDeploymentDRBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "compliance-attestation",
-      "componentPath": "@/pages/admin/ai-runtime/ComplianceAttestationBoard",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "advisors",
-      "componentPath": "@/pages/admin/AdvisorBoardCatalog",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "owner-copilot",
-      "componentPath": "@/pages/admin/ai-runtime/OwnerCopilotBriefings",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "nightly-truth",
-      "componentPath": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "connector-truth",
-      "componentPath": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel",
-      "requiresOperatorAction": true,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": false
-    },
-    {
-      "tabId": "mobile-scope-truth",
-      "componentPath": "@/components/admin/ai-runtime/MobileScopeTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "frontend-polish-truth",
-      "componentPath": "@/components/admin/ai-runtime/FrontendPolishTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "admin-validation-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminValidationTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "hardware-operator-truth",
-      "componentPath": "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "security-portability-truth",
-      "componentPath": "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "architectural-cleanup-truth",
-      "componentPath": "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "economic-trust-future-truth",
-      "componentPath": "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "architecture-hardening-truth",
-      "componentPath": "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "flagship-surface-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "admin-empty-state-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "admin-coherence-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "trust-state-and-copy-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
-    },
-    {
-      "tabId": "frontend-truth-backing-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel",
-      "requiresOperatorAction": false,
-      "fileExists": true,
-      "importsOperatorActionPanel": false,
-      "composesOperatorActionPanel": false,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action-missing",
+      "message": "Tab \"connector-truth\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
     }
-  ]
+  ],
+  "tier": "WARN",
+  "promotionTier": "BLOCK",
+  "scope": "admin-ai-engineer-team",
+  "requiringOperatorAction": 24,
+  "compliantTabs": 6,
+  "coveragePct": 25
 }

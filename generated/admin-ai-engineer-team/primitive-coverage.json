@@ -1,816 +1,377 @@
 {
-  "generatedAt": "2026-04-19T19:36:10.254Z",
-  "totalTabs": 43,
-  "tabsWithStatusBadge": 8,
-  "tabsWithOperatorActionPanel": 3,
-  "tabsWithAITruthDisclosure": 4,
-  "tabsWithForbiddenColors": 25,
-  "averagePrimitiveScore": 0.7906976744186046,
-  "panels": [
+  "generatedAt": "2026-04-19T19:41:42.021Z",
+  "gate": "ai-engineer-primitive-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 72,
+  "issues": [
     {
-      "tabId": "team",
-      "componentPath": "@/pages/admin/AIT01TeamOverview",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "text-amber-500",
-        "text-blue-500",
-        "text-emerald-500"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"team\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-blue-500, text-emerald-500 in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "tabId": "internal-agents",
-      "componentPath": "@/pages/admin/ai-runtime/InternalAgentsBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/15",
-        "bg-emerald-500/15",
-        "bg-sky-500/15",
-        "text-amber-400",
-        "text-amber-600",
-        "text-emerald-400",
-        "text-emerald-500",
-        "text-emerald-600",
-        "text-sky-400",
-        "text-sky-500",
-        "text-sky-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"team\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "tabId": "internal-agent-intents",
-      "componentPath": "@/pages/admin/ai-runtime/InternalAgentIntentTimeline",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-amber-500/15",
-        "bg-blue-500/15",
-        "bg-green-500/10",
-        "bg-green-500/15",
-        "bg-green-500/20",
-        "bg-green-500/5",
-        "bg-orange-500/10",
-        "bg-orange-500/15",
-        "bg-red-500/10",
-        "bg-red-500/15",
-        "bg-red-500/20",
-        "bg-red-500/5",
-        "border-green-500/30",
-        "border-orange-500/30",
-        "border-red-500/30",
-        "text-amber-400",
-        "text-blue-400",
-        "text-green-400",
-        "text-orange-400",
-        "text-red-400"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"team\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "tabId": "councils",
-      "componentPath": "@/pages/admin/ai-runtime/CouncilsBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/15",
-        "bg-emerald-500/15",
-        "bg-orange-500/15",
-        "border-amber-500/40",
-        "border-emerald-500/30",
-        "text-amber-400",
-        "text-amber-500",
-        "text-amber-600",
-        "text-emerald-400",
-        "text-emerald-500",
-        "text-emerald-600",
-        "text-orange-400",
-        "text-orange-600",
-        "text-sky-500"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"internal-agent-intents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-amber-500/15, bg-blue-500/15, bg-green-500/10, +17 more in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "tabId": "trust-ladder",
-      "componentPath": "@/pages/admin/ai-runtime/TrustLadderBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-blue-500/10",
-        "bg-emerald-500/10",
-        "bg-orange-500/10",
-        "bg-red-500/10",
-        "border-amber-500/30",
-        "border-blue-500/30",
-        "border-emerald-500/30",
-        "border-orange-500/30",
-        "border-red-500/30",
-        "text-amber-500",
-        "text-blue-500",
-        "text-emerald-500",
-        "text-orange-500",
-        "text-red-500"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"internal-agent-intents\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "tabId": "reflection",
-      "componentPath": "@/pages/admin/ai-runtime/ReflectionBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500",
-        "bg-amber-500/15",
-        "bg-green-500",
-        "bg-green-500/15",
-        "bg-green-500/5",
-        "bg-orange-500/15",
-        "bg-red-500",
-        "bg-red-500/15",
-        "bg-red-500/5",
-        "border-green-500/30",
-        "border-red-500/30",
-        "text-amber-400",
-        "text-green-400",
-        "text-orange-400",
-        "text-red-400"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"internal-agent-intents\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "tabId": "suggestions",
-      "componentPath": "@/pages/admin/ai-runtime/SuggestionsBoard",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": true,
-      "importsAITruthDisclosure": true,
-      "importsTrustCopyMap": true,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 5,
-      "ok": true
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"councils\" uses raw status-color literals (must go through StatusTone): border-amber-500/40, border-emerald-500/30, text-amber-500, text-emerald-500, +1 more in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
-      "tabId": "weekly-digest",
-      "componentPath": "@/pages/admin/ai-runtime/WeeklyDigestBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"trust-ladder\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-emerald-500, text-red-500 in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
-      "tabId": "dependency-findings",
-      "componentPath": "@/pages/admin/ai-runtime/DependencyFindingsBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/15",
-        "bg-amber-500/5",
-        "bg-green-500/15",
-        "bg-orange-500/15",
-        "bg-orange-500/5",
-        "bg-red-500/15",
-        "bg-red-500/5",
-        "border-amber-500/30",
-        "border-orange-500/30",
-        "border-red-500/30",
-        "text-amber-400",
-        "text-green-400",
-        "text-orange-400",
-        "text-red-400"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"reflection\" uses raw status-color literals (must go through StatusTone): bg-amber-500, bg-amber-500/15, bg-green-500, bg-green-500/15, +11 more in @/pages/admin/ai-runtime/ReflectionBoard"
     },
     {
-      "tabId": "policy-drafts",
-      "componentPath": "@/pages/admin/ai-runtime/PolicyDraftReviewBoard",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": true,
-      "importsAITruthDisclosure": true,
-      "importsTrustCopyMap": true,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 5,
-      "ok": true
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"reflection\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ReflectionBoard"
     },
     {
-      "tabId": "cross-council",
-      "componentPath": "@/pages/admin/ai-runtime/CrossCouncilBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"weekly-digest\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/WeeklyDigestBoard"
     },
     {
-      "tabId": "tenant-federation",
-      "componentPath": "@/pages/admin/ai-runtime/TenantFederationBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"dependency-findings\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-amber-500/5, bg-green-500/15, bg-orange-500/15, +10 more in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "tabId": "security-council",
-      "componentPath": "@/pages/admin/ai-runtime/SecurityCouncilBoard",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": true,
-      "importsAITruthDisclosure": true,
-      "importsTrustCopyMap": true,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 5,
-      "ok": true
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"dependency-findings\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "tabId": "providers",
-      "componentPath": "@/pages/admin/AIG01ProviderRegistry",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-green-400",
-        "text-green-500"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"dependency-findings\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "tabId": "models",
-      "componentPath": "@/pages/admin/AIG02ModelRegistry",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "text-green-400"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"tenant-federation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/TenantFederationBoard"
     },
     {
-      "tabId": "routing",
-      "componentPath": "@/pages/admin/AIG03RoutingMatrix",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "border-amber-500/50",
-        "text-amber-400",
-        "text-blue-400",
-        "text-emerald-400"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"tenant-federation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/TenantFederationBoard"
     },
     {
-      "tabId": "budget",
-      "componentPath": "@/pages/admin/AIG04BudgetCenter",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"providers\" uses raw status-color literals (must go through StatusTone): bg-green-400, text-green-500 in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "tabId": "governance",
-      "componentPath": "@/pages/admin/AIGovernancePage",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "text-green-500"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"providers\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "tabId": "slo-observability",
-      "componentPath": "@/pages/admin/ai-runtime/SLOObservabilityBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-blue-500/10",
-        "bg-emerald-500/10",
-        "bg-red-500/10",
-        "text-amber-600",
-        "text-blue-600",
-        "text-emerald-600",
-        "text-red-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"providers\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "tabId": "efficiency",
-      "componentPath": "@/pages/admin/intelligence/AIEfficiencyScoreboard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "text-amber-400",
-        "text-emerald-400",
-        "text-rose-400"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"models\" uses raw status-color literals (must go through StatusTone): text-green-400 in @/pages/admin/AIG02ModelRegistry"
     },
     {
-      "tabId": "cost",
-      "componentPath": "@/pages/admin/AIT05CostEfficiency",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "text-amber-500",
-        "text-blue-500",
-        "text-emerald-500"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"models\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG02ModelRegistry"
     },
     {
-      "tabId": "assurance-chaos",
-      "componentPath": "@/pages/admin/ai-runtime/AssuranceChaosBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-blue-500/10",
-        "bg-emerald-500/10",
-        "bg-red-500/10",
-        "text-amber-600",
-        "text-blue-600",
-        "text-emerald-600",
-        "text-red-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"routing\" uses raw status-color literals (must go through StatusTone): border-amber-500/50, text-amber-400, text-blue-400, text-emerald-400 in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "tabId": "external-workforce-api",
-      "componentPath": "@/pages/admin/ai-runtime/ExternalWorkforceApiBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-emerald-500/10",
-        "bg-red-500/10",
-        "text-amber-600",
-        "text-emerald-600",
-        "text-red-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"routing\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "tabId": "knowledge-federation",
-      "componentPath": "@/pages/admin/ai-runtime/KnowledgeFederationBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-blue-500/10",
-        "bg-emerald-500/10",
-        "text-amber-600",
-        "text-blue-600",
-        "text-emerald-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"routing\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "tabId": "sovereign-dr",
-      "componentPath": "@/pages/admin/ai-runtime/SovereignDeploymentDRBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/10",
-        "bg-blue-500/10",
-        "bg-emerald-500/10",
-        "bg-red-500/10",
-        "text-amber-600",
-        "text-blue-600",
-        "text-emerald-600",
-        "text-red-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"budget\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG04BudgetCenter"
     },
     {
-      "tabId": "compliance-attestation",
-      "componentPath": "@/pages/admin/ai-runtime/ComplianceAttestationBoard",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/10",
-        "text-emerald-600"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 1,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"budget\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG04BudgetCenter"
     },
     {
-      "tabId": "advisors",
-      "componentPath": "@/pages/admin/AdvisorBoardCatalog",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"governance\" uses raw status-color literals (must go through StatusTone): text-green-500 in @/pages/admin/AIGovernancePage"
     },
     {
-      "tabId": "owner-copilot",
-      "componentPath": "@/pages/admin/ai-runtime/OwnerCopilotBriefings",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"governance\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIGovernancePage"
     },
     {
-      "tabId": "nightly-truth",
-      "componentPath": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": true,
-      "importsTrustCopyMap": true,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": true,
-      "primitiveScore": 3,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"slo-observability\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "tabId": "connector-truth",
-      "componentPath": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-amber-500/15",
-        "bg-emerald-500/15",
-        "border-amber-500/30",
-        "border-emerald-500/30",
-        "text-amber-400",
-        "text-amber-700",
-        "text-emerald-400",
-        "text-emerald-600",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": true,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"slo-observability\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "tabId": "mobile-scope-truth",
-      "componentPath": "@/components/admin/ai-runtime/MobileScopeTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/15",
-        "border-emerald-500/30",
-        "text-emerald-400",
-        "text-emerald-600",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"slo-observability\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "tabId": "frontend-polish-truth",
-      "componentPath": "@/components/admin/ai-runtime/FrontendPolishTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/15",
-        "border-emerald-500/30",
-        "text-emerald-400",
-        "text-emerald-600",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"efficiency\" uses raw status-color literals (must go through StatusTone): text-amber-400, text-emerald-400, text-rose-400 in @/pages/admin/intelligence/AIEfficiencyScoreboard"
     },
     {
-      "tabId": "admin-validation-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminValidationTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/15",
-        "border-emerald-500/30",
-        "text-emerald-400",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"efficiency\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/intelligence/AIEfficiencyScoreboard"
     },
     {
-      "tabId": "hardware-operator-truth",
-      "componentPath": "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/15",
-        "border-emerald-500/30",
-        "text-amber-400",
-        "text-amber-700",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"cost\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-blue-500, text-emerald-500 in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "tabId": "security-portability-truth",
-      "componentPath": "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [
-        "bg-emerald-500/15",
-        "border-emerald-500/30",
-        "text-amber-400",
-        "text-amber-700",
-        "text-emerald-700"
-      ],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"cost\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "tabId": "architectural-cleanup-truth",
-      "componentPath": "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"cost\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "tabId": "economic-trust-future-truth",
-      "componentPath": "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": true
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"assurance-chaos\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "tabId": "architecture-hardening-truth",
-      "componentPath": "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"assurance-chaos\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "tabId": "flagship-surface-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"assurance-chaos\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "tabId": "admin-empty-state-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": false,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": true,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 0,
-      "ok": false
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"external-workforce-api\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, +2 more in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "tabId": "admin-coherence-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": true
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"external-workforce-api\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "tabId": "trust-state-and-copy-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": true
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"external-workforce-api\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "tabId": "frontend-truth-backing-closure-truth",
-      "componentPath": "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel",
-      "fileExists": true,
-      "importsStatusBadge": true,
-      "importsOperatorActionPanel": false,
-      "importsAITruthDisclosure": false,
-      "importsTrustCopyMap": false,
-      "rawShadcnBadgeUsed": false,
-      "forbiddenColorHits": [],
-      "requiresOperatorAction": false,
-      "primitiveScore": 1,
-      "ok": true
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"knowledge-federation\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, text-amber-600, +2 more in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"knowledge-federation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"knowledge-federation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"sovereign-dr\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"sovereign-dr\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"sovereign-dr\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"compliance-attestation\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/10, text-emerald-600 in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"compliance-attestation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"compliance-attestation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"advisors\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AdvisorBoardCatalog"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"owner-copilot\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"owner-copilot\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"nightly-truth\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"connector-truth\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, border-amber-500/30, border-emerald-500/30, +5 more in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"connector-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "operator-action",
+      "message": "Tab \"connector-truth\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"mobile-scope-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, +1 more in @/components/admin/ai-runtime/MobileScopeTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"mobile-scope-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/MobileScopeTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"frontend-polish-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, +1 more in @/components/admin/ai-runtime/FrontendPolishTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"frontend-polish-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/FrontendPolishTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"admin-validation-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-700 in @/components/admin/ai-runtime/AdminValidationTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"admin-validation-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/AdminValidationTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"hardware-operator-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, +1 more in @/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"hardware-operator-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "color-literal",
+      "message": "Tab \"security-portability-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, +1 more in @/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"security-portability-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"architectural-cleanup-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"architecture-hardening-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"flagship-surface-closure-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "raw-badge",
+      "message": "Tab \"admin-empty-state-closure-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"
     }
-  ]
+  ],
+  "tier": "WARN",
+  "promotionTier": "BLOCK",
+  "scope": "admin-ai-engineer-team",
+  "totalTabs": 43,
+  "tabsWithStatusBadge": 12,
+  "tabsWithOperatorActionPanel": 7,
+  "tabsWithAITruthDisclosure": 8,
+  "tabsWithForbiddenColors": 24
 }

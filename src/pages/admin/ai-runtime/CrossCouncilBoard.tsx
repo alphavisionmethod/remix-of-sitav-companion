@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,6 +14,10 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, Users2, DollarSign, Wrench, AlertTriangle } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { outcomeTone, riskTone, policyDraftStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 
 interface ConsensusSession {
   id: string;
@@ -147,9 +150,12 @@ export default function CrossCouncilBoard() {
             Phase 6 — multi-agent consensus, cost optimization drafts, and self-healing runbook executions.
           </p>
         </div>
-        <Button onClick={loadAll} variant="outline" disabled={loading}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Refresh"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <AITruthDisclosure mode="live-gateway" to="/admin/ai-runtime" />
+          <Button onClick={loadAll} variant="outline" disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Refresh"}
+          </Button>
+        </div>
       </div>
 
       <Alert>
@@ -178,11 +184,15 @@ export default function CrossCouncilBoard() {
         <TabsContent value="consensus" className="space-y-3">
           {sessions.length === 0 && !loading && (
             <Card>
-              <CardContent className="py-6">
+              <CardContent className="py-6 space-y-3">
                 <EmptyState
                   icon={<Users2 className="h-5 w-5" />}
                   title="No consensus sessions in flight"
                   description="Sessions open automatically when agents from multiple councils need to align on a shared decision. Quorum, action class, and effective autonomy are recorded for each session."
+                />
+                <OperatorActionPanel
+                  next={[{ label: "Open Internal Agents", href: "/admin/ai-runtime?tab=internal-agents" }]}
+                  evidence={[{ label: "Open Trust Ladder", href: "/admin/ai-runtime?tab=trust-ladder" }]}
                 />
               </CardContent>
             </Card>
@@ -198,18 +208,18 @@ export default function CrossCouncilBoard() {
                     </CardDescription>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    <Badge variant={s.status === "resolved" ? "default" : s.status === "conflict" ? "destructive" : "secondary"}>
+                    <StatusBadge tone={outcomeTone(s.status)} size="sm">
                       {s.status}
-                    </Badge>
-                    {s.conflict_detected && <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" />conflict</Badge>}
-                    {s.ceiling_capped && <Badge variant="outline">capped → L{s.effective_autonomy_level}</Badge>}
+                    </StatusBadge>
+                    {s.conflict_detected && <StatusBadge tone="danger" size="sm" icon={<AlertTriangle className="h-3 w-3" />}>conflict</StatusBadge>}
+                    {s.ceiling_capped && <StatusBadge tone="warning" size="sm">capped → L{s.effective_autonomy_level}</StatusBadge>}
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex flex-wrap gap-1">
                   {s.participating_councils.map((c) => (
-                    <Badge key={c} variant="outline" className="text-[10px]">{c}</Badge>
+                    <StatusBadge key={c} tone="muted" size="xs">{c}</StatusBadge>
                   ))}
                 </div>
                 <div className="text-muted-foreground">
@@ -258,12 +268,12 @@ export default function CrossCouncilBoard() {
                     <CardDescription>by {p.proposing_agent_id} · scope: {p.scope}</CardDescription>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <Badge variant={p.status === "approved_for_manual_apply" ? "default" : p.status === "rejected" ? "secondary" : "outline"}>
+                    <StatusBadge tone={policyDraftStatusTone(p.status)} size="sm">
                       {p.status.replace(/_/g, " ")}
-                    </Badge>
-                    <Badge variant={p.risk_assessment === "high" || p.risk_assessment === "critical" ? "destructive" : "outline"}>
+                    </StatusBadge>
+                    <StatusBadge tone={riskTone(p.risk_assessment)} size="sm">
                       risk: {p.risk_assessment}
-                    </Badge>
+                    </StatusBadge>
                   </div>
                 </div>
               </CardHeader>
@@ -325,10 +335,10 @@ export default function CrossCouncilBoard() {
                         </CardDescription>
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <Badge variant={e.outcome_status === "succeeded" ? "default" : e.outcome_status === "failed" ? "destructive" : "secondary"}>
+                        <StatusBadge tone={outcomeTone(e.outcome_status)} size="sm">
                           {e.outcome_status}
-                        </Badge>
-                        <Badge variant="outline">L{e.autonomy_level_used}{e.ceiling_capped ? " (capped)" : ""}</Badge>
+                        </StatusBadge>
+                        <StatusBadge tone="muted" size="sm">L{e.autonomy_level_used}{e.ceiling_capped ? " (capped)" : ""}</StatusBadge>
                       </div>
                     </div>
                   </CardHeader>

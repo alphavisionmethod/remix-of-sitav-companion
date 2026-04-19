@@ -1,38 +1,29 @@
-# Admin AI Engineer Hub — Phase 3–6 Hardening (in progress)
-
-Generated: 2026-04-19T19:36:52.823Z
+# Admin AI Engineer Hub — Phase 3–6 Hardening (Batch A complete)
 
 ## Coverage snapshot
-- Tabs with StatusBadge: **8/43**
-- Tabs with AITruthDisclosure: **4/43**
-- Tabs with OperatorActionPanel: **3/43**
-- Required-action tabs compliant: **3/24** (13%)
-- Average primitive score: **0.79 / 6**
+- Tabs with StatusBadge: **12/43**
+- Tabs with AITruthDisclosure: **8/43**
+- Tabs with OperatorActionPanel: **6/24 required (25%)**
+- Average primitive score: **1.20 / 6**
 
-## Flagships lifted to 6/6
-- security-council (SecurityCouncilBoard)
-- suggestions (SuggestionsBoard)
-- policy-drafts (PolicyDraftReviewBoard)
+## Flagships lifted to canonical primitives
+- security-council, suggestions, policy-drafts (initial)
+- internal-agents, councils, trust-ladder, cross-council (Batch A)
 
-## New shared helpers
-- src/components/admin/ai-runtime/_shared/status-tone-maps.ts (8 canonical domain→tone mappings)
+## Shared helpers
+- `src/components/admin/ai-runtime/_shared/status-tone-maps.ts` — 8 canonical domain→tone mappings
 
-## Validators (4 new gates)
-- `check-ai-engineer-tab-registry` — tier BLOCK — green
-- `check-ai-engineer-wiring-coverage` — tier WARN — advisory
-- `check-ai-engineer-primitive-coverage` — tier WARN — advisory
-- `check-ai-engineer-action-coverage` — tier WARN — advisory
+## Validators (4 gates wired into release-readiness aggregator)
+- check-ai-engineer-tab-registry — BLOCK — green
+- check-ai-engineer-wiring-coverage — WARN — advisory
+- check-ai-engineer-primitive-coverage — WARN — advisory
+- check-ai-engineer-action-coverage — WARN — advisory
 
-## Remaining debt
-- Tabs needing StatusBadge lift: **35**
-- Tabs needing OperatorActionPanel: **21**
-
-Remaining lifts mechanically follow same pattern as 3 flagships; status-tone-maps + AITruthDisclosure + OperatorActionPanel imports apply unchanged.
+## Remaining debt (mechanical, same pattern)
+- StatusBadge lifts: 31 panels
+- OperatorActionPanel: 18 panels
 
 ## Scope discipline
-- Files touched (new + edited): 4
-- Outside-scope edits: **0**
-- New component families: **0**
-- New color systems: **0**
-- Autonomy ceiling: L3 preserved
-- Sovereign AI Gateway: preserved (no direct provider SDK calls)
+- Files touched: 8 (1 new shared helper + 7 board lifts)
+- Outside-scope edits: 0 · New component families: 0 · New color systems: 0
+- L3 autonomy ceiling: preserved · Sovereign AI Gateway: preserved

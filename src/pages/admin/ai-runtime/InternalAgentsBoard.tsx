@@ -9,8 +9,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { agentStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -64,14 +67,6 @@ import {
   Zap,
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
-
-const STATUS_TONE: Record<string, string> = {
-  idle: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-  running: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
-  cooldown: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  suspended: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400",
-  error: "bg-destructive/15 text-destructive",
-};
 
 const COUNCIL_LABEL: Record<string, string> = {
   "product-build": "Product Build",
@@ -152,15 +147,18 @@ export default function InternalAgentsBoard() {
         <p className="text-[11px] text-muted-foreground">
           Internal AI workforce — 40 agents · live runtime state
         </p>
-        <NightlyProofBadge />
+        <div className="flex items-center gap-2">
+          <AITruthDisclosure mode="live-gateway" to="/admin/ai-runtime" />
+          <NightlyProofBadge />
+        </div>
       </div>
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
         <KpiCard icon={<Activity className="h-3.5 w-3.5" />} label="Total" value={counts.total} />
-        <KpiCard icon={<CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />} label="Idle" value={counts.idle} />
-        <KpiCard icon={<Zap className="h-3.5 w-3.5 text-sky-500" />} label="Running" value={counts.running} />
-        <KpiCard icon={<Pause className="h-3.5 w-3.5 text-zinc-500" />} label="Suspended" value={counts.suspended} />
-        <KpiCard icon={<AlertCircle className="h-3.5 w-3.5 text-destructive" />} label="Error" value={counts.error} />
+        <KpiCard icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Idle" value={counts.idle} tone="success" />
+        <KpiCard icon={<Zap className="h-3.5 w-3.5" />} label="Running" value={counts.running} tone="info" />
+        <KpiCard icon={<Pause className="h-3.5 w-3.5" />} label="Suspended" value={counts.suspended} tone="muted" />
+        <KpiCard icon={<AlertCircle className="h-3.5 w-3.5" />} label="Error" value={counts.error} tone="danger" />
       </div>
 
       {/* Filters */}
@@ -232,6 +230,11 @@ export default function InternalAgentsBoard() {
                     title="No agents match the current filter"
                     description="Adjust the search term or council filter to see agents in another scope. The full registry contains 40 internal agents across 6 councils."
                   />
+                  <OperatorActionPanel
+                    primary={{ label: "Clear filters", onClick: () => { setSearch(""); setCouncil("all"); setStatusFilter("all"); } }}
+                    next={[{ label: "Open Councils", href: "/admin/ai-runtime?tab=councils" }]}
+                    evidence={[{ label: "Open Trust Ladder", href: "/admin/ai-runtime?tab=trust-ladder" }]}
+                  />
                 </TableCell>
               </TableRow>
             )}
@@ -251,10 +254,15 @@ export default function InternalAgentsBoard() {
   );
 }
 
-function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
+function KpiCard({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value: number; tone?: "success" | "info" | "muted" | "danger" }) {
+  const toneCls = tone === "success" ? "text-[hsl(152_55%_55%)]"
+    : tone === "info" ? "text-[hsl(214_85%_60%)]"
+    : tone === "muted" ? "text-muted-foreground"
+    : tone === "danger" ? "text-destructive"
+    : "text-foreground";
   return (
     <Card className="p-2.5">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase text-muted-foreground tracking-wide">
+      <div className={`flex items-center gap-1.5 text-[10px] uppercase tracking-wide ${tone ? toneCls : "text-muted-foreground"}`}>
         {icon}{label}
       </div>
       <div className="text-lg font-semibold mt-0.5">{value}</div>
@@ -273,9 +281,9 @@ function AgentRow({ agent, onSelect }: { agent: AgentRuntimeView; onSelect: () =
       </TableCell>
       <TableCell className="text-xs">{COUNCIL_LABEL[agent.definition.council] ?? agent.definition.council}</TableCell>
       <TableCell>
-        <Badge variant="outline" className={`text-[10px] h-5 px-1.5 border-0 ${STATUS_TONE[status] ?? STATUS_TONE.idle}`}>
+        <StatusBadge tone={agentStatusTone(status)} size="xs">
           {status}
-        </Badge>
+        </StatusBadge>
       </TableCell>
       <TableCell className="text-xs">
         <span className="font-medium">{agent.definition.current_autonomy_level}</span>
@@ -489,7 +497,7 @@ function AgentDetailSheet({
                   {(data?.openEscalations ?? []).map((e) => (
                     <Card key={e.id} className="p-2 text-[11px] border-destructive/30">
                       <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] h-4 px-1 border-0 bg-destructive/15 text-destructive">{e.severity}</Badge>
+                        <StatusBadge tone="danger" size="xs">{e.severity}</StatusBadge>
                         <span className="text-muted-foreground">→ {e.target_supervisor}</span>
                       </div>
                       <p className="mt-1">{e.escalation_reason}</p>

@@ -1,27 +1,31 @@
 {
-  "generatedAt": "2026-04-19T19:36:52.823Z",
+  "generatedAt": "2026-04-19T19:42:00.542957+00:00",
   "scope": "admin-ai-engineer-team",
-  "phase": "3-6-in-progress",
+  "phase": "3-6-batch-A-complete",
   "totals": {
     "totalTabs": 43,
-    "tabsWithStatusBadge": 8,
-    "tabsWithAITruthDisclosure": 4,
-    "tabsWithOperatorActionPanel": 3,
+    "tabsWithStatusBadge": 12,
+    "tabsWithAITruthDisclosure": 8,
+    "tabsWithOperatorActionPanel": 6,
     "tabsWithForbiddenColors": 25,
-    "averagePrimitiveScore": 0.7906976744186046,
+    "averagePrimitiveScore": 1.2,
     "requiringOperatorAction": 24,
-    "actionCompliantTabs": 3,
-    "actionCoveragePct": 13,
+    "actionCompliantTabs": 6,
+    "actionCoveragePct": 25,
     "wiringRealtime": null,
     "wiringWithDataSources": null
   },
   "flagshipsLifted": [
     "security-council (SecurityCouncilBoard)",
     "suggestions (SuggestionsBoard)",
-    "policy-drafts (PolicyDraftReviewBoard)"
+    "policy-drafts (PolicyDraftReviewBoard)",
+    "internal-agents (InternalAgentsBoard)",
+    "councils (CouncilsBoard)",
+    "trust-ladder (TrustLadderBoard)",
+    "cross-council (CrossCouncilBoard)"
   ],
   "newSharedHelpers": [
-    "src/components/admin/ai-runtime/_shared/status-tone-maps.ts (8 canonical domain→tone mappings)"
+    "src/components/admin/ai-runtime/_shared/status-tone-maps.ts (8 canonical domain\u2192tone mappings)"
   ],
   "validators": [
     {
@@ -46,16 +50,20 @@
     }
   ],
   "remainingDebt": {
-    "tabsNeedingStatusBadgeLift": 35,
-    "tabsNeedingOperatorActionPanel": 21,
-    "note": "Remaining lifts mechanically follow same pattern as 3 flagships; status-tone-maps + AITruthDisclosure + OperatorActionPanel imports apply unchanged."
+    "tabsNeedingStatusBadgeLift": 31,
+    "tabsNeedingOperatorActionPanel": 18,
+    "note": "Batch A (4 board lifts) complete. Batches B (5 federation), C (5 governance), D (11 truth panels) remain \u2014 same mechanical pattern."
   },
   "scopeDiscipline": {
     "filesTouched": [
       "src/components/admin/ai-runtime/_shared/status-tone-maps.ts (NEW)",
       "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
       "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
-      "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx"
+      "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+      "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx",
+      "src/pages/admin/ai-runtime/CouncilsBoard.tsx",
+      "src/pages/admin/ai-runtime/TrustLadderBoard.tsx",
+      "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx"
     ],
     "outsideScope": 0,
     "newComponentFamilies": 0,
