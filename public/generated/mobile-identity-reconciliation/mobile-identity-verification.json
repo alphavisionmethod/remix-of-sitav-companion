@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "track": "mobile-identity-stack-truth-reconciliation",
+  "parallelTo": "mobile-deployment-closure",
+  "status": "GREEN",
+  "verdict": "all-gates-pass",
+  "canonical": {
+    "appId": "com.sita.os",
+    "appName": "SITA OS",
+    "wrapper": "capacitor@6",
+    "webLayer": "vite+react",
+    "backend": "lovable-cloud",
+    "nativeProjectModel": "generated-on-demand",
+    "androidBuild": "gradle",
+    "iosBuild": "xcodebuild+cocoapods"
+  },
+  "gates": [
+    { "id": "mobile-project-identification", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "mobile-identity-source-of-truth", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "no-flutter-stack-drift", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "capacitor-mobile-truth", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "android-native-generation", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "ios-native-generation", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "native-project-generation-contract", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "mobile-bootstrap-contract", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "mobile-build-model-consistency", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 0 },
+    { "id": "mobile-env-strategy-consistency", "tier": "warn", "status": "GREEN", "errors": 0, "warnings": 2 }
+  ],
+  "totals": { "gates": 10, "green": 10, "errors": 0, "warnings": 2 },
+  "aggregatorIntegration": {
+    "file": "scripts/architecture/checks/check-os-release-readiness.ts",
+    "section": "MOBILE_WARN_GATES",
+    "addedGates": 10
+  },
+  "npmScripts": {
+    "mobile:identity:run-all": "runs all 10 reconciliation validators",
+    "mobile:run-all": "runs closure + identity tracks together"
+  },
+  "honestDeferrals": [
+    { "item": "iOS signed .ipa + TestFlight", "blocker": "Apple Developer Program membership", "class": "account-blocked" },
+    { "item": "APNs push", "blocker": "Apple Developer membership", "class": "account-blocked" },
+    { "item": "FCM push", "blocker": "google-services.json", "class": "secret-blocked" },
+    { "item": "Play Store submission", "blocker": "screenshot matrix", "class": "metadata-blocked" }
+  ]
+}
