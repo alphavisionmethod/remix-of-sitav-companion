@@ -1,13 +1,29 @@
 {
-  "generatedAt": "2026-04-19T18:23:05.428Z",
+  "generatedAt": "2026-04-19T19:05:00.000Z",
   "gate": "frontend-completeness",
   "surfacesInScope": 5,
   "surfacesWired": 5,
   "bonusSurfacesWired": 1,
   "primitivesAdded": [
     "ProvenanceChip",
-    "EvidenceLink"
+    "EvidenceLink",
+    "AITruthDisclosure"
   ],
+  "sharedSystemsAdded": [
+    "src/lib/trust-copy/trust-copy-map.ts"
+  ],
+  "sectionDCoverage": {
+    "required": 6,
+    "shipped": 6,
+    "items": [
+      { "id": "D1", "name": "Operator empty-state", "asset": "EmptyState + PremiumEmptyState", "status": "shipped" },
+      { "id": "D2", "name": "Historical-data-pending", "asset": "NeedsHistoricalReleasesExplainer + NeedsTimeWindowExplainer", "status": "shipped" },
+      { "id": "D3", "name": "Reauth/degraded provider", "asset": "ConnectorStateBadge", "status": "shipped" },
+      { "id": "D4", "name": "AI truth/status disclosure", "asset": "AITruthDisclosure", "status": "shipped" },
+      { "id": "D5", "name": "Admin remediation/next-action", "asset": "OperatorActionPanel", "status": "shipped" },
+      { "id": "D6", "name": "Trust-copy helper map", "asset": "src/lib/trust-copy/trust-copy-map.ts", "status": "shipped" }
+    ]
+  },
   "newComponentFamilies": 0,
   "classification": "green"
 }
