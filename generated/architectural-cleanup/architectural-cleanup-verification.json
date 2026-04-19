@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "pass": "architectural-cleanup-pass-1",
+  "verdict": "PASS",
+  "totalBlockGates": 186,
+  "newBlockGatesThisPass": 5,
+  "newBlockGateNames": [
+    "no-browser-globals-in-portable-code",
+    "edge-function-structured-logging",
+    "no-duplicate-truth-manifests",
+    "no-stale-canonical-docs",
+    "safe-cleanup-regressions"
+  ],
+  "deliverables": {
+    "markdowns": 12,
+    "jsonStatusFiles": 4,
+    "validators": 5,
+    "truthPanels": 1
+  },
+  "regressionsIntroduced": 0,
+  "filesDeleted": 0,
+  "honestWarnsPreserved": true,
+  "fakeGreens": 0,
+  "scopeRuleHonored": "All new UI on AIRuntimeHome.tsx as 1 new tab. Zero edits to other admin domains.",
+  "carryovers": ["economic-trust-future-closure (abandoned mid-flight; out of scope this prompt)"]
+}

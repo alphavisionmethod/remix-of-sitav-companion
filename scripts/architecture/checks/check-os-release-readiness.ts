@@ -240,6 +240,12 @@ const REQUIRED_GATES = [
   "no-browser-trapped-shared-hooks",
   "runtime-host-abstraction",
   "portability-boundaries",
+  // Architectural Cleanup Closure — 5 BLOCK gates (additive cleanup pass; zero deletions)
+  "no-browser-globals-in-portable-code",
+  "edge-function-structured-logging",
+  "no-duplicate-truth-manifests",
+  "no-stale-canonical-docs",
+  "safe-cleanup-regressions",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
