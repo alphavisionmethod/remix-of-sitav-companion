@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-19T22:09:15.707Z",
+  "generatedAt": "2026-04-19T22:09:31.762Z",
   "gate": "os-ci-end-to-end",
   "phase": "phase-18-layout-and-ci-truth",
   "workflowPath": ".github/workflows/os-build-iso.yml",
   "requirementsChecked": 16,
   "evidence": {
     "trigger-push": true,
-    "trigger-schedule": false,
+    "trigger-schedule": true,
     "trigger-release": true,
     "trigger-dispatch": true,
     "profile-matrix": true,
@@ -22,14 +22,8 @@
     "job-publish": true,
     "step-upload": true
   },
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "trigger",
-      "message": "Missing: nightly schedule trigger (id=trigger-schedule)"
-    }
-  ]
+  "issues": []
 }
