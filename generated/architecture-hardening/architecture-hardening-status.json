@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "architecture-hardening",
+  "status": "shipped-and-wired",
+  "ok": true,
+  "summary": {
+    "deliverables": 22,
+    "markdowns": 18,
+    "jsons": 4,
+    "newValidators": 6,
+    "newBlockGates": 6,
+    "totalBlockGatesAfter": 199,
+    "newTruthPanels": 2,
+    "totalTruthPanelsAfter": 10,
+    "filesDeleted": 0,
+    "filesRenamed": 0,
+    "regressions": 0
+  },
+  "validators": [
+    "check-runtime-host-boundaries",
+    "check-shell-runtime-portability",
+    "check-edge-function-log-shape",
+    "check-mobile-archived-scope",
+    "check-no-kernel-overclaim",
+    "check-doc-canonicality"
+  ],
+  "truthPanels": [
+    "EconomicTrustFutureTruthPanel",
+    "ArchitectureHardeningTruthPanel"
+  ],
+  "scope": {
+    "additiveOnly": true,
+    "adminAiEngineerOnly": true,
+    "noOtherAdminDomainEdits": true,
+    "noUserFacingEdits": true,
+    "noEdgeFunctionEdits": true,
+    "noSealedMigrationEdits": true,
+    "noArchiveEdits": true
+  },
+  "relatedClosures": {
+    "architecturalCleanup": "shipped",
+    "economicTrustFuture": "now-shipped-and-wired",
+    "securityPortability": "shipped",
+    "mobileScope": "shipped",
+    "hardwareOperator": "shipped-warn-tier",
+    "adminValidation": "shipped"
+  },
+  "honestWarnTierPreserved": [
+    "edge-function-log-shape-partial-shape",
+    "doc-canonicality-orphans",
+    "partial-surface-families-audit-only"
+  ]
+}

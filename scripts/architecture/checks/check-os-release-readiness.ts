@@ -254,6 +254,13 @@ const REQUIRED_GATES = [
   "future-surfaces-registered",
   "negative-receipts-emitted",
   "economic-trust-future-closure",
+  // Architecture Hardening Closure — 6 BLOCK gates (additive hardening; zero deletions)
+  "runtime-host-boundaries",
+  "shell-runtime-portability",
+  "edge-function-log-shape",
+  "mobile-archived-scope",
+  "no-kernel-overclaim",
+  "doc-canonicality",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

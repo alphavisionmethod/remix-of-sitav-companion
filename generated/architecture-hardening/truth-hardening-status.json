@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "architecture-hardening",
+  "scope": "truth-manifests",
+  "ok": true,
+  "summary": {
+    "subClosuresGoverned": 7,
+    "totalGeneratedArtifacts": 371,
+    "duplicateTruthSources": 0,
+    "staleCanonicalDocs": 0,
+    "orphanedHardeningDocs": "warn-tier-only",
+    "competingActiveManifests": 0
+  },
+  "canonicalSources": {
+    "routeTopology": "generated/route-truth-report.json",
+    "appPlaneMap": "generated/app-plane-map.json",
+    "appProfileMatrix": "generated/app-profile-matrix.json",
+    "serviceOwnership": "generated/ownership-manifest.json",
+    "edgeFunctionTopology": "generated/edge-function-topology-report.json",
+    "mobileScope": "MOBILE_HONESTY.md + archive/mobile/ARCHIVED.md",
+    "kernelHonesty": "docs/architecture/native-os-future/KERNEL_OWNERSHIP_GAP.md",
+    "runtimeTiers": "src/runtimes/feature-runtime-tier-registry.ts",
+    "portabilityBoundaries": "src/runtimes/portability-boundary-model.ts",
+    "perUserBudgets": "generated/economic-trust-and-future-closure/per-user-budget-status.json",
+    "futureSurfaces": "generated/economic-trust-and-future-closure/future-surface-status.json",
+    "architectureHardening": "generated/architecture-hardening/"
+  },
+  "driftValidators": [
+    "check-no-duplicate-truth-manifests",
+    "check-no-stale-canonical-docs",
+    "check-doc-canonicality",
+    "check-mobile-archived-scope",
+    "check-no-kernel-overclaim"
+  ]
+}
