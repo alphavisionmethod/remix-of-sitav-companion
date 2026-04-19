@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-19T01:26:49.692Z",
+  "gate": "final-deployment-readiness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "checked": [
+    {
+      "file": "generated/restore-drill-report.json",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/boardroom-layer7-closure-report.json",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/kill-switch-enforcement-report.json",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/signed-release-artifacts-report.json",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/pg-cron-schedules-report.json",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  ]
+}
