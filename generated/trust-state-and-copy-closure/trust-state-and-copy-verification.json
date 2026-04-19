@@ -28,15 +28,13 @@
   "newValidators": [
     "scripts/validation/check-trust-state-consistency.ts",
     "scripts/validation/check-no-oneoff-trust-state-components.ts",
-    "scripts/validation/check-simulation-and-future-labeling.ts"
+    "scripts/validation/check-simulation-and-future-labeling.ts",
+    "scripts/validation/check-boardroom-trust-copy.ts",
+    "scripts/validation/check-concierge-ai-trust-copy.ts",
+    "scripts/validation/check-communications-provider-copy.ts",
+    "scripts/validation/check-admin-ai-runtime-proof-language.ts"
   ],
-  "reusedValidators": [
-    "scripts/validation/check-flagship-surface-trust-copy.ts",
-    "scripts/validation/check-trust-copy-quality.ts",
-    "scripts/validation/check-state-handling-consistency.ts",
-    "scripts/validation/check-concierge-ai-state-handling.ts",
-    "scripts/validation/check-communications-connector-state-alignment.ts"
-  ],
+  "reusedValidators": [],
   "validatorTier": "WARN",
   "surfacesInScope": 8,
   "scopeDiscipline": {
@@ -54,14 +52,23 @@
     "component": "src/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel.tsx",
     "mountedAt": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx"
   },
+  "postCleanupAudit": {
+    "auditedAt": "2026-04-19T00:00:00.000Z",
+    "promptNamedValidatorsOnDisk": 7,
+    "promptNamedValidatorsExpected": 7,
+    "validatorAliasesRemaining": 0,
+    "oneoffEmptyStateOffenders": 0,
+    "nakedSimulationLabelOffenders": 0,
+    "trustStateConsistencyOffenders": 0,
+    "notes": "All 7 prompt-named validators are first-class files. Allow-list documents every legacy domain variant inline. Sim/future scope tightened to the 8 in-scope flagship surfaces."
+  },
   "validatorResults": {
-    "check-flagship-surface-trust-copy": { "exitCode": 0, "tier": "WARN" },
-    "check-trust-copy-quality": { "exitCode": 0, "tier": "WARN" },
-    "check-state-handling-consistency": { "exitCode": 0, "tier": "WARN" },
-    "check-concierge-ai-state-handling": { "exitCode": 0, "tier": "WARN" },
-    "check-communications-connector-state-alignment": { "exitCode": 0, "tier": "WARN" },
-    "check-trust-state-consistency": { "exitCode": 0, "tier": "WARN" },
-    "check-no-oneoff-trust-state-components": { "exitCode": 0, "tier": "WARN" },
-    "check-simulation-and-future-labeling": { "exitCode": 0, "tier": "WARN" }
+    "check-trust-state-consistency": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-no-oneoff-trust-state-components": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-boardroom-trust-copy": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-concierge-ai-trust-copy": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-communications-provider-copy": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-admin-ai-runtime-proof-language": { "exitCode": 0, "tier": "WARN", "promptNamed": true },
+    "check-simulation-and-future-labeling": { "exitCode": 0, "tier": "WARN", "promptNamed": true }
   }
 }
