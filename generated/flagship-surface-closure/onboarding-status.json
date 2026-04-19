@@ -1,6 +1,13 @@
 {
   "surface": "onboarding",
-  "status": "deferred",
-  "reason": "operator-scoped to admin AI engineering team per directive",
-  "trackedSeparately": true
+  "status": "deferred-to-user-flagship-pass",
+  "scope": "admin-ai-engineering",
+  "classification": "honest-warn-deferred",
+  "validator": "onboarding-simulated-persona-disclosure",
+  "deferralDoc": "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md",
+  "canonicalRuntime": {
+    "daemon": "src/lib/services/onboarding-daemon.ts",
+    "hook": "src/hooks/useOnboardingDaemon.ts"
+  },
+  "requiredForGreen": "user-flagship-pass: build src/pages/onboarding/** with centralized SimulatedPersonaBanner"
 }

@@ -96,9 +96,16 @@ const REQUIRED_GATES = [
   "internal-agent-escalation-runtime",
   "internal-agent-seed-integrity",
   "internal-agent-runtime-loop",
-  // Flagship Surface Closure — Admin AI Engineering scope (2 BLOCK gates)
+  // Flagship Surface Closure — Admin AI Engineering scope (2 BLOCK + 6 honest WARN-tier hybrid)
   "admin-ai-runtime-drilldowns",
   "admin-integrations-health-visibility",
+  // Flagship Surface Closure — honest WARN-tier hybrid validators (deferred-to-user-flagship)
+  "onboarding-simulated-persona-disclosure",
+  "boardroom-briefing-truth-alignment",
+  "concierge-ai-state-handling",
+  "communications-connector-state-alignment",
+  "flagship-surface-trust-copy",
+  "flagship-surface-responsive-quality",
   // Internal AI Workforce — Phase 2 closure (8 BLOCK gates)
   "internal-agent-execute-action",
   "autonomous-action-safety-gates",

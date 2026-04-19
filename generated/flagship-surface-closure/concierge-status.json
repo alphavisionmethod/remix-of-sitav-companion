@@ -1,6 +1,14 @@
 {
   "surface": "concierge",
-  "status": "deferred",
-  "reason": "operator-scoped to admin AI engineering team per directive",
-  "trackedSeparately": true
+  "status": "deferred-to-user-flagship-pass",
+  "scope": "admin-ai-engineering",
+  "classification": "honest-warn-deferred",
+  "validator": "concierge-ai-state-handling",
+  "deferralDoc": "generated/flagship-surface-closure/CONCIERGE_CHAT_CLOSURE_SPEC.md",
+  "runtimeBackboneInScope": [
+    "AIRuntimeNightlyTruthPanel",
+    "ConnectorTruthSummaryPanel",
+    "ai-runtime-nightly-verify edge function"
+  ],
+  "requiredForGreen": "user-flagship-pass: wire /concierge/* to AI runtime status surfaces + canonical AI trust disclosure block + chat-specific degraded/budget/error treatments"
 }

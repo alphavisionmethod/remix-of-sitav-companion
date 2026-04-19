@@ -1,6 +1,14 @@
 {
   "surface": "boardroom-briefing",
-  "status": "deferred",
-  "reason": "operator-scoped to admin AI engineering team per directive",
-  "trackedSeparately": true
+  "status": "deferred-to-user-flagship-pass",
+  "scope": "admin-ai-engineering",
+  "classification": "honest-warn-deferred",
+  "validator": "boardroom-briefing-truth-alignment",
+  "deferralDoc": "generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOSURE_SPEC.md",
+  "canonicalBackbone": [
+    "generated/boardroom-layer7-state-coverage-report.json",
+    "generated/boardroom-outcome-tracking-report.json",
+    "generated/boardroom-followthrough-linkage-report.json"
+  ],
+  "requiredForGreen": "user-flagship-pass: build /boardroom/briefing consuming canonical Layer 7 data + distinguish learning-loop-v2 boundary"
 }
