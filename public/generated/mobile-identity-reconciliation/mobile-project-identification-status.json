@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "track": "mobile-identity-stack-truth-reconciliation",
+  "scope": "mobile-project-identification",
+  "status": "GREEN",
+  "errors": 0,
+  "warnings": 0,
+  "generatedAt": "2026-04-19T20:00:00.000Z",
+  "classification": "ARCHIVED / FUTURE_VISION_ONLY",
+  "canonical": {
+    "appId": "com.sita.os",
+    "appName": "SITA OS",
+    "wrapper": "capacitor@6 (planned)",
+    "currentImplementation": "archived"
+  },
+  "source": "archive/generated/mobile/mobile-identity-reconciliation/PROJECT_IDENTIFICATION_AUDIT.md",
+  "note": "Mirror of archived project-identification gate. Active state: archived per generated/mobile-scope-closure/. Re-activation requires Apple Developer + Firebase + Play Console enrollment."
+}
