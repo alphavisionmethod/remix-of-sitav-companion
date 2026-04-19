@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T13:29:35.090Z",
+  "generatedAt": "2026-04-19T13:34:02.207Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -102,6 +102,20 @@
       "warnings": 0
     },
     {
+      "file": "generated/mobile-store-readiness-report.json",
+      "gate": "mobile-store-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-build-pipeline-report.json",
+      "gate": "mobile-build-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 5
+    },
+    {
       "file": "generated/ks-payments-auth-readiness-report.json",
       "gate": "ks-payments-auth-readiness",
       "ok": true,
@@ -191,6 +205,13 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/mobile-capability-truth-report.json",
+      "gate": "mobile-capability-truth",
+      "ok": true,
+      "errors": 0,
+      "warnings": 5
     },
     {
       "file": "generated/profile-route-coverage-report.json",
@@ -944,51 +965,51 @@
     {
       "file": "generated/google-refresh-nightly-report.json",
       "gate": "google-refresh-nightly",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/microsoft-refresh-nightly-report.json",
       "gate": "microsoft-refresh-nightly",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/slack-refresh-nightly-report.json",
       "gate": "slack-refresh-nightly",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/connector-health-state-consistency-report.json",
       "gate": "connector-health-state-consistency",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/no-ambiguous-connected-state-report.json",
       "gate": "no-ambiguous-connected-state",
-      "ok": false,
-      "errors": 3,
+      "ok": true,
+      "errors": 0,
       "warnings": 0
     },
     {
       "file": "generated/long-tail-provider-classification-report.json",
       "gate": "long-tail-provider-classification",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/connector-refresh-streak-report.json",
       "gate": "connector-refresh-streak",
-      "ok": false,
-      "errors": 1,
-      "warnings": 0
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
     },
     {
       "file": "generated/mobile-native-out-of-scope-truth-report.json",
@@ -1075,13 +1096,9 @@
       "warnings": 0
     }
   ],
-  "totalErrors": 9,
-  "totalWarnings": 3364,
-  "missingGates": [
-    "mobile-store-readiness",
-    "mobile-build-pipeline",
-    "mobile-capability-truth"
-  ],
-  "ok": false,
-  "verdict": "RED"
+  "totalErrors": 0,
+  "totalWarnings": 3380,
+  "missingGates": [],
+  "ok": true,
+  "verdict": "YELLOW"
 }

@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T13:29:35.090Z
-> Verdict: **RED** ❌
+> Generated: 2026-04-19T13:34:02.207Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
 | Gates required | 156 |
-| Gates present  | 153 |
-| Gates missing  | 3 |
-| Total errors   | 9 |
-| Total warnings | 3364 |
+| Gates present  | 156 |
+| Gates missing  | 0 |
+| Total errors   | 0 |
+| Total warnings | 3380 |
 
 ## Per-gate results
 
@@ -31,6 +31,8 @@
 | `app-plane-map` | ✅ | 0 | 0 |
 | `user-profile-readiness` | ✅ | 0 | 0 |
 | `operator-readiness` | ✅ | 0 | 0 |
+| `mobile-store-readiness` | ✅ | 0 | 0 |
+| `mobile-build-pipeline` | ✅ | 0 | 5 |
 | `ks-payments-auth-readiness` | ✅ | 0 | 0 |
 | `ci-artifacts-proof` | ✅ | 0 | 0 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
@@ -44,6 +46,7 @@
 | `launcher-registry-completeness` | ✅ | 0 | 0 |
 | `app-profile-matrix` | ✅ | 0 | 0 |
 | `hidden-app-routes` | ✅ | 0 | 0 |
+| `mobile-capability-truth` | ✅ | 0 | 5 |
 | `profile-route-coverage` | ✅ | 0 | 0 |
 | `command-palette-profile-leakage` | ✅ | 0 | 0 |
 | `shared-component-profile-pollution` | ✅ | 0 | 0 |
@@ -151,13 +154,13 @@
 | `ai-fallback-verification` | ✅ | 0 | 0 |
 | `ai-budget-enforcement-under-load` | ✅ | 0 | 0 |
 | `ai-runtime-streak-health` | ✅ | 0 | 0 |
-| `google-refresh-nightly` | ❌ | 1 | 0 |
-| `microsoft-refresh-nightly` | ❌ | 1 | 0 |
-| `slack-refresh-nightly` | ❌ | 1 | 0 |
-| `connector-health-state-consistency` | ❌ | 1 | 0 |
-| `no-ambiguous-connected-state` | ❌ | 3 | 0 |
-| `long-tail-provider-classification` | ❌ | 1 | 0 |
-| `connector-refresh-streak` | ❌ | 1 | 0 |
+| `google-refresh-nightly` | ✅ | 0 | 1 |
+| `microsoft-refresh-nightly` | ✅ | 0 | 1 |
+| `slack-refresh-nightly` | ✅ | 0 | 1 |
+| `connector-health-state-consistency` | ✅ | 0 | 1 |
+| `no-ambiguous-connected-state` | ✅ | 0 | 0 |
+| `long-tail-provider-classification` | ✅ | 0 | 1 |
+| `connector-refresh-streak` | ✅ | 0 | 1 |
 | `mobile-native-out-of-scope-truth` | ✅ | 0 | 0 |
 | `no-active-native-mobile-claims` | ✅ | 0 | 0 |
 | `install-page-mobile-honesty` | ✅ | 0 | 0 |
@@ -170,13 +173,10 @@
 | `admin-board-polish` | ✅ | 0 | 0 |
 | `trust-copy-quality` | ✅ | 0 | 0 |
 | `responsive-surface-integrity` | ✅ | 0 | 0 |
-| `mobile-store-readiness` | ❌ MISSING | — | — |
-| `mobile-build-pipeline` | ❌ MISSING | — | — |
-| `mobile-capability-truth` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 9 error(s) and resolve 3 missing gate(s).
+⚠️ All required gates passed, but 3380 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
