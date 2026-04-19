@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-19T17:07:38.639Z",
+  "generatedAt": "2026-04-19T17:20:21.742Z",
   "gate": "sbom-history-empty-state",
-  "ok": true,
-  "errorCount": 0,
-  "warningCount": 1,
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
   "issues": [
     {
-      "severity": "warning",
-      "area": "page-not-built",
-      "message": "Page does not exist yet: src/pages/admin/releases/SbomHistory.tsx. DEFERRED to releases-domain-pass. See generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md."
+      "severity": "error",
+      "area": "operator-navigation",
+      "message": "src/pages/admin/releases/SbomHistory.tsx must contain ≥2 real <Link to=\"/admin/...\"> canonical destinations (found 0)"
     }
   ],
   "classification": "honest-warn-deferred",

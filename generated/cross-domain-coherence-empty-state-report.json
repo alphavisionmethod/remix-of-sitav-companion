@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-19T17:07:34.200Z",
+  "generatedAt": "2026-04-19T17:20:16.267Z",
   "gate": "cross-domain-coherence-empty-state",
-  "ok": true,
-  "errorCount": 0,
-  "warningCount": 1,
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
   "issues": [
     {
-      "severity": "warning",
-      "area": "page-not-built",
-      "message": "Page does not exist yet: src/pages/admin/verification/CrossDomainCoherence.tsx. DEFERRED to verification-domain-pass. See generated/admin-empty-state-closure/CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md."
+      "severity": "error",
+      "area": "operator-navigation",
+      "message": "src/pages/admin/verification/CrossDomainCoherence.tsx must contain ≥2 real <Link to=\"/admin/...\"> canonical destinations (found 0)"
     }
   ],
   "classification": "honest-warn-deferred",
