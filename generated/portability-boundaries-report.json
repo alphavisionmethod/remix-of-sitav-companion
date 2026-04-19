@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T14:45:35.641Z",
+  "gate": "portability-boundaries",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classified": 13,
+  "missing": 0,
+  "violations": 0,
+  "byBoundary": {
+    "leaf-browser-only": 4,
+    "shared-portable": 4,
+    "shell-specific": 1,
+    "adapter-routed": 4
+  }
+}

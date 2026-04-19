@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T14:45:33.545Z",
+  "gate": "runtime-host-abstraction",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "refactoredCount": 4,
+  "canonicalAdapterPresent": true
+}
