@@ -147,6 +147,9 @@ export default function CouncilsBoard() {
 
   return (
     <div className="space-y-3">
+      <div className="flex items-center justify-end">
+        <AITruthDisclosure mode="live-gateway" to="/admin/ai-runtime" />
+      </div>
       {/* Council panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {(summaries ?? []).map((s) => (
@@ -183,9 +186,9 @@ export default function CouncilsBoard() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={`text-[10px] h-4 px-1 border-0 ${SEVERITY_TONE[e.severity] ?? SEVERITY_TONE.moderate}`}>
+                  <StatusBadge tone={severityTone(e.severity)} size="xs">
                     {e.severity}
-                  </Badge>
+                  </StatusBadge>
                   <span className="text-xs font-medium">{e.source_agent_id}</span>
                   <span className="text-[10px] text-muted-foreground">→ {e.target_supervisor}</span>
                 </div>
@@ -215,7 +218,7 @@ export default function CouncilsBoard() {
         <div className="space-y-1">
           {(decisions ?? []).map((d: any) => (
             <div key={d.id} className="text-[11px] flex items-center gap-2 py-1 border-b border-border/30 last:border-0">
-              <Badge variant="outline" className="text-[9px] h-4 px-1 border-0 bg-muted">{d.decision_type}</Badge>
+              <StatusBadge tone="muted" size="xs">{d.decision_type}</StatusBadge>
               <span className="font-mono text-[10px]">{d.supervisor_key}</span>
               <span className="text-muted-foreground">→</span>
               <span className="font-mono text-[10px]">{d.target_agent_id ?? d.target_escalation_id ?? "—"}</span>
@@ -239,9 +242,9 @@ export default function CouncilsBoard() {
             <div>
               <p className="text-[10px] uppercase text-muted-foreground tracking-wide">Resolve escalation</p>
               <p className="text-xs font-semibold">{selectedEsc.source_agent_id}</p>
-              <Badge variant="outline" className={`text-[10px] h-4 px-1 border-0 mt-1 ${SEVERITY_TONE[selectedEsc.severity] ?? SEVERITY_TONE.moderate}`}>
+              <StatusBadge tone={severityTone(selectedEsc.severity)} size="xs" className="mt-1">
                 {selectedEsc.severity}
-              </Badge>
+              </StatusBadge>
             </div>
             <Button size="sm" variant="ghost" className="h-6 text-[10px]" onClick={() => setSelectedEscId(null)}>
               Cancel
@@ -292,9 +295,9 @@ function CouncilPanel({
     <Card className={`p-3 ${healthTone}`}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xs font-semibold">{COUNCIL_LABEL[summary.council] ?? summary.council}</h3>
-        <Badge variant="outline" className="text-[10px] h-4 px-1.5 border-0 bg-muted">
+        <StatusBadge tone="muted" size="xs">
           {summary.totalAgents} agents
-        </Badge>
+        </StatusBadge>
       </div>
       <div className="grid grid-cols-2 gap-1.5 text-[11px]">
         <Stat icon={<Activity className="h-3 w-3" />} label="Active" value={summary.activeAgents} />
@@ -317,9 +320,9 @@ function CouncilPanel({
               onClick={() => onSelectEsc(e.id)}
               className="w-full text-left text-[10px] hover:underline flex items-center gap-1"
             >
-              <Badge variant="outline" className={`h-3 px-1 border-0 text-[9px] ${SEVERITY_TONE[e.severity] ?? SEVERITY_TONE.moderate}`}>
+              <StatusBadge tone={severityTone(e.severity)} size="xs">
                 {e.severity}
-              </Badge>
+              </StatusBadge>
               <span className="truncate">{e.source_agent_id}</span>
             </button>
           ))}
