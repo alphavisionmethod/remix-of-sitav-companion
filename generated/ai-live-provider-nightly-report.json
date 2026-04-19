@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T02:14:56.418Z",
+  "gate": "ai-live-provider-nightly",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "cron-doc",
+      "message": "pg-cron-schedules.md does not document the ai-runtime-nightly-verify schedule"
+    }
+  ]
+}

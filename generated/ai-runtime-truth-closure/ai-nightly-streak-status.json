@@ -1,12 +1,11 @@
 {
-  "generated_at": "2026-04-19T02:14:11.514Z",
-  "current_streak_days": 0,
-  "longest_streak_days": 0,
-  "last_pass_at": null,
-  "last_fail_at": null,
-  "last_failure_class": null,
-  "streak_started_at": null,
-  "unacknowledged_alerts": 0,
-  "classification": "building",
-  "goal_days": 7
+  "generated_at": "2026-04-19T02:14:53.808Z",
+  "note": "Live streak state lives in ai_runtime_streak_state table; query via get_ai_runtime_streak_summary() RPC.",
+  "classification_thresholds": {
+    "green": ">= 7 consecutive clean nights",
+    "yellow": ">= 3 consecutive clean nights",
+    "building": "< 3 nights",
+    "red": "any unacknowledged failure"
+  },
+  "artifact_check_ok": true
 }
