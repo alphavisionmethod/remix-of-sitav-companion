@@ -124,3 +124,17 @@ select cron.schedule(
        body := '{}'::jsonb
      ); $$
 );
+
+-- AI Runtime Truth — Nightly live verifier (02:00 UTC)
+-- Sub-checks: live provider call, receipt persistence, ledger write, fallback path, budget enforcement.
+-- Companion CI workflow .github/workflows/ai-runtime-truth-nightly.yml runs at 03:00 UTC to
+-- emit JSON artifacts and run the 6 ai-runtime validation gates.
+select cron.schedule(
+  'sita-ai-runtime-nightly-verify',
+  '0 2 * * *',
+  $$ select net.http_post(
+       url := 'https://<PROJECT-REF>.supabase.co/functions/v1/ai-runtime-nightly-verify',
+       headers := '{"Content-Type":"application/json","Authorization":"Bearer <ANON-KEY>"}'::jsonb,
+       body := '{"triggered_by":"pg_cron"}'::jsonb
+     ); $$
+);
