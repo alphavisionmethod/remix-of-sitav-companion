@@ -20,7 +20,24 @@ Provide an installable mobile distribution of SITA OS for owner-operators who wa
 | Push (mobile) | **Deferred** — APNs + FCM both gated on credentials | See `mobile/android/FCM.md`, `mobile/ios/SIGNING.md`. |
 | Push (web) | VAPID — **active** | Real, shipped in current SPA. |
 
-> **Flutter is not used.** Earlier architecture sketches referenced Flutter as a future migration target; that direction was abandoned. Any remaining Flutter mention in this repo is non-canonical drift and is regression-protected by `scripts/validation/check-mobile-canonical-stack.ts` and `scripts/validation/check-no-flutter-mobile-truth-drift.ts`.
+> **Flutter is not used.** Earlier architecture sketches referenced Flutter as a future migration target; that direction was abandoned. Any remaining Flutter mention in this repo is non-canonical drift and is regression-protected by `scripts/validation/check-mobile-canonical-stack.ts`, `scripts/validation/check-no-flutter-mobile-truth-drift.ts`, and `scripts/validation/check-no-flutter-stack-drift.ts` (identity reconciliation track).
+
+## Identity & Stack Truth Reconciliation
+
+Two parallel governance tracks cover the mobile distribution layer:
+
+| Track | Purpose | Run command | Gates | Artifacts |
+|---|---|---|---|---|
+| **Closure** | Signing keystore presence, store-submission readiness, push claim safety | `npm run mobile:closure:run-all` | 6 | `mobile/android/`, `mobile/ios/`, `mobile/store-metadata/` |
+| **Identity & Stack Truth** | Canonical app id/name, Capacitor-stack truth, native generation contract, build/env model | `npm run mobile:identity:run-all` | 10 | `generated/mobile-identity-reconciliation/` |
+| **Both** | Full mobile readiness sweep | `npm run mobile:run-all` | 16 | — |
+
+Canonical identity (single source of truth: `capacitor.config.ts`):
+- `appId = com.sita.os`
+- `appName = SITA OS`
+- Wrapper = Capacitor 6 over the Lovable SPA
+- Native `android/` and `ios/` projects are **generated on demand**, never committed
+- See `generated/mobile-identity-reconciliation/MOBILE_IDENTITY_SOURCE_OF_TRUTH.md` for the full contract.
 
 ## Directories (current)
 | Path | Description |
