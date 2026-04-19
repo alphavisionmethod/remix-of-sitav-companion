@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T01:11:34.682Z",
+  "gate": "android-native-generation",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "script": "scripts/android/bootstrap.sh",
+  "contract": "on-demand, version-pinned, post-validated"
+}

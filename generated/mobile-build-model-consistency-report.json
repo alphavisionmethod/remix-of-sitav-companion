@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19T01:11:42.753Z",
+  "gate": "mobile-build-model-consistency",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "deps",
+      "message": "No @capacitor/* deps in package.json"
+    }
+  ],
+  "model": "generated/mobile-identity-reconciliation/MOBILE_BUILD_AND_DEPENDENCY_MODEL.md",
+  "tiers": [
+    "web/Vite",
+    "wrapper/Capacitor",
+    "Android/Gradle",
+    "iOS/xcodebuild+CocoaPods"
+  ]
+}
