@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T03:11:05.262Z",
+  "generatedAt": "2026-04-19T03:14:44.000Z",
   "ok": false,
   "status": "RED",
   "checks": {
@@ -15,6 +15,8 @@
     "no_stray_generated_mobile_truth"
   ],
   "stray_generated_mobile_truth": [
+    "mobile-manifest-archive-classification-report.json",
+    "mobile-native-out-of-scope-truth-report.json",
     "mobile-scope-closure"
   ],
   "capacitor_deps_remaining": [],
