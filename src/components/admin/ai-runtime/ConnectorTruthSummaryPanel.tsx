@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
+import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
 import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadConnectorTruthSummary,
@@ -110,6 +112,17 @@ export default function ConnectorTruthSummaryPanel() {
                       {s.last_failure_class && (
                         <div>Class: <span className="text-destructive">{s.last_failure_class}</span></div>
                       )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                      <ProvenanceChip
+                        source="oauth_refresh_probe_results"
+                        verifiedAt={s.last_pass_at ?? s.last_fail_at ?? null}
+                      />
+                      <EvidenceLink
+                        to={`/admin/integrations?provider=${encodeURIComponent(s.provider)}`}
+                        label="Drilldown"
+                        kind="integration"
+                      />
                     </div>
                   </div>
                 ))}

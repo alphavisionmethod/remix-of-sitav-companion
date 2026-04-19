@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
+import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
 import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadNightlyTruthData,
