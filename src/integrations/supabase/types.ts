@@ -1991,6 +1991,152 @@ export type Database = {
           },
         ]
       }
+      ai_runtime_failure_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          acknowledgment_notes: string | null
+          created_at: string
+          evidence: Json
+          failure_class: string
+          id: string
+          run_id: string
+          severity: string
+          summary: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          acknowledgment_notes?: string | null
+          created_at?: string
+          evidence?: Json
+          failure_class: string
+          id?: string
+          run_id: string
+          severity?: string
+          summary: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          acknowledgment_notes?: string | null
+          created_at?: string
+          evidence?: Json
+          failure_class?: string
+          id?: string
+          run_id?: string
+          severity?: string
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_runtime_failure_alerts_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "ai_runtime_nightly_runs"
+            referencedColumns: ["run_id"]
+          },
+        ]
+      }
+      ai_runtime_nightly_runs: {
+        Row: {
+          budget_enforced: boolean
+          completed_at: string | null
+          created_at: string
+          estimated_cost_usd: number
+          evidence: Json
+          failure_class: string | null
+          failure_detail: string | null
+          fallback_verified: boolean
+          id: string
+          ledger_verified: boolean
+          provider_calls_ok: boolean
+          receipts_verified: boolean
+          run_id: string
+          started_at: string
+          status: string
+          total_invocations: number
+          triggered_by: string
+        }
+        Insert: {
+          budget_enforced?: boolean
+          completed_at?: string | null
+          created_at?: string
+          estimated_cost_usd?: number
+          evidence?: Json
+          failure_class?: string | null
+          failure_detail?: string | null
+          fallback_verified?: boolean
+          id?: string
+          ledger_verified?: boolean
+          provider_calls_ok?: boolean
+          receipts_verified?: boolean
+          run_id: string
+          started_at?: string
+          status: string
+          total_invocations?: number
+          triggered_by?: string
+        }
+        Update: {
+          budget_enforced?: boolean
+          completed_at?: string | null
+          created_at?: string
+          estimated_cost_usd?: number
+          evidence?: Json
+          failure_class?: string | null
+          failure_detail?: string | null
+          fallback_verified?: boolean
+          id?: string
+          ledger_verified?: boolean
+          provider_calls_ok?: boolean
+          receipts_verified?: boolean
+          run_id?: string
+          started_at?: string
+          status?: string
+          total_invocations?: number
+          triggered_by?: string
+        }
+        Relationships: []
+      }
+      ai_runtime_streak_state: {
+        Row: {
+          current_streak_days: number
+          id: string
+          last_fail_at: string | null
+          last_failure_class: string | null
+          last_pass_at: string | null
+          last_run_id: string | null
+          longest_streak_days: number
+          singleton_key: string
+          streak_started_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          current_streak_days?: number
+          id?: string
+          last_fail_at?: string | null
+          last_failure_class?: string | null
+          last_pass_at?: string | null
+          last_run_id?: string | null
+          longest_streak_days?: number
+          singleton_key?: string
+          streak_started_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          current_streak_days?: number
+          id?: string
+          last_fail_at?: string | null
+          last_failure_class?: string | null
+          last_pass_at?: string | null
+          last_run_id?: string | null
+          longest_streak_days?: number
+          singleton_key?: string
+          streak_started_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_usage_ledger: {
         Row: {
           capability_key: string
@@ -19807,6 +19953,10 @@ export type Database = {
       }
     }
     Functions: {
+      acknowledge_ai_runtime_failure_alert: {
+        Args: { _alert_id: string; _notes?: string }
+        Returns: Json
+      }
       acknowledge_error_patrol_detection: {
         Args: { _detection_id: string }
         Returns: Json
@@ -19875,6 +20025,7 @@ export type Database = {
         Returns: Json
       }
       expire_overdue_kill_switches: { Args: never; Returns: number }
+      get_ai_runtime_streak_summary: { Args: never; Returns: Json }
       get_compliance_rls_summary: { Args: never; Returns: Json }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
       has_admin_permission: {
