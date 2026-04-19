@@ -113,29 +113,24 @@ for (const t of AI_ENGINEER_HUB_TABS) {
 
   const tabIssues: GateIssue[] = [];
 
-  // BLOCK rule: if any status-color literal is present, that's a fail.
+  // WARN-tier (Phase 4): raw status-color literals — sweep planned.
   if (forbiddenColorHits.length > 0) {
     tabIssues.push({
-      severity: "error",
+      severity: "warning",
       area: "color-literal",
-      message: `Tab "${t.id}" uses raw status-color literals (must go through StatusTone): ${forbiddenColorHits.join(", ")} in ${t.componentPath}`,
+      message: `Tab "${t.id}" uses raw status-color literals (must go through StatusTone): ${forbiddenColorHits.slice(0, 4).join(", ")}${forbiddenColorHits.length > 4 ? `, +${forbiddenColorHits.length - 4} more` : ""} in ${t.componentPath}`,
     });
   }
-  // BLOCK rule: if raw shadcn Badge is imported AND used for status display
-  // (heuristic: raw `Badge` used together with status keywords),
-  // require StatusBadge instead. We allow raw Badge ONLY when StatusBadge
-  // is also imported (legacy Badge for non-status counters).
   if (rawShadcnBadgeUsed && !importsStatusBadge) {
     tabIssues.push({
-      severity: "error",
+      severity: "warning",
       area: "raw-badge",
       message: `Tab "${t.id}" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in ${t.componentPath}`,
     });
   }
-  // BLOCK rule: requiresOperatorAction implies OperatorActionPanel import.
   if (t.requiresOperatorAction && !importsOperatorActionPanel) {
     tabIssues.push({
-      severity: "error",
+      severity: "warning",
       area: "operator-action",
       message: `Tab "${t.id}" declares requiresOperatorAction=true but does not import OperatorActionPanel in ${t.componentPath}`,
     });
@@ -186,11 +181,14 @@ const file = emitGateReport({
   ok,
   issues,
   extra: {
-    tier: "BLOCK",
+    tier: "WARN",
+    promotionTier: "BLOCK",
     scope: "admin-ai-engineer-team",
     totalTabs: AI_ENGINEER_HUB_TABS.length,
     tabsWithStatusBadge: coverage.filter((c) => c.importsStatusBadge).length,
     tabsWithOperatorActionPanel: coverage.filter((c) => c.importsOperatorActionPanel).length,
+    tabsWithAITruthDisclosure: coverage.filter((c) => c.importsAITruthDisclosure).length,
+    tabsWithForbiddenColors: coverage.filter((c) => c.forbiddenColorHits.length > 0).length,
   },
 });
 

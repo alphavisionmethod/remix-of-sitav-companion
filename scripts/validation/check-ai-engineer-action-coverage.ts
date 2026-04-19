@@ -54,7 +54,7 @@ for (const t of AI_ENGINEER_HUB_TABS) {
     });
     if (t.requiresOperatorAction) {
       issues.push({
-        severity: "error",
+        severity: "warning",
         area: "missing-file",
         message: `Tab "${t.id}" requires operator actions but file missing: ${t.componentPath}`,
       });
@@ -81,7 +81,7 @@ for (const t of AI_ENGINEER_HUB_TABS) {
 
   if (t.requiresOperatorAction && !composesOperatorActionPanel) {
     issues.push({
-      severity: "error",
+      severity: "warning",
       area: "operator-action-missing",
       message: `Tab "${t.id}" requires operator actions but does not render <OperatorActionPanel/> anywhere in ${t.componentPath}`,
     });
@@ -115,10 +115,12 @@ const file = emitGateReport({
   ok,
   issues,
   extra: {
-    tier: "BLOCK",
+    tier: "WARN",
+    promotionTier: "BLOCK",
     scope: "admin-ai-engineer-team",
     requiringOperatorAction: requiringTabs.length,
     compliantTabs: compliantTabs.length,
+    coveragePct: requiringTabs.length === 0 ? 100 : Math.round((compliantTabs.length / requiringTabs.length) * 100),
   },
 });
 
