@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "scope": "trust-state-and-copy-closure",
+  "verdict": "GREEN-fully-shipped",
+  "deliverables": {
+    "auditDocs": [
+      "generated/trust-state-and-copy-closure/TRUST_STATE_HANDLING_AUDIT.md",
+      "generated/trust-state-and-copy-closure/TRUST_COPY_AUDIT.md"
+    ],
+    "specDocs": [
+      "generated/trust-state-and-copy-closure/TRUST_STATE_SYSTEM_SPEC.md",
+      "generated/trust-state-and-copy-closure/TRUST_COPY_GUIDANCE_MODEL.md",
+      "generated/trust-state-and-copy-closure/BOARDROOM_TRUST_COPY_SPEC.md",
+      "generated/trust-state-and-copy-closure/CONCIERGE_TRUST_COPY_SPEC.md",
+      "generated/trust-state-and-copy-closure/COMMUNICATIONS_TRUST_COPY_SPEC.md",
+      "generated/trust-state-and-copy-closure/ADMIN_AI_RUNTIME_TRUST_COPY_SPEC.md"
+    ],
+    "statusJsons": [
+      "generated/trust-state-and-copy-closure/trust-state-status.json",
+      "generated/trust-state-and-copy-closure/trust-copy-status.json",
+      "generated/trust-state-and-copy-closure/trust-surface-status.json"
+    ],
+    "finalMarkdown": "generated/trust-state-and-copy-closure/TRUST_STATE_AND_COPY_FINAL_VERIFICATION.md"
+  },
+  "newComponents": [],
+  "newComponentFamilies": 0,
+  "duplicates": 0,
+  "newValidators": [
+    "scripts/validation/check-trust-state-consistency.ts",
+    "scripts/validation/check-no-oneoff-trust-state-components.ts",
+    "scripts/validation/check-simulation-and-future-labeling.ts"
+  ],
+  "reusedValidators": [
+    "scripts/validation/check-flagship-surface-trust-copy.ts",
+    "scripts/validation/check-trust-copy-quality.ts",
+    "scripts/validation/check-state-handling-consistency.ts",
+    "scripts/validation/check-concierge-ai-state-handling.ts",
+    "scripts/validation/check-communications-connector-state-alignment.ts"
+  ],
+  "validatorTier": "WARN",
+  "surfacesInScope": 8,
+  "scopeDiscipline": {
+    "newComponentFamilies": 0,
+    "newDesignSystems": 0,
+    "edgeFunctions": 0,
+    "migrations": 0,
+    "crossDomainEdits": 0,
+    "appTsxRouteEdits": 0,
+    "aiEngineerHubIntegration": "tab-14-truth-panel"
+  },
+  "truthPanel": {
+    "id": "trust-state-and-copy-closure-truth",
+    "tab": 14,
+    "component": "src/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel.tsx",
+    "mountedAt": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx"
+  },
+  "validatorResults": {
+    "check-flagship-surface-trust-copy": { "exitCode": 0, "tier": "WARN" },
+    "check-trust-copy-quality": { "exitCode": 0, "tier": "WARN" },
+    "check-state-handling-consistency": { "exitCode": 0, "tier": "WARN" },
+    "check-concierge-ai-state-handling": { "exitCode": 0, "tier": "WARN" },
+    "check-communications-connector-state-alignment": { "exitCode": 0, "tier": "WARN" },
+    "check-trust-state-consistency": { "exitCode": 0, "tier": "WARN" },
+    "check-no-oneoff-trust-state-components": { "exitCode": 0, "tier": "WARN" },
+    "check-simulation-and-future-labeling": { "exitCode": 0, "tier": "WARN" }
+  }
+}

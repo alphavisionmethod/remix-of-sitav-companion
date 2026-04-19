@@ -43,6 +43,7 @@ const ArchitectureHardeningTruthPanel = lazy(() => import("@/components/admin/ai
 const FlagshipSurfaceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"));
 const AdminEmptyStateClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"));
 const AdminCoherenceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"));
+const TrustStateAndCopyClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -197,6 +198,13 @@ export default function AIRuntimeHome() {
       description: "Admin coherence + responsive quality closure: 4 canonical specs + 3 audits + 4 new primitives (NeedsDataExplainer, NeedsTimeWindowExplainer, NeedsHistoricalReleasesExplainer, OperatorActionPanel — all compose existing canonical primitives, zero new families). 7 WARN-tier validators ban hardcoded status colors, banned microcopy, raw empty-state text, unwrapped tables, and silent /desktop narrow-width breakage.",
       legacyPath: "/admin/ai-runtime/admin-coherence-closure-truth",
       render: wrap(AdminCoherenceClosureTruthPanel),
+    },
+    {
+      id: "trust-state-and-copy-closure-truth",
+      label: "Trust-State & Copy Closure",
+      description: "Trust-grade state handling + trust-copy alignment closure: canonical state system applied across 8 in-scope surfaces (onboarding, boardroom, concierge, communications, admin/ai-runtime, admin/integrations, admin/health, admin/releases-support). 13 deliverables + 8 WARN-tier validators (5 reused + 3 new: trust-state-consistency, no-oneoff-trust-state-components, simulation-and-future-labeling). Zero new component families. Boardroom distinguishes live recs vs future learning v2; concierge stays gateway-governed; comms separates OAuth-live from manual long-tail; admin AI runtime keeps 4 proof tiers separate.",
+      legacyPath: "/admin/ai-runtime/trust-state-and-copy-closure-truth",
+      render: wrap(TrustStateAndCopyClosureTruthPanel),
     },
     {
       id: "efficiency",
