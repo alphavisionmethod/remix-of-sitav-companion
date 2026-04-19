@@ -1,0 +1,214 @@
+{
+  "generatedAt": "2026-04-19T16:22:57.723Z",
+  "gate": "edge-function-log-shape",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 38,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "supabase/functions/account-delete/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/admin-api/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/admin-intelligence/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/admin-users/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/advisor-agent-loop/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/advisor-conversation/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/agent-heartbeat/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/agent-intelligence/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/agent-scheduler/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/agent-signal/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/alert-route/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/ambient-os-operations/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call (dead instrumentation — refactor pending)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-install/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-launch-resolve/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/app-uninstall/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/audit-log-export/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/brain-core/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/chat-advisor/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-batch/index.ts",
+      "message": "Partial canonical log shape (3/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-discover/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-health/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-operations/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-proxy/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/connector-transform/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/cost-alert/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/device-telemetry/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/event-processor/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/file-ingestion/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/gdpr-delete/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/gdpr-export/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/main/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call (dead instrumentation — refactor pending)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/os-command/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/os-status/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/personal-brain/index.ts",
+      "message": "Partial canonical log shape (2/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/revenue-caller/index.ts",
+      "message": "Partial canonical log shape (0/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/scheduler-dispatch/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call (dead instrumentation — refactor pending)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/self-healing/index.ts",
+      "message": "Partial canonical log shape (1/6 required tokens present)."
+    },
+    {
+      "severity": "warning",
+      "area": "supabase/functions/system-updates/index.ts",
+      "message": "Imports EdgeLogger but never invokes a structured log call (dead instrumentation — refactor pending)."
+    }
+  ],
+  "totalFunctions": 172,
+  "usingLogger": 38,
+  "fullyShaped": 0,
+  "partiallyShaped": 34,
+  "deadInstrumentation": 4,
+  "baselineFloor": 0,
+  "requiredTokens": [
+    "fn",
+    "correlationId",
+    "event_type",
+    "severity",
+    "result",
+    "latencyMs"
+  ],
+  "note": "Honest WARN-tier — see EDGE_FUNCTION_LOGGING_STANDARDIZATION_PLAN.md for refactor roadmap."
+}

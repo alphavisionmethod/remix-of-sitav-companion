@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-19T16:22:52.542Z",
+  "gate": "runtime-host-boundaries",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 178,
+  "portableOk": 145,
+  "adapterRouted": 0,
+  "leafClassified": 33,
+  "violations": 0
+}

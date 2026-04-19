@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T16:22:55.110Z",
+  "gate": "shell-runtime-portability",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 664,
+  "sharedRoots": [
+    "src/hooks",
+    "src/lib/services"
+  ],
+  "violations": 0
+}
