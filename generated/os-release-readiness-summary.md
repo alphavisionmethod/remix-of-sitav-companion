@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T13:28:30.749Z
+> Generated: 2026-04-19T13:29:20.582Z
 > Verdict: **RED** ❌
 
 ## Summary
@@ -8,10 +8,10 @@
 | Metric | Value |
 |---|---|
 | Gates required | 156 |
-| Gates present  | 141 |
-| Gates missing  | 15 |
-| Total errors   | 0 |
-| Total warnings | 3348 |
+| Gates present  | 153 |
+| Gates missing  | 3 |
+| Total errors   | 9 |
+| Total warnings | 3364 |
 
 ## Per-gate results
 
@@ -140,12 +140,24 @@
 | `release-artifact-signer` | ✅ | 0 | 0 |
 | `final-deployment-readiness` | ✅ | 0 | 0 |
 | `final-runtime-proof` | ✅ | 0 | 0 |
+| `final-mobile-truth` | ❌ | 0 | 16 |
 | `final-ai-workforce-readiness` | ✅ | 0 | 0 |
 | `final-launch-honesty` | ✅ | 0 | 0 |
 | `final-supportability-readiness` | ✅ | 0 | 0 |
 | `final-gate-meaningfulness` | ✅ | 0 | 0 |
 | `ai-live-provider-nightly` | ✅ | 0 | 0 |
+| `ai-receipt-persistence` | ✅ | 0 | 0 |
+| `ai-ledger-write-verification` | ✅ | 0 | 0 |
+| `ai-fallback-verification` | ✅ | 0 | 0 |
+| `ai-budget-enforcement-under-load` | ✅ | 0 | 0 |
 | `ai-runtime-streak-health` | ✅ | 0 | 0 |
+| `google-refresh-nightly` | ❌ | 1 | 0 |
+| `microsoft-refresh-nightly` | ❌ | 1 | 0 |
+| `slack-refresh-nightly` | ❌ | 1 | 0 |
+| `connector-health-state-consistency` | ❌ | 1 | 0 |
+| `no-ambiguous-connected-state` | ❌ | 3 | 0 |
+| `long-tail-provider-classification` | ❌ | 1 | 0 |
+| `connector-refresh-streak` | ❌ | 1 | 0 |
 | `mobile-native-out-of-scope-truth` | ✅ | 0 | 0 |
 | `no-active-native-mobile-claims` | ✅ | 0 | 0 |
 | `install-page-mobile-honesty` | ✅ | 0 | 0 |
@@ -161,22 +173,10 @@
 | `mobile-store-readiness` | ❌ MISSING | — | — |
 | `mobile-build-pipeline` | ❌ MISSING | — | — |
 | `mobile-capability-truth` | ❌ MISSING | — | — |
-| `final-mobile-truth` | ❌ MISSING | — | — |
-| `ai-receipt-persistence` | ❌ MISSING | — | — |
-| `ai-ledger-write-verification` | ❌ MISSING | — | — |
-| `ai-fallback-verification` | ❌ MISSING | — | — |
-| `ai-budget-enforcement-under-load` | ❌ MISSING | — | — |
-| `google-refresh-nightly` | ❌ MISSING | — | — |
-| `microsoft-refresh-nightly` | ❌ MISSING | — | — |
-| `slack-refresh-nightly` | ❌ MISSING | — | — |
-| `connector-health-state-consistency` | ❌ MISSING | — | — |
-| `no-ambiguous-connected-state` | ❌ MISSING | — | — |
-| `long-tail-provider-classification` | ❌ MISSING | — | — |
-| `connector-refresh-streak` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 15 missing gate(s).
+❌ Release is **NOT cuttable**. Fix 9 error(s) and resolve 3 missing gate(s).
 
 ## Related
 
