@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "pass": "architectural-cleanup-pass-1",
+  "summary": {
+    "newMarkdowns": 12,
+    "newJsonStatuses": 4,
+    "newValidators": 5,
+    "newTruthPanels": 1,
+    "edgeFunctionsRefactored": 8,
+    "filesDeleted": 0,
+    "filesArchived": 0,
+    "filesRelabeled": 0
+  },
+  "policy": {
+    "removalAllowedThisPass": false,
+    "ninePointPolicy": "FILE_REMOVAL_SAFETY_POLICY.md",
+    "additiveOnly": true
+  },
+  "carryovers": [
+    {
+      "id": "economic-trust-future-closure",
+      "status": "abandoned-mid-flight",
+      "evidence": "DB tables + runtime enforcement + microcopy + registry edits exist; generated/economic-trust-and-future-closure/ directory was never created and the truth panel was never mounted.",
+      "scope": "out-of-scope-for-this-prompt"
+    }
+  ],
+  "honestLimits": [
+    "Edge-function logging coverage rises 30/172 → 38/172 (17% → 22%) this pass; remaining 134 honestly tracked.",
+    "Truth-manifest reconciliation is relabel-only; no canonical files removed.",
+    "Docs/scripts audits are evidence-only registers — no removals."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "totalWindowTouchingHooks": 11,
+  "classifiedInBoundaryModel": 11,
+  "unclassifiedHooks": 0,
+  "totalClassificationsInModel": 31,
+  "byBoundary": {
+    "leaf-browser-only": 26,
+    "shared-portable": 4,
+    "shell-specific": 1,
+    "adapter-routed": 4
+  },
+  "newAdapterMethodsRequired": 0,
+  "rationale": "All 11 window-touching hooks are legitimate browser-shell primitives (responsive breakpoints, gestures, parallax, online indicators, OS shortcuts, realtime UI toasts). The 4 cross-tier needs are already adapter-routed.",
+  "validatorsEnforcing": [
+    "check-portability-boundaries",
+    "check-no-browser-trapped-shared-hooks",
+    "check-runtime-host-abstraction",
+    "check-no-browser-globals-in-portable-code"
+  ]
+}

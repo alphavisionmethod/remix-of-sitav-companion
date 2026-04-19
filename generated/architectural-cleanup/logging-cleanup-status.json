@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "totalEdgeFunctions": 172,
+  "canonicalCompliant": 30,
+  "refactoredThisPass": 8,
+  "refactoredFunctions": [
+    "ai-gateway",
+    "agent-executor",
+    "admin-bff-gateway",
+    "internal-agent-loop",
+    "push-dispatch",
+    "license-gateway",
+    "ai-runtime-nightly-verify",
+    "secret-rotation-orchestrator"
+  ],
+  "needsStandardizationRemaining": [
+    "api-gateway", "intelligence-api", "advisor-deep-intelligence", "internal-agent-execute-action",
+    "admin-ai-workforce-run", "connector-oauth", "advisor-agent-loop", "connector-refresh-nightly-verify",
+    "internal-agent-suggestion-generator", "ecosystem-operations", "os-agent-channel", "ai-health",
+    "runtime-probes", "security-council-tick", "cloud-storage-api", "msa-operations",
+    "internal-agent-reflect", "app-ingest-web", "webauthn-challenge", "provider-family-operations",
+    "internal-agent-weekly-digest", "data-cleanup", "boardroom-followthrough-dispatch",
+    "connector-token-refresh", "internal-agent-dependency-scanner", "error-ingest", "runbook-drill",
+    "compliance-evidence-cron", "boardroom-session", "connector-sync", "internal-agent-trust-evaluator",
+    "oauth-refresh-probe", "boardroom-followthrough-sla", "account-delete", "tax-estimate"
+  ],
+  "passthroughAcceptableCount": 84,
+  "coverageNow": "38/172 (22%)",
+  "coverageBefore": "30/172 (17%)",
+  "honestlyTrackedGap": "134/172 not yet on canonical structured logging — surfaced on truth panel as known WARN; NOT presented as green.",
+  "validatorWiring": "check-edge-function-structured-logging.ts BLOCKs only on regression of canonicalCompliant + refactoredFunctions sets."
+}
