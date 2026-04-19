@@ -15,7 +15,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
 import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
 import {
   loadNightlyTruthData,
   acknowledgeAlert,
