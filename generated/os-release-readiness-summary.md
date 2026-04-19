@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T15:26:31.120Z
+> Generated: 2026-04-19T15:31:08.258Z
 > Verdict: **RED** ❌
 
 ## Summary
@@ -8,10 +8,10 @@
 | Metric | Value |
 |---|---|
 | Gates required | 193 |
-| Gates present  | 188 |
-| Gates missing  | 5 |
+| Gates present  | 193 |
+| Gates missing  | 0 |
 | Total errors   | 3 |
-| Total warnings | 3408 |
+| Total warnings | 3410 |
 
 ## Per-gate results
 
@@ -198,6 +198,11 @@
 | `no-browser-trapped-shared-hooks` | ✅ | 0 | 0 |
 | `runtime-host-abstraction` | ✅ | 0 | 0 |
 | `portability-boundaries` | ✅ | 0 | 0 |
+| `no-browser-globals-in-portable-code` | ✅ | 0 | 0 |
+| `edge-function-structured-logging` | ✅ | 0 | 1 |
+| `no-duplicate-truth-manifests` | ✅ | 0 | 0 |
+| `no-stale-canonical-docs` | ✅ | 0 | 1 |
+| `safe-cleanup-regressions` | ✅ | 0 | 0 |
 | `per-user-ai-ceilings` | ✅ | 0 | 0 |
 | `ai-budget-hard-stop` | ✅ | 0 | 1 |
 | `calm-mode-default-posture` | ✅ | 0 | 0 |
@@ -205,15 +210,10 @@
 | `future-surfaces-registered` | ✅ | 0 | 0 |
 | `negative-receipts-emitted` | ✅ | 0 | 0 |
 | `economic-trust-future-closure` | ✅ | 0 | 0 |
-| `no-browser-globals-in-portable-code` | ❌ MISSING | — | — |
-| `edge-function-structured-logging` | ❌ MISSING | — | — |
-| `no-duplicate-truth-manifests` | ❌ MISSING | — | — |
-| `no-stale-canonical-docs` | ❌ MISSING | — | — |
-| `safe-cleanup-regressions` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 3 error(s) and resolve 5 missing gate(s).
+❌ Release is **NOT cuttable**. Fix 3 error(s) and resolve 0 missing gate(s).
 
 ## Related
 

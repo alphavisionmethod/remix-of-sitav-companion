@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T15:26:31.120Z",
+  "generatedAt": "2026-04-19T15:31:08.258Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1271,6 +1271,41 @@
       "warnings": 0
     },
     {
+      "file": "generated/no-browser-globals-in-portable-code-report.json",
+      "gate": "no-browser-globals-in-portable-code",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-structured-logging-report.json",
+      "gate": "edge-function-structured-logging",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/no-duplicate-truth-manifests-report.json",
+      "gate": "no-duplicate-truth-manifests",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-stale-canonical-docs-report.json",
+      "gate": "no-stale-canonical-docs",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/safe-cleanup-regressions-report.json",
+      "gate": "safe-cleanup-regressions",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/per-user-ai-ceilings-report.json",
       "gate": "per-user-ai-ceilings",
       "ok": true,
@@ -1321,14 +1356,8 @@
     }
   ],
   "totalErrors": 3,
-  "totalWarnings": 3408,
-  "missingGates": [
-    "no-browser-globals-in-portable-code",
-    "edge-function-structured-logging",
-    "no-duplicate-truth-manifests",
-    "no-stale-canonical-docs",
-    "safe-cleanup-regressions"
-  ],
+  "totalWarnings": 3410,
+  "missingGates": [],
   "ok": false,
   "verdict": "RED"
 }
