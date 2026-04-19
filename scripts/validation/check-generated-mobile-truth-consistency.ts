@@ -7,10 +7,19 @@ const GENERATED = "generated";
 
 const STRAY_PREFIXES = /^(mobile|capacitor|android|ios|no-flutter|native-project|final-mobile)/i;
 const ALLOWED_SUBDIR = "mobile-scope-closure";
+// Gate-report outputs from the 5 new mobile-scope validators are allowed at generated/ root.
+const ALLOWED_GATE_REPORTS = new Set([
+  "mobile-native-out-of-scope-truth-report.json",
+  "mobile-manifest-archive-classification-report.json",
+  "no-active-native-mobile-claims-report.json",
+  "install-page-mobile-honesty-report.json",
+  "generated-mobile-truth-consistency-report.json",
+]);
 
 if (existsSync(GENERATED)) {
   for (const f of readdirSync(GENERATED)) {
     if (f === ALLOWED_SUBDIR) continue;
+    if (ALLOWED_GATE_REPORTS.has(f)) continue;
     if (STRAY_PREFIXES.test(f)) {
       issues.push({
         severity: "error",

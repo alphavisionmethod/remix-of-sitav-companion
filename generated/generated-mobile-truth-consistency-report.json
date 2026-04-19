@@ -1,20 +1,9 @@
 {
-  "generatedAt": "2026-04-19T03:11:15.070Z",
+  "generatedAt": "2026-04-19T03:13:26.003Z",
   "gate": "generated-mobile-truth-consistency",
-  "ok": false,
-  "errorCount": 2,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "generated",
-      "message": "Stray mobile-related artifact in generated/: mobile-manifest-archive-classification-report.json — should be archive/generated/mobile/ or removed"
-    },
-    {
-      "severity": "error",
-      "area": "generated",
-      "message": "Stray mobile-related artifact in generated/: mobile-native-out-of-scope-truth-report.json — should be archive/generated/mobile/ or removed"
-    }
-  ],
+  "issues": [],
   "allowedSubdir": "mobile-scope-closure"
 }
