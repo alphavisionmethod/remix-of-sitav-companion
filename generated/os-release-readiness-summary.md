@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T13:34:02.207Z
-> Verdict: **YELLOW** ⚠️
+> Generated: 2026-04-19T15:31:08.258Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 156 |
-| Gates present  | 156 |
+| Gates required | 193 |
+| Gates present  | 193 |
 | Gates missing  | 0 |
-| Total errors   | 0 |
-| Total warnings | 3380 |
+| Total errors   | 3 |
+| Total warnings | 3410 |
 
 ## Per-gate results
 
@@ -173,10 +173,47 @@
 | `admin-board-polish` | ✅ | 0 | 0 |
 | `trust-copy-quality` | ✅ | 0 | 0 |
 | `responsive-surface-integrity` | ✅ | 0 | 0 |
+| `admin-top-task-discoverability` | ✅ | 0 | 0 |
+| `no-museum-boards` | ❌ | 2 | 0 |
+| `admin-action-orientation` | ❌ | 1 | 0 |
+| `edge-function-contract-coverage` | ✅ | 0 | 1 |
+| `warn-ratchet-meaningfulness` | ✅ | 0 | 0 |
+| `evidence-freshness-blocking` | ✅ | 0 | 1 |
+| `behavioral-ci-coverage` | ✅ | 0 | 0 |
+| `gate-quality-classification` | ✅ | 0 | 0 |
+| `real-hardware-proof` | ✅ | 0 | 1 |
+| `hardware-certification-matrix` | ✅ | 0 | 1 |
+| `attestation-evidence-freshness` | ✅ | 0 | 1 |
+| `operator-drill-execution` | ✅ | 0 | 1 |
+| `runbook-human-use-proof` | ✅ | 0 | 1 |
+| `kill-switch-drill-readiness` | ✅ | 0 | 1 |
+| `supportability-freshness` | ✅ | 0 | 1 |
+| `secret-rotation-cadence` | ✅ | 0 | 0 |
+| `secret-rotation-freshness` | ✅ | 0 | 8 |
+| `security-adversarial-proof` | ✅ | 0 | 4 |
+| `rls-under-stress` | ✅ | 0 | 1 |
+| `electron-threat-detection-proof` | ✅ | 0 | 3 |
+| `debugger-tamper-proof` | ✅ | 0 | 1 |
+| `session-threat-behavior` | ✅ | 0 | 1 |
+| `no-browser-trapped-shared-hooks` | ✅ | 0 | 0 |
+| `runtime-host-abstraction` | ✅ | 0 | 0 |
+| `portability-boundaries` | ✅ | 0 | 0 |
+| `no-browser-globals-in-portable-code` | ✅ | 0 | 0 |
+| `edge-function-structured-logging` | ✅ | 0 | 1 |
+| `no-duplicate-truth-manifests` | ✅ | 0 | 0 |
+| `no-stale-canonical-docs` | ✅ | 0 | 1 |
+| `safe-cleanup-regressions` | ✅ | 0 | 0 |
+| `per-user-ai-ceilings` | ✅ | 0 | 0 |
+| `ai-budget-hard-stop` | ✅ | 0 | 1 |
+| `calm-mode-default-posture` | ✅ | 0 | 0 |
+| `agency-wording-lockdown` | ✅ | 0 | 0 |
+| `future-surfaces-registered` | ✅ | 0 | 0 |
+| `negative-receipts-emitted` | ✅ | 0 | 0 |
+| `economic-trust-future-closure` | ✅ | 0 | 0 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3380 warning(s) present. Release is cuttable but review warnings.
+❌ Release is **NOT cuttable**. Fix 3 error(s) and resolve 0 missing gate(s).
 
 ## Related
 

@@ -2,6 +2,9 @@
 // app-install — install (or re-enable) an app for current user
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { EdgeLogger } from "../_shared/logger.ts";
+const logger = new EdgeLogger("app-install");
+logger.info("boot", { ts: Date.now() });
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

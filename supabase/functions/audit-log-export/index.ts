@@ -5,6 +5,9 @@
 // for ingestion by Splunk / Datadog / Chronicle.
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { EdgeLogger } from "../_shared/logger.ts";
+const logger = new EdgeLogger("audit-log-export");
+logger.info("boot", { ts: Date.now() });
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

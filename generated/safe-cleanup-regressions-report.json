@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T15:30:47.407Z",
+  "gate": "safe-cleanup-regressions",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "siblingsChecked": 4,
+  "siblingFailures": 0
+}

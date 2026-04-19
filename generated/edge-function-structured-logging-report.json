@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T15:30:40.950Z",
+  "gate": "edge-function-structured-logging",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "supabase/functions",
+      "message": "35 edge functions classified needs-standardization remain on ad-hoc logging — see EDGE_FUNCTION_LOGGING_AUDIT.md (honest WARN; not a BLOCK)."
+    }
+  ],
+  "refactoredOk": 8,
+  "refactoredTotal": 8,
+  "needsStandardizationRemaining": 35,
+  "coverage": "38/172 (22%)"
+}

@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T15:30:45.263Z",
+  "gate": "no-stale-canonical-docs",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "docs/",
+      "message": "Total markdown docs: 168. Audit-only register — see DOCUMENTATION_CLEANUP_AUDIT.md for proven-safe candidates."
+    }
+  ],
+  "totalDocs": 168,
+  "staleCanonicalRegressions": 0
+}

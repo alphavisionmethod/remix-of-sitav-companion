@@ -4,7 +4,9 @@ import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
-import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+const logger = new EdgeLogger("advisor-agent-loop");
+logger.info("boot", { ts: Date.now() });
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Agent Loop

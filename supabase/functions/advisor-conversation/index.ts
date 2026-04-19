@@ -1,5 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+const logger = new EdgeLogger("advisor-conversation");
+logger.info("boot", { ts: Date.now() });
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
