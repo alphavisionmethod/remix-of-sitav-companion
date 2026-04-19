@@ -12,7 +12,6 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from "@/components/ui/sheet";
@@ -27,6 +26,14 @@ import {
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
+import {
+  severityTone,
+  findingStatusTone,
+} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -72,20 +79,8 @@ const AGENTS = [
   { id: "st-privacy-boundary", label: "Privacy Boundary", desc: "Cross-tenant action observations" },
 ] as const;
 
-const SEVERITY_TONE: Record<string, string> = {
-  critical: "bg-destructive/15 text-destructive border-destructive/30",
-  high: "bg-orange-500/15 text-orange-500 border-orange-500/30",
-  medium: "bg-amber-500/15 text-amber-500 border-amber-500/30",
-  low: "bg-muted text-muted-foreground border-border",
-};
-
-const STATUS_TONE: Record<string, string> = {
-  open: "bg-blue-500/15 text-blue-500 border-blue-500/30",
-  acknowledged: "bg-violet-500/15 text-violet-500 border-violet-500/30",
-  routed: "bg-cyan-500/15 text-cyan-500 border-cyan-500/30",
-  resolved: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
-  muted: "bg-muted text-muted-foreground border-border",
-};
+// Status tones now flow through canonical StatusBadge + status-tone-maps
+// (see src/components/admin/ai-runtime/_shared/status-tone-maps.ts).
 
 export default function SecurityCouncilBoard() {
   const [findings, setFindings] = useState<Finding[]>([]);
