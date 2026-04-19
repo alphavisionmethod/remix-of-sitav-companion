@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadNightlyTruthData,
   acknowledgeAlert,

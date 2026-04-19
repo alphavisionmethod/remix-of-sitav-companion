@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadConnectorTruthSummary,
   type ConnectorTruthSummary,
