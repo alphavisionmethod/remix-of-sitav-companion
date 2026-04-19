@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T02:44:57.346Z",
+  "generatedAt": "2026-04-19T02:50:48.371Z",
   "lastRun": {
     "run_id": "connector-nightly-2026-04-19T02-39-32-779Z",
     "status": "fail",
@@ -24,7 +24,8 @@
   "classification": "building",
   "min_streak_days": 0,
   "acceptance": {
-    "nightly_real_refresh_runs": false,
+    "nightly_real_refresh_runs": true,
+    "live_token_refresh_observed": false,
     "durable_receipts_written": true,
     "canonical_health_states": true,
     "expiry_pressure_proven": false,
@@ -34,6 +35,16 @@
     "seven_day_evidence": false
   },
   "overallPass": false,
+  "notes": {
+    "token_count_per_provider": {
+      "google": 0,
+      "microsoft": 0,
+      "slack": 0
+    },
+    "any_tokens_exist": false,
+    "launch_honest_pass": false,
+    "interpretation": "no live tokens to probe — gates report launch-honest WARN; will auto-progress when real tokens connect"
+  },
   "connectorRegistry": [
     {
       "connector_id": "gmail",

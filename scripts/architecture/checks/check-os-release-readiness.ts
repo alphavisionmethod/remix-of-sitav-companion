@@ -190,7 +190,7 @@ const REQUIRED_GATES = [
   "ai-fallback-verification",
   "ai-budget-enforcement-under-load",
   "ai-runtime-streak-health",
-  // Connector Truth Closure — 7 BLOCK gates (live OAuth refresh proof)
+  // Connector Truth Closure — 8 BLOCK gates (live OAuth refresh proof)
   "google-refresh-nightly",
   "microsoft-refresh-nightly",
   "slack-refresh-nightly",
@@ -198,6 +198,7 @@ const REQUIRED_GATES = [
   "no-ambiguous-connected-state",
   "long-tail-provider-classification",
   "connector-refresh-streak",
+  "connector-reauth-surfacing",
 ];
 
 // Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
