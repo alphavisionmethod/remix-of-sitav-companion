@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-04-19T18:00:28.939Z",
+  "gate": "no-oneoff-trust-state-components",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 11,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/business/adaptive/AdaptiveEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/business/crm/CRMEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/business/lead-inbox/LeadEmptyStates.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/ContextualEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/EmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/EmptyStateCTA.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/EmptyStateCard.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/PremiumEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/__tests__/EmptyStateCard.test.tsx — fold into canonical primitives or add to allow-list with rationale"
+    },
+    {
+      "severity": "warning",
+      "area": "oneoff-empty-state",
+      "message": "One-off empty-state component drift: src/components/sita/domain-shared/ModuleEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
+    }
+  ],
+  "classification": "warn-tier-drift-guard",
+  "candidatesFound": 13,
+  "allowedCanonical": 2,
+  "driftOffenders": 11,
+  "allowList": [
+    "src/components/primitives/feedback/EmptyState.tsx",
+    "src/components/primitives/feedback/PremiumEmptyState.tsx",
+    "src/components/primitives/feedback/NeedsDataExplainer.tsx",
+    "src/components/primitives/feedback/NeedsTimeWindowExplainer.tsx",
+    "src/components/primitives/feedback/NeedsHistoricalReleasesExplainer.tsx",
+    "src/components/concierge/ConciergeEmptyState.tsx"
+  ]
+}
