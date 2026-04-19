@@ -131,7 +131,7 @@ export default function ArchitectureHardeningTruthPanel() {
           />
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="status">
+          <Tabs defaultValue="status" onValueChange={(v) => { void v; }}>
             <TabsList>
               <TabsTrigger value="status">Hardening Status</TabsTrigger>
               <TabsTrigger value="portability">Portability Health</TabsTrigger>
