@@ -81,9 +81,10 @@ export default function ConnectorTruthSummaryPanel() {
         <CardContent>
           {loading && <p className="text-sm text-muted-foreground">Loading connector truth…</p>}
           {!loading && !summary && (
-            <p className="text-sm text-muted-foreground">
-              No connector truth data available yet. Nightly verifier runs at 02:30 UTC.
-            </p>
+            <NeedsHistoricalReleasesExplainer
+              title="No connector truth recorded yet"
+              description="The connector truth verifier runs nightly at 02:30 UTC. Streaks, classification, and provider state appear after the first scheduled tick completes."
+            />
           )}
           {!loading && summary && (
             <div className="space-y-4">
