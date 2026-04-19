@@ -204,6 +204,12 @@ export default function CouncilsBoard() {
               description="All councils are within their autonomy envelope. New escalations appear here automatically as soon as a council requests supervisor input."
             />
           )}
+          {(escalations?.length ?? 0) === 0 && (
+            <OperatorActionPanel
+              next={[{ label: "Open Trust Ladder", href: "/admin/ai-runtime?tab=trust-ladder" }]}
+              evidence={[{ label: "Open Internal Agents", href: "/admin/ai-runtime?tab=internal-agents" }]}
+            />
+          )}
         </div>
       </Card>
 
