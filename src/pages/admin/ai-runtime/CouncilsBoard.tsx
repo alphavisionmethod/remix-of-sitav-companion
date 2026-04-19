@@ -25,6 +25,8 @@ import {
   escalateToMeta,
 } from "@/lib/internal-agents/runtime/supervisor-actions";
 import { ShieldAlert, ShieldCheck, Activity, Users, ArrowUp } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 
 const COUNCIL_LABEL: Record<string, string> = {
   "product-build": "Product Build",
@@ -160,8 +162,10 @@ export default function CouncilsBoard() {
           />
         ))}
         {(!summaries || summaries.length === 0) && (
-          <Card className="p-6 text-center text-xs text-muted-foreground col-span-full">
-            Loading councils…
+          <Card className="p-4 col-span-full space-y-2" aria-busy="true">
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-4 w-2/5" />
           </Card>
         )}
       </div>
@@ -195,9 +199,11 @@ export default function CouncilsBoard() {
             </button>
           ))}
           {(escalations?.length ?? 0) === 0 && (
-            <p className="text-[11px] text-muted-foreground italic text-center py-3">
-              No open escalations — councils are healthy
-            </p>
+            <EmptyState
+              icon={<ShieldCheck className="h-5 w-5" />}
+              title="No open escalations"
+              description="All councils are within their autonomy envelope. New escalations appear here automatically as soon as a council requests supervisor input."
+            />
           )}
         </div>
       </Card>
@@ -221,7 +227,11 @@ export default function CouncilsBoard() {
             </div>
           ))}
           {(decisions?.length ?? 0) === 0 && (
-            <p className="text-[11px] text-muted-foreground italic text-center py-3">No decisions recorded</p>
+            <EmptyState
+              icon={<Users className="h-5 w-5" />}
+              title="No supervisor decisions in the recent window"
+              description="Resolutions and meta-escalations from supervisors will be listed here as they happen, with the target agent or escalation ID and timing."
+            />
           )}
         </div>
       </Card>
