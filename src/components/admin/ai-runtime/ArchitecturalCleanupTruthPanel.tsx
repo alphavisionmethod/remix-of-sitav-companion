@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { TruthPanelActions } from "./TruthPanelActions";
 
 interface PortabilityStatus {
@@ -83,8 +84,17 @@ export default function ArchitecturalCleanupTruthPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <TruthPanelActions onClick={() => undefined}
+      <div className="flex justify-end gap-2">
+        <Button
+          type="button"
+          size="sm"
+          variant="secondary"
+          onClick={() => setReloadTick((t) => t + 1)}
+          aria-label="Re-run cleanup checks"
+        >
+          Re-run cleanup checks
+        </Button>
+        <TruthPanelActions
           onRefresh={() => setReloadTick((t) => t + 1)}
           refreshing={!loaded}
           sourcePath="/generated/architectural-cleanup/"

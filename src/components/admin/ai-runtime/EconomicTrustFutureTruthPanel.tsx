@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldCheck, DollarSign, Eye, AlertTriangle } from "lucide-react";
+import { ShieldCheck, DollarSign, Eye, AlertTriangle, RefreshCw } from "lucide-react";
 import { TruthPanelActions } from "./TruthPanelActions";
 
 interface BudgetDecisionRow {
@@ -94,11 +95,24 @@ export default function EconomicTrustFutureTruthPanel() {
               ceilings, agency-wording lockdown, future-surface containment.
             </p>
           </div>
-          <TruthPanelActions onClick={() => undefined}
-            onRefresh={() => setReloadTick((t) => t + 1)}
-            refreshing={loading}
-            sourcePath="/generated/economic-trust-and-future-closure/"
-          />
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              onClick={() => setReloadTick((t) => t + 1)}
+              disabled={loading}
+              aria-label="Refresh budget snapshot"
+            >
+              <RefreshCw className={`mr-1 h-3 w-3 ${loading ? "animate-spin" : ""}`} />
+              Refresh budget snapshot
+            </Button>
+            <TruthPanelActions
+              onRefresh={() => setReloadTick((t) => t + 1)}
+              refreshing={loading}
+              sourcePath="/generated/economic-trust-and-future-closure/"
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="budgets">

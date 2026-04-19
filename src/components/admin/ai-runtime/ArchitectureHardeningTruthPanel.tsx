@@ -13,9 +13,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Layers, ShieldCheck, MapPin, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Layers, ShieldCheck, MapPin, AlertTriangle, CheckCircle2, RefreshCw } from "lucide-react";
 import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationJson {
@@ -124,11 +125,24 @@ export default function ArchitectureHardeningTruthPanel() {
               truth-source map. Read-only — refreshed each release-readiness run.
             </p>
           </div>
-          <TruthPanelActions
-            onRefresh={load}
-            refreshing={refreshing}
-            sourcePath="/generated/architecture-hardening/architecture-hardening-verification.json"
-          />
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              onClick={() => { void load(); }}
+              disabled={refreshing}
+              aria-label="Refresh hardening evidence"
+            >
+              <RefreshCw className={`mr-1 h-3 w-3 ${refreshing ? "animate-spin" : ""}`} />
+              Refresh hardening evidence
+            </Button>
+            <TruthPanelActions
+              onRefresh={load}
+              refreshing={refreshing}
+              sourcePath="/generated/architecture-hardening/architecture-hardening-verification.json"
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="status" onValueChange={(v) => { void v; }}>

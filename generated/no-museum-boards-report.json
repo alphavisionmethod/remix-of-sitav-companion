@@ -1,36 +1,10 @@
 {
-  "generatedAt": "2026-04-19T16:30:46.059Z",
+  "generatedAt": "2026-04-19T16:39:19.678Z",
   "gate": "no-museum-boards",
-  "ok": false,
-  "errorCount": 5,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    },
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/ArchitectureHardeningTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    },
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    },
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/FrontendPolishTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    },
-    {
-      "severity": "error",
-      "area": "src/components/admin/ai-runtime/MobileScopeTruthPanel.tsx",
-      "message": "Card with status display has no actionable element (Button/Link/navigate/invoke)"
-    }
-  ],
+  "issues": [],
   "filesScanned": 28,
-  "museumViolations": 5
+  "museumViolations": 0
 }
