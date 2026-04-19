@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "admin-and-validation-truth-closure",
+  "ok": true,
+  "status": "GREEN",
+  "deliverables_total": 16,
+  "deliverables_present": 16,
+  "validators_total": 8,
+  "validators_passing_block": 6,
+  "validators_warn_with_roadmap": 2,
+  "edge_function_contract_coverage": { "covered": 49, "total": 173, "percent": 28, "block_target_percent": 50 },
+  "ui_panels_added": ["AdminValidationTruthPanel"],
+  "block_gates_added": 8,
+  "warn_gates_with_roadmap": ["edge-function-contract-coverage", "evidence-freshness-blocking"],
+  "failed_checks": []
+}

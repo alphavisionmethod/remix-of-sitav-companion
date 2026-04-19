@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "gate-quality-classification",
+  "taxonomy": ["structural", "smoke", "behavioral", "e2e", "warn-only"],
+  "summary": {
+    "structural": 56,
+    "smoke": 27,
+    "behavioral": 71,
+    "e2e": 12,
+    "warn-only": 5,
+    "total": 171
+  },
+  "deployment_critical_behavioral_areas": [
+    { "area": "ai-live-provider", "validator": "ai-live-provider-nightly", "class": "behavioral" },
+    { "area": "ai-receipt-persistence", "validator": "ai-receipt-persistence", "class": "behavioral" },
+    { "area": "ai-ledger", "validator": "ai-ledger-write-verification", "class": "behavioral" },
+    { "area": "ai-fallback", "validator": "ai-fallback-verification", "class": "behavioral" },
+    { "area": "ai-budget", "validator": "ai-budget-enforcement-under-load", "class": "behavioral" },
+    { "area": "oauth-google", "validator": "google-refresh-nightly", "class": "behavioral" },
+    { "area": "oauth-microsoft", "validator": "microsoft-refresh-nightly", "class": "behavioral" },
+    { "area": "oauth-slack", "validator": "slack-refresh-nightly", "class": "behavioral" },
+    { "area": "boardroom-l7", "validator": "boardroom-layer7-e2e", "class": "e2e" },
+    { "area": "restore-drill", "validator": "drill-cadence-freshness", "class": "behavioral" },
+    { "area": "hardware-proof", "validator": "real-hardware-proof", "class": "behavioral", "status": "partner-blocked" },
+    { "area": "operator-drill-execution", "validator": "operator-drill-execution", "class": "behavioral", "status": "pending-human-execution" }
+  ],
+  "warn_acknowledged": []
+}
