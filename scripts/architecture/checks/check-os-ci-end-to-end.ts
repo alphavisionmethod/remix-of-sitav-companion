@@ -23,7 +23,7 @@ interface Requirement { id: string; area: string; pattern: RegExp; description: 
 const REQUIREMENTS: Requirement[] = [
   // Triggers
   { id: "trigger-push",     area: "trigger",  pattern: /\bpush:\s*\n\s*branches:\s*\[main\]/m,  description: "push to main trigger" },
-  { id: "trigger-schedule", area: "trigger",  pattern: /\bschedule:\s*\n\s*-\s*cron:/m,         description: "nightly schedule trigger" },
+  { id: "trigger-schedule", area: "trigger",  pattern: /\bschedule:\s*\n(?:\s*#.*\n)*\s*-\s*cron:/m, description: "nightly schedule trigger" },
   { id: "trigger-release",  area: "trigger",  pattern: /\brelease:\s*\n\s*types:\s*\[\s*published\s*\]/m, description: "release published trigger" },
   { id: "trigger-dispatch", area: "trigger",  pattern: /\bworkflow_dispatch:/,                  description: "workflow_dispatch trigger" },
   // Profile matrix
