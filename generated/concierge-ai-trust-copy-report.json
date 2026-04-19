@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-19T18:10:54.809Z",
+  "gate": "concierge-ai-trust-copy",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-trust-copy-guard",
+  "spec": "generated/trust-state-and-copy-closure/CONCIERGE_TRUST_COPY_SPEC.md",
+  "surfacesScanned": 51,
+  "overclaimHits": 0,
+  "canonicalStance": "gateway-governed-suggest-then-confirm"
+}
