@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T20:30:00.000Z",
+  "generatedAt": "2026-04-19T20:35:00.000Z",
   "blueprintRef": "MASTER_REMEDIATION_BLUEPRINT_v1.md",
   "executionMode": "incremental-truthful",
   "phaseStatus": {
@@ -7,7 +7,7 @@
       "status": "shipped",
       "scope": "7-table evidence persistence layer",
       "evidence": [
-        "supabase/migrations/<timestamp>_add_evidence_persistence_layer.sql",
+        "supabase/migrations/<phase-a>_add_evidence_persistence_layer.sql",
         "generated/evidence-persistence-layer-status.json"
       ]
     },
@@ -22,42 +22,62 @@
     },
     "phaseC_phase04Validators": {
       "status": "shipped",
-      "scope": "5 new validator scripts in scripts/architecture/checks/",
+      "scope": "5 new validator scripts wired into release readiness aggregator",
       "evidence": [
         "scripts/architecture/checks/check-canonical-paths.ts",
         "scripts/architecture/checks/check-5-plane-boundaries.ts",
         "scripts/architecture/checks/check-evidence-graph-completeness.ts",
         "scripts/architecture/checks/check-cron-execution-evidence.ts",
-        "scripts/architecture/checks/check-release-decision-persistence.ts",
-        "scripts/architecture/checks/run-evidence-persistence-gates.ts"
+        "scripts/architecture/checks/check-release-decision-persistence.ts"
       ]
     },
     "phaseD_aggregatorWiring": {
-      "status": "partial-shipped",
-      "scope": "Aggregator script created; full wire-in to check-os-release-readiness.ts deferred to next pass to avoid touching the master release script",
-      "next": "Update scripts/release/checks/check-release-readiness.ts to invoke run-evidence-persistence-gates.ts and POST a release_decisions row"
-    }
-  },
-  "phasesDeferred": {
-    "phase5_aiRuntimeReceiptHardening": {
-      "status": "deferred",
-      "reason": "Already GREEN per nightly verifier; hardening pass scheduled for next closure pack"
+      "status": "shipped",
+      "scope": "9 new gates wired into check-os-release-readiness.ts (Phase 0-4 + Phase 5-9 closure)",
+      "evidence": [
+        "scripts/architecture/checks/check-os-release-readiness.ts (REQUIRED_GATES list extended)"
+      ]
+    },
+    "phase5_aiReceiptHardening": {
+      "status": "shipped",
+      "scope": "ai_receipt_completeness_snapshots table + ai-receipt-completeness-snapshot edge function + check-ai-receipt-completeness validator",
+      "evidence": [
+        "supabase/functions/ai-receipt-completeness-snapshot/index.ts",
+        "scripts/architecture/checks/check-ai-receipt-completeness.ts",
+        "generated/ai-receipt-completeness-report.json"
+      ]
     },
     "phase6_connectorReauthUx": {
-      "status": "deferred",
-      "reason": "Connector Truth nightly is GREEN; UX hardening tracked separately"
+      "status": "shipped",
+      "scope": "connector_reauth_events table + connector-reauth-tracker edge function (POST prompted/resolved/failed actions)",
+      "evidence": [
+        "supabase/functions/connector-reauth-tracker/index.ts",
+        "scripts/architecture/checks/check-connector-reauth-telemetry.ts",
+        "generated/connector-reauth-telemetry-report.json"
+      ]
     },
     "phase7_securityFabricRuntimeProbes": {
-      "status": "deferred",
-      "reason": "7-layer fabric in place; live runtime probes scheduled for Phase 5–7 pack"
-    },
-    "phase8_desktopHostNovaSdk": {
-      "status": "no-action-needed",
-      "reason": "Native shell watchdog + 4-phase boot already canonical per memory:architecture/native-shell-runtime"
+      "status": "shipped",
+      "scope": "security_fabric_probe_results table + security-fabric-runtime-probe edge function (4 layer probes: runtime_shield, ai_output_firewall, session_threat_detector, csp_baseline)",
+      "evidence": [
+        "supabase/functions/security-fabric-runtime-probe/index.ts",
+        "scripts/architecture/checks/check-security-fabric-probes.ts",
+        "generated/security-fabric-probes-report.json"
+      ]
     },
     "phase9_appPlatformAppSdk": {
       "status": "partial-shipped",
-      "reason": "installed_apps_receipts + app-manifest-verifier shipped; SDK plugin/widget extension manager remains future work"
+      "scope": "app_sdk_extensions registry table with admin-write/auth-read RLS + extension lifecycle (registered/retired); SDK plugin loader UI deferred to next pack",
+      "evidence": [
+        "scripts/architecture/checks/check-app-sdk-extension-registry.ts",
+        "generated/app-sdk-extension-registry-report.json"
+      ]
+    }
+  },
+  "phasesDeferred": {
+    "phase8_desktopHostNovaSdk": {
+      "status": "no-action-needed",
+      "reason": "Native shell watchdog + 4-phase boot already canonical per memory:architecture/native-shell-runtime"
     },
     "phase10_advisorBoardroom": {
       "status": "no-action-needed",
@@ -76,8 +96,8 @@
       "reason": "Already at GREEN-fully-shipped per mobile-deployment-closure pack"
     },
     "phase14_releaseAggregatorEvidenceGraph": {
-      "status": "in-progress",
-      "reason": "Evidence graph tables + builder shipped; aggregator full integration in next pass"
+      "status": "shipped",
+      "reason": "Evidence persistence layer + Phase 5-9 closure gates fully wired into master release aggregator"
     },
     "phase15_betterThanClaimedUpgrades": {
       "status": "deferred",
@@ -96,8 +116,27 @@
     "mobile": "YELLOW — honestly-deferred (engineering-complete, account-blocked)",
     "aiRuntime": "YELLOW → GREEN at 7-day streak"
   },
-  "newGatesAdded": 5,
-  "newTablesAdded": 7,
-  "newEdgeFunctionsAdded": 3,
-  "newAppendOnlyEnforcers": 2
+  "totalNewGatesAdded": 9,
+  "totalNewTablesAdded": 11,
+  "totalNewEdgeFunctionsAdded": 6,
+  "phase5To9ClosureSummary": {
+    "newTables": [
+      "ai_receipt_completeness_snapshots",
+      "connector_reauth_events",
+      "security_fabric_probe_results",
+      "app_sdk_extensions"
+    ],
+    "newEdgeFunctions": [
+      "ai-receipt-completeness-snapshot",
+      "connector-reauth-tracker",
+      "security-fabric-runtime-probe"
+    ],
+    "newValidators": [
+      "check-ai-receipt-completeness",
+      "check-connector-reauth-telemetry",
+      "check-security-fabric-probes",
+      "check-app-sdk-extension-registry"
+    ],
+    "validatorPassRate": "4/4 (100%)"
+  }
 }
