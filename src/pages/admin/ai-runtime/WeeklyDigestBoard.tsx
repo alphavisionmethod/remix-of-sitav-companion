@@ -108,10 +108,21 @@ export default function WeeklyDigestBoard() {
           <CardContent className="p-0">
             <ScrollArea className="h-[600px]">
               {digests.length === 0 ? (
-                <div className="p-8 text-center text-sm text-muted-foreground">
-                  <Inbox className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                  {loading ? "Loading…" : "No digests yet."}
-                </div>
+                loading ? (
+                  <div className="p-4 space-y-2">
+                    <Skeleton className="h-14 w-full" />
+                    <Skeleton className="h-14 w-full" />
+                    <Skeleton className="h-14 w-full" />
+                  </div>
+                ) : (
+                  <div className="p-4">
+                    <EmptyState
+                      icon={<Inbox className="h-5 w-5" />}
+                      title="No digests generated yet"
+                      description="Run the weekly digest job or wait for the scheduled pass to populate the archive."
+                    />
+                  </div>
+                )
               ) : (
                 <ul className="divide-y">
                   {digests.map((d) => (
@@ -153,7 +164,11 @@ export default function WeeklyDigestBoard() {
           </CardHeader>
           <CardContent>
             {!selected ? (
-              <div className="text-sm text-muted-foreground py-12 text-center">No digest selected.</div>
+              <EmptyState
+                icon={<FileText className="h-5 w-5" />}
+                title="Select a digest from the list"
+                description="Pick any week from the left to read its summary, highlights, and evidence references."
+              />
             ) : (
               <ScrollArea className="h-[600px] pr-3">
                 <article className="prose prose-sm max-w-none dark:prose-invert">
