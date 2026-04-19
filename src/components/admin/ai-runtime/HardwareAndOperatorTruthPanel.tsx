@@ -108,9 +108,9 @@ export default function HardwareAndOperatorTruthPanel() {
               variant="outline"
               className={
                 doc.status === "GREEN"
-                  ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/30"
+                  ? "bg-primary/15 text-primary border-primary/30"
                   : doc.status === "YELLOW"
-                    ? "bg-amber-500/15 text-amber-700 border-amber-500/30"
+                    ? "bg-muted text-muted-foreground border-border"
                     : "bg-destructive/15 text-destructive border-destructive/30"
               }
             >
