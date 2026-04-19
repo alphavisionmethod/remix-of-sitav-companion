@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T14:11:18.356Z",
+  "gate": "hardware-certification-matrix",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "matrix",
+      "message": "Matrix empty — partner-blocked"
+    }
+  ],
+  "runs": 0,
+  "level": "warn"
+}

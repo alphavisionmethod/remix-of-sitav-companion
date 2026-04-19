@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T14:11:27.518Z",
+  "gate": "attestation-evidence-freshness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "freshness",
+      "message": "No attestation runs to evaluate freshness"
+    }
+  ],
+  "runs": 0,
+  "windowHours": 720
+}
