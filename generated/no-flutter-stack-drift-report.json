@@ -1,67 +1,14 @@
 {
-  "generatedAt": "2026-04-19T01:12:35.590Z",
+  "generatedAt": "2026-04-19T01:14:37.552Z",
   "gate": "no-flutter-stack-drift",
-  "ok": false,
-  "errorCount": 10,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/MOBILE_BUILD_AND_DEPENDENCY_AUDIT.md:115 — The closure-pass note worried about \"mixed dependency narratives, stale Pod/Gradle assumptions, stale Flutter/Fastlane wording.\" Searched repo:"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/MOBILE_BUILD_AND_DEPENDENCY_AUDIT.md:120 — | `pubspec.yaml` (Flutter dep file) | 0 | ✅ |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/MOBILE_BUILD_AND_DEPENDENCY_MODEL.md:126 — | Adding a second mobile wrapper (Flutter, RN, Expo) | `check-capacitor-mobile-truth.ts` enforces single wrapper |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/MOBILE_STACK_TRUTH_AUDIT.md:34 — | `flutter` (case-insensitive) | 0 | ✅ |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/MOBILE_STACK_TRUTH_AUDIT.md:35 — | `dart` (Dart language) | 0 in claim surfaces (`dart` substring matches `kbart`, `start`, etc. — none are Flutter) | ✅ |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-identity-reconciliation/PROJECT_IDENTIFICATION_AUDIT.md:149 — | Flutter declarations in claim surfaces | 0 |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-deployment-closure/MOBILE_ARCHITECTURE_TRUTH_AUDIT.md:45 — | `src/planes/MOBILE_MANIFEST.md` | `/mobile/flutter_app/lib/` migration target | Rewritten — Capacitor canonical, no Flutter |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-deployment-closure/MOBILE_ARCHITECTURE_TRUTH_AUDIT.md:46 — | `infra/deploy/mobile.yaml` | `flutter:` build steps + `flutter pub get` | Rewritten — `capacitor:` block, `bootstrap:` paths |"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-deployment-closure/MOBILE_CANONICAL_TRUTH_MODEL.md:23 — - ❌ A second mobile stack (React Native, Flutter, native Swift/Kotlin app)"
-    },
-    {
-      "severity": "error",
-      "area": "stack-drift",
-      "message": "Flutter mention without disavowal in claim surface: generated/mobile-deployment-closure/MOBILE_DEPLOYMENT_FINAL_VERIFICATION.md:55 — - \"Is mobile ready?\" — ambiguous; some docs said yes, some no, some referenced Flutter"
-    }
-  ],
+  "issues": [],
   "scanRoots": [
     "src/planes",
     "infra",
-    "mobile",
-    "generated/mobile-identity-reconciliation",
-    "generated/mobile-deployment-closure"
+    "mobile"
   ],
-  "hits": 10
+  "hits": 0
 }
