@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T17:34:50.871Z",
+  "generatedAt": "2026-04-19T17:36:14.477Z",
   "gate": "admin-empty-state-consistency",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 5,
+  "warningCount": 2,
   "issues": [
     {
       "severity": "warning",
@@ -14,25 +14,10 @@
       "severity": "warning",
       "area": "raw-empty-state",
       "message": "src/pages/admin/sag/SAGCostConfidenceLab.tsx: raw inline empty-state text found (\"<p className=\"text-sm text-muted-foreground\">No data yet. Warnings appear when p…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-empty-state",
-      "message": "src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx: raw inline empty-state text found (\"<p className=\"text-xs text-muted-foreground py-4\">No drilldown data available.</…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-empty-state",
-      "message": "src/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel.tsx: raw inline empty-state text found (\"<p className=\"text-sm text-muted-foreground py-8 text-center\">No nightly truth d…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-empty-state",
-      "message": "src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx: raw inline empty-state text found (\"<p className=\"text-sm text-muted-foreground\">\n              No connector truth d…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
     }
   ],
   "scanned": 678,
-  "offenders": 5,
+  "offenders": 2,
   "canonicalPrimitives": [
     "PremiumEmptyState",
     "EmptyState",

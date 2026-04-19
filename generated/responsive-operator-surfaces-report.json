@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T17:34:50.885Z",
+  "generatedAt": "2026-04-19T17:36:14.439Z",
   "gate": "responsive-operator-surfaces",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 15,
+  "warningCount": 14,
   "issues": [
     {
       "severity": "warning",
@@ -74,15 +74,10 @@
       "severity": "warning",
       "area": "unwrapped-table",
       "message": "src/pages/admin/NSS03TrustContinuity.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
     }
   ],
   "scanned": 679,
-  "offenderCount": 15,
+  "offenderCount": 14,
   "canonicalPattern": "<div className=\"overflow-x-auto\"><table>...</table></div>",
   "classification": "warn-tier-responsive-discipline"
 }
