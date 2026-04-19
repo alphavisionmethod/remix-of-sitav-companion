@@ -66,6 +66,24 @@ if (!existsSync(PAGE)) {
       message: `${PAGE} exists but does not adopt PremiumEmptyState or EmptyState`,
     });
   }
+  // Action-link assertion
+  const linkMatches = src.match(/to="\/admin\//g) ?? [];
+  if (linkMatches.length < 2) {
+    issues.push({
+      severity: "error",
+      area: "operator-navigation",
+      message: `${PAGE} must contain ≥2 real <Link to="/admin/..."> canonical destinations (found ${linkMatches.length})`,
+    });
+  }
+  // History-context copy assertion
+  const hasHistoryCopy = /history|signed release|SBOM|accumulat|release cycle/i.test(src);
+  if (!hasHistoryCopy) {
+    issues.push({
+      severity: "error",
+      area: "history-context-copy",
+      message: `${PAGE} missing history-context operator copy`,
+    });
+  }
 }
 
 const ok = issues.filter((i) => i.severity === "error").length === 0;
