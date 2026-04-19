@@ -106,10 +106,12 @@ export default function FrontendTruthBackingClosureTruthPanel() {
             </CardTitle>
             <p className="text-xs text-muted-foreground">
               Visible provenance + canonical evidence drilldowns wired across
-              5 in-scope surfaces. Two new shared primitives
+              5 in-scope surfaces. Three new shared primitives
               (<code className="font-mono text-[10px]">ProvenanceChip</code>,{" "}
-              <code className="font-mono text-[10px]">EvidenceLink</code>) and 6
-              prompt-named WARN-tier validators guard against drift.
+              <code className="font-mono text-[10px]">EvidenceLink</code>,{" "}
+              <code className="font-mono text-[10px]">AITruthDisclosure</code>),
+              one canonical trust-copy map (<code className="font-mono text-[10px]">src/lib/trust-copy/</code>),
+              and 6 prompt-named WARN-tier validators guard against drift.
             </p>
           </div>
           <Button size="sm" variant="outline" onClick={load} className="h-7 px-2">
@@ -183,9 +185,14 @@ export default function FrontendTruthBackingClosureTruthPanel() {
           <CardContent className="space-y-1.5 text-xs">
             <PrimRow name="ProvenanceChip" detail="composes StatusBadge + Link" />
             <PrimRow name="EvidenceLink" detail="composes Button asChild + Link" />
+            <PrimRow name="AITruthDisclosure" detail="composes StatusBadge + Link" />
+            <PrimRow name="trust-copy map" detail="pure data — src/lib/trust-copy/" />
             <div className="mt-2 pt-2 border-t border-border space-y-1 text-[10px] text-muted-foreground">
-              Both are thin compositions of existing canonical primitives —
+              All compositions of existing canonical primitives —
               <span className="font-medium text-foreground"> 0 new component families</span>.
+              Section D coverage: <span className="font-medium text-foreground">6 / 6</span>{" "}
+              (D1 EmptyState · D2 Needs* explainers · D3 ConnectorStateBadge ·
+              D4 AITruthDisclosure · D5 OperatorActionPanel · D6 trust-copy map).
             </div>
           </CardContent>
         </Card>

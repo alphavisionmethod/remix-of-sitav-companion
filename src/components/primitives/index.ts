@@ -35,6 +35,8 @@ export { FreshnessBadge } from "./status/FreshnessBadge";
 export type { FreshnessBadgeProps, FreshnessLevel } from "./status/FreshnessBadge";
 export { ModeBadge } from "./status/ModeBadge";
 export type { ModeBadgeProps, Mode } from "./status/ModeBadge";
+export { AITruthDisclosure } from "./status/AITruthDisclosure";
+export type { AITruthDisclosureProps, AITruthMode } from "./status/AITruthDisclosure";
 
 // feedback
 export { EmptyState } from "./feedback/EmptyState";

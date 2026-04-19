@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T18:20:39.397Z",
+  "generatedAt": "2026-04-19T18:37:26.281Z",
   "gate": "simulation-disclosure-coverage",
   "ok": true,
   "errorCount": 0,
@@ -241,7 +241,7 @@
       "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
     }
   ],
-  "scanned": 580,
+  "scanned": 581,
   "withSim": 53,
   "offenders": 47,
   "classification": "warn-tier-disclosure-coverage"
