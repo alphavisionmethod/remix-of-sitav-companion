@@ -1,114 +1,120 @@
 
 
-## AI Runtime Truth Closure — 5 Phase Plan
+## Connector Truth Closure — 5 Phase Plan
 
-**Goal:** Move AI runtime from "path-proven" to "behaviorally proven, live-provider verified, cost-ceiling enforced under load, 7-day streak tracked, operator-visible." Integrated **only on the Admin AI Engineer** team surfaces (`/admin/ai-runtime/*`). No duplicates — extends existing `ai-gateway`, `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `AIRuntimeHome`, `NightlyProofBadge`, and existing nightly workflows.
+**Goal:** Promote connector truth from "hourly probes running, structurally correct" to "behaviorally proven over 7 days, expiry-pressure tested, durable streak object, long-tail manual-classified everywhere, admin-AI-engineer-visible." All work **extends** existing `oauth-refresh-probe`, `oauth_refresh_probe_results`, `connector_effective_state`, `ConnectorStateBadge`, `OAuthRefreshHealthBoard`, `IntegrationStreakPanel`, `IntegrationReceiptDrawer`, and the canonical state grammar — **zero duplication**.
 
----
-
-### Phase 1 — Truth Schema + Audit Artifacts (deployment-ready standalone)
-
-**DB migration** (additive, no destructive changes):
-- `ai_runtime_nightly_runs` — one row per nightly run: `run_id`, `started_at`, `completed_at`, `status` (pass/fail/degraded), `provider_calls_ok`, `receipts_verified`, `ledger_verified`, `fallback_verified`, `budget_enforced`, `failure_class`, `evidence_jsonb`. RLS: admin-read only.
-- `ai_runtime_streak_state` — singleton: `current_streak_days`, `last_pass_at`, `last_fail_at`, `last_failure_class`, `streak_started_at`. RLS: admin-read only.
-- `ai_runtime_failure_alerts` — `alert_id`, `run_id`, `failure_class`, `severity`, `acknowledged_at`, `acknowledged_by`. RLS: admin-read/write via `has_admin_permission`.
-- Trigger: on insert into `ai_runtime_nightly_runs`, recompute streak; if status=fail, insert alert row.
-
-**Artifacts** (`generated/ai-runtime-truth-closure/`):
-- `AI_RUNTIME_CURRENT_STATE_AUDIT.md` — what's already real vs. synthetic
-- `AI_RUNTIME_NIGHTLY_VERIFICATION_MODEL.md` — canonical flow design
-- `AI_BUDGET_AND_CEILING_AUDIT.md`
-- `AI_COST_CEILING_LOAD_PROOF_MODEL.md`
-- `AI_RUNTIME_FAILURE_CLASSES.md` — 9 classes (provider_unavailable, invocation_invalid, receipt_missing, ledger_missing, fallback_failed, budget_enforcement_failed, budget_overrun_unblocked, model_routing_mismatch, verification_query_mismatch)
+**Admin AI Engineer scope:** Canonical control surface stays at `/admin/integrations` (where it already lives). A read-only `ConnectorTruthSummaryPanel` is added as a new tab in `AIRuntimeHome` (`/admin/ai-runtime`) so the AI Engineer team sees connector truth side-by-side with AI runtime truth — no duplicate dashboards, just a summary panel that links back to the canonical OAuth board for any action.
 
 ---
 
-### Phase 2 — Live-Provider Nightly Verifier Edge Function
+### Phase 1 — Truth Schema + Audit Artifacts
 
-**New edge function:** `supabase/functions/ai-runtime-nightly-verify/index.ts`
-- Service-role auth + admin caller check
-- Executes 5 canonical sub-checks against the **real `ai-gateway`** (cheapest model: `google/gemini-2.5-flash-lite`, capped at ~6 invocations / run):
-  1. **live_provider_call** — invokes gateway with sentinel prompt, asserts 200 + content
-  2. **receipt_persistence** — re-queries `ai_inference_receipts` by invocation_id
-  3. **ledger_write** — re-queries `ai_usage_ledger` matches invocation
-  4. **fallback_path** — invokes with deliberately-failing primary model, asserts `ai_fallback_events` row written
-  5. **budget_enforcement_under_load** — uses `ai_workforce_budget_classes` test class (already exists) at 95% utilization, fires N+1 calls, asserts the (N+1)th is refused and a refusal receipt persists
-- Inserts result row into `ai_runtime_nightly_runs` (trigger handles streak + alert)
-- Writes `generated/ai-runtime-truth-closure/ai-runtime-truth-verification.json` via response payload
+**DB migration** (additive, RLS admin-read):
+- `connector_refresh_streak_state` — singleton-per-provider: `provider`, `current_streak_days`, `last_pass_at`, `last_fail_at`, `last_failure_class`, `streak_started_at`, `total_runs_7d`, `successful_runs_7d`. RLS: admin-read.
+- `connector_refresh_nightly_runs` — one row per nightly verification: `run_id`, `started_at`, `completed_at`, `status` (pass/fail/degraded), `providers_passed`, `providers_failed`, `providers_reauth_required`, `expiry_pressure_passed`, `evidence_jsonb`. RLS: admin-read.
+- Trigger: on insert into `connector_refresh_nightly_runs`, recompute per-provider streak rows.
+- RPC: `get_connector_refresh_streak_summary()` returning structured JSON for UI.
 
-**Cost guardrail:** hard-cap ~$0.005/run via `gemini-2.5-flash-lite`, dry-run mode flag for CI without live credits.
-
----
-
-### Phase 3 — CI Wiring + 6 Validation Scripts
-
-**Validation scripts** (`scripts/validation/`):
-- `check-ai-live-provider-nightly.ts` — reads latest `ai_runtime_nightly_runs` row, fails if >36h stale or status=fail
-- `check-ai-receipt-persistence.ts` — asserts last 24h `ai_inference_receipts` count > 0 and matches `ai_invocations`
-- `check-ai-ledger-write-verification.ts` — asserts `ai_usage_ledger` rows match invocation count
-- `check-ai-fallback-verification.ts` — asserts last 7d has ≥1 fallback event proving path works
-- `check-ai-budget-enforcement-under-load.ts` — asserts last nightly run includes `budget_enforced=true`
-- `check-ai-runtime-streak-health.ts` — reads `ai_runtime_streak_state`, classifies streak, writes `ai-nightly-streak-status.json`
-
-All emit gate reports via existing `_lib/emit-gate-report.ts`.
-
-**Cron schedule** (via `pg_cron` + `pg_net`, inserted directly to DB so anon key isn't repo-committed):
-- `ai-runtime-nightly-verify-tick` — daily 02:00 UTC, hits the edge function
-
-**CI wiring:** add 6 new gate steps to `playwright-proof-nightly.yml` and `ci.yml` after existing AI gates. Add to master release aggregator (`check-os-release-readiness.ts`) at BLOCK level.
+**Artifacts** (`generated/connector-truth-closure/`) — all 9 markdown docs + content drawn from existing `generated/restore-and-oauth-hardening/` as source of truth:
+- `CONNECTOR_REFRESH_CURRENT_STATE_AUDIT.md`
+- `CONNECTOR_NIGHTLY_REFRESH_MODEL.md`
+- `CONNECTOR_HEALTH_STATE_MODEL.md` (references canonical 6-state grammar)
+- `CONNECTOR_EXPIRY_PRESSURE_TEST_MODEL.md`
+- `CONNECTOR_UX_AND_ADMIN_AUDIT.md`
+- `CONNECTOR_REFRESH_RECEIPT_MODEL.md`
+- `CONNECTOR_STREAK_AND_PROOF_MODEL.md`
+- `LONG_TAIL_PROVIDER_CLASSIFICATION_AUDIT.md`
+- `CONNECTOR_TRUTH_FINAL_VERIFICATION.md`
 
 ---
 
-### Phase 4 — Admin Visibility (extend existing surfaces only — no new pages)
+### Phase 2 — Nightly Verifier Edge Function (Real + Expiry-Pressure)
 
-**Extend `AIRuntimeDrilldownPanel.tsx`** (already mounted in `InternalAgentsBoard`):
-- Replace minimal `NightlyProofBadge` with rich panel showing:
-  - Current 7-day streak (with day-by-day dots)
-  - Last pass/fail timestamps + failure class
-  - Per-sub-check status (5 checks from Phase 2)
-  - Last live provider receipt link → drill into `ai_inference_receipts` row
-  - Last fallback event link
-  - Last budget enforcement decision
-  - Acknowledge-failure button (writes to `ai_runtime_failure_alerts`)
+**New edge function:** `supabase/functions/connector-refresh-nightly-verify/index.ts`
+- Service-role auth, admin caller check
+- For each provider (Google / Microsoft / Slack):
+  1. **live_refresh** — calls existing `oauth-refresh-probe` internally (reuse, don't duplicate), reads results
+  2. **expiry_pressure_synthetic** — sends a deliberately invalid refresh token to the real provider endpoint, asserts the `reauth_required` failure class is correctly emitted (proves classifier works under hostile input)
+  3. **state_consistency** — queries `connector_effective_state` view for each token, asserts no row is `connected` while `oauth_refresh_probe_results.lifecycle_state='failing'` for the same token
+- Inserts row into `connector_refresh_nightly_runs` (trigger handles streak)
+- **No reckless API spend** — uses existing tokens; expiry-pressure uses a single sentinel invalid token per provider per night (3 calls total)
 
-**Extend `AIRuntimeHome.tsx`** with one new tab (no separate route):
-- `id: "nightly-truth"` → `AIRuntimeNightlyTruthPanel` (new component, lives in `src/components/admin/ai-runtime/`)
-- Shows full 30-day history table, per-run drilldown, evidence JSON viewer
-
-**Data hook:** `src/lib/internal-agents/runtime/nightly-truth-data.ts` — single typed loader querying the 3 new tables. Reuses existing pattern from `agent-drilldown-data.ts`.
+**pg_cron schedule:** `sita-connector-refresh-nightly-verify` daily at 02:30 UTC (offset from hourly probe and AI runtime verifier).
 
 ---
 
-### Phase 5 — Final Verification + Reports + Master Aggregator Wiring
+### Phase 3 — 7 Validation Scripts + Artifact Emitter + CI
 
-**Generated artifacts** (final outputs):
-- `ai-live-provider-status.json` — per-provider success/failure last 7d
-- `ai-budget-enforcement-status.json` — last enforcement decision + ledger proof
-- `ai-nightly-streak-status.json` — current streak + classification
-- `ai-runtime-truth-verification.json` — master rollup
-- `AI_RUNTIME_TRUTH_FINAL_VERIFICATION.md` — operator-facing summary
+**Validation scripts** (all use `_lib/emit-gate-report`):
+- `check-google-refresh-nightly.ts` — last 24h `oauth_refresh_probe_results` for Google has ≥1 success
+- `check-microsoft-refresh-nightly.ts` — same for Microsoft
+- `check-slack-refresh-nightly.ts` — same for Slack
+- `check-connector-health-state-consistency.ts` — joins `connector_effective_state` + latest probe; fails on any "connected" + recent "failing" mismatch
+- `check-no-ambiguous-connected-state.ts` — greps codebase for hard-coded "Connected" strings on connector UI surfaces not driven by `ConnectorStateBadge`
+- `check-long-tail-provider-classification.ts` — reads `connector_registry` table; asserts every provider not in {google, microsoft, slack} has `auth_mode != 'oauth_live'` OR is rendered with `manual` badge
+- `check-connector-refresh-streak.ts` — reads `connector_refresh_streak_state`; classifies green (≥7d) / yellow (1-6d) / red (0d or unack failure)
 
-**Master aggregator integration:**
-- Register 6 new gates in `check-os-release-readiness.ts` BLOCK list
-- Update `generated/os-release-readiness-report.json` to include AI runtime truth section
-- Streak <3 days → YELLOW; ≥7 days → GREEN; any unack'd failure → RED
+**Artifact emitter:** `scripts/validation/emit-connector-truth-artifacts.ts`
+- Queries `connector_refresh_nightly_runs`, `connector_refresh_streak_state`, `oauth_refresh_probe_results`, `connector_effective_state`, `connector_registry`
+- Emits 4 required JSON files into `generated/connector-truth-closure/`:
+  - `connector-provider-status.json` — per-provider 7d success/fail + last receipt
+  - `connector-refresh-streak-status.json` — streak summary + classification
+  - `connector-reauth-status.json` — count of reauth_required tokens + per-provider breakdown
+  - `connector-truth-verification.json` — master rollup with hard pass/fail per acceptance criterion
 
-**Failure alerting:**
-- Reuse existing `notification_delivery_receipts` + admin notification path
-- Trigger on `ai_runtime_failure_alerts` insert → notification to admin AI engineer team only
+**CI workflow:** `.github/workflows/connector-truth-nightly.yml`
+- Schedule: `30 3 * * *` UTC (1h after pg_cron, gives verifier time)
+- Triggers verifier via `curl POST` (uses `${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}`)
+- Runs emitter + 7 validation gates
+- Uploads artifacts (30-day retention)
+- `workflow_dispatch` for manual runs
 
-**Final run:** trigger one live verify, confirm row persists, badge updates, gate passes.
+**Master aggregator:** Register all 7 gates in `check-os-release-readiness.ts` BLOCK list.
 
 ---
 
-### Technical guardrails
+### Phase 4 — Admin AI Engineer Team Surfacing (extend, no duplicates)
 
-- **No duplicates:** extends `ai-gateway`, `AIRuntimeDrilldownPanel`, `AIRuntimeHome`, `NightlyProofBadge`, existing nightly workflows
-- **No stubs:** every script queries real tables; edge function calls real provider
-- **No fake green:** streak resets on any failure; one pass ≠ proven (need 7)
-- **No reckless spend:** flash-lite model, ≤6 calls/run, ~$0.005/night
-- **Admin-only scope:** all UI under `/admin/ai-runtime/*`; RLS restricts to `has_admin_permission`
-- **Reuses canonical:** `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `ai_workforce_budget_classes`, `notification_delivery_receipts`, `_lib/emit-gate-report`
+**New component:** `src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx`
+- Read-only summary panel (NOT a duplicate dashboard)
+- Shows: per-provider streak day count + last-pass/fail timestamp, total reauth_required tokens, last nightly verifier run status, expiry-pressure last result
+- Each row links via `<Link to="/admin/integrations/oauth-refresh-health">` — canonical actions stay on the OAuth board
+- Footer: "Canonical control: Integrations Hub →"
 
-Each phase ships independently deployment-ready. Phase 5 requires 7 nights to reach GREEN streak — until then the aggregator honestly reports YELLOW (launch-honest).
+**Wire into `AIRuntimeHome`:** add new tab `id: "connector-truth"` → `ConnectorTruthSummaryPanel`. Extends existing tab list, no new route.
+
+**Data hook:** `src/lib/internal-agents/runtime/connector-truth-data.ts` — typed loader using new RPC `get_connector_refresh_streak_summary()` plus latest nightly run.
+
+**Long-tail enforcement** (UI):
+- Audit `src/pages/admin/CN01ConnectorRealityOverview.tsx` and connected-services pages — confirm any provider not in {google, microsoft, slack} renders `<ConnectorStateBadge state="manual" />`
+- Add gate `check-long-tail-provider-classification.ts` enforcement; fix any drift found.
+
+---
+
+### Phase 5 — Final Verification + Wiring
+
+- Trigger one live nightly verifier run via edge function call
+- Run `emit-connector-truth-artifacts.ts` to populate the 4 JSON files immediately so master aggregator has full evidence today
+- Run all 7 new gates → confirm GREEN where data exists, honest YELLOW for streak <7d
+- Update `CONNECTOR_TRUTH_FINAL_VERIFICATION.md` with workflow URL, cron cadence, current streak state
+- Add 1-line `Last DB observation: <timestamp>` to `ConnectorTruthSummaryPanel`
+
+---
+
+### Guardrails (preserved)
+- **No duplicate systems:** reuses `oauth-refresh-probe` (the nightly verifier calls it, doesn't replicate it), `oauth_refresh_probe_results`, `connector_effective_state`, `ConnectorStateBadge`, `OAuthRefreshHealthBoard`, `IntegrationStreakPanel`, `IntegrationReceiptDrawer`, canonical state grammar
+- **No stubs:** every probe is real provider HTTP; expiry-pressure uses real provider endpoint with sentinel invalid token
+- **No fake green:** streak resets on any failure; one pass ≠ proven (need 7 nights)
+- **No reckless spend:** ≤3 extra HTTP calls per night for expiry-pressure (existing hourly probe carries the rest)
+- **Admin AI Engineer scope:** canonical control at `/admin/integrations`; AI runtime tab is **read-only summary** that links back — no duplicate dashboard
+- **Long-tail honesty:** new gate fails CI if any non-{google,microsoft,slack} provider surfaces as "Connected"
+- **Service role key:** stays in GitHub Secrets / Supabase env only — never repo-committed
+
+### Files touched
+- **New (15):** 1 migration, 1 edge function, 1 artifact emitter, 7 validation scripts, 1 CI workflow, 1 React component, 1 data hook, 1 RPC (in migration), 9 markdown artifacts
+- **Edited (3):** `check-os-release-readiness.ts` (+7 BLOCK gates), `AIRuntimeHome.tsx` (+1 tab), `package.json` (+2 npm scripts: `connector:truth:emit`, `connector:truth:run-all`)
+- **Generated on first run (4):** the 4 required JSON artifacts
+
+After this pass, every acceptance criterion in PART 8 is satisfied with live evidence. Streak progresses to GREEN after 7 successful nightly verifier runs.
 
