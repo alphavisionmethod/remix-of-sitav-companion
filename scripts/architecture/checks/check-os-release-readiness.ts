@@ -175,6 +175,14 @@ const REQUIRED_GATES = [
   "pg-cron-schedules",
   "pg-extensions-enabled",
   "release-artifact-signer",
+  // Final last-mile deployment closure — meta-gates (gates 118–124)
+  "final-deployment-readiness",
+  "final-runtime-proof",
+  "final-mobile-truth",
+  "final-ai-workforce-readiness",
+  "final-launch-honesty",
+  "final-supportability-readiness",
+  "final-gate-meaningfulness",
 ];
 
 // Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
