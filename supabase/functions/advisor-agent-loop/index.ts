@@ -4,7 +4,7 @@ import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { resolveUnifiedPolicy, negativeReceiptResponse } from "../_shared/policy.ts";
 import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
-import { checkKillSwitchOrReject } from "../_shared/kill-switch.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Agent Loop
@@ -119,12 +119,17 @@ function killSwitchGate(isActive: boolean): GateResult {
 // --- Main Handler ---
 
 serve(async (req) => {
+  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
+  const log = new EdgeLogger("advisor-agent-loop", correlationId);
+  const t0 = performance.now();
+
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     // --- Gate 1: Identity ---
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
+      log.warn("missing_auth", { failure_class: "auth_missing" });
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -388,10 +393,17 @@ serve(async (req) => {
       });
     }
 
+    const completedCount = results.filter(r => r.status === "completed").length;
+    log.complete(200, Math.round(performance.now() - t0), {
+      event_type: "advisor_loop_complete", actor: userId,
+      total_agents: agents.length, completed: completedCount,
+      total_actions: results.reduce((s, r) => s + r.actions_created, 0),
+      result: completedCount === agents.length ? "success" : "partial",
+    });
     return new Response(JSON.stringify({
       execution_summary: {
         total_agents: agents.length,
-        completed: results.filter(r => r.status === "completed").length,
+        completed: completedCount,
         skipped: results.filter(r => r.status !== "completed").length,
         total_actions: results.reduce((s, r) => s + r.actions_created, 0),
         timestamp: new Date().toISOString(),
@@ -402,7 +414,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error("Advisor agent loop error:", err);
+    log.error("unhandled_exception", { failure_class: "internal_error", error: err instanceof Error ? err.message : String(err) });
     return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Internal error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
