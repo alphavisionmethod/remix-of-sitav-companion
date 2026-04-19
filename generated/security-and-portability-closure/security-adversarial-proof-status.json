@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T14:44:19.348Z",
+  "rls": {
+    "evidenceCount": 0
+  },
+  "electron": {
+    "wired": true,
+    "drillEvidence": 0
+  },
+  "debugger": {
+    "wired": true,
+    "drillEvidence": 0
+  },
+  "session": {
+    "wired": true,
+    "runEvidence": 0
+  },
+  "findingsRegister": true
+}

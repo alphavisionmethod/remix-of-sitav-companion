@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2026-04-19T14:44:22.470Z",
+  "ok": true,
+  "status": "YELLOW",
+  "rotation": {
+    "generatedAt": "2026-04-19T14:44:16.432Z",
+    "source": "no-db-access",
+    "totalClasses": 8,
+    "overdue": 0,
+    "dueSoon": 0,
+    "fresh": 0,
+    "noEvidence": 6,
+    "controlPlaneBlocked": 2,
+    "perClass": [
+      {
+        "class": "push",
+        "intervalDays": 90,
+        "staleThresholdDays": 14,
+        "controlPlaneBlocked": false,
+        "ownerRole": "platform-security",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      },
+      {
+        "class": "comms",
+        "intervalDays": 180,
+        "staleThresholdDays": 21,
+        "controlPlaneBlocked": false,
+        "ownerRole": "platform-security",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      },
+      {
+        "class": "ai",
+        "intervalDays": 90,
+        "staleThresholdDays": 14,
+        "controlPlaneBlocked": false,
+        "ownerRole": "ai-ops",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      },
+      {
+        "class": "auth",
+        "intervalDays": 365,
+        "staleThresholdDays": 60,
+        "controlPlaneBlocked": true,
+        "ownerRole": "lovable-cloud-control-plane",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "control-plane-blocked",
+        "rowCount": 0
+      },
+      {
+        "class": "storage",
+        "intervalDays": 365,
+        "staleThresholdDays": 60,
+        "controlPlaneBlocked": true,
+        "ownerRole": "lovable-cloud-control-plane",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "control-plane-blocked",
+        "rowCount": 0
+      },
+      {
+        "class": "webhook-signing",
+        "intervalDays": 90,
+        "staleThresholdDays": 14,
+        "controlPlaneBlocked": false,
+        "ownerRole": "platform-security",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      },
+      {
+        "class": "attestation-signing",
+        "intervalDays": 180,
+        "staleThresholdDays": 30,
+        "controlPlaneBlocked": false,
+        "ownerRole": "platform-security",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      },
+      {
+        "class": "audit-export-hmac",
+        "intervalDays": 180,
+        "staleThresholdDays": 30,
+        "controlPlaneBlocked": false,
+        "ownerRole": "platform-security",
+        "lastRotatedAt": null,
+        "cadenceDueAt": null,
+        "daysSinceLast": null,
+        "daysUntilDue": null,
+        "status": "no-evidence",
+        "rowCount": 0
+      }
+    ]
+  },
+  "adversarial": {
+    "generatedAt": "2026-04-19T14:44:19.348Z",
+    "rls": {
+      "evidenceCount": 0
+    },
+    "electron": {
+      "wired": true,
+      "drillEvidence": 0
+    },
+    "debugger": {
+      "wired": true,
+      "drillEvidence": 0
+    },
+    "session": {
+      "wired": true,
+      "runEvidence": 0
+    },
+    "findingsRegister": true
+  },
+  "portability": {
+    "generatedAt": "2026-04-19T00:00:00.000Z",
+    "ok": true,
+    "violations": 0,
+    "classified": 4,
+    "adapterRouted": [
+      "src/hooks/useAppStatePersistence.ts",
+      "src/hooks/use-zero-latency.ts",
+      "src/hooks/use-session-restore.ts",
+      "src/hooks/useSetupOrchestration.ts"
+    ],
+    "leafBrowserOnly": [
+      "src/hooks/use-mobile.ts",
+      "src/hooks/useReducedMotion.ts"
+    ],
+    "shellSpecific": [
+      "src/hooks/useWindowSnap.ts",
+      "src/hooks/useElectronBridge.ts"
+    ],
+    "secondAbstractionDetected": false
+  },
+  "partner_blocked": [
+    "electron-threat-detection"
+  ],
+  "pending_human_execution": [
+    "debugger-tamper-drill",
+    "rls-under-stress",
+    "session-threat-runs"
+  ],
+  "errors": []
+}

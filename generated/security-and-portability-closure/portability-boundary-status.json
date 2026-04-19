@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "ok": true,
+  "violations": 0,
+  "classified": 4,
+  "adapterRouted": [
+    "src/hooks/useAppStatePersistence.ts",
+    "src/hooks/use-zero-latency.ts",
+    "src/hooks/use-session-restore.ts",
+    "src/hooks/useSetupOrchestration.ts"
+  ],
+  "leafBrowserOnly": [
+    "src/hooks/use-mobile.ts",
+    "src/hooks/useReducedMotion.ts"
+  ],
+  "shellSpecific": [
+    "src/hooks/useWindowSnap.ts",
+    "src/hooks/useElectronBridge.ts"
+  ],
+  "secondAbstractionDetected": false
+}
