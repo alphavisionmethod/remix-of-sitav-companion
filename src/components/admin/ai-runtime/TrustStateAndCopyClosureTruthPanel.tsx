@@ -352,3 +352,14 @@ function DeliverableGroup({ label, items }: { label: string; items: string[] }) 
     </div>
   );
 }
+
+function AuditRow({ label, value, ok }: { label: string; value: string; ok: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-[10px] text-muted-foreground truncate">{label}</span>
+      <StatusBadge tone={ok ? "success" : "warning"} size="xs">
+        {value}
+      </StatusBadge>
+    </div>
+  );
+}
