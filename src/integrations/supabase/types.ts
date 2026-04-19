@@ -10984,6 +10984,69 @@ export type Database = {
         }
         Relationships: []
       }
+      hardware_certification_runs: {
+        Row: {
+          ab_rollback_pass: boolean
+          attestation_quote_b64: string | null
+          created_at: string
+          device_class: string
+          device_model: string | null
+          dm_verity_pass: boolean
+          firmware: string | null
+          id: string
+          log_refs: Json
+          notes: string | null
+          overall_pass: boolean
+          recovery_pass: boolean
+          run_at: string
+          run_id: string
+          runner_id: string | null
+          secure_boot_pass: boolean
+          tpm_pass: boolean
+          updated_at: string
+        }
+        Insert: {
+          ab_rollback_pass?: boolean
+          attestation_quote_b64?: string | null
+          created_at?: string
+          device_class: string
+          device_model?: string | null
+          dm_verity_pass?: boolean
+          firmware?: string | null
+          id?: string
+          log_refs?: Json
+          notes?: string | null
+          overall_pass?: boolean
+          recovery_pass?: boolean
+          run_at?: string
+          run_id: string
+          runner_id?: string | null
+          secure_boot_pass?: boolean
+          tpm_pass?: boolean
+          updated_at?: string
+        }
+        Update: {
+          ab_rollback_pass?: boolean
+          attestation_quote_b64?: string | null
+          created_at?: string
+          device_class?: string
+          device_model?: string | null
+          dm_verity_pass?: boolean
+          firmware?: string | null
+          id?: string
+          log_refs?: Json
+          notes?: string | null
+          overall_pass?: boolean
+          recovery_pass?: boolean
+          run_at?: string
+          run_id?: string
+          runner_id?: string | null
+          secure_boot_pass?: boolean
+          tpm_pass?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       health_validation_results: {
         Row: {
           checked_at: string
@@ -14382,6 +14445,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      operator_drill_executions: {
+        Row: {
+          confirm_pass: boolean
+          created_at: string
+          detect_pass: boolean
+          drill_id: string
+          evidence_pass: boolean
+          executed_at: string
+          friction_notes: string | null
+          id: string
+          kill_switch_id: string | null
+          kill_switch_pass: boolean
+          mttd_seconds: number | null
+          mttr_seconds: number | null
+          operator_id: string | null
+          operator_label: string | null
+          overall_pass: boolean
+          rollback_pass: boolean
+          runbook_id: string | null
+          scenario: string
+          scenario_category: string
+          select_runbook_pass: boolean
+          signoff_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          confirm_pass?: boolean
+          created_at?: string
+          detect_pass?: boolean
+          drill_id: string
+          evidence_pass?: boolean
+          executed_at?: string
+          friction_notes?: string | null
+          id?: string
+          kill_switch_id?: string | null
+          kill_switch_pass?: boolean
+          mttd_seconds?: number | null
+          mttr_seconds?: number | null
+          operator_id?: string | null
+          operator_label?: string | null
+          overall_pass?: boolean
+          rollback_pass?: boolean
+          runbook_id?: string | null
+          scenario: string
+          scenario_category?: string
+          select_runbook_pass?: boolean
+          signoff_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          confirm_pass?: boolean
+          created_at?: string
+          detect_pass?: boolean
+          drill_id?: string
+          evidence_pass?: boolean
+          executed_at?: string
+          friction_notes?: string | null
+          id?: string
+          kill_switch_id?: string | null
+          kill_switch_pass?: boolean
+          mttd_seconds?: number | null
+          mttr_seconds?: number | null
+          operator_id?: string | null
+          operator_label?: string | null
+          overall_pass?: boolean
+          rollback_pass?: boolean
+          runbook_id?: string | null
+          scenario?: string
+          scenario_category?: string
+          select_runbook_pass?: boolean
+          signoff_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       org_members: {
         Row: {
