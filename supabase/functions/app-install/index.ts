@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // app-install — install (or re-enable) an app for current user
+// Structured logging via canonical EdgeLogger (Phase 33 cleanup).
 // ═══════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,12 +20,22 @@ function json(body: unknown, status = 200) {
 }
 
 Deno.serve(async (req) => {
+  const correlationId = req.headers.get("x-correlation-id") ?? crypto.randomUUID();
+  const log = new EdgeLogger("app-install", correlationId);
+  const t0 = performance.now();
+
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  if (req.method !== "POST") {
+    log.warn("method_not_allowed", { method: req.method, failure_class: "bad_method" });
+    return json({ error: "method_not_allowed" }, 405);
+  }
 
   try {
     const auth = req.headers.get("Authorization");
-    if (!auth) return json({ error: "unauthorized" }, 401);
+    if (!auth) {
+      log.warn("missing_auth", { failure_class: "auth_missing" });
+      return json({ error: "unauthorized" }, 401);
+    }
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -32,12 +44,18 @@ Deno.serve(async (req) => {
     );
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr || !userData?.user) return json({ error: "unauthorized" }, 401);
+    if (userErr || !userData?.user) {
+      log.warn("auth_failed", { failure_class: "auth_invalid", error: userErr?.message });
+      return json({ error: "unauthorized" }, 401);
+    }
     const userId = userData.user.id;
 
     const body = await req.json().catch(() => ({}));
     const appId = (body.app_id || body.appId || "").toString().trim();
-    if (!appId || appId.length > 200) return json({ error: "app_id required" }, 400);
+    if (!appId || appId.length > 200) {
+      log.warn("invalid_input", { failure_class: "bad_request", actor: userId });
+      return json({ error: "app_id required" }, 400);
+    }
 
     const sourceChannel = (body.source_channel || "store").toString().slice(0, 50);
     const permsGranted = body.permissions_granted ?? {};
@@ -48,12 +66,18 @@ Deno.serve(async (req) => {
       .select("app_id,latest_version,installability,enabled,permissions_required")
       .eq("app_id", appId)
       .maybeSingle();
-    if (catalogErr) return json({ error: catalogErr.message }, 500);
-    if (!catalogApp || !catalogApp.enabled)
+    if (catalogErr) {
+      log.error("catalog_lookup_failed", { failure_class: "db_error", actor: userId, target: appId, error: catalogErr.message });
+      return json({ error: catalogErr.message }, 500);
+    }
+    if (!catalogApp || !catalogApp.enabled) {
+      log.warn("app_not_in_catalog", { failure_class: "not_found", actor: userId, target: appId });
       return json({ error: "app_not_in_catalog" }, 404);
-
-    if (catalogApp.installability === "unavailable")
+    }
+    if (catalogApp.installability === "unavailable") {
+      log.warn("app_unavailable", { failure_class: "policy_block", actor: userId, target: appId });
       return json({ error: "app_unavailable" }, 409);
+    }
 
     const { data, error } = await supabase
       .from("installed_apps")
@@ -71,10 +95,15 @@ Deno.serve(async (req) => {
       )
       .select("*")
       .maybeSingle();
-    if (error) return json({ error: error.message }, 500);
+    if (error) {
+      log.error("install_failed", { failure_class: "db_error", actor: userId, target: appId, error: error.message });
+      return json({ error: error.message }, 500);
+    }
 
+    log.complete(200, Math.round(performance.now() - t0), { event_type: "app_install", actor: userId, target: appId, result: "success" });
     return json({ ok: true, installed: data });
   } catch (e) {
+    log.error("unhandled_exception", { failure_class: "internal_error", error: (e as Error).message, latencyMs: Math.round(performance.now() - t0) });
     return json({ error: (e as Error).message }, 500);
   }
 });
