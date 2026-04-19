@@ -206,7 +206,7 @@ export default function ProductionLaunchAttestationConsole() {
                     {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
                   </span>
                 </div>
-                {a.notes && <div className="text-muted-foreground">{a.notes}</div>}
+                {a.release_tag && <div className="text-xs text-muted-foreground">tag: {a.release_tag}</div>}
                 {a.signature && (
                   <div className="text-[10px] font-mono text-muted-foreground truncate">
                     sig: {a.signature.slice(0, 32)}…

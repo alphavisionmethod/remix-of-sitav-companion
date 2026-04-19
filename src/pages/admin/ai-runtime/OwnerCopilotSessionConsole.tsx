@@ -97,9 +97,9 @@ export default function OwnerCopilotSessionConsole() {
             <div className="text-2xl font-semibold">{items.length}</div>
           </CardContent></Card>
           <Card><CardContent className="p-4">
-            <div className="text-xs text-muted-foreground">Total interactions</div>
+            <div className="text-xs text-muted-foreground">Total prompts</div>
             <div className="text-2xl font-semibold">
-              {items.reduce((sum, s) => sum + (s.interactions_count ?? 0), 0)}
+              {items.reduce((sum, s) => sum + (s.prompt_count ?? 0), 0)}
             </div>
           </CardContent></Card>
         </div>
