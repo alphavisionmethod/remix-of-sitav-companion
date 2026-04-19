@@ -3,147 +3,183 @@
 ## Audit findings (live)
 
 **Already in place — DO NOT duplicate:**
-- Admin AI Engineer hub at `src/pages/admin/ai-runtime/AIRuntimeHome.tsx` — 19 modules already including 4 truth panels (Nightly Truth, Connector Truth, Mobile Scope Truth, Frontend Polish Truth)
-- `BoardSection.tsx` shared helper in `_shared/`
-- `check-admin-operator-coherence.ts` (12-domain check) — GREEN
-- `check-human-use-operational-readiness.ts` (6 scenarios, KS+RB linkage) — GREEN
-- `check-drill-cadence-freshness.ts` (9 drills DB-backed) — GREEN
-- `check-supportability-review-cadence.ts` — GREEN
-- `check-evidence-freshness.ts` (WARN-tier today)
-- `check-final-gate-meaningfulness.ts`
-- 30+ behavioral validators (AI live-provider nightly, OAuth refresh nightly, connector streak)
-- `os/scripts/build-verity-root.sh`, `seal-verity-to-tpm.sh`, `verify-tpm-seal.sh`, `verify-verity-metadata.sh`
-- `os/image-builder/preflight/hardware-check.sh`
-- 21 edge function `_test.ts` files (out of 158 functions = ~13% coverage today)
-- `generated/final-hardening/drill-cadence-status.json` with 9 drills
-- 156 BLOCK gates already wired into `check-os-release-readiness.ts`
+- Real `secret-rotation-orchestrator` edge function with secret taxonomy (push/comms/ai/auth/storage)
+- `security-anomaly-rotation-trigger` edge function (dry-run only, dual-admin gated)
+- 7-layer Electron security fabric: `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `integrity-check.cjs`, `license-guard.cjs` + `os-security/` (sessiond, secretsd, auditd, policyd)
+- Canonical runtime-host abstraction already exists at `src/runtimes/`: `RuntimeTierProvider`, `runtime-detection.ts`, `desktop-runtime-detection.ts`, `feature-runtime-tier-registry.ts` — this IS the canonical adapter (no need for a 2nd abstraction)
+- `src/lib/ux-trust/` (microcopy + ux-principles) and 7 frontend-polish gates including `trust-copy-quality`
+- 171 BLOCK gates wired in `check-os-release-readiness.ts`
+- AI Engineer hub at `src/pages/admin/ai-runtime/AIRuntimeHome.tsx` with 6 truth panels (mount point for new panel)
+- `RUNTIME_TIER_GOVERNANCE_REPORT.md` and portability registries in `src/runtimes/`
 
 **Real gaps (not yet implemented):**
 
-*Admin & Validation closure:*
-- 0 of 8 closure validators exist (museum-board, action-orientation, edge-function-contract-coverage, warn-ratchet-meaningfulness, evidence-freshness-blocking, behavioral-ci-coverage, gate-quality-classification, admin-top-task-discoverability)
-- 0 of 16 closure deliverables exist in `generated/admin-and-validation-closure/`
-- Edge-function contract coverage measured at ~13% (21/158) — needs honest baseline + path to >50%
-- Evidence freshness is WARN-only — needs policy + observation-window → BLOCK promotion
+*Section A — Secret rotation cadence:*
+- Orchestrator exists but NO codified cadence policy per secret class (rotation interval, owner, stale threshold)
+- No freshness validator that fails CI when a secret class is overdue
+- No `secret_rotation_log` durable evidence table tracking real rotation runs
 
-*Hardware & Operator closure:*
-- 0 of 7 closure validators exist (real-hardware-proof, hardware-certification-matrix, attestation-evidence-freshness, operator-drill-execution, runbook-human-use-proof, kill-switch-drill-readiness, supportability-freshness)
-- 0 of 14 closure deliverables exist in `generated/hardware-and-operator-closure/`
-- No hardware certification matrix — only emulation/QEMU proof
-- No durable attestation evidence model
-- No operator MTTR/signoff capture model
+*Section B — Adversarial proof:*
+- Zero adversarial validators (RLS-under-stress, Electron threat detection, debugger/tamper, session-threat behavior)
+- No `SECURITY_FINDINGS_REGISTER` model — findings have no closure-loop tracking
 
-**Scope rule (per user):** All NEW UI surfacing lives on the **Admin AI Engineer hub** (`src/pages/admin/ai-runtime/AIRuntimeHome.tsx`) as 2 new truth-panel tabs. Validators live in the canonical `scripts/validation/` (platform-wide by definition). Generated evidence lives in canonical `generated/` paths. **Zero edits to other admin domains.**
+*Section C — Browser-only assumptions in shared logic:*
+- 4 shared hooks directly access `window` without going through the canonical `useRuntimeTier()` adapter:
+  - `src/hooks/useAppStatePersistence.ts` (window.scrollY, scroll listeners)
+  - `src/hooks/use-zero-latency.ts` (window.scrollY/scrollTo)
+  - `src/hooks/use-session-restore.ts` (window.location.pathname, scrollTo)
+  - `src/hooks/useSetupOrchestration.ts` (window.addEventListener beforeunload)
+- `useReducedMotion`, `useWindowSnap`, `use-mobile`, `useElectronBridge` are correctly scoped (browser-leaf or already adapter-routed) → leave alone
+- No `check-no-browser-trapped-shared-hooks` or `check-portability-boundaries` validator
 
----
+*Section D — Hub UI:*
+- No "Security & Portability Truth" panel on AI Engineer hub
 
-## Phase 1 — Admin & Validation Truth Closure (10 deliverables)
-
-### 1A. Generate the 16 audit/status documents
-Create `generated/admin-and-validation-closure/` with all 11 markdown audits + 4 JSON status files + 1 final verification — using LIVE evidence from existing reports (read `admin-operator-coherence-report.json`, `human-use-operational-readiness-report.json`, `evidence-freshness-report.json`, etc.):
-- `ADMIN_CONTROL_PLANE_USABILITY_AUDIT.md` (12 domains × 9 criteria from existing status)
-- `OPERATOR_TOP_TASK_PATHFINDING_MODEL.md` (10 critical operator tasks: AI failure triage, connector reauth, Boardroom stuck, kill-switch decision, restore/recovery, incident drilldown, release verification, receipts lookup, env remediation, secret rotation)
-- `ADMIN_DOMAIN_CONSOLIDATION_AND_LINKAGE_PLAN.md` (no new domains; cross-link plan)
-- `OPERATOR_STRESS_TEST_REPORT.md` (8 scenario × find/interpret/action timing)
-- `MUSEUM_BOARD_AUDIT.md` (scan AI Engineer hub: classify each board on action-orientation + remediation)
-- `EDGE_FUNCTION_CONTRACT_COVERAGE_AUDIT.md` (live count: 21/158 covered today; gap list)
-- `EDGE_FUNCTION_CONTRACT_EXPANSION_PLAN.md` (priority list to reach 80/158 = >50%)
-- `WARN_GATE_AND_RATCHET_AUDIT.md` (read `per-bucket-warn-ratchet-report.json` + classify each WARN)
-- `EVIDENCE_FRESHNESS_POLICY.md` (define 9 freshness windows, 30-day clean-window observation policy)
-- `CI_BEHAVIORAL_TRUTH_AUDIT.md` (classify all 156 gates: structural / smoke / behavioral / E2E)
-- `GATE_TAXONOMY_AND_QUALITY_MODEL.md` (5-class taxonomy, per-gate classification table)
-- `ADMIN_AND_VALIDATION_FINAL_VERIFICATION.md`
-- 4 JSON status files (admin-usability, gate-quality, warn-ratchet, admin-and-validation-verification)
-
-### 1B. Implement the 8 NEW validators
-Each is real (not stub), exits non-zero on real violations, emits via `_lib/emit-gate-report.ts`:
-1. `check-admin-top-task-discoverability.ts` — asserts `admin-and-validation-closure/admin-usability-status.json` declares ≥10 top tasks each with ≤3-click path
-2. `check-no-museum-boards.ts` — scans `src/pages/admin/ai-runtime/**` requiring every Card with status display to also link to `useNavigate(...)` or `<Link>` to a remediation/drilldown route
-3. `check-admin-action-orientation.ts` — every AI Engineer board must contain ≥1 actionable element (Button, Link to remediation, refresh, etc.)
-4. `check-edge-function-contract-coverage.ts` — counts real `_test.ts` files in `supabase/functions/`, asserts ≥50% (≥80 of 158); emits coverage delta
-5. `check-warn-ratchet-meaningfulness.ts` — reads `per-bucket-warn-ratchet-report.json`; asserts every WARN bucket is either trending down OR explicitly classified `noncritical-acknowledged` in `gate-quality-status.json`
-6. `check-evidence-freshness-blocking.ts` — promotes `evidence-freshness-report.json` to BLOCK after 30-day clean observation window proven by `observation-window-status.json`
-7. `check-behavioral-ci-coverage.ts` — asserts every deployment-critical runtime-truth area (AI live-provider, OAuth refresh G/M/S, Boardroom L7, restore drill) has a behavioral validator (not synthetic)
-8. `check-gate-quality-classification.ts` — asserts every of 156 gates has explicit classification in `gate-quality-status.json` (`structural | smoke | behavioral | e2e | warn-only`)
-
-### 1C. Wire into release readiness
-Add 8 new BLOCK gates to `scripts/architecture/checks/check-os-release-readiness.ts` REQUIRED_GATES array.
-
-### 1D. AI Engineer hub UI (1 new tab)
-- New `src/components/admin/ai-runtime/AdminValidationTruthPanel.tsx` — reads `generated/admin-and-validation-closure/admin-and-validation-verification.json` + per-gate classification; same shape as existing 4 truth panels
-- Insert as new `admin-validation-truth` module in `AIRuntimeHome.tsx` (after `frontend-polish-truth`)
-
-### 1E. Edge-function contract coverage hardening
-Add **20 new contract `_test.ts` files** prioritized by deployment-criticality (going from 21 to 41 → on path to 80; the validator fails warning-only at <50% but emits a clear roadmap). Targets: `internal-agent-execute-action`, `internal-agent-loop`, `internal-agent-reflect`, `internal-agent-policy-architect`, `internal-agent-trust-evaluator`, `internal-agent-self-healer`, `internal-agent-suggestion-generator`, `internal-agent-weekly-digest`, `internal-agent-dependency-scanner`, `internal-agent-cost-optimizer`, `internal-agent-slo-evaluator`, `internal-agent-consensus-engine`, `internal-agent-tenant-federation`, `security-council-tick`, `boardroom-followthrough-dispatch`, `boardroom-outcome-record`, `release-artifact-signer`, `release-artifact-verifier`, `attestation-packet-builder`, `audit-export-bundler`. Each test asserts: CORS, JWT validation, error-shape contract, success-shape contract.
+**Scope rule (per user):** All NEW UI lives ONLY on Admin AI Engineer hub (`AIRuntimeHome.tsx`) as 1 new truth-panel tab. Validators in canonical `scripts/validation/`. Generated evidence in canonical `generated/security-and-portability-closure/`. **Zero edits to other admin domains.**
 
 ---
 
-## Phase 2 — Hardware & Operator Readiness Closure (24 deliverables)
+## Phase 1 — Secret rotation cadence (codified + enforced)
 
-### 2A. Generate the 14 hardware/operator documents
-Create `generated/hardware-and-operator-closure/`:
-- `HARDWARE_PROOF_CURRENT_STATE_AUDIT.md` (honest: QEMU/OVMF only today; no real-device runs recorded)
-- `HARDWARE_PROOF_MODEL.md` (4 capabilities × 4 device classes proof matrix)
-- `HARDWARE_ATTESTATION_EVIDENCE_MODEL.md` (durable evidence schema: run_id, device_class, firmware, phase, pass/fail, attestation_quote, log_refs, timestamps, runner_id)
-- `HARDWARE_CERTIFICATION_MATRIX.md` (4 device classes × 5 capability columns; ALL marked `partner-blocked` honestly today)
-- `OPERATOR_READINESS_CURRENT_STATE_AUDIT.md` (existing 6 scenarios reviewed; 0 real-human-use logs to date)
-- `OPERATOR_DRILL_MODEL.md` (8 drill categories × 6 dimensions: detect, select-runbook, kill-switch, evidence, rollback, confirm)
-- `HUMAN_USE_DRILL_EXECUTION_REPORT.md` (initial template with `pending-execution` scenarios)
-- `OPERATOR_SIGNOFF_AND_MTTR_MODEL.md` (record schema: scenario, runner, MTTD, MTTR, friction)
-- `DRILL_CADENCE_AND_FRESHNESS_POLICY.md` (per-drill cadence: hardware monthly, restore weekly, runbook quarterly, kill-switch monthly)
-- `HARDWARE_AND_OPERATOR_FINAL_VERIFICATION.md`
-- 4 JSON status files (hardware-proof, hardware-certification, operator-readiness, hardware-and-operator-verification)
+### 1A. Database — durable rotation evidence (1 migration)
+Create `secret_rotation_log` table:
+- columns: `id uuid PK`, `secret_class text`, `secret_name text`, `rotated_at timestamptz`, `rotated_by uuid`, `dry_run bool`, `result jsonb`, `cadence_due_at timestamptz`
+- RLS: admin-only SELECT/INSERT via existing `has_role(auth.uid(),'admin')`
+- Index on `(secret_class, rotated_at DESC)` for freshness lookups
+- Realtime publication for live truth panel
 
-### 2B. Create canonical hardware proof DB tables (real, RLS-enforced)
-New migration creating:
-- `hardware_certification_runs` (run_id, device_class, firmware, secure_boot_pass, tpm_pass, dm_verity_pass, ab_rollback_pass, recovery_pass, attestation_quote_b64, log_refs JSONB, runner_id uuid, run_at timestamptz)
-- `operator_drill_executions` (drill_id, scenario, operator_id uuid, mttd_seconds, mttr_seconds, detect_pass, select_runbook_pass, kill_switch_pass, evidence_pass, rollback_pass, confirm_pass, friction_notes, signoff_at)
-- RLS: only `has_role(auth.uid(),'admin')` can SELECT/INSERT (uses existing `has_role` helper)
-- Both tables `ALTER PUBLICATION supabase_realtime ADD TABLE` for live AI Engineer hub updates
+### 1B. Cadence policy (1 canonical model file + 1 status mate)
+- `src/lib/security/secret-rotation-cadence.ts` — typed registry: per-class `{class, intervalDays, ownerRole, backupOwnerRole, staleThresholdDays, alertSeverity}`. Classes: `push` (90d), `comms` (180d), `ai` (90d), `auth` (control-plane), `storage` (control-plane), `webhook-signing` (90d), `attestation-signing` (180d), `audit-export-hmac` (180d)
+- `generated/security-and-portability-closure/secret-rotation-status.json` — emitter reads `secret_rotation_log` + cadence registry, computes per-class freshness/overdue state
 
-### 2C. Create real hardware proof emitter scripts
-- `os/scripts/record-hardware-certification-run.sh` (real: takes device-class arg, runs `verify-tpm-seal.sh` + `verify-verity-metadata.sh` locally, dumps JSON evidence into `generated/hardware-and-operator-closure/runs/<run-id>.json` AND inserts into DB if `PGHOST` available)
-- `scripts/validation/emit-hardware-and-operator-artifacts.ts` (regenerates the 4 JSON status files from DB rows + run files)
+### 1C. Wire orchestrator → log
+Edit `supabase/functions/secret-rotation-orchestrator/index.ts` to INSERT a row into `secret_rotation_log` on every plan execution (dryRun included), with `cadence_due_at = now() + interval`.
 
-### 2D. Implement the 7 NEW validators
-1. `check-real-hardware-proof.ts` — reads `hardware-proof-status.json`; honestly classifies state as `partner-blocked` (warn) until real evidence rows present, then promotes to BLOCK
-2. `check-hardware-certification-matrix.ts` — asserts matrix is current (per cadence policy); emits `partner-blocked` reason if no rows
-3. `check-attestation-evidence-freshness.ts` — asserts attestation runs within 30-day window when present
-4. `check-operator-drill-execution.ts` — reads DB rows from `operator_drill_executions` (or status file fallback); asserts ≥6 scenarios with executions in last 90 days
-5. `check-runbook-human-use-proof.ts` — every runbook in `runbook-registry.ts` must have ≥1 execution row OR explicit `pending-human-use` classification
-6. `check-kill-switch-drill-readiness.ts` — every KS in registry must have ≥1 drill execution OR `pending-drill` classification
-7. `check-supportability-freshness.ts` — extends existing cadence freshness check to enforce per-category staleness windows from policy
-
-### 2E. Wire into release readiness
-Add 7 hardware/operator gates to `check-os-release-readiness.ts` REQUIRED_GATES (15 new BLOCK gates total when combined with Phase 1).
-
-### 2F. AI Engineer hub UI (1 new tab)
-- New `src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx` — reads `hardware-and-operator-verification.json` + queries `hardware_certification_runs` and `operator_drill_executions` tables live
-- Three sections: Hardware certification matrix table | Operator drill log (latest 20 with MTTR) | Cadence freshness summary
-- Insert as new `hardware-operator-truth` module in `AIRuntimeHome.tsx`
-
-### 2G. Wire drill execution recording from existing surfaces
-- Edge function `runbook-drill` (already exists): extend to write into `operator_drill_executions` on completion
-- `dr-drill-runner` (already exists): extend to write certification rows when run with `--hardware` flag
+### 1D. Cadence emitter + 2 validators
+- `scripts/validation/emit-secret-rotation-status.ts` — queries DB, emits status JSON
+- `scripts/validation/check-secret-rotation-cadence.ts` — asserts every class in registry has a policy entry; fails BLOCK if cadence/owner missing
+- `scripts/validation/check-secret-rotation-freshness.ts` — asserts no class is past `staleThresholdDays`; honest WARN-tier for `auth`/`storage` (control-plane-blocked)
 
 ---
 
-## Phase 3 — npm scripts + final integration
+## Phase 2 — Adversarial validation evidence (5 validators + register)
 
-- Add `closure:admin-validation:emit`, `closure:admin-validation:run-all`, `closure:hardware-operator:emit`, `closure:hardware-operator:run-all` to `package.json`
-- Update `final:closure:run-all` to include both new closures
-- Run all 15 new gates → expect: Admin/Validation 8/8 GREEN, Hardware/Operator 4/7 GREEN + 3 honestly classified `partner-blocked` WARN (until real-device evidence is captured by operator)
+Each validator does REAL work (no stubs); honest WARN-tier where evidence requires real execution.
 
-### Honest limits surfaced (no fake green)
-- `check-real-hardware-proof` and `check-hardware-certification-matrix` will return `partner-blocked` warn-tier until real-device runs are recorded (no synthetic proof)
-- `check-operator-drill-execution` will return `pending-human-execution` warn until human operator runs first drill (the runbook-drill function is wired and ready)
-- `check-edge-function-contract-coverage` returns warning at 41/158 (~26%) initially; gate explicitly flags target=>50% with named expansion plan
-- `check-evidence-freshness-blocking` stays WARN until 30-day clean observation window completes (no false BLOCK promotion)
+### 2A. `check-rls-under-stress.ts` (~80 LOC)
+- Reads `generated/security-and-portability-closure/rls-stress-runs/*.json` (evidence files)
+- Required: ≥1 run in last 90 days with: concurrent multi-tenant probe, SECURITY DEFINER coverage check, edge-condition policy bypass attempt
+- Honest WARN if zero runs ("pending-execution"); BLOCK if any run shows isolation breach
+- Companion script `os/scripts/run-rls-stress-probe.sh` — real psql-based concurrent probe (uses existing `PG*` env), writes evidence file
 
-### Files touched (final summary)
-- **NEW (49):** 16 admin-validation deliverables + 14 hardware-operator deliverables + 8 admin validators + 7 hardware validators + 2 emitters + 2 truth panels (UI) + 20 contract tests + 1 hardware run script + 1 SQL migration
-- **EDITED (4):** `AIRuntimeHome.tsx` (+2 tabs), `check-os-release-readiness.ts` (+15 BLOCK gates), `package.json` (+4 scripts), `runbook-drill` and `dr-drill-runner` edge functions (+real DB writes)
-- **ZERO edits to:** any other admin domain, any user-facing surface, mobile/connector/AI runtime closures (preserved GREEN)
+### 2B. `check-electron-threat-detection-proof.ts` (~60 LOC)
+- Scans `electron/runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs` for required detection paths (anti-debug, screenshot block, domain allowlist)
+- Reads `electron/__threat_drills__/*.json` evidence files
+- Honest `partner-blocked` if no Electron-build environment available
 
-After this pass: 171 BLOCK gates total (was 156), 2 new live truth panels on AI Engineer hub, real hardware/operator evidence schema in DB, honest WARN-tier classification for everything blocked by real-world execution (no synthetic green).
+### 2C. `check-debugger-tamper-proof.ts` (~50 LOC)
+- Verifies `runtime-shield.cjs` exports debugger-detection + integrity-check hooks
+- Verifies `integrity-check.cjs` ASAR hash check is wired
+- Reads tamper-drill evidence; honest WARN where real-device drill required
+
+### 2D. `check-session-threat-behavior.ts` (~50 LOC)
+- Scans `src/lib/security/` and `os-security/sessiond.ts` for behavioral thresholds + anomaly response
+- Reads `generated/security-and-portability-closure/session-threat-runs/*.json`
+- Asserts admin visibility wired (existing `kill_switch_audit_log` linkage)
+
+### 2E. `check-security-adversarial-proof.ts` (meta, ~70 LOC)
+- Aggregates the 4 above + reads `SECURITY_FINDINGS_REGISTER` JSON mate
+- Asserts every claimed strong-security area has at least: a validator + an evidence file OR explicit `pending-execution` classification
+
+### 2F. Findings register
+- `generated/security-and-portability-closure/security-findings-register.json` — typed array `{id, severity, area, status: open|closed|accepted-risk|blocked-externally, opened_at, remediation_ref}`
+- `SECURITY_FINDINGS_REGISTER.md` — human-readable mate
+
+---
+
+## Phase 3 — Browser-only hook portability (4 hook refactors + 2 validators)
+
+### 3A. Extend canonical runtime-host adapter
+Add to `src/runtimes/`:
+- `runtime-host-adapter.ts` — typed surface exposing: `getScrollY()`, `setScrollY(y)`, `addBeforeUnload(fn)`, `getCurrentPath()`, `addOnlineListener(fn)`. Implementations:
+  - `web/web-host-adapter.ts` — uses `window.*` (safe: only loaded in WEB_APP/DESKTOP_HOST tiers)
+  - `noop/noop-host-adapter.ts` — for SIMULATED/SSR contexts
+- Adapter selected via existing `RuntimeTierProvider` — single adapter, no duplicate abstraction
+
+### 3B. Refactor 4 shared hooks to route through adapter
+Edit only these 4 (per audit — no scattered defensive null-checks elsewhere):
+- `src/hooks/useAppStatePersistence.ts`
+- `src/hooks/use-zero-latency.ts`
+- `src/hooks/use-session-restore.ts`
+- `src/hooks/useSetupOrchestration.ts`
+
+Each replaces direct `window.*` access with `useRuntimeHost()` calls. Behavior preserved in WEB_APP/DESKTOP_HOST; safe no-ops in SIMULATED.
+
+### 3C. Two new portability validators
+- `scripts/validation/check-no-browser-trapped-shared-hooks.ts` — scans `src/hooks/**/*.ts` for direct `window.`/`document.` references; allowlists 4 leaf hooks (`use-mobile`, `useReducedMotion`, `useWindowSnap`, `useElectronBridge`); fails BLOCK on new violations
+- `scripts/validation/check-runtime-host-abstraction.ts` — asserts the 4 refactored hooks DO import `useRuntimeHost`; asserts no second abstraction file exists
+
+### 3D. Portability boundary model
+- `src/runtimes/portability-boundary-model.ts` — typed enum `{leaf-browser-only, shared-portable, shell-specific, adapter-routed}` + per-file classification
+- `scripts/validation/check-portability-boundaries.ts` — asserts every file in `src/hooks/`, `src/lib/`, and `src/runtimes/` has a classification
+
+---
+
+## Phase 4 — Generated deliverables (13 files)
+
+`generated/security-and-portability-closure/`:
+- 12 markdown audits/models (per Part 5 spec): SECRET_ROTATION_CURRENT_STATE_AUDIT, SECRET_ROTATION_CADENCE_MODEL, SECURITY_ADVERSARIAL_PROOF_AUDIT, ADVERSARIAL_VALIDATION_MODEL, RLS_UNDER_STRESS_VALIDATION, ELECTRON_THREAT_DETECTION_VALIDATION, DEBUGGER_AND_TAMPER_VALIDATION, SESSION_THREAT_BEHAVIOR_VALIDATION, SECURITY_FINDINGS_REGISTER, BROWSER_ONLY_ASSUMPTION_AUDIT, RUNTIME_HOST_EXTRACTION_PLAN, PORTABILITY_BOUNDARY_MODEL
+- 1 final verification: SECURITY_AND_PORTABILITY_FINAL_VERIFICATION.md
+- 4 JSON status mates: secret-rotation-status, security-adversarial-proof-status, portability-boundary-status, security-and-portability-verification
+
+All audits use LIVE evidence — no stubs.
+
+---
+
+## Phase 5 — UI (1 new truth panel on AI Engineer hub only)
+
+- New `src/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel.tsx` — reads `security-and-portability-verification.json` + queries `secret_rotation_log` table live for cadence freshness; same shape as existing 6 panels (Refresh button, action-oriented per `check-no-museum-boards`)
+- Three sections: Secret rotation cadence table | Adversarial findings register | Portability boundary status
+- Insert as new `security-portability-truth` module in `AIRuntimeHome.tsx` (after `hardware-operator-truth`)
+- **Zero other admin pages touched.**
+
+---
+
+## Phase 6 — Wire 10 new gates into release readiness + npm scripts
+
+### 6A. `scripts/architecture/checks/check-os-release-readiness.ts`
+Add 10 new BLOCK gates (171 → 181):
+- `secret-rotation-cadence`, `secret-rotation-freshness`
+- `security-adversarial-proof`, `rls-under-stress`, `electron-threat-detection-proof`, `debugger-tamper-proof`, `session-threat-behavior`
+- `no-browser-trapped-shared-hooks`, `runtime-host-abstraction`, `portability-boundaries`
+
+### 6B. `package.json`
+Add 4 scripts:
+- `closure:security-portability:emit` (runs the 2 emitters)
+- `closure:security-portability:run-all` (runs all 10 validators)
+- `security:rotate:dry-run` (calls orchestrator with dryRun)
+- `security:rls-stress` (runs RLS stress probe)
+
+Update `final:closure:run-all` to include the new closure.
+
+---
+
+## Honest limits surfaced (no fake green)
+
+- `check-electron-threat-detection-proof` returns `partner-blocked` WARN-tier until Electron build environment captures real drill evidence
+- `check-rls-under-stress` returns `pending-execution` WARN until first stress-probe run; the `os/scripts/run-rls-stress-probe.sh` is wired and ready
+- `check-secret-rotation-freshness` returns `control-plane-blocked` WARN for `auth`/`storage` classes (Lovable Cloud control plane)
+- `check-debugger-tamper-proof` returns `pending-drill` WARN until real-device tamper drill recorded
+
+Every WARN classification is reached by inspecting REAL data (DB rows, evidence files, registry entries) — never hard-coded.
+
+---
+
+## Files touched (final summary)
+
+- **NEW (28):** 12 markdown audits + 4 JSON status files + 1 verification md + 5 adversarial validators + 3 portability validators + 2 cadence validators + 2 emitters + 1 truth panel UI + 1 SQL migration + 1 RLS stress script + 1 cadence registry + 1 host adapter set (3 files counted as 1) + 1 portability boundary model
+- **EDITED (8):** `AIRuntimeHome.tsx` (+1 tab), `check-os-release-readiness.ts` (+10 BLOCK gates), `package.json` (+4 scripts), `secret-rotation-orchestrator` (+log writes), 4 shared hooks (refactored to adapter)
+- **ZERO edits to:** other admin domains, mobile/AI runtime/connector/hardware closures (preserved GREEN), existing electron security modules (only read-scanned)
+
+After this pass: 181 BLOCK gates total, 1 new live truth panel on AI Engineer hub, real cadence enforcement against DB, real adversarial validators that read real evidence, 4 hooks fully host-abstracted, second abstraction prevented by validator. Honest WARN-tier classification for everything blocked by real-world execution (no synthetic green).
 
