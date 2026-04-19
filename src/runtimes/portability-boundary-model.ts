@@ -125,6 +125,27 @@ export const PORTABILITY_CLASSIFICATIONS: readonly PortabilityClassification[] =
   { path: "src/hooks/useWallpaperParallax.ts", boundary: "leaf-browser-only", rationale: "Mouse-parallax wallpaper effect — DOM only." },
   { path: "src/hooks/useWindowAttention.ts", boundary: "leaf-browser-only", rationale: "Window-attention flash — DESKTOP_HOST shell." },
   { path: "src/hooks/useWindowManager.ts", boundary: "leaf-browser-only", rationale: "Window manager — DESKTOP_HOST shell only." },
+  // ── src/lib/services/* — WEB_APP / DESKTOP_HOST shell services that legitimately touch browser globals.
+  { path: "src/lib/services/adaptive-visual-system.ts", boundary: "leaf-browser-only", rationale: "Adaptive visual rendering — DOM/window-bound by design." },
+  { path: "src/lib/services/ambient-context-engine.ts", boundary: "leaf-browser-only", rationale: "localStorage-backed ambient signal cache — WEB_APP shell only." },
+  { path: "src/lib/services/app-store/launch.service.ts", boundary: "leaf-browser-only", rationale: "App launcher window.open / native launch — shell only." },
+  { path: "src/lib/services/background-intelligence.ts", boundary: "leaf-browser-only", rationale: "Background DOM probes — UI shell only." },
+  { path: "src/lib/services/context-graph/index.ts", boundary: "leaf-browser-only", rationale: "navigator.onLine context probe — WEB/DESKTOP shell only." },
+  { path: "src/lib/services/device-presence-service.ts", boundary: "leaf-browser-only", rationale: "Device presence (window/document focus events) — shell only." },
+  { path: "src/lib/services/error-monitoring-service.ts", boundary: "leaf-browser-only", rationale: "window error/unhandledrejection listeners — shell only." },
+  { path: "src/lib/services/native-apps/detection.ts", boundary: "shell-specific", rationale: "Native-app detection probes — DESKTOP_HOST shell only." },
+  { path: "src/lib/services/native-apps/launch.ts", boundary: "shell-specific", rationale: "Native-app launch — DESKTOP_HOST shell only." },
+  { path: "src/lib/services/offline-sync/index.ts", boundary: "leaf-browser-only", rationale: "navigator.onLine + window online/offline events — shell only." },
+  { path: "src/lib/services/onboarding-daemon/index.ts", boundary: "leaf-browser-only", rationale: "Onboarding draft cache (localStorage + navigator.permissions)." },
+  { path: "src/lib/services/platform-readiness/platform-readiness-seeder.ts", boundary: "leaf-browser-only", rationale: "Platform capability probe — shell only." },
+  { path: "src/lib/services/predictive-prefetch.ts", boundary: "leaf-browser-only", rationale: "Prefetch heuristic cache (localStorage) — WEB_APP shell only." },
+  { path: "src/lib/services/push-notification/push-registration-service.ts", boundary: "leaf-browser-only", rationale: "navigator.serviceWorker push registration." },
+  { path: "src/lib/services/routine-detector.ts", boundary: "leaf-browser-only", rationale: "Usage-routine cache (localStorage) — UI shell only." },
+  { path: "src/lib/services/session-persistence.ts", boundary: "leaf-browser-only", rationale: "Session state cache (localStorage) — UI shell only." },
+  { path: "src/lib/services/setup/hardware-capability-service.ts", boundary: "leaf-browser-only", rationale: "Hardware capability probe (navigator.*) — shell only." },
+  { path: "src/lib/services/surface-detection/index.ts", boundary: "leaf-browser-only", rationale: "Surface (window/CSS env) detection — UI shell only." },
+  { path: "src/lib/services/system-updates/index.ts", boundary: "leaf-browser-only", rationale: "System update probe — shell only." },
+  { path: "src/lib/services/universal-state-sync/index.ts", boundary: "leaf-browser-only", rationale: "Cross-tab state sync (window storage events)." },
 ] as const;
 
 export function classifyByPath(path: string): PortabilityClassification | null {
