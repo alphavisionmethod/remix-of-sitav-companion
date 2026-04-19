@@ -263,6 +263,54 @@ export default function AdminCoherenceClosureTruthPanel() {
   );
 }
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xs flex items-center gap-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-muted-foreground" />
+            Post-cleanup audit
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-xs">
+          {data?.postCleanupAudit?.buckets ? (
+            Object.entries(data.postCleanupAudit.buckets).map(([key, b]) => {
+              const cleared = b.status === "cleared";
+              const tone = cleared ? "success" : "warning";
+              const label =
+                key === "rawEmptyStates"
+                  ? "Raw empty-state strings"
+                  : key === "unwrappedTables"
+                  ? "Unwrapped <table> elements"
+                  : key === "narrowWidthBriefing"
+                  ? "Boardroom briefing narrow-width"
+                  : key === "hardcodedColorSemantics"
+                  ? "Hardcoded color classes"
+                  : key;
+              return (
+                <div key={key} className="flex items-center justify-between gap-2">
+                  <span className="text-foreground/80 truncate">{label}</span>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      {b.before ?? 0} → {b.after ?? 0}
+                      {b.wrapped ? ` (${b.wrapped} wrapped)` : ""}
+                    </span>
+                    <StatusBadge tone={tone} size="xs">
+                      {cleared ? "cleared" : "tracked"}
+                    </StatusBadge>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-muted-foreground text-[11px]">
+              Cleanup audit data loads from the verification artifact.
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function Row({
   name,
   tone,
