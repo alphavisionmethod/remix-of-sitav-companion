@@ -1,12 +1,28 @@
 {
-  "generatedAt": "2026-04-19T18:23:05.429Z",
-  "scope": "frontend-truth-backing-closure (AI Engineer hub + canonical primitives)",
+  "generatedAt": "2026-04-19T19:05:00.000Z",
+  "scope": "frontend-truth-backing-closure (AI Engineer hub + canonical primitives + trust-copy map)",
   "verdict": "GREEN",
   "surfacesInScope": 5,
   "newComponents": [
     "src/components/primitives/status/ProvenanceChip.tsx",
-    "src/components/primitives/actions/EvidenceLink.tsx"
+    "src/components/primitives/actions/EvidenceLink.tsx",
+    "src/components/primitives/status/AITruthDisclosure.tsx"
   ],
+  "newSharedSystems": [
+    "src/lib/trust-copy/trust-copy-map.ts"
+  ],
+  "sectionDCoverage": {
+    "required": 6,
+    "shipped": 6,
+    "items": [
+      { "id": "D1", "name": "Operator empty-state", "asset": "EmptyState + PremiumEmptyState" },
+      { "id": "D2", "name": "Historical-data-pending", "asset": "NeedsHistoricalReleasesExplainer + NeedsTimeWindowExplainer" },
+      { "id": "D3", "name": "Reauth/degraded provider", "asset": "ConnectorStateBadge" },
+      { "id": "D4", "name": "AI truth/status disclosure", "asset": "AITruthDisclosure" },
+      { "id": "D5", "name": "Admin remediation/next-action", "asset": "OperatorActionPanel" },
+      { "id": "D6", "name": "Trust-copy helper map", "asset": "src/lib/trust-copy/trust-copy-map.ts" }
+    ]
+  },
   "newComponentFamilies": 0,
   "duplicates": 0,
   "newValidators": [
@@ -20,54 +36,12 @@
   "reusedValidators": [],
   "validatorTier": "WARN",
   "validatorResults": {
-    "thin-admin-empty-states": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 0,
-      "promptNamed": true,
-      "classification": "warn-tier-adoption-tracker"
-    },
-    "no-dead-cta-on-production-surfaces": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 0,
-      "promptNamed": true,
-      "classification": "warn-tier-adoption-tracker"
-    },
-    "qualified-surface-copy": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 0,
-      "promptNamed": true,
-      "classification": "warn-tier-truth-copy"
-    },
-    "provider-state-chip-consistency": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 582,
-      "promptNamed": true,
-      "classification": "warn-tier-adoption-tracker"
-    },
-    "responsive-admin-layout-integrity": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 0,
-      "promptNamed": true,
-      "classification": "warn-tier-adoption-tracker"
-    },
-    "simulation-disclosure-coverage": {
-      "exitCode": 0,
-      "tier": "WARN",
-      "errorCount": 0,
-      "warningCount": 47,
-      "promptNamed": true,
-      "classification": "warn-tier-disclosure-coverage"
-    }
+    "thin-admin-empty-states": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 0, "promptNamed": true, "classification": "warn-tier-adoption-tracker" },
+    "no-dead-cta-on-production-surfaces": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 0, "promptNamed": true, "classification": "warn-tier-adoption-tracker" },
+    "qualified-surface-copy": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 0, "promptNamed": true, "classification": "warn-tier-truth-copy" },
+    "provider-state-chip-consistency": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 582, "promptNamed": true, "classification": "warn-tier-adoption-tracker" },
+    "responsive-admin-layout-integrity": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 0, "promptNamed": true, "classification": "warn-tier-adoption-tracker" },
+    "simulation-disclosure-coverage": { "exitCode": 0, "tier": "WARN", "errorCount": 0, "warningCount": 47, "promptNamed": true, "classification": "warn-tier-disclosure-coverage" }
   },
   "scopeDiscipline": {
     "deletions": 0,
@@ -102,59 +76,11 @@
     "finalMarkdown": "generated/frontend-truth-backing-closure/FRONTEND_TRUTH_BACKING_FINAL_VERIFICATION.md"
   },
   "surfacesWired": [
-    {
-      "surface": "ConciergeBoardroom (Boardroom briefing root)",
-      "primitives": [
-        "ProvenanceChip",
-        "EvidenceLink"
-      ],
-      "drilldowns": [
-        "/admin/ai-runtime/nightly-truth",
-        "/admin/ai-runtime/connector-truth"
-      ]
-    },
-    {
-      "surface": "AIRuntimeNightlyTruthPanel",
-      "primitives": [
-        "ProvenanceChip",
-        "EvidenceLink"
-      ],
-      "drilldowns": [
-        "receipts",
-        "ledger",
-        "fallback-events",
-        "provider-health"
-      ]
-    },
-    {
-      "surface": "ConnectorTruthSummaryPanel",
-      "primitives": [
-        "ProvenanceChip",
-        "EvidenceLink"
-      ],
-      "drilldowns": [
-        "/admin/integrations?provider=…"
-      ]
-    },
-    {
-      "surface": "IntegrationStreakPanel",
-      "primitives": [
-        "ProvenanceChip",
-        "OperatorActionPanel"
-      ],
-      "drilldowns": [
-        "/admin/integrations"
-      ]
-    },
-    {
-      "surface": "Communications (canonical chips already present)",
-      "primitives": [
-        "ConnectorStateBadge"
-      ],
-      "drilldowns": [
-        "n/a"
-      ]
-    }
+    { "surface": "ConciergeBoardroom (Boardroom briefing root)", "primitives": ["AITruthDisclosure", "EvidenceLink"], "drilldowns": ["/admin/ai-runtime/nightly-truth", "/admin/ai-runtime/connector-truth"] },
+    { "surface": "AIRuntimeNightlyTruthPanel", "primitives": ["AITruthDisclosure", "ProvenanceChip", "EvidenceLink", "trust-copy"], "drilldowns": ["receipts", "ledger", "fallback-events", "provider-health"] },
+    { "surface": "ConnectorTruthSummaryPanel", "primitives": ["ProvenanceChip", "EvidenceLink"], "drilldowns": ["/admin/integrations?provider=…"] },
+    { "surface": "IntegrationStreakPanel", "primitives": ["ProvenanceChip", "OperatorActionPanel"], "drilldowns": ["/admin/integrations"] },
+    { "surface": "Communications (canonical chips already present)", "primitives": ["ConnectorStateBadge"], "drilldowns": ["n/a"] }
   ],
   "honestWarningCounts": {
     "provider-state-chip-consistency": 582,
