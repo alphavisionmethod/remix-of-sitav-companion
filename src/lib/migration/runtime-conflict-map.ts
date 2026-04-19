@@ -38,7 +38,7 @@ export const RUNTIME_CONFLICT_MAP: readonly RuntimeConflictEntry[] = [
   },
   {
     id: "kernel-claim-vs-simulation",
-    description: "Nova kernel is simulated UX, not a real kernel.",
+    description: "Nova Runtime SDK is a simulated userland substrate, not a host-level kernel (see KERNEL_OWNERSHIP_GAP.md).",
     involvedPaths: ["src/lib/nova-sdk/kernel/"],
     resolution: "extract-shared-contract",
     rationale: "Kernel stays in SIMULATION_TIER. Marketing copy must not claim host authority.",

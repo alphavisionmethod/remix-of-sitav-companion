@@ -35,7 +35,7 @@ export const APPLIANCE_RUNTIME_CAPABILITIES: readonly ApplianceCapabilityEntry[]
   { capability: "health-check", state: "real", artifact: "scripts/release/iso/sita-os.service" },
   { capability: "metrics-emission", state: "real", artifact: "scripts/release/iso/sita-metrics-agent.sh" },
   { capability: "managed-runtime-authority", state: "real", artifact: "src/lib/runtime/runtime-tier-model.ts", notes: "Honest only at Tier 3" },
-  { capability: "bespoke-kernel", state: "roadmap", artifact: "docs/architecture/PRODUCT_REALITY_TIERS.md", notes: "Claim must remain roadmap until real kernel ships" },
+  { capability: "bespoke-kernel", state: "roadmap", artifact: "docs/architecture/PRODUCT_REALITY_TIERS.md", notes: "Claim remains roadmap until host-level kernel ownership ships (see KERNEL_OWNERSHIP_GAP.md)" },
   { capability: "ova-export", state: "real", artifact: "scripts/release/vmware/build-ova.sh" },
   { capability: "iso-build", state: "real", artifact: "scripts/release/vmware/generate-vmware-iso-image.ts" },
 ];
