@@ -31,10 +31,14 @@ if (!existsSync(LAYOUT_PATH)) {
   issues.push({ severity: "error", area: "layout", message: `Missing electron domain registry: ${LAYOUT_PATH}` });
 } else {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const layout = require(require("node:path").resolve(LAYOUT_PATH)) as Record<string, string[]>;
-    const { readdirSync } = require("node:fs") as typeof import("node:fs");
-    const onDisk = readdirSync("electron").filter((f: string) => f.endsWith(".cjs"));
+    const { createRequire } = await import("node:module");
+    const requireCjs = createRequire(import.meta.url);
+    const { resolve } = await import("node:path");
+    const { readdirSync } = await import("node:fs");
+    const layout = requireCjs(resolve(LAYOUT_PATH)) as Record<string, string[]>;
+    const onDisk = readdirSync("electron")
+      .filter((f: string) => f.endsWith(".cjs"))
+      .filter((f: string) => !f.startsWith("_"));
     const classified = new Set<string>();
     for (const arr of Object.values(layout)) {
       if (Array.isArray(arr)) for (const f of arr) classified.add(f);

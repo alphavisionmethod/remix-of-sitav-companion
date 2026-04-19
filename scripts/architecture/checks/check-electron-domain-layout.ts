@@ -8,6 +8,9 @@
 // ═══════════════════════════════════════════════════════════════════════
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { createRequire } from "node:module";
+
+const requireCjs = createRequire(import.meta.url);
 
 interface Issue { severity: "error" | "warning"; area: string; message: string; }
 const issues: Issue[] = [];
@@ -20,8 +23,7 @@ if (!existsSync(LAYOUT_PATH)) {
   issues.push({ severity: "error", area: "registry", message: `Missing ${LAYOUT_PATH}` });
 } else {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    layout = require(resolve(LAYOUT_PATH));
+    layout = requireCjs(resolve(LAYOUT_PATH));
   } catch (e: any) {
     issues.push({ severity: "error", area: "registry", message: `Failed to load _layout.cjs: ${e?.message || e}` });
   }
@@ -53,9 +55,12 @@ if (layout) {
   }
 }
 
-// Filesystem reality
+// Filesystem reality. Exclude the registry file itself + any underscore-prefixed
+// meta-modules (e.g. _layout.cjs) — those are governance artifacts, not runtime modules.
 const onDisk = existsSync(ELECTRON_DIR)
-  ? readdirSync(ELECTRON_DIR).filter(f => f.endsWith(".cjs"))
+  ? readdirSync(ELECTRON_DIR)
+      .filter(f => f.endsWith(".cjs"))
+      .filter(f => !f.startsWith("_"))
   : [];
 
 // Orphans: on disk but not registered
