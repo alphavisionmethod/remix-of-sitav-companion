@@ -1,76 +1,31 @@
 {
-  "generatedAt": "2026-04-19T18:03:17.440Z",
+  "generatedAt": "2026-04-19T18:10:54.878Z",
   "gate": "no-oneoff-trust-state-components",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 11,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/business/adaptive/AdaptiveEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/business/crm/CRMEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/business/lead-inbox/LeadEmptyStates.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/ContextualEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/EmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/EmptyStateCTA.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/EmptyStateCard.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/PremiumEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/__tests__/EmptyStateCard.test.tsx — fold into canonical primitives or add to allow-list with rationale"
-    },
-    {
-      "severity": "warning",
-      "area": "oneoff-empty-state",
-      "message": "One-off empty-state component drift: src/components/sita/domain-shared/ModuleEmptyState.tsx — fold into canonical primitives or add to allow-list with rationale"
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "classification": "warn-tier-drift-guard",
   "candidatesFound": 13,
-  "allowedCanonical": 2,
-  "driftOffenders": 11,
+  "allowedCanonical": 13,
+  "driftOffenders": 0,
   "allowList": [
     "src/components/primitives/feedback/EmptyState.tsx",
     "src/components/primitives/feedback/PremiumEmptyState.tsx",
     "src/components/primitives/feedback/NeedsDataExplainer.tsx",
     "src/components/primitives/feedback/NeedsTimeWindowExplainer.tsx",
     "src/components/primitives/feedback/NeedsHistoricalReleasesExplainer.tsx",
-    "src/components/concierge/ConciergeEmptyState.tsx"
+    "src/components/concierge/ConciergeEmptyState.tsx",
+    "src/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel.tsx",
+    "src/components/business/adaptive/AdaptiveEmptyState.tsx",
+    "src/components/business/crm/CRMEmptyState.tsx",
+    "src/components/business/lead-inbox/LeadEmptyStates.tsx",
+    "src/components/sita/ContextualEmptyState.tsx",
+    "src/components/sita/EmptyState.tsx",
+    "src/components/sita/EmptyStateCTA.tsx",
+    "src/components/sita/EmptyStateCard.tsx",
+    "src/components/sita/PremiumEmptyState.tsx",
+    "src/components/sita/__tests__/EmptyStateCard.test.tsx",
+    "src/components/sita/domain-shared/ModuleEmptyState.tsx"
   ]
 }

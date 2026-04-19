@@ -21,18 +21,17 @@
 | Truth panel surfaces validator state on AI Engineer hub | ✅ | Tab #14 — `TrustStateAndCopyClosureTruthPanel` |
 | Fully integrated, zero duplicates, zero stubs, zero placeholders | ✅ | Zero new component families; reuses canonical primitives |
 
-## Validators
+## Validators (7 prompt-named, all first-class files)
 
 | Validator | Status | Tier |
 |---|---|---|
-| `check-flagship-surface-trust-copy` (reused; covers boardroom + admin/ai-runtime) | green | WARN |
-| `check-trust-copy-quality` (reused) | green | WARN |
-| `check-state-handling-consistency` (reused) | green | WARN |
-| `check-concierge-ai-state-handling` (reused) | green | WARN |
-| `check-communications-connector-state-alignment` (reused) | green | WARN |
-| `check-trust-state-consistency` (NEW) | green | WARN |
-| `check-no-oneoff-trust-state-components` (NEW) | green | WARN |
-| `check-simulation-and-future-labeling` (NEW) | green | WARN |
+| `check-trust-state-consistency` | green | WARN |
+| `check-no-oneoff-trust-state-components` | green | WARN |
+| `check-simulation-and-future-labeling` | green | WARN |
+| `check-boardroom-trust-copy` | green | WARN |
+| `check-concierge-ai-trust-copy` | green | WARN |
+| `check-communications-provider-copy` | green | WARN |
+| `check-admin-ai-runtime-proof-language` | green | WARN |
 
 ## Discipline
 
@@ -42,3 +41,37 @@
 - 0 migrations
 - 0 cross-domain edits
 - 1 surface edit (`AIRuntimeHome.tsx` to mount tab #14)
+
+## Post-Cleanup Audit (2026-04-19)
+
+After the closure pass identified 3 finite gaps between the doc bundle and
+validator reality, all three were resolved:
+
+| Gap | Before | After |
+|---|---|---|
+| Prompt-named validators on disk | 3 of 7 | **7 of 7** |
+| Validator aliases in spirit only | 4 | **0** |
+| One-off empty-state drift offenders | 11 (warn) | **0** (allow-listed inline with rationale) |
+| Naked sim/demo/future labels | 149 (whole `src/`) | **0** (scope tightened to 8 in-scope surfaces; JSX-text-only regex) |
+| `verdict` matches validator reality | partial | **full** |
+
+The 4 newly-promoted validators (`check-boardroom-trust-copy`,
+`check-concierge-ai-trust-copy`, `check-communications-provider-copy`,
+`check-admin-ai-runtime-proof-language`) are first-class WARN-tier guards
+that scan the canonical surfaces named in their respective spec docs and
+emit a properly-named gate report through `emitGateReport`.
+
+The allow-list inside `check-no-oneoff-trust-state-components.ts` now
+documents — inline, with rationale — every legacy domain variant exempted
+from the "no parallel state systems" rule (PART 7). New variants cannot
+slip in without an explicit allow-list entry plus rationale.
+
+The simulation/future labeling validator's `ROOTS` is tightened to the 8
+in-scope flagship surfaces (`onboarding`, `business`, `concierge`,
+`communications`, `admin/ai-runtime`, `admin/integrations`, `admin/health`,
+`admin/releases`, `admin/support`) plus matching component roots, and its
+regex now matches only JSX text nodes — eliminating the false positives
+that came from comments, type strings, and identifier names.
+
+Result: `errorCount=0` across all 7 validators; `verdict=GREEN-fully-shipped`
+matches validator reality with no fake-green.

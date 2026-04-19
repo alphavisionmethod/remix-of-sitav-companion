@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T18:10:54.682Z",
+  "gate": "boardroom-trust-copy",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-trust-copy-guard",
+  "spec": "generated/trust-state-and-copy-closure/BOARDROOM_TRUST_COPY_SPEC.md",
+  "surfacesScanned": 86,
+  "overclaimHits": 0,
+  "distinguishes": [
+    "live-recommendation-loop",
+    "future-continuous-learning-v2"
+  ]
+}

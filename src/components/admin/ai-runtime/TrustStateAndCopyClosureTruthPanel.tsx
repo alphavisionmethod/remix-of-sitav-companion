@@ -51,7 +51,17 @@ interface VerificationJson {
   surfacesInScope?: number;
   scopeDiscipline?: Record<string, unknown>;
   truthPanel?: { id?: string; tab?: number; component?: string; mountedAt?: string };
-  validatorResults?: Record<string, ValidatorResult>;
+  validatorResults?: Record<string, ValidatorResult & { promptNamed?: boolean }>;
+  postCleanupAudit?: {
+    auditedAt?: string;
+    promptNamedValidatorsOnDisk?: number;
+    promptNamedValidatorsExpected?: number;
+    validatorAliasesRemaining?: number;
+    oneoffEmptyStateOffenders?: number;
+    nakedSimulationLabelOffenders?: number;
+    trustStateConsistencyOffenders?: number;
+    notes?: string;
+  };
 }
 
 const VERIFICATION_PATH =
@@ -97,8 +107,9 @@ export default function TrustStateAndCopyClosureTruthPanel() {
             </CardTitle>
             <p className="text-xs text-muted-foreground">
               Live status of the canonical state-handling system and trust-copy
-              alignment across 8 in-scope surfaces. 8 WARN-tier validators (5 reused + 3 new)
-              guard against drift back into one-off states or overclaim copy.
+              alignment across 8 in-scope surfaces. 7 prompt-named WARN-tier
+              validators (all first-class files) guard against drift back into
+              one-off states or overclaim copy.
             </p>
           </div>
           <Button size="sm" variant="outline" onClick={load} className="h-7 px-2">
@@ -189,29 +200,51 @@ export default function TrustStateAndCopyClosureTruthPanel() {
           <CardHeader>
             <CardTitle className="text-xs flex items-center gap-2">
               <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" />
-              Validators (
-              {(data?.newValidators?.length ?? 0) + (data?.reusedValidators?.length ?? 0)})
+              Validators ({(data?.newValidators ?? []).length} prompt-named, all first-class)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1.5 text-xs">
             {data ? (
-              <>
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                  New
-                </div>
-                {(data.newValidators ?? []).map((v) => (
-                  <ValidatorRow key={v} path={v} result={data.validatorResults?.[stem(v)]} />
-                ))}
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground mt-2">
-                  Reused
-                </div>
-                {(data.reusedValidators ?? []).map((v) => (
-                  <ValidatorRow key={v} path={v} result={data.validatorResults?.[stem(v)]} />
-                ))}
-              </>
+              (data.newValidators ?? []).map((v) => (
+                <ValidatorRow
+                  key={v}
+                  path={v}
+                  result={data.validatorResults?.[stem(v)]}
+                />
+              ))
             ) : (
               <div className="text-muted-foreground text-[11px]">
                 Validator list loads from the verification artifact.
+              </div>
+            )}
+            {data?.postCleanupAudit && (
+              <div className="mt-3 pt-2 border-t border-border space-y-1">
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Post-cleanup audit
+                </div>
+                <AuditRow
+                  label="Prompt-named validators on disk"
+                  value={`${data.postCleanupAudit.promptNamedValidatorsOnDisk ?? 0} / ${data.postCleanupAudit.promptNamedValidatorsExpected ?? 0}`}
+                  ok={
+                    (data.postCleanupAudit.promptNamedValidatorsOnDisk ?? 0) ===
+                    (data.postCleanupAudit.promptNamedValidatorsExpected ?? 0)
+                  }
+                />
+                <AuditRow
+                  label="Aliases remaining"
+                  value={`${data.postCleanupAudit.validatorAliasesRemaining ?? 0}`}
+                  ok={(data.postCleanupAudit.validatorAliasesRemaining ?? 0) === 0}
+                />
+                <AuditRow
+                  label="One-off offenders"
+                  value={`${data.postCleanupAudit.oneoffEmptyStateOffenders ?? 0}`}
+                  ok={(data.postCleanupAudit.oneoffEmptyStateOffenders ?? 0) === 0}
+                />
+                <AuditRow
+                  label="Naked sim/future labels"
+                  value={`${data.postCleanupAudit.nakedSimulationLabelOffenders ?? 0}`}
+                  ok={(data.postCleanupAudit.nakedSimulationLabelOffenders ?? 0) === 0}
+                />
               </div>
             )}
           </CardContent>
@@ -316,6 +349,17 @@ function DeliverableGroup({ label, items }: { label: string; items: string[] }) 
           {p}
         </div>
       ))}
+    </div>
+  );
+}
+
+function AuditRow({ label, value, ok }: { label: string; value: string; ok: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-[10px] text-muted-foreground truncate">{label}</span>
+      <StatusBadge tone={ok ? "success" : "warning"} size="xs">
+        {value}
+      </StatusBadge>
     </div>
   );
 }
