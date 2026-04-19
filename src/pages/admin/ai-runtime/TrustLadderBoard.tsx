@@ -138,10 +138,13 @@ export default function TrustLadderBoard() {
             {summary?.agents[0]?.human_approval_required_above_rung ?? 4} require human approval.
           </p>
         </div>
-        <Button onClick={runEvaluator} disabled={evaluating} variant="outline">
-          <RefreshCw className={`h-4 w-4 mr-2 ${evaluating ? "animate-spin" : ""}`} />
-          {evaluating ? "Evaluating…" : "Run evaluator"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <AITruthDisclosure mode="live-gateway" verifiedAt={summary?.generated_at} to="/admin/ai-runtime" />
+          <Button onClick={runEvaluator} disabled={evaluating} variant="outline">
+            <RefreshCw className={`h-4 w-4 mr-2 ${evaluating ? "animate-spin" : ""}`} />
+            {evaluating ? "Evaluating…" : "Run evaluator"}
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="agents" className="space-y-4">
@@ -171,13 +174,13 @@ export default function TrustLadderBoard() {
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base font-mono">{a.agent_id}</CardTitle>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={rungBadge(a.current_rung)}>
+                      <StatusBadge tone={rungTone(a.current_rung)} size="sm">
                         {RUNG_LABELS[a.current_rung]}
-                      </Badge>
+                      </StatusBadge>
                       {a.promotion_locked && (
-                        <Badge variant="outline" className="border-amber-500/30 text-amber-500">
-                          <Lock className="h-3 w-3 mr-1" /> Locked
-                        </Badge>
+                        <StatusBadge tone="warning" size="sm" icon={<Lock className="h-3 w-3" />}>
+                          Locked
+                        </StatusBadge>
                       )}
                     </div>
                   </div>
@@ -264,7 +267,7 @@ export default function TrustLadderBoard() {
                   {(summary?.active_learnings ?? []).map((l) => (
                     <div key={l.id} className="p-3 rounded-lg border bg-card">
                       <div className="flex items-center justify-between mb-1">
-                        <Badge variant="outline" className="font-mono text-xs">{l.pattern_tag}</Badge>
+                        <StatusBadge tone="info" size="sm" className="font-mono">{l.pattern_tag}</StatusBadge>
                         <span className="text-xs text-muted-foreground">{(l.confidence * 100).toFixed(0)}% confidence</span>
                       </div>
                       <p className="text-sm">{l.learning_summary}</p>
