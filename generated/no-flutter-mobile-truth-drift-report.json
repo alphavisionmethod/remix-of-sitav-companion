@@ -1,21 +1,15 @@
 {
-  "generatedAt": "2026-04-19T00:42:48.648Z",
+  "generatedAt": "2026-04-19T00:43:40.852Z",
   "gate": "no-flutter-mobile-truth-drift",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "truth-drift",
-      "message": "Flutter mention in mobile-truth doc without disavowal context: src/planes/MOBILE_MANIFEST.md:47"
-    }
-  ],
+  "issues": [],
   "truthRootsScanned": [
     "src/planes",
     "generated/manifests",
     "infra/deploy",
     "mobile"
   ],
-  "hits": 1
+  "hits": 0
 }
