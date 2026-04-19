@@ -59,6 +59,8 @@ const ExternalInstallerPage = () => {
         <p className="text-sm text-muted-foreground mt-1">Install software from outside the SITA App Store</p>
       </div>
 
+      <MobileHonestyNotice />
+
       {state === "idle" && (
         <>
           {/* Drop Zone */}

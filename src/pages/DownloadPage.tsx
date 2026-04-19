@@ -97,6 +97,8 @@ export default function DownloadPage() {
             </p>
           </header>
 
+          <MobileHonestyNotice className="mb-8 max-w-3xl mx-auto" />
+
           <Tabs value={channel} onValueChange={(v) => setChannel(v as Channel)}>
             <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="stable">Stable</TabsTrigger>

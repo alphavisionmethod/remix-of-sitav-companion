@@ -29,6 +29,7 @@ const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/Depe
 const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"));
 const AIRuntimeNightlyTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"));
 const ConnectorTruthSummaryPanel = lazy(() => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"));
+const MobileScopeTruthPanel = lazy(() => import("@/components/admin/ai-runtime/MobileScopeTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -106,6 +107,13 @@ export default function AIRuntimeHome() {
       description: "Live OAuth refresh truth (Google / Microsoft / Slack) — read-only summary; canonical control at Integrations Hub.",
       legacyPath: "/admin/ai-runtime/connector-truth",
       render: wrap(ConnectorTruthSummaryPanel),
+    },
+    {
+      id: "mobile-scope-truth",
+      label: "Mobile Scope Truth",
+      description: "Native iOS/Android are ARCHIVED. Read-only canonical truth + reactivation conditions checklist.",
+      legacyPath: "/admin/ai-runtime/mobile-scope-truth",
+      render: wrap(MobileScopeTruthPanel),
     },
     {
       id: "efficiency",
