@@ -1,63 +1,86 @@
 
-The user wants me to plan a Mobile Identity & Stack Truth Reconciliation pass. This is separate from the previously-completed Mobile Deployment Closure (which covered signing/submission). This new pass focuses on **identity, stack truth declarations, native generation contract, build/dependency model, env strategy** — and explicitly calls out that `infra/deploy/mobile.yaml` previously claimed Flutter (per their audit). Looking at the file excerpt I have, `infra/deploy/mobile.yaml` already declares `stack: capacitor` — but they want full audit + 16 new artifacts + 8 new validators.
+This is a massive scope — "final last-mile deployment closure" covering 18 areas (A–R) across 5 execution phases. Looking at memory and recent history:
 
-I'll keep the plan tight: 4 phases, each independently deployable.
+- Phases 1–9 of AI Workforce: COMPLETE per memory (`features/ai-workforce-runtime`)
+- Boardroom Layer 7: COMPLETE per memory (`features/boardroom-layer-7`)
+- Mobile identity reconciliation: JUST COMPLETED (140 gates green)
+- Mobile deployment closure: COMPLETE (16 artifacts)
+- 117 BLOCK-level gates already enforced
+- Security Council UI/cron: NOT BUILT (verified earlier this session — 0 rows in `security_council_findings`, no pg_cron job, no `/admin/ai-runtime/security-council` route)
+- Production restore drill, OAuth refresh probes, MOK matrix: per memory `operational-readiness` — pg_cron entries exist (1h OAuth probe, weekly DR drill)
 
-<lov-plan>
-# Mobile Identity & Stack Truth Reconciliation — Implementation Plan
+The biggest **real, unimplemented** gap from this session's verification is the **Security Council runtime** (Item Q + part of N). The user explicitly asked about it earlier and I confirmed it doesn't exist. The rest is largely complete or governance-doc work.
 
-Builds on the completed Mobile Deployment Closure. Adds a parallel reconciliation track focused on **identity, stack truth, native generation contract, build model, env strategy** under `generated/mobile-identity-reconciliation/`.
+I'll structure 5 small phases focused on **what's actually missing** vs. closure-doc generation. Keep it tight.
 
-## Phase 1 — Identity & Stack Truth Audit + Source-of-Truth Model
-**Deployable outcome:** Canonical identity model published; all conflicting identity references normalized.
+---
 
-- Audit every identity-bearing surface (`capacitor.config.ts`, `mobile/store-metadata/*.json`, `mobile/*/SIGNING.md`, `infra/deploy/mobile.yaml`, bootstrap scripts, workflow files)
-- Define single source of truth: `appId=com.sita.os`, `appName=SITA OS`, wrapper=Capacitor 6, web=Vite/React SPA, backend=Lovable Cloud
-- Normalize any drift (e.g. `app.lovable.*` placeholders rejected for signed builds)
-- **Artifacts:** `PROJECT_IDENTIFICATION_AUDIT.md`, `MOBILE_IDENTITY_SOURCE_OF_TRUTH.md`, `MOBILE_STACK_TRUTH_AUDIT.md`, `MOBILE_DEPLOY_MANIFEST_RECONCILIATION.md`, `mobile-project-identification-status.json`, `mobile-stack-truth-status.json`
-- **Validators:** `check-mobile-project-identification.ts`, `check-mobile-identity-source-of-truth.ts`, `check-no-flutter-stack-drift.ts`, `check-capacitor-mobile-truth.ts`
+# Final Last-Mile Deployment Closure — Implementation Plan
 
-## Phase 2 — Native Project Generation Contract
-**Deployable outcome:** Explicit, validated contract for how `android/` and `ios/` come into existence.
+Scope verified against memory + live DB checks. The bulk of the 18 areas (A–R) are already complete (AI Workforce Phases 1–9, Boardroom L7, Mobile closure, 117 gates, restore drill, OAuth probes, MOK matrix). The **real remaining gaps** are: (1) Security Council runtime + UI, (2) final-closure governance artifacts + meta-validators that prove the green-state is meaningful.
 
-- Audit `scripts/android/bootstrap.sh`, `scripts/archive/ios/bootstrap.sh`, `.github/workflows/mobile-build.yml`
-- Promote iOS bootstrap from `scripts/archive/ios/` → `scripts/ios/bootstrap.sh` (real, hardened, not archived)
-- Document: native projects are **generated on demand**, not committed; pinned tool versions; post-generation sanity checks; failure diagnostics
-- **Artifacts:** `NATIVE_PROJECT_GENERATION_AUDIT.md`, `NATIVE_PROJECT_GENERATION_CONTRACT.md`, `native-generation-contract-status.json`
-- **Validators:** `check-android-native-generation.ts`, `check-ios-native-generation.ts`, `check-native-project-generation-contract.ts`, `check-mobile-bootstrap-contract.ts`
+## Phase 1 — Security Council Runtime (Item Q, real code)
+**Deployable outcome:** 7 security agents producing real findings hourly; admin board shows live data.
 
-## Phase 3 — Build, Dependency & Environment Model
-**Deployable outcome:** One canonical build/dep/env story; no mixed narratives.
+- **DB migration:** add `security_council_findings` columns if missing (`agent_id`, `severity`, `evidence_jsonb`, `proposed_action`, `kill_switch_recommendation`, `secret_rotation_target`, `policy_proposal_id`); add indexes; RLS policies (admin read, service-role insert).
+- **Edge function:** `supabase/functions/sita-security-council-tick/index.ts` — runs the 7 agents (rls-watcher, secret-rotation-sentinel, anomaly-detector, policy-drift-auditor, edge-fn-jwt-checker, oauth-token-watcher, kill-switch-recommender), inserts findings, emits AI receipts via existing gateway.
+- **pg_cron job:** `sita-security-council-tick` hourly, calling the edge function via `net.http_post` with service-role auth.
+- **UI:** new route `/admin/ai-runtime/security-council` → `src/pages/admin/ai-runtime/SecurityCouncilPage.tsx` with: 7 agent cards (last-run, finding-count, trust-score), findings table (sortable by severity), evidence drilldown drawer, "Acknowledge / Dispatch to Approval Queue / Open Runbook" actions wired to existing `approval_decisions` and `runbooks` infra.
+- **Nav wiring:** add to `AdminControlPlaneShell` AI-Runtime domain; gate via existing `useRequireAdmin`.
 
-- Define: web=npm/Vite, Android=Gradle, iOS=xcodebuild+CocoaPods (post-gen), Capacitor sync as bridge
-- Define env strategy: Lovable `.env` (web runtime) vs GitHub Actions secrets (signing) vs Supabase function secrets (push/backend) vs Apple/Google credential stores (never in repo)
-- **Artifacts:** `MOBILE_BUILD_AND_DEPENDENCY_AUDIT.md`, `MOBILE_BUILD_AND_DEPENDENCY_MODEL.md`, `MOBILE_ENV_AND_SECRET_STRATEGY_AUDIT.md`, `MOBILE_ENV_AND_SECRET_STRATEGY_MODEL.md`, `mobile-build-model-status.json`
-- **Validators:** `check-mobile-build-model-consistency.ts`, `check-mobile-env-strategy-consistency.ts`
+## Phase 2 — Final Closure Governance Artifacts (10 docs + 6 status JSONs)
+**Deployable outcome:** All 16 deliverables under `generated/final-deployment-closure/` exist with real content sourced from live system state.
 
-## Phase 4 — Governance Wiring & Final Verification
-**Deployable outcome:** All new validators wired into the 130-gate aggregator; final verification artifact attests GREEN.
+- Generate the 10 `.md` files (00–09) by reading live registries: 117-gate report, Boardroom L7 status, mobile reconciliation status, AI workforce roadmap completion, claim-safety registry.
+- Generate the 6 `.json` status files from real validators (no hand-typed data).
+- Each artifact cites its source manifest + last-validated timestamp.
 
-- Add 8 new validators to `scripts/validation/check-os-release-readiness.ts` aggregator (gates 131–138)
-- Add npm script `mobile:identity:run-all` mirroring existing `mobile:closure:run-all`
-- Update `src/planes/MOBILE_MANIFEST.md` to reference identity reconciliation alongside closure
-- **Artifacts:** `MOBILE_IDENTITY_RECONCILIATION_FINAL_VERIFICATION.md`, `mobile-identity-verification.json`
-- Run full aggregator → confirm 138 gates GREEN, 0 errors
+## Phase 3 — Meta-Validators (gate meaningfulness)
+**Deployable outcome:** 7 new validators detect "false green" states; wired into 117-gate aggregator → 124 gates.
+
+- `check-final-deployment-readiness.ts` — aggregates restore + OAuth + MOK + L7 closure status.
+- `check-final-runtime-proof.ts` — verifies pg_cron jobs are actually firing (queries `cron.job_run_details`).
+- `check-final-mobile-truth.ts` — re-runs the 10 mobile identity gates as a meta-check.
+- `check-final-ai-workforce-readiness.ts` — verifies all 40 agents have `last_run_at` within SLA + Security Council producing rows.
+- `check-final-launch-honesty.ts` — scans for forbidden claim phrases ("kernel", "production-ready" without qualifiers) outside contained registry.
+- `check-final-supportability-readiness.ts` — verifies every kill-switch + runbook has a tested execution receipt.
+- `check-final-gate-meaningfulness.ts` — classifies each of the 124 gates as structural/behavioral/smoke/E2E + fails if >20% are structural-only.
+
+## Phase 4 — Aggregator Wiring + Scripts
+**Deployable outcome:** Master aggregator at 124 gates GREEN, with new `final:closure:run-all` npm script.
+
+- Append 7 new validators to `MASTER_RELEASE_GATES` in `check-os-release-readiness.ts`.
+- Add `final:closure:run-all` and `security-council:tick:manual` to `package.json`.
+- Update `src/planes/MOBILE_MANIFEST.md` and create `src/planes/FINAL_CLOSURE_MANIFEST.md` with the canonical map.
+
+## Phase 5 — Live Verification + Certification
+**Deployable outcome:** Signed `final-deployment-certification.json` confirming 124/124 GREEN with cryptographic seal via existing `SITA_HARDENING_HMAC_KEY`.
+
+- Run `npm run check:os-release-readiness` end-to-end.
+- Manually trigger `sita-security-council-tick` once → confirm findings inserted.
+- Verify Security Council UI loads with live data.
+- Generate signed certification artifact + attach to baseline seal.
 
 ## Files Touched (Summary)
 
 ```text
-generated/mobile-identity-reconciliation/   [16 new files]
-scripts/validation/                         [8 new validators]
-scripts/ios/bootstrap.sh                    [promoted from archive, hardened]
-scripts/validation/check-os-release-readiness.ts   [+8 gates]
-src/planes/MOBILE_MANIFEST.md               [identity section added]
-package.json                                [+ mobile:identity:run-all script]
-infra/deploy/mobile.yaml                    [verified canonical, no changes expected]
+supabase/migrations/<ts>_security_council_runtime.sql       [new]
+supabase/functions/sita-security-council-tick/index.ts      [new]
+src/pages/admin/ai-runtime/SecurityCouncilPage.tsx          [new]
+src/lib/services/security-council/                          [new dir, 7 agent runners]
+src/components/admin/security-council/                      [new dir, 4 UI components]
+src/AppRoutes.tsx + AdminControlPlaneShell                  [+ route + nav entry]
+generated/final-deployment-closure/                         [16 new artifacts]
+scripts/validation/check-final-*.ts                         [7 new meta-validators]
+scripts/architecture/checks/check-os-release-readiness.ts   [+7 gates → 124 total]
+src/planes/FINAL_CLOSURE_MANIFEST.md                        [new]
+package.json                                                [+ 2 scripts]
 ```
 
 ## Guarantees
 
-- No stubs, no placeholders — every doc has real audit findings + concrete contracts
-- No duplicates — identity reconciliation is a **parallel track** to closure (different concerns: identity/stack vs signing/submission), wired together via the aggregator
-- No false readiness — Apple/Play account-blocked items remain honestly classified
-- Each phase ends GREEN on the aggregator before moving to the next
+- **No stubs:** Security Council is real code emitting real DB rows on a real cron schedule.
+- **No duplicates:** reuses existing `ai_receipt_records`, `approval_decisions`, `kill_switch_audit_log`, `runbooks`, `AdminControlPlaneShell`, `useRequireAdmin`.
+- **No false green:** Phase 3 meta-validators specifically detect structural-only "theater" gates.
+- **Honest about externals:** Apple/Play account blockers stay classified as such — not silently flipped to green.
+- Each phase ends with the master aggregator passing before the next begins.
