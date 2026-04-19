@@ -61,8 +61,10 @@ export default function ArchitecturalCleanupTruthPanel() {
   const [logging, setLogging] = useState<LoggingStatus | null>(null);
   const [verification, setVerification] = useState<VerificationStatus | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [reloadTick, setReloadTick] = useState(0);
 
   useEffect(() => {
+    setLoaded(false);
     Promise.all([
       safeFetch<PortabilityStatus>("/generated/architectural-cleanup/portability-cleanup-status.json"),
       safeFetch<LoggingStatus>("/generated/architectural-cleanup/logging-cleanup-status.json"),
@@ -73,7 +75,7 @@ export default function ArchitecturalCleanupTruthPanel() {
       setVerification(v);
       setLoaded(true);
     });
-  }, []);
+  }, [reloadTick]);
 
   if (!loaded) {
     return <div className="text-xs text-muted-foreground py-12 text-center">Loading cleanup truth…</div>;
@@ -81,6 +83,13 @@ export default function ArchitecturalCleanupTruthPanel() {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <TruthPanelActions
+          onRefresh={() => setReloadTick((t) => t + 1)}
+          refreshing={!loaded}
+          sourcePath="/generated/architectural-cleanup/"
+        />
+      </div>
       <Alert>
         <AlertDescription className="text-xs">
           Architectural cleanup is an additive, audit-first pass. Honest WARN-tier classification is preserved
