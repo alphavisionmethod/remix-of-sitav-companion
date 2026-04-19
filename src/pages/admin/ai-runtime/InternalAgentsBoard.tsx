@@ -213,10 +213,25 @@ export default function InternalAgentsBoard() {
           </TableHeader>
           <TableBody>
             {isLoading && (
-              <TableRow><TableCell colSpan={9} className="text-center text-xs text-muted-foreground py-6">Loading…</TableCell></TableRow>
+              <>
+                {[0, 1, 2].map((i) => (
+                  <TableRow key={`sk-${i}`}>
+                    <TableCell colSpan={9} className="py-2">
+                      <div className="h-4 w-full bg-muted/40 rounded animate-pulse" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
             )}
             {!isLoading && filtered.length === 0 && (
-              <TableRow><TableCell colSpan={9} className="text-center text-xs text-muted-foreground py-6">No agents match filter</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={9} className="py-6">
+                  <div className="text-center text-xs text-muted-foreground">
+                    <div className="font-medium text-foreground">No agents match the current filter</div>
+                    <div className="mt-1">Adjust the search term or council filter above to see agents in another scope. The full registry contains 40 internal agents across 6 councils.</div>
+                  </div>
+                </TableCell>
+              </TableRow>
             )}
             {filtered.map((a) => (
               <AgentRow key={a.definition.agent_id} agent={a} onSelect={() => setSelectedAgentId(a.definition.agent_id)} />
@@ -387,7 +402,13 @@ function AgentDetailSheet({
           <p className="text-[11px] text-muted-foreground font-mono">{def?.agent_id}</p>
         </SheetHeader>
 
-        {isLoading && <p className="text-xs text-muted-foreground py-6">Loading…</p>}
+        {isLoading && (
+          <div className="py-6 space-y-2" aria-busy="true">
+            <div className="h-4 w-3/4 bg-muted/40 rounded animate-pulse" />
+            <div className="h-4 w-2/3 bg-muted/40 rounded animate-pulse" />
+            <div className="h-4 w-1/2 bg-muted/40 rounded animate-pulse" />
+          </div>
+        )}
 
         {def && (
           <div className="space-y-4 mt-4">
