@@ -1,24 +1,8 @@
 {
-  "generatedAt": "2026-04-19T02:43:19.118Z",
+  "generatedAt": "2026-04-19T02:43:56.079Z",
   "gate": "no-ambiguous-connected-state",
-  "ok": false,
-  "errorCount": 3,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "drift",
-      "message": "Hard-coded \"Connected\" outside ConnectorStateBadge: 170:          <TabsTrigger value=\"accounts\">Connected Accounts</TabsTrigger>"
-    },
-    {
-      "severity": "error",
-      "area": "drift",
-      "message": "Hard-coded \"Connected\" outside ConnectorStateBadge: 188:                    <TableHead>Connected</TableHead>"
-    },
-    {
-      "severity": "error",
-      "area": "drift",
-      "message": "Hard-coded \"Connected\" outside ConnectorStateBadge: 226:            <CardHeader><CardTitle className=\"text-sm\">Connected Account Diagnostics</CardTitle></CardHeader>"
-    }
-  ]
+  "issues": []
 }
