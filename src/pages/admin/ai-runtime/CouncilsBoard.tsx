@@ -40,13 +40,6 @@ const COUNCIL_LABEL: Record<string, string> = {
   "knowledge-coordination": "Knowledge",
 };
 
-const SEVERITY_TONE: Record<string, string> = {
-  low: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-  moderate: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  high: "bg-orange-500/15 text-orange-600 dark:text-orange-400",
-  critical: "bg-destructive/15 text-destructive",
-};
-
 function relTime(iso: string | null): string {
   if (!iso) return "never";
   const ms = Date.now() - new Date(iso).getTime();
