@@ -97,12 +97,12 @@ export default function ArchitectureHardeningTruthPanel() {
   }, []);
 
   const verdictBadge = verification?.ok ? (
-    <Badge variant="outline" className="border-emerald-500 text-emerald-600">
+    <Badge variant="outline" className="border-primary text-primary">
       <CheckCircle2 className="mr-1 h-3 w-3" />
       {verification.verdict ?? "PASS"}
     </Badge>
   ) : (
-    <Badge variant="outline" className="border-amber-500 text-amber-600">
+    <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
       <AlertTriangle className="mr-1 h-3 w-3" />
       pending
     </Badge>
@@ -225,7 +225,7 @@ export default function ArchitectureHardeningTruthPanel() {
               ) : (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                    <ShieldCheck className="h-4 w-4 text-primary" />
                     <span className="text-sm font-medium">Portability boundaries — verified</span>
                   </div>
 
