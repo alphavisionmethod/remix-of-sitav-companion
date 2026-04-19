@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { ShieldCheck, Zap, RotateCcw, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface Drill { id: string; drill_key: string; scenario: string; status: string; blast_radius: number; last_run_at: string | null; }
 interface Report { id: string; period_start: string; period_end: string; assurance_score: number; breach_count: number; drill_count: number; summary: string | null; }
@@ -72,7 +73,13 @@ export default function AssuranceChaosBoard() {
         <Card>
           <CardHeader><CardTitle className="text-sm">Chaos drills</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {drills.length === 0 && <p className="text-xs text-muted-foreground">No drills configured.</p>}
+            {drills.length === 0 && (
+              <EmptyState
+                icon={<Zap className="h-5 w-5" />}
+                title="No chaos drills scheduled"
+                description="Drills become visible here once a supervisor schedules a controlled failure scenario. Each drill is blast-radius bounded and rollback-capable."
+              />
+            )}
             {drills.map((d) => (
               <div key={d.id} className="flex items-center justify-between text-xs border-b border-border/30 pb-1">
                 <div>
@@ -88,7 +95,13 @@ export default function AssuranceChaosBoard() {
         <Card>
           <CardHeader><CardTitle className="text-sm">Auto-rollback events</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {rollbacks.length === 0 && <p className="text-xs text-muted-foreground">No auto-rollbacks recorded.</p>}
+            {rollbacks.length === 0 && (
+              <EmptyState
+                icon={<RotateCcw className="h-5 w-5" />}
+                title="No automatic rollbacks have fired"
+                description="A clean window means assurance has not detected a regression severe enough to revert. Rollback events are recorded with their trigger, target, and applied autonomy."
+              />
+            )}
             {rollbacks.map((r) => (
               <div key={r.id} className="flex items-center justify-between text-xs border-b border-border/30 pb-1">
                 <div>
@@ -108,7 +121,13 @@ export default function AssuranceChaosBoard() {
       <Card>
         <CardHeader><CardTitle className="text-sm">Weekly assurance reports</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {reports.length === 0 && <p className="text-xs text-muted-foreground">No reports yet.</p>}
+          {reports.length === 0 && (
+            <EmptyState
+              icon={<ShieldCheck className="h-5 w-5" />}
+              title="No assurance reports generated yet"
+              description="Reports are produced on a rolling cadence after each drill window closes. Each report includes the assurance score, breach count, and remediation linkage."
+            />
+          )}
           {reports.map((r) => (
             <div key={r.id} className="text-xs border-b border-border/30 pb-1">
               <div className="flex justify-between">

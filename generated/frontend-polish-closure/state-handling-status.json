@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-04-19T13:19:57.596Z",
+  "scope": "admin/ai-runtime",
+  "violations": 7,
+  "offenders": [
+    {
+      "file": "AssuranceChaosBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "ComplianceAttestationBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "CrossCouncilBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "PolicyDraftReviewBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "SLOObservabilityBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "SovereignDeploymentDRBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    },
+    {
+      "file": "TrustLadderBoard.tsx",
+      "missing_skeleton": true,
+      "missing_error": false
+    }
+  ]
+}

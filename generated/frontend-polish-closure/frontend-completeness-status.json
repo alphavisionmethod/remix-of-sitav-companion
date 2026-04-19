@@ -1,0 +1,134 @@
+{
+  "generatedAt": "2026-04-19T13:19:57.596Z",
+  "scope": "admin/ai-runtime",
+  "boards": [
+    {
+      "surface": "AssuranceChaosBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "ComplianceAttestationBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "CouncilsBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "CrossCouncilBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "DependencyFindingsBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "ExternalWorkforceApiBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": true
+    },
+    {
+      "surface": "InternalAgentIntentTimeline",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "InternalAgentsBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "KnowledgeFederationBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": true
+    },
+    {
+      "surface": "PolicyDraftReviewBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "ReflectionBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "SLOObservabilityBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "SecurityCouncilBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "SovereignDeploymentDRBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "SuggestionsBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "TenantFederationBoard",
+      "emptyStatePolished": true,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": true
+    },
+    {
+      "surface": "TrustLadderBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": false,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    },
+    {
+      "surface": "WeeklyDigestBoard",
+      "emptyStatePolished": false,
+      "loadingPolished": true,
+      "errorPolished": true,
+      "boardSectionAdopted": false
+    }
+  ],
+  "total": 18,
+  "polished": 8
+}
