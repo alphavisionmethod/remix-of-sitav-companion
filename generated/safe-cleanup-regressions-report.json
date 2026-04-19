@@ -1,26 +1,16 @@
 {
-  "generatedAt": "2026-04-19T15:26:49.115Z",
+  "generatedAt": "2026-04-19T15:29:55.568Z",
   "gate": "safe-cleanup-regressions",
   "ok": false,
-  "errorCount": 3,
+  "errorCount": 1,
   "warningCount": 0,
   "issues": [
     {
       "severity": "error",
       "area": "no-browser-globals-in-portable-code",
       "message": "Sibling validator \"no-browser-globals-in-portable-code\" reported errors (errorCount=20)."
-    },
-    {
-      "severity": "error",
-      "area": "edge-function-structured-logging",
-      "message": "Sibling validator \"edge-function-structured-logging\" reported errors (errorCount=8)."
-    },
-    {
-      "severity": "error",
-      "area": "no-duplicate-truth-manifests",
-      "message": "Sibling validator \"no-duplicate-truth-manifests\" reported errors (errorCount=1)."
     }
   ],
   "siblingsChecked": 4,
-  "siblingFailures": 3
+  "siblingFailures": 1
 }
