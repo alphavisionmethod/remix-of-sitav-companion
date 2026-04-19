@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-04-19T02:14:11.514Z",
+  "current_streak_days": 0,
+  "longest_streak_days": 0,
+  "last_pass_at": null,
+  "last_fail_at": null,
+  "last_failure_class": null,
+  "streak_started_at": null,
+  "unacknowledged_alerts": 0,
+  "classification": "building",
+  "goal_days": 7
+}

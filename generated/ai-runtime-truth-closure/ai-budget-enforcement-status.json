@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-04-19T02:14:11.514Z",
+  "window_days": 7,
+  "ledger_rows_7d": 0,
+  "accumulated_cost_usd_7d": 0,
+  "refusal_count_7d": 0,
+  "fallback_events_7d": 0,
+  "budget_alerts_7d": [],
+  "last_budget_decision": null,
+  "classification": "no-data"
+}

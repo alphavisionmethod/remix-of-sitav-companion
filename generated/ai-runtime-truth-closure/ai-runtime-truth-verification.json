@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-04-19T02:14:11.514Z",
+  "overall": "degraded",
+  "checks": {
+    "live_provider_call": "no-data",
+    "receipt_persistence": "no-data",
+    "ledger_write": "no-data",
+    "fallback_path": "no-data",
+    "budget_enforcement": "no-data",
+    "streak_health": "building"
+  },
+  "runs_30d": {
+    "total": 0,
+    "pass": 0,
+    "fail": 0,
+    "degraded": 0
+  },
+  "streak": {
+    "current": 0,
+    "longest": 0,
+    "classification": "building",
+    "goal": 7
+  },
+  "unacknowledged_failures": 0,
+  "acceptance_criteria": {
+    "A_live_provider_ci_proof": "no-data",
+    "B_cost_ceiling_under_load": "no-data",
+    "C_nightly_e2e_checks": "no-data",
+    "D_failure_alerting": "pass",
+    "E_admin_visibility": "pass",
+    "F_hard_pass_fail_evidence": "pass",
+    "G_seven_day_streak": "building"
+  },
+  "last_run": null
+}
