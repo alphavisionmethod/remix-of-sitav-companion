@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T16:50:58.496Z",
+  "generatedAt": "2026-04-19T16:56:24.093Z",
   "gate": "boardroom-briefing-truth-alignment",
   "ok": true,
   "errorCount": 0,
@@ -18,7 +18,7 @@
   ],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOSURE_SPEC.md",
-  "backbonePresent": 1,
-  "backboneExpected": 4,
+  "backbonePresent": 5,
+  "backboneExpected": 5,
   "requiredForGreen": "user-flagship-pass: build /boardroom/briefing consuming canonical Layer 7 data"
 }

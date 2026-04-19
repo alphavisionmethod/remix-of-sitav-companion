@@ -4,9 +4,9 @@
   "verdict": "in-scope-GREEN-with-honest-deferrals",
   "completed": ["admin-ai-runtime", "admin-integrations"],
   "deferred": ["onboarding", "boardroom-briefing", "concierge", "communications"],
-  "aggregatorGatesAdded": 6,
+  "aggregatorGatesAdded": 8,
   "totalRequiredGates": 211,
-  "previousRequiredGates": 205,
+  "previousRequiredGates": 203,
   "validators": {
     "inScope": [
       "admin-ai-runtime-drilldowns",
@@ -21,6 +21,25 @@
       "flagship-surface-responsive-quality"
     ]
   },
+  "validatorReports": {
+    "onboarding-simulated-persona-disclosure": { "ok": true, "errors": 0, "warnings": 2 },
+    "boardroom-briefing-truth-alignment": { "ok": true, "errors": 0, "warnings": 2 },
+    "concierge-ai-state-handling": { "ok": true, "errors": 0, "warnings": 1 },
+    "communications-connector-state-alignment": { "ok": true, "errors": 0, "warnings": 2 },
+    "flagship-surface-trust-copy": { "ok": true, "errors": 0, "warnings": 4 },
+    "flagship-surface-responsive-quality": { "ok": true, "errors": 0, "warnings": 14 }
+  },
+  "canonicalPathsCorrected": {
+    "onboardingDaemon": "src/lib/services/onboarding-daemon/index.ts",
+    "boardroomBackbone": [
+      "generated/boardroom-layer7-closure-report.json",
+      "generated/boardroom-layer7-closure/boardroom-layer7-verification.json",
+      "generated/boardroom-layer7-closure/state-coverage.json",
+      "generated/boardroom-layer7-closure/outcome-coverage.json",
+      "generated/boardroom-layer7-closure/linkage.json"
+    ],
+    "connectorStateBadge": "src/components/primitives/status/ConnectorStateBadge.tsx"
+  },
   "deliverables": {
     "inScope": [
       "ADMIN_AI_RUNTIME_CLOSURE_SPEC.md",
@@ -33,6 +52,19 @@
       "BOARDROOM_BRIEFING_CLOSURE_SPEC.md",
       "CONCIERGE_CHAT_CLOSURE_SPEC.md",
       "COMMUNICATIONS_INBOX_CLOSURE_SPEC.md"
+    ]
+  },
+  "aggregatorWiring": {
+    "file": "scripts/architecture/checks/check-os-release-readiness.ts",
+    "lines": "100-108",
+    "blockGates": ["admin-ai-runtime-drilldowns", "admin-integrations-health-visibility"],
+    "warnGates": [
+      "onboarding-simulated-persona-disclosure",
+      "boardroom-briefing-truth-alignment",
+      "concierge-ai-state-handling",
+      "communications-connector-state-alignment",
+      "flagship-surface-trust-copy",
+      "flagship-surface-responsive-quality"
     ]
   },
   "truthPanelMount": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx#flagship-surface-closure-truth (tab 11)",
