@@ -91,9 +91,9 @@ export async function loadNightlyTruthData(): Promise<NightlyTruthData> {
   ]);
 
   return {
-    streak: (streakRes.data as StreakState | null) ?? null,
-    recentRuns: (runsRes.data as NightlyRun[] | null) ?? [],
-    unackAlerts: (alertsRes.data as FailureAlert[] | null) ?? [],
+    streak: (streakRes.data as unknown as StreakState | null) ?? null,
+    recentRuns: (runsRes.data as unknown as NightlyRun[] | null) ?? [],
+    unackAlerts: (alertsRes.data as unknown as FailureAlert[] | null) ?? [],
   };
 }
 
@@ -103,7 +103,7 @@ export async function acknowledgeAlert(alertId: string, notes?: string): Promise
     _notes: notes ?? null,
   });
   if (error) return { ok: false, reason: error.message };
-  return (data as { ok: boolean; reason?: string }) ?? { ok: false, reason: "unknown" };
+  return (data as unknown as { ok: boolean; reason?: string }) ?? { ok: false, reason: "unknown" };
 }
 
 export async function triggerManualVerification(): Promise<{ ok: boolean; run_id?: string; status?: string; error?: string }> {

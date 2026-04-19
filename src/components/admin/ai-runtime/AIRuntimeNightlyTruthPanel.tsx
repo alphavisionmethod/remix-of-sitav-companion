@@ -56,8 +56,8 @@ function StreakDots({ runs }: { runs: NightlyRun[] }) {
           return <div key={i} className="h-3 w-3 rounded-full bg-muted/40" title="no data" />;
         }
         const tone =
-          r.status === "pass" ? "bg-emerald-500"
-          : r.status === "degraded" ? "bg-amber-500"
+          r.status === "pass" ? "bg-success"
+          : r.status === "degraded" ? "bg-warning"
           : "bg-destructive";
         return (
           <div
@@ -76,7 +76,7 @@ function SubCheckRow({ label, ok }: { label: string; ok: boolean }) {
     <div className="flex items-center justify-between py-1.5 text-xs border-b border-border/50 last:border-0">
       <span>{label}</span>
       {ok ? (
-        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        <CheckCircle2 className="h-4 w-4 text-success" />
       ) : (
         <XCircle className="h-4 w-4 text-destructive" />
       )}

@@ -27,6 +27,7 @@ const SuggestionsBoard = lazy(() => import("@/pages/admin/ai-runtime/Suggestions
 const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"));
 const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
 const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"));
+const AIRuntimeNightlyTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -90,6 +91,13 @@ export default function AIRuntimeHome() {
       description: "Phase 4 — 7 security-trust agents observing runtime signals; live findings + drilldown.",
       legacyPath: "/admin/ai-runtime/security-council",
       render: wrap(SecurityCouncilBoard),
+    },
+    {
+      id: "nightly-truth",
+      label: "Nightly Truth",
+      description: "Live-provider verification, receipts, ledger, fallback, and budget proof — nightly streak tracking.",
+      legacyPath: "/admin/ai-runtime/nightly-truth",
+      render: wrap(AIRuntimeNightlyTruthPanel),
     },
     {
       id: "efficiency",
