@@ -290,6 +290,12 @@ const REQUIRED_GATES = [
   "mobile-deferral-attestation",
   "app-sdk-extension-events",
   "release-evidence-graph-snapshot",
+  // Phase 15 Final Closure Pack (5 BLOCK gates)
+  "owner-copilot-readonly",
+  "federation-optin-append-only",
+  "dr-drill-evidence",
+  "chaos-drill-classification",
+  "production-launch-attestation",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
