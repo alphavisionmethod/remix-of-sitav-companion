@@ -57,6 +57,7 @@ function scanBoard(file: string): BoardScan {
       /from ["']@\/components\/admin\/ai-runtime\/_shared\/BoardSection["']/.test(src),
     hasSkeleton:
       /from ["']@\/components\/primitives\/feedback\/Skeleton["']/.test(src) ||
+      /from ["']@\/components\/ui\/skeleton["']/.test(src) ||
       /from ["']@\/components\/admin\/ai-runtime\/_shared\/BoardSection["']/.test(src) ||
       /animate-pulse/.test(src),
     hasErrorState:
