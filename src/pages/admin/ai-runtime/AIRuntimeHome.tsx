@@ -26,6 +26,9 @@ const CouncilsBoard = lazy(() => import("@/pages/admin/ai-runtime/CouncilsBoard"
 const SuggestionsBoard = lazy(() => import("@/pages/admin/ai-runtime/SuggestionsBoard"));
 const WeeklyDigestBoard = lazy(() => import("@/pages/admin/ai-runtime/WeeklyDigestBoard"));
 const DependencyFindingsBoard = lazy(() => import("@/pages/admin/ai-runtime/DependencyFindingsBoard"));
+const SecurityCouncilBoard = lazy(() => import("@/pages/admin/ai-runtime/SecurityCouncilBoard"));
+const KillSwitchRecommendationsBoard = lazy(() => import("@/pages/admin/ai-runtime/KillSwitchRecommendationsBoard"));
+const AnomalyRotationsBoard = lazy(() => import("@/pages/admin/ai-runtime/AnomalyRotationsBoard"));
 
 function ModuleFallback() {
   return (
@@ -82,6 +85,27 @@ export default function AIRuntimeHome() {
       description: "Phase 3 — normalized npm audit findings linked to upgrade suggestions.",
       legacyPath: "/admin/ai-runtime/dependency-findings",
       render: wrap(DependencyFindingsBoard),
+    },
+    {
+      id: "security-council",
+      label: "Security Council",
+      description: "Phase 4 — 7 scheduled security agents, evidence-backed findings, recommendation-only autonomy.",
+      legacyPath: "/admin/ai-runtime/security-council",
+      render: wrap(SecurityCouncilBoard),
+    },
+    {
+      id: "kill-switch-recommendations",
+      label: "Kill-Switch Recommendations",
+      description: "Phase 4 — AI-proposed kill-switch arming (recommendation only; arming requires admin dual-approval).",
+      legacyPath: "/admin/ai-runtime/kill-switch-recommendations",
+      render: wrap(KillSwitchRecommendationsBoard),
+    },
+    {
+      id: "anomaly-rotations",
+      label: "Anomaly Rotations",
+      description: "Phase 4 — anomaly-driven secret rotation triggers (dry-run only; live rotation via RB-SECRET-ROTATION).",
+      legacyPath: "/admin/ai-runtime/anomaly-rotations",
+      render: wrap(AnomalyRotationsBoard),
     },
     {
       id: "efficiency",
