@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface IntentRow {
   id: string;
@@ -289,8 +290,12 @@ export default function InternalAgentIntentTimeline() {
             <TableBody>
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
-                    {loading ? "Loading…" : "No intents match the current filter."}
+                  <TableCell colSpan={8} className="py-2">
+                    <EmptyState
+                      icon={<Search className="h-5 w-5" />}
+                      title={loading ? "Loading intents…" : "No intents match the current filter"}
+                      description={loading ? "Fetching the latest 100 constrained autonomous actions." : "Adjust the agent or status filter, or wait for the next intent to be drafted."}
+                    />
                   </TableCell>
                 </TableRow>
               )}
@@ -398,7 +403,11 @@ export default function InternalAgentIntentTimeline() {
                       );
                     })}
                     {(!Array.isArray(selected.gate_results) || selected.gate_results.length === 0) && (
-                      <p className="text-sm text-muted-foreground">No gate verdicts recorded.</p>
+                      <EmptyState
+                        icon={<ShieldCheck className="h-5 w-5" />}
+                        title="No gate verdicts recorded"
+                        description="Pre-execution gates left no traces — the action may have been auto-approved or short-circuited before evaluation."
+                      />
                     )}
                   </div>
                 </TabsContent>
@@ -407,7 +416,11 @@ export default function InternalAgentIntentTimeline() {
                   {selected.rollback_plan ? (
                     <pre className="text-xs bg-muted p-3 rounded overflow-auto max-h-64">{JSON.stringify(selected.rollback_plan, null, 2)}</pre>
                   ) : (
-                    <p className="text-sm text-muted-foreground">No rollback plan persisted.</p>
+                    <EmptyState
+                      icon={<RotateCcw className="h-5 w-5" />}
+                      title="No rollback plan persisted"
+                      description="This action class is non-reversible or the planner did not stage a compensating step."
+                    />
                   )}
                   {selected.rolled_back_at && (
                     <div className="text-sm">

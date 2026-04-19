@@ -65,7 +65,7 @@ export default function AssuranceChaosBoard() {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={runCanaries} disabled={loading}><Zap className="h-4 w-4 mr-1" /> Run canaries</Button>
           <Button variant="outline" size="sm" onClick={runChaos} disabled={loading}><Zap className="h-4 w-4 mr-1" /> Advance chaos</Button>
-          <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}><RefreshCw className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /></Button>
         </div>
       </div>
 

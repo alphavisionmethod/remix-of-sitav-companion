@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { ShieldAlert, CloudCog, FileCheck2, RefreshCw } from "lucide-react";
+import { ShieldAlert, CloudCog, FileCheck2, RefreshCw, Archive } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { toast } from "sonner";
 
 interface Drill {
@@ -92,7 +93,13 @@ export default function SovereignDeploymentDRBoard() {
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><CloudCog className="h-4 w-4" /> DR drills</CardTitle></CardHeader>
           <CardContent>
-            {drills.length === 0 ? <p className="text-sm text-muted-foreground">No drills yet.</p> : (
+            {drills.length === 0 ? (
+              <EmptyState
+                icon={<CloudCog className="h-5 w-5" />}
+                title="No DR drills recorded"
+                description="Trigger a drill to validate restore-time and integrity targets without affecting production."
+              />
+            ) : (
               <div className="space-y-2">
                 {drills.map(d => (
                   <div key={d.id} className="flex items-center justify-between text-sm border-b pb-2">
@@ -113,7 +120,13 @@ export default function SovereignDeploymentDRBoard() {
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><FileCheck2 className="h-4 w-4" /> Signed release artifacts</CardTitle></CardHeader>
           <CardContent>
-            {artifacts.length === 0 ? <p className="text-sm text-muted-foreground">No signed artifacts recorded.</p> : (
+            {artifacts.length === 0 ? (
+              <EmptyState
+                icon={<FileCheck2 className="h-5 w-5" />}
+                title="No signed release artifacts"
+                description="Cosign-signed artifacts will land here automatically once a release publishes."
+              />
+            ) : (
               <div className="space-y-2">
                 {artifacts.map(a => (
                   <div key={a.id} className="flex items-center justify-between text-sm border-b pb-2">
@@ -134,7 +147,13 @@ export default function SovereignDeploymentDRBoard() {
         <Card>
           <CardHeader><CardTitle className="text-base">Immutable audit-export bundles</CardTitle></CardHeader>
           <CardContent>
-            {bundles.length === 0 ? <p className="text-sm text-muted-foreground">No bundles yet.</p> : (
+            {bundles.length === 0 ? (
+              <EmptyState
+                icon={<Archive className="h-5 w-5" />}
+                title="No audit bundles yet"
+                description="Use “Bundle audit” to seal a tamper-evident export of the current period."
+              />
+            ) : (
               <div className="space-y-2">
                 {bundles.map(b => (
                   <div key={b.id} className="flex items-center justify-between text-sm border-b pb-2">

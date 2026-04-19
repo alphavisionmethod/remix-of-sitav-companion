@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-04-19T13:19:57.596Z",
-  "ok": false,
-  "status": "RED",
+  "generatedAt": "2026-04-19T13:26:18.806Z",
+  "ok": true,
+  "status": "GREEN",
   "scope": "admin/ai-runtime",
   "boards_total": 18,
-  "boards_polished": 8,
-  "empty_state_violations": 13,
+  "boards_polished": 18,
+  "empty_state_violations": 0,
   "cta_violations": 0,
   "shell_only_violations": 0,
-  "state_handling_violations": 7,
+  "state_handling_violations": 0,
   "trust_copy_violations": 0,
   "responsive_violations": 0,
   "acceptance": {
-    "every_board_has_empty_state_primitive": false,
-    "every_board_has_loading_skeleton": false,
+    "every_board_has_empty_state_primitive": true,
+    "every_board_has_loading_skeleton": true,
     "every_board_has_error_handling": true,
     "zero_dead_ctas": true,
     "zero_forbidden_copy": true,
@@ -22,8 +22,5 @@
     "truth_panel_mounted": true,
     "shared_helper_present": true
   },
-  "failed_checks": [
-    "every_board_has_empty_state_primitive",
-    "every_board_has_loading_skeleton"
-  ]
+  "failed_checks": []
 }

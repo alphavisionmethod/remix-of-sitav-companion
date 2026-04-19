@@ -1,31 +1,6 @@
 {
-  "generatedAt": "2026-04-19T13:19:57.596Z",
+  "generatedAt": "2026-04-19T13:26:18.806Z",
   "scope": "admin/ai-runtime",
-  "violations": 13,
-  "offenders": [
-    {
-      "file": "InternalAgentIntentTimeline.tsx",
-      "raw_no_text_count": 2
-    },
-    {
-      "file": "PolicyDraftReviewBoard.tsx",
-      "raw_no_text_count": 1
-    },
-    {
-      "file": "SLOObservabilityBoard.tsx",
-      "raw_no_text_count": 4
-    },
-    {
-      "file": "SovereignDeploymentDRBoard.tsx",
-      "raw_no_text_count": 3
-    },
-    {
-      "file": "TrustLadderBoard.tsx",
-      "raw_no_text_count": 2
-    },
-    {
-      "file": "WeeklyDigestBoard.tsx",
-      "raw_no_text_count": 1
-    }
-  ]
+  "violations": 0,
+  "offenders": []
 }

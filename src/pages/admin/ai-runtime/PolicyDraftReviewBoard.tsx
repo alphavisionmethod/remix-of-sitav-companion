@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { ShieldAlert, FileWarning, KeyRound, CheckCircle2, XCircle, RefreshCw, Play, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -172,9 +174,19 @@ export default function PolicyDraftReviewBoard() {
         </TabsList>
 
         <TabsContent value={activeTab} className="space-y-3 mt-4">
-          {loading && <div className="text-sm text-muted-foreground">Loading…</div>}
+          {loading && (
+            <div className="space-y-2">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          )}
           {!loading && filtered.length === 0 && (
-            <div className="text-sm text-muted-foreground py-8 text-center">No drafts in this state.</div>
+            <EmptyState
+              icon={<FileWarning className="h-5 w-5" />}
+              title="No drafts in this state"
+              description="Policy drafts queued by the security architect will surface here for review and approval."
+            />
           )}
           {filtered.map((draft) => {
             const Icon = KIND_ICON[draft.draft_kind] ?? FileWarning;

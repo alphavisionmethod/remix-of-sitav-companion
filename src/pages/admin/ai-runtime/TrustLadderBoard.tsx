@@ -13,6 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import {
   ShieldCheck,
   RefreshCw,
@@ -22,6 +24,7 @@ import {
   Lock,
   Sparkles,
   AlertTriangle,
+  History,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -153,14 +156,17 @@ export default function TrustLadderBoard() {
 
         <TabsContent value="agents" className="space-y-3">
           {loading ? (
-            <Card><CardContent className="py-10 text-center text-muted-foreground">Loading…</CardContent></Card>
+            <div className="space-y-2">
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
           ) : (summary?.agents ?? []).length === 0 ? (
-            <Card>
-              <CardContent className="py-10 text-center text-muted-foreground">
-                <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                No agents on the ladder yet. Run the evaluator after reflections accumulate.
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={<Sparkles className="h-5 w-5" />}
+              title="Trust ladder is empty"
+              description="Run the evaluator after reflections accumulate. Agents earn rungs once outcome quality stabilises."
+            />
           ) : (
             (summary?.agents ?? []).map((a) => (
               <Card key={a.agent_id}>
@@ -236,7 +242,11 @@ export default function TrustLadderBoard() {
                     );
                   })}
                   {(summary?.recent_changes ?? []).length === 0 && (
-                    <p className="text-sm text-muted-foreground text-center py-8">No rung changes yet.</p>
+                    <EmptyState
+                      icon={<History className="h-5 w-5" />}
+                      title="No rung changes recorded"
+                      description="Promotions and demotions appear here once the ladder evaluator detects sustained trust shifts."
+                    />
                   )}
                 </div>
               </ScrollArea>
@@ -273,7 +283,11 @@ export default function TrustLadderBoard() {
                     </div>
                   ))}
                   {(summary?.active_learnings ?? []).length === 0 && (
-                    <p className="text-sm text-muted-foreground text-center py-8">No active learnings yet.</p>
+                    <EmptyState
+                      icon={<Sparkles className="h-5 w-5" />}
+                      title="Knowledge bus is quiet"
+                      description="Cross-agent learnings published with sufficient confidence will surface here for supervisor review."
+                    />
                   )}
                 </div>
               </ScrollArea>

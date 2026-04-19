@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-19T13:19:57.596Z",
+  "generatedAt": "2026-04-19T13:26:18.806Z",
   "scope": "admin/ai-runtime",
   "boards": [
     {
       "surface": "AssuranceChaosBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "ComplianceAttestationBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -26,7 +26,7 @@
     {
       "surface": "CrossCouncilBoard",
       "emptyStatePolished": true,
-      "loadingPolished": false,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
@@ -46,14 +46,14 @@
     },
     {
       "surface": "InternalAgentIntentTimeline",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "InternalAgentsBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -67,42 +67,42 @@
     },
     {
       "surface": "PolicyDraftReviewBoard",
-      "emptyStatePolished": false,
-      "loadingPolished": false,
+      "emptyStatePolished": true,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "ReflectionBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "SLOObservabilityBoard",
-      "emptyStatePolished": false,
-      "loadingPolished": false,
+      "emptyStatePolished": true,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "SecurityCouncilBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "SovereignDeploymentDRBoard",
-      "emptyStatePolished": false,
-      "loadingPolished": false,
+      "emptyStatePolished": true,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "SuggestionsBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -116,19 +116,19 @@
     },
     {
       "surface": "TrustLadderBoard",
-      "emptyStatePolished": false,
-      "loadingPolished": false,
+      "emptyStatePolished": true,
+      "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "WeeklyDigestBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     }
   ],
   "total": 18,
-  "polished": 8
+  "polished": 18
 }

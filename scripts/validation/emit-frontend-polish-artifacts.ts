@@ -57,8 +57,11 @@ function scanBoard(file: string): BoardScan {
       /from ["']@\/components\/admin\/ai-runtime\/_shared\/BoardSection["']/.test(src),
     hasSkeleton:
       /from ["']@\/components\/primitives\/feedback\/Skeleton["']/.test(src) ||
+      /from ["']@\/components\/ui\/skeleton["']/.test(src) ||
       /from ["']@\/components\/admin\/ai-runtime\/_shared\/BoardSection["']/.test(src) ||
-      /animate-pulse/.test(src),
+      /animate-pulse/.test(src) ||
+      /animate-spin/.test(src) ||
+      /\bLoader2\b/.test(src),
     hasErrorState:
       /catch\s*\(/.test(src) || /\.error/.test(src) || /useState[^;]*error/i.test(src),
     rawNoTextCount: (src.match(RAW_NO_RE) ?? []).length,
