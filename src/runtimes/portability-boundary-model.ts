@@ -93,6 +93,38 @@ export const PORTABILITY_CLASSIFICATIONS: readonly PortabilityClassification[] =
     boundary: "shared-portable",
     rationale: "Tier detection probes; defensive window guards keep it portable.",
   },
+
+  // ── Leaf-browser-only: UI personalization, OS shell chrome, localStorage-backed
+  //    user preferences. These hooks are exclusively rendered inside WEB_APP /
+  //    DESKTOP_HOST shells and never imported by SSR / SIMULATED tiers. Each is
+  //    an explicit, audited decision — not a silent allowlist.
+  { path: "src/hooks/use-accent-sync.ts", boundary: "leaf-browser-only", rationale: "DOM accent CSS variable application — render-side only." },
+  { path: "src/hooks/use-adaptive-personalization.ts", boundary: "leaf-browser-only", rationale: "localStorage-backed user UI preference cache." },
+  { path: "src/hooks/use-backend-actions.ts", boundary: "leaf-browser-only", rationale: "Reads localStorage feature toggle for UI affordance." },
+  { path: "src/hooks/use-calm-mode.ts", boundary: "leaf-browser-only", rationale: "Toggles document.body class for calm visual mode." },
+  { path: "src/hooks/use-focus-mode.ts", boundary: "leaf-browser-only", rationale: "Focus-mode chrome toggle + localStorage persistence." },
+  { path: "src/hooks/use-gesture-engine.ts", boundary: "leaf-browser-only", rationale: "Pointer/touch gesture engine — DOM-bound by design." },
+  { path: "src/hooks/use-online-status.ts", boundary: "leaf-browser-only", rationale: "navigator.onLine + window online/offline events." },
+  { path: "src/hooks/use-proof-chain.ts", boundary: "leaf-browser-only", rationale: "document.createElement download trigger for proof export." },
+  { path: "src/hooks/use-realtime-notifications.ts", boundary: "leaf-browser-only", rationale: "window event bridge for realtime UI toasts." },
+  { path: "src/hooks/use-wallpaper.ts", boundary: "leaf-browser-only", rationale: "Wallpaper preference cache (localStorage)." },
+  { path: "src/hooks/useAdaptiveInterface.ts", boundary: "leaf-browser-only", rationale: "DOM density-class application." },
+  { path: "src/hooks/useAppSurfacing.ts", boundary: "leaf-browser-only", rationale: "App-launcher recents cache (localStorage)." },
+  { path: "src/hooks/useBusinessOnboarding.ts", boundary: "leaf-browser-only", rationale: "Onboarding draft cache (localStorage)." },
+  { path: "src/hooks/useCurrentOrg.ts", boundary: "leaf-browser-only", rationale: "Active-org selector cache (localStorage)." },
+  { path: "src/hooks/useDemoModeRuntimeEnforcement.ts", boundary: "leaf-browser-only", rationale: "Applies demo-mode body class — DOM only." },
+  { path: "src/hooks/useDesktopWidgets.ts", boundary: "leaf-browser-only", rationale: "Desktop widget layout cache — DESKTOP_HOST shell." },
+  { path: "src/hooks/useDraftAutosave.ts", boundary: "leaf-browser-only", rationale: "Canonical draft autosave — localStorage + IndexedDB by design." },
+  { path: "src/hooks/useGlobalShortcuts.ts", boundary: "leaf-browser-only", rationale: "window keydown listener — UI shell only." },
+  { path: "src/hooks/useIdleDetector.ts", boundary: "leaf-browser-only", rationale: "Idle detection via document/window events." },
+  { path: "src/hooks/useLayerOpacity.ts", boundary: "leaf-browser-only", rationale: "DOM layer opacity application." },
+  { path: "src/hooks/useLiveActivityDomainData.ts", boundary: "leaf-browser-only", rationale: "Live-activity poller — UI shell only." },
+  { path: "src/hooks/useOSRuntime.tsx", boundary: "leaf-browser-only", rationale: "OS runtime selector for shell chrome." },
+  { path: "src/hooks/useOfflineStore.ts", boundary: "leaf-browser-only", rationale: "Offline state cache (localStorage + IndexedDB)." },
+  { path: "src/hooks/useUserPreferences.ts", boundary: "leaf-browser-only", rationale: "User preference cache (localStorage)." },
+  { path: "src/hooks/useWallpaperParallax.ts", boundary: "leaf-browser-only", rationale: "Mouse-parallax wallpaper effect — DOM only." },
+  { path: "src/hooks/useWindowAttention.ts", boundary: "leaf-browser-only", rationale: "Window-attention flash — DESKTOP_HOST shell." },
+  { path: "src/hooks/useWindowManager.ts", boundary: "leaf-browser-only", rationale: "Window manager — DESKTOP_HOST shell only." },
 ] as const;
 
 export function classifyByPath(path: string): PortabilityClassification | null {
