@@ -1,0 +1,31 @@
+{
+  "scope": "admin-semantics-and-microcopy",
+  "phase": "shipped",
+  "canonicalPrimitive": "src/components/primitives/status/StatusBadge.tsx",
+  "lockedTones": [
+    "neutral", "info", "success", "warning", "danger",
+    "muted", "verified", "pending", "failed"
+  ],
+  "bannedClassesInAdminTree": [
+    "bg-yellow-*", "text-yellow-*", "border-yellow-*",
+    "bg-red-*", "text-red-*", "border-red-*",
+    "bg-green-*", "text-green-*", "border-green-*",
+    "bg-amber-*", "text-amber-*", "border-amber-*"
+  ],
+  "bannedMicrocopyPhrases": [
+    "Coming soon",
+    "Check back later",
+    "Nothing here yet",
+    "Stay tuned",
+    "Whoops",
+    "Oops",
+    "Working on it"
+  ],
+  "validators": [
+    "check-admin-status-semantics",
+    "check-admin-microcopy-rules",
+    "check-admin-empty-state-consistency",
+    "check-admin-action-panel-hierarchy"
+  ],
+  "verdict": "green-fully-shipped"
+}

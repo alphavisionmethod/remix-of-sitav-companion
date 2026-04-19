@@ -1,0 +1,26 @@
+{
+  "scope": "responsive-surface-quality",
+  "phase": "shipped",
+  "surfaces": {
+    "/desktop": {
+      "treatment": "honest-narrow-width-disclosure-banner",
+      "file": "src/pages/DesktopPage.tsx",
+      "breakpoint": "< 768px",
+      "honest": true
+    },
+    "/boardroom/briefing": {
+      "treatment": "audit-only-no-edits-required",
+      "rationale": "OwnerCopilotBriefings already composes shadcn Card (responsive); no fixed-pixel grids found"
+    },
+    "/admin/*": {
+      "treatment": "regression-guarded-by-validator",
+      "validator": "check-responsive-operator-surfaces"
+    }
+  },
+  "validators": [
+    "check-responsive-operator-surfaces",
+    "check-boardroom-briefing-narrow-width",
+    "check-desktop-honest-narrow-width"
+  ],
+  "verdict": "green-fully-shipped"
+}
