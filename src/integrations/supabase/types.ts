@@ -12974,6 +12974,78 @@ export type Database = {
         }
         Relationships: []
       }
+      kill_switch_recommendations: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          approval_id: string | null
+          blast_radius: string
+          created_at: string
+          evidence: Json
+          id: string
+          reason: string
+          recommended_action: string
+          severity: string
+          source_agent_id: string
+          source_finding_id: string | null
+          status: string
+          switch_id: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          approval_id?: string | null
+          blast_radius?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reason: string
+          recommended_action?: string
+          severity?: string
+          source_agent_id: string
+          source_finding_id?: string | null
+          status?: string
+          switch_id: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          approval_id?: string | null
+          blast_radius?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reason?: string
+          recommended_action?: string
+          severity?: string
+          source_agent_id?: string
+          source_finding_id?: string | null
+          status?: string
+          switch_id?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kill_switch_recommendations_approval_id_fkey"
+            columns: ["approval_id"]
+            isOneToOne: false
+            referencedRelation: "kill_switch_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kill_switch_recommendations_source_finding_id_fkey"
+            columns: ["source_finding_id"]
+            isOneToOne: false
+            referencedRelation: "security_council_findings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       layer_health_snapshots: {
         Row: {
           captured_at: string
@@ -17070,6 +17142,142 @@ export type Database = {
         }
         Relationships: []
       }
+      secret_rotation_triggers: {
+        Row: {
+          anomaly_evidence: Json
+          anomaly_type: string
+          created_at: string
+          id: string
+          orchestrator_dryrun_result: Json
+          provider_key: string | null
+          receipt_id: string | null
+          rotation_executed_at: string | null
+          rotation_executed_by: string | null
+          secret_scope: string
+          severity: string
+          source_agent_id: string
+          source_finding_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          anomaly_evidence?: Json
+          anomaly_type: string
+          created_at?: string
+          id?: string
+          orchestrator_dryrun_result?: Json
+          provider_key?: string | null
+          receipt_id?: string | null
+          rotation_executed_at?: string | null
+          rotation_executed_by?: string | null
+          secret_scope: string
+          severity?: string
+          source_agent_id: string
+          source_finding_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          anomaly_evidence?: Json
+          anomaly_type?: string
+          created_at?: string
+          id?: string
+          orchestrator_dryrun_result?: Json
+          provider_key?: string | null
+          receipt_id?: string | null
+          rotation_executed_at?: string | null
+          rotation_executed_by?: string | null
+          secret_scope?: string
+          severity?: string
+          source_agent_id?: string
+          source_finding_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "secret_rotation_triggers_source_finding_id_fkey"
+            columns: ["source_finding_id"]
+            isOneToOne: false
+            referencedRelation: "security_council_findings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_council_findings: {
+        Row: {
+          agent_id: string
+          council: string
+          created_at: string
+          evidence: Json
+          finding_type: string
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          occurrences: number
+          resolution_notes: string | null
+          resolved_at: string | null
+          routed_suggestion_id: string | null
+          severity: string
+          source_signal_ref: string
+          source_signal_type: string
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          council?: string
+          created_at?: string
+          evidence?: Json
+          finding_type: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          occurrences?: number
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          routed_suggestion_id?: string | null
+          severity?: string
+          source_signal_ref: string
+          source_signal_type?: string
+          status?: string
+          summary?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          council?: string
+          created_at?: string
+          evidence?: Json
+          finding_type?: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          occurrences?: number
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          routed_suggestion_id?: string | null
+          severity?: string
+          source_signal_ref?: string
+          source_signal_type?: string
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_council_findings_routed_suggestion_id_fkey"
+            columns: ["routed_suggestion_id"]
+            isOneToOne: false
+            referencedRelation: "ai_implementation_suggestions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_identity_registry: {
         Row: {
           allowed_targets: string[] | null
@@ -19773,6 +19981,20 @@ export type Database = {
         }
         Returns: string
       }
+      propose_kill_switch_recommendation: {
+        Args: {
+          _blast_radius: string
+          _evidence: Json
+          _reason: string
+          _recommended_action: string
+          _severity: string
+          _source_agent_id: string
+          _source_finding_id: string
+          _switch_id: string
+          _urgency: string
+        }
+        Returns: string
+      }
       publish_agent_learning: {
         Args: {
           _applies_to_agents?: string[]
@@ -19867,6 +20089,19 @@ export type Database = {
         }
         Returns: Json
       }
+      record_security_finding: {
+        Args: {
+          _agent_id: string
+          _evidence: Json
+          _finding_type: string
+          _severity: string
+          _source_signal_ref: string
+          _source_signal_type: string
+          _summary: string
+          _title: string
+        }
+        Returns: string
+      }
       resolve_error_patrol_detection: {
         Args: { _detection_id: string; _notes?: string }
         Returns: Json
@@ -19904,7 +20139,21 @@ export type Database = {
         }[]
       }
       summarize_policy_draft_health: { Args: never; Returns: Json }
+      summarize_security_council: { Args: never; Returns: Json }
       summarize_trust_ladder: { Args: never; Returns: Json }
+      trigger_anomaly_secret_rotation: {
+        Args: {
+          _anomaly_evidence: Json
+          _anomaly_type: string
+          _dryrun_result: Json
+          _provider_key: string
+          _secret_scope: string
+          _severity: string
+          _source_agent_id: string
+          _source_finding_id: string
+        }
+        Returns: string
+      }
       trim_kill_switch_audit_log: {
         Args: { _keep_days?: number }
         Returns: number
