@@ -1,114 +1,13 @@
 {
-  "generatedAt": "2026-04-19T15:29:46.021Z",
+  "generatedAt": "2026-04-19T15:30:38.681Z",
   "gate": "no-browser-globals-in-portable-code",
-  "ok": false,
-  "errorCount": 20,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/lib/services/adaptive-visual-system.ts",
-      "message": "Browser global in portable service layer: window.a, window.r, document.d — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/ambient-context-engine.ts",
-      "message": "Browser global in portable service layer: window.l, localStorage.g, localStorage.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/app-store/launch.service.ts",
-      "message": "Browser global in portable service layer: window.d, window.o, window.w — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/background-intelligence.ts",
-      "message": "Browser global in portable service layer: document.q, document.c, document.h — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/context-graph/index.ts",
-      "message": "Browser global in portable service layer: navigator.o — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/device-presence-service.ts",
-      "message": "Browser global in portable service layer: window.a, document.a, document.h — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/error-monitoring-service.ts",
-      "message": "Browser global in portable service layer: window.a — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/native-apps/detection.ts",
-      "message": "Browser global in portable service layer: window.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/native-apps/launch.ts",
-      "message": "Browser global in portable service layer: window.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/offline-sync/index.ts",
-      "message": "Browser global in portable service layer: window.a, navigator.o — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/onboarding-daemon/index.ts",
-      "message": "Browser global in portable service layer: navigator.p, localStorage.g, localStorage.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
-      "message": "Browser global in portable service layer: navigator.u, navigator.p, sessionStorage.g — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/predictive-prefetch.ts",
-      "message": "Browser global in portable service layer: localStorage.g, localStorage.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/push-notification/push-registration-service.ts",
-      "message": "Browser global in portable service layer: navigator.u, navigator.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/routine-detector.ts",
-      "message": "Browser global in portable service layer: localStorage.g, localStorage.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/session-persistence.ts",
-      "message": "Browser global in portable service layer: localStorage.s, localStorage.g, localStorage.r — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/setup/hardware-capability-service.ts",
-      "message": "Browser global in portable service layer: window.s, window.m, navigator.m — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/surface-detection/index.ts",
-      "message": "Browser global in portable service layer: window.C, window.m, window.s — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/system-updates/index.ts",
-      "message": "Browser global in portable service layer: window.l, navigator.u, navigator.p — route through useRuntimeHost() or guard with typeof check."
-    },
-    {
-      "severity": "error",
-      "area": "src/lib/services/universal-state-sync/index.ts",
-      "message": "Browser global in portable service layer: window.s, window.l, navigator.u — route through useRuntimeHost() or guard with typeof check."
-    }
-  ],
+  "issues": [],
   "scanned": 486,
   "roots": [
     "src/lib/services"
   ],
-  "violations": 20
+  "violations": 0
 }
