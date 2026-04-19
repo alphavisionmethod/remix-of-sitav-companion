@@ -1,15 +1,10 @@
 {
-  "generatedAt": "2026-04-19T16:49:53.768Z",
+  "generatedAt": "2026-04-19T16:50:56.392Z",
   "gate": "onboarding-simulated-persona-disclosure",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 2,
   "issues": [
-    {
-      "severity": "error",
-      "area": "canonical-runtime",
-      "message": "Missing canonical onboarding daemon: src/lib/services/onboarding-daemon.ts"
-    },
     {
       "severity": "warning",
       "area": "user-flagship-deferred",
@@ -24,7 +19,7 @@
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md",
   "canonicalRuntime": {
-    "daemon": "src/lib/services/onboarding-daemon.ts",
+    "daemon": "src/lib/services/onboarding-daemon/index.ts",
     "hook": "src/hooks/useOnboardingDaemon.ts"
   },
   "requiredForGreen": "user-flagship-pass: build src/pages/onboarding/** with SimulatedPersonaBanner"
