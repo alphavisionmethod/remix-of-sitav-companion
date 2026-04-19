@@ -1,0 +1,164 @@
+{
+  "generatedAt": "2026-04-19T18:23:05.429Z",
+  "scope": "frontend-truth-backing-closure (AI Engineer hub + canonical primitives)",
+  "verdict": "GREEN",
+  "surfacesInScope": 5,
+  "newComponents": [
+    "src/components/primitives/status/ProvenanceChip.tsx",
+    "src/components/primitives/actions/EvidenceLink.tsx"
+  ],
+  "newComponentFamilies": 0,
+  "duplicates": 0,
+  "newValidators": [
+    "scripts/validation/check-thin-admin-empty-states.ts",
+    "scripts/validation/check-no-dead-cta-on-production-surfaces.ts",
+    "scripts/validation/check-qualified-surface-copy.ts",
+    "scripts/validation/check-provider-state-chip-consistency.ts",
+    "scripts/validation/check-responsive-admin-layout-integrity.ts",
+    "scripts/validation/check-simulation-disclosure-coverage.ts"
+  ],
+  "reusedValidators": [],
+  "validatorTier": "WARN",
+  "validatorResults": {
+    "thin-admin-empty-states": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 0,
+      "promptNamed": true,
+      "classification": "warn-tier-adoption-tracker"
+    },
+    "no-dead-cta-on-production-surfaces": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 0,
+      "promptNamed": true,
+      "classification": "warn-tier-adoption-tracker"
+    },
+    "qualified-surface-copy": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 0,
+      "promptNamed": true,
+      "classification": "warn-tier-truth-copy"
+    },
+    "provider-state-chip-consistency": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 582,
+      "promptNamed": true,
+      "classification": "warn-tier-adoption-tracker"
+    },
+    "responsive-admin-layout-integrity": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 0,
+      "promptNamed": true,
+      "classification": "warn-tier-adoption-tracker"
+    },
+    "simulation-disclosure-coverage": {
+      "exitCode": 0,
+      "tier": "WARN",
+      "errorCount": 0,
+      "warningCount": 47,
+      "promptNamed": true,
+      "classification": "warn-tier-disclosure-coverage"
+    }
+  },
+  "scopeDiscipline": {
+    "deletions": 0,
+    "desktopRouteRemoved": false,
+    "mobileResponsiveRemoved": false,
+    "disclosureRemoved": false,
+    "edgeFunctionsChanged": 0,
+    "migrationsAdded": 0,
+    "appTsxChanged": false
+  },
+  "truthPanel": {
+    "id": "frontend-truth-backing-closure-truth",
+    "tab": 22,
+    "component": "src/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel.tsx",
+    "mountedAt": "/admin/ai-runtime"
+  },
+  "deliverables": {
+    "auditDocs": [
+      "generated/frontend-truth-backing-closure/FRONTEND_TRUTH_LINKAGE_AUDIT.md",
+      "generated/frontend-truth-backing-closure/FRONTEND_COMPLETENESS_MATRIX.md",
+      "generated/frontend-truth-backing-closure/THIN_EMPTY_STATE_REMEDIATION_REPORT.md",
+      "generated/frontend-truth-backing-closure/TRUST_COPY_ALIGNMENT_REPORT.md",
+      "generated/frontend-truth-backing-closure/RESPONSIVE_ADMIN_SURFACE_AUDIT.md",
+      "generated/frontend-truth-backing-closure/PARTIAL_SURFACE_CLOSURE_STATUS.md"
+    ],
+    "statusJsons": [
+      "generated/frontend-truth-backing-closure/frontend-completeness-status.json",
+      "generated/frontend-truth-backing-closure/thin-empty-state-status.json",
+      "generated/frontend-truth-backing-closure/trust-copy-alignment-status.json",
+      "generated/frontend-truth-backing-closure/responsive-admin-surface-status.json"
+    ],
+    "finalMarkdown": "generated/frontend-truth-backing-closure/FRONTEND_TRUTH_BACKING_FINAL_VERIFICATION.md"
+  },
+  "surfacesWired": [
+    {
+      "surface": "ConciergeBoardroom (Boardroom briefing root)",
+      "primitives": [
+        "ProvenanceChip",
+        "EvidenceLink"
+      ],
+      "drilldowns": [
+        "/admin/ai-runtime/nightly-truth",
+        "/admin/ai-runtime/connector-truth"
+      ]
+    },
+    {
+      "surface": "AIRuntimeNightlyTruthPanel",
+      "primitives": [
+        "ProvenanceChip",
+        "EvidenceLink"
+      ],
+      "drilldowns": [
+        "receipts",
+        "ledger",
+        "fallback-events",
+        "provider-health"
+      ]
+    },
+    {
+      "surface": "ConnectorTruthSummaryPanel",
+      "primitives": [
+        "ProvenanceChip",
+        "EvidenceLink"
+      ],
+      "drilldowns": [
+        "/admin/integrations?provider=…"
+      ]
+    },
+    {
+      "surface": "IntegrationStreakPanel",
+      "primitives": [
+        "ProvenanceChip",
+        "OperatorActionPanel"
+      ],
+      "drilldowns": [
+        "/admin/integrations"
+      ]
+    },
+    {
+      "surface": "Communications (canonical chips already present)",
+      "primitives": [
+        "ConnectorStateBadge"
+      ],
+      "drilldowns": [
+        "n/a"
+      ]
+    }
+  ],
+  "honestWarningCounts": {
+    "provider-state-chip-consistency": 582,
+    "simulation-disclosure-coverage": 47,
+    "note": "Honest adoption-tracker debt; WARN-tier ship criterion is errorCount=0 only."
+  }
+}

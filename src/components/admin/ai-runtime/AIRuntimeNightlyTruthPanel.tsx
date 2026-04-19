@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
+import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
 import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
 import {
   loadNightlyTruthData,
@@ -235,6 +237,41 @@ export default function AIRuntimeNightlyTruthPanel() {
           </CardContent>
         </Card>
       </div>
+
+      {/* ── Evidence drilldowns (canonical sources) ───────── */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xs uppercase tracking-wide text-muted-foreground">
+            Evidence sources
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center gap-2">
+          <ProvenanceChip
+            source="ai_runtime_nightly_runs"
+            verifiedAt={data.recentRuns[0]?.started_at ?? null}
+          />
+          <EvidenceLink
+            to="/admin/ai-gateway/receipts"
+            label="ai_inference_receipts"
+            kind="receipt"
+          />
+          <EvidenceLink
+            to="/admin/ai-gateway/budget"
+            label="ai_usage_ledger"
+            kind="ledger"
+          />
+          <EvidenceLink
+            to="/admin/ai-runtime/connector-truth"
+            label="ai_fallback_events"
+            kind="fallback-event"
+          />
+          <EvidenceLink
+            to="/admin/ai-gateway/providers"
+            label="provider health"
+            kind="integration"
+          />
+        </CardContent>
+      </Card>
 
       {/* ── Unacknowledged alerts ─────────────────────────── */}
       {data.unackAlerts.length > 0 && (

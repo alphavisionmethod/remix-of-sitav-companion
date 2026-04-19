@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
 import { normalizeConnectorState, type ConnectorState } from "@/lib/connectors/connector-state-grammar";
 
 interface ProbeRow {
@@ -101,6 +103,18 @@ export default function IntegrationStreakPanel() {
     return () => { cancelled = true; };
   }, []);
 
+  // Worst current state across all providers — drives remediation panel.
+  const worstNow: ConnectorState = streaks.reduce<ConnectorState>((acc, s) => {
+    const order: ConnectorState[] = ["connected", "demo_simulated", "degraded", "manual", "reauth_required", "failing"];
+    const todays = s.days[s.days.length - 1]?.state ?? "manual";
+    return order.indexOf(todays) > order.indexOf(acc) ? todays : acc;
+  }, "connected");
+  const needsRemediation = worstNow === "reauth_required" || worstNow === "failing" || worstNow === "degraded";
+  const lastVerifiedAt = streaks
+    .flatMap((s) => s.days)
+    .filter((d) => d.probes > 0)
+    .reduce<string | null>((acc, d) => (d.date > (acc ?? "") ? d.date : acc), null);
+
   return (
     <Card>
       <CardHeader>
@@ -108,6 +122,12 @@ export default function IntegrationStreakPanel() {
         <p className="text-xs text-muted-foreground">
           Per-provider canonical state (worst-of-day) sourced from token-refresh probes.
         </p>
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <ProvenanceChip
+            source="oauth_refresh_probe_results"
+            verifiedAt={lastVerifiedAt ? `${lastVerifiedAt}T00:00:00Z` : null}
+          />
+        </div>
       </CardHeader>
       <CardContent>
         {loading && <p className="text-sm text-muted-foreground">Loading streaks…</p>}
@@ -142,6 +162,18 @@ export default function IntegrationStreakPanel() {
               </div>
             ))}
           </div>
+        )}
+        {!loading && needsRemediation && (
+          <OperatorActionPanel
+            ariaLabel="Connector remediation actions"
+            remediation={{
+              label: worstNow === "reauth_required" ? "Reauthorize provider" : "Inspect failing provider",
+              href: "/admin/integrations",
+            }}
+            evidence={[
+              { label: "Token-refresh probe history", href: "/admin/integrations" },
+            ]}
+          />
         )}
       </CardContent>
     </Card>

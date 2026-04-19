@@ -44,6 +44,7 @@ const FlagshipSurfaceClosureTruthPanel = lazy(() => import("@/components/admin/a
 const AdminEmptyStateClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"));
 const AdminCoherenceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"));
 const TrustStateAndCopyClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"));
+const FrontendTruthBackingClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -205,6 +206,13 @@ export default function AIRuntimeHome() {
       description: "Trust-grade state handling + trust-copy alignment closure: canonical state system applied across 8 in-scope surfaces (onboarding, boardroom, concierge, communications, admin/ai-runtime, admin/integrations, admin/health, admin/releases-support). 13 deliverables + 8 WARN-tier validators (5 reused + 3 new: trust-state-consistency, no-oneoff-trust-state-components, simulation-and-future-labeling). Zero new component families. Boardroom distinguishes live recs vs future learning v2; concierge stays gateway-governed; comms separates OAuth-live from manual long-tail; admin AI runtime keeps 4 proof tiers separate.",
       legacyPath: "/admin/ai-runtime/trust-state-and-copy-closure-truth",
       render: wrap(TrustStateAndCopyClosureTruthPanel),
+    },
+    {
+      id: "frontend-truth-backing-closure-truth",
+      label: "Frontend Truth-Backing Closure",
+      description: "Frontend instrumentation + truth-backing closure: visible provenance and canonical evidence drilldowns wired across 5 in-scope surfaces (Boardroom briefing, Concierge, Communications, Admin AI Runtime, Admin Integrations). 2 new shared primitives (ProvenanceChip, EvidenceLink — both thin compositions, 0 new component families) + 6 prompt-named WARN-tier validators (thin-admin-empty-states, no-dead-cta-on-production-surfaces, qualified-surface-copy, provider-state-chip-consistency, responsive-admin-layout-integrity, simulation-disclosure-coverage). Master verification JSON reflects validator reality — honest warning counts surfaced, no fake-green.",
+      legacyPath: "/admin/ai-runtime/frontend-truth-backing-closure-truth",
+      render: wrap(FrontendTruthBackingClosureTruthPanel),
     },
     {
       id: "efficiency",

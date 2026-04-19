@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T18:20:39.309Z",
+  "gate": "no-dead-cta-on-production-surfaces",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "surfaces": [
+    "src/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel.tsx",
+    "src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx",
+    "src/components/admin/integrations/IntegrationStreakPanel.tsx",
+    "src/pages/concierge/ConciergeBoardroom.tsx"
+  ],
+  "scanned": 4,
+  "offenders": 0,
+  "classification": "warn-tier-adoption-tracker"
+}
