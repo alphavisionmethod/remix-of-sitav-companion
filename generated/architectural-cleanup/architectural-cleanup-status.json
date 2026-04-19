@@ -5,7 +5,7 @@
     "newMarkdowns": 12,
     "newJsonStatuses": 4,
     "newValidators": 5,
-    "newTruthPanels": 1,
+    "newTruthPanels": 2,
     "edgeFunctionsRefactored": 8,
     "filesDeleted": 0,
     "filesArchived": 0,
@@ -16,12 +16,14 @@
     "ninePointPolicy": "FILE_REMOVAL_SAFETY_POLICY.md",
     "additiveOnly": true
   },
-  "carryovers": [
+  "carryovers": [],
+  "relatedClosures": [
     {
       "id": "economic-trust-future-closure",
-      "status": "abandoned-mid-flight",
-      "evidence": "DB tables + runtime enforcement + microcopy + registry edits exist; generated/economic-trust-and-future-closure/ directory was never created and the truth panel was never mounted.",
-      "scope": "out-of-scope-for-this-prompt"
+      "status": "now-shipped-and-wired",
+      "evidence": "8 markdowns + 5 JSONs in generated/economic-trust-and-future-closure/; EconomicTrustFutureTruthPanel mounted as 9th tab on AI Engineer hub; 7 BLOCK validators wired into check-os-release-readiness.ts (193 total gates).",
+      "deliverables": 13,
+      "blockGates": 7
     }
   ],
   "honestLimits": [
