@@ -5,6 +5,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainHubLayout";
 
@@ -231,6 +234,14 @@ export default function AIRuntimeHome() {
 
   return (
     <AdminControlPlaneShell>
+      <div className="flex justify-end px-4 pt-2">
+        <Link to="/admin/health/error-patrol">
+          <Button size="sm" variant="outline" onClick={() => undefined}>
+            <ExternalLink className="mr-1 h-3 w-3" />
+            Open Error Patrol
+          </Button>
+        </Link>
+      </div>
       <DomainHubLayout domain="ai-runtime" modules={modules} defaultTabId="team" />
     </AdminControlPlaneShell>
   );
