@@ -284,6 +284,12 @@ const REQUIRED_GATES = [
   "connector-reauth-telemetry",
   "security-fabric-probes",
   "app-sdk-extension-registry",
+  // Phase 10–14 Closure Pack (5 BLOCK gates)
+  "boardroom-cockpit-telemetry",
+  "onboarding-branch-telemetry",
+  "mobile-deferral-attestation",
+  "app-sdk-extension-events",
+  "release-evidence-graph-snapshot",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
