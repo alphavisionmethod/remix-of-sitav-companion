@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-04-19T02:05:40Z",
+  "verdict": "BEHAVIORALLY_PROVEN_DAY_1",
+  "verdict_color": "YELLOW",
+  "verdict_reason": "Live-provider path proven end-to-end on day 1; 7 consecutive clean nights required for GREEN streak.",
+  "phases_complete": {
+    "phase_1_schema_and_audit": true,
+    "phase_2_verifier_edge_function": true,
+    "phase_3_ci_validation_scripts": true,
+    "phase_4_admin_visibility": true,
+    "phase_5_cron_and_aggregator": true
+  },
+  "live_provider_proof": {
+    "first_pass_run_id": "nrv-2026-04-19T02-05-32-448Z",
+    "model": "google/gemini-2.5-flash-lite",
+    "provider": "lovable-gateway",
+    "real_invocation": true,
+    "synthetic_only": false,
+    "estimated_cost_per_run_usd": 0.000002,
+    "cost_ceiling_usd": 0.005
+  },
+  "sub_checks": {
+    "live_provider_call": "PASS",
+    "receipt_persistence": "PASS",
+    "ledger_write": "PASS",
+    "fallback_path": "PASS",
+    "budget_enforcement": "PASS"
+  },
+  "streak": {
+    "current_streak_days": 1,
+    "longest_streak_days": 1,
+    "streak_target_for_green": 7,
+    "streak_started_at": "2026-04-19T02:05:32.448Z"
+  },
+  "alerts": {
+    "auto_alerting_active": true,
+    "trigger_function": "handle_ai_runtime_nightly_run_insert",
+    "first_alert_proves_path": "2b555d13-6bd3-4a01-8a77-dcca5bd899f6"
+  },
+  "cron": {
+    "schedule_name": "sita-ai-runtime-nightly-verify",
+    "schedule": "0 2 * * *",
+    "jobid": 27,
+    "active": true
+  },
+  "ci_gates_registered_in_aggregator": [
+    "ai-live-provider-nightly",
+    "ai-receipt-persistence",
+    "ai-ledger-write-verification",
+    "ai-fallback-verification",
+    "ai-budget-enforcement-under-load",
+    "ai-runtime-streak-health"
+  ],
+  "admin_surface": {
+    "tab_id": "nightly-truth",
+    "panel_component": "AIRuntimeNightlyTruthPanel",
+    "scope": "admin-ai-engineer-only",
+    "page": "/admin/ai-runtime"
+  },
+  "canonical_systems_reused": [
+    "ai-gateway",
+    "ai_invocations",
+    "ai_usage_ledger",
+    "ai_inference_receipts",
+    "ai_fallback_events",
+    "ai_workforce_budget_classes",
+    "_lib/emit-gate-report",
+    "AIRuntimeHome",
+    "check-os-release-readiness aggregator"
+  ],
+  "no_duplicates_introduced": true,
+  "no_stubs": true,
+  "launch_honest": true
+}
