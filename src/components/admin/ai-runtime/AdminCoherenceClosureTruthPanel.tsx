@@ -259,9 +259,6 @@ export default function AdminCoherenceClosureTruthPanel() {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
 
       <Card>
         <CardHeader>
