@@ -5220,6 +5220,48 @@ export type Database = {
         }
         Relationships: []
       }
+      chaos_drill_results: {
+        Row: {
+          blast_radius: string
+          completed_at: string | null
+          created_at: string
+          detection_seconds: number | null
+          drill_name: string
+          evidence: Json
+          id: string
+          outcome: string
+          recovery_seconds: number | null
+          started_at: string
+          triggered_by: string
+        }
+        Insert: {
+          blast_radius?: string
+          completed_at?: string | null
+          created_at?: string
+          detection_seconds?: number | null
+          drill_name: string
+          evidence?: Json
+          id?: string
+          outcome?: string
+          recovery_seconds?: number | null
+          started_at?: string
+          triggered_by: string
+        }
+        Update: {
+          blast_radius?: string
+          completed_at?: string | null
+          created_at?: string
+          detection_seconds?: number | null
+          drill_name?: string
+          evidence?: Json
+          id?: string
+          outcome?: string
+          recovery_seconds?: number | null
+          started_at?: string
+          triggered_by?: string
+        }
+        Relationships: []
+      }
       client_capability_matrix: {
         Row: {
           capabilities: Json | null
@@ -9942,6 +9984,48 @@ export type Database = {
         }
         Relationships: []
       }
+      dr_drill_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          drill_kind: string
+          evidence: Json
+          failover_target: string | null
+          id: string
+          outcome: string
+          rpo_seconds: number | null
+          rto_seconds: number | null
+          started_at: string
+          triggered_by: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          drill_kind: string
+          evidence?: Json
+          failover_target?: string | null
+          id?: string
+          outcome?: string
+          rpo_seconds?: number | null
+          rto_seconds?: number | null
+          started_at?: string
+          triggered_by: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          drill_kind?: string
+          evidence?: Json
+          failover_target?: string | null
+          id?: string
+          outcome?: string
+          rpo_seconds?: number | null
+          rto_seconds?: number | null
+          started_at?: string
+          triggered_by?: string
+        }
+        Relationships: []
+      }
       dr_drills: {
         Row: {
           created_at: string
@@ -10925,6 +11009,39 @@ export type Database = {
           user_id?: string
           window_end?: string
           window_start?: string
+        }
+        Relationships: []
+      }
+      federation_optin_events: {
+        Row: {
+          consent_kind: string
+          consent_scope: Json
+          consented_at: string
+          consented_by: string
+          created_at: string
+          id: string
+          signature: string
+          tenant_id: string
+        }
+        Insert: {
+          consent_kind: string
+          consent_scope?: Json
+          consented_at?: string
+          consented_by: string
+          created_at?: string
+          id?: string
+          signature: string
+          tenant_id: string
+        }
+        Update: {
+          consent_kind?: string
+          consent_scope?: Json
+          consented_at?: string
+          consented_by?: string
+          created_at?: string
+          id?: string
+          signature?: string
+          tenant_id?: string
         }
         Relationships: []
       }
@@ -15928,6 +16045,45 @@ export type Database = {
           },
         ]
       }
+      owner_copilot_sessions: {
+        Row: {
+          copilot_kind: string
+          created_at: string
+          evidence: Json
+          id: string
+          prompt_count: number
+          read_only_verified: boolean
+          session_ended_at: string | null
+          session_started_at: string
+          tenant_id: string | null
+          user_id: string
+        }
+        Insert: {
+          copilot_kind?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          prompt_count?: number
+          read_only_verified?: boolean
+          session_ended_at?: string | null
+          session_started_at?: string
+          tenant_id?: string | null
+          user_id: string
+        }
+        Update: {
+          copilot_kind?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          prompt_count?: number
+          read_only_verified?: boolean
+          session_ended_at?: string | null
+          session_started_at?: string
+          tenant_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       plane_service_assignments: {
         Row: {
           created_at: string
@@ -16323,6 +16479,45 @@ export type Database = {
           symbol?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      production_launch_attestations: {
+        Row: {
+          attested_at: string
+          attested_by: string
+          created_at: string
+          evidence: Json
+          evidence_hash: string
+          id: string
+          launch_posture: string
+          release_tag: string | null
+          signature: string
+          surface_key: string
+        }
+        Insert: {
+          attested_at?: string
+          attested_by: string
+          created_at?: string
+          evidence?: Json
+          evidence_hash: string
+          id?: string
+          launch_posture: string
+          release_tag?: string | null
+          signature: string
+          surface_key: string
+        }
+        Update: {
+          attested_at?: string
+          attested_by?: string
+          created_at?: string
+          evidence?: Json
+          evidence_hash?: string
+          id?: string
+          launch_posture?: string
+          release_tag?: string | null
+          signature?: string
+          surface_key?: string
         }
         Relationships: []
       }
