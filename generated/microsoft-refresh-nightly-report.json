@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T02:41:46.280Z",
+  "gate": "microsoft-refresh-nightly",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "microsoft",
+      "message": "microsoft has 0 successful refresh probes in last 24h (failures=0)"
+    }
+  ]
+}

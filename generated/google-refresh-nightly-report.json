@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T02:41:44.379Z",
+  "gate": "google-refresh-nightly",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "google",
+      "message": "google has 0 successful refresh probes in last 24h (failures=0)"
+    }
+  ]
+}
