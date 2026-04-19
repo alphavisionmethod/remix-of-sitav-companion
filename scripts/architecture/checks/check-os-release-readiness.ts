@@ -183,6 +183,13 @@ const REQUIRED_GATES = [
   "final-launch-honesty",
   "final-supportability-readiness",
   "final-gate-meaningfulness",
+  // AI Runtime Truth Closure — 6 BLOCK gates (live-provider behavioral proof)
+  "ai-live-provider-nightly",
+  "ai-receipt-persistence",
+  "ai-ledger-write-verification",
+  "ai-fallback-verification",
+  "ai-budget-enforcement-under-load",
+  "ai-runtime-streak-health",
 ];
 
 // Mobile Deployment Closure — WARN-tier (mobile is secondary distribution surface;
