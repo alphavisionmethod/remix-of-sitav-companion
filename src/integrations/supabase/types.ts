@@ -383,6 +383,45 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_action_proof_packs: {
+        Row: {
+          action_id: string
+          advisor_id: string
+          created_at: string
+          evidence: Json
+          id: string
+          reversible: boolean
+          rollback_evidence: Json | null
+          rollback_executed_at: string | null
+          rollback_token: string | null
+          user_id: string
+        }
+        Insert: {
+          action_id: string
+          advisor_id: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reversible?: boolean
+          rollback_evidence?: Json | null
+          rollback_executed_at?: string | null
+          rollback_token?: string | null
+          user_id: string
+        }
+        Update: {
+          action_id?: string
+          advisor_id?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reversible?: boolean
+          rollback_evidence?: Json | null
+          rollback_executed_at?: string | null
+          rollback_token?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_action_queue: {
         Row: {
           action_type: string
@@ -9164,6 +9203,45 @@ export type Database = {
           },
         ]
       }
+      cron_run_receipts: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          job_name: string
+          payload: Json
+          schedule_expression: string | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name: string
+          payload?: Json
+          schedule_expression?: string | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name?: string
+          payload?: Json
+          schedule_expression?: string | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           created_at: string
@@ -10338,6 +10416,78 @@ export type Database = {
         }
         Relationships: []
       }
+      evidence_graph_edges: {
+        Row: {
+          created_at: string
+          from_node: string
+          id: string
+          metadata: Json
+          relation: string
+          to_node: string
+        }
+        Insert: {
+          created_at?: string
+          from_node: string
+          id?: string
+          metadata?: Json
+          relation: string
+          to_node: string
+        }
+        Update: {
+          created_at?: string
+          from_node?: string
+          id?: string
+          metadata?: Json
+          relation?: string
+          to_node?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidence_graph_edges_from_node_fkey"
+            columns: ["from_node"]
+            isOneToOne: false
+            referencedRelation: "evidence_graph_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "evidence_graph_edges_to_node_fkey"
+            columns: ["to_node"]
+            isOneToOne: false
+            referencedRelation: "evidence_graph_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evidence_graph_nodes: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          metadata: Json
+          owner: string
+          ref: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          metadata?: Json
+          owner?: string
+          ref: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          metadata?: Json
+          owner?: string
+          ref?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       external_workforce_api_keys: {
         Row: {
           created_at: string
@@ -11434,6 +11584,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      installed_apps_receipts: {
+        Row: {
+          action: string
+          app_id: string
+          created_at: string
+          id: string
+          manifest_hash: string | null
+          manifest_signature: string | null
+          metadata: Json
+          occurred_at: string
+          signature_verified: boolean
+          source_channel: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          app_id: string
+          created_at?: string
+          id?: string
+          manifest_hash?: string | null
+          manifest_signature?: string | null
+          metadata?: Json
+          occurred_at?: string
+          signature_verified?: boolean
+          source_channel?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          app_id?: string
+          created_at?: string
+          id?: string
+          manifest_hash?: string | null
+          manifest_signature?: string | null
+          metadata?: Json
+          occurred_at?: string
+          signature_verified?: boolean
+          source_channel?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       instruments: {
         Row: {
@@ -13440,6 +13632,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      kill_switch_ttl_expiry_receipts: {
+        Row: {
+          created_at: string
+          expired_at: string
+          expired_by_actor: string
+          id: string
+          prior_state: Json
+          switch_id: string
+          switch_row_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          expired_at?: string
+          expired_by_actor?: string
+          id?: string
+          prior_state?: Json
+          switch_id: string
+          switch_row_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          expired_at?: string
+          expired_by_actor?: string
+          id?: string
+          prior_state?: Json
+          switch_id?: string
+          switch_row_id?: string | null
+        }
+        Relationships: []
       }
       layer_health_snapshots: {
         Row: {
@@ -16789,6 +17011,39 @@ export type Database = {
           rollout_percentage?: number
           rollout_stage?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      release_decisions: {
+        Row: {
+          created_at: string
+          decided_at: string
+          decided_by: string
+          decision: string
+          evidence: Json
+          gate_name: string
+          id: string
+          release_id: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string
+          decided_by?: string
+          decision: string
+          evidence?: Json
+          gate_name: string
+          id?: string
+          release_id: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string
+          decided_by?: string
+          decision?: string
+          evidence?: Json
+          gate_name?: string
+          id?: string
+          release_id?: string
         }
         Relationships: []
       }
