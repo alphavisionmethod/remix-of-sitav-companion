@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:21:52.680Z",
+  "generatedAt": "2026-04-19T14:23:25.438Z",
   "gate": "operator-drill-execution",
   "ok": true,
   "errorCount": 0,
@@ -14,7 +14,7 @@
   "drills": 0,
   "distinctScenarios": 0,
   "scenarioTarget": 6,
-  "source": "status-file",
+  "source": "live-db",
   "classification": "pending-human-execution",
   "perScenario": []
 }

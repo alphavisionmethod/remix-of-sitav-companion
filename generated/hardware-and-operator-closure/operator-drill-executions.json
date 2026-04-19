@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-19T14:21:41.214Z",
-  "source": "no-db-access",
+  "generatedAt": "2026-04-19T14:23:19.907Z",
+  "source": "live-db",
   "rows": [],
   "aggregates": {
     "perScenario": []

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:22:00.099Z",
+  "generatedAt": "2026-04-19T14:23:32.983Z",
   "gate": "kill-switch-drill-readiness",
   "ok": true,
   "errorCount": 0,
@@ -8,10 +8,10 @@
     {
       "severity": "warning",
       "area": "drills",
-      "message": "0/16 kill-switches have drill evidence — pending-drill"
+      "message": "0/15 kill-switches have drill evidence — pending-drill"
     }
   ],
-  "totalSwitches": 16,
+  "totalSwitches": 15,
   "drilledSwitches": 0,
   "coveragePct": 0,
   "drillSource": "live-db",
@@ -146,15 +146,6 @@
     {
       "switchId": "KS-PAYMENTS-AUTH",
       "displayName": "Payment Authorization Kill Switch",
-      "impactLevel": "severe",
-      "ownerTeam": "finance-team",
-      "drillCount": 0,
-      "latestDrill": null,
-      "classification": "pending-drill"
-    },
-    {
-      "switchId": "KS-PAYMENTS-AUTH",
-      "displayName": "Payment Authentication Kill Switch",
       "impactLevel": "severe",
       "ownerTeam": "finance-team",
       "drillCount": 0,

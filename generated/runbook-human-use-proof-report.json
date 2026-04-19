@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:21:56.783Z",
+  "generatedAt": "2026-04-19T14:23:29.737Z",
   "gate": "runbook-human-use-proof",
   "ok": true,
   "errorCount": 0,
@@ -7,14 +7,175 @@
   "issues": [
     {
       "severity": "warning",
-      "area": "registry",
-      "message": "No runbooks found in registry"
+      "area": "drills",
+      "message": "0/20 runbooks have human-use evidence — pending-human-execution"
     }
   ],
-  "totalRunbooks": 0,
+  "totalRunbooks": 20,
   "coveredRunbooks": 0,
   "coveragePct": 0,
   "drillSource": "live-db",
-  "classification": "no-registry",
-  "perRunbook": []
+  "classification": "pending-human-execution",
+  "perRunbook": [
+    {
+      "runbookId": "RB-001",
+      "title": "Auth Outage Recovery",
+      "severity": "critical",
+      "subsystem": "auth",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-002",
+      "title": "AI Provider Outage",
+      "severity": "high",
+      "subsystem": "ai-providers",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-003",
+      "title": "Sync Lag Recovery",
+      "severity": "medium",
+      "subsystem": "sync",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-004",
+      "title": "Stuck Workflow Recovery",
+      "severity": "medium",
+      "subsystem": "workflow",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-005",
+      "title": "Proof Mismatch Resolution",
+      "severity": "high",
+      "subsystem": "proof",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-006",
+      "title": "Generated vs Runtime Drift",
+      "severity": "medium",
+      "subsystem": "manifest-drift",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-007",
+      "title": "Push Notification Failure",
+      "severity": "low",
+      "subsystem": "push",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-008",
+      "title": "VMware/Desktop Boot Failure",
+      "severity": "medium",
+      "subsystem": "desktop-host",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-009",
+      "title": "Release Rollback",
+      "severity": "critical",
+      "subsystem": "release",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-010",
+      "title": "AI Degradation Response",
+      "severity": "high",
+      "subsystem": "ai-degradation",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-011",
+      "title": "Connector Token Failure",
+      "severity": "medium",
+      "subsystem": "connectors",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-012",
+      "title": "Setup Checkpoint Corruption",
+      "severity": "medium",
+      "subsystem": "setup",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-013",
+      "title": "Approval Queue Jam",
+      "severity": "high",
+      "subsystem": "approvals",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-014",
+      "title": "DB Restore Failure",
+      "severity": "critical",
+      "subsystem": "db",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-015",
+      "title": "RLS Misconfiguration Response",
+      "severity": "critical",
+      "subsystem": "rls",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-016",
+      "title": "Desktop Host Bridge Failure",
+      "severity": "medium",
+      "subsystem": "desktop-host",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-017",
+      "title": "Mobile Push Registration Failure",
+      "severity": "low",
+      "subsystem": "mobile-push",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-018",
+      "title": "Runtime Probe Failure",
+      "severity": "medium",
+      "subsystem": "runtime-probe",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-019",
+      "title": "Support Escalation Failure",
+      "severity": "high",
+      "subsystem": "support-escalation",
+      "executions": 0,
+      "latestSignoff": null
+    },
+    {
+      "runbookId": "RB-020",
+      "title": "Ingress / Edge Routing Failure",
+      "severity": "high",
+      "subsystem": "ingress",
+      "executions": 0,
+      "latestSignoff": null
+    }
+  ]
 }
