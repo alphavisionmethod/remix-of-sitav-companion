@@ -1,0 +1,32 @@
+{
+  "$schema": "https://sita-os.dev/schemas/attestations/legacy-barrel.v1.json",
+  "attestationId": "legacy-barrel",
+  "issuedAt": "2026-04-19T00:00:00.000Z",
+  "issuedBy": "architecture-governance",
+  "phase": "Phase 18 — Layout & CI Truth",
+  "decision": "GOVERNED_SCAFFOLDING",
+  "rationale": "src/legacy/canonical-backend and src/legacy/simulation are intentional empty migration barrels (export {};). They are NOT live code duplicates of src/lib/canonical-backend/ or src/lib/simulation/. They exist as stable import targets so any residual consumer can be redirected to the canonical lib homes without breaking builds. Zero runtime behavior, zero exported symbols.",
+  "barrels": [
+    {
+      "path": "src/legacy/canonical-backend/index.ts",
+      "kind": "empty-barrel",
+      "exports": 0,
+      "canonicalHome": "src/lib/canonical-backend/",
+      "consumerCount": 0
+    },
+    {
+      "path": "src/legacy/simulation/index.ts",
+      "kind": "empty-barrel",
+      "exports": 0,
+      "canonicalHome": "src/lib/simulation/",
+      "consumerCount": 0
+    }
+  ],
+  "guarantees": [
+    "Empty barrels — no runtime divergence possible",
+    "Zero current consumers — verified by import-graph scan",
+    "Retained as stable redirect targets only"
+  ],
+  "closes": "PROJECT_TREE_AUDIT.md#A3",
+  "status": "CLOSED"
+}
