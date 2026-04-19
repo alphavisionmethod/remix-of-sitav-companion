@@ -1,8 +1,41 @@
 {
-  "generatedAt": "2026-04-18",
+  "generatedAt": "2026-04-19",
   "scope": "admin-ai-engineering",
+  "verdict": "in-scope-GREEN-with-honest-deferrals",
   "completed": ["admin-ai-runtime", "admin-integrations"],
   "deferred": ["onboarding", "boardroom-briefing", "concierge", "communications"],
-  "aggregatorGatesAdded": 8,
-  "totalRequiredGates": 58
+  "aggregatorGatesAdded": 6,
+  "totalRequiredGates": 211,
+  "previousRequiredGates": 205,
+  "validators": {
+    "inScope": [
+      "admin-ai-runtime-drilldowns",
+      "admin-integrations-health-visibility"
+    ],
+    "deferredHybrid": [
+      "onboarding-simulated-persona-disclosure",
+      "boardroom-briefing-truth-alignment",
+      "concierge-ai-state-handling",
+      "communications-connector-state-alignment",
+      "flagship-surface-trust-copy",
+      "flagship-surface-responsive-quality"
+    ]
+  },
+  "deliverables": {
+    "inScope": [
+      "ADMIN_AI_RUNTIME_CLOSURE_SPEC.md",
+      "ADMIN_INTEGRATIONS_CLOSURE_SPEC.md",
+      "SHARED_STATE_AND_TRUST_ALIGNMENT.md",
+      "FLAGSHIP_SURFACE_FINAL_VERIFICATION.md"
+    ],
+    "deferred": [
+      "ONBOARDING_WIRING_AUDIT.md",
+      "BOARDROOM_BRIEFING_CLOSURE_SPEC.md",
+      "CONCIERGE_CHAT_CLOSURE_SPEC.md",
+      "COMMUNICATIONS_INBOX_CLOSURE_SPEC.md"
+    ]
+  },
+  "truthPanelMount": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx#flagship-surface-closure-truth (tab 11)",
+  "honestyPolicy": "no-fake-green: deferred surfaces emit explicit WARN with cross-reference to deferral doc; never silent passes",
+  "userConstraint": "integrate it correctly only on the admin AI engineer team — zero edits to user-facing routes"
 }

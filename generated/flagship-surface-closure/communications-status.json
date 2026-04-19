@@ -1,6 +1,14 @@
 {
   "surface": "communications",
-  "status": "deferred",
-  "reason": "operator-scoped to admin AI engineering team per directive",
-  "trackedSeparately": true
+  "status": "deferred-to-user-flagship-pass",
+  "scope": "admin-ai-engineering",
+  "classification": "honest-warn-deferred",
+  "validator": "communications-connector-state-alignment",
+  "deferralDoc": "generated/flagship-surface-closure/COMMUNICATIONS_INBOX_CLOSURE_SPEC.md",
+  "canonicalChip": "src/components/connectors/ConnectorStateBadge.tsx",
+  "adminBackboneInScope": [
+    "src/pages/admin/integrations/IntegrationsHome.tsx",
+    "src/pages/admin/integrations/OAuthRefreshHealthBoard.tsx"
+  ],
+  "requiredForGreen": "user-flagship-pass: build /communications/inbox using ConnectorStateBadge + connector_provider_health for live/degraded/reauth/failing/manual chips"
 }
