@@ -6,7 +6,8 @@
     "calmModeDefault": "applied",
     "uxAgencyMicrocopy": "canonicalized",
     "futureSurfaceContainment": "extended",
-    "edgeFunctionStructuredLogging": "8-additional-fns-refactored"
+    "edgeFunctionStructuredLogging": "8-additional-fns-refactored",
+    "uiPanelMounted": "AIRuntimeHome 9th tab"
   },
   "edgeFunctionsRefactored": [
     "app-install",
@@ -18,9 +19,9 @@
     "advisor-conversation",
     "advisor-agent-loop"
   ],
-  "loggingCoverage": { "before": 30, "after": 38, "total": 172 },
+  "loggingCoverage": { "before": 30, "after": 43, "total": 172 },
   "honestLimits": [
     "Per-user budget load test pending first run (WARN-tier honest)",
-    "Remaining ~130 edge fns classified passthrough-acceptable (no fake-green)"
+    "Remaining ~129 edge fns classified passthrough-acceptable (no fake-green)"
   ]
 }
