@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T17:20:16.267Z",
+  "generatedAt": "2026-04-19T17:20:47.336Z",
   "gate": "cross-domain-coherence-empty-state",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "operator-navigation",
-      "message": "src/pages/admin/verification/CrossDomainCoherence.tsx must contain ≥2 real <Link to=\"/admin/...\"> canonical destinations (found 0)"
-    }
-  ],
+  "issues": [],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/admin-empty-state-closure/CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/verification/CrossDomainCoherence.tsx",

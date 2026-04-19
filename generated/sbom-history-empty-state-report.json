@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T17:20:21.742Z",
+  "generatedAt": "2026-04-19T17:20:53.841Z",
   "gate": "sbom-history-empty-state",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "operator-navigation",
-      "message": "src/pages/admin/releases/SbomHistory.tsx must contain ≥2 real <Link to=\"/admin/...\"> canonical destinations (found 0)"
-    }
-  ],
+  "issues": [],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/releases/SbomHistory.tsx",

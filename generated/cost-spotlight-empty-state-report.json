@@ -1,16 +1,10 @@
 {
-  "generatedAt": "2026-04-19T17:20:18.755Z",
+  "generatedAt": "2026-04-19T17:20:50.262Z",
   "gate": "cost-spotlight-empty-state",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "operator-navigation",
-      "message": "src/pages/admin/health/CostSpotlight.tsx must contain ≥2 real <Link to=\"/admin/...\"> canonical destinations (found 0)"
-    }
-  ],
+  "issues": [],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/admin-empty-state-closure/COST_SPOTLIGHT_EMPTY_STATE_SPEC.md",
   "expectedPagePath": "src/pages/admin/health/CostSpotlight.tsx",
