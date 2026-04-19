@@ -1,0 +1,1734 @@
+{
+  "generatedAt": "2026-04-19T19:29:40.929Z",
+  "totalTabs": 43,
+  "tabsWithRealWiring": 22,
+  "tabsWithRealtime": 8,
+  "tabsClaimingRealtime": 18,
+  "mismatches": [
+    {
+      "tabId": "team",
+      "componentPath": "@/pages/admin/AIT01TeamOverview",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_registry"
+      ],
+      "declaredRpcs": [
+        "get_internal_agent_health_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_registry",
+        "rpc:get_internal_agent_health_summary"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "internal-agents",
+      "componentPath": "@/pages/admin/ai-runtime/InternalAgentsBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_runtime_state",
+        "internal_agent_action_intents"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_runtime_state",
+        "table:internal_agent_action_intents"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "internal-agent-intents",
+      "componentPath": "@/pages/admin/ai-runtime/InternalAgentIntentTimeline",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_action_intents"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-execute-action"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_action_intents",
+        "internal_agent_gate_verdicts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_gate_verdicts"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "councils",
+      "componentPath": "@/pages/admin/ai-runtime/CouncilsBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_council_state",
+        "internal_agent_escalations"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_council_state",
+        "table:internal_agent_escalations"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "trust-ladder",
+      "componentPath": "@/pages/admin/ai-runtime/TrustLadderBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [
+        "summarize_trust_ladder"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-trust-evaluator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_trust_ladder",
+        "internal_agent_knowledge_bus"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_trust_ladder",
+        "table:internal_agent_knowledge_bus"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "reflection",
+      "componentPath": "@/pages/admin/ai-runtime/ReflectionBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_reflections"
+      ],
+      "rpcsFound": [
+        "summarize_internal_agent_learning"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-reflect"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_reflections"
+      ],
+      "declaredRpcs": [
+        "get_agent_reflection_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "rpc:get_agent_reflection_summary"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "suggestions",
+      "componentPath": "@/pages/admin/ai-runtime/SuggestionsBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_implementation_suggestions"
+      ],
+      "rpcsFound": [
+        "record_implementation_suggestion_decision",
+        "summarize_implementation_suggestions"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-suggestion-generator"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_implementation_suggestions"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-suggestion-generator"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "edge:ai-suggestion-generator"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "weekly-digest",
+      "componentPath": "@/pages/admin/ai-runtime/WeeklyDigestBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_weekly_digests"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-weekly-digest"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_weekly_digests"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-weekly-digest-generator"
+      ],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_weekly_digests",
+        "edge:ai-weekly-digest-generator"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "dependency-findings",
+      "componentPath": "@/pages/admin/ai-runtime/DependencyFindingsBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "dependency_upgrade_findings"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_dependency_findings"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-dependency-upgrade-proposer"
+      ],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_dependency_findings",
+        "edge:ai-dependency-upgrade-proposer"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "policy-drafts",
+      "componentPath": "@/pages/admin/ai-runtime/PolicyDraftReviewBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_policy_drafts"
+      ],
+      "rpcsFound": [
+        "record_policy_draft_decision",
+        "summarize_policy_draft_health"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-policy-architect"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_policy_drafts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-policy-architect"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "edge:ai-policy-architect"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "cross-council",
+      "componentPath": "@/pages/admin/ai-runtime/CrossCouncilBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_consensus_sessions",
+        "internal_agent_cost_proposals",
+        "internal_agent_runbook_executions"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-cost-optimizer"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_consensus_sessions",
+        "internal_agent_cost_proposals",
+        "internal_agent_runbooks"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_runbooks"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "tenant-federation",
+      "componentPath": "@/pages/admin/ai-runtime/TenantFederationBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_tenant_kill_switches",
+        "internal_agent_tenant_quotas",
+        "internal_agent_tenant_scopes"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "tenant_federation_state",
+        "tenant_kill_switches"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:tenant_federation_state",
+        "table:tenant_kill_switches"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "security-council",
+      "componentPath": "@/pages/admin/ai-runtime/SecurityCouncilBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "security_council_findings"
+      ],
+      "rpcsFound": [
+        "acknowledge_security_finding",
+        "summarize_security_council"
+      ],
+      "edgeFunctionsFound": [
+        "security-council-tick"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "sita_security_council_findings"
+      ],
+      "declaredRpcs": [
+        "sita-security-council-tick"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:sita_security_council_findings",
+        "rpc:sita-security-council-tick"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "providers",
+      "componentPath": "@/pages/admin/AIG01ProviderRegistry",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_provider_registry",
+        "ai_provider_health"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_provider_registry",
+        "table:ai_provider_health"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "models",
+      "componentPath": "@/pages/admin/AIG02ModelRegistry",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_model_registry"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_model_registry"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "routing",
+      "componentPath": "@/pages/admin/AIG03RoutingMatrix",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_capability_routing",
+        "ai_routing_policies"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_capability_routing",
+        "table:ai_routing_policies"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "budget",
+      "componentPath": "@/pages/admin/AIG04BudgetCenter",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_provider_registry"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_budget_alerts",
+        "ai_budget_decision_receipts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_budget_alerts",
+        "table:ai_budget_decision_receipts"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "governance",
+      "componentPath": "@/pages/admin/AIGovernancePage",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_autonomy_policies",
+        "ai_prompt_families"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_autonomy_policies",
+        "table:ai_prompt_families"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "slo-observability",
+      "componentPath": "@/pages/admin/ai-runtime/SLOObservabilityBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_anomaly_signals",
+        "internal_agent_canary_runs",
+        "internal_agent_drift_findings",
+        "internal_agent_slo_snapshots"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-slo-evaluator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_slo_evaluations",
+        "ai_anomaly_events"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-slo-evaluator"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_slo_evaluations",
+        "table:ai_anomaly_events",
+        "edge:ai-slo-evaluator"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "efficiency",
+      "componentPath": "@/pages/admin/intelligence/AIEfficiencyScoreboard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_feedback",
+        "advisor_board_reflections"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_feedback",
+        "table:advisor_board_reflections"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "cost",
+      "componentPath": "@/pages/admin/AIT05CostEfficiency",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_usage_ledger",
+        "ai_invocations"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_usage_ledger",
+        "table:ai_invocations"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "assurance-chaos",
+      "componentPath": "@/pages/admin/ai-runtime/AssuranceChaosBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_assurance_reports",
+        "internal_agent_auto_rollback_events",
+        "internal_agent_chaos_drills"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-canary-runner",
+        "internal-agent-chaos-scheduler"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_chaos_drills",
+        "ai_assurance_reports",
+        "ai_auto_rollback_events"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_chaos_drills",
+        "table:ai_assurance_reports",
+        "table:ai_auto_rollback_events"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "external-workforce-api",
+      "componentPath": "@/pages/admin/ai-runtime/ExternalWorkforceApiBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "external_workforce_api_keys",
+        "external_workforce_subscriptions",
+        "external_workforce_webhook_deliveries"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "external_workforce_endpoints",
+        "external_workforce_webhooks"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:external_workforce_endpoints",
+        "table:external_workforce_webhooks"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "knowledge-federation",
+      "componentPath": "@/pages/admin/ai-runtime/KnowledgeFederationBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "federated_knowledge_shares",
+        "federated_pattern_aggregates",
+        "tenant_federation_optins"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "federated-knowledge-aggregator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "knowledge_federation_optins",
+        "knowledge_federation_dp_budget"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:knowledge_federation_optins",
+        "table:knowledge_federation_dp_budget"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "sovereign-dr",
+      "componentPath": "@/pages/admin/ai-runtime/SovereignDeploymentDRBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "audit_export_bundles",
+        "dr_drills",
+        "signed_release_artifacts"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "audit-export-bundler",
+        "dr-drill-runner"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "sovereign_dr_drills",
+        "sovereign_dr_failover_requests"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:sovereign_dr_drills",
+        "table:sovereign_dr_failover_requests"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "advisors",
+      "componentPath": "@/pages/admin/AdvisorBoardCatalog",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_workforce_launch_honesty"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_registry",
+        "advisor_profiles"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_registry",
+        "table:advisor_profiles"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "owner-copilot",
+      "componentPath": "@/pages/admin/ai-runtime/OwnerCopilotBriefings",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "owner-copilot-bff?op=handoff",
+        "owner-copilot-bff?op=list"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "owner_copilot_briefings"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "owner-copilot-bff"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:owner_copilot_briefings",
+        "edge:owner-copilot-bff"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "nightly-truth",
+      "componentPath": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_runtime_nightly_runs",
+        "ai_runtime_failure_alerts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-runtime-nightly-verify"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_runtime_nightly_runs",
+        "table:ai_runtime_failure_alerts",
+        "edge:ai-runtime-nightly-verify"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "connector-truth",
+      "componentPath": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "connector_refresh_nightly_runs"
+      ],
+      "declaredRpcs": [
+        "get_connector_refresh_streak_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:connector_refresh_nightly_runs",
+        "rpc:get_connector_refresh_streak_summary"
+      ],
+      "unwiredRealtime": false
+    }
+  ],
+  "panels": [
+    {
+      "tabId": "team",
+      "componentPath": "@/pages/admin/AIT01TeamOverview",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_registry"
+      ],
+      "declaredRpcs": [
+        "get_internal_agent_health_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_registry",
+        "rpc:get_internal_agent_health_summary"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "internal-agents",
+      "componentPath": "@/pages/admin/ai-runtime/InternalAgentsBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_runtime_state",
+        "internal_agent_action_intents"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_runtime_state",
+        "table:internal_agent_action_intents"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "internal-agent-intents",
+      "componentPath": "@/pages/admin/ai-runtime/InternalAgentIntentTimeline",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_action_intents"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-execute-action"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_action_intents",
+        "internal_agent_gate_verdicts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_gate_verdicts"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "councils",
+      "componentPath": "@/pages/admin/ai-runtime/CouncilsBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_council_state",
+        "internal_agent_escalations"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_council_state",
+        "table:internal_agent_escalations"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "trust-ladder",
+      "componentPath": "@/pages/admin/ai-runtime/TrustLadderBoard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [
+        "summarize_trust_ladder"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-trust-evaluator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_trust_ladder",
+        "internal_agent_knowledge_bus"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_trust_ladder",
+        "table:internal_agent_knowledge_bus"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "reflection",
+      "componentPath": "@/pages/admin/ai-runtime/ReflectionBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_reflections"
+      ],
+      "rpcsFound": [
+        "summarize_internal_agent_learning"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-reflect"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "internal_agent_reflections"
+      ],
+      "declaredRpcs": [
+        "get_agent_reflection_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "rpc:get_agent_reflection_summary"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "suggestions",
+      "componentPath": "@/pages/admin/ai-runtime/SuggestionsBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_implementation_suggestions"
+      ],
+      "rpcsFound": [
+        "record_implementation_suggestion_decision",
+        "summarize_implementation_suggestions"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-suggestion-generator"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_implementation_suggestions"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-suggestion-generator"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "edge:ai-suggestion-generator"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "weekly-digest",
+      "componentPath": "@/pages/admin/ai-runtime/WeeklyDigestBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_weekly_digests"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-weekly-digest"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_weekly_digests"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-weekly-digest-generator"
+      ],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_weekly_digests",
+        "edge:ai-weekly-digest-generator"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "dependency-findings",
+      "componentPath": "@/pages/admin/ai-runtime/DependencyFindingsBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "dependency_upgrade_findings"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "ai_dependency_findings"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-dependency-upgrade-proposer"
+      ],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_dependency_findings",
+        "edge:ai-dependency-upgrade-proposer"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "policy-drafts",
+      "componentPath": "@/pages/admin/ai-runtime/PolicyDraftReviewBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_policy_drafts"
+      ],
+      "rpcsFound": [
+        "record_policy_draft_decision",
+        "summarize_policy_draft_health"
+      ],
+      "edgeFunctionsFound": [
+        "internal-agent-policy-architect"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_policy_drafts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-policy-architect"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "edge:ai-policy-architect"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "cross-council",
+      "componentPath": "@/pages/admin/ai-runtime/CrossCouncilBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_consensus_sessions",
+        "internal_agent_cost_proposals",
+        "internal_agent_runbook_executions"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-cost-optimizer"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "internal_agent_consensus_sessions",
+        "internal_agent_cost_proposals",
+        "internal_agent_runbooks"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:internal_agent_runbooks"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "tenant-federation",
+      "componentPath": "@/pages/admin/ai-runtime/TenantFederationBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_tenant_kill_switches",
+        "internal_agent_tenant_quotas",
+        "internal_agent_tenant_scopes"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "tenant_federation_state",
+        "tenant_kill_switches"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:tenant_federation_state",
+        "table:tenant_kill_switches"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "security-council",
+      "componentPath": "@/pages/admin/ai-runtime/SecurityCouncilBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "security_council_findings"
+      ],
+      "rpcsFound": [
+        "acknowledge_security_finding",
+        "summarize_security_council"
+      ],
+      "edgeFunctionsFound": [
+        "security-council-tick"
+      ],
+      "channelFound": true,
+      "realtimeFound": true,
+      "declaredTables": [
+        "sita_security_council_findings"
+      ],
+      "declaredRpcs": [
+        "sita-security-council-tick"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:sita_security_council_findings",
+        "rpc:sita-security-council-tick"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "providers",
+      "componentPath": "@/pages/admin/AIG01ProviderRegistry",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_provider_registry",
+        "ai_provider_health"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_provider_registry",
+        "table:ai_provider_health"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "models",
+      "componentPath": "@/pages/admin/AIG02ModelRegistry",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_model_registry"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_model_registry"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "routing",
+      "componentPath": "@/pages/admin/AIG03RoutingMatrix",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_capability_routing",
+        "ai_routing_policies"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:ai_capability_routing",
+        "table:ai_routing_policies"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "budget",
+      "componentPath": "@/pages/admin/AIG04BudgetCenter",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_provider_registry"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_budget_alerts",
+        "ai_budget_decision_receipts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_budget_alerts",
+        "table:ai_budget_decision_receipts"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "governance",
+      "componentPath": "@/pages/admin/AIGovernancePage",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_autonomy_policies",
+        "ai_prompt_families"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_autonomy_policies",
+        "table:ai_prompt_families"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "slo-observability",
+      "componentPath": "@/pages/admin/ai-runtime/SLOObservabilityBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_anomaly_signals",
+        "internal_agent_canary_runs",
+        "internal_agent_drift_findings",
+        "internal_agent_slo_snapshots"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-slo-evaluator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_slo_evaluations",
+        "ai_anomaly_events"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-slo-evaluator"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_slo_evaluations",
+        "table:ai_anomaly_events",
+        "edge:ai-slo-evaluator"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "efficiency",
+      "componentPath": "@/pages/admin/intelligence/AIEfficiencyScoreboard",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_feedback",
+        "advisor_board_reflections"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_feedback",
+        "table:advisor_board_reflections"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "cost",
+      "componentPath": "@/pages/admin/AIT05CostEfficiency",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_usage_ledger",
+        "ai_invocations"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_usage_ledger",
+        "table:ai_invocations"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "assurance-chaos",
+      "componentPath": "@/pages/admin/ai-runtime/AssuranceChaosBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "internal_agent_assurance_reports",
+        "internal_agent_auto_rollback_events",
+        "internal_agent_chaos_drills"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "internal-agent-canary-runner",
+        "internal-agent-chaos-scheduler"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_chaos_drills",
+        "ai_assurance_reports",
+        "ai_auto_rollback_events"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_chaos_drills",
+        "table:ai_assurance_reports",
+        "table:ai_auto_rollback_events"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "external-workforce-api",
+      "componentPath": "@/pages/admin/ai-runtime/ExternalWorkforceApiBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "external_workforce_api_keys",
+        "external_workforce_subscriptions",
+        "external_workforce_webhook_deliveries"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "external_workforce_endpoints",
+        "external_workforce_webhooks"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:external_workforce_endpoints",
+        "table:external_workforce_webhooks"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "knowledge-federation",
+      "componentPath": "@/pages/admin/ai-runtime/KnowledgeFederationBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "federated_knowledge_shares",
+        "federated_pattern_aggregates",
+        "tenant_federation_optins"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "federated-knowledge-aggregator"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "knowledge_federation_optins",
+        "knowledge_federation_dp_budget"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:knowledge_federation_optins",
+        "table:knowledge_federation_dp_budget"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "sovereign-dr",
+      "componentPath": "@/pages/admin/ai-runtime/SovereignDeploymentDRBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "audit_export_bundles",
+        "dr_drills",
+        "signed_release_artifacts"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "audit-export-bundler",
+        "dr-drill-runner"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "sovereign_dr_drills",
+        "sovereign_dr_failover_requests"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:sovereign_dr_drills",
+        "table:sovereign_dr_failover_requests"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "compliance-attestation",
+      "componentPath": "@/pages/admin/ai-runtime/ComplianceAttestationBoard",
+      "fileExists": true,
+      "tablesFound": [
+        "attestation_packets",
+        "compliance_controls",
+        "compliance_evidence",
+        "policy_as_code_rules"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "attestation-packet-builder",
+        "compliance-evidence-collector"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "compliance_evidence",
+        "attestation_packets"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "advisors",
+      "componentPath": "@/pages/admin/AdvisorBoardCatalog",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_workforce_launch_honesty"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "advisor_registry",
+        "advisor_profiles"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:advisor_registry",
+        "table:advisor_profiles"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "owner-copilot",
+      "componentPath": "@/pages/admin/ai-runtime/OwnerCopilotBriefings",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [
+        "owner-copilot-bff?op=handoff",
+        "owner-copilot-bff?op=list"
+      ],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "owner_copilot_briefings"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "owner-copilot-bff"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:owner_copilot_briefings",
+        "edge:owner-copilot-bff"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "nightly-truth",
+      "componentPath": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "ai_runtime_nightly_runs",
+        "ai_runtime_failure_alerts"
+      ],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [
+        "ai-runtime-nightly-verify"
+      ],
+      "declaredRealtime": true,
+      "missingDeclared": [
+        "table:ai_runtime_nightly_runs",
+        "table:ai_runtime_failure_alerts",
+        "edge:ai-runtime-nightly-verify"
+      ],
+      "unwiredRealtime": true
+    },
+    {
+      "tabId": "connector-truth",
+      "componentPath": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [
+        "connector_refresh_nightly_runs"
+      ],
+      "declaredRpcs": [
+        "get_connector_refresh_streak_summary"
+      ],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [
+        "table:connector_refresh_nightly_runs",
+        "rpc:get_connector_refresh_streak_summary"
+      ],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "mobile-scope-truth",
+      "componentPath": "@/components/admin/ai-runtime/MobileScopeTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "frontend-polish-truth",
+      "componentPath": "@/components/admin/ai-runtime/FrontendPolishTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "admin-validation-truth",
+      "componentPath": "@/components/admin/ai-runtime/AdminValidationTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "hardware-operator-truth",
+      "componentPath": "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel",
+      "fileExists": true,
+      "tablesFound": [
+        "hardware_certification_runs",
+        "operator_drill_executions"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "security-portability-truth",
+      "componentPath": "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel",
+      "fileExists": true,
+      "tablesFound": [
+        "secret_rotation_log"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "architectural-cleanup-truth",
+      "componentPath": "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "economic-trust-future-truth",
+      "componentPath": "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [
+        "ai_budget_decision_receipts",
+        "ai_user_hard_ceilings"
+      ],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "architecture-hardening-truth",
+      "componentPath": "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "flagship-surface-closure-truth",
+      "componentPath": "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "admin-empty-state-closure-truth",
+      "componentPath": "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "admin-coherence-closure-truth",
+      "componentPath": "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "trust-state-and-copy-closure-truth",
+      "componentPath": "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    },
+    {
+      "tabId": "frontend-truth-backing-closure-truth",
+      "componentPath": "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel",
+      "fileExists": true,
+      "tablesFound": [],
+      "rpcsFound": [],
+      "edgeFunctionsFound": [],
+      "channelFound": false,
+      "realtimeFound": false,
+      "declaredTables": [],
+      "declaredRpcs": [],
+      "declaredEdgeFunctions": [],
+      "declaredRealtime": false,
+      "missingDeclared": [],
+      "unwiredRealtime": false
+    }
+  ]
+}
