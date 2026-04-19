@@ -155,7 +155,8 @@ jobs:
             generated/sbom-os-*.cdx.json
             generated/sbom-os-*.cdx.json.sig
             generated/sbom-os-*.cdx.json.sha256
-          retention-days: 14
+          # Bump retention on release-triggered builds (90 days vs 14 day default)
+          retention-days: ${{ github.event_name == 'release' && 90 || 14 }}
           if-no-files-found: error
 
       - name: Build summary
@@ -208,3 +209,47 @@ jobs:
             out/qemu-validation-report.md
           retention-days: 14
           if-no-files-found: warn
+
+  publish-iso:
+    name: Publish ISO to GitHub Release (${{ matrix.profile }})
+    needs: [build, smoke-test]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [user, operator]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: sita-os-iso-${{ matrix.profile }}
+          path: release-assets/
+
+      - name: Stage release assets
+        run: |
+          mkdir -p staged
+          # Flatten + namespace by profile so user/operator artifacts don't collide
+          for f in release-assets/out/*.iso release-assets/out/*.img release-assets/out/*.sha256 \
+                   release-assets/out/*.manifest.json release-assets/out/verity-metadata.json \
+                   release-assets/generated/os-build-attestation.json \
+                   release-assets/generated/sbom-electron-*.cdx.json \
+                   release-assets/generated/sbom-electron-*.cdx.json.sig \
+                   release-assets/generated/sbom-os-*.cdx.json \
+                   release-assets/generated/sbom-os-*.cdx.json.sig; do
+            [ -f "$f" ] || continue
+            base="$(basename "$f")"
+            cp "$f" "staged/sita-os-${{ matrix.profile }}-${base}"
+          done
+          ls -lh staged/
+
+      - name: Attach to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: staged/*
+          fail_on_unmatched_files: false
+          tag_name: ${{ github.event.release.tag_name }}
+
