@@ -155,10 +155,10 @@ export default function InternalAgentsBoard() {
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
         <KpiCard icon={<Activity className="h-3.5 w-3.5" />} label="Total" value={counts.total} />
-        <KpiCard icon={<CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />} label="Idle" value={counts.idle} />
-        <KpiCard icon={<Zap className="h-3.5 w-3.5 text-sky-500" />} label="Running" value={counts.running} />
-        <KpiCard icon={<Pause className="h-3.5 w-3.5 text-zinc-500" />} label="Suspended" value={counts.suspended} />
-        <KpiCard icon={<AlertCircle className="h-3.5 w-3.5 text-destructive" />} label="Error" value={counts.error} />
+        <KpiCard icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Idle" value={counts.idle} tone="success" />
+        <KpiCard icon={<Zap className="h-3.5 w-3.5" />} label="Running" value={counts.running} tone="info" />
+        <KpiCard icon={<Pause className="h-3.5 w-3.5" />} label="Suspended" value={counts.suspended} tone="muted" />
+        <KpiCard icon={<AlertCircle className="h-3.5 w-3.5" />} label="Error" value={counts.error} tone="danger" />
       </div>
 
       {/* Filters */}
@@ -254,10 +254,15 @@ export default function InternalAgentsBoard() {
   );
 }
 
-function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
+function KpiCard({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value: number; tone?: "success" | "info" | "muted" | "danger" }) {
+  const toneCls = tone === "success" ? "text-[hsl(152_55%_55%)]"
+    : tone === "info" ? "text-[hsl(214_85%_60%)]"
+    : tone === "muted" ? "text-muted-foreground"
+    : tone === "danger" ? "text-destructive"
+    : "text-foreground";
   return (
     <Card className="p-2.5">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase text-muted-foreground tracking-wide">
+      <div className={`flex items-center gap-1.5 text-[10px] uppercase tracking-wide ${tone ? toneCls : "text-muted-foreground"}`}>
         {icon}{label}
       </div>
       <div className="text-lg font-semibold mt-0.5">{value}</div>
@@ -492,7 +497,7 @@ function AgentDetailSheet({
                   {(data?.openEscalations ?? []).map((e) => (
                     <Card key={e.id} className="p-2 text-[11px] border-destructive/30">
                       <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] h-4 px-1 border-0 bg-destructive/15 text-destructive">{e.severity}</Badge>
+                        <StatusBadge tone="danger" size="xs">{e.severity}</StatusBadge>
                         <span className="text-muted-foreground">→ {e.target_supervisor}</span>
                       </div>
                       <p className="mt-1">{e.escalation_reason}</p>
