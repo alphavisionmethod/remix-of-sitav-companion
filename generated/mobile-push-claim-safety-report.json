@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T00:43:46.316Z",
+  "gate": "mobile-push-claim-safety",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "transports": {
+    "web": "vapid-active",
+    "ios": "apns-deferred",
+    "android": "fcm-deferred"
+  },
+  "realPushTransport": "web-vapid"
+}

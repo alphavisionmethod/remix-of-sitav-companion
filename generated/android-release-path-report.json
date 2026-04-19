@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T00:43:42.644Z",
+  "gate": "android-release-path",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "requiredArtifacts": 8,
+  "blockerClass": "secret-blocked",
+  "nextStep": "provision ANDROID_KEYSTORE_PATH + 4 env vars; run scripts/release/android/build-android.sh"
+}

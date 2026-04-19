@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T00:43:40.852Z",
+  "gate": "no-flutter-mobile-truth-drift",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "truthRootsScanned": [
+    "src/planes",
+    "generated/manifests",
+    "infra/deploy",
+    "mobile"
+  ],
+  "hits": 0
+}
