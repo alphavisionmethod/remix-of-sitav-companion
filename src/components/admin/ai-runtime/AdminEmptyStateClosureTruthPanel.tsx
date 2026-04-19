@@ -134,7 +134,13 @@ export default function AdminEmptyStateClosureTruthPanel() {
     );
   };
 
-  const verdictBadge = verification?.verdict?.includes("GREEN") ? (
+  const isFullyShipped = verification?.verdict?.includes("GREEN-fully-shipped");
+  const verdictBadge = isFullyShipped ? (
+    <Badge variant="outline" className="border-primary text-primary">
+      <CheckCircle2 className="mr-1 h-3 w-3" />
+      Fully shipped · GREEN
+    </Badge>
+  ) : verification?.verdict?.includes("GREEN") ? (
     <Badge variant="outline" className="border-primary text-primary">
       <CheckCircle2 className="mr-1 h-3 w-3" />
       In-scope GREEN
@@ -157,9 +163,9 @@ export default function AdminEmptyStateClosureTruthPanel() {
               {!loading && verdictBadge}
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
-              Admin AI engineering closure: 3 canonical empty-state primitives confirmed in-scope ·
-              3 surfaces honestly deferred to verification/health/releases domain passes
-              (WARN-tier with cross-referenced deferral docs). Zero fake-green.
+              {isFullyShipped
+                ? "All 3 admin empty-state surfaces shipped using the canonical PremiumEmptyState primitive. Cross-Domain Coherence, Cost Spotlight, and SBOM History are live in their canonical hubs with operator-grade copy, real /admin/* destinations, and explicit non-live labeling for preview content. Zero duplicates."
+                : "Admin AI engineering closure: 3 canonical empty-state primitives confirmed in-scope · 3 surfaces honestly deferred to verification/health/releases domain passes (WARN-tier with cross-referenced deferral docs). Zero fake-green."}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -206,7 +212,8 @@ export default function AdminEmptyStateClosureTruthPanel() {
                     : 3}
                 </TabsTrigger>
                 <TabsTrigger value="deferred">
-                  Deferred Surfaces · {DEFERRED_SURFACE_IDS.length}
+                  {isFullyShipped ? "Shipped Surfaces" : "Deferred Surfaces"} ·{" "}
+                  {DEFERRED_SURFACE_IDS.length}
                 </TabsTrigger>
                 <TabsTrigger value="meta">Closure Meta</TabsTrigger>
               </TabsList>
@@ -234,37 +241,73 @@ export default function AdminEmptyStateClosureTruthPanel() {
               </TabsContent>
 
               <TabsContent value="deferred" className="space-y-3 pt-3">
-                <div className="rounded border border-warning/40 bg-warning/5 p-3 text-xs text-muted-foreground">
-                  These 3 surfaces are <strong>out-of-admin-AI-engineering-scope</strong>. UX
-                  build requires the verification, health, and releases domain passes
-                  respectively. Each is tracked by an honest WARN-tier validator with explicit
-                  cross-reference — never silent passes.
+                <div
+                  className={`rounded border p-3 text-xs text-muted-foreground ${
+                    isFullyShipped
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-muted-foreground/30 bg-muted/30"
+                  }`}
+                >
+                  {isFullyShipped ? (
+                    <>
+                      All 3 surfaces are <strong>shipped</strong> with the canonical{" "}
+                      <code>PremiumEmptyState</code> primitive. Each surface is registered in its
+                      canonical domain hub and reachable via a direct route. Open buttons below
+                      navigate to the live boards.
+                    </>
+                  ) : (
+                    <>
+                      These 3 surfaces are <strong>out-of-admin-AI-engineering-scope</strong>.
+                      UX build requires the verification, health, and releases domain passes
+                      respectively. Each is tracked by an honest WARN-tier validator with
+                      explicit cross-reference — never silent passes.
+                    </>
+                  )}
                 </div>
                 {DEFERRED_SURFACE_IDS.map((d) => {
                   const s = statuses[d.id];
+                  const shipped = s?.status === "implemented-canonical-primitive-adopted";
                   return (
                     <div key={d.id} className="rounded border bg-card p-3">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                          {shipped ? (
+                            <CheckCircle2 className="h-4 w-4 text-primary" />
+                          ) : (
+                            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                          )}
                           <span className="text-sm font-medium">{d.label}</span>
                           <Badge
                             variant="outline"
-                            className="border-muted-foreground/40 text-[10px] text-muted-foreground"
+                            className={`text-[10px] ${
+                              shipped
+                                ? "border-primary text-primary"
+                                : "border-muted-foreground/40 text-muted-foreground"
+                            }`}
                           >
-                            {s?.status ?? "deferred"}
+                            {shipped ? "shipped" : (s?.status ?? "deferred")}
                           </Badge>
                         </div>
-                        <Link
-                          to={`/generated/admin-empty-state-closure/${d.doc}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button type="button" size="sm" variant="ghost">
-                            <ExternalLink className="mr-1 h-3 w-3" />
-                            Open deferral doc
-                          </Button>
-                        </Link>
+                        <div className="flex items-center gap-1">
+                          {shipped && s?.surface && (
+                            <Link to={s.surface}>
+                              <Button type="button" size="sm" variant="default">
+                                <ArrowRight className="mr-1 h-3 w-3" />
+                                Open live board
+                              </Button>
+                            </Link>
+                          )}
+                          <Link
+                            to={`/generated/admin-empty-state-closure/${d.doc}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button type="button" size="sm" variant="ghost">
+                              <ExternalLink className="mr-1 h-3 w-3" />
+                              Spec
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                       {s?.surface && (
                         <div className="mt-2 text-xs">
