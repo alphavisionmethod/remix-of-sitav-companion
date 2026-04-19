@@ -1,140 +1,91 @@
 
 
-## Plan — Frontend Reality & Polish Closure (Admin AI Engineer team only)
+## Audit Verdict — NOT 100% (was previously claimed GREEN, is actually RED)
 
-### Audit findings (live)
+Live evidence from `generated/frontend-polish-closure/frontend-polish-verification.json`:
+- `status: "RED"`, `ok: false`
+- 8/18 boards polished (10 still failing)
+- 13 raw empty-state violations
+- 7 loading-state violations
+- 2 acceptance checks failing: `every_board_has_empty_state_primitive`, `every_board_has_loading_skeleton`
 
-**Already in place — do NOT duplicate:**
-- `EmptyState` primitive at `src/components/primitives/feedback/EmptyState.tsx` (canonical)
-- `Skeleton` primitive at `src/components/primitives/feedback/Skeleton.tsx`
-- `DegradedStatePanel` at `src/components/reality/DegradedStatePanel.tsx`
-- `RuntimeFallback` at `src/components/runtime/RuntimeFallback.tsx`
-- `check-frontend-polish-coverage.ts` gate against `generated/final-proof-verification/frontend-completeness-status.json` (already GREEN, 9 surfaces)
-- `check-cta-wiring.ts` (warning gate, scans page-state-registry)
-- `generated/final-proof-verification/FRONTEND_POLISH_GAP_REGISTER.md` — currently empty
-- `AIRuntimeHome` hub: 19 modules, 17 boards, 3 truth panels — all routed through `DomainHubLayout`
+Confirmed remaining raw "No …" / "Loading…" offenders (grep verified):
+| Board | Raw violations |
+|---|---|
+| `InternalAgentIntentTimeline.tsx` | line 293 (`Loading…` / `No intents`) |
+| `PolicyDraftReviewBoard.tsx` | 1 |
+| `SLOObservabilityBoard.tsx` | line 119 + 3 more |
+| `SovereignDeploymentDRBoard.tsx` | line 95 + 2 more |
+| `TrustLadderBoard.tsx` | lines 161, 239, 276 |
+| `WeeklyDigestBoard.tsx` | lines 113, 156 |
+| `InternalAgentsBoard.tsx` | line 230 (raw "No agents match" div) |
+| `ReflectionBoard.tsx` | lines 215, 269 (raw Card text) |
+| `SecurityCouncilBoard.tsx` | line 347 (raw text) |
+| `SuggestionsBoard.tsx` | line 246 (raw "Loading…/No suggestions") |
 
-**Real gaps on the Admin AI Engineer hub (17 boards measured):**
-| Board | Empty-state primitive | Loading skeleton | Error state |
-|---|---|---|---|
-| AssuranceChaos | ❌ raw `<p>No…</p>` | ❌ | ⚠️ minimal |
-| ComplianceAttestation | ❌ raw | ❌ | ⚠️ |
-| Councils | ❌ raw italic text | ❌ | ❌ |
-| CrossCouncil | ❌ | ❌ | ❌ |
-| DependencyFindings | ❌ raw `Loading…` text | ❌ | ⚠️ |
-| ExternalWorkforceApi | ❌ 3× raw `<p>No…</p>` | ❌ | ❌ |
-| InternalAgentsBoard | ❌ raw table cell | ⚠️ partial | ❌ |
-| KnowledgeFederation | ❌ 3× raw | ❌ | ⚠️ |
-| PolicyDraftReview | ❌ raw | ❌ | ❌ |
-| Reflection | ❌ 2× raw | ⚠️ inline | ⚠️ |
-| SLOObservability | ❌ 4× raw | ❌ | ⚠️ |
-| SecurityCouncil | ❌ | ❌ | ⚠️ |
-| SovereignDeploymentDR | ❌ | ❌ | ⚠️ |
-| Suggestions | ❌ raw | ❌ | ⚠️ |
-| TenantFederation | ❌ 3× raw | ❌ | ❌ |
-| TrustLadder | ❌ | ❌ | ❌ |
-| WeeklyDigest | ❌ raw | ❌ | ⚠️ |
-| InternalAgentIntentTimeline | ❌ raw | ❌ | ❌ |
+What IS already in place and correct:
+- All 7 validators present in `scripts/validation/`
+- Emitter present
+- All 7 wired as BLOCK gates in `check-os-release-readiness.ts` (lines 208-214)
+- npm scripts `polish:closure:emit` + `polish:closure:run-all` present
+- `BoardSection.tsx` shared helper present
+- `FrontendPolishTruthPanel` mounted in `AIRuntimeHome`
+- All 16 closure deliverables present in `generated/frontend-polish-closure/`
+- 0 dead CTAs, 0 forbidden copy, 0 shell-only pages, 0 responsive violations
 
-**Zero dead CTAs detected** in `src/pages/admin/ai-runtime/` and `src/components/admin/ai-runtime/` (clean).
+## Closure Plan — Flip RED → GREEN
 
-**Scope rule (per user):** restrict ALL changes to **Admin AI Engineer team** = `src/pages/admin/ai-runtime/**` + `src/components/admin/ai-runtime/**`. Other domains stay untouched.
+**Scope:** Locked to `src/pages/admin/ai-runtime/**`. No other domain touched.
 
----
+### Phase 1 — Replace 13 raw empty-state strings in 10 boards
 
-### Phase 1 — Audit deliverables (production-grade documentation)
+For each offender, swap raw `<p>/<div>` "No …" / "Loading…" pattern with canonical `<EmptyState>` primitive (already imported pattern in 8 polished boards). Use trust-grade operator copy per board domain:
 
-Write the 11 markdown audits + 5 JSON status files exactly as PART 5 specifies, scoped to the AI Engineer hub:
+| Board | Replacement empty-state copy |
+|---|---|
+| `InternalAgentIntentTimeline` | "No intents in this window" / "Adjust the time-window or run an agent pass to populate the intent timeline." |
+| `PolicyDraftReviewBoard` | "No drafts awaiting review" / "Operators will see proposed policy diffs here when the council emits a draft." |
+| `SLOObservabilityBoard` | "No drift detected" + 3 more domain-specific states |
+| `SovereignDeploymentDRBoard` | "No DR drills run yet" + 2 more (snapshot/restore) |
+| `TrustLadderBoard` | 3× ("No agents on the ladder yet", "No rung changes yet", "No active learnings yet") with operator next-step |
+| `WeeklyDigestBoard` | "No digests generated yet" / "No digest selected" |
+| `InternalAgentsBoard` | "No agents match the current filter" — clear-filter CTA |
+| `ReflectionBoard` | 2× ("No reflections in this window" / "No reflections match the filter") |
+| `SecurityCouncilBoard` | "No findings in this view" with hourly-cron note |
+| `SuggestionsBoard` | "No suggestions match the filter" with run-generator hint |
 
-```
-generated/frontend-polish-closure/
-├─ FRONTEND_REALITY_AUDIT.md
-├─ FRONTEND_COMPLETENESS_MATRIX.md
-├─ EMPTY_STATE_AUDIT.md            ← lists all 18 raw-text empty states above
-├─ THIN_ADMIN_BOARD_AUDIT.md       ← classifies the 3 thinnest (External­Workforce, TenantFederation, KnowledgeFederation)
-├─ CTA_INTEGRITY_AUDIT.md          ← 0 dead CTAs found, evidence
-├─ ASSET_AND_VISUAL_COMPLETENESS_AUDIT.md
-├─ SHELL_ONLY_SURFACE_AUDIT.md     ← 0 shell-only surfaces (all wired to live tables)
-├─ STATE_HANDLING_AUDIT.md
-├─ TRUST_COPY_AND_PREMIUM_FEEL_AUDIT.md
-├─ RESPONSIVE_AND_APP_QUALITY_AUDIT.md
-├─ FRONTEND_POLISH_FINAL_VERIFICATION.md
-├─ frontend-completeness-status.json
-├─ empty-state-status.json
-├─ cta-integrity-status.json
-├─ state-handling-status.json
-└─ frontend-polish-verification.json
-```
+### Phase 2 — Replace 7 raw `Loading…` patterns with canonical `Skeleton` rows
 
-### Phase 2 — Canonical board state-handling helper (no duplication)
+Boards needing skeleton: `AssuranceChaos`, `Compliance Attestation`, `CrossCouncil`, `PolicyDraftReview`, `SLOObservability`, `SovereignDeploymentDR`, `TrustLadder`. Pattern: 3-row `<Skeleton className="h-4 w-X" />` from `@/components/primitives/feedback/Skeleton` (already canonical, already used in `BoardSection`).
 
-Create **one** shared helper `src/components/admin/ai-runtime/_shared/BoardSection.tsx`:
-- Wraps a `Card` + `CardHeader` + `CardContent`
-- Props: `title`, `icon`, `loading`, `error`, `isEmpty`, `emptyTitle`, `emptyDescription`, `emptyAction`, `children`
-- Internally renders: `Skeleton` (3 rows) when loading, `EmptyState` primitive when `isEmpty`, inline error card when error, otherwise children
-- Uses ONLY existing primitives — no new design system
+### Phase 3 — Re-emit + verify
 
-This is the single substitution target for all 18 raw-text empty states.
+1. Run `npm run polish:closure:emit` → regenerates the 5 status JSON files from real scan
+2. Run all 7 validators → expect 7/7 GREEN
+3. Confirm `frontend-polish-verification.json` flips to `status: "GREEN"`, `ok: true`, `boards_polished: 18`, all `failed_checks: []`
+4. Update `FRONTEND_POLISH_FINAL_VERIFICATION.md` with live GREEN evidence table
 
-### Phase 3 — Harden the 17 AI Engineer boards
+### Phase 4 — Tighten emitter scan (prevent future regressions)
 
-Replace raw `<p className="text-xs text-muted-foreground">No…</p>` patterns with `<BoardSection>` + canonical `EmptyState`. Per-board upgrade:
-- **Trust-grade title + description** matching each board's domain (e.g. ExternalWorkforceApi: "No API keys issued yet", "Issue a signed key from the Owner Workspace to allow trusted tenants to read workforce signals.")
-- **Loading**: 3-row skeleton rather than blank
-- **Error**: surface supabase error with retry button (uses existing `refresh()`/`load()` functions already in each board)
-- **Operator next-step copy** for every empty state (admin-grade, not user-grade)
+Current emitter missed 4 raw-text offenders (InternalAgentsBoard, ReflectionBoard, SecurityCouncilBoard, SuggestionsBoard). Broaden the regex in `scripts/validation/emit-frontend-polish-artifacts.ts` to also flag:
+- raw `<div>…No <X>…</div>` (not just `<p>`)
+- ternaries containing `"Loading…"` or `"No "` literals inside JSX text nodes
+- JSX text children of `<CardContent>` containing those literals
 
-Boards touched (17): AssuranceChaos, ComplianceAttestation, Councils, CrossCouncil, DependencyFindings, ExternalWorkforceApi, InternalAgents, KnowledgeFederation, PolicyDraftReview, Reflection, SLOObservability, SecurityCouncil, SovereignDeploymentDR, Suggestions, TenantFederation, TrustLadder, WeeklyDigest, InternalAgentIntentTimeline.
+Re-run after fix to confirm count is stable at 0.
 
-### Phase 4 — Promote the AI Engineer surface in the polish matrix
-
-- Append new row `"Admin AI Engineer (Hub)"` to `generated/final-proof-verification/frontend-completeness-status.json` with all 9 dimensions classified `true` (verdict: `launchGradeDesktop`)
-- Existing `check-frontend-polish-coverage.ts` will validate it on next CI
-
-### Phase 5 — Add the 7 closure validators
-
-Create real, evidence-checking gates (not stubs):
-```
-scripts/validation/check-empty-state-coverage.ts          ← scans ai-runtime boards for raw "No <X>" <p> patterns
-scripts/validation/check-cta-integrity.ts                  ← scans for empty onClick / href="#" / TODO in ai-runtime
-scripts/validation/check-no-shell-only-production-pages.ts ← validates each ai-runtime board has supabase calls + state mgmt
-scripts/validation/check-state-handling-consistency.ts     ← validates loading + empty + error states present
-scripts/validation/check-admin-board-polish.ts             ← validates BoardSection adoption count
-scripts/validation/check-trust-copy-quality.ts             ← lints for forbidden phrases (TODO, FIXME, lorem, alert())
-scripts/validation/check-responsive-surface-integrity.ts   ← validates tables wrapped in overflow-x-auto on ai-runtime
-```
-
-All 7 emit JSON gate reports via existing `_lib/emit-gate-report.ts` and exit nonzero on real violations.
-
-### Phase 6 — Wire into release readiness + add npm scripts
-
-- Add 7 new gates to `scripts/deployment/check-os-release-readiness.ts` BLOCK list
-- Add `package.json` scripts: `polish:closure:run-all` (runs all 7), `polish:closure:emit` (regenerates the 5 JSON status files)
-- Wire emitter `scripts/validation/emit-frontend-polish-artifacts.ts` to write `generated/frontend-polish-closure/*.json` from real scan results
-
-### Phase 7 — Surface live polish status in the AI Engineer hub
-
-Add **one new tab** to `AIRuntimeHome` modules: `frontend-polish-truth` → renders a new `<FrontendPolishTruthPanel>` component that reads `generated/frontend-polish-closure/frontend-polish-verification.json` (mirrors the existing `MobileScopeTruthPanel` pattern — same shape, same primitives, no new design language).
-
-### Phase 8 — Final verification
-
-- Run all 7 new gates → expect 7/7 GREEN
-- Run emitter → JSON status files updated with real evidence
-- Run existing `check-frontend-polish-coverage.ts` → still GREEN with new row
-- Update `FRONTEND_POLISH_FINAL_VERIFICATION.md` with live evidence table
+### Guardrails (preserved, do NOT touch)
+- BoardSection.tsx — already canonical, reused
+- EmptyState / Skeleton primitives — already canonical, reused
+- 8 already-polished boards (ExternalWorkforce, TenantFederation, KnowledgeFederation, Councils, CrossCouncil, DependencyFindings, AssuranceChaos, ComplianceAttestation) — empty-state path preserved, only their loading skeletons may be added
+- All other domains in repo — zero edits
+- All other GREEN gates (mobile, connector, AI runtime) — untouched
 
 ### Files touched
-- **New (11):** `BoardSection.tsx`, `FrontendPolishTruthPanel.tsx`, 7 validators, 1 emitter, 1 npm-script wire-up
-- **Edited (17):** the 17 ai-runtime boards (raw empty-text → `<BoardSection>` + `EmptyState`)
-- **Edited (3):** `AIRuntimeHome.tsx` (add 1 tab), `check-os-release-readiness.ts` (add 7 BLOCK gates), `frontend-completeness-status.json` (add row)
-- **New docs/JSON (16):** 11 markdown audits + 5 JSON status files in `generated/frontend-polish-closure/`
+- **Edited (10 boards):** the 10 boards with remaining raw strings
+- **Edited (1):** `scripts/validation/emit-frontend-polish-artifacts.ts` (broader regex)
+- **Re-emitted (5):** the 5 JSON status files in `generated/frontend-polish-closure/`
+- **Edited (1):** `FRONTEND_POLISH_FINAL_VERIFICATION.md` with live GREEN evidence
 
-### Guardrails
-- Scope locked to `src/pages/admin/ai-runtime/**` and `src/components/admin/ai-runtime/**` — zero edits elsewhere
-- Reuses existing `EmptyState`, `Skeleton`, `DegradedStatePanel`, `Card`, `Badge`, `DomainHubLayout`, `AdminControlPlaneShell` — no new design system
-- No fake CTAs, no decorative filler, no lorem copy, no shell-only pages added
-- Every error state uses the actual `refresh()`/`load()` already present in each board (no stubbed retries)
-- Existing GREEN gates (mobile-scope-closure, frontend-polish-coverage) preserved untouched
-
-After this pass: 7/7 new gates GREEN, 17 boards trust-grade, 16 closure deliverables complete, AI Engineer hub gains a live `Frontend Polish Truth` tab — and the rest of the project is untouched.
+After this pass: `frontend-polish-verification.json` reports `status: "GREEN"`, 18/18 polished, 0 violations, 7/7 BLOCK gates GREEN — true 100% closure (not the previously-claimed-but-false GREEN).
 
