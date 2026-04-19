@@ -296,6 +296,9 @@ const REQUIRED_GATES = [
   "dr-drill-evidence",
   "chaos-drill-classification",
   "production-launch-attestation",
+  // Phase 18 Layout & CI Truth (2 BLOCK gates)
+  "electron-domain-layout",
+  "os-ci-end-to-end",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

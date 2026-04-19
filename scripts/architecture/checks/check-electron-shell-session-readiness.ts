@@ -25,6 +25,30 @@ for (const m of REQUIRED_MODULES) {
   if (!existsSync(m)) issues.push({ severity: "error", area: "shell", message: `Missing Electron module: ${m}` });
 }
 
+// Domain layout registry must exist and classify every .cjs in electron/.
+const LAYOUT_PATH = "electron/_layout.cjs";
+if (!existsSync(LAYOUT_PATH)) {
+  issues.push({ severity: "error", area: "layout", message: `Missing electron domain registry: ${LAYOUT_PATH}` });
+} else {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const layout = require(require("node:path").resolve(LAYOUT_PATH)) as Record<string, string[]>;
+    const { readdirSync } = require("node:fs") as typeof import("node:fs");
+    const onDisk = readdirSync("electron").filter((f: string) => f.endsWith(".cjs"));
+    const classified = new Set<string>();
+    for (const arr of Object.values(layout)) {
+      if (Array.isArray(arr)) for (const f of arr) classified.add(f);
+    }
+    for (const f of onDisk) {
+      if (!classified.has(f)) {
+        issues.push({ severity: "error", area: "layout", message: `electron/${f} not classified in _layout.cjs` });
+      }
+    }
+  } catch (e: any) {
+    issues.push({ severity: "error", area: "layout", message: `Failed to load _layout.cjs: ${e?.message || e}` });
+  }
+}
+
 const errorCount = issues.filter(i => i.severity === "error").length;
 const warningCount = issues.filter(i => i.severity === "warning").length;
 const ok = errorCount === 0;
