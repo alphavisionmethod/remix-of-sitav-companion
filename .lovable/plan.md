@@ -2,55 +2,94 @@
 
 ## Goal
 
-Refresh both downloadable master audit documents to fully reflect the current project state — especially the recently shipped Frontend Truth-Backing Closure (Tab #22, D4 `AITruthDisclosure`, D6 trust-copy map), the 22-tab AI Engineer hub, 6/6 Section-D canonical primitive coverage, the 124-gate readiness aggregator, and the latest counts (173 edge functions, 201 RLS-protected tables, 428 generated artifacts, 124 pages).
+Produce v3 editions of both master audit documents — fully enhanced with every architectural fact surfaced in the current project memory (including 12-domain admin IA, 8 operator workflows, 7-layer orchestration pipeline, 9-phase AI Workforce Roadmap, Nova Runtime SDK 4-phase boot, 7-layer security fabric, 5-layer service constitution, 6 autonomous advisors with 9-gate pipeline, 14-lever Continuous Profit Engine, Boardroom 16-tab cockpit, 11 canonical durability tables, 35+ integration connectors, 19 recovery runbooks + 15 kill-switches, 5 OS platform daemons, deployment profiles user/operator, 4-stage trusted boot chain, 6 Flagship Loops, App Platform 4-class taxonomy, etc.).
 
-## Documents
+V2 was already comprehensive but missing many real systems documented in canonical memory. V3 closes that gap with **new sections** for each system that wasn't called out, while keeping every v2 section and enhancing it.
 
-1. `/mnt/documents/ONE_MASTER_SITA_AUDIT.md` — **48-section** master audit (currently 3,113 lines, last updated 2026-04-18).
-2. `/mnt/documents/THE ULTIMATE SITA OS AUDIT.md` — **16-section** mobile-deployment-focused audit (currently 848 lines).
+## Deliverables
 
-Both will be **rewritten in place as `_v2` siblings** so the originals remain available for diff:
-- `ONE_MASTER_SITA_AUDIT_v2.md`
-- `THE_ULTIMATE_SITA_OS_AUDIT_v2.md`
+| File | Action | Sections |
+|---|---|---|
+| `/mnt/documents/ONE_MASTER_SITA_AUDIT_v3.md` | CREATE | 64 sections (v2 had 48 → +16 new) |
+| `/mnt/documents/THE_ULTIMATE_SITA_OS_AUDIT_v3.md` | CREATE | 24 sections (v2 had 16 → +8 new) |
 
-## What gets updated (no section skipped)
+Originals (v1) and v2 preserved untouched for diff.
 
-### `ONE_MASTER_SITA_AUDIT_v2.md` — all 48 sections refreshed
+## ONE_MASTER_SITA_AUDIT_v3.md — section map
 
-| Block | Refresh focus |
-|---|---|
-| §1–§7 (Posture, Scoreboard, Topology, CI) | Refresh all index numbers; add Frontend Truth-Backing Closure as the most recent delta; bump topology counts to 124 pages / 173 edge functions / 201 tables / 428 generated artifacts; update CI-gate count to 124 BLOCK + WARN-tier gates |
-| §8–§13 (Architecture, Routes, Frontend, Mobile, iOS) | Reflect 5-plane model with PlaneBoundaryGuard; document the new `ProvenanceChip` + `EvidenceLink` + `AITruthDisclosure` primitives; note mobile is honestly-deferred (Capacitor archived, web+PWA+Ubuntu-native canonical) |
-| §14–§22 (Domain Reality, Wiring, UI Grammar, Services, Contracts, DB, FE↔BE↔DB, Edge, App Registry) | Refresh DB to 201 tables / 323 RLS policies / 11 canonical durability tables; refresh edge functions to 173; document the 8 Layer-3 platform services (Auth/Policies/Proof/Execution/Eventing/Observability/Sync/Notifications) |
-| §23–§31 (Runtime, AI Runtime, Connectors, Providers, Notifications, Mock Governance, Journeys, REX, Flagship Loops) | Document AI Runtime Truth Closure (nightly verifier, 5 sub-checks, 7-day streaks); Connector Truth Closure (Google/Microsoft/Slack real refresh, manual classification for long-tail); Frontend Truth-Backing Closure (Tab #22, 6/6 Section-D primitives, 6 prompt-named WARN validators, 12-artifact doc bundle) |
-| §32–§40 (Prioritization, UX Honesty, Security, Observability, Cost, Deployment, Support, Devices, Narrative) | Document 7-layer security fabric, 9-gate Sovereign AI Gateway, L0–L6 autonomy with L3 ceiling, 4-tier product reality model, 7-layer orchestration pipeline |
-| §41–§48 (Contradictions, Ownership, Open Questions, Gap Register, Blast Radius, Action Plan, Launch Honesty, Truth Index) | Reduce gap register (D4 + D6 closed); update launch-honesty matrix; bump Truth Index with Frontend Truth-Backing closure; add appendix listing Tab #22 + 22-tab AI Engineer hub |
+**§1–§48** — all v2 sections kept, every table refreshed.
 
-### `THE_ULTIMATE_SITA_OS_AUDIT_v2.md` — all 16 sections refreshed
+**New sections added in v3 (§49–§64):**
+- §49 — Nova Runtime SDK (4-phase boot, syscalls, MLFQ scheduler, transactional FS, ACPI power)
+- §50 — Boot & Trust Chain (UEFI → Shim → GRUB → dm-verity → TPM 2.0 PCR sealing)
+- §51 — Deployment Profiles (sita-os-user vs sita-os-operator, ShellComposer)
+- §52 — Desktop Host Runtime Contract (22 IPC method groups, release channels, update governance)
+- §53 — Native Shell Watchdog & Health Probe (3s backoff, TTY7 recovery, 60fps drag perf)
+- §54 — OS Platform Daemons (settingsd, crashd, healthd, timed, accessibilityd)
+- §55 — App Platform 4-Class Taxonomy (Type A/B/C/D + ed25519 signing + trust tiers)
+- §56 — App SDK & Lifecycle (manifests, NovaFS, Window API, Extension Manager)
+- §57 — Standalone App Windows (True App Isolation model)
+- §58 — Advisor Board Intelligence (10 advisors, 6-layer cognition, 5-layer memory, 16-tab cockpit, 14-lever CPE)
+- §59 — Autonomous Advisors (6 agents, 9-gate pipeline, L0–L6 tiers, advisor knowledge + voice)
+- §60 — AI Workforce Roadmap (Phases 1–9, Security Council pg_cron)
+- §61 — Runbook & Kill-Switch System (15+ switches, 19 runbooks, dual-admin approval)
+- §62 — 12-Domain Admin IA + 8 Operator Workflows (full mapping)
+- §63 — Onboarding & First-Use Master Spec (29 personalization screens, 9 wow moments, branching logic)
+- §64 — Cron / Scheduled Operations (full schedule from 2m webhook → weekly DR drill)
 
-| Block | Refresh focus |
-|---|---|
-| §1–§3 (Pre-audit, Exec Summary, Identification, Inventory) | Reframe scope from mobile-only to "active platforms = Web + Ubuntu-native + Electron; mobile = honestly-deferred"; reflect canonical PLATFORM_SCOPE.md |
-| §4 (Android), §5 (iOS) | Mark as **archived but code-launch-ready**: bootstrap scripts present, signing pipelines env-gated, 6 mobile validators GREEN; remaining work = external accounts + credentials only |
-| §6–§11 (Config, Deps, Backend, Security, UX/QA, CI/CD) | 173 edge functions, 201 tables / 323 RLS policies, 7-layer security fabric, 124-gate aggregator, nightly cron jobs (AI 02:00 / Connectors 02:30 / Compliance 06:00 / DR-drill Sun 05:00 UTC) |
-| §12 (Store Submission) | Mark Apple/Google paths as **external-account-blocked** (no engineering blockers remaining) |
-| §13–§16 (Gap Analysis, Action Plan, Final Decision, Methodology) | Update final decision to: **Desktop/Ubuntu-primary GREEN; Mobile honestly-deferred GREEN**; rewrite methodology to reflect 124-gate aggregator + Manifest Truth Framework + Frontend Truth-Backing Closure |
+**Enhanced v2 sections (selected):**
+- §3 Topology — add file count (5,683+), Electron security modules (15), runbooks (19), kill-switches (15+)
+- §17 Layer-3 Platform Services — add full 5-layer Service Constitution
+- §19 Database — list all 11 canonical durability tables explicitly
+- §21 Edge Functions — break down by all 10 clusters with named examples
+- §25 Connectors — list 35+ connector taxonomy (Brokerages/CEX/DEX/Wallets/Forex)
+- §28 Mock Governance — add Epistemic Firewall (A–F evidence grading)
+- §29 Journeys — add Closed-Loop Execution (REX) lifecycle with all 13 states
+- §31 Flagship Loops — list all 6 (Auth/Pulse, Files AI, Boardroom, Connectors, Admin Truth, REX)
+- §34 Security Fabric — expand to all 7 layers with real module names
+- §38 Operator Surfaces — add 12-domain map + 8 workflow names
 
-## Section-detail discipline
+## THE_ULTIMATE_SITA_OS_AUDIT_v3.md — section map
 
-- Every section preserves its existing numbering (§1–§48 / §1–§16) — no section skipped, none collapsed.
-- Tables get refreshed counts (no stale numbers left).
-- Every claim of "shipped" is backed by an artifact path under `generated/` or `public/generated/` — same evidence pattern the existing docs use.
-- A new appendix in each document lists the `Frontend Truth-Backing Closure` artifacts (12 files + 6 validator reports + Tab #22 panel) so future readers can independently verify.
-- No fake-green: where things are deferred (mobile, Apple Dev enrollment, Play Console), the docs say so explicitly with the "honestly deferred" classification already canonical in the codebase.
+**§1–§16** — all v2 sections kept, refreshed.
+
+**New sections added in v3 (§17–§24):**
+- §17 — Boot Chain & Trusted Substrate (UEFI/TPM/dm-verity/MOK/Secure Boot)
+- §18 — Deployment Profile Matrix (user vs operator artifacts)
+- §19 — Native Shell Reliability (watchdog, heartbeat, TTY7 fallback, drag perf)
+- §20 — App Platform Production-Grade (4 classes + ed25519 + trust tiers + Native Bridge)
+- §21 — Advisor / AI Workforce Operational Map (10 advisors + 6 autonomous agents + Security Council)
+- §22 — Operational Drills & Cron Schedule (2m → weekly DR)
+- §23 — Onboarding First-Use Substantiation (Phase 0–4, 29 screens)
+- §24 — Comprehensive Connector Catalog (35+ across 5 classes)
+
+**Enhanced v2 sections:**
+- §6 Configuration — add Profile Manifest, MOK keys, sita-runtime.service
+- §8 Backend — list all 11 durability tables, full cron schedule
+- §9 Security — replace 7-layer table with named modules + 9-gate Sovereign Gateway gates
+- §10 UX/QA — add Epistemic Firewall + Structured Refusals + REX lifecycle
+- §11 CI/CD — list all 17 workflows by name
+- §13 Gap Analysis — refresh against memory deltas
+- §15 Final Decision — add Flagship Loop status + AI Workforce Phase 9 status
+- §16 Methodology — add Manifest Truth + Service Constitution + Plane Boundary Guard
+
+## Discipline guarantees
+
+- **No fake-green** — every claim backed by an artifact path, registry, or memory reference
+- **No deletions** of v1/v2 docs (siblings only)
+- **Every section has detail** — no one-liners; tables, sub-bullets, evidence paths
+- **Honestly-deferred items** (mobile, Apple/Play accounts, VMware OVA hardware matrix) remain explicit
+- **Two appendices** in each doc:
+  - Appendix A — Frontend Truth-Backing Closure Bundle (12 artifacts + 6 validators)
+  - Appendix B — Full 22-tab AI Engineer hub index
+- **New Appendix C** in master audit — full 64-section index for navigation
+- **New Appendix D** in ultimate audit — Deployment artifact matrix (ISO/IMG/OVA/Electron/Web)
 
 ## Files touched
 
 | Action | Path |
 |---|---|
-| CREATE | `/mnt/documents/ONE_MASTER_SITA_AUDIT_v2.md` |
-| CREATE | `/mnt/documents/THE_ULTIMATE_SITA_OS_AUDIT_v2.md` |
-| EMIT | 2 `<lov-artifact>` tags so the user can preview/download |
-
-Originals are preserved untouched for comparison. Each new doc will be ≥ the original's section count, fully detailed, no stubs, no placeholders.
+| CREATE | `/mnt/documents/ONE_MASTER_SITA_AUDIT_v3.md` (~64 sections, ~1,800 lines) |
+| CREATE | `/mnt/documents/THE_ULTIMATE_SITA_OS_AUDIT_v3.md` (~24 sections, ~900 lines) |
+| EMIT | 2 `<lov-artifact>` tags for download |
 
