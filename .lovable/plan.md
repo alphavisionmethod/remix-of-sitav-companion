@@ -1,95 +1,105 @@
 
 
-## Goal
+## Scope check (read before planning)
 
-Produce v3 editions of both master audit documents — fully enhanced with every architectural fact surfaced in the current project memory (including 12-domain admin IA, 8 operator workflows, 7-layer orchestration pipeline, 9-phase AI Workforce Roadmap, Nova Runtime SDK 4-phase boot, 7-layer security fabric, 5-layer service constitution, 6 autonomous advisors with 9-gate pipeline, 14-lever Continuous Profit Engine, Boardroom 16-tab cockpit, 11 canonical durability tables, 35+ integration connectors, 19 recovery runbooks + 15 kill-switches, 5 OS platform daemons, deployment profiles user/operator, 4-stage trusted boot chain, 6 Flagship Loops, App Platform 4-class taxonomy, etc.).
+User explicitly says: **"only on the admin ai engineer team"**. The prompt body is a repo-wide structural refactor — that scope contradicts the user's instruction. I must obey the user constraint, not the prompt body.
 
-V2 was already comprehensive but missing many real systems documented in canonical memory. V3 closes that gap with **new sections** for each system that wasn't called out, while keeping every v2 section and enhancing it.
+So the actual scope = **structural hardening of the Admin AI Engineering surface only** (not a repo-wide plane refactor, not Electron restructure, not backend plane re-org). That surface = the AI Engineer hub (`/admin/ai-runtime` + 22 tabs + supporting modules).
 
-## Deliverables
+I'll do enough exploration to confirm current state, then plan a phased, deployment-ready hardening pass scoped to that team's code.
 
-| File | Action | Sections |
-|---|---|---|
-| `/mnt/documents/ONE_MASTER_SITA_AUDIT_v3.md` | CREATE | 64 sections (v2 had 48 → +16 new) |
-| `/mnt/documents/THE_ULTIMATE_SITA_OS_AUDIT_v3.md` | CREATE | 24 sections (v2 had 16 → +8 new) |
+## Exploration needed first
 
-Originals (v1) and v2 preserved untouched for diff.
+1. Inventory the AI Engineer hub: tabs, panels, hooks, services, edge functions, tables.
+2. Identify duplicates/stubs/placeholders inside that scope.
+3. Identify wiring gaps (UI → service → edge function → DB → realtime).
+4. Verify the 6/6 Section-D primitive adoption across all 22 tabs (not just Tab #22).
+5. Check Security Council, autonomous advisor, and cron paths surfaced in this hub.
 
-## ONE_MASTER_SITA_AUDIT_v3.md — section map
+## Files to inspect
 
-**§1–§48** — all v2 sections kept, every table refreshed.
+- `src/components/admin/ai-runtime/**` (all 22 tab panels + shared)
+- `src/pages/admin/AIRuntime*.tsx` and any `AIEngineer*` route pages
+- `src/lib/ai/**`, `src/lib/services/ai-gateway/**`
+- `src/hooks/useAI*`, `useAdvisor*`, `useSecurityCouncil*`
+- `supabase/functions/ai-*`, `advisor-*`, `*-nightly-verify*`
+- Tables: `ai_*`, `advisor_*`, `kill_switch_*`, `sita_security_council_*`
 
-**New sections added in v3 (§49–§64):**
-- §49 — Nova Runtime SDK (4-phase boot, syscalls, MLFQ scheduler, transactional FS, ACPI power)
-- §50 — Boot & Trust Chain (UEFI → Shim → GRUB → dm-verity → TPM 2.0 PCR sealing)
-- §51 — Deployment Profiles (sita-os-user vs sita-os-operator, ShellComposer)
-- §52 — Desktop Host Runtime Contract (22 IPC method groups, release channels, update governance)
-- §53 — Native Shell Watchdog & Health Probe (3s backoff, TTY7 recovery, 60fps drag perf)
-- §54 — OS Platform Daemons (settingsd, crashd, healthd, timed, accessibilityd)
-- §55 — App Platform 4-Class Taxonomy (Type A/B/C/D + ed25519 signing + trust tiers)
-- §56 — App SDK & Lifecycle (manifests, NovaFS, Window API, Extension Manager)
-- §57 — Standalone App Windows (True App Isolation model)
-- §58 — Advisor Board Intelligence (10 advisors, 6-layer cognition, 5-layer memory, 16-tab cockpit, 14-lever CPE)
-- §59 — Autonomous Advisors (6 agents, 9-gate pipeline, L0–L6 tiers, advisor knowledge + voice)
-- §60 — AI Workforce Roadmap (Phases 1–9, Security Council pg_cron)
-- §61 — Runbook & Kill-Switch System (15+ switches, 19 runbooks, dual-admin approval)
-- §62 — 12-Domain Admin IA + 8 Operator Workflows (full mapping)
-- §63 — Onboarding & First-Use Master Spec (29 personalization screens, 9 wow moments, branching logic)
-- §64 — Cron / Scheduled Operations (full schedule from 2m webhook → weekly DR drill)
+## Proposed phases (each phase = independently deployable)
 
-**Enhanced v2 sections (selected):**
-- §3 Topology — add file count (5,683+), Electron security modules (15), runbooks (19), kill-switches (15+)
-- §17 Layer-3 Platform Services — add full 5-layer Service Constitution
-- §19 Database — list all 11 canonical durability tables explicitly
-- §21 Edge Functions — break down by all 10 clusters with named examples
-- §25 Connectors — list 35+ connector taxonomy (Brokerages/CEX/DEX/Wallets/Forex)
-- §28 Mock Governance — add Epistemic Firewall (A–F evidence grading)
-- §29 Journeys — add Closed-Loop Execution (REX) lifecycle with all 13 states
-- §31 Flagship Loops — list all 6 (Auth/Pulse, Files AI, Boardroom, Connectors, Admin Truth, REX)
-- §34 Security Fabric — expand to all 7 layers with real module names
-- §38 Operator Surfaces — add 12-domain map + 8 workflow names
+### Phase 1 — Inventory & duplicate audit (no code changes)
+- Generate `generated/admin-ai-engineer-team/INVENTORY.md` listing every tab, panel, hook, service, edge function, table touching this hub.
+- Detect duplicates: any two panels showing the same data, any two hooks calling the same RPC, any orphaned `*Panel.tsx` not mounted in the 22-tab registry.
+- Output: `duplicate-report.json`, `orphan-report.json`, `wiring-gap-report.json`.
+- **Deployment-ready criterion:** report-only; zero behavior change.
 
-## THE_ULTIMATE_SITA_OS_AUDIT_v3.md — section map
+### Phase 2 — Canonical 22-tab registry + single source of truth
+- Create `src/lib/admin/ai-engineer-hub/tab-registry.ts` — typed manifest of all 22 tabs (id, label, panel ref, capability, owner, evidence path).
+- Refactor `AIEngineerHubPage.tsx` to render from registry (no hardcoded tab arrays).
+- Add CI gate `scripts/validation/check-ai-engineer-tab-registry.ts` — every panel file under `ai-runtime/` must be either registered or explicitly archived.
+- Delete confirmed-duplicate panels from Phase 1; collapse near-duplicates into one canonical panel.
+- **Deployment-ready criterion:** all 22 tabs render identically; registry-driven; zero orphaned panels.
 
-**§1–§16** — all v2 sections kept, refreshed.
+### Phase 3 — Wiring closure (UI → service → edge function → DB → realtime)
+For each of the 22 tabs, prove the full wiring chain is real:
+- **Models / Providers / Capabilities / Routing** → `ai_model_registry`, `ai_provider_registry`, `ai_capability_routing`
+- **Invocations / Receipts / Cost / Budgets / Fallbacks** → `ai_usage_ledger`, `ai_invocation_receipts`, `ai_budget_*`
+- **Health / Drift** → `ai_provider_health`, nightly drift detector
+- **Suggestions / Approvals** → `ai_implementation_suggestions`, `kill_switch_approvals`
+- **Security Council** → `sita_security_council_findings`, hourly `pg_cron`
+- **Advisors / Boardroom / REX** → `advisor_*`, `boardroom_*` tables
+- **Runbooks / Kill Switches** → `kill_switch_audit_log`, runbook registry
+- **Tab #22 Frontend Truth-Backing** → existing closure bundle
 
-**New sections added in v3 (§17–§24):**
-- §17 — Boot Chain & Trusted Substrate (UEFI/TPM/dm-verity/MOK/Secure Boot)
-- §18 — Deployment Profile Matrix (user vs operator artifacts)
-- §19 — Native Shell Reliability (watchdog, heartbeat, TTY7 fallback, drag perf)
-- §20 — App Platform Production-Grade (4 classes + ed25519 + trust tiers + Native Bridge)
-- §21 — Advisor / AI Workforce Operational Map (10 advisors + 6 autonomous agents + Security Council)
-- §22 — Operational Drills & Cron Schedule (2m → weekly DR)
-- §23 — Onboarding First-Use Substantiation (Phase 0–4, 29 screens)
-- §24 — Comprehensive Connector Catalog (35+ across 5 classes)
+Replace any `useState`-only or mock-prop panels with real hooks calling real services. Add realtime subscriptions where the underlying table supports it (`ai_usage_ledger`, `kill_switch_audit_log`, etc.). Generate `generated/admin-ai-engineer-team/WIRING_PROOF_MATRIX.md`.
+- **Deployment-ready criterion:** every tab consumes real DB/edge-function data with realtime where applicable; zero `as any`; zero mock arrays in shipping code.
 
-**Enhanced v2 sections:**
-- §6 Configuration — add Profile Manifest, MOK keys, sita-runtime.service
-- §8 Backend — list all 11 durability tables, full cron schedule
-- §9 Security — replace 7-layer table with named modules + 9-gate Sovereign Gateway gates
-- §10 UX/QA — add Epistemic Firewall + Structured Refusals + REX lifecycle
-- §11 CI/CD — list all 17 workflows by name
-- §13 Gap Analysis — refresh against memory deltas
-- §15 Final Decision — add Flagship Loop status + AI Workforce Phase 9 status
-- §16 Methodology — add Manifest Truth + Service Constitution + Plane Boundary Guard
+### Phase 4 — 6/6 Section-D primitive coverage across all 22 tabs
+Currently only Tab #22 strictly enforces `AITruthDisclosure` + `trust-copy-map`. Extend to all 22:
+- Replace ad-hoc status text/badges with `StatusBadge` + `StatusTone`.
+- Replace AI-state language with `AITruthDisclosure` (live-gateway / degraded / structural / preview / archived).
+- Replace trust labels with `formatTrustLabel()` from `trust-copy-map`.
+- Add `ProvenanceChip` + `EvidenceLink` where evidence rows exist.
+- New CI gate `check-ai-engineer-primitive-coverage.ts` (BLOCK-tier).
+- **Deployment-ready criterion:** 100% canonical primitive adoption inside `src/components/admin/ai-runtime/**`; CI gate green.
+
+### Phase 5 — Operator action panels + remediation paths
+Every tab must answer "what do I do next?":
+- Adopt `OperatorActionPanel` (D5) on every degraded/error/empty state.
+- Wire each Security Council finding → suggested runbook + suggested kill switch (uses existing Incident Classifier).
+- Wire each provider-health drop → reauth/escalation CTA.
+- Wire each budget alert → ledger drilldown + kill-switch link.
+- **Deployment-ready criterion:** every non-green state has an actionable next step backed by a real handler.
+
+### Phase 6 — Validation, observability, and final closure
+- Add `scripts/validation/check-ai-engineer-no-mocks.ts` (mock governance scoped to this surface).
+- Add `scripts/validation/check-ai-engineer-realtime-coverage.ts` (asserts realtime subscriptions for streaming tabs).
+- Wire all 4 new gates into the 124-gate Release Aggregator.
+- Generate the closure bundle in `generated/admin-ai-engineer-team/`:
+  - `INVENTORY.md` · `WIRING_PROOF_MATRIX.md` · `PRIMITIVE_COVERAGE.md` · `REMEDIATION_COVERAGE.md` · `FINAL_CLOSURE.md`
+  - Mirror to `public/generated/admin-ai-engineer-team/` for in-app inspection.
+- Update Tab #22 to surface this team's closure status alongside frontend truth-backing.
+- **Deployment-ready criterion:** all 4 new gates pass; closure bundle complete; Tab #22 shows 6/6 + 22/22 green.
 
 ## Discipline guarantees
 
-- **No fake-green** — every claim backed by an artifact path, registry, or memory reference
-- **No deletions** of v1/v2 docs (siblings only)
-- **Every section has detail** — no one-liners; tables, sub-bullets, evidence paths
-- **Honestly-deferred items** (mobile, Apple/Play accounts, VMware OVA hardware matrix) remain explicit
-- **Two appendices** in each doc:
-  - Appendix A — Frontend Truth-Backing Closure Bundle (12 artifacts + 6 validators)
-  - Appendix B — Full 22-tab AI Engineer hub index
-- **New Appendix C** in master audit — full 64-section index for navigation
-- **New Appendix D** in ultimate audit — Deployment artifact matrix (ISO/IMG/OVA/Electron/Web)
+- **Scope locked** to `src/components/admin/ai-runtime/**`, `src/pages/admin/AI*Page.tsx`, related hooks/services, related edge functions, related validators, related generated artifacts. Zero changes outside this surface.
+- **No edits** to `/desktop`, user-plane apps, Electron, OS image-builder, or backend planes outside AI runtime.
+- **No new component families** — composes existing primitives (`StatusBadge`, `ProvenanceChip`, `EvidenceLink`, `AITruthDisclosure`, `OperatorActionPanel`, `trust-copy-map`).
+- **No deletions** of working assets; only proven-duplicate panels (Phase 1 → Phase 2) and only after reference check.
+- **No App.tsx / route-table changes** (registry is internal to the hub page).
+- **No migrations** unless a tab requires a missing index for realtime; if so, additive only.
+- **L3 autonomy ceiling preserved** — Security Council remains advisory; no auto-apply.
+- **Sovereign AI Gateway preserved** — every AI call still goes through `invokeAICapability`.
+- Each phase is independently shippable and rollback-safe.
 
-## Files touched
+## Files touched (estimate)
 
-| Action | Path |
-|---|---|
-| CREATE | `/mnt/documents/ONE_MASTER_SITA_AUDIT_v3.md` (~64 sections, ~1,800 lines) |
-| CREATE | `/mnt/documents/THE_ULTIMATE_SITA_OS_AUDIT_v3.md` (~24 sections, ~900 lines) |
-| EMIT | 2 `<lov-artifact>` tags for download |
+- ~30 panel files in `src/components/admin/ai-runtime/`
+- 1 hub page (`AIEngineerHubPage.tsx`)
+- 1 new registry (`tab-registry.ts`)
+- 4 new validators
+- 5 new generated artifacts (+ public mirror)
+- ~5 hooks consolidated into canonical service-facade calls
+- 1 update to release-readiness-aggregator gate list
 
