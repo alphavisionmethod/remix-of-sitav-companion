@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T23:55:34.539Z
+> Generated: 2026-04-19T01:16:13.811Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -8,10 +8,10 @@
 | Metric | Value |
 |---|---|
 | Gates required | 124 |
-| Gates present  | 124 |
+| Gates present  | 140 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3348 |
+| Total warnings | 3350 |
 
 ## Per-gate results
 
@@ -141,10 +141,26 @@
 | `pg-cron-schedules` | ✅ | 0 | 0 |
 | `pg-extensions-enabled` | ✅ | 0 | 0 |
 | `release-artifact-signer` | ✅ | 0 | 0 |
+| `mobile-canonical-stack (warn)` | ✅ | 0 | 0 |
+| `no-flutter-mobile-truth-drift (warn)` | ✅ | 0 | 0 |
+| `android-release-path (warn)` | ✅ | 0 | 0 |
+| `ios-release-path (warn)` | ✅ | 0 | 0 |
+| `mobile-push-claim-safety (warn)` | ✅ | 0 | 0 |
+| `mobile-submission-blockers (warn)` | ✅ | 0 | 0 |
+| `mobile-project-identification (warn)` | ✅ | 0 | 0 |
+| `mobile-identity-source-of-truth (warn)` | ✅ | 0 | 0 |
+| `no-flutter-stack-drift (warn)` | ✅ | 0 | 0 |
+| `capacitor-mobile-truth (warn)` | ✅ | 0 | 0 |
+| `android-native-generation (warn)` | ✅ | 0 | 0 |
+| `ios-native-generation (warn)` | ✅ | 0 | 0 |
+| `native-project-generation-contract (warn)` | ✅ | 0 | 0 |
+| `mobile-bootstrap-contract (warn)` | ✅ | 0 | 0 |
+| `mobile-build-model-consistency (warn)` | ✅ | 0 | 0 |
+| `mobile-env-strategy-consistency (warn)` | ✅ | 0 | 2 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3348 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3350 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

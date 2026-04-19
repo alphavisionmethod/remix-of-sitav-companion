@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:55:34.539Z",
+  "generatedAt": "2026-04-19T01:16:13.811Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -870,10 +870,122 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
+    },
+    {
+      "file": "generated/mobile-canonical-stack-report.json",
+      "gate": "mobile-canonical-stack (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-flutter-mobile-truth-drift-report.json",
+      "gate": "no-flutter-mobile-truth-drift (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/android-release-path-report.json",
+      "gate": "android-release-path (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ios-release-path-report.json",
+      "gate": "ios-release-path (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-push-claim-safety-report.json",
+      "gate": "mobile-push-claim-safety (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-submission-blockers-report.json",
+      "gate": "mobile-submission-blockers (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-project-identification-report.json",
+      "gate": "mobile-project-identification (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-identity-source-of-truth-report.json",
+      "gate": "mobile-identity-source-of-truth (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-flutter-stack-drift-report.json",
+      "gate": "no-flutter-stack-drift (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/capacitor-mobile-truth-report.json",
+      "gate": "capacitor-mobile-truth (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/android-native-generation-report.json",
+      "gate": "android-native-generation (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ios-native-generation-report.json",
+      "gate": "ios-native-generation (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/native-project-generation-contract-report.json",
+      "gate": "native-project-generation-contract (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-bootstrap-contract-report.json",
+      "gate": "mobile-bootstrap-contract (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-build-model-consistency-report.json",
+      "gate": "mobile-build-model-consistency (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-env-strategy-consistency-report.json",
+      "gate": "mobile-env-strategy-consistency (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3348,
+  "totalWarnings": 3350,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
