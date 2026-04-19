@@ -1,18 +1,12 @@
 {
-  "generatedAt": "2026-04-19T18:10:54.530Z",
+  "generatedAt": "2026-04-19T18:11:46.830Z",
   "gate": "simulation-and-future-labeling",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "naked-future-or-demo-label",
-      "message": "src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx contains a sim/future/demo label without a canonical badge primitive (StatusBadge / AIStateBadge / ConnectorStateBadge / AILaunchBadge)"
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "classification": "warn-tier-truth-labeling-guard",
   "surfacesScanned": 143,
   "labeledSurfaces": 1,
-  "nakedOffenders": 1
+  "nakedOffenders": 0
 }
