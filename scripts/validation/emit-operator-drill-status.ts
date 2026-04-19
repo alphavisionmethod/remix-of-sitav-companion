@@ -15,7 +15,7 @@ function tryPsql(): { rows: Array<Record<string, string>>; aggregates: Aggregate
   if (!process.env.PGHOST) return null;
   try {
     const aggOut = execSync(
-      `psql -At -F '|' -c "SELECT scenario, COUNT(*)::int, MAX(signoff_at)::text, COALESCE(AVG(EXTRACT(EPOCH FROM (signoff_at - started_at)))::int, 0), COALESCE(AVG(EXTRACT(EPOCH FROM (detected_at - started_at)))::int, 0) FROM operator_drill_executions WHERE signoff_at IS NOT NULL GROUP BY scenario"`,
+      `psql -At -F '|' -c "SELECT scenario, COUNT(*)::int, MAX(signoff_at)::text, COALESCE(AVG(mttr_seconds)::int, 0), COALESCE(AVG(mttd_seconds)::int, 0) FROM operator_drill_executions WHERE signoff_at IS NOT NULL GROUP BY scenario"`,
       { encoding: "utf-8", timeout: 10_000 },
     );
     const aggregates: AggregateRow[] = aggOut
@@ -27,7 +27,7 @@ function tryPsql(): { rows: Array<Record<string, string>>; aggregates: Aggregate
         return { scenario: sc, count: Number(cnt), latest_signoff: sa || null, avg_mttr_seconds: mttr ? Number(mttr) : null, avg_mttd_seconds: mttd ? Number(mttd) : null };
       });
     const rowsOut = execSync(
-      `psql -At -F '|' -c "SELECT scenario, COALESCE(runbook_id,''), COALESCE(signoff_at::text,''), COALESCE(operator_user_id::text,'') FROM operator_drill_executions WHERE signoff_at IS NOT NULL ORDER BY signoff_at DESC LIMIT 100"`,
+      `psql -At -F '|' -c "SELECT scenario, COALESCE(runbook_id,''), COALESCE(signoff_at::text,''), COALESCE(operator_id::text,'') FROM operator_drill_executions WHERE signoff_at IS NOT NULL ORDER BY signoff_at DESC LIMIT 100"`,
       { encoding: "utf-8", timeout: 10_000 },
     );
     const rows = rowsOut
@@ -35,8 +35,8 @@ function tryPsql(): { rows: Array<Record<string, string>>; aggregates: Aggregate
       .split("\n")
       .filter((l) => l.length > 0)
       .map((l) => {
-        const [scenario, runbook_id, signoff_at, operator_user_id] = l.split("|");
-        return { scenario, runbook_id, signoff_at, operator_user_id };
+        const [scenario, runbook_id, signoff_at, operator_id] = l.split("|");
+        return { scenario, runbook_id, signoff_at, operator_id };
       });
     return { rows, aggregates };
   } catch (e) {

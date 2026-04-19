@@ -15,7 +15,7 @@ function queryViaPsql(): DrillRow[] | null {
   if (!process.env.PGHOST) return null;
   try {
     const out = execSync(
-      `psql -At -F '|' -c "SELECT scenario, COUNT(*)::int, MAX(signoff_at)::text, AVG(EXTRACT(EPOCH FROM (signoff_at - started_at)))::int FROM operator_drill_executions WHERE signoff_at IS NOT NULL AND signoff_at > now() - interval '90 days' GROUP BY scenario"`,
+      `psql -At -F '|' -c "SELECT scenario, COUNT(*)::int, MAX(signoff_at)::text, COALESCE(AVG(mttr_seconds)::int, 0) FROM operator_drill_executions WHERE signoff_at IS NOT NULL AND signoff_at > now() - interval '90 days' GROUP BY scenario"`,
       { encoding: "utf-8", timeout: 10_000 },
     );
     return out

@@ -14,9 +14,14 @@ function loadKillSwitchRegistry(): KSRow[] {
   if (!existsSync(file)) return [];
   const src = readFileSync(file, "utf-8");
   const rows: KSRow[] = [];
-  const rx = /switchId:\s*"(KS-[A-Z0-9-]+)"[^}]*?displayName:\s*"([^"]+)"[^}]*?impactLevel:\s*"([^"]+)"[^}]*?ownerTeam:\s*"([^"]+)"/gs;
-  for (const m of src.matchAll(rx)) {
-    rows.push({ switchId: m[1], displayName: m[2], impactLevel: m[3], ownerTeam: m[4] });
+  const entryRx = /switchId:\s*"(KS-[A-Z0-9-]+)"[\s\S]*?(?=switchId:\s*"KS-[A-Z0-9-]+"|^\];?$)/gm;
+  for (const m of src.matchAll(entryRx)) {
+    const block = m[0];
+    const id = m[1];
+    const displayName = block.match(/displayName:\s*"([^"]+)"/)?.[1] ?? "";
+    const impactLevel = block.match(/impactLevel:\s*"([^"]+)"/)?.[1] ?? "unknown";
+    const ownerTeam = block.match(/ownerTeam:\s*"([^"]+)"/)?.[1] ?? "unknown";
+    rows.push({ switchId: id, displayName, impactLevel, ownerTeam });
   }
   return rows;
 }

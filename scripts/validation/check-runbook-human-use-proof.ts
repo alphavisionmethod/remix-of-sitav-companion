@@ -14,10 +14,15 @@ function loadRunbookRegistry(): RunbookRow[] {
   if (!existsSync(file)) return [];
   const src = readFileSync(file, "utf-8");
   const rows: RunbookRow[] = [];
-  // Parse `runbookId: "RB-XXX", title: "...", ... severity: "...", ... subsystem: "..."`
-  const rx = /runbookId:\s*"(RB-\d+)"[^}]*?title:\s*"([^"]+)"[^}]*?severity:\s*"([^"]+)"[^}]*?subsystem:\s*"([^"]+)"/gs;
-  for (const m of src.matchAll(rx)) {
-    rows.push({ runbookId: m[1], title: m[2], severity: m[3], subsystem: m[4] });
+  // Parse each entry block, then extract individual fields independently.
+  const entryRx = /runbookId:\s*"(RB-\d+)"[\s\S]*?(?=runbookId:\s*"RB-\d+"|^\];?$)/gm;
+  for (const m of src.matchAll(entryRx)) {
+    const block = m[0];
+    const id = m[1];
+    const title = block.match(/title:\s*"([^"]+)"/)?.[1] ?? "";
+    const severity = block.match(/severity:\s*"([^"]+)"/)?.[1] ?? "unknown";
+    const subsystem = block.match(/subsystem:\s*"([^"]+)"/)?.[1] ?? "unknown";
+    rows.push({ runbookId: id, title, severity, subsystem });
   }
   return rows;
 }
