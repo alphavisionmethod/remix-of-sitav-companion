@@ -1,75 +1,72 @@
 
 
-## Audit Verdict — Connector Truth Closure
+## Mobile Native Scope Closure — 5 Phase Plan
 
-**Implemented & verified live:**
-- ✅ All 9 markdown artifacts present in `generated/connector-truth-closure/`
-- ✅ All 4 required JSON artifacts present and freshly emitted
-- ✅ DB tables `connector_refresh_streak_state` + `connector_refresh_nightly_runs` live
-- ✅ Edge function `connector-refresh-nightly-verify` deployed (392 lines, real provider HTTP, no mocks)
-- ✅ pg_cron job `sita-connector-refresh-nightly-verify` registered & active (02:30 UTC)
-- ✅ 1 real run already persisted (run_id `connector-nightly-2026-04-19T02-39-32-779Z`)
-- ✅ 7 validation scripts present + all 7 wired into master aggregator BLOCK list (lines 194-200)
-- ✅ CI workflow `.github/workflows/connector-truth-nightly.yml` present
-- ✅ `ConnectorTruthSummaryPanel` integrated as tab in `AIRuntimeHome` (admin AI Engineer scope)
-- ✅ `connector_registry` long-tail providers correctly set to `refresh_supported=false`
-- ✅ npm scripts `connector:truth:emit` + `connector:truth:run-all` present
+**Decision:** Native iOS/Android = ARCHIVED / FUTURE_VISION_ONLY. Active deployment = Web SPA + Ubuntu-native + Electron. Eliminate the contradiction where `PLATFORM_SCOPE.md` says "Capacitor deleted" but `capacitor.config.ts`, 8 deps, and 16 generated reports still claim store-readiness.
 
-**Real gaps — must close for truth-completeness:**
+**Scoping rule:** All new operator-visible UI lives **only inside the Admin AI Engineer hub** (`AIRuntimeHome` → new "Mobile Scope Truth" tab). No new user-facing pages.
 
-1. **Missing gate from prompt PART 6:** `check-connector-reauth-surfacing.ts` is explicitly required by the spec but does not exist. Only the broader `check-reauth-visibility.ts` exists, which doesn't validate connector-specific reauth surfacing. The prompt names this gate explicitly.
+---
 
-2. **Slack secrets missing in edge function env:** Last nightly run shows `missing-google-oauth-secrets` and `missing-microsoft-oauth-secrets` — expiry-pressure cannot run for Google/MS without `GOOGLE_OAUTH_CLIENT_ID/SECRET` and `MICROSOFT_OAUTH_CLIENT_ID/SECRET` configured as edge function secrets. Slack test ran cleanly (returned `invalid_auth` as expected). This blocks `expiry_pressure_passed=true` and the streak from ever progressing.
+### Phase 1 — Audit & canonical model (docs only)
 
-3. **`acceptance.nightly_real_refresh_runs=false`** in the verification JSON because no live tokens exist to refresh. This is launch-honest but the rollup logic should distinguish "no tokens to probe" (warn) from "probe ran and failed" (fail) — currently it conflates both.
+Create `generated/mobile-scope-closure/` with:
+- `MOBILE_SCOPE_REFERENCE_AUDIT.md` — every mobile reference classified (safe-archived / contradiction / must-rewrite)
+- `MOBILE_SCOPE_CANONICAL_MODEL.md` — canonical vocabulary: `ARCHIVED`, `FUTURE_VISION_ONLY`, `NOT_LAUNCH_SURFACE`, `OPTIONAL_FUTURE_PROGRAM`
+- `INSTALL_AND_DISTRIBUTION_SURFACE_AUDIT.md` — `DownloadPage`, `DownloadsCenter`, `ExternalInstallerPage` audit
+- `MOBILE_REACTIVATION_CONDITIONS.md` — explicit gates for any future mobile revival
 
-## Plan to Close the 3 Gaps
+Create canonical honesty doc: **`docs/MOBILE_HONESTY.md`** (single source of truth that all surfaces link to).
 
-### Phase 1 — Add the missing canonical gate
+### Phase 2 — Contain the live mobile scaffolding
 
-**New:** `scripts/validation/check-connector-reauth-surfacing.ts`
-- Reads `connector-reauth-status.json` (already emitted by emit-connector-truth-artifacts.ts)
-- Asserts every token with `lifecycle_state='reauth_required'` in `connector_effective_state` has a matching reauth UI signal (greps for `reauth_required` rendering in `ConnectorStateBadge` consumers + admin OAuth board)
-- Asserts the count of reauth-required tokens surfaced in `ConnectorTruthSummaryPanel` matches DB truth
-- Emits gate report via `_lib/emit-gate-report`
-- Wire into `check-os-release-readiness.ts` BLOCK list (8th connector gate, after line 200)
-- Add to `connector:truth:run-all` npm script
+- **Move** `capacitor.config.ts` → `archive/capacitor/capacitor.config.ts` (with header banner: ARCHIVED / FUTURE_VISION_ONLY)
+- **Move** `infra/deploy/mobile.yaml` → `archive/infra/mobile.yaml` with same banner
+- **Move** active `mobile/` directory → `archive/mobile/` (preserves Capacitor config, Android/iOS templates, store metadata for future reactivation)
+- **Remove** 8 `@capacitor/*` deps from `package.json` (they're unused — no `import "@capacitor/*"` exists in `src/`; verified)
+- Add `archive/mobile/ARCHIVED.md` explaining the containment policy
 
-### Phase 2 — Add OAuth provider secrets for expiry-pressure
+### Phase 3 — Reconcile generated reports (machine-readable truth)
 
-Request the 4 OAuth client secrets via `add_secret` so the nightly verifier can run real expiry-pressure HTTP calls against Google + Microsoft (Slack already works with public endpoint):
-- `GOOGLE_OAUTH_CLIENT_ID`
-- `GOOGLE_OAUTH_CLIENT_SECRET`
-- `MICROSOFT_OAUTH_CLIENT_ID`
-- `MICROSOFT_OAUTH_CLIENT_SECRET`
+Move all 16 conflicting `generated/mobile-*.json` reports to `archive/generated/mobile/` (already partially done — finish it). Emit fresh canonical artifacts in `generated/mobile-scope-closure/`:
+- `mobile-scope-status.json` → `{status: "ARCHIVED", active_deployment: false}`
+- `install-surface-honesty-status.json` → confirms 3 install surfaces link to `MOBILE_HONESTY.md`
+- `mobile-manifest-status.json` → confirms zero active mobile manifests
+- `mobile-scope-verification.json` → final pass/fail rollup
 
-These already exist as runtime OAuth secrets for the user-facing connect flow but must be exposed to the `connector-refresh-nightly-verify` edge function env. After they're added, re-trigger one nightly run so expiry_pressure flips to `true` for all 3 providers.
+Add emitter script `scripts/validation/emit-mobile-scope-artifacts.ts`.
 
-### Phase 3 — Refine acceptance rollup honesty
+### Phase 4 — Honesty wiring on install surfaces (Admin AI Engineer hub only for new UI)
 
-Edit `scripts/validation/emit-connector-truth-artifacts.ts`:
-- `acceptance.nightly_real_refresh_runs` → `true` if the verifier ran (regardless of token count); add separate `acceptance.live_token_refresh_observed` = `true` only when real tokens were probed
-- Add `notes.token_count_per_provider` so operators can see `{google:0, microsoft:0, slack:0}` and understand the WARN-not-FAIL classification
-- Re-run emitter; expect `overallPass=true` once expiry-pressure passes for all 3 providers (gates already treat 0-token providers as launch-honest WARN, not error)
+- Add a small `<MobileHonestyNotice>` link/banner to `DownloadPage.tsx`, `DownloadsCenter.tsx`, and `ExternalInstallerPage.tsx` pointing to `/docs/MOBILE_HONESTY.md`. Reuses existing `Alert` component — no new design system.
+- Add new tab **"Mobile Scope Truth"** to `AIRuntimeHome` rendering a read-only `MobileScopeTruthPanel` that loads `mobile-scope-verification.json` and shows: archived status, validation gate results, reactivation conditions checklist. No duplicate dashboard — reuses the same panel pattern as `ConnectorTruthSummaryPanel`.
 
-### Phase 4 — Final verification
+### Phase 5 — Validation gates (drift prevention)
 
-- Trigger one fresh nightly run via edge function
-- Run all 8 gates (7 existing + new reauth-surfacing); expect 8/8 GREEN or honest-WARN
-- Update `CONNECTOR_TRUTH_FINAL_VERIFICATION.md` with the new gate + secret evidence + live `expiry_pressure_passed=true` proof
-- Confirm `ConnectorTruthSummaryPanel` renders the new run with green expiry-pressure indicators
+Create 5 new validators (all wired into `check-os-release-readiness.ts` BLOCK list and a new `mobile:scope:run-all` npm script):
+1. `check-mobile-native-out-of-scope-truth.ts` — fails if `capacitor.config.ts` returns to repo root or `@capacitor/*` deps reappear in `package.json`
+2. `check-no-active-native-mobile-claims.ts` — greps docs/UI for forbidden phrases ("store-ready", "App Store submission ready", etc.) outside `archive/`
+3. `check-install-page-mobile-honesty.ts` — asserts `DownloadPage`/`DownloadsCenter`/`ExternalInstallerPage` link to `MOBILE_HONESTY.md`
+4. `check-mobile-manifest-archive-classification.ts` — asserts no `infra/deploy/mobile.yaml` at active path; archived copy must have ARCHIVED banner
+5. `check-generated-mobile-truth-consistency.ts` — asserts no active `generated/mobile-*.json` outside the `mobile-scope-closure/` canonical set
 
-### Guardrails (preserved)
-- No new tables, no new dashboards, no duplicate monitoring
-- New gate reuses existing `_lib/emit-gate-report`
-- Secrets stay in Lovable Cloud env — never committed
-- Streak still requires 7 real consecutive clean nights
-- Reuses `connector_effective_state` view + `ConnectorStateBadge` (no new state grammar)
+Update `docs/PLATFORM_SCOPE.md` to remove the false claim "Deleted `capacitor.config.ts` + 12 `@capacitor/*` deps" — replace with accurate "Archived to `archive/capacitor/` and `archive/mobile/` on 2026-04-19; deps removed."
+
+Retire the 16 stale `mobile:*` npm scripts in `package.json` (replace `mobile:run-all` with a single `mobile:scope:run-all` pointing to the 5 new gates). Old validator scripts in `scripts/validation/check-mobile-*.ts` and `check-capacitor-*.ts` move to `archive/scripts/`.
+
+---
 
 ### Files touched
-- **New (1):** `scripts/validation/check-connector-reauth-surfacing.ts`
-- **Edited (4):** `scripts/architecture/checks/check-os-release-readiness.ts` (+1 BLOCK gate), `scripts/validation/emit-connector-truth-artifacts.ts` (acceptance refinement), `package.json` (+gate in run-all), `generated/connector-truth-closure/CONNECTOR_TRUTH_FINAL_VERIFICATION.md`
-- **Secrets requested (4):** Google + Microsoft OAuth client ID/secret pairs for nightly verifier env
+- **New (12):** 5 markdown + 4 JSON in `generated/mobile-scope-closure/`, `docs/MOBILE_HONESTY.md`, `MobileScopeTruthPanel.tsx`, emitter script
+- **New validators (5):** in `scripts/validation/`
+- **Moved/archived (~30):** `capacitor.config.ts`, `infra/deploy/mobile.yaml`, `mobile/` dir, 16 stale `generated/mobile-*.json`, ~16 stale `check-mobile-*.ts` validators
+- **Edited (6):** `package.json` (remove 8 deps, retire 16 npm scripts, add 1), `docs/PLATFORM_SCOPE.md`, 3 download/install pages (+ honesty notice), `AIRuntimeHome.tsx` (+1 tab), `check-os-release-readiness.ts` (+5 BLOCK gates)
 
-After this pass, all 8 acceptance criteria from PART 8 are satisfied with live evidence on disk, in CI, and in the admin AI Engineer surface. Streak progresses to GREEN automatically after 7 clean nightly runs.
+### Guardrails
+- **No duplicate UI**: reuses `AIRuntimeHome` tab pattern + existing `Alert` component
+- **No data loss**: containment, not deletion — every archived asset preserved under `archive/`
+- **No web responsiveness regression**: only native-mobile shell removed; PWA + responsive web untouched
+- **Future reactivation possible**: `MOBILE_REACTIVATION_CONDITIONS.md` documents the path back
+
+After this pass, all 8 PART 8 acceptance criteria are satisfied with live evidence.
 
