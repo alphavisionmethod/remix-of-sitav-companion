@@ -23,6 +23,8 @@ export type { StatTileProps } from "./display/StatTile";
 // status
 export { StatusBadge } from "./status/StatusBadge";
 export type { StatusBadgeProps, StatusTone, StatusSize } from "./status/StatusBadge";
+export { ProvenanceChip } from "./status/ProvenanceChip";
+export type { ProvenanceChipProps } from "./status/ProvenanceChip";
 export { TrustBadge } from "./status/TrustBadge";
 export type { TrustBadgeProps, TrustState } from "./status/TrustBadge";
 export { UrgencyBadge } from "./status/UrgencyBadge";
@@ -49,6 +51,8 @@ export type { NeedsHistoricalReleasesExplainerProps } from "./feedback/NeedsHist
 // actions
 export { OperatorActionPanel } from "./actions/OperatorActionPanel";
 export type { OperatorActionPanelProps, OperatorAction } from "./actions/OperatorActionPanel";
+export { EvidenceLink } from "./actions/EvidenceLink";
+export type { EvidenceLinkProps, EvidenceKind } from "./actions/EvidenceLink";
 
 // overlays
 export { Drawer } from "./overlays/Drawer";
