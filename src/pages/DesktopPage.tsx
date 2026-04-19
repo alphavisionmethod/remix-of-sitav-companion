@@ -125,6 +125,15 @@ export default function DesktopPage() {
   return (
     <CalmEngineProvider windows={calmWindows} layerState={calmLayerState}>
       <h1 className="sr-only">Desktop</h1>
+      {/* Honest narrow-width disclosure — gated to <md (<768px). Desktop view is
+          intentionally desktop-oriented; this banner avoids silent breakage on phones. */}
+      <div
+        role="note"
+        aria-label="Narrow viewport notice"
+        className="md:hidden fixed top-2 left-2 right-2 z-[200] rounded-md border border-border bg-card/95 backdrop-blur-sm px-3 py-2 text-[11px] text-muted-foreground shadow-sm"
+      >
+        <span className="font-medium text-foreground">Desktop view</span> — open on a wider screen for the full SITA workspace.
+      </div>
       <FirstWeekCalibration />
       {/* Notifications now integrated in desktop widget column */}
       <DesktopSurface

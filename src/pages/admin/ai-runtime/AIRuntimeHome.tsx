@@ -42,6 +42,7 @@ const EconomicTrustFutureTruthPanel = lazy(() => import("@/components/admin/ai-r
 const ArchitectureHardeningTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"));
 const FlagshipSurfaceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"));
 const AdminEmptyStateClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"));
+const AdminCoherenceClosureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -189,6 +190,13 @@ export default function AIRuntimeHome() {
       description: "Admin empty-state closure: 3 canonical primitives confirmed reusable + 3 surfaces SHIPPED with PremiumEmptyState (cross-domain-coherence, cost-spotlight, sbom-history) — live in their canonical hubs with operator-grade copy and real /admin/* destinations. 4 validators green at 0 errors / 0 warnings. Zero duplicates, zero fake-live preview content.",
       legacyPath: "/admin/ai-runtime/admin-empty-state-closure-truth",
       render: wrap(AdminEmptyStateClosureTruthPanel),
+    },
+    {
+      id: "admin-coherence-closure-truth",
+      label: "Admin Coherence Closure",
+      description: "Admin coherence + responsive quality closure: 4 canonical specs + 3 audits + 4 new primitives (NeedsDataExplainer, NeedsTimeWindowExplainer, NeedsHistoricalReleasesExplainer, OperatorActionPanel — all compose existing canonical primitives, zero new families). 7 WARN-tier validators ban hardcoded status colors, banned microcopy, raw empty-state text, unwrapped tables, and silent /desktop narrow-width breakage.",
+      legacyPath: "/admin/ai-runtime/admin-coherence-closure-truth",
+      render: wrap(AdminCoherenceClosureTruthPanel),
     },
     {
       id: "efficiency",
