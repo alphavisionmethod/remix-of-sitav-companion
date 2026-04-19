@@ -85,20 +85,25 @@ RULES:
     if (!response.ok) {
       const status = response.status;
       if (status === 429) {
+        log.warn("ai_rate_limited", { failure_class: "rate_limited", status });
         return new Response(JSON.stringify({ error: "Rate limited" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      console.error("AI gateway error:", status, await response.text());
+      log.error("ai_gateway_error", { failure_class: "upstream_error", status });
       return new Response(JSON.stringify({ error: "AI service error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const result = await response.json();
     const content = result.choices?.[0]?.message?.content ?? "I couldn't generate a response.";
 
+    log.complete(200, Math.round(performance.now() - t0), {
+      event_type: "advisor_response", actor: auth.userId, target: advisorId,
+      result: "success", response_length: content.length,
+    });
     return new Response(JSON.stringify({ response: content }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("advisor-conversation error:", e);
+    log.error("unhandled_exception", { failure_class: "internal_error", error: e instanceof Error ? e.message : "Unknown error" });
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
