@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T00:00:00Z",
+  "matrix_rows": [
+    { "device_class": "workstation-x86_64", "last_validated": null, "secure_boot": false, "tpm_2_0": false, "dm_verity": false, "ab_rollback": false, "recovery": false, "certification_status": "partner-blocked" },
+    { "device_class": "server-x86_64", "last_validated": null, "secure_boot": false, "tpm_2_0": false, "dm_verity": false, "ab_rollback": false, "recovery": false, "certification_status": "partner-blocked" },
+    { "device_class": "vm-aarch64", "last_validated": null, "secure_boot": false, "tpm_2_0": false, "dm_verity": false, "ab_rollback": false, "recovery": false, "certification_status": "partner-blocked" },
+    { "device_class": "edge-x86_64", "last_validated": null, "secure_boot": false, "tpm_2_0": false, "dm_verity": false, "ab_rollback": false, "recovery": false, "certification_status": "partner-blocked" }
+  ],
+  "total_certified": 0
+}

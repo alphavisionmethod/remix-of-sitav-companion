@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T00:00:00Z",
+  "hardware_runs_total": 0,
+  "fresh_runs_30d": 0,
+  "device_classes_covered": [],
+  "classification": "partner-blocked",
+  "capabilities_proven": {
+    "secure_boot": false,
+    "tpm_2_0": false,
+    "dm_verity": false,
+    "ab_rollback": false,
+    "recovery": false
+  },
+  "honest_limit": "No real-device runs recorded yet. Use os/scripts/record-hardware-certification-run.sh to capture evidence."
+}

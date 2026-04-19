@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T00:00:00Z",
+  "drills_total": 0,
+  "drills_recent_90d": 0,
+  "scenarios_covered": [],
+  "scenarios_needed": 6,
+  "mttd_avg_seconds": null,
+  "mttr_avg_seconds": null,
+  "classification": "pending-human-execution",
+  "honest_limit": "No human-use drill executions recorded yet. Use the runbook-drill edge function or admin Drill Runner."
+}
