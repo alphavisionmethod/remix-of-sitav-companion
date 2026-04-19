@@ -9,8 +9,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { agentStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -64,14 +67,6 @@ import {
   Zap,
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
-
-const STATUS_TONE: Record<string, string> = {
-  idle: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-  running: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
-  cooldown: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  suspended: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400",
-  error: "bg-destructive/15 text-destructive",
-};
 
 const COUNCIL_LABEL: Record<string, string> = {
   "product-build": "Product Build",
@@ -152,7 +147,10 @@ export default function InternalAgentsBoard() {
         <p className="text-[11px] text-muted-foreground">
           Internal AI workforce — 40 agents · live runtime state
         </p>
-        <NightlyProofBadge />
+        <div className="flex items-center gap-2">
+          <AITruthDisclosure mode="live-gateway" to="/admin/ai-runtime" />
+          <NightlyProofBadge />
+        </div>
       </div>
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
@@ -232,6 +230,11 @@ export default function InternalAgentsBoard() {
                     title="No agents match the current filter"
                     description="Adjust the search term or council filter to see agents in another scope. The full registry contains 40 internal agents across 6 councils."
                   />
+                  <OperatorActionPanel
+                    primary={{ label: "Clear filters", onClick: () => { setSearch(""); setCouncil("all"); setStatusFilter("all"); } }}
+                    next={[{ label: "Open Councils", href: "/admin/ai-runtime?tab=councils" }]}
+                    evidence={[{ label: "Open Trust Ladder", href: "/admin/ai-runtime?tab=trust-ladder" }]}
+                  />
                 </TableCell>
               </TableRow>
             )}
@@ -273,9 +276,9 @@ function AgentRow({ agent, onSelect }: { agent: AgentRuntimeView; onSelect: () =
       </TableCell>
       <TableCell className="text-xs">{COUNCIL_LABEL[agent.definition.council] ?? agent.definition.council}</TableCell>
       <TableCell>
-        <Badge variant="outline" className={`text-[10px] h-5 px-1.5 border-0 ${STATUS_TONE[status] ?? STATUS_TONE.idle}`}>
+        <StatusBadge tone={agentStatusTone(status)} size="xs">
           {status}
-        </Badge>
+        </StatusBadge>
       </TableCell>
       <TableCell className="text-xs">
         <span className="font-medium">{agent.definition.current_autonomy_level}</span>
