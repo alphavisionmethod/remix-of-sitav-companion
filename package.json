@@ -102,6 +102,14 @@
     "mobile:closure:run-all": "npx tsx scripts/validation/check-mobile-canonical-stack.ts; npx tsx scripts/validation/check-no-flutter-mobile-truth-drift.ts; npx tsx scripts/validation/check-android-release-path.ts; npx tsx scripts/validation/check-ios-release-path.ts; npx tsx scripts/validation/check-mobile-push-claim-safety.ts; npx tsx scripts/validation/check-mobile-submission-blockers.ts; true"
   },
   "dependencies": {
+    "@capacitor/android": "^6",
+    "@capacitor/app": "^6",
+    "@capacitor/cli": "^6",
+    "@capacitor/core": "^6",
+    "@capacitor/device": "^6",
+    "@capacitor/ios": "^6",
+    "@capacitor/network": "^6",
+    "@capacitor/preferences": "^6",
     "@electron/packager": "^18.3.6",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^3.10.0",
