@@ -1,185 +1,158 @@
 
 
-## Audit findings (live)
+## Audit verdict — Security & Portability is 100% complete; Economic-Trust-Future is 0% started
 
-**Already in place — DO NOT duplicate:**
-- Real `secret-rotation-orchestrator` edge function with secret taxonomy (push/comms/ai/auth/storage)
-- `security-anomaly-rotation-trigger` edge function (dry-run only, dual-admin gated)
-- 7-layer Electron security fabric: `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `integrity-check.cjs`, `license-guard.cjs` + `os-security/` (sessiond, secretsd, auditd, policyd)
-- Canonical runtime-host abstraction already exists at `src/runtimes/`: `RuntimeTierProvider`, `runtime-detection.ts`, `desktop-runtime-detection.ts`, `feature-runtime-tier-registry.ts` — this IS the canonical adapter (no need for a 2nd abstraction)
-- `src/lib/ux-trust/` (microcopy + ux-principles) and 7 frontend-polish gates including `trust-copy-quality`
-- 171 BLOCK gates wired in `check-os-release-readiness.ts`
-- AI Engineer hub at `src/pages/admin/ai-runtime/AIRuntimeHome.tsx` with 6 truth panels (mount point for new panel)
-- `RUNTIME_TIER_GOVERNANCE_REPORT.md` and portability registries in `src/runtimes/`
+**Security & Portability closure (prior work) — VERIFIED COMPLETE:**
+- 19 deliverables present in `generated/security-and-portability-closure/` (12 markdowns + 4 JSON status mates + 2 evidence dirs + register)
+- 10 real validators (no stubs) wired into `check-os-release-readiness.ts` at lines 232–242 (181 BLOCK gates total)
+- `secret_rotation_log` DB table + cadence registry (`src/lib/security/secret-rotation-cadence.ts`) live
+- Canonical `runtime-host-adapter.ts` + 4 hooks refactored
+- `SecurityAndPortabilityTruthPanel.tsx` mounted on AI Engineer hub
+- Honest WARN-tier classification for items requiring real-world execution (no fake greens)
 
-**Real gaps (not yet implemented):**
+**Economic Governance + UX Trust + Future-Surface Containment — 0% started:**
 
-*Section A — Secret rotation cadence:*
-- Orchestrator exists but NO codified cadence policy per secret class (rotation interval, owner, stale threshold)
-- No freshness validator that fails CI when a secret class is overdue
-- No `secret_rotation_log` durable evidence table tracking real rotation runs
+| Area | Current state | Gap |
+|---|---|---|
+| Per-user AI ceilings | Class-based (`max_calls_per_hour`, `max_cost_cents_per_call`) per user — but no **explicit hard daily/monthly user-spend ceiling** distinct from class envelope | No per-user hard-stop ledger, no budget-decision receipts table, no load-proof artifact |
+| Calm mode | Default = `"standard"` in `AppearanceContext.tsx` line 84 | Should be `"calm"` if calm is canonical safe default |
+| AI workforce wording | 13+ surfaces use "workforce", "autonomously", etc. | No agency-claim audit + no validator preventing regression |
+| Future surfaces | `demo-only-surface-registry.ts` has 9 surfaces (DWE01-07, UAO03/08) BUT **mobile-native, ambient shells, continuity, wearable archive paths NOT all in the launch-scope exclusion list** | No `launch-scope-surface-classification` validator + no `economic-trust-and-future-closure/` directory |
+| Validators | 0 of 7 required validators exist | `check-per-user-ai-ceilings`, `check-ai-budget-hard-stop`, `check-ai-budget-receipts`, `check-calm-mode-default`, `check-no-ambiguous-ai-agency-claims`, `check-future-surface-containment`, `check-launch-scope-surface-classification` |
 
-*Section B — Adversarial proof:*
-- Zero adversarial validators (RLS-under-stress, Electron threat detection, debugger/tamper, session-threat behavior)
-- No `SECURITY_FINDINGS_REGISTER` model — findings have no closure-loop tracking
-
-*Section C — Browser-only assumptions in shared logic:*
-- 4 shared hooks directly access `window` without going through the canonical `useRuntimeTier()` adapter:
-  - `src/hooks/useAppStatePersistence.ts` (window.scrollY, scroll listeners)
-  - `src/hooks/use-zero-latency.ts` (window.scrollY/scrollTo)
-  - `src/hooks/use-session-restore.ts` (window.location.pathname, scrollTo)
-  - `src/hooks/useSetupOrchestration.ts` (window.addEventListener beforeunload)
-- `useReducedMotion`, `useWindowSnap`, `use-mobile`, `useElectronBridge` are correctly scoped (browser-leaf or already adapter-routed) → leave alone
-- No `check-no-browser-trapped-shared-hooks` or `check-portability-boundaries` validator
-
-*Section D — Hub UI:*
-- No "Security & Portability Truth" panel on AI Engineer hub
-
-**Scope rule (per user):** All NEW UI lives ONLY on Admin AI Engineer hub (`AIRuntimeHome.tsx`) as 1 new truth-panel tab. Validators in canonical `scripts/validation/`. Generated evidence in canonical `generated/security-and-portability-closure/`. **Zero edits to other admin domains.**
+**Scope rule (per user):** All NEW UI lives ONLY on Admin AI Engineer hub (`AIRuntimeHome.tsx`). Validators in canonical `scripts/validation/`. Generated evidence in canonical `generated/economic-trust-and-future-closure/`. **Zero edits to other admin domains.**
 
 ---
 
-## Phase 1 — Secret rotation cadence (codified + enforced)
+## Phase 1 — Per-user AI hard ceilings (DB + runtime + receipts)
 
-### 1A. Database — durable rotation evidence (1 migration)
-Create `secret_rotation_log` table:
-- columns: `id uuid PK`, `secret_class text`, `secret_name text`, `rotated_at timestamptz`, `rotated_by uuid`, `dry_run bool`, `result jsonb`, `cadence_due_at timestamptz`
-- RLS: admin-only SELECT/INSERT via existing `has_role(auth.uid(),'admin')`
-- Index on `(secret_class, rotated_at DESC)` for freshness lookups
-- Realtime publication for live truth panel
+### 1A. DB migration — explicit per-user ceiling + decision receipts
+- **NEW table** `ai_user_hard_ceilings`: `user_id PK`, `daily_cost_cents_cap`, `monthly_cost_cents_cap`, `daily_calls_cap`, `degrade_to_model_id`, `effective_from`, `updated_at`. Admin-write, owner-read RLS.
+- **NEW table** `ai_budget_decision_receipts`: `id`, `user_id`, `capability_key`, `decision: allow|degrade|block`, `reason`, `pre_check_state jsonb` (rolling spend, calls), `policy_rule`, `cost_estimate_cents`, `actual_cost_cents`, `created_at`. Append-only, admin-read, service-insert RLS. Realtime-published.
+- **NEW SECURITY DEFINER fn** `check_user_hard_ceiling(p_user_id, p_estimated_cost_cents)` returns `{allowed, reason, daily_pct, monthly_pct, fallback_model_id}` — runs BEFORE existing `check_ai_budget_policies` (defense in depth).
+- **Seed default ceiling** for every existing user via trigger on `auth.users`.
 
-### 1B. Cadence policy (1 canonical model file + 1 status mate)
-- `src/lib/security/secret-rotation-cadence.ts` — typed registry: per-class `{class, intervalDays, ownerRole, backupOwnerRole, staleThresholdDays, alertSeverity}`. Classes: `push` (90d), `comms` (180d), `ai` (90d), `auth` (control-plane), `storage` (control-plane), `webhook-signing` (90d), `attestation-signing` (180d), `audit-export-hmac` (180d)
-- `generated/security-and-portability-closure/secret-rotation-status.json` — emitter reads `secret_rotation_log` + cadence registry, computes per-class freshness/overdue state
+### 1B. Runtime enforcement (real path, no dashboards-only)
+- Edit `supabase/functions/_shared/ai-budget-check.ts` → after the existing class-based RPC, ALSO call `check_user_hard_ceiling`. If user-cap exceeded → `shouldBlock=true, reason="user_hard_ceiling_exceeded"`. If 80%+ → `shouldDowngrade=true, fallbackModelId=ceiling.degrade_to_model_id`.
+- Every call writes a row to `ai_budget_decision_receipts` BEFORE executing the LLM call (the receipt records the *decision*, not the result).
+- Edit `supabase/functions/ai-gateway/index.ts` → on `shouldBlock`, return graceful 429 with structured body `{ kind: "budget_ceiling", message_user_safe: "...", retry_after_seconds, current_pct, daily_resets_at }` so UI can render premium decline copy.
 
-### 1C. Wire orchestrator → log
-Edit `supabase/functions/secret-rotation-orchestrator/index.ts` to INSERT a row into `secret_rotation_log` on every plan execution (dryRun included), with `cadence_due_at = now() + interval`.
+### 1C. Graceful degraded behavior in UI
+- **NEW** `src/components/ai-runtime/BudgetCeilingNotice.tsx` — premium calm copy when blocked: "You've used today's AI workspace allowance. New requests resume at 00:00 UTC." (No bug-feel.) Wired into `chat-advisor` client error handler.
+- Admin-visible ceiling badge in the new truth panel.
 
-### 1D. Cadence emitter + 2 validators
-- `scripts/validation/emit-secret-rotation-status.ts` — queries DB, emits status JSON
-- `scripts/validation/check-secret-rotation-cadence.ts` — asserts every class in registry has a policy entry; fails BLOCK if cadence/owner missing
-- `scripts/validation/check-secret-rotation-freshness.ts` — asserts no class is past `staleThresholdDays`; honest WARN-tier for `auth`/`storage` (control-plane-blocked)
-
----
-
-## Phase 2 — Adversarial validation evidence (5 validators + register)
-
-Each validator does REAL work (no stubs); honest WARN-tier where evidence requires real execution.
-
-### 2A. `check-rls-under-stress.ts` (~80 LOC)
-- Reads `generated/security-and-portability-closure/rls-stress-runs/*.json` (evidence files)
-- Required: ≥1 run in last 90 days with: concurrent multi-tenant probe, SECURITY DEFINER coverage check, edge-condition policy bypass attempt
-- Honest WARN if zero runs ("pending-execution"); BLOCK if any run shows isolation breach
-- Companion script `os/scripts/run-rls-stress-probe.sh` — real psql-based concurrent probe (uses existing `PG*` env), writes evidence file
-
-### 2B. `check-electron-threat-detection-proof.ts` (~60 LOC)
-- Scans `electron/runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs` for required detection paths (anti-debug, screenshot block, domain allowlist)
-- Reads `electron/__threat_drills__/*.json` evidence files
-- Honest `partner-blocked` if no Electron-build environment available
-
-### 2C. `check-debugger-tamper-proof.ts` (~50 LOC)
-- Verifies `runtime-shield.cjs` exports debugger-detection + integrity-check hooks
-- Verifies `integrity-check.cjs` ASAR hash check is wired
-- Reads tamper-drill evidence; honest WARN where real-device drill required
-
-### 2D. `check-session-threat-behavior.ts` (~50 LOC)
-- Scans `src/lib/security/` and `os-security/sessiond.ts` for behavioral thresholds + anomaly response
-- Reads `generated/security-and-portability-closure/session-threat-runs/*.json`
-- Asserts admin visibility wired (existing `kill_switch_audit_log` linkage)
-
-### 2E. `check-security-adversarial-proof.ts` (meta, ~70 LOC)
-- Aggregates the 4 above + reads `SECURITY_FINDINGS_REGISTER` JSON mate
-- Asserts every claimed strong-security area has at least: a validator + an evidence file OR explicit `pending-execution` classification
-
-### 2F. Findings register
-- `generated/security-and-portability-closure/security-findings-register.json` — typed array `{id, severity, area, status: open|closed|accepted-risk|blocked-externally, opened_at, remediation_ref}`
-- `SECURITY_FINDINGS_REGISTER.md` — human-readable mate
+### 1D. Load proof
+- **NEW** `os/scripts/run-per-user-budget-load-test.sh` — drives 200 concurrent calls against a test user past their cap, verifies (a) no extra calls slipped through, (b) ledger tally is exact, (c) all decisions receipted, (d) degraded behavior stable. Writes evidence file `generated/economic-trust-and-future-closure/budget-load-runs/<ts>.json`.
 
 ---
 
-## Phase 3 — Browser-only hook portability (4 hook refactors + 2 validators)
+## Phase 2 — Calm-mode default + UX trust copy alignment
 
-### 3A. Extend canonical runtime-host adapter
-Add to `src/runtimes/`:
-- `runtime-host-adapter.ts` — typed surface exposing: `getScrollY()`, `setScrollY(y)`, `addBeforeUnload(fn)`, `getCurrentPath()`, `addOnlineListener(fn)`. Implementations:
-  - `web/web-host-adapter.ts` — uses `window.*` (safe: only loaded in WEB_APP/DESKTOP_HOST tiers)
-  - `noop/noop-host-adapter.ts` — for SIMULATED/SSR contexts
-- Adapter selected via existing `RuntimeTierProvider` — single adapter, no duplicate abstraction
+### 2A. Flip calm-mode default
+- Edit `src/contexts/AppearanceContext.tsx` line 84: `useState<DisplayMode>("standard")` → `useState<DisplayMode>("calm")`.
+- Edit `src/pages/FirstBootSetup.tsx` line 98: `calmMode: false` → `calmMode: true`.
+- Edit `src/lib/services/personalization-engine/index.ts` line 124: `calmMode: false` → `calmMode: true`.
+- Update onboarding copy disclosing calm-mode default.
 
-### 3B. Refactor 4 shared hooks to route through adapter
-Edit only these 4 (per audit — no scattered defensive null-checks elsewhere):
-- `src/hooks/useAppStatePersistence.ts`
-- `src/hooks/use-zero-latency.ts`
-- `src/hooks/use-session-restore.ts`
-- `src/hooks/useSetupOrchestration.ts`
+### 2B. Notification disclosure surface
+- **NEW** `src/components/notifications/NotificationDisclosureCard.tsx` — calm description of: notification categories, default intensity (calm), how to tune. Embed into Settings notification page (existing) AND first-boot.
 
-Each replaces direct `window.*` access with `useRuntimeHost()` calls. Behavior preserved in WEB_APP/DESKTOP_HOST; safe no-ops in SIMULATED.
-
-### 3C. Two new portability validators
-- `scripts/validation/check-no-browser-trapped-shared-hooks.ts` — scans `src/hooks/**/*.ts` for direct `window.`/`document.` references; allowlists 4 leaf hooks (`use-mobile`, `useReducedMotion`, `useWindowSnap`, `useElectronBridge`); fails BLOCK on new violations
-- `scripts/validation/check-runtime-host-abstraction.ts` — asserts the 4 refactored hooks DO import `useRuntimeHost`; asserts no second abstraction file exists
-
-### 3D. Portability boundary model
-- `src/runtimes/portability-boundary-model.ts` — typed enum `{leaf-browser-only, shared-portable, shell-specific, adapter-routed}` + per-file classification
-- `scripts/validation/check-portability-boundaries.ts` — asserts every file in `src/hooks/`, `src/lib/`, and `src/runtimes/` has a classification
+### 2C. AI agency wording audit + corrections
+- Scan-then-edit pass: replace "workforce is acting" / "AI is autonomously" patterns with proven-language equivalents from `src/lib/ux-trust/microcopy.ts`. Targets identified: `AutonomyLadder.tsx`, `MissionControlPage.tsx`, `InternalAgentsBoard.tsx`, `SuggestionsBoard.tsx`, `HQApprovalQueue.tsx`, `AIT01TeamOverview.tsx`, `AIT02RoleRegistry.tsx`, `AIT03TaskInvocation.tsx`, `AIT04to08Boards.tsx`.
+- Extend `src/lib/ux-trust/microcopy.ts` with `aiAgency.{readyToAct, canRecommend, governedScope, runtimeProvenOnly}` canonical phrases.
 
 ---
 
-## Phase 4 — Generated deliverables (13 files)
+## Phase 3 — Future-surface containment expansion
 
-`generated/security-and-portability-closure/`:
-- 12 markdown audits/models (per Part 5 spec): SECRET_ROTATION_CURRENT_STATE_AUDIT, SECRET_ROTATION_CADENCE_MODEL, SECURITY_ADVERSARIAL_PROOF_AUDIT, ADVERSARIAL_VALIDATION_MODEL, RLS_UNDER_STRESS_VALIDATION, ELECTRON_THREAT_DETECTION_VALIDATION, DEBUGGER_AND_TAMPER_VALIDATION, SESSION_THREAT_BEHAVIOR_VALIDATION, SECURITY_FINDINGS_REGISTER, BROWSER_ONLY_ASSUMPTION_AUDIT, RUNTIME_HOST_EXTRACTION_PLAN, PORTABILITY_BOUNDARY_MODEL
-- 1 final verification: SECURITY_AND_PORTABILITY_FINAL_VERIFICATION.md
-- 4 JSON status mates: secret-rotation-status, security-adversarial-proof-status, portability-boundary-status, security-and-portability-verification
+### 3A. Extend `demo-only-surface-registry.ts`
+- Add archived-mobile-native surface entries (linking to `archive/mobile/`).
+- Add `containment: "archived"` as a new ContainmentLevel and seed it.
+- **NEW field** `excludedFromLaunchScoring: boolean` on every entry that is `future_vision` or `archived` — this is what the new validator reads.
 
-All audits use LIVE evidence — no stubs.
+### 3B. Banners + route-level truth
+- Verify every entry's `componentPath` imports `<DemoOnlyBanner surfaceId="..." />` (existing `check-demo-only-surface-badging.ts` already enforces this — no new work).
+
+### 3C. Remove from launch-scored critical path
+- **NEW** `generated/economic-trust-and-future-closure/launch-scope-exclusions.json` — emitted from registry, lists every `excludedFromLaunchScoring=true` surface.
+- New validator (Phase 4) reads this and ensures these surfaces never appear as required gates in `check-os-release-readiness.ts`.
 
 ---
 
-## Phase 5 — UI (1 new truth panel on AI Engineer hub only)
+## Phase 4 — Seven new BLOCK validators + 1 emitter
 
-- New `src/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel.tsx` — reads `security-and-portability-verification.json` + queries `secret_rotation_log` table live for cadence freshness; same shape as existing 6 panels (Refresh button, action-oriented per `check-no-museum-boards`)
-- Three sections: Secret rotation cadence table | Adversarial findings register | Portability boundary status
-- Insert as new `security-portability-truth` module in `AIRuntimeHome.tsx` (after `hardware-operator-truth`)
+All real (no stubs); honest WARN-tier where evidence requires real execution.
+
+1. `check-per-user-ai-ceilings.ts` (~90 LOC) — asserts `ai_user_hard_ceilings` table exists + every active user has a row + RLS correct. Reads DB via `psql`.
+2. `check-ai-budget-hard-stop.ts` (~70 LOC) — reads `budget-load-runs/*.json`; requires ≥1 run in last 30 days proving zero ceiling-exceeding calls; honest `pending-execution` WARN if no runs.
+3. `check-ai-budget-receipts.ts` (~60 LOC) — verifies `ai_budget_decision_receipts` table exists; cross-references DB count vs `ai_usage_ledger` count (every call must have a decision receipt).
+4. `check-calm-mode-default.ts` (~50 LOC) — greps `AppearanceContext.tsx`, `FirstBootSetup.tsx`, `personalization-engine/index.ts` for `useState<DisplayMode>("calm")` and `calmMode: true`. BLOCK on regression.
+5. `check-no-ambiguous-ai-agency-claims.ts` (~80 LOC) — scans `src/components/`, `src/pages/` for forbidden phrases: "workforce is acting", "AI autonomously", "is acting on your behalf" (case-insensitive). Allowlists wording sourced from `src/lib/ux-trust/microcopy.ts::aiAgency`.
+6. `check-future-surface-containment.ts` (~70 LOC) — reads `demo-only-surface-registry.ts`; asserts every device/wearable/ambient/continuity/native-mobile route has a registry entry with `excludedFromLaunchScoring=true` for `future_vision` and `archived` levels.
+7. `check-launch-scope-surface-classification.ts` (~60 LOC, meta) — cross-references `launch-scope-exclusions.json` against `REQUIRED_GATES` array in `check-os-release-readiness.ts`; BLOCK if any excluded surface appears in launch scoring.
+8. `emit-economic-trust-future-status.ts` — emitter that queries DB + reads registry + writes the 4 JSON status mates.
+
+---
+
+## Phase 5 — 12 deliverables in `generated/economic-trust-and-future-closure/`
+
+8 markdowns + 4 JSON mates per Part 5 spec:
+- `AI_BUDGET_CURRENT_STATE_AUDIT.md`, `PER_USER_AI_CEILING_MODEL.md`, `AI_BUDGET_RECEIPT_MODEL.md`, `PER_USER_BUDGET_ENFORCEMENT_PROOF.md`
+- `TRUST_SENSITIVE_UX_AUDIT.md`, `TRUST_COPY_ALIGNMENT_MODEL.md`
+- `FUTURE_SURFACE_AUDIT.md`
+- `ECONOMIC_TRUST_AND_FUTURE_FINAL_VERIFICATION.md`
+- `per-user-budget-status.json`, `trust-ux-status.json`, `future-surface-status.json`, `economic-trust-and-future-verification.json`
+
+All audits backed by LIVE evidence (DB queries, registry parse, file scans).
+
+---
+
+## Phase 6 — UI panel on AI Engineer hub (1 new panel ONLY)
+
+- **NEW** `src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx` — three sections:
+  - **Per-user budget ceilings** — live query `ai_user_hard_ceilings` + recent `ai_budget_decision_receipts` (block/degrade/allow counts, top users by spend %)
+  - **UX trust posture** — calm-mode default status, agency-claim scan result
+  - **Future-surface containment** — table from registry, excluded-from-launch-scoring badge per row
+- Insert as new tab in `AIRuntimeHome.tsx` after `security-portability-truth`.
 - **Zero other admin pages touched.**
 
 ---
 
-## Phase 6 — Wire 10 new gates into release readiness + npm scripts
+## Phase 7 — Wire 7 new BLOCK gates + npm scripts
 
-### 6A. `scripts/architecture/checks/check-os-release-readiness.ts`
-Add 10 new BLOCK gates (171 → 181):
-- `secret-rotation-cadence`, `secret-rotation-freshness`
-- `security-adversarial-proof`, `rls-under-stress`, `electron-threat-detection-proof`, `debugger-tamper-proof`, `session-threat-behavior`
-- `no-browser-trapped-shared-hooks`, `runtime-host-abstraction`, `portability-boundaries`
+### 7A. `check-os-release-readiness.ts`
+Append after line 242 (181 → **188 BLOCK gates**):
+```
+// Economic Governance + UX Trust + Future-Surface Closure — 7 BLOCK gates
+"per-user-ai-ceilings", "ai-budget-hard-stop", "ai-budget-receipts",
+"calm-mode-default", "no-ambiguous-ai-agency-claims",
+"future-surface-containment", "launch-scope-surface-classification",
+```
 
-### 6B. `package.json`
-Add 4 scripts:
-- `closure:security-portability:emit` (runs the 2 emitters)
-- `closure:security-portability:run-all` (runs all 10 validators)
-- `security:rotate:dry-run` (calls orchestrator with dryRun)
-- `security:rls-stress` (runs RLS stress probe)
-
-Update `final:closure:run-all` to include the new closure.
+### 7B. `package.json` scripts
+- `closure:economic-trust-future:emit` (runs emitter)
+- `closure:economic-trust-future:run-all` (runs 7 validators)
+- `ai:budget:load-test` (runs `run-per-user-budget-load-test.sh`)
+- Update `final:closure:run-all` to include the new closure.
 
 ---
 
 ## Honest limits surfaced (no fake green)
 
-- `check-electron-threat-detection-proof` returns `partner-blocked` WARN-tier until Electron build environment captures real drill evidence
-- `check-rls-under-stress` returns `pending-execution` WARN until first stress-probe run; the `os/scripts/run-rls-stress-probe.sh` is wired and ready
-- `check-secret-rotation-freshness` returns `control-plane-blocked` WARN for `auth`/`storage` classes (Lovable Cloud control plane)
-- `check-debugger-tamper-proof` returns `pending-drill` WARN until real-device tamper drill recorded
+- `check-ai-budget-hard-stop` returns `pending-execution` WARN until first load-test run — script is wired and ready.
+- `check-per-user-ai-ceilings` BLOCKs only if table missing or RLS wrong; honest WARN if seed coverage <100%.
+- `check-future-surface-containment` BLOCKs on uncategorized device/mobile-native routes.
 
-Every WARN classification is reached by inspecting REAL data (DB rows, evidence files, registry entries) — never hard-coded.
+Every WARN classification is reached by inspecting REAL data — never hard-coded.
 
 ---
 
 ## Files touched (final summary)
 
-- **NEW (28):** 12 markdown audits + 4 JSON status files + 1 verification md + 5 adversarial validators + 3 portability validators + 2 cadence validators + 2 emitters + 1 truth panel UI + 1 SQL migration + 1 RLS stress script + 1 cadence registry + 1 host adapter set (3 files counted as 1) + 1 portability boundary model
-- **EDITED (8):** `AIRuntimeHome.tsx` (+1 tab), `check-os-release-readiness.ts` (+10 BLOCK gates), `package.json` (+4 scripts), `secret-rotation-orchestrator` (+log writes), 4 shared hooks (refactored to adapter)
-- **ZERO edits to:** other admin domains, mobile/AI runtime/connector/hardware closures (preserved GREEN), existing electron security modules (only read-scanned)
+- **NEW (24):** 8 markdown audits + 4 JSON status files + 7 validators + 1 emitter + 1 truth panel UI + 1 SQL migration + 1 load-test shell script + 1 budget-ceiling notice component
+- **EDITED (10):** `AppearanceContext.tsx`, `FirstBootSetup.tsx`, `personalization-engine/index.ts`, `microcopy.ts`, `demo-only-surface-registry.ts`, `ai-budget-check.ts`, `ai-gateway/index.ts`, `AIRuntimeHome.tsx`, `check-os-release-readiness.ts`, `package.json`
+- **AGENCY WORDING EDITS:** 9 admin/AI surfaces (one-line copy fixes only)
+- **ZERO edits to:** other admin domains, security/portability/mobile/AI runtime/connector/hardware closures (preserved GREEN)
 
-After this pass: 181 BLOCK gates total, 1 new live truth panel on AI Engineer hub, real cadence enforcement against DB, real adversarial validators that read real evidence, 4 hooks fully host-abstracted, second abstraction prevented by validator. Honest WARN-tier classification for everything blocked by real-world execution (no synthetic green).
+After this pass: **188 BLOCK gates total**, 1 new live truth panel on AI Engineer hub, real per-user hard-stop enforcement at runtime with receipts, calm-mode as default, agency wording locked behind validator, future surfaces excluded from launch scoring with explicit registry+validator backing. Honest WARN-tier preserved where evidence requires real execution.
 
