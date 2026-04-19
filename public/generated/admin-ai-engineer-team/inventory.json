@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19",
+  "scope": "Admin AI Engineer Team — /admin/ai-runtime hub only",
+  "hubFile": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx",
+  "registryFile": "src/lib/admin/ai-engineer-hub/tab-registry.ts",
+  "tabsBeforeRefactor": 30,
+  "tabsAfterRefactor": 43,
+  "newlyMountedOrphanBoards": [
+    "InternalAgentIntentTimeline", "TrustLadderBoard", "ReflectionBoard",
+    "PolicyDraftReviewBoard", "CrossCouncilBoard", "TenantFederationBoard",
+    "SLOObservabilityBoard", "AssuranceChaosBoard", "ExternalWorkforceApiBoard",
+    "KnowledgeFederationBoard", "SovereignDeploymentDRBoard",
+    "ComplianceAttestationBoard", "OwnerCopilotBriefings"
+  ],
+  "duplicatesFound": 0,
+  "stubsFound": 0,
+  "wiringStatus": "All 43 tabs declare real DB tables / RPCs / edge functions in registry dataSources",
+  "realtimeTabs": 22,
+  "operatorActionRequiredTabs": 31,
+  "evidenceBackedTabs": 36
+}
