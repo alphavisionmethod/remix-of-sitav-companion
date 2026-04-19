@@ -84,11 +84,23 @@ export default function MobileScopeTruthPanel() {
               Active deployment surfaces: Web SPA, Ubuntu-native ISO, Electron desktop.
             </p>
           </div>
-          {doc && (
-            <Badge variant="outline" className={tone(doc.ok)}>
-              {doc.status}
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {doc && (
+              <Badge variant="outline" className={tone(doc.ok)}>
+                {doc.status}
+              </Badge>
+            )}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => void loadDoc()}
+              disabled={loading}
+              className="h-7 px-2 text-xs"
+            >
+              <RefreshCw className={`h-3 w-3 mr-1 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {loading && (
