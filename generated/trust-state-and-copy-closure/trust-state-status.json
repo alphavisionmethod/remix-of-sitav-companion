@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "scope": "trust-state-and-copy-closure",
+  "verdict": "GREEN-fully-shipped",
+  "canonicalPrimitives": [
+    "BoardSection",
+    "EmptyState",
+    "PremiumEmptyState",
+    "ConciergeEmptyState",
+    "Skeleton",
+    "NeedsDataExplainer",
+    "NeedsTimeWindowExplainer",
+    "NeedsHistoricalReleasesExplainer",
+    "OperatorActionPanel",
+    "AIStateBadge",
+    "AIDegradedState",
+    "StatusBadge",
+    "ConnectorStateBadge"
+  ],
+  "stateAdoption": {
+    "onboarding": { "loading": "Skeleton", "empty": "EmptyState", "error": "inline-alert", "drift": false },
+    "boardroom": { "loading": "Skeleton", "empty": "PremiumEmptyState", "error": "inline-alert", "degraded": "AIDegradedState", "drift": false },
+    "concierge": { "loading": "Skeleton", "empty": "ConciergeEmptyState", "error": "inline-alert", "degraded": "AIDegradedState", "drift": false },
+    "communications": { "loading": "Skeleton", "empty": "EmptyState", "error": "inline-alert", "reauth": "ConnectorStateBadge", "drift": false },
+    "admin/ai-runtime": { "loading": "BoardSection", "empty": "EmptyState", "error": "BoardSection", "degraded": "AIDegradedState", "drift": false },
+    "admin/integrations": { "loading": "Skeleton", "empty": "EmptyState", "error": "inline-alert", "reauth": "ConnectorStateBadge", "drift": false },
+    "admin/health": { "loading": "Skeleton", "empty": "EmptyState", "error": "inline-alert", "degraded": "StatusBadge:warning", "drift": false },
+    "admin/releases-support": { "loading": "Skeleton", "empty": "NeedsHistoricalReleasesExplainer", "error": "inline-alert", "drift": false }
+  },
+  "newComponentFamilies": 0,
+  "duplicates": 0
+}

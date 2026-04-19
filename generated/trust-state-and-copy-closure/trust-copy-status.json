@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "scope": "trust-state-and-copy-closure",
+  "verdict": "GREEN-fully-shipped",
+  "forbiddenPhrasePatterns": [
+    "\\bfully autonomous\\b",
+    "\\bself-acting\\b",
+    "\\bguaranteed (?:to|reliability)\\b",
+    "\\b(?:always|never) fails\\b",
+    "\\b100% (?:reliable|accurate)\\b"
+  ],
+  "perSurface": {
+    "boardroom": { "forbiddenHits": 0, "specDoc": "BOARDROOM_TRUST_COPY_SPEC.md", "status": "exact" },
+    "concierge": { "forbiddenHits": 0, "specDoc": "CONCIERGE_TRUST_COPY_SPEC.md", "status": "exact" },
+    "communications": { "forbiddenHits": 0, "specDoc": "COMMUNICATIONS_TRUST_COPY_SPEC.md", "status": "exact" },
+    "admin/ai-runtime": { "forbiddenHits": 0, "specDoc": "ADMIN_AI_RUNTIME_TRUST_COPY_SPEC.md", "status": "exact" },
+    "onboarding": { "forbiddenHits": 0, "status": "exact" },
+    "admin/health": { "forbiddenHits": 0, "status": "exact" },
+    "admin/releases-support": { "forbiddenHits": 0, "status": "exact" }
+  }
+}

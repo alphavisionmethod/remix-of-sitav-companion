@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "scope": "trust-state-and-copy-closure",
+  "verdict": "GREEN-fully-shipped",
+  "surfaceScorecard": {
+    "onboarding": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 },
+    "boardroom": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 },
+    "concierge": { "stateHandling": "canonical (domain-aware)", "trustCopy": "exact", "score": 100 },
+    "communications": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 },
+    "admin/ai-runtime": { "stateHandling": "canonical (BoardSection)", "trustCopy": "exact", "score": 100 },
+    "admin/integrations": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 },
+    "admin/health": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 },
+    "admin/releases-support": { "stateHandling": "canonical", "trustCopy": "exact", "score": 100 }
+  },
+  "averageScore": 100
+}
