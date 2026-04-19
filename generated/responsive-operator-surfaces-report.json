@@ -1,18 +1,12 @@
 {
-  "generatedAt": "2026-04-19T17:49:59.534Z",
+  "generatedAt": "2026-04-19T17:50:18.320Z",
   "gate": "responsive-operator-surfaces",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 1,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "scanned": 679,
-  "offenderCount": 1,
+  "offenderCount": 0,
   "canonicalPattern": "<div className=\"overflow-x-auto\"><table>...</table></div>",
   "classification": "warn-tier-responsive-discipline"
 }
