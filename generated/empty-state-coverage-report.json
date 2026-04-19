@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-19T13:20:57.538Z",
+  "gate": "empty-state-coverage",
+  "ok": false,
+  "errorCount": 6,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "InternalAgentIntentTimeline.tsx contains 2 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    },
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "PolicyDraftReviewBoard.tsx contains 1 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    },
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "SLOObservabilityBoard.tsx contains 4 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    },
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "SovereignDeploymentDRBoard.tsx contains 3 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    },
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "TrustLadderBoard.tsx contains 2 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    },
+    {
+      "severity": "error",
+      "area": "empty-state",
+      "message": "WeeklyDigestBoard.tsx contains 1 raw \"No …\" text node(s) — replace with EmptyState primitive"
+    }
+  ]
+}
