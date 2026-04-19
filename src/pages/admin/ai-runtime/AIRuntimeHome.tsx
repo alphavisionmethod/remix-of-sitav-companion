@@ -35,6 +35,8 @@ const AdminValidationTruthPanel = lazy(() => import("@/components/admin/ai-runti
 const HardwareAndOperatorTruthPanel = lazy(() => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"));
 const SecurityAndPortabilityTruthPanel = lazy(() => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"));
 const ArchitecturalCleanupTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"));
+const EconomicTrustFutureTruthPanel = lazy(() => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"));
+const ArchitectureHardeningTruthPanel = lazy(() => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"));
 
 function ModuleFallback() {
   return (
@@ -154,6 +156,20 @@ export default function AIRuntimeHome() {
       description: "Live portability boundary status, edge-function structured-logging coverage, and truth-manifest health — additive, audit-first pass with honest WARN-tier classification and zero deletions.",
       legacyPath: "/admin/ai-runtime/architectural-cleanup-truth",
       render: wrap(ArchitecturalCleanupTruthPanel),
+    },
+    {
+      id: "economic-trust-future-truth",
+      label: "Economic Trust & Future",
+      description: "Per-user AI budget ceilings (live), agency-wording lockdown, calm-mode posture, and future-surface containment — 7 BLOCK gates wired with honest WARN-tier preserved.",
+      legacyPath: "/admin/ai-runtime/economic-trust-future-truth",
+      render: wrap(EconomicTrustFutureTruthPanel),
+    },
+    {
+      id: "architecture-hardening-truth",
+      label: "Architecture Hardening",
+      description: "Architecture-hardening closure: 22 deliverables, 6 new BLOCK validators (runtime-host boundaries, shell/runtime portability, edge log shape, mobile archived scope, kernel overclaim, doc canonicality), canonical source-of-truth map, partial-surface closure register.",
+      legacyPath: "/admin/ai-runtime/architecture-hardening-truth",
+      render: wrap(ArchitectureHardeningTruthPanel),
     },
     {
       id: "efficiency",
