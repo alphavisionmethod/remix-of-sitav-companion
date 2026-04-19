@@ -276,7 +276,7 @@ export default function AdminCoherenceClosureTruthPanel() {
                 key === "rawEmptyStates"
                   ? "Raw empty-state strings"
                   : key === "unwrappedTables"
-                  ? "Unwrapped <table> elements"
+                  ? "Unwrapped table elements"
                   : key === "narrowWidthBriefing"
                   ? "Boardroom briefing narrow-width"
                   : key === "hardcodedColorSemantics"
