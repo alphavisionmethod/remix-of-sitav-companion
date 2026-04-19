@@ -10,12 +10,13 @@
 // by the validators on each release-readiness run.
 // Mounted as tab #10 on /admin/ai-runtime.
 // ═══════════════════════════════════════════════════════════════
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Layers, ShieldCheck, MapPin, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { TruthPanelActions } from "./TruthPanelActions";
 
 interface VerificationJson {
   verdict?: string;
@@ -69,32 +70,32 @@ async function loadJson<T>(path: string): Promise<T | null> {
 
 export default function ArchitectureHardeningTruthPanel() {
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [verification, setVerification] = useState<VerificationJson | null>(null);
   const [portability, setPortability] = useState<PortabilityJson | null>(null);
   const [truth, setTruth] = useState<TruthJson | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const [v, p, t] = await Promise.all([
-        loadJson<VerificationJson>(
-          "/generated/architecture-hardening/architecture-hardening-verification.json",
-        ),
-        loadJson<PortabilityJson>(
-          "/generated/architecture-hardening/portability-hardening-status.json",
-        ),
-        loadJson<TruthJson>("/generated/architecture-hardening/truth-hardening-status.json"),
-      ]);
-      if (cancelled) return;
-      setVerification(v);
-      setPortability(p);
-      setTruth(t);
-      setLoading(false);
-    })();
-    return () => {
-      cancelled = true;
-    };
+  const load = useCallback(async () => {
+    setRefreshing(true);
+    const [v, p, t] = await Promise.all([
+      loadJson<VerificationJson>(
+        "/generated/architecture-hardening/architecture-hardening-verification.json",
+      ),
+      loadJson<PortabilityJson>(
+        "/generated/architecture-hardening/portability-hardening-status.json",
+      ),
+      loadJson<TruthJson>("/generated/architecture-hardening/truth-hardening-status.json"),
+    ]);
+    setVerification(v);
+    setPortability(p);
+    setTruth(t);
+    setLoading(false);
+    setRefreshing(false);
   }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   const verdictBadge = verification?.ok ? (
     <Badge variant="outline" className="border-primary text-primary">
@@ -111,16 +112,23 @@ export default function ArchitectureHardeningTruthPanel() {
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Layers className="h-4 w-4 text-primary" />
-            Architecture Hardening Truth
-            {!loading && verdictBadge}
-          </CardTitle>
-          <p className="text-xs text-muted-foreground">
-            Live closure status: 22 deliverables, 6 BLOCK validators, portability boundaries,
-            truth-source map. Read-only — refreshed each release-readiness run.
-          </p>
+        <CardHeader className="flex flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Layers className="h-4 w-4 text-primary" />
+              Architecture Hardening Truth
+              {!loading && verdictBadge}
+            </CardTitle>
+            <p className="text-xs text-muted-foreground mt-1">
+              Live closure status: 22 deliverables, 6 BLOCK validators, portability boundaries,
+              truth-source map. Read-only — refreshed each release-readiness run.
+            </p>
+          </div>
+          <TruthPanelActions
+            onRefresh={load}
+            refreshing={refreshing}
+            sourcePath="/generated/architecture-hardening/architecture-hardening-verification.json"
+          />
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="status">
