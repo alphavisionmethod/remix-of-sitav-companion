@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-19T16:48:29.554Z",
+  "gate": "onboarding-simulated-persona-disclosure",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 2,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "canonical-runtime",
+      "message": "Missing canonical onboarding daemon: src/lib/services/onboarding-daemon.ts"
+    },
+    {
+      "severity": "warning",
+      "area": "user-flagship-deferred",
+      "message": "User onboarding screens (src/pages/onboarding/**) not present — DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md."
+    },
+    {
+      "severity": "warning",
+      "area": "simulated-persona-banner",
+      "message": "Centralized SimulatedPersonaBanner component not enforced — DEFERRED. Will be required when user surface is built."
+    }
+  ],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md",
+  "canonicalRuntime": {
+    "daemon": "src/lib/services/onboarding-daemon.ts",
+    "hook": "src/hooks/useOnboardingDaemon.ts"
+  },
+  "requiredForGreen": "user-flagship-pass: build src/pages/onboarding/** with SimulatedPersonaBanner"
+}
