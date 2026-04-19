@@ -1,6 +1,22 @@
-# SITA OS — Mobile Deployment Manifest
-# Canonical stack: Capacitor over Lovable SPA (NOT Flutter — Flutter was abandoned).
-# Posture: secondary supported distribution surface, honestly deferred on external blockers.
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — ARCHIVED / FUTURE_VISION_ONLY · NOT_LAUNCH_SURFACE
+# ═══════════════════════════════════════════════════════════════
+#
+# This file was the active mobile-native deployment manifest. As of
+# 2026-04-19 the mobile-native channel is OUT OF SCOPE for the current
+# deployment track.
+#
+#   Status:         ARCHIVED
+#   Classification: FUTURE_VISION_ONLY · NOT_LAUNCH_SURFACE
+#   Canonical doc:  docs/MOBILE_HONESTY.md
+#   Reactivation:   generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md
+#
+# DO NOT consume from any active workflow, build script, or release
+# aggregator. Drift protection: scripts/validation/
+# check-mobile-manifest-archive-classification.ts FAILS CI if
+# `infra/deploy/mobile.yaml` reappears at the active path.
+# ═══════════════════════════════════════════════════════════════
+# Original spec preserved verbatim below for traceability.
 apiVersion: deploy/v1
 kind: MobileDeployment
 metadata:
