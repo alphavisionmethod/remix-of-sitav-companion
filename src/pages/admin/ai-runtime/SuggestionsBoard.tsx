@@ -174,25 +174,43 @@ export default function SuggestionsBoard() {
           <p className="text-sm text-muted-foreground mt-1">
             Phase 3 — evidence-backed proposals from internal AI workforce signals (drift, repeated failure, cost anomaly, dependency, policy drift).
           </p>
+          <div className="mt-2">
+            <AITruthDisclosure
+              mode={items.length > 0 ? "live-gateway" : "structural"}
+              verifiedAt={items[0]?.updated_at ?? null}
+              label={
+                items.length > 0
+                  ? formatTrustLabel("ai", "live", { verifiedAt: items[0]?.updated_at })
+                  : undefined
+              }
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={cn("h-4 w-4 mr-2", loading && "animate-spin")} />
-            Refresh
-          </Button>
-          <Button size="sm" onClick={runGenerator} disabled={generating}>
-            <Sparkles className={cn("h-4 w-4 mr-2", generating && "animate-pulse")} />
-            Run generator now
-          </Button>
-        </div>
+        <OperatorActionPanel
+          ariaLabel="Suggestions actions"
+          primary={{
+            label: generating ? "Generating…" : "Run generator now",
+            icon: Sparkles,
+            onClick: runGenerator,
+            disabled: generating,
+          }}
+          next={[
+            {
+              label: loading ? "Refreshing…" : "Refresh",
+              icon: RefreshCw,
+              onClick: load,
+              disabled: loading,
+            },
+          ]}
+        />
       </div>
 
       {/* Totals */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card><CardContent className="p-3"><div className="text-xs text-muted-foreground">Open</div><div className="text-2xl font-semibold mt-0.5">{totals.open}</div></CardContent></Card>
-        <Card className="bg-red-500/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Urgent</div><div className="text-2xl font-semibold mt-0.5 text-red-400">{totals.urgent}</div></CardContent></Card>
-        <Card className="bg-green-500/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Accepted</div><div className="text-2xl font-semibold mt-0.5 text-green-400">{totals.accepted}</div></CardContent></Card>
-        <Card className="bg-emerald-500/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Done</div><div className="text-2xl font-semibold mt-0.5 text-emerald-400">{totals.done}</div></CardContent></Card>
+        <Card className="bg-destructive/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Urgent</div><div className="text-2xl font-semibold mt-0.5 text-destructive">{totals.urgent}</div></CardContent></Card>
+        <Card className="bg-success/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Accepted</div><div className="text-2xl font-semibold mt-0.5 text-success">{totals.accepted}</div></CardContent></Card>
+        <Card className="bg-success/5"><CardContent className="p-3"><div className="text-xs text-muted-foreground">Done</div><div className="text-2xl font-semibold mt-0.5 text-success">{totals.done}</div></CardContent></Card>
       </div>
 
       {/* Filters */}
@@ -218,7 +236,7 @@ export default function SuggestionsBoard() {
             <option value="all">All councils</option>
             {councils.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <Badge variant="outline" className="ml-auto">{filtered.length} shown</Badge>
+          <StatusBadge tone="muted" size="xs" className="ml-auto">{filtered.length} shown</StatusBadge>
         </CardContent>
       </Card>
 
@@ -236,18 +254,18 @@ export default function SuggestionsBoard() {
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-sm leading-snug">{s.title}</CardTitle>
-                  <Badge variant="outline" className={cn("text-[10px] shrink-0", STATUS_TONE[s.status])}>{s.status}</Badge>
+                  <StatusBadge tone={suggestionStatusTone(s.status)} size="xs">{s.status}</StatusBadge>
                 </div>
               </CardHeader>
               <CardContent className="space-y-2">
                 <p className="text-xs text-muted-foreground line-clamp-2">{s.summary}</p>
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" className={cn("text-[10px]", TYPE_TONE[s.proposed_change_type])}>{s.proposed_change_type}</Badge>
-                  <Badge variant="outline" className={cn("text-[10px]", PRIORITY_TONE[s.priority])}>{s.priority}</Badge>
-                  <Badge variant="outline" className="text-[10px] font-mono">{s.source_council}</Badge>
-                  <Badge variant="outline" className="text-[10px] font-mono">{s.source_agent_id}</Badge>
-                  <Badge variant="outline" className="text-[10px]">effort: {s.estimated_effort}</Badge>
-                  <Badge variant="outline" className="text-[10px]">value: {s.expected_value}</Badge>
+                  <StatusBadge tone={outcomeTone(s.proposed_change_type)} size="xs">{s.proposed_change_type}</StatusBadge>
+                  <StatusBadge tone={priorityTone(s.priority)} size="xs">{s.priority}</StatusBadge>
+                  <StatusBadge tone="neutral" size="xs">{s.source_council}</StatusBadge>
+                  <StatusBadge tone="neutral" size="xs">{s.source_agent_id}</StatusBadge>
+                  <StatusBadge tone="muted" size="xs">effort: {s.estimated_effort}</StatusBadge>
+                  <StatusBadge tone="muted" size="xs">value: {s.expected_value}</StatusBadge>
                 </div>
                 <div className="text-[10px] text-muted-foreground font-mono">
                   {s.source_signal_type} · {s.source_signal_ref}
@@ -271,11 +289,11 @@ export default function SuggestionsBoard() {
               </SheetHeader>
               <div className="mt-4 space-y-4 text-sm">
                 <div className="flex flex-wrap gap-1.5">
-                  <Badge variant="outline" className={cn("text-[11px]", STATUS_TONE[selected.status])}>{selected.status}</Badge>
-                  <Badge variant="outline" className={cn("text-[11px]", TYPE_TONE[selected.proposed_change_type])}>{selected.proposed_change_type}</Badge>
-                  <Badge variant="outline" className={cn("text-[11px]", PRIORITY_TONE[selected.priority])}>{selected.priority}</Badge>
-                  <Badge variant="outline" className="text-[11px]">effort: {selected.estimated_effort}</Badge>
-                  <Badge variant="outline" className="text-[11px]">value: {selected.expected_value}</Badge>
+                  <StatusBadge tone={suggestionStatusTone(selected.status)} size="sm">{selected.status}</StatusBadge>
+                  <StatusBadge tone={outcomeTone(selected.proposed_change_type)} size="sm">{selected.proposed_change_type}</StatusBadge>
+                  <StatusBadge tone={priorityTone(selected.priority)} size="sm">{selected.priority}</StatusBadge>
+                  <StatusBadge tone="muted" size="sm">effort: {selected.estimated_effort}</StatusBadge>
+                  <StatusBadge tone="muted" size="sm">value: {selected.expected_value}</StatusBadge>
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">Summary</div>

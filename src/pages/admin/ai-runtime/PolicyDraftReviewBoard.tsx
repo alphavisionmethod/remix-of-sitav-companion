@@ -121,7 +121,7 @@ export default function PolicyDraftReviewBoard() {
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <ShieldAlert className="h-6 w-6 text-primary" />
@@ -130,11 +130,25 @@ export default function PolicyDraftReviewBoard() {
           <p className="text-sm text-muted-foreground">
             AI-drafted security proposals (RLS, secret rotation). Never auto-applied — admin approval required.
           </p>
+          <div className="mt-2">
+            <AITruthDisclosure
+              mode={drafts.length > 0 ? "structural" : "structural"}
+              label={formatTrustLabel("ai", "structural")}
+            />
+          </div>
         </div>
-        <Button onClick={runScan} disabled={scanning} className="gap-2">
-          {scanning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-          Run Architect Scan
-        </Button>
+        <OperatorActionPanel
+          ariaLabel="Policy Draft actions"
+          primary={{
+            label: scanning ? "Scanning…" : "Run Architect Scan",
+            icon: scanning ? RefreshCw : Play,
+            onClick: runScan,
+            disabled: scanning,
+          }}
+          next={[
+            { label: "Refresh", icon: RefreshCw, onClick: () => void load(), disabled: loading },
+          ]}
+        />
       </div>
 
       {health && (
@@ -206,8 +220,9 @@ export default function PolicyDraftReviewBoard() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">{draft.draft_kind.replace(/_/g, " ")}</Badge>
-                      <Badge variant={RISK_BADGE[draft.risk_assessment]}>{draft.risk_assessment}</Badge>
+                      <StatusBadge tone="muted" size="xs">{draft.draft_kind.replace(/_/g, " ")}</StatusBadge>
+                      <StatusBadge tone={riskTone(draft.risk_assessment)} size="xs">{draft.risk_assessment}</StatusBadge>
+                      <StatusBadge tone={policyDraftStatusTone(draft.status)} size="xs">{draft.status.replace(/_/g, " ")}</StatusBadge>
                     </div>
                   </div>
                 </CardHeader>
