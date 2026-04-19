@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T20:53:37.513Z",
+  "gate": "dr-drill-evidence",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "validKinds": [
+    "region-failover",
+    "db-restore",
+    "edge-function-failover",
+    "storage-failover",
+    "full-stack"
+  ],
+  "issues": []
+}
