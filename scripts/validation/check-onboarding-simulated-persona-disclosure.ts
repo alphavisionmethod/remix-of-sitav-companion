@@ -17,7 +17,7 @@ import { emitGateReport, type GateIssue } from "./_lib/emit-gate-report";
 const GATE = "onboarding-simulated-persona-disclosure";
 const issues: GateIssue[] = [];
 
-const DAEMON = "src/lib/services/onboarding-daemon.ts";
+const DAEMON = "src/lib/services/onboarding-daemon/index.ts";
 const HOOK = "src/hooks/useOnboardingDaemon.ts";
 const DEFERRAL_DOC = "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md";
 

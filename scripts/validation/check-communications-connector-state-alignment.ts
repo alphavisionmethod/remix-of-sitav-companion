@@ -16,7 +16,7 @@ import { emitGateReport, type GateIssue } from "./_lib/emit-gate-report";
 const GATE = "communications-connector-state-alignment";
 const issues: GateIssue[] = [];
 const DEFERRAL_DOC = "generated/flagship-surface-closure/COMMUNICATIONS_INBOX_CLOSURE_SPEC.md";
-const CANONICAL_CHIP = "src/components/connectors/ConnectorStateBadge.tsx";
+const CANONICAL_CHIP = "src/components/primitives/status/ConnectorStateBadge.tsx";
 
 // In-scope (admin AI): canonical chip must exist; integrations hub must be wired.
 if (!existsSync(CANONICAL_CHIP)) {

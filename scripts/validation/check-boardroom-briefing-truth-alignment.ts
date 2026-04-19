@@ -17,9 +17,11 @@ const DEFERRAL_DOC = "generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOS
 
 // In-scope (admin AI): canonical layer7 status artifacts must be present.
 const REQUIRED_BACKBONE = [
-  "generated/boardroom-layer7-state-coverage-report.json",
-  "generated/boardroom-outcome-tracking-report.json",
-  "generated/boardroom-followthrough-linkage-report.json",
+  "generated/boardroom-layer7-closure-report.json",
+  "generated/boardroom-layer7-closure/boardroom-layer7-verification.json",
+  "generated/boardroom-layer7-closure/state-coverage.json",
+  "generated/boardroom-layer7-closure/outcome-coverage.json",
+  "generated/boardroom-layer7-closure/linkage.json",
 ];
 let backbonePresent = 0;
 for (const f of REQUIRED_BACKBONE) {
