@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Scale, FileBadge, RefreshCw, Gavel } from "lucide-react";
 import { toast } from "sonner";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface Control { id: string; framework: string; control_id: string; title: string; status: string; collection_cadence: string; }
 interface Evidence { id: string; control_id: string; collected_at: string; pass: boolean; failure_reason: string | null; }
@@ -71,7 +72,13 @@ export default function ComplianceAttestationBoard() {
           <Card>
             <CardHeader><CardTitle className="text-base">Active controls ({controls.length})</CardTitle></CardHeader>
             <CardContent>
-              {controls.length === 0 ? <p className="text-sm text-muted-foreground">No controls yet.</p> : (
+              {controls.length === 0 ? (
+                <EmptyState
+                  icon={<Scale className="h-5 w-5" />}
+                  title="No compliance controls registered"
+                  description="Controls populate as soon as a framework (SOC 2, ISO 27001, HIPAA…) is enabled in the compliance configuration. Each control declares its collection cadence and evidence type."
+                />
+              ) : (
                 <div className="space-y-2 max-h-72 overflow-y-auto">
                   {controls.map(c => (
                     <div key={c.id} className="text-sm border-b pb-1">
@@ -87,7 +94,13 @@ export default function ComplianceAttestationBoard() {
           <Card>
             <CardHeader><CardTitle className="text-base flex items-center gap-2"><Gavel className="h-4 w-4" /> Policy-as-code rules</CardTitle></CardHeader>
             <CardContent>
-              {rules.length === 0 ? <p className="text-sm text-muted-foreground">No policy rules registered.</p> : (
+              {rules.length === 0 ? (
+                <EmptyState
+                  icon={<Gavel className="h-5 w-5" />}
+                  title="No policy-as-code rules registered"
+                  description="Policy rules govern auto-enforcement against the active control set. Add a rule to enforce, monitor, or block at runtime."
+                />
+              ) : (
                 <div className="space-y-2 max-h-72 overflow-y-auto">
                   {rules.map(r => (
                     <div key={r.id} className="flex items-center justify-between text-sm border-b pb-1">
@@ -107,7 +120,13 @@ export default function ComplianceAttestationBoard() {
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><FileBadge className="h-4 w-4" /> Sealed attestation packets</CardTitle></CardHeader>
           <CardContent>
-            {packets.length === 0 ? <p className="text-sm text-muted-foreground">No packets sealed yet.</p> : (
+            {packets.length === 0 ? (
+              <EmptyState
+                icon={<FileBadge className="h-5 w-5" />}
+                title="No attestation packets sealed yet"
+                description="Packets are signed bundles of evidence at a point in time. They are produced on cadence per framework and immutable once sealed."
+              />
+            ) : (
               <div className="space-y-2">
                 {packets.map(p => (
                   <div key={p.id} className="flex items-center justify-between text-sm border-b pb-2">
@@ -128,7 +147,13 @@ export default function ComplianceAttestationBoard() {
         <Card>
           <CardHeader><CardTitle className="text-base">Recent evidence ({evidence.length})</CardTitle></CardHeader>
           <CardContent>
-            {evidence.length === 0 ? <p className="text-sm text-muted-foreground">No evidence collected yet.</p> : (
+            {evidence.length === 0 ? (
+              <EmptyState
+                icon={<FileBadge className="h-5 w-5" />}
+                title="No evidence collected in the current window"
+                description="Evidence is gathered automatically by allow-listed collectors. The most recent collection per control is shown here once any data has been recorded."
+              />
+            ) : (
               <div className="space-y-1 max-h-60 overflow-y-auto">
                 {evidence.map(e => (
                   <div key={e.id} className="flex items-center justify-between text-xs border-b py-1">
