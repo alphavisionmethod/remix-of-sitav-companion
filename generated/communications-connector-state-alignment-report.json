@@ -1,15 +1,10 @@
 {
-  "generatedAt": "2026-04-19T16:48:37.851Z",
+  "generatedAt": "2026-04-19T16:51:03.058Z",
   "gate": "communications-connector-state-alignment",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 2,
   "issues": [
-    {
-      "severity": "error",
-      "area": "canonical-chip",
-      "message": "Missing canonical ConnectorStateBadge: src/components/connectors/ConnectorStateBadge.tsx"
-    },
     {
       "severity": "warning",
       "area": "user-flagship-deferred",
@@ -18,11 +13,11 @@
     {
       "severity": "warning",
       "area": "ambiguous-connected-states",
-      "message": "Inbox-level live/degraded/reauth/failing/manual chip enforcement deferred. Canonical chip src/components/connectors/ConnectorStateBadge.tsx IS available for adoption."
+      "message": "Inbox-level live/degraded/reauth/failing/manual chip enforcement deferred. Canonical chip src/components/primitives/status/ConnectorStateBadge.tsx IS available for adoption."
     }
   ],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/flagship-surface-closure/COMMUNICATIONS_INBOX_CLOSURE_SPEC.md",
-  "canonicalChip": "src/components/connectors/ConnectorStateBadge.tsx",
+  "canonicalChip": "src/components/primitives/status/ConnectorStateBadge.tsx",
   "requiredForGreen": "user-flagship-pass: build /communications/inbox using ConnectorStateBadge + connector_provider_health"
 }

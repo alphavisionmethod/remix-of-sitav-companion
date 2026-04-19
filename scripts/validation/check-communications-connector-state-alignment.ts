@@ -16,7 +16,12 @@ import { emitGateReport, type GateIssue } from "./_lib/emit-gate-report";
 const GATE = "communications-connector-state-alignment";
 const issues: GateIssue[] = [];
 const DEFERRAL_DOC = "generated/flagship-surface-closure/COMMUNICATIONS_INBOX_CLOSURE_SPEC.md";
-const CANONICAL_CHIP = "src/components/connectors/ConnectorStateBadge.tsx";
+// Canonical ConnectorStateBadge lives under primitives/status (shared, plane-safe
+// chip used by both admin integrations + future user inbox). Accept either the
+// primitives location or the legacy connectors location.
+const CHIP_PRIMITIVES = "src/components/primitives/status/ConnectorStateBadge.tsx";
+const CHIP_LEGACY = "src/components/connectors/ConnectorStateBadge.tsx";
+const CANONICAL_CHIP = existsSync(CHIP_PRIMITIVES) ? CHIP_PRIMITIVES : CHIP_LEGACY;
 
 // In-scope (admin AI): canonical chip must exist; integrations hub must be wired.
 if (!existsSync(CANONICAL_CHIP)) {

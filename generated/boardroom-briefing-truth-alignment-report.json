@@ -1,15 +1,10 @@
 {
-  "generatedAt": "2026-04-19T16:48:32.694Z",
+  "generatedAt": "2026-04-19T16:50:58.496Z",
   "gate": "boardroom-briefing-truth-alignment",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 2,
   "issues": [
-    {
-      "severity": "error",
-      "area": "canonical-backbone",
-      "message": "No canonical boardroom backbone status artifact found — admin AI scope is broken. Expected at least one of: generated/boardroom-layer7-state-coverage-report.json, generated/boardroom-outcome-tracking-report.json, generated/boardroom-followthrough-linkage-report.json"
-    },
     {
       "severity": "warning",
       "area": "user-flagship-deferred",
@@ -23,7 +18,7 @@
   ],
   "classification": "honest-warn-deferred",
   "deferralDoc": "generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOSURE_SPEC.md",
-  "backbonePresent": 0,
-  "backboneExpected": 3,
+  "backbonePresent": 1,
+  "backboneExpected": 4,
   "requiredForGreen": "user-flagship-pass: build /boardroom/briefing consuming canonical Layer 7 data"
 }

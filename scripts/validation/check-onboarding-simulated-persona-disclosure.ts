@@ -17,7 +17,11 @@ import { emitGateReport, type GateIssue } from "./_lib/emit-gate-report";
 const GATE = "onboarding-simulated-persona-disclosure";
 const issues: GateIssue[] = [];
 
-const DAEMON = "src/lib/services/onboarding-daemon.ts";
+// Canonical onboarding daemon module (index.ts inside the directory) is the
+// source of truth — accept either a single-file or directory module layout.
+const DAEMON_FILE = "src/lib/services/onboarding-daemon.ts";
+const DAEMON_DIR = "src/lib/services/onboarding-daemon/index.ts";
+const DAEMON = existsSync(DAEMON_FILE) ? DAEMON_FILE : DAEMON_DIR;
 const HOOK = "src/hooks/useOnboardingDaemon.ts";
 const DEFERRAL_DOC = "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md";
 
