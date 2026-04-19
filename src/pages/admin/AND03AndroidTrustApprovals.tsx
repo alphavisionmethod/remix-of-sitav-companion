@@ -58,6 +58,7 @@ const AND03AndroidTrustApprovals = () => (
         <Card>
           <CardHeader><CardTitle className="text-sm">Risk-Based Escalation Matrix</CardTitle></CardHeader>
           <CardContent>
+            <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Risk</th><th className="text-left p-2">Action</th><th className="p-2">Biometric</th><th className="p-2">Escalates</th></tr></thead>
               <tbody>
@@ -71,6 +72,7 @@ const AND03AndroidTrustApprovals = () => (
                 ))}
               </tbody>
             </table>
+            </div>
           </CardContent>
         </Card>
         <Card className="mt-4">
@@ -92,6 +94,7 @@ const AND03AndroidTrustApprovals = () => (
         <Card>
           <CardHeader><CardTitle className="text-sm">Verification Event Matrix</CardTitle></CardHeader>
           <CardContent>
+            <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Event</th><th className="text-left p-2">Method</th><th className="p-2">Frequency</th></tr></thead>
               <tbody>
@@ -104,6 +107,7 @@ const AND03AndroidTrustApprovals = () => (
                 ))}
               </tbody>
             </table>
+            </div>
           </CardContent>
         </Card>
       </TabsContent>

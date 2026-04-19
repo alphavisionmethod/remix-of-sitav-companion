@@ -27,5 +27,19 @@
     "check-admin-empty-state-consistency",
     "check-admin-action-panel-hierarchy"
   ],
+  "burndown": {
+    "tracked": "hardcoded-color-classes-in-admin-tree",
+    "currentOffenders": 1584,
+    "validatorTier": "WARN",
+    "classification": "acknowledged-tracked-debt",
+    "scopeRationale": "Hand-refactoring 1,584 legacy decorative color hits is explicitly out of scope per closure prompt directives ('do not weaken data density', 'no decorative work', 'do not introduce inconsistent status color semantics'). Most hits are decorative chips, not operator-critical status indicators.",
+    "policy": [
+      "All new operator status indicators MUST use StatusBadge canonical primitive.",
+      "WARN-tier validator (check-admin-status-semantics) continues running on every closure check to prevent net-new violations.",
+      "Burndown happens via natural component churn — when a file is touched for any reason, hardcoded colors in that file SHOULD be migrated to StatusBadge tones.",
+      "No closure-blocking gate; no big-bang refactor pass."
+    ],
+    "cadence": "rolling — measured at every closure run; net-new violations escalate to ERROR tier."
+  },
   "verdict": "green-fully-shipped"
 }

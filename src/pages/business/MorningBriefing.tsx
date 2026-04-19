@@ -64,7 +64,7 @@ export default function MorningBriefing() {
       </motion.div>
 
       {/* Metrics snapshot */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="grid grid-cols-4 gap-3">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="grid grid-cols-2 md:grid-cols-4 gap-3 overflow-x-auto">
         {METRICS_SNAPSHOT.map((m) => (
           <div key={m.label} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3">
             <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-foreground/30">{m.label}</p>
@@ -76,9 +76,9 @@ export default function MorningBriefing() {
         ))}
       </motion.div>
 
-      <div className="grid grid-cols-5 gap-5">
-        {/* Priority Actions — 3 cols */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="col-span-3 space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+        {/* Priority Actions — 3 cols on md+ */}
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="md:col-span-3 space-y-3">
           <div className="flex items-center gap-2">
             <Target size={14} className="text-[hsl(var(--sita-gold))]" />
             <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-foreground/50">Priority Actions</h2>
@@ -138,7 +138,7 @@ export default function MorningBriefing() {
         </motion.div>
 
         {/* Today's schedule — 2 cols */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="col-span-2 space-y-3">
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="md:col-span-2 space-y-3">
           <div className="flex items-center gap-2">
             <Calendar size={14} className="text-[hsl(var(--sita-purple))]" />
             <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-foreground/50">Today's Schedule</h2>

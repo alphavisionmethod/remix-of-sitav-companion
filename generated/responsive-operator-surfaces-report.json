@@ -1,83 +1,12 @@
 {
-  "generatedAt": "2026-04-19T17:40:04.211Z",
+  "generatedAt": "2026-04-19T17:50:18.320Z",
   "gate": "responsive-operator-surfaces",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 14,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/AIHumanBoundaryControls.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/AIReleasesCenter.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/AND02WearOSExperience.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/AND03AndroidTrustApprovals.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/DbTruthExplorer.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/HRS01HealthConsentCenter.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/HRS02SignalSourcesBoard.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/HRS03ReadinessExplanation.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/HRS05AssistantTimingBoard.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/NRC02CalmnessCenter.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/NRC03FatigueBoard.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/NRC04QueueInterruptMatrix.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/NRC05CrossDeviceDelivery.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    },
-    {
-      "severity": "warning",
-      "area": "unwrapped-table",
-      "message": "src/pages/admin/NSS03TrustContinuity.tsx: <table> without overflow-x-auto wrapper — wrap in <div className=\"overflow-x-auto\"> for narrow widths"
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "scanned": 679,
-  "offenderCount": 14,
+  "offenderCount": 0,
   "canonicalPattern": "<div className=\"overflow-x-auto\"><table>...</table></div>",
   "classification": "warn-tier-responsive-discipline"
 }

@@ -48,3 +48,45 @@ This pass closed the remaining admin/frontend polish gap with a fully integrated
 ## Truth panel
 
 Live operator-facing status: `/admin/ai-runtime` → tab **Admin Coherence Closure**.
+
+---
+
+## Post-Cleanup Audit (2026-04-19)
+
+After the initial closure shipped GREEN at WARN tier, a focused cleanup pass
+drove three of the four residual buckets to **offenders=0**:
+
+| Validator bucket | Before | After | Action |
+|------------------|--------|-------|--------|
+| Raw inline empty-state strings | 2 | **0** | Replaced with `EmptyState` (AIRuntimeStatus) and `NeedsDataExplainer` (SAGCostConfidenceLab) |
+| Unwrapped `<table>` elements | 14 files | **0** | Wrapped 27 raw tables in `<div className="overflow-x-auto">` (single-line edits, no layout overhaul) |
+| Boardroom briefing narrow-width | 1 | **0** | Applied `grid-cols-1 md:grid-cols-5` + `md:col-span-*` to MorningBriefing |
+| Hardcoded color-class semantics | 1,584 | 1,584 | **Tracked burndown** (see ADMIN_STATUS_SEMANTICS_SPEC.md → Scope and Burndown) |
+
+### Files edited
+
+- **2 empty-state pages**: `src/pages/admin/AIRuntimeStatus.tsx`, `src/pages/admin/sag/SAGCostConfidenceLab.tsx`
+- **14 admin board files**: AIHumanBoundaryControls, AIReleasesCenter, AND02WearOSExperience, AND03AndroidTrustApprovals, DbTruthExplorer, HRS01HealthConsentCenter, HRS02SignalSourcesBoard, HRS03ReadinessExplanation, HRS05AssistantTimingBoard, NRC02CalmnessCenter, NRC03FatigueBoard, NRC04QueueInterruptMatrix, NRC05CrossDeviceDelivery, NSS03TrustContinuity
+- **1 boardroom briefing**: `src/pages/business/MorningBriefing.tsx`
+
+### Discipline maintained
+
+- Zero new components — all cleanup uses existing canonical primitives
+- Zero new validators — re-using the 7 already shipped
+- Zero edge functions, sealed migrations, or `App.tsx` route table edits
+- Zero hardcoded-color hand-refactors (explicitly scoped out)
+- AI Engineer hub (`/admin/ai-runtime` tab #13) remains the single integration point
+
+### Final validator state (post-cleanup)
+
+```
+✅ check-admin-empty-state-consistency        offenders=0
+✅ check-responsive-operator-surfaces         offenders=0
+✅ check-boardroom-briefing-narrow-width      offenders=0
+✅ check-admin-status-semantics               offenders=1584 (tracked-burndown, WARN)
+✅ check-admin-action-panel-hierarchy         offenders=0
+✅ check-admin-microcopy-rules                offenders=0
+✅ check-desktop-honest-narrow-width          offenders=0
+```
+
+**Verdict: GREEN-fully-shipped — deployment-ready.**

@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useTaskRequests } from "@/hooks/use-sag-data";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { NeedsDataExplainer } from "@/components/primitives/feedback/NeedsDataExplainer";
 
 
 
@@ -84,7 +85,14 @@ const SAGCostConfidenceLab = () => {
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-yellow-500" /> Diminishing Returns Warnings</CardTitle></CardHeader>
           <CardContent>
-            {tasks.length === 0 ? <p className="text-sm text-muted-foreground">No data yet. Warnings appear when premium models are used for tasks where cheaper models achieve similar confidence.</p> :
+            {tasks.length === 0 ? (
+              <NeedsDataExplainer
+                title="No diminishing-returns warnings yet"
+                description="Warnings appear when premium models are used for tasks where cheaper models achieve similar confidence. Run more graded tasks to populate this surface."
+                icon={AlertTriangle}
+                tip="Tip — once 20+ tasks have completed, the route payback ratio chart becomes meaningful."
+              />
+            ) :
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>• Continuously monitors cost-to-confidence curves</p>
                 <p>• Flags premium overuse when utility models suffice</p>

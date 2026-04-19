@@ -36,6 +36,7 @@ const NRC04QueueInterruptMatrix = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Delivery Strategy Matrix</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Type</th><th className="text-left p-2">Categories</th><th className="p-2">Urgency</th><th className="p-2">Volume</th><th className="text-left p-2">User Action</th><th className="p-2">Retention</th></tr></thead>
                 <tbody>
@@ -51,6 +52,7 @@ const NRC04QueueInterruptMatrix = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -59,6 +61,7 @@ const NRC04QueueInterruptMatrix = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Quick Action Registry</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Context</th><th className="p-2">Risk</th><th className="text-left p-2">Surfaces</th></tr></thead>
                 <tbody>
@@ -72,6 +75,7 @@ const NRC04QueueInterruptMatrix = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -81,6 +85,7 @@ const NRC04QueueInterruptMatrix = () => {
             <CardHeader><CardTitle className="text-sm">Category → Delivery Routing</CardTitle></CardHeader>
             <CardContent>
               {isLoading ? <p className="text-xs text-muted-foreground">Loading…</p> : (
+                <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Category</th><th className="text-left p-2">Default Delivery</th><th className="text-left p-2">Escalation</th><th className="p-2">Priority</th></tr></thead>
                   <tbody>
@@ -94,6 +99,7 @@ const NRC04QueueInterruptMatrix = () => {
                     ))}
                   </tbody>
                 </table>
+                </div>
               )}
             </CardContent>
           </Card>

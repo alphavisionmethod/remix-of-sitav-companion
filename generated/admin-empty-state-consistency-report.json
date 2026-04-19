@@ -1,23 +1,12 @@
 {
-  "generatedAt": "2026-04-19T17:39:59.225Z",
+  "generatedAt": "2026-04-19T17:49:59.774Z",
   "gate": "admin-empty-state-consistency",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 2,
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "raw-empty-state",
-      "message": "src/pages/admin/AIRuntimeStatus.tsx: raw inline empty-state text found (\"<p className=\"text-sm text-muted-foreground py-4 text-center\">No data — run heal…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-empty-state",
-      "message": "src/pages/admin/sag/SAGCostConfidenceLab.tsx: raw inline empty-state text found (\"<p className=\"text-sm text-muted-foreground\">No data yet. Warnings appear when p…\") — adopt PremiumEmptyState / EmptyState / BoardSection"
-    }
-  ],
+  "warningCount": 0,
+  "issues": [],
   "scanned": 678,
-  "offenders": 2,
+  "offenders": 0,
   "canonicalPrimitives": [
     "PremiumEmptyState",
     "EmptyState",

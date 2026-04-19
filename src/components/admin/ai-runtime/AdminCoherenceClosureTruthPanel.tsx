@@ -27,6 +27,14 @@ import {
 } from "lucide-react";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 
+interface BucketState {
+  before?: number;
+  after?: number;
+  status?: string;
+  wrapped?: number;
+  rationale?: string;
+}
+
 interface VerificationJson {
   generatedAt?: string;
   scope?: string;
@@ -44,6 +52,11 @@ interface VerificationJson {
   newComponentFamilies?: number;
   duplicates?: number;
   scopeDiscipline?: Record<string, unknown>;
+  postCleanupAudit?: {
+    ranAt?: string;
+    buckets?: Record<string, BucketState>;
+    validatorResults?: Record<string, { exitCode: number; offenders: number; tier?: string; classification?: string }>;
+  };
 }
 
 const VERIFICATION_PATH =
@@ -244,6 +257,51 @@ export default function AdminCoherenceClosureTruthPanel() {
             unwrapped <code className="bg-muted px-1 rounded">&lt;table&gt;</code> regression-guarded
             by <code className="bg-muted px-1 rounded">check-responsive-operator-surfaces</code>.
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xs flex items-center gap-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-muted-foreground" />
+            Post-cleanup audit
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-xs">
+          {data?.postCleanupAudit?.buckets ? (
+            Object.entries(data.postCleanupAudit.buckets).map(([key, b]) => {
+              const cleared = b.status === "cleared";
+              const tone = cleared ? "success" : "warning";
+              const label =
+                key === "rawEmptyStates"
+                  ? "Raw empty-state strings"
+                  : key === "unwrappedTables"
+                  ? "Unwrapped table elements"
+                  : key === "narrowWidthBriefing"
+                  ? "Boardroom briefing narrow-width"
+                  : key === "hardcodedColorSemantics"
+                  ? "Hardcoded color classes"
+                  : key;
+              return (
+                <div key={key} className="flex items-center justify-between gap-2">
+                  <span className="text-foreground/80 truncate">{label}</span>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      {b.before ?? 0} → {b.after ?? 0}
+                      {b.wrapped ? ` (${b.wrapped} wrapped)` : ""}
+                    </span>
+                    <StatusBadge tone={tone} size="xs">
+                      {cleared ? "cleared" : "tracked"}
+                    </StatusBadge>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-muted-foreground text-[11px]">
+              Cleanup audit data loads from the verification artifact.
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

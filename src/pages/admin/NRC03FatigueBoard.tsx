@@ -37,6 +37,7 @@ const NRC03FatigueBoard = () => {
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Activity className="h-4 w-4" />Fatigue Signal Weights</CardTitle></CardHeader>
             <CardContent>
               {isLoading ? <p className="text-xs text-muted-foreground">Loading…</p> : (
+                <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Signal</th><th className="p-2">Threshold</th><th className="p-2">Weight</th><th className="text-left p-2">Source</th></tr></thead>
                   <tbody>
@@ -50,6 +51,7 @@ const NRC03FatigueBoard = () => {
                     ))}
                   </tbody>
                 </table>
+                </div>
               )}
               <p className="text-[10px] text-muted-foreground mt-3">Composite fatigue score = weighted sum of all signals (0.0 = fresh, 1.0 = overloaded)</p>
             </CardContent>
@@ -60,6 +62,7 @@ const NRC03FatigueBoard = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><BellOff className="h-4 w-4" />Adaptive Suppression Actions</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Trigger</th><th className="text-left p-2">Action</th><th className="p-2">Duration</th><th className="text-left p-2">Recovery</th></tr></thead>
                 <tbody>
@@ -73,6 +76,7 @@ const NRC03FatigueBoard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -81,6 +85,7 @@ const NRC03FatigueBoard = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4" />Overload Triggers</CardTitle></CardHeader>
             <CardContent>
+              <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Trigger</th><th className="p-2">Severity</th><th className="p-2">Auto</th><th className="p-2">Cooldown</th></tr></thead>
                 <tbody>
@@ -94,6 +99,7 @@ const NRC03FatigueBoard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
               <div className="mt-4 p-3 rounded-lg border bg-destructive/5 text-xs flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4 text-destructive" />
                 <span>On overload: suppress all non-critical notifications for the cooldown period. Emergency/critical urgency always bypasses.</span>
