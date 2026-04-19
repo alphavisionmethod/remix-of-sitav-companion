@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T13:56:00.000Z",
+  "scope": "hardware-and-operator-readiness-closure",
+  "ok": true,
+  "status": "YELLOW",
+  "hardware_runs_total": 0,
+  "operator_drills_total": 0,
+  "observation_window_clean_days": 0,
+  "partner_blocked": ["real-hardware-proof", "hardware-certification-matrix"],
+  "pending_human_execution": ["operator-drill-execution"],
+  "validators_total": 7,
+  "validators_block_eligible": 4,
+  "validators_warn_honestly_classified": 3,
+  "ui_panels_added": ["HardwareAndOperatorTruthPanel"],
+  "failed_checks": []
+}
