@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-19T02:41:36.583Z",
+  "reauth_required_count_24h": 0,
+  "per_provider": {
+    "google": 0,
+    "microsoft": 0,
+    "slack": 0
+  }
+}

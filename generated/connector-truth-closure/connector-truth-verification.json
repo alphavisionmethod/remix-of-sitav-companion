@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-04-19T02:41:36.583Z",
+  "lastRun": {
+    "run_id": "connector-nightly-2026-04-19T02-39-32-779Z",
+    "status": "fail",
+    "started_at": "2026-04-19T02:39:32.779+00:00",
+    "completed_at": "2026-04-19T02:39:34.266+00:00",
+    "providers_passed": [],
+    "providers_failed": [
+      "google",
+      "microsoft",
+      "slack"
+    ],
+    "providers_reauth_required": [],
+    "expiry_pressure_passed": false,
+    "state_consistency_passed": true,
+    "failure_summary": "expiry_pressure failed: google=null,microsoft=null",
+    "stateConsistency": {
+      "passed": true,
+      "driftCount": 0,
+      "driftSamples": []
+    }
+  },
+  "classification": "building",
+  "min_streak_days": 0,
+  "acceptance": {
+    "nightly_real_refresh_runs": false,
+    "durable_receipts_written": true,
+    "canonical_health_states": true,
+    "expiry_pressure_proven": false,
+    "reauth_ux_validated": true,
+    "long_tail_manual_classified": true,
+    "no_ambiguous_connected": true,
+    "seven_day_evidence": false
+  },
+  "overallPass": false,
+  "connectorRegistry": [
+    {
+      "connector_id": "gmail",
+      "provider": "google",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "beta",
+      "connector_class": "communication"
+    },
+    {
+      "connector_id": "google-calendar",
+      "provider": "google",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "beta",
+      "connector_class": "calendar"
+    },
+    {
+      "connector_id": "google-drive",
+      "provider": "google",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "beta",
+      "connector_class": "cloud-storage"
+    },
+    {
+      "connector_id": "plaid",
+      "provider": "plaid",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "beta",
+      "connector_class": "banking"
+    },
+    {
+      "connector_id": "stripe",
+      "provider": "stripe",
+      "auth_method": "api_key",
+      "refresh_supported": false,
+      "launch_stage": "beta",
+      "connector_class": "payments"
+    },
+    {
+      "connector_id": "quickbooks",
+      "provider": "intuit",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "planned",
+      "connector_class": "accounting"
+    },
+    {
+      "connector_id": "twilio",
+      "provider": "twilio",
+      "auth_method": "api_key",
+      "refresh_supported": false,
+      "launch_stage": "beta",
+      "connector_class": "communication"
+    },
+    {
+      "connector_id": "sendgrid",
+      "provider": "sendgrid",
+      "auth_method": "api_key",
+      "refresh_supported": false,
+      "launch_stage": "planned",
+      "connector_class": "communication"
+    },
+    {
+      "connector_id": "instacart",
+      "provider": "instacart",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "planned",
+      "connector_class": "commerce"
+    },
+    {
+      "connector_id": "hubspot",
+      "provider": "hubspot",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "planned",
+      "connector_class": "crm"
+    },
+    {
+      "connector_id": "slack",
+      "provider": "slack",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "planned",
+      "connector_class": "communication"
+    },
+    {
+      "connector_id": "dropbox",
+      "provider": "dropbox",
+      "auth_method": "oauth2",
+      "refresh_supported": true,
+      "launch_stage": "planned",
+      "connector_class": "cloud-storage"
+    }
+  ]
+}

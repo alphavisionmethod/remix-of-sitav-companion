@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-19T02:41:36.583Z",
+  "providers": {
+    "google": {
+      "provider": "google",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null
+    },
+    "microsoft": {
+      "provider": "microsoft",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null
+    },
+    "slack": {
+      "provider": "slack",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null
+    }
+  }
+}
