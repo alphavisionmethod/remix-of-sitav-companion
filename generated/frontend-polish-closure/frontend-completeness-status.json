@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T13:19:57.596Z",
+  "generatedAt": "2026-04-19T13:23:27.731Z",
   "scope": "admin/ai-runtime",
   "boards": [
     {
@@ -46,7 +46,7 @@
     },
     {
       "surface": "InternalAgentIntentTimeline",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -67,7 +67,7 @@
     },
     {
       "surface": "PolicyDraftReviewBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": false,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -81,7 +81,7 @@
     },
     {
       "surface": "SLOObservabilityBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": false,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -95,7 +95,7 @@
     },
     {
       "surface": "SovereignDeploymentDRBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": false,
       "errorPolished": true,
       "boardSectionAdopted": false
@@ -116,19 +116,19 @@
     },
     {
       "surface": "TrustLadderBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": false,
       "errorPolished": true,
       "boardSectionAdopted": false
     },
     {
       "surface": "WeeklyDigestBoard",
-      "emptyStatePolished": false,
+      "emptyStatePolished": true,
       "loadingPolished": true,
       "errorPolished": true,
       "boardSectionAdopted": false
     }
   ],
   "total": 18,
-  "polished": 8
+  "polished": 14
 }
