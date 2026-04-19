@@ -14,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, Users2, DollarSign, Wrench, AlertTriangle } from "lucide-react";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 
 interface ConsensusSession {
   id: string;
@@ -177,8 +178,12 @@ export default function CrossCouncilBoard() {
         <TabsContent value="consensus" className="space-y-3">
           {sessions.length === 0 && !loading && (
             <Card>
-              <CardContent className="py-10 text-center text-muted-foreground">
-                No consensus sessions yet. Sessions are opened when agents from multiple councils need to align.
+              <CardContent className="py-6">
+                <EmptyState
+                  icon={<Users2 className="h-5 w-5" />}
+                  title="No consensus sessions in flight"
+                  description="Sessions open automatically when agents from multiple councils need to align on a shared decision. Quorum, action class, and effective autonomy are recorded for each session."
+                />
               </CardContent>
             </Card>
           )}
@@ -232,8 +237,12 @@ export default function CrossCouncilBoard() {
           </div>
           {proposals.length === 0 && !loading && (
             <Card>
-              <CardContent className="py-10 text-center text-muted-foreground">
-                No cost proposals yet. Run the optimizer to scan recent usage.
+              <CardContent className="py-6">
+                <EmptyState
+                  icon={<DollarSign className="h-5 w-5" />}
+                  title="No cost proposals drafted"
+                  description="The cost optimizer scans recent usage and drafts savings proposals here. Proposals never auto-apply — admins approve them for manual application via canonical config tooling."
+                />
               </CardContent>
             </Card>
           )}
@@ -294,8 +303,12 @@ export default function CrossCouncilBoard() {
         <TabsContent value="healing" className="space-y-3">
           {executions.length === 0 && !loading && (
             <Card>
-              <CardContent className="py-10 text-center text-muted-foreground">
-                No self-healing runs yet. Bound agents will appear here when they execute reversible runbook steps.
+              <CardContent className="py-6">
+                <EmptyState
+                  icon={<Wrench className="h-5 w-5" />}
+                  title="No self-healing executions yet"
+                  description="Bound agents appear here when they execute reversible runbook steps. Every run records the runbook ID, autonomy level used, and ceiling cap status."
+                />
               </CardContent>
             </Card>
           )}
