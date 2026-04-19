@@ -1,0 +1,224 @@
+{
+  "generatedAt": "2026-04-19T19:18:10.369Z",
+  "hubFile": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx",
+  "modulesMounted": 30,
+  "modules": [
+    {
+      "id": "team",
+      "label": "Team Overview",
+      "component": "AIT01TeamOverview",
+      "importPath": "@/pages/admin/AIT01TeamOverview"
+    },
+    {
+      "id": "internal-agents",
+      "label": "Internal Agents",
+      "component": "InternalAgentsBoard",
+      "importPath": "@/pages/admin/ai-runtime/InternalAgentsBoard"
+    },
+    {
+      "id": "councils",
+      "label": "Councils",
+      "component": "CouncilsBoard",
+      "importPath": "@/pages/admin/ai-runtime/CouncilsBoard"
+    },
+    {
+      "id": "suggestions",
+      "label": "Suggestions",
+      "component": "SuggestionsBoard",
+      "importPath": "@/pages/admin/ai-runtime/SuggestionsBoard"
+    },
+    {
+      "id": "weekly-digest",
+      "label": "Weekly Digest",
+      "component": "WeeklyDigestBoard",
+      "importPath": "@/pages/admin/ai-runtime/WeeklyDigestBoard"
+    },
+    {
+      "id": "dependency-findings",
+      "label": "Dependency Findings",
+      "component": "DependencyFindingsBoard",
+      "importPath": "@/pages/admin/ai-runtime/DependencyFindingsBoard"
+    },
+    {
+      "id": "security-council",
+      "label": "Security Council",
+      "component": "SecurityCouncilBoard",
+      "importPath": "@/pages/admin/ai-runtime/SecurityCouncilBoard"
+    },
+    {
+      "id": "nightly-truth",
+      "label": "Nightly Truth",
+      "component": "AIRuntimeNightlyTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
+    },
+    {
+      "id": "connector-truth",
+      "label": "Connector Truth",
+      "component": "ConnectorTruthSummaryPanel",
+      "importPath": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+    },
+    {
+      "id": "mobile-scope-truth",
+      "label": "Mobile Scope Truth",
+      "component": "MobileScopeTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/MobileScopeTruthPanel"
+    },
+    {
+      "id": "frontend-polish-truth",
+      "label": "Frontend Polish Truth",
+      "component": "FrontendPolishTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/FrontendPolishTruthPanel"
+    },
+    {
+      "id": "admin-validation-truth",
+      "label": "Admin & Validation Truth",
+      "component": "AdminValidationTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/AdminValidationTruthPanel"
+    },
+    {
+      "id": "hardware-operator-truth",
+      "label": "Hardware & Operator Truth",
+      "component": "HardwareAndOperatorTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
+    },
+    {
+      "id": "security-portability-truth",
+      "label": "Security & Portability Truth",
+      "component": "SecurityAndPortabilityTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
+    },
+    {
+      "id": "architectural-cleanup-truth",
+      "label": "Architectural Cleanup Truth",
+      "component": "ArchitecturalCleanupTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"
+    },
+    {
+      "id": "economic-trust-future-truth",
+      "label": "Economic Trust & Future",
+      "component": "EconomicTrustFutureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"
+    },
+    {
+      "id": "architecture-hardening-truth",
+      "label": "Architecture Hardening",
+      "component": "ArchitectureHardeningTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"
+    },
+    {
+      "id": "flagship-surface-closure-truth",
+      "label": "Flagship Surface Closure",
+      "component": "FlagshipSurfaceClosureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"
+    },
+    {
+      "id": "admin-empty-state-closure-truth",
+      "label": "Admin Empty-State Closure",
+      "component": "AdminEmptyStateClosureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"
+    },
+    {
+      "id": "admin-coherence-closure-truth",
+      "label": "Admin Coherence Closure",
+      "component": "AdminCoherenceClosureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"
+    },
+    {
+      "id": "trust-state-and-copy-closure-truth",
+      "label": "Trust-State & Copy Closure",
+      "component": "TrustStateAndCopyClosureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"
+    },
+    {
+      "id": "frontend-truth-backing-closure-truth",
+      "label": "Frontend Truth-Backing Closure",
+      "component": "FrontendTruthBackingClosureTruthPanel",
+      "importPath": "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel"
+    },
+    {
+      "id": "efficiency",
+      "label": "Intelligence Efficiency",
+      "component": "AIEfficiencyScoreboard",
+      "importPath": "@/pages/admin/intelligence/AIEfficiencyScoreboard"
+    },
+    {
+      "id": "cost",
+      "label": "Cost",
+      "component": "AIT05CostEfficiency",
+      "importPath": "@/pages/admin/AIT05CostEfficiency"
+    },
+    {
+      "id": "providers",
+      "label": "Providers",
+      "component": "AIG01ProviderRegistry",
+      "importPath": "@/pages/admin/AIG01ProviderRegistry"
+    },
+    {
+      "id": "models",
+      "label": "Models",
+      "component": "AIG02ModelRegistry",
+      "importPath": "@/pages/admin/AIG02ModelRegistry"
+    },
+    {
+      "id": "routing",
+      "label": "Routing",
+      "component": "AIG03RoutingMatrix",
+      "importPath": "@/pages/admin/AIG03RoutingMatrix"
+    },
+    {
+      "id": "budget",
+      "label": "Budget",
+      "component": "AIG04BudgetCenter",
+      "importPath": "@/pages/admin/AIG04BudgetCenter"
+    },
+    {
+      "id": "governance",
+      "label": "Governance",
+      "component": "AIGovernancePage",
+      "importPath": "@/pages/admin/AIGovernancePage"
+    },
+    {
+      "id": "advisors",
+      "label": "Advisors",
+      "component": "AdvisorBoardCatalog",
+      "importPath": "@/pages/admin/AdvisorBoardCatalog"
+    }
+  ],
+  "panelFilesOnDisk": 36,
+  "truthPanelFiles": 17,
+  "hubBoardFiles": 19,
+  "duplicateIds": [],
+  "orphanedPanelFiles": [
+    "src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx",
+    "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+    "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+    "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+    "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx",
+    "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
+    "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+    "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx",
+    "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+    "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
+    "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+    "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+    "src/pages/admin/ai-runtime/TenantFederationBoard.tsx",
+    "src/pages/admin/ai-runtime/TrustLadderBoard.tsx"
+  ],
+  "suspectPanelPairs": [
+    {
+      "a": "AIG05ReceiptsExplorer.tsx",
+      "b": "AIG05UsageLedgerExplorer.tsx",
+      "reason": "shared AIG05 prefix; verify whether both are surfaced in hub"
+    },
+    {
+      "a": "AIG06LaunchTruth.tsx",
+      "b": "AIG07LaunchTruth.tsx",
+      "reason": "Both labelled LaunchTruth; verify separate purpose"
+    },
+    {
+      "a": "AIT04ActivityFeedPage.tsx",
+      "b": "AIT04to08Boards.tsx",
+      "reason": "Both touch AIT04 territory; verify split"
+    }
+  ]
+}
