@@ -1,86 +1,114 @@
 
-This is a massive scope — "final last-mile deployment closure" covering 18 areas (A–R) across 5 execution phases. Looking at memory and recent history:
 
-- Phases 1–9 of AI Workforce: COMPLETE per memory (`features/ai-workforce-runtime`)
-- Boardroom Layer 7: COMPLETE per memory (`features/boardroom-layer-7`)
-- Mobile identity reconciliation: JUST COMPLETED (140 gates green)
-- Mobile deployment closure: COMPLETE (16 artifacts)
-- 117 BLOCK-level gates already enforced
-- Security Council UI/cron: NOT BUILT (verified earlier this session — 0 rows in `security_council_findings`, no pg_cron job, no `/admin/ai-runtime/security-council` route)
-- Production restore drill, OAuth refresh probes, MOK matrix: per memory `operational-readiness` — pg_cron entries exist (1h OAuth probe, weekly DR drill)
+## AI Runtime Truth Closure — 5 Phase Plan
 
-The biggest **real, unimplemented** gap from this session's verification is the **Security Council runtime** (Item Q + part of N). The user explicitly asked about it earlier and I confirmed it doesn't exist. The rest is largely complete or governance-doc work.
-
-I'll structure 5 small phases focused on **what's actually missing** vs. closure-doc generation. Keep it tight.
+**Goal:** Move AI runtime from "path-proven" to "behaviorally proven, live-provider verified, cost-ceiling enforced under load, 7-day streak tracked, operator-visible." Integrated **only on the Admin AI Engineer** team surfaces (`/admin/ai-runtime/*`). No duplicates — extends existing `ai-gateway`, `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `AIRuntimeHome`, `NightlyProofBadge`, and existing nightly workflows.
 
 ---
 
-# Final Last-Mile Deployment Closure — Implementation Plan
+### Phase 1 — Truth Schema + Audit Artifacts (deployment-ready standalone)
 
-Scope verified against memory + live DB checks. The bulk of the 18 areas (A–R) are already complete (AI Workforce Phases 1–9, Boardroom L7, Mobile closure, 117 gates, restore drill, OAuth probes, MOK matrix). The **real remaining gaps** are: (1) Security Council runtime + UI, (2) final-closure governance artifacts + meta-validators that prove the green-state is meaningful.
+**DB migration** (additive, no destructive changes):
+- `ai_runtime_nightly_runs` — one row per nightly run: `run_id`, `started_at`, `completed_at`, `status` (pass/fail/degraded), `provider_calls_ok`, `receipts_verified`, `ledger_verified`, `fallback_verified`, `budget_enforced`, `failure_class`, `evidence_jsonb`. RLS: admin-read only.
+- `ai_runtime_streak_state` — singleton: `current_streak_days`, `last_pass_at`, `last_fail_at`, `last_failure_class`, `streak_started_at`. RLS: admin-read only.
+- `ai_runtime_failure_alerts` — `alert_id`, `run_id`, `failure_class`, `severity`, `acknowledged_at`, `acknowledged_by`. RLS: admin-read/write via `has_admin_permission`.
+- Trigger: on insert into `ai_runtime_nightly_runs`, recompute streak; if status=fail, insert alert row.
 
-## Phase 1 — Security Council Runtime (Item Q, real code)
-**Deployable outcome:** 7 security agents producing real findings hourly; admin board shows live data.
+**Artifacts** (`generated/ai-runtime-truth-closure/`):
+- `AI_RUNTIME_CURRENT_STATE_AUDIT.md` — what's already real vs. synthetic
+- `AI_RUNTIME_NIGHTLY_VERIFICATION_MODEL.md` — canonical flow design
+- `AI_BUDGET_AND_CEILING_AUDIT.md`
+- `AI_COST_CEILING_LOAD_PROOF_MODEL.md`
+- `AI_RUNTIME_FAILURE_CLASSES.md` — 9 classes (provider_unavailable, invocation_invalid, receipt_missing, ledger_missing, fallback_failed, budget_enforcement_failed, budget_overrun_unblocked, model_routing_mismatch, verification_query_mismatch)
 
-- **DB migration:** add `security_council_findings` columns if missing (`agent_id`, `severity`, `evidence_jsonb`, `proposed_action`, `kill_switch_recommendation`, `secret_rotation_target`, `policy_proposal_id`); add indexes; RLS policies (admin read, service-role insert).
-- **Edge function:** `supabase/functions/sita-security-council-tick/index.ts` — runs the 7 agents (rls-watcher, secret-rotation-sentinel, anomaly-detector, policy-drift-auditor, edge-fn-jwt-checker, oauth-token-watcher, kill-switch-recommender), inserts findings, emits AI receipts via existing gateway.
-- **pg_cron job:** `sita-security-council-tick` hourly, calling the edge function via `net.http_post` with service-role auth.
-- **UI:** new route `/admin/ai-runtime/security-council` → `src/pages/admin/ai-runtime/SecurityCouncilPage.tsx` with: 7 agent cards (last-run, finding-count, trust-score), findings table (sortable by severity), evidence drilldown drawer, "Acknowledge / Dispatch to Approval Queue / Open Runbook" actions wired to existing `approval_decisions` and `runbooks` infra.
-- **Nav wiring:** add to `AdminControlPlaneShell` AI-Runtime domain; gate via existing `useRequireAdmin`.
+---
 
-## Phase 2 — Final Closure Governance Artifacts (10 docs + 6 status JSONs)
-**Deployable outcome:** All 16 deliverables under `generated/final-deployment-closure/` exist with real content sourced from live system state.
+### Phase 2 — Live-Provider Nightly Verifier Edge Function
 
-- Generate the 10 `.md` files (00–09) by reading live registries: 117-gate report, Boardroom L7 status, mobile reconciliation status, AI workforce roadmap completion, claim-safety registry.
-- Generate the 6 `.json` status files from real validators (no hand-typed data).
-- Each artifact cites its source manifest + last-validated timestamp.
+**New edge function:** `supabase/functions/ai-runtime-nightly-verify/index.ts`
+- Service-role auth + admin caller check
+- Executes 5 canonical sub-checks against the **real `ai-gateway`** (cheapest model: `google/gemini-2.5-flash-lite`, capped at ~6 invocations / run):
+  1. **live_provider_call** — invokes gateway with sentinel prompt, asserts 200 + content
+  2. **receipt_persistence** — re-queries `ai_inference_receipts` by invocation_id
+  3. **ledger_write** — re-queries `ai_usage_ledger` matches invocation
+  4. **fallback_path** — invokes with deliberately-failing primary model, asserts `ai_fallback_events` row written
+  5. **budget_enforcement_under_load** — uses `ai_workforce_budget_classes` test class (already exists) at 95% utilization, fires N+1 calls, asserts the (N+1)th is refused and a refusal receipt persists
+- Inserts result row into `ai_runtime_nightly_runs` (trigger handles streak + alert)
+- Writes `generated/ai-runtime-truth-closure/ai-runtime-truth-verification.json` via response payload
 
-## Phase 3 — Meta-Validators (gate meaningfulness)
-**Deployable outcome:** 7 new validators detect "false green" states; wired into 117-gate aggregator → 124 gates.
+**Cost guardrail:** hard-cap ~$0.005/run via `gemini-2.5-flash-lite`, dry-run mode flag for CI without live credits.
 
-- `check-final-deployment-readiness.ts` — aggregates restore + OAuth + MOK + L7 closure status.
-- `check-final-runtime-proof.ts` — verifies pg_cron jobs are actually firing (queries `cron.job_run_details`).
-- `check-final-mobile-truth.ts` — re-runs the 10 mobile identity gates as a meta-check.
-- `check-final-ai-workforce-readiness.ts` — verifies all 40 agents have `last_run_at` within SLA + Security Council producing rows.
-- `check-final-launch-honesty.ts` — scans for forbidden claim phrases ("kernel", "production-ready" without qualifiers) outside contained registry.
-- `check-final-supportability-readiness.ts` — verifies every kill-switch + runbook has a tested execution receipt.
-- `check-final-gate-meaningfulness.ts` — classifies each of the 124 gates as structural/behavioral/smoke/E2E + fails if >20% are structural-only.
+---
 
-## Phase 4 — Aggregator Wiring + Scripts
-**Deployable outcome:** Master aggregator at 124 gates GREEN, with new `final:closure:run-all` npm script.
+### Phase 3 — CI Wiring + 6 Validation Scripts
 
-- Append 7 new validators to `MASTER_RELEASE_GATES` in `check-os-release-readiness.ts`.
-- Add `final:closure:run-all` and `security-council:tick:manual` to `package.json`.
-- Update `src/planes/MOBILE_MANIFEST.md` and create `src/planes/FINAL_CLOSURE_MANIFEST.md` with the canonical map.
+**Validation scripts** (`scripts/validation/`):
+- `check-ai-live-provider-nightly.ts` — reads latest `ai_runtime_nightly_runs` row, fails if >36h stale or status=fail
+- `check-ai-receipt-persistence.ts` — asserts last 24h `ai_inference_receipts` count > 0 and matches `ai_invocations`
+- `check-ai-ledger-write-verification.ts` — asserts `ai_usage_ledger` rows match invocation count
+- `check-ai-fallback-verification.ts` — asserts last 7d has ≥1 fallback event proving path works
+- `check-ai-budget-enforcement-under-load.ts` — asserts last nightly run includes `budget_enforced=true`
+- `check-ai-runtime-streak-health.ts` — reads `ai_runtime_streak_state`, classifies streak, writes `ai-nightly-streak-status.json`
 
-## Phase 5 — Live Verification + Certification
-**Deployable outcome:** Signed `final-deployment-certification.json` confirming 124/124 GREEN with cryptographic seal via existing `SITA_HARDENING_HMAC_KEY`.
+All emit gate reports via existing `_lib/emit-gate-report.ts`.
 
-- Run `npm run check:os-release-readiness` end-to-end.
-- Manually trigger `sita-security-council-tick` once → confirm findings inserted.
-- Verify Security Council UI loads with live data.
-- Generate signed certification artifact + attach to baseline seal.
+**Cron schedule** (via `pg_cron` + `pg_net`, inserted directly to DB so anon key isn't repo-committed):
+- `ai-runtime-nightly-verify-tick` — daily 02:00 UTC, hits the edge function
 
-## Files Touched (Summary)
+**CI wiring:** add 6 new gate steps to `playwright-proof-nightly.yml` and `ci.yml` after existing AI gates. Add to master release aggregator (`check-os-release-readiness.ts`) at BLOCK level.
 
-```text
-supabase/migrations/<ts>_security_council_runtime.sql       [new]
-supabase/functions/sita-security-council-tick/index.ts      [new]
-src/pages/admin/ai-runtime/SecurityCouncilPage.tsx          [new]
-src/lib/services/security-council/                          [new dir, 7 agent runners]
-src/components/admin/security-council/                      [new dir, 4 UI components]
-src/AppRoutes.tsx + AdminControlPlaneShell                  [+ route + nav entry]
-generated/final-deployment-closure/                         [16 new artifacts]
-scripts/validation/check-final-*.ts                         [7 new meta-validators]
-scripts/architecture/checks/check-os-release-readiness.ts   [+7 gates → 124 total]
-src/planes/FINAL_CLOSURE_MANIFEST.md                        [new]
-package.json                                                [+ 2 scripts]
-```
+---
 
-## Guarantees
+### Phase 4 — Admin Visibility (extend existing surfaces only — no new pages)
 
-- **No stubs:** Security Council is real code emitting real DB rows on a real cron schedule.
-- **No duplicates:** reuses existing `ai_receipt_records`, `approval_decisions`, `kill_switch_audit_log`, `runbooks`, `AdminControlPlaneShell`, `useRequireAdmin`.
-- **No false green:** Phase 3 meta-validators specifically detect structural-only "theater" gates.
-- **Honest about externals:** Apple/Play account blockers stay classified as such — not silently flipped to green.
-- Each phase ends with the master aggregator passing before the next begins.
+**Extend `AIRuntimeDrilldownPanel.tsx`** (already mounted in `InternalAgentsBoard`):
+- Replace minimal `NightlyProofBadge` with rich panel showing:
+  - Current 7-day streak (with day-by-day dots)
+  - Last pass/fail timestamps + failure class
+  - Per-sub-check status (5 checks from Phase 2)
+  - Last live provider receipt link → drill into `ai_inference_receipts` row
+  - Last fallback event link
+  - Last budget enforcement decision
+  - Acknowledge-failure button (writes to `ai_runtime_failure_alerts`)
+
+**Extend `AIRuntimeHome.tsx`** with one new tab (no separate route):
+- `id: "nightly-truth"` → `AIRuntimeNightlyTruthPanel` (new component, lives in `src/components/admin/ai-runtime/`)
+- Shows full 30-day history table, per-run drilldown, evidence JSON viewer
+
+**Data hook:** `src/lib/internal-agents/runtime/nightly-truth-data.ts` — single typed loader querying the 3 new tables. Reuses existing pattern from `agent-drilldown-data.ts`.
+
+---
+
+### Phase 5 — Final Verification + Reports + Master Aggregator Wiring
+
+**Generated artifacts** (final outputs):
+- `ai-live-provider-status.json` — per-provider success/failure last 7d
+- `ai-budget-enforcement-status.json` — last enforcement decision + ledger proof
+- `ai-nightly-streak-status.json` — current streak + classification
+- `ai-runtime-truth-verification.json` — master rollup
+- `AI_RUNTIME_TRUTH_FINAL_VERIFICATION.md` — operator-facing summary
+
+**Master aggregator integration:**
+- Register 6 new gates in `check-os-release-readiness.ts` BLOCK list
+- Update `generated/os-release-readiness-report.json` to include AI runtime truth section
+- Streak <3 days → YELLOW; ≥7 days → GREEN; any unack'd failure → RED
+
+**Failure alerting:**
+- Reuse existing `notification_delivery_receipts` + admin notification path
+- Trigger on `ai_runtime_failure_alerts` insert → notification to admin AI engineer team only
+
+**Final run:** trigger one live verify, confirm row persists, badge updates, gate passes.
+
+---
+
+### Technical guardrails
+
+- **No duplicates:** extends `ai-gateway`, `AIRuntimeDrilldownPanel`, `AIRuntimeHome`, `NightlyProofBadge`, existing nightly workflows
+- **No stubs:** every script queries real tables; edge function calls real provider
+- **No fake green:** streak resets on any failure; one pass ≠ proven (need 7)
+- **No reckless spend:** flash-lite model, ≤6 calls/run, ~$0.005/night
+- **Admin-only scope:** all UI under `/admin/ai-runtime/*`; RLS restricts to `has_admin_permission`
+- **Reuses canonical:** `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `ai_workforce_budget_classes`, `notification_delivery_receipts`, `_lib/emit-gate-report`
+
+Each phase ships independently deployment-ready. Phase 5 requires 7 nights to reach GREEN streak — until then the aggregator honestly reports YELLOW (launch-honest).
+
