@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T13:32:48.676Z",
+  "classification": "credentials_unavailable",
+  "lastRun": null,
+  "min_streak_days": 0,
+  "acceptance": {
+    "credentials_available": false,
+    "note": "Live acceptance criteria can only be evaluated by production CI/cron with service role key."
+  },
+  "overallPass": false,
+  "connectorRegistry": []
+}

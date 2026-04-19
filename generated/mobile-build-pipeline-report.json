@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-04-19T13:33:06.410Z",
+  "gate": "mobile-build-pipeline",
+  "ok": false,
+  "errorCount": 5,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-canonical-stack-report.json missing — mobile build pipeline not classified"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/no-flutter-stack-drift-report.json missing — mobile build pipeline not classified"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/capacitor-mobile-truth-report.json missing — mobile build pipeline not classified"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-bootstrap-contract-report.json missing — mobile build pipeline not classified"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-build-model-consistency-report.json missing — mobile build pipeline not classified"
+    }
+  ],
+  "canonical_stack": "capacitor-spa-wrap"
+}

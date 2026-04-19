@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-19T13:29:07.508Z",
+  "generatedAt": "2026-04-19T13:32:58.653Z",
   "gate": "long-tail-provider-classification",
-  "ok": false,
-  "errorCount": 1,
-  "warningCount": 0,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
   "issues": [
     {
-      "severity": "error",
-      "area": "artifact",
-      "message": "generated/connector-truth-closure/connector-truth-verification.json missing"
+      "severity": "warning",
+      "area": "credentials",
+      "message": "credentials_unavailable in this environment — connector_registry classification produced only by production cron."
     }
   ]
 }

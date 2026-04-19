@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T13:32:48.676Z",
+  "classification": "credentials_unavailable",
+  "reauth_required_count_24h": 0,
+  "per_provider": {
+    "google": 0,
+    "microsoft": 0,
+    "slack": 0
+  }
+}

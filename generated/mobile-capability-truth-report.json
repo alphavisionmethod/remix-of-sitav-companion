@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-04-19T13:33:08.455Z",
+  "gate": "mobile-capability-truth",
+  "ok": false,
+  "errorCount": 5,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-push-claim-safety-report.json missing — mobile capability truth not recorded"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-identity-source-of-truth-report.json missing — mobile capability truth not recorded"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-env-strategy-consistency-report.json missing — mobile capability truth not recorded"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/android-release-path-report.json missing — mobile capability truth not recorded"
+    },
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/ios-release-path-report.json missing — mobile capability truth not recorded"
+    }
+  ],
+  "push_classification": "external-account-blocked",
+  "identity_classification": "supabase-auth-canonical"
+}

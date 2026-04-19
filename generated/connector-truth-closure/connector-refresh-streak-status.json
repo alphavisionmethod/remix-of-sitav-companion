@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-19T13:32:48.676Z",
+  "classification": "credentials_unavailable",
+  "min_streak_days": 0,
+  "reauth_required_count_24h": 0,
+  "streaks": [],
+  "recent_runs": [],
+  "note": "Service role key unavailable — streak evidence produced only by production cron."
+}

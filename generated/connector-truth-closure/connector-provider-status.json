@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-19T13:32:48.676Z",
+  "classification": "credentials_unavailable",
+  "providers": {
+    "google": {
+      "provider": "google",
+      "classification": "credentials_unavailable",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null,
+      "note": "Service role key unavailable in this environment — live evidence emitted only by production CI cron."
+    },
+    "microsoft": {
+      "provider": "microsoft",
+      "classification": "credentials_unavailable",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null,
+      "note": "Service role key unavailable in this environment — live evidence emitted only by production CI cron."
+    },
+    "slack": {
+      "provider": "slack",
+      "classification": "credentials_unavailable",
+      "successCount24h": 0,
+      "failureCount24h": 0,
+      "successCount7d": 0,
+      "lastSuccessAt": null,
+      "lastFailureClass": null,
+      "lastReceiptId": null,
+      "note": "Service role key unavailable in this environment — live evidence emitted only by production CI cron."
+    }
+  }
+}

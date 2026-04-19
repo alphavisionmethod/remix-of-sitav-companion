@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T13:33:04.585Z",
+  "gate": "mobile-store-readiness",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "artifact",
+      "message": "generated/mobile-submission-blockers-report.json missing — mobile submission blockers not classified"
+    }
+  ],
+  "classification": "external-account-blocked",
+  "primary_platform": "desktop-ubuntu",
+  "mobile_status": "code-complete-account-blocked"
+}
