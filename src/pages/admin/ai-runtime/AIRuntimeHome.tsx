@@ -5,10 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainHubLayout";
-import { Button } from "@/components/ui/button";
 
 const AIT01TeamOverview = lazy(() => import("@/pages/admin/AIT01TeamOverview"));
 const AIT05CostEfficiency = lazy(() =>
@@ -201,14 +199,6 @@ export default function AIRuntimeHome() {
 
   return (
     <AdminControlPlaneShell>
-      <div className="flex items-center justify-end gap-2 px-4 pt-3">
-        <Button asChild size="sm" variant="outline" className="h-7 text-xs">
-          <Link to="/admin/releases">Open Release Readiness</Link>
-        </Button>
-        <Button asChild size="sm" variant="ghost" className="h-7 text-xs">
-          <Link to="/admin/health/error-patrol">Error Patrol</Link>
-        </Button>
-      </div>
       <DomainHubLayout domain="ai-runtime" modules={modules} defaultTabId="team" />
     </AdminControlPlaneShell>
   );

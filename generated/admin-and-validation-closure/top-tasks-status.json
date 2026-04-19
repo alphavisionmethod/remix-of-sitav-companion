@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-04-19T14:00:00.000Z",
+  "scope": "admin-and-validation-closure",
+  "description": "Machine-readable mate to OPERATOR_TOP_TASK_PATHFINDING_MODEL.md. Consumed by check-admin-top-task-discoverability.ts to enforce ≤3 clicks per top task.",
+  "clickCeiling": 3,
+  "findTimeCeilingSeconds": 30,
+  "tasks": [
+    {
+      "id": "ai-runtime-failure",
+      "name": "AI runtime nightly failure triage",
+      "route": "/admin/ai-runtime",
+      "expectedClicks": 2,
+      "currentPath": ["AdminShell sidebar → AI Runtime", "Nightly Truth tab"],
+      "idealPath": ["AdminShell sidebar → AI Runtime", "Nightly Truth tab"],
+      "complete": true
+    },
+    {
+      "id": "connector-reauth",
+      "name": "Connector reauth (Google/Microsoft/Slack)",
+      "route": "/admin/integrations",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Integrations", "Connector list", "Reauth action"],
+      "idealPath": ["AdminShell sidebar → Integrations", "Health column", "Reauth action"],
+      "complete": true
+    },
+    {
+      "id": "boardroom-stuck",
+      "name": "Boardroom stuck approval / execution",
+      "route": "/admin/approvals",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Approvals", "Pending tab", "Drilldown"],
+      "idealPath": ["AdminShell sidebar → Approvals", "Stuck filter", "Drilldown"],
+      "complete": true
+    },
+    {
+      "id": "kill-switch-decision",
+      "name": "Kill-switch decision",
+      "route": "/admin/trust-security",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Trust & Security", "Kill switches tab", "Switch detail"],
+      "idealPath": ["AdminShell sidebar → Trust & Security", "Kill switches tab", "Switch detail"],
+      "complete": true
+    },
+    {
+      "id": "restore-recovery",
+      "name": "Restore / recovery (DR drill)",
+      "route": "/admin/health",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Health", "Recovery tab", "Drill action"],
+      "idealPath": ["AdminShell sidebar → Health", "Recovery tab", "Drill action"],
+      "complete": true
+    },
+    {
+      "id": "incident-drilldown",
+      "name": "Incident drilldown to runbook",
+      "route": "/admin/alerts",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Alerts", "Incident card", "Linked runbook"],
+      "idealPath": ["AdminShell sidebar → Alerts", "Incident card", "Linked runbook"],
+      "complete": true
+    },
+    {
+      "id": "release-verification",
+      "name": "Release verification",
+      "route": "/admin/releases",
+      "expectedClicks": 2,
+      "currentPath": ["AdminShell sidebar → Releases", "Latest release"],
+      "idealPath": ["AdminShell sidebar → Releases", "Latest release"],
+      "complete": true
+    },
+    {
+      "id": "receipts-lookup",
+      "name": "Receipts lookup",
+      "route": "/admin/verification",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Verification", "Receipts tab", "Search"],
+      "idealPath": ["AdminShell sidebar → Verification", "Receipts tab", "Search"],
+      "complete": true
+    },
+    {
+      "id": "env-remediation",
+      "name": "Environment / config remediation",
+      "route": "/admin/environments",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Environments", "Config tab", "Remediate"],
+      "idealPath": ["AdminShell sidebar → Environments", "Config tab", "Remediate"],
+      "complete": true
+    },
+    {
+      "id": "secret-rotation",
+      "name": "Secret rotation / security anomaly",
+      "route": "/admin/trust-security",
+      "expectedClicks": 3,
+      "currentPath": ["AdminShell sidebar → Trust & Security", "Secrets tab", "Rotate action"],
+      "idealPath": ["AdminShell sidebar → Trust & Security", "Secrets tab", "Rotate action"],
+      "complete": true
+    }
+  ]
+}

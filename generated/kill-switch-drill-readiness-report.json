@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:11:22.885Z",
+  "generatedAt": "2026-04-19T14:23:32.983Z",
   "gate": "kill-switch-drill-readiness",
   "ok": true,
   "errorCount": 0,
@@ -7,9 +7,150 @@
   "issues": [
     {
       "severity": "warning",
-      "area": "kill-switches",
-      "message": "Kill-switch drill readiness pending first drill executions"
+      "area": "drills",
+      "message": "0/15 kill-switches have drill evidence — pending-drill"
     }
   ],
-  "classification": "pending-drill"
+  "totalSwitches": 15,
+  "drilledSwitches": 0,
+  "coveragePct": 0,
+  "drillSource": "live-db",
+  "classification": "pending-drill",
+  "perSwitch": [
+    {
+      "switchId": "KS-ADVISORS",
+      "displayName": "Advisor Council Kill Switch",
+      "impactLevel": "significant",
+      "ownerTeam": "advisor-platform",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-OUTBOUND",
+      "displayName": "Outbound Communications Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "messaging-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-CONNECTORS",
+      "displayName": "Connector Integration Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "integrations-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-SYNC",
+      "displayName": "Data Sync Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "integrations-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-PAYMENTS",
+      "displayName": "Payment Processing Kill Switch",
+      "impactLevel": "severe",
+      "ownerTeam": "finance-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-MOBILE-PUSH",
+      "displayName": "Mobile Push Kill Switch",
+      "impactLevel": "minimal",
+      "ownerTeam": "mobile-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-MODEL-PROVIDERS",
+      "displayName": "AI Model Provider Kill Switch",
+      "impactLevel": "significant",
+      "ownerTeam": "ai-platform",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-WORKFLOW",
+      "displayName": "Workflow Engine Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "platform-runtime",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-SIMULATIONS",
+      "displayName": "Simulation Engine Kill Switch",
+      "impactLevel": "minimal",
+      "ownerTeam": "boardroom-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-AUTOMATIONS",
+      "displayName": "Automation Engine Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "automation-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-RELEASE-ROLLOUT",
+      "displayName": "Release Rollout Kill Switch",
+      "impactLevel": "severe",
+      "ownerTeam": "release-engineering",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-APPLIANCE-UPDATE",
+      "displayName": "Appliance Update Channel Kill Switch",
+      "impactLevel": "significant",
+      "ownerTeam": "release-engineering",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-SELF-HEALING",
+      "displayName": "Self-Healing Loop Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "platform-runtime",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-PROVIDER-INGESTION",
+      "displayName": "Provider Ingestion Kill Switch",
+      "impactLevel": "moderate",
+      "ownerTeam": "integrations-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    },
+    {
+      "switchId": "KS-PAYMENTS-AUTH",
+      "displayName": "Payment Authorization Kill Switch",
+      "impactLevel": "severe",
+      "ownerTeam": "finance-team",
+      "drillCount": 0,
+      "latestDrill": null,
+      "classification": "pending-drill"
+    }
+  ]
 }

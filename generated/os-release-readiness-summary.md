@@ -1,17 +1,17 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T14:13:18.776Z
+> Generated: 2026-04-19T13:34:02.207Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 171 |
-| Gates present  | 171 |
+| Gates required | 156 |
+| Gates present  | 156 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3388 |
+| Total warnings | 3380 |
 
 ## Per-gate results
 
@@ -173,25 +173,10 @@
 | `admin-board-polish` | ✅ | 0 | 0 |
 | `trust-copy-quality` | ✅ | 0 | 0 |
 | `responsive-surface-integrity` | ✅ | 0 | 0 |
-| `admin-top-task-discoverability` | ✅ | 0 | 0 |
-| `no-museum-boards` | ✅ | 0 | 0 |
-| `admin-action-orientation` | ✅ | 0 | 0 |
-| `edge-function-contract-coverage` | ✅ | 0 | 1 |
-| `warn-ratchet-meaningfulness` | ✅ | 0 | 0 |
-| `evidence-freshness-blocking` | ✅ | 0 | 1 |
-| `behavioral-ci-coverage` | ✅ | 0 | 0 |
-| `gate-quality-classification` | ✅ | 0 | 0 |
-| `real-hardware-proof` | ✅ | 0 | 1 |
-| `hardware-certification-matrix` | ✅ | 0 | 1 |
-| `attestation-evidence-freshness` | ✅ | 0 | 1 |
-| `operator-drill-execution` | ✅ | 0 | 1 |
-| `runbook-human-use-proof` | ✅ | 0 | 1 |
-| `kill-switch-drill-readiness` | ✅ | 0 | 1 |
-| `supportability-freshness` | ✅ | 0 | 0 |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3388 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3380 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

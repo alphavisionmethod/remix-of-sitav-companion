@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:13:18.776Z",
+  "generatedAt": "2026-04-19T13:34:02.207Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1094,115 +1094,10 @@
       "ok": true,
       "errors": 0,
       "warnings": 0
-    },
-    {
-      "file": "generated/admin-top-task-discoverability-report.json",
-      "gate": "admin-top-task-discoverability",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/no-museum-boards-report.json",
-      "gate": "no-museum-boards",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/admin-action-orientation-report.json",
-      "gate": "admin-action-orientation",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/edge-function-contract-coverage-report.json",
-      "gate": "edge-function-contract-coverage",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/warn-ratchet-meaningfulness-report.json",
-      "gate": "warn-ratchet-meaningfulness",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/evidence-freshness-blocking-report.json",
-      "gate": "evidence-freshness-blocking",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/behavioral-ci-coverage-report.json",
-      "gate": "behavioral-ci-coverage",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/gate-quality-classification-report.json",
-      "gate": "gate-quality-classification",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/real-hardware-proof-report.json",
-      "gate": "real-hardware-proof",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/hardware-certification-matrix-report.json",
-      "gate": "hardware-certification-matrix",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/attestation-evidence-freshness-report.json",
-      "gate": "attestation-evidence-freshness",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/operator-drill-execution-report.json",
-      "gate": "operator-drill-execution",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/runbook-human-use-proof-report.json",
-      "gate": "runbook-human-use-proof",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/kill-switch-drill-readiness-report.json",
-      "gate": "kill-switch-drill-readiness",
-      "ok": true,
-      "errors": 0,
-      "warnings": 1
-    },
-    {
-      "file": "generated/supportability-freshness-report.json",
-      "gate": "supportability-freshness",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3388,
+  "totalWarnings": 3380,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"

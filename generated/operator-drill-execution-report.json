@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:11:16.012Z",
+  "generatedAt": "2026-04-19T14:23:25.438Z",
   "gate": "operator-drill-execution",
   "ok": true,
   "errorCount": 0,
@@ -8,10 +8,13 @@
     {
       "severity": "warning",
       "area": "drills",
-      "message": "No operator drill executions recorded — pending human execution"
+      "message": "No operator drill executions recorded — pending-human-execution"
     }
   ],
   "drills": 0,
-  "level": "warn",
-  "classification": "pending-human-execution"
+  "distinctScenarios": 0,
+  "scenarioTarget": 6,
+  "source": "live-db",
+  "classification": "pending-human-execution",
+  "perScenario": []
 }

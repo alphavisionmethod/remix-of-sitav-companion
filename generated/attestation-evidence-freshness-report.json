@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T14:11:27.518Z",
+  "generatedAt": "2026-04-19T14:23:22.084Z",
   "gate": "attestation-evidence-freshness",
   "ok": true,
   "errorCount": 0,
@@ -8,9 +8,12 @@
     {
       "severity": "warning",
       "area": "freshness",
-      "message": "No attestation runs to evaluate freshness"
+      "message": "No attestation runs to evaluate freshness — partner-blocked"
     }
   ],
-  "runs": 0,
-  "windowHours": 720
+  "totalRuns": 0,
+  "deviceClasses": 0,
+  "windowHours": 720,
+  "classification": "partner-blocked",
+  "perDevice": []
 }

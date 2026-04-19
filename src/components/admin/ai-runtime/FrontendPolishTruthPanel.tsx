@@ -8,12 +8,11 @@
 // Mirrors the MobileScopeTruthPanel pattern. Mounted ONLY inside
 // /admin/ai-runtime as a tab — there is no duplicate user-facing dashboard.
 // ═══════════════════════════════════════════════════════════════
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Sparkles, ShieldCheck, Layers, FileCheck2, RefreshCw, ExternalLink } from "lucide-react";
+import { Sparkles, ShieldCheck, Layers, FileCheck2 } from "lucide-react";
 
 interface VerificationDoc {
   generatedAt: string;
@@ -46,24 +45,28 @@ export default function FrontendPolishTruthPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadDoc = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(VERIFICATION_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = (await res.json()) as VerificationDoc;
-      setDoc(data);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    void loadDoc();
-  }, [loadDoc]);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(VERIFICATION_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = (await res.json()) as VerificationDoc;
+        if (!cancelled) {
+          setDoc(data);
+          setLoading(false);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : String(e));
+          setLoading(false);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -80,32 +83,11 @@ export default function FrontendPolishTruthPanel() {
               and responsive integrity for every board on this hub.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            {doc && (
-              <Badge className={tone(doc.ok)} variant="outline">
-                {doc.status}
-              </Badge>
-            )}
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => void loadDoc()}
-              disabled={loading}
-              className="h-7 px-2 text-xs"
-            >
-              <RefreshCw className={`h-3 w-3 mr-1 ${loading ? "animate-spin" : ""}`} />
-              Refresh
-            </Button>
-            <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
-              <a
-                href="/generated/frontend-polish-closure/FRONTEND_POLISH_FINAL_VERIFICATION.md"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Evidence <ExternalLink className="h-3 w-3 ml-1" />
-              </a>
-            </Button>
-          </div>
+          {doc && (
+            <Badge className={tone(doc.ok)} variant="outline">
+              {doc.status}
+            </Badge>
+          )}
         </CardHeader>
         <CardContent className="text-xs space-y-3">
           {loading && (
