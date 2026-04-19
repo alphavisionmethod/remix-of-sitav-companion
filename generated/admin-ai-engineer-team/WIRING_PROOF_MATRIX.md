@@ -1,6 +1,6 @@
 # Admin AI Engineer Hub — Wiring Proof Matrix
 
-> Generated: 2026-04-19T19:27:52.198Z
+> Generated: 2026-04-19T19:29:40.930Z
 > Tabs: 43 · Realtime: 8 · Mismatches: 29
 
 Each tab is verified against its declared data sources by AST-scanning the panel source for `supabase.from`, `supabase.rpc`, `supabase.functions.invoke`, and `supabase.channel`.

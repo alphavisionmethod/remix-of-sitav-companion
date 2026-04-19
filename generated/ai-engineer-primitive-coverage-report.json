@@ -1,459 +1,462 @@
 {
-  "generatedAt": "2026-04-19T19:27:54.344Z",
+  "generatedAt": "2026-04-19T19:29:42.717Z",
   "gate": "ai-engineer-primitive-coverage",
-  "ok": false,
-  "errorCount": 89,
-  "warningCount": 0,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 89,
   "issues": [
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"team\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-blue-500, text-emerald-500 in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"team\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"team\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIT01TeamOverview"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"internal-agents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-sky-500/15, text-amber-400, text-amber-600, text-emerald-400, text-emerald-500, text-emerald-600, text-sky-400, text-sky-500, text-sky-600 in @/pages/admin/ai-runtime/InternalAgentsBoard"
+      "message": "Tab \"internal-agents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-sky-500/15, text-amber-400, +7 more in @/pages/admin/ai-runtime/InternalAgentsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"internal-agents\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/InternalAgentsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"internal-agents\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/InternalAgentsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"internal-agent-intents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-amber-500/15, bg-blue-500/15, bg-green-500/10, bg-green-500/15, bg-green-500/20, bg-green-500/5, bg-orange-500/10, bg-orange-500/15, bg-red-500/10, bg-red-500/15, bg-red-500/20, bg-red-500/5, border-green-500/30, border-orange-500/30, border-red-500/30, text-amber-400, text-blue-400, text-green-400, text-orange-400, text-red-400 in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
+      "message": "Tab \"internal-agent-intents\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-amber-500/15, bg-blue-500/15, bg-green-500/10, +17 more in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"internal-agent-intents\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"internal-agent-intents\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/InternalAgentIntentTimeline"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"councils\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-orange-500/15, border-amber-500/40, border-emerald-500/30, text-amber-400, text-amber-500, text-amber-600, text-emerald-400, text-emerald-500, text-emerald-600, text-orange-400, text-orange-600, text-sky-500 in @/pages/admin/ai-runtime/CouncilsBoard"
+      "message": "Tab \"councils\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, bg-orange-500/15, border-amber-500/40, +10 more in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"councils\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"councils\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/CouncilsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"trust-ladder\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-orange-500/10, bg-red-500/10, border-amber-500/30, border-blue-500/30, border-emerald-500/30, border-orange-500/30, border-red-500/30, text-amber-500, text-blue-500, text-emerald-500, text-orange-500, text-red-500 in @/pages/admin/ai-runtime/TrustLadderBoard"
+      "message": "Tab \"trust-ladder\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-orange-500/10, +11 more in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"trust-ladder\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"trust-ladder\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/TrustLadderBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"reflection\" uses raw status-color literals (must go through StatusTone): bg-amber-500, bg-amber-500/15, bg-green-500, bg-green-500/15, bg-green-500/5, bg-orange-500/15, bg-red-500, bg-red-500/15, bg-red-500/5, border-green-500/30, border-red-500/30, text-amber-400, text-green-400, text-orange-400, text-red-400 in @/pages/admin/ai-runtime/ReflectionBoard"
+      "message": "Tab \"reflection\" uses raw status-color literals (must go through StatusTone): bg-amber-500, bg-amber-500/15, bg-green-500, bg-green-500/15, +11 more in @/pages/admin/ai-runtime/ReflectionBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"reflection\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ReflectionBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"suggestions\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-emerald-500/5, bg-green-500/15, bg-green-500/5, bg-orange-500/15, bg-red-500/15, bg-red-500/5, border-amber-500/30, border-blue-500/30, border-emerald-500/30, border-green-500/30, border-orange-500/30, border-red-500/30, text-amber-400, text-blue-400, text-emerald-400, text-green-400, text-orange-400, text-red-400 in @/pages/admin/ai-runtime/SuggestionsBoard"
+      "message": "Tab \"suggestions\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-emerald-500/5, +17 more in @/pages/admin/ai-runtime/SuggestionsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"suggestions\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SuggestionsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"suggestions\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SuggestionsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"weekly-digest\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/WeeklyDigestBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"dependency-findings\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-amber-500/5, bg-green-500/15, bg-orange-500/15, bg-orange-500/5, bg-red-500/15, bg-red-500/5, border-amber-500/30, border-orange-500/30, border-red-500/30, text-amber-400, text-green-400, text-orange-400, text-red-400 in @/pages/admin/ai-runtime/DependencyFindingsBoard"
+      "message": "Tab \"dependency-findings\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-amber-500/5, bg-green-500/15, bg-orange-500/15, +10 more in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"dependency-findings\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"dependency-findings\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/DependencyFindingsBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"policy-drafts\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"policy-drafts\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"cross-council\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/CrossCouncilBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"cross-council\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/CrossCouncilBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"tenant-federation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/TenantFederationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"tenant-federation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/TenantFederationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"security-council\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-orange-500/15, border-amber-500/30, border-blue-500/30, border-emerald-500/30, border-orange-500/30, text-amber-500, text-blue-500, text-emerald-500, text-orange-500 in @/pages/admin/ai-runtime/SecurityCouncilBoard"
+      "message": "Tab \"security-council\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-orange-500/15, +8 more in @/pages/admin/ai-runtime/SecurityCouncilBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"security-council\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SecurityCouncilBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"security-council\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SecurityCouncilBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"providers\" uses raw status-color literals (must go through StatusTone): bg-green-400, text-green-500 in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"providers\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"providers\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG01ProviderRegistry"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"models\" uses raw status-color literals (must go through StatusTone): text-green-400 in @/pages/admin/AIG02ModelRegistry"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"models\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG02ModelRegistry"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"routing\" uses raw status-color literals (must go through StatusTone): border-amber-500/50, text-amber-400, text-blue-400, text-emerald-400 in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"routing\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"routing\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG03RoutingMatrix"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"budget\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIG04BudgetCenter"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"budget\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIG04BudgetCenter"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"governance\" uses raw status-color literals (must go through StatusTone): text-green-500 in @/pages/admin/AIGovernancePage"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"governance\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIGovernancePage"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"slo-observability\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, text-blue-600, text-emerald-600, text-red-600 in @/pages/admin/ai-runtime/SLOObservabilityBoard"
+      "message": "Tab \"slo-observability\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"slo-observability\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"slo-observability\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SLOObservabilityBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"efficiency\" uses raw status-color literals (must go through StatusTone): text-amber-400, text-emerald-400, text-rose-400 in @/pages/admin/intelligence/AIEfficiencyScoreboard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"efficiency\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/intelligence/AIEfficiencyScoreboard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"cost\" uses raw status-color literals (must go through StatusTone): text-amber-500, text-blue-500, text-emerald-500 in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"cost\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"cost\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/AIT05CostEfficiency"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"assurance-chaos\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, text-blue-600, text-emerald-600, text-red-600 in @/pages/admin/ai-runtime/AssuranceChaosBoard"
+      "message": "Tab \"assurance-chaos\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"assurance-chaos\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"assurance-chaos\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/AssuranceChaosBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"external-workforce-api\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, text-emerald-600, text-red-600 in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
+      "message": "Tab \"external-workforce-api\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, +2 more in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"external-workforce-api\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"external-workforce-api\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"knowledge-federation\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, text-amber-600, text-blue-600, text-emerald-600 in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
+      "message": "Tab \"knowledge-federation\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, text-amber-600, +2 more in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"knowledge-federation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"knowledge-federation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/KnowledgeFederationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"sovereign-dr\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, text-amber-600, text-blue-600, text-emerald-600, text-red-600 in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+      "message": "Tab \"sovereign-dr\" uses raw status-color literals (must go through StatusTone): bg-amber-500/10, bg-blue-500/10, bg-emerald-500/10, bg-red-500/10, +4 more in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"sovereign-dr\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"sovereign-dr\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"compliance-attestation\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/10, text-emerald-600 in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"compliance-attestation\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"compliance-attestation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/ComplianceAttestationBoard"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"advisors\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/AdvisorBoardCatalog"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"owner-copilot\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"owner-copilot\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"nightly-truth\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"connector-truth\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, border-amber-500/30, border-emerald-500/30, text-amber-400, text-amber-700, text-emerald-400, text-emerald-600, text-emerald-700 in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
+      "message": "Tab \"connector-truth\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-emerald-500/15, border-amber-500/30, border-emerald-500/30, +5 more in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"connector-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"connector-truth\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"mobile-scope-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, text-emerald-700 in @/components/admin/ai-runtime/MobileScopeTruthPanel"
+      "message": "Tab \"mobile-scope-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, +1 more in @/components/admin/ai-runtime/MobileScopeTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"mobile-scope-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/MobileScopeTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"frontend-polish-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, text-emerald-700 in @/components/admin/ai-runtime/FrontendPolishTruthPanel"
+      "message": "Tab \"frontend-polish-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-600, +1 more in @/components/admin/ai-runtime/FrontendPolishTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"frontend-polish-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/FrontendPolishTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
       "message": "Tab \"admin-validation-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-emerald-400, text-emerald-700 in @/components/admin/ai-runtime/AdminValidationTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"admin-validation-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/AdminValidationTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"hardware-operator-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, text-emerald-700 in @/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
+      "message": "Tab \"hardware-operator-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, +1 more in @/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"hardware-operator-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "color-literal",
-      "message": "Tab \"security-portability-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, text-emerald-700 in @/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
+      "message": "Tab \"security-portability-truth\" uses raw status-color literals (must go through StatusTone): bg-emerald-500/15, border-emerald-500/30, text-amber-400, text-amber-700, +1 more in @/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"security-portability-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"architectural-cleanup-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"architecture-hardening-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"flagship-surface-closure-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"
     },
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"admin-empty-state-closure-truth\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"
     }
   ],
-  "tier": "BLOCK",
+  "tier": "WARN",
+  "promotionTier": "BLOCK",
   "scope": "admin-ai-engineer-team",
   "totalTabs": 43,
   "tabsWithStatusBadge": 5,
-  "tabsWithOperatorActionPanel": 0
+  "tabsWithOperatorActionPanel": 0,
+  "tabsWithAITruthDisclosure": 1,
+  "tabsWithForbiddenColors": 27
 }
