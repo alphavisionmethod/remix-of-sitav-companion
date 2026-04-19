@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T19:29:42.717Z",
+  "generatedAt": "2026-04-19T19:36:10.255Z",
   "gate": "ai-engineer-primitive-coverage",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 89,
+  "warningCount": 81,
   "issues": [
     {
       "severity": "warning",
@@ -92,21 +92,6 @@
     },
     {
       "severity": "warning",
-      "area": "color-literal",
-      "message": "Tab \"suggestions\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-emerald-500/5, +17 more in @/pages/admin/ai-runtime/SuggestionsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"suggestions\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SuggestionsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"suggestions\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SuggestionsBoard"
-    },
-    {
-      "severity": "warning",
       "area": "raw-badge",
       "message": "Tab \"weekly-digest\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/WeeklyDigestBoard"
     },
@@ -128,16 +113,6 @@
     {
       "severity": "warning",
       "area": "raw-badge",
-      "message": "Tab \"policy-drafts\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"policy-drafts\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
       "message": "Tab \"cross-council\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/CrossCouncilBoard"
     },
     {
@@ -154,21 +129,6 @@
       "severity": "warning",
       "area": "operator-action",
       "message": "Tab \"tenant-federation\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/TenantFederationBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "color-literal",
-      "message": "Tab \"security-council\" uses raw status-color literals (must go through StatusTone): bg-amber-500/15, bg-blue-500/15, bg-emerald-500/15, bg-orange-500/15, +8 more in @/pages/admin/ai-runtime/SecurityCouncilBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "raw-badge",
-      "message": "Tab \"security-council\" imports @/components/ui/badge but does not import StatusBadge — replace status badges with StatusBadge in @/pages/admin/ai-runtime/SecurityCouncilBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action",
-      "message": "Tab \"security-council\" declares requiresOperatorAction=true but does not import OperatorActionPanel in @/pages/admin/ai-runtime/SecurityCouncilBoard"
     },
     {
       "severity": "warning",
@@ -455,8 +415,8 @@
   "promotionTier": "BLOCK",
   "scope": "admin-ai-engineer-team",
   "totalTabs": 43,
-  "tabsWithStatusBadge": 5,
-  "tabsWithOperatorActionPanel": 0,
-  "tabsWithAITruthDisclosure": 1,
-  "tabsWithForbiddenColors": 27
+  "tabsWithStatusBadge": 8,
+  "tabsWithOperatorActionPanel": 3,
+  "tabsWithAITruthDisclosure": 4,
+  "tabsWithForbiddenColors": 25
 }

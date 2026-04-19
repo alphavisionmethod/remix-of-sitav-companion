@@ -7,11 +7,18 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
+import {
+  riskTone,
+  policyDraftStatusTone,
+} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { ShieldAlert, FileWarning, KeyRound, CheckCircle2, XCircle, RefreshCw, Play, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -50,12 +57,7 @@ const KIND_ICON: Record<string, typeof FileWarning> = {
   column_grant_review: FileWarning,
 };
 
-const RISK_BADGE: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  low: "outline",
-  medium: "secondary",
-  high: "default",
-  critical: "destructive",
-};
+// Risk + status tones now flow through canonical StatusBadge + status-tone-maps.
 
 export default function PolicyDraftReviewBoard() {
   const [drafts, setDrafts] = useState<PolicyDraft[]>([]);
@@ -119,7 +121,7 @@ export default function PolicyDraftReviewBoard() {
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <ShieldAlert className="h-6 w-6 text-primary" />
@@ -128,11 +130,25 @@ export default function PolicyDraftReviewBoard() {
           <p className="text-sm text-muted-foreground">
             AI-drafted security proposals (RLS, secret rotation). Never auto-applied — admin approval required.
           </p>
+          <div className="mt-2">
+            <AITruthDisclosure
+              mode={drafts.length > 0 ? "structural" : "structural"}
+              label={formatTrustLabel("ai", "structural")}
+            />
+          </div>
         </div>
-        <Button onClick={runScan} disabled={scanning} className="gap-2">
-          {scanning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-          Run Architect Scan
-        </Button>
+        <OperatorActionPanel
+          ariaLabel="Policy Draft actions"
+          primary={{
+            label: scanning ? "Scanning…" : "Run Architect Scan",
+            icon: scanning ? RefreshCw : Play,
+            onClick: runScan,
+            disabled: scanning,
+          }}
+          next={[
+            { label: "Refresh", icon: RefreshCw, onClick: () => void load(), disabled: loading },
+          ]}
+        />
       </div>
 
       {health && (
@@ -204,8 +220,9 @@ export default function PolicyDraftReviewBoard() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">{draft.draft_kind.replace(/_/g, " ")}</Badge>
-                      <Badge variant={RISK_BADGE[draft.risk_assessment]}>{draft.risk_assessment}</Badge>
+                      <StatusBadge tone="muted" size="xs">{draft.draft_kind.replace(/_/g, " ")}</StatusBadge>
+                      <StatusBadge tone={riskTone(draft.risk_assessment)} size="xs">{draft.risk_assessment}</StatusBadge>
+                      <StatusBadge tone={policyDraftStatusTone(draft.status)} size="xs">{draft.status.replace(/_/g, " ")}</StatusBadge>
                     </div>
                   </div>
                 </CardHeader>

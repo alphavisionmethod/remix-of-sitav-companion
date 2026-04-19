@@ -12,7 +12,6 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from "@/components/ui/sheet";
@@ -27,6 +26,14 @@ import {
 } from "lucide-react";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
+import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
+import {
+  severityTone,
+  findingStatusTone,
+} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -72,20 +79,8 @@ const AGENTS = [
   { id: "st-privacy-boundary", label: "Privacy Boundary", desc: "Cross-tenant action observations" },
 ] as const;
 
-const SEVERITY_TONE: Record<string, string> = {
-  critical: "bg-destructive/15 text-destructive border-destructive/30",
-  high: "bg-orange-500/15 text-orange-500 border-orange-500/30",
-  medium: "bg-amber-500/15 text-amber-500 border-amber-500/30",
-  low: "bg-muted text-muted-foreground border-border",
-};
-
-const STATUS_TONE: Record<string, string> = {
-  open: "bg-blue-500/15 text-blue-500 border-blue-500/30",
-  acknowledged: "bg-violet-500/15 text-violet-500 border-violet-500/30",
-  routed: "bg-cyan-500/15 text-cyan-500 border-cyan-500/30",
-  resolved: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
-  muted: "bg-muted text-muted-foreground border-border",
-};
+// Status tones now flow through canonical StatusBadge + status-tone-maps
+// (see src/components/admin/ai-runtime/_shared/status-tone-maps.ts).
 
 export default function SecurityCouncilBoard() {
   const [findings, setFindings] = useState<Finding[]>([]);
@@ -212,17 +207,50 @@ export default function SecurityCouncilBoard() {
             Phase 4 — 7 security-trust agents observe runtime signals and propose policy/kill-switch actions.
             Findings never auto-execute; high/critical items route to the Suggestions queue for human review.
           </p>
+          <div className="mt-2">
+            <AITruthDisclosure
+              mode={summary?.generated_at ? "live-gateway" : "structural"}
+              verifiedAt={summary?.generated_at ?? null}
+              label={
+                summary?.generated_at
+                  ? formatTrustLabel("ai", "live", { verifiedAt: summary.generated_at })
+                  : undefined
+              }
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={cn("h-4 w-4 mr-2", loading && "animate-spin")} />
-            Refresh
-          </Button>
-          <Button size="sm" onClick={runTick} disabled={ticking}>
-            <Activity className={cn("h-4 w-4 mr-2", ticking && "animate-pulse")} />
-            Run tick now
-          </Button>
-        </div>
+        <OperatorActionPanel
+          ariaLabel="Security Council actions"
+          primary={{
+            label: ticking ? "Ticking…" : "Run tick now",
+            icon: Activity,
+            onClick: runTick,
+            disabled: ticking,
+          }}
+          next={[
+            {
+              label: loading ? "Refreshing…" : "Refresh",
+              icon: RefreshCw,
+              onClick: load,
+              disabled: loading,
+            },
+          ]}
+          evidence={[
+            {
+              label: "Open Suggestions",
+              icon: ExternalLink,
+              href: "/admin/ai-runtime?tab=suggestions",
+              asChild: (
+                <a
+                  href="/admin/ai-runtime?tab=suggestions"
+                  className="inline-flex items-center gap-1.5 rounded-md border bg-background h-8 px-3 text-xs hover:bg-muted"
+                >
+                  <ExternalLink className="h-3 w-3" /> Open Suggestions
+                </a>
+              ),
+            },
+          ]}
+        />
       </div>
 
       {/* Summary cards */}
@@ -234,7 +262,7 @@ export default function SecurityCouncilBoard() {
                 <p className="text-xs text-muted-foreground">Open findings</p>
                 <p className="text-2xl font-semibold">{summary?.open_findings ?? 0}</p>
               </div>
-              <Eye className="h-5 w-5 text-blue-500" />
+              <Eye className="h-5 w-5 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -256,7 +284,7 @@ export default function SecurityCouncilBoard() {
                 <p className="text-xs text-muted-foreground">Kill-switch recs (pending)</p>
                 <p className="text-2xl font-semibold">{summary?.kill_switch_recommendations?.pending ?? 0}</p>
               </div>
-              <ShieldX className="h-5 w-5 text-orange-500" />
+              <ShieldX className="h-5 w-5 text-warning" />
             </div>
           </CardContent>
         </Card>
@@ -295,7 +323,7 @@ export default function SecurityCouncilBoard() {
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">Open</span>
-                    <span className={cn("font-medium", stats.openCount > 0 && "text-orange-500")}>
+                    <span className={cn("font-medium", stats.openCount > 0 && "text-warning")}>
                       {stats.openCount}
                     </span>
                   </div>
@@ -368,14 +396,14 @@ export default function SecurityCouncilBoard() {
                     onClick={() => setSelected(f)}
                   >
                     <TableCell>
-                      <Badge variant="outline" className={SEVERITY_TONE[f.severity]}>
+                      <StatusBadge tone={severityTone(f.severity)} size="xs">
                         {f.severity}
-                      </Badge>
+                      </StatusBadge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className={STATUS_TONE[f.status]}>
+                      <StatusBadge tone={findingStatusTone(f.status)} size="xs">
                         {f.status}
-                      </Badge>
+                      </StatusBadge>
                     </TableCell>
                     <TableCell className="text-xs font-mono">{f.agent_id}</TableCell>
                     <TableCell className="text-sm max-w-md truncate">{f.title}</TableCell>
@@ -398,9 +426,9 @@ export default function SecurityCouncilBoard() {
             <>
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <Badge variant="outline" className={SEVERITY_TONE[selected.severity]}>
+                  <StatusBadge tone={severityTone(selected.severity)} size="sm">
                     {selected.severity}
-                  </Badge>
+                  </StatusBadge>
                   {selected.title}
                 </SheetTitle>
                 <SheetDescription>{selected.summary}</SheetDescription>
@@ -417,8 +445,8 @@ export default function SecurityCouncilBoard() {
                 </div>
 
                 {selected.routed_suggestion_id && (
-                  <div className="rounded-md border border-cyan-500/30 bg-cyan-500/5 p-3 text-xs">
-                    <div className="flex items-center gap-2 font-medium text-cyan-500 mb-1">
+                  <div className="rounded-md border border-info/30 bg-info/5 p-3 text-xs">
+                    <div className="flex items-center gap-2 font-medium text-info mb-1">
                       <ExternalLink className="h-3.5 w-3.5" />
                       Routed to implementation suggestion
                     </div>

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T19:29:44.516Z",
+  "generatedAt": "2026-04-19T19:36:12.148Z",
   "gate": "ai-engineer-action-coverage",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 24,
+  "warningCount": 21,
   "issues": [
     {
       "severity": "warning",
@@ -33,17 +33,7 @@
     {
       "severity": "warning",
       "area": "operator-action-missing",
-      "message": "Tab \"suggestions\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SuggestionsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
       "message": "Tab \"dependency-findings\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/DependencyFindingsBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
-      "message": "Tab \"policy-drafts\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
     },
     {
       "severity": "warning",
@@ -54,11 +44,6 @@
       "severity": "warning",
       "area": "operator-action-missing",
       "message": "Tab \"tenant-federation\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/TenantFederationBoard"
-    },
-    {
-      "severity": "warning",
-      "area": "operator-action-missing",
-      "message": "Tab \"security-council\" requires operator actions but does not render <OperatorActionPanel/> anywhere in @/pages/admin/ai-runtime/SecurityCouncilBoard"
     },
     {
       "severity": "warning",
@@ -130,6 +115,6 @@
   "promotionTier": "BLOCK",
   "scope": "admin-ai-engineer-team",
   "requiringOperatorAction": 24,
-  "compliantTabs": 0,
-  "coveragePct": 0
+  "compliantTabs": 3,
+  "coveragePct": 13
 }
