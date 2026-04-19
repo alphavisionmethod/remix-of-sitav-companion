@@ -1,0 +1,26 @@
+{
+  "phase": "phase4",
+  "status": "in_progress",
+  "completed": [
+    "DB foundation: 3 tables (security_council_findings, kill_switch_recommendations, secret_rotation_triggers) with RLS, service-role-only writes, audit.view-gated reads",
+    "4 RPCs: record_security_finding, propose_kill_switch_recommendation, trigger_anomaly_secret_rotation, summarize_security_council",
+    "3 edge functions deployed: security-council-tick (7 agents), security-kill-switch-recommender (recommend-only), security-anomaly-rotation-trigger (dryRun-only)",
+    "pg_cron schedule sita-security-council-tick installed (hourly, jobid=24)",
+    "Hard guardrails: no DDL execution, no kill switch arming, no live secret rotation"
+  ],
+  "remaining": [
+    "3 admin pages (/admin/ai-runtime/security-council, /kill-switch-recommendations, /anomaly-rotations)",
+    "AIRuntimeHome tile registration",
+    "6 BLOCK validators + aggregator registration",
+    "Remaining 10 generated/internal-ai-runtime-phase4/ artifacts",
+    "docs/runbooks/security-council-operations.md"
+  ],
+  "guardrails_enforced": {
+    "policy_changes": "drafts only via existing internal-agent-policy-architect",
+    "kill_switches": "recommendations only, route into existing kill_switch_approvals dual-approval",
+    "secret_rotation": "dryRun=true only, human required via RB-SECRET-ROTATION",
+    "L3_ceiling": "preserved",
+    "EWMA_trust": "preserved (no direct trust_score writes)"
+  },
+  "generated_at": "2026-04-19T00:00:00Z"
+}
