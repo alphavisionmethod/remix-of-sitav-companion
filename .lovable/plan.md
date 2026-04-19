@@ -1,34 +1,45 @@
 
 
-User wants a comprehensive audit document `PROJECT_TREE_AUDIT.md` written to `/mnt/documents/` based on actual repo inspection. This is a documentation/artifact task — read-only inspection then file generation. No app code changes.
+The user wants a massive execution-grade master remediation blueprint covering 64 sections + 4 appendices in 9 ordered parts. This is a documentation/artifact generation task — read-only inspection then file generation. No app code changes.
 
 ## Approach
 
-1. **Inspect actual repo state** (read-only): top-level layout, `src/` decomposition, `electron/`, `os/`, `supabase/`, `scripts/architecture/`, `generated/`, `public/generated/`, plane registries, route-plane map, deployment profiles, recent AI Engineer hub closure bundle.
-2. **Cross-check claims** in memory against filesystem (e.g., is there a `src/services/`? is `src/lib/` actually huge? are planes physically reflected?).
-3. **Generate the audit** with all 9 required sections (A–I), in markdown, comprehensive, no softening.
-4. **Write to `/mnt/documents/PROJECT_TREE_AUDIT.md`** and emit `<lov-artifact>` for download.
-5. **Mirror to `public/generated/`** so it can be surfaced in-app later if needed.
+1. **Spot-verify key claims** in the v3 audit against actual repo state (10 targeted reads/searches in parallel) — confirm what's real vs. what's likely overstated, so the fix plan targets real gaps.
+2. **Generate `MASTER_REMEDIATION_BLUEPRINT_v1.md`** to `/mnt/documents/` (downloadable) with all 9 parts, ~6000–8000 lines.
+3. **Mirror to `public/generated/`** so the in-app document viewer can surface it.
+4. Emit a single `<lov-artifact>` tag at the end.
 
-## Scope discipline
+## Verification reads (parallel)
 
-- Pure read + artifact write. No edits to app code, no migrations, no edge functions.
-- Audit reflects current state honestly: AI Engineer hub Phases 1–6 done at framework + flagship-board level; ~33/43 panels still owe primitive sweep; structural debts (oversized `src/lib`, missing `src/services`, no first-class mobile root, observability/security/compliance still distributed) called out unsoftened.
+- `src/lib/architecture/route-plane-map.ts` (claim: 124 routes, all mapped)
+- `src/lib/architecture/plane-registry.ts` + `app-plane-map.ts`
+- `src/lib/runtime/desktop/` listing (claim: full host contract)
+- `src/lib/nova-sdk/kernel/` listing (claim: 4-phase boot)
+- `electron/security/` listing (claim: 7-layer fabric, 15 modules)
+- `os/runtime/` listing (claim: shell-watchdog, health-probe)
+- `supabase/functions/` count (claim: 173)
+- `generated/` listing (claim: 428 artifacts)
+- `scripts/architecture/checks/` listing (claim: 124 BLOCK gates + 7 meta)
+- `src/pages/admin/ai-runtime/` (claim: 22-tab hub, but earlier audit said 43 tabs with 28% primitive coverage)
 
-## Files to read (parallel where safe)
+## Document structure
 
-- Root: `package.json`, `tsconfig.json`, `vite.config.ts`
-- `src/` top-level listing + `src/lib/` overview + `src/components/admin/ai-runtime/` + `src/pages/admin/ai-runtime/`
-- `src/lib/architecture/plane-registry.ts`, `route-plane-map.ts`, `deployment-profile.ts`
-- `electron/` listing
-- `os/` listing  
-- `supabase/functions/` count, `supabase/config.toml`
-- `scripts/architecture/`, `scripts/validation/check-ai-engineer-*`
-- `generated/admin-ai-engineer-team/admin-ai-engineer-team-verification.json`
+Following the user's exact 9-part TOC:
+1. Master Fix Strategy (top-20, dep chains, hidden gaps, hardenings, deferrals)
+2. Phased Fix Plan (Phases 0–15, each with objective/files/artifacts/validators/gates/AC/deps)
+3. Section-by-Section Fixes (§1–§64, every one in Keep / Fix Now / Harden Next / Closure Proof format)
+4. Exact Wiring Instructions (FE / BE / DB / Runtime-OS / Evidence — directive form)
+5. Files/Artifacts/Modules to Create (grouped: manifests, registries, contracts, plane-maps, generated bundles, validators, migrations, edge funcs, cron, dashboards, runbooks, kill-switches, onboarding, advisor proofs, mobile)
+6. Validators & Gates (15 validator families, each with script name / inputs / pass-fail / output / severity)
+7. Migrations, Edge Functions, Contracts (concrete tables, columns, RLS, edge functions, TS contracts)
+8. Execution Backlog (tickets grouped by phase: ID / title / why / change / deps / owner / severity / complexity / DoD / proof)
+9. 30/60/90 Day Build Sequence (weekly milestones, critical path, parallel tracks, no-go gates)
+
+Style discipline: imperative verbs (Create / Add / Replace / Wire / Gate / Generate / Persist / Enforce / Deprecate / Delete), exact paths, exact validator names, no audit prose, no fluff, launch honesty preserved (mobile remains honestly deferred, AI Runtime stays Yellow until 7-day streak).
 
 ## Output
 
-- `/mnt/documents/PROJECT_TREE_AUDIT.md` (downloadable artifact, ~1500–2000 lines, all 9 sections, real tree, honest gap list, prioritized P0–P3)
-- Mirror at `public/generated/PROJECT_TREE_AUDIT.md`
-- Single `<lov-artifact>` tag at end
+- `/mnt/documents/MASTER_REMEDIATION_BLUEPRINT_v1.md` (downloadable artifact)
+- Mirror at `public/generated/MASTER_REMEDIATION_BLUEPRINT_v1.md`
+- Single `<lov-artifact path="MASTER_REMEDIATION_BLUEPRINT_v1.md" mime_type="text/markdown"></lov-artifact>` at end
 
