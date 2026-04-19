@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "economic-trust-and-future",
+  "domain": "per-user-budget-ceilings",
+  "status": "GREEN-WITH-WARN-LOAD",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "evidence": {
+    "rpc": "check_ai_budget_policies",
+    "tables": ["ai_workforce_budget_classes", "ai_usage_ledger", "ai_budget_alerts", "ai_budget_decision_receipts"],
+    "enforcementPath": "ai-gateway → check_ai_budget_policies → deny | downgrade | allow",
+    "perUserCeilingActive": true,
+    "perUserHourlyCallCap": true,
+    "perUserDailyDollarCap": true,
+    "premiumGating": true,
+    "downgradeAt80Pct": true,
+    "failsClosed": true,
+    "receiptEmittedOnDeny": true,
+    "loadTestRunsDir": "generated/economic-trust-and-future-closure/budget-load-runs/",
+    "loadTestStatus": "shell-script-present-honest-warn-until-executed"
+  },
+  "honestLimit": "Per-user hard-stop logic is wired and emits receipts; sustained-load proof requires running budget-load-test.sh against a deployed env. Classified WARN-tier until first real run lands."
+}

@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-04-19T00:00:00.000Z",
+  "closure": "economic-trust-and-future",
+  "domain": "future-surface-containment",
+  "status": "GREEN",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "evidence": {
+    "futureSurfacesRegistry": "src/lib/architecture/future-surfaces-registry.ts",
+    "excludedFromLaunchScoring": true,
+    "labeledArchivedOrFuture": true,
+    "categories": [
+      { "key": "mobile-native-ios-android", "status": "ARCHIVED", "reason": "Ubuntu-primary; native paths code-complete but external-account-blocked" },
+      { "key": "vr-spatial-shell", "status": "FUTURE_VISION_ONLY" },
+      { "key": "hardware-bridge-experimental", "status": "FUTURE_VISION_ONLY" }
+    ],
+    "containmentValidator": "check-future-surfaces-registered",
+    "boundaryEnforcement": "future surfaces cannot be referenced from launch-scoring code paths"
+  },
+  "honestLimit": "Future surfaces are explicitly excluded from launch readiness scoring with registry+validator backing. Re-promotion requires explicit registry update + new gate evidence."
+}
