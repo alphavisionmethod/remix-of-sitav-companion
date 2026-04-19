@@ -96,7 +96,7 @@ export function AIRuntimeDrilldownPanel({ agentId, userId }: Props) {
   if (!data) {
     return (
       <EmptyState
-        icon={Inbox}
+        icon={<Inbox className="h-5 w-5" />}
         title="No drilldown data yet"
         description="This agent has no recorded actions, invocations, or fallback events in the current window. Drilldown populates after the first runtime tick."
         size="sm"
