@@ -1,0 +1,119 @@
+{
+  "generatedAt": "2026-04-19T22:08:41.438Z",
+  "gate": "electron-domain-layout",
+  "phase": "phase-18-layout-and-ci-truth",
+  "ok": false,
+  "errorCount": 16,
+  "warningCount": 0,
+  "domains": [
+    "main",
+    "preload",
+    "bridges",
+    "security",
+    "updater",
+    "license",
+    "packaging"
+  ],
+  "registeredCount": 0,
+  "onDiskCount": 15,
+  "onDisk": [
+    "_layout.cjs",
+    "auto-updater.cjs",
+    "crash-reporter.cjs",
+    "dlp-guard.cjs",
+    "forge.config.cjs",
+    "fs-bridge.cjs",
+    "integrity-check.cjs",
+    "license-guard.cjs",
+    "license-preload.cjs",
+    "license-ui.cjs",
+    "main.cjs",
+    "network-sentinel.cjs",
+    "preload.cjs",
+    "runtime-shield.cjs",
+    "sita-apps-bridge.cjs"
+  ],
+  "classification": {},
+  "issues": [
+    {
+      "severity": "error",
+      "area": "registry",
+      "message": "Failed to load _layout.cjs: require is not defined"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/_layout.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/auto-updater.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/crash-reporter.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/dlp-guard.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/forge.config.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/fs-bridge.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/integrity-check.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/license-guard.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/license-preload.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/license-ui.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/main.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/network-sentinel.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/preload.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/runtime-shield.cjs\" exists on disk but is not classified in _layout.cjs"
+    },
+    {
+      "severity": "error",
+      "area": "orphan",
+      "message": "Module \"electron/sita-apps-bridge.cjs\" exists on disk but is not classified in _layout.cjs"
+    }
+  ]
+}
