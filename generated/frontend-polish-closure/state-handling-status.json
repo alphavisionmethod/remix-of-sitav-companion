@@ -1,12 +1,6 @@
 {
-  "generatedAt": "2026-04-19T13:25:32.726Z",
+  "generatedAt": "2026-04-19T13:26:18.806Z",
   "scope": "admin/ai-runtime",
-  "violations": 1,
-  "offenders": [
-    {
-      "file": "AssuranceChaosBoard.tsx",
-      "missing_skeleton": true,
-      "missing_error": false
-    }
-  ]
+  "violations": 0,
+  "offenders": []
 }
