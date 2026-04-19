@@ -212,6 +212,23 @@ const REQUIRED_GATES = [
   "admin-board-polish",
   "trust-copy-quality",
   "responsive-surface-integrity",
+  // Admin & Validation Truth Closure — 8 BLOCK gates (operator pathfinding + gate-quality)
+  "admin-top-task-discoverability",
+  "no-museum-boards",
+  "admin-action-orientation",
+  "edge-function-contract-coverage",
+  "warn-ratchet-meaningfulness",
+  "evidence-freshness-blocking",
+  "behavioral-ci-coverage",
+  "gate-quality-classification",
+  // Hardware & Operator Readiness Closure — 7 BLOCK gates (real-device + human-use proof)
+  "real-hardware-proof",
+  "hardware-certification-matrix",
+  "attestation-evidence-freshness",
+  "operator-drill-execution",
+  "runbook-human-use-proof",
+  "kill-switch-drill-readiness",
+  "supportability-freshness",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

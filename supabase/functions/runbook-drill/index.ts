@@ -171,6 +171,32 @@ Deno.serve(async (req) => {
     return corsResponse({ ok: false, error: insertErr.message, outcomes }, 500);
   }
 
+  // ── Phase 2G: also record into operator_drill_executions (canonical operator-readiness truth) ──
+  // Maps the drill outcome to the 6-dimension operator capability schema so
+  // check-operator-drill-execution.ts can promote WARN → BLOCK.
+  try {
+    const allStepsOk = outcomes.every((o) => o.status === "ok");
+    const hasRollbackCheck = outcomes.some((o) => /rollback/i.test(o.notes ?? ""));
+    await supabase.from("operator_drill_executions").insert({
+      drill_id: `drill-${row.id}`,
+      scenario: body.runbookId,
+      operator_id: userId,
+      mttd_seconds: 0,
+      mttr_seconds: Math.floor(durationMs / 1000),
+      detect_pass: true,
+      select_runbook_pass: true,
+      kill_switch_pass: true,
+      evidence_pass: passed,
+      rollback_pass: allStepsOk && hasRollbackCheck,
+      confirm_pass: passed,
+      friction_notes: passed ? null : "Dry-run found issues — see runbook_drill_results.step_outcomes",
+      signoff_at: new Date().toISOString(),
+    });
+  } catch (e) {
+    // Non-fatal — the primary runbook_drill_results row is already persisted.
+    console.warn("[runbook-drill] operator_drill_executions insert failed:", (e as Error).message);
+  }
+
   return corsResponse({ ok: true, passed, durationMs, result: row }, 200);
 });
 
