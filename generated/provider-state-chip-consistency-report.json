@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T18:20:39.535Z",
+  "generatedAt": "2026-04-19T18:37:22.032Z",
   "gate": "provider-state-chip-consistency",
   "ok": true,
   "errorCount": 0,
@@ -2916,7 +2916,7 @@
       "message": "src/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel.tsx:165: provider-state context with hardcoded color — drive via ConnectorStateBadge"
     }
   ],
-  "scanned": 581,
+  "scanned": 582,
   "offenders": 582,
   "canonical": "ConnectorStateBadge composes StatusBadge with grammar-derived tone",
   "classification": "warn-tier-adoption-tracker"
