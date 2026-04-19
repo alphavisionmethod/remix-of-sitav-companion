@@ -1,14 +1,14 @@
 # Mobile Scope Closure — Final Verification
 
-> Generated: 2026-04-19T03:13:00.012Z
-> Status: **RED**
+> Generated: 2026-04-19T03:13:16.196Z
+> Status: **GREEN**
 
 ## Acceptance criteria
 
 | Criterion | Pass |
 |---|---|
-| native mobile out of scope | ❌ |
-| no maybe ready ambiguity | ❌ |
+| native mobile out of scope | ✅ |
+| no maybe ready ambiguity | ✅ |
 | install surfaces honest | ✅ |
 | artifacts safely contained | ✅ |
 | reactivation path documented | ✅ |
@@ -23,11 +23,9 @@
 | mobile dir archived | ✅ |
 | no capacitor deps | ✅ |
 | install surfaces linked | ✅ |
-| no stray generated mobile truth | ❌ |
+| no stray generated mobile truth | ✅ |
 
-## Failed checks
 
-- no_stray_generated_mobile_truth
 
 ## Surfaces audited
 
