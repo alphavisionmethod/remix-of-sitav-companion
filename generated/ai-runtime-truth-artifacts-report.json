@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T02:14:13.106Z",
+  "gate": "ai-runtime-truth-artifacts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "artifacts_emitted": 4,
+  "overall": "degraded"
+}

@@ -151,6 +151,12 @@ export default function AIRuntimeNightlyTruthPanel() {
             Live-provider verification, receipt persistence, ledger writes, fallback path, and budget enforcement —
             run nightly at 02:00 UTC against the real Sovereign AI Gateway.
           </p>
+          <p className="text-[10px] text-muted-foreground mt-1">
+            Truth artifacts regenerated nightly at 03:00 UTC via GitHub Actions{" "}
+            <code className="font-mono">ai-runtime-truth-nightly.yml</code> →{" "}
+            <code className="font-mono">generated/ai-runtime-truth-closure/</code>.
+            Last DB observation: {data.recentRuns[0]?.started_at ? new Date(data.recentRuns[0].started_at).toLocaleString() : "—"}.
+          </p>
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={reload} disabled={loading}>

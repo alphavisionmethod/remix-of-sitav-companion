@@ -1,75 +1,35 @@
 {
-  "schema_version": "1.0",
-  "generated_at": "2026-04-19T02:05:40Z",
-  "verdict": "BEHAVIORALLY_PROVEN_DAY_1",
-  "verdict_color": "YELLOW",
-  "verdict_reason": "Live-provider path proven end-to-end on day 1; 7 consecutive clean nights required for GREEN streak.",
-  "phases_complete": {
-    "phase_1_schema_and_audit": true,
-    "phase_2_verifier_edge_function": true,
-    "phase_3_ci_validation_scripts": true,
-    "phase_4_admin_visibility": true,
-    "phase_5_cron_and_aggregator": true
+  "generated_at": "2026-04-19T02:14:11.514Z",
+  "overall": "degraded",
+  "checks": {
+    "live_provider_call": "no-data",
+    "receipt_persistence": "no-data",
+    "ledger_write": "no-data",
+    "fallback_path": "no-data",
+    "budget_enforcement": "no-data",
+    "streak_health": "building"
   },
-  "live_provider_proof": {
-    "first_pass_run_id": "nrv-2026-04-19T02-05-32-448Z",
-    "model": "google/gemini-2.5-flash-lite",
-    "provider": "lovable-gateway",
-    "real_invocation": true,
-    "synthetic_only": false,
-    "estimated_cost_per_run_usd": 0.000002,
-    "cost_ceiling_usd": 0.005
-  },
-  "sub_checks": {
-    "live_provider_call": "PASS",
-    "receipt_persistence": "PASS",
-    "ledger_write": "PASS",
-    "fallback_path": "PASS",
-    "budget_enforcement": "PASS"
+  "runs_30d": {
+    "total": 0,
+    "pass": 0,
+    "fail": 0,
+    "degraded": 0
   },
   "streak": {
-    "current_streak_days": 1,
-    "longest_streak_days": 1,
-    "streak_target_for_green": 7,
-    "streak_started_at": "2026-04-19T02:05:32.448Z"
+    "current": 0,
+    "longest": 0,
+    "classification": "building",
+    "goal": 7
   },
-  "alerts": {
-    "auto_alerting_active": true,
-    "trigger_function": "handle_ai_runtime_nightly_run_insert",
-    "first_alert_proves_path": "2b555d13-6bd3-4a01-8a77-dcca5bd899f6"
+  "unacknowledged_failures": 0,
+  "acceptance_criteria": {
+    "A_live_provider_ci_proof": "no-data",
+    "B_cost_ceiling_under_load": "no-data",
+    "C_nightly_e2e_checks": "no-data",
+    "D_failure_alerting": "pass",
+    "E_admin_visibility": "pass",
+    "F_hard_pass_fail_evidence": "pass",
+    "G_seven_day_streak": "building"
   },
-  "cron": {
-    "schedule_name": "sita-ai-runtime-nightly-verify",
-    "schedule": "0 2 * * *",
-    "jobid": 27,
-    "active": true
-  },
-  "ci_gates_registered_in_aggregator": [
-    "ai-live-provider-nightly",
-    "ai-receipt-persistence",
-    "ai-ledger-write-verification",
-    "ai-fallback-verification",
-    "ai-budget-enforcement-under-load",
-    "ai-runtime-streak-health"
-  ],
-  "admin_surface": {
-    "tab_id": "nightly-truth",
-    "panel_component": "AIRuntimeNightlyTruthPanel",
-    "scope": "admin-ai-engineer-only",
-    "page": "/admin/ai-runtime"
-  },
-  "canonical_systems_reused": [
-    "ai-gateway",
-    "ai_invocations",
-    "ai_usage_ledger",
-    "ai_inference_receipts",
-    "ai_fallback_events",
-    "ai_workforce_budget_classes",
-    "_lib/emit-gate-report",
-    "AIRuntimeHome",
-    "check-os-release-readiness aggregator"
-  ],
-  "no_duplicates_introduced": true,
-  "no_stubs": true,
-  "launch_honest": true
+  "last_run": null
 }

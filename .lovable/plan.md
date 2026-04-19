@@ -1,73 +1,114 @@
 
 
-## Audit Verdict
+## AI Runtime Truth Closure — 5 Phase Plan
 
-**Implemented & verified live:**
-- 3 DB tables (`ai_runtime_nightly_runs`, `ai_runtime_streak_state`, `ai_runtime_failure_alerts`) ✓
-- Verifier edge function `ai-runtime-nightly-verify` (447 lines) ✓
-- 6 audit `.md` artifacts in `generated/ai-runtime-truth-closure/` ✓
-- 6 validation scripts in `scripts/validation/` ✓
-- 6 BLOCK gates wired into `check-os-release-readiness.ts` (lines 187–192) ✓
-- `pg_cron` job `sita-ai-runtime-nightly-verify` installed ✓
-- 2 real runs persisted, last status = **PASS** with all 5 sub-checks green ✓
-- Admin UI panel + tab in `AIRuntimeHome` ✓
-- 3 SECURITY DEFINER RPCs (streak summary, ack alert) ✓
+**Goal:** Move AI runtime from "path-proven" to "behaviorally proven, live-provider verified, cost-ceiling enforced under load, 7-day streak tracked, operator-visible." Integrated **only on the Admin AI Engineer** team surfaces (`/admin/ai-runtime/*`). No duplicates — extends existing `ai-gateway`, `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `AIRuntimeHome`, `NightlyProofBadge`, and existing nightly workflows.
 
-**Real gaps (not implemented despite being claimed):**
+---
 
-1. **4 required JSON artifacts missing on disk** — `ai-live-provider-status.json`, `ai-budget-enforcement-status.json`, `ai-nightly-streak-status.json`, `ai-runtime-truth-verification.json`. The prompt explicitly requires these exact filenames.
-2. **No GitHub Actions workflow runs the nightly verifier** — only `pg_cron` does. Acceptance criterion A says "live-provider receipt assertions exist in CI" — currently the 6 validation scripts run, but the actual live verifier does not run from CI.
-3. **No artifact-emitter script** — the JSON artifacts must be regenerated nightly from live DB state, not written once and stale.
+### Phase 1 — Truth Schema + Audit Artifacts (deployment-ready standalone)
 
-## Plan to Close Gaps
+**DB migration** (additive, no destructive changes):
+- `ai_runtime_nightly_runs` — one row per nightly run: `run_id`, `started_at`, `completed_at`, `status` (pass/fail/degraded), `provider_calls_ok`, `receipts_verified`, `ledger_verified`, `fallback_verified`, `budget_enforced`, `failure_class`, `evidence_jsonb`. RLS: admin-read only.
+- `ai_runtime_streak_state` — singleton: `current_streak_days`, `last_pass_at`, `last_fail_at`, `last_failure_class`, `streak_started_at`. RLS: admin-read only.
+- `ai_runtime_failure_alerts` — `alert_id`, `run_id`, `failure_class`, `severity`, `acknowledged_at`, `acknowledged_by`. RLS: admin-read/write via `has_admin_permission`.
+- Trigger: on insert into `ai_runtime_nightly_runs`, recompute streak; if status=fail, insert alert row.
 
-### Phase 1 — Live Artifact Emitter Script (deployment-ready)
+**Artifacts** (`generated/ai-runtime-truth-closure/`):
+- `AI_RUNTIME_CURRENT_STATE_AUDIT.md` — what's already real vs. synthetic
+- `AI_RUNTIME_NIGHTLY_VERIFICATION_MODEL.md` — canonical flow design
+- `AI_BUDGET_AND_CEILING_AUDIT.md`
+- `AI_COST_CEILING_LOAD_PROOF_MODEL.md`
+- `AI_RUNTIME_FAILURE_CLASSES.md` — 9 classes (provider_unavailable, invocation_invalid, receipt_missing, ledger_missing, fallback_failed, budget_enforcement_failed, budget_overrun_unblocked, model_routing_mismatch, verification_query_mismatch)
 
-**New:** `scripts/validation/emit-ai-runtime-truth-artifacts.ts`
-- Queries `ai_runtime_nightly_runs` (last 30d), `ai_runtime_streak_state`, `ai_runtime_failure_alerts`, `ai_inference_receipts`, `ai_usage_ledger`, `ai_fallback_events`, `ai_provider_health` via service-role client
-- Emits 4 canonical JSON files into `generated/ai-runtime-truth-closure/`:
-  - `ai-live-provider-status.json` — per-provider 7d success/fail counts + last receipt id + last invocation id
-  - `ai-budget-enforcement-status.json` — last enforcement decision, ledger accumulation, refusal receipt
-  - `ai-nightly-streak-status.json` — streak count, last pass/fail/degraded, classification (green/yellow/red)
-  - `ai-runtime-truth-verification.json` — master rollup with hard `pass`/`fail`/`degraded` per check + acceptance-criteria mapping
-- Emits gate report via existing `_lib/emit-gate-report.ts`
-- Uses **only canonical tables** — no parallel data store
+---
 
-**Wire into:** `package.json` script `ai:runtime:emit-truth` and called from each of the 6 validation gates so artifacts always reflect latest DB truth.
+### Phase 2 — Live-Provider Nightly Verifier Edge Function
 
-### Phase 2 — GitHub Actions Workflow for Live CI Proof
+**New edge function:** `supabase/functions/ai-runtime-nightly-verify/index.ts`
+- Service-role auth + admin caller check
+- Executes 5 canonical sub-checks against the **real `ai-gateway`** (cheapest model: `google/gemini-2.5-flash-lite`, capped at ~6 invocations / run):
+  1. **live_provider_call** — invokes gateway with sentinel prompt, asserts 200 + content
+  2. **receipt_persistence** — re-queries `ai_inference_receipts` by invocation_id
+  3. **ledger_write** — re-queries `ai_usage_ledger` matches invocation
+  4. **fallback_path** — invokes with deliberately-failing primary model, asserts `ai_fallback_events` row written
+  5. **budget_enforcement_under_load** — uses `ai_workforce_budget_classes` test class (already exists) at 95% utilization, fires N+1 calls, asserts the (N+1)th is refused and a refusal receipt persists
+- Inserts result row into `ai_runtime_nightly_runs` (trigger handles streak + alert)
+- Writes `generated/ai-runtime-truth-closure/ai-runtime-truth-verification.json` via response payload
 
-**New:** `.github/workflows/ai-runtime-truth-nightly.yml`
-- Schedule: `0 3 * * *` UTC (1h after pg_cron — gives verifier time to complete)
-- Steps:
-  1. Checkout + setup-node
-  2. `npm ci`
-  3. **Trigger live verify** via `curl POST` to `ai-runtime-nightly-verify` edge function (uses `${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}` — never committed)
-  4. Wait for completion (poll `ai_runtime_nightly_runs` via SQL through existing `supabase-db-query` pattern, or sleep 30s)
-  5. Run `npm run ai:runtime:emit-truth` (regenerates all 4 JSON artifacts from live DB)
-  6. Run all 6 validation gates: `tsx scripts/validation/check-ai-*.ts`
-  7. Upload artifacts (`generated/ai-runtime-truth-closure/`) with 30-day retention
-  8. Fail workflow if any gate exits non-zero → surfaces failure in GitHub UI + alerts on-call
-- Manual `workflow_dispatch` trigger for ad-hoc proof
+**Cost guardrail:** hard-cap ~$0.005/run via `gemini-2.5-flash-lite`, dry-run mode flag for CI without live credits.
 
-### Phase 3 — Final Verification & Wiring
+---
 
-- Run emitter once locally (via edge function call) to populate the 4 JSON files immediately so master aggregator has full evidence today
-- Re-run `check-os-release-readiness.ts` to confirm all 6 AI gates flip GREEN with artifacts present
-- Update `AI_RUNTIME_TRUTH_FINAL_VERIFICATION.md` with workflow trigger URL + artifact regeneration cadence
-- Add 1-line note to `AIRuntimeNightlyTruthPanel` showing "Last artifact emit: <timestamp>" so operators see the emitter ran
+### Phase 3 — CI Wiring + 6 Validation Scripts
 
-### Guardrails (preserved)
-- No new tables, no new admin pages, no duplicate monitoring
-- Reuses `ai-gateway`, all canonical receipt/ledger tables, `_lib/emit-gate-report`
-- Service role key stays in GitHub Secrets only — never in repo
-- Workflow runs **after** `pg_cron` so live invocation cost stays at ~$0.005/night (not doubled)
-- Streak still requires 7 real consecutive nights — emitter cannot fabricate streak
+**Validation scripts** (`scripts/validation/`):
+- `check-ai-live-provider-nightly.ts` — reads latest `ai_runtime_nightly_runs` row, fails if >36h stale or status=fail
+- `check-ai-receipt-persistence.ts` — asserts last 24h `ai_inference_receipts` count > 0 and matches `ai_invocations`
+- `check-ai-ledger-write-verification.ts` — asserts `ai_usage_ledger` rows match invocation count
+- `check-ai-fallback-verification.ts` — asserts last 7d has ≥1 fallback event proving path works
+- `check-ai-budget-enforcement-under-load.ts` — asserts last nightly run includes `budget_enforced=true`
+- `check-ai-runtime-streak-health.ts` — reads `ai_runtime_streak_state`, classifies streak, writes `ai-nightly-streak-status.json`
 
-### Files touched
-- **New (2):** `scripts/validation/emit-ai-runtime-truth-artifacts.ts`, `.github/workflows/ai-runtime-truth-nightly.yml`
-- **Edited (3):** `package.json` (1 npm script), `generated/ai-runtime-truth-closure/AI_RUNTIME_TRUTH_FINAL_VERIFICATION.md`, `src/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel.tsx` (1 timestamp line)
-- **Generated on first run (4):** the 4 required JSON artifacts
+All emit gate reports via existing `_lib/emit-gate-report.ts`.
 
-After this pass, every acceptance criterion in PART 7 is satisfied with live evidence on disk and in CI.
+**Cron schedule** (via `pg_cron` + `pg_net`, inserted directly to DB so anon key isn't repo-committed):
+- `ai-runtime-nightly-verify-tick` — daily 02:00 UTC, hits the edge function
+
+**CI wiring:** add 6 new gate steps to `playwright-proof-nightly.yml` and `ci.yml` after existing AI gates. Add to master release aggregator (`check-os-release-readiness.ts`) at BLOCK level.
+
+---
+
+### Phase 4 — Admin Visibility (extend existing surfaces only — no new pages)
+
+**Extend `AIRuntimeDrilldownPanel.tsx`** (already mounted in `InternalAgentsBoard`):
+- Replace minimal `NightlyProofBadge` with rich panel showing:
+  - Current 7-day streak (with day-by-day dots)
+  - Last pass/fail timestamps + failure class
+  - Per-sub-check status (5 checks from Phase 2)
+  - Last live provider receipt link → drill into `ai_inference_receipts` row
+  - Last fallback event link
+  - Last budget enforcement decision
+  - Acknowledge-failure button (writes to `ai_runtime_failure_alerts`)
+
+**Extend `AIRuntimeHome.tsx`** with one new tab (no separate route):
+- `id: "nightly-truth"` → `AIRuntimeNightlyTruthPanel` (new component, lives in `src/components/admin/ai-runtime/`)
+- Shows full 30-day history table, per-run drilldown, evidence JSON viewer
+
+**Data hook:** `src/lib/internal-agents/runtime/nightly-truth-data.ts` — single typed loader querying the 3 new tables. Reuses existing pattern from `agent-drilldown-data.ts`.
+
+---
+
+### Phase 5 — Final Verification + Reports + Master Aggregator Wiring
+
+**Generated artifacts** (final outputs):
+- `ai-live-provider-status.json` — per-provider success/failure last 7d
+- `ai-budget-enforcement-status.json` — last enforcement decision + ledger proof
+- `ai-nightly-streak-status.json` — current streak + classification
+- `ai-runtime-truth-verification.json` — master rollup
+- `AI_RUNTIME_TRUTH_FINAL_VERIFICATION.md` — operator-facing summary
+
+**Master aggregator integration:**
+- Register 6 new gates in `check-os-release-readiness.ts` BLOCK list
+- Update `generated/os-release-readiness-report.json` to include AI runtime truth section
+- Streak <3 days → YELLOW; ≥7 days → GREEN; any unack'd failure → RED
+
+**Failure alerting:**
+- Reuse existing `notification_delivery_receipts` + admin notification path
+- Trigger on `ai_runtime_failure_alerts` insert → notification to admin AI engineer team only
+
+**Final run:** trigger one live verify, confirm row persists, badge updates, gate passes.
+
+---
+
+### Technical guardrails
+
+- **No duplicates:** extends `ai-gateway`, `AIRuntimeDrilldownPanel`, `AIRuntimeHome`, `NightlyProofBadge`, existing nightly workflows
+- **No stubs:** every script queries real tables; edge function calls real provider
+- **No fake green:** streak resets on any failure; one pass ≠ proven (need 7)
+- **No reckless spend:** flash-lite model, ≤6 calls/run, ~$0.005/night
+- **Admin-only scope:** all UI under `/admin/ai-runtime/*`; RLS restricts to `has_admin_permission`
+- **Reuses canonical:** `ai_invocations`, `ai_usage_ledger`, `ai_inference_receipts`, `ai_fallback_events`, `ai_workforce_budget_classes`, `notification_delivery_receipts`, `_lib/emit-gate-report`
+
+Each phase ships independently deployment-ready. Phase 5 requires 7 nights to reach GREEN streak — until then the aggregator honestly reports YELLOW (launch-honest).
 
