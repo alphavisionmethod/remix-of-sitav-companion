@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-19T02:43:12.171Z",
+  "generatedAt": "2026-04-19T02:45:00.164Z",
   "gate": "google-refresh-nightly",
-  "ok": false,
-  "errorCount": 1,
-  "warningCount": 0,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
   "issues": [
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "google",
-      "message": "google has 0 successful refresh probes in last 24h (failures=0)"
+      "message": "google has 0 connector tokens — nothing to probe (launch-honest WARN, not failure)"
     }
   ]
 }

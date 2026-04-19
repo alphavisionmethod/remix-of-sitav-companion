@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-19T02:43:15.555Z",
+  "generatedAt": "2026-04-19T02:45:05.630Z",
   "gate": "slack-refresh-nightly",
-  "ok": false,
-  "errorCount": 1,
-  "warningCount": 0,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
   "issues": [
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "slack",
-      "message": "slack has 0 successful refresh probes in last 24h (failures=0)"
+      "message": "slack has 0 connector tokens — nothing to probe (launch-honest WARN)"
     }
   ]
 }
