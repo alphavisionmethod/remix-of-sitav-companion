@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-18T23:55:34.539Z
+> Generated: 2026-04-19T00:46:21.334Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -8,7 +8,7 @@
 | Metric | Value |
 |---|---|
 | Gates required | 124 |
-| Gates present  | 124 |
+| Gates present  | 130 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3348 |
@@ -141,6 +141,12 @@
 | `pg-cron-schedules` | ✅ | 0 | 0 |
 | `pg-extensions-enabled` | ✅ | 0 | 0 |
 | `release-artifact-signer` | ✅ | 0 | 0 |
+| `mobile-canonical-stack (warn)` | ✅ | 0 | 0 |
+| `no-flutter-mobile-truth-drift (warn)` | ✅ | 0 | 0 |
+| `android-release-path (warn)` | ✅ | 0 | 0 |
+| `ios-release-path (warn)` | ✅ | 0 | 0 |
+| `mobile-push-claim-safety (warn)` | ✅ | 0 | 0 |
+| `mobile-submission-blockers (warn)` | ✅ | 0 | 0 |
 
 ## Verdict
 

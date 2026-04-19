@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T23:55:34.539Z",
+  "generatedAt": "2026-04-19T00:46:21.334Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -867,6 +867,48 @@
     {
       "file": "generated/release-artifact-signer-report.json",
       "gate": "release-artifact-signer",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-canonical-stack-report.json",
+      "gate": "mobile-canonical-stack (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-flutter-mobile-truth-drift-report.json",
+      "gate": "no-flutter-mobile-truth-drift (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/android-release-path-report.json",
+      "gate": "android-release-path (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ios-release-path-report.json",
+      "gate": "ios-release-path (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-push-claim-safety-report.json",
+      "gate": "mobile-push-claim-safety (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-submission-blockers-report.json",
+      "gate": "mobile-submission-blockers (warn)",
       "ok": true,
       "errors": 0,
       "warnings": 0

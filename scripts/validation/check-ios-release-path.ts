@@ -49,8 +49,10 @@ if (existsSync("mobile/ios/SIGNING.md")) {
 if (existsSync("mobile/store-metadata/ios.json")) {
   try {
     const meta = JSON.parse(readFileSync("mobile/store-metadata/ios.json", "utf8"));
-    if (!meta.title) issues.push({ severity: "error", area: "metadata", message: "ios.json missing title" });
-    if (!meta.privacyPolicyUrl) issues.push({ severity: "error", area: "metadata", message: "ios.json missing privacyPolicyUrl" });
+    const title = meta.title || meta.name;
+    const privacy = meta.privacyPolicyUrl || meta.privacyUrl;
+    if (!title) issues.push({ severity: "error", area: "metadata", message: "ios.json missing title/name" });
+    if (!privacy) issues.push({ severity: "error", area: "metadata", message: "ios.json missing privacyPolicyUrl/privacyUrl" });
   } catch (e) {
     issues.push({ severity: "error", area: "metadata", message: `ios.json invalid: ${(e as Error).message}` });
   }

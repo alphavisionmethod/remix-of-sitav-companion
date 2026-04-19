@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T00:46:10.068Z",
+  "gate": "mobile-canonical-stack",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalStack": "capacitor",
+  "claimSurfacesScanned": [
+    "src/planes",
+    "infra/deploy",
+    "mobile"
+  ],
+  "flutterDriftHits": 0
+}

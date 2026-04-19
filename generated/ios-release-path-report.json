@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T00:46:15.808Z",
+  "gate": "ios-release-path",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "requiredArtifacts": 7,
+  "blockerClass": "account-blocked",
+  "nextStep": "Activate Apple Developer Program + provision 7 secrets in CI; run scripts/release/ios/build-ios.sh on macos-14"
+}
