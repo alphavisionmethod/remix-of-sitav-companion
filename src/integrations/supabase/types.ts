@@ -1993,6 +1993,39 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_receipt_completeness_snapshots: {
+        Row: {
+          created_at: string
+          id: string
+          invocations_with_receipt: number
+          missing_receipt_ids: Json
+          receipt_coverage_pct: number
+          total_invocations: number
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invocations_with_receipt?: number
+          missing_receipt_ids?: Json
+          receipt_coverage_pct?: number
+          total_invocations?: number
+          window_end: string
+          window_start: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invocations_with_receipt?: number
+          missing_receipt_ids?: Json
+          receipt_coverage_pct?: number
+          total_invocations?: number
+          window_end?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       ai_receipt_records: {
         Row: {
           capability_key: string
@@ -3365,6 +3398,51 @@ export type Database = {
           permission_value?: Json
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      app_sdk_extensions: {
+        Row: {
+          app_id: string
+          created_at: string
+          extension_id: string
+          extension_kind: string
+          id: string
+          manifest: Json
+          registered_at: string
+          retired_at: string | null
+          signature: string | null
+          status: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          extension_id: string
+          extension_kind: string
+          id?: string
+          manifest?: Json
+          registered_at?: string
+          retired_at?: string | null
+          signature?: string | null
+          status?: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          extension_id?: string
+          extension_kind?: string
+          id?: string
+          manifest?: Json
+          registered_at?: string
+          retired_at?: string | null
+          signature?: string | null
+          status?: string
+          updated_at?: string
+          version?: string
         }
         Relationships: []
       }
@@ -7903,6 +7981,45 @@ export type Database = {
             referencedColumns: ["account_id"]
           },
         ]
+      }
+      connector_reauth_events: {
+        Row: {
+          attempts: number
+          created_at: string
+          id: string
+          metadata: Json
+          prompted_at: string
+          provider: string
+          resolution_state: string
+          resolved_at: string | null
+          trigger_reason: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          prompted_at?: string
+          provider: string
+          resolution_state?: string
+          resolved_at?: string | null
+          trigger_reason: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          prompted_at?: string
+          provider?: string
+          resolution_state?: string
+          resolved_at?: string | null
+          trigger_reason?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       connector_receipts: {
         Row: {
@@ -18038,6 +18155,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      security_fabric_probe_results: {
+        Row: {
+          created_at: string
+          evidence: Json
+          expected: Json
+          id: string
+          layer_name: string
+          observed: Json
+          observed_at: string
+          probe_id: string
+          severity: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          evidence?: Json
+          expected?: Json
+          id?: string
+          layer_name: string
+          observed?: Json
+          observed_at?: string
+          probe_id: string
+          severity?: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          evidence?: Json
+          expected?: Json
+          id?: string
+          layer_name?: string
+          observed?: Json
+          observed_at?: string
+          probe_id?: string
+          severity?: string
+          status?: string
+        }
+        Relationships: []
       }
       service_identity_registry: {
         Row: {
