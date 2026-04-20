@@ -50,12 +50,25 @@ if (!graph || typeof graph.totalNodes !== "number") {
     });
   }
 
-  // 3. Cycles
-  if ((graph.cycleCount ?? 0) > 0) {
+  // 3. Cycles — fail only when a cycle touches a release-critical artifact (would block stale propagation).
+  //    Non-critical cycles (validator↔emit pairs in non-shipping pipelines) are surfaced as WARN.
+  const releaseCritical = new Set<string>((graph.releaseCriticalStale || []) as string[]);
+  // Recompute set from nodes (releaseCriticalStale only lists already-stale ones)
+  for (const n of (graph.nodes || []) as Array<{ id: string; isReleaseCritical: boolean }>) {
+    if (n.isReleaseCritical) releaseCritical.add(n.id);
+  }
+  const criticalCycles: string[][] = ((graph.cycles || []) as string[][]).filter(c => c.some(n => releaseCritical.has(n)));
+  if (criticalCycles.length > 0) {
     issues.push({
       severity: "error",
-      area: "cycles",
-      message: `${graph.cycleCount} cycle(s) detected: ${(graph.cycles || []).slice(0, 3).map((c: string[]) => c.join(" → ")).join("; ")}`,
+      area: "release-critical-cycles",
+      message: `${criticalCycles.length} cycle(s) touch release-critical artifacts: ${criticalCycles.slice(0, 3).map(c => c.join(" → ")).join("; ")}`,
+    });
+  } else if ((graph.cycleCount ?? 0) > 0) {
+    issues.push({
+      severity: "warning",
+      area: "non-critical-cycles",
+      message: `${graph.cycleCount} cycle(s) detected in non-release-critical pipelines (validator↔emit pairs): ${(graph.cycles || []).slice(0, 3).map((c: string[]) => c.join(" → ")).join("; ")}`,
     });
   }
 
