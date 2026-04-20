@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T06:32:01.161Z",
+  "generatedAt": "2026-04-20T06:33:10.532Z",
   "gate": "artifact-ownership-graph",
   "phase": "phase-30-producer-consumer-graph",
   "errorCount": 2,
@@ -9,12 +9,12 @@
     {
       "severity": "error",
       "area": "consumer-coverage",
-      "message": "Consumer coverage 78% < 95% (205/263 non-terminal nodes consumed)"
+      "message": "Consumer coverage 86% < 95% (140/163 non-terminal nodes consumed)"
     },
     {
       "severity": "error",
       "area": "cycles",
-      "message": "132 cycle(s) detected: generated/accessibility-summary.json → generated/validation-summary.json → generated/accessibility-summary.json; generated/accessibility-summary.json → generated/validation-summary.json → generated/visual-regression-baseline.json → generated/accessibility-summary.json; generated/validation-summary.json → generated/visual-regression-baseline.json → generated/validation-summary.json"
+      "message": "4 cycle(s) detected: generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/install-surface-honesty-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-manifest-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-scope-status.json → generated/generated-mobile-truth-consistency-report.json"
     },
     {
       "severity": "warning",
@@ -24,13 +24,13 @@
   ],
   "metrics": {
     "totalNodes": 598,
-    "totalEdges": 2128,
-    "artifactToArtifactEdges": 1521,
+    "totalEdges": 1154,
+    "artifactToArtifactEdges": 547,
     "fresh": 598,
     "aging": 0,
     "stale": 0,
     "transitivelyStale": 0,
-    "cycles": 132,
+    "cycles": 4,
     "orphanProducers": 0,
     "releaseCriticalStale": 0
   }
