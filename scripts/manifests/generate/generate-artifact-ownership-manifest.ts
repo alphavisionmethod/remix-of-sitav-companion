@@ -117,6 +117,12 @@ for (const [scriptPath, consts] of scriptDirConsts) {
     }
   }
 }
+// Also attribute scripts that mention "generated/<dir>" AND contain a write call
+for (const [scriptPath, mentions] of scriptMentionsDir) {
+  for (const dir of mentions) {
+    if (!dirOwnerMap.has(dir)) dirOwnerMap.set(dir, scriptPath);
+  }
+}
 
 // ── 5. Build npm-script reverse map ──────────────────────────
 const pkg = readJsonSafe<{ scripts: Record<string, string> }>("package.json");
