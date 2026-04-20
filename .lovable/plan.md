@@ -1,98 +1,109 @@
 
 
-## Truth check (what I found on disk, right now)
+## Wave 7 — Stub & Demo-Flag Hardening (Final Production Sweep)
 
-The "3 missing required-gate outputs" status the cockpit is showing is **stale text inside `public/generated/MASTER_AUDIT.md`**, not a real aggregator failure. Two parts of that same file disagree with each other:
+### Truth check (what's actually wrong vs. what looks wrong)
 
-| Section | What it says | Reality |
+The 1,038 hits in §15 conflate three very different categories:
+
+| Category | Count (approx) | Real risk |
 |---|---|---|
-| §1.3 lines 92–94 | OS-ISO/OVA/RAW = 🟡 STAGING, 3 missing required-gate outputs | **Stale** — written pre-Wave 1 |
-| §12.1–§12.2 line 334+ | "All previously missing required-gate outputs produced; 244/244 BLOCK GREEN; Wave 5 complete" | **Current truth** |
+| Doc-strings / JSDoc / future-work prose (`// TODO:`, `XXX from runbook-registry`, etc.) | ~900 | **None** — informational |
+| Test fixtures (`vi.mock`, `__tests__/**`) | ~120 | **None** — test-only |
+| **Hardcoded `const isDemoMode = true` at module scope in production pages** | **14 prod files + 5 tests** | **High** — memory violation `constraints/reality-mode-wiring` |
+| **Pages still reading `useDataMode()` instead of `useAuth().isDemo`** | **3 files** (ActivityStream, MediaWorkspace, ProofCenter) | **Medium** — wiring drift |
+| **Pages where the module-scope flag is NOT shadowed** → permanently frozen demo | **2 files** (`investment-office/InvestmentReceipts.tsx`, `integrations/ConnectionsList.tsx`) | **Critical** — these pages can never go live |
 
-Live evidence: `generated/os-build-pipeline-report.json` and `generated/qemu-vm-readiness-report.json` both report `errorCount: 0, ok: true`. Aggregator summary confirms `os-build-pipeline`, `os-trust-chain-readiness`, `os-update-readiness`, `os-recovery-readiness`, `qemu-vm-readiness` and `os-support-bundle-readiness` all ✅ GREEN with 0 errors / 0 warnings. So the cockpit message is doc drift, not a code gap.
+So the §15 advice ("most hits are doc-strings, no `MOCK_AUTH_USER` flags found") is technically true but **misses the 2 pages that are stuck in demo permanently and the 14 that violate the canonical wiring rule**.
 
-**However**, while validating this I found two real, deployment-affecting ISO/OVA/RAW gaps that nobody has gated yet. Wave 6 closes both, plus the doc drift, plus the missing CI wiring.
+### Out of scope (explicitly not touched)
+- 900+ doc-string `TODO/XXX/FIXME` markers — informational, not code paths
+- `coming_soon` enum values inside `feature-reality-types.ts`, `runtime-tier-model.ts`, `degraded-state-classes.ts` — these are **legitimate state labels**, not stubs
+- `sample notes.md` content inside `TerminalWindow.tsx` and template strings in `DocumentEditor.tsx` — user-facing demo content
+- `INITIAL_TODOS` in `TodoWindow.tsx` — that's the actual to-do widget's seed list
+- Phase 15 mega-gates (lib decomposition / legacy wrappers) — owned elsewhere
 
-## Real residual gaps for ISO/OVA/RAW pipeline
+### Wave 7 implementation
 
-### Tier 1 — Real artifact gap
-1. **`os-build-iso.yml` never invokes `os/vmware/build-ova.sh`.** The OVA exists as a script but is NOT produced by CI on release. Operators have no signed OVA artifact in the GitHub Release. The release pipeline `os/scripts/release.sh` also stops at step 13 (QEMU) and never wraps the ISO into an OVA.
-2. **`build-ova.sh` ships a "live-from-CD" appliance** (line 37–40 of the script confirms it). This is documented in `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md` as Phase-2 work but is unsuitable for production. No autoinstall preseed is consumed; `scripts/release/iso/autoinstall/` is wired for ISO but not OVA.
+#### 7.1 Fix the 2 critical "frozen-demo" pages
+- `src/pages/integrations/ConnectionsList.tsx`: delete module-scope `const isDemoMode = true`; add `const { isDemo } = useAuth(); const isDemoMode = isDemo;` inside the component body (matching every other page's pattern).
+- `src/pages/investment-office/InvestmentReceipts.tsx`: same fix.
 
-### Tier 2 — Doc drift causing the cockpit panel
-3. `MASTER_AUDIT.md` §1.3 still claims the 8-surface verdict table shows STAGING. Operators reading the cockpit panel cannot trust it.
+#### 7.2 Re-wire 3 drifted pages to canonical auth source
+- `src/pages/ActivityStream.tsx`, `src/pages/MediaWorkspace.tsx`, `src/pages/ProofCenter.tsx`: replace `const { isDemoMode } = useDataMode();` with `const { isDemo } = useAuth(); const isDemoMode = isDemo;` to match `constraints/reality-mode-wiring`.
 
-### Tier 3 — Missing release-time gates
-4. There is no `iso-artifact-presence` / `ova-artifact-presence` / `raw-img-artifact-presence` block gate that physically verifies `out/*.iso`, `out/*.ova`, `out/*.img` exist after a release-tagged build. Today the `os-build-pipeline` gate only checks scripts exist, not that they produced artifacts.
+#### 7.3 Remove dead module-scope flag from the 11 already-shadowed pages
+For each of: `AIWorkforcePage`, `ApprovalChamber`, `CommunicationsPage`, `GlobalBoardroom`, `GovernanceDashboard`, `OutcomeEnginePage`, `TasksWorkflowsCenter`, `TrustCenter`, `enterprise/EnterpriseControlPlane`, plus the 3 from §7.2 above (after the rewire) — delete the dead `const isDemoMode = true; // Safe default for demo mode` line. It's already shadowed; removing it eliminates a future foot-gun and the 14-file memory violation.
 
-## Wave 6 — ISO/OVA/RAW production readiness
+#### 7.4 Strip the same line from 5 test files
+The `__tests__/{Boardroom,BusinessCenter,DailyPulse,MoneyCenter,SettingsPage}.test.tsx` files have the same dead line at module scope, unused by the test bodies (the test mock already returns `isDemoMode: true`). Remove for cleanliness.
 
-### 6.1 Fix doc drift (cockpit goes GREEN immediately)
-- Update `public/generated/MASTER_AUDIT.md` §1.3 lines 92–94: flip OS-ISO / OVA / RAW IMG from 🟡 STAGING to 🟢 READY, and replace "3 missing required-gate outputs" with the Wave-5 truth ("ISO+IMG produced by CI; OVA gated to release events; 244/244 BLOCK GREEN — see §12.1").
-- Update §1.4 "Critical path to GREEN": replace the 4-step list with "Already GREEN as of Wave 5 (2026-04-20)".
-- Mirror the change into `public/generated/artifacts/audits/MASTER_AUDIT.md` (same file, second copy).
+#### 7.5 Add new BLOCK gate `check-hardcoded-demo-flags.ts`
+Create `scripts/architecture/checks/check-hardcoded-demo-flags.ts` that scans `src/pages/**` and `src/components/**` for the regex `/^(?:export\s+)?const\s+isDemoMode\s*=\s*(true|false)\s*;/m` at module scope. Emits `generated/hardcoded-demo-flags-report.json`. Behavior:
+- BLOCK on any hit in `src/pages/**` or `src/components/**` outside `__tests__`.
+- Allow inside test files.
+- Register in `check-os-release-readiness.ts` as the **248th BLOCK gate** (with writer + validator-map entry).
 
-### 6.2 Wire OVA into CI (close the real artifact gap)
-- Add a new `build-ova` job to `.github/workflows/os-build-iso.yml` that depends on `build`, runs only on `release: published` and `workflow_dispatch`, downloads the ISO artifact, installs `qemu-img qemu-system-x86 ovmf tar`, runs `bash os/vmware/build-ova.sh`, then uploads `out/*.ova`, `out/*.ova.sha256`, `out/*.ova.manifest.json` as a separate artifact and attaches to the GitHub Release.
-- Add a final step in `os/scripts/release.sh` (step 14/14): `bash os/vmware/build-ova.sh` after step 13 QEMU. Make it skip-with-warning if `qemu-img` / `qemu-system-x86_64` are missing so local dev still passes.
+#### 7.6 Add new advisory gate `check-stub-density.ts`
+Create `scripts/architecture/checks/check-stub-density.ts` per §15.3 recommendation. Counts `TODO|FIXME|XXX|HACK` in `src/**` excluding `__tests__` and known doc-string allowlist. Emits `generated/stub-density-report.json`. Establishes a baseline budget (e.g., current count + 50) and warns on regression. Advisory only (not BLOCK), so it can't break a release but visibly tracks drift.
 
-### 6.3 Add three artifact-presence gates (lock the wins)
-Create three new BLOCK gates that physically verify produced artifacts (not just scripts):
-- `scripts/architecture/checks/check-iso-artifact-presence.ts` → looks for `out/sita-os-*.iso` + `.sha256` + `.manifest.json` OR a documented `--allow-empty` flag for non-build environments. Emits `generated/iso-artifact-presence-report.json`.
-- `scripts/architecture/checks/check-ova-artifact-presence.ts` → same pattern for `.ova`.
-- `scripts/architecture/checks/check-raw-img-artifact-presence.ts` → same for `.img`.
-- Each gate runs in two modes: **CI release mode** (artifacts must exist) and **dev mode** (artifacts may be absent; gate reports OK with `mode: "dev"`). Mode is selected by `SITA_RELEASE_MODE=ci|dev` env (defaults to `dev`).
-- Register all three in `scripts/architecture/checks/check-os-release-readiness.ts`:
-  - Add to `REQUIRED_OUTPUT_WRITERS` map.
-  - Add to the BLOCK-tier gate list (now 247/247).
-  - Add to the validator-map.
+#### 7.7 Refresh ground truth
+- Append `WAVE7_STUB_HARDENING.md` operator note (sibling of `WAVE6_*`) summarizing the 19-line cleanup, the 2-critical-page fix, and the new gates.
+- Update `public/generated/MASTER_AUDIT.md` Part XV: replace "1,038 hits" line with the truthful breakdown (doc-strings vs. real flags), confirm zero hardcoded demo overrides remain, and bump BLOCK count from 247 → **248**.
+- Mirror to `public/generated/artifacts/audits/MASTER_AUDIT.md`.
+- Update `WAVE2_ADVISORY_DISPOSITION.md` with Wave 7 entry.
 
-### 6.4 Wire the three new gates into CI
-- In `.github/workflows/os-build-iso.yml` `build` job, after the "Inspect output" step, add: `SITA_RELEASE_MODE=ci npx tsx scripts/architecture/checks/check-iso-artifact-presence.ts` and the IMG one.
-- In the new `build-ova` job, after upload, add: `SITA_RELEASE_MODE=ci npx tsx scripts/architecture/checks/check-ova-artifact-presence.ts`.
-- Failure of any of the three fails the workflow.
+#### 7.8 Aggregator re-run + verdict
+- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts`.
+- Expected: **248/248 BLOCK GREEN, 0 errors, 0 missing**. Stub-density advisory establishes its baseline on first run.
 
-### 6.5 Make OVA autoinstall real (Phase-2 graduation)
-- Wire the existing `scripts/release/iso/autoinstall/` (meta-data, network-config, user-data) into `os/vmware/build-ova.sh`: pass `-cdrom seed.iso` containing the autoinstall payload and a fixed-size 32GB qcow2 target so the install lands on disk, not live-from-CD.
-- Update the OVF descriptor written by `build-ova.sh` to advertise vmx-19 hardware and 4 GiB RAM / 2 vCPU defaults that match the validated targets in `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md`.
-- Document the Phase-2 graduation in the same doc: change "Phase 2 (planned)" to "Phase 2 (shipped Wave 6)".
+### Files to be created
+- `scripts/architecture/checks/check-hardcoded-demo-flags.ts`
+- `scripts/architecture/checks/check-stub-density.ts`
+- `WAVE7_STUB_HARDENING.md`
 
-### 6.6 Refresh ground truth
-- Append a `WAVE6_ISO_OVA_RAW_PRODUCTION.md` operator note (sibling of `WAVE5_PRODUCTION_HARDENING.md`) summarising what Wave 6 changed.
-- Update `docs/os/RELEASE_ARTIFACT_MODEL.md` to mark OVA from "workflow_dispatch only" to "release-triggered (workflow_dispatch + release events)".
-- Update `docs/PLATFORM_SCOPE.md` line for "VMware OVA appliance" from 🟡 Partial → 🟢 GA, with note "unattended install graduated from live-from-CD as of Wave 6".
-- Update memory `governance/readiness-framework` count from 244 → 247 BLOCK gates after the three new gates land.
+### Files to be edited (19 source files + 4 docs)
 
-### 6.7 Re-run aggregator and verify
-- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts` locally.
-- Expected: 247/247 BLOCK GREEN, 0 errors, 0 missing. Verdict stays YELLOW only because of the three deferred mega-gates (Phase-15 lib decomposition / legacy wrappers / lib ownership) which remain explicitly out of scope.
+**Critical fix (2):**
+- `src/pages/integrations/ConnectionsList.tsx`
+- `src/pages/investment-office/InvestmentReceipts.tsx`
 
-## Files to be created
-- `scripts/architecture/checks/check-iso-artifact-presence.ts`
-- `scripts/architecture/checks/check-ova-artifact-presence.ts`
-- `scripts/architecture/checks/check-raw-img-artifact-presence.ts`
-- `WAVE6_ISO_OVA_RAW_PRODUCTION.md`
+**Re-wire to useAuth (3):**
+- `src/pages/ActivityStream.tsx`
+- `src/pages/MediaWorkspace.tsx`
+- `src/pages/ProofCenter.tsx`
 
-## Files to be edited
-- `public/generated/MASTER_AUDIT.md` (§1.3 + §1.4 truth refresh)
-- `public/generated/artifacts/audits/MASTER_AUDIT.md` (mirror)
-- `.github/workflows/os-build-iso.yml` (new `build-ova` job + 3 gate-runner steps)
-- `os/scripts/release.sh` (new step 14 wraps OVA)
-- `os/vmware/build-ova.sh` (autoinstall seed wiring + OVF defaults)
-- `scripts/architecture/checks/check-os-release-readiness.ts` (register 3 new BLOCK gates + writers)
-- `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md` (Phase-2 graduation)
-- `docs/os/RELEASE_ARTIFACT_MODEL.md` (OVA trigger update)
-- `docs/PLATFORM_SCOPE.md` (OVA → GA)
+**Remove dead module-scope flag (9 prod):**
+- `src/pages/AIWorkforcePage.tsx`
+- `src/pages/ApprovalChamber.tsx`
+- `src/pages/CommunicationsPage.tsx`
+- `src/pages/GlobalBoardroom.tsx`
+- `src/pages/GovernanceDashboard.tsx`
+- `src/pages/OutcomeEnginePage.tsx`
+- `src/pages/TasksWorkflowsCenter.tsx`
+- `src/pages/TrustCenter.tsx`
+- `src/pages/enterprise/EnterpriseControlPlane.tsx`
 
-## Stop conditions
-1. Any of the existing 244 BLOCK gates flips RED after the 3 new gates are registered → halt.
-2. `build-ova.sh` autoinstall seed cannot be assembled without `xorrisofs` available in CI → fall back to live-from-CD with a `::warning::` and document.
-3. Adding `SITA_RELEASE_MODE=ci` to local validators breaks dev mode (artifacts absent locally) → enforce the dev/ci mode split and re-run before commit.
+**Test cleanup (5):**
+- `src/pages/__tests__/{Boardroom,BusinessCenter,DailyPulse,MoneyCenter,SettingsPage}.test.tsx`
 
-## What this delivers
-- The cockpit panel for OS-ISO / OVA / RAW IMG flips from 🟡 STAGING → 🟢 READY (doc drift fixed).
-- OVA artifact is actually produced, signed, and attached to GitHub Releases (not just `workflow_dispatch`).
-- OVA graduates from live-from-CD to true unattended-install appliance.
-- 3 new BLOCK gates physically verify ISO/OVA/IMG artifacts existed at release time, preventing future silent regressions.
-- Aggregator reaches 247/247 BLOCK GREEN, 0 errors, 0 missing — system is genuinely real-life deployment-ready for sovereign Linux.
+**Aggregator + docs (5):**
+- `scripts/architecture/checks/check-os-release-readiness.ts`
+- `public/generated/MASTER_AUDIT.md`
+- `public/generated/artifacts/audits/MASTER_AUDIT.md`
+- `WAVE2_ADVISORY_DISPOSITION.md`
+
+### Stop conditions
+1. Any of the existing 247 BLOCK gates flips RED after registration of `check-hardcoded-demo-flags` → halt and report.
+2. Removing module-scope `isDemoMode` breaks a page render (i.e., the const was actually used somewhere outside the component) → restore and convert to a function-scope binding.
+3. Stub-density baseline detection fails (no allowlist viable) → ship advisory in count-only mode without budget enforcement.
+
+### What this delivers
+- **0 hardcoded demo overrides** in production pages (down from 14).
+- **2 frozen-demo pages** (`InvestmentReceipts`, `ConnectionsList`) actually go live when `isDemo === false`.
+- **3 drifted pages** realigned to the canonical `useAuth().isDemo` wiring per memory rule.
+- **New BLOCK gate (#248)** prevents this regression class forever.
+- **New advisory gate** tracks the 1,038-hit stub density per §15.3 recommendation.
+- **Documentation** stops claiming "1,038 stubs are all benign" and shows the actual zero-real-flag truth.
+- BLOCK status: **248/248 GREEN, 0 errors, 0 missing** — system stays release-cuttable.
 
