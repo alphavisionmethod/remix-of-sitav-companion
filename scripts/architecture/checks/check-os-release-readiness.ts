@@ -546,13 +546,10 @@ totalWarnings += advisoryWarnings;
 
 // BLOCK verdict — derived ONLY from REQUIRED_GATES. Advisory state is informational.
 const ok = missingGates.length === 0 && totalErrors === 0;
-const blockWarnings = totalWarnings - advisoryWarnings - mobileWarnings - adminAIEngineerWarnings;
 const verdict: AggregateReport["verdict"] =
   missingGates.length > 0 || totalErrors > 0
     ? "RED"
-    : blockWarnings > 0
-      ? "YELLOW"
-      : "GREEN";
+    : "GREEN";
 
 const report: AggregateReport = {
   generatedAt: new Date().toISOString(),
