@@ -150,9 +150,9 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 2 | `src/lib/admin-ai` | AI-engineering admin (separate from operator-admin) | ✅ | Pair with `admin` |
 | 3 | `src/lib/advisor-intelligence` | Advisor knowledge + recommendation prep | ✅ |  |
 | 4 | `src/lib/advisor-protocol` | Cross-advisor protocol contracts | ✅ |  |
-| 5 | `src/lib/ai` | Legacy shim → src/lib/ai-platform/runtime | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
-| 6 | `src/lib/ai-engineering` | Legacy shim → src/lib/ai-platform/engineering | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
-| 7 | `src/lib/ai-gateway` | Legacy shim → src/lib/ai-platform/gateway | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
+| 5 | `src/lib/ai` | Legacy shim → src/lib/ai-platform/runtime | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gates #27 cluster-readme-coverage + #28 ai-shim-integrity) |
+| 6 | `src/lib/ai-engineering` | Legacy shim → src/lib/ai-platform/engineering | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gates #27 cluster-readme-coverage + #28 ai-shim-integrity) |
+| 7 | `src/lib/ai-gateway` | Legacy shim → src/lib/ai-platform/gateway | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gates #27 cluster-readme-coverage + #28 ai-shim-integrity) |
 | 8 | `src/lib/api` | Browser-side API helpers | ✅ |  |
 | 9 | `src/lib/app-platform` | App registry + install lifecycle | ✅ |  |
 | 10 | `src/lib/backend-topology` | Edge-function role enforcement | ✅ |  |
@@ -206,7 +206,7 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 58 | `src/lib/setup` | Setup wizards (overlap with onboarding) | 🟡 | Intent overlap |
 | 59 | `src/lib/shopify` | Shopify-specific client (account-blocked) | ⚪ | Tested only against fixtures |
 | 60 | `src/lib/sita-kernel.ts` | Kernel boot code | ✅ |  |
-| 61 | `src/lib/sovereign-ai-gateway` | Legacy shim → src/lib/ai-platform/sovereign | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
+| 61 | `src/lib/sovereign-ai-gateway` | Legacy shim → src/lib/ai-platform/sovereign | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gates #27 cluster-readme-coverage + #28 ai-shim-integrity) |
 | 62 | `src/lib/storage` | Storage clients | ✅ |  |
 | 63 | `src/lib/strategic-intelligence` | Strategic intel surfacing | ✅ |  |
 | 64 | `src/lib/supabase-helpers.ts` | Single-file helpers | ✅ |  |
