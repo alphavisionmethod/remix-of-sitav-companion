@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "totalActionTypes": 12,
+  "fullyReversible": 6,
+  "partiallyReversible": 1,
+  "timeLimited": 2,
+  "irreversible": 1,
+  "confirmationRequired": [
+    "send-email",
+    "send-notification",
+    "execute-payment",
+    "delete-record",
+    "change-permission",
+    "toggle-kill-switch"
+  ]
+}

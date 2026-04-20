@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "gate": "runtime-authority-closure",
+  "ok": true,
+  "activeSurfaces": [
+    "web",
+    "electron",
+    "appliance",
+    "ios",
+    "android"
+  ],
+  "featureCount": 48,
+  "capabilityCount": 17,
+  "facadeFile": "src/runtimes/runtime-authority.ts",
+  "surfaceContractFile": "src/runtimes/runtime-surface-contract.ts"
+}

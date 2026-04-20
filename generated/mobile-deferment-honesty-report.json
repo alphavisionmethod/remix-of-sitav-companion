@@ -1,0 +1,1 @@
+{"generatedAt":"2026-04-20T21:20:30.255Z","verdict":"honestly-deferred","reason":"Distribution signing and store accounts not enrolled","codeReady":true,"storeReady":false,"blockers":["apple-developer-enrollment","google-play-enrollment","native-shell-build","store-listing-creation"],"estimatedClosurePath":"4-6 weeks after enrollment"}

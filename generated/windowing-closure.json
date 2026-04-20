@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "registeredWindows": 10,
+  "persistableWindows": 8,
+  "ipcGroups": [
+    "domain-apps",
+    "boardroom",
+    "system"
+  ],
+  "crashSafeRestore": true,
+  "permissionBoundaries": true,
+  "files": {
+    "registry": "src/lib/windowing/window-registry.ts",
+    "sessionStore": "src/lib/windowing/window-session-store.ts",
+    "recovery": "src/lib/windowing/window-recovery.ts",
+    "policy": "src/lib/windowing/window-capability-policy.ts"
+  }
+}
