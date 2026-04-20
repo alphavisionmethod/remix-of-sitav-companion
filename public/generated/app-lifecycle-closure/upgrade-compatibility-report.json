@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "upgradeRules": {
+    "patch": {"compatible":true,"dataMigration":false,"breakingChanges":false,"autoUpdateAllowed":"depends_on_tier"},
+    "minor": {"compatible":true,"dataMigration":false,"breakingChanges":false,"autoUpdateAllowed":"depends_on_tier"},
+    "major": {"compatible":true,"dataMigration":true,"breakingChanges":true,"autoUpdateAllowed":"manual_only"},
+    "downgrade": {"compatible":false,"dataMigration":false,"breakingChanges":false,"autoUpdateAllowed":"never"}
+  },
+  "autoUpdateMatrix": [
+    {"trustTier":"first_party","channel":"stable","autoAllowed":true},
+    {"trustTier":"first_party","channel":"internal","autoAllowed":true},
+    {"trustTier":"first_party","channel":"beta","autoAllowed":false},
+    {"trustTier":"first_party","channel":"nightly","autoAllowed":false},
+    {"trustTier":"trusted","channel":"stable","autoAllowed":true},
+    {"trustTier":"trusted","channel":"beta","autoAllowed":false},
+    {"trustTier":"trusted","channel":"nightly","autoAllowed":false},
+    {"trustTier":"trusted","channel":"internal","autoAllowed":false},
+    {"trustTier":"standard","channel":"stable","autoAllowed":false},
+    {"trustTier":"standard","channel":"beta","autoAllowed":false},
+    {"trustTier":"standard","channel":"nightly","autoAllowed":false},
+    {"trustTier":"standard","channel":"internal","autoAllowed":false},
+    {"trustTier":"restricted","channel":"stable","autoAllowed":false},
+    {"trustTier":"restricted","channel":"beta","autoAllowed":false},
+    {"trustTier":"restricted","channel":"nightly","autoAllowed":false},
+    {"trustTier":"restricted","channel":"internal","autoAllowed":false}
+  ],
+  "policyFile": "src/lib/app-platform/app-upgrade-policy.ts"
+}
