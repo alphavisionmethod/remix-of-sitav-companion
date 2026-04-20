@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-20T10:11:06.257Z",
+  "generatedAt": "2026-04-20T10:12:15.889Z",
   "gate": "internal-agent-deferred-set-explicitness",
-  "ok": false,
-  "errorCount": 11,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
   "total": 40,
   "coveragePercent": 100,
   "breakdown": {
-    "wired": 19,
-    "scheduledOnly": 8,
+    "wired": 8,
+    "scheduledOnly": 19,
     "uiSurfaceOnly": 5,
     "deferred": 8
   },
@@ -51,10 +51,9 @@
     },
     {
       "agentId": "aw-documentation",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-suggestion-generator",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-suggestion-generator; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-qa-architect",
@@ -64,17 +63,15 @@
     },
     {
       "agentId": "aw-incident-response",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-self-healer but does not dispatch by per-agent ID yet.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-workflow-recovery",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-self-healer; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-connector-health",
@@ -90,24 +87,21 @@
     },
     {
       "agentId": "aw-rollback",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-execute-action",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-execute-action; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-sre",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-slo-evaluator",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-slo-evaluator; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-fleet-health",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/health-cron",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/health-cron; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-support-diagnostics",
@@ -180,24 +174,21 @@
     },
     {
       "agentId": "aw-token-budget",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-cost-optimizer; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-ai-spend-control",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-cost-optimizer; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-model-routing",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/routing-policy-update",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/routing-policy-update; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-latency-optimizer",
@@ -258,17 +249,15 @@
     },
     {
       "agentId": "aw-knowledge-curator",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/advisor-knowledge-manage",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/advisor-knowledge-manage; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-release-notes",
-      "runtimeStatus": "wired",
-      "runtimeInvocationPath": "supabase/functions/internal-agent-weekly-digest",
-      "pathExists": true,
-      "aliasReferencesFound": []
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Executor lives in supabase/functions/internal-agent-weekly-digest; per-agent dispatch pending.",
+      "deferredEta": "post-launch"
     },
     {
       "agentId": "aw-sprint-planning",
@@ -289,61 +278,5 @@
       "deferredEta": "post-launch"
     }
   ],
-  "issues": [
-    {
-      "severity": "error",
-      "area": "aw-documentation",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-suggestion-generator contains no reference to agent or any alias (aw-documentation)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-incident-response",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-self-healer contains no reference to agent or any alias (aw-incident-response, ro-incident-response)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-workflow-recovery",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-self-healer contains no reference to agent or any alias (aw-workflow-recovery)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-rollback",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-execute-action contains no reference to agent or any alias (aw-rollback)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-sre",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-slo-evaluator contains no reference to agent or any alias (aw-sre)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-fleet-health",
-      "message": "runtimeInvocationPath supabase/functions/health-cron contains no reference to agent or any alias (aw-fleet-health)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-token-budget",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-cost-optimizer contains no reference to agent or any alias (aw-token-budget)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-ai-spend-control",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-cost-optimizer contains no reference to agent or any alias (aw-ai-spend-control, rc-cost-sentinel)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-model-routing",
-      "message": "runtimeInvocationPath supabase/functions/routing-policy-update contains no reference to agent or any alias (aw-model-routing)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-knowledge-curator",
-      "message": "runtimeInvocationPath supabase/functions/advisor-knowledge-manage contains no reference to agent or any alias (aw-knowledge-curator, kc-knowledge-coordinator)"
-    },
-    {
-      "severity": "error",
-      "area": "aw-release-notes",
-      "message": "runtimeInvocationPath supabase/functions/internal-agent-weekly-digest contains no reference to agent or any alias (aw-release-notes)"
-    }
-  ]
+  "issues": []
 }
