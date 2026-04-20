@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-20T09:25:51.129Z",
+  "gate": "legacy-policies-folder-absence",
+  "legacyPath": "src/lib/policies",
+  "canonicalPath": "src/lib/policy",
+  "scannedFiles": 5570,
+  "violations": [],
+  "ok": true,
+  "errorCount": 0
+}
