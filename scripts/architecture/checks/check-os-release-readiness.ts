@@ -316,6 +316,8 @@ const REQUIRED_GATES = [
   "recovery-boot-evidence",
   // Phase 30 Producer→consumer ownership graph (1 BLOCK gate — directed graph + transitive staleness for 459 artifacts)
   "artifact-ownership-graph",
+  // Phase 31 Cross-tier capability matrix (1 BLOCK gate — registry is single source of truth; no hard-coded tier literals)
+  "cross-tier-capability-matrix",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
