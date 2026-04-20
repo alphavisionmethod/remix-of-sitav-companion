@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T06:34:17.767Z
-> Verdict: **RED** ❌
+> Generated: 2026-04-20T16:20:31.957Z
+> Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 239 |
-| Gates present  | 359 |
-| Gates missing  | 3 |
+| Gates required | 244 |
+| Gates present  | 367 |
+| Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3624 |
 | Advisory gates surfaced | 119 |
@@ -252,9 +252,17 @@
 | `public-artifact-mirror` | ✅ | 0 | 0 |
 | `onboarding-components-folder` | ✅ | 0 | 0 |
 | `artifact-index-traceability` | ✅ | 0 | 0 |
+| `runbook-coverage` | ✅ | 0 | 0 |
 | `edge-function-ownership-completeness` | ✅ | 0 | 0 |
+| `connector-client-registry-completeness` | ✅ | 0 | 0 |
+| `admin-runbook-surface-wiring` | ✅ | 0 | 0 |
 | `recovery-boot-evidence` | ✅ | 0 | 0 |
 | `artifact-ownership-graph` | ✅ | 0 | 3 |
+| `cross-tier-capability-matrix` | ✅ | 0 | 0 |
+| `first-use-spec-coverage` | ✅ | 0 | 0 |
+| `internal-agent-deferred-set-explicitness` | ✅ | 0 | 0 |
+| `cluster-readme-coverage` | ✅ | 0 | 0 |
+| `ai-shim-integrity` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
@@ -357,7 +365,7 @@
 | `route-registry-completeness (advisory)` | ✅ | 0 | 0 |
 | `route-truth (advisory)` | ❌ | 0 | 0 |
 | `route-wrapper-usage (advisory)` | ❌ | 0 | 0 |
-| `runbook-coverage (advisory)` | ❌ | 0 | 0 |
+| `runbook-coverage (advisory)` | ✅ | 0 | 0 |
 | `runtime-foundations (advisory)` | ❌ | 0 | 0 |
 | `sensitive-document-privacy (advisory)` | ❌ | 0 | 0 |
 | `service-authority-unique (advisory)` | ❌ | 0 | 0 |
@@ -378,13 +386,10 @@
 | `workflow-state-usage (advisory)` | ❌ | 0 | 0 |
 | `workflow-states (advisory)` | ❌ | 0 | 0 |
 | `wrapper-purity (advisory)` | ❌ | 0 | 0 |
-| `runbook-coverage` | ❌ MISSING | — | — |
-| `connector-client-registry-completeness` | ❌ MISSING | — | — |
-| `admin-runbook-surface-wiring` | ❌ MISSING | — | — |
 
 ## Verdict
 
-❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 3 missing gate(s).
+⚠️ All required gates passed, but 3624 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
