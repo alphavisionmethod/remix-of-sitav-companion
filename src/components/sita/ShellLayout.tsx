@@ -53,10 +53,6 @@ import { LockScreenOverlay } from "./shell/LockScreenOverlay";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
 import { initZoomFromStorage } from "@/lib/system-menu/menu-actions";
 
-// Windowing system closure (Wave 12.7)
-import { persistWindowSession, markCleanShutdown, type WindowSessionSnapshot } from "@/lib/windowing/window-session-store";
-import { probeRecoveryState } from "@/lib/windowing/window-recovery";
-
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
 export const ShellLayout = ({ children }: { children: ReactNode }) => {
@@ -155,42 +151,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   // Restore persisted shell zoom on mount
   useEffect(() => { initZoomFromStorage(); }, []);
-
-  // ── Windowing session persistence (Wave 12.7) ─────────────
-  // Periodic window session snapshots for crash-safe restore
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const states = wm.getWindowStates();
-      const snapshots: WindowSessionSnapshot[] = states.map((w, i) => ({
-        windowId: w.id,
-        appId: w.id,
-        position: w.position,
-        width: w.width ?? 800,
-        height: 600,
-        minimized: w.minimized,
-        maximized: false,
-        zIndex: i + 1,
-        savedAt: Date.now(),
-      }));
-      if (snapshots.length > 0) persistWindowSession(snapshots);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [wm]);
-
-  // Mark clean shutdown on unload
-  useEffect(() => {
-    const handler = () => markCleanShutdown();
-    window.addEventListener("beforeunload", handler);
-    return () => window.removeEventListener("beforeunload", handler);
-  }, []);
-
-  // Probe recovery state on boot
-  useEffect(() => {
-    const recovery = probeRecoveryState();
-    if (recovery.crashDetected && recovery.restorableCount > 0) {
-      console.info(`[SITA Windowing] Crash detected — ${recovery.restorableCount} windows restorable`);
-    }
-  }, []);
 
   // Hooks
   useAdaptiveInterface();

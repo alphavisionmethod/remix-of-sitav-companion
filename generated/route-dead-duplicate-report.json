@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-04-20T23:15:06.221Z",
+  "gate": "route-dead-duplicate-cleanup",
+  "deadRoutes": 0,
+  "duplicateRoutes": 0,
+  "ok": true
+}
