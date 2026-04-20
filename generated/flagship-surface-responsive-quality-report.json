@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T16:53:18.589Z",
+  "generatedAt": "2026-04-20T16:54:19.478Z",
   "gate": "flagship-surface-responsive-quality",
   "ok": true,
   "errorCount": 0,
@@ -13,7 +13,7 @@
     {
       "severity": "warning",
       "area": "admin-ai-responsive-coverage",
-      "message": "src/components/admin/ai-runtime/MobileScopeTruthPanel.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
+      "message": "src/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
     },
     {
       "severity": "warning",
