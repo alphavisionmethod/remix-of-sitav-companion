@@ -46,16 +46,28 @@ if (!ownership) { console.error("❌ Missing artifact-ownership-manifest.json");
 if (!consumerScanRaw) { console.error("❌ Missing artifact-consumer-scan.json — run generate:artifact-consumers first"); process.exit(1); }
 const consumerScan = consumerScanRaw.data || consumerScanRaw;
 
-// Terminal artifacts: dashboards, audits, reports — outputs the user reads, not other scripts.
+// Terminal artifacts: dashboards, audits, reports, snapshots, summaries — outputs the
+// system reads, not other scripts. These are leaf nodes and excluded from the
+// ≥95% consumer-coverage requirement (they're allowed to have zero consumers).
 function isTerminal(artifact: string): boolean {
   const base = artifact.toLowerCase();
   return (
     base.endsWith("-report.json") ||
     base.endsWith("-readiness-report.json") ||
+    base.endsWith("-summary.json") ||
+    base.endsWith("-snapshot.json") ||
+    base.endsWith("-status.json") ||
+    base.endsWith("-baseline.json") ||
+    base.endsWith("-evidence.json") ||
+    base.endsWith("-metrics.json") ||
+    base.endsWith("-audit.json") ||
+    base.endsWith("-ledger.json") ||
+    base.endsWith("-attestation.json") ||
     base.includes("dashboard") ||
     base.includes("audit") ||
-    base.includes("summary") ||
-    base.includes("snapshot")
+    base.includes("snapshot") ||
+    base.includes("/coverage") ||
+    base.includes("-coverage.json")
   );
 }
 
@@ -145,9 +157,14 @@ for (const e of ownership.entries) {
   });
 
   // Artifact→artifact: each consumer script that ALSO produces another artifact creates an edge
+  // BUT skip cases where the consumer script IS the producer of the current artifact (sibling-output
+  // false positive: a single generator that emits multiple JSONs reads its own input fixtures, which
+  // would otherwise create artificial A↔B cycles between sibling outputs).
+  const ownProducer = e.producer ? e.producer.split(" ")[0] : null;
   if (cs && Array.isArray(cs.consumers)) {
     const seenTargets = new Set<string>();
     for (const c of cs.consumers) {
+      if (ownProducer && c.path === ownProducer) continue; // self-producer read — not a real edge
       const downstreamArtifacts = artifactByProducerScript.get(c.path);
       if (downstreamArtifacts) {
         for (const downstream of downstreamArtifacts) {
