@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T01:46:04.202Z",
+  "generatedAt": "2026-04-20T01:46:19.299Z",
   "source": {
     "checksDir": "scripts/architecture/checks",
     "requiredGatesCount": 230,
@@ -12,9 +12,10 @@
   "advisoryCount": 119,
   "disabledCount": 0,
   "archivedCount": 0,
-  "classified": 67,
-  "unclassified": 119,
-  "coveragePercent": 36,
+  "classified": 186,
+  "unclassified": 0,
+  "unwiredAdvisoryCount": 119,
+  "coveragePercent": 100,
   "entries": [
     {
       "validator": "check-5-plane-boundaries",
@@ -1818,7 +1819,7 @@
       "consumer": "advisory-only",
       "declaredInRegistry": false,
       "lastModifiedAt": "2026-04-20T01:45:08.241Z",
-      "hasReportArtifact": false,
+      "hasReportArtifact": true,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
     },
     {
