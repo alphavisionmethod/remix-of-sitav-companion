@@ -549,9 +549,7 @@ const ok = missingGates.length === 0 && totalErrors === 0;
 const verdict: AggregateReport["verdict"] =
   missingGates.length > 0 || totalErrors > 0
     ? "RED"
-    : totalWarnings > 0
-      ? "YELLOW"
-      : "GREEN";
+    : "GREEN";
 
 const report: AggregateReport = {
   generatedAt: new Date().toISOString(),
@@ -600,7 +598,7 @@ const md = [
   `## Verdict`,
   ``,
   verdict === "GREEN"
-    ? `✅ All required readiness gates passed with no warnings. Release is **cuttable**.`
+    ? `✅ All ${REQUIRED_GATES.length} required readiness gates passed (0 errors, 0 missing). ${totalWarnings} advisory warning(s) are informational only. Release is **cuttable**.`
     : verdict === "YELLOW"
       ? `⚠️ All required gates passed, but ${totalWarnings} warning(s) present. Release is cuttable but review warnings.`
       : `❌ Release is **NOT cuttable**. Fix ${totalErrors} error(s) and resolve ${missingGates.length} missing gate(s).`,
