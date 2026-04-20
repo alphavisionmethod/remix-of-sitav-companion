@@ -1,56 +1,96 @@
 
-## Verification Result: ✅ DEPLOYMENT READY — Audit doc update required
+## Diagnosis
 
-The "Connector capability completeness" P-fix is **100% in place on disk** from the previous loop. The only remaining work is reflecting RESOLVED status in the audit documents (and their mirrors).
+The audit observation is structurally accurate: only ~10 docs are mirrored to `public/generated/`, but the project has 459 evidence artifacts (markdown audits + JSON manifests + reports across `docs/`, `generated/`, `mnt/documents/`). The in-app document viewer can only fetch what's served from `public/`, so today it sees a small fraction.
 
-### On-disk evidence (from prior loop)
+This is a real surfacing gap — not just a doc claim. We need a **real, enforced mirror pipeline** that:
+1. Selects the canonical set of "publicly viewable" evidence artifacts
+2. Mirrors them into `public/generated/` deterministically
+3. Produces a typed index so the in-app viewer can list/search them
+4. Has a BLOCK-tier gate enforcing the mirror stays in sync (no drift)
 
-| Check | Result |
-|---|---|
-| `src/lib/connectors/types.ts` | ✅ shared `ConnectorCapability` type |
-| `src/lib/connectors/capabilities/*.capability.ts` | ✅ 12 files (one per catalog connector) |
-| `src/lib/connectors/capabilities/index.ts` | ✅ barrel + `getCapability()` |
-| `src/lib/connectors/clients/createEdgeFunctionClient.ts` | ✅ thin routing factory |
-| `src/lib/connectors/clients/index.ts` | ✅ 6 live client bindings (beta tier) |
-| `src/lib/connectors/registry.ts` | ✅ `getConnector()` joins capability + client + catalog |
-| `scripts/architecture/checks/check-connector-capability-completeness.ts` | ✅ BLOCK gate, PASS (12 catalog / 12 capabilities / 6 live + 6 planned) |
-| `npx tsc --noEmit` on connector files | ✅ 0 errors |
+## Strategy — additive, deterministic, zero behavior change to existing gates
 
-### What still needs doing
+### Step 1 — Mirror selection policy (`scripts/architecture/lib/public-mirror-policy.ts`)
+Single source of truth declaring which artifact classes get mirrored:
+- All `MISSING_AUDIT*.md`, `PROJECT_TREE_AUDIT*.md`, `MASTER_REMEDIATION*.md` (already partially mirrored)
+- All `generated/*.json` manifests (routes, services, capabilities, connector-catalog, evidence-graph, etc.)
+- All `docs/architecture/audits/*.md`
+- All `docs/architecture/registry/*.yaml`
+- Explicit denylist: secrets, internal scratch, `node_modules`, `*.lock`
 
-Update **all 4 audit mirrors** with a `RESOLVED 2026-04-20` marker for "Connector capability completeness":
-- `public/generated/MISSING_AUDIT.md`
-- `/mnt/documents/MISSING_AUDIT.md`
-- `public/generated/MISSING_AUDIT_v2.md`
-- `/mnt/documents/MISSING_AUDIT_v2.md`
+### Step 2 — Mirror generator (`scripts/manifests/generate/generate-public-artifact-mirror.ts`)
+Walks the policy, copies matching files into `public/generated/artifacts/<category>/<file>`, preserving relative structure. Idempotent. Skips unchanged files (md5 compare) so it doesn't churn git.
 
-With file references to:
-- `src/lib/connectors/capabilities/` (12 capability files)
-- `src/lib/connectors/clients/` (6 live bindings via `createEdgeFunctionClient`)
-- `src/lib/connectors/registry.ts` (single source of truth)
-- `scripts/architecture/checks/check-connector-capability-completeness.ts` (BLOCK gate)
+### Step 3 — Public artifact index (`public/generated/artifact-index.json`)
+Typed manifest the in-app viewer reads: `{ totalArtifacts, categories: [{ name, count, files: [{ path, sizeBytes, lastModified, sha256 }] }] }`. Generated alongside the mirror.
 
-### Verification after the doc update
+### Step 4 — In-app viewer integration (`src/lib/artifacts/`)
+- `src/lib/artifacts/types.ts` — `PublicArtifact`, `ArtifactCategory` types
+- `src/lib/artifacts/loadArtifactIndex.ts` — fetches `/generated/artifact-index.json`
+- `src/lib/artifacts/loadArtifact.ts` — fetches an individual mirrored artifact by path
+- Pure data-layer; no UI changes. Existing viewer components import from here.
+
+### Step 5 — BLOCK-tier enforcement gate (`scripts/architecture/checks/check-public-artifact-mirror.ts`)
+Asserts:
+1. Every artifact matched by the policy exists in `public/generated/artifacts/` with matching content hash
+2. `public/generated/artifact-index.json` exists, parses, and references only present files
+3. No drift: count in policy === count in index === count of files on disk under `public/generated/artifacts/`
+4. Mirror count meets minimum threshold (≥ 50, well above the current ~10)
+
+Add as **gate #22** to `check-os-release-readiness.ts` aggregator (BLOCK tier). This is the only roster change.
+
+### Step 6 — Audit reconciliation
+Mark in all 4 audit mirrors: "Public artifact surfacing — mirror coverage" → **RESOLVED 2026-04-20** with file refs. Preserve byte-identical mirror parity.
+
+## What this does NOT touch
+- Zero changes to existing 21 BLOCK gates (just adds a 22nd).
+- Zero changes to existing connector / onboarding / evidence systems.
+- No migrations, no RLS, no auth, no new routes.
+- No UI component edits — only the data layer the viewer already calls.
+- The 10 already-mirrored files stay where they are; we add to them.
+
+## Files touched
+
+**New (~8):**
+- `scripts/architecture/lib/public-mirror-policy.ts`
+- `scripts/manifests/generate/generate-public-artifact-mirror.ts`
+- `scripts/architecture/checks/check-public-artifact-mirror.ts`
+- `src/lib/artifacts/types.ts`
+- `src/lib/artifacts/loadArtifactIndex.ts`
+- `src/lib/artifacts/loadArtifact.ts`
+- `src/lib/artifacts/index.ts`
+- `public/generated/artifact-index.json` (auto-generated)
+
+**Modified (5):**
+- `scripts/architecture/checks/check-os-release-readiness.ts` (+1 gate registration → 22 BLOCK gates)
+- `public/generated/MISSING_AUDIT.md` + `/mnt/documents/MISSING_AUDIT.md` (RESOLVED markers)
+- `public/generated/MISSING_AUDIT_v2.md` + `/mnt/documents/MISSING_AUDIT_v2.md` (RESOLVED markers)
+
+**Auto-mirrored (~50+):**
+- New files copied under `public/generated/artifacts/{audits,manifests,registry,reports}/...`
+
+## Verification after approval
 
 ```bash
-# Strengthened gate still passes
-npx tsx scripts/architecture/checks/check-connector-capability-completeness.ts   # 0 errors
+# Generator runs and produces mirror + index
+npx tsx scripts/manifests/generate/generate-public-artifact-mirror.ts
 
-# 21/21 BLOCK gates green
+# Mirror count well above 10 (target ≥ 50)
+ls -R public/generated/artifacts | grep -E '\.(md|json|yaml)$' | wc -l
+
+# New BLOCK gate passes
+npx tsx scripts/architecture/checks/check-public-artifact-mirror.ts        # 0 errors
+
+# Master readiness now 22/22 BLOCK green
 npm run release:readiness
 
 # TypeScript clean
-npx tsc --noEmit                                                                  # 0 errors
+npx tsc --noEmit                                                            # 0 errors
 
-# Mirror parity
-md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md           # identical
-md5sum public/generated/MISSING_AUDIT_v2.md /mnt/documents/MISSING_AUDIT_v2.md     # identical
+# Audit mirror parity preserved
+md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md     # identical
+md5sum public/generated/MISSING_AUDIT_v2.md /mnt/documents/MISSING_AUDIT_v2.md  # identical
 ```
 
-### Files touched
-- `public/generated/MISSING_AUDIT.md` — RESOLVED marker
-- `/mnt/documents/MISSING_AUDIT.md` — RESOLVED marker (mirror)
-- `public/generated/MISSING_AUDIT_v2.md` — RESOLVED marker
-- `/mnt/documents/MISSING_AUDIT_v2.md` — RESOLVED marker (mirror)
-
-No code, gate, or registry changes — implementation is already durable on disk.
+Result: `public/generated/` becomes a real, indexed, drift-enforced mirror of the 459-artifact evidence corpus; the in-app viewer can enumerate and load any mirrored artifact via a typed data layer; a new BLOCK-tier gate prevents future regression — without touching any of the existing 21 gates' logic or any UI component.
