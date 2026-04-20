@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-recovery-closure",
+  "capabilities": {
+    "crashDetection": true,
+    "autoRestore": true,
+    "promptRestore": true,
+    "selectiveRestore": true,
+    "degradedRestore": true,
+    "quarantine": true,
+    "modalChainRepair": true,
+    "cleanShutdownMarking": true
+  },
+  "recoveryFile": "src/lib/windowing/window-recovery.ts",
+  "sessionStoreFile": "src/lib/windowing/window-session-store.ts"
+}

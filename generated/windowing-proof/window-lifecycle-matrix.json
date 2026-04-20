@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-lifecycle-coverage",
+  "totalStates": 15,
+  "states": ["CREATED","INITIALIZING","OPEN","FOCUSED","BLURRED","BACKGROUNDED","MINIMIZED","HIDDEN","SUSPENDED","MODAL_OPEN","CRASHED","RECOVERING","CLOSING","CLOSED","RESTORING"],
+  "totalTransitions": 14,
+  "transitions": {
+    "initialize": { "from": ["CREATED"], "to": "INITIALIZING" },
+    "open": { "from": ["INITIALIZING","RESTORING"], "to": "OPEN" },
+    "focus": { "from": ["OPEN","BLURRED","BACKGROUNDED","MODAL_OPEN"], "to": "FOCUSED" },
+    "blur": { "from": ["FOCUSED"], "to": "BLURRED" },
+    "background": { "from": ["BLURRED","OPEN"], "to": "BACKGROUNDED" },
+    "minimize": { "from": ["OPEN","FOCUSED","BLURRED","BACKGROUNDED","MODAL_OPEN"], "to": "MINIMIZED" },
+    "hide": { "from": ["OPEN","FOCUSED","BLURRED","BACKGROUNDED","MINIMIZED"], "to": "HIDDEN" },
+    "suspend": { "from": ["HIDDEN","BACKGROUNDED","MINIMIZED"], "to": "SUSPENDED" },
+    "openModal": { "from": ["OPEN","FOCUSED","BLURRED"], "to": "MODAL_OPEN" },
+    "crash": { "from": ["OPEN","FOCUSED","BLURRED","BACKGROUNDED","MINIMIZED","HIDDEN","SUSPENDED","MODAL_OPEN","INITIALIZING"], "to": "CRASHED" },
+    "recover": { "from": ["CRASHED"], "to": "RECOVERING" },
+    "close": { "from": ["OPEN","FOCUSED","BLURRED","BACKGROUNDED","MINIMIZED","HIDDEN","SUSPENDED","MODAL_OPEN","CRASHED","RECOVERING"], "to": "CLOSING" },
+    "closed": { "from": ["CLOSING"], "to": "CLOSED" },
+    "restore": { "from": ["MINIMIZED","HIDDEN","SUSPENDED","CLOSED"], "to": "RESTORING" }
+  },
+  "handlerFile": "src/lib/windowing/window-lifecycle-manager.ts",
+  "validatorFunction": "isValidTransition"
+}
