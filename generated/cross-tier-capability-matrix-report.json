@@ -1,0 +1,593 @@
+{
+  "gate": "cross-tier-capability-matrix",
+  "generatedAt": "2026-04-20T07:41:54.957Z",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "summary": {
+    "registeredFeatures": 48,
+    "referencedFeatureIds": 1,
+    "coverageRows": 48,
+    "tiersChecked": 4,
+    "hardCodedLiterals": 0
+  },
+  "coverage": [
+    {
+      "featureId": "auth-email",
+      "name": "Email Authentication",
+      "ownerDomain": "auth",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "auth-google",
+      "name": "Google OAuth",
+      "ownerDomain": "auth",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "biometric-auth",
+      "name": "Biometric / Passkey",
+      "ownerDomain": "auth",
+      "byTier": {
+        "WEB_APP": "fallback",
+        "DESKTOP_HOST": "fallback",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "boardroom",
+      "name": "Boardroom Decision Engine",
+      "ownerDomain": "platform",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "business-os",
+      "name": "Business OS Suite",
+      "ownerDomain": "business-os",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "money-os",
+      "name": "Money OS Suite",
+      "ownerDomain": "finance-os",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "concierge",
+      "name": "Concierge",
+      "ownerDomain": "concierge-os",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "files",
+      "name": "Files",
+      "ownerDomain": "files",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "communications",
+      "name": "Communications",
+      "ownerDomain": "communications",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "search",
+      "name": "Universal Search",
+      "ownerDomain": "search",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "command-palette",
+      "name": "Command Palette",
+      "ownerDomain": "platform",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "approval-flows",
+      "name": "Approval Flows",
+      "ownerDomain": "governance",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "proof-receipts",
+      "name": "Proof Receipts",
+      "ownerDomain": "governance",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "filesystem-local",
+      "name": "Local Filesystem Access",
+      "ownerDomain": "files",
+      "byTier": {
+        "WEB_APP": "fallback",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "file-picker",
+      "name": "File Picker",
+      "ownerDomain": "files",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "local-backup",
+      "name": "Local Backup",
+      "ownerDomain": "files",
+      "byTier": {
+        "WEB_APP": "fallback",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "notifications-push",
+      "name": "Push Notifications",
+      "ownerDomain": "notifications",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "notifications-native",
+      "name": "Native OS Notifications",
+      "ownerDomain": "notifications",
+      "byTier": {
+        "WEB_APP": "fallback",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "in-app-toast",
+      "name": "In-App Toast",
+      "ownerDomain": "notifications",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "window-control",
+      "name": "Window Management",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "tray-icon",
+      "name": "System Tray Icon",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "prohibited",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "menu-bar",
+      "name": "Native Menu Bar",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "auto-update-desktop",
+      "name": "Desktop Auto-Update",
+      "ownerDomain": "deployment",
+      "byTier": {
+        "WEB_APP": "prohibited",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "crash-reporter-ui",
+      "name": "Crash Reporter UI",
+      "ownerDomain": "support",
+      "byTier": {
+        "WEB_APP": "fallback",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "fallback",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "first-boot-ceremony",
+      "name": "First-Boot Ceremony",
+      "ownerDomain": "appliance",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "ota-update",
+      "name": "OTA Update Agent",
+      "ownerDomain": "appliance",
+      "byTier": {
+        "WEB_APP": "prohibited",
+        "DESKTOP_HOST": "prohibited",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "appliance-recovery",
+      "name": "Appliance Recovery",
+      "ownerDomain": "appliance",
+      "byTier": {
+        "WEB_APP": "prohibited",
+        "DESKTOP_HOST": "prohibited",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "managed-runtime-services",
+      "name": "Managed Runtime Services",
+      "ownerDomain": "appliance",
+      "byTier": {
+        "WEB_APP": "prohibited",
+        "DESKTOP_HOST": "prohibited",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "desktop-shell",
+      "name": "Desktop Shell",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "dock",
+      "name": "Dock",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "lock-screen",
+      "name": "Lock Screen",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "control-center",
+      "name": "Control Center",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "mission-control",
+      "name": "Mission Control",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "app-launcher",
+      "name": "App Launcher",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "boot-sequence-ux",
+      "name": "Boot Sequence (UX)",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "ambient-widgets",
+      "name": "Ambient Widgets",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "wallpaper",
+      "name": "Wallpaper System",
+      "ownerDomain": "shell",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "nova-kernel-runtime",
+      "name": "Nova Kernel (Runtime)",
+      "ownerDomain": "runtime",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "nova-filesystem-runtime",
+      "name": "Nova Filesystem (Runtime)",
+      "ownerDomain": "runtime",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "nova-compositor-runtime",
+      "name": "Nova Compositor (Runtime)",
+      "ownerDomain": "runtime",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "process-model-runtime",
+      "name": "Process Lifecycle (Runtime)",
+      "ownerDomain": "runtime",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "simulated",
+        "SIMULATED_OS_EXPERIENCE": "simulated"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "trust-zones",
+      "name": "Trust Zone Security",
+      "ownerDomain": "security",
+      "byTier": {
+        "WEB_APP": "simulated",
+        "DESKTOP_HOST": "simulated",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "needs-disclosure"
+    },
+    {
+      "featureId": "mobile-pwa-install",
+      "name": "Install as PWA",
+      "ownerDomain": "platform",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "prohibited",
+        "APPLIANCE_RUNTIME": "prohibited",
+        "SIMULATED_OS_EXPERIENCE": "prohibited"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "session-restore",
+      "name": "Session Restore",
+      "ownerDomain": "platform",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "connectors",
+      "name": "Connectors",
+      "ownerDomain": "integrations",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "integration-oauth",
+      "name": "OAuth Integrations",
+      "ownerDomain": "integrations",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "admin-dashboard",
+      "name": "Admin Dashboard",
+      "ownerDomain": "admin",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    },
+    {
+      "featureId": "kill-switches",
+      "name": "Emergency Kill Switches",
+      "ownerDomain": "admin",
+      "byTier": {
+        "WEB_APP": "supported",
+        "DESKTOP_HOST": "supported",
+        "APPLIANCE_RUNTIME": "supported",
+        "SIMULATED_OS_EXPERIENCE": "supported"
+      },
+      "launchHonesty": "honest"
+    }
+  ],
+  "issues": []
+}
