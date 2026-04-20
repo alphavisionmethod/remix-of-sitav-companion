@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 // @persistence: none — stateless module, no durable state to persist
 
+import { getDeviceLabel } from "@/runtimes/runtime-platform";
+
 export interface PasskeyCredential {
   id: string;
   publicKey: string;
@@ -112,13 +114,8 @@ class BiometricAuthBridge {
   }
 
   private detectDevice(): string {
-    const ua = navigator.userAgent;
-    if (/iPhone|iPad/.test(ua)) return 'Apple Device';
-    if (/Android/.test(ua)) return 'Android Device';
-    if (/Windows/.test(ua)) return 'Windows Device';
-    if (/Mac/.test(ua)) return 'Mac Device';
-    if (/Linux/.test(ua)) return 'Linux Device';
-    return 'Unknown Device';
+    // Registry-routed device label
+    return getDeviceLabel();
   }
 }
 

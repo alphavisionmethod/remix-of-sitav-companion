@@ -6,6 +6,7 @@
 
 import { getContextualDecisionEngine } from "./policyd-decisions";
 import { getPolicyBundleManager, type DeviceMode } from "./policyd-bundles";
+import { getDevicePlatform } from "@/runtimes/runtime-platform";
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -330,8 +331,10 @@ export class OnboardingDaemon {
   // ── Hardware Detection ────────────────────────────────────
 
   private detectHardware(): HardwareDetection {
+    // Registry-routed hardware model classification
+    const platform = getDevicePlatform();
     return {
-      hardwareModel: navigator.userAgent.includes("Mac") ? "SITA Book Pro" : "SITA Station",
+      hardwareModel: platform === "macos" ? "SITA Book Pro" : "SITA Station",
       batteryPresent: "getBattery" in navigator,
       tpmPresent: true, // simulated
       biometricPresent: "credentials" in navigator,

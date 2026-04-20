@@ -4,6 +4,7 @@
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { getDeviceLabel, getDevicePlatform } from "@/runtimes/runtime-platform";
 
 export interface UpdateRelease {
   id: string;
@@ -74,8 +75,9 @@ export const SystemUpdateService = {
 
     const deviceId = getDeviceId();
     const profile = {
-      userAgent: navigator.userAgent,
-      platform: navigator.platform,
+      // Registry-routed device profile (no raw UA in business code)
+      deviceLabel: getDeviceLabel(),
+      platform: getDevicePlatform(),
       language: navigator.language,
       cores: navigator.hardwareConcurrency || 0,
       memory: (navigator as unknown as Record<string, unknown>).deviceMemory || 0,

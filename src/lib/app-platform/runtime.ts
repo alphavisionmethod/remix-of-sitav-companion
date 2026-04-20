@@ -1,6 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Runtime capability probe
+// All tier + platform truth flows through src/runtimes/.
 // ═══════════════════════════════════════════════════════════════
+
+import { detectDesktopRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
+import { getDevicePlatform, isMobileSurface } from "@/runtimes/runtime-platform";
 
 export interface RuntimeCapabilities {
   isElectron: boolean;
@@ -29,25 +33,26 @@ export function probeRuntime(): RuntimeCapabilities {
     };
   }
 
-  const ua = navigator.userAgent || "";
-  const isElectron = !!window.electron || ua.toLowerCase().includes("electron");
+  const desktop = detectDesktopRuntime();
+  const isElectron = desktop.isElectron;
   const isPwa = window.matchMedia?.("(display-mode: standalone)").matches ?? false;
-  const isMobileUA = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+  const isMobileUA = isMobileSurface();
   const hasNativeAppsBridge = !!window.sitaApps?.launchNativeApp;
 
-  let platform: RuntimeCapabilities["platform"] = "web";
-  if (isElectron && window.electron?.platform) {
-    platform = window.electron.platform as RuntimeCapabilities["platform"];
-  } else if (/iPhone|iPad|iPod/i.test(ua)) {
-    platform = "ios";
-  } else if (/Android/i.test(ua)) {
-    platform = "android";
-  } else if (/Mac/i.test(ua)) {
-    platform = "darwin";
-  } else if (/Win/i.test(ua)) {
-    platform = "win32";
-  } else if (/Linux/i.test(ua)) {
-    platform = "linux";
+  // Platform mapping: prefer desktop bridge truth, otherwise use the
+  // registry's UA-based classifier and translate to legacy buckets.
+  let platform: RuntimeCapabilities["platform"];
+  if (isElectron && desktop.platform !== "unknown") {
+    platform = desktop.platform;
+  } else {
+    const dp = getDevicePlatform();
+    platform =
+      dp === "macos" ? "darwin" :
+      dp === "windows" ? "win32" :
+      dp === "linux" ? "linux" :
+      dp === "ios" ? "ios" :
+      dp === "android" ? "android" :
+      "web";
   }
 
   const surface: RuntimeCapabilities["surface"] = isElectron

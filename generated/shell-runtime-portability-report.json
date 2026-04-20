@@ -1,14 +1,25 @@
 {
-  "generatedAt": "2026-04-19T16:25:50.300Z",
+  "generatedAt": "2026-04-20T15:49:52.631Z",
   "gate": "shell-runtime-portability",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
   "issues": [],
-  "scanned": 664,
-  "sharedRoots": [
-    "src/hooks",
-    "src/lib/services"
-  ],
-  "violations": 0
+  "pass1": {
+    "scanned": 665,
+    "sharedRoots": [
+      "src/hooks",
+      "src/lib/services"
+    ],
+    "violations": 0
+  },
+  "pass2": {
+    "scanned": 4903,
+    "scanRoots": [
+      "src"
+    ],
+    "allowlistSize": 8,
+    "violations": 0,
+    "offendingFiles": []
+  }
 }
