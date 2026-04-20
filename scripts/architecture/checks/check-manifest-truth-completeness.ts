@@ -4,9 +4,12 @@
 import { readJsonSafe } from "../lib/utils";
 
 interface M { governance: Record<string, boolean>; classification: string; generatedArtifactCount: number }
+interface AOM { coveragePercent: number; totalArtifacts: number; withProducer: number; orphanCount: number }
 const data = readJsonSafe<M>("generated/deployment-gap-closure/manifest-truth-closure-map.json");
+const aom = readJsonSafe<AOM>("generated/artifact-ownership-manifest.json");
 if (!data) { console.warn("⚠ evidence missing"); process.exit(0); }
 const missing = Object.entries(data.governance).filter(([, v]) => !v).map(([k]) => k);
 const ok = missing.length === 0;
 console.log(`${ok ? "✅" : "⚠"} Manifest truth: ${data.classification} (${data.generatedArtifactCount} artifacts)${missing.length ? ` missing: ${missing.join(", ")}` : ""}`);
+if (aom) console.log(`   Producer coverage: ${aom.coveragePercent}% (${aom.withProducer}/${aom.totalArtifacts}, ${aom.orphanCount} orphans)`);
 process.exit(0);
