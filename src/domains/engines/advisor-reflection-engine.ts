@@ -3,6 +3,8 @@
 // Tracks owner actions to improve advisor accuracy over time
 // ═══════════════════════════════════════════════════════════════
 
+import { deriveAdjustments, type ReflectionSignal, type PolicyAdjustment } from "@/lib/advisors/advisor-reflection-policy-loop";
+
 export type OwnerAction = "approved" | "rejected" | "ignored" | "modified" | "deferred";
 
 export interface ReflectionEntry {
@@ -140,6 +142,19 @@ export class AdvisorReflectionEngine {
 
   getEntries(): ReflectionEntry[] {
     return [...this.entries];
+  }
+
+  /** Derive canonical policy adjustments from a reflection entry */
+  derivePolicyAdjustments(entry: ReflectionEntry): PolicyAdjustment[] {
+    const signal: ReflectionSignal = {
+      advisorId: entry.advisorId,
+      outcomeQuality: entry.outcomePositive === true ? 0.9 : entry.outcomePositive === false ? 0.2 : 0.5,
+      ownerAction: entry.ownerAction === "approved" ? "accepted" : entry.ownerAction as "modified" | "rejected" | "ignored",
+      executionFitness: entry.outcomeObserved ? (entry.outcomePositive ? 0.9 : 0.3) : 0.5,
+      shouldRepeat: entry.ownerAction === "approved" && entry.outcomePositive === true,
+      lessonLearned: entry.notes || "No lesson recorded",
+    };
+    return deriveAdjustments(signal);
   }
 }
 
