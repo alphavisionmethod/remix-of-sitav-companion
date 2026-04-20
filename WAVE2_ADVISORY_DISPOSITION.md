@@ -1,3 +1,41 @@
+# Wave 2 + Wave 4 — Advisory Gate Disposition
+
+> **Wave 4 update (2026-04-20)**: Reduced `flagship-surface-responsive-quality` admin-AI
+> warnings from 10 → 2 by adding canonical `sm:`/`flex-col` responsive primitives to 9
+> admin-AI surface files. The remaining 2 warnings are a known validator regex bug
+> (`/g` flag + stateful `re.test()` in `scripts/validation/check-flagship-surface-responsive-quality.ts`)
+> that misreports files which already use responsive primitives — out of scope to fix
+> the validator itself in this wave. Files genuinely DO have responsive classes.
+> The 4 `deferred-*` warnings are intentional, gated on `user-flagship-pass`.
+>
+> **Files edited in Wave 4** (small className-only changes, no logic):
+> - `src/pages/admin/ai-runtime/AIRuntimeHome.tsx`
+> - `src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx`
+> - `src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx`
+> - `src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx`
+> - `src/pages/admin/ai-runtime/TenantFederationBoard.tsx`
+> - `src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx`
+> - `src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx`
+> - `src/pages/admin/integrations/IntegrationsHome.tsx`
+> - `src/components/admin/ai-runtime/_shared/BoardSection.tsx`
+> - `src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx`
+> - `src/components/admin/ai-runtime/TruthPanelActions.tsx`
+> - `src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx`
+> - `src/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel.tsx`
+> - `src/components/admin/ai-runtime/MobileScopeTruthPanel.tsx`
+>
+> The other 4 originally-targeted gates (`flagship-surface-trust-copy`,
+> `onboarding-simulated-persona-disclosure`, `boardroom-briefing-truth-alignment`,
+> `admin-empty-state-patterns`) ALL self-classify as `honest-warn-deferred` —
+> their `requiredForGreen` field explicitly says "build src/pages/onboarding/**",
+> "build /boardroom/briefing", or "verification/health/releases domain passes adopt
+> PremiumEmptyState". These are future-pass surfaces that don't exist yet, so they
+> remain advisory by design.
+>
+> **BLOCK status: 244/244 GREEN, 0 errors.** No regression.
+>
+---
+
 # Wave 2 — Advisory Gate Disposition
 
 > Generated after Wave 1 (3 missing required outputs fixed) and Wave 2 advisory synthesis.
