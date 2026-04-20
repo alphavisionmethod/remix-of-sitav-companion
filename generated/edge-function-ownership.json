@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-20T10:24:27.125Z",
+  "generatedAt": "2026-04-20T10:25:30.414Z",
   "source": "src/lib/backend-topology/edge-function-owner-map.ts",
   "totalFunctionsOnDisk": 192,
-  "totalFunctionsOwned": 186,
-  "coveragePercent": 96.88,
+  "totalFunctionsOwned": 192,
+  "coveragePercent": 100,
   "totalOwnerTeams": 13,
   "ownersByTeam": {
     "admin-governance": 6,
@@ -12,11 +12,11 @@
     "ai-engineering": 10,
     "os-kernel": 7,
     "platform-core": 34,
-    "user-experience": 20,
+    "user-experience": 25,
     "finance-engine": 9,
     "cloud-infrastructure": 8,
     "connector-integrations": 13,
-    "compliance-security": 29,
+    "compliance-security": 30,
     "notification-services": 7,
     "app-platform": 14
   },
@@ -497,13 +497,13 @@
     {
       "name": "beta-apply",
       "path": "supabase/functions/beta-apply/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "boardroom-cockpit-telemetry",
@@ -1399,13 +1399,13 @@
     {
       "name": "investor-request",
       "path": "supabase/functions/investor-request/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "invoice-generate",
@@ -1630,13 +1630,13 @@
     {
       "name": "press-inquiry",
       "path": "supabase/functions/press-inquiry/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "production-launch-attestor",
@@ -1696,13 +1696,13 @@
     {
       "name": "recovery-evidence-ingest",
       "path": "supabase/functions/recovery-evidence-ingest/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "compliance-security",
+      "primaryContact": "@sita/compliance-security",
+      "escalationContact": "pd:security-oncall",
+      "slackChannel": "#compliance-security",
+      "runbookRef": "RB-011-SECURITY",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/compliance-security"
     },
     {
       "name": "release-artifact-signer",
@@ -2015,24 +2015,24 @@
     {
       "name": "waitlist-signup",
       "path": "supabase/functions/waitlist-signup/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "waitlist-stats",
       "path": "supabase/functions/waitlist-stats/index.ts",
-      "ownerTeam": null,
-      "primaryContact": null,
-      "escalationContact": null,
-      "slackChannel": null,
-      "runbookRef": null,
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
       "killSwitchRef": null,
-      "reviewerCodeOwners": null
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "webauthn-challenge",

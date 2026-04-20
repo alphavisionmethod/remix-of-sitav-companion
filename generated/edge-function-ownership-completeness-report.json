@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-20T10:24:29.749Z",
+  "generatedAt": "2026-04-20T10:25:32.647Z",
   "totalFunctionsOnDisk": 192,
-  "totalFunctionsOwned": 186,
-  "coveragePercent": 96.88,
+  "totalFunctionsOwned": 192,
+  "coveragePercent": 100,
   "ownerTeamCount": 13,
   "ownersByTeam": {
-    "compliance-security": 29,
+    "compliance-security": 30,
     "admin-governance": 6,
     "advisor-intelligence": 9,
     "agent-runtime": 20,
@@ -14,63 +14,32 @@
     "os-kernel": 7,
     "platform-core": 34,
     "app-platform": 14,
-    "user-experience": 20,
+    "user-experience": 25,
     "finance-engine": 9,
     "cloud-infrastructure": 8,
     "connector-integrations": 13
   },
-  "orphanCount": 6,
+  "orphanCount": 0,
   "phantomCount": 0,
   "metadataViolationCount": 0,
   "manifestArtifacts": {
     "canonical": {
       "path": "generated/edge-function-ownership.json",
-      "md5": "51790f2e7a0472d6d4eeca14dfec06dc",
+      "md5": "d3fd1d83bfe83d8636e8921dd0de3633",
       "present": true
     },
     "publicMirror": {
       "path": "public/generated/edge-function-ownership.json",
-      "md5": "51790f2e7a0472d6d4eeca14dfec06dc",
+      "md5": "d3fd1d83bfe83d8636e8921dd0de3633",
       "present": true
     },
     "colocated": {
       "path": "supabase/functions/_owners.json",
-      "md5": "51790f2e7a0472d6d4eeca14dfec06dc",
+      "md5": "d3fd1d83bfe83d8636e8921dd0de3633",
       "present": true
     },
     "parityOk": true
   },
-  "violations": [
-    {
-      "kind": "unowned-function",
-      "subject": "beta-apply",
-      "detail": "supabase/functions/beta-apply/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    },
-    {
-      "kind": "unowned-function",
-      "subject": "investor-request",
-      "detail": "supabase/functions/investor-request/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    },
-    {
-      "kind": "unowned-function",
-      "subject": "press-inquiry",
-      "detail": "supabase/functions/press-inquiry/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    },
-    {
-      "kind": "unowned-function",
-      "subject": "recovery-evidence-ingest",
-      "detail": "supabase/functions/recovery-evidence-ingest/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    },
-    {
-      "kind": "unowned-function",
-      "subject": "waitlist-signup",
-      "detail": "supabase/functions/waitlist-signup/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    },
-    {
-      "kind": "unowned-function",
-      "subject": "waitlist-stats",
-      "detail": "supabase/functions/waitlist-stats/index.ts has no entry in EDGE_FUNCTION_OWNER_MAP"
-    }
-  ],
-  "ok": false
+  "violations": [],
+  "ok": true
 }
