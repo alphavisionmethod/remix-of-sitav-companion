@@ -53,6 +53,8 @@ export const RUNBOOK_SUBSYSTEM_REQUIREMENTS: readonly RunbookSubsystemRequiremen
     description: "Failed support escalation paths" },
   { subsystem: "ingress", displayName: "Ingress / Edge", mandatory: true, criticalIncidentClass: true,
     description: "Ingress and edge routing failures (Nginx/Traefik/Kong)" },
+  { subsystem: "payments-auth", displayName: "Payment Authentication / 3DS", mandatory: true, criticalIncidentClass: true,
+    description: "Payment authorization, tokenization, and 3DS/SCA gateway recovery (KS-PAYMENTS-AUTH)" },
 ] as const;
 
 export function getMandatorySubsystems(): readonly RunbookSubsystem[] {

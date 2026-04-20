@@ -305,6 +305,8 @@ const REQUIRED_GATES = [
   "onboarding-components-folder",
   // Phase 24 Artifact index traceability (1 BLOCK gate — external validator entrypoint)
   "artifact-index-traceability",
+  // Phase 25 Runbook coverage (1 BLOCK gate — operator narrative + kill-switch ↔ runbook bidirectional integrity)
+  "runbook-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
