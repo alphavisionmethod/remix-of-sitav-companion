@@ -1,18 +1,32 @@
 {
-  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "generatedAt": "2026-04-20T23:00:00.000Z",
   "registeredWindows": 10,
   "persistableWindows": 8,
-  "ipcGroups": [
-    "domain-apps",
-    "boardroom",
-    "system"
-  ],
+  "ipcGroups": ["domain-apps", "boardroom", "system"],
   "crashSafeRestore": true,
   "permissionBoundaries": true,
+  "lifecycleStates": 15,
+  "lifecycleTransitions": 14,
+  "contractCoverage": "100%",
+  "proofArtifacts": 9,
+  "validators": 7,
+  "blockGates": ["window-contract-closure", "window-lifecycle-coverage"],
   "files": {
+    "contracts": "src/packages/window-contracts/index.ts",
     "registry": "src/lib/windowing/window-registry.ts",
     "sessionStore": "src/lib/windowing/window-session-store.ts",
     "recovery": "src/lib/windowing/window-recovery.ts",
-    "policy": "src/lib/windowing/window-capability-policy.ts"
+    "policy": "src/lib/windowing/window-capability-policy.ts",
+    "lifecycleManager": "src/lib/windowing/window-lifecycle-manager.ts",
+    "permissionBoundary": "src/lib/windowing/window-permission-boundary.ts",
+    "monitorPolicy": "src/lib/windowing/window-monitor-policy.ts",
+    "dpiPolicy": "src/lib/windowing/window-dpi-policy.ts",
+    "zOrderManager": "src/lib/windowing/window-z-order-manager.ts",
+    "focusHistory": "src/lib/windowing/window-focus-history.ts",
+    "modalPolicy": "src/lib/windowing/window-modal-policy.ts",
+    "communicationPolicy": "src/lib/windowing/window-communication-policy.ts",
+    "performancePolicy": "src/lib/windowing/window-performance-policy.ts",
+    "layoutEngine": "src/lib/windowing/window-layout-engine.ts",
+    "runtimeCompatibility": "src/lib/windowing/window-runtime-compatibility.ts"
   }
 }
