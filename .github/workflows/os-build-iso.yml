@@ -128,6 +128,16 @@ jobs:
           cat out/*.manifest.json
           cat generated/os-build-summary.md || true
 
+      - name: Wave 6 — Verify ISO artifact presence
+        env:
+          SITA_RELEASE_MODE: ci
+        run: npx tsx scripts/architecture/checks/check-iso-artifact-presence.ts
+
+      - name: Wave 6 — Verify RAW IMG artifact presence
+        env:
+          SITA_RELEASE_MODE: ci
+        run: npx tsx scripts/architecture/checks/check-raw-img-artifact-presence.ts
+
       - name: Cleanup MOK
         if: always()
         run: rm -f "$RUNNER_TEMP/mok.key" "$RUNNER_TEMP/mok.crt"
@@ -250,6 +260,71 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: staged/*
+          fail_on_unmatched_files: false
+          tag_name: ${{ github.event.release.tag_name }}
+
+  # ─────────────────────────────────────────────────────────────────────
+  # Wave 6 — VMware OVA appliance build
+  # Wraps the user-profile ISO into a deployable .ova on release events
+  # and on workflow_dispatch (large artifact; not built on every commit).
+  # ─────────────────────────────────────────────────────────────────────
+  build-ova:
+    name: Build VMware OVA appliance
+    needs: [build, smoke-test]
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sita-os-iso-user
+          path: out/
+
+      - name: Install OVA build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            qemu-utils qemu-system-x86 ovmf xorriso tar
+
+      - name: Build OVA appliance
+        run: |
+          ISO="$(ls -t out/sita-os-*-amd64.iso 2>/dev/null | head -1)"
+          if [ -z "$ISO" ]; then echo "::error::No ISO found to wrap"; exit 1; fi
+          bash os/vmware/build-ova.sh "$ISO"
+
+      - name: Wave 6 — Verify OVA artifact presence
+        env:
+          SITA_RELEASE_MODE: ci
+        run: npx tsx scripts/architecture/checks/check-ova-artifact-presence.ts
+
+      - name: Inspect OVA output
+        run: |
+          ls -lh out/*.ova out/*.ova.sha256 out/*.ova.manifest.json
+          cat out/*.ova.manifest.json
+
+      - name: Upload OVA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sita-os-ova
+          path: |
+            out/*.ova
+            out/*.ova.sha256
+            out/*.ova.manifest.json
+          retention-days: ${{ github.event_name == 'release' && 90 || 14 }}
+          if-no-files-found: error
+
+      - name: Attach OVA to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            out/*.ova
+            out/*.ova.sha256
+            out/*.ova.manifest.json
           fail_on_unmatched_files: false
           tag_name: ${{ github.event.release.tag_name }}
 

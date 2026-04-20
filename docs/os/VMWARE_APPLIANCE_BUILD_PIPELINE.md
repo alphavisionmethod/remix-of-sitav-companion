@@ -18,12 +18,20 @@
 | VMware Fusion 13 | ✅ boots |
 | ESXi 7 / vSphere 8 | ✅ boots (set vmx-19) |
 
-## Phase 2 (planned)
+## Phase 2 (shipped Wave 6 — 2026-04-20)
 
-- Unattended installer driven by VMware OVF properties (`hostname`,
-  `username`, `channel`) consumed via `cloud-init`.
-- Fixed-size 32 GB qcow2 with the install already applied — eliminates
-  the live-from-CD step.
+- ✅ Unattended installer driven by cloud-init seed ISO
+  (`scripts/release/iso/autoinstall/{user-data,meta-data,network-config}`),
+  assembled at OVA-build time with `xorrisofs` and attached as a second
+  CD-ROM during a 30-minute headless `qemu-system-x86_64` install loop.
+- ✅ Fixed-size 32 GiB qcow2 target, converted to streamOptimized vmdk —
+  the install lands on disk, eliminating live-from-CD for production.
+- ✅ OVF advertises **vmx-19**, 2 vCPU, 4 GiB RAM (matches the validated
+  hardware matrix above).
+- ✅ Manifest records the install phase (`installed-to-disk` vs
+  `live-from-cd`) so operators can verify appliance shape after deploy.
+- ✅ Falls back to live-from-CD with explicit `::warning::` when
+  `xorrisofs` is unavailable — never silently downgrades.
 
 ## Build
 

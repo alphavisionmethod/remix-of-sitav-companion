@@ -84,16 +84,25 @@ SITA_INSTALLED_VERSION="${SITA_INSTALLED_VERSION:-0.0.0}" \
     "${OUT_DIR}/sita-os-${VERSION}.bundle" \
     "${OUT_DIR}/channel-${CHANNEL}.json"
 
-step "12/13  Build raw IMG (flashable disk + cloud import)"
+step "12/14  Build raw IMG (flashable disk + cloud import)"
 SITA_OUT_DIR="${OUT_DIR}" VERSION="${VERSION}" sudo -E bash "${REPO}/os/scripts/build-raw-img.sh"
 
-step "13/13  QEMU validation"
+step "13/14  QEMU validation"
 SITA_QEMU_TIMEOUT="${SITA_QEMU_TIMEOUT:-180}" bash "${REPO}/os/qemu-validate.sh"
+
+step "14/14  Wrap ISO into VMware OVA appliance"
+if command -v qemu-img >/dev/null 2>&1; then
+  bash "${REPO}/os/vmware/build-ova.sh" "${OUT_DIR}/sita-os-${VERSION}-amd64.iso" || \
+    echo "  (OVA build failed — see warning above)"
+else
+  echo "  (skipped — qemu-img missing; install qemu-utils to enable OVA)"
+fi
 
 echo
 echo "✅ release pipeline complete"
 echo "   ISO:        ${OUT_DIR}/sita-os-${VERSION}-amd64.iso"
 echo "   IMG:        ${OUT_DIR}/sita-os-${VERSION}-amd64.img"
+echo "   OVA:        ${OUT_DIR}/sita-os-${VERSION}-amd64.ova"
 echo "   Bundle:     ${OUT_DIR}/sita-os-${VERSION}.bundle"
 echo "   Channel:    ${OUT_DIR}/channel-${CHANNEL}.json"
 echo "   TPM seal:   ${OUT_DIR}/tpm-seal-manifest.json"

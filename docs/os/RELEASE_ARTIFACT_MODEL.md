@@ -17,7 +17,9 @@ not considered valid unless **all** are present and verified.
 | `os-build-summary.md` | human readable |
 | `os-verification-report.json` | post-build verifier output |
 | `qemu-validation-report.json` | QEMU boot proof |
-| `sita-os-<version>-amd64.ova` | VMware appliance (workflow_dispatch only) |
+| `sita-os-<version>-amd64.ova` | VMware appliance (release events + workflow_dispatch; Wave 6) |
+| `sita-os-<version>-amd64.ova.sha256` | OVA integrity checksum |
+| `sita-os-<version>-amd64.ova.manifest.json` | OVA build metadata + install phase (`installed-to-disk` / `live-from-cd`) |
 
 ## Versioning
 

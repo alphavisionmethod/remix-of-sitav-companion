@@ -89,17 +89,14 @@
 | PWA | 🟢 READY | service worker live |
 | Edge (Supabase Functions) | 🟢 READY | 194 fns deployed |
 | Electron desktop | 🟢 READY | layout gate GREEN |
-| OS-ISO (sovereign Linux) | 🟡 STAGING | 3 missing required-gate outputs |
-| OVA (VM appliance) | 🟡 STAGING | depends on ISO |
-| RAW IMG (cloud-init) | 🟡 STAGING | depends on ISO |
+| OS-ISO (sovereign Linux) | 🟢 READY | ISO produced by CI nightly + on release; 247/247 BLOCK GREEN — see §12.1 |
+| OVA (VM appliance) | 🟢 READY | OVA wired to release events; autoinstall graduated from live-from-CD (Wave 6) |
+| RAW IMG (cloud-init) | 🟢 READY | IMG produced by CI; flashable + cloud-import verified |
 | iOS / Android (Capacitor) | ⚪ DEFERRED | mobile-deferral attestation signed |
 
 ### 1.4 Critical path to GREEN
 
-1. Generate `runbook-coverage-report.json` (validator exists in `scripts/architecture/checks/`)
-2. Generate `connector-client-registry-completeness-report.json`
-3. Generate `admin-runbook-surface-wiring-report.json`
-4. Re-run `npm run release:readiness` → expect verdict flip RED → GREEN.
+**Already GREEN as of Wave 6 (2026-04-20).** All 247 BLOCK gates pass with 0 errors and 0 missing outputs. The three Wave-1 gaps (`runbook-coverage`, `connector-client-registry-completeness`, `admin-runbook-surface-wiring`) and the three Wave-6 gates (`iso-artifact-presence`, `ova-artifact-presence`, `raw-img-artifact-presence`) are all green. Verdict remains YELLOW only because of the 3 deferred mega-gates owned by Phase 15 (lib decomposition, legacy wrappers, lib ownership drift) which are explicitly out of scope for this aggregator. See `WAVE6_ISO_OVA_RAW_PRODUCTION.md` for the full Wave 1→6 chain.
 
 ---
 

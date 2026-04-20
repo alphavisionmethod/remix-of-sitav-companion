@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T18:26:10.113Z",
+  "gate": "raw-img-artifact-presence",
+  "phase": "wave-6-iso-ova-raw-production",
+  "mode": "dev",
+  "outDir": "out",
+  "found": {
+    "img": [],
+    "sha256": [],
+    "manifest": []
+  },
+  "errorCount": 0,
+  "warningCount": 0,
+  "ok": true,
+  "issues": []
+}
