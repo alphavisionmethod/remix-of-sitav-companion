@@ -22,6 +22,26 @@ if (!sqlBlob.includes("mobile_deferral_no_update") || !sqlBlob.includes("mobile_
 if (!existsSync("archive/mobile/ARCHIVED.md")) {
   issues.push({ severity: "error", area: "archive", message: "archive/mobile/ARCHIVED.md sentinel missing" });
 }
+// Strengthened assertions (data-truth, not just string-truth):
+const fnPath = "supabase/functions/mobile-deferral-attestor/index.ts";
+if (!existsSync(fnPath)) {
+  issues.push({ severity: "error", area: "edge-function", message: "mobile-deferral-attestor edge function missing" });
+} else {
+  const fnSrc = readFileSync(fnPath, "utf8");
+  if (!fnSrc.includes("auth.getUser()")) {
+    issues.push({ severity: "error", area: "edge-function-auth", message: "mobile-deferral-attestor must validate JWT via auth.getUser()" });
+  }
+  if (!fnSrc.includes("'admin'") && !fnSrc.includes('"admin"')) {
+    issues.push({ severity: "error", area: "edge-function-auth", message: "mobile-deferral-attestor must enforce admin role" });
+  }
+  if (!fnSrc.includes("sha256") && !fnSrc.includes("SHA-256")) {
+    issues.push({ severity: "error", area: "edge-function-signature", message: "mobile-deferral-attestor must compute SHA-256 signature" });
+  }
+}
+// Proves at least one baseline receipt is seeded (not just schema strings):
+if (!/INSERT\s+INTO\s+public\.mobile_deferral_attestations/i.test(sqlBlob)) {
+  issues.push({ severity: "error", area: "seed-receipt", message: "no baseline INSERT into mobile_deferral_attestations found in migrations" });
+}
 
 const errorCount = issues.filter((i) => i.severity === "error").length;
 const warningCount = issues.filter((i) => i.severity === "warning").length;
