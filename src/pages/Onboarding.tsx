@@ -1,10 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useOnboardingResume, type OnboardingBranch } from "@/hooks/useOnboardingResume";
 
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ import logo from "@/assets/logo.webp";
 import {
   Briefcase, DollarSign, Headphones, ChevronRight, ChevronLeft, Check, User, Building,
   Shield, Brain, Zap, Clock, Mail, Calendar, FileText, Sparkles, CheckCircle, ArrowRight,
-  Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders
+  Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders, RotateCcw
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
