@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-20T01:32:20.161Z",
+  "generatedAt": "2026-04-20T01:33:36.471Z",
   "generator": "scripts/manifests/generate/generate-artifact-ownership-manifest.ts",
   "totalArtifacts": 913,
-  "withProducer": 406,
-  "withoutProducer": 507,
-  "coveragePercent": 44.5,
-  "orphanCount": 471,
+  "withProducer": 452,
+  "withoutProducer": 461,
+  "coveragePercent": 49.5,
+  "orphanCount": 425,
   "declaredInRegistry": 115,
   "ownerBreakdown": {
     "architecture": 641,
@@ -24,23 +24,14 @@
   "sourceBreakdown": {
     "auto-discovered": 227,
     "registry": 36,
-    "orphan": 471,
-    "directory-inferred": 179
+    "orphan": 425,
+    "directory-inferred": 225
   },
   "orphans": [
     "generated/SITA_MASTER_AUDIT.md",
     "generated/STUBS_AND_PLACEHOLDERS_REGISTER.md",
     "generated/admin-action-orientation-report.json",
     "generated/admin-action-panel-hierarchy-report.json",
-    "generated/admin-ai-engineer-team/CLOSURE_PHASE_1_2.md",
-    "generated/admin-ai-engineer-team/CLOSURE_PHASE_3_6.md",
-    "generated/admin-ai-engineer-team/FINAL_CLOSURE.md",
-    "generated/admin-ai-engineer-team/WIRING_PROOF_MATRIX.md",
-    "generated/admin-ai-engineer-team/action-coverage.json",
-    "generated/admin-ai-engineer-team/admin-ai-engineer-team-verification.json",
-    "generated/admin-ai-engineer-team/inventory.json",
-    "generated/admin-ai-engineer-team/primitive-coverage.json",
-    "generated/admin-ai-engineer-team/wiring-coverage.json",
     "generated/admin-ai-runtime-drilldowns-report.json",
     "generated/admin-ai-runtime-proof-language-report.json",
     "generated/admin-and-validation-closure/ADMIN_AND_VALIDATION_FINAL_VERIFICATION.md",
@@ -125,9 +116,18 @@
     "generated/behavioral-ci-coverage-report.json",
     "generated/boardroom-briefing-narrow-width-report.json",
     "generated/boardroom-briefing-truth-alignment-report.json",
-    "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_CURRENT_STATE_AUDIT.md",
-    "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_DB_AND_LINKAGE_MAP.md",
-    "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_E2E_PROOF_STATUS.md"
+    "generated/boardroom-layer7-closure-report.json",
+    "generated/boardroom-trust-copy-report.json",
+    "generated/bridge-status-contract-report.json",
+    "generated/calm-mode-default-posture-report.json",
+    "generated/capacitor-mobile-truth-report.json",
+    "generated/chaos-safe-catalogue-report.json",
+    "generated/ci-artifacts-proof-report.json",
+    "generated/claim-safety-hardening/CANONICAL_OS_LANGUAGE_GUIDE.md",
+    "generated/claim-safety-hardening/CLAIM_SAFETY_HARDENING_FINAL_VERIFICATION.md",
+    "generated/claim-safety-hardening/DEMO_AND_FUTURE_CLAIM_SAFETY_UPDATE.md",
+    "generated/claim-safety-hardening/DEMO_CONTAINMENT_MODEL.md",
+    "generated/claim-safety-hardening/DEMO_ONLY_SURFACE_AUDIT.md"
   ],
   "entries": [
     {
@@ -172,93 +172,93 @@
     },
     {
       "artifact": "generated/admin-ai-engineer-team/action-coverage.json",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/admin-ai-engineer-team-verification.json",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/CLOSURE_PHASE_1_2.md",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/CLOSURE_PHASE_3_6.md",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/FINAL_CLOSURE.md",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/inventory.json",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/primitive-coverage.json",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/WIRING_PROOF_MATRIX.md",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-engineer-team/wiring-coverage.json",
-      "producer": null,
+      "producer": "scripts/validation/check-ai-engineer-action-coverage.ts",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-ai-runtime-drilldowns-report.json",
@@ -1889,183 +1889,183 @@
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_CURRENT_STATE_AUDIT.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.832Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_DB_AND_LINKAGE_MAP.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.832Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_E2E_PROOF_STATUS.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_EXECUTION_AND_PROOF_FLOW.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_FINAL_VERIFICATION.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_OPERATOR_VISIBILITY.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_STATE_MACHINE.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_TARGET_MODEL.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/BOARDROOM_LAYER7_USER_VISIBILITY.md",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/boardroom-layer7-e2e-status.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/boardroom-layer7-linkage-map.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/boardroom-layer7-state-machine.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/boardroom-layer7-verification.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/linkage.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/outcome-coverage.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/proof-coverage.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/reflection-coverage.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-layer7-closure/state-coverage.json",
-      "producer": null,
-      "npmScript": null,
+      "producer": "scripts/validation/check-boardroom-followthrough-linkage.ts",
+      "npmScript": "brd:l7:linkage",
       "owner": "ai-workforce",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.833Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/boardroom-template-index.json",
@@ -6097,13 +6097,13 @@
     },
     {
       "artifact": "generated/lib-decomposition/SRC_LIB_CURRENT_TO_TARGET_MAP.md",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.856Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/SRC_LIB_DUPLICATE_AND_AMBIGUOUS_MODULES.md",
@@ -6117,73 +6117,73 @@
     },
     {
       "artifact": "generated/lib-decomposition/SRC_LIB_FULL_CLASSIFICATION_AUDIT.md",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.857Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/SRC_LIB_MIGRATION_PLAN.md",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.857Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/SRC_LIB_VERIFICATION_RESULTS.md",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.857Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/src-lib-classification-map.json",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.860Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/src-lib-target-map.json",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/src-lib-verification-results.json",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-decomposition/src-lib-wrapper-map.json",
-      "producer": null,
+      "producer": "scripts/architecture/audit-src-lib.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-ownership-drift-report.json",
@@ -6223,7 +6223,7 @@
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_CANONICAL_OWNERSHIP_FINAL.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6231,11 +6231,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_DUPLICATE_RESOLUTION_REPORT.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6243,11 +6243,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_FINAL_VERIFICATION_RESULTS.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6255,11 +6255,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_HARDENING_STATUS.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6267,11 +6267,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_REMAINING_LEGACY_JUSTIFICATION.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6279,11 +6279,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_REMEDIATION_PLAN.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6291,11 +6291,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_STALE_REFERENCE_CLEANUP.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6303,11 +6303,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.862Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/SRC_LIB_WRAPPER_REMOVAL_STATUS.md",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6315,11 +6315,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.863Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/src-lib-final-verification.json",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6327,11 +6327,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.863Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/src-lib-remediation-status.json",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6339,11 +6339,11 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.863Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/src-lib-wrapper-removal-status.json",
-      "producer": null,
+      "producer": "scripts/architecture/checks/check-residual-lib-canonicality.ts",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [
@@ -6351,7 +6351,7 @@
       ],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.863Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/lib-remediation/wave5-wrapper-removal.json",
