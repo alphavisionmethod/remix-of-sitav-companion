@@ -6,19 +6,28 @@
       "name": "predictive-intent.test",
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/predictive-intent.test.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "test harness"
     },
     {
       "name": "system-updates.test",
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/system-updates.test.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "test harness"
     },
     {
       "name": "window-physics.test",
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/window-physics.test.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "test harness"
     },
     {
       "name": "adaptive-interface",
@@ -31,7 +40,10 @@
         "AdaptiveContext",
         "AdaptiveInterfaceService",
         "createAdaptiveInterface"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "agent-control",
@@ -44,7 +56,10 @@
         "FleetControlSummary",
         "AgentControlService",
         "createAgentControl"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "summarizer",
@@ -55,7 +70,10 @@
         "ConversationSummary",
         "ConversationSummarizer",
         "conversationSummarizer"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "cost-circuit-breaker",
@@ -70,7 +88,10 @@
         "FleetBudgetSummary",
         "CostCircuitBreakerService",
         "createCostCircuitBreaker"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "budget",
@@ -78,7 +99,10 @@
       "path": "src/lib/services/ai-gateway/budget.service.ts",
       "exports": [
         "UsageLedgerStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "callable",
@@ -87,7 +111,10 @@
       "exports": [
         "BrainCoreResponse",
         "AIGatewayResponse"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "diagnostics",
@@ -95,7 +122,10 @@
       "path": "src/lib/services/ai-gateway/diagnostics.service.ts",
       "exports": [
         "DegradedDiagnostic"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "launch-honesty",
@@ -103,25 +133,37 @@
       "path": "src/lib/services/ai-gateway/launch-honesty.service.ts",
       "exports": [
         "AICapabilityLaunchStatus"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "provider-registry",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/provider-registry.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "receipts",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/receipts.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "routing",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/routing.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "types",
@@ -169,7 +211,10 @@
         "AIGatewayResponse",
         "AIBudgetSummary",
         "AIProviderStatus"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "admin-budget-routing-policy",
@@ -190,7 +235,10 @@
         "getBudgetExecutionParams",
         "getCostSavingSuggestions",
         "buildInvocationHistory"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "agent-governance",
@@ -202,7 +250,10 @@
         "GovernanceConfig",
         "AgentGovernanceService",
         "createAgentGovernance"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "agent-health-monitor",
@@ -214,7 +265,10 @@
         "HealthIncident",
         "AgentHealthMonitorService",
         "createAgentHealthMonitor"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "workforce-orchestrator",
@@ -224,7 +278,10 @@
         "WorkforceRole",
         "WorkforceInvocationRequest",
         "WorkforceInvocation"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "workforce-service",
@@ -234,7 +291,10 @@
         "AgentAssignmentResult",
         "AIWorkforceService",
         "createAIWorkforce"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "approval-history",
@@ -245,7 +305,10 @@
         "recordApproval",
         "getApprovalHistory",
         "computeMetrics"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "approval-requests",
@@ -259,7 +322,10 @@
         "updateStatus",
         "expireStale",
         "persistState"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "approval-routing",
@@ -271,7 +337,10 @@
         "routeApproval",
         "canDelegate",
         "getNextDelegate"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "escalation-rules",
@@ -284,7 +353,10 @@
         "getNextEscalationTarget",
         "createMultiStepApproval",
         "advanceMultiStep"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "god-tier-integration-engine",
@@ -323,7 +395,10 @@
         "getSprawlReducers",
         "getSprawlDangers",
         "computeIntegrationScore"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "attention-os",
@@ -340,7 +415,10 @@
         "SurfaceRoutingDecision",
         "AttentionOSService",
         "createAttentionOS"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "advisor-track-composer",
@@ -350,7 +428,10 @@
         "ComposedAdvisorView",
         "composeAdvisorTracks",
         "getAdvisorName"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "carryover",
@@ -362,7 +443,10 @@
         "resolveCarryoverItem",
         "getOpenCarryovers",
         "getAllCarryovers"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "decision-memory",
@@ -374,7 +458,10 @@
         "listSessionDecisions",
         "searchDecisions",
         "getRecentDecisions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "boundary-engine",
@@ -386,7 +473,10 @@
         "BoundaryCheck",
         "BoundaryEngineService",
         "createBoundaryEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "build-approval-package",
@@ -397,7 +487,10 @@
         "ApprovalEvidence",
         "RiskAssessment",
         "buildApprovalPackage"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "build-boardroom-request",
@@ -407,7 +500,10 @@
         "BoardroomRequest",
         "AgendaItem",
         "buildBoardroomRequest"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "build-explanation",
@@ -417,7 +513,10 @@
         "ExplanationPackage",
         "buildExplanationPackage",
         "formatDuration"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "build-simulation-request",
@@ -428,7 +527,10 @@
         "SimulationParameter",
         "SimulationScenario",
         "buildSimulationRequest"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "choose-advisors",
@@ -439,7 +541,10 @@
         "AdvisorSelectionResult",
         "chooseAdvisors",
         "scoreAdvisor"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "choose-execution-mode",
@@ -449,7 +554,10 @@
         "ExecutionModeDecision",
         "selectExecutionMode",
         "canBypassApproval"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "councils",
@@ -462,7 +570,10 @@
         "runFinanceCouncil",
         "runConciergeCouncil",
         "runMetaCouncil"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "model-router",
@@ -479,7 +590,10 @@
         "getModelBudgetStatus",
         "setModelBudget",
         "resetDailySpend"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "orchestrate-intent",
@@ -496,7 +610,10 @@
         "chooseExecutionMode",
         "buildOrchestrationPlan",
         "buildExplanation"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "accounts",
@@ -505,7 +622,10 @@
       "exports": [
         "AccountHealthRollup",
         "segmentAccounts"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "business-boardroom-inputs",
@@ -514,7 +634,10 @@
       "exports": [
         "BusinessBoardroomPacket",
         "buildBusinessBoardroomPacket"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "callback-queue",
@@ -524,7 +647,10 @@
         "CallbackEntry",
         "buildCallbackQueue",
         "prioritizeCallbacks"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "collections-command",
@@ -533,7 +659,10 @@
       "exports": [
         "buildEscalationQueue",
         "computeCollectionsKpis"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "collections",
@@ -543,7 +672,10 @@
         "CollectionsStatus",
         "categorizeByAging",
         "buildCollectionsStatuses"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "contacts",
@@ -553,7 +685,10 @@
         "ContactTimelineEntry",
         "enrichContact",
         "mergeContacts"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "customer-dashboard",
@@ -564,7 +699,10 @@
         "CustomerDashboard",
         "computeCustomerHealth",
         "buildDashboard"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "customer-health",
@@ -575,7 +713,10 @@
         "HealthFactor",
         "computeHealthScore",
         "identifyChurnRisk"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "customer-timeline",
@@ -586,7 +727,10 @@
         "aggregateTimeline",
         "detectEngagementGaps",
         "summarizeEngagement"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "follow-up",
@@ -596,7 +740,10 @@
         "FollowUpAction",
         "generateFollowUpSequence",
         "shouldEscalateFollowUp"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "invoice-linking",
@@ -607,7 +754,10 @@
         "linkInvoiceToQuote",
         "detectUnlinkedInvoices",
         "computeQuoteToInvoiceRate"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "lead-intake",
@@ -618,7 +768,10 @@
         "createLead",
         "deduplicateLeads",
         "trackLeadSource"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "lead-scoring",
@@ -629,7 +782,10 @@
         "scoreLead",
         "detectStaleLead",
         "buildCallbackQueue"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "leakage-engine",
@@ -637,7 +793,10 @@
       "path": "src/lib/services/business-os/leakage-engine.service.ts",
       "exports": [
         "detectLeakageComprehensive"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "no-show-recovery",
@@ -649,7 +808,10 @@
         "detectNoShows",
         "buildNoShowRecoveryActions",
         "computeNoShowRate"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "opportunity-engine",
@@ -660,7 +822,10 @@
         "OpportunityScore",
         "scoreOpportunity",
         "rankOpportunities"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "opportunity-ranking",
@@ -670,7 +835,10 @@
         "RankingConfig",
         "RankedOpportunity",
         "rankOpportunitiesWeighted"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "proposals",
@@ -681,7 +849,10 @@
         "ProposalLineItem",
         "createProposal",
         "computeWinRate"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "quotes",
@@ -692,7 +863,10 @@
         "createQuote",
         "isQuoteExpired",
         "reviseQuote"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "reactivation",
@@ -701,7 +875,10 @@
       "exports": [
         "ReactivationCandidate",
         "identifyReactivationCandidates"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "recovered-value-ledger",
@@ -711,7 +888,10 @@
         "RecoveredValueEntry",
         "RecoveryLedgerSummary",
         "summarizeLedger"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "recovery-engine",
@@ -722,7 +902,10 @@
         "RecoveryStep",
         "createRecoveryPlan",
         "advanceRecoveryStep"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "revenue-autopilot",
@@ -732,7 +915,10 @@
         "detectLeaks",
         "buildCollectionsEscalation",
         "computeKpiSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "stale-lead-detector",
@@ -742,7 +928,10 @@
         "StaleLeadReport",
         "detectStaleLeads",
         "buildStaleLeadReport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "website-management",
@@ -759,7 +948,10 @@
         "WebsiteStats",
         "WebsiteManager",
         "createWebsiteManager"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "pipeline-orchestrator",
@@ -773,7 +965,10 @@
         "PipelineRequest",
         "PipelineOrchestrator",
         "pipelineOrchestrator"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "capability-registry",
@@ -789,7 +984,10 @@
         "getAllCapabilities",
         "getRegistryHealth",
         "persistState"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "pack-enablement",
@@ -802,7 +1000,10 @@
         "listEnabledCapabilities",
         "getPackDefinition",
         "listPacks"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "shell-space-routing",
@@ -815,7 +1016,10 @@
         "listRoutesForSection",
         "getDeepLinkableRoutes",
         "registerRoute"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "chief-of-staff",
@@ -832,7 +1036,10 @@
         "CoordinationDecision",
         "ChiefOfStaffService",
         "createChiefOfStaff"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "activity-prep",
@@ -842,7 +1049,10 @@
         "ActivityChecklist",
         "buildActivityChecklist",
         "getMockActivityChecklists"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "conflict-detector",
@@ -852,7 +1062,10 @@
         "ConflictResolution",
         "detectConflicts",
         "suggestResolutions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "event-continuity",
@@ -862,7 +1075,10 @@
         "EventPlan",
         "buildEventPlan",
         "getMockEventPlans"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "gift-reminders",
@@ -872,7 +1088,10 @@
         "GiftReminder",
         "getUpcomingGiftReminders",
         "filterUrgent"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "grocery-continuity",
@@ -882,7 +1101,10 @@
         "detectContinuityAlerts",
         "generateShoppingList",
         "computeMonthlyGroceryBudget"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "home-admin",
@@ -891,7 +1113,10 @@
       "exports": [
         "getExpiringItems",
         "computeAdminLoad"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "household-boardroom-inputs",
@@ -900,7 +1125,10 @@
       "exports": [
         "HouseholdBoardroomPacket",
         "buildHouseholdBoardroomPacket"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "household-ops",
@@ -909,7 +1137,10 @@
       "exports": [
         "computeHouseholdKpis",
         "balanceLoad"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "household-overview",
@@ -918,7 +1149,10 @@
       "exports": [
         "HouseholdOverview",
         "buildHouseholdOverview"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "load-balance",
@@ -928,7 +1162,10 @@
         "LoadReport",
         "analyzeLoad",
         "suggestRebalance"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "prep-checklist",
@@ -936,7 +1173,10 @@
       "path": "src/lib/services/concierge-os/prep-checklist.service.ts",
       "exports": [
         "generateTripChecklist"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "prep-derivation",
@@ -944,7 +1184,10 @@
       "path": "src/lib/services/concierge-os/prep-derivation.service.ts",
       "exports": [
         "derivePrepTasks"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "provider-memory",
@@ -954,7 +1197,10 @@
         "findProvider",
         "getFavorites",
         "suggestProvider"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "reconciliation",
@@ -965,7 +1211,10 @@
         "ReconciliationResult",
         "CalendarConflict",
         "reconcileCalendars"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "recurring-supplies",
@@ -974,7 +1223,10 @@
       "exports": [
         "detectResupplyNeeded",
         "estimateMonthlySupplyCost"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "reservation-ingest",
@@ -982,7 +1234,10 @@
       "path": "src/lib/services/concierge-os/reservation-ingest.service.ts",
       "exports": [
         "ingestReservationFromEmail"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "responsibilities",
@@ -991,7 +1246,10 @@
       "exports": [
         "ResponsibilityAssignment",
         "assignResponsibilities"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "school-items",
@@ -1001,7 +1259,10 @@
         "SchoolItem",
         "getUpcomingSchoolItems",
         "groupByChild"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "travel-continuity",
@@ -1011,7 +1272,10 @@
         "buildPrepChecklist",
         "ingestReservation",
         "assessTripReadiness"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "trip-overview",
@@ -1020,7 +1284,10 @@
       "exports": [
         "TripDashboard",
         "buildTripDashboard"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-auth",
@@ -1032,7 +1299,10 @@
         "getAllAuthStates",
         "refreshToken",
         "revokeAuth"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-fake-mode",
@@ -1045,7 +1315,10 @@
         "isFakeModeEnabled",
         "getFakeResponse",
         "getFakeModeConfig"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-health",
@@ -1057,7 +1330,10 @@
         "checkAllConnectorHealth",
         "recordSync",
         "getFreshnessPolicy"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-truth-service",
@@ -1067,7 +1343,10 @@
         "OAuthFlowRecord",
         "SyncJobRecord",
         "getConnectorTruthIndex"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "conscience-gate",
@@ -1082,7 +1361,10 @@
         "GateRequest",
         "ConscienceGateService",
         "conscienceGate"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "critique-loop",
@@ -1097,7 +1379,10 @@
         "logCritique",
         "getCritiqueLog",
         "getCritiqueStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "continuity-engine",
@@ -1112,7 +1397,10 @@
         "ContinuityScore",
         "ContinuityEngineService",
         "createContinuityEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "council-automation",
@@ -1124,7 +1412,10 @@
         "EscalationResult",
         "CouncilAutomationService",
         "createCouncilAutomation"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "persistence-adapters",
@@ -1147,7 +1438,10 @@
         "communicationLogAdapter",
         "SovereignExportRow",
         "sovereignExportsAdapter"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "demo-governance-service",
@@ -1156,7 +1450,10 @@
       "exports": [
         "DemoGovernanceStatus",
         "getDemoGovernanceIndex"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "desk-executor",
@@ -1170,7 +1467,10 @@
         "ExecutionReceipt",
         "DeskExecutor",
         "deskExecutor"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "digest-engine",
@@ -1186,7 +1486,10 @@
         "DigestDataProvider",
         "DigestEngineService",
         "createDigestEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "domain-runtime-service",
@@ -1196,7 +1499,10 @@
         "DomainRuntimeRecord",
         "getRuntimeTruthIndex",
         "getDomainList"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "assumption-registry",
@@ -1220,7 +1526,10 @@
         "assumeConnectorFresh",
         "assumeNoNewObligations",
         "getAssumptionStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "cite-checker",
@@ -1235,7 +1544,10 @@
         "verifyClaim",
         "runCiteCheck",
         "getCiteCheckPolicy"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "cortex-loop",
@@ -1256,7 +1568,10 @@
         "getVerifiedOutcomes",
         "getOutcomeLearningStats",
         "getCortexLoopConfig"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "evidence-grader",
@@ -1274,7 +1589,10 @@
         "GradedEvidenceSet",
         "getDomainEvidencePolicy",
         "isHighTrustDomain"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "negative-receipt",
@@ -1291,7 +1609,10 @@
         "refuseForMissingApproval",
         "getNegativeReceipts",
         "getNegativeReceiptStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "sentinel-engine",
@@ -1310,7 +1631,10 @@
         "getSentinelStats",
         "getInvariants",
         "getInvariantById"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "tool-grounding",
@@ -1328,7 +1652,10 @@
         "getBlockingRulesForDomain",
         "logGroundingCheck",
         "getGroundingStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "event-envelope",
@@ -1340,7 +1667,10 @@
         "markDelivered",
         "markDeadLettered",
         "incrementRetry"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "publish-event",
@@ -1351,7 +1681,10 @@
         "publishBatch",
         "getEventLog",
         "getDeadLetterQueue"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "subscribe-event",
@@ -1363,7 +1696,10 @@
         "listSubscriptions",
         "clearSubscriptions",
         "subscribeOnce"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "unified-event-service",
@@ -1373,7 +1709,10 @@
         "UnifiedEventHandler",
         "UnifiedEventService",
         "unifiedEventService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "execute-action",
@@ -1388,7 +1727,10 @@
         "markFailed",
         "markRolledBack",
         "listExecutions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "execute-connector-action",
@@ -1403,7 +1745,10 @@
         "getConnectorHealth",
         "getAllConnectorHealth",
         "setConnectorHealth"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "execute-workflow-step",
@@ -1416,7 +1761,10 @@
         "initWorkflowState",
         "executeStep",
         "canRetry"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "experience-signature",
@@ -1430,7 +1778,10 @@
         "SignatureContext",
         "ExperienceSignatureService",
         "createExperienceSignature"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "account-summary",
@@ -1441,7 +1792,10 @@
         "buildAccountSummary",
         "groupAccountsByType",
         "detectStaleAccounts"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "balance-sync",
@@ -1452,7 +1806,10 @@
         "SyncHealthReport",
         "reconcileBalance",
         "buildSyncHealthReport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "bill-calendar",
@@ -1463,7 +1820,10 @@
         "BillCalendarMonth",
         "buildBillCalendar",
         "getNextDueBills"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "capital-map",
@@ -1473,7 +1833,10 @@
         "buildCapitalMap",
         "getMockCapitalMap",
         "computeEntityConcentration"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "cash-allocator",
@@ -1482,7 +1845,10 @@
       "exports": [
         "CashAllocatorInput",
         "computeCashAllocations"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "committee-boardroom-inputs",
@@ -1491,7 +1857,10 @@
       "exports": [
         "CommitteeBriefing",
         "buildCommitteeBriefing"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "crypto-exposure",
@@ -1500,7 +1869,10 @@
       "exports": [
         "CryptoRiskAssessment",
         "assessCryptoRisk"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "debt-analyzer",
@@ -1509,7 +1881,10 @@
       "exports": [
         "computeDebtProfile",
         "simulateDebtPayoff"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "due-soon-alerts",
@@ -1519,7 +1894,10 @@
         "DueSoonAlert",
         "generateDueSoonAlerts",
         "countUpcomingTotal"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "entity-capital",
@@ -1529,7 +1907,10 @@
         "EntityCapitalReport",
         "analyzeEntityCapital",
         "computeInterEntityTransfers"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "envelope-budget",
@@ -1540,7 +1921,10 @@
         "allocateIncome",
         "applyRollover",
         "computePaceStatus"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "execution-review",
@@ -1549,7 +1933,10 @@
       "exports": [
         "ExecutionQualityReport",
         "buildExecutionReview"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "family-office-review",
@@ -1558,7 +1945,10 @@
       "exports": [
         "buildFamilyOfficeReview",
         "computeReviewScore"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "finance-boardroom-inputs",
@@ -1566,7 +1956,10 @@
       "path": "src/lib/services/finance-os/finance-boardroom-inputs.service.ts",
       "exports": [
         "buildFinanceBoardroomPacket"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "financial-health",
@@ -1574,7 +1967,10 @@
       "path": "src/lib/services/finance-os/financial-health.service.ts",
       "exports": [
         "computeFinancialHealth"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "fx-watchlist",
@@ -1583,7 +1979,10 @@
       "exports": [
         "FxAlert",
         "monitorFxExposure"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "income-quality",
@@ -1592,7 +1991,10 @@
       "exports": [
         "IncomeQualityInput",
         "computeIncomeQuality"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "investment-memory",
@@ -1613,7 +2015,10 @@
         "assessBehavioralFirewall",
         "buildPortfolioMemory",
         "buildEventMemory"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "investment-office-runtime",
@@ -1631,7 +2036,10 @@
         "InvestmentOfficeSummary",
         "InvestmentOfficeRuntimeService",
         "createInvestmentOfficeRuntime"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "investment-office",
@@ -1670,7 +2078,10 @@
         "getSlippageAdjustedReturn",
         "getInvestmentTrustMode",
         "getAvailableTrustModes"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "liquidity",
@@ -1679,7 +2090,10 @@
       "exports": [
         "computeLiquidity",
         "runLiquidityStressTest"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "overview",
@@ -1687,7 +2101,10 @@
       "path": "src/lib/services/finance-os/overview.service.ts",
       "exports": [
         "computeAllocationDrift"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "peace-score",
@@ -1696,7 +2113,10 @@
       "exports": [
         "PeaceScoreInput",
         "computePeaceScore"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "portfolio-risk",
@@ -1705,7 +2125,10 @@
       "exports": [
         "PortfolioRiskReport",
         "buildPortfolioRiskReport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "receivables",
@@ -1715,7 +2138,10 @@
         "ReceivableAgingReport",
         "buildAgingReport",
         "flagOverdueReceivables"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "recurring-obligation",
@@ -1724,7 +2150,10 @@
       "exports": [
         "RecurringObligationSummary",
         "summarizeRecurringObligations"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "regime-engine",
@@ -1734,7 +2163,10 @@
         "RegimeHistory",
         "buildRegimeHistory",
         "shouldAdjustPosture"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "renewal-risk",
@@ -1743,7 +2175,10 @@
       "exports": [
         "RenewalRiskReport",
         "buildRenewalRiskReport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "reserve-engine",
@@ -1752,7 +2187,10 @@
       "exports": [
         "computeSafeToSpend",
         "assessReserveHealth"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "revenue-memory",
@@ -1768,7 +2206,10 @@
         "detectDebates",
         "AlignmentCluster",
         "computeAlignmentMap"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "safe-to-spend",
@@ -1777,7 +2218,10 @@
       "exports": [
         "SafeToSpendForecast",
         "computeSafeToSpendForecast"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "scenario-engine",
@@ -1786,7 +2230,10 @@
       "exports": [
         "runScenario",
         "generatePresetScenarios"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "sinking-fund",
@@ -1796,7 +2243,10 @@
         "createSinkingFund",
         "assessFundProgress",
         "recommendContributionAdjustment"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "stress-radar",
@@ -1805,7 +2255,10 @@
       "exports": [
         "StressRadarInput",
         "computeStressRadar"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "subscription-detector",
@@ -1814,7 +2267,10 @@
       "exports": [
         "DetectedSubscription",
         "detectSubscriptions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "subscription-waste",
@@ -1824,7 +2280,10 @@
         "detectWaste",
         "assessRenewalRisks",
         "computeTotalWaste"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "thesis-vault",
@@ -1833,7 +2292,10 @@
       "exports": [
         "getMockTheses",
         "assessThesisHealth"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "transaction-categorizer",
@@ -1843,7 +2305,10 @@
         "CategorizationRule",
         "categorizeTransaction",
         "aggregateSpend"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "waste-detector",
@@ -1852,7 +2317,10 @@
       "exports": [
         "WasteReport",
         "buildWasteReport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "flagship-loop-service",
@@ -1865,7 +2333,10 @@
         "getLoopGrade",
         "getImportanceBadge",
         "getStatusBadge"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "frontend-quality-engine",
@@ -1884,7 +2355,10 @@
         "MissingToWorldClassEntry",
         "MISSING_TO_WORLD_CLASS",
         "computeFrontendQualityScore"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "google-demo-provider",
@@ -1892,7 +2366,10 @@
       "path": "src/lib/services/google-provider-family/google-demo-provider.ts",
       "exports": [
         "getGoogleDemoState"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "google-provider-family",
@@ -1902,7 +2379,10 @@
         "doesIdentityImplyConnector",
         "resolveOAuthClient",
         "isScopeUpgradeSafe"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "types",
@@ -1928,31 +2408,46 @@
         "GOOGLE_CALENDAR_SCOPES",
         "GOOGLE_API_REQUIREMENTS",
         "GOOGLE_OAUTH_CLIENT_TEMPLATES"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "account-graph",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/account-graph.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-access",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/connector-access.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "consent",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/consent.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "identity-provider",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/identity-provider.service.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "types",
@@ -1993,7 +2488,10 @@
         "ConsentHistoryView",
         "AccountGraphSummaryView",
         "AuthSeparationContract"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connector-sdk",
@@ -2015,7 +2513,10 @@
         "DryRunPreviewItem",
         "createDemoHealthCheck",
         "createDemoDryRun"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "demo-connections",
@@ -2029,7 +2530,10 @@
         "DEMO_CONNECTIONS",
         "DEMO_ACTION_REQUESTS",
         "DEMO_AUDIT_LOG"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "providers",
@@ -2040,7 +2544,10 @@
         "getProviderById",
         "getProvidersByCategory",
         "PROVIDER_CATEGORIES"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "intent-orchestrator",
@@ -2058,7 +2565,10 @@
         "IntentOrchestratorService",
         "IntentMiddleware",
         "createIntentOrchestrator"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "launch-gate-service",
@@ -2072,7 +2582,10 @@
         "calculateGateScore",
         "deriveHonestyClass",
         "getLaunchHonestyIndex"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "launch-readiness-engine",
@@ -2090,7 +2603,10 @@
         "computeLaunchReadiness",
         "GoNoGoCondition",
         "getGoNoGoConditions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "financial-literacy-engine",
@@ -2108,7 +2624,10 @@
         "HouseholdLeaderboard",
         "FinancialLiteracyEngine",
         "createFinancialLiteracyEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "household-coaching-engine",
@@ -2124,7 +2643,10 @@
         "MilestoneReward",
         "HouseholdCoachingEngine",
         "createHouseholdCoachingEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "life-goal-tracker",
@@ -2141,7 +2663,10 @@
         "GoalDecomposition",
         "LifeGoalTracker",
         "createLifeGoalTracker"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "skill-monetization-advisor",
@@ -2158,7 +2683,10 @@
         "RoadmapPhase",
         "SkillMonetizationAdvisor",
         "createSkillMonetizationAdvisor"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "wealth-building-engine",
@@ -2173,7 +2701,10 @@
         "EmergencyFundTarget",
         "WealthBuildingEngine",
         "createWealthBuildingEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "life-shock-simulator",
@@ -2186,7 +2717,10 @@
         "ShockImpactReport",
         "LifeShockSimulator",
         "createLifeShockSimulator"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "memory-governance-engine",
@@ -2198,7 +2732,10 @@
         "MemoryAuditRecord",
         "MemoryGovernanceEngine",
         "createMemoryGovernance"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "boardroom-memory",
@@ -2212,7 +2749,10 @@
         "ageCarryovers",
         "resolveCarryover",
         "listCarryovers"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "correction",
@@ -2224,7 +2764,10 @@
         "recordCorrection",
         "getCorrections",
         "computeCorrectionStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "preference-memory",
@@ -2237,7 +2780,10 @@
         "listPreferences",
         "resetToDefaults",
         "exportPreferences"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "profile-memory",
@@ -2249,7 +2795,10 @@
         "listProfileMemories",
         "deleteProfileMemory",
         "clearExpired"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "trust-memory",
@@ -2265,7 +2814,10 @@
         "getTrustState",
         "addTrustFlag",
         "resolveFlag"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "workflow-memory",
@@ -2279,7 +2831,10 @@
         "listWorkflowCheckpoints",
         "deleteWorkflowCheckpoint",
         "pruneOldCheckpoints"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "collector",
@@ -2288,7 +2843,10 @@
       "exports": [
         "MetaGovernanceCollectorService",
         "getMetaGovernanceCollector"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "context-assembler",
@@ -2300,7 +2858,10 @@
         "AssembledContext",
         "ContextAssembler",
         "contextAssembler"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "health-aggregator",
@@ -2315,7 +2876,10 @@
         "DegradedModeConfig",
         "HealthAggregatorService",
         "createHealthAggregator"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "observability-service",
@@ -2325,7 +2889,10 @@
         "RuntimeProbe",
         "ProbeRunRecord",
         "HealthSnapshot"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "persistence",
@@ -2334,7 +2901,10 @@
       "exports": [
         "startPeriodicFlush",
         "stopPeriodicFlush"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "ambient-intelligence",
@@ -2346,7 +2916,10 @@
         "ContextualInsight",
         "AmbientIntelligenceService",
         "createAmbientIntelligence"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "personal-operating-graph",
@@ -2362,7 +2935,10 @@
         "CrossDomainResolution",
         "PersonalOperatingGraphService",
         "createPersonalOperatingGraph"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "auto-rules",
@@ -2374,7 +2950,10 @@
         "RuleEvaluation",
         "AutoRulesEngine",
         "createAutoRulesEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "behavioral-learning",
@@ -2386,13 +2965,19 @@
         "InferredPattern",
         "BehavioralLearningEngine",
         "createBehavioralLearningEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "platform-readiness-seeder",
       "domain": "platform-readiness",
       "path": "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
-      "exports": []
+      "exports": [],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "approval-requirements",
@@ -2402,7 +2987,10 @@
         "ApprovalResolution",
         "resolveApprovalRequirements",
         "getThresholdsForDomain"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "outbound-comm-policy",
@@ -2414,7 +3002,10 @@
         "validateOutboundCommunication",
         "getPolicyForType",
         "getRemainingQuota"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "sensitive-doc-policy",
@@ -2425,7 +3016,10 @@
         "classifyDocument",
         "getRedactionRules",
         "bulkClassify"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "truth-boundaries",
@@ -2439,7 +3033,10 @@
         "getBoundaryRule",
         "listProtectedFields",
         "isFieldProtected"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "types",
@@ -2460,7 +3057,10 @@
         "ProviderFamilyDisplayConfig",
         "PROVIDER_FAMILY_CONFIGS",
         "doesIdentityImplyConnectorGeneric"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "push-registration-service",
@@ -2471,7 +3071,10 @@
         "PushTokenRecord",
         "isPushSupported",
         "getPermissionState"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "approval-receipts",
@@ -2480,7 +3083,10 @@
       "exports": [
         "generateApprovalReceipt",
         "generateSingleApprovalReceipt"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "execution-receipts",
@@ -2489,7 +3095,10 @@
       "exports": [
         "generateExecutionReceipt",
         "generateBatchExecutionReceipts"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "proof-bundles",
@@ -2499,7 +3108,10 @@
         "assembleProofBundle",
         "validateBundle",
         "mergeBundles"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "receipts",
@@ -2513,7 +3125,10 @@
         "createRefusalReceipt",
         "getReceiptById",
         "createFirstBootReceipt"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "recommendation-loop-service",
@@ -2521,7 +3136,10 @@
       "path": "src/lib/services/recommendation-execution/recommendation-loop-service.ts",
       "exports": [
         "getValidTransitions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "business-model-advisor",
@@ -2536,7 +3154,10 @@
         "BusinessScenarioResult",
         "BusinessModelAdvisor",
         "createBusinessModelAdvisor"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "income-discovery-engine",
@@ -2551,7 +3172,10 @@
         "PassiveIncomeStream",
         "IncomeDiscoveryEngine",
         "createIncomeDiscoveryEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "market-intelligence",
@@ -2565,7 +3189,10 @@
         "TimingAdvice",
         "MarketIntelligenceService",
         "createMarketIntelligence"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "security-posture-engine",
@@ -2607,7 +3234,10 @@
         "getPublicLaunchBlockers",
         "getThreatsByStatus",
         "getHighRiskFunctions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "security-privacy-service",
@@ -2615,7 +3245,10 @@
       "path": "src/lib/services/security-privacy/security-privacy-service.ts",
       "exports": [
         "SecurityCheckResult"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "heartbeat",
@@ -2626,7 +3259,10 @@
         "HeartbeatSummary",
         "ServiceHeartbeat",
         "serviceHeartbeat"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "route-to-service-inventory",
@@ -2642,7 +3278,10 @@
         "getRoutesWithLowConfidence",
         "getAllActions",
         "getDuplicateActionPatterns"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "service-ownership-registry",
@@ -2667,7 +3306,10 @@
         "getDirectoryClassification",
         "getDirectoriesByClass",
         "getClassificationSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "advisor-recommendation-engine",
@@ -2676,7 +3318,10 @@
       "exports": [
         "AdvisorRecommendationEngine",
         "advisorRecommendationEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "connection-recommendation-engine",
@@ -2686,7 +3331,10 @@
         "ConnectionRecommendation",
         "ConnectionRecommendationEngine",
         "connectionRecommendationEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "first-win-recommendation-engine",
@@ -2695,7 +3343,10 @@
       "exports": [
         "FirstWinRecommendationEngine",
         "firstWinRecommendationEngine"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "hardware-capability-service",
@@ -2704,7 +3355,10 @@
       "exports": [
         "HardwareCapabilityService",
         "hardwareCapabilityService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "setup-summary-builder",
@@ -2714,7 +3368,10 @@
         "SetupSummaryContext",
         "SetupSummaryBuilder",
         "setupSummaryBuilder"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "trust-calibration-service",
@@ -2723,7 +3380,10 @@
       "exports": [
         "TrustCalibrationService",
         "trustCalibrationService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "world-model-service",
@@ -2732,7 +3392,10 @@
       "exports": [
         "WorldModelService",
         "worldModelService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "diagnostic-bundle",
@@ -2741,7 +3404,10 @@
       "exports": [
         "generateDiagnosticBundle",
         "generateExtendedDiagnostic"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "incident-classification",
@@ -2750,7 +3416,10 @@
       "exports": [
         "IncidentClassification",
         "classifyIncident"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "replay-metadata",
@@ -2760,7 +3429,10 @@
         "ReplayMetadata",
         "captureReplayMetadata",
         "redactReplayForSupport"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "support-summary",
@@ -2769,7 +3441,10 @@
       "exports": [
         "SupportSummary",
         "generateSupportSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "surface-adapter-registry",
@@ -2782,7 +3457,10 @@
         "getAdapterByKey",
         "getActiveAdapters",
         "getAdapterCountSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "surface-portability-service",
@@ -2794,7 +3472,10 @@
         "CANONICAL_SURFACE_ADAPTERS",
         "getSurfacePortabilityIndex",
         "getSurfaceAdapterSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "timing-intelligence",
@@ -2809,7 +3490,10 @@
         "TimingPattern",
         "TimingIntelligenceService",
         "createTimingIntelligence"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "trust-weighted-actions",
@@ -2825,7 +3509,10 @@
         "ActionPolicyOverride",
         "TrustWeightedActionService",
         "createTrustWeightedActions"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "truth-index-aggregator",
@@ -2833,7 +3520,10 @@
       "path": "src/lib/services/truth-indices/truth-index-aggregator.ts",
       "exports": [
         "TruthIndexSummary"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "postcondition-checks",
@@ -2845,7 +3535,10 @@
         "createPostconditionCheck",
         "runPostconditionChecks",
         "summarizeChecks"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "receipt-verification",
@@ -2857,7 +3550,10 @@
         "ReceiptIntegrityResult",
         "ReceiptVerificationService",
         "createReceiptVerificationService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "replay-verification",
@@ -2872,7 +3568,10 @@
         "ReplayExecutor",
         "ReplayVerificationService",
         "createReplayVerificationService"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "rollback-signals",
@@ -2882,7 +3581,10 @@
         "RollbackSignal",
         "detectRollbackCondition",
         "generateRollbackProof"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     },
     {
       "name": "verification",
@@ -2892,7 +3594,12 @@
         "verify",
         "getVerificationHistory",
         "getVerificationStats"
-      ]
+      ],
+      "status": "active",
+      "statusSource": "wave5-auto-tagger",
+      "statusReason": "default — service is shipped in current build"
     }
-  ]
+  ],
+  "statusTaggedAt": "2026-04-20T17:04:02.535Z",
+  "statusTaggerVersion": "wave5.3"
 }
