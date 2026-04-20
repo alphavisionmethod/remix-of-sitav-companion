@@ -76,9 +76,10 @@ writeFileSync("generated/onboarding-branch-telemetry-report.json", JSON.stringif
     tablePresent: resumeTablePresent,
     rlsComplete,
     edgeFunctionPresent,
+    clientWired,
   },
   issues,
 }, null, 2));
 console.log(`${ok ? "✅" : "❌"} onboarding-branch-telemetry: ${errorCount} errors, ${warningCount} warnings`);
-console.log(`  resume persistence — table:${resumeTablePresent} rls:${rlsComplete} fn:${edgeFunctionPresent}`);
+console.log(`  resume persistence — table:${resumeTablePresent} rls:${rlsComplete} fn:${edgeFunctionPresent} client:${clientWired}`);
 process.exit(ok ? 0 : 1);
