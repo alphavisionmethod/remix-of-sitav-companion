@@ -1,7 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Barrel: src/domains/setup
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// Re-exports the canonical onboarding surface registry so any code
+// importing from "@/domains/setup" lands on the truth source.
+// See: src/lib/architecture/onboarding-surface-registry.ts
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export {
+  ONBOARDING_SURFACES,
+  ONBOARDING_NON_ENTRYPOINTS,
+  ONBOARDING_DEPRECATED_SURFACES,
+  ONBOARDING_SURFACE_TIERS,
+  getOnboardingSurface,
+  getOnboardingSurfacesByTier,
+  type OnboardingSurface,
+  type OnboardingSurfaceTier,
+  type OnboardingSurfaceStatus,
+} from "@/lib/architecture/onboarding-surface-registry";

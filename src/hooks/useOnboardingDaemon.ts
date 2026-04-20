@@ -1,7 +1,19 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — useOnboardingDaemon Hook
-// Reactive bridge for onboarding UI
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// SITA OS — useOnboardingDaemon Hook  [DEPRECATED]
+// ----------------------------------------------------------------
+// DEPRECATED: This hook bridges the legacy onboarding-daemon engine,
+// an alternative 11-step OS onboarding orchestrator that is NOT the
+// canonical first-boot path.
+//
+// CANONICAL REPLACEMENT:  src/components/sita/OSSetupExperience.tsx
+//                         (~50-phase first-boot, 29-screen master spec)
+// REGISTRY:               src/lib/architecture/onboarding-surface-registry.ts
+//                         (see ONBOARDING_DEPRECATED_SURFACES)
+//
+// Retained for backward compatibility with src/pages/FirstBootSetup.tsx.
+// New code MUST NOT import this hook — enforced by:
+//   scripts/architecture/checks/check-onboarding-surface-truth.ts
+// ════════════════════════════════════════════════════════════════
 
 import { useSyncExternalStore, useCallback, useState } from "react";
 import { onboardingDaemon } from "@/lib/services/onboarding-daemon";
