@@ -18,7 +18,7 @@ import {
   RefreshCw, Brain, DollarSign, Activity, Zap,
 } from "lucide-react";
 import type { GateDecision, GateVerdict, EvidenceState, BudgetState, RoutingHints } from "@/lib/core-services/conscience-gate/conscience-gate";
-import { DEMO_CONSCIENCE_VERDICTS } from "@/lib/mock-data/conscience-gate";
+import { DEMO_CONSCIENCE_VERDICTS } from "@/data/fixtures/mock-data/conscience-gate";
 import { supabase } from "@/integrations/supabase/client";
 
 // Local row type used by this dashboard — keeps a stable `id` for table keys.

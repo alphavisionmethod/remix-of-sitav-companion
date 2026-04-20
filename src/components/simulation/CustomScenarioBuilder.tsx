@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Trash2, Save, X, Sparkles } from "lucide-react";
-import type { SimulationVariable, CustomFormulaNode, CustomScenario } from "@/lib/simulation/monte-carlo-engine";
+import type { SimulationVariable, CustomFormulaNode, CustomScenario } from "@/domains/simulation/monte-carlo-engine";
 
 const DISTRIBUTIONS = ["normal", "uniform", "triangular"] as const;
 const OPERATIONS = [

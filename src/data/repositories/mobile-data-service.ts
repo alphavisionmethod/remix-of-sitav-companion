@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_MOBILE_ALERTS, MOCK_MOBILE_APPROVALS, MOCK_MOBILE_PROOFS, MOCK_MOBILE_WORKFLOW_STEPS } from "@/lib/mock-data/mobile";
+import { MOCK_MOBILE_ALERTS, MOCK_MOBILE_APPROVALS, MOCK_MOBILE_PROOFS, MOCK_MOBILE_WORKFLOW_STEPS } from "@/data/fixtures/mock-data/mobile";
 
 export async function fetchMobileAlerts() {
   const { data: { user } } = await supabase.auth.getUser();

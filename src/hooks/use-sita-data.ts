@@ -9,7 +9,7 @@ import {
   mockHouseholdTasks, mockFamilyEvents, mockGroceryList, mockTravel,
   mockActivity, mockOpportunityInsights, mockMemoryItems,
   mockAutomationRules, mockConnectors, mockAITeam, mockIncidents, mockCosts,
-} from "@/lib/mock-data/legacy-display-mocks";
+} from "@/data/fixtures/mock-data/legacy-display-mocks";
 
 // ── Generic hook factory ─────────────────────────────────────
 // Returns mock data ONLY in demo mode; queries Supabase in live mode.

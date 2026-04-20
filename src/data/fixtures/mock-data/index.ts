@@ -36,7 +36,7 @@ export * from "./advisor-mission-control";
 
 // Legacy display mocks (simple format for use-sita-data hooks)
 // NOT re-exported here to avoid collision with advisor-mission-control.
-// Import directly from "@/lib/mock-data/legacy-display-mocks" or via "@/lib/mocks".
+// Import directly from "@/data/fixtures/mock-data/legacy-display-mocks" or via "@/lib/mocks".
 
 // ── Business Mock Data ──────────────────────────────────────────
 

@@ -1,14 +1,30 @@
 {
-  "generatedAt": "2026-04-20T00:01:28.819Z",
+  "generatedAt": "2026-04-20T00:13:33.656Z",
   "gate": "cosmetic-debt-closure",
-  "mode": "PHYSICAL",
+  "mode": "PHYSICAL-DELETION",
   "tier": "BLOCK-composite",
   "parentGate": "lib-ownership-drift",
-  "totalAssertions": 12,
+  "totalAssertions": 14,
   "verified": [
     {
       "closes": "A1",
-      "path": "src/lib/canonical-backend/index.ts"
+      "path": "src/lib/canonical-backend"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/simulation"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/mock-data"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/demo-data"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/seed"
     },
     {
       "closes": "A1",
@@ -16,15 +32,7 @@
     },
     {
       "closes": "A1",
-      "path": "src/lib/simulation/monte-carlo-engine.ts"
-    },
-    {
-      "closes": "A1",
       "path": "src/domains/simulation/monte-carlo-engine.ts"
-    },
-    {
-      "closes": "A1",
-      "path": "src/lib/mock-data/index.ts"
     },
     {
       "closes": "A1",
@@ -32,11 +40,11 @@
     },
     {
       "closes": "A1",
-      "path": "src/lib/demo-data/index.ts"
+      "path": "src/data/fixtures/demo-data/index.ts"
     },
     {
       "closes": "A1",
-      "path": "src/lib/seed/index.ts"
+      "path": "src/data/fixtures/seed/index.ts"
     },
     {
       "closes": "A2",

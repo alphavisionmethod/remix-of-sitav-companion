@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { GitCompareArrows, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { SimulationResult } from "@/lib/simulation/monte-carlo-engine";
+import type { SimulationResult } from "@/domains/simulation/monte-carlo-engine";
 
 interface ComparisonOverlayProps {
   runs: { label: string; result: SimulationResult }[];

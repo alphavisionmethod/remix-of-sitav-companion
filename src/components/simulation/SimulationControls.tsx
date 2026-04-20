@@ -21,7 +21,7 @@ import {
   type SimulationVariable,
   type SimulationPreset,
   type CustomScenario,
-} from "@/lib/simulation/monte-carlo-engine";
+} from "@/domains/simulation/monte-carlo-engine";
 import { CustomScenarioBuilder } from "./CustomScenarioBuilder";
 
 const DOMAINS = [

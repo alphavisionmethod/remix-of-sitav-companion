@@ -16,7 +16,7 @@ import {
   Inbox, FileText, Receipt, Camera, Mic, StickyNote, Mail, Clock,
   CheckCircle, ArrowRight, Sparkles, DollarSign, Send
 } from "lucide-react";
-import { DEMO_INBOX_ITEMS } from "@/lib/demo-data";
+import { DEMO_INBOX_ITEMS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 

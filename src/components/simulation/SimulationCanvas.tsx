@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useRef, useEffect, useCallback } from "react";
-import type { SimulationProgress } from "@/lib/simulation/monte-carlo-engine";
+import type { SimulationProgress } from "@/domains/simulation/monte-carlo-engine";
 
 interface SimulationCanvasProps {
   progress: SimulationProgress | null;

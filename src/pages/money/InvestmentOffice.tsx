@@ -25,7 +25,7 @@ import {
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
 } from "@/data/seed/investment";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
-import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/lib/mock-data/investment";
+import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/data/fixtures/mock-data/investment";
 import { INVESTMENT_POLICY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

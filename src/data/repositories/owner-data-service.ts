@@ -5,9 +5,9 @@ import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
 // Re-export the rich types directly from mock-data for full compatibility
-export type { OwnerApprovalItem, OwnerPricingItem } from "@/lib/mock-data/owner";
-import type { OwnerApprovalItem, OwnerPricingItem } from "@/lib/mock-data/owner";
-import { MOCK_OWNER_APPROVALS, MOCK_PRICING_ITEMS } from "@/lib/mock-data/owner";
+export type { OwnerApprovalItem, OwnerPricingItem } from "@/data/fixtures/mock-data/owner";
+import type { OwnerApprovalItem, OwnerPricingItem } from "@/data/fixtures/mock-data/owner";
+import { MOCK_OWNER_APPROVALS, MOCK_PRICING_ITEMS } from "@/data/fixtures/mock-data/owner";
 
 export interface LeaseItem {
   id: string; tenant: string; unit: string; rent: number;

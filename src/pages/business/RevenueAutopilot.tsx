@@ -18,7 +18,7 @@ import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
-import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/lib/mock-data/revenue-autopilot";
+import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/data/fixtures/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
 // ── Derived data (fallback to mock, overridden in component) ──

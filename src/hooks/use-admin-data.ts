@@ -10,7 +10,7 @@ import {
   mockTrustCenter, mockReleases, mockModelRouting, mockKnowledgeHealth,
   mockSupportCases, mockChangeReviews, mockRollbackCenter, mockServiceMap,
   mockSLOs, mockArchGates, mockDeploymentRings, mockTestCoverage,
-} from "@/lib/mock-data/admin-ops";
+} from "@/data/fixtures/mock-data/admin-ops";
 import { ALL_DETAILED_AGENTS, COUNCILS, SUPERVISORS } from "@/lib/internal-agents";
 import { toast } from "sonner";
 
@@ -30,14 +30,14 @@ async function callAdminAPI<T = unknown>(endpoint: string, options?: { method?: 
 }
 
 // ── Upstream data shape types for Owner Center hooks ──
-export type TrustCenterData = typeof import("@/lib/mock-data/admin-ops").mockTrustCenter;
-export type ReleasesData = typeof import("@/lib/mock-data/admin-ops").mockReleases;
-export type ModelRoutingData = typeof import("@/lib/mock-data/admin-ops").mockModelRouting;
-export type KnowledgeHealthData = typeof import("@/lib/mock-data/admin-ops").mockKnowledgeHealth;
-export type SupportCase = (typeof import("@/lib/mock-data/admin-ops").mockSupportCases)[number];
-export type ChangeReview = (typeof import("@/lib/mock-data/admin-ops").mockChangeReviews)[number];
-export type RollbackCenterData = typeof import("@/lib/mock-data/admin-ops").mockRollbackCenter;
-export type ServiceMapData = typeof import("@/lib/mock-data/admin-ops").mockServiceMap;
+export type TrustCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").mockTrustCenter;
+export type ReleasesData = typeof import("@/data/fixtures/mock-data/admin-ops").mockReleases;
+export type ModelRoutingData = typeof import("@/data/fixtures/mock-data/admin-ops").mockModelRouting;
+export type KnowledgeHealthData = typeof import("@/data/fixtures/mock-data/admin-ops").mockKnowledgeHealth;
+export type SupportCase = (typeof import("@/data/fixtures/mock-data/admin-ops").mockSupportCases)[number];
+export type ChangeReview = (typeof import("@/data/fixtures/mock-data/admin-ops").mockChangeReviews)[number];
+export type RollbackCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").mockRollbackCenter;
+export type ServiceMapData = typeof import("@/data/fixtures/mock-data/admin-ops").mockServiceMap;
 
 // ══════════════════════════════════════════════
 // INCIDENTS

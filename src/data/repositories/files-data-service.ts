@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import { MOCK_FILES_OVERVIEW, MOCK_FILES_PROCESSING, MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data/files";
+import { MOCK_FILES_OVERVIEW, MOCK_FILES_PROCESSING, MOCK_FILES_SEARCH_INDEX } from "@/data/fixtures/mock-data/files";
 import type { IndexableItem, SearchDomain } from "@/lib/core-services/search-fabric";
 
 async function getUser() {

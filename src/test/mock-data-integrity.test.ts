@@ -5,12 +5,12 @@ import {
   mockHouseholdTasks, mockFamilyEvents, mockGroceryList, mockTravel,
   mockActivity, mockOpportunityInsights, mockMemoryItems, mockConnectors,
   mockAutomationRules, mockAITeam, mockIncidents, mockCosts,
-} from "@/lib/mock-data/legacy-display-mocks";
+} from "@/data/fixtures/mock-data/legacy-display-mocks";
 import {
   mockAdminIncidents, mockAdminAuditLogs, mockAdminPolicies,
   mockAdminDevices, mockAdminCouncilDecisions, mockAdminIntelligence,
   mockAgentRuntimeStates,
-} from "@/lib/mock-data/admin-ops";
+} from "@/data/fixtures/mock-data/admin-ops";
 
 describe("Mock Data Integrity", () => {
   describe("Business Domain", () => {

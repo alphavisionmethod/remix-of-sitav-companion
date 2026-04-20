@@ -17,7 +17,7 @@ import {
 import type {
   AdvisorSummary, AdvisorRecommendation, SimulationResult,
   ApprovalRequest, ProofHistoryItem, MemoryItem, MultiAdvisorSynthesis,
-} from "@/lib/mock-data/advisor-mission-control";
+} from "@/data/fixtures/mock-data/advisor-mission-control";
 
 const iconMap: Record<string, React.ElementType> = {
   Briefcase, DollarSign, Headphones, Heart, TrendingUp, Target, Shield, BarChart3,

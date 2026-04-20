@@ -9,9 +9,9 @@ export {
   dcfNPV, blackScholes, kellyCriterion, capmExpectedReturn,
   sharpeRatio, compoundInterest, parametricVaR, historicalVaR,
   expectedShortfall, sortinoRatio, maxDrawdown, FORMULA_REGISTRY,
-} from "@/lib/simulation/financial-formulas";
-export type { FormulaType } from "@/lib/simulation/financial-formulas";
-export type { MarketDataPoint, IntelligenceReport } from "@/lib/simulation/market-intelligence";
+} from "@/domains/simulation/financial-formulas";
+export type { FormulaType } from "@/domains/simulation/financial-formulas";
+export type { MarketDataPoint, IntelligenceReport } from "@/domains/simulation/market-intelligence";
 
 // ── FIP (Feature Integration Protocol) ──
 export {
@@ -34,7 +34,7 @@ export * as RealityRecords from "@/lib/reality-records/canonical-records";
 export * as TruthVocabulary from "@/lib/reality-records/truth-vocabulary";
 
 // ── Demo Data ──
-export * as DemoData from "@/lib/demo-data";
+export * as DemoData from "@/data/fixtures/demo-data";
 
 // ── Seed ──
-export * as SeedScripts from "@/lib/seed";
+export * as SeedScripts from "@/data/fixtures/seed";

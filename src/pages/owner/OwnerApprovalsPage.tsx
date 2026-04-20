@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
-import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
+import type { OwnerApprovalItem as ApprovalItem } from "@/data/fixtures/mock-data/owner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const riskStyles: Record<string, string> = {

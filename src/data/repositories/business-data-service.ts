@@ -5,9 +5,9 @@ import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
 // Re-export the rich types directly from mock-data for full compatibility
-export type { CollectionsAccount } from "@/lib/mock-data/collections";
-import type { CollectionsAccount } from "@/lib/mock-data/collections";
-import { MOCK_COLLECTIONS_ACCOUNTS } from "@/lib/mock-data/collections";
+export type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
+import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
+import { MOCK_COLLECTIONS_ACCOUNTS } from "@/data/fixtures/mock-data/collections";
 
 export interface MockCustomer {
   id: string; name: string; company: string; email: string; phone: string;

@@ -19,7 +19,7 @@ import {
 import {
   mockLeads, mockCustomers, mockOpportunities, mockBills, mockInvoices, mockSubscriptions,
   mockHouseholdTasks,
-} from "@/lib/mock-data/legacy-display-mocks";
+} from "@/data/fixtures/mock-data/legacy-display-mocks";
 import type { CashflowAnalysis, BudgetHealthResult, ReserveAssessment, InvoiceAgingResult, FinancialHealthResult, BillCalendarResult } from "@/lib/domain-engines/finance-os";
 import type { BusinessHealthResult, PipelineAnalysis, LeadScoreResult } from "@/lib/domain-engines/business-os";
 import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";

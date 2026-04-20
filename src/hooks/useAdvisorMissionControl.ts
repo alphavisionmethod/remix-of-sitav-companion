@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useDataMode } from "@/contexts/DataModeContext";
-import * as amc from "@/lib/mock-data/advisor-mission-control";
+import * as amc from "@/data/fixtures/mock-data/advisor-mission-control";
 
-export type { AdvisorSummary, AdvisorRecommendation, SafeModeState } from "@/lib/mock-data/advisor-mission-control";
+export type { AdvisorSummary, AdvisorRecommendation, SafeModeState } from "@/data/fixtures/mock-data/advisor-mission-control";
 
 // ── Named re-exports for module-scope usage in sub-components ──
 // Pages import these instead of importing from mock-data directly.

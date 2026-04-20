@@ -4,7 +4,7 @@ import {
   mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory,
   type AdvisorSummary, type AdvisorRecommendation, type MultiAdvisorSynthesis,
   type ApprovalRequest, type ProofHistoryItem,
-} from "@/lib/mock-data/advisor-mission-control";
+} from "@/data/fixtures/mock-data/advisor-mission-control";
 
 export type { AdvisorSummary, AdvisorRecommendation, MultiAdvisorSynthesis, ApprovalRequest, ProofHistoryItem };
 

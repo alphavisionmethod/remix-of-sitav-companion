@@ -9,7 +9,7 @@ import {
   TrendingUp, TrendingDown, AlertTriangle, BarChart3, Target, Shield,
   Lightbulb, CheckCircle2, XCircle, Activity,
 } from "lucide-react";
-import type { SimulationResult } from "@/lib/simulation/monte-carlo-engine";
+import type { SimulationResult } from "@/domains/simulation/monte-carlo-engine";
 import { SimulationAdvisor } from "./SimulationAdvisor";
 
 interface SimulationResultsProps {
