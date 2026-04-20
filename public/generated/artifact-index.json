@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-20T02:57:20.569Z",
-  "totalArtifacts": 527,
+  "generatedAt": "2026-04-20T02:58:07.157Z",
+  "totalArtifacts": 528,
   "categories": [
     {
       "name": "audits",
@@ -240,16 +240,16 @@
         {
           "path": "audits/MISSING_AUDIT_v2.md",
           "sourcePath": "public/generated/MISSING_AUDIT_v2.md",
-          "sizeBytes": 75519,
-          "lastModified": "2026-04-20T02:57:20.485Z",
-          "sha256": "eaaa7b43497fa7f1ff7e86e66cd2d7a2a9555d289564ddb7d5675bf3627de96d"
+          "sizeBytes": 76332,
+          "lastModified": "2026-04-20T02:58:07.080Z",
+          "sha256": "f958d6c030380ab12aae18188ccdd8a2b1475456338b0704b035413b7bfd8740"
         },
         {
           "path": "audits/MISSING_AUDIT.md",
           "sourcePath": "public/generated/MISSING_AUDIT.md",
-          "sizeBytes": 80108,
-          "lastModified": "2026-04-20T02:57:20.486Z",
-          "sha256": "a38a4a168878b6f77e67dfc33538de4f25bc83389b121c9b9f4ec7fa0fa2c6d3"
+          "sizeBytes": 80921,
+          "lastModified": "2026-04-20T02:58:07.081Z",
+          "sha256": "b403430568bdd482e2ec34d9dbfe334c773d86c8c55a249f911fb6a92bdfa477"
         },
         {
           "path": "audits/MISSION_CONTROL_SHELL.md",
@@ -653,7 +653,7 @@
     },
     {
       "name": "manifests",
-      "count": 414,
+      "count": 415,
       "files": [
         {
           "path": "manifests/5-plane-boundaries-report.json",
@@ -2838,6 +2838,13 @@
           "sizeBytes": 134415,
           "lastModified": "2026-04-20T02:57:20.545Z",
           "sha256": "c184d77d38ce398e11cc85288d0d81901259887ce0a128a4b3b567c1fa229f33"
+        },
+        {
+          "path": "manifests/public-artifact-mirror-report.json",
+          "sourcePath": "generated/public-artifact-mirror-report.json",
+          "sizeBytes": 323,
+          "lastModified": "2026-04-20T02:58:07.131Z",
+          "sha256": "5c21cd59191fb7bb89cfa1633d13461e1fb60b86eaf56a8c29e68b8e05e532fa"
         },
         {
           "path": "manifests/qemu-vm-readiness-report.json",
