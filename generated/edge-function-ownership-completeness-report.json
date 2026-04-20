@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T04:22:09.317Z",
+  "generatedAt": "2026-04-20T04:22:56.701Z",
   "totalFunctionsOnDisk": 186,
   "totalFunctionsOwned": 186,
   "coveragePercent": 100,
@@ -25,12 +25,12 @@
   "manifestArtifacts": {
     "canonical": {
       "path": "generated/edge-function-ownership.json",
-      "md5": "e19557e95d19d7658d77cf706d57a48b",
+      "md5": "4b5772a01c58754255e2c2aa3195c739",
       "present": true
     },
     "publicMirror": {
       "path": "public/generated/edge-function-ownership.json",
-      "md5": "e19557e95d19d7658d77cf706d57a48b",
+      "md5": "4b5772a01c58754255e2c2aa3195c739",
       "present": true
     },
     "parityOk": true
