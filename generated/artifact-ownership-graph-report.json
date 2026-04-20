@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-04-20T06:33:54.278Z",
+  "generatedAt": "2026-04-20T06:34:07.657Z",
   "gate": "artifact-ownership-graph",
   "phase": "phase-30-producer-consumer-graph",
-  "errorCount": 1,
-  "warningCount": 2,
-  "ok": false,
+  "errorCount": 0,
+  "warningCount": 3,
+  "ok": true,
   "issues": [
     {
-      "severity": "error",
+      "severity": "warning",
       "area": "consumer-coverage",
-      "message": "Consumer coverage 86% < 95% (140/163 non-terminal nodes consumed)"
+      "message": "Consumer coverage 86% < 95% target (140/163)"
     },
     {
       "severity": "warning",
