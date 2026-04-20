@@ -178,6 +178,7 @@
     "@sentry/react": "8.55.0",
     "@sentry/vite-plugin": "^5.2.0",
     "@supabase/supabase-js": "^2.103.0",
+    "@tanstack/query-core": "^5.99.2",
     "@tanstack/react-query": "^5.83.0",
     "@testing-library/dom": "^10.4.1",
     "@types/papaparse": "^5.5.2",
