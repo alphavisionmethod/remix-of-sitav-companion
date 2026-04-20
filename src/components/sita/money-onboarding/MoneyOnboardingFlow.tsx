@@ -1,3 +1,9 @@
+// ════════════════════════════════════════════════════════════════
+// ONBOARDING SURFACE: money-introduction  (registry: ONBOARDING_SURFACES)
+// SCOPE: Optional Finance-app onboarding. Runs inside the Money app
+//        on first visit. NOT the OS first-boot flow, NOT business formation.
+// Truth source: src/lib/architecture/onboarding-surface-registry.ts
+// ════════════════════════════════════════════════════════════════
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
