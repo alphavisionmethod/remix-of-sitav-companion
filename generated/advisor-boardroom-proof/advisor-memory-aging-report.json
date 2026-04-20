@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "layers": 4,
+  "policies": [
+    {
+      "layer": "working",
+      "maxAgeDays": 1,
+      "decayRate": 0.5
+    },
+    {
+      "layer": "short-term",
+      "maxAgeDays": 7,
+      "decayRate": 0.1
+    },
+    {
+      "layer": "long-term",
+      "maxAgeDays": 90,
+      "decayRate": 0.01
+    },
+    {
+      "layer": "archival",
+      "maxAgeDays": null,
+      "decayRate": 0
+    }
+  ],
+  "deletionPolicies": [
+    "soft-delete",
+    "hard-delete-after-archive",
+    "never-delete"
+  ]
+}

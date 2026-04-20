@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "permissionEntries": 6,
+  "actionCategories": [
+    "read",
+    "recommend",
+    "draft",
+    "execute",
+    "execute-financial",
+    "communicate-external",
+    "system-config"
+  ],
+  "blockedActionsPerAdvisor": {
+    "business": 1,
+    "finance": 2,
+    "concierge": 2,
+    "security": 2,
+    "operations": 2,
+    "investment": 2
+  }
+}

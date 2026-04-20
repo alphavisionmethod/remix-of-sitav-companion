@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "diagnosticFields": 16,
+  "bundleSections": [
+    "snapshot",
+    "recentReflections",
+    "policyAdjustments",
+    "escalationHistory"
+  ],
+  "supportCapabilities": [
+    "advisor-status-check",
+    "memory-utilization",
+    "error-history",
+    "trust-score-trace",
+    "budget-tracking",
+    "kill-switch-status"
+  ]
+}
