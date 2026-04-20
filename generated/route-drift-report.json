@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:38.438Z",
+  "gate": "route-drift",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-route-drift.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "\n📊 24 routes total, 2 duplicates, 952 orphaned pages\n"
+}

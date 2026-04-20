@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:34.781Z",
+  "gate": "action-envelope-boundary",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-action-envelope-boundary.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ ActionEnvelope boundary check passed — no violations found\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:03.147Z",
+  "gate": "service-sprawl",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-sprawl.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📦 209 service directories discovered\n  📁 platform: 198 services\n  📁 finance-os: 3 services\n  📁 business-os: 1 services\n  📁 concierge-os: 7 services\n  ⚠️ [sprawl-warning] src/lib/services: 209 services approaching sprawl threshold of 250\n"
+}

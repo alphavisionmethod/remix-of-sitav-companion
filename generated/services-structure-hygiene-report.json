@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:08.273Z",
+  "gate": "services-structure-hygiene",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-services-structure-hygiene.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [no-barrel] src/lib/services/flagship-loops: Service \"flagship-loops\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/frontend: Service \"frontend\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/intent-orchestrator: Service \"intent-orchestrator\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/launch-gate: Service \"launch-gate\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/launch-readiness: Service \"launch-readiness\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/memory-governance: Service \"memory-governance\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/orchestration-pipeline: Service \"orchestration-pipeline\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/personal-graph: Service \"personal-graph\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/platform-readiness: Service \"platform-readiness\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/provider-family: Service \"provider-family\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/push-notification: Service \"push-notification\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/recommendation-execution: Service \"recommendation-execution\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/rex: Service \"rex\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/security: Service \"security\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/security-privacy: Service \"security-privacy\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/surface-portability: Service \"surface-portability\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/timing-intelligence: Service \"timing-intelligence\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/trust-actions: Service \"trust-actions\" has no index.ts barrel export\n  ⚠️ [no-barrel] src/lib/services/truth-indices: Service \"truth-indices\" has no index.ts barrel export\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:33.567Z",
+  "gate": "redirect-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-redirect-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 Redirect-eligible entries: 4\n  ✅ Covered: 4\n  📋 Total redirects mounted: 9\n✅ check-redirect-coverage: All checks passed\n"
+}

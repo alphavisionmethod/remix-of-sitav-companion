@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:26.489Z",
+  "gate": "proof-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-proof-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🧾 Receipt coverage: 333/333 capabilities (100%)\n✅ check-proof-coverage: All checks passed\n"
+}

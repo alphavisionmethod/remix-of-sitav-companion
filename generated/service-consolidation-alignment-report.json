@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:55.417Z",
+  "gate": "service-consolidation-alignment",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-consolidation-alignment.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 43 entries in consolidation manifest\n✅ check-service-consolidation-alignment: All checks passed\n"
+}

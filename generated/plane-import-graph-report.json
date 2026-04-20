@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:06.612Z",
+  "gate": "plane-import-graph",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-plane-import-graph.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "plane-import-graph: 0 direct user↔admin violations (baseline 0) — OK\n"
+}

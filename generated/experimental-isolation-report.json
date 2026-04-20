@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:10.635Z",
+  "gate": "experimental-isolation",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-experimental-isolation.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🧪 120 experimental routes detected\n  🔎 Scanned 0 nav/launcher files\n  ✅ Leaks: 0\n✅ check-experimental-isolation: All checks passed\n"
+}

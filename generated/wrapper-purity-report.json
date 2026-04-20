@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:25.473Z",
+  "gate": "wrapper-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-wrapper-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 scanned 10 wrapper(s)\n✅ check-wrapper-purity: All checks passed\n"
+}

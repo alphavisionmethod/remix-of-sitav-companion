@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:41.032Z",
+  "gate": "no-duplicate-primary-concept",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-duplicate-primary-concept.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ✅ overview         → /admin/overview\n  ✅ alerts           → /admin/alerts\n  ✅ approvals        → /admin/approvals\n  ✅ environments     → /admin/environments\n  ✅ ai-runtime       → /admin/ai-runtime\n  ✅ integrations     → /admin/integrations\n  ✅ trust-security   → /admin/trust-security\n  ✅ health           → /admin/health\n  ✅ releases         → /admin/releases\n  ✅ verification     → /admin/verification\n  ✅ config           → /admin/config\n  ✅ support          → /admin/support\n✅ check-no-duplicate-primary-concept: All checks passed\n"
+}

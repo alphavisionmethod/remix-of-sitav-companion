@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:22.947Z",
+  "gate": "workflow-states",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-workflow-states.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🔄 21 workflow files checked\n  ⚠️ [incomplete-states] src/lib/services/ecosystem-orchestrator/index.ts: Missing states: idle, active, error\n  ⚠️ [incomplete-states] src/lib/services/ecosystem-orchestrator/types.ts: Missing states: idle, active, error\n  ⚠️ [incomplete-states] src/lib/services/executor-service/execute-workflow-step.service.ts: Missing states: idle, active, error\n  ⚠️ [incomplete-states] src/lib/services/intent-orchestrator/intent-orchestrator.ts: Missing states: idle, active, success, error\n  ⚠️ [incomplete-states] src/lib/services/orchestration-pipeline/types.ts: Missing states: idle, active, success, error\n  ⚠️ [incomplete-states] src/lib/services/workflow-engine/index.ts: Missing states: idle, active, success, error\n"
+}

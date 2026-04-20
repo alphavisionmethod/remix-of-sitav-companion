@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:00.878Z",
+  "gate": "engine-no-io",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-engine-no-io.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ check-engine-no-io: All checks passed\n"
+}

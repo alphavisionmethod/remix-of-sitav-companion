@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:58.257Z",
+  "gate": "electron-shell-session-readiness",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-electron-shell-session-readiness.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "Electron shell: ✅ OK\n"
+}

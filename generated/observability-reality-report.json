@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:55.789Z",
+  "gate": "observability-reality",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-observability-reality.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "❌ Observability truth: 9/10 truthful\n   - #7 Mobile diagnostics\n"
+}

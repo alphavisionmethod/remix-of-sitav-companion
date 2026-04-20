@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:49.087Z",
+  "gate": "no-runtime-in-shared",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-runtime-in-shared.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ check-no-runtime-in-shared: All checks passed\n"
+}

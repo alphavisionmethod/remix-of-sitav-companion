@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:43.066Z",
+  "gate": "route-truth",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-route-truth.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "route-truth: 494 routes, 26 unresolved — WARN\n"
+}

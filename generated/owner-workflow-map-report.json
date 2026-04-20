@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:02.390Z",
+  "gate": "owner-workflow-map",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-owner-workflow-map.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🔁 5 workflows, 215 mounted routes, 26 redirects\n    daily: 5/5 steps mounted\n    weekly: 5/5 steps mounted\n    support: 6/6 steps mounted\n    release: 6/6 steps mounted\n    trust-safety: 6/6 steps mounted\n✅ check-owner-workflow-map: All checks passed\n"
+}

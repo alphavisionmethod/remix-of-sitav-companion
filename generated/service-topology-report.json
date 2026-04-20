@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:05.782Z",
+  "gate": "service-topology",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-topology.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "service-topology: 193 hidden services (budget 185) — WARN\n"
+}

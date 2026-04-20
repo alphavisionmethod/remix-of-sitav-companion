@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:35.098Z",
+  "gate": "layer-boundaries",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-layer-boundaries.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/use-security-fabric.ts\n     → Hook imports kernel directly: @/lib/core-services/security/security-fabric\n\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/use-security-fabric.ts\n     → Hook imports kernel directly: @/lib/core-services/security/intrusion-detection-engine\n\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/use-security-fabric.ts\n     → Hook imports kernel directly: @/lib/core-services/security/trust-boundary-model\n\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/use-streaming-chat.ts\n     → Hook imports kernel directly: @/lib/core-services/security/ai-output-firewall\n\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/useOrchestrationHealth.ts\n     → Hook imports kernel directly: @/platform/core-services/event-bus\n\n  ⚠️ [HOOK_IMPORTS_KERNEL] src/hooks/usePipelineBootstrap.ts\n     → Hook imports kernel directly: @/platform/core-services/event-bus\n\n"
+}

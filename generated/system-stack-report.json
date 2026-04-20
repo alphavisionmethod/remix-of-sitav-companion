@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:15.578Z",
+  "gate": "system-stack",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-system-stack.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "[check-system-stack] Validation result: {\"ok\":true,\"missing\":[]}\n[check-system-stack] Entries: 10\n[check-system-stack] On-disk files checked: 20\n[check-system-stack] ❌ Missing on-disk files (3):\n  - experience.surfaces → src/lib/architecture/route-registry.ts\n  - domain.framework → src/lib/architecture/bounded-context-registry.ts\n  - platform.eventing → src/lib/runtime/event-classification-map.ts\n[check-system-stack] FAILED — system stack integrity violated.\n"
+}

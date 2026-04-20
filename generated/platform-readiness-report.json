@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:13.272Z",
+  "gate": "platform-readiness",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-platform-readiness.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ✅ Quality metrics\n  ✅ Architecture compliance\n  ✅ Validation summary\n  ✅ Feature integration\n  ✅ Ownership manifest\n  📊 Phase 5: 5/5 gates passed\n✅ check-phase5-readiness: All checks passed\n"
+}

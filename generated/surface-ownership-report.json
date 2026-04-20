@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:13.571Z",
+  "gate": "surface-ownership",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-surface-ownership.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [invalid-owner] route-manifest.json: Route \"/editor\" owned by unknown service: editor\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/reporting\" owned by unknown service: reporting\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/media\" owned by unknown service: media\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/templates\" owned by unknown service: templates\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/import-export\" owned by unknown service: import-export\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/files/pdf-viewer\" owned by unknown service: document-engine\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/workspace/data-grid\" owned by unknown service: workspace\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/email\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/messenger\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/vault\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/health\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/gallery\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/apps/weather-news\" owned by unknown service: app-platform\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/intelligence\" owned by unknown service: brain-core\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/intelligence/dashboard\" owned by unknown service: brain-core\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/intelligence/device-mesh\" owned by unknown service: brain-core\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/intelligence/privacy\" owned by unknown service: brain-core\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/settings/environment\" owned by unknown service: platform-admin\n  ⚠️ [invalid-owner] route-manifest.json: Route \"/settings/self-service\" owned by unknown service: platform-admin\n"
+}

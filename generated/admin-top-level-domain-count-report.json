@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:53.610Z",
+  "gate": "admin-top-level-domain-count",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-top-level-domain-count.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🏷️ 0 top-level admin domains\n✅ check-admin-top-level-domain-count: All checks passed\n"
+}

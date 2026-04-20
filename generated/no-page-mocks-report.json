@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:47.082Z",
+  "gate": "no-page-mocks",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-page-mocks.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ No pages import from @/lib/mocks\n"
+}

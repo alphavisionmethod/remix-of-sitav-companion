@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:45.491Z",
+  "gate": "route-wrapper-usage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-route-wrapper-usage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "route-wrapper-usage: 8 wrappers, 0 undeclared — OK\n"
+}

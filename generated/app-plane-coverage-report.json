@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:58.643Z",
+  "gate": "app-plane-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-app-plane-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "[check-app-plane-coverage] 20 apps · 0 errors · 0 warnings\n[check-app-plane-coverage] ✓ ok\n"
+}

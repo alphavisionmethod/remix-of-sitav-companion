@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:11.281Z",
+  "gate": "platform-anti-patterns",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-platform-anti-patterns.ts",
+  "ok": false,
+  "errorCount": 7,
+  "warningCount": 2,
+  "issues": [],
+  "legacyOutputTail": "  ❌ [as-any] src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx: Explicit 'as any' type cast (3 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx: Explicit 'as any' type cast (3 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx: Explicit 'as any' type cast (3 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx: Explicit 'as any' type cast (2 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx: Explicit 'as any' type cast (4 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/admin/ai-runtime/TenantFederationBoard.tsx: Explicit 'as any' type cast (3 occurrences) — pages layer must have zero\n  ❌ [as-any] src/pages/marketing/Proof.tsx: Explicit 'as any' type cast (1 occurrences) — pages layer must have zero\n  ⚠️ [as-any] src/lib/services/device-presence-service.ts: Explicit 'as any' type cast (5 occurrences)\n  ⚠️ [as-any] src/lib/services/finance-os/revenue-memory.service.ts: Explicit 'as any' type cast (20 occurrences)\n❌ check-platform-anti-patterns: 7 error(s), 2 warning(s)\n"
+}

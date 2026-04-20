@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:46.284Z",
+  "gate": "admin-route-coherence",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-route-coherence.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🛤️ 0 admin routes found\n✅ check-admin-route-coherence: All checks passed\n"
+}

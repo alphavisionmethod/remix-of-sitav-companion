@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:10.957Z",
+  "gate": "status-truth-tags",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-status-truth-tags.ts",
+  "ok": false,
+  "errorCount": 235,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ❌ [missing-status] service-manifest.json: Service \"hardware-capability-service\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"setup-summary-builder\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"trust-calibration-service\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"world-model-service\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"diagnostic-bundle\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"incident-classification\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"replay-metadata\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"support-summary\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"surface-adapter-registry\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"surface-portability-service\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"timing-intelligence\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"trust-weighted-actions\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"truth-index-aggregator\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"postcondition-checks\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"receipt-verification\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"replay-verification\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"rollback-signals\" has no status tag\n  ❌ [missing-status] service-manifest.json: Service \"verification\" has no status tag\n❌ check-status-truth-tags: 235 error(s), 0 warning(s)\n"
+}

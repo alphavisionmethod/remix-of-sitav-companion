@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:53.485Z",
+  "gate": "duplicate-families",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-duplicate-families.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🧬 Total name collisions: 13\n  📋 Declared families: 13\n  ⚠️  Undeclared collisions: 0\n✅ check-duplicate-families: All checks passed\n"
+}

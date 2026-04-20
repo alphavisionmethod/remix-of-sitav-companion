@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:25.297Z",
+  "gate": "contract-registry",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-contract-registry.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: MemoryForgetRequest\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: MemoryGovernanceConfig\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: RiskTier\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: ProofType\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: ProposalRecord\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: OpportunityNode\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: TrustProfile\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: VerticalModule\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: VerticalApprovalDefault\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: AllocationStrategy\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: ScenarioResult\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: TruthBoundaryRule\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: ContradictionReport\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: RefusalState\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: RequiredSourceType\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: DowngradeLevel\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: ProofPack\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: Postcondition\n  ⚠️ [duplicate-contract] contract-manifest.json: Duplicate contract: AutonomyLevel\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:05.917Z",
+  "gate": "bounded-context-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-bounded-context-coverage.ts",
+  "ok": false,
+  "errorCount": 4,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ℹ️  13 edge-function context labels found in topology map\n  ℹ️  13 canonical bounded contexts in registry\n  ✓ 13 canonical contexts\n  ✓ 85 edge function references verified\n  ✓ 203 table references verified\n  ❌ [MISSING_SOT] src/platform/architecture/bounded-context-registry.ts: sourceOfTruth path \"src/lib/runtime\" does not exist\n  ❌ [UNKNOWN_TABLE] src/platform/architecture/bounded-context-registry.ts: Table \"customer_health_scores\" referenced in registry but not present in supabase types\n  ❌ [UNKNOWN_TABLE] src/platform/architecture/bounded-context-registry.ts: Table \"concierge_errands\" referenced in registry but not present in supabase types\n  ❌ [UNKNOWN_TABLE] src/platform/architecture/bounded-context-registry.ts: Table \"self_healing_actions\" referenced in registry but not present in supabase types\n❌ check-bounded-context-coverage: 4 error(s), 0 warning(s)\n"
+}

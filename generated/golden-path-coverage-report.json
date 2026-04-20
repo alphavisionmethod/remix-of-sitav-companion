@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:20.856Z",
+  "gate": "golden-path-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-golden-path-coverage.ts",
+  "ok": false,
+  "errorCount": 7,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-FIRST-BOOT.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/first-boot-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-RESTORE.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/restore-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-OAUTH-AND-SYNC.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/oauth-sync-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-WORKFLOW-REPLAY.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/workflow-replay-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-MOBILE-APPROVAL.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/mobile-approval-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-PUSH-TO-APPROVAL.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/push-pipeline-probe.ts\" does not exist on disk\n  ❌ [phantom-artifact] src/lib/operations/golden-path-registry.ts: GP-ENV-RECOVERY.verification[runtime-probe]: artifactRef \"src/lib/runtime/probes/env-recovery-probe.ts\" does not exist on disk\n❌ check-golden-path-coverage: 7 error(s), 0 warning(s)\n"
+}

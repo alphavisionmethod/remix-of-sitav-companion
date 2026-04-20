@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:28.827Z",
+  "gate": "protocol-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-protocol-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ check-protocol-purity: All checks passed\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:15.952Z",
+  "gate": "feature-integration-completeness",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-feature-integration-completeness.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n  ⚠️ [no-capabilities] feature-integration-index.json: Feature \"undefined\" has no capabilities\n  ⚠️ [no-routes] feature-integration-index.json: Feature \"undefined\" has no routes\n"
+}

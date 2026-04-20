@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:53.835Z",
+  "gate": "no-workflow-bypass",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-workflow-bypass.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🔒 Workflow bypass scan: 5162 files, 1 violations\n  ❌ [workflow-bypass] supabase/functions/internal-agent-execute-action/index.ts: Direct insert into workflow_runs outside canonical runner\n❌ check-no-workflow-bypass: 1 error(s), 0 warning(s)\n"
+}

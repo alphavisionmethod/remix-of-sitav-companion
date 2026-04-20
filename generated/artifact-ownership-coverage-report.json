@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:00.928Z",
+  "gate": "artifact-ownership-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-artifact-ownership-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "⚠️ Artifact ownership coverage: 94.1% (873/928)\n   Owners breakdown: declared-in-registry=115, orphans=26\n   Issues:\n     - coverage 94.1% < 95% target (warn)\n   Sample orphans (first 5):\n     • generated/SITA_MASTER_AUDIT.md\n     • generated/STUBS_AND_PLACEHOLDERS_REGISTER.md\n     • generated/android-native-generation-report.json\n     • generated/android-release-path-report.json\n     • generated/app-plane-map-report.json\n"
+}

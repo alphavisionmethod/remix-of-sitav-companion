@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:20.333Z",
+  "gate": "workflow-state-usage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-workflow-state-usage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [unknown-state] src/lib/services/onboarding-daemon/index.ts: Non-standard workflow state \"not_started\" used\n  ⚠️ [unknown-state] src/lib/services/onboarding-daemon/index.ts: Non-standard workflow state \"initializing\" used\n  ⚠️ [unknown-state] src/lib/services/onboarding-daemon/index.ts: Non-standard workflow state \"available\" used\n  ⚠️ [unknown-state] src/lib/services/onboarding-daemon/index.ts: Non-standard workflow state \"complete\" used\n  ⚠️ [unknown-state] src/lib/services/orchestration-pipeline/pipeline-probe.ts: Non-standard workflow state \"pass\" used\n  ⚠️ [unknown-state] src/lib/services/service-registry/heartbeat.ts: Non-standard workflow state \"down\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"checking\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"metadata_verified\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"downloading\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"download_verified\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"staging\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"staged\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"awaiting_reboot\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"boot_validation\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"rolled_back\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"inactive\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"fail\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"pending_boot\" used\n  ⚠️ [unknown-state] src/lib/services/update-daemon/index.ts: Non-standard workflow state \"invalid\" used\n"
+}

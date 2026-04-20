@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T16:27:33.978Z",
+  "generatedAt": "2026-04-20T16:32:19.991Z",
   "edgeCallers": [
     "supabase/functions/admin-bff-gateway/index.ts",
     "supabase/functions/advisor-agent-loop/index.ts",

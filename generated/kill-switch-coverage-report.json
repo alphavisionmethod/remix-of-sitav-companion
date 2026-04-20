@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:32.837Z",
+  "gate": "kill-switch-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-kill-switch-coverage.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 16 switches, 23 enforcement points, 8 dependency edges, 15 consequences\n  ✅ Enforcement verification: 21 files exist, 0 missing, 20 symbols matched, 1 symbols missing\n  ❌ [enforcement-symbol-missing] kill-switch-enforcement-map.ts: Switch KS-PAYMENTS-AUTH → file src/pages/admin/AR08KillSwitchCenter.tsx does not contain symbol \"useKillSwitchGate\"\n❌ check-kill-switch-coverage: 1 error(s), 0 warning(s)\n"
+}

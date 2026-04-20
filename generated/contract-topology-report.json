@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:28.415Z",
+  "gate": "contract-topology",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-contract-topology.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "contract-topology: 0 leaked named-family contracts (budget 0) — OK\n"
+}

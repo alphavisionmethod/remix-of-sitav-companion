@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:40.152Z",
+  "gate": "deployability-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-deployability-coverage.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "Deployability: 7 surfaces, avg 96/100, 0 below threshold\n  → generated/deployability-report.json\n❌ Issues:\n   - electron/build artifact missing: src/lib/runtime/desktop\n   - electron/sign artifact missing: src/lib/runtime/desktop\n   - electron/distribute artifact missing: src/lib/runtime/desktop\n   - electron/update artifact missing: src/lib/runtime/desktop\n   - ios/build artifact missing: infra/deploy/mobile.yaml\n   - ios/sign artifact missing: infra/deploy/mobile.yaml\n   - ios/distribute artifact missing: infra/deploy/mobile.yaml\n   - ios/update artifact missing: infra/deploy/mobile.yaml\n   - ios/recover artifact missing: src/runtimes/mobile/index.ts\n   - android/build artifact missing: infra/deploy/mobile.yaml\n   - android/sign artifact missing: infra/deploy/mobile.yaml\n   - android/distribute artifact missing: infra/deploy/mobile.yaml\n   - android/update artifact missing: infra/deploy/mobile.yaml\n   - android/recover artifact missing: src/runtimes/mobile/index.ts\n   - mobile-pwa/recover artifact missing: src/runtimes/mobile/index.ts\n"
+}

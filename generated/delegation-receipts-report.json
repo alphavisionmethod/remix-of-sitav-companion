@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:35.789Z",
+  "gate": "delegation-receipts",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-delegation-receipts.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "❌ 3 delegation receipt violation(s):\n\n  [DIRECT_TIER_ASSIGNMENT] src/domains/engines/delegation-engine.ts:132\n    → .currentTier = \n\n  [DIRECT_TIER_ASSIGNMENT] src/domains/engines/delegation-engine.ts:146\n    → .currentTier = \n\n  [DIRECT_TIER_ASSIGNMENT] src/domains/engines/delegation-engine.ts:165\n    → .currentTier =\n\n"
+}

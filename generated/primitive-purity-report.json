@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:22.131Z",
+  "gate": "primitive-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-primitive-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🧪 Auditing 24 primitive(s)...\n✅ check-primitive-purity: All checks passed\n"
+}

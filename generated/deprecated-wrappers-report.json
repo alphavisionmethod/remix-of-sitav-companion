@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:45.766Z",
+  "gate": "deprecated-wrappers",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-deprecated-wrappers.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🪟 Auditing 0 declared wrapper(s)...\n✅ check-deprecated-wrappers: All checks passed\n"
+}

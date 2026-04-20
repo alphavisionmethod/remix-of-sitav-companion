@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:33.251Z",
+  "gate": "dead-pages",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-dead-pages.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "dead-pages: 53/1084 pages with no detected reference (budget 150) — OK\n"
+}

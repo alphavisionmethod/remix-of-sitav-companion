@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:40.746Z",
+  "gate": "route-page-contract-layer-usage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-route-page-contract-layer-usage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ check-route-page-contract-layer-usage: All checks passed\n"
+}

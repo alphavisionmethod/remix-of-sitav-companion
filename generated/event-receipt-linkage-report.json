@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:08.096Z",
+  "gate": "event-receipt-linkage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-event-receipt-linkage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [missing-receipt] contracts: Event \"ReleasePromotionEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"ReleaseRollbackEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"StageEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"SessionLifecycleEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"CapabilityEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"NetworkEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"SelectionEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"CompletionEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"WorldModelEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"ConnectionEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"DeferredEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"BranchEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"SetupEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"NarrativeEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"DigestFeedEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"WsClientSafeEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"RegressionTimelineEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"RolloutEvent\" has no corresponding receipt type\n  ⚠️ [missing-receipt] contracts: Event \"ScenarioEvent\" has no corresponding receipt type\n"
+}

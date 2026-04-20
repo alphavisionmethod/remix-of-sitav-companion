@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T16:25:25.263Z",
+  "generatedAt": "2026-04-20T16:30:11.659Z",
   "gateCount": 39,
   "byPhase": {
     "phase-1-bounded-context": 1,
@@ -413,7 +413,7 @@
     }
   ],
   "integrity": {
-    "checkedAt": "2026-04-20T16:25:25.262Z",
+    "checkedAt": "2026-04-20T16:30:11.659Z",
     "gateCount": 39,
     "issues": [],
     "errorCount": 0,
