@@ -1,0 +1,9 @@
+{
+  "gate": "connector-client-registry-completeness",
+  "ok": true,
+  "generatedAt": "2026-04-20T04:28:12.637Z",
+  "catalogConnectors": 12,
+  "perProviderClients": 12,
+  "registryFile": "src/lib/connectors/providers.ts",
+  "issues": []
+}
