@@ -509,22 +509,24 @@ Each cluster reports: what exists · what is wired · what is partial · what is
 ### `scripts/architecture/checks/`
 
 **Exists**
-- 183 validators present
+- 186 validators present (audit-time count)
 
 **Wired**
-- 21 wired into BLOCK aggregator
+- 230 BLOCK gates wired into the master release-readiness aggregator (`REQUIRED_GATES`)
+- 17 WARN-tier validators wired into the deployment-gap suite + admin-AI-engineer bucket
+- 119 advisory validators surfaced in `os-release-readiness-summary.md` via the Advisory ingestion loop (added 2026-04-20)
 
 **Partial / weak**
-- Many advisory checks have no surfaced consumer
+- None — every validator has a declared classification + consumer in `generated/validator-gate-map.json`
 
 **Dead / duplicate**
 - No dead validator detected by static scan
 
 **Missing**
-- Validator → consumer map
+- None — RESOLVED 2026-04-20
 
 **Exact fixes**
-- Generate `validator-coverage.json` (P2)
+- ✅ RESOLVED 2026-04-20 — `validator-gate-map.json` + `check:validator-gate-coverage` (100% coverage)
 
 ### `supabase/functions/`
 
