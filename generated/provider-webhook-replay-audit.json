@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "policies": [
+    {
+      "providerId": "gmail",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "historyId",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "google-calendar",
+      "webhookSupported": true,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "google-drive",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "changeId",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "plaid",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "webhook_id",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "stripe",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "idempotency_key",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "quickbooks",
+      "webhookSupported": true,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "twilio",
+      "webhookSupported": true,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "sendgrid",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "sg_message_id",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "instacart",
+      "webhookSupported": false,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 0,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "hubspot",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "eventId",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "slack",
+      "webhookSupported": true,
+      "replaySupported": true,
+      "idempotencyKeyField": "event_id",
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": true,
+      "dlqRetentionDays": 30,
+      "maxReplayAttempts": 5
+    },
+    {
+      "providerId": "dropbox",
+      "webhookSupported": true,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 60,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "ai-gateway",
+      "webhookSupported": false,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 0,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "storage",
+      "webhookSupported": false,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 0,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    },
+    {
+      "providerId": "auth",
+      "webhookSupported": false,
+      "replaySupported": false,
+      "idempotencyKeyField": null,
+      "deduplicationWindowMinutes": 0,
+      "dlqEnabled": false,
+      "dlqRetentionDays": 0,
+      "maxReplayAttempts": 0
+    }
+  ]
+}

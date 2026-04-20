@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.200Z",
+  "policy": {
+    "encryptionAtRest": {
+      "enabled": true,
+      "algorithm": "aes-256-gcm",
+      "keyRotationDays": 90
+    },
+    "tokenAccessAuditing": {
+      "enabled": true,
+      "logTable": "admin_action_audit"
+    },
+    "expiryIndexing": {
+      "enabled": true,
+      "indexColumns": [
+        "expires_at",
+        "refresh_token_expires_at"
+      ]
+    },
+    "supportSafeRedaction": {
+      "enabled": true,
+      "redactedFields": [
+        "access_token",
+        "refresh_token",
+        "client_secret",
+        "private_key"
+      ]
+    },
+    "refreshTokenProtection": {
+      "rotateOnUse": true,
+      "maxLifetimeDays": 90
+    }
+  },
+  "encryptionStatus": "enforced",
+  "keyRotationStatus": "current",
+  "lastRotationAt": "2026-04-20T23:56:53.200Z",
+  "nextRotationDue": "2026-07-19T23:56:53.200Z",
+  "auditingActive": true,
+  "redactionActive": true,
+  "oauthProviders": [
+    "gmail",
+    "google-calendar",
+    "google-drive",
+    "quickbooks",
+    "hubspot",
+    "slack",
+    "dropbox"
+  ]
+}

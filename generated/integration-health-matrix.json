@@ -1,34 +1,110 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "integration-health-matrix",
+  "generatedAt": "2026-04-20T23:56:53.198Z",
   "providers": [
     {
-      "provider": "google",
-      "healthState": "healthy",
-      "refreshCadence": "hourly",
-      "killSwitch": "KS-CONNECTORS",
-      "lastRefresh": "2026-04-20T21:27:50.034Z"
+      "providerId": "gmail",
+      "owner": "connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
     },
     {
-      "provider": "microsoft",
-      "healthState": "healthy",
-      "refreshCadence": "hourly",
-      "killSwitch": "KS-CONNECTORS",
-      "lastRefresh": "2026-04-20T21:27:50.034Z"
+      "providerId": "google-calendar",
+      "owner": "connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
     },
     {
-      "provider": "slack",
-      "healthState": "healthy",
-      "refreshCadence": "hourly",
-      "killSwitch": "KS-CONNECTORS",
-      "lastRefresh": "2026-04-20T21:27:50.034Z"
+      "providerId": "google-drive",
+      "owner": "connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
     },
     {
-      "provider": "plaid",
-      "healthState": "manual",
-      "refreshCadence": "manual",
-      "killSwitch": "KS-CONNECTORS",
-      "note": "Long-tail manual provider"
+      "providerId": "plaid",
+      "owner": "finance-connector-service",
+      "outagePolicy": "queue-and-retry",
+      "degradedUxBehavior": "show-error-banner",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "stripe",
+      "owner": "payment-service",
+      "outagePolicy": "circuit-breaker",
+      "degradedUxBehavior": "disable-feature",
+      "killSwitch": "KS-PAYMENTS"
+    },
+    {
+      "providerId": "quickbooks",
+      "owner": "finance-connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "twilio",
+      "owner": "notification-service",
+      "outagePolicy": "fail-fast",
+      "degradedUxBehavior": "show-error-banner",
+      "killSwitch": "KS-NOTIFICATIONS"
+    },
+    {
+      "providerId": "sendgrid",
+      "owner": "notification-service",
+      "outagePolicy": "queue-and-retry",
+      "degradedUxBehavior": "silent-fallback",
+      "killSwitch": "KS-NOTIFICATIONS"
+    },
+    {
+      "providerId": "instacart",
+      "owner": "concierge-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "disable-feature",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "hubspot",
+      "owner": "crm-connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "slack",
+      "owner": "notification-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-error-banner",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "dropbox",
+      "owner": "connector-service",
+      "outagePolicy": "graceful-degrade",
+      "degradedUxBehavior": "show-cached-data",
+      "killSwitch": "KS-CONNECTORS"
+    },
+    {
+      "providerId": "ai-gateway",
+      "owner": "ai-gateway-service",
+      "outagePolicy": "circuit-breaker",
+      "degradedUxBehavior": "silent-fallback",
+      "killSwitch": "KS-MODEL-PROVIDERS"
+    },
+    {
+      "providerId": "storage",
+      "owner": "storage-service",
+      "outagePolicy": "queue-and-retry",
+      "degradedUxBehavior": "show-error-banner",
+      "killSwitch": "KS-FILE-PROCESSING"
+    },
+    {
+      "providerId": "auth",
+      "owner": "auth-service",
+      "outagePolicy": "fail-fast",
+      "degradedUxBehavior": "disable-feature",
+      "killSwitch": "KS-AUTH"
     }
   ]
 }

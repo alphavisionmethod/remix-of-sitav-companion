@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "declarations": [
+    {
+      "familyId": "auth",
+      "replayable": false,
+      "replaySafetyRules": [
+        "session-tokens-must-be-unique",
+        "no-replay-of-mfa"
+      ],
+      "nonReplayablePaths": [
+        "auth.signup",
+        "auth.account-delete",
+        "auth.mfa-challenge"
+      ],
+      "rollbackVsRerunPolicy": "manual-only",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "onboarding",
+      "replayable": true,
+      "replaySafetyRules": [
+        "checkpoint-idempotent",
+        "branch-selection-idempotent"
+      ],
+      "nonReplayablePaths": [
+        "onboard.complete"
+      ],
+      "rollbackVsRerunPolicy": "rerun-safe",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "app-lifecycle",
+      "replayable": false,
+      "replaySafetyRules": [
+        "install-must-be-unique-per-version"
+      ],
+      "nonReplayablePaths": [
+        "app.remove"
+      ],
+      "rollbackVsRerunPolicy": "rollback-first",
+      "requiresIdempotencyKey": true
+    },
+    {
+      "familyId": "advisor",
+      "replayable": false,
+      "replaySafetyRules": [
+        "execution-receipts-immutable",
+        "rollback-tokens-single-use"
+      ],
+      "nonReplayablePaths": [
+        "advisor.execute",
+        "advisor.rollback"
+      ],
+      "rollbackVsRerunPolicy": "rollback-first",
+      "requiresIdempotencyKey": true
+    },
+    {
+      "familyId": "boardroom",
+      "replayable": false,
+      "replaySafetyRules": [
+        "approval-is-irreversible",
+        "dispatch-single-use"
+      ],
+      "nonReplayablePaths": [
+        "board.approve",
+        "board.reconcile"
+      ],
+      "rollbackVsRerunPolicy": "manual-only",
+      "requiresIdempotencyKey": true
+    },
+    {
+      "familyId": "payment",
+      "replayable": false,
+      "replaySafetyRules": [
+        "no-double-charge",
+        "settlement-irreversible"
+      ],
+      "nonReplayablePaths": [
+        "pay.settle",
+        "pay.receipt"
+      ],
+      "rollbackVsRerunPolicy": "rollback-first",
+      "requiresIdempotencyKey": true
+    },
+    {
+      "familyId": "crm-connector",
+      "replayable": true,
+      "replaySafetyRules": [
+        "sync-idempotent-via-cursor",
+        "conflict-resolution-logged"
+      ],
+      "nonReplayablePaths": [
+        "crm.conflict-resolve"
+      ],
+      "rollbackVsRerunPolicy": "rerun-safe",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "file",
+      "replayable": true,
+      "replaySafetyRules": [
+        "upload-deduplication-by-hash",
+        "processing-idempotent"
+      ],
+      "nonReplayablePaths": [
+        "file.action-trigger"
+      ],
+      "rollbackVsRerunPolicy": "rerun-safe",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "desktop-recovery",
+      "replayable": false,
+      "replaySafetyRules": [
+        "restart-limit-enforced"
+      ],
+      "nonReplayablePaths": [
+        "desktop.safe-mode"
+      ],
+      "rollbackVsRerunPolicy": "manual-only",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "os-recovery",
+      "replayable": false,
+      "replaySafetyRules": [
+        "boot-sequence-atomic"
+      ],
+      "nonReplayablePaths": [
+        "os.boot"
+      ],
+      "rollbackVsRerunPolicy": "manual-only",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "operator-incident",
+      "replayable": false,
+      "replaySafetyRules": [
+        "kill-switch-audit-immutable"
+      ],
+      "nonReplayablePaths": [
+        "incident.close"
+      ],
+      "rollbackVsRerunPolicy": "manual-only",
+      "requiresIdempotencyKey": false
+    },
+    {
+      "familyId": "support-bundle",
+      "replayable": true,
+      "replaySafetyRules": [
+        "bundle-regeneration-safe",
+        "redaction-deterministic"
+      ],
+      "nonReplayablePaths": [
+        "support.escalate"
+      ],
+      "rollbackVsRerunPolicy": "rerun-safe",
+      "requiresIdempotencyKey": false
+    }
+  ],
+  "replayableFamilies": 4
+}

@@ -1,0 +1,252 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "families": [
+    {
+      "familyId": "auth",
+      "owner": "auth-service",
+      "intent": "Govern user authentication lifecycle from signup through session invalidation",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 9,
+      "contractedSteps": 9,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "admin_sessions",
+        "admin_action_audit",
+        "account_deletion_requests"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/users",
+      "killSwitchBinding": "KS-AUTH",
+      "goldenPathRef": "GP-AUTH-PULSE",
+      "runbookRef": "RB-001"
+    },
+    {
+      "familyId": "onboarding",
+      "owner": "onboarding-service",
+      "intent": "Guide new users through setup, checkpoint persistence, and first-win activation",
+      "deploymentCriticality": "important",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "onboarding_checkpoints",
+        "onboarding_branch_selections"
+      ],
+      "replayable": true,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 2,
+      "dashboardRoute": "/admin/onboarding",
+      "killSwitchBinding": null,
+      "goldenPathRef": "GP-ONBOARDING",
+      "runbookRef": "RB-002"
+    },
+    {
+      "familyId": "app-lifecycle",
+      "owner": "app-lifecycle-manager",
+      "intent": "Govern app discovery, install, permission, update, remove, and recovery",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 7,
+      "contractedSteps": 7,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "app_install_registry",
+        "app_permission_ledger"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/apps",
+      "killSwitchBinding": "KS-APP-INSTALLS",
+      "goldenPathRef": "GP-APP-LIFECYCLE",
+      "runbookRef": "RB-003"
+    },
+    {
+      "familyId": "advisor",
+      "owner": "advisor-orchestration-service",
+      "intent": "Manage advisor recommendation through approval, execution, receipt, and rollback",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 7,
+      "contractedSteps": 7,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "advisor_board_actions",
+        "advisor_action_proof_packs",
+        "advisor_board_reflections"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 2,
+      "dashboardRoute": "/admin/ai-engineering",
+      "killSwitchBinding": "KS-AI-ADVISORS",
+      "goldenPathRef": "GP-ADVISOR-RECOMMEND",
+      "runbookRef": "RB-010"
+    },
+    {
+      "familyId": "boardroom",
+      "owner": "boardroom-orchestration-service",
+      "intent": "Strategic decision flow from recommendation through approval, execution, and outcome reconciliation",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 7,
+      "contractedSteps": 7,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "boardroom_items",
+        "boardroom_outcome_records",
+        "boardroom_followthrough_dispatches"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/boardroom",
+      "killSwitchBinding": "KS-BOARDROOM",
+      "goldenPathRef": "GP-BOARDROOM",
+      "runbookRef": "RB-011"
+    },
+    {
+      "familyId": "payment",
+      "owner": "payment-service",
+      "intent": "Authorize, settle, receipt, and handle disputes/recovery for payments",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "payment_transactions",
+        "receipts",
+        "compliance_evidence"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/payments",
+      "killSwitchBinding": "KS-PAYMENTS",
+      "goldenPathRef": "GP-PAYMENT",
+      "runbookRef": "RB-005"
+    },
+    {
+      "familyId": "crm-connector",
+      "owner": "connector-sync-service",
+      "intent": "CRM data ingestion, sync health, retry, conflict detection and resolution",
+      "deploymentCriticality": "important",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "connector_sync_jobs",
+        "connector_oauth_flows"
+      ],
+      "replayable": true,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/integrations",
+      "killSwitchBinding": "KS-CONNECTORS",
+      "goldenPathRef": "GP-CONNECTOR-SYNC",
+      "runbookRef": "RB-012"
+    },
+    {
+      "familyId": "file",
+      "owner": "file-processing-service",
+      "intent": "File upload, parse/process, action trigger, and audit evidence",
+      "deploymentCriticality": "important",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "file_processing_receipts",
+        "storage.objects"
+      ],
+      "replayable": true,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/files",
+      "killSwitchBinding": "KS-FILE-PROCESSING",
+      "goldenPathRef": "GP-FILES-AI",
+      "runbookRef": "RB-013"
+    },
+    {
+      "familyId": "desktop-recovery",
+      "owner": "desktop-host-service",
+      "intent": "Desktop host failure detection, watchdog trigger, shell restart, and recovery",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 5,
+      "contractedSteps": 5,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "os_runtime_state",
+        "shell_health_checks"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 2,
+      "dashboardRoute": "/admin/runtime",
+      "killSwitchBinding": "KS-DESKTOP-HOST",
+      "goldenPathRef": null,
+      "runbookRef": "RB-014"
+    },
+    {
+      "familyId": "os-recovery",
+      "owner": "os-recovery-service",
+      "intent": "OS boot, shell launch, safe mode entry, and full recovery lifecycle",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "os_boot_records",
+        "recovery_logs"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 3,
+      "dashboardRoute": "/admin/os-health",
+      "killSwitchBinding": null,
+      "goldenPathRef": null,
+      "runbookRef": "RB-015"
+    },
+    {
+      "familyId": "operator-incident",
+      "owner": "incident-management-service",
+      "intent": "Operator incident triage, kill-switch activation, remediation, and closure",
+      "deploymentCriticality": "critical",
+      "declaredSteps": 6,
+      "contractedSteps": 6,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "kill_switch_audit_log",
+        "admin_action_audit",
+        "incident_records"
+      ],
+      "replayable": false,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 2,
+      "dashboardRoute": "/admin/kill-switches",
+      "killSwitchBinding": null,
+      "goldenPathRef": "GP-KILL-SWITCH",
+      "runbookRef": "RB-016"
+    },
+    {
+      "familyId": "support-bundle",
+      "owner": "support-service",
+      "intent": "Support bundle generation, escalation, action history, and closure",
+      "deploymentCriticality": "important",
+      "declaredSteps": 5,
+      "contractedSteps": 5,
+      "stepCoverage": 100,
+      "evidenceSources": [
+        "support_bundles",
+        "admin_action_audit"
+      ],
+      "replayable": true,
+      "rollbackDeclared": true,
+      "failureInjectionPoints": 2,
+      "dashboardRoute": "/admin/support",
+      "killSwitchBinding": null,
+      "goldenPathRef": "GP-SUPPORT-BUNDLE",
+      "runbookRef": "RB-017"
+    }
+  ],
+  "totalFamilies": 12,
+  "totalStepContracts": 76
+}

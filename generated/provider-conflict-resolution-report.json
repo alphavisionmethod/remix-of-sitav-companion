@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "policies": [
+    {
+      "providerId": "gmail",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "google-calendar",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "google-drive",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "plaid",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "stripe",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "quickbooks",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "twilio",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "sendgrid",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "instacart",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "hubspot",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "merge",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "slack",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "dropbox",
+      "syncCapable": true,
+      "conflictDetection": true,
+      "resolutionStrategy": "last-write-wins",
+      "operatorEscalation": true,
+      "auditConflicts": true
+    },
+    {
+      "providerId": "ai-gateway",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "storage",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    },
+    {
+      "providerId": "auth",
+      "syncCapable": false,
+      "conflictDetection": false,
+      "resolutionStrategy": "not-applicable",
+      "operatorEscalation": false,
+      "auditConflicts": false
+    }
+  ]
+}

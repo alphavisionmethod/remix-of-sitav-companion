@@ -1,0 +1,140 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "policies": [
+    {
+      "providerId": "gmail",
+      "requestsPerMinute": 250,
+      "burstLimit": 50,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "google-calendar",
+      "requestsPerMinute": 100,
+      "burstLimit": 20,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "google-drive",
+      "requestsPerMinute": 1000,
+      "burstLimit": 100,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "plaid",
+      "requestsPerMinute": 30,
+      "burstLimit": 5,
+      "backoffStrategy": "linear-backoff",
+      "queueBehavior": "queue",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "stripe",
+      "requestsPerMinute": 100,
+      "burstLimit": 25,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "quickbooks",
+      "requestsPerMinute": 500,
+      "burstLimit": 50,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "twilio",
+      "requestsPerMinute": 100,
+      "burstLimit": 20,
+      "backoffStrategy": "linear-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "sendgrid",
+      "requestsPerMinute": 600,
+      "burstLimit": 100,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "queue",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "instacart",
+      "requestsPerMinute": 60,
+      "burstLimit": 10,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "hubspot",
+      "requestsPerMinute": 100,
+      "burstLimit": 10,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "slack",
+      "requestsPerMinute": 60,
+      "burstLimit": 10,
+      "backoffStrategy": "linear-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "dropbox",
+      "requestsPerMinute": 200,
+      "burstLimit": 30,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "ai-gateway",
+      "requestsPerMinute": 1000,
+      "burstLimit": 100,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "storage",
+      "requestsPerMinute": 500,
+      "burstLimit": 100,
+      "backoffStrategy": "exponential-backoff",
+      "queueBehavior": "queue",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    },
+    {
+      "providerId": "auth",
+      "requestsPerMinute": 300,
+      "burstLimit": 50,
+      "backoffStrategy": "linear-backoff",
+      "queueBehavior": "throttle",
+      "headerBasedDetection": true,
+      "retryAfterHonored": true
+    }
+  ]
+}

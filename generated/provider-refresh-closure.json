@@ -1,26 +1,184 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "provider-refresh-closure",
-  "refreshLifecycle": {
-    "cadence": "hourly",
-    "retryPolicy": "3x-exponential",
-    "deadLetterPath": "connector-dead-letter-queue"
-  },
-  "providers": [
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "policies": [
     {
-      "provider": "google",
-      "successRate": 99.2,
-      "lastSuccess": "2026-04-20T21:27:50.034Z"
+      "providerId": "gmail",
+      "refreshCadenceMinutes": 50,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 10,
+      "preExpiryBufferMinutes": 5
     },
     {
-      "provider": "microsoft",
-      "successRate": 98.8,
-      "lastSuccess": "2026-04-20T21:27:50.034Z"
+      "providerId": "google-calendar",
+      "refreshCadenceMinutes": 50,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 10,
+      "preExpiryBufferMinutes": 5
     },
     {
-      "provider": "slack",
-      "successRate": 99.5,
-      "lastSuccess": "2026-04-20T21:27:50.034Z"
+      "providerId": "google-drive",
+      "refreshCadenceMinutes": 50,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 10,
+      "preExpiryBufferMinutes": 5
+    },
+    {
+      "providerId": "plaid",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        2000,
+        4000,
+        8000,
+        16000,
+        32000
+      ],
+      "maxRetries": 5,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "stripe",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        500,
+        1000,
+        2000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "quickbooks",
+      "refreshCadenceMinutes": 50,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 10,
+      "preExpiryBufferMinutes": 5
+    },
+    {
+      "providerId": "twilio",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        500,
+        1000
+      ],
+      "maxRetries": 2,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "sendgrid",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "instacart",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "hubspot",
+      "refreshCadenceMinutes": 50,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 10,
+      "preExpiryBufferMinutes": 5
+    },
+    {
+      "providerId": "slack",
+      "refreshCadenceMinutes": 720,
+      "retryBackoffMs": [
+        500,
+        1000,
+        2000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 30,
+      "preExpiryBufferMinutes": 60
+    },
+    {
+      "providerId": "dropbox",
+      "refreshCadenceMinutes": 240,
+      "retryBackoffMs": [
+        1000,
+        2000,
+        4000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 15,
+      "preExpiryBufferMinutes": 10
+    },
+    {
+      "providerId": "ai-gateway",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        500,
+        1000,
+        2000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "storage",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        500,
+        1000,
+        2000
+      ],
+      "maxRetries": 3,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
+    },
+    {
+      "providerId": "auth",
+      "refreshCadenceMinutes": -1,
+      "retryBackoffMs": [
+        0
+      ],
+      "maxRetries": 1,
+      "refreshWindowMinutes": 0,
+      "preExpiryBufferMinutes": 0
     }
   ]
 }
