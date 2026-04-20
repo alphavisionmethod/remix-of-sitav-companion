@@ -1,53 +1,59 @@
 
 
-## Reality check — real project 100% deployment-ready ✅
+## Reality check
 
-Verified on disk just now:
-- **3 mirrors of `_owners.json` present**, identical MD5 `d3fd1d83…`:
-  - `generated/edge-function-ownership.json` (81,762 bytes)
-  - `public/generated/edge-function-ownership.json` (81,762 bytes)
-  - `supabase/functions/_owners.json` (81,762 bytes)
-- **BLOCK Gate #26** report: `ok: true`, **192/192 functions = 100% coverage**, 13 owner teams, 0 orphans, 0 phantoms, 0 metadata violations, MD5 parity green across all 3 mirrors.
-- Source of truth `src/lib/backend-topology/edge-function-owner-map.ts` matches.
-
-**No code, gate, generator, or manifest work needed.** The 185-claim is structurally impossible to repeat — the gate enforces inventory parity on every CI run.
-
-## Doc drift remaining (8 lines across 6 mirrors)
-
-| Mirror | Line | Issue |
+| Row | Cluster | Real state |
 |---|---|---|
-| `public/generated/artifacts/audits/MISSING_AUDIT.md` | 131 | Says `Edge functions (185)` + "No per-function ownership manifest" — fully stale |
-| `public/generated/artifacts/audits/MISSING_AUDIT_v2.md` | 131 | Same as above |
-| `public/generated/MISSING_AUDIT.md` | 131 | Says `(186)` — should be `(192)` to match gate |
-| `/mnt/documents/MISSING_AUDIT.md` | 130 | Same `(186)` → `(192)` |
-| `public/generated/MISSING_AUDIT_v2.md` | 131 | Same `(186)` → `(192)` |
-| `/mnt/documents/MISSING_AUDIT_v2.md` | 130 | Same `(186)` → `(192)` |
+| 1 | `ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway` | ✅ **ALREADY RESOLVED.** All 4 are 1-line shims pointing at `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/`. README.md exists with full responsibility map. |
+| 2 | `services` vs `core-services` | ⚠️ Authority hardened in `core-services/index.ts` header comments, but **no README.md in either folder**. Concept clear in code, invisible to a folder browser. |
+| 3 | `platform`, `platform-law`, `platform-plane`, `web-platform` | ⚠️ All 4 distinct (Layer-3 services / law registry / BFF + RBAC / web-deployability). No README per folder. `web-platform/` has only `release/` inside — true sub-cluster. |
+| 4 | Onboarding intent surfaces | ✅ **ALREADY RESOLVED.** `src/lib/architecture/onboarding-surface-registry.ts` is the canonical 3-tier registry (os / business / money), with deprecated set declared, validator `check-onboarding-surface-truth.ts` exists. |
+| 5 | `observability` vs `incidents` | Distinct concerns: `observability/` = telemetry (logger, tracing, SLOs, sentry); `incidents/` = single classifier mapping symptom→runbook. **Not foldable** — different lifecycle, different consumers (admin dashboards vs. incident response). README per folder + cross-link is the honest fix. |
 
-Row #5 in §2 is already RESOLVED in all 6 mirrors — leaving it untouched.
+The **real cognitive risk** is folder-browsing without README anchors. Code itself is correct.
 
-## Plan (default mode — doc sync only)
+## Plan (consolidate via documentation anchors + CI enforcement)
 
-### Single edit per mirror — §1 topology row
+### 1. Add canonical README.md to 7 ambiguous cluster roots
+Each README is short, declares purpose / role in the layered architecture / what NOT to put here / canonical neighbors.
 
-**For the 2 `artifacts/audits/` mirrors** (line 131), replace:
-> `| supabase/ | Edge functions (185), migrations (225), config | ✅ canonical | Backend | No per-function ownership manifest | supabase/functions/_owners.json |`
+| File | Anchors |
+|---|---|
+| `src/lib/services/README.md` | Layer-2 Domain Services (implementations). Re-exported by `core-services` façade. |
+| `src/lib/core-services/README.md` | Layer-1 Platform Canonical (organs + façade). Authority above `services/`. |
+| `src/lib/platform/README.md` | Layer-3 Platform Services barrel (auth/proof/execution/observability/sync/notifications). |
+| `src/lib/platform-law/README.md` | Pure law registry (rules-as-data). Not a runtime. |
+| `src/lib/platform-plane/README.md` | BFF + RBAC + safety + notification routing for the Admin/User planes. |
+| `src/lib/web-platform/README.md` | Web-target deployability contract (browser min-version, runtime contract). |
+| `src/lib/observability/README.md` | Telemetry primitives — logs, traces, SLO, sentry. Cross-links `incidents/`. |
+| `src/lib/incidents/README.md` | Symptom→runbook classifier. Cross-links `observability/`. |
 
-With:
-> `| supabase/ | Edge functions (192), migrations (225+), config | ✅ canonical | Backend | **RESOLVED 2026-04-20** — per-function ownership manifest at 3 mirrors (canonical/public/colocated `_owners.json`), 100% coverage, 13 teams, BLOCK gate #26 (MD5 parity enforced) | generated/edge-function-ownership.json + supabase/functions/_owners.json |`
+### 2. New CI gate `check-cluster-readme-coverage.ts`
+- Asserts every folder in a curated `AMBIGUOUS_CLUSTERS` allowlist has a `README.md` with required headings (`# Purpose`, `# Layer`, `# Canonical neighbors`).
+- BLOCK tier. Report at `generated/cluster-readme-coverage-report.json`.
+- Register as **Gate #27** at the bottom of the master aggregator (`check-os-release-readiness.ts`).
 
-**For the 4 already-RESOLVED mirrors** (lines 130–131), bump the count `(186)` → `(192)` and add `+ supabase/functions/_owners.json` to the proof column so the row matches the gate report's actual on-disk state.
+### 3. Rename Row 4 follow-through
+Already structurally done — verify `check-onboarding-surface-truth.ts` is registered in master aggregator; if not, register it.
 
-## Files edited (6, single-line each)
+### 4. Doc sync (6 mirrors of `MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md`)
+Replace §3 table (rows 1-5) with **RESOLVED 2026-04-20** annotations:
+- Row 1 → cite `src/lib/ai-platform/README.md` + 4 shims
+- Row 2 → cite new `services/README.md` + `core-services/README.md` + Service Layer Constitution doc
+- Row 3 → cite 4 new READMEs (`platform`, `platform-law`, `platform-plane`, `web-platform`)
+- Row 4 → cite `onboarding-surface-registry.ts` + validator
+- Row 5 → cite `observability/README.md` + `incidents/README.md` (kept separate by design, cross-linked)
 
-1. `public/generated/MISSING_AUDIT.md` (line 131)
-2. `/mnt/documents/MISSING_AUDIT.md` (line 130)
-3. `public/generated/MISSING_AUDIT_v2.md` (line 131)
-4. `/mnt/documents/MISSING_AUDIT_v2.md` (line 130)
-5. `public/generated/artifacts/audits/MISSING_AUDIT.md` (line 131 — full row replacement)
-6. `public/generated/artifacts/audits/MISSING_AUDIT_v2.md` (line 131 — full row replacement)
+All gated by **BLOCK Gate #27** to prevent regression.
+
+## Files
+
+**Created (9):** 8 READMEs + 1 CI gate script
+**Edited (2):** master aggregator (register #27), 6 audit doc mirrors
+**No code/runtime/DB changes** — pure documentation + enforcement
 
 ## Out of scope
-- No code, gate, generator, runtime, DB, or schema changes (already shipped + green).
-- No edits to Row #5 in §2 (already correctly RESOLVED across all 6 mirrors).
-- No edits to §10/Part XIII narratives (already accurate).
+- No folder consolidation (real concerns are distinct)
+- No moves of `incidents/` into `observability/` (different lifecycle owners)
+- No removal of legacy AI shims (preserved for back-compat by design)
 
