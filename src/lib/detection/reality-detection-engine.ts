@@ -88,16 +88,16 @@ const KNOWN_MOCK_SOURCES: Array<{
   hasSupersedeService: boolean;
   realBackendTarget: string;
 }> = [
-  // Page-level direct imports (still importing from mock-data)
-  { path: "src/lib/mock-data/investment.ts", pages: ["/money/investment-office"], domain: "investment", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
-  { path: "src/lib/mock-data/advisor-mission-control.ts", pages: ["/boardroom", "/advisors/workspace", "/mission-control"], domain: "advisors", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "advisor_registry + advisor_configs" },
-  { path: "src/lib/mock-data/revenue-autopilot.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices + revenue_analytics" },
-  { path: "src/lib/mock-data/owner.ts", pages: ["/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "approval_queue + pricing_items" },
-  { path: "src/lib/mock-data/collections.ts", pages: ["/business/collections"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices (collections)" },
-  { path: "src/lib/mock-data/workspace.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
-  { path: "src/lib/mock-data/calendar.ts", pages: ["/concierge/calendar"], domain: "concierge", severity: "low", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "bookings" },
-  { path: "src/lib/mock-data/owner-center.ts", pages: ["/owner"], domain: "owner", severity: "medium", mockType: "demo-flow", hasSupersedeService: false, realBackendTarget: "owner_policies" },
-  { path: "src/lib/mock-data/calling.ts", pages: ["/business/calling"], domain: "business", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "communication_log + leads" },
+  // Page-level direct imports (canonical home: src/data/fixtures/mock-data after Wave 2 migration)
+  { path: "src/data/fixtures/mock-data/investment.ts", pages: ["/money/investment-office"], domain: "investment", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
+  { path: "src/data/fixtures/mock-data/advisor-mission-control.ts", pages: ["/boardroom", "/advisors/workspace", "/mission-control"], domain: "advisors", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "advisor_registry + advisor_configs" },
+  { path: "src/data/fixtures/mock-data/revenue-autopilot.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices + revenue_analytics" },
+  { path: "src/data/fixtures/mock-data/owner.ts", pages: ["/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "approval_queue + pricing_items" },
+  { path: "src/data/fixtures/mock-data/collections.ts", pages: ["/business/collections"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices (collections)" },
+  { path: "src/data/fixtures/mock-data/workspace.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
+  { path: "src/data/fixtures/mock-data/calendar.ts", pages: ["/concierge/calendar"], domain: "concierge", severity: "low", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "bookings" },
+  { path: "src/data/fixtures/mock-data/owner-center.ts", pages: ["/owner"], domain: "owner", severity: "medium", mockType: "demo-flow", hasSupersedeService: false, realBackendTarget: "owner_policies" },
+  { path: "src/data/fixtures/mock-data/calling.ts", pages: ["/business/calling"], domain: "business", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "communication_log + leads" },
 
   // Data-service fallback imports (services that fall back to mock when no user/data)
   { path: "src/lib/data-services/business-data-service.ts", pages: ["/business/customers", "/business/collections"], domain: "business", severity: "medium", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "customers + invoices" },

@@ -56,7 +56,7 @@ const REMEDIATION_RULES: Array<{
     gapType: "mock-import-in-production",
     action: (gap) => ({
       suggestedAction: `Replace mock import with real data source in ${gap.targetId}`,
-      suggestedArtifacts: [`Remove import from src/lib/mock-data/`, `Wire to Supabase query`],
+      suggestedArtifacts: [`Remove import from src/data/fixtures/mock-data/`, `Wire to Supabase query`],
       priority: "critical",
       autoFixable: false,
     }),

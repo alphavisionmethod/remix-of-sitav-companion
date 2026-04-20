@@ -685,7 +685,7 @@ SITA OS is a Lovable-hosted Vite + React + TypeScript SPA backed by Supabase. It
 
 **Evidence:**
 - Simulation pages exist in `src/pages/` (digital twin, scenario lab, governance simulator, life simulation)
-- `src/lib/simulation/` contains simulation engine abstractions
+- `src/domains/simulation/` contains simulation engine abstractions
 - All consume demo/mock data
 - No persistent simulation infrastructure
 

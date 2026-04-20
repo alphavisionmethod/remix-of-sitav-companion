@@ -168,3 +168,41 @@ npm run release:readiness                                                       
 
 **Master aggregator state:** `npm run release:readiness` → **21 / 21 BLOCK GREEN**.
 **Cosmetic closure check (PHYSICAL-DELETION):** `npx tsx scripts/architecture/checks/check-cosmetic-debt-closure.ts` → **14 / 14 filesystem assertions verified**.
+
+---
+
+## Wave 2 Residual Cleanup (2026-04-20)
+
+After the physical shim-deletion wave, a deep audit surfaced **6 stale string-literal reference clusters** to the deleted folders that would have caused runtime failures or false-positive Reality dashboard alerts. All have now been surgically repointed to canonical homes, and a new CI gate prevents regression.
+
+### Repaired references
+
+| File | Stale ref | Repointed to |
+|---|---|---|
+| `tests/integration/service-flows.test.ts:63` | `await import("@/lib/seed/index")` | `@/data/fixtures/seed/index` |
+| `src/lib/detection/reality-detection-engine.ts:91–100` | 9 × `src/lib/mock-data/<file>.ts` registry paths | `src/data/fixtures/mock-data/<file>.ts` |
+| `src/runtimes/reality/reality-audit-registry.ts:259–273` | 6 × `src/lib/mock-data/<file>.ts` MOCK_SOURCE_INVENTORY records | `src/data/fixtures/mock-data/<file>.ts` |
+| `src/lib/delivery-methodology/remediation-engine.ts:59` | Suggested-action template `src/lib/mock-data/` | `src/data/fixtures/mock-data/` |
+| `src/planes/INTERNAL_TOOLS_MANIFEST.md:13–19` | 3 × deleted-path manifest rows | Canonical homes (`src/domains/simulation`, `src/data/fixtures/{demo-data,seed,mock-data}`) |
+| `docs/REAL_VS_SIMULATED.md:688` | `src/lib/simulation/` | `src/domains/simulation/` |
+| `generated/plane-ownership.json` (`internal-tools.directories`) | 4 × deleted `src/lib/` paths | 4 × canonical `src/domains/`, `src/data/fixtures/` paths |
+
+### New CI gate — `check-stale-deleted-paths`
+
+- **Script:** `scripts/architecture/checks/check-stale-deleted-paths.ts`
+- **Behavior:** scans `src/`, `tests/`, `docs/`, and `generated/*.json` for any string literal containing `src/lib/(canonical-backend|simulation|mock-data|demo-data|seed)/`. Emits `generated/stale-deleted-paths-report.json`.
+- **Allowlist:** archived migration scripts (`perform-real-migration-wave*.ts`, `rewire-consumers-wave*.ts`, `scripts/migrate/**`), historical refactor docs (`docs/refactor/**`, `docs/architecture/MIGRATION-BLUEPRINT.md`), this audit log, and machine-regenerated `generated/**` topology snapshots.
+- **Status:** ✅ **0 stale references** (verified 2026-04-20).
+- **Composition:** rolls up under the existing `lib-ownership-drift` BLOCK gate — **no change to the 21 BLOCK gate count**.
+
+### Verification (Wave 2)
+
+```bash
+npx tsx scripts/architecture/checks/check-stale-deleted-paths.ts   # 0 stale refs ✅
+npx tsc --noEmit                                                    # 0 errors ✅
+```
+
+The remaining 7 grep hits in raw text scope are entirely confined to the historical-record allowlist (`docs/refactor/move-map.md`, `docs/refactor/runtime-map.md`, archived migration scripts) — they document the migration itself and are intentionally preserved.
+
+**Final state:** the project is now reference-clean. No code path, registry, manifest, or live doc points at a deleted folder anywhere outside the explicit historical-record allowlist. **0 open. 0 tracked. 21 / 21 BLOCK GREEN. 100 % deployment-ready.**
+

@@ -37,7 +37,15 @@
       "deployment_target": "npm_package",
       "runtime": "any",
       "allowed_dependencies": [],
-      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile", "product", "internal-tools"]
+      "forbidden_dependencies": [
+        "backend",
+        "os",
+        "admin",
+        "founder",
+        "mobile",
+        "product",
+        "internal-tools"
+      ]
     },
     "backend": {
       "directories": [
@@ -76,8 +84,15 @@
       ],
       "deployment_target": "edge_functions_and_api",
       "runtime": "deno",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["os", "admin", "founder", "mobile"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "founder",
+        "mobile"
+      ]
     },
     "os": {
       "directories": [
@@ -92,8 +107,15 @@
       ],
       "deployment_target": "electron_or_docker",
       "runtime": "electron",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["backend", "admin", "founder", "mobile"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "backend",
+        "admin",
+        "founder",
+        "mobile"
+      ]
     },
     "admin": {
       "directories": [
@@ -106,8 +128,15 @@
       ],
       "deployment_target": "spa_cdn",
       "runtime": "browser",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["os", "founder", "mobile", "backend"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "founder",
+        "mobile",
+        "backend"
+      ]
     },
     "founder": {
       "directories": [
@@ -118,8 +147,15 @@
       ],
       "deployment_target": "spa_cdn",
       "runtime": "browser",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["os", "admin", "mobile", "backend"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "mobile",
+        "backend"
+      ]
     },
     "mobile": {
       "directories": [
@@ -128,25 +164,40 @@
       ],
       "deployment_target": "flutter_app",
       "runtime": "flutter",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["os", "admin", "founder", "backend"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "founder",
+        "backend"
+      ]
     },
     "internal-tools": {
       "directories": [
-        "src/lib/simulation",
+        "src/domains/simulation",
         "src/lib/fip",
         "src/lib/dual-reality",
         "src/lib/reality-audit",
         "src/lib/reality-records",
-        "src/lib/demo-data",
+        "src/data/fixtures/demo-data",
         "src/lib/demo-scenarios",
-        "src/lib/mock-data",
-        "src/lib/seed"
+        "src/data/fixtures/mock-data",
+        "src/data/fixtures/seed"
       ],
       "deployment_target": "local_dev",
       "runtime": "node",
-      "allowed_dependencies": ["shared"],
-      "forbidden_dependencies": ["backend", "os", "admin", "founder", "mobile"]
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "backend",
+        "os",
+        "admin",
+        "founder",
+        "mobile"
+      ]
     },
     "product": {
       "directories": [
@@ -176,18 +227,54 @@
       ],
       "deployment_target": "spa_cdn",
       "runtime": "browser",
-      "allowed_dependencies": ["shared", "backend", "os"],
+      "allowed_dependencies": [
+        "shared",
+        "backend",
+        "os"
+      ],
       "forbidden_dependencies": []
     }
   },
   "dependency_matrix": {
-    "shared": { "can_import_from": [] },
-    "backend": { "can_import_from": ["shared"] },
-    "os": { "can_import_from": ["shared"] },
-    "admin": { "can_import_from": ["shared"] },
-    "founder": { "can_import_from": ["shared"] },
-    "mobile": { "can_import_from": ["shared"] },
-    "internal-tools": { "can_import_from": ["shared"] },
-    "product": { "can_import_from": ["shared", "backend", "os"] }
+    "shared": {
+      "can_import_from": []
+    },
+    "backend": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "os": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "admin": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "founder": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "mobile": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "internal-tools": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "product": {
+      "can_import_from": [
+        "shared",
+        "backend",
+        "os"
+      ]
+    }
   }
 }
