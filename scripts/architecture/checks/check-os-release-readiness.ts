@@ -318,6 +318,8 @@ const REQUIRED_GATES = [
   "artifact-ownership-graph",
   // Phase 31 Cross-tier capability matrix (1 BLOCK gate — registry is single source of truth; no hard-coded tier literals)
   "cross-tier-capability-matrix",
+  // Phase 32 First-use spec coverage (1 BLOCK gate — 29-screen master spec ↔ SetupPhaseId mapping is typed + verified)
+  "first-use-spec-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
