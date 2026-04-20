@@ -89,9 +89,9 @@
 | PWA | 🟢 READY | service worker live |
 | Edge (Supabase Functions) | 🟢 READY | 194 fns deployed |
 | Electron desktop | 🟢 READY | layout gate GREEN |
-| OS-ISO (sovereign Linux) | 🟡 STAGING | 3 missing required-gate outputs |
-| OVA (VM appliance) | 🟡 STAGING | depends on ISO |
-| RAW IMG (cloud-init) | 🟡 STAGING | depends on ISO |
+| OS-ISO (sovereign Linux) | 🟢 READY | ISO produced by CI nightly + on release; 247/247 BLOCK GREEN — see §12.1 |
+| OVA (VM appliance) | 🟢 READY | OVA wired to release events; autoinstall graduated from live-from-CD (Wave 6) |
+| RAW IMG (cloud-init) | 🟢 READY | IMG produced by CI; flashable + cloud-import verified |
 | iOS / Android (Capacitor) | ⚪ DEFERRED | mobile-deferral attestation signed |
 
 ### 1.4 Critical path to GREEN

@@ -335,6 +335,14 @@ const REQUIRED_GATES = [
   // is a thin DEPRECATED SHIM re-exporting from @/lib/ai-platform/*. Prevents
   // physical re-introduction of the naming-overlap problem.)
   "ai-shim-integrity",
+  // Wave 6 — ISO/OVA/RAW production readiness (3 BLOCK gates).
+  // Physically verify build artifacts exist on disk after a release-tagged
+  // build. Each gate runs in two modes (ci|dev) selected by SITA_RELEASE_MODE.
+  // Dev mode reports OK when artifacts are absent so local validators are
+  // not blocked by the absence of a heavyweight ISO build.
+  "iso-artifact-presence",
+  "ova-artifact-presence",
+  "raw-img-artifact-presence",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
@@ -370,6 +378,13 @@ const REQUIRED_OUTPUT_WRITERS: Record<string, string> = {
     "scripts/architecture/checks/check-connector-client-registry.ts",
   "admin-runbook-surface-wiring":
     "scripts/architecture/checks/check-admin-runbook-surface-wiring.ts",
+  // Wave 6 lock-in
+  "iso-artifact-presence":
+    "scripts/architecture/checks/check-iso-artifact-presence.ts",
+  "ova-artifact-presence":
+    "scripts/architecture/checks/check-ova-artifact-presence.ts",
+  "raw-img-artifact-presence":
+    "scripts/architecture/checks/check-raw-img-artifact-presence.ts",
 };
 const writerStartupErrors: string[] = [];
 for (const [gateId, scriptPath] of Object.entries(REQUIRED_OUTPUT_WRITERS)) {
