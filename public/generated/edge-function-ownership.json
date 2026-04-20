@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-20T04:22:54.937Z",
+  "generatedAt": "2026-04-20T10:24:27.125Z",
   "source": "src/lib/backend-topology/edge-function-owner-map.ts",
-  "totalFunctionsOnDisk": 186,
+  "totalFunctionsOnDisk": 192,
   "totalFunctionsOwned": 186,
-  "coveragePercent": 100,
+  "coveragePercent": 96.88,
   "totalOwnerTeams": 13,
   "ownersByTeam": {
     "admin-governance": 6,
@@ -493,6 +493,17 @@
       "runbookRef": "RB-011-SECURITY",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/compliance-security"
+    },
+    {
+      "name": "beta-apply",
+      "path": "supabase/functions/beta-apply/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
     },
     {
       "name": "boardroom-cockpit-telemetry",
@@ -1386,6 +1397,17 @@
       "reviewerCodeOwners": "@sita/finance-engine"
     },
     {
+      "name": "investor-request",
+      "path": "supabase/functions/investor-request/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
+    },
+    {
       "name": "invoice-generate",
       "path": "supabase/functions/invoice-generate/index.ts",
       "ownerTeam": "finance-engine",
@@ -1606,6 +1628,17 @@
       "reviewerCodeOwners": "@sita/ai-engineering"
     },
     {
+      "name": "press-inquiry",
+      "path": "supabase/functions/press-inquiry/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
+    },
+    {
       "name": "production-launch-attestor",
       "path": "supabase/functions/production-launch-attestor/index.ts",
       "ownerTeam": "compliance-security",
@@ -1659,6 +1692,17 @@
       "runbookRef": "RB-009-NOTIFICATIONS",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/notification-services"
+    },
+    {
+      "name": "recovery-evidence-ingest",
+      "path": "supabase/functions/recovery-evidence-ingest/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
     },
     {
       "name": "release-artifact-signer",
@@ -1967,6 +2011,28 @@
       "runbookRef": "RB-011-SECURITY",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/compliance-security"
+    },
+    {
+      "name": "waitlist-signup",
+      "path": "supabase/functions/waitlist-signup/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
+    },
+    {
+      "name": "waitlist-stats",
+      "path": "supabase/functions/waitlist-stats/index.ts",
+      "ownerTeam": null,
+      "primaryContact": null,
+      "escalationContact": null,
+      "slackChannel": null,
+      "runbookRef": null,
+      "killSwitchRef": null,
+      "reviewerCodeOwners": null
     },
     {
       "name": "webauthn-challenge",
