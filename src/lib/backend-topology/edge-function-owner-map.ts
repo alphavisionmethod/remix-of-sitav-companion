@@ -274,6 +274,14 @@ export const EDGE_FUNCTION_OWNER_MAP: Record<string, OwnerTeam> = {
   // compliance-security extras pulled from late additions
   "production-launch-attestor": "compliance-security",
   "federated-knowledge-aggregator": "compliance-security",
+  // Public-surface intake endpoints
+  "beta-apply": "user-experience",
+  "investor-request": "user-experience",
+  "press-inquiry": "user-experience",
+  "waitlist-signup": "user-experience",
+  "waitlist-stats": "user-experience",
+  // Recovery / disaster-recovery evidence pipeline
+  "recovery-evidence-ingest": "compliance-security",
 } as const;
 
 // ── Per-function runbook + kill-switch overrides ───────────────────────────
