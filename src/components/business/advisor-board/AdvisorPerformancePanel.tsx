@@ -7,6 +7,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { BarChart3, Trophy, TrendingUp, Zap, Target, Clock, ArrowUp, ArrowDown } from "lucide-react";
 import type { PerformanceSnapshot, AdvisorPerformanceRecord } from "@/domains/engines/advisor-performance-engine";
+import { getDisablementPolicy } from "@/lib/advisors/advisor-disablement-policy";
+import { getAdvisorIdentity } from "@/lib/advisors/advisor-identity-registry";
 
 interface Props {
   snapshot: PerformanceSnapshot;

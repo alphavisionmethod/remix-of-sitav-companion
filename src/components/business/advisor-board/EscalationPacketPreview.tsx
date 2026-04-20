@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import type { EscalationPacket } from "@/domains/engines/business-advisor-engine";
 import { AdvisorDisagreementCard } from "./AdvisorDisagreementCard";
 import { toast } from "sonner";
+import { ESCALATION_RULES } from "@/lib/ai-platform/runtime/advisor-escalation-policy";
 
 interface Props {
   packet: EscalationPacket;
