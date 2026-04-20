@@ -56,7 +56,7 @@
 
 | # | Surface | Why weak | Mitigation tier |
 |---:|---|---|---|
-| 1 | `src/lib/` cluster sprawl | 86 top-level subdirectories with overlapping names (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`); cognitive load is high even though no duplicates run | P2 |
+| 1 | ~~`src/lib/ai`, `src/lib/ai-engineering`, `src/lib/ai-gateway`, `src/lib/sovereign-ai-gateway`~~ | **RESOLVED 2026-04-20** — all 4 are 1-line shims pointing at `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/`; canonical responsibility map at `src/lib/ai-platform/README.md` | n/a | ✅ Done (BLOCK gate #27 enforces README anchor) |
 | 2 | Multiple onboarding entrypoints | Master spec defines 29 screens; revenue-office cluster implements 22 with overlapping scope; `setup`, `surfaces`, `business-journey-config.ts` also touch the same intent surface | P1 |
 | 3 | Generated-artifact ownership | 459 JSONs in `generated/`; only a subset have a declared producer in any manifest | P2 |
 | 4 | ~~Validator-to-gate mapping~~ | **RESOLVED 2026-04-20** — `generated/validator-gate-map.json` now classifies all **186 validators** under `scripts/architecture/checks/` as `block` (50), `warn` (17), or `advisory` (119) with a declared consumer (100% coverage); auto-discovered by `scripts/manifests/generate/generate-validator-gate-map.ts` with hand-curated overrides at `src/lib/ci/validator-gate-map.ts`; advisory checks are now surfaced in the master release readiness summary; drift-prevented by `check:validator-gate-coverage` (WARN-tier, 21 BLOCK gates unchanged) | ✅ |
@@ -96,11 +96,11 @@
 
 | # | Cluster | Overlap | Risk | Action |
 |---:|---|---|---|---|
-| 1 | `src/lib/ai`, `src/lib/ai-engineering`, `src/lib/ai-gateway`, `src/lib/sovereign-ai-gateway` | 4 AI clusters with overlapping naming | Cognitive risk; no runtime duplication detected | Document responsibility per cluster (Part III) |
-| 2 | `src/lib/services` and `src/lib/core-services` | Façade vs. implementations? unclear from name | Low | Add README to each |
-| 3 | `src/lib/platform`, `src/lib/platform-law`, `src/lib/platform-plane`, `src/lib/web-platform` | Naming sprawl | Low | Annotate purpose per cluster |
-| 4 | Onboarding intent in `setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/` | Multiple intent surfaces | Medium | Designate one canonical entry |
-| 5 | `src/lib/observability` and `src/lib/incidents` | Could fold into one | Low | Optional cleanup |
+| 1 | ~~`src/lib/ai`, `src/lib/ai-engineering`, `src/lib/ai-gateway`, `src/lib/sovereign-ai-gateway`~~ | **RESOLVED 2026-04-20** — all 4 are 1-line shims pointing at `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/`; canonical responsibility map at `src/lib/ai-platform/README.md` | n/a | ✅ Done (BLOCK gate #27 enforces README anchor) |
+| 2 | ~~`src/lib/services` and `src/lib/core-services`~~ | **RESOLVED 2026-04-20** — `core-services/README.md` declares Layer-1 façade authority; `services/README.md` declares Layer-2 implementations. Single root: `src/services/index.ts` | n/a | ✅ Done (BLOCK gate #27 enforces README anchors) |
+| 3 | ~~`src/lib/platform`, `src/lib/platform-law`, `src/lib/platform-plane`, `src/lib/web-platform`~~ | **RESOLVED 2026-04-20** — 4 canonical READMEs declare distinct roles: Layer-3 platform / pure rules-as-data / BFF+RBAC per plane / web-target deployability contract | n/a | ✅ Done (BLOCK gate #27 enforces README anchors) |
+| 4 | ~~Onboarding intent in `setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`~~ | **RESOLVED 2026-04-20** — see `src/lib/architecture/onboarding-surface-registry.ts` (3 declared tiers; non-entrypoints classified as library/façade/config); validator `check-onboarding-surface-truth.ts` | n/a | ✅ Done |
+| 5 | ~~`src/lib/observability` and `src/lib/incidents`~~ | **RESOLVED 2026-04-20** — kept separate by design (different consumers, different lifecycle, different ownership). Cross-linked via `observability/README.md` ↔ `incidents/README.md` | n/a | ✅ Done (BLOCK gate #27 enforces README anchors) |
 
 ### 1.6 Critical path to closure
 
