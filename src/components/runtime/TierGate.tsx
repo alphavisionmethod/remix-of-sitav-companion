@@ -37,10 +37,17 @@ export function TierGate({
   const status = useFeatureRuntimeTier(featureId);
   const feature = getFeatureRuntimeTier(featureId);
 
-  const tierMatches = requireTier
+  // When `requireTier` is omitted, derive the allow-list from the
+  // registry's `supportedTiers` so callers never need to repeat what the
+  // registry already knows. Explicit `requireTier` still wins.
+  const effectiveRequireTier: readonly RuntimeTier[] | undefined = requireTier
     ? Array.isArray(requireTier)
-      ? (requireTier as readonly RuntimeTier[]).includes(activeTier)
-      : requireTier === activeTier
+      ? (requireTier as readonly RuntimeTier[])
+      : [requireTier as RuntimeTier]
+    : feature?.supportedTiers;
+
+  const tierMatches = effectiveRequireTier
+    ? effectiveRequireTier.includes(activeTier)
     : true;
 
   const statusOk = acceptStatuses.includes(status);

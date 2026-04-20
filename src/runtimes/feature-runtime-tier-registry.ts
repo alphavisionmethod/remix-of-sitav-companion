@@ -119,3 +119,74 @@ export function listFeaturesForTier(
 export function listFeaturesNeedingDisclosure(): FeatureRuntimeTierMapping[] {
   return FEATURE_RUNTIME_TIER_MAPPING.filter((f) => f.launchHonesty === "needs-disclosure");
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Canonical resolver — the ONLY supported way for non-React code,
+// CI gates, generators, and admin dashboards to determine
+// (feature × tier) availability without re-deriving the rules.
+// React surfaces should use `useFeatureRuntimeTier()` /
+// `useCapability()` from `runtime-context`, which delegate here.
+// ═══════════════════════════════════════════════════════════════
+
+import type { TierAvailability } from "./runtime-tier-model";
+
+/** Resolve the availability of a feature on a specific runtime tier. */
+export function resolveFeatureTierAvailability(
+  featureId: string,
+  tier: RuntimeTier,
+): TierAvailability {
+  const feature = getFeatureRuntimeTier(featureId);
+  if (!feature) return "prohibited";
+  if (feature.supportedTiers.includes(tier)) return "supported";
+  if (feature.simulatedTiers.includes(tier)) return "simulated";
+  if (feature.fallbackTiers.includes(tier)) return "fallback";
+  if (feature.roadmapTiers.includes(tier)) return "roadmap";
+  return "prohibited";
+}
+
+/** True if the feature has `supported` status on the given tier. */
+export function isFeatureSupportedOn(featureId: string, tier: RuntimeTier): boolean {
+  return resolveFeatureTierAvailability(featureId, tier) === "supported";
+}
+
+/** True if a registered feature is **not** prohibited on the tier (any
+ *  positive status: supported, simulated, fallback, roadmap). */
+export function isFeatureAvailableOn(featureId: string, tier: RuntimeTier): boolean {
+  return resolveFeatureTierAvailability(featureId, tier) !== "prohibited";
+}
+
+/** All registered feature ids. */
+export function listRegisteredFeatureIds(): readonly string[] {
+  return FEATURE_RUNTIME_TIER_MAPPING.map((f) => f.featureId);
+}
+
+export interface FeatureCoverageRow {
+  featureId: string;
+  name: string;
+  ownerDomain: string;
+  byTier: Record<RuntimeTier, TierAvailability>;
+  launchHonesty: FeatureRuntimeTierMapping["launchHonesty"];
+}
+
+/** Materialize the full feature × tier coverage matrix. Used by the
+ *  build-time generator (`cross-tier-capability-matrix.generated.ts`)
+ *  and by the admin Cross-Tier board. */
+export function enumerateFeatureCoverage(): readonly FeatureCoverageRow[] {
+  const tiers: readonly RuntimeTier[] = [
+    "WEB_APP",
+    "DESKTOP_HOST",
+    "APPLIANCE_RUNTIME",
+    "SIMULATED_OS_EXPERIENCE",
+  ];
+  return FEATURE_RUNTIME_TIER_MAPPING.map((f) => {
+    const byTier = {} as Record<RuntimeTier, TierAvailability>;
+    for (const t of tiers) byTier[t] = resolveFeatureTierAvailability(f.featureId, t);
+    return {
+      featureId: f.featureId,
+      name: f.name,
+      ownerDomain: f.ownerDomain,
+      byTier,
+      launchHonesty: f.launchHonesty,
+    };
+  });
+}

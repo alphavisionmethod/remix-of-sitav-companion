@@ -39,6 +39,7 @@
 | 19 | `production-launch-attestation` | `scripts/architecture/checks/check-production-launch-attestation.ts` | `generated/production-launch-attestation-report.json` |
 | 20 | `electron-domain-layout` | `scripts/architecture/checks/check-electron-domain-layout.ts` | `generated/electron-domain-layout-report.json` |
 | 21 | `os-ci-end-to-end` | `scripts/architecture/checks/check-os-ci-end-to-end.ts` | `generated/os-ci-end-to-end-report.json` |
+| 22 | `cross-tier-capability-matrix` | `scripts/architecture/checks/check-cross-tier-capability-matrix.ts` | `generated/cross-tier-capability-matrix-report.json` |
 
 ---
 
@@ -63,7 +64,34 @@ npm run release:readiness   # → 21/21 BLOCK gates green
 
 ---
 
+## Phase 31 — Cross-Tier Capability Matrix (NEW)
+
+Resolves the residual P2 finding from `MISSING_AUDIT.md` row 10:
+
+- **Hard-coded tier lookups removed** → `useElectronBridge` now resolves
+  via `useFeatureRuntimeTier("window-control")` instead of literal
+  `tier === "DESKTOP_HOST"`.
+- **Single source of truth** → `src/runtimes/feature-runtime-tier-registry.ts`
+  exposes canonical `resolveFeatureTierAvailability` / `isFeatureSupportedOn`
+  / `enumerateFeatureCoverage`. `runtime-context.tsx` delegates here.
+- **Auto-derive in `<TierGate>`** → if `requireTier` prop is omitted, the
+  gate uses the registry's `supportedTiers` automatically.
+- **Generated truth artifact** → `src/runtimes/generated/cross-tier-capability-matrix.generated.ts`
+  for use by admin boards and offline tools.
+- **CI gate (BLOCK #22)** → `check-cross-tier-capability-matrix.ts`
+  asserts (a) every referenced featureId is registered, (b) all 4
+  canonical tiers are classified per feature, (c) zero hard-coded
+  `tier === "X"` literals exist outside `src/runtimes/`.
+
+Verification:
+```bash
+npx tsx scripts/architecture/checks/check-cross-tier-capability-matrix.ts
+# → ✅ OK (registered features, 0 hard-coded literals, 0 errors)
+```
+
+---
+
 ## Result
 
-🟢 **All 21 BLOCK gates verified, wired, and report-emitting.**
+🟢 **All 22 BLOCK gates verified, wired, and report-emitting.**
 System is deployment-ready against the canonical aggregator gate set.
