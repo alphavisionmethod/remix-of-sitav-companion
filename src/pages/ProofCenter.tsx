@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -27,8 +26,6 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
-
-const isDemoMode = true; // Safe default for demo mode
 
 
 
@@ -168,8 +165,8 @@ const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
-  const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [filter, setFilter] = useState<FilterType>("all");
   const [domainFilter, setDomainFilter] = useState<DomainFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
