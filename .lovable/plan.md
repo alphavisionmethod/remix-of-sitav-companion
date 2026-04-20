@@ -1,88 +1,62 @@
 
 
-## Diagnosis (verified on disk)
+## What's actually still broken
 
-You want the three Section A items physically eliminated, not just attested. Current real state:
+The previous wave physically deleted the 5 shim folders, but **3 stale references** were missed and would surface as runtime/CI failures:
 
-- **#3 Legacy mirrors** — Already gone. `src/legacy/` is empty. ✅ truly fixed.
-- **#2 No `src/services/`** — `src/services/index.ts` exists and re-exports core/data/platform. ✅ truly fixed (one gap: it omits `os-services`).
-- **#1 `src/lib/` sprawl** — Still real. `src/lib/` has **75 top-level entries**. The five "relocated" folders (`canonical-backend`, `simulation`, `demo-data`, `mock-data`, `seed`) still physically exist as ~38 shim files in `src/lib/` because **48 consumers across 138 files still import via `@/lib/...`**. Until consumers migrate, the shims stay and `src/lib` doesn't actually shrink.
+1. **`tests/integration/service-flows.test.ts:63`** — `await import("@/lib/seed/index")` — folder is deleted; test will throw at runtime.
+2. **`src/lib/detection/reality-detection-engine.ts`** — `KNOWN_MOCK_SOURCES` registry hard-codes 9 string paths to `src/lib/mock-data/*.ts` files that no longer exist. Detection engine reports phantoms; downstream Reality dashboards show ghost violations.
+3. **`generated/plane-ownership.json`** — `internal-tools` plane lists 4 deleted directories (`src/lib/{simulation,demo-data,mock-data,seed}`). Plane boundary checks will mis-attribute ownership.
 
-So the only honest "100% fix" left is: **rewrite the consumer imports**, then **delete the shims**.
+## Fix plan (3 surgical edits + audit truth-up)
 
-## Plan — Real shrinkage of `src/lib/` + complete `src/services/` façade
+### Step 1 — Repoint the broken test
+`tests/integration/service-flows.test.ts:63` → change `@/lib/seed/index` to `@/data/fixtures/seed/index` (the canonical home).
 
-### Step 1 — Codemod consumer imports to canonical paths
-Run a project-wide search-and-replace across `src/`, `scripts/`, and tests:
+### Step 2 — Update the detection registry to canonical paths
+`src/lib/detection/reality-detection-engine.ts` lines 92–100: rewrite the 9 string-literal `path` fields:
+- `src/lib/mock-data/<name>.ts` → `src/data/fixtures/mock-data/<name>.ts`
 
-| From | To |
-|---|---|
-| `from "@/lib/canonical-backend"` | `from "@/integrations/canonical-backend"` |
-| `from "@/lib/simulation/...` | `from "@/domains/simulation/...` |
-| `from "@/lib/mock-data/...` | `from "@/data/fixtures/mock-data/...` |
-| `from "@/lib/demo-data` | `from "@/data/fixtures/demo-data` |
-| `from "@/lib/seed` | `from "@/data/fixtures/seed` |
+This is a registry of *paths to scan*, not imports — but the strings must match real files for the detection engine to be honest.
 
-Estimated reach: ~48 files, ~285 import lines. Pure path rewrites — no logic changes.
+### Step 3 — Refresh `generated/plane-ownership.json`
+Update the `internal-tools.directories` array:
+- Remove: `src/lib/simulation`, `src/lib/demo-data`, `src/lib/mock-data`, `src/lib/seed`
+- Add: `src/domains/simulation`, `src/data/fixtures/demo-data`, `src/data/fixtures/mock-data`, `src/data/fixtures/seed`
 
-### Step 2 — Delete the shim folders
-Once Step 1 is complete and `npx tsc --noEmit` is green, physically delete:
-- `src/lib/canonical-backend/` (1 shim file)
-- `src/lib/simulation/` (3 shim files)
-- `src/lib/mock-data/` (~28 shim files)
-- `src/lib/demo-data/` (2 shim files)
-- `src/lib/seed/` (4 shim files)
+Keep the remaining (still-existing) entries: `src/lib/fip`, `src/lib/dual-reality`, `src/lib/reality-records`, `src/lib/demo-scenarios`.
 
-`src/lib/` drops from **75 → 70 top-level entries**, ~38 fewer files. Real shrinkage.
+### Step 4 — Add a CI gate to prevent stale-path regression
+New script `scripts/architecture/checks/check-stale-deleted-paths.ts` (BLOCK-composite under `lib-ownership-drift`, no count change): scans `src/`, `tests/`, `generated/*.json`, and `docs/` for any string literal matching `src/lib/(canonical-backend|simulation|mock-data|demo-data|seed)/`. Allowlist: archived migration scripts under `scripts/architecture/perform-real-migration-wave*.ts` (historical record).
 
-### Step 3 — Complete the `src/services/` façade (all layers)
-Update `src/services/index.ts` to add the missing OS-services layer so it's the single navigable root:
+### Step 5 — Cosmetic doc cleanup
+`docs/REAL_VS_SIMULATED.md` line 688: change `src/lib/simulation/` → `src/domains/simulation/`.
 
-```ts
-export * from "@/lib/core-services";       // Layer 2 — Domain
-export * from "@/lib/data-services";       // Layer 4 — Data
-export * as OS from "@/lib/os-services";   // Layer 3 — OS daemons (namespaced)
-export * as Platform from "@/packages";    // Layer 1 — Core Platform
-```
+### Step 6 — Truth-up `PROJECT_TREE_AUDIT.md`
+Append a "Wave 2 Residual Cleanup (2026-04-20)" section under the Physical Resolution Log:
+- Repointed 1 test import (`service-flows.test.ts`)
+- Migrated 9 detection-registry path literals to canonical homes
+- Synced `plane-ownership.json` to canonical directories
+- Added `check-stale-deleted-paths` CI gate
+- Verdict line stays: **0 open, 0 tracked, 21/21 BLOCK GREEN** (honest now — no stale string refs anywhere except archived migration history).
 
-(OS and Platform are namespaced to prevent name collisions across ~33 OS daemons.)
+Mirror to `/mnt/documents/PROJECT_TREE_AUDIT.md`.
 
-### Step 4 — Update validators to assert physical deletion (not shim-presence)
-Rewrite `scripts/architecture/checks/check-cosmetic-debt-closure.ts` so the A1 assertions invert:
-- **mustExist:false** for `src/lib/canonical-backend`, `src/lib/simulation`, `src/lib/mock-data`, `src/lib/demo-data`, `src/lib/seed`
-- **mustExist:true** for the canonical homes (already verified)
-- A2 assertion expanded to require the four-layer façade
+## What this does NOT touch
 
-This makes "shims still around" a CI failure instead of a passing state.
-
-### Step 5 — Re-baseline `lib-canonicality-baseline.json`
-After deletions land, regenerate the baseline so the new (smaller) `src/lib/` becomes the locked ceiling. Future regressions blocked by `check-residual-lib-canonicality`.
-
-### Step 6 — Update `PROJECT_TREE_AUDIT.md`
-Section A → all 3 items "✅ Physically Eliminated" with concrete deltas:
-- "src/lib/ subdirs: 75 → 70 (5 service-shaped folders deleted, not shimmed)"
-- "src/services/ façade now spans all 4 layers (core, data, os, platform)"
-- "src/legacy/ empty (verified)"
-
-Appendix: corrected counts. Mirror to `/mnt/documents/PROJECT_TREE_AUDIT.md`.
-
-## What this does NOT change
-
-- No edits to `src/lib/core-services/`, `src/lib/services/`, `src/packages/`, or any business logic
-- No DB migrations, edge functions, or auth changes
-- No change to the 21 BLOCK gate count (cosmetic-debt-closure remains a composite under `lib-ownership-drift`)
-- No edits to `src/integrations/supabase/{client,types}.ts`
+- No edits to `src/lib/core-services/`, `src/packages/`, business logic, DB, edge functions, auth.
+- No new folders under `src/lib/`.
+- No change to the 21 BLOCK gate count.
+- Migration scripts (`perform-real-migration-wave2/3.ts`) preserved as historical record (allowlisted).
 
 ## Verification after approval
 
 ```bash
-ls src/lib/canonical-backend src/lib/simulation src/lib/mock-data src/lib/demo-data src/lib/seed 2>&1   # all "No such file"
-ls src/lib | wc -l                                                                                       # 70
-grep -r "@/lib/canonical-backend\|@/lib/simulation\|@/lib/mock-data\|@/lib/demo-data\|@/lib/seed" src    # 0 hits
-npx tsc --noEmit                                                                                          # 0 errors
-npx tsx scripts/architecture/checks/check-cosmetic-debt-closure.ts                                        # PHYSICAL deletions verified
-npm run release:readiness                                                                                 # 21/21 BLOCK GREEN
+grep -rE "src/lib/(canonical-backend|simulation|mock-data|demo-data|seed)/" src tests generated docs   # only archived scripts
+npx tsc --noEmit                                                                                       # 0 errors
+npx tsx scripts/architecture/checks/check-stale-deleted-paths.ts                                       # PASS
+npx tsx scripts/architecture/checks/check-cosmetic-debt-closure.ts                                     # 14/14 PASS
+npm run release:readiness                                                                              # 21/21 BLOCK GREEN
+npm test -- service-flows                                                                              # passes (seed import resolved)
 ```
-
-Audit document then matches disk: **5 folders deleted, façade complete, 0 open items**.
 
