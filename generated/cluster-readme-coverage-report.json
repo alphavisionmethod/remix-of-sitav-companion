@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-20T10:33:51.222Z",
+  "generatedAt": "2026-04-20T10:43:28.292Z",
   "gate": "cluster-readme-coverage",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
   "issues": [],
-  "totalClusters": 8,
-  "okCount": 8,
+  "totalClusters": 9,
+  "okCount": 9,
   "failCount": 0,
   "perCluster": [
     {
@@ -63,6 +63,13 @@
       "ok": true,
       "missingHeadings": [],
       "readmePath": "src/lib/incidents/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/ai-platform",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/ai-platform/README.md",
       "exists": true
     }
   ],

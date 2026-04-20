@@ -25,6 +25,7 @@ const AMBIGUOUS_CLUSTERS = [
   "src/lib/web-platform",
   "src/lib/observability",
   "src/lib/incidents",
+  "src/lib/ai-platform",
 ];
 
 const REQUIRED_HEADINGS = ["## Purpose", "## Layer", "## Canonical neighbors"];

@@ -1,9 +1,25 @@
 # `src/lib/ai-platform/` — Canonical AI Family Home
 
+## Purpose
+
 This directory is the **single canonical home** for the SITA OS AI surface.
 It consolidates four historically-overlapping clusters into one navigable
 hierarchy, eliminating the cognitive load of `ai` vs `ai-gateway` vs
 `ai-engineering` vs `sovereign-ai-gateway`.
+
+## Layer
+
+Kernel / Platform — AI runtime and engineering primitives. Not a feature
+surface. Consumed by `src/features/**`, `src/admin/**`, and edge functions
+via the canonical `@/lib/ai-platform/*` import paths.
+
+## Canonical neighbors
+
+- `@/lib/ai-platform/runtime` — client-side AI runtime (`invokeAICapability`, hooks)
+- `@/lib/ai-platform/gateway` — pre-invocation client gates (budget, rate-limit)
+- `@/lib/ai-platform/engineering` — 9 intelligence layers
+- `@/lib/ai-platform/sovereign` — Sovereign Gateway type taxonomy
+- Legacy shim re-exports under `src/lib/{ai,ai-engineering,ai-gateway,sovereign-ai-gateway}/` (enforced by BLOCK Gate #28 `ai-shim-integrity`)
 
 ## Domain map
 

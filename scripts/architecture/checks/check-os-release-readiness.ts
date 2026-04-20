@@ -330,6 +330,11 @@ const REQUIRED_GATES = [
   // with canonical README.md files containing Purpose/Layer/Canonical-neighbors headings.
   // Prevents cognitive-risk regressions from folder-browsing without context.)
   "cluster-readme-coverage",
+  // Phase 28 AI Shim Integrity (1 BLOCK gate — asserts every *.ts in the 4
+  // legacy AI clusters (ai, ai-engineering, ai-gateway, sovereign-ai-gateway)
+  // is a thin DEPRECATED SHIM re-exporting from @/lib/ai-platform/*. Prevents
+  // physical re-introduction of the naming-overlap problem.)
+  "ai-shim-integrity",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
