@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-20T03:48:30.208Z",
+  "gate": "artifact-index-traceability",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "indexPath": "generated/INDEX.json",
+  "mirrorPath": "public/generated/INDEX.json",
+  "mirrorParity": true,
+  "coveragePercent": 96.9,
+  "coverageFloor": 90,
+  "totalArtifacts": 913,
+  "withProducer": 858,
+  "withConsumers": 167,
+  "fullyTraceable": 140,
+  "missingProducers": 0,
+  "issues": []
+}

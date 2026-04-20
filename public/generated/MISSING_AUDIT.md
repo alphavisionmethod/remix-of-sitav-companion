@@ -70,7 +70,7 @@
 
 | # | Missing artifact | Impact | Tier |
 |---:|---|---|---|
-| 1 | `generated/INDEX.json` (artifact → producer-script → consuming-gate map) | External validators cannot trace any artifact back to its producer | P1 |
+| 1 | ~~`generated/INDEX.json` (artifact → producer-script → consuming-gate map)~~ | **RESOLVED 2026-04-20** — `generated/INDEX.json` emitted by `scripts/manifests/generate/generate-artifact-index.ts`; slim externally-readable map joining artifact → producer-script → consuming-gates by scanning all `check-*.ts` files for `readJsonSafe` / `readFileSync` references (913 entries, 96.9% traceable, 858 producers, 167 consumer-bearing). Mirrored to `public/generated/INDEX.json` (sha256-identical). **BLOCK gate #24** `check-artifact-index-traceability` asserts existence, schema validity (v1), ≥90% traceability coverage, producer-on-disk, and mirror parity — PASS (0 errors). | ✅ |
 | 2 | `public/generated/routes.json` | ✅ RESOLVED 2026-04-20 — emitted (696 routes; planes user/admin/shell-runtime; tiers tier1-4); `manifest-routes-flat` registered in manifest-registry; WARN gate PASS | P1 (RESOLVED) |
 | 3 | `docs/runbooks/` (incident + kill-switch playbooks) | Operators have no runbook linkage; the support-bundle gate produces evidence but no operator narrative | P1 |
 | 4 | Per-edge-function ownership manifest | 185 functions, no single ownership file; ad-hoc README only | P2 |

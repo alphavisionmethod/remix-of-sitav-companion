@@ -90,6 +90,14 @@ export const MIRROR_RULES: MirrorRule[] = [
     recursive: false,
     extensions: [".md"],
   },
+  // Top-level slim artifact index (INDEX.json) — external validator entrypoint
+  {
+    category: "manifests",
+    sourceDir: "generated",
+    recursive: false,
+    extensions: [".json"],
+    basenamePattern: /^INDEX\.json$/,
+  },
   // Top-level governance docs
   {
     category: "docs",

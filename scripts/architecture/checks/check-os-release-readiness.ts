@@ -303,6 +303,8 @@ const REQUIRED_GATES = [
   "public-artifact-mirror",
   // Phase 23 Onboarding components folder canonicalization (1 BLOCK gate)
   "onboarding-components-folder",
+  // Phase 24 Artifact index traceability (1 BLOCK gate — external validator entrypoint)
+  "artifact-index-traceability",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

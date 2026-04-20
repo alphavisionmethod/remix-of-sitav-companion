@@ -416,6 +416,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     producesArtifact: "generated/onboarding-components-folder-report.json",
   },
 
+  // ── Phase 24 ── Artifact Index Traceability (external validator entrypoint)
+  {
+    id: "artifact-index-traceability",
+    phase: "phase-26-manifest-truth",
+    title: "Artifact index traceability (producer ↔ artifact ↔ consuming-gate)",
+    script: "scripts/architecture/checks/check-artifact-index-traceability.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Asserts generated/INDEX.json exists, is schema-valid (v1), has ≥90% traceability coverage, every producer path is on disk (or a known external source like .github/, supabase/functions/, package.json), and public/generated/INDEX.json is byte-identical (sha256 parity). Drift-prevents the audit-flagged P1 (external validators cannot trace any artifact back to its producer-script or downstream consuming-gate without parsing the heavyweight 913-entry ownership manifest).",
+    producesArtifact: "generated/artifact-index-traceability-report.json",
+  },
+
   // ── Phase 32 ── Final "It's Real" Gate (Checklist 27)
   {
     id: "its-real-gate",
