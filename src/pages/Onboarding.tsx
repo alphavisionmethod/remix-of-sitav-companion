@@ -202,6 +202,28 @@ const Onboarding = () => {
             {/* ======================== WELCOME ======================== */}
             {step === "welcome" && (
               <div className="text-center space-y-8">
+                {showResumePrompt && checkpoint && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-primary/40 bg-primary/5 p-5 max-w-md mx-auto text-left"
+                    data-testid="resume-prompt"
+                  >
+                    <div className="flex items-start gap-3">
+                      <RotateCcw className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-foreground">Resume where you left off?</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          We saved your progress on screen {checkpoint.current_screen} of 29.
+                        </p>
+                        <div className="mt-3 flex gap-2">
+                          <SitaButton variant="primary" size="sm" onClick={handleResume} data-testid="resume-accept">Resume</SitaButton>
+                          <SitaButton variant="ghost" size="sm" onClick={handleStartFresh} data-testid="resume-decline">Start Fresh</SitaButton>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
                 <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
                   <img src={logo} loading="lazy" alt="SITA OS" className="mx-auto h-24 w-24 rounded-3xl shadow-glow-purple" />
                 </motion.div>
