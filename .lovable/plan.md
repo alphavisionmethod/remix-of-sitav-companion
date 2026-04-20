@@ -1,219 +1,214 @@
 
 
-## Wave 12.6 — App Platform Lifecycle Closure
+## Wave 12.7 — Windowing System Closure
 
-### PART 1 — Canonical Systems To Preserve and Extend
+### Summary
 
-| System | Path | Status |
+Formalize the existing windowing foundations into a canonical, OS-grade windowing platform. The project has two parallel window management systems (the `useWindowManager` hook + `WindowManagerContext` used by `FloatingWindow`, and the `OSWindowProvider`/`WindowContext` used by `AppWindow`/`WindowCompositor`) plus a typed static registry (`src/lib/windowing/`). This wave unifies them, adds missing governance layers (contracts, lifecycle state machine, focus history, modal policy, DPI/monitor/communication/performance policies), and generates proof artifacts.
+
+---
+
+### PART 1 — Canonical Systems to Preserve and Extend
+
+| System | Path | Action |
 |---|---|---|
-| App Manifest Schema (Zod) | `src/lib/app-platform/manifest-schema.ts` | Canonical, 18 fields |
-| Package Schema (Zod) | `src/lib/app-platform/package-schema.ts` | Canonical, ed25519 signed |
-| Install State | `src/lib/app-platform/install-state.ts` | Canonical, 9 statuses |
-| Launch Resolver | `src/lib/app-platform/launch-resolver.ts` | Canonical, 7 strategies |
-| Runtime Probe | `src/lib/app-platform/runtime.ts` | Canonical |
-| Trust Resolver | `src/lib/app-platform/trust.ts` | Canonical, 5 badges |
-| Permission Engine | `src/lib/app-platform/permission-engine.ts` | Canonical |
-| Permissions Keys | `src/lib/app-platform/permissions.ts` | Canonical, 15 keys |
-| Runtime Boundaries | `src/lib/app-platform/runtime-boundaries.ts` | Canonical, 5 targets |
-| Sandbox | `src/lib/app-platform/sandbox.ts` | Canonical |
-| App Host API | `src/lib/app-platform/host-api.ts` | Canonical |
-| App SDK | `src/lib/app-platform/sdk.ts` | Canonical |
-| DB Adapter | `src/lib/app-platform/db-app-adapter.ts` | Canonical |
-| Recovery Manager | `src/lib/app-platform/app-recovery-manager.ts` | Canonical, localStorage |
-| Mock Catalog | `src/lib/app-platform/catalog.ts` | Canonical, 45+ apps |
-| Catalog Service | `src/lib/services/app-store/catalog.service.ts` | Canonical, DB-backed |
-| Install Service | `src/lib/services/app-store/install.service.ts` | Canonical, DB-backed |
-| Launch Service | `src/lib/services/app-store/launch.service.ts` | Canonical |
-| Permissions Service | `src/lib/services/app-store/permissions.service.ts` | Canonical |
-| Update Service | `src/lib/services/app-store/update.service.ts` | Canonical |
-| Edge: app-install | `supabase/functions/app-install/index.ts` | Deployed |
-| Edge: app-uninstall | `supabase/functions/app-uninstall/index.ts` | Deployed |
-| Edge: app-update-check | `supabase/functions/app-update-check/index.ts` | Deployed |
-| Edge: app-launch-resolve | `supabase/functions/app-launch-resolve/index.ts` | Deployed |
-| Edge: app-permissions-sync | `supabase/functions/app-permissions-sync/index.ts` | Deployed |
+| Window Registry (static) | `src/lib/windowing/window-registry.ts` | Extend with lifecycle, placement, modal, runtime fields |
+| Window Session Store | `src/lib/windowing/window-session-store.ts` | Extend with z-order, workspace, focus history, monitor |
+| Window Recovery | `src/lib/windowing/window-recovery.ts` | Extend with corrupted state quarantine, modal chain repair, selective restore |
+| Window Capability Policy | `src/lib/windowing/window-capability-policy.ts` | Extend with host bridge, filesystem, privileged modal, and permission escalation rules |
+| App Window Policy | `src/lib/app-platform/app-window-policy.ts` | Keep as-is, reference from contracts |
+| Window Physics | `src/lib/services/window-physics.ts` | Keep as-is (magnetic, bounce, shake) |
+| Window Snap | `src/hooks/useWindowSnap.ts` | Keep as-is |
+| Window Perf Monitor | `src/platform/nova-sdk/kernel/window-perf.ts` | Keep as-is, referenced by performance policy |
+| FloatingWindow | `src/components/sita/shell/FloatingWindow.tsx` | Keep as primary window renderer (887 lines, full-featured) |
+| AppWindow | `src/components/sita/os/AppWindow.tsx` | Keep as secondary renderer for OSWindowProvider consumers |
+| ShellWindowLayer launcher | `src/components/sita/shell/ShellWindowLayer.tsx` | Keep as canonical app-to-window mapping |
 
-### PART 2 — Duplicates To Consolidate
+### PART 2 — Duplicate/Shadow Systems to Consolidate
 
-| Duplicate | Canonical | Action |
+| Duplicate | Canonical Target | Action |
 |---|---|---|
-| `src/domains/apps/types.ts` (AppDefinition with separate AppInstallStatus) | `src/lib/app-platform/install-state.ts` (InstallStatus) | Keep both — AppDefinition is UI-facing, InstallStatus is engine-facing. Already bridged via `db-app-adapter.ts`. No action needed. |
-| `InstalledAppRow` in `install-state.ts` vs `install.service.ts` | `install.service.ts` is DB-shaped, `install-state.ts` is engine-shaped | Keep both — they serve different layers. Document the distinction. |
+| `useWindowManager` hook (src/hooks/) | Remains as the primary runtime hook, but internal types aligned to new contract | Align `WindowState` fields to `WindowContract` |
+| `OSWindowProvider` (src/components/sita/os/WindowContext.tsx) | Secondary system used by `WindowCompositor` | Keep as-is — it serves a different render path (AppWindow). Add note marking it as the OS-layer compositor context vs. the shell-layer `WindowManagerContext` |
+| `APP_REGISTRY` in ShellWindowLayer | `WINDOW_REGISTRY` in windowing/window-registry.ts | Cross-reference; no merge needed since they serve different purposes (runtime components vs. static metadata) |
 
-No true duplicates found. The two-layer design (engine types vs service types vs UI types) is intentional.
+No deletions required. The two window contexts serve distinct render pipelines and are used in different shell layers.
 
-### PART 3 — Missing Files To Create
+### PART 3 — Window Contract and Lifecycle
 
-#### 3A. Lifecycle State Machine (`src/lib/app-platform/app-lifecycle-state-machine.ts`)
+**New file: `src/packages/window-contracts/index.ts`**
 
-Typed state machine with 17 states and explicit transition table:
+Typed contracts including:
+- `WindowContract` — full identity: windowId, appId, windowType (primary/secondary/modal/panel/dialog), windowRole, title, runtimeSurface, shellTarget, workspaceId, monitorId, placement, size, zIndex, focusState, visibilityState, lifecycleState, persistencePolicy, recoveryPolicy, permissionScope, communicationPolicy, modalOwnerWindowId, parentWindowId, launchCause, evidence metadata
+- `WindowLifecycleState` — 15-state enum: CREATED, INITIALIZING, OPEN, FOCUSED, BLURRED, BACKGROUNDED, MINIMIZED, HIDDEN, SUSPENDED, MODAL_OPEN, CRASHED, RECOVERING, CLOSING, CLOSED, RESTORING
+- `WindowLifecycleTransition` — typed transition table with source states, requirements, permission implications, persistence requirements, focus/z-order updates
+- `WindowType`, `WindowRole`, `FocusState`, `VisibilityState`, `PersistencePolicy`, `RecoveryPolicy`, `PermissionScope`, `CommunicationPolicy`, `LaunchCause`
+- `WindowPlacement` — x, y, width, height, monitorId, workspaceId, dpiScale
+- `WindowRecoveryMetadata` — lastStableSnapshot, crashCount, lastCrashAt, quarantined
 
-```text
-DISCOVERED → AVAILABLE → INSTALL_PENDING → INSTALLING → INSTALLED
-INSTALLED → LAUNCH_PENDING → RUNNING → FOCUSED / BACKGROUNDED / SUSPENDED
-INSTALLED → UPDATE_AVAILABLE → UPDATING → INSTALLED
-RUNNING → CRASHED → RECOVERING → RUNNING / ERROR
-INSTALLED → REMOVAL_PENDING → REMOVING → REMOVED
-```
+**New file: `src/lib/windowing/window-lifecycle-manager.ts`**
 
-Each transition defines: `from`, `to`, `requiredChecks`, `persistenceRequired`, `receiptRequired`, `adminVisible`.
+- Canonical 15-state machine with validated transitions
+- `transitionWindow(windowId, targetState)` with guards
+- Event emission for each transition
+- Fallback behavior for invalid transitions
 
-#### 3B. Lifecycle Manager (`src/lib/app-platform/app-lifecycle-manager.ts`)
+### PART 4 — Registry / Persistence / Recovery Extensions
 
-Canonical orchestrator consuming existing services. Methods:
+**Extend: `src/lib/windowing/window-registry.ts`**
 
-- `discoverApp(appId)` — catalog lookup
-- `installApp(appId)` — delegates to `installService.install()`
-- `launchApp(appId)` — delegates to `launchService`
-- `focusApp(appId)` / `backgroundApp(appId)` / `suspendApp(appId)` / `resumeApp(appId)` — window manager events
-- `detectCrash(appId, error)` — delegates to `app-recovery-manager.ts`
-- `recoverApp(appId)` — delegates to `acceptAppRecovery()`
-- `checkForUpdate(appId)` — delegates to `updateService.check()`
-- `removeApp(appId)` — delegates to `installService.uninstall()`
-- `getLifecycleStatus(appId)` — derives from install state + recovery state
-- `emitLifecycleReceipt(appId, transition)` — logs to `app_lifecycle_events` table (if exists) or localStorage
+Add runtime fields:
+- `windowType`, `windowRole`, `runtimeSurface`, `shellTarget`
+- `persistencePolicy`, `recoveryPolicy`, `permissionScope`
+- `communicationPolicy`, `modalSupport`, `standaloneSupport`
 
-Each method validates transitions via the state machine before executing.
+Add runtime APIs:
+- `getActiveWindows()`, `getSuspendedWindows()`, `getCrashedWindows()`
+- `getWindowStack()` (z-order sorted)
+- `getWindowsForWorkspace(workspaceId)`
+- `getModalOwner(windowId)`, `getChildWindows(parentId)`
+- `registerModal(windowId, ownerWindowId)`
 
-#### 3C. Install Registry (`src/lib/app-platform/app-install-registry.ts`)
+**Extend: `src/lib/windowing/window-session-store.ts`**
 
-Wraps `installService` + `catalogService` + `app-recovery-manager` into a single queryable registry:
+Add fields to `WindowSessionSnapshot`:
+- `workspaceId`, `monitorId`, `focusOrder`, `lifecycleState`
+- `dpiScale`, `snapZone`
 
-- `getInstallRecord(appId)` — combined catalog + install + recovery state
-- `listInstalled()` — all installed apps with health/recovery status
-- `getAppHealth(appId)` — install status + crash count + last launch + recovery offer
+**Extend: `src/lib/windowing/window-recovery.ts`**
 
-#### 3D. Permission Ledger (`src/lib/app-platform/app-permission-ledger.ts`)
+Add:
+- `quarantineCorruptedState(windowId)` — isolate corrupted session data
+- `repairModalChain(snapshot)` — re-link orphaned modals
+- `selectiveRestore(windowIds)` — restore subset of windows
+- `degradedRestore(snapshot, capabilities)` — fallback when native APIs missing
 
-Append-only in-memory ledger (persisted to localStorage, optionally to DB via `permissionsService`):
+### PART 5 — New Policy Modules
 
-- `recordGrant(appId, permissionKey, actor, trustTier)`
-- `recordDenial(appId, permissionKey, actor, reason)`
-- `recordRevocation(appId, permissionKey, actor)`
-- `getHistory(appId)` — all permission events
-- `getEffectiveGrants(appId)` — current grant state
-- `exportAudit()` — full ledger for support/operator review
+**New: `src/lib/windowing/window-permission-boundary.ts`**
+- `canAccessNativeBridge(windowId)` — checks permission scope
+- `canRequestFileSystem(windowId)`
+- `canLaunchExternal(windowId)`
+- `canCommunicateWith(sourceId, targetId)` — wraps and extends capability-policy
+- `canOpenPrivilegedModal(windowId)`
+- `canExportSupportData(windowId)`
+- `resolveEffectivePermissions(windowId)` — combines app + runtime + shell + window policies
 
-#### 3E. Trust Tier Policy (`src/lib/app-platform/app-trust-tier-policy.ts`)
+**New: `src/lib/windowing/window-monitor-policy.ts`**
+- `resolveMonitorPlacement(windowId, monitors)` — assign to monitor
+- `recoverOffScreen(window, viewport)` — bring off-screen windows back
+- `handleMonitorDetach(detachedMonitorId, windows)` — redistribute
+- `getSafePlacement(size, monitors)` — initial safe placement
 
-Maps trust tiers to lifecycle restrictions:
+**New: `src/lib/windowing/window-dpi-policy.ts`**
+- `normalizePlacement(placement, fromDPI, toDPI)` — scale geometry
+- `getEffectiveDPI()` — resolve current DPI
+- `shouldUseHighDPIRendering(windowId)` — per-window decision
+- `getMinMaxBounds(registryEntry, dpi)` — DPI-aware min/max
 
-- `first_party`: auto-install, all permissions auto-granted, no removal prompt
-- `trusted`: install allowed, high-risk permissions require consent
-- `standard`: install allowed, all permissions require consent
-- `restricted`: install requires admin approval, sandbox-only
+**New: `src/lib/windowing/window-z-order-manager.ts`**
+- `bringToFront(windowId)`, `sendToBack(windowId)`
+- `getStack()` — ordered array
+- `insertAbove(windowId, referenceId)`, `insertBelow(windowId, referenceId)`
+- `getPinnedWindows()` — always-on-top list
 
-#### 3F. Upgrade Policy (`src/lib/app-platform/app-upgrade-policy.ts`)
+**New: `src/lib/windowing/window-focus-history.ts`**
+- `recordFocus(windowId)` — append to history
+- `getPreviousFocus()` — for Alt-Tab style switching
+- `getFocusHistory(limit)` — recent focus order
+- `clearHistory()`
 
-- `canUpgrade(from, to)` — semver compatibility check
-- `requiresDataMigration(from, to)` — major version → true
-- `isAutoUpdateAllowed(trustLevel, channel)` — first_party+stable → auto, else manual
+**New: `src/lib/windowing/window-modal-policy.ts`**
+- `canOpenModal(parentId)` — checks nesting depth
+- `getModalStack(parentId)` — chain of modals
+- `resolveModalClosure(modalId)` — what happens when modal closes
+- `isBlocked(windowId)` — true if a modal is open on top
+- Max nesting depth: 3
 
-#### 3G. Uninstall Cleanup (`src/lib/app-platform/app-uninstall-cleanup.ts`)
+**New: `src/lib/windowing/window-communication-policy.ts`**
+- `canSendMessage(sourceId, targetId, channel)` — extends IPC policy with channel granularity
+- `getAvailableChannels(windowId)` — list of permitted channels
+- `isIsolated(windowId)` — true for sandboxed/restricted windows
+- Channel types: `broadcast`, `direct`, `system`, `domain`
 
-- `cleanupAppData(appId)` — removes localStorage keys matching `sita-app-state:{appId}:*`
-- `cleanupCrashState(appId)` — delegates to `declineAppRecovery()`
-- `cleanupPermissions(appId)` — logs revocation to permission ledger
+**New: `src/lib/windowing/window-performance-policy.ts`**
+- `getDragFrameBudget()` — target 16ms (60fps)
+- `shouldUseTransformDrag(windowId)` — always true (GPU compositing)
+- `shouldThrottleContent(windowId, isFocused)` — throttle unfocused windows
+- `getReducedMotionPolicy()` — respect prefers-reduced-motion
+- `shouldDeferRendering(windowCount)` — true when >8 windows open
 
-#### 3H. App Observability (`src/lib/app-platform/app-observability.ts`)
+**New: `src/lib/windowing/window-layout-engine.ts`**
+- `cascadePosition(existingWindows, newSize)` — compute cascade offset
+- `tileWindows(windows, viewport)` — grid tiling
+- `stackWindows(windows, viewport)` — overlap-free stacking
+- `computeSafeStartPosition(size, viewport, existingWindows)` — avoid overlap
 
-- `getAppMetrics(appId)` — launch count, crash count, last launch, time since install
-- `getSystemHealth()` — total installed, crashed, recovering, blocked counts
-- `exportDiagnostics(appId)` — support bundle for a single app
+### PART 6 — Runtime Integration
 
-#### 3I. App Support Bundle (`src/lib/app-platform/app-support-bundle.ts`)
+**New: `src/lib/windowing/window-runtime-compatibility.ts`**
+- Maps every window feature to runtime tier (Web, PWA, Desktop, Appliance)
+- Features: drag, snap, multi-monitor, DPI scaling, native bridge, IPC, crash recovery, session persistence, performance monitoring
+- `isFeatureAvailable(feature, tier)`, `getDegradedBehavior(feature, tier)`
 
-- `generateBundle(appId)` — collects: install record, permission history, crash snapshots, lifecycle events, runtime capabilities, manifest
-- `generateSystemBundle()` — all apps summary for operator
+### PART 7 — Generated Proof Artifacts
 
-#### 3J. App Window Policy (`src/lib/app-platform/app-window-policy.ts`)
+Create `generated/windowing-proof/` directory containing:
 
-Maps app class + trust tier to window behavior:
-
-- `internal`: full shell integration, multi-window allowed
-- `web-app`/`wrapped-app`: single window, embedded webview
-- `native`: Electron-only, delegate to host
-- `restricted`: sandboxed iframe, no IPC
-
-#### 3K. Contracts Package (`src/packages/app-contracts/index.ts`)
-
-Barrel re-exporting all types from `@/lib/app-platform/` for external consumers:
-
-- `AppLifecycleState`, `AppLifecycleTransition`
-- `InstallRecord`, `PermissionLedgerEntry`
-- `TrustTierPolicy`, `UpgradePolicy`
-- `AppSupportBundle`
-
-### PART 4 — Generated Proof Artifacts
-
-All placed in `generated/app-lifecycle-closure/`:
-
-| Artifact | Content |
+| Artifact | Contents |
 |---|---|
-| `lifecycle-state-matrix.json` | All 17 states × valid transitions |
-| `install-state-coverage.json` | Per-app install state + health |
-| `permission-enforcement-report.json` | Permission keys × trust tier × enforcement |
-| `trust-tier-audit.json` | Per-app trust tier + restrictions |
-| `runtime-compatibility-matrix.json` | Per-app × surface compatibility |
-| `recovery-closure.json` | Crash/recovery path per app type |
-| `upgrade-compatibility-report.json` | Version upgrade rules |
-| `supportability-report.json` | Support bundle coverage |
-| `window-policy-matrix.json` | Per-app-class window behavior |
+| `window-contract-coverage.json` | Every registered window mapped to contract fields |
+| `window-lifecycle-matrix.json` | All 15 states, valid transitions, handler existence |
+| `window-session-closure.json` | Persistence field coverage per window |
+| `window-recovery-closure.json` | Recovery capability coverage |
+| `window-permission-audit.json` | Per-window permission scope resolution |
+| `window-monitor-compatibility.json` | Multi-monitor and off-screen recovery status |
+| `window-dpi-compatibility.json` | DPI scaling coverage per window |
+| `window-communication-audit.json` | IPC permission matrix |
+| `window-runtime-compatibility.json` | Feature-to-tier support matrix |
 
-Update existing `generated/app-lifecycle-closure.json` and `generated/app-permission-audit.json` with richer data.
+### PART 8 — Validators and Gates
 
-Mirror key artifacts to `public/generated/app-lifecycle-closure/`.
+Create `scripts/windowing/` with 7 validators:
 
-### PART 5 — Validators
+| Script | Gate ID | Level | Checks |
+|---|---|---|---|
+| `check-window-contract-closure.ts` | `window-contract-closure` | BLOCK | Every window has canonical contract coverage |
+| `check-window-lifecycle-coverage.ts` | `window-lifecycle-coverage` | BLOCK | Lifecycle states and transitions are explicit |
+| `check-window-session-persistence.ts` | `window-session-persistence` | ADVISORY | Geometry/focus/z-order persisted where required |
+| `check-window-permission-boundaries.ts` | `window-permission-boundaries` | ADVISORY | Permissions explicit for every window |
+| `check-window-runtime-compatibility.ts` | `window-runtime-compatibility` | ADVISORY | Runtime tier compatibility declared |
+| `check-window-shell-integration.ts` | `window-shell-integration` | ADVISORY | Shell entry points and registry wiring consistent |
+| `check-window-recovery-closure.ts` | `window-recovery-closure` | ADVISORY | Recovery logic exists and proof generated |
 
-| Script | Gate | Blocking |
-|---|---|---|
-| `scripts/app-platform/check-app-identity-closure.ts` | Every app has canonical identity, no duplicate IDs | BLOCK |
-| `scripts/app-platform/check-app-lifecycle-coverage.ts` | State machine coverage, handler existence | BLOCK |
-| `scripts/app-platform/check-app-permission-enforcement.ts` | Permission declarations + ledger coverage | Advisory |
-| `scripts/app-platform/check-app-runtime-compatibility.ts` | Runtime claims match runtime authority | Advisory |
-| `scripts/app-platform/check-app-recovery-closure.ts` | Crash/recovery path exists | Advisory |
-| `scripts/app-platform/check-app-supportability.ts` | Support bundle coverage | Advisory |
+Register `window-contract-closure` and `window-lifecycle-coverage` as BLOCK gates in `check-os-release-readiness.ts`.
 
-Wire the 2 BLOCK gates into `check-os-release-readiness.ts`.
+### PART 9 — Shell / Route Integration
 
-### PART 6 — Barrel and Wiring Updates
+- Wire `window-lifecycle-manager` into `useWindowLauncher` in `ShellWindowLayer.tsx` — call `transitionWindow` on open/close/minimize/maximize
+- Wire `window-session-store` periodic persistence into `ShellLayout.tsx` via `useEffect` interval (every 5s)
+- Wire `markCleanShutdown()` on `beforeunload` event in `ShellLayout.tsx`
+- Wire `probeRecoveryState()` on shell boot in `ShellLayout.tsx`
 
-**Files to modify**:
+### PART 10 — Deployment Closure Checklist
 
-- `src/lib/app-platform/index.ts` — add exports for lifecycle manager, install registry, permission ledger, trust tier policy, upgrade policy, uninstall cleanup, observability, support bundle, window policy
-- `src/lib/app-platform/app-recovery-manager.ts` — no changes needed (already complete)
-- `scripts/architecture/checks/check-os-release-readiness.ts` — register 2 new BLOCK gates
-
-### PART 7 — What This Does NOT Do
-
-- No new database migrations (all persistence uses existing `installed_apps`, `app_permission_grants`, `app_permissions_overrides` tables + localStorage)
-- No new edge functions (existing 5 edge functions cover install/uninstall/update/launch/permissions)
-- No UI changes (lifecycle manager is consumed by existing services)
-- No duplication of existing services
-
-### PART 8 — Implementation Order
-
-1. State machine + trust tier policy + upgrade policy + window policy (pure types, no dependencies)
-2. Permission ledger + uninstall cleanup (localStorage-backed)
-3. Install registry + lifecycle manager (wires existing services)
-4. Observability + support bundle (reads from registry)
-5. Contracts package (barrel)
-6. Generated artifacts + validators
-7. Barrel update + aggregator wiring
-
-### Deployment Closure Checklist
-
-- [ ] One canonical lifecycle state machine with 17 states and explicit transitions
-- [ ] Lifecycle manager orchestrates all transitions through state machine validation
-- [ ] Install registry unifies catalog + install + recovery into single query surface
-- [ ] Permission ledger records all grant/deny/revoke events with timestamps
-- [ ] Trust tier policy enforces install/permission restrictions per trust level
-- [ ] Upgrade policy validates version compatibility
-- [ ] Uninstall cleanup removes app data, crash state, and permission records
-- [ ] Observability provides per-app and system-wide health metrics
-- [ ] Support bundle generates redacted diagnostic packages
-- [ ] Window policy maps app class to window behavior
-- [ ] 9 generated proof artifacts in `generated/app-lifecycle-closure/`
-- [ ] 6 validators with 2 BLOCK gates wired into release aggregator
-- [ ] Zero duplicates — all new code extends existing canonical services
+- [ ] One canonical `WindowContract` type exists in `src/packages/window-contracts/`
+- [ ] 15-state lifecycle machine with validated transitions
+- [ ] 10 registered windows have full contract coverage
+- [ ] Session persistence includes z-order, workspace, focus history, monitor, DPI
+- [ ] Crash-safe restore with quarantine, modal repair, selective/degraded restore
+- [ ] Permission boundary resolves app + runtime + shell + window policies
+- [ ] Multi-monitor placement, off-screen recovery, detach handling
+- [ ] DPI normalization and high-DPI rendering policy
+- [ ] Z-order manager with pinned window support
+- [ ] Focus history for Alt-Tab style switching
+- [ ] Modal ownership with max nesting depth 3
+- [ ] Communication policy with channel-granular IPC
+- [ ] Performance policy with 60fps drag budget and reduced-motion
+- [ ] Layout engine with cascade, tile, stack, safe-start
+- [ ] Runtime compatibility matrix across 4 tiers
+- [ ] 9 generated proof artifacts in `generated/windowing-proof/`
+- [ ] 7 validators, 2 BLOCK gates wired into release aggregator
+- [ ] Zero duplicates — both window contexts documented as serving distinct render pipelines
+- [ ] TypeScript builds with 0 errors
 
