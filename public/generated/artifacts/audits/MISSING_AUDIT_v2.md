@@ -128,7 +128,7 @@ With those three landed, every remaining item in the P1/P2 fix plan (Part XIV) b
 | `electron/` | Electron main + preload + bridges (15 .cjs) | ✅ canonical | Desktop | None — flat layout enforced | None |
 | `os/` | Native OS image, scripts, runtime, recovery | ✅ canonical | OS engineering | Recovery evidence is QEMU-only | Real-recovery boot evidence |
 | `scripts/` | Validators + utility scripts (183 architecture checks) | ✅ canonical | Architecture | Many advisory checks unconsumed | Validator-to-consumer map |
-| `supabase/` | Edge functions (185), migrations (225), config | ✅ canonical | Backend | No per-function ownership manifest | `supabase/functions/_owners.json` |
+| `supabase/` | Edge functions (192), migrations (225+), config | ✅ canonical | Backend | **RESOLVED 2026-04-20** — per-function ownership manifest at 3 mirrors (canonical/public/colocated `_owners.json`), 100% coverage, 13 teams, BLOCK gate #26 (MD5 parity enforced) | `generated/edge-function-ownership.json` + `supabase/functions/_owners.json` |
 | `infra/` | Infrastructure config | ✅ canonical | DevOps | Spot-check only | Per-component README |
 | `nginx/` | Reverse proxy config for self-host | ✅ canonical | DevOps | None | None |
 | `deploy/` | First-boot + provisioning + backup scripts | ✅ canonical | OS engineering | Backup smoke is advisory | Production backup evidence |
