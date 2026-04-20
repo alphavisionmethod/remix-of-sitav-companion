@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-11T00:00:00Z",
+  "trustModel": {
+    "type": "5-ring-capability-based",
+    "rings": [
+      { "ring": 0, "name": "Kernel", "description": "Kernel-space only" },
+      { "ring": 1, "name": "Trusted", "description": "Signed SITA services" },
+      { "ring": 2, "name": "Verified", "description": "Reviewed third-party apps" },
+      { "ring": 3, "name": "Sandboxed", "description": "Restricted third-party apps" },
+      { "ring": 4, "name": "Untrusted", "description": "Unknown/unsigned code" }
+    ]
+  },
+  "sandboxing": {
+    "syscallFiltering": "seccomp-bpf",
+    "filesystemRestriction": "landlock-lsm",
+    "namespaceIsolation": ["pid", "net", "mnt", "user", "ipc", "uts", "cgroup"],
+    "resourceLimits": "cgroups-v2"
+  },
+  "codeSigning": {
+    "algorithms": ["ed25519", "rsa-4096", "ecdsa-p256"],
+    "enforcement": "enforced",
+    "bootChainVerification": true,
+    "crlSupport": true
+  },
+  "permissions": {
+    "layers": ["posix-dac", "linux-capabilities", "sita-capability-tokens"],
+    "sitaTokenFeatures": ["domain-scoped", "time-windowed", "amount-limited", "device-trust-gated"]
+  },
+  "runtimeProtections": {
+    "aslr": "full-kernel-and-user",
+    "dep": "hardware-enforced-nx",
+    "stackCanaries": "fstack-protector-strong",
+    "cfi": "clang-cfi-ibt",
+    "shadowStack": "cet",
+    "kaslr": "enabled",
+    "memoryTagging": "mte-arm64-future"
+  },
+  "encryption": {
+    "fde": { "type": "luks2", "cipher": "aes-xts-plain64", "keySize": 512, "kdf": "argon2id" },
+    "keyHierarchy": ["master", "volume", "file", "transport", "signing", "session"],
+    "tpmSealing": { "supported": true, "pcrPolicy": ["PCR0", "PCR1", "PCR4", "PCR8", "PCR9", "PCR10"] },
+    "inTransit": { "protocol": "tls-1.3", "mtls": true },
+    "keyRotation": { "defaultDays": 90, "autoRotate": true }
+  },
+  "appIsolation": {
+    "levels": ["none", "basic", "standard", "strict", "maximum"],
+    "features": ["per-app-namespaces", "private-mounts", "nftables-firewall", "crash-isolation", "resource-limits"]
+  }
+}

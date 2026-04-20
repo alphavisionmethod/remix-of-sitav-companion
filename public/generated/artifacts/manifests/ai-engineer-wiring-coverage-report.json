@@ -1,0 +1,355 @@
+{
+  "generatedAt": "2026-04-19T19:29:40.930Z",
+  "gate": "ai-engineer-wiring-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 68,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"team\" declares table:advisor_registry but the AST scan did not find a direct supabase.* call in @/pages/admin/AIT01TeamOverview (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"team\" declares rpc:get_internal_agent_health_summary but the AST scan did not find a direct supabase.* call in @/pages/admin/AIT01TeamOverview (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"internal-agents\" declares table:internal_agent_runtime_state but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/InternalAgentsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"internal-agents\" declares table:internal_agent_action_intents but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/InternalAgentsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"internal-agent-intents\" declares table:internal_agent_gate_verdicts but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/InternalAgentIntentTimeline (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"councils\" declares table:internal_agent_council_state but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/CouncilsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"councils\" declares table:internal_agent_escalations but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/CouncilsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"trust-ladder\" declares table:internal_agent_trust_ladder but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/TrustLadderBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"trust-ladder\" declares table:internal_agent_knowledge_bus but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/TrustLadderBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"trust-ladder\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/TrustLadderBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"reflection\" declares rpc:get_agent_reflection_summary but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/ReflectionBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"suggestions\" declares edge:ai-suggestion-generator but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SuggestionsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"weekly-digest\" declares table:ai_weekly_digests but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/WeeklyDigestBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"weekly-digest\" declares edge:ai-weekly-digest-generator but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/WeeklyDigestBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"dependency-findings\" declares table:ai_dependency_findings but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/DependencyFindingsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"dependency-findings\" declares edge:ai-dependency-upgrade-proposer but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/DependencyFindingsBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"policy-drafts\" declares edge:ai-policy-architect but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/PolicyDraftReviewBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"policy-drafts\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/PolicyDraftReviewBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"cross-council\" declares table:internal_agent_runbooks but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/CrossCouncilBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"cross-council\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/CrossCouncilBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"tenant-federation\" declares table:tenant_federation_state but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/TenantFederationBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"tenant-federation\" declares table:tenant_kill_switches but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/TenantFederationBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"tenant-federation\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/TenantFederationBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"security-council\" declares table:sita_security_council_findings but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SecurityCouncilBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"security-council\" declares rpc:sita-security-council-tick but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SecurityCouncilBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"providers\" declares table:ai_provider_registry but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG01ProviderRegistry (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"providers\" declares table:ai_provider_health but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG01ProviderRegistry (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"providers\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/AIG01ProviderRegistry"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"models\" declares table:ai_model_registry but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG02ModelRegistry (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"routing\" declares table:ai_capability_routing but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG03RoutingMatrix (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"routing\" declares table:ai_routing_policies but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG03RoutingMatrix (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"budget\" declares table:ai_budget_alerts but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG04BudgetCenter (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"budget\" declares table:ai_budget_decision_receipts but the AST scan did not find a direct supabase.* call in @/pages/admin/AIG04BudgetCenter (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"budget\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/AIG04BudgetCenter"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"governance\" declares table:advisor_autonomy_policies but the AST scan did not find a direct supabase.* call in @/pages/admin/AIGovernancePage (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"governance\" declares table:ai_prompt_families but the AST scan did not find a direct supabase.* call in @/pages/admin/AIGovernancePage (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"slo-observability\" declares table:ai_slo_evaluations but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SLOObservabilityBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"slo-observability\" declares table:ai_anomaly_events but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SLOObservabilityBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"slo-observability\" declares edge:ai-slo-evaluator but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SLOObservabilityBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"slo-observability\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/SLOObservabilityBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"efficiency\" declares table:advisor_feedback but the AST scan did not find a direct supabase.* call in @/pages/admin/intelligence/AIEfficiencyScoreboard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"efficiency\" declares table:advisor_board_reflections but the AST scan did not find a direct supabase.* call in @/pages/admin/intelligence/AIEfficiencyScoreboard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"cost\" declares table:ai_usage_ledger but the AST scan did not find a direct supabase.* call in @/pages/admin/AIT05CostEfficiency (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"cost\" declares table:ai_invocations but the AST scan did not find a direct supabase.* call in @/pages/admin/AIT05CostEfficiency (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"cost\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/AIT05CostEfficiency"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"assurance-chaos\" declares table:ai_chaos_drills but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/AssuranceChaosBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"assurance-chaos\" declares table:ai_assurance_reports but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/AssuranceChaosBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"assurance-chaos\" declares table:ai_auto_rollback_events but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/AssuranceChaosBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"assurance-chaos\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/AssuranceChaosBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"external-workforce-api\" declares table:external_workforce_endpoints but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"external-workforce-api\" declares table:external_workforce_webhooks but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"external-workforce-api\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/ExternalWorkforceApiBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"knowledge-federation\" declares table:knowledge_federation_optins but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/KnowledgeFederationBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"knowledge-federation\" declares table:knowledge_federation_dp_budget but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/KnowledgeFederationBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"sovereign-dr\" declares table:sovereign_dr_drills but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"sovereign-dr\" declares table:sovereign_dr_failover_requests but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"sovereign-dr\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/SovereignDeploymentDRBoard"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"advisors\" declares table:advisor_registry but the AST scan did not find a direct supabase.* call in @/pages/admin/AdvisorBoardCatalog (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"advisors\" declares table:advisor_profiles but the AST scan did not find a direct supabase.* call in @/pages/admin/AdvisorBoardCatalog (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"owner-copilot\" declares table:owner_copilot_briefings but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/OwnerCopilotBriefings (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"owner-copilot\" declares edge:owner-copilot-bff but the AST scan did not find a direct supabase.* call in @/pages/admin/ai-runtime/OwnerCopilotBriefings (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"owner-copilot\" declares realtime=true but no supabase.channel(...) call found in @/pages/admin/ai-runtime/OwnerCopilotBriefings"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"nightly-truth\" declares table:ai_runtime_nightly_runs but the AST scan did not find a direct supabase.* call in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"nightly-truth\" declares table:ai_runtime_failure_alerts but the AST scan did not find a direct supabase.* call in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"nightly-truth\" declares edge:ai-runtime-nightly-verify but the AST scan did not find a direct supabase.* call in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "realtime",
+      "message": "Tab \"nightly-truth\" declares realtime=true but no supabase.channel(...) call found in @/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"connector-truth\" declares table:connector_refresh_nightly_runs but the AST scan did not find a direct supabase.* call in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel (may be wired via a shared service module)"
+    },
+    {
+      "severity": "warning",
+      "area": "wiring-mismatch",
+      "message": "Tab \"connector-truth\" declares rpc:get_connector_refresh_streak_summary but the AST scan did not find a direct supabase.* call in @/components/admin/ai-runtime/ConnectorTruthSummaryPanel (may be wired via a shared service module)"
+    }
+  ],
+  "tier": "WARN",
+  "promotionTier": "BLOCK",
+  "scope": "admin-ai-engineer-team",
+  "totalTabs": 43,
+  "realtimeTabs": 8,
+  "mismatchCount": 29
+}

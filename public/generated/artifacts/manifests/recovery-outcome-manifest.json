@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "description": "Recovery outcome manifest — appliance + ISO lanes, deterministic checks, failure semantics",
+  "lanes": ["appliance", "iso"],
+  "recoveryTypes": ["partition-rollback", "checkpoint-restore", "factory-reset", "network-recovery", "manual-intervention"],
+  "deterministicChecks": [
+    { "id": "drc-01", "name": "Rollback partition integrity", "lane": "appliance", "phase": "pre-recovery", "failureSemantics": "block" },
+    { "id": "drc-02", "name": "Recovery media present", "lane": "iso", "phase": "pre-recovery", "failureSemantics": "block" },
+    { "id": "drc-03", "name": "Data partition backup", "lane": "appliance", "phase": "pre-recovery", "failureSemantics": "warn-continue" },
+    { "id": "drc-04", "name": "Boot attestation post-recovery", "lane": "appliance", "phase": "post-recovery", "failureSemantics": "abort-with-evidence" },
+    { "id": "drc-05", "name": "Proof chain continuity", "lane": "appliance", "phase": "post-recovery", "failureSemantics": "abort-with-evidence" },
+    { "id": "drc-06", "name": "First-boot handoff integrity", "lane": "iso", "phase": "during-recovery", "failureSemantics": "block" }
+  ],
+  "preflightGateTypes": ["disk-space", "power-state", "network-connectivity", "hardware-compatibility", "secure-boot-status", "tpm-status", "existing-data-backup", "partition-integrity", "firmware-version"],
+  "partitionSchemes": ["ab-slot", "single", "btrfs-snapshot"],
+  "hardwareTiers": ["certified", "supported", "community", "unsupported"],
+  "updateChannels": ["critical-security", "essential", "feature", "beta"],
+  "failureSeverities": ["warning", "error", "critical", "fatal"],
+  "rollbackEvidenceRequired": ["partition-hash", "verity-root-hash", "attestation-report", "chain-head-hash", "chain-verification-report"]
+}

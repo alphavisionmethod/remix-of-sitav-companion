@@ -1,0 +1,2005 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-04-13T09:01:20.759Z",
+  "total": 333,
+  "capabilities": [
+    {
+      "name": "BusinessDomainId",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessEntityType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CurrencyCode",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MonetaryAmount",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessPriority",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessMetadata",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BookingConfirmation",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking-confirmation.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BookingStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Booking",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueSnapshot",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessBoardroomPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "KPITrend",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessKPI",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallbackOutcome",
+      "domain": "business",
+      "source": "src/packages/business-contracts/callback-task.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallbackTask",
+      "domain": "business",
+      "source": "src/packages/business-contracts/callback-task.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapacityMonetizationSignal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/capacity-monetization-signal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionSequenceStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionSequence",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionStepType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionChannel",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CommunicationPreference",
+      "domain": "business",
+      "source": "src/packages/business-contracts/contact-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContactRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/contact-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerDashboardView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-dashboard-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthScoreView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerRiskSummary",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-risk-summary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TimelineEventType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerTimelineItem",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NBACategory",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NextBestAction",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/onboarding-customer-bootstrap-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContinuityStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceContinuityView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerLifecycleStage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifecycleTransitionRule",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifecycleEvent",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthDimension",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthScore",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ChurnPredictionInput",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ChurnPrediction",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerLifecycleRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MessageChannel",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-message.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MessageDirection",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-message.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MessageSentiment",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-message.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerMessage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-message.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MessageThread",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-message.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealRiskCategory",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealRisk",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealRiskAssessment",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealStage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealCloseReason",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealStakeholder",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealTimeline",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Deal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DealForecast",
+      "domain": "business",
+      "source": "src/packages/business-contracts/deal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HandoffTrigger",
+      "domain": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HandoffRoute",
+      "domain": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HandoffCondition",
+      "domain": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HandoffExecution",
+      "domain": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts",
+      "riskTier": "high"
+    },
+    {
+      "name": "HandoffMetrics",
+      "domain": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvoiceAgingBucket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvoiceFollowUpPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FollowUpStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionsMetrics",
+      "domain": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PaymentPlanProposal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts",
+      "riskTier": "high"
+    },
+    {
+      "name": "LeadStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadSource",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadTemperature",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadScoreBreakdown",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadEnriched",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadReactivationPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StaleLeadState",
+      "domain": "business",
+      "source": "src/packages/business-contracts/leads/stale-lead-state.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowRisk",
+      "domain": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowRiskFactor",
+      "domain": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowRecoveryPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowAnalytics",
+      "domain": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityRankResult",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunities/opportunity-rank-result.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReactivationCandidate",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunities/reactivation-candidate.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityStage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityActivity",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutboundChannel",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutboundPurpose",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutboundTemplate",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutboundCampaign",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CommunicationPreferences",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SequenceEnrollment",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutreachGoal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutreachPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutreachAudienceFilter",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutreachStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OutreachPerformanceReport",
+      "domain": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PipelineStageConfig",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PipelineAutomation",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PipelineConfig",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PipelineSnapshot",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PricingModel",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DiscountType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PricingProposal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PricingLineItem",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AppliedDiscount",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PricingGuidance",
+      "domain": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteLineItem",
+      "domain": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteExpanded",
+      "domain": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteComparisonResult",
+      "domain": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReferralStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReferralPrompt",
+      "domain": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReferralRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReferralProgramMetrics",
+      "domain": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RepeatPurchaseTiming",
+      "domain": "business",
+      "source": "src/packages/business-contracts/repeat-purchase-timing.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PurchasePatternAnalysis",
+      "domain": "business",
+      "source": "src/packages/business-contracts/repeat-purchase-timing.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionsEscalationPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/collections-escalation-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowRecoveryPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/no-show-recovery-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/recovered-value-ledger-entry.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-autopilot-kpi-summary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeakCategory",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueLeakRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueRecoveryStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueRecoveryPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueLeakType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueLeakageSignal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueLeakageDashboard",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionsStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/collections-state.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionsAccountState",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/collections-state.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EstimateStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/estimate-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EstimateRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/estimate-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvoiceStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/invoice-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvoiceRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/invoice-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OnboardingRevenueBootstrapPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/onboarding-revenue-bootstrap-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PaymentProofLink",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/payment-proof-link.ts",
+      "riskTier": "high"
+    },
+    {
+      "name": "ProposalRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/proposal-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/quote-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReminderPackage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/reminder-package.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueApprovalPackage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-approval-package.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "RevenueMetricsSnapshot",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueWaterfall",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CohortAnalysis",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueSendPackage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-send-package.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReviewType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/review-request.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReviewUrgency",
+      "domain": "business",
+      "source": "src/packages/business-contracts/review-request.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReviewRequest",
+      "domain": "business",
+      "source": "src/packages/business-contracts/review-request.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReviewPolicy",
+      "domain": "business",
+      "source": "src/packages/business-contracts/review-request.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceOrderStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/service-order.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceOrder",
+      "domain": "business",
+      "source": "src/packages/business-contracts/service-order.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceLineItem",
+      "domain": "business",
+      "source": "src/packages/business-contracts/service-order.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceOrderMetrics",
+      "domain": "business",
+      "source": "src/packages/business-contracts/service-order.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaskPriority",
+      "domain": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaskStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaskAssignment",
+      "domain": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaskWorkload",
+      "domain": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VerticalApprovalDefault",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-approval-default.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "ApprovalCondition",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-approval-default.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "VerticalCommsTemplate",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-comms-template.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VerticalPackConfig",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-pack-config.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VerticalModule",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-pack-config.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VerticalPlaybook",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-playbook.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PlaybookStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-playbook.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VerticalRoleDefault",
+      "domain": "business",
+      "source": "src/packages/business-contracts/vertical-role-default.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BookingRequestSubmission",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/booking-request-submission.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FormFieldType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/form-definition.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FormDefinition",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/form-definition.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FormSubmission",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/form-submission.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeadAttributionRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/lead-attribution-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OnboardingSiteBootstrapPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/onboarding-site-bootstrap-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PageType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/page-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PageRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/page-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PageVersion",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/page-version.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PublishRequest",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/publish-request.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PublishResult",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/publish-result.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "QuoteRequestSubmission",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/quote-request-submission.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SiteStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/site-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SiteRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/site-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "WebsiteLeadRoutingPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/website/website-lead-routing-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StressSeverity",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StressCategory",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StressSignal",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StressRadarResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifeEventType",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifeEvent",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifeMoneyImpact",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MoneyModeId",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MoneyMode",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AllocationBucket",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AllocationEntry",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AllocationStrategy",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CashAllocationPlan",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "IncomeQualityDimension",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "IncomeQualityScore",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PeaceScoreDimension",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PeaceScoreResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TrustNodeType",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TrustEdgeHealth",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FinancialTrustNode",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FinancialTrustEdge",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FinancialTrustGraph",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityCostEntry",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RitualFrequency",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MoneyRitual",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RitualStep",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EmotionalPatternType",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EmotionalPattern",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DebtProfile",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DebtAccount",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PayoffPlan",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PayoffMilestone",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CreditScorePulse",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CreditFactor",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EnvelopeBudget",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EnvelopeGroup",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Envelope",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EnvelopeAllocationRule",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdFinanceSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SharedGoal",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MemberFinanceSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapitalMap",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EntityCapitalMap",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquiditySummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FinancialHealthScore",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HealthDimension",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HealthActionItem",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FounderBoundaryAlert",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketRegime",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketRegimeResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PortfolioExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RiskBudgetResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ScenarioResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MonteCarloResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HistoricalReplayResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AllocationSuggestion",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RebalanceRecommendation",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ThesisRecord",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ThesisCandidate",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TradeReviewPacket",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ExecutionIntent",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "high"
+    },
+    {
+      "name": "TradeCostEstimate",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SlippageFeeResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StopExitPolicyResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FactorRiskDecomposition",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MandateComplianceResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RobustOptimizationResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeverageCapResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapitalCallPlan",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CommitmentPacing",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaxReserveResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquidityLadder",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReserveProtectionResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ObligationCoverageResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CorrelationMatrixResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FxExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CryptoExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VenueRiskSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "WatchlistEntry",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "WatchlistWithRegime",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ResearchContext",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NetWorthResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EntityCapitalSeparation",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DeployableCapitalResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CashPosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReservePosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquidityPosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityScore",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BrokerageSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketDataSnapshot",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BankSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentDecisionProof",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentTrustMode",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SinkingFund",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReserveHealth",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ScenarioInput",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/scenario.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ScenarioOutput",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/scenario.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RenewalRisk",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/subscriptions/renewal-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AppointmentType",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/appointment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Appointment",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/appointment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AvailabilityWindow",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/availability-window.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AvailabilityMatrix",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/availability-window.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FamilyCalendarItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReconciliationConflict",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PrepItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CalendarConflict",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar-conflict.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ConciergeBoardroomPacket",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/concierge-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PulseCategory",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DailyPulseItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DailyPulse",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ErrandBundle",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/errand-bundle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ErrandItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/errand-bundle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EventPlan",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/event-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EventReminder",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "GiftOpportunity",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FamilyBoardroomPacket",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/family-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FamilyLoadBalance",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/family-load-balance.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MemberLoad",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/family-load-balance.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FamilyMemberProfile",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/family-member-profile.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "GiftPlan",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/gift-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "GroceryItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RecurringSupplyItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContinuityAlert",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdRole",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdMember",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdMaintenanceItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household-maintenance-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdResponsibility",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household-responsibility.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InventoryItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/inventory-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Itinerary",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ItineraryDay",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ItineraryActivity",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PackingPlan",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/packing-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PackingCategory",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/packing-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PantryReplenishment",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/pantry-replenishment.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PrepSequence",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/prep-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PrepStep",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/prep-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ProviderFollowUp",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/providers/provider-follow-up.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReservationMemory",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/reservation-memory.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Reservation",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/reservation.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RouteGrouping",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/route-grouping.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ScheduleItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/schedule-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SchoolActivityItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SchoolFeeItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SchoolActivity",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/school-activity.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceProviderMemory",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/service-provider-memory.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReservationRecord",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/travel/reservation-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TravelDisruption",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/travel-disruption.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TripLeg",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/trip-leg.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ApprovalThreshold",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "MultiStepApproval",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "MultiStepApprovalStep",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/outbound/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallAutomationPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/outbound/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SensitivityTier",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RetentionPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RedactionPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-04-18T14:39:44.006Z",
+  "gate": "evidence-freshness",
+  "level": "warn",
+  "totalTargets": 9,
+  "freshCount": 9,
+  "staleCount": 0,
+  "missingCount": 0,
+  "results": [
+    {
+      "path": "generated/os-release-readiness-report.json",
+      "category": "release-readiness",
+      "ageHours": 0.4,
+      "maxAgeHours": 168,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/profile-and-runtime-hardening/baseline.sealed.json",
+      "category": "baseline",
+      "ageHours": 0.3,
+      "maxAgeHours": 720,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/warn-ratchet-report.json",
+      "category": "release-readiness",
+      "ageHours": 0,
+      "maxAgeHours": 168,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/per-bucket-warn-ratchet-report.json",
+      "category": "release-readiness",
+      "ageHours": 0,
+      "maxAgeHours": 168,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/deployment-gap-closure/frontend-backend-substrate-matrix.json",
+      "category": "deployment-gap",
+      "ageHours": 0.5,
+      "maxAgeHours": 336,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/deployment-gap-closure/db-truth-closure-map.json",
+      "category": "deployment-gap",
+      "ageHours": 0.5,
+      "maxAgeHours": 336,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/deployment-gap-closure/manifest-truth-closure-map.json",
+      "category": "deployment-gap",
+      "ageHours": 0.5,
+      "maxAgeHours": 336,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/deployment-gap-closure/app-install-truth-map.json",
+      "category": "deployment-gap",
+      "ageHours": 0.5,
+      "maxAgeHours": 336,
+      "fresh": true,
+      "exists": true
+    },
+    {
+      "path": "generated/deployment-gap-closure/supportability-coverage-map.json",
+      "category": "deployment-gap",
+      "ageHours": 0.5,
+      "maxAgeHours": 336,
+      "fresh": true,
+      "exists": true
+    }
+  ],
+  "ok": true
+}

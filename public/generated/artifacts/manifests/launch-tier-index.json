@@ -1,0 +1,2145 @@
+{
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:15.430Z",
+  "totalServices": 235,
+  "tierDistribution": {
+    "mvp": 30,
+    "pilot": 104,
+    "ga": 101
+  },
+  "tiers": [
+    {
+      "tier": "mvp",
+      "description": "Minimum viable product — core platform spine",
+      "services": [
+        {
+          "serviceId": "approval-history",
+          "serviceName": "approval-history",
+          "owner": "approval-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "approval-requests",
+          "serviceName": "approval-requests",
+          "owner": "approval-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "approval-routing",
+          "serviceName": "approval-routing",
+          "owner": "approval-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "escalation-rules",
+          "serviceName": "escalation-rules",
+          "owner": "approval-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "build-approval-package",
+          "serviceName": "build-approval-package",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "build-boardroom-request",
+          "serviceName": "build-boardroom-request",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "build-explanation",
+          "serviceName": "build-explanation",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "build-simulation-request",
+          "serviceName": "build-simulation-request",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "choose-advisors",
+          "serviceName": "choose-advisors",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "choose-execution-mode",
+          "serviceName": "choose-execution-mode",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "councils",
+          "serviceName": "councils",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "model-router",
+          "serviceName": "model-router",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "orchestrate-intent",
+          "serviceName": "orchestrate-intent",
+          "owner": "brain-core",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "persistence-adapters",
+          "serviceName": "persistence-adapters",
+          "owner": "database",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "event-envelope",
+          "serviceName": "event-envelope",
+          "owner": "event-bus",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "publish-event",
+          "serviceName": "publish-event",
+          "owner": "event-bus",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "subscribe-event",
+          "serviceName": "subscribe-event",
+          "owner": "event-bus",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "unified-event-service",
+          "serviceName": "unified-event-service",
+          "owner": "event-bus",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "execute-action",
+          "serviceName": "execute-action",
+          "owner": "executor-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "execute-connector-action",
+          "serviceName": "execute-connector-action",
+          "owner": "executor-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "execute-workflow-step",
+          "serviceName": "execute-workflow-step",
+          "owner": "executor-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "approval-requirements",
+          "serviceName": "approval-requirements",
+          "owner": "policy-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "outbound-comm-policy",
+          "serviceName": "outbound-comm-policy",
+          "owner": "policy-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "sensitive-doc-policy",
+          "serviceName": "sensitive-doc-policy",
+          "owner": "policy-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "truth-boundaries",
+          "serviceName": "truth-boundaries",
+          "owner": "policy-engine",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "approval-receipts",
+          "serviceName": "approval-receipts",
+          "owner": "receipt-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "execution-receipts",
+          "serviceName": "execution-receipts",
+          "owner": "receipt-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "proof-bundles",
+          "serviceName": "proof-bundles",
+          "owner": "receipt-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "receipts",
+          "serviceName": "receipts",
+          "owner": "receipt-service",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "security-posture-engine",
+          "serviceName": "security-posture-engine",
+          "owner": "security",
+          "currentStatus": "active",
+          "launchTier": "mvp",
+          "dependencyCount": 0,
+          "readyForTier": true
+        }
+      ]
+    },
+    {
+      "tier": "pilot",
+      "description": "Early adopter features — domain OS surfaces",
+      "services": [
+        {
+          "serviceId": "advisor-track-composer",
+          "serviceName": "advisor-track-composer",
+          "owner": "boardroom-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "carryover",
+          "serviceName": "carryover",
+          "owner": "boardroom-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "decision-memory",
+          "serviceName": "decision-memory",
+          "owner": "boardroom-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "accounts",
+          "serviceName": "accounts",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "business-boardroom-inputs",
+          "serviceName": "business-boardroom-inputs",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "callback-queue",
+          "serviceName": "callback-queue",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "collections-command",
+          "serviceName": "collections-command",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "collections",
+          "serviceName": "collections",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "contacts",
+          "serviceName": "contacts",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "customer-dashboard",
+          "serviceName": "customer-dashboard",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "customer-health",
+          "serviceName": "customer-health",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "customer-timeline",
+          "serviceName": "customer-timeline",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "follow-up",
+          "serviceName": "follow-up",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "invoice-linking",
+          "serviceName": "invoice-linking",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "lead-intake",
+          "serviceName": "lead-intake",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "lead-scoring",
+          "serviceName": "lead-scoring",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "leakage-engine",
+          "serviceName": "leakage-engine",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "no-show-recovery",
+          "serviceName": "no-show-recovery",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "opportunity-engine",
+          "serviceName": "opportunity-engine",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "opportunity-ranking",
+          "serviceName": "opportunity-ranking",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "proposals",
+          "serviceName": "proposals",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "quotes",
+          "serviceName": "quotes",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "reactivation",
+          "serviceName": "reactivation",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "recovered-value-ledger",
+          "serviceName": "recovered-value-ledger",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "recovery-engine",
+          "serviceName": "recovery-engine",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "revenue-autopilot",
+          "serviceName": "revenue-autopilot",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "stale-lead-detector",
+          "serviceName": "stale-lead-detector",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "website-management",
+          "serviceName": "website-management",
+          "owner": "business-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "capability-registry",
+          "serviceName": "capability-registry",
+          "owner": "capability-router",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "pack-enablement",
+          "serviceName": "pack-enablement",
+          "owner": "capability-router",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "shell-space-routing",
+          "serviceName": "shell-space-routing",
+          "owner": "capability-router",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "activity-prep",
+          "serviceName": "activity-prep",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "conflict-detector",
+          "serviceName": "conflict-detector",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "event-continuity",
+          "serviceName": "event-continuity",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "gift-reminders",
+          "serviceName": "gift-reminders",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "grocery-continuity",
+          "serviceName": "grocery-continuity",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "home-admin",
+          "serviceName": "home-admin",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "household-boardroom-inputs",
+          "serviceName": "household-boardroom-inputs",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "household-ops",
+          "serviceName": "household-ops",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "household-overview",
+          "serviceName": "household-overview",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "load-balance",
+          "serviceName": "load-balance",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "prep-checklist",
+          "serviceName": "prep-checklist",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "prep-derivation",
+          "serviceName": "prep-derivation",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "provider-memory",
+          "serviceName": "provider-memory",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "reconciliation",
+          "serviceName": "reconciliation",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "recurring-supplies",
+          "serviceName": "recurring-supplies",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "reservation-ingest",
+          "serviceName": "reservation-ingest",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "responsibilities",
+          "serviceName": "responsibilities",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "school-items",
+          "serviceName": "school-items",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "travel-continuity",
+          "serviceName": "travel-continuity",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "trip-overview",
+          "serviceName": "trip-overview",
+          "owner": "concierge-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-auth",
+          "serviceName": "connector-auth",
+          "owner": "connector-control-plane",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-fake-mode",
+          "serviceName": "connector-fake-mode",
+          "owner": "connector-control-plane",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-health",
+          "serviceName": "connector-health",
+          "owner": "connector-control-plane",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "account-summary",
+          "serviceName": "account-summary",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "balance-sync",
+          "serviceName": "balance-sync",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "bill-calendar",
+          "serviceName": "bill-calendar",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "capital-map",
+          "serviceName": "capital-map",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "cash-allocator",
+          "serviceName": "cash-allocator",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "committee-boardroom-inputs",
+          "serviceName": "committee-boardroom-inputs",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "crypto-exposure",
+          "serviceName": "crypto-exposure",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "debt-analyzer",
+          "serviceName": "debt-analyzer",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "due-soon-alerts",
+          "serviceName": "due-soon-alerts",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "entity-capital",
+          "serviceName": "entity-capital",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "envelope-budget",
+          "serviceName": "envelope-budget",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "execution-review",
+          "serviceName": "execution-review",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "family-office-review",
+          "serviceName": "family-office-review",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "finance-boardroom-inputs",
+          "serviceName": "finance-boardroom-inputs",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "financial-health",
+          "serviceName": "financial-health",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "fx-watchlist",
+          "serviceName": "fx-watchlist",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "income-quality",
+          "serviceName": "income-quality",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "investment-memory",
+          "serviceName": "investment-memory",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "investment-office-runtime",
+          "serviceName": "investment-office-runtime",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "investment-office",
+          "serviceName": "investment-office",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "liquidity",
+          "serviceName": "liquidity",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "overview",
+          "serviceName": "overview",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "peace-score",
+          "serviceName": "peace-score",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "portfolio-risk",
+          "serviceName": "portfolio-risk",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "receivables",
+          "serviceName": "receivables",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "recurring-obligation",
+          "serviceName": "recurring-obligation",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "regime-engine",
+          "serviceName": "regime-engine",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "renewal-risk",
+          "serviceName": "renewal-risk",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "reserve-engine",
+          "serviceName": "reserve-engine",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "revenue-memory",
+          "serviceName": "revenue-memory",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "safe-to-spend",
+          "serviceName": "safe-to-spend",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "scenario-engine",
+          "serviceName": "scenario-engine",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "sinking-fund",
+          "serviceName": "sinking-fund",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "stress-radar",
+          "serviceName": "stress-radar",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "subscription-detector",
+          "serviceName": "subscription-detector",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "subscription-waste",
+          "serviceName": "subscription-waste",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "thesis-vault",
+          "serviceName": "thesis-vault",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "transaction-categorizer",
+          "serviceName": "transaction-categorizer",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "waste-detector",
+          "serviceName": "waste-detector",
+          "owner": "finance-os",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "boardroom-memory",
+          "serviceName": "boardroom-memory",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "correction",
+          "serviceName": "correction",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "preference-memory",
+          "serviceName": "preference-memory",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "profile-memory",
+          "serviceName": "profile-memory",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "trust-memory",
+          "serviceName": "trust-memory",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "workflow-memory",
+          "serviceName": "workflow-memory",
+          "owner": "memory-service",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "postcondition-checks",
+          "serviceName": "postcondition-checks",
+          "owner": "verification-engine",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "receipt-verification",
+          "serviceName": "receipt-verification",
+          "owner": "verification-engine",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "replay-verification",
+          "serviceName": "replay-verification",
+          "owner": "verification-engine",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "rollback-signals",
+          "serviceName": "rollback-signals",
+          "owner": "verification-engine",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "verification",
+          "serviceName": "verification",
+          "owner": "verification-engine",
+          "currentStatus": "active",
+          "launchTier": "pilot",
+          "dependencyCount": 0,
+          "readyForTier": true
+        }
+      ]
+    },
+    {
+      "tier": "ga",
+      "description": "General availability — full platform",
+      "services": [
+        {
+          "serviceId": "predictive-intent.test",
+          "serviceName": "predictive-intent.test",
+          "owner": "__tests__",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "system-updates.test",
+          "serviceName": "system-updates.test",
+          "owner": "__tests__",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "window-physics.test",
+          "serviceName": "window-physics.test",
+          "owner": "__tests__",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "adaptive-interface",
+          "serviceName": "adaptive-interface",
+          "owner": "adaptive-interface",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "agent-control",
+          "serviceName": "agent-control",
+          "owner": "admin-service",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "summarizer",
+          "serviceName": "summarizer",
+          "owner": "advisor-memory",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "cost-circuit-breaker",
+          "serviceName": "cost-circuit-breaker",
+          "owner": "ai-economics",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "budget",
+          "serviceName": "budget",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "callable",
+          "serviceName": "callable",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "diagnostics",
+          "serviceName": "diagnostics",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "launch-honesty",
+          "serviceName": "launch-honesty",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "provider-registry",
+          "serviceName": "provider-registry",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "receipts",
+          "serviceName": "receipts",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "routing",
+          "serviceName": "routing",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "types",
+          "serviceName": "types",
+          "owner": "ai-gateway",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "admin-budget-routing-policy",
+          "serviceName": "admin-budget-routing-policy",
+          "owner": "ai-workforce",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "agent-governance",
+          "serviceName": "agent-governance",
+          "owner": "ai-workforce",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "agent-health-monitor",
+          "serviceName": "agent-health-monitor",
+          "owner": "ai-workforce",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "workforce-orchestrator",
+          "serviceName": "workforce-orchestrator",
+          "owner": "ai-workforce",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "workforce-service",
+          "serviceName": "workforce-service",
+          "owner": "ai-workforce",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "god-tier-integration-engine",
+          "serviceName": "god-tier-integration-engine",
+          "owner": "architecture",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "attention-os",
+          "serviceName": "attention-os",
+          "owner": "attention-os",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "boundary-engine",
+          "serviceName": "boundary-engine",
+          "owner": "boundary-engine",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "pipeline-orchestrator",
+          "serviceName": "pipeline-orchestrator",
+          "owner": "canonical-pipeline",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "chief-of-staff",
+          "serviceName": "chief-of-staff",
+          "owner": "chief-of-staff",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-truth-service",
+          "serviceName": "connector-truth-service",
+          "owner": "connector-truth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "conscience-gate",
+          "serviceName": "conscience-gate",
+          "owner": "conscience-gate",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "critique-loop",
+          "serviceName": "critique-loop",
+          "owner": "conscience-gate",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "continuity-engine",
+          "serviceName": "continuity-engine",
+          "owner": "continuity-engine",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "council-automation",
+          "serviceName": "council-automation",
+          "owner": "council-orchestrator",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "demo-governance-service",
+          "serviceName": "demo-governance-service",
+          "owner": "demo-governance",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "desk-executor",
+          "serviceName": "desk-executor",
+          "owner": "desk",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "digest-engine",
+          "serviceName": "digest-engine",
+          "owner": "digest-engine",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "domain-runtime-service",
+          "serviceName": "domain-runtime-service",
+          "owner": "domain-runtime",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "assumption-registry",
+          "serviceName": "assumption-registry",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "cite-checker",
+          "serviceName": "cite-checker",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "cortex-loop",
+          "serviceName": "cortex-loop",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "evidence-grader",
+          "serviceName": "evidence-grader",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "negative-receipt",
+          "serviceName": "negative-receipt",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "sentinel-engine",
+          "serviceName": "sentinel-engine",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "tool-grounding",
+          "serviceName": "tool-grounding",
+          "owner": "epistemic-firewall",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "experience-signature",
+          "serviceName": "experience-signature",
+          "owner": "experience-signature",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "flagship-loop-service",
+          "serviceName": "flagship-loop-service",
+          "owner": "flagship-loops",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "frontend-quality-engine",
+          "serviceName": "frontend-quality-engine",
+          "owner": "frontend",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "google-demo-provider",
+          "serviceName": "google-demo-provider",
+          "owner": "google-provider-family",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "google-provider-family",
+          "serviceName": "google-provider-family",
+          "owner": "google-provider-family",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "types",
+          "serviceName": "types",
+          "owner": "google-provider-family",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "account-graph",
+          "serviceName": "account-graph",
+          "owner": "identity-auth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-access",
+          "serviceName": "connector-access",
+          "owner": "identity-auth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "consent",
+          "serviceName": "consent",
+          "owner": "identity-auth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "identity-provider",
+          "serviceName": "identity-provider",
+          "owner": "identity-auth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "types",
+          "serviceName": "types",
+          "owner": "identity-auth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connector-sdk",
+          "serviceName": "connector-sdk",
+          "owner": "integration-hub",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "demo-connections",
+          "serviceName": "demo-connections",
+          "owner": "integration-hub",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "providers",
+          "serviceName": "providers",
+          "owner": "integration-hub",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "intent-orchestrator",
+          "serviceName": "intent-orchestrator",
+          "owner": "intent-orchestrator",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "launch-gate-service",
+          "serviceName": "launch-gate-service",
+          "owner": "launch-gate",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "launch-readiness-engine",
+          "serviceName": "launch-readiness-engine",
+          "owner": "launch-readiness",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "financial-literacy-engine",
+          "serviceName": "financial-literacy-engine",
+          "owner": "life-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "household-coaching-engine",
+          "serviceName": "household-coaching-engine",
+          "owner": "life-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "life-goal-tracker",
+          "serviceName": "life-goal-tracker",
+          "owner": "life-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "skill-monetization-advisor",
+          "serviceName": "skill-monetization-advisor",
+          "owner": "life-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "wealth-building-engine",
+          "serviceName": "wealth-building-engine",
+          "owner": "life-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "life-shock-simulator",
+          "serviceName": "life-shock-simulator",
+          "owner": "life-simulation",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "memory-governance-engine",
+          "serviceName": "memory-governance-engine",
+          "owner": "memory-governance",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "collector",
+          "serviceName": "collector",
+          "owner": "meta-governance",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "context-assembler",
+          "serviceName": "context-assembler",
+          "owner": "mnemosyne",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "health-aggregator",
+          "serviceName": "health-aggregator",
+          "owner": "observability",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "observability-service",
+          "serviceName": "observability-service",
+          "owner": "observability",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "persistence",
+          "serviceName": "persistence",
+          "owner": "observability",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "ambient-intelligence",
+          "serviceName": "ambient-intelligence",
+          "owner": "os-awareness",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "personal-operating-graph",
+          "serviceName": "personal-operating-graph",
+          "owner": "personal-graph",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "auto-rules",
+          "serviceName": "auto-rules",
+          "owner": "personalization-engine",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "behavioral-learning",
+          "serviceName": "behavioral-learning",
+          "owner": "personalization-engine",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "platform-readiness-seeder",
+          "serviceName": "platform-readiness-seeder",
+          "owner": "platform-readiness",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "types",
+          "serviceName": "types",
+          "owner": "provider-family",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "push-registration-service",
+          "serviceName": "push-registration-service",
+          "owner": "push-notification",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "recommendation-loop-service",
+          "serviceName": "recommendation-loop-service",
+          "owner": "recommendation-execution",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "business-model-advisor",
+          "serviceName": "business-model-advisor",
+          "owner": "revenue-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "income-discovery-engine",
+          "serviceName": "income-discovery-engine",
+          "owner": "revenue-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "market-intelligence",
+          "serviceName": "market-intelligence",
+          "owner": "revenue-growth",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "security-privacy-service",
+          "serviceName": "security-privacy-service",
+          "owner": "security-privacy",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "heartbeat",
+          "serviceName": "heartbeat",
+          "owner": "service-registry",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "route-to-service-inventory",
+          "serviceName": "route-to-service-inventory",
+          "owner": "service-registry",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "service-ownership-registry",
+          "serviceName": "service-ownership-registry",
+          "owner": "service-registry",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "advisor-recommendation-engine",
+          "serviceName": "advisor-recommendation-engine",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "connection-recommendation-engine",
+          "serviceName": "connection-recommendation-engine",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "first-win-recommendation-engine",
+          "serviceName": "first-win-recommendation-engine",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "hardware-capability-service",
+          "serviceName": "hardware-capability-service",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "setup-summary-builder",
+          "serviceName": "setup-summary-builder",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "trust-calibration-service",
+          "serviceName": "trust-calibration-service",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "world-model-service",
+          "serviceName": "world-model-service",
+          "owner": "setup",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "diagnostic-bundle",
+          "serviceName": "diagnostic-bundle",
+          "owner": "support-diagnostics",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "incident-classification",
+          "serviceName": "incident-classification",
+          "owner": "support-diagnostics",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "replay-metadata",
+          "serviceName": "replay-metadata",
+          "owner": "support-diagnostics",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "support-summary",
+          "serviceName": "support-summary",
+          "owner": "support-diagnostics",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "surface-adapter-registry",
+          "serviceName": "surface-adapter-registry",
+          "owner": "surface-portability",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "surface-portability-service",
+          "serviceName": "surface-portability-service",
+          "owner": "surface-portability",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "timing-intelligence",
+          "serviceName": "timing-intelligence",
+          "owner": "timing-intelligence",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "trust-weighted-actions",
+          "serviceName": "trust-weighted-actions",
+          "owner": "trust-actions",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceId": "truth-index-aggregator",
+          "serviceName": "truth-index-aggregator",
+          "owner": "truth-indices",
+          "currentStatus": "active",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        }
+      ]
+    }
+  ]
+}

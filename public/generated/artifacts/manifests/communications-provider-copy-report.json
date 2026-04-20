@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T18:10:54.629Z",
+  "gate": "communications-provider-copy",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-trust-copy-guard",
+  "spec": "generated/trust-state-and-copy-closure/COMMUNICATIONS_TRUST_COPY_SPEC.md",
+  "surfacesScanned": 2,
+  "collapseHits": 0,
+  "distinguishes": [
+    "live-oauth-google-ms-slack",
+    "manual-long-tail-providers"
+  ]
+}

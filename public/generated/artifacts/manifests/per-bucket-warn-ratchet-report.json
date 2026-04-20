@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-04-18T14:39:42.033Z",
+  "gate": "per-bucket-warn-ratchet",
+  "level": "warn",
+  "buckets": [
+    {
+      "gate": "lib-decomposition-readiness",
+      "observed": 1731,
+      "ceiling": 1740,
+      "ok": true,
+      "headroom": 9
+    },
+    {
+      "gate": "legacy-wrapper-usage",
+      "observed": 1518,
+      "ceiling": 1530,
+      "ok": true,
+      "headroom": 12
+    },
+    {
+      "gate": "lib-ownership-drift",
+      "observed": 99,
+      "ceiling": 105,
+      "ok": true,
+      "headroom": 6
+    }
+  ],
+  "anyExceeded": false,
+  "ok": true
+}

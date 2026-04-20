@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T13:32:50.628Z",
+  "gate": "google-refresh-nightly",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "credentials",
+      "message": "credentials_unavailable in this environment — production CI cron emits live evidence."
+    }
+  ]
+}

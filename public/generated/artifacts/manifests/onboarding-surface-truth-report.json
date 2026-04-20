@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-04-20T01:26:20.461Z",
+  "validator": "check-onboarding-surface-truth",
+  "tier": "WARN",
+  "registry": "src/lib/architecture/onboarding-surface-registry.ts",
+  "declaredSurfaces": [
+    {
+      "id": "os-first-boot",
+      "tier": "os",
+      "entrypointFile": "src/components/sita/OSSetupExperience.tsx",
+      "intentBannerToken": "ONBOARDING SURFACE: os-first-boot",
+      "screenCount": 50
+    },
+    {
+      "id": "business-formation",
+      "tier": "business",
+      "entrypointFile": "src/pages/revenue-office/onboarding/FormationShell.tsx",
+      "intentBannerToken": "ONBOARDING SURFACE: business-formation",
+      "screenCount": 22
+    },
+    {
+      "id": "money-introduction",
+      "tier": "money",
+      "entrypointFile": "src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx",
+      "intentBannerToken": "ONBOARDING SURFACE: money-introduction",
+      "screenCount": 11
+    }
+  ],
+  "allowlistedDaemonImporters": [
+    "scripts/architecture/checks/check-onboarding-surface-truth.ts",
+    "src/hooks/useOnboardingDaemon.ts",
+    "src/lib/architecture/onboarding-surface-registry.ts",
+    "src/lib/services/onboarding-daemon/index.ts",
+    "src/pages/FirstBootSetup.tsx",
+    "src/platform/architecture/directory-organization-map.ts",
+    "src/platform/setup/index.ts",
+    "src/runtimes/portability-boundary-model.ts"
+  ],
+  "newDaemonImporters": [],
+  "summary": {
+    "totalSurfaces": 3,
+    "errors": 0,
+    "warnings": 0,
+    "status": "PASS"
+  },
+  "issues": []
+}

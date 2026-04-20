@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "mode": "dry-validate",
+  "startedAt": "2026-04-17T00:44:37.068Z",
+  "finishedAt": "2026-04-17T00:44:37.072Z",
+  "durationMs": 4,
+  "backupFile": "backups/20260417T004356Z.sql",
+  "backupMode": "pg_dump",
+  "registryTableCount": 201,
+  "backupTableCount": 202,
+  "matchPercent": 100,
+  "errors": [],
+  "warnings": []
+}

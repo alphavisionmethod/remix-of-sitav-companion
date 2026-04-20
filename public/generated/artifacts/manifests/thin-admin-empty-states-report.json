@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T19:55:48.366Z",
+  "gate": "thin-admin-empty-states",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 680,
+  "offenders": 0,
+  "canonicalPrimitives": [
+    "EmptyState",
+    "PremiumEmptyState",
+    "BoardSection"
+  ],
+  "classification": "warn-tier-adoption-tracker"
+}

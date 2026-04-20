@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-04-17T00:52:23.134Z",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "summary": {
+    "totalTables": 201,
+    "unownedTables": 0,
+    "ioMappedFunctions": 86,
+    "missingFromIO": 0,
+    "tablesWithWriters": 190,
+    "tablesWithReaders": 178,
+    "tablesWithoutAnyIO": 0,
+    "crossDomainViolations": 18,
+    "unexemptedCrossDomainWriters": 0,
+    "backup": {
+      "ok": true,
+      "ageDays": 0,
+      "latest": {
+        "timestamp": "20260417T004356Z",
+        "mode": "pg_dump",
+        "file": "20260417T004356Z.sql",
+        "tableCount": 202,
+        "policyCount": 336,
+        "sizeBytes": 555038
+      }
+    },
+    "restoreDrill": {
+      "ok": true,
+      "mode": "dry-validate",
+      "matchPercent": 100
+    }
+  },
+  "issues": [],
+  "crossDomainOffenders": [
+    {
+      "table": "ai_workforce_approval_queue",
+      "writers": [
+        "admin-ai-workforce-run"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "writers": [
+        "admin-ai-workforce-run"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "writers": [
+        "admin-ai-workforce-run"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "writers": [
+        "admin-ai-workforce-run"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "user_roles",
+      "writers": [
+        "admin-users"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "appointments",
+      "writers": [
+        "booking-manage",
+        "seed-user-data"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "leads",
+      "writers": [
+        "crm-sync",
+        "seed-user-data"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "cloud_activity_journal",
+      "writers": [
+        "os-agent-channel"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "incidents",
+      "writers": [
+        "self-healing"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "command_memory",
+      "writers": [
+        "brain-core"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "license_activations",
+      "writers": [
+        "license-gateway"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "license_audit_log",
+      "writers": [
+        "license-gateway"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "support_case_events",
+      "writers": [
+        "support-gateway",
+        "user-bff-gateway"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "support_cases",
+      "writers": [
+        "support-gateway"
+      ],
+      "unexempted": []
+    },
+    {
+      "table": "communication_metrics",
+      "writers": [
+        "os-agent-channel"
+      ],
+      "unexempted": []
+    }
+  ],
+  "missingFromIO": [],
+  "tablesWithoutAnyIO": []
+}

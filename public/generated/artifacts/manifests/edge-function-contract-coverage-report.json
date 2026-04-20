@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-19T16:24:20.154Z",
+  "gate": "edge-function-contract-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "coverage",
+      "message": "48/172 (28%) — target ≥50% for BLOCK promotion"
+    }
+  ],
+  "totalFunctions": 172,
+  "coveredFunctions": 48,
+  "percent": 28,
+  "targetPercent": 50,
+  "level": "warn",
+  "missingCount": 124
+}

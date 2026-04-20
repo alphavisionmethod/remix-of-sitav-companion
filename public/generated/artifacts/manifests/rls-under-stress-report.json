@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T14:47:54.574Z",
+  "gate": "rls-under-stress",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "evidence",
+      "message": "rls-stress-runs/ empty — pending-execution"
+    }
+  ],
+  "totalRuns": 0
+}

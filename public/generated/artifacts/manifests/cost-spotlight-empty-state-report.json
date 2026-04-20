@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T17:25:00.846Z",
+  "gate": "cost-spotlight-empty-state",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/admin-empty-state-closure/COST_SPOTLIGHT_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/health/CostSpotlight.tsx",
+  "canonicalAlternativesPresent": 3,
+  "canonicalAlternativesExpected": 3,
+  "requiredForGreen": "health-domain-pass: build CostSpotlight.tsx + adopt PremiumEmptyState + label any preview content non-live"
+}

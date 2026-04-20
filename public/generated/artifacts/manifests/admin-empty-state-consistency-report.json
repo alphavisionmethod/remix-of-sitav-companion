@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T19:55:48.322Z",
+  "gate": "admin-empty-state-consistency",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 680,
+  "offenders": 0,
+  "canonicalPrimitives": [
+    "PremiumEmptyState",
+    "EmptyState",
+    "BoardSection",
+    "NeedsDataExplainer",
+    "NeedsTimeWindowExplainer",
+    "NeedsHistoricalReleasesExplainer"
+  ],
+  "classification": "warn-tier-adoption-tracker"
+}

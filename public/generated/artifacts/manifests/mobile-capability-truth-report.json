@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-04-19T13:34:00.276Z",
+  "gate": "mobile-capability-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 5,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "missing-upstream",
+      "message": "generated/mobile-push-claim-safety-report.json not yet emitted in this environment — production CI emits upstream capability truth."
+    },
+    {
+      "severity": "warning",
+      "area": "missing-upstream",
+      "message": "generated/mobile-identity-source-of-truth-report.json not yet emitted in this environment — production CI emits upstream capability truth."
+    },
+    {
+      "severity": "warning",
+      "area": "missing-upstream",
+      "message": "generated/mobile-env-strategy-consistency-report.json not yet emitted in this environment — production CI emits upstream capability truth."
+    },
+    {
+      "severity": "warning",
+      "area": "missing-upstream",
+      "message": "generated/android-release-path-report.json not yet emitted in this environment — production CI emits upstream capability truth."
+    },
+    {
+      "severity": "warning",
+      "area": "missing-upstream",
+      "message": "generated/ios-release-path-report.json not yet emitted in this environment — production CI emits upstream capability truth."
+    }
+  ],
+  "push_classification": "external-account-blocked",
+  "identity_classification": "supabase-auth-canonical"
+}

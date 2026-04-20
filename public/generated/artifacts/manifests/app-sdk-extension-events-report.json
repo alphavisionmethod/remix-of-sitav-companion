@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-19T20:47:42.103Z",
+  "gate": "app-sdk-extension-events",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "validEventTypes": [
+    "installed",
+    "enabled",
+    "disabled",
+    "updated",
+    "removed",
+    "verified"
+  ],
+  "issues": []
+}

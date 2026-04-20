@@ -1,0 +1,513 @@
+{
+  "generatedAt": "2026-04-19T17:49:59.624Z",
+  "gate": "admin-status-semantics",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 100,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIAgentDebate.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIApprovalDesk.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIApprovalDesk.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIApprovalDesk.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIChangePlanViewer.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIChangePlanViewer.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIChangePlanViewer.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIEvidenceBundleComposer.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIFixCenter.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIFixCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIFixCenter.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG01ProviderRegistry.tsx: hardcoded color \"bg-green-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG01ProviderRegistry.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG02ModelRegistry.tsx: hardcoded color \"text-green-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG03RoutingMatrix.tsx: hardcoded color \"text-amber-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG03RoutingMatrix.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG06LaunchTruth.tsx: hardcoded color \"text-yellow-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG06LaunchTruth.tsx: hardcoded color \"text-red-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG06LaunchTruth.tsx: hardcoded color \"text-green-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG07LaunchTruth.tsx: hardcoded color \"text-amber-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG08DegradedDiagnostics.tsx: hardcoded color \"text-amber-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG09RuntimeVerification.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIG09RuntimeVerification.tsx: hardcoded color \"text-amber-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIGovernancePage.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIHumanBoundaryControls.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIHumanBoundaryControls.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIHumanBoundaryControls.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AILearningCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIMissionCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIMissionCenter.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIReleasesCenter.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIReleasesCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIReleasesCenter.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRootCauseGraph.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRootCauseGraph.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRootCauseGraph.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"bg-yellow-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"text-yellow-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"border-yellow-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"bg-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"text-red-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"border-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"bg-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"text-green-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx: hardcoded color \"border-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AISelfHealing.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AISelfLearningLedger.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIT01TeamOverview.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIT04to08Boards.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIT04to08Boards.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AIT05CostEfficiency.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITeamRoster.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITeamRoster.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITeamRoster.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITimeMachine.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITimeMachine.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITimeMachine.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AITokenDashboard.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND01AndroidEcosystemCenter.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND01AndroidEcosystemCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND03AndroidTrustApprovals.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND03AndroidTrustApprovals.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND04AndroidHealthConsent.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND05AndroidLaunchReadiness.tsx: hardcoded color \"bg-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AND05AndroidLaunchReadiness.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL01AppleEcosystemCenter.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL01AppleEcosystemCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL02AppleDevicesTrust.tsx: hardcoded color \"bg-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL02AppleDevicesTrust.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL02AppleDevicesTrust.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL02AppleDevicesTrust.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL04AppleIdentityAccounts.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL05AppleHealthConsent.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL06AppleLaunchReadiness.tsx: hardcoded color \"bg-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL06AppleLaunchReadiness.tsx: hardcoded color \"text-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/APL06AppleLaunchReadiness.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AR08KillSwitchCenter.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AR08KillSwitchCenter.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AR08KillSwitchCenter.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"bg-yellow-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"text-yellow-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"bg-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"text-red-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"bg-green-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"text-green-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: hardcoded color \"text-amber-400\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"bg-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"text-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"border-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"text-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: hardcoded color \"border-amber-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AdminDashboard.tsx: hardcoded color \"bg-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AdminDashboard.tsx: hardcoded color \"text-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AdminDashboard.tsx: hardcoded color \"border-red-500\" — use StatusBadge tone or semantic token"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-color",
+      "message": "src/pages/admin/AdminDashboard.tsx: hardcoded color \"bg-amber-500\" — use StatusBadge tone or semantic token"
+    }
+  ],
+  "scanned": 679,
+  "offenderCount": 1584,
+  "canonicalPrimitive": "src/components/primitives/status/StatusBadge.tsx",
+  "classification": "warn-tier-color-discipline"
+}

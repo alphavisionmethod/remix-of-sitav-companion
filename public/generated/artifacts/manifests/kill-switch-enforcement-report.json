@@ -1,0 +1,60 @@
+{
+  "$schema": "https://sita.os/schemas/kill-switch-enforcement-report-v1.json",
+  "phase": 27,
+  "ciGate": "kill-switch-coverage",
+  "validator": "scripts/architecture/checks/check-kill-switch-coverage.ts",
+  "owner": "platform-architecture",
+  "ok": true,
+  "totals": {
+    "switches": 14,
+    "enforcementPoints": 21,
+    "enforcedFilesVerified": 19,
+    "enforcedFilesMissing": 0,
+    "symbolMatches": 19,
+    "symbolMissing": 0,
+    "dangling": 0,
+    "requiredHighRiskSwitches": 9,
+    "requiredHighRiskCovered": 9,
+    "runbookLinks": 12,
+    "runbookLinksResolved": 12
+  },
+  "perSwitchCoverage": [
+    { "switchId": "KS-ADVISORS",          "points": 2, "verified": 2, "layers": ["edge-function", "scheduler"] },
+    { "switchId": "KS-OUTBOUND",          "points": 1, "verified": 1, "layers": ["edge-function"] },
+    { "switchId": "KS-CONNECTORS",        "points": 2, "verified": 2, "layers": ["connector", "edge-function"] },
+    { "switchId": "KS-SYNC",              "points": 2, "verified": 2, "layers": ["edge-function", "scheduler"] },
+    { "switchId": "KS-PAYMENTS",          "points": 3, "verified": 3, "layers": ["edge-function", "ui-gate", "edge-function"] },
+    { "switchId": "KS-MOBILE-PUSH",       "points": 1, "verified": 1, "layers": ["edge-function"] },
+    { "switchId": "KS-MODEL-PROVIDERS",   "points": 1, "verified": 1, "layers": ["ai-gateway"] },
+    { "switchId": "KS-WORKFLOW",          "points": 2, "verified": 2, "layers": ["edge-function", "scheduler"] },
+    { "switchId": "KS-SIMULATIONS",       "points": 1, "verified": 1, "layers": ["edge-function"] },
+    { "switchId": "KS-AUTOMATIONS",       "points": 1, "verified": 1, "layers": ["scheduler"] },
+    { "switchId": "KS-RELEASE-ROLLOUT",   "points": 2, "verified": 2, "layers": ["release-pipeline", "ui-gate"] },
+    { "switchId": "KS-APPLIANCE-UPDATE",  "points": 1, "verified": 1, "layers": ["appliance-update"] },
+    { "switchId": "KS-SELF-HEALING",      "points": 1, "verified": 1, "layers": ["self-healing"] },
+    { "switchId": "KS-PROVIDER-INGESTION","points": 1, "verified": 1, "layers": ["connector"] }
+  ],
+  "edgeFunctionEnforcement": [
+    { "function": "supabase/functions/payment-process/index.ts",        "switches": ["KS-PAYMENTS"],                "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/chat-advisor/index.ts",           "switches": ["KS-ADVISORS"],                "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/advisor-agent-loop/index.ts",     "switches": ["KS-ADVISORS"],                "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/connector-sync/index.ts",         "switches": ["KS-CONNECTORS", "KS-SYNC", "KS-PROVIDER-INGESTION"], "symbol": "checkAnyKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/connector-oauth/index.ts",        "switches": ["KS-CONNECTORS"],              "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/push-dispatch/index.ts",          "switches": ["KS-OUTBOUND", "KS-MOBILE-PUSH"], "symbol": "checkAnyKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/ai-gateway/index.ts",             "switches": ["KS-MODEL-PROVIDERS"],         "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/workflow-execute/index.ts",       "switches": ["KS-WORKFLOW"],                "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/scheduler-dispatch/index.ts",     "switches": ["KS-AUTOMATIONS", "KS-WORKFLOW", "KS-SYNC"], "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/simulation-engine-api/index.ts",  "switches": ["KS-SIMULATIONS"],             "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/self-healing/index.ts",           "switches": ["KS-SELF-HEALING"],            "symbol": "checkKillSwitchOrReject", "verified": true },
+    { "function": "supabase/functions/payment-kill-switch/index.ts",    "switches": ["KS-PAYMENTS"],                "symbol": "killSwitchActive", "verified": true }
+  ],
+  "adminSurface": {
+    "page": "src/pages/admin/AR08KillSwitchCenter.tsx",
+    "route": "/admin/automation/kill-switches",
+    "mountedIn": "src/routes/AdminRoutes.tsx",
+    "permission": "flags.view"
+  },
+  "violations": [],
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "generationSource": "scripts/architecture/checks/check-kill-switch-coverage.ts"
+}

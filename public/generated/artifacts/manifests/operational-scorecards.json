@@ -1,0 +1,3304 @@
+{
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:03.362Z",
+  "totalServices": 235,
+  "averageHealth": 75,
+  "gradeDistribution": {
+    "healthy": 1,
+    "fair": 234,
+    "degraded": 0,
+    "critical": 0
+  },
+  "scorecards": [
+    {
+      "serviceId": "predictive-intent.test",
+      "serviceName": "predictive-intent.test",
+      "owner": "__tests__",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "system-updates.test",
+      "serviceName": "system-updates.test",
+      "owner": "__tests__",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "window-physics.test",
+      "serviceName": "window-physics.test",
+      "owner": "__tests__",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "adaptive-interface",
+      "serviceName": "adaptive-interface",
+      "owner": "adaptive-interface",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "agent-control",
+      "serviceName": "agent-control",
+      "owner": "admin-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "summarizer",
+      "serviceName": "summarizer",
+      "owner": "advisor-memory",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "cost-circuit-breaker",
+      "serviceName": "cost-circuit-breaker",
+      "owner": "ai-economics",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "budget",
+      "serviceName": "budget",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "callable",
+      "serviceName": "callable",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "diagnostics",
+      "serviceName": "diagnostics",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "launch-honesty",
+      "serviceName": "launch-honesty",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "provider-registry",
+      "serviceName": "provider-registry",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "receipts",
+      "serviceName": "receipts",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "routing",
+      "serviceName": "routing",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "owner": "ai-gateway",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "admin-budget-routing-policy",
+      "serviceName": "admin-budget-routing-policy",
+      "owner": "ai-workforce",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "agent-governance",
+      "serviceName": "agent-governance",
+      "owner": "ai-workforce",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "agent-health-monitor",
+      "serviceName": "agent-health-monitor",
+      "owner": "ai-workforce",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "workforce-orchestrator",
+      "serviceName": "workforce-orchestrator",
+      "owner": "ai-workforce",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "workforce-service",
+      "serviceName": "workforce-service",
+      "owner": "ai-workforce",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "approval-history",
+      "serviceName": "approval-history",
+      "owner": "approval-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "approval-requests",
+      "serviceName": "approval-requests",
+      "owner": "approval-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "approval-routing",
+      "serviceName": "approval-routing",
+      "owner": "approval-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "escalation-rules",
+      "serviceName": "escalation-rules",
+      "owner": "approval-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "god-tier-integration-engine",
+      "serviceName": "god-tier-integration-engine",
+      "owner": "architecture",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "attention-os",
+      "serviceName": "attention-os",
+      "owner": "attention-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "advisor-track-composer",
+      "serviceName": "advisor-track-composer",
+      "owner": "boardroom-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "carryover",
+      "serviceName": "carryover",
+      "owner": "boardroom-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "decision-memory",
+      "serviceName": "decision-memory",
+      "owner": "boardroom-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "boundary-engine",
+      "serviceName": "boundary-engine",
+      "owner": "boundary-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "build-approval-package",
+      "serviceName": "build-approval-package",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "build-boardroom-request",
+      "serviceName": "build-boardroom-request",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "build-explanation",
+      "serviceName": "build-explanation",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "build-simulation-request",
+      "serviceName": "build-simulation-request",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "choose-advisors",
+      "serviceName": "choose-advisors",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "choose-execution-mode",
+      "serviceName": "choose-execution-mode",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "councils",
+      "serviceName": "councils",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "model-router",
+      "serviceName": "model-router",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "orchestrate-intent",
+      "serviceName": "orchestrate-intent",
+      "owner": "brain-core",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "accounts",
+      "serviceName": "accounts",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "business-boardroom-inputs",
+      "serviceName": "business-boardroom-inputs",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "callback-queue",
+      "serviceName": "callback-queue",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "collections-command",
+      "serviceName": "collections-command",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "collections",
+      "serviceName": "collections",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "contacts",
+      "serviceName": "contacts",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "customer-dashboard",
+      "serviceName": "customer-dashboard",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "customer-health",
+      "serviceName": "customer-health",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "customer-timeline",
+      "serviceName": "customer-timeline",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "follow-up",
+      "serviceName": "follow-up",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "invoice-linking",
+      "serviceName": "invoice-linking",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "lead-intake",
+      "serviceName": "lead-intake",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "lead-scoring",
+      "serviceName": "lead-scoring",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "leakage-engine",
+      "serviceName": "leakage-engine",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "no-show-recovery",
+      "serviceName": "no-show-recovery",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "opportunity-engine",
+      "serviceName": "opportunity-engine",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "opportunity-ranking",
+      "serviceName": "opportunity-ranking",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "proposals",
+      "serviceName": "proposals",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "quotes",
+      "serviceName": "quotes",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "reactivation",
+      "serviceName": "reactivation",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "recovered-value-ledger",
+      "serviceName": "recovered-value-ledger",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "recovery-engine",
+      "serviceName": "recovery-engine",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "revenue-autopilot",
+      "serviceName": "revenue-autopilot",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "stale-lead-detector",
+      "serviceName": "stale-lead-detector",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "website-management",
+      "serviceName": "website-management",
+      "owner": "business-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "pipeline-orchestrator",
+      "serviceName": "pipeline-orchestrator",
+      "owner": "canonical-pipeline",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "capability-registry",
+      "serviceName": "capability-registry",
+      "owner": "capability-router",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "pack-enablement",
+      "serviceName": "pack-enablement",
+      "owner": "capability-router",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "shell-space-routing",
+      "serviceName": "shell-space-routing",
+      "owner": "capability-router",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "chief-of-staff",
+      "serviceName": "chief-of-staff",
+      "owner": "chief-of-staff",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "activity-prep",
+      "serviceName": "activity-prep",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "conflict-detector",
+      "serviceName": "conflict-detector",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "event-continuity",
+      "serviceName": "event-continuity",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "gift-reminders",
+      "serviceName": "gift-reminders",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "grocery-continuity",
+      "serviceName": "grocery-continuity",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "home-admin",
+      "serviceName": "home-admin",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "household-boardroom-inputs",
+      "serviceName": "household-boardroom-inputs",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "household-ops",
+      "serviceName": "household-ops",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "household-overview",
+      "serviceName": "household-overview",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "load-balance",
+      "serviceName": "load-balance",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "prep-checklist",
+      "serviceName": "prep-checklist",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "prep-derivation",
+      "serviceName": "prep-derivation",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "provider-memory",
+      "serviceName": "provider-memory",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "reconciliation",
+      "serviceName": "reconciliation",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "recurring-supplies",
+      "serviceName": "recurring-supplies",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "reservation-ingest",
+      "serviceName": "reservation-ingest",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "responsibilities",
+      "serviceName": "responsibilities",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "school-items",
+      "serviceName": "school-items",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "travel-continuity",
+      "serviceName": "travel-continuity",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "trip-overview",
+      "serviceName": "trip-overview",
+      "owner": "concierge-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-auth",
+      "serviceName": "connector-auth",
+      "owner": "connector-control-plane",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-fake-mode",
+      "serviceName": "connector-fake-mode",
+      "owner": "connector-control-plane",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-health",
+      "serviceName": "connector-health",
+      "owner": "connector-control-plane",
+      "status": "active",
+      "healthScore": 95,
+      "grade": "healthy",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": true,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-truth-service",
+      "serviceName": "connector-truth-service",
+      "owner": "connector-truth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "conscience-gate",
+      "serviceName": "conscience-gate",
+      "owner": "conscience-gate",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "critique-loop",
+      "serviceName": "critique-loop",
+      "owner": "conscience-gate",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "continuity-engine",
+      "serviceName": "continuity-engine",
+      "owner": "continuity-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "council-automation",
+      "serviceName": "council-automation",
+      "owner": "council-orchestrator",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "persistence-adapters",
+      "serviceName": "persistence-adapters",
+      "owner": "database",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "demo-governance-service",
+      "serviceName": "demo-governance-service",
+      "owner": "demo-governance",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "desk-executor",
+      "serviceName": "desk-executor",
+      "owner": "desk",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "digest-engine",
+      "serviceName": "digest-engine",
+      "owner": "digest-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "domain-runtime-service",
+      "serviceName": "domain-runtime-service",
+      "owner": "domain-runtime",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "assumption-registry",
+      "serviceName": "assumption-registry",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "cite-checker",
+      "serviceName": "cite-checker",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "cortex-loop",
+      "serviceName": "cortex-loop",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "evidence-grader",
+      "serviceName": "evidence-grader",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "negative-receipt",
+      "serviceName": "negative-receipt",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "sentinel-engine",
+      "serviceName": "sentinel-engine",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "tool-grounding",
+      "serviceName": "tool-grounding",
+      "owner": "epistemic-firewall",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "event-envelope",
+      "serviceName": "event-envelope",
+      "owner": "event-bus",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "publish-event",
+      "serviceName": "publish-event",
+      "owner": "event-bus",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "subscribe-event",
+      "serviceName": "subscribe-event",
+      "owner": "event-bus",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "unified-event-service",
+      "serviceName": "unified-event-service",
+      "owner": "event-bus",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "execute-action",
+      "serviceName": "execute-action",
+      "owner": "executor-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "execute-connector-action",
+      "serviceName": "execute-connector-action",
+      "owner": "executor-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "execute-workflow-step",
+      "serviceName": "execute-workflow-step",
+      "owner": "executor-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "experience-signature",
+      "serviceName": "experience-signature",
+      "owner": "experience-signature",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "account-summary",
+      "serviceName": "account-summary",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "balance-sync",
+      "serviceName": "balance-sync",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "bill-calendar",
+      "serviceName": "bill-calendar",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "capital-map",
+      "serviceName": "capital-map",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "cash-allocator",
+      "serviceName": "cash-allocator",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "committee-boardroom-inputs",
+      "serviceName": "committee-boardroom-inputs",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "crypto-exposure",
+      "serviceName": "crypto-exposure",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "debt-analyzer",
+      "serviceName": "debt-analyzer",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "due-soon-alerts",
+      "serviceName": "due-soon-alerts",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "entity-capital",
+      "serviceName": "entity-capital",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "envelope-budget",
+      "serviceName": "envelope-budget",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "execution-review",
+      "serviceName": "execution-review",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "family-office-review",
+      "serviceName": "family-office-review",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "finance-boardroom-inputs",
+      "serviceName": "finance-boardroom-inputs",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "financial-health",
+      "serviceName": "financial-health",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "fx-watchlist",
+      "serviceName": "fx-watchlist",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "income-quality",
+      "serviceName": "income-quality",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "investment-memory",
+      "serviceName": "investment-memory",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "investment-office-runtime",
+      "serviceName": "investment-office-runtime",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "investment-office",
+      "serviceName": "investment-office",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "liquidity",
+      "serviceName": "liquidity",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "overview",
+      "serviceName": "overview",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "peace-score",
+      "serviceName": "peace-score",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "portfolio-risk",
+      "serviceName": "portfolio-risk",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "receivables",
+      "serviceName": "receivables",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "recurring-obligation",
+      "serviceName": "recurring-obligation",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "regime-engine",
+      "serviceName": "regime-engine",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "renewal-risk",
+      "serviceName": "renewal-risk",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "reserve-engine",
+      "serviceName": "reserve-engine",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "revenue-memory",
+      "serviceName": "revenue-memory",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "safe-to-spend",
+      "serviceName": "safe-to-spend",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "scenario-engine",
+      "serviceName": "scenario-engine",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "sinking-fund",
+      "serviceName": "sinking-fund",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "stress-radar",
+      "serviceName": "stress-radar",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "subscription-detector",
+      "serviceName": "subscription-detector",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "subscription-waste",
+      "serviceName": "subscription-waste",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "thesis-vault",
+      "serviceName": "thesis-vault",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "transaction-categorizer",
+      "serviceName": "transaction-categorizer",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "waste-detector",
+      "serviceName": "waste-detector",
+      "owner": "finance-os",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "flagship-loop-service",
+      "serviceName": "flagship-loop-service",
+      "owner": "flagship-loops",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "frontend-quality-engine",
+      "serviceName": "frontend-quality-engine",
+      "owner": "frontend",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "google-demo-provider",
+      "serviceName": "google-demo-provider",
+      "owner": "google-provider-family",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "google-provider-family",
+      "serviceName": "google-provider-family",
+      "owner": "google-provider-family",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "owner": "google-provider-family",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "account-graph",
+      "serviceName": "account-graph",
+      "owner": "identity-auth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-access",
+      "serviceName": "connector-access",
+      "owner": "identity-auth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "consent",
+      "serviceName": "consent",
+      "owner": "identity-auth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "identity-provider",
+      "serviceName": "identity-provider",
+      "owner": "identity-auth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "owner": "identity-auth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connector-sdk",
+      "serviceName": "connector-sdk",
+      "owner": "integration-hub",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "demo-connections",
+      "serviceName": "demo-connections",
+      "owner": "integration-hub",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "providers",
+      "serviceName": "providers",
+      "owner": "integration-hub",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "intent-orchestrator",
+      "serviceName": "intent-orchestrator",
+      "owner": "intent-orchestrator",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "launch-gate-service",
+      "serviceName": "launch-gate-service",
+      "owner": "launch-gate",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "launch-readiness-engine",
+      "serviceName": "launch-readiness-engine",
+      "owner": "launch-readiness",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "financial-literacy-engine",
+      "serviceName": "financial-literacy-engine",
+      "owner": "life-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "household-coaching-engine",
+      "serviceName": "household-coaching-engine",
+      "owner": "life-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "life-goal-tracker",
+      "serviceName": "life-goal-tracker",
+      "owner": "life-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "skill-monetization-advisor",
+      "serviceName": "skill-monetization-advisor",
+      "owner": "life-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "wealth-building-engine",
+      "serviceName": "wealth-building-engine",
+      "owner": "life-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "life-shock-simulator",
+      "serviceName": "life-shock-simulator",
+      "owner": "life-simulation",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "memory-governance-engine",
+      "serviceName": "memory-governance-engine",
+      "owner": "memory-governance",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "boardroom-memory",
+      "serviceName": "boardroom-memory",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "correction",
+      "serviceName": "correction",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "preference-memory",
+      "serviceName": "preference-memory",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "profile-memory",
+      "serviceName": "profile-memory",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "trust-memory",
+      "serviceName": "trust-memory",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "workflow-memory",
+      "serviceName": "workflow-memory",
+      "owner": "memory-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "collector",
+      "serviceName": "collector",
+      "owner": "meta-governance",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "context-assembler",
+      "serviceName": "context-assembler",
+      "owner": "mnemosyne",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "health-aggregator",
+      "serviceName": "health-aggregator",
+      "owner": "observability",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "observability-service",
+      "serviceName": "observability-service",
+      "owner": "observability",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "persistence",
+      "serviceName": "persistence",
+      "owner": "observability",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "ambient-intelligence",
+      "serviceName": "ambient-intelligence",
+      "owner": "os-awareness",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "personal-operating-graph",
+      "serviceName": "personal-operating-graph",
+      "owner": "personal-graph",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "auto-rules",
+      "serviceName": "auto-rules",
+      "owner": "personalization-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "behavioral-learning",
+      "serviceName": "behavioral-learning",
+      "owner": "personalization-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "platform-readiness-seeder",
+      "serviceName": "platform-readiness-seeder",
+      "owner": "platform-readiness",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "approval-requirements",
+      "serviceName": "approval-requirements",
+      "owner": "policy-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "outbound-comm-policy",
+      "serviceName": "outbound-comm-policy",
+      "owner": "policy-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "sensitive-doc-policy",
+      "serviceName": "sensitive-doc-policy",
+      "owner": "policy-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "truth-boundaries",
+      "serviceName": "truth-boundaries",
+      "owner": "policy-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "owner": "provider-family",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "push-registration-service",
+      "serviceName": "push-registration-service",
+      "owner": "push-notification",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "approval-receipts",
+      "serviceName": "approval-receipts",
+      "owner": "receipt-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "execution-receipts",
+      "serviceName": "execution-receipts",
+      "owner": "receipt-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "proof-bundles",
+      "serviceName": "proof-bundles",
+      "owner": "receipt-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "receipts",
+      "serviceName": "receipts",
+      "owner": "receipt-service",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "recommendation-loop-service",
+      "serviceName": "recommendation-loop-service",
+      "owner": "recommendation-execution",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "business-model-advisor",
+      "serviceName": "business-model-advisor",
+      "owner": "revenue-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "income-discovery-engine",
+      "serviceName": "income-discovery-engine",
+      "owner": "revenue-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "market-intelligence",
+      "serviceName": "market-intelligence",
+      "owner": "revenue-growth",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "security-posture-engine",
+      "serviceName": "security-posture-engine",
+      "owner": "security",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "security-privacy-service",
+      "serviceName": "security-privacy-service",
+      "owner": "security-privacy",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "heartbeat",
+      "serviceName": "heartbeat",
+      "owner": "service-registry",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "route-to-service-inventory",
+      "serviceName": "route-to-service-inventory",
+      "owner": "service-registry",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "service-ownership-registry",
+      "serviceName": "service-ownership-registry",
+      "owner": "service-registry",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "advisor-recommendation-engine",
+      "serviceName": "advisor-recommendation-engine",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "connection-recommendation-engine",
+      "serviceName": "connection-recommendation-engine",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "first-win-recommendation-engine",
+      "serviceName": "first-win-recommendation-engine",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "hardware-capability-service",
+      "serviceName": "hardware-capability-service",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "setup-summary-builder",
+      "serviceName": "setup-summary-builder",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "trust-calibration-service",
+      "serviceName": "trust-calibration-service",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "world-model-service",
+      "serviceName": "world-model-service",
+      "owner": "setup",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "diagnostic-bundle",
+      "serviceName": "diagnostic-bundle",
+      "owner": "support-diagnostics",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "incident-classification",
+      "serviceName": "incident-classification",
+      "owner": "support-diagnostics",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "replay-metadata",
+      "serviceName": "replay-metadata",
+      "owner": "support-diagnostics",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "support-summary",
+      "serviceName": "support-summary",
+      "owner": "support-diagnostics",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "surface-adapter-registry",
+      "serviceName": "surface-adapter-registry",
+      "owner": "surface-portability",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "surface-portability-service",
+      "serviceName": "surface-portability-service",
+      "owner": "surface-portability",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "timing-intelligence",
+      "serviceName": "timing-intelligence",
+      "owner": "timing-intelligence",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "trust-weighted-actions",
+      "serviceName": "trust-weighted-actions",
+      "owner": "trust-actions",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "truth-index-aggregator",
+      "serviceName": "truth-index-aggregator",
+      "owner": "truth-indices",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "postcondition-checks",
+      "serviceName": "postcondition-checks",
+      "owner": "verification-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "receipt-verification",
+      "serviceName": "receipt-verification",
+      "owner": "verification-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "replay-verification",
+      "serviceName": "replay-verification",
+      "owner": "verification-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "rollback-signals",
+      "serviceName": "rollback-signals",
+      "owner": "verification-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceId": "verification",
+      "serviceName": "verification",
+      "owner": "verification-engine",
+      "status": "active",
+      "healthScore": 75,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": true,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    }
+  ]
+}

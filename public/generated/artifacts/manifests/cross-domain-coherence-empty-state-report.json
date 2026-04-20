@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T17:24:58.495Z",
+  "gate": "cross-domain-coherence-empty-state",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/admin-empty-state-closure/CROSS_DOMAIN_COHERENCE_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/verification/CrossDomainCoherence.tsx",
+  "requiredForGreen": "verification-domain-pass: build CrossDomainCoherence.tsx + adopt PremiumEmptyState with canonical destination links"
+}

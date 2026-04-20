@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T17:49:59.689Z",
+  "gate": "admin-action-panel-hierarchy",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalPrimitive": "src/components/primitives/actions/OperatorActionPanel.tsx",
+  "canonicalSlotOrder": [
+    "primary",
+    "remediation",
+    "next",
+    "related",
+    "evidence"
+  ],
+  "classification": "warn-tier-primitive-availability"
+}

@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-19T03:30:15.884Z",
+  "gate": "generated-mobile-truth-consistency",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "allowedSubdir": "mobile-scope-closure"
+}

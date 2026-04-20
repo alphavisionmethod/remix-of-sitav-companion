@@ -1,0 +1,87 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:31.494Z",
+  "total": 20,
+  "outcomes": [
+    {
+      "name": "PackClass",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "OwnerType",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "EntitlementTier",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "PackStatus",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "PackManifest",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "StoreCategory",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "InternalApp",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "InstallState",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "PackAnalytics",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "INTERNAL_APPS",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "PACK_CATALOG",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "MOCK_INSTALL_STATES",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getPacksByCategory",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getFeaturedPacks",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getInstallState",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "isInstalled",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getInstalledPacks",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getPacksWithUpdates",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "getRecommendedPacks",
+      "source": "src/lib/pack-store/index.ts"
+    },
+    {
+      "name": "STORE_CATEGORIES",
+      "source": "src/lib/pack-store/index.ts"
+    }
+  ]
+}

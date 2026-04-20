@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-04-19T14:47:52.489Z",
+  "gate": "security-adversarial-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 4,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "rls",
+      "message": "pending-execution — no RLS stress runs"
+    },
+    {
+      "severity": "warning",
+      "area": "electron-drills",
+      "message": "partner-blocked — no Electron threat drill evidence captured"
+    },
+    {
+      "severity": "warning",
+      "area": "tamper-drills",
+      "message": "pending-drill — no real-device tamper drill recorded"
+    },
+    {
+      "severity": "warning",
+      "area": "session-runs",
+      "message": "pending-execution — no session-threat run evidence"
+    }
+  ],
+  "rls": {
+    "evidenceCount": 0
+  },
+  "electron": {
+    "wired": true,
+    "drillEvidence": 0
+  },
+  "debugger": {
+    "wired": true,
+    "drillEvidence": 0
+  },
+  "session": {
+    "wired": true,
+    "runEvidence": 0
+  },
+  "findingsRegister": true
+}

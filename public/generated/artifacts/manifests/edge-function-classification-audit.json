@@ -1,0 +1,2012 @@
+{
+  "generatedAt": "2026-04-17T00:26:11.258Z",
+  "schemaVersion": "1.0.0",
+  "totalFunctions": 85,
+  "categoryCounts": {
+    "ORCHESTRATION_FUNCTION": 18,
+    "WRAPPER_ONLY": 2,
+    "ADMIN_BFF": 1,
+    "DOMAIN_FUNCTION": 38,
+    "SPLIT_REQUIRED": 1,
+    "PUBLIC_BFF": 4,
+    "CONNECTOR_WEBHOOK_FUNCTION": 12,
+    "RUNTIME_SYSTEM_FUNCTION": 7,
+    "DEPRECATE_AND_REDIRECT": 1
+  },
+  "ambiguousCount": 4,
+  "highRiskTargets": [
+    {
+      "name": "admin-api",
+      "bytes": 59632,
+      "category": "WRAPPER_ONLY",
+      "subCategory": "admin-legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "duplicate-admin-ingress"
+      ],
+      "recommendedAction": "Convert to compatibility wrapper forwarding to admin-bff-gateway"
+    },
+    {
+      "name": "admin-bff-gateway",
+      "bytes": 8820,
+      "category": "ADMIN_BFF",
+      "subCategory": "bff-admin",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 6
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Canonical ADMIN_BFF"
+    },
+    {
+      "name": "admin-gateway",
+      "bytes": 3209,
+      "category": "WRAPPER_ONLY",
+      "subCategory": "admin-legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "duplicate-admin-ingress"
+      ],
+      "recommendedAction": "Convert to compatibility wrapper forwarding to admin-bff-gateway"
+    },
+    {
+      "name": "agent-executor",
+      "bytes": 22721,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "executor",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Sole executor choke point per HARD RULE"
+    },
+    {
+      "name": "agent-intelligence",
+      "bytes": 7797,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "ai-reasoning",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 6
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Resolved by Phase 16 — strict BackendCategory pinned in registry"
+    },
+    {
+      "name": "ambient-os-operations",
+      "bytes": 24931,
+      "category": "SPLIT_REQUIRED",
+      "subCategory": "runtime-mixed",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 11
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Resolved by Phase 16 — strict BackendCategory pinned in registry"
+    },
+    {
+      "name": "api-gateway",
+      "bytes": 41696,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-public",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [
+          "brain-core",
+          "ai-gateway",
+          "ai-gateway",
+          "cloud-sync-api"
+        ],
+        "routeCount": 5
+      },
+      "ambiguityFlags": [
+        "generic-gateway-name"
+      ],
+      "recommendedAction": "Constrain to PUBLIC_BFF non-admin or demote to wrapper if user-bff-gateway covers it"
+    },
+    {
+      "name": "brain-core",
+      "bytes": 34838,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "brain-orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 11
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Resolved by Phase 16 — strict BackendCategory pinned in registry"
+    },
+    {
+      "name": "cloud-admin-api",
+      "bytes": 6364,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Resolved by Phase 16 — strict BackendCategory pinned in registry"
+    },
+    {
+      "name": "intelligence-api",
+      "bytes": 40491,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-intelligence",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Strip orchestration; keep as PUBLIC_BFF for frontend AI queries only"
+    },
+    {
+      "name": "main",
+      "bytes": 2319,
+      "category": "DEPRECATE_AND_REDIRECT",
+      "subCategory": "legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "generic-name",
+        "likely-catch-all"
+      ],
+      "recommendedAction": "Audit; deprecate or rename to specific role; keep wrapper"
+    },
+    {
+      "name": "os-command",
+      "bytes": 2968,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "user-bff-gateway",
+      "bytes": 5480,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-user",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Canonical PUBLIC_BFF"
+    }
+  ],
+  "audits": [
+    {
+      "name": "admin-ai-workforce-run",
+      "bytes": 21250,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 5
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "admin-api",
+      "bytes": 59632,
+      "category": "WRAPPER_ONLY",
+      "subCategory": "admin-legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "duplicate-admin-ingress"
+      ],
+      "recommendedAction": "Convert to compatibility wrapper forwarding to admin-bff-gateway"
+    },
+    {
+      "name": "admin-bff-gateway",
+      "bytes": 8820,
+      "category": "ADMIN_BFF",
+      "subCategory": "bff-admin",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 6
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Canonical ADMIN_BFF"
+    },
+    {
+      "name": "admin-gateway",
+      "bytes": 3209,
+      "category": "WRAPPER_ONLY",
+      "subCategory": "admin-legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "duplicate-admin-ingress"
+      ],
+      "recommendedAction": "Convert to compatibility wrapper forwarding to admin-bff-gateway"
+    },
+    {
+      "name": "admin-intelligence",
+      "bytes": 13507,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 3
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "admin-users",
+      "bytes": 4699,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "admin-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-agent-loop",
+      "bytes": 15803,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "bytes": 6867,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "advisor-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-conversation",
+      "bytes": 4123,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "advisor-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "bytes": 45177,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "bytes": 4002,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "advisor-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "advisor-weekly-report",
+      "bytes": 5012,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "advisor-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "agent-executor",
+      "bytes": 22721,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "executor",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Sole executor choke point per HARD RULE"
+    },
+    {
+      "name": "agent-heartbeat",
+      "bytes": 3936,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "agent-intelligence",
+      "bytes": 7797,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "ai-reasoning",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 6
+      },
+      "ambiguityFlags": [
+        "overlap-with-brain-core"
+      ],
+      "recommendedAction": "Reasoning DOMAIN_FUNCTION OR merge into brain-core"
+    },
+    {
+      "name": "agent-scheduler",
+      "bytes": 6084,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "agent-signal",
+      "bytes": 5729,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "ai-gateway",
+      "bytes": 16569,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "ai-gateway",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "ai-health",
+      "bytes": 11294,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "ambient-os-operations",
+      "bytes": 24931,
+      "category": "SPLIT_REQUIRED",
+      "subCategory": "runtime-mixed",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 11
+      },
+      "ambiguityFlags": [
+        "mixes-ux-orchestration-with-runtime"
+      ],
+      "recommendedAction": "Split: UX-side → ORCHESTRATION_FUNCTION; runtime-side → RUNTIME_SYSTEM"
+    },
+    {
+      "name": "api-gateway",
+      "bytes": 41696,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-public",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [
+          "brain-core",
+          "ai-gateway",
+          "ai-gateway",
+          "cloud-sync-api"
+        ],
+        "routeCount": 5
+      },
+      "ambiguityFlags": [
+        "generic-gateway-name"
+      ],
+      "recommendedAction": "Constrain to PUBLIC_BFF non-admin or demote to wrapper if user-bff-gateway covers it"
+    },
+    {
+      "name": "app-store-api",
+      "bytes": 3366,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 6
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "booking-manage",
+      "bytes": 5937,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "user-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "brain-core",
+      "bytes": 34838,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "brain-orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 11
+      },
+      "ambiguityFlags": [
+        "mixes-aggregation"
+      ],
+      "recommendedAction": "ORCHESTRATION_FUNCTION; strip frontend-safe response shaping"
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "bytes": 6707,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "business-board-api",
+      "bytes": 18044,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [
+          "advisor-deep-intelligence"
+        ],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cashflow-calculate",
+      "bytes": 5482,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "chat-advisor",
+      "bytes": 21007,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "check-ai-budget",
+      "bytes": 3222,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-admin-api",
+      "bytes": 6364,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "admin-aggregator-overlap"
+      ],
+      "recommendedAction": "Reclassify as DOMAIN_FUNCTION (cloud control plane); stop claiming admin BFF role"
+    },
+    {
+      "name": "cloud-device-api",
+      "bytes": 4019,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "bytes": 6025,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-storage-api",
+      "bytes": 10473,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-sync-api",
+      "bytes": 5044,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-tenant-api",
+      "bytes": 4201,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cloud-worker-api",
+      "bytes": 5663,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "cloud-control-plane",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "communications-api",
+      "bytes": 2714,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-batch",
+      "bytes": 11056,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 5
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-discover",
+      "bytes": 7596,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-health",
+      "bytes": 3069,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-oauth",
+      "bytes": 11530,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-operations",
+      "bytes": 17787,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 10
+      },
+      "ambiguityFlags": [
+        "high-route-count-10"
+      ],
+      "recommendedAction": "Review: high-route-count-10"
+    },
+    {
+      "name": "connector-proxy",
+      "bytes": 6195,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-sync",
+      "bytes": 1952,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 3
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "connector-transform",
+      "bytes": 12011,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "cost-alert",
+      "bytes": 2874,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "crm-sync",
+      "bytes": 4903,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "device-telemetry",
+      "bytes": 3054,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "digital-twin-engine",
+      "bytes": 2701,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "ecosystem-operations",
+      "bytes": 20298,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 9
+      },
+      "ambiguityFlags": [
+        "high-route-count-9",
+        "possible-aggregation"
+      ],
+      "recommendedAction": "Review: high-route-count-9, possible-aggregation"
+    },
+    {
+      "name": "event-processor",
+      "bytes": 10659,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 5
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "file-ingestion",
+      "bytes": 7032,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "gdpr-delete",
+      "bytes": 4192,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": true,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "gdpr-export",
+      "bytes": 3686,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "get-weather",
+      "bytes": 3504,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "user-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "health-check",
+      "bytes": 571,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "intelligence-api",
+      "bytes": 40491,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-intelligence",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Strip orchestration; keep as PUBLIC_BFF for frontend AI queries only"
+    },
+    {
+      "name": "investment-portfolio-api",
+      "bytes": 2419,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "invoice-generate",
+      "bytes": 5864,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "license-gateway",
+      "bytes": 18151,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": true,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 7
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "main",
+      "bytes": 2319,
+      "category": "DEPRECATE_AND_REDIRECT",
+      "subCategory": "legacy",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [
+        "generic-name",
+        "likely-catch-all"
+      ],
+      "recommendedAction": "Audit; deprecate or rename to specific role; keep wrapper"
+    },
+    {
+      "name": "msa-operations",
+      "bytes": 23322,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 7
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "os-agent-channel",
+      "bytes": 10207,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": true,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "os-command",
+      "bytes": 2968,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "os-status",
+      "bytes": 3657,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "payment-kill-switch",
+      "bytes": 2338,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": true,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "payment-process",
+      "bytes": 5740,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "personal-brain",
+      "bytes": 9114,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "user-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "provider-family-operations",
+      "bytes": 16599,
+      "category": "CONNECTOR_WEBHOOK_FUNCTION",
+      "subCategory": "connector",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 9
+      },
+      "ambiguityFlags": [
+        "high-route-count-9"
+      ],
+      "recommendedAction": "Review: high-route-count-9"
+    },
+    {
+      "name": "push-dispatch",
+      "bytes": 17711,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "notification",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": true,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "push-track",
+      "bytes": 1778,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "notification",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "revenue-caller",
+      "bytes": 6970,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "runtime-probes",
+      "bytes": 13094,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "scheduler-dispatch",
+      "bytes": 8890,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "seed-user-data",
+      "bytes": 22424,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "self-healing",
+      "bytes": 5346,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": true,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "simulation-engine-api",
+      "bytes": 3087,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "support-gateway",
+      "bytes": 3857,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-support",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "system-updates",
+      "bytes": 4200,
+      "category": "RUNTIME_SYSTEM_FUNCTION",
+      "subCategory": "runtime",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "tasks-workflow-api",
+      "bytes": 3526,
+      "category": "ORCHESTRATION_FUNCTION",
+      "subCategory": "orchestration",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": true,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "tax-estimate",
+      "bytes": 7033,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "finance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "user-bff-gateway",
+      "bytes": 5480,
+      "category": "PUBLIC_BFF",
+      "subCategory": "bff-user",
+      "signals": {
+        "hasMultiAction": true,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": true,
+        "hasAdminCheck": false,
+        "hasJwtCheck": true,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 4
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Canonical PUBLIC_BFF"
+    },
+    {
+      "name": "vapid-public-key",
+      "bytes": 735,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "platform-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": false,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    },
+    {
+      "name": "verification-recorder",
+      "bytes": 3615,
+      "category": "DOMAIN_FUNCTION",
+      "subCategory": "compliance-domain",
+      "signals": {
+        "hasMultiAction": false,
+        "hasOrchestration": false,
+        "hasWebhookSig": false,
+        "hasRuntimeChannel": false,
+        "hasAggregation": false,
+        "hasAdminCheck": false,
+        "hasJwtCheck": false,
+        "hasServiceRole": true,
+        "callsOtherFunctions": [],
+        "routeCount": 0
+      },
+      "ambiguityFlags": [],
+      "recommendedAction": "Keep as classified"
+    }
+  ],
+  "phase16Resolutions": [
+    "agent-intelligence",
+    "ambient-os-operations",
+    "brain-core",
+    "cloud-admin-api"
+  ]
+}

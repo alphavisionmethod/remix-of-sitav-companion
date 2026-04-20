@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T18:10:54.324Z",
+  "gate": "trust-state-consistency",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-regression-guard",
+  "surfacesScanned": 97,
+  "canonicalAdoption": 50,
+  "rawEmptyOffenders": 0
+}

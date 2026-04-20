@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-11T00:00:00.000Z",
+  "layer": "userspace",
+  "bootTargets": [
+    { "id": "basic.target", "description": "Minimal system — watchdog, journal, device manager", "phase": 1 },
+    { "id": "filesystem.target", "description": "Filesystems mounted, dm-verity active", "phase": 2 },
+    { "id": "security.target", "description": "TPM, PolicyKit, crypto subsystem ready", "phase": 3 },
+    { "id": "network.target", "description": "Network interfaces configured, DNS resolving", "phase": 4 },
+    { "id": "sita-runtime.target", "description": "SITA services ready — sessions, cron, updates", "phase": 5 },
+    { "id": "desktop.target", "description": "Desktop surface ready for user interaction", "phase": 6 }
+  ],
+  "daemons": [
+    { "id": "sita-watchdogd", "target": "basic.target", "critical": true, "restartPolicy": "always" },
+    { "id": "sita-journald", "target": "basic.target", "critical": true, "restartPolicy": "always" },
+    { "id": "sita-deviced", "target": "basic.target", "critical": true, "restartPolicy": "always" },
+    { "id": "sita-networkd", "target": "network.target", "critical": true, "restartPolicy": "always" },
+    { "id": "sita-resolved", "target": "network.target", "critical": false, "restartPolicy": "always" },
+    { "id": "sita-sessiond", "target": "sita-runtime.target", "critical": false, "restartPolicy": "always" },
+    { "id": "sita-crond", "target": "sita-runtime.target", "critical": false, "restartPolicy": "on-failure" },
+    { "id": "sita-updated", "target": "sita-runtime.target", "critical": false, "restartPolicy": "on-failure" },
+    { "id": "sita-tpmd", "target": "security.target", "critical": false, "restartPolicy": "on-failure" },
+    { "id": "sita-polkitd", "target": "security.target", "critical": false, "restartPolicy": "always" }
+  ],
+  "repositories": [
+    { "id": "sita-core", "url": "https://packages.sita.os/core", "trusted": true },
+    { "id": "sita-security", "url": "https://packages.sita.os/security", "trusted": true }
+  ],
+  "services": {
+    "initSystem": "Dependency-ordered boot with DAG resolution, watchdog timers, target groups",
+    "daemonRegistry": "10 canonical system daemons with health probes and resource limits",
+    "packageManager": "Transactional install/upgrade/rollback with signature verification",
+    "journalSubsystem": "Structured ring-buffer journal with crash dumps and diagnostic snapshots",
+    "configManager": "Typed KV store with overlay hierarchy (default → system → user → runtime)"
+  }
+}

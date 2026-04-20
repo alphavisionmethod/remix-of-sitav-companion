@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-19T16:38:23.974Z",
+  "gate": "mobile-submission-blockers-report",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "note": "mobile-archived-no-active-program",
+  "classification": "ARCHIVED / FUTURE_VISION_ONLY",
+  "source": "generated/mobile-scope-closure/",
+  "seeAlso": [
+    "archive/mobile/ARCHIVED.md",
+    "docs/MOBILE_HONESTY.md",
+    "generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md"
+  ],
+  "rationale": "Native iOS/Android is archived. This stub satisfies the final-mobile-truth meta-gate by declaring honest archived posture rather than fabricating live program evidence."
+}

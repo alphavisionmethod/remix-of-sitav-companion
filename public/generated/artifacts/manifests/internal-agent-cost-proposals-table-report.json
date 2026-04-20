@@ -1,0 +1,10 @@
+{
+  "gate": "internal-agent-cost-proposals-table",
+  "level": "BLOCK",
+  "ok": true,
+  "required": [
+    "internal_agent_cost_proposals"
+  ],
+  "missing": [],
+  "generated_at": "2026-04-18T23:53:44.949Z"
+}

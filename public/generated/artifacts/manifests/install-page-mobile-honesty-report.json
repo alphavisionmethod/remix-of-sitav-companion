@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T03:30:12.213Z",
+  "gate": "install-page-mobile-honesty",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "surfaces": [
+    "src/pages/DownloadPage.tsx",
+    "src/pages/DownloadsCenter.tsx",
+    "src/pages/app-platform/ExternalInstallerPage.tsx"
+  ],
+  "honestyDoc": "docs/MOBILE_HONESTY.md"
+}

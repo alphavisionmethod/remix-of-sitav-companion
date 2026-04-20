@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-18T14:39:47.846Z",
+  "gate": "route-topology-truth",
+  "level": "warn-with-ratchet",
+  "totalRoutes": 493,
+  "totalPages": 1047,
+  "unresolvedRoutes": 26,
+  "deadPages": 53,
+  "combinedDrift": 79,
+  "budget": 90,
+  "ok": true
+}

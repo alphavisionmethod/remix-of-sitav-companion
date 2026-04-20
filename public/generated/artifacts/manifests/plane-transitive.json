@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-04-18T12:11:16.852Z",
+  "gate": "plane-transitive",
+  "directViolationCount": 0,
+  "transitiveViolationCount": 12,
+  "transitiveBudget": 20,
+  "level": "warn",
+  "ok": true,
+  "directSample": [],
+  "transitiveSample": [
+    {
+      "from": "src/app/index.ts",
+      "via": "src/App.tsx",
+      "to": "src/components/admin/AdminCommandPalette.tsx"
+    },
+    {
+      "from": "src/pages/Boardroom.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/DigitalTwinsPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/ObservabilityPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/ScenarioLabPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/UsersAdminPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/WorkflowReplayHub.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/advisors/AdvisorWorkspace.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/mission/PolicySimulatorPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/mission-control/MissionControlPage.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/workspace/OperatorWorkspace.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    },
+    {
+      "from": "src/pages/workspace/PrincipalWorkspace.tsx",
+      "via": "src/packages/contracts/index.ts",
+      "to": "src/packages/contracts/admin/index.ts"
+    }
+  ],
+  "sharedPresentationalAllowlist": [
+    "src/components/sita/admin/"
+  ]
+}

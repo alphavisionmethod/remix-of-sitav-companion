@@ -1,0 +1,339 @@
+{
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:17.252Z",
+  "totalBaselines": 30,
+  "captured": 0,
+  "pending": 30,
+  "baselines": [
+    {
+      "route": "/auth/callback",
+      "component": "EmailVerificationHandler",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/home",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/desktop",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/pulse",
+      "component": "DailyPulse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/daily-pulse",
+      "component": "DailyPulse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/profile",
+      "component": "UserProfilePage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/life",
+      "component": "LifeDashboard",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/life-simulator",
+      "component": "LifeSimulator",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/personal-life",
+      "component": "PersonalLifeWorkspace",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/downloads",
+      "component": "DownloadsCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/storage",
+      "component": "StorageManager",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/network",
+      "component": "NetworkUtility",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/planning-canvas",
+      "component": "PlanningCanvas",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/my-activity",
+      "component": "MyActivity",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/overview",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/leads",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/customers",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/opportunities",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/quotes",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/invoices",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/collections",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/revenue-autopilot",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/autopilot-hub",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/revenue-impact",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/playbook-builder",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/revenue-forecast",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/communications",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/business/boardroom",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    }
+  ]
+}

@@ -1,0 +1,4003 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:41.450Z",
+  "total": 333,
+  "matrix": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MessageChannel",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MessageDirection",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MessageSentiment",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CustomerMessage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MessageThread",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealRiskCategory",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealRisk",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealRiskAssessment",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealStage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealCloseReason",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealStakeholder",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealTimeline",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Deal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DealForecast",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HandoffTrigger",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HandoffRoute",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HandoffCondition",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HandoffExecution",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "modal"
+    },
+    {
+      "capabilityId": "HandoffMetrics",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvoiceAgingBucket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvoiceFollowUpPlan",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FollowUpStep",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionsMetrics",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PaymentPlanProposal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "modal"
+    },
+    {
+      "capabilityId": "LeadStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadSource",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadTemperature",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadScoreBreakdown",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadEnriched",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadReactivationPlan",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NoShowRisk",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NoShowRiskFactor",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPlan",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NoShowAnalytics",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityStage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityActivity",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutboundChannel",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutboundPurpose",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutboundTemplate",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutboundCampaign",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CommunicationPreferences",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SequenceEnrollment",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutreachGoal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutreachPlan",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutreachAudienceFilter",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutreachStep",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OutreachPerformanceReport",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PipelineStageConfig",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PipelineAutomation",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PipelineConfig",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PipelineSnapshot",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PricingModel",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DiscountType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PricingProposal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PricingLineItem",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AppliedDiscount",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PricingGuidance",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteLineItem",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteExpanded",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteComparisonResult",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReferralStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReferralPrompt",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReferralRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReferralProgramMetrics",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RepeatPurchaseTiming",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PurchasePatternAnalysis",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueLeakType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueLeakageSignal",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueLeakageDashboard",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionsStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CollectionsAccountState",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EstimateStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EstimateRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvoiceStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvoiceRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OnboardingRevenueBootstrapPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PaymentProofLink",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "modal"
+    },
+    {
+      "capabilityId": "ProposalRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReminderPackage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueApprovalPackage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueMetricsSnapshot",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueWaterfall",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CohortAnalysis",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RevenueSendPackage",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReviewType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReviewUrgency",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReviewRequest",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReviewPolicy",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceOrderStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceOrder",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceLineItem",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceOrderMetrics",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TaskPriority",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TaskStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TaskAssignment",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TaskWorkload",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalApprovalDefault",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ApprovalCondition",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalCommsTemplate",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalPackConfig",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalModule",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalPlaybook",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PlaybookStep",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VerticalRoleDefault",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BookingRequestSubmission",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FormFieldType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FormDefinition",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FormSubmission",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeadAttributionRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OnboardingSiteBootstrapPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PageType",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PageRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PageVersion",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PublishRequest",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PublishResult",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "QuoteRequestSubmission",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SiteStatus",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SiteRecord",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "WebsiteLeadRoutingPacket",
+      "domain": "business",
+      "shellSection": "business",
+      "surfaceRoutes": [
+        "/business",
+        "/business/overview",
+        "/business/leads"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StressSeverity",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StressCategory",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StressSignal",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StressRadarResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LifeEventType",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LifeEvent",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LifeMoneyImpact",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MoneyModeId",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MoneyMode",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AllocationBucket",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AllocationEntry",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AllocationStrategy",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CashAllocationPlan",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "IncomeQualityDimension",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "IncomeQualityScore",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PeaceScoreDimension",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PeaceScoreResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TrustNodeType",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TrustEdgeHealth",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FinancialTrustNode",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FinancialTrustEdge",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FinancialTrustGraph",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityCostEntry",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RitualFrequency",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MoneyRitual",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RitualStep",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EmotionalPatternType",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EmotionalPattern",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DebtProfile",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DebtAccount",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PayoffPlan",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PayoffMilestone",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CreditScorePulse",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CreditFactor",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EnvelopeBudget",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EnvelopeGroup",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Envelope",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EnvelopeAllocationRule",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdFinanceSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SharedGoal",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MemberFinanceSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FinancialHealthScore",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HealthDimension",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HealthActionItem",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FounderBoundaryAlert",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "modal"
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ScenarioInput",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ScenarioOutput",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "shellSection": "money",
+      "surfaceRoutes": [
+        "/money/onboarding",
+        "/money",
+        "/money/overview"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AppointmentType",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Appointment",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AvailabilityWindow",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "AvailabilityMatrix",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CalendarConflict",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ConciergeBoardroomPacket",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PulseCategory",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DailyPulseItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "DailyPulse",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ErrandBundle",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ErrandItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EventPlan",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FamilyBoardroomPacket",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FamilyLoadBalance",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MemberLoad",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "FamilyMemberProfile",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "GiftPlan",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdMaintenanceItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "HouseholdResponsibility",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "InventoryItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Itinerary",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ItineraryDay",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ItineraryActivity",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PackingPlan",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PackingCategory",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PantryReplenishment",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PrepSequence",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "PrepStep",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReservationMemory",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "Reservation",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RouteGrouping",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ScheduleItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SchoolActivity",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ServiceProviderMemory",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TravelDisruption",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "TripLeg",
+      "domain": "concierge",
+      "shellSection": "concierge",
+      "surfaceRoutes": [
+        "/concierge",
+        "/concierge/overview",
+        "/concierge/calendar"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "shellSection": "admin",
+      "surfaceRoutes": [
+        "/admin",
+        "/admin/dashboard",
+        "/admin/ai-runtime"
+      ],
+      "hasDedicatedRoute": true,
+      "panelType": "full"
+    }
+  ]
+}

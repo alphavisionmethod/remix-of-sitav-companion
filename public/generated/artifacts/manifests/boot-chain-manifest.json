@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "stages": [
+    {
+      "order": 0,
+      "name": "UEFI Firmware",
+      "pcrBanks": ["PCR0", "PCR1"],
+      "verifies": "Platform firmware integrity",
+      "signingAuthority": "OEM",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 1,
+      "name": "Shim",
+      "pcrBanks": ["PCR4"],
+      "verifies": "Secure Boot chain-of-trust bridge",
+      "signingAuthority": "Canonical UEFI CA",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 2,
+      "name": "systemd-boot",
+      "pcrBanks": ["PCR4"],
+      "verifies": "Bootloader integrity",
+      "signingAuthority": "Canonical Kernel Signing Key",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 3,
+      "name": "Linux Kernel",
+      "pcrBanks": ["PCR8"],
+      "verifies": "Kernel binary + command line",
+      "signingAuthority": "Canonical Kernel Signing Key",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 4,
+      "name": "Initramfs",
+      "pcrBanks": ["PCR9"],
+      "verifies": "Initial RAM filesystem integrity",
+      "signingAuthority": "SITA OS Initramfs Signing Key",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 5,
+      "name": "dm-verity Root Filesystem",
+      "pcrBanks": ["PCR10"],
+      "verifies": "Root filesystem block-level integrity",
+      "signingAuthority": "SITA OS Build System",
+      "hash": "measured-at-boot"
+    },
+    {
+      "order": 6,
+      "name": "systemd Units",
+      "pcrBanks": [],
+      "verifies": "Service dependency chain",
+      "signingAuthority": "Package manager",
+      "hash": "config-hash"
+    },
+    {
+      "order": 7,
+      "name": "sita-runtime.service",
+      "pcrBanks": [],
+      "verifies": "SITA runtime process integrity",
+      "signingAuthority": "SITA OS Code Signing Key",
+      "hash": "binary-hash"
+    },
+    {
+      "order": 8,
+      "name": "First-Boot Provisioning",
+      "pcrBanks": [],
+      "verifies": "Device identity, tenant binding, key generation",
+      "signingAuthority": "SITA Runtime",
+      "hash": "envelope-hash",
+      "conditional": "only on first boot"
+    }
+  ],
+  "measurements": {
+    "pcrIndexes": ["PCR0", "PCR1", "PCR4", "PCR8", "PCR9", "PCR10"],
+    "hashAlgorithm": "SHA-256",
+    "eventLogFormat": "TCG-PC-Client-2",
+    "attestationMethod": "TPM2_Quote"
+  },
+  "failureModes": {
+    "secureBootDisabled": {
+      "action": "continue-with-warning",
+      "trustImpact": "reduced-trust baseline, recorded in proof chain"
+    },
+    "tpmAbsent": {
+      "action": "software-only-keys",
+      "trustImpact": "software-only trust baseline"
+    },
+    "dmVerityFailed": {
+      "action": "halt-boot",
+      "trustImpact": "blocked — root filesystem compromised"
+    },
+    "initramfsCorrupted": {
+      "action": "halt-boot",
+      "trustImpact": "blocked — initramfs integrity failure"
+    }
+  }
+}

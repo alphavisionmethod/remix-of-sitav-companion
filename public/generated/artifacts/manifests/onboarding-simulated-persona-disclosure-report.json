@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-19T16:56:22.087Z",
+  "gate": "onboarding-simulated-persona-disclosure",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 2,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "user-flagship-deferred",
+      "message": "User onboarding screens (src/pages/onboarding/**) not present — DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md."
+    },
+    {
+      "severity": "warning",
+      "area": "simulated-persona-banner",
+      "message": "Centralized SimulatedPersonaBanner component not enforced — DEFERRED. Will be required when user surface is built."
+    }
+  ],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md",
+  "canonicalRuntime": {
+    "daemon": "src/lib/services/onboarding-daemon/index.ts",
+    "hook": "src/hooks/useOnboardingDaemon.ts"
+  },
+  "requiredForGreen": "user-flagship-pass: build src/pages/onboarding/** with SimulatedPersonaBanner"
+}

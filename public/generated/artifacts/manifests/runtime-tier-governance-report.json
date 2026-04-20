@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-04-16T18:51:29.595Z",
+  "totalChecks": 6,
+  "passed": 6,
+  "failed": 0,
+  "passRate": 100,
+  "results": [
+    {
+      "id": "feature-tier-classification",
+      "script": "scripts/runtime/checks/check-feature-tier-classification.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "📋 48 runtime-tiered features registered\n✅ check-feature-tier-classification: All checks passed",
+      "stderr": ""
+    },
+    {
+      "id": "runtime-capability-enforcement",
+      "script": "scripts/runtime/checks/check-runtime-capability-enforcement.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "🛡️  0/1 runtime-sensitive call sites have a capability gate\n  ⚠️ [ungated-capability] src/hooks/use-realtime-notifications.ts: Uses runtime-sensitive API for \"any-electron-bridge\" without a capability gate",
+      "stderr": "⚠️ check-runtime-capability-enforcement: 1 warning(s)"
+    },
+    {
+      "id": "launch-honesty",
+      "script": "scripts/runtime/checks/check-launch-honesty.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "📣 Scanned 1901 files, 0 claims flagged for review\n✅ check-launch-honesty: All checks passed",
+      "stderr": ""
+    },
+    {
+      "id": "desktop-bridge-isolation",
+      "script": "scripts/runtime/checks/check-desktop-bridge-isolation.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "🔒 1938 files scanned, 0 desktop-bridge leaks\n✅ check-desktop-bridge-isolation: All checks passed",
+      "stderr": ""
+    },
+    {
+      "id": "appliance-isolation",
+      "script": "scripts/runtime/checks/check-appliance-isolation.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "📦 1009 pages scanned, 0 appliance-isolation breaches\n✅ check-appliance-isolation: All checks passed",
+      "stderr": ""
+    },
+    {
+      "id": "simulated-os-truth",
+      "script": "scripts/runtime/checks/check-simulated-os-truth.ts",
+      "passed": true,
+      "exitCode": 0,
+      "stdout": "🎭 6 simulated-surface files checked, 6 missing disclosure\n  ⚠️ [missing-disclosure] src/components/sita/boot/BootAccessibilityShortcut.tsx: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.\n  ⚠️ [missing-disclosure] src/components/sita/boot/BootHandoffTransition.tsx: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.\n  ⚠️ [missing-disclosure] src/components/sita/boot/BootRecoveryCard.tsx: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.\n  ⚠️ [missing-disclosure] src/components/sita/boot/HardwareDetectionPanel.tsx: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.\n  ⚠️ [missing-disclosure] src/components/sita/boot/SecureInitCeremony.tsx: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.\n  ⚠️ [missing-disclosure] src/components/sita/boot/bootStatePersistence.ts: boot-sequence surface lacks tier disclosure. Boot UI must reference simulation context outside APPLIANCE_RUNTIME.",
+      "stderr": "⚠️ check-simulated-os-truth: 6 warning(s)"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-20T00:24:06.046Z",
+  "gate": "stale-deleted-paths",
+  "description": "Detects string-literal references to physically deleted Wave 2 shim folders.",
+  "deletedPaths": [
+    "src/lib/canonical-backend/",
+    "src/lib/simulation/",
+    "src/lib/mock-data/",
+    "src/lib/demo-data/",
+    "src/lib/seed/"
+  ],
+  "allowlistPatterns": [
+    "^scripts\\/architecture\\/perform-real-migration-wave\\d+\\.ts$",
+    "^scripts\\/architecture\\/rewire-consumers-wave\\d+\\.ts$",
+    "^scripts\\/architecture\\/checks\\/check-stale-deleted-paths\\.ts$",
+    "^scripts\\/architecture\\/checks\\/check-cosmetic-debt-closure\\.ts$",
+    "^scripts\\/architecture\\/checks\\/check-lib-ownership-drift\\.ts$",
+    "^scripts\\/architecture\\/checks\\/check-residual-lib-canonicality\\.ts$",
+    "^scripts\\/migrate\\/",
+    "^public\\/generated\\/PROJECT_TREE_AUDIT\\.md$",
+    "^docs\\/architecture\\/MIGRATION-BLUEPRINT\\.md$",
+    "^docs\\/refactor\\/",
+    "^generated\\/"
+  ],
+  "violations": [],
+  "ok": true,
+  "errorCount": 0
+}

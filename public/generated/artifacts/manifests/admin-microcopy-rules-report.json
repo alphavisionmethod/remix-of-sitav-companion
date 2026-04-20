@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T17:49:59.671Z",
+  "gate": "admin-microcopy-rules",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 677,
+  "offenderCount": 0,
+  "bannedPhrases": [
+    "\\bComing soon\\b",
+    "\\bCheck back later\\b",
+    "\\bNothing here yet\\b",
+    "\\bStay tuned\\b",
+    "\\bWhoops\\b",
+    "\\bWorking on it\\b"
+  ],
+  "classification": "warn-tier-microcopy-discipline"
+}

@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-17T06:00:00.000Z",
+  "phase": "phase-26-manifest-truth",
+  "gate": "manifest-theater-elimination",
+  "ok": true,
+  "totals": {
+    "registry": 111,
+    "onDiskJson": 99,
+    "onDiskMd": 9,
+    "orphanOnDisk": 0,
+    "phantomEntries": 0,
+    "missingValidators": 0
+  },
+  "byClass": {
+    "structural": 38,
+    "contract": 7,
+    "runtime": 16,
+    "compliance": 31,
+    "informational": 19
+  },
+  "byAuthority": {
+    "authoritative": 29,
+    "derived": 63,
+    "informational": 19
+  },
+  "orphanOnDisk": [],
+  "phantomEntries": [],
+  "missingValidators": []
+}

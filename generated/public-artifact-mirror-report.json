@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T02:58:09.010Z",
+  "gate": "public-artifact-mirror",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "policyMatches": 528,
+  "indexedCount": 528,
+  "mirrorRoot": "public/generated/artifacts",
+  "indexPath": "public/generated/artifact-index.json",
+  "minThreshold": 50
+}

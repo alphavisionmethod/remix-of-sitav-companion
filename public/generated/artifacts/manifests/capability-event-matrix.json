@@ -1,0 +1,4613 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:41.450Z",
+  "total": 333,
+  "matrix": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "MessageChannel",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "MessageDirection",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "MessageSentiment",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CustomerMessage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "MessageThread",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealRiskCategory",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealRisk",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealRiskAssessment",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealStage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealCloseReason",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealStakeholder",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealTimeline",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "Deal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DealForecast",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "HandoffTrigger",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "HandoffRoute",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "HandoffCondition",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "HandoffExecution",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "HandoffMetrics",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "InvoiceAgingBucket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "InvoiceFollowUpPlan",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "FollowUpStep",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionsMetrics",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PaymentPlanProposal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadSource",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadTemperature",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadScoreBreakdown",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadEnriched",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadReactivationPlan",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NoShowRisk",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NoShowRiskFactor",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NoShowRecoveryPlan",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NoShowAnalytics",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OpportunityStage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OpportunityRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OpportunityActivity",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutboundChannel",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutboundPurpose",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutboundTemplate",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutboundCampaign",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CommunicationPreferences",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "SequenceEnrollment",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutreachGoal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutreachPlan",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutreachAudienceFilter",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutreachStep",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OutreachPerformanceReport",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PipelineStageConfig",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PipelineAutomation",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PipelineConfig",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PipelineSnapshot",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PricingModel",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "DiscountType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PricingProposal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PricingLineItem",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "AppliedDiscount",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PricingGuidance",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteLineItem",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteExpanded",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteComparisonResult",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReferralStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReferralPrompt",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReferralRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReferralProgramMetrics",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RepeatPurchaseTiming",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PurchasePatternAnalysis",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueLeakType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueLeakageSignal",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueLeakageDashboard",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionsStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CollectionsAccountState",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "EstimateStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "EstimateRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "InvoiceStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "InvoiceRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OnboardingRevenueBootstrapPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PaymentProofLink",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ProposalRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReminderPackage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueApprovalPackage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueMetricsSnapshot",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueWaterfall",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "CohortAnalysis",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "RevenueSendPackage",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReviewType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReviewUrgency",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReviewRequest",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ReviewPolicy",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ServiceOrderStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ServiceOrder",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ServiceLineItem",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ServiceOrderMetrics",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "TaskPriority",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "TaskStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "TaskAssignment",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "TaskWorkload",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalApprovalDefault",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "ApprovalCondition",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalCommsTemplate",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalPackConfig",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalModule",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalPlaybook",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PlaybookStep",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "VerticalRoleDefault",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "BookingRequestSubmission",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "FormFieldType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "FormDefinition",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "FormSubmission",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "LeadAttributionRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "OnboardingSiteBootstrapPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PageType",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PageRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PageVersion",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PublishRequest",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "PublishResult",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "QuoteRequestSubmission",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "SiteStatus",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "SiteRecord",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "WebsiteLeadRoutingPacket",
+      "domain": "business",
+      "emittedEvents": [
+        "lead.captured",
+        "lead.scored",
+        "lead.converted"
+      ],
+      "consumedEvents": [
+        "customer.created",
+        "customer.health-changed"
+      ],
+      "totalEvents": 11
+    },
+    {
+      "capabilityId": "StressSeverity",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "StressCategory",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "StressSignal",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "StressRadarResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LifeEventType",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LifeEvent",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LifeMoneyImpact",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MoneyModeId",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MoneyMode",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "AllocationBucket",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "AllocationEntry",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "AllocationStrategy",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CashAllocationPlan",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "IncomeQualityDimension",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "IncomeQualityScore",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "PeaceScoreDimension",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "PeaceScoreResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "TrustNodeType",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "TrustEdgeHealth",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FinancialTrustNode",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FinancialTrustEdge",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FinancialTrustGraph",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "OpportunityCostEntry",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RitualFrequency",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MoneyRitual",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RitualStep",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EmotionalPatternType",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EmotionalPattern",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "DebtProfile",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "DebtAccount",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "PayoffPlan",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "PayoffMilestone",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CreditScorePulse",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CreditFactor",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EnvelopeBudget",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EnvelopeGroup",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "Envelope",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EnvelopeAllocationRule",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "HouseholdFinanceSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "SharedGoal",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MemberFinanceSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FinancialHealthScore",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "HealthDimension",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "HealthActionItem",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FounderBoundaryAlert",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ScenarioInput",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "ScenarioOutput",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "emittedEvents": [
+        "account.synced",
+        "transaction.categorized",
+        "bill.upcoming"
+      ],
+      "consumedEvents": [
+        "bill.paid",
+        "subscription.detected"
+      ],
+      "totalEvents": 9
+    },
+    {
+      "capabilityId": "AppointmentType",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "Appointment",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "AvailabilityWindow",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "AvailabilityMatrix",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "CalendarConflict",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ConciergeBoardroomPacket",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PulseCategory",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "DailyPulseItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "DailyPulse",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ErrandBundle",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ErrandItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "EventPlan",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "FamilyBoardroomPacket",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "FamilyLoadBalance",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "MemberLoad",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "FamilyMemberProfile",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "GiftPlan",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "HouseholdMaintenanceItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "HouseholdResponsibility",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "InventoryItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "Itinerary",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ItineraryDay",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ItineraryActivity",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PackingPlan",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PackingCategory",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PantryReplenishment",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PrepSequence",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "PrepStep",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ReservationMemory",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "Reservation",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "RouteGrouping",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ScheduleItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "SchoolActivity",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ServiceProviderMemory",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "TravelDisruption",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "TripLeg",
+      "domain": "concierge",
+      "emittedEvents": [
+        "task.created",
+        "task.completed",
+        "booking.confirmed"
+      ],
+      "consumedEvents": [
+        "calendar.conflict-detected",
+        "reminder.triggered"
+      ],
+      "totalEvents": 5
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "emittedEvents": [],
+      "consumedEvents": [],
+      "totalEvents": 0
+    }
+  ]
+}

@@ -1,0 +1,2338 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:41.450Z",
+  "total": 333,
+  "matrix": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/booking-confirmation.ts"
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/booking.ts"
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/booking.ts"
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts"
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts"
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts"
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts"
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/callback-task.ts"
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/callback-task.ts"
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/capacity-monetization-signal.ts"
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts"
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts"
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/contact-record.ts"
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/contact-record.ts"
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-dashboard-view.ts"
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-health-score.ts"
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-risk-summary.ts"
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts"
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts"
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts"
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts"
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/onboarding-customer-bootstrap-packet.ts"
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts"
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts"
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "capabilityId": "MessageChannel",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "capabilityId": "MessageDirection",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "capabilityId": "MessageSentiment",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "capabilityId": "CustomerMessage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "capabilityId": "MessageThread",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "capabilityId": "DealRiskCategory",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "capabilityId": "DealRisk",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "capabilityId": "DealRiskAssessment",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "capabilityId": "DealStage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "DealCloseReason",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "DealStakeholder",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "DealTimeline",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "Deal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "DealForecast",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "capabilityId": "HandoffTrigger",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "capabilityId": "HandoffRoute",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "capabilityId": "HandoffCondition",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "capabilityId": "HandoffExecution",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "capabilityId": "HandoffMetrics",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "capabilityId": "InvoiceAgingBucket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "capabilityId": "InvoiceFollowUpPlan",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "capabilityId": "FollowUpStep",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "capabilityId": "CollectionsMetrics",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "capabilityId": "PaymentPlanProposal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "capabilityId": "LeadStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "LeadSource",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "LeadTemperature",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "LeadScoreBreakdown",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "LeadEnriched",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "LeadReactivationPlan",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/leads/stale-lead-state.ts"
+    },
+    {
+      "capabilityId": "NoShowRisk",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "capabilityId": "NoShowRiskFactor",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPlan",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "capabilityId": "NoShowAnalytics",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/opportunities/opportunity-rank-result.ts"
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/opportunities/reactivation-candidate.ts"
+    },
+    {
+      "capabilityId": "OpportunityStage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "capabilityId": "OpportunityRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "capabilityId": "OpportunityActivity",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "capabilityId": "OutboundChannel",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "OutboundPurpose",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "OutboundTemplate",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "OutboundCampaign",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "CommunicationPreferences",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "SequenceEnrollment",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "capabilityId": "OutreachGoal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "capabilityId": "OutreachPlan",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "capabilityId": "OutreachAudienceFilter",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "capabilityId": "OutreachStep",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "capabilityId": "OutreachPerformanceReport",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "capabilityId": "PipelineStageConfig",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "capabilityId": "PipelineAutomation",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "capabilityId": "PipelineConfig",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "capabilityId": "PipelineSnapshot",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "capabilityId": "PricingModel",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "DiscountType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "PricingProposal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "PricingLineItem",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "AppliedDiscount",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "PricingGuidance",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "capabilityId": "QuoteStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "capabilityId": "QuoteLineItem",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "capabilityId": "QuoteExpanded",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "capabilityId": "QuoteComparisonResult",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "capabilityId": "ReferralStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "capabilityId": "ReferralPrompt",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "capabilityId": "ReferralRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "capabilityId": "ReferralProgramMetrics",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "capabilityId": "RepeatPurchaseTiming",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/repeat-purchase-timing.ts"
+    },
+    {
+      "capabilityId": "PurchasePatternAnalysis",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/repeat-purchase-timing.ts"
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/collections-escalation-packet.ts"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/no-show-recovery-packet.ts"
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/recovered-value-ledger-entry.ts"
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-autopilot-kpi-summary.ts"
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts"
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts"
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts"
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts"
+    },
+    {
+      "capabilityId": "RevenueLeakType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "capabilityId": "RevenueLeakageSignal",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "capabilityId": "RevenueLeakageDashboard",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "capabilityId": "CollectionsStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/collections-state.ts"
+    },
+    {
+      "capabilityId": "CollectionsAccountState",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/collections-state.ts"
+    },
+    {
+      "capabilityId": "EstimateStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/estimate-record.ts"
+    },
+    {
+      "capabilityId": "EstimateRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/estimate-record.ts"
+    },
+    {
+      "capabilityId": "InvoiceStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/invoice-record.ts"
+    },
+    {
+      "capabilityId": "InvoiceRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/invoice-record.ts"
+    },
+    {
+      "capabilityId": "OnboardingRevenueBootstrapPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/onboarding-revenue-bootstrap-packet.ts"
+    },
+    {
+      "capabilityId": "PaymentProofLink",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/payment-proof-link.ts"
+    },
+    {
+      "capabilityId": "ProposalRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/proposal-record.ts"
+    },
+    {
+      "capabilityId": "QuoteRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/quote-record.ts"
+    },
+    {
+      "capabilityId": "ReminderPackage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/reminder-package.ts"
+    },
+    {
+      "capabilityId": "RevenueApprovalPackage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-approval-package.ts"
+    },
+    {
+      "capabilityId": "RevenueMetricsSnapshot",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "capabilityId": "RevenueWaterfall",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "capabilityId": "CohortAnalysis",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "capabilityId": "RevenueSendPackage",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/revenue-ops/revenue-send-package.ts"
+    },
+    {
+      "capabilityId": "ReviewType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "capabilityId": "ReviewUrgency",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "capabilityId": "ReviewRequest",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "capabilityId": "ReviewPolicy",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "capabilityId": "ServiceOrderStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "capabilityId": "ServiceOrder",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "capabilityId": "ServiceLineItem",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "capabilityId": "ServiceOrderMetrics",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "capabilityId": "TaskPriority",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "capabilityId": "TaskStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "capabilityId": "TaskAssignment",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "capabilityId": "TaskWorkload",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "capabilityId": "VerticalApprovalDefault",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-approval-default.ts"
+    },
+    {
+      "capabilityId": "ApprovalCondition",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-approval-default.ts"
+    },
+    {
+      "capabilityId": "VerticalCommsTemplate",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-comms-template.ts"
+    },
+    {
+      "capabilityId": "VerticalPackConfig",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-pack-config.ts"
+    },
+    {
+      "capabilityId": "VerticalModule",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-pack-config.ts"
+    },
+    {
+      "capabilityId": "VerticalPlaybook",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-playbook.ts"
+    },
+    {
+      "capabilityId": "PlaybookStep",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-playbook.ts"
+    },
+    {
+      "capabilityId": "VerticalRoleDefault",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/vertical-role-default.ts"
+    },
+    {
+      "capabilityId": "BookingRequestSubmission",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/booking-request-submission.ts"
+    },
+    {
+      "capabilityId": "FormFieldType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/form-definition.ts"
+    },
+    {
+      "capabilityId": "FormDefinition",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/form-definition.ts"
+    },
+    {
+      "capabilityId": "FormSubmission",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/form-submission.ts"
+    },
+    {
+      "capabilityId": "LeadAttributionRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/lead-attribution-record.ts"
+    },
+    {
+      "capabilityId": "OnboardingSiteBootstrapPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/onboarding-site-bootstrap-packet.ts"
+    },
+    {
+      "capabilityId": "PageType",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/page-record.ts"
+    },
+    {
+      "capabilityId": "PageRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/page-record.ts"
+    },
+    {
+      "capabilityId": "PageVersion",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/page-version.ts"
+    },
+    {
+      "capabilityId": "PublishRequest",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/publish-request.ts"
+    },
+    {
+      "capabilityId": "PublishResult",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/publish-result.ts"
+    },
+    {
+      "capabilityId": "QuoteRequestSubmission",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/quote-request-submission.ts"
+    },
+    {
+      "capabilityId": "SiteStatus",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/site-record.ts"
+    },
+    {
+      "capabilityId": "SiteRecord",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/site-record.ts"
+    },
+    {
+      "capabilityId": "WebsiteLeadRoutingPacket",
+      "domain": "business",
+      "ownerService": "business-os",
+      "ownerTeam": "business",
+      "source": "src/packages/business-contracts/website/website-lead-routing-packet.ts"
+    },
+    {
+      "capabilityId": "StressSeverity",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "StressCategory",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "StressSignal",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "StressRadarResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "LifeEventType",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "LifeEvent",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "LifeMoneyImpact",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "MoneyModeId",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "MoneyMode",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "AllocationBucket",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "AllocationEntry",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "AllocationStrategy",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "CashAllocationPlan",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "IncomeQualityDimension",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "IncomeQualityScore",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "PeaceScoreDimension",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "PeaceScoreResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "TrustNodeType",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "TrustEdgeHealth",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "FinancialTrustNode",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "FinancialTrustEdge",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "FinancialTrustGraph",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "OpportunityCostEntry",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "RitualFrequency",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "MoneyRitual",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "RitualStep",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "EmotionalPatternType",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "EmotionalPattern",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "capabilityId": "DebtProfile",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "DebtAccount",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "PayoffPlan",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "PayoffMilestone",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "CreditScorePulse",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "CreditFactor",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "capabilityId": "EnvelopeBudget",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "EnvelopeGroup",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "Envelope",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "EnvelopeAllocationRule",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "HouseholdFinanceSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "SharedGoal",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "MemberFinanceSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "capabilityId": "FinancialHealthScore",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "capabilityId": "HealthDimension",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "capabilityId": "HealthActionItem",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "capabilityId": "FounderBoundaryAlert",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts"
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts"
+    },
+    {
+      "capabilityId": "ScenarioInput",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/scenario.ts"
+    },
+    {
+      "capabilityId": "ScenarioOutput",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/scenario.ts"
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "ownerService": "finance-os",
+      "ownerTeam": "finance",
+      "source": "src/packages/finance-contracts/subscriptions/renewal-risk.ts"
+    },
+    {
+      "capabilityId": "AppointmentType",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/appointment.ts"
+    },
+    {
+      "capabilityId": "Appointment",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/appointment.ts"
+    },
+    {
+      "capabilityId": "AvailabilityWindow",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/availability-window.ts"
+    },
+    {
+      "capabilityId": "AvailabilityMatrix",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/availability-window.ts"
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "capabilityId": "CalendarConflict",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/calendar-conflict.ts"
+    },
+    {
+      "capabilityId": "ConciergeBoardroomPacket",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/concierge-boardroom-packet.ts"
+    },
+    {
+      "capabilityId": "PulseCategory",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "capabilityId": "DailyPulseItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "capabilityId": "DailyPulse",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "capabilityId": "ErrandBundle",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/errand-bundle.ts"
+    },
+    {
+      "capabilityId": "ErrandItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/errand-bundle.ts"
+    },
+    {
+      "capabilityId": "EventPlan",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/event-plan.ts"
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts"
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts"
+    },
+    {
+      "capabilityId": "FamilyBoardroomPacket",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/family-boardroom-packet.ts"
+    },
+    {
+      "capabilityId": "FamilyLoadBalance",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/family-load-balance.ts"
+    },
+    {
+      "capabilityId": "MemberLoad",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/family-load-balance.ts"
+    },
+    {
+      "capabilityId": "FamilyMemberProfile",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/family-member-profile.ts"
+    },
+    {
+      "capabilityId": "GiftPlan",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/gift-plan.ts"
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "capabilityId": "HouseholdMaintenanceItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/household-maintenance-item.ts"
+    },
+    {
+      "capabilityId": "HouseholdResponsibility",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/household-responsibility.ts"
+    },
+    {
+      "capabilityId": "InventoryItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/inventory-item.ts"
+    },
+    {
+      "capabilityId": "Itinerary",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "capabilityId": "ItineraryDay",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "capabilityId": "ItineraryActivity",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "capabilityId": "PackingPlan",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/packing-plan.ts"
+    },
+    {
+      "capabilityId": "PackingCategory",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/packing-plan.ts"
+    },
+    {
+      "capabilityId": "PantryReplenishment",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/pantry-replenishment.ts"
+    },
+    {
+      "capabilityId": "PrepSequence",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/prep-sequence.ts"
+    },
+    {
+      "capabilityId": "PrepStep",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/prep-sequence.ts"
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/providers/provider-follow-up.ts"
+    },
+    {
+      "capabilityId": "ReservationMemory",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/reservation-memory.ts"
+    },
+    {
+      "capabilityId": "Reservation",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/reservation.ts"
+    },
+    {
+      "capabilityId": "RouteGrouping",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/route-grouping.ts"
+    },
+    {
+      "capabilityId": "ScheduleItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/schedule-item.ts"
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts"
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts"
+    },
+    {
+      "capabilityId": "SchoolActivity",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/school-activity.ts"
+    },
+    {
+      "capabilityId": "ServiceProviderMemory",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/service-provider-memory.ts"
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/travel/reservation-record.ts"
+    },
+    {
+      "capabilityId": "TravelDisruption",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/travel-disruption.ts"
+    },
+    {
+      "capabilityId": "TripLeg",
+      "domain": "concierge",
+      "ownerService": "concierge-os",
+      "ownerTeam": "concierge",
+      "source": "src/packages/concierge-contracts/trip-leg.ts"
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/outbound/types.ts"
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/outbound/types.ts"
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "ownerService": "platform",
+      "ownerTeam": "platform",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    }
+  ]
+}

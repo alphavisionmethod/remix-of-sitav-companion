@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-19T16:23:56.767Z",
+  "gate": "final-runtime-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "summary": [
+    {
+      "file": "generated/pg-cron-schedules-report.json",
+      "ok": true
+    },
+    {
+      "file": "generated/internal-agent-phase8-tables-report.json",
+      "ok": true
+    },
+    {
+      "file": "generated/internal-agent-phase9-tables-report.json",
+      "ok": true
+    },
+    {
+      "file": "generated/kill-switch-enforcement-report.json",
+      "ok": true
+    },
+    {
+      "file": "generated/attestation-packet-signed-report.json",
+      "ok": true
+    },
+    {
+      "file": "generated/audit-export-immutable-report.json",
+      "ok": true
+    }
+  ]
+}

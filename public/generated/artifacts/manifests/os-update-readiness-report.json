@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T01:40:02.997Z",
+  "gate": "os-update-readiness",
+  "phase": "phase-12-native-deployability",
+  "errorCount": 0,
+  "warningCount": 0,
+  "ok": true,
+  "issues": []
+}
