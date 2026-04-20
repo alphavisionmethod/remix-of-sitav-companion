@@ -2,91 +2,78 @@
 
 ## Diagnosis
 
-User wants a brand-new artifact — `MISSING_AUDIT.md` — generated as a deep, file-level repository reality audit and made downloadable. This is a **non-build, artifact-generation task** (a long markdown document), not a UI feature. It should be produced via `code--exec` writing to `/mnt/documents/` and surfaced via `<lov-artifact>`. A copy should also land in `public/generated/` so it's reachable from the in-app document viewer alongside the existing `PROJECT_TREE_AUDIT.md`.
+User wants `MISSING_AUDIT.md` expanded so every one of the 15 mandated parts is present, deeply detailed, and grounded in real filesystem evidence. Current file is ~850 lines (per prior summary) — target is a 3,000–5,000 line, table-heavy, deeply technical document with no missing or shallow sections.
 
-I am in plan mode (read-only), so I'll present the plan and execute on approval.
+## Verification I'll do during execution
 
-## Exploration I'll perform during execution
+1. Read current `public/generated/MISSING_AUDIT.md` end-to-end, then run `grep -c "^## Part"` to confirm which of the 15 parts exist and which are stubs.
+2. Re-inventory the repo for fresh evidence (counts may have changed):
+   - `src/lib/` subdir count + per-cluster line totals
+   - `src/pages/**` page count + cross-check vs `<Route>` declarations in `src/App.tsx`
+   - `supabase/functions/` (count + classify into the 6 edge-function roles)
+   - `supabase/migrations/` (count + RLS coverage spot-check)
+   - `electron/*.cjs` vs `_layout.cjs` registry domains
+   - `os/image-builder/`, `os/scripts/`, `.github/workflows/os-build-iso.yml`
+   - `scripts/architecture/checks/` (validator count vs the 21 BLOCK gates)
+   - `generated/` and `public/generated/` artifact freshness (mtimes)
+   - `src/lib/internal-agents/` (40-agent registry verification)
+   - First-use screens vs the 29-screen master spec
+3. Read the truth files: `PROJECT_TREE_AUDIT.md`, `MASTER_REMEDIATION_BLUEPRINT_v2.md`, `MASTER_REMEDIATION_VERIFICATION_v2.md`, `check-os-release-readiness.ts`, route-plane-map, app-plane-map.
 
-Before writing the audit, I need to ground every claim in real filesystem evidence (the user's primary rule: "Truth only"). I'll inventory:
+## Plan — Expand `MISSING_AUDIT.md` to a true principal-engineer audit
 
-| Surface | Command / probe |
-|---|---|
-| Top-level layout | `ls -la`, `ls src/`, `ls electron/`, `ls os/`, `ls supabase/{functions,migrations}` |
-| `src/lib/` cluster (91 dirs) | `ls src/lib/` + `wc -l` per subdir, identify duplicates/legacy |
-| Routes vs pages | grep `<Route` in `src/App.tsx` + `ls src/pages/**`, find dead pages |
-| Edge functions | `ls supabase/functions/` + cross-check with callers via `grep "supabase.functions.invoke"` |
-| Migrations | `ls supabase/migrations/` count + scan recent files for RLS patterns |
-| Generated artifacts | `ls generated/`, `ls public/generated/` — flag stale outputs |
-| Validators | `ls scripts/architecture/checks/` cross-checked vs `check-os-release-readiness.ts` aggregator |
-| Electron | `ls electron/` vs `_layout.cjs` registry |
-| OS image | `ls os/image-builder/` + `.github/workflows/os-build-iso.yml` |
-| Internal agents | `ls src/lib/internal-agents/` + the 40-agent registry |
-| Onboarding | grep first-use screens vs the 29-screen master spec |
-| Connectors | `ls src/lib/connectors/` + connector_tokens table refs |
-| AI gateway | `ls src/lib/services/ai-gateway/` + `supabase/functions/ai-gateway` |
-
-I'll also read key truth files: `PROJECT_TREE_AUDIT.md`, `MASTER_REMEDIATION_BLUEPRINT_v2.md`, `MASTER_REMEDIATION_VERIFICATION_v2.md`, `check-os-release-readiness.ts`, and 5-10 representative generated reports to detect drift.
-
-## Plan — Generate `MISSING_AUDIT.md`
-
-### Step 1 — Filesystem reconnaissance (parallel reads)
-Run a batch of `ls`, `wc`, and targeted `grep` calls to build the evidence base. Outputs feed directly into Parts II–XII.
+### Step 1 — Reconnaissance batch (parallel `ls`/`wc`/`grep`/`find`)
+Build a fresh evidence base: cluster sizes, route inventory, edge function classification, migration count, validator count, generated-artifact mtimes, electron module count, OS daemon list.
 
 ### Step 2 — Targeted file reads
-Read the 8–12 most-important truth files (release aggregator, route map, electron layout, latest migration index, generated coverage reports) to cross-validate claims vs reality.
+Read the 12-15 most authoritative files (release aggregator, route registry, plane maps, electron layout, internal-agents registry, top 5 generated reports) to anchor every claim.
 
-### Step 3 — Compose the audit (single Python heredoc → `/mnt/documents/MISSING_AUDIT.md`)
-Document follows the user's exact 15-part structure:
+### Step 3 — Rewrite `MISSING_AUDIT.md` (single Python heredoc → both locations)
+Each of the 15 parts will be expanded to the depths below. **Target: 3,500–5,000 lines.**
 
-- **Part I** — Executive Reality Summary (solid / weak / missing / overstated / duplicated / critical path)
-- **Part II** — Full Repository Topology (table: directory · purpose · canonical status · owner · risks · missing proof)
-- **Part III** — File Cluster Audit (12 clusters, each with: exists / wired / partial / dead / missing / fixes)
-- **Part IV** — End-to-End Wiring Audit (8 representative traces with breakpoints)
-- **Part V** — Integration Audit (auth, Supabase, Google, MS, Slack, Twilio, SendGrid, Stripe, Plaid, AI providers, voice, runtime, update channels)
-- **Part VI** — Database & Policy Audit (tables · RLS · indexes · append-only · receipts · missing migrations)
-- **Part VII** — Runtime / Electron / OS Audit
-- **Part VIII** — AI / Advisor / Autonomy Audit
-- **Part IX** — App Platform / SDK / Windowing Audit
-- **Part X** — Admin / Operator / Support Audit
-- **Part XI** — Onboarding / Journey Audit (29-screen first-use spec vs reality)
-- **Part XII** — Validation / Evidence / Release Audit (21 BLOCK gates verified line-by-line)
-- **Part XIII** — Contradictions, Drift, Legacy (verified phantom folders, stale generated artifacts, deprecated-but-live paths)
-- **Part XIV** — Exact Fix Plan (P0/P1/P2/P3, each with title · problem · files · wiring · validator · proof · rollback)
-- **Part XV** — 30/60/90 day execution plan with critical path + parallel workstreams
+| Part | Required content | Target lines |
+|---|---|---|
+| I. Executive Reality Summary | Solid / Weak / Missing / Overstated / Duplicated tables + critical-path narrative | 150 |
+| II. Full Repository Topology | Per-directory table: directory · purpose · canonical status · owner · risks · missing proof, covering ~25 top-level dirs and ~40 `src/lib/` clusters | 400 |
+| III. File Cluster Audit | 12 clusters, each with sub-tables for: exists / wired / partial / dead / missing / fixes | 600 |
+| IV. End-to-End Wiring Audit | 8 traces (auth, files, AI invocation, connector refresh, app install, onboarding, release evidence, watchdog) — each as ASCII diagram + breakpoint table | 350 |
+| V. Integration Audit | 13 providers, each with: state · token flow · refresh · health · kill-switch · proof · gaps | 350 |
+| VI. Database & Policy Audit | Table-by-table coverage for the 11 canonical tables + RLS gaps + missing indexes + missing migrations | 300 |
+| VII. Runtime / Electron / OS Audit | Per-module .cjs audit, preload exposure matrix, OS daemon table, watchdog escalation, recovery flow | 300 |
+| VIII. AI / Advisor / Autonomy Audit | Provider registry, model routing matrix, receipt coverage, fallback chain, autonomy ladder L0-L6, simulation paths | 300 |
+| IX. App Platform / SDK / Windowing Audit | Type A/B/C/D matrix, manifest schema, install lifecycle, Native Bridge, SDK hooks, window isolation | 250 |
+| X. Admin / Operator / Support Audit | 12-domain admin IA, dashboards, kill-switch UX, support bundle, runbook linkage | 250 |
+| XI. Onboarding / Journey Audit | All 29 screens × {implemented, telemetry, branching, copy adaptation, resume} | 300 |
+| XII. Validation / Evidence / Release Audit | All 21 BLOCK gates + their validator + artifact + line in aggregator + freshness | 300 |
+| XIII. Contradictions, Drift, Legacy | Phantom folders verified absent, stale generated artifacts (mtime evidence), duplicate paths, dead validators | 200 |
+| XIV. Exact Fix Plan | P0/P1/P2/P3 grouped — each fix: title · problem · files · new artifacts · wiring · validator · proof · rollback | 500 |
+| XV. 30/60/90 Day Plan | Critical path Gantt-style ASCII + parallel workstreams + owner suggestions | 200 |
 
-Target: ~3,000–4,500 lines of dense, table-heavy, evidence-cited markdown. Every claim hyperlinked to a real file path discovered in Step 1/2.
+### Step 4 — Mirror & verify
+- Write to `/mnt/documents/MISSING_AUDIT_v2.md` (preserves v1 for diff) AND overwrite `public/generated/MISSING_AUDIT.md`.
+- `md5sum` confirms `/mnt/documents/MISSING_AUDIT.md` (overwrite) ≡ `public/generated/MISSING_AUDIT.md`.
+- `grep -c "^## Part "` returns 15.
+- `wc -l` ≥ 3,500.
+- Spot-check 8 random claims against filesystem.
 
-### Step 4 — Mirror & surface
-- Write to `/mnt/documents/MISSING_AUDIT.md` (downloadable artifact).
-- Copy to `public/generated/MISSING_AUDIT.md` so it's reachable from the in-app document viewer alongside `PROJECT_TREE_AUDIT.md`.
-- Verify both copies are byte-identical (`md5sum`).
-- Emit `<lov-artifact path="MISSING_AUDIT.md" mime_type="text/markdown">`.
-
-### Step 5 — QA pass
-Open the generated file, spot-check 5 random claims against the filesystem, and confirm:
-- All 15 parts present
-- No phantom-folder claims (e.g., no `src/lib/policies/`, `sync/`, `proof/` etc. — verified non-existent per memory)
-- Every "missing" item paired with an exact fix
-- Honest classification of deferred items (mobile, calendar streaks, etc.)
+### Step 5 — Emit artifact tag for download
+```
+<lov-artifact path="MISSING_AUDIT.md" mime_type="text/markdown"></lov-artifact>
+```
 
 ## What this does NOT touch
 
-- No code changes
-- No DB migrations, edge functions, auth changes
-- No edits to `src/`, `electron/`, `os/`, `scripts/`, `supabase/`
-- No changes to the 21 BLOCK gates or release aggregator
-- No edits to `PROJECT_TREE_AUDIT.md` or any existing generated artifact
+- No code, validators, registries, edge functions, migrations, or generated JSON.
+- No changes to the 21 BLOCK gates or any release pipeline.
+- No edits anywhere except `/mnt/documents/MISSING_AUDIT.md` and `public/generated/MISSING_AUDIT.md`.
 
 ## Verification after approval
 
 ```bash
-ls -la /mnt/documents/MISSING_AUDIT.md public/generated/MISSING_AUDIT.md
-md5sum /mnt/documents/MISSING_AUDIT.md public/generated/MISSING_AUDIT.md     # identical
-wc -l /mnt/documents/MISSING_AUDIT.md                                          # ~3000-4500 lines
-grep -cE "^## Part " /mnt/documents/MISSING_AUDIT.md                          # 15
-grep -E "src/lib/(policies|sync|proof|execution|eventing|notifications)/" /mnt/documents/MISSING_AUDIT.md  # 0 phantom claims
+wc -l public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md
+md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md
+grep -c "^## Part " public/generated/MISSING_AUDIT.md           # 15
+grep -E "src/lib/(policies|sync|proof|execution|eventing|notifications)/" public/generated/MISSING_AUDIT.md  # only in proof-of-absence context
+npm run release:readiness                                        # 21/21 BLOCK GREEN (unchanged)
 ```
-
-Deliverable: a downloadable `MISSING_AUDIT.md` that a CTO, principal engineer, release manager, and security lead can execute against immediately.
 
