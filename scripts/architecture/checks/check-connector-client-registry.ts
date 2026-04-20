@@ -92,9 +92,9 @@ for (const d of providerDirs) {
 const errorCount = issues.filter((i) => i.severity === "error").length;
 const ok = errorCount === 0;
 
-// Persist machine-readable report
+// Persist machine-readable report (legacy public-mirror path retained for dashboard)
 mkdirSync("generated", { recursive: true });
-writeFileSync(REPORT_PATH, JSON.stringify({
+const payload = {
   gate: "connector-client-registry-completeness",
   ok,
   generatedAt: new Date().toISOString(),
@@ -104,7 +104,10 @@ writeFileSync(REPORT_PATH, JSON.stringify({
   errorCount,
   warningCount: issues.filter((i) => i.severity === "warning").length,
   issues,
-}, null, 2));
+};
+writeFileSync(REPORT_PATH, JSON.stringify(payload, null, 2));
+// Canonical generated/<gate>-report.json — required by master release-readiness aggregator
+writeFileSync("generated/connector-client-registry-completeness-report.json", JSON.stringify(payload, null, 2));
 
 console.log(`  📦 ${connectors.length} catalog / ${coveredCount} per-provider client modules`);
 if (!ok) {

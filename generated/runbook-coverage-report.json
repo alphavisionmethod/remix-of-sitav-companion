@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-04-20T16:20:20.503Z",
+  "gate": "runbook-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "totalRunbooks": 22,
+  "subsystemsCovered": 21,
+  "mandatorySubsystems": 20,
+  "criticalSubsystemCoverage": [
+    {
+      "subsystem": "auth",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "ai-providers",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "proof",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "release",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "db",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "rls",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "ingress",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    },
+    {
+      "subsystem": "payments-auth",
+      "runbookCount": 1,
+      "hasSeriousRunbook": true
+    }
+  ],
+  "perRunbook": [
+    {
+      "runbookId": "RB-001",
+      "subsystem": "auth",
+      "severity": "critical",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-002",
+      "subsystem": "ai-providers",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-003",
+      "subsystem": "sync",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-004",
+      "subsystem": "workflow",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-005",
+      "subsystem": "proof",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-006",
+      "subsystem": "manifest-drift",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-007",
+      "subsystem": "push",
+      "severity": "low",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-008",
+      "subsystem": "desktop-host",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-009",
+      "subsystem": "release",
+      "severity": "critical",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-010",
+      "subsystem": "ai-degradation",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-011",
+      "subsystem": "connectors",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-012",
+      "subsystem": "setup",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-013",
+      "subsystem": "approvals",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-014",
+      "subsystem": "db",
+      "severity": "critical",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-015",
+      "subsystem": "rls",
+      "severity": "critical",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-016",
+      "subsystem": "desktop-host",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-017",
+      "subsystem": "mobile-push",
+      "severity": "low",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-018",
+      "subsystem": "runtime-probe",
+      "severity": "medium",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-019",
+      "subsystem": "support-escalation",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 4
+    },
+    {
+      "runbookId": "RB-020",
+      "subsystem": "ingress",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-020",
+      "subsystem": "boardroom-followthrough",
+      "severity": "high",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    },
+    {
+      "runbookId": "RB-005-AUTH",
+      "subsystem": "payments-auth",
+      "severity": "critical",
+      "hasMarkdown": true,
+      "hasValidContext": true,
+      "hasValidKillSwitch": true,
+      "stepCount": 5
+    }
+  ]
+}

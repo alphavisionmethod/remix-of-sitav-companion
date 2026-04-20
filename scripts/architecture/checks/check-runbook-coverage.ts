@@ -113,4 +113,52 @@ console.log(
   `  📊 ${RUNBOOK_REGISTRY.length} runbooks, ${subsystemsCovered.size}/${RUNBOOK_SUBSYSTEM_REQUIREMENTS.length} subsystems covered`,
 );
 vc.report("check-runbook-coverage");
+
+// ── Emit canonical generated/runbook-coverage-report.json ──────
+// Required by the master release-readiness aggregator.
+const issues = vc.violations.map((v) => ({
+  severity: v.severity ?? "error",
+  area: v.rule,
+  message: `${v.file}: ${v.detail}`,
+}));
+const errorCount = issues.filter((i) => i.severity === "error").length;
+const warningCount = issues.filter((i) => i.severity === "warning").length;
+const ok = errorCount === 0;
+
+const perRunbook = RUNBOOK_REGISTRY.map((rb) => ({
+  runbookId: rb.runbookId,
+  subsystem: rb.subsystem,
+  severity: rb.severity,
+  hasMarkdown: fs.existsSync(path.join(repoRoot, rb.markdownRef)),
+  hasValidContext: validContextIds.has(rb.boundedContextId),
+  hasValidKillSwitch: rb.killSwitchRef ? validSwitchIds.has(rb.killSwitchRef) : true,
+  stepCount: rb.steps.length,
+}));
+
+const criticalSubsystemCoverage = getCriticalIncidentSubsystems().map((sub) => {
+  const rbs = RUNBOOK_REGISTRY.filter((r) => r.subsystem === sub);
+  return {
+    subsystem: sub,
+    runbookCount: rbs.length,
+    hasSeriousRunbook: rbs.some((r) => r.severity === "critical" || r.severity === "high"),
+  };
+});
+
+const report = {
+  generatedAt: new Date().toISOString(),
+  gate: "runbook-coverage",
+  ok,
+  errorCount,
+  warningCount,
+  issues,
+  totalRunbooks: RUNBOOK_REGISTRY.length,
+  subsystemsCovered: subsystemsCovered.size,
+  mandatorySubsystems: getMandatorySubsystems().length,
+  criticalSubsystemCoverage,
+  perRunbook,
+};
+
+fs.mkdirSync("generated", { recursive: true });
+fs.writeFileSync("generated/runbook-coverage-report.json", JSON.stringify(report, null, 2));
+
 vc.exitIfErrors();

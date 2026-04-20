@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T06:34:17.767Z",
+  "generatedAt": "2026-04-20T16:20:31.957Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1635,8 +1635,29 @@
       "warnings": 0
     },
     {
+      "file": "generated/runbook-coverage-report.json",
+      "gate": "runbook-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/edge-function-ownership-completeness-report.json",
       "gate": "edge-function-ownership-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/connector-client-registry-completeness-report.json",
+      "gate": "connector-client-registry-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-runbook-surface-wiring-report.json",
+      "gate": "admin-runbook-surface-wiring",
       "ok": true,
       "errors": 0,
       "warnings": 0
@@ -1654,6 +1675,41 @@
       "ok": true,
       "errors": 0,
       "warnings": 3
+    },
+    {
+      "file": "generated/cross-tier-capability-matrix-report.json",
+      "gate": "cross-tier-capability-matrix",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/first-use-spec-coverage-report.json",
+      "gate": "first-use-spec-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-deferred-set-explicitness-report.json",
+      "gate": "internal-agent-deferred-set-explicitness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cluster-readme-coverage-report.json",
+      "gate": "cluster-readme-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-shim-integrity-report.json",
+      "gate": "ai-shim-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     },
     {
       "file": "generated/ai-engineer-tab-registry-report.json",
@@ -2370,9 +2426,9 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/runbook-coverage-report.json",
       "gate": "runbook-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2519,11 +2575,7 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 3624,
-  "missingGates": [
-    "runbook-coverage",
-    "connector-client-registry-completeness",
-    "admin-runbook-surface-wiring"
-  ],
-  "ok": false,
-  "verdict": "RED"
+  "missingGates": [],
+  "ok": true,
+  "verdict": "YELLOW"
 }
