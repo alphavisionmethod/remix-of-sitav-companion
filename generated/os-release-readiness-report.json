@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T19:09:47.312Z",
+  "generatedAt": "2026-04-20T19:10:46.668Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -2605,5 +2605,5 @@
   "totalWarnings": 4252,
   "missingGates": [],
   "ok": true,
-  "verdict": "YELLOW"
+  "verdict": "GREEN"
 }
