@@ -73,10 +73,10 @@ const producerByPath = new Map<string, string>();
 
 // 3a. Direct literal writes: writeFileSync("generated/...", ...)
 const literalWrite = /(?:writeJsonOutput|writeFileSync|writeFile|fs\.promises\.writeFile)\s*\(\s*["'`]([^"'`]*generated\/[^"'`]+)["'`]/g;
-// 3b. path.join with literal: writeFileSync(path.join("generated/x", "y.json"), ...)
-const joinLiteralWrite = /(?:writeJsonOutput|writeFileSync|writeFile)\s*\(\s*(?:path\.)?join\s*\(\s*["'`](generated\/[^"'`]+|generated)["'`]\s*,\s*["'`]([^"'`]+)["'`]\s*\)/g;
-// 3c. path.join with const: writeFileSync(path.join(OUT_DIR, "y.json"), ...)
-const joinConstWrite = /(?:writeJsonOutput|writeFileSync|writeFile)\s*\(\s*(?:path\.)?join\s*\(\s*([A-Z_][A-Z0-9_]*)\s*,\s*["'`]([^"'`]+)["'`]\s*\)/g;
+// 3b. path.join/resolve with literal: writeFileSync(path.join("generated/x", "y.json"), ...)
+const joinLiteralWrite = /(?:writeJsonOutput|writeFileSync|writeFile)\s*\(\s*(?:path\.)?(?:join|resolve)\s*\(\s*["'`](generated\/[^"'`]+|generated)["'`]\s*,\s*["'`]([^"'`]+)["'`]\s*\)/g;
+// 3c. path.join/resolve with const: writeFileSync(path.join(OUT_DIR, "y.json"), ...)
+const joinConstWrite = /(?:writeJsonOutput|writeFileSync|writeFile)\s*\(\s*(?:path\.)?(?:join|resolve)\s*\(\s*([A-Z_][A-Z0-9_]*)\s*,\s*["'`]([^"'`]+)["'`]\s*\)/g;
 // 3d. const-only write: writeJsonOutput(OUT_PATH, ...) where OUT_PATH points to generated/
 const constOnlyWrite = /(?:writeJsonOutput|writeFileSync|writeFile)\s*\(\s*([A-Z_][A-Z0-9_]*)\s*,/g;
 // 3e. Template literal: writeFileSync(`generated/${x}/file.json`, ...)
