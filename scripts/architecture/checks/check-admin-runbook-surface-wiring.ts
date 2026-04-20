@@ -95,23 +95,24 @@ const warningCount = issues.filter(i => i.severity === "warning").length;
 const ok = errorCount === 0;
 
 mkdirSync("generated", { recursive: true });
-writeFileSync(
-  "generated/admin-runbook-surface-report.json",
-  JSON.stringify({
-    generatedAt: new Date().toISOString(),
-    gate: "admin-runbook-surface-wiring",
-    phase: "phase-28-runbook-ia-wiring",
-    canonicalSubnav: canonicalRe.test(reg),
-    canonicalViewer: viewerRe.test(reg),
-    legacyDeprecated: legacyRe.test(reg),
-    canonicalRouteMounted: /path="\/admin\/support\/runbooks"/.test(routes),
-    hubModuleWired: /id:\s*"runbooks"/.test(hub) && /legacyPath:\s*"\/admin\/support\/runbooks"/.test(hub),
-    errorCount,
-    warningCount,
-    ok,
-    issues,
-  }, null, 2)
-);
+const reportPayload = {
+  generatedAt: new Date().toISOString(),
+  gate: "admin-runbook-surface-wiring",
+  phase: "phase-28-runbook-ia-wiring",
+  canonicalSubnav: canonicalRe.test(reg),
+  canonicalViewer: viewerRe.test(reg),
+  legacyDeprecated: legacyRe.test(reg),
+  canonicalRouteMounted: /path="\/admin\/support\/runbooks"/.test(routes),
+  hubModuleWired: /id:\s*"runbooks"/.test(hub) && /legacyPath:\s*"\/admin\/support\/runbooks"/.test(hub),
+  errorCount,
+  warningCount,
+  ok,
+  issues,
+};
+// Legacy filename retained for back-compat dashboards
+writeFileSync("generated/admin-runbook-surface-report.json", JSON.stringify(reportPayload, null, 2));
+// Canonical filename required by master release-readiness aggregator
+writeFileSync("generated/admin-runbook-surface-wiring-report.json", JSON.stringify(reportPayload, null, 2));
 
 console.log(`Admin runbook surface wiring: ${ok ? "✅ OK" : `❌ ${errorCount} errors`}`);
 if (!ok) {
