@@ -24,6 +24,12 @@ const ALLOWED_TOP_LEVEL = new Set([
   "internal",
   "hooks",
   "__tests__",
+  // Canonical consolidated homes (Phase 19 — AI-family sprawl collapse).
+  // `ai-platform` is the single navigable root for runtime/gateway/
+  // engineering/sovereign. The four legacy folders (ai, ai-engineering,
+  // ai-gateway, sovereign-ai-gateway) remain as transparent shims and
+  // are tracked in the residual baseline rather than the allowlist.
+  "ai-platform",
   // Expected folders during the active decomposition migration.
   // These shrink wave-by-wave as files move to canonical homes.
   // They are present *intentionally* during the transition; the

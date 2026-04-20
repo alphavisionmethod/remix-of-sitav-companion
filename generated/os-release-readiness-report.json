@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T22:10:46.616Z",
+  "generatedAt": "2026-04-20T01:04:03.244Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -148,7 +148,7 @@
       "gate": "lib-ownership-drift",
       "ok": true,
       "errors": 0,
-      "warnings": 99
+      "warnings": 82
     },
     {
       "file": "generated/misplaced-runtime-logic-report.json",
@@ -1643,7 +1643,7 @@
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3638,
+  "totalWarnings": 3621,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"
