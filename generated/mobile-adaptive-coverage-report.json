@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-20T23:38:23.986Z",
+  "gate": "mobile-adaptive-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "layoutPatterns": 10,
+  "adaptiveRules": 10,
+  "coveragePct": 100
+}

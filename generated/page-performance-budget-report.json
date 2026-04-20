@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-04-20T23:38:23.860Z",
+  "gate": "page-performance-budget",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "pageClassesCovered": 6,
+  "budgets": {
+    "data-list": {
+      "pageClass": "data-list",
+      "lcpMs": 2000,
+      "fcpMs": 1000,
+      "bundleKb": 250,
+      "skeletonRequired": true,
+      "lazyLoadRequired": true
+    },
+    "data-detail": {
+      "pageClass": "data-detail",
+      "lcpMs": 1800,
+      "fcpMs": 900,
+      "bundleKb": 200,
+      "skeletonRequired": true,
+      "lazyLoadRequired": true
+    },
+    "form": {
+      "pageClass": "form",
+      "lcpMs": 1500,
+      "fcpMs": 800,
+      "bundleKb": 200,
+      "skeletonRequired": false,
+      "lazyLoadRequired": true
+    },
+    "dashboard": {
+      "pageClass": "dashboard",
+      "lcpMs": 2500,
+      "fcpMs": 1200,
+      "bundleKb": 400,
+      "skeletonRequired": true,
+      "lazyLoadRequired": true
+    },
+    "auth": {
+      "pageClass": "auth",
+      "lcpMs": 1200,
+      "fcpMs": 600,
+      "bundleKb": 100,
+      "skeletonRequired": false,
+      "lazyLoadRequired": false
+    },
+    "static": {
+      "pageClass": "static",
+      "lcpMs": 1500,
+      "fcpMs": 800,
+      "bundleKb": 150,
+      "skeletonRequired": false,
+      "lazyLoadRequired": false
+    }
+  },
+  "evidenceAvailable": true
+}

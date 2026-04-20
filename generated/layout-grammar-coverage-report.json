@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-04-20T23:38:23.995Z",
+  "gate": "layout-grammar-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "layoutPatterns": 10,
+  "complianceEntries": 30,
+  "patterns": [
+    {
+      "id": "landing",
+      "shell": "PublicLayout",
+      "nav": "top-bar"
+    },
+    {
+      "id": "auth",
+      "shell": "AuthLayout",
+      "nav": "none"
+    },
+    {
+      "id": "onboarding",
+      "shell": "OnboardingLayout",
+      "nav": "none"
+    },
+    {
+      "id": "workspace",
+      "shell": "AppSidebar",
+      "nav": "sidebar"
+    },
+    {
+      "id": "admin-operator",
+      "shell": "AdminControlPlaneShell",
+      "nav": "sidebar"
+    },
+    {
+      "id": "desktop-os",
+      "shell": "ShellComposer",
+      "nav": "shell-menu-bar"
+    },
+    {
+      "id": "app-detail",
+      "shell": "FloatingWindow",
+      "nav": "none"
+    },
+    {
+      "id": "settings",
+      "shell": "SettingsLayout",
+      "nav": "sidebar"
+    },
+    {
+      "id": "marketing",
+      "shell": "PublicLayout",
+      "nav": "top-bar"
+    },
+    {
+      "id": "mobile-optimized",
+      "shell": "MobileLayout",
+      "nav": "tab-bar"
+    }
+  ]
+}
