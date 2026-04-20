@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "tiers": {
+    "first_party": {"autoInstall":true,"autoUpdate":true,"removalPrompt":false,"adminApproval":false,"sandboxOnly":false,"permissionAutoGrant":"all","maxBackgroundProcesses":5,"ipcAllowed":true,"fileSystemAccess":"full"},
+    "trusted": {"autoInstall":false,"autoUpdate":true,"removalPrompt":false,"adminApproval":false,"sandboxOnly":false,"permissionAutoGrant":"low_only","maxBackgroundProcesses":2,"ipcAllowed":true,"fileSystemAccess":"scoped"},
+    "standard": {"autoInstall":false,"autoUpdate":false,"removalPrompt":true,"adminApproval":false,"sandboxOnly":false,"permissionAutoGrant":"none","maxBackgroundProcesses":1,"ipcAllowed":false,"fileSystemAccess":"scoped"},
+    "restricted": {"autoInstall":false,"autoUpdate":false,"removalPrompt":true,"adminApproval":true,"sandboxOnly":true,"permissionAutoGrant":"none","maxBackgroundProcesses":0,"ipcAllowed":false,"fileSystemAccess":"none"}
+  },
+  "badgeToTierMapping": {
+    "internal":"first_party","verified":"trusted","trusted-domain":"standard","community":"standard","unverified":"restricted"
+  }
+}

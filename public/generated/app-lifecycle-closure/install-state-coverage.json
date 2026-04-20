@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "installStatusValues": ["not_installed","installing","installed","updating","update_available","uninstalling","blocked","crashed","recovering"],
+  "lifecycleStateMapping": {
+    "not_installed":"DISCOVERED","installing":"INSTALLING","installed":"INSTALLED","updating":"UPDATING",
+    "update_available":"UPDATE_AVAILABLE","uninstalling":"REMOVING","blocked":"ERROR","crashed":"CRASHED","recovering":"RECOVERING"
+  },
+  "installRegistryFile": "src/lib/app-platform/app-install-registry.ts",
+  "installStateFile": "src/lib/app-platform/install-state.ts",
+  "installServiceFile": "src/lib/services/app-store/install.service.ts",
+  "edgeFunctions": ["app-install","app-uninstall","app-update-check","app-launch-resolve","app-permissions-sync"]
+}

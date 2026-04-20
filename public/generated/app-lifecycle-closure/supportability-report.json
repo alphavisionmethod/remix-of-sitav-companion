@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "supportBundleFile": "src/lib/app-platform/app-support-bundle.ts",
+  "observabilityFile": "src/lib/app-platform/app-observability.ts",
+  "capabilities": {
+    "perAppDiagnostics": true,
+    "systemWideDiagnostics": true,
+    "permissionAuditExport": true,
+    "crashSnapshotExport": true,
+    "lifecycleReceiptExport": true,
+    "recoveryHistoryExport": true,
+    "redactionApplied": true,
+    "operatorHealthDashboard": true
+  },
+  "metricsCollected": ["launchCount","crashCount","lastLaunchedAt","installedAt","timeSinceInstallMs","permissionGrantCount","permissionDenyCount","lifecycleEventCount","currentState","hasRecoveryOffer"],
+  "bundleVersion": "1.0"
+}

@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "runtimeTargets": ["sita-internal","sita-web-runtime","pwa-link","web-link","native-link"],
+  "appTypeCompatibility": {
+    "internal": {"sita-internal":"full","sita-web-runtime":"degraded","pwa-link":"blocked","web-link":"blocked","native-link":"blocked"},
+    "web": {"sita-internal":"full","sita-web-runtime":"full","pwa-link":"partial","web-link":"full","native-link":"blocked"},
+    "pwa": {"sita-internal":"full","sita-web-runtime":"full","pwa-link":"full","web-link":"degraded","native-link":"blocked"},
+    "external_desktop": {"sita-internal":"blocked","sita-web-runtime":"blocked","pwa-link":"blocked","web-link":"blocked","native-link":"full"},
+    "pack": {"sita-internal":"full","sita-web-runtime":"partial","pwa-link":"blocked","web-link":"blocked","native-link":"blocked"}
+  },
+  "permissionsPerTarget": {
+    "sita-internal": 11,
+    "sita-web-runtime": 7,
+    "pwa-link": 3,
+    "web-link": 1,
+    "native-link": 3
+  },
+  "boundariesFile": "src/lib/app-platform/runtime-boundaries.ts"
+}

@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "totalPermissionKeys": 15,
+  "permissionKeys": ["notifications","files.read","files.write","external_links","shell.embed","account.link","device.location","device.camera","device.microphone","device.clipboard","device.contacts","device.calendar","background.run","network.fetch","storage.persistent"],
+  "riskLevels": {
+    "high": ["device.camera","device.microphone","device.location","device.contacts"],
+    "medium": ["files.write","background.run"],
+    "low": ["notifications","files.read","external_links","shell.embed","account.link","device.clipboard","device.calendar","network.fetch","storage.persistent"]
+  },
+  "enforcementByTier": {
+    "first_party": {"autoGranted":"all","consentRequired":"none"},
+    "trusted": {"autoGranted":"low","consentRequired":"medium,high"},
+    "standard": {"autoGranted":"none","consentRequired":"all"},
+    "restricted": {"autoGranted":"none","consentRequired":"all","adminApprovalRequired":"high"}
+  },
+  "ledgerImplemented": true,
+  "ledgerFile": "src/lib/app-platform/app-permission-ledger.ts"
+}
