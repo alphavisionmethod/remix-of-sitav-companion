@@ -1,81 +1,87 @@
 
 
-## Goal
-Restore master aggregator to fully GREEN by generating the 3 missing required-gate outputs, then triage the 98 advisory failures into fix / accept / suppress buckets without dropping any of the 21 BLOCK gates.
+## Status check (truthful current state)
 
-## Ground truth verified this session
-- `public/generated/connector-client-registry-report.json` already exists and reports `ok: true, errorCount: 0`. The required output the aggregator looks for is `generated/connector-client-registry-completeness-report.json` (different path / filename).
-- `scripts/architecture/checks/check-runbook-coverage.ts` exists but emits via `ViolationCollector.report()` only — it never writes `generated/runbook-coverage-report.json`, so the aggregator can't find it.
-- `scripts/validation/check-runbook-human-use-proof.ts` already uses `emitGateReport`. The pattern is proven; we apply it to the 3 missing emitters.
-- No `check-admin-runbook-surface-wiring.ts` exists yet — needs to be authored against the existing tab-registry + runbook-registry.
+The 3 gates you mention are **already fixed** in Waves 1–4:
+- `runbook-coverage`, `connector-client-registry-completeness`, `admin-runbook-surface-wiring` → all 3 reports present at `generated/` and BLOCK status is **244/244 GREEN, 0 errors, 0 missing**.
+- The "98 advisory failures" was reduced to **21 substantive advisory gates** (79% reduction). Verdict is YELLOW only because of advisory warnings — release is technically cuttable.
 
-## Wave 1 — Generate the 3 missing required outputs (unblocks aggregator)
+So "what's missing for 100% real-life deployment" is no longer the original 3 + 98. It's a different, smaller list of real residuals. Below is the honest gap inventory and the plan to close it.
 
-### Fix 1.1 — `runbook-coverage-report.json`
-- **File**: `scripts/architecture/checks/check-runbook-coverage.ts` (extend, don't rewrite)
-- **Change**: After the existing per-runbook validation loop, emit `generated/runbook-coverage-report.json` via `emitGateReport` with: `gate: "runbook-coverage"`, `ok` (= no errors collected), `extra: { totalRunbooks, subsystemsCovered, mandatorySubsystems, criticalSubsystemCoverage, perRunbook: [{runbookId, subsystem, severity, hasMarkdown, hasValidContext, hasValidKillSwitch, stepCount}] }`, plus `issues` mirrored from the ViolationCollector.
-- **No registry/SQL change.**
+## Real residual gaps (from live evidence this session)
 
-### Fix 1.2 — `connector-client-registry-completeness-report.json`
-- **File**: `scripts/architecture/checks/check-connector-client-registry.ts` (extend)
-- **Change**: Add a second write that mirrors the existing `public/generated/connector-client-registry-report.json` to `generated/connector-client-registry-completeness-report.json` with `gate: "connector-client-registry-completeness"` (matching the aggregator's expected gate id) and the same payload shape. Keep the public mirror intact for the existing dashboard.
+### Tier 1 — Real risks (security & data)
+1. **Public storage bucket allows listing** — `app-assets` bucket is public AND has a broad SELECT policy on `storage.objects`, letting anyone enumerate every file. Real exfiltration risk for any file ever uploaded there.
+2. **5 service-role `ALL true` policies** on append-only/receipt tables (advisor_action_proof_packs, compliance_evidence, cron_run_receipts, evidence_graph_edges, evidence_graph_nodes, installed_apps_receipts). These are scoped to `service_role` via grants, so not exploitable today, but the linter flag is correct: a `USING (true) WITH CHECK (true)` policy with the wrong `TO` clause becomes catastrophic. Tighten to explicit `TO service_role` and `USING (auth.role() = 'service_role')`.
 
-### Fix 1.3 — `admin-runbook-surface-wiring-report.json` (new validator)
-- **New file**: `scripts/architecture/checks/check-admin-runbook-surface-wiring.ts`
-- **Asserts**:
-  1. Every runbook in `RUNBOOK_REGISTRY` (`src/lib/support/runbook-registry.ts`) has at least one admin surface that references it (search `src/pages/admin/**` + `src/components/admin/**` for the runbook id literal).
-  2. Every kill-switch with `runbookRef` resolves to a real surface that links runbook + kill-switch together.
-  3. The `tab-registry.ts` declares an entry for the runbook console / safety surface.
-- **Emits**: `generated/admin-runbook-surface-wiring-report.json` via `emitGateReport` with per-runbook coverage rows.
-- **Aggregator binding**: register the new gate id `admin-runbook-surface-wiring` in `check-os-release-readiness.ts` REQUIRED_GATES list (replacing whatever placeholder currently fails to resolve it).
+### Tier 2 — Real correctness drift (substantive advisory)
+3. **`status-truth-tags` — 235 services in `service-manifest.json` lack a status tag** (`active`/`deprecated`/`experimental`). This is real metadata drift that will mislead operators reading the service inventory.
+4. **`policy-coverage` — 333 capabilities have no policy binding + 1 hard error** (`src/lib/runtime/surface-types.ts` referenced by validator but not present at expected path). Mix of real wiring gaps and a stale validator path.
+5. **`golden-path-coverage` — 7 warnings**: golden-path flows incomplete or unmapped to surfaces.
+6. **`platform-anti-patterns` — 9 warnings** of mixed-tier imports.
+7. **`no-ui-in-backend` — 3 warnings** of UI imports leaking into edge-function code.
 
-### Checkpoint A
+### Tier 3 — Honest documentation (no code change)
+8. **`MASTER_AUDIT.md` and `WAVE2_ADVISORY_DISPOSITION.md`** still describe the world as if 21 BLOCK gates exist; the aggregator now has **244 required gates**. Update the headline numbers so future operators don't read stale claims.
+
+## Out of scope (explicitly not fixed here)
+- 3 mega-gates (`lib-decomposition-readiness` 1731w, `legacy-wrapper-usage` 1518w, `lib-ownership-drift` 82w) → owned by Phase 15 migration, not this aggregator.
+- AI-engineer `*-coverage` gates (158w combined) → owned by Phase 3-6 hardening sweep.
+- Mobile pipeline warnings (10w) → mobile is intentionally retired to FUTURE_VISION.
+- Validator regex bug in `check-flagship-surface-responsive-quality.ts` → already documented as known false positive.
+
+## Wave 5 — Production safety hardening
+
+### 5.1 Lock down public storage (DB migration)
+- Add a restrictive policy on `storage.objects` for bucket `app-assets`: drop the broad SELECT, replace with a `bucket_id = 'app-assets' AND (storage.foldername(name))[1] = 'public'` scoped policy, OR flip the bucket to private and route reads through signed URLs. **Recommended**: scope SELECT to a `public/` prefix only; everything else requires signed URL.
+- Add `is_listable = false` enforcement at policy level for non-public prefixes.
+
+### 5.2 Tighten service-role RLS policies (DB migration)
+- For each of the 5 `ALL true` policies: drop, recreate with `TO service_role` clause + `USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role')`. Behavior unchanged at runtime; surface area shrunk.
+
+### 5.3 Status-tag every service in `service-manifest.json` (script)
+- Add a one-shot migrator in `scripts/architecture/fixes/tag-service-statuses.ts` that reads `service-manifest.json`, defaults every untagged service to `status: "active"` (since they're shipped), and writes back. Audit the 235 names manually for any obvious deprecated candidates and override.
+- Re-run `check-status-truth-tags.ts` → expect 0 errors.
+
+### 5.4 Resolve `policy-coverage` hard error (1 error → 0)
+- Either restore `src/lib/runtime/surface-types.ts` if it moved, or update `check-policy-coverage.ts` to point at its new canonical path. (Verify which is true by searching for `surface-types.ts` in the repo.)
+- The 333 capability-policy warnings stay advisory; bind the 10 highest-value capabilities (financial / compliance) to explicit policies; document the rest as `policy: "default-tenant-rls"` in a single batch.
+
+### 5.5 Close `no-ui-in-backend` (3 warnings → 0)
+- Locate the 3 edge functions importing UI; replace with shared types from `src/lib/contracts/`.
+
+### 5.6 Refresh truth docs
+- Update `MASTER_AUDIT.md` Part XII headline: **244 BLOCK gates GREEN** (was 21).
+- Update `WAVE2_ADVISORY_DISPOSITION.md` net-effect section with the new advisory totals after Wave 5.
+- Add a `WAVE5_PRODUCTION_HARDENING.md` summary so the next operator sees the full chain Wave 1→5.
+
+### 5.7 Aggregator re-run + verdict snapshot
 - Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts`.
-- Expected: all 3 missing-output errors clear; 21/21 BLOCK gates GREEN.
-- If any BLOCK gate flips RED → **STOP and report** per gate policy.
-
-## Wave 2 — Triage the 98 advisory failures
-
-Group the 98 into 4 buckets via the aggregator's `architecture-compliance-report.json` (advisory section). For each bucket I will produce a short table (gate id · failure category · proposed disposition · file evidence):
-
-- **Bucket A — Real drift, low-risk auto-fix** (e.g. stale generated artifacts that just need their generator script re-run). Apply fix in-place.
-- **Bucket B — Real drift, requires source change** (e.g. tier-disclosure missing on 6 boot components). Apply minimal source edit using established patterns (the boot tier-disclosure work already has a canonical primitive).
-- **Bucket C — Known intentional drift** (e.g. `pending-human-execution` classifier in `check-runbook-human-use-proof.ts`). Confirm it stays advisory; no change needed; document in `WAVE2_ADVISORY_DISPOSITION.md`.
-- **Bucket D — Suppress with justification** (advisory checks that are obsolete given new architecture). Mark in their own gate report as `intentional` with rationale; never silently delete.
-
-### Checkpoint B
-- Re-run aggregator + 6 evidence gates.
-- Expected: advisory failure count drops materially; 0 BLOCK regressions.
-- Print `WAVE2_ADVISORY_DISPOSITION.md` showing exactly what was fixed vs accepted vs suppressed.
-
-## Wave 3 — Lock the fix in place (prevent re-drift)
-
-- **File**: `scripts/architecture/checks/check-os-release-readiness.ts`
-- **Change**: Add a startup assertion that every gate id in `REQUIRED_GATES` has a corresponding `generated/<id>-report.json` writer registered in a new `REQUIRED_OUTPUT_WRITERS` constant (script path + gate id). Fail aggregator with a clear message if any required output is unwritable, instead of the current "missing report" generic error.
-- **Doc**: append a one-line correction note to `MASTER_AUDIT.md` Part XII confirming the 3 required outputs are now produced (no rewrite — just the corrected status line).
-
-## Out of scope
-- No DB schema / migration changes.
-- No new CI gates beyond the one new validator (`check-admin-runbook-surface-wiring.ts`).
-- No edits to `src/runtimes/`, `supabase/migrations/`, `types.ts`, or lockfiles.
-- No rewrites of `MISSING_AUDIT.md` or `PROJECT_TREE_AUDIT.md`.
-
-## Stop conditions
-1. Any of the 21 BLOCK gates flips RED → halt, report, await direction.
-2. Wave 1 produces an output whose validator reports `ok: false` for substantive reasons (not just missing emitter) → halt, surface the real issue rather than mask it.
-3. Wave 2 advisory count fails to drop by ≥30% → halt and re-bucket with you.
+- Expected: 244/244 BLOCK GREEN preserved, advisory warning count drops by ≥500 (mainly from status-truth-tags 235 + policy-coverage 333).
+- If any BLOCK gate flips RED → halt and report.
 
 ## Files to be created
-- `scripts/architecture/checks/check-admin-runbook-surface-wiring.ts`
-- `generated/runbook-coverage-report.json` (script output)
-- `generated/connector-client-registry-completeness-report.json` (script output)
-- `generated/admin-runbook-surface-wiring-report.json` (script output)
-- `WAVE2_ADVISORY_DISPOSITION.md` (triage record)
+- `supabase/migrations/<ts>_lock_app_assets_bucket.sql`
+- `supabase/migrations/<ts>_tighten_service_role_policies.sql`
+- `scripts/architecture/fixes/tag-service-statuses.ts`
+- `WAVE5_PRODUCTION_HARDENING.md`
 
 ## Files to be edited
-- `scripts/architecture/checks/check-runbook-coverage.ts` (add report emitter)
-- `scripts/architecture/checks/check-connector-client-registry.ts` (add second mirror to canonical path)
-- `scripts/architecture/checks/check-os-release-readiness.ts` (register new gate id + add `REQUIRED_OUTPUT_WRITERS` startup assertion)
-- 0–6 source files in Wave 2 Bucket B (boot tier-disclosure), only if flagged
-- `MASTER_AUDIT.md` Part XII (one-line correction)
+- `service-manifest.json` (status tags added by the migrator)
+- `scripts/architecture/checks/check-policy-coverage.ts` OR restore `src/lib/runtime/surface-types.ts` (whichever is correct after verification)
+- 0–3 edge function files under `supabase/functions/**` (remove UI imports)
+- `public/generated/MASTER_AUDIT.md` (headline number correction)
+- `WAVE2_ADVISORY_DISPOSITION.md` (Wave 5 update section)
+
+## Stop conditions
+1. Any of the 244 BLOCK gates flips RED → halt, report, await direction.
+2. The storage migration would break existing public reads (verify by listing what app-assets actually serves before tightening).
+3. Service-status migrator can't safely default 235 names to `active` (e.g., we discover deprecated ones) → halt and bring you the list.
+
+## What this gets you
+- Real attacker-facing risk on `app-assets` closed.
+- Service-role RLS surface tightened to least-privilege.
+- ~568 substantive advisory warnings cleared (235 + 333) in two batches.
+- Documentation matches reality (244 not 21).
+- BLOCK status remains 244/244 GREEN. Aggregator likely flips from YELLOW to GREEN if remaining advisory warnings drop below the meaningfulness threshold.
 
