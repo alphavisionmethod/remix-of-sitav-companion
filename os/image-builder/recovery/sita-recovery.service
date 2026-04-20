@@ -6,6 +6,7 @@ Before=shutdown.target
 
 [Service]
 Type=idle
+ExecStartPre=-/usr/sbin/sita-recovery-evidence-collect
 ExecStart=/usr/sbin/sita-recovery menu
 StandardInput=tty
 StandardOutput=tty
