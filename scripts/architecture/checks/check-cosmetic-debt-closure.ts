@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Cosmetic Debt Closure Check (PHYSICAL MODE)
+// SITA OS — Cosmetic Debt Closure Check (PHYSICAL DELETION MODE)
 // Asserts that the three formerly-open "cosmetic/tracked" items
-// in PROJECT_TREE_AUDIT.md Section A are PHYSICALLY remediated
-// on disk — not paper-attested.
+// in PROJECT_TREE_AUDIT.md Section A are PHYSICALLY remediated.
 //
-// Closes (physical):
-//   A1 — src/lib/ shrinkage  → 4 service-shaped folders relocated
+// Closes (post-shim deletion):
+//   A1 — src/lib/ shrinkage  → 5 service-shaped folders DELETED
 //                              (canonical-backend, simulation,
-//                               demo-data, mock-data, seed → shims only)
-//   A2 — src/services/        → src/services/index.ts façade exists
+//                               demo-data, mock-data, seed)
+//                              and their canonical homes exist.
+//   A2 — src/services/        → façade spans ALL 4 layers
+//                              (core, data, OS, platform)
 //   A3 — legacy mirror dirs   → src/legacy/{canonical-backend,
 //                              simulation,unclassified} DELETED
 // ═══════════════════════════════════════════════════════════════
@@ -27,19 +28,15 @@ interface PhysicalAssertion {
   path: string;
   mustExist: boolean;
   mustContain?: string[];
-  mustBeShim?: boolean; // file must contain only re-export(s)
 }
 
 const ASSERTIONS: PhysicalAssertion[] = [
-  // A1 — src/lib shrinkage: original folders are now shim-only re-exports
-  {
-    closes: "A1",
-    description: "src/lib/canonical-backend is a shim, real code at @/integrations/canonical-backend",
-    path: "src/lib/canonical-backend/index.ts",
-    mustExist: true,
-    mustBeShim: true,
-    mustContain: ["@/integrations/canonical-backend"],
-  },
+  // A1 — src/lib shrinkage: shim folders DELETED, canonical homes present
+  { closes: "A1", description: "src/lib/canonical-backend DELETED", path: "src/lib/canonical-backend", mustExist: false },
+  { closes: "A1", description: "src/lib/simulation DELETED", path: "src/lib/simulation", mustExist: false },
+  { closes: "A1", description: "src/lib/mock-data DELETED", path: "src/lib/mock-data", mustExist: false },
+  { closes: "A1", description: "src/lib/demo-data DELETED", path: "src/lib/demo-data", mustExist: false },
+  { closes: "A1", description: "src/lib/seed DELETED", path: "src/lib/seed", mustExist: false },
   {
     closes: "A1",
     description: "Real canonical-backend code lives at src/integrations/canonical-backend",
@@ -49,25 +46,9 @@ const ASSERTIONS: PhysicalAssertion[] = [
   },
   {
     closes: "A1",
-    description: "src/lib/simulation/monte-carlo-engine.ts is a shim",
-    path: "src/lib/simulation/monte-carlo-engine.ts",
-    mustExist: true,
-    mustBeShim: true,
-    mustContain: ["@/domains/simulation/monte-carlo-engine"],
-  },
-  {
-    closes: "A1",
     description: "Real simulation code lives at src/domains/simulation",
     path: "src/domains/simulation/monte-carlo-engine.ts",
     mustExist: true,
-  },
-  {
-    closes: "A1",
-    description: "src/lib/mock-data/index.ts is a shim",
-    path: "src/lib/mock-data/index.ts",
-    mustExist: true,
-    mustBeShim: true,
-    mustContain: ["@/data/fixtures/mock-data"],
   },
   {
     closes: "A1",
@@ -77,51 +58,35 @@ const ASSERTIONS: PhysicalAssertion[] = [
   },
   {
     closes: "A1",
-    description: "src/lib/demo-data/index.ts is a shim",
-    path: "src/lib/demo-data/index.ts",
+    description: "Real demo-data lives at src/data/fixtures/demo-data",
+    path: "src/data/fixtures/demo-data/index.ts",
     mustExist: true,
-    mustBeShim: true,
-    mustContain: ["@/data/fixtures/demo-data"],
   },
   {
     closes: "A1",
-    description: "src/lib/seed/index.ts is a shim",
-    path: "src/lib/seed/index.ts",
+    description: "Real seed code lives at src/data/fixtures/seed",
+    path: "src/data/fixtures/seed/index.ts",
     mustExist: true,
-    mustBeShim: true,
-    mustContain: ["@/data/fixtures/seed"],
   },
-  // A2 — services façade
+
+  // A2 — services façade: must span all 4 layers
   {
     closes: "A2",
-    description: "Canonical src/services/ façade exists",
+    description: "Canonical src/services/ façade exists and spans 4 layers",
     path: "src/services/index.ts",
     mustExist: true,
     mustContain: [
-      "@/lib/core-services",
-      "@/lib/data-services",
-      "@/packages",
+      "@/lib/core-services",   // Layer 2
+      "@/lib/data-services",   // Layer 4
+      "@/lib/os-services",     // Layer 3
+      "@/packages",            // Layer 1
     ],
   },
+
   // A3 — legacy mirror barrels DELETED
-  {
-    closes: "A3",
-    description: "Legacy canonical-backend mirror is DELETED",
-    path: "src/legacy/canonical-backend",
-    mustExist: false,
-  },
-  {
-    closes: "A3",
-    description: "Legacy simulation mirror is DELETED",
-    path: "src/legacy/simulation",
-    mustExist: false,
-  },
-  {
-    closes: "A3",
-    description: "Legacy unclassified barrel is DELETED",
-    path: "src/legacy/unclassified",
-    mustExist: false,
-  },
+  { closes: "A3", description: "Legacy canonical-backend mirror DELETED", path: "src/legacy/canonical-backend", mustExist: false },
+  { closes: "A3", description: "Legacy simulation mirror DELETED", path: "src/legacy/simulation", mustExist: false },
+  { closes: "A3", description: "Legacy unclassified barrel DELETED", path: "src/legacy/unclassified", mustExist: false },
 ];
 
 interface Violation {
@@ -156,20 +121,6 @@ for (const a of ASSERTIONS) {
         });
         continue;
       }
-      if (a.mustBeShim) {
-        // shim: only export statements, no logic
-        const nonComment = body
-          .split("\n")
-          .filter((l) => !l.trim().startsWith("//") && !l.trim().startsWith("/*") && !l.trim().startsWith("*") && l.trim().length > 0)
-          .join("\n");
-        if (/\b(function|class|const\s+\w+\s*=\s*[^"'])/i.test(nonComment) && !/^export\s+\*/m.test(nonComment.split("\n")[0] ?? "")) {
-          // permissive — only fail if no export * at all
-          if (!/export\s+\*/.test(body)) {
-            violations.push({ closes: a.closes, path: a.path, reason: "expected shim (re-export only), found logic" });
-            continue;
-          }
-        }
-      }
     }
   }
   verified.push({ closes: a.closes, path: a.path });
@@ -178,7 +129,7 @@ for (const a of ASSERTIONS) {
 const report = {
   generatedAt: new Date().toISOString(),
   gate: "cosmetic-debt-closure",
-  mode: "PHYSICAL",
+  mode: "PHYSICAL-DELETION",
   tier: "BLOCK-composite",
   parentGate: "lib-ownership-drift",
   totalAssertions: ASSERTIONS.length,
@@ -194,7 +145,7 @@ writeFileSync(
 );
 
 console.log(
-  `cosmetic-debt-closure (PHYSICAL): ${verified.length}/${ASSERTIONS.length} assertions passed, ${violations.length} violation(s)`,
+  `cosmetic-debt-closure (PHYSICAL-DELETION): ${verified.length}/${ASSERTIONS.length} assertions passed, ${violations.length} violation(s)`,
 );
 if (violations.length > 0) {
   for (const v of violations) {
