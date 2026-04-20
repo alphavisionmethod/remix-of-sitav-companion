@@ -14,7 +14,10 @@ export type ExtendedAdvisorId =
   | "data-advisor" | "product-advisor" | "engineering-advisor" | "design-advisor"
   | "growth-advisor" | "partnerships-advisor" | "investor-relations-advisor" | "tax-advisor"
   | "treasury-advisor" | "procurement-advisor" | "facilities-advisor" | "wellness-advisor"
-  | "education-advisor" | "integration-advisor";
+  | "education-advisor" | "integration-advisor"
+  // Orchestration engine advisors
+  | "trust-advisor" | "risk-advisor" | "execution-advisor" | "family-advisor"
+  | "boardroom-advisor" | "collections-advisor" | "travel-advisor" | "school-advisor";
 
 export type ExtendedAdvisorDomain =
   | AdvisorDomain
