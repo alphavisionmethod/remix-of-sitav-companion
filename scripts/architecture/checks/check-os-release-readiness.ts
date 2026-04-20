@@ -307,6 +307,8 @@ const REQUIRED_GATES = [
   "artifact-index-traceability",
   // Phase 25 Runbook coverage (1 BLOCK gate — operator narrative + kill-switch ↔ runbook bidirectional integrity)
   "runbook-coverage",
+  // Phase 26 Per-edge-function ownership manifest (1 BLOCK gate — 100% owner coverage + mirror parity + freshness)
+  "edge-function-ownership-completeness",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)

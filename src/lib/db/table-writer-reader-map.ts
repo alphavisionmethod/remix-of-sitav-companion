@@ -58,6 +58,7 @@ const FUNCTION_OWNER_TO_TABLE_OWNER: Record<OwnerTeam, OwnershipTeam> = {
   "os-kernel": "os-kernel-team",
   "compliance-security": "compliance-team",
   "user-experience": "ux-team",
+  "app-platform": "platform-engineering",
 };
 
 /** Tables exempt from cross-domain writer check (shared/infrastructure). */
