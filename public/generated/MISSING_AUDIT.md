@@ -1323,7 +1323,7 @@ Mitigation: per-cluster README + Part II annotations.
 
 ### 13.7 Cleanup candidates
 - Fold `core-services` into `services` (or document boundary)
-- Document or designate canonical entry for onboarding intent
+- ~~Document or designate canonical entry for onboarding intent~~ → ✅ DONE 2026-04-20 (`onboarding-surface-registry.ts`)
 - Promote or delete unconsumed advisory validators
 
 ---
