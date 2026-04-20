@@ -348,6 +348,17 @@ const REQUIRED_GATES = [
   // declarations in production pages/components per
   // constraints/reality-mode-wiring. Excludes __tests__.
   "hardcoded-demo-flags",
+  // Wave 12 — Full Systems Integration Pass (17 BLOCK gates)
+  "runtime-authority",
+  "os-boot-recovery-closure",
+  "route-plane-runtime-profile-consistency",
+  "truth-surface-coverage",
+  "provider-refresh-closure",
+  "oauth-security-closure",
+  "ai-capability-proof",
+  "runbook-linkage",
+  "artifact-proof-closure",
+  "evidence-graph-completeness-v2",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
