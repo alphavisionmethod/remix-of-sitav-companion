@@ -59,7 +59,7 @@
 | 2 | Multiple onboarding entrypoints | Master spec defines 29 screens; revenue-office cluster implements 22 with overlapping scope; `setup`, `surfaces`, `business-journey-config.ts` also touch the same intent surface | P1 |
 | 3 | Generated-artifact ownership | 459 JSONs in `generated/`; only a subset have a declared producer in any manifest | P2 |
 | 4 | ~~Validator-to-gate mapping~~ | **RESOLVED 2026-04-20** — `generated/validator-gate-map.json` now classifies all **186 validators** under `scripts/architecture/checks/` as `block` (50), `warn` (17), or `advisory` (119) with a declared consumer (100% coverage); auto-discovered by `scripts/manifests/generate/generate-validator-gate-map.ts` with hand-curated overrides at `src/lib/ci/validator-gate-map.ts`; advisory checks are now surfaced in the master release readiness summary; drift-prevented by `check:validator-gate-coverage` (WARN-tier, 21 BLOCK gates unchanged) | ✅ |
-| 5 | Route inventory | Only 14 `<Route>` lines in `src/App.tsx`; routing is delegated into nested shells/launchers — there is no flat truth file `routes.json` for external consumers | P1 |
+| 5 | Route inventory | ✅ RESOLVED 2026-04-20 — flat truth file `public/generated/routes.json` (696 routes, 16 sources walked, byte-identical mirrors) emitted by `npm run generate:routes-inventory`; freshness/parity enforced by WARN gate `check-routes-inventory-completeness` | P1 (RESOLVED) |
 | 6 | First-use telemetry | Branch telemetry gate exists but resume/re-entry persistence is partial | P1 |
 | 7 | Connector capability completeness | Gate exists; `src/lib/connectors/` is small (only state grammar + reauth actions visible); concrete provider clients live in edge functions | P1 |
 | 8 | Public artifact surfacing | Only ~10 docs are mirrored to `public/generated/`; the in-app document viewer therefore can show only a fraction of the 459 evidence artifacts | P2 |
@@ -71,7 +71,7 @@
 | # | Missing artifact | Impact | Tier |
 |---:|---|---|---|
 | 1 | `generated/INDEX.json` (artifact → producer-script → consuming-gate map) | External validators cannot trace any artifact back to its producer | P1 |
-| 2 | `public/generated/routes.json` | No machine-readable route truth for external probes / rendering surfaces | P1 |
+| 2 | `public/generated/routes.json` | ✅ RESOLVED 2026-04-20 — emitted (696 routes; planes user/admin/shell-runtime; tiers tier1-4); `manifest-routes-flat` registered in manifest-registry; WARN gate PASS | P1 (RESOLVED) |
 | 3 | `docs/runbooks/` (incident + kill-switch playbooks) | Operators have no runbook linkage; the support-bundle gate produces evidence but no operator narrative | P1 |
 | 4 | Per-edge-function ownership manifest | 185 functions, no single ownership file; ad-hoc README only | P2 |
 | 5 | `src/lib/connectors/<provider>/client.ts` per OAuth provider | Real provider logic lives in edge functions; no client-side capability registry export | P2 |
@@ -106,7 +106,7 @@
 Three artifacts unlock everything else:
 
 1. **`generated/INDEX.json`** — closes producer-to-consumer gap. Enables freshness ratchet to ratchet by-bucket.
-2. **`public/generated/routes.json`** — closes external visibility gap. Enables route-topology gate to be runtime-verifiable.
+2. **`public/generated/routes.json`** — ✅ RESOLVED 2026-04-20: shipped, 696 routes, generator walks App.tsx + all 13 `src/routes/*.tsx` shells, mirror parity enforced.
 3. **`docs/runbooks/`** + **`runbook-coverage` advisory check** — closes operator gap. Enables the kill-switch UX to link directly to an operator response.
 
 With those three landed, every remaining item in the P1/P2 fix plan (Part XIV) becomes incremental.
@@ -223,8 +223,8 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 
 - 1,073 page files. Routing is delegated heavily into shell launchers (`mission-control-launcher.ts`, `business-launcher.ts`, `concierge-launcher.ts`, `app-store-launcher.ts`, `finance-launcher.ts`).
 - Only 14 top-level `<Route>` declarations in `src/App.tsx`. The rest is nested.
-- **Risk:** No flat machine-readable route inventory exists in `public/generated/routes.json`. External tools (probes, sitemap generators, route-topology gate) currently scan source manually.
-- **Action:** Emit `generated/routes.json` from a script (P1).
+- **Risk:** ✅ RESOLVED 2026-04-20 — `public/generated/routes.json` now exists (696 routes); generator walks App.tsx + every `src/routes/*.tsx` shell; WARN gate enforces freshness + mirror parity.
+- **Action:** ✅ RESOLVED — `npm run generate:routes-inventory` + `npm run check:routes-inventory-completeness` wired.
 
 ### 2.4 `electron/` topology (15 modules, flat layout, registry-enforced)
 
@@ -1329,9 +1329,9 @@ Mitigation: per-cluster README + Part II annotations.
 - **Proof artifact:** generated/INDEX.json itself; commit hash referenced in os-release-readiness-report
 - **Rollback:** Rollback: drop the new check from aggregator; INDEX.json is read-only
 
-#### P1.2 — Emit a flat machine-readable route inventory
+#### P1.2 — Emit a flat machine-readable route inventory ✅ RESOLVED 2026-04-20
 - **Problem:** Only 14 top-level <Route> declarations in src/App.tsx; nested routing means no machine-readable truth file
-- **Files / new artifacts:** scripts/architecture/build-route-inventory.ts (new); generated/routes.json (new); mirrored to public/generated/routes.json
+- **Files / new artifacts:** ✅ DELIVERED — `scripts/manifests/generate/generate-route-manifest.ts` (extended to walk all shells); `scripts/architecture/checks/check-routes-inventory-completeness.ts` (new WARN gate); `generated/routes.json` + `public/generated/routes.json` (696 routes)
 - **Artifact shape:** routes.json with {path, component, plane, runtime_tier, owner}
 - **Wiring:** Wire into existing check-route-topology-truth gate
 - **Validator / gate:** check-route-topology-truth becomes runtime-verifiable instead of source-grep-only
