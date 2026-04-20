@@ -201,6 +201,34 @@ function inferOwner(p: string): string {
   return "architecture";
 }
 
+// ── 9b. Filename-fuzzy script index for top-level orphan recovery ─
+const scriptByBaseName = new Map<string, string>();
+for (const sp of allScripts) {
+  const norm = sp.replace(/\\/g, "/");
+  const base = path.basename(norm).replace(/\.(ts|js|mjs|cjs|sh|bash)$/, "");
+  if (!scriptByBaseName.has(base)) scriptByBaseName.set(base, norm);
+}
+function fuzzyMatchScript(artifact: string): string | null {
+  const filename = path.basename(artifact).replace(/\.(json|md|html|sarif|txt|yaml|yml)$/, "");
+  const candidates = [
+    `check-${filename}`,
+    `emit-${filename}`,
+    `generate-${filename}`,
+    `check-${filename.replace(/-report$/, "")}`,
+    `check-${filename.replace(/-map$/, "")}`,
+    `check-${filename.replace(/-summary$/, "")}`,
+    `check-${filename.replace(/-manifest$/, "")}`,
+    `emit-${filename.replace(/-report$/, "")}`,
+    `generate-${filename.replace(/-manifest$/, "")}`,
+    `generate-${filename.replace(/-report$/, "")}`,
+  ];
+  for (const c of candidates) {
+    const found = scriptByBaseName.get(c);
+    if (found) return found;
+  }
+  return null;
+}
+
 // ── 10. Build entries ────────────────────────────────────────
 const entries: ArtifactEntry[] = allArtifacts.map((artifact) => {
   let producer = producerByPath.get(artifact) || overlayMap.get(artifact)?.producer || null;
@@ -208,12 +236,16 @@ const entries: ArtifactEntry[] = allArtifacts.map((artifact) => {
     ? (producerByPath.has(artifact) ? "auto-discovered" : "overlay")
     : "orphan";
 
-  // Directory-level inference fallback
   if (!producer) {
-    const parent = artifact.split("/").slice(0, 2).join("/"); // generated/<sub>
+    const parent = artifact.split("/").slice(0, 2).join("/");
     const grandparent = artifact.split("/").slice(0, 3).join("/");
     const found = dirOwnerMap.get(grandparent) || dirOwnerMap.get(parent);
     if (found) { producer = found; source = "directory-inferred"; }
+  }
+
+  if (!producer) {
+    const fuzzy = fuzzyMatchScript(artifact);
+    if (fuzzy) { producer = fuzzy; source = "directory-inferred"; }
   }
 
   if (!producer && registryPaths.has(artifact)) source = "registry";
