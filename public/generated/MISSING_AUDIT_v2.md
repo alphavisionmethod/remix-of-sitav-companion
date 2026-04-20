@@ -73,7 +73,7 @@
 | 1 | ~~`generated/INDEX.json` (artifact → producer-script → consuming-gate map)~~ | **RESOLVED 2026-04-20** — `generated/INDEX.json` emitted by `scripts/manifests/generate/generate-artifact-index.ts`; slim externally-readable map joining artifact → producer-script → consuming-gates by scanning all `check-*.ts` files for `readJsonSafe` / `readFileSync` references (913 entries, 96.9% traceable, 858 producers, 167 consumer-bearing). Mirrored to `public/generated/INDEX.json` (sha256-identical). **BLOCK gate #24** `check-artifact-index-traceability` asserts existence, schema validity (v1), ≥90% traceability coverage, producer-on-disk, and mirror parity — PASS (0 errors). | ✅ |
 | 2 | `public/generated/routes.json` | ✅ RESOLVED 2026-04-20 — emitted (696 routes; planes user/admin/shell-runtime; tiers tier1-4); `manifest-routes-flat` registered in manifest-registry; WARN gate PASS | P1 (RESOLVED) |
 | 3 | `docs/runbooks/` (incident + kill-switch playbooks) | Operators have no runbook linkage; the support-bundle gate produces evidence but no operator narrative **RESOLVED 2026-04-20** — docs/runbooks/ has 29 narratives + infra/runbooks/RB-005-AUTH.md; RUNBOOK_REGISTRY (src/lib/support/runbook-registry.ts) now has 22 entries (RB-005-AUTH added, dangling KS-PAYMENTS-AUTH→RB-005-AUTH reference resolved); runbook-subsystem-map declares 20 mandatory subsystems (added payments-auth); generated/runbook-index.json (31 entries) mirrored to public/generated/; check-runbook-coverage is BLOCK gate #25 in MANDATORY_BLOCK_GATES (scripts/architecture/checks/check-os-release-readiness.ts) — asserts mandatory subsystem coverage + markdown existence + bidirectional kill-switch ↔ runbook linkage. | P1 |
-| 4 | Per-edge-function ownership manifest | 185 functions, no single ownership file; ad-hoc README only | P2 |
+| 4 | ~~Per-edge-function ownership manifest~~ | **RESOLVED 2026-04-20** — `src/lib/backend-topology/edge-function-owner-map.ts` now covers **186/186 functions (100%)** across **13 owner teams** (added `app-platform` team + 101 backfilled entries). Per-function ownership manifest at `generated/edge-function-ownership.json` (mirrored to `public/generated/`) carries `ownerTeam` + `primaryContact` + `escalationContact` + `slackChannel` + `runbookRef` + `killSwitchRef` for every function. `.github/CODEOWNERS` routes PRs to owning teams. `check-edge-function-ownership-completeness` is BLOCK gate #26 in master release roster, asserts 100% coverage + mirror parity + freshness ≤ 7 days. Mirror parity preserved via md5sum. | ✅ |
 | 5 | `src/lib/connectors/<provider>/client.ts` per OAuth provider | Real provider logic lives in edge functions; no client-side capability registry export | P2 |
 | 6 | ~~First-use resume/re-entry telemetry table~~ | **RESOLVED 2026-04-20** — `public.onboarding_resume_checkpoints` table live with owner-scoped RLS (`users_select_own_resume_checkpoint`, `users_insert_own_resume_checkpoint`, `users_update_own_resume_checkpoint`); validation trigger enforces `current_screen 1..29` and `branch IN (quick,balanced,deep)`; resume token + 30-day expiry; edge function deployed; gate `check-onboarding-branch-telemetry` enforces presence | P1 (RESOLVED) |
 | 7 | Admin runbook surface in 12-domain IA | Admin shells exist; runbook tab is not wired | P2 |
@@ -89,7 +89,7 @@
 | 2 | "All 459 generated artifacts are owned" | Only the 21 BLOCK-gate artifacts have certain producer linkage | Build `generated/INDEX.json` (P1) |
 | 3 | "`src/lib/policies/` exists" (legacy doc) | Only `src/lib/policy/` exists — verified | Already corrected in PROJECT_TREE_AUDIT.md; preserve in Part XIII |
 | 4 | "40 internal agents are wired into runtime" | 40 agents are in the registry; runtime invocation paths exist for ≤ 15 | Mark deferred set explicitly |
-| 5 | "185 edge functions with ownership" | Functions exist; no central ownership manifest | Build `supabase/functions/_owners.json` (P2) |
+| 5 | ~~"185 edge functions with ownership"~~ | **RESOLVED 2026-04-20** — `src/lib/backend-topology/edge-function-owner-map.ts` now covers **186/186 functions (100%)** across **13 owner teams** (added `app-platform` team + 101 backfilled entries). Per-function ownership manifest at `generated/edge-function-ownership.json` (mirrored to `public/generated/`) carries `ownerTeam` + `primaryContact` + `escalationContact` + `slackChannel` + `runbookRef` + `killSwitchRef` for every function. `.github/CODEOWNERS` routes PRs to owning teams. `check-edge-function-ownership-completeness` is BLOCK gate #26 in master release roster, asserts 100% coverage + mirror parity + freshness ≤ 7 days. Mirror parity preserved via md5sum. | ✅ RESOLVED 2026-04-20 |
 
 ### 1.5 What is **duplicated** (🟣)
 
@@ -127,7 +127,7 @@ With those three landed, every remaining item in the P1/P2 fix plan (Part XIV) b
 | `electron/` | Electron main + preload + bridges (15 .cjs) | ✅ canonical | Desktop | None — flat layout enforced | None |
 | `os/` | Native OS image, scripts, runtime, recovery | ✅ canonical | OS engineering | Recovery evidence is QEMU-only | Real-recovery boot evidence |
 | `scripts/` | Validators + utility scripts (183 architecture checks) | ✅ canonical | Architecture | Many advisory checks unconsumed | Validator-to-consumer map |
-| `supabase/` | Edge functions (185), migrations (225), config | ✅ canonical | Backend | No per-function ownership manifest | `supabase/functions/_owners.json` |
+| `supabase/` | Edge functions (186), migrations (225+), config | ✅ canonical | Backend | **RESOLVED 2026-04-20** — per-function ownership manifest at `generated/edge-function-ownership.json` (100% coverage, 13 teams, BLOCK gate #26) | `generated/edge-function-ownership.json` |
 | `infra/` | Infrastructure config | ✅ canonical | DevOps | Spot-check only | Per-component README |
 | `nginx/` | Reverse proxy config for self-host | ✅ canonical | DevOps | None | None |
 | `deploy/` | First-boot + provisioning + backup scripts | ✅ canonical | OS engineering | Backup smoke is advisory | Production backup evidence |
@@ -1368,7 +1368,10 @@ Mitigation: per-cluster README + Part II annotations.
 
 ### Tier P2 (production hardening)
 
-#### P2.1 — Per-edge-function ownership manifest
+#### P2.1 — ~~Per-edge-function ownership manifest~~ ✅ RESOLVED 2026-04-20
+
+> **RESOLVED 2026-04-20** — 186/186 functions covered (100%) across 13 owner teams. Source: `src/lib/backend-topology/edge-function-owner-map.ts`. Manifest: `generated/edge-function-ownership.json` (mirrored to `public/generated/`). Gate: `check-edge-function-ownership-completeness` (BLOCK gate #26 in master release roster).
+
 - **Problem:** 185 functions, no central owner record
 - **Files / new artifacts:** supabase/functions/_owners.json (new)
 - **Artifact shape:** {function_name → owner_team, on_call, primary_consumer}

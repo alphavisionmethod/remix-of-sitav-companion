@@ -441,6 +441,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
       'Aggregates the 13 upstream truth reports (feature reality, route completeness, edge function membership+health, db reality, table membership, auth/policy/trust, mobile store+build, owner workflows, manifest theater, runbook operability, kill switches, golden paths, test+release truth, observability truth, mock leak) into a single verdict. Emits verdict="real" only when all 13 clauses are green. Last gate in the launch pipeline.',
     producesArtifact: "generated/its-real-gate-report.json",
   },
+
+  // ── Phase 26 ── Per-edge-function ownership manifest (BLOCK gate #26 in master release roster)
+  {
+    id: "edge-function-ownership-completeness",
+    phase: "phase-26-manifest-truth",
+    title: "Edge function ownership completeness (per-function manifest, 100% coverage)",
+    script: "scripts/architecture/checks/check-edge-function-ownership-completeness.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Asserts every supabase/functions/<name>/index.ts on disk has an owner team, primaryContact, escalationContact, slackChannel, and reviewerCodeOwners in EDGE_FUNCTION_OWNER_MAP / EDGE_FUNCTION_OWNERSHIP_MANIFEST. Asserts no phantom entries, mirror parity (generated/ ↔ public/generated/), and freshness ≤ 7 days. Drives the canonical machine-readable ownership manifest at generated/edge-function-ownership.json and the public mirror used by external probes.",
+    producesArtifact: "generated/edge-function-ownership-completeness-report.json",
+  },
 ];
 
 export function listGatesByPhase(phase: CIGateEntry["phase"]): readonly CIGateEntry[] {

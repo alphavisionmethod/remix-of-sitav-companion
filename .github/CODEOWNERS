@@ -1,0 +1,92 @@
+# ════════════════════════════════════════════════════════════════════
+# SITA OS — CODEOWNERS
+# Routes pull-request reviews to the team that owns each path.
+# Mirrors src/lib/backend-topology/edge-function-owner-map.ts
+# (EDGE_FUNCTION_OWNERSHIP_MANIFEST.reviewerCodeOwners).
+# Enforced by BLOCK gate #26 (check-edge-function-ownership-completeness).
+# ════════════════════════════════════════════════════════════════════
+
+# Default catch-all
+*                                                @sita/platform-core
+
+# ── Edge functions (per-team patterns) ───────────────────────────────
+/supabase/functions/admin-*/                     @sita/admin-governance
+/supabase/functions/advisor-*/                   @sita/advisor-intelligence
+/supabase/functions/agent-*/                     @sita/agent-runtime
+/supabase/functions/internal-agent-*/            @sita/agent-runtime
+/supabase/functions/ai-*/                        @sita/ai-engineering
+/supabase/functions/brain-*/                     @sita/ai-engineering
+/supabase/functions/personal-brain/              @sita/ai-engineering
+/supabase/functions/digital-twin-engine/         @sita/ai-engineering
+/supabase/functions/intelligence-api/            @sita/ai-engineering
+/supabase/functions/simulation-engine-api/       @sita/ai-engineering
+/supabase/functions/check-ai-budget/             @sita/ai-engineering
+/supabase/functions/chat-advisor/                @sita/advisor-intelligence
+/supabase/functions/business-advisor-intelligence/ @sita/advisor-intelligence
+/supabase/functions/business-board-api/          @sita/advisor-intelligence
+/supabase/functions/app-*/                       @sita/app-platform
+/supabase/functions/desktop-update-manifest/     @sita/app-platform
+/supabase/functions/os-update-manifest/          @sita/app-platform
+/supabase/functions/package-verify/              @sita/app-platform
+/supabase/functions/boardroom-*/                 @sita/user-experience
+/supabase/functions/onboarding-*/                @sita/user-experience
+/supabase/functions/owner-copilot-*/             @sita/user-experience
+/supabase/functions/seed-advisor-registry/       @sita/user-experience
+/supabase/functions/seed-connector-registry/     @sita/user-experience
+/supabase/functions/booking-manage/              @sita/user-experience
+/supabase/functions/communications-api/          @sita/user-experience
+/supabase/functions/get-weather/                 @sita/user-experience
+/supabase/functions/license-gateway/             @sita/user-experience
+/supabase/functions/support-gateway/             @sita/user-experience
+/supabase/functions/tasks-workflow-api/          @sita/user-experience
+/supabase/functions/user-bff-gateway/            @sita/user-experience
+/supabase/functions/app-store-api/               @sita/user-experience
+/supabase/functions/connector-*/                 @sita/connector-integrations
+/supabase/functions/crm-sync/                    @sita/connector-integrations
+/supabase/functions/provider-family-operations/  @sita/connector-integrations
+/supabase/functions/cloud-*/                     @sita/cloud-infrastructure
+/supabase/functions/device-telemetry/            @sita/cloud-infrastructure
+/supabase/functions/cashflow-calculate/          @sita/finance-engine
+/supabase/functions/cost-alert/                  @sita/finance-engine
+/supabase/functions/investment-portfolio-api/    @sita/finance-engine
+/supabase/functions/invoice-generate/            @sita/finance-engine
+/supabase/functions/msa-operations/              @sita/finance-engine
+/supabase/functions/payment-*/                   @sita/finance-engine
+/supabase/functions/revenue-caller/              @sita/finance-engine
+/supabase/functions/tax-estimate/                @sita/finance-engine
+/supabase/functions/account-delete/              @sita/compliance-security
+/supabase/functions/audit-*/                     @sita/compliance-security
+/supabase/functions/attestation-packet-builder/  @sita/compliance-security
+/supabase/functions/canary-chaos-cron/           @sita/compliance-security
+/supabase/functions/compliance-evidence-*/       @sita/compliance-security
+/supabase/functions/dr-drill-*/                  @sita/compliance-security
+/supabase/functions/evidence-graph-builder/      @sita/compliance-security
+/supabase/functions/federated-knowledge-aggregator/ @sita/compliance-security
+/supabase/functions/gdpr-*/                      @sita/compliance-security
+/supabase/functions/kill-switch-*/               @sita/compliance-security
+/supabase/functions/mobile-deferral-attestor/    @sita/compliance-security
+/supabase/functions/production-launch-attestor/  @sita/compliance-security
+/supabase/functions/release-artifact-*/          @sita/compliance-security
+/supabase/functions/release-evidence-graph-snapshot/ @sita/compliance-security
+/supabase/functions/runbook-drill/               @sita/compliance-security
+/supabase/functions/secret-rotation-orchestrator/ @sita/compliance-security
+/supabase/functions/security-*/                  @sita/compliance-security
+/supabase/functions/verification-recorder/       @sita/compliance-security
+/supabase/functions/webauthn-challenge/          @sita/compliance-security
+/supabase/functions/alert-*/                     @sita/notification-services
+/supabase/functions/push-*/                      @sita/notification-services
+/supabase/functions/vapid-public-key/            @sita/notification-services
+/supabase/functions/ambient-os-operations/       @sita/os-kernel
+/supabase/functions/os-agent-channel/            @sita/os-kernel
+/supabase/functions/os-command/                  @sita/os-kernel
+/supabase/functions/os-status/                   @sita/os-kernel
+/supabase/functions/runtime-probes/              @sita/os-kernel
+/supabase/functions/self-healing/                @sita/os-kernel
+/supabase/functions/system-updates/              @sita/os-kernel
+
+# ── Ownership-manifest source files (changes require platform-core review) ──
+/src/lib/backend-topology/edge-function-owner-map.ts          @sita/platform-core
+/scripts/manifests/generate/generate-edge-function-ownership-manifest.ts  @sita/platform-core
+/scripts/architecture/checks/check-edge-function-ownership-completeness.ts @sita/platform-core
+/generated/edge-function-ownership.json                       @sita/platform-core
+/public/generated/edge-function-ownership.json                @sita/platform-core
