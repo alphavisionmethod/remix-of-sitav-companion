@@ -1,137 +1,91 @@
 
 
-## Goal
-Produce a single canonical **`MASTER_AUDIT.md`** that absorbs `MISSING_AUDIT.md` v3 (today, 33KB, 15 PARTS) PLUS the dimensions covered in the older `FULL_MASTER_AUDIT v4` (48 sections), `master-audit v6.3` (47 sections + Appendix), and `SITA_MASTER_AUDIT v7` — re-derived against live state — so nothing in the project is left un-audited.
+## Plan — Route remaining inline runtime probes through the canonical registry
 
-## Live ground truth (verified just now)
+### Goal
+Eliminate every inline `window.electron` / `navigator.userAgent` runtime/platform check outside `src/runtimes/` so all tier + platform truth flows through the canonical detectors (`detectActiveRuntimeTier`, `detectDesktopRuntime`, `getElectronBridge`, `isElectronRuntime`) — exactly the pattern that already governs `useElectronBridge`.
 
-| Metric | Live count | Prior audit claim | Status |
-|---|---:|---:|---|
-| DB tables | **431** | 318 / 420 | All audits stale; correct here |
-| RLS policies | **934** | 700 / 934 | v3 correct |
-| DB functions | **76** | 19 / 18 | All prior audits massively under-counted |
-| DB views | **11** | 8 / 4 | Prior audits stale |
-| Edge functions | **192** | 74 / 128 / 133 | All prior audits stale |
-| Migrations | **229** | 190 | +39 since last audit |
-| Generated artifacts | **489** | 121 | +368 |
-| Gate reports | **330** (329 ok) | n/a | New dimension |
+### Scope decision per match
 
-## Gap inventory — what `MISSING_AUDIT.md v3` doesn't cover
+| Pattern | Files | Action |
+|---|---|---|
+| `VITE_APPLIANCE_RUNTIME` | `src/runtimes/runtime-detection.ts` only | ✅ Already canonical — no change |
+| Observability sinks (raw UA string for telemetry only) | `src/lib/observability/runtime-error-context.ts`, `src/lib/observability/uptime.ts` | ✅ Keep — tier-agnostic crash/heartbeat metadata, not a runtime decision |
+| Documentation contracts describing fallbacks | `src/runtimes/desktop/desktop-host-capabilities.ts`, `src/runtimes/desktop/desktop-fallbacks.ts`, `src/lib/surfaces/host-window-vs-simulated-map.ts`, `src/lib/web-platform/release/web-runtime-min-contract.ts` | ✅ Keep — these are spec strings, not live probes |
+| Live runtime/platform probes outside `src/runtimes/` | 9 files (listed below) | 🔧 Migrate |
 
-The v3 (15 PARTS) is structurally complete for **architecture truth + closure plan**, but is missing the **scoring + breadth dimensions** the older audits had. Specifically:
+### New canonical helper (single file, no second abstraction)
 
-| Dimension | In v3? | In old audits? | Action |
-|---|---|---|---|
-| Weighted scoreboard (14–15 indices) | ❌ | ✅ FULL_MASTER §2 | **ADD** |
-| Per-table inventory (431 tables, classified) | partial (counts only) | ✅ master-audit App B | **ADD** as Appendix |
-| Per-edge-function inventory (192 fns, 6-role) | partial | ✅ master-audit App A | **ADD** as Appendix |
-| Mock data / demo-mode register | ❌ | ✅ FULL §16-17 | **ADD** |
-| REX loop audit | ❌ | ✅ FULL §19 | **ADD** |
-| Flagship Loop audit (5 loops) | ❌ | ✅ FULL §20 | **ADD** |
-| Push / WebAuthn / biometric | ❌ | ✅ FULL §21-22 | **ADD** |
-| GDPR / privacy / DSAR | ❌ | ✅ FULL §23 | **ADD** |
-| Memory & knowledge layer | ❌ | ✅ FULL §27 | **ADD** |
-| Multi-tenancy / federation | ❌ | ✅ FULL §28 | **ADD** |
-| Sync / conflict / CRDT | ❌ | ✅ FULL §30 | **ADD** |
-| Dependency / supply chain | ❌ | ✅ FULL §38 | **ADD** |
-| Launch readiness matrix (8 targets) | partial | ✅ SITA §I.2 | **EXPAND** |
-| Surface-runtime truth (Web/PWA/Electron/iOS/Android/ISO/IMG/OVA) | ❌ | ✅ FULL §42-44 | **ADD** |
-| Score-change tracker / delta vs prior | ❌ | ✅ FULL §3, App D | **ADD** |
-| Internal AI workforce (40 agents, 6 councils) | partial | mentioned | **ADD** dedicated section |
-| Anti-piracy / boot-chain trust | ❌ | mentioned in memory | **ADD** |
-| Connector truth closure (provider-by-provider) | partial | ✅ memory | **ADD** matrix |
-| Operational telemetry (cron schedule full table) | partial | ✅ memory | **ADD** |
-| Kill-switch + runbook registry inventory | partial | ✅ memory | **ADD** matrix |
+**Add `src/runtimes/runtime-platform.ts`** — pure helper layered on the existing detectors. No new abstraction layer; it just re-exports the registry's truth in the shapes the call sites need:
 
-## Plan — `MASTER_AUDIT.md` structure (consolidated, ~70KB)
+```ts
+// ── exports ──────────────────────────────────────────────
+export type DevicePlatform = "ios" | "android" | "macos" | "windows" | "linux" | "web";
+export type DeviceFormFactor = "desktop" | "mobile" | "tablet";
 
-### Part 0 — Provenance & Audit Method
-Method, sources of truth, supersedes list, verification date, live-query anchors.
+export function getDevicePlatform(): DevicePlatform        // uses detectDesktopRuntime + UA fallback
+export function getDeviceFormFactor(): DeviceFormFactor    // mobile/desktop classification
+export function getDeviceLabel(): string                   // "iPhone" / "Mac Browser" / "SITA Desktop"
+export function getDeviceFingerprint(): string             // stable short id for state-sync / continuity
+export function getOSVersionString(): string               // for diagnostics rows
+export function isMobileSurface(): boolean
+```
 
-### Part I — Executive Reality Summary + Weighted Scoreboard
-Aggregate score / 100 across **18 indices** (re-derived live). Verdict per surface (Web, Edge, Electron, OS-ISO, OVA, IMG, PWA, iOS, Android).
+All UA parsing lives in this one file. Internally it calls `detectActiveRuntimeTier()` first (so `DESKTOP_HOST` short-circuits to `"SITA Desktop"`), then falls back to a single UA regex table.
 
-### Part II — Repository Topology (live counts)
-All 25+ metrics in one table; delta vs FULL_MASTER v4, master-audit v6.3, SITA v7, MISSING v3.
+### Migrations (9 files)
 
-### Part III — Full Cluster Audit (12 clusters)
-src/lib · src/components · src/pages · src/packages · src/hooks · electron · os · scripts · supabase/functions · supabase/migrations · generated · docs/memory.
+| File | Inline check today | Replaced with |
+|---|---|---|
+| `src/lib/services/surface-detection/index.ts` | `('electron' in window) \|\| ua.includes("Electron")`; mobile UA regex; `getDeviceName()` UA chain | `isElectronRuntime()` + `isMobileSurface()` + `getDeviceLabel()` |
+| `src/lib/app-platform/runtime.ts` | `window.electron`, `window.electron.platform`, mobile UA | `detectDesktopRuntime()` + `getDevicePlatform()` |
+| `src/lib/app-platform/sdk.ts` | `window.electron?.platform`, `!!window.electron`, UA regex | `getDevicePlatform()` + `isElectronRuntime()` |
+| `src/hooks/use-realtime-notifications.ts` | direct `window.electron?.sendNotification` call + local `isElectron()` | Use `useElectronBridge().sendNotification` (already the canonical bridge) |
+| `src/contexts/SitaOSContext.tsx` | `/iPhone\|iPad\|Android/i.test(ua)` + `ua.slice(0,32)` for deviceId | `isMobileSurface()` + `getDeviceFingerprint()` |
+| `src/lib/services/biometric-auth/index.ts` | UA-based device label | `getDeviceLabel()` |
+| `src/lib/services/system-updates/index.ts` | raw `navigator.userAgent`/`platform`/`language` for device profile | `getDeviceLabel()` + `getDevicePlatform()`; keep `language` (locale, not runtime) |
+| `src/lib/services/push-notification/push-registration-service.ts` | UA chain for device name | `getDeviceLabel()` |
+| `src/lib/services/universal-state-sync/index.ts` | `web_${ua.slice(0,20)}` device id | `getDeviceFingerprint()` |
+| `src/components/sita/OSSetupExperience.tsx` | `navigator.userAgent.slice(0,60)` x2 (osVersion + os) | `getOSVersionString()` |
 
-### Part IV — End-to-End Wiring Traces (10 traces)
-v3 had 5; add: connector refresh · app install/launch · biometric/WebAuthn · push delivery · DR drill · GDPR export.
+### Validator extension (enforces the new boundary going forward)
 
-### Part V — Integration Audit (16 providers)
-Auth · Supabase · Google · Microsoft · Slack · Twilio · SendGrid · Stripe · Plaid · OpenAI · Anthropic · Google AI · Capacitor · Electron Forge · GitHub Releases · Apple/Play Store. Each: token/refresh/health/kill-switch/proof.
+Update **`scripts/validation/check-shell-runtime-portability.ts`** to add a second pass: any `*.ts/*.tsx` file outside `src/runtimes/`, `src/lib/observability/`, the doc-contract files listed above, and the canonical `useElectronBridge.ts` must NOT contain the literal tokens `window.electron`, `navigator.userAgent`, or `import.meta.env.VITE_APPLIANCE_RUNTIME`. Emit `error` issues into the existing gate report (no new gate ID needed — extends the same shell/runtime portability gate already wired into the master aggregator).
 
-### Part VI — Database & Policy Audit
-431 tables, 934 policies, 76 functions, 11 views. Per-domain table count. Missing-index hunt. RLS strength sample. Append-only/receipt tables list.
+Add an explicit allowlist constant `RUNTIME_PROBE_ALLOWLIST` at the top of the validator with the 6 doc/observability files, so future additions are an obvious code review signal.
 
-### Part VII — Runtime / Electron / OS Audit
-Electron security boundary inventory · IPC surface · preload exposure · trust ring · OS daemons (sita-runtime, sita-updated, sita-ota) · boot chain (UEFI→Shim→GRUB→dm-verity→TPM) · A/B partition · recovery mode.
+### Out of scope
 
-### Part VIII — AI / Advisor / Autonomy Audit
-40 internal agents (6 councils) · sovereign gateway · 9-stage pipeline · receipt coverage · budget enforcement · Cortex Loop · 7-gate autonomous action pipeline · L0–L6 trust ladder · simulation/reversibility.
+- No changes to `src/runtimes/**` detectors (already canonical).
+- No changes to observability files (`runtime-error-context.ts`, `uptime.ts`) — UA there is opaque telemetry, not a runtime decision.
+- No changes to `useElectronBridge.ts` (it IS the canonical bridge consumer).
+- No DB / edge function / migration / README changes.
+- No deletion of the doc-contract strings that mention `navigator.userAgent` as a *described* web fallback.
 
-### Part IX — App Platform / SDK Audit
-4 app classes (A/B/C/D) · manifest schema (ed25519 signed) · ingest pipelines · launch resolver · NovaFS · window isolation · Nova Runtime SDK 4-phase boot · 17 store modules.
+### Validation (after implementation)
 
-### Part X — Admin / Operator Audit
-12 admin domains · OS Platform Command Center (8 tabs) · 16 boardroom tabs · 19 runbooks · 15+ kill-switches · operator surfaces (Phase 16 boards).
+1. `npx tsx scripts/validation/check-shell-runtime-portability.ts` → 0 violations.
+2. `npx tsx scripts/validation/check-runtime-host-boundaries.ts` → still PASS (unchanged surface).
+3. Spot-check `src/lib/services/surface-detection` — `detectSurfaceType()` should now return identical values for Electron/PWA/mobile/web without referencing `navigator` or `window.electron` directly.
+4. Master aggregator (`os-release-readiness-report.json`) — no regression in the 28 BLOCK gates.
 
-### Part XI — Onboarding / Journey Audit
-First-Use Master Spec (29 screens · 4 phases · 9 wow moments · branching matrix · resume logic) · telemetry coverage · 15 golden paths.
+### Files touched
 
-### Part XII — Validation / Evidence / Release Audit
-Master aggregator (`check-os-release-readiness.ts`) · 236 required gates · 28 BLOCK gates · 3 missing required outputs (named in v3) · 98 stale advisory failures · meta-validators · evidence-graph completeness.
+**Created (1)**
+- `src/runtimes/runtime-platform.ts`
 
-### Part XIII — Operational Readiness & Telemetry
-Full pg_cron schedule (2m/5m/30m/1h/nightly/daily/weekly) · DR drill RTO/RPO · chaos drill · production-launch attestation · security fabric runtime probe.
+**Edited (10)**
+- `src/lib/services/surface-detection/index.ts`
+- `src/lib/app-platform/runtime.ts`
+- `src/lib/app-platform/sdk.ts`
+- `src/hooks/use-realtime-notifications.ts`
+- `src/contexts/SitaOSContext.tsx`
+- `src/lib/services/biometric-auth/index.ts`
+- `src/lib/services/system-updates/index.ts`
+- `src/lib/services/push-notification/push-registration-service.ts`
+- `src/lib/services/universal-state-sync/index.ts`
+- `src/components/sita/OSSetupExperience.tsx`
 
-### Part XIV — Contradictions, Drift, Legacy
-Memory-vs-disk drift table (table count, edge fn count, etc.) · superseded audits · stale generated outputs (1 of 330 not ok) · dead routes · legacy shims (32 verified clean).
-
-### Part XV — Mock Data / Demo Mode / Stubs Register
-Per-cluster scan for `// TODO`, `MOCK_`, `placeholder`, `stub`, demo-mode flags.
-
-### Part XVI — Dependency / Supply Chain
-package.json · lockfile health · audit warnings · CycloneDX SBOM presence · MOK/codesign coverage.
-
-### Part XVII — Exact Fix Plan (P0 → P3)
-Reuse v3's plan + add 6 new fixes from new dimensions. Each fix: title · problem · files to change · wiring · validator · proof artifact · rollback.
-
-### Part XVIII — 30 / 60 / 90 Day Execution Plan
-Critical-path Gantt with parallel workstreams.
-
-### Appendix A — All 192 Edge Functions (table, with 6-role classification)
-### Appendix B — All 431 Tables (table, with domain + RLS + receipt class)
-### Appendix C — All 28 BLOCK Gates (gate name · validator path · report path · status)
-### Appendix D — All 19 Runbooks + 15 Kill-Switches
-### Appendix E — Score Delta (v6.3 → v7 → MASTER) per index
-### Appendix F — Files Verified This Audit (exhaustive list)
-### Appendix G — Glossary
-
-## Method (default mode)
-
-1. **Live re-verification pass** — `psql` for tables/policies/fns/views; `find`/`ls` for source/edge/migrations/generated; `cat` for `os-release-readiness-report.json` and `architecture-compliance-report.json`.
-2. **Deep traversal** — `ls supabase/functions/` (full 192) → classify by name + 6-role rules; `psql information_schema.tables` → per-domain rollup; read 5 sample edge fns to spot-check classification.
-3. **Stub/mock scan** — `grep -r "MOCK_\|TODO\|placeholder\|demo_mode" src/` + extract counts per cluster.
-4. **Wiring trace expansion** — open the 5 new traces' entry files end-to-end.
-5. **Memory-vs-disk drift table** — diff every memory-claimed number against live.
-6. **Single-write fan-out** — Python script writes the canonical content once, mirrors to all locations below, verifies MD5 parity.
-
-## Files written
-
-| Path | Action |
-|---|---|
-| `/mnt/documents/MASTER_AUDIT.md` | **CREATED** (canonical) |
-| `public/generated/MASTER_AUDIT.md` | **CREATED** (web mirror) |
-| `public/generated/artifacts/audits/MASTER_AUDIT.md` | **CREATED** (artifact mirror) |
-| `/mnt/documents/MASTER_AUDIT.md` (header) | "Supersedes: FULL_MASTER_AUDIT v4 (2026-04-16), master-audit v6.3 (2026-04-17), SITA_MASTER_AUDIT v7 (2026-04-18), MISSING_AUDIT v3 (2026-04-20)" |
-| Old audits | **NOT deleted** — preserved as historical, marked superseded in their first line |
-
-## Out of scope
-
-- No code, gate, registry, runtime, DB, schema, README, or shim changes.
-- No edits to `MISSING_AUDIT.md` v3 (already canonical for missing-items lens; MASTER_AUDIT supersedes by being the broader doc).
-- No new validators or CI gates this loop.
+**Validator extended (1)**
+- `scripts/validation/check-shell-runtime-portability.ts`
 
