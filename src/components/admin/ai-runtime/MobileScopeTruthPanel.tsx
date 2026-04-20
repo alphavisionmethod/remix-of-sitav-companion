@@ -82,7 +82,7 @@ export default function MobileScopeTruthPanel() {
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-4">
+        <CardHeader className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
             <CardTitle className="text-base flex items-center gap-2">
               <Smartphone className="h-4 w-4" /> Mobile Scope Truth
@@ -92,7 +92,7 @@ export default function MobileScopeTruthPanel() {
               Active deployment surfaces: Web SPA, Ubuntu-native ISO, Electron desktop.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
             {doc && (
               <Badge variant="outline" className={tone(doc.ok)}>
                 {doc.status}
