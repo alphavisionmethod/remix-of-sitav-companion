@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-04-17T14:48:34.809Z",
+  "generatedAt": "2026-04-20T16:27:07.833Z",
   "generator": "scripts/architecture/checks/check-observability-reality.ts",
   "checklist": 26,
   "summary": {
     "items": 10,
-    "truthful": 10,
-    "ok": true,
-    "deployable": true
+    "truthful": 9,
+    "ok": false,
+    "deployable": false
   },
   "checks": [
     {
@@ -77,11 +77,9 @@
     {
       "id": 7,
       "item": "Mobile diagnostics",
-      "truthful": true,
+      "truthful": false,
       "evidence": [
-        "mobile-diagnostics.ts",
-        "recordMobileDiagnostic",
-        "peekMobileDiagnostics"
+        "mobile-diagnostics.ts"
       ]
     },
     {
