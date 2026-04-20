@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-04-20T10:33:51.222Z",
+  "gate": "cluster-readme-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "totalClusters": 8,
+  "okCount": 8,
+  "failCount": 0,
+  "perCluster": [
+    {
+      "cluster": "src/lib/services",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/services/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/core-services",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/core-services/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/platform",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/platform/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/platform-law",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/platform-law/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/platform-plane",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/platform-plane/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/web-platform",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/web-platform/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/observability",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/observability/README.md",
+      "exists": true
+    },
+    {
+      "cluster": "src/lib/incidents",
+      "ok": true,
+      "missingHeadings": [],
+      "readmePath": "src/lib/incidents/README.md",
+      "exists": true
+    }
+  ],
+  "requiredHeadings": [
+    "## Purpose",
+    "## Layer",
+    "## Canonical neighbors"
+  ]
+}
