@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "resolutionRules": 6,
+  "strategies": [
+    "higher-confidence-wins",
+    "domain-authority-wins",
+    "owner-decides",
+    "strategy-advisor-arbitrates",
+    "merge-with-caveats"
+  ],
+  "debatePolicy": {
+    "minParticipants": 2,
+    "consensusThreshold": 0.75,
+    "majorityThreshold": 0.5,
+    "maxRounds": 3,
+    "tiebreakerAdvisor": "strategy-advisor"
+  },
+  "outcomes": [
+    "consensus",
+    "majority",
+    "dissent-recorded",
+    "escalated-to-owner",
+    "tiebreaker-by-strategy"
+  ]
+}

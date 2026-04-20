@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "advisorCount": 26,
+  "identitiesDeclared": 26,
+  "coveragePct": 100,
+  "fields": [
+    "advisorId",
+    "displayName",
+    "personaDescription",
+    "voiceTone",
+    "domainAuthority",
+    "trustFloor",
+    "trustCeiling",
+    "disabledFallback"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "boundariesDeclared": 7,
+  "highRiskAdvisors": [
+    "money-advisor",
+    "legal-advisor",
+    "tax-advisor",
+    "security-advisor"
+  ],
+  "domainFenceCoverage": {
+    "covered": 7,
+    "total": 26,
+    "note": "Only high-risk advisors require explicit persona boundaries; others inherit default domain-only fencing"
+  }
+}
