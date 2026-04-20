@@ -1,73 +1,108 @@
 
 
-## Wave 10 — Full MASTER_AUDIT.md Rewrite (Truth-Verified v2.0)
+## Wave 11 — MASTER_AUDIT.md v3.0 (Comprehensive 100% Coverage Rewrite)
 
-### What this delivers
+### What's missing from v2.0
 
-A complete rewrite of `public/generated/MASTER_AUDIT.md` (and its mirror) that:
-- Corrects every stale number to match live-verified counts
-- Reflects all Wave 6-9 work (ISO/OVA/RAW production, stub hardening, security hardening, verdict fix)
-- Adds a new Part XVI for Wave 8 security hardening status
-- Updates the security scan section with the 12 current findings (2 error, 5 warn, 5 info)
-- Removes the stale P0 fix plan (already resolved) and replaces with current remaining work
-- Upgrades the weighted scoreboard to reflect post-Wave-9 reality
+After a full project scan, these sections are absent or incomplete:
 
-### Verified corrections (disk truth vs. current doc)
+| Gap | What's missing | Why it matters |
+|---|---|---|
+| **Page inventory** | Audit says "29 top-level routes" but there are **110+ page files** plus **28 admin sub-directories** with **230+ admin pages**. No page-level breakdown. | Cannot verify dead-page or feature coverage claims |
+| **Context/Provider inventory** | 23 React contexts powering the app are undocumented | These are the app's nervous system — unaudited wiring |
+| **Component inventory** | 1,014 files across 34 component domains — zero domain breakdown | Impossible to assess UI coverage or orphans |
+| **Package contract inventory** | 33 contract/SDK packages in `src/packages/` — listed by count only, no domain map | Contract integrity is unverifiable |
+| **CI/CD workflow inventory** | 17 GitHub Actions workflows exist — not documented in audit | Release pipeline is invisible |
+| **Kill-switch registry detail** | Audit says "15+ kill-switches" — actual registry in `src/lib/control-plane/kill-switch-registry.ts` has **18 entries** with impact levels, affected services, affected tables | Operator can't assess blast radius |
+| **Runbook registry detail** | Audit says "19 runbooks" — no mapping to edge functions, tables, or golden paths | Incident response chain unverifiable |
+| **Golden path registry detail** | 15 paths exist in `src/lib/operations/golden-path-registry.ts` — audit mentions them but no per-path status | User journey coverage is untracked |
+| **Route family breakdown** | 15 route family files in `src/routes/` — not enumerated | Route composition is invisible |
+| **Infrastructure layer** | `infra/` directory (ci, deploy, docs, runbooks) completely absent from audit | Deployment topology undocumented |
+| **Error monitoring** | `initErrorMonitoring()` called at boot — no audit of error capture pipeline | Observability gap |
+| **Dependency health** | No `npm audit` results, no outdated package count, no bundle size | Supply chain risk unquantified |
+| **Performance baseline** | No bundle size, no route-level code-split count, no lazy-load inventory | Performance regression risk |
+| **Test coverage** | `__tests__/` dirs exist under pages, components, contexts, lib — no coverage metrics | Quality assurance gap |
+| **Marketing site audit** | 10 public marketing pages — not individually assessed for content/SEO readiness | Launch readiness gap |
+| **Admin page taxonomy** | 230+ admin pages across 26 sub-directories — no domain classification table | Admin surface is a black box |
+| **Edge function shared utilities** | `_shared/` directory in supabase/functions — undocumented | Backend code reuse patterns invisible |
 
-| Field | Current doc | Live truth | Fix |
-|---|---|---|---|
-| DB functions | 85 | 76 | Correct to 76 |
-| Edge functions | 194 | 193 | Correct to 193 |
-| Migrations | 229 | 233 | Correct to 233 (4 added by Wave 8) |
-| Generated artifacts | 489 | 1,624 files | Correct count |
-| Scripts files | 779 | 786 | Correct to 786 |
-| Required-gate outputs missing | "3" in Appendix C | 0 | Appendix C gates #22-24 flip to GREEN |
-| Aggregator inputs | 359 | 371 | Correct to 371 |
-| Advisory failures | "98" in some sections | 21 | Correct throughout |
-| Advisory warnings | 4,252 | 4,252 | Correct (unchanged) |
-| Trace 5 (release evidence) | RED marker | GREEN | Fix trace status |
-| Security scan findings | Not present | 12 findings | Add new section |
-| useDataMode hooks | 28 | 29 | Correct to 29 |
-| Part XII §12.1 BLOCK gates | "28" | 248 (per verdict) | Clarify: 248 total inputs checked, aggregator structure |
-| Scoreboard index #10 | 88 (3 missing) | 100 (0 missing) | Bump to 100 |
-| Scoreboard index #8 | 90 (1 not-OK) | 95+ | Bump |
+### Plan
 
-### Structure of rewritten MASTER_AUDIT.md
+Rewrite MASTER_AUDIT.md to v3.0 adding these new parts while preserving all existing content:
 
-All 18 Parts plus Appendices preserved and enhanced:
+**New Part XX — Full Page & Route Inventory**
+- Enumerate all 15 route families with child route counts
+- Classify 110+ top-level pages by domain (marketing, workspace, admin, settings, OS)
+- List all 28 admin sub-directories with page counts per domain
+- Total: ~340+ pages across all tiers
+- Flag the 12 dead pages by name
 
-- **Part 0** — Provenance: update verification anchors to include Wave 8/9 migrations
-- **Part I** — Verdict: remove contradictory "3 required-gate outputs MISSING" line; update scoreboard scores for indices #8, #10; bump weighted total from 91 to ~95
-- **Part II** — Topology: correct DB functions to 76, edge fns to 193, migrations to 233, scripts to 786, generated artifacts to 1,624
-- **Part III** — Clusters: update scripts count to 786, generated artifacts count, os cluster state to GREEN (was YELLOW)
-- **Part IV** — Wiring Traces: fix Trace 5 from RED to GREEN
-- **Part V** — Integrations: unchanged (still accurate)
-- **Part VI** — Database: correct DB functions to 76
-- **Part VII** — Runtime/Electron/OS: unchanged (still accurate)
-- **Part VIII** — AI/Advisor: unchanged
-- **Part IX** — App Platform: unchanged
-- **Part X** — Admin/Operator: unchanged
-- **Part XI** — Onboarding: unchanged
-- **Part XII** — Validation: update aggregator inputs to 371, failed advisory to 21, BLOCK gates all GREEN, remove stale "was 98" references
-- **Part XIII** — Operational Readiness: unchanged
-- **Part XIV** — Drift: update memory-vs-disk table with current numbers
-- **Part XV** — Stubs: add note about 6 remaining `useDataMode` refs (1 comment + 5 test files, zero prod risk); hooks count = 29
-- **Part XVI (NEW)** — Security Posture: document Wave 8 hardening, current 12-finding scan (2 error: donations PII exposure + OAuth token plaintext; 5 warn: public form PII collection + realtime channel scope + uptime_heartbeats; 5 RLS-always-true linter warnings)
-- **Part XVII** — Fix Plan: replace resolved P0 with current remaining items (OAuth token encryption, donations SELECT policy, realtime channel scoping, Apple notarization, dead page cleanup)
-- **Part XVIII** — 30/60/90: refresh with post-Wave-9 priorities
-- **Appendix C** — All BLOCK gates: flip gates #22-24 from RED to GREEN; expand to show 248 count context
-- **Appendix E** — Score delta: add MASTER v2 column
-- **Appendix F** — Files verified: add Wave 8/9 migration files
+**New Part XXI — Context & Provider Architecture**
+- List all 23 React contexts with purpose, scope (global/route/component), and dependencies
+- Map provider nesting order from App.tsx (critical for debugging)
+- Flag any unused/orphan contexts
+
+**New Part XXII — Component Domain Map**
+- Break down 34 component directories with file counts and domain owners
+- Identify the top-10 largest component clusters
+- Cross-reference against page imports to find orphaned components
+
+**New Part XXIII — Package & Contract Registry**
+- List all 33 packages with purpose classification (contract, SDK, config, primitives)
+- Map package consumers (which services/hooks import them)
+
+**New Part XXIV — CI/CD Pipeline Inventory**
+- Enumerate all 17 GitHub Actions workflows with triggers, jobs, and BLOCK gate mappings
+- Map to VALIDATION_MATRIX.md rows
+- Document the deployment pipeline: PR → CI → staging → production
+
+**New Part XXV — Kill-Switch & Runbook Cross-Reference**
+- Full 18-entry kill-switch table with: ID, impact level, affected services, affected tables, affected edge functions, user-facing impact
+- Full 19-entry runbook table with: ID, trigger condition, recovery steps, golden path refs
+- Cross-link matrix: which kill-switches trigger which runbooks
+
+**New Part XXVI — Golden Path Status Matrix**
+- All 15 golden paths with: steps, surfaces, runtime probe status, last certified date, blocking kill-switches, recovery runbook refs
+- Gate ref mapping to release gates
+
+**New Part XXVII — Infrastructure & Deployment Topology**
+- Document `infra/ci/`, `infra/deploy/`, `infra/runbooks/` contents
+- Map deployment targets: Web (Vite), Edge (Supabase), Desktop (Electron), OS (ISO/OVA/RAW)
+- Document the `os-artifact.yaml` packaging spec
+
+**New Part XXVIII — Performance & Bundle Baseline**
+- Lazy-loaded route count (from App.tsx `lazy()` calls)
+- Code-split entry points
+- Known heavy dependencies
+
+**New Part XXIX — Test & Quality Baseline**
+- Test directory locations and file counts
+- Framework (Vitest) configuration status
+- Coverage baseline (if available)
+
+**Enhance existing Parts:**
+- **Part II**: Update page count from "29 routes" to actual ~340+ pages; add context count (23), component domain count (34), package count (33), workflow count (17)
+- **Part III**: Add admin cluster breakdown (26 sub-dirs, 230+ pages)
+- **Part X**: Expand from 4 bullet points to full admin domain taxonomy with page counts per domain
+- **Part XVII**: Add `npm audit` summary, bundle size estimate, outdated dependency count
+- **Appendix A**: Expand edge function sample to include `_shared/` utilities documentation
+- **Appendix D**: Replace prose lists with structured tables including cross-references
 
 ### Files to edit
-
-1. `public/generated/MASTER_AUDIT.md` — full rewrite
-2. `public/generated/artifacts/audits/MASTER_AUDIT.md` — mirror (identical content)
+1. `public/generated/MASTER_AUDIT.md` — full v3.0 rewrite (~1,200 lines)
+2. `public/generated/artifacts/audits/MASTER_AUDIT.md` — mirror
 
 ### What does NOT change
-
 - No database migrations
 - No code changes
 - No new gates or validators
-- Pure documentation truth-refresh
+- Pure documentation enhancement
+
+### What this delivers
+- Every layer of the project is individually enumerated and classified
+- Operator can trace any feature from page → route → context → component → hook → edge function → table → RLS policy
+- Kill-switch blast radius is visible at a glance
+- CI pipeline is fully mapped to release gates
+- Score justification is traceable to specific evidence per index
+- Audit moves from 667 lines to ~1,200 lines — comprehensive enough to onboard a new engineer or auditor cold
 
