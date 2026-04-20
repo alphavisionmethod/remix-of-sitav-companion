@@ -101,6 +101,8 @@ writeFileSync(REPORT_PATH, JSON.stringify({
   catalogConnectors: connectors.length,
   perProviderClients: coveredCount,
   registryFile: REGISTRY_FILE,
+  errorCount,
+  warningCount: issues.filter((i) => i.severity === "warning").length,
   issues,
 }, null, 2));
 
