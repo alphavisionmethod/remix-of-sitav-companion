@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "function-caller-matrix",
+  "callerClasses": [
+    "browser",
+    "admin-ui",
+    "edge-function",
+    "pg-cron",
+    "webhook"
+  ],
+  "totalMappings": 193,
+  "unmappedCallers": 0
+}

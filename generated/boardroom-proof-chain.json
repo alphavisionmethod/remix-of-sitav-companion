@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "boardroom-proof-chain",
+  "chain": "recommendation→evidence→approval→execution→outcome",
+  "tables": [
+    "advisor_board_recommendations",
+    "advisor_board_actions",
+    "ai_action_receipts",
+    "advisor_board_reflections",
+    "boardroom_outcome_records"
+  ],
+  "complete": true
+}

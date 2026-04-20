@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "db-authority-map",
+  "contexts": [
+    {
+      "context": "identity",
+      "tables": [
+        "accounts",
+        "account_deletion_requests",
+        "admin_sessions"
+      ],
+      "owner": "identity"
+    },
+    {
+      "context": "ai-platform",
+      "tables": [
+        "ai_invocations",
+        "ai_model_registry",
+        "ai_provider_registry",
+        "ai_capability_routing",
+        "ai_prompt_families",
+        "ai_prompt_versions"
+      ],
+      "owner": "ai-engineering"
+    },
+    {
+      "context": "advisor-board",
+      "tables": [
+        "advisor_board_actions",
+        "advisor_board_recommendations",
+        "advisor_board_reflections",
+        "advisor_board_memory"
+      ],
+      "owner": "intelligence"
+    },
+    {
+      "context": "admin-safety",
+      "tables": [
+        "admin_action_audit",
+        "admin_action_confirmations",
+        "admin_safety_actions",
+        "admin_role_permissions"
+      ],
+      "owner": "operations"
+    },
+    {
+      "context": "ai-budget",
+      "tables": [
+        "ai_budget_alerts",
+        "ai_budget_decision_receipts",
+        "ai_usage_ledger",
+        "ai_receipt_records"
+      ],
+      "owner": "ai-engineering"
+    }
+  ],
+  "totalTables": 420,
+  "mappedContexts": 5
+}

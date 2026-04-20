@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "db-bounded-context-map",
+  "contexts": [
+    "identity",
+    "ai-platform",
+    "advisor-board",
+    "admin-safety",
+    "ai-budget",
+    "connectors",
+    "boardroom",
+    "files",
+    "notifications",
+    "compliance"
+  ],
+  "crossRefs": {
+    "ai-platform": {
+      "edgeFunctions": [
+        "ai-gateway",
+        "ai-receipt-logger"
+      ],
+      "tables": 12
+    }
+  }
+}

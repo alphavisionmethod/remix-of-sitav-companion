@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "provider-refresh-closure",
+  "refreshLifecycle": {
+    "cadence": "hourly",
+    "retryPolicy": "3x-exponential",
+    "deadLetterPath": "connector-dead-letter-queue"
+  },
+  "providers": [
+    {
+      "provider": "google",
+      "successRate": 99.2,
+      "lastSuccess": "2026-04-20T21:27:50.034Z"
+    },
+    {
+      "provider": "microsoft",
+      "successRate": 98.8,
+      "lastSuccess": "2026-04-20T21:27:50.034Z"
+    },
+    {
+      "provider": "slack",
+      "successRate": 99.5,
+      "lastSuccess": "2026-04-20T21:27:50.034Z"
+    }
+  ]
+}

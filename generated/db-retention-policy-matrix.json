@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "db-retention-policy-matrix",
+  "policies": [
+    {
+      "family": "ai_invocations",
+      "retentionDays": 90,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": "expires_at"
+    },
+    {
+      "family": "ai_inference_receipts",
+      "retentionDays": 90,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": "expires_at"
+    },
+    {
+      "family": "admin_action_audit",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null
+    },
+    {
+      "family": "account_deletion_requests",
+      "retentionDays": 30,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": "scheduled_purge_at"
+    },
+    {
+      "family": "ai_budget_alerts",
+      "retentionDays": 30,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": "expires_at"
+    }
+  ]
+}

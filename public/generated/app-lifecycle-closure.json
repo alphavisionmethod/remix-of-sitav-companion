@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "appTypes": [
+    "A-Web",
+    "B-PWA",
+    "C-External",
+    "D-Internal"
+  ],
+  "lifecyclePhases": [
+    "not_installed",
+    "installing",
+    "installed",
+    "launching",
+    "running",
+    "updating",
+    "crashed",
+    "recovering",
+    "uninstalling",
+    "blocked"
+  ],
+  "crashRecoveryImplemented": true,
+  "maxAutoRestarts": 3,
+  "recoveryManagerFile": "src/lib/app-platform/app-recovery-manager.ts"
+}

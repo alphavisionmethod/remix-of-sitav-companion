@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "oauth-security-closure",
+  "tokenEncryption": "at-rest-via-vault",
+  "expiryIndexed": true,
+  "refreshPathProven": true,
+  "deadLetterPath": "connector-dead-letter-queue",
+  "providers": [
+    "google",
+    "microsoft",
+    "slack"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "app-permission-audit",
+  "appTypes": [
+    {
+      "type": "A-WebApp",
+      "permissions": [
+        "files.read",
+        "files.write",
+        "network"
+      ],
+      "consentRequired": true
+    },
+    {
+      "type": "B-PWA",
+      "permissions": [
+        "files.read",
+        "notifications",
+        "offline-storage"
+      ],
+      "consentRequired": true
+    },
+    {
+      "type": "C-External",
+      "permissions": [
+        "ipc.send",
+        "network"
+      ],
+      "consentRequired": true
+    },
+    {
+      "type": "D-InternalOS",
+      "permissions": [
+        "system.all",
+        "files.all",
+        "ipc.all"
+      ],
+      "consentRequired": false,
+      "note": "Trusted OS component"
+    }
+  ]
+}
