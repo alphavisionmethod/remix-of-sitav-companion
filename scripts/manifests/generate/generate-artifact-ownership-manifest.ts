@@ -30,13 +30,21 @@ const allArtifacts = scanDir(GENERATED_DIR, [".json", ".md", ".html", ".sarif", 
   .filter((p) => !p.endsWith("artifact-ownership-manifest.json"));
 
 // ── 2. Build per-script directory-constant table ─────────────
-// e.g. const OUT_DIR = "generated/foo"  →  scriptPath ⇒ {OUT_DIR: "generated/foo"}
-const allScripts = scanDir(SCRIPTS_DIR, [".ts", ".js", ".mjs", ".cjs"]);
+// Plus: scan ALL scripts (and shells/edge functions) for any "generated/<dir>" literal
+// to catch the many emit-style validators that don't use a constant.
+const allScripts = [
+  ...scanDir(SCRIPTS_DIR, [".ts", ".js", ".mjs", ".cjs", ".sh", ".bash"]),
+  ...(fs.existsSync("supabase/functions") ? scanDir("supabase/functions", [".ts"]) : []),
+  ...(fs.existsSync("os/scripts") ? scanDir("os/scripts", [".sh", ".bash"]) : []),
+];
 const scriptDirConsts = new Map<string, Map<string, string>>();
 const scriptContents = new Map<string, string>();
+const scriptMentionsDir = new Map<string, Set<string>>(); // script → "generated/<dir>" referenced AND has a write call
 
 const constPattern = /(?:const|let)\s+([A-Z_][A-Z0-9_]*)\s*=\s*["'`]([^"'`]+)["'`]/g;
 const joinConstPattern = /(?:const|let)\s+([A-Z_][A-Z0-9_]*)\s*=\s*(?:path\.)?join\s*\(\s*["'`]([^"'`]+)["'`](?:\s*,\s*["'`]([^"'`]+)["'`])?\s*\)/g;
+const dirMentionPattern = /["'`](generated\/[a-z0-9_-]+(?:\/[a-z0-9_-]+)?)["'`]/gi;
+const writeIndicator = /(?:writeFileSync|writeJsonOutput|writeFile|Deno\.writeTextFile|>\s*"?generated\/|>>\s*"?generated\/|tee\s+generated\/)/;
 
 for (const scriptPath of allScripts) {
   let content: string;
@@ -52,6 +60,12 @@ for (const scriptPath of allScripts) {
     if (composed.includes("generated")) consts.set(m[1], composed);
   }
   scriptDirConsts.set(normalized, consts);
+
+  if (writeIndicator.test(content)) {
+    const mentions = new Set<string>();
+    for (const m of content.matchAll(dirMentionPattern)) mentions.add(m[1]);
+    if (mentions.size > 0) scriptMentionsDir.set(normalized, mentions);
+  }
 }
 
 // ── 3. Discover write calls and resolve to artifact paths ────
