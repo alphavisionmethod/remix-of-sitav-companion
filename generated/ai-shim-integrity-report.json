@@ -1,0 +1,213 @@
+{
+  "generatedAt": "2026-04-20T10:42:52.287Z",
+  "gate": "ai-shim-integrity",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyClusters": [
+    "src/lib/ai",
+    "src/lib/ai-engineering",
+    "src/lib/ai-gateway",
+    "src/lib/sovereign-ai-gateway"
+  ],
+  "canonicalHome": "src/lib/ai-platform",
+  "totalFiles": 32,
+  "okFiles": 32,
+  "failFiles": 0,
+  "maxShimLines": 12,
+  "perFile": [
+    {
+      "file": "src/lib/ai/ai-capability-client.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/ai-launch-honesty-reclassifier.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/ai-response-normalizer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/ai-routing-seed-service.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/ai-state-types.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/ai-surface-grammar.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-admin-synthesis.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-advisor-chat.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-ai-capability.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-ai-runtime-verification.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-boardroom-summary.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-daily-pulse.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-memory-summary.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/hooks/use-utility-ai.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai/index.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 10
+    },
+    {
+      "file": "src/lib/ai/workforce-executor.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/agent-orchestration-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/agent-specifications.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/change-plan-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/diagnosis-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/execution-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/index.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 10
+    },
+    {
+      "file": "src/lib/ai-engineering/learning-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/observation-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/planning-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/platform-integration.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/self-healing-engine.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-engineering/verification-layer.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-gateway/budget-gate.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    },
+    {
+      "file": "src/lib/ai-gateway/index.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 9
+    },
+    {
+      "file": "src/lib/sovereign-ai-gateway/index.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 9
+    },
+    {
+      "file": "src/lib/sovereign-ai-gateway/types.ts",
+      "ok": true,
+      "reasons": [],
+      "lineCount": 8
+    }
+  ]
+}
