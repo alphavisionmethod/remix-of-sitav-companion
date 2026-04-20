@@ -21,7 +21,7 @@
 | `src/lib/` clusters | 86 | `ls -1 src/lib` |
 | Page components under `src/pages/` | 1,073 | `find src/pages -type f` |
 | Top-level `<Route>` declarations in `src/App.tsx` | 14 | `grep -c '<Route' src/App.tsx` |
-| Edge Functions | 185 | `ls -1 supabase/functions` |
+| Edge Functions | 192 | `ls -1 supabase/functions` |
 | SQL Migrations | 225 | `ls -1 supabase/migrations` |
 | Architecture validators | 183 | `ls scripts/architecture/checks/check-*.ts` |
 | Generated artifacts (`generated/`) | 459 | `ls -1 generated` |
@@ -90,7 +90,7 @@
 | 2 | ~~"All 459 generated artifacts are owned"~~ | **RESOLVED 2026-04-20** — `generated/INDEX.json` (913 entries, **96.9% traceable**, 858 producers, 167 consumer-bearing) emitted by `scripts/manifests/generate/generate-artifact-index.ts`; sha256-identical mirror at `public/generated/INDEX.json`. Producer ledger: `generated/artifact-ownership-manifest.json` (928 entries, **94.1% with declared producer**, 26 orphans). Enforced by **BLOCK gate #24** `check-artifact-index-traceability` (Phase 24, aggregator line 307) — schema-v1, ≥90% coverage, producer-on-disk, mirror parity. Augmented by **BLOCK gate #30** `check-artifact-ownership-graph` (Phase 30, line 318) — 598-node directed DAG with transitive-staleness + cycle detection. | RESOLVED |
 | 3 | ~~"`src/lib/policies/` exists" (legacy doc)~~ | **RESOLVED 2026-04-20** — verified absent on disk. Canonical home is `src/lib/policy/` (10 files: `policy-actor-registry.ts`, `policy-approval-map.ts`, `policy-domain-map.ts`, `policy-enforcement-map.ts`, `policy-proof-requirements.ts`, `policy-reversibility-map.ts`, `policy-surface-map.ts`, `policy-trust-thresholds.ts`, `unified-policy-matrix.ts`, `index.ts`). Enforced by **CI gate** `scripts/architecture/checks/check-legacy-policies-folder-absence.ts` — asserts (a) legacy folder absent on disk, (b) canonical folder present, (c) zero string-literal references to `lib/policies` across `src/` + `scripts/`. Passes with **0 violations across 5,570 files**. Report: `generated/legacy-policies-folder-absence-report.json`. | RESOLVED |
 | 4 | ~~"40 internal agents are wired into runtime"~~ | **RESOLVED 2026-04-20** — honest classification now enforced. Of 40 registered agents: **8 wired** (Security Council via `supabase/functions/security-council-tick`), **19 scheduled-only** (cron row, executor pending), **5 ui-surface-only** (admin cards), **8 deferred** (each with `deferredReason` + `deferredEta`). Status lives in `src/lib/internal-agents/agent-runtime-status-map.ts` and is overlaid onto every `InternalAgentDefinition` via 4 new fields (`runtimeStatus`, `runtimeInvocationPath`, `deferredReason`, `deferredEta`) in `src/packages/internal-agent-config/types.ts`. Legacy `st-*` / `ro-*` / `rc-*` IDs resolved to canonical `aw-*` via `src/lib/internal-agents/agent-id-alias-map.ts`. Enforced by **BLOCK Gate #22** `scripts/architecture/checks/check-internal-agent-deferred-set-explicitness.ts` — asserts 100% status coverage, `wired` paths exist on disk, `deferred` carry reason+ETA. Passes (`coveragePercent: 100`, 0 errors). Reports: `generated/internal-agent-runtime-status.json` + `generated/internal-agent-deferred-set-explicitness-report.json`. | RESOLVED |
-| 5 | ~~"185 edge functions with ownership"~~ | **RESOLVED 2026-04-20** — `src/lib/backend-topology/edge-function-owner-map.ts` now covers **186/186 functions (100%)** across **13 owner teams** (added `app-platform` team + 101 backfilled entries). Per-function ownership manifest at `generated/edge-function-ownership.json` (mirrored to `public/generated/`) carries `ownerTeam` + `primaryContact` + `escalationContact` + `slackChannel` + `runbookRef` + `killSwitchRef` for every function. `.github/CODEOWNERS` routes PRs to owning teams. `check-edge-function-ownership-completeness` is BLOCK gate #26 in master release roster, asserts 100% coverage + mirror parity + freshness ≤ 7 days. Mirror parity preserved via md5sum. | ✅ RESOLVED 2026-04-20 |
+| 5 | ~~"185 edge functions with ownership"~~ | **RESOLVED 2026-04-20** — central ownership manifest now exists at **3 mirrors** (`generated/edge-function-ownership.json`, `public/generated/edge-function-ownership.json`, `supabase/functions/_owners.json` — colocated with functions for `supabase functions deploy` workflows). 192 functions, **100% coverage**, 13 owner teams. Source of truth: `src/lib/backend-topology/edge-function-owner-map.ts`. Enforced by **BLOCK gate #26** `scripts/architecture/checks/check-edge-function-ownership-completeness.ts` (registered line 311 of `check-os-release-readiness.ts`) — asserts coverage, MD5 parity across all 3 mirrors, zero orphans/phantoms, freshness ≤ 7 days. | ✅ RESOLVED 2026-04-20 |
 
 ### 1.5 What is **duplicated** (🟣)
 
@@ -528,20 +528,17 @@ Each cluster reports: what exists · what is wired · what is partial · what is
 ### `supabase/functions/`
 
 **Exists**
-- 185 edge functions
-
+- 192 edge functions (100% ownership coverage across 13 teams — see Row #5)
 **Wired**
 - 6-role topology enforced; one Admin BFF, one orchestration choke point
 
 **Partial / weak**
-- No central ownership manifest
-
+- ✅ Central ownership manifest live at 3 mirrors (`generated/`, `public/generated/`, `supabase/functions/_owners.json`)
 **Dead / duplicate**
 - No duplicates detected by name
 
 **Missing**
-- `supabase/functions/_owners.json`
-
+- ✅ `supabase/functions/_owners.json` (colocated mirror, MD5-parity-enforced by BLOCK gate #26)
 **Exact fixes**
 - P2 fix in Part XIV
 
