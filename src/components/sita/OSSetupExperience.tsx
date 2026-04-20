@@ -1,7 +1,15 @@
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
 // SITA OS — Premium OS Setup Experience (World-Class Onboarding)
-// Clean 24-phase flow powered by SetupOrchestrationEngine
-// ═══════════════════════════════════════════════════════════════
+// ----------------------------------------------------------------
+// ONBOARDING SURFACE: os-first-boot  (registry: ONBOARDING_SURFACES)
+// SCOPE: Device-wide first-boot personalization. Implements the
+//        29-screen master spec via ~50 phases powered by
+//        SetupOrchestrationEngine.
+// THIS IS THE CANONICAL OS FIRST-BOOT FLOW. The Business workspace
+// formation surface (FormationShell) and Money introduction surface
+// (MoneyOnboardingFlow) are SEPARATE downstream tiers — see
+// src/lib/architecture/onboarding-surface-registry.ts.
+// ════════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { persistSetupState, loadPersistedSetupState, clearPersistedSetupState } from "@/components/sita/setup/SetupPersistenceManager";

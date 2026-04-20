@@ -1,3 +1,11 @@
+// ════════════════════════════════════════════════════════════════
+// ONBOARDING SURFACE: business-formation  (registry: ONBOARDING_SURFACES)
+// SCOPE: Per-business workspace formation. Runs inside BusinessAppShell
+//        AFTER OS first-boot (os-first-boot) is complete, when
+//        business_onboarding.completed_at IS NULL.
+// NOT THE OS FIRST-BOOT FLOW. See OSSetupExperience for that.
+// Truth source: src/lib/architecture/onboarding-surface-registry.ts
+// ════════════════════════════════════════════════════════════════
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
