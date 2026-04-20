@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T00:22:43.404Z",
+  "generatedAt": "2026-04-20T00:23:32.660Z",
   "gate": "stale-deleted-paths",
   "description": "Detects string-literal references to physically deleted Wave 2 shim folders.",
   "deletedPaths": [
