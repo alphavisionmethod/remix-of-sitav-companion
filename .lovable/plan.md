@@ -2,53 +2,102 @@
 
 ## Diagnosis
 
-The validator-to-gate mapping fix is **already 100% in place and deployment-ready**:
+The audit's claim is **partially out of date but structurally real**:
 
-| Check | Result |
-|---|---|
-| 186 validators on disk classified | ✅ 100% (50 block / 17 warn / 119 advisory) |
-| `check-validator-gate-coverage` gate | ✅ PASS (0 errors / 0 warnings, above 95% target) |
-| 4 new files present | ✅ all on disk |
-| 3 npm scripts wired | ✅ confirmed |
-| Master readiness aggregator | ✅ `ok: true`, BLOCK verdict logic intact |
-| `MISSING_AUDIT.md` mirrors byte-identical | ✅ md5 `381286521c65e8dda0dab38a2eea8f63` |
-| RESOLVED entries in audit | ✅ 5 sections updated (cluster, topology, drift ledger ×3, fix-plan P2.3) |
+- `src/App.tsx` actually has **19 `<Route>` lines** today (not 14), but most routing is genuinely delegated into 13 nested shell files in `src/routes/*.tsx` (apps-routes, business-routes, money-routes, etc.) plus 4 dynamic generators (`AdminRoutes`, `OwnerRoutes`, `MobileRoutes`, etc.).
+- A `generated/route-manifest.json` **does exist** (811 routes) — but its generator (`scripts/manifests/generate/generate-route-manifest.ts`) **only regexes `src/App.tsx`**. It does NOT walk the 13 nested shells, so the 811 figure is misleading and the file is internal-only — never mirrored to `public/generated/`.
+- The audit specifically asks for `public/generated/routes.json` — a **flat, externally-consumable truth file** that probes, sitemap generators, and the route-topology gate can read at runtime.
+- No npm script wires this; no validator enforces it.
 
-**Two doc-only drifts to reconcile:**
+This is a real artifact-completeness gap, not just a doc drift.
 
-1. **Line 61 of `MISSING_AUDIT.md`** says *"230 BLOCK gates unchanged"* — wrong. The canonical figure is **21 mandatory BLOCK gates** (per `governance/readiness-framework` memory and the rest of the audit). Cosmetic typo from the previous loop. Fix: change `230` → `21`.
+## Strategy
 
-2. **`/mnt/documents/MISSING_AUDIT_v2.md` exists but has no `public/generated/` mirror** — the user is currently viewing `MISSING_AUDIT_v2.md`. Need to either (a) read it to confirm whether it already reflects the RESOLVED state, and if so mirror it to `public/generated/`, or (b) leave it alone if it's a separate work product.
+Three additive deliverables, zero behavior change to any existing route or shell:
 
-## Plan
+### Step 1 — Real recursive route inventory builder
 
-### Step 1 — Read `/mnt/documents/MISSING_AUDIT_v2.md`
-Determine whether it covers the validator-to-gate mapping topic and what state it currently records, so we know whether to update it too.
+Replace the regex-only `generate-route-manifest.ts` with a true multi-source walker that emits a flat `generated/routes.json`:
 
-### Step 2 — Reconcile the BLOCK-count typo on line 61
-Change `230 BLOCK gates unchanged` → `21 BLOCK gates unchanged` in both mirrors of `MISSING_AUDIT.md`. This is the only remaining inaccuracy.
+- Parse `src/App.tsx` for top-level `<Route>` JSX
+- Recursively parse every file in `src/routes/*.tsx` for `<Route>` JSX (the 13 shell files)
+- Cross-reference each route against `src/lib/architecture/route-plane-map.ts` to attach `plane` and `runtime_tier`
+- Cross-reference against existing `route-manifest.json` ownerDistribution for `owner`
+- Emit canonical shape: `{ path, component, plane, runtimeTier, owner, source }`
+- Also emit a top-level summary `{ totalRoutes, byPlane, byOwner, byRuntimeTier, generatedAt, version }`
 
-### Step 3 — If `MISSING_AUDIT_v2.md` is a parallel canonical doc that does NOT yet record the resolution
-Add a single RESOLVED entry mirroring line 61's content (with the correct `21` figure), and copy to `public/generated/` so the two mirrors stay in sync.
+Write to **both**:
+- `generated/routes.json` (internal)
+- `public/generated/routes.json` (external probes)
 
-### Step 4 — Re-verify
-- `md5sum` both `MISSING_AUDIT.md` mirrors → identical
-- `md5sum` both `MISSING_AUDIT_v2.md` mirrors → identical (if v2 exists in both)
-- `grep -c "21 BLOCK gates unchanged" public/generated/MISSING_AUDIT.md` ≥ 1
-- `grep -c "230 BLOCK" public/generated/MISSING_AUDIT.md` = 0
+### Step 2 — Validator + drift gate
+
+New: `scripts/architecture/checks/check-routes-inventory-completeness.ts`
+
+WARN-tier (does NOT join BLOCK list per zero-behavior-change constraint). Asserts:
+1. `public/generated/routes.json` exists and is fresh (regenerated within last 7 days)
+2. Both mirrors are byte-identical
+3. Route count ≥ 100 (sanity floor — actual is ~800)
+4. Every entry has non-empty `path`, `component`, `plane`
+5. No duplicate `path` values across all sources
+
+Emit `generated/routes-inventory-completeness-report.json`.
+
+### Step 3 — Wire into manifest registries + npm scripts
+
+- Add to `src/lib/manifests/manifest-registry.ts`: entry for `routes.json` with producer = `generate-route-manifest`, consumer = `route-topology probes / external sitemap`.
+- Add to `src/lib/ci/validator-gate-map.ts`: classify `check-routes-inventory-completeness` as `warn` (consumer: `architecture-hygiene`).
+- `package.json` scripts:
+  ```json
+  "generate:routes-inventory": "npx tsx scripts/manifests/generate/generate-route-manifest.ts",
+  "check:routes-inventory-completeness": "npx tsx scripts/architecture/checks/check-routes-inventory-completeness.ts"
+  ```
+
+### Step 4 — Update both audits
+
+In `MISSING_AUDIT.md` and `MISSING_AUDIT_v2.md` (and their `public/generated/` mirrors):
+- Mark Item #5 "Route inventory" → **RESOLVED 2026-04-20**
+- Mark "Top file gap #2 routes.json" → **RESOLVED**
+- Update Part XIV fix-plan P1.2 line to RESOLVED with file references
+- Bump audit timestamps
 
 ## What this does NOT touch
 
-- No code changes (the fix is already shipped and verified)
-- No validator/registry/aggregator changes
-- No DB / RLS / edge function / auth / route / UI changes
-- Only `MISSING_AUDIT.md` (typo fix) and possibly `MISSING_AUDIT_v2.md` (mirror sync) modified
+- No changes to any actual route, shell, lazy import, or `App.tsx` registration order
+- No changes to the 21 BLOCK gates or `REQUIRED_GATES`
+- No DB / RLS / edge function / auth changes
+- Existing `route-manifest.json` consumers keep working (we keep the field shape backward-compatible and just add the new `routes.json` flat file)
 
 ## Files touched
 
-**Modified (2 or 4):**
-- `public/generated/MISSING_AUDIT.md` (line 61 typo: `230` → `21`)
-- `/mnt/documents/MISSING_AUDIT.md` (same typo fix)
-- `/mnt/documents/MISSING_AUDIT_v2.md` (only if Step 1 shows it needs the RESOLVED entry)
-- `public/generated/MISSING_AUDIT_v2.md` (only if v2 needs to be mirrored)
+**New (1):**
+- `scripts/architecture/checks/check-routes-inventory-completeness.ts`
+
+**Modified (5):**
+- `scripts/manifests/generate/generate-route-manifest.ts` (extend to walk nested shells + emit flat `routes.json` to both mirrors)
+- `package.json` (1 new script; 1 renamed alias)
+- `src/lib/manifests/manifest-registry.ts` (register routes.json)
+- `src/lib/ci/validator-gate-map.ts` (classify new validator)
+- `public/generated/MISSING_AUDIT.md` + `/mnt/documents/MISSING_AUDIT.md` + `public/generated/MISSING_AUDIT_v2.md` + `/mnt/documents/MISSING_AUDIT_v2.md` (mark RESOLVED)
+
+**Auto-generated (3):**
+- `generated/routes.json`
+- `public/generated/routes.json`
+- `generated/routes-inventory-completeness-report.json`
+
+## Verification after approval
+
+```bash
+npm run generate:routes-inventory
+jq '.totalRoutes, .byPlane, .byRuntimeTier' public/generated/routes.json   # ≥ 100, populated
+md5sum generated/routes.json public/generated/routes.json                  # identical
+npm run check:routes-inventory-completeness                                # PASS
+npm run check:validator-gate-coverage                                      # still 100%
+npm run release:readiness                                                  # 21/21 BLOCK GREEN unchanged
+npx tsc --noEmit                                                           # 0 errors
+md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md   # identical
+md5sum public/generated/MISSING_AUDIT_v2.md /mnt/documents/MISSING_AUDIT_v2.md  # identical
+```
+
+Result: a real, on-disk, externally-consumable flat route truth file exists at `public/generated/routes.json`, the generator walks all nested shells (not just `App.tsx`), a CI gate prevents staleness/drift, and both audits reflect RESOLVED — all without touching a single live route.
 
