@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { persistSetupState, loadPersistedSetupState, clearPersistedSetupState } from "@/components/sita/setup/SetupPersistenceManager";
+import { getOSVersionString } from "@/runtimes/runtime-platform";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -666,7 +667,7 @@ export function OSSetupExperience() {
           lastSeen: new Date().toISOString(),
           diagnostics: {
             batteryHealth: 100,
-            osVersion: navigator.userAgent.slice(0, 60),
+            osVersion: getOSVersionString(),
             appVersion: "1.0.0",
             networkType: navigator.onLine ? "online" : "offline",
           },
@@ -681,7 +682,7 @@ export function OSSetupExperience() {
           device_type: surfaceType === "mobile" || surfaceType === "capacitor" ? "mobile" : "desktop",
           status: "active",
           last_seen: new Date().toISOString(),
-          os: navigator.userAgent.slice(0, 60),
+          os: getOSVersionString(),
           metadata: { enrolled_via: "setup", surface: surfaceType },
         }, { onConflict: "user_id,device_name" });
       } catch (enrollErr) {

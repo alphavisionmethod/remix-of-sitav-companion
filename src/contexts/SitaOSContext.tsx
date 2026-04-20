@@ -8,6 +8,7 @@ import React, { createContext, useContext, useEffect, useRef, useState, type Rea
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/platform/architecture/layer-manifest";
+import { isMobileSurface, getDeviceFingerprint } from "@/runtimes/runtime-platform";
 
 // ── Service Factories ────────────────────────────────────────────
 import { createPersonalOperatingGraph, type PersonalOperatingGraphService } from "@/lib/services/personal-graph/personal-operating-graph";
@@ -352,11 +353,11 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.actionSafety.loadPersistedState(),
       k.workspaceIntelligence.loadPersistedState(),
     ]).then(() => {
-      // Register the current web surface with mobile detection
-      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+      // Register the current web surface — registry-routed mobile detection
+      const isMobile = isMobileSurface();
       k.continuityEngine.registerSurface({
         surfaceId: isMobile ? "web-mobile" : "web-desktop",
-        deviceId: navigator.userAgent.slice(0, 32),
+        deviceId: getDeviceFingerprint(),
         type: isMobile ? "mobile" : "desktop",
         lastSeen: new Date().toISOString(),
         active: true,

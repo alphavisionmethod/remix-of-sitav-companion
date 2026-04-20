@@ -6,16 +6,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { makeSandbox, PermissionDeniedError, type SandboxContext } from "./sandbox";
 import type { AppHostApi, HostCapabilities, HostUser, NotificationArgs, OpenWindowArgs } from "./host-api";
 import type { PackagePermission } from "./package-schema";
+import { isElectronRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
+import { getDevicePlatform } from "@/runtimes/runtime-platform";
 
-// Globals (Window.sitaApps / Window.electron) are declared in src/vite-env.d.ts
+// Globals (Window.sitaApps) are declared in src/vite-env.d.ts
 
 function detectPlatform(): HostCapabilities["platform"] {
   if (typeof window === "undefined") return "web";
-  const p = window.electron?.platform as HostCapabilities["platform"] | undefined;
-  if (p) return p;
-  const ua = navigator.userAgent.toLowerCase();
-  if (/iphone|ipad/.test(ua)) return "ios";
-  if (/android/.test(ua)) return "android";
+  // Registry-routed platform classifier
+  const dp = getDevicePlatform();
+  if (dp === "ios") return "ios";
+  if (dp === "android") return "android";
+  if (dp === "macos") return "darwin";
+  if (dp === "windows") return "win32";
+  if (dp === "linux") return "linux";
   return "web";
 }
 
@@ -85,11 +89,11 @@ export function makeAppSdk(ctx: SandboxContext): AppHostApi {
     },
     getHostCapabilities(): HostCapabilities {
       const platform = detectPlatform();
-      const isElectron = !!(typeof window !== "undefined" && window.electron);
+      const isElectron = isElectronRuntime();
       return {
         isElectron,
         platform,
-        canLaunchNative: isElectron && !!window.sitaApps?.launchNativeApp,
+        canLaunchNative: isElectron && !!(typeof window !== "undefined" && window.sitaApps?.launchNativeApp),
         canPersistFiles: isElectron,
         canEmitNotifications: typeof Notification !== "undefined",
       };

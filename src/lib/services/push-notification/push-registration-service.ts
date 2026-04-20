@@ -5,6 +5,8 @@
 
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
+import { isElectronRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
+import { getDeviceLabel } from "@/runtimes/runtime-platform";
 
 export type PushPlatform = "web" | "ios" | "android" | "electron";
 
@@ -23,19 +25,13 @@ export interface PushTokenRecord {
 
 function detectPlatform(): PushPlatform {
   if (typeof window === "undefined") return "web";
-  if (('electron' in window)) return "electron";
+  if (isElectronRuntime()) return "electron";
   return "web";
 }
 
 function getDeviceName(): string {
-  const ua = navigator.userAgent;
-  if (/iPhone/.test(ua)) return "iPhone";
-  if (/iPad/.test(ua)) return "iPad";
-  if (/Android/.test(ua)) return "Android Device";
-  if (/Mac/.test(ua)) return "Mac";
-  if (/Windows/.test(ua)) return "Windows PC";
-  if (/Linux/.test(ua)) return "Linux";
-  return "Unknown Device";
+  // Registry-routed device label
+  return getDeviceLabel();
 }
 
 // ── Web Push Registration ────────────────────────────────────
@@ -198,7 +194,7 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
 
 export function isPushSupported(): boolean {
   if (typeof window === "undefined") return false;
-  if (('electron' in window)) return true;
+  if (isElectronRuntime()) return true;
   return "serviceWorker" in navigator && "PushManager" in window;
 }
 

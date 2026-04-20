@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useElectronBridge } from "@/hooks/useElectronBridge";
 
 const URGENCY_STYLES: Record<string, { icon: string; type: "success" | "error" | "info" | "warning" }> = {
   critical: { icon: "🔴", type: "error" },
@@ -11,13 +12,10 @@ const URGENCY_STYLES: Record<string, { icon: string; type: "success" | "error" |
   low: { icon: "✅", type: "success" },
 };
 
-function isElectron(): boolean {
-  return typeof window !== "undefined" && !!('electron' in window);
-}
-
 export function useRealtimeNotifications() {
   const { user } = useAuth();
   const qc = useQueryClient();
+  const { isElectron, sendNotification } = useElectronBridge();
 
   useEffect(() => {
     if (!user?.id) return;
@@ -62,13 +60,10 @@ export function useRealtimeNotifications() {
               duration: n.urgency === "critical" ? 10000 : 5000,
             });
 
-            // Native Electron notification
-            if (isElectron()) {
+            // Native Electron notification — routed through canonical bridge
+            if (isElectron) {
               try {
-                window.electron?.sendNotification?.(
-                  `${style.icon} ${n.title}`,
-                  n.body || ""
-                );
+                sendNotification(`${style.icon} ${n.title}`, n.body || "");
               } catch {
                 // Electron bridge not available
               }
@@ -86,5 +81,5 @@ export function useRealtimeNotifications() {
       cancelled = true;
       if (channel) supabase.removeChannel(channel);
     };
-  }, [user?.id, qc]);
+  }, [user?.id, qc, isElectron, sendNotification]);
 }

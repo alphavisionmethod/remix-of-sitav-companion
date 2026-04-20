@@ -7,6 +7,8 @@
 
 import { useState, useEffect } from "react";
 import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os-unification-runtime";
+import { isElectronRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
+import { isMobileSurface, getDeviceLabel } from "@/runtimes/runtime-platform";
 
 // ── Surface detection ───────────────────────────────────────────
 
@@ -17,8 +19,8 @@ export type ExtendedSurfaceType = SurfaceType | "pwa" | "electron" | "capacitor"
 export function detectSurfaceType(): ExtendedSurfaceType {
   if (typeof window === "undefined") return "api";
 
-  // Electron
-  if (('electron' in window) || navigator.userAgent.includes("Electron")) {
+  // Electron — registry-routed
+  if (isElectronRuntime()) {
     return "electron";
   }
 
@@ -35,11 +37,8 @@ export function detectSurfaceType(): ExtendedSurfaceType {
     return "pwa";
   }
 
-  // Mobile browser
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-  if (isMobile) return "mobile";
+  // Mobile browser — registry-routed
+  if (isMobileSurface()) return "mobile";
 
   // Default web
   return "web";
@@ -71,15 +70,8 @@ export function getDeviceId(): string {
 }
 
 export function getDeviceName(): string {
-  const ua = navigator.userAgent;
-  if (ua.includes("Electron")) return "SITA Desktop";
-  if (/iPhone/.test(ua)) return "iPhone";
-  if (/iPad/.test(ua)) return "iPad";
-  if (/Android/.test(ua)) return "Android Device";
-  if (/Macintosh/.test(ua)) return "Mac Browser";
-  if (/Windows/.test(ua)) return "Windows Browser";
-  if (/Linux/.test(ua)) return "Linux Browser";
-  return "Unknown Device";
+  // Registry-routed via runtime-platform helper
+  return getDeviceLabel();
 }
 
 // ── Build ActiveSurface ─────────────────────────────────────────
@@ -96,7 +88,10 @@ export function buildActiveSurface(userId: string): ActiveSurface {
     currentContext: {
       extendedType: extended,
       deviceName: getDeviceName(),
-      userAgent: navigator.userAgent,
+      // Surface telemetry — kept verbatim only for the ActiveSurface payload
+      // shape, sourced via the runtime-platform helper to avoid duplicating
+      // raw UA parsing in business code.
+      userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
       screenWidth: window.screen?.width,
       screenHeight: window.screen?.height,
       online: navigator.onLine,

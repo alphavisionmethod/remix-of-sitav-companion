@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
+import { getDeviceFingerprint } from "@/runtimes/runtime-platform";
 
 const SERVICE_KEY = "universal-state-sync";
 
@@ -63,7 +64,8 @@ export function createUniversalStateSync(): UniversalStateSyncService {
   const adapters = new Map<string, StateAdapter>();
   const snapshots = new Map<string, Map<string, AppStateSnapshot>>(); // appId -> deviceId -> snapshot
 
-  const CURRENT_DEVICE = `web_${navigator.userAgent.slice(0, 20).replace(/\s/g, "_")}`;
+  // Registry-routed stable device fingerprint
+  const CURRENT_DEVICE = getDeviceFingerprint();
 
   function captureAppState(appId: string): AppStateSnapshot | null {
     const adapter = adapters.get(appId);
