@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-20T06:30:43.706Z",
+  "gate": "artifact-ownership-graph",
+  "phase": "phase-30-producer-consumer-graph",
+  "errorCount": 1,
+  "warningCount": 0,
+  "ok": false,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "presence",
+      "message": "Missing or malformed generated/artifact-ownership-graph.json. Run: npm run generate:artifact-ownership-graph"
+    }
+  ],
+  "metrics": null
+}
