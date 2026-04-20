@@ -86,7 +86,7 @@
 
 | # | Claim found in older docs | Reality | Action |
 |---:|---|---|---|
-| 1 | "Onboarding has 29 screens implemented" | 22 screens in `src/pages/revenue-office/onboarding/screens/`; remaining 7 are planning surfaces | Update first-use spec with implementation status column |
+| 1 | ~~"Onboarding has 29 screens implemented" — only 22 found~~ | **RESOLVED 2026-04-20** — category error in original audit. The 29 = OS first-use master spec (delivered by `src/components/sita/OSSetupExperience.tsx` via ~50 SetupPhaseId phases — 100% covered). The 22 = `src/pages/revenue-office/onboarding/screens/` business-formation surface (separate tier, also 100% complete per its own scope). Truth source: `src/lib/architecture/first-use-spec-registry.ts` (29/29 implemented). CI BLOCK gate #23 `check-first-use-spec-coverage` enforces coverage. Static snapshot: `src/lib/architecture/generated/first-use-spec-coverage.generated.ts`. Report: `generated/first-use-spec-coverage-report.json`. | RESOLVED |
 | 2 | "All 459 generated artifacts are owned" | Only the 21 BLOCK-gate artifacts have certain producer linkage | Build `generated/INDEX.json` (P1) |
 | 3 | "`src/lib/policies/` exists" (legacy doc) | Only `src/lib/policy/` exists — verified | Already corrected in PROJECT_TREE_AUDIT.md; preserve in Part XIII |
 | 4 | "40 internal agents are wired into runtime" | 40 agents are in the registry; runtime invocation paths exist for ≤ 15 | Mark deferred set explicitly |
@@ -812,7 +812,7 @@ Phase 4 post-arrival continuity (Day 1 / Day 3 / Week 1)
 | # | Hop | State | Notes |
 |---:|---|---|---|
 | 1 | Phases 0-2 | ✅ | Implemented in revenue-office onboarding cluster |
-| 2 | Phase 3 screens | 🟡 | 22 of 29 screens implemented |
+| 2 | Phase 3 screens | ✅ | **RESOLVED 2026-04-20** — all 18 Phase-3 screens (#11–#28) mapped to live SetupPhaseIds in `first-use-spec-registry.ts`; full 29/29 coverage verified by BLOCK gate #23 |
 | 3 | Branch telemetry | ✅ | BLOCK gate exists |
 | 4 | Resume / re-entry | ✅ | RESOLVED 2026-04-20 — `onboarding_resume_checkpoints` table + `onboarding-resume-checkpoint` edge function + extended BLOCK gate enforce persistence |
 | 5 | Phase 4 continuity | 🟡 | Adaptive completion partial |
@@ -1125,7 +1125,7 @@ ingest → manifest.sign → trust_tier → admin approval (if needed) → insta
 | 9 | Health & Observability | ✅ | Provider health, runtime status |
 | 10 | Operator Actions / Kill-switch | ✅ | admin_action_confirmations |
 | 11 | Support / Incidents | 🟡 | Bundle present; runbook tab missing |
-| 12 | Onboarding & Personalization | 🟡 | Spec coverage 22/29 |
+| 12 | Onboarding & Personalization | ✅ | Spec coverage 29/29 (verified by BLOCK gate #23 `first-use-spec-coverage`) |
 
 ### 10.2 Workflows
 - Approvals: 4-eye via `admin_action_confirmations` (justification + dry-run + cooldown)
