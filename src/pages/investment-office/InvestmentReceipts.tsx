@@ -8,9 +8,6 @@ import { DEMO_RECEIPTS } from "@/data/seed/investment";
 import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Safe default for demo mode
-
-
 interface Receipt {
   id: string;
   type: "trade" | "approval" | "thesis" | "risk-change" | "rebalance" | "advisor-snapshot";
@@ -28,7 +25,8 @@ const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trus
 const VERDICT_COLORS: Record<string, string> = { "well-executed": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", acceptable: "bg-primary/10 text-primary", caution: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", "needs-action": "bg-destructive/10 text-destructive" };
 
 export default function InvestmentReceipts() {
-  const { user } = useAuth();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState<string | null>(null);
 
