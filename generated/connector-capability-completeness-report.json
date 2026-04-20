@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T02:50:54.386Z",
+  "gate": "connector-capability-completeness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "catalogConnectors": 12,
+  "capabilityFiles": 12,
+  "nonPlannedCount": 6,
+  "plannedCount": 6
+}
