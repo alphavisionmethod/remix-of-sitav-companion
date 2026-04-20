@@ -1,8 +1,14 @@
 {
-  "generatedAt": "2026-04-20T21:28:40.361Z",
+  "generatedAt": "2026-04-20T23:58:43.369Z",
   "gate": "oauth-security-closure",
-  "ok": true,
-  "errorCount": 0,
+  "ok": false,
+  "errorCount": 1,
   "warningCount": 0,
-  "issues": []
+  "issues": [
+    {
+      "severity": "error",
+      "area": "import",
+      "message": "Failed: ReferenceError: require is not defined"
+    }
+  ]
 }
