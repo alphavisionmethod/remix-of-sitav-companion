@@ -42,7 +42,7 @@ const scriptContents = new Map<string, string>();
 const scriptMentionsDir = new Map<string, Set<string>>(); // script → "generated/<dir>" referenced AND has a write call
 
 const constPattern = /(?:const|let)\s+([A-Z_][A-Z0-9_]*)\s*=\s*["'`]([^"'`]+)["'`]/g;
-const joinConstPattern = /(?:const|let)\s+([A-Z_][A-Z0-9_]*)\s*=\s*(?:path\.)?join\s*\(\s*["'`]([^"'`]+)["'`](?:\s*,\s*["'`]([^"'`]+)["'`])?\s*\)/g;
+const joinConstPattern = /(?:const|let)\s+([A-Z_][A-Z0-9_]*)\s*=\s*(?:path\.)?(?:join|resolve)\s*\(\s*["'`]([^"'`]+)["'`](?:\s*,\s*["'`]([^"'`]+)["'`])?\s*\)/g;
 const dirMentionPattern = /["'`](generated\/[a-z0-9_-]+(?:\/[a-z0-9_-]+)?)["'`]/gi;
 const writeIndicator = /(?:writeFileSync|writeJsonOutput|writeFile|Deno\.writeTextFile|>\s*"?generated\/|>>\s*"?generated\/|tee\s+generated\/)/;
 
