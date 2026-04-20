@@ -364,6 +364,8 @@ const REQUIRED_GATES = [
   "app-lifecycle-coverage",
   // Wave 12.8 — Route-to-System Coherence Closure (1 BLOCK gate)
   "route-metadata-closure",
+  // Wave 13 — Frontend Canonicalization Closure (1 BLOCK gate)
+  "component-canonicalization",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
@@ -379,6 +381,13 @@ const ADMIN_AI_ENGINEER_WARN_GATES: string[] = [
   "ai-engineer-wiring-coverage",
   "ai-engineer-primitive-coverage",
   "ai-engineer-action-coverage",
+  // Wave 13 — Frontend Canonicalization (6 WARN-tier advisory gates)
+  "truth-primitive-coverage",
+  "frontend-page-state-coverage",
+  "layout-grammar-coverage",
+  "accessibility-baseline",
+  "mobile-adaptive-coverage",
+  "page-performance-budget",
 ];
 
 const GENERATED_DIR = "generated";
