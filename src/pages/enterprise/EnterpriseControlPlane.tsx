@@ -42,7 +42,8 @@ const EnterpriseControlPlane = () => {
   const [activeTab, setActiveTab] = useState("organization");
   const [permissions, setPermissions] = useState(ROLE_PERMISSIONS);
   const [inviteEmail, setInviteEmail] = useState("");
-  const { user } = useAuth();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
 
   // Real data queries
   const { data: realTeamMembers } = useQuery({
