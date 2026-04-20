@@ -6,8 +6,10 @@
 
 import type { ExtendedAdvisorId } from "@/packages/advisor-config/registry";
 
+export type AdvisorIdentityId = ExtendedAdvisorId | string;
+
 export interface AdvisorIdentity {
-  readonly advisorId: ExtendedAdvisorId;
+  readonly advisorId: AdvisorIdentityId;
   readonly displayName: string;
   readonly personaDescription: string;
   readonly voiceTone: "analytical" | "warm" | "authoritative" | "cautious" | "encouraging";
@@ -46,6 +48,15 @@ export const ADVISOR_IDENTITIES: readonly AdvisorIdentity[] = [
   { advisorId: "wellness-advisor", displayName: "Wellness Advisor", personaDescription: "Work-life balance and wellbeing", voiceTone: "warm", pronouns: "they", avatarSeed: "wel-001", domainAuthority: "wellness", trustFloor: 0.5, trustCeiling: 0.8, disabledFallback: "hr-advisor" },
   { advisorId: "education-advisor", displayName: "Education Advisor", personaDescription: "Learning and professional development", voiceTone: "encouraging", pronouns: "they", avatarSeed: "edu-001", domainAuthority: "education", trustFloor: 0.5, trustCeiling: 0.8, disabledFallback: "hr-advisor" },
   { advisorId: "integration-advisor", displayName: "Integration Advisor", personaDescription: "Third-party connector and API management", voiceTone: "analytical", pronouns: "they", avatarSeed: "int-001", domainAuthority: "integration", trustFloor: 0.55, trustCeiling: 0.85, disabledFallback: "engineering-advisor" },
+  // ── Orchestration Engine Advisors ──────────────────────────
+  { advisorId: "trust-advisor", displayName: "Trust Advisor", personaDescription: "Policy enforcement, trust scoring, and security oversight", voiceTone: "authoritative", pronouns: "they", avatarSeed: "tru-001", domainAuthority: "trust", trustFloor: 0.8, trustCeiling: 1.0, disabledFallback: "owner" },
+  { advisorId: "risk-advisor", displayName: "Risk Advisor", personaDescription: "Risk assessment, compliance incidents, and threat analysis", voiceTone: "cautious", pronouns: "they", avatarSeed: "rsk-001", domainAuthority: "risk", trustFloor: 0.7, trustCeiling: 0.95, disabledFallback: "trust-advisor" },
+  { advisorId: "execution-advisor", displayName: "Execution Advisor", personaDescription: "Workflow automation, task execution, and process orchestration", voiceTone: "analytical", pronouns: "they", avatarSeed: "exe-001", domainAuthority: "workflow", trustFloor: 0.5, trustCeiling: 0.85, disabledFallback: "business-advisor" },
+  { advisorId: "family-advisor", displayName: "Family Advisor", personaDescription: "Household coordination, family logistics, and school management", voiceTone: "warm", pronouns: "they", avatarSeed: "fam-001", domainAuthority: "household", trustFloor: 0.6, trustCeiling: 0.9, disabledFallback: "concierge-advisor" },
+  { advisorId: "boardroom-advisor", displayName: "Boardroom Advisor", personaDescription: "Strategic synthesis, executive briefings, and cross-domain planning", voiceTone: "authoritative", pronouns: "they", avatarSeed: "brd-001", domainAuthority: "boardroom", trustFloor: 0.6, trustCeiling: 0.9, disabledFallback: "strategy-advisor" },
+  { advisorId: "collections-advisor", displayName: "Collections Advisor", personaDescription: "Invoice aging, payment recovery, and receivables management", voiceTone: "analytical", pronouns: "they", avatarSeed: "col-001", domainAuthority: "collections", trustFloor: 0.6, trustCeiling: 0.9, disabledFallback: "money-advisor" },
+  { advisorId: "travel-advisor", displayName: "Travel Advisor", personaDescription: "Trip planning, itinerary optimization, and travel logistics", voiceTone: "warm", pronouns: "they", avatarSeed: "trv-001", domainAuthority: "travel", trustFloor: 0.5, trustCeiling: 0.8, disabledFallback: "concierge-advisor" },
+  { advisorId: "school-advisor", displayName: "School Advisor", personaDescription: "Education scheduling, school events, and academic coordination", voiceTone: "encouraging", pronouns: "they", avatarSeed: "sch-001", domainAuthority: "education", trustFloor: 0.5, trustCeiling: 0.8, disabledFallback: "family-advisor" },
 ];
 
 export function getAdvisorIdentity(advisorId: string): AdvisorIdentity | undefined {

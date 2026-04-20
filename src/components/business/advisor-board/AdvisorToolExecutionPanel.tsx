@@ -15,6 +15,8 @@ import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
 import type {
   ToolDefinition, ToolExecution, ToolExecutionStatus, ToolCategory,
 } from "@/domains/engines/advisor-tool-execution-engine";
+import { isActionAllowed } from "@/lib/ai-platform/runtime/advisor-permission-matrix";
+import { getReversibility } from "@/lib/ai-platform/runtime/advisor-reversibility-map";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Mail, CheckSquare, UserCog, Calendar, Receipt, MessageSquare, FileText, ClipboardList,

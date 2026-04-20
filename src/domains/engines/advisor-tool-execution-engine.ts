@@ -3,6 +3,9 @@
 // Tool registry, execution pipeline, approval gates, rollback
 // ═══════════════════════════════════════════════════════════════
 
+import { isActionAllowed, type AdvisorRole, type ActionCategory } from "@/lib/ai-platform/runtime/advisor-permission-matrix";
+import { getReversibility, isReversible } from "@/lib/ai-platform/runtime/advisor-reversibility-map";
+
 export type ToolCategory = "communication" | "crm" | "scheduling" | "invoicing" | "tasks" | "files" | "analytics";
 
 export type ToolRiskLevel = "safe" | "low" | "medium" | "high" | "critical";
@@ -263,6 +266,22 @@ export class AdvisorToolExecutionEngine {
   }): ToolExecution {
     const tool = this.getTool(params.toolId);
     if (!tool) throw new Error(`Unknown tool: ${params.toolId}`);
+
+    // Check canonical permission matrix if role mapping exists
+    const roleMap: Record<string, AdvisorRole> = {
+      "business-advisor": "business", "money-advisor": "finance",
+      "concierge-advisor": "concierge", "security-advisor": "security",
+      "ops-advisor": "operations", "execution-advisor": "operations",
+    };
+    const role = roleMap[params.advisorId];
+    if (role) {
+      const actionCategory: ActionCategory = tool.riskLevel === "high" || tool.riskLevel === "critical"
+        ? "execute" : tool.category === "communication" ? "communicate-external" : "draft";
+      const permission = isActionAllowed(role, actionCategory);
+      if (permission === "blocked") {
+        throw new Error(`Permission denied: ${params.advisorId} cannot perform ${actionCategory} actions`);
+      }
+    }
 
     // Check daily limit
     const dailyKey = `${params.toolId}-${new Date().toDateString()}`;

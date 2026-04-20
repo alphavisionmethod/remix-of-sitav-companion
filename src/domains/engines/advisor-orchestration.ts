@@ -8,6 +8,10 @@ import type {
   HandoffProtocol, CollaborationFrame, AdvisorContribution,
   AdvisorConsensus, AdvisorDisagreement, AdvisorPerformance,
 } from "../types/advisor-orchestration.types";
+import { ADVISOR_IDENTITIES, getAdvisorIdentity } from "@/lib/advisors/advisor-identity-registry";
+import { evaluateConfidenceGate } from "@/lib/advisors/advisor-confidence-policy";
+import { shouldEscalate as checkEscalationPolicy } from "@/lib/ai-platform/runtime/advisor-escalation-policy";
+import { getDisablementPolicy, type DisablementReason } from "@/lib/advisors/advisor-disablement-policy";
 
 const CORE_ADVISORS: AdvisorDefinition[] = [
   { id: "business-advisor", name: "Business Advisor", tier: "core", domains: ["business", "crm", "revenue"], capabilities: [], trustThreshold: 0.7, memoryScopes: ["business", "crm"], toolAccess: ["crm", "email", "calendar"], toolForbidden: ["payment", "bank"], explanationStyle: "plain_english", escalationTargets: ["money-advisor", "risk-advisor"], receivesEscalationsFrom: ["growth-advisor", "execution-advisor"], maxAutonomy: "draft", simulationRequired: ["bulk_email", "pricing_change"], performanceKpis: ["leads_converted", "revenue_recovered", "pipeline_growth"], active: true },
@@ -38,6 +42,11 @@ export class AdvisorOrchestrationEngine {
   // ── Registry ────────────────────────────────────────────────
   getAdvisor(id: AdvisorId): AdvisorDefinition | undefined {
     return this.advisors.get(id);
+  }
+
+  /** Get canonical identity from the advisor identity registry */
+  getCanonicalIdentity(id: string) {
+    return getAdvisorIdentity(id);
   }
 
   getAllAdvisors(): AdvisorDefinition[] {
@@ -71,12 +80,35 @@ export class AdvisorOrchestrationEngine {
     const advisor = this.advisors.get(advisorId);
     if (!advisor) return { escalate: false };
 
+    // Check canonical escalation policy first
+    const policyResult = checkEscalationPolicy({
+      financialImpactCents: amount ? amount * 100 : undefined,
+      confidence,
+      reversible: true,
+      category: "execute",
+    });
+    if (policyResult) {
+      const target = advisor.escalationTargets[0];
+      return { escalate: true, target, reason: `Policy ${policyResult.ruleId}: ${policyResult.description}` };
+    }
+
+    // Fallback: check advisor-specific trust threshold
     if (confidence < advisor.trustThreshold) {
       const target = advisor.escalationTargets[0];
       return { escalate: true, target, reason: `Confidence ${confidence} below threshold ${advisor.trustThreshold}` };
     }
 
     return { escalate: false };
+  }
+
+  /** Evaluate whether an action class is permitted at the given confidence */
+  evaluateConfidence(actionClass: string, confidence: number) {
+    return evaluateConfidenceGate(actionClass, confidence);
+  }
+
+  /** Get the disablement behavior for an advisor */
+  getDisablementBehavior(reason: DisablementReason) {
+    return getDisablementPolicy(reason);
   }
 
   // ── Handoff ─────────────────────────────────────────────────

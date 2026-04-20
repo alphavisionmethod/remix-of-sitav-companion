@@ -8,6 +8,7 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
+import { isDomainFenced, isConfidenceSufficient, shouldEscalateAction } from "../_shared/advisor-governance.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // Deep Advisor Personalities — unique expertise per advisor

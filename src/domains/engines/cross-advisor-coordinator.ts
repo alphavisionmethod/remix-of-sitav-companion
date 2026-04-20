@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import { resolveConflict, type ConflictRule } from "@/lib/advisors/advisor-conflict-resolution-policy";
+import { resolveDebate, DEFAULT_DEBATE_POLICY, type DebateOutcome } from "@/lib/advisors/advisor-debate-orchestrator";
 
 export interface CoordinatedRecommendation {
   id: string;
@@ -53,6 +55,22 @@ function categorize(rec: AIRecommendation): CoordinatedRecommendation["category"
 
 export class CrossAdvisorCoordinator {
   private similarityThreshold = 0.35;
+
+  /** Use canonical conflict resolution policy */
+  resolveConflictBetween(context: {
+    sameDomain: boolean;
+    financialImpact: boolean;
+    safetyRelated: boolean;
+    irreversible: boolean;
+    maxConfidence: number;
+  }): ConflictRule {
+    return resolveConflict(context);
+  }
+
+  /** Use canonical debate resolution */
+  resolveDebateOutcome(positions: Array<{ advisorId: string; stance: "support" | "oppose" | "neutral"; confidence: number; rationale: string }>): DebateOutcome {
+    return resolveDebate(positions, DEFAULT_DEBATE_POLICY);
+  }
 
   coordinate(recommendations: AIRecommendation[]): CoordinatedRecommendation[] {
     if (recommendations.length === 0) return [];

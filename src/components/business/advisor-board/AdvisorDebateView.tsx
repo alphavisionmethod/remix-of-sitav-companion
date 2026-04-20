@@ -12,6 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { BUSINESS_ADVISORS } from "@/domains/engines/business-advisor-personas";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
 import { AnimatedConfidenceRing } from "./AnimatedConfidenceRing";
+import { resolveDebate, DEFAULT_DEBATE_POLICY, type DebateOutcome } from "@/lib/advisors/advisor-debate-orchestrator";
+import { resolveConflict } from "@/lib/advisors/advisor-conflict-resolution-policy";
 
 interface DebatePosition {
   advisorId: string;

@@ -3,6 +3,13 @@
 // Multi-layer memory: short-term, mid-term, long-term, preference, procedural
 // ═══════════════════════════════════════════════════════════════
 
+import {
+  shouldExpire as checkAgingExpiry,
+  shouldPromote as checkAgingPromotion,
+  getAgingRule,
+  type MemoryLayer as AgingMemoryLayer,
+} from "@/lib/advisors/advisor-memory-aging-policy";
+
 export type MemoryLayer = "short-term" | "mid-term" | "long-term" | "preference" | "procedural";
 
 export interface MemoryItem {
@@ -165,6 +172,40 @@ export class AdvisorMemoryEngine {
 
   getCorrections(): MemoryCorrection[] {
     return [...this.corrections];
+  }
+
+  // ── Canonical Aging Policy Integration ─────────────────────
+
+  /** Check if a memory item should be promoted based on canonical aging rules */
+  shouldPromoteByPolicy(item: MemoryItem): boolean {
+    const agingLayer = this.mapToAgingLayer(item.layer);
+    if (!agingLayer) return false;
+    return checkAgingPromotion(agingLayer, item.accessCount);
+  }
+
+  /** Check if a memory item has expired based on canonical aging rules */
+  shouldExpireByPolicy(item: MemoryItem): boolean {
+    const agingLayer = this.mapToAgingLayer(item.layer);
+    if (!agingLayer) return false;
+    const ageDays = (Date.now() - new Date(item.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+    return checkAgingExpiry(agingLayer, ageDays);
+  }
+
+  /** Get the canonical aging rule for a memory layer */
+  getAgingRuleForLayer(layer: MemoryLayer) {
+    const agingLayer = this.mapToAgingLayer(layer);
+    return agingLayer ? getAgingRule(agingLayer) : null;
+  }
+
+  private mapToAgingLayer(layer: MemoryLayer): AgingMemoryLayer | null {
+    const map: Record<MemoryLayer, AgingMemoryLayer | null> = {
+      "short-term": "short-term",
+      "mid-term": "short-term",  // mid-term maps to short-term aging rules
+      "long-term": "long-term",
+      "preference": "archival",  // preferences never expire
+      "procedural": "archival",  // procedures never expire
+    };
+    return map[layer];
   }
 
   // ── Helpers ────────────────────────────────────────────────
