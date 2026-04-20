@@ -39,10 +39,13 @@ const ALLOWLIST_PATTERNS: RegExp[] = [
   /^scripts\/architecture\/checks\/check-cosmetic-debt-closure\.ts$/,
   /^scripts\/architecture\/checks\/check-lib-ownership-drift\.ts$/,
   /^scripts\/architecture\/checks\/check-residual-lib-canonicality\.ts$/,
+  /^scripts\/migrate\//,
   /^public\/generated\/PROJECT_TREE_AUDIT\.md$/,
-  /^generated\/lib-remediation\/.*\.json$/,
-  /^generated\/cosmetic-debt-closure-report\.json$/,
-  /^generated\/stale-deleted-paths-report\.json$/,
+  /^docs\/architecture\/MIGRATION-BLUEPRINT\.md$/,
+  /^docs\/refactor\//,
+  // Generated artifacts (regenerated from disk by their producers; stale snapshots are
+  // expected here until the next architecture mapping run rewrites them).
+  /^generated\//,
 ];
 
 const SCAN_DIRS = ["src", "tests", "docs"];

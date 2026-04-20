@@ -10,13 +10,14 @@ Development, testing, simulation, and forensic tooling. Not deployed to producti
 ## Directories (Current Lovable SPA)
 | Path | Description |
 |------|-------------|
-| `src/lib/simulation/` | Simulation engines (dry-run, policy, what-if) |
+| `src/domains/simulation/` | Simulation engines (dry-run, policy, what-if) |
 | `src/lib/fip/` | Feature Integration Protocol registry |
 | `src/lib/dual-reality/` | Dual reality simulation framework |
 | `src/lib/reality-audit/` | Reality audit registry |
 | `src/lib/reality-records/` | Reality classification records |
-| `src/lib/demo-data/` | Demo/seed data generators |
-| `src/lib/seed/` | Database seed scripts |
+| `src/data/fixtures/demo-data/` | Demo/seed data generators |
+| `src/data/fixtures/seed/` | Database seed scripts |
+| `src/data/fixtures/mock-data/` | Mock fixtures for tests/scenarios |
 
 ## Migration Target
 ```
