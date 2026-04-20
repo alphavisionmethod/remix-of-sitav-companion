@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "advisorRoles": [
+    "business",
+    "finance",
+    "concierge",
+    "security",
+    "operations",
+    "investment"
+  ],
+  "permissionMatrixFile": "src/lib/ai-platform/runtime/advisor-permission-matrix.ts",
+  "escalationPolicyFile": "src/lib/ai-platform/runtime/advisor-escalation-policy.ts",
+  "escalationRules": 8,
+  "reversibilityMapFile": "src/lib/ai-platform/runtime/advisor-reversibility-map.ts",
+  "actionTypes": 12,
+  "irreversibleActions": [
+    "send-notification"
+  ]
+}
