@@ -8,7 +8,7 @@
 import { useState, useEffect } from "react";
 import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os-unification-runtime";
 import { isElectronRuntime } from "@/runtimes/desktop/desktop-runtime-detection";
-import { isMobileSurface, getDeviceLabel } from "@/runtimes/runtime-platform";
+import { isMobileSurface, getDeviceLabel, getOSVersionString } from "@/runtimes/runtime-platform";
 
 // ── Surface detection ───────────────────────────────────────────
 
@@ -88,10 +88,10 @@ export function buildActiveSurface(userId: string): ActiveSurface {
     currentContext: {
       extendedType: extended,
       deviceName: getDeviceName(),
-      // Surface telemetry — kept verbatim only for the ActiveSurface payload
-      // shape, sourced via the runtime-platform helper to avoid duplicating
-      // raw UA parsing in business code.
-      userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+      // ActiveSurface contract historically carries an opaque UA string
+      // for downstream telemetry. We delegate to the runtime registry's
+      // canonical OS version helper so no raw UA parsing lives here.
+      userAgent: getOSVersionString(),
       screenWidth: window.screen?.width,
       screenHeight: window.screen?.height,
       online: navigator.onLine,

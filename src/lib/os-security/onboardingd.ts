@@ -6,6 +6,7 @@
 
 import { getContextualDecisionEngine } from "./policyd-decisions";
 import { getPolicyBundleManager, type DeviceMode } from "./policyd-bundles";
+import { getDevicePlatform } from "@/runtimes/runtime-platform";
 
 // ── Types ───────────────────────────────────────────────────
 
