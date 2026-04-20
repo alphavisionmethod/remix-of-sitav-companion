@@ -1,148 +1,161 @@
 
 
-## Wave 13 — Frontend Canonicalization Closure
+## Wave 14 — Workflow Proof Closure and Provider Truth Closure
 
 ### Summary
 
-The project has strong existing frontend infrastructure: canonical primitives barrel (17 exports), component-duplication-map (13 families), page-state contracts (2 files in `src/lib/reality/` and `src/lib/frontend/`), truth-surface-registry (8 entries), component-registry system, 644+ generated proof artifacts, accessibility-summary.json (811 routes, 100% compliant), and surface-performance-budget.json (811 routes). Missing: unified component canonical map, component family taxonomy, layout grammar, page-shell compliance, accessibility/mobile/performance policy files in `src/lib/frontend/`, deprecation registry, and 7 dedicated frontend validators. This wave fills every gap by extending existing systems rather than duplicating.
+The project has a strong canonical workflow engine (`src/lib/core-services/workflow-engine.ts`, 749 lines, 11-state machine with replay, recovery, timeout, verification hooks) and a canonical connector system (12 providers in `src/lib/connectors/providers.ts`, 6-state grammar, auth/health/truth services). What is missing: workflow proof registry mapping workflow families to evidence/owners/rollback, provider contract registry with lifecycle/diagnostics/security closure, and all associated validators and generated proof artifacts. Two existing validator stubs (`scripts/integrations/check-oauth-security-closure.ts`, `check-provider-refresh-closure.ts`) only check file existence.
+
+This wave creates the workflow and integration governance layers by extending existing systems, not duplicating them.
 
 ---
 
-### PART 1 — Canonical Frontend Systems to Preserve
+### Phase A — Workflow Proof Registry and Contracts (6 files)
 
-| System | Path | Action |
-|---|---|---|
-| Primitives barrel | `src/components/primitives/index.ts` | Keep — 17 canonical exports |
-| Component duplication map | `src/platform/architecture/component-duplication-map.ts` | Keep — 13 families, extend |
-| Component registry | `src/platform/architecture/component-registry.ts` | Keep — classification types, purity rules |
-| Page state contract (reality) | `src/lib/reality/page-state-contract.ts` | Keep — 6 page classes, 5 state requirements |
-| Page state registry | `src/lib/reality/page-state-registry.ts` | Keep — 43+ registered routes |
-| Page state contract (frontend) | `src/lib/frontend/page-state-contract.ts` | Keep — PagePhase + transition machine |
-| Truth surface registry | `src/lib/frontend/truth-surface-registry.ts` | Keep — 8 entries, extend |
-| Accessibility summary | `generated/accessibility-summary.json` | Keep — 811 routes |
-| Performance budgets | `generated/surface-performance-budget.json` | Keep — 811 routes |
-| Check component canonicalization | `scripts/frontend/check-component-canonicalization.ts` | Strengthen from stub to real validator |
-| Check truth surface coverage | `scripts/frontend/check-truth-surface-coverage.ts` | Keep, strengthen |
+**1. `src/lib/workflows/workflow-proof-registry.ts`**
+- Registry of 12 workflow families (auth, onboarding, app-lifecycle, advisor, boardroom, payment, CRM/connector, file, desktop-recovery, OS-recovery, operator-incident, support-bundle)
+- Each entry: `familyId`, `owner`, `intent`, `scope`, `stepIds[]`, `evidenceSources[]`, `replayable`, `rollbackSemantics`, `failureInjectionPoints[]`, `dashboardRoute`, `runbookRef`, `killSwitchBinding`, `goldenPathRef`
+- Cross-references existing golden path IDs and kill-switch IDs
 
-### PART 2 — Duplicate/Shadow Systems to Consolidate
+**2. `src/lib/workflows/workflow-step-contracts.ts`**
+- Typed step contract interface: `stepId`, `sourceState`, `targetState`, `requiredInputs[]`, `sideEffects[]`, `persistenceReqs`, `evidenceReqs`, `rollbackEligible`, `failureModes[]`, `retryPolicy`, `operatorVisible`
+- Pre-defined step contracts for all 12 families (~60 steps total)
+- Maps to `ServiceWorkflowState` from existing workflow engine
 
-No new duplicate systems. The two page-state files serve complementary purposes: `src/lib/reality/page-state-contract.ts` defines page classes and required state types for CI validation; `src/lib/frontend/page-state-contract.ts` defines the runtime PagePhase state machine. Both stay.
+**3. `src/lib/workflows/workflow-evidence-builder.ts`**
+- `buildWorkflowEvidenceBundle(familyId, run)` function
+- Produces `WorkflowEvidenceBundle` containing: metadata, execution lineage, receipts, decision points, retries, failures, rollback outcomes, proof of final state
+- Leverages existing `WorkflowInstance.eventLog` from core-services engine
 
-Alignment needed:
-- `truth-surface-registry.ts` has 8 entries; needs expansion to cover admin AI, connectors, payments, approvals, security surfaces (~20 total)
-- `check-component-canonicalization.ts` is a stub that only checks file existence; needs real validation logic
+**4. `src/lib/workflows/workflow-replay-engine.ts`**
+- Thin wrapper around existing `WorkflowReplayEngine` from `core-services/workflow-engine.ts`
+- Adds family-level replay declarations: which families are replayable, replay safety rules, non-replayable sensitive paths
+- No duplication — imports and extends existing replay engine
 
-### PART 3 — New Canonical Artifacts
+**5. `src/lib/workflows/workflow-failure-injection.ts`**
+- Declares per-family failure injection points
+- `InjectionPoint` type: `familyId`, `stepId`, `faultType` (timeout, error, partial, permission-denied), `severity`
+- `injectFault(familyId, stepId, faultType)` function for test harnesses
 
-**Phase A — Component Canonical Map and Taxonomy**
+**6. `src/lib/workflows/workflow-rollback-map.ts`**
+- Per-family rollback semantics: reversible steps, irreversible steps, compensating actions, escalation rules, runbook linkage
+- Cross-references existing runbook registry IDs
 
-1. **`src/lib/frontend/component-canonical-map.ts`** — Master registry of ~25 component families. Each entry: `familyId`, `canonicalPaths[]`, `deprecatedPaths[]`, `purpose`, `grammarRole`, `trustSensitive`, `owner`, `migrationStatus`. Families: buttons, cards (BaseCard), badges (StatusBadge/TrustBadge/ProofBadge/etc), status indicators, alerts/toasts, disclosures (AITruthDisclosure), modals/dialogs, drawers/sheets, tables, forms/fields, nav items, command surfaces, page headers, skeletons, empty states (EmptyState/PremiumEmptyState), error states, evidence primitives (EvidenceLink/ProvenanceChip), operator panels (OperatorActionPanel), timelines (TimelineRow), tiles (StatTile), panels, heroes, summaries.
+### Phase B — Provider Contract Registry and Lifecycle (7 files)
 
-2. **`src/lib/frontend/component-family-taxonomy.ts`** — Classification enum: `PRIMITIVE`, `DOMAIN`, `SURFACE`, `LIB_UI`. Grammar roles: `display`, `status`, `feedback`, `action`, `overlay`, `layout`, `navigation`, `data`, `trust`. Maps each family to its grammar role and layer.
+**7. `src/lib/integrations/provider-contract-registry.ts`**
+- Registry of all 12 catalog providers (gmail, google-calendar, google-drive, plaid, stripe, quickbooks, twilio, sendgrid, instacart, hubspot, slack, dropbox) plus 3 system providers (AI-gateway, storage, auth)
+- Each entry: `providerId`, `providerType`, `owner`, `credentialModel`, `environments[]`, `refreshPolicy`, `retryPolicy`, `rateLimitPolicy`, `outagePolicy`, `degradedUxBehavior`, `killSwitchBinding`, `runbookRef`, `webhookBehavior`, `retentionPolicy`, `diagnosticsSupport`
+- Extends existing `CONNECTOR_PROVIDER_REGISTRY` — does not replace it
 
-3. **`src/lib/frontend/primitive-deprecation-registry.ts`** — Extends duplication-map with explicit deprecation enforcement. Each entry: deprecated path, canonical replacement, migration deadline, callers-remaining count, enforcement level (warn/block).
+**8. `src/lib/integrations/provider-lifecycle-manager.ts`**
+- Canonical lifecycle state machine: `initial-connect → auth-issued → active → refresh → expiring → expired → reauth → disabled → recovered`
+- `advanceProviderLifecycle(providerId, event)` function
+- Integrates with existing `ConnectorAuthState` from `connector-auth.service.ts`
+- Extends existing `ConnectorState` from `connector-state-grammar.ts`
 
-**Phase B — Layout Grammar and Shell Compliance**
+**9. `src/lib/integrations/provider-health-model.ts`**
+- Canonical health model: `healthy | degraded | partial-outage | full-outage | maintenance | unknown`
+- `assessProviderHealth(providerId, signals)` function
+- Integrates with existing `fetchConnectorHealth()` from `connector-health-service.ts`
 
-4. **`src/lib/frontend/layout-grammar-map.ts`** — Canonical layout patterns: `landing` (public, no sidebar), `auth` (centered card), `onboarding` (stepper), `workspace` (sidebar+main), `admin-operator` (AdminControlPlaneShell), `desktop-os` (ShellComposer), `app-detail` (floating window), `settings` (sidebar+tabs), `marketing` (full-width sections), `mobile-optimized` (stack, no sidebar). Each pattern declares: shell component, nav role, sidebar behavior, mobile adaptation.
+**10. `src/lib/integrations/provider-diagnostics.ts`**
+- `generateProviderDiagnostics(providerId)` — returns structured diagnostic bundle
+- Covers: credential status, last refresh, error history, latency, rate-limit state, webhook delivery status
+- Integrates with existing `getOAuthFlows()` and `getSyncJobs()` from `connector-truth-service.ts`
 
-5. **`src/lib/frontend/page-shell-compliance-map.ts`** — Maps ~30 route prefixes to their required layout grammar. Cross-references route-plane-map and route-intent-taxonomy. Declares expected shell, layout pattern, state contract class, and mobile adaptation standard per route family.
+**11. `src/lib/integrations/provider-kill-switch-map.ts`**
+- Maps providers to kill-switch IDs from existing `KILL_SWITCH_REGISTRY`
+- Maps providers to runbook IDs from existing `RUNBOOK_REGISTRY`
+- E.g. `stripe → KS-PAYMENTS`, `gmail → KS-CONNECTORS`
 
-**Phase C — Trust, Accessibility, Mobile, Performance Policies**
+**12. `src/lib/integrations/provider-retention-policy.ts`**
+- Per-provider data retention rules: token TTL, sync data retention, audit log retention, replay data policy, environment separation (sandbox vs prod)
 
-6. **Extend `src/lib/frontend/truth-surface-registry.ts`** — Add ~12 entries for admin AI runtime, admin approvals, admin security, connectors settings, payments, investment office, revenue office, owner dashboard, app permissions/install, digital presence, and approval chamber routes. Add `requiredPrimitives` field to each entry listing specific primitives needed (AITruthDisclosure, EvidenceLink, ProvenanceChip, TrustBadge, StatusBadge).
+**13. `src/lib/integrations/oauth-security-closure.ts`**
+- Declares OAuth token encryption-at-rest policy
+- Token access auditing requirements
+- Key rotation compatibility declarations
+- Expiry/indexing coverage
+- Support-safe redaction rules
+- Generates `generated/oauth-security-closure.json`
 
-7. **`src/lib/frontend/accessibility-baseline.ts`** — Declares per-page-class requirements: semantic HTML landmarks, keyboard nav, focus management, ARIA labels for interactive elements, dialog/modal focus trapping, reduced-motion respect, contrast compliance, screen-reader state messages. References existing `generated/accessibility-summary.json` as evidence source.
+### Phase C — Supporting Provider Policies (4 files)
 
-8. **`src/lib/frontend/mobile-adaptive-policy.ts`** — Declares per-layout-grammar mobile expectations: breakpoints (sm: 640, md: 768, lg: 1024, xl: 1280), touch target minimums (44px), navigation collapse behavior, sidebar hide/drawer behavior, desktop-only feature disclosure, reduced-density rules for admin tables. References existing route-runtime-map for runtime tier support.
+**14. `src/lib/integrations/provider-refresh-policy.ts`**
+- Per-provider refresh cadence, retry backoff, max retries, refresh window
 
-9. **`src/lib/frontend/page-performance-budget.ts`** — Declares per-page-class budgets: critical routes (LCP <1500ms, FCP <800ms, bundle <150KB), standard routes (LCP <2000ms, FCP <1000ms, bundle <250KB), heavy admin (LCP <2500ms, FCP <1200ms, bundle <400KB). References existing `generated/surface-performance-budget.json` as evidence source. Adds skeleton-required threshold and lazy-load expectations.
+**15. `src/lib/integrations/provider-rate-limit-policy.ts`**
+- Per-provider rate limits, backoff strategy, burst handling, queue behavior
 
-**Phase D — Validators (7 scripts)**
+**16. `src/lib/integrations/provider-webhook-replay-policy.ts`**
+- Webhook replay rules, deduplication, idempotency keys, DLQ behavior
 
-10. **`scripts/frontend/check-component-canonicalization.ts`** — Replace existing stub. Load component-canonical-map and component-duplication-map. Scan `src/components/` for files matching deprecated paths still imported. Emit `generated/component-canonicalization-report.json`. BLOCK if undeclared families found.
+**17. `src/lib/integrations/provider-conflict-resolution-policy.ts`**
+- CRM/sync conflict detection, resolution strategy (last-write-wins, merge, manual), operator escalation
 
-11. **`scripts/frontend/check-truth-primitive-coverage.ts`** — New. Load truth-surface-registry. For each registered route, verify the page file imports at least one required primitive. Emit `generated/truth-primitive-coverage.json`. ADVISORY.
+### Phase D — Validators (10 scripts)
 
-12. **`scripts/frontend/check-page-state-coverage.ts`** — New. Load page-state-registry. Cross-reference page-state-contract classes. Flag routes missing required states. Emit `generated/page-state-coverage.json`. ADVISORY.
+Replace the 2 existing stubs and add 8 new validators:
 
-13. **`scripts/frontend/check-layout-grammar.ts`** — New. Load page-shell-compliance-map. Verify page files import expected shell/layout components. Emit `generated/layout-grammar-coverage.json`. ADVISORY.
+**18. `scripts/workflows/check-workflow-proof-closure.ts`** — BLOCK. Verify all 12 families registered, step contracts defined, evidence sources declared.
 
-14. **`scripts/frontend/check-accessibility-baseline.ts`** — New. Load accessibility-baseline. Reference generated/accessibility-summary.json. Emit `generated/accessibility-closure.json` summarizing compliance. ADVISORY.
+**19. `scripts/workflows/check-workflow-step-contracts.ts`** — ADVISORY. Verify step contracts cover all declared steps.
 
-15. **`scripts/frontend/check-mobile-adaptive-coverage.ts`** — New. Load mobile-adaptive-policy. Cross-reference route-runtime-map. Emit `generated/mobile-adaptive-coverage.json`. ADVISORY.
+**20. `scripts/workflows/check-workflow-replayability.ts`** — ADVISORY. Verify replayable families have replay safety rules.
 
-16. **`scripts/frontend/check-page-performance-budgets.ts`** — New. Load page-performance-budget. Reference generated/surface-performance-budget.json. Flag routes exceeding budget. Emit `generated/page-performance-budget-report.json`. ADVISORY.
+**21. `scripts/workflows/check-workflow-failure-injection.ts`** — ADVISORY. Verify injection points declared for critical families.
 
-**Phase E — Proof Bundle and Gate Registration**
+**22. `scripts/workflows/check-workflow-rollback-coverage.ts`** — ADVISORY. Verify rollback semantics declared for reversible families.
 
-17. **`generated/frontend-closure-bundle.json`** — Update existing `public/generated/frontend-closure-bundle.json` and generate canonical version at `generated/frontend-closure-bundle.json`. Aggregates: component family count, deprecated families, page-state coverage %, layout grammar coverage %, truth primitive coverage %, accessibility score, mobile adaptive %, performance budget compliance %.
+**23. `scripts/integrations/check-provider-contract-closure.ts`** — BLOCK. Verify all 15 providers registered with full contracts.
 
-18. Register `component-canonicalization` as a **BLOCK** gate in `check-os-release-readiness.ts`. Register the other 6 as **WARN** gates in the admin AI engineer warn array.
+**24. `scripts/integrations/check-oauth-security-closure.ts`** — REPLACE existing stub. Real validation: check oauth-security-closure.json completeness.
 
-### PART 4 — Trust / Accessibility / Mobile / Performance Wiring
+**25. `scripts/integrations/check-provider-refresh-closure.ts`** — REPLACE existing stub. Real validation: check all providers have refresh policies.
 
-- Truth surface registry expanded from 8 → ~20 entries covering all trust-sensitive domains (admin AI, connectors, payments, boardroom, finance, approvals, security, owner, app platform)
-- Each entry gains `requiredPrimitives: string[]` field linking to canonical primitive exports
-- Accessibility baseline references existing 811-route accessibility-summary.json (all compliant)
-- Mobile adaptive policy cross-references existing route-runtime-map (30 entries) for runtime tier support
-- Performance budget policy cross-references existing surface-performance-budget.json (811 routes)
+**26. `scripts/integrations/check-provider-diagnostics-closure.ts`** — ADVISORY. Verify diagnostics coverage.
 
-### PART 5 — Route / Shell / Page Ownership Integration
+**27. `scripts/integrations/check-provider-webhook-replay.ts`** — ADVISORY. Verify webhook replay policy exists for webhook providers.
 
-- `page-shell-compliance-map.ts` cross-references existing `route-plane-map.ts` (23 entries), `route-intent-taxonomy.ts` (30 entries), and `layer-manifest.ts` (27 entries)
-- No duplication of route metadata — compliance map imports from existing route architecture
-- Shell assignment per route family uses existing `ShellComposer`, `AdminControlPlaneShell`, and `PublicLayout` components
+### Phase E — Generated Proof Artifacts
 
-### PART 6 — Validators and Generated Artifacts
+- `generated/workflow-proof-bundles/workflow-closure-matrix.json` — all 12 families with step/evidence/replay/rollback coverage
+- `generated/workflow-proof-bundles/workflow-replayability-report.json`
+- `generated/workflow-proof-bundles/workflow-rollback-coverage.json`
+- `generated/integration-proof-bundles/provider-contract-closure.json` — all 15 providers with lifecycle/health/diagnostics coverage
+- `generated/oauth-security-closure.json` — OAuth token security posture
+- `generated/token-encryption-rotation-proof.json` — encryption-at-rest + rotation evidence
+- `generated/provider-refresh-closure.json` — refresh policy coverage
+- `generated/provider-rate-limit-coverage.json`
+- `generated/provider-webhook-replay-audit.json`
+- `generated/provider-conflict-resolution-report.json`
 
-| Script | Gate ID | Level | Output |
-|---|---|---|---|
-| `check-component-canonicalization.ts` | `component-canonicalization` | BLOCK | `generated/component-canonicalization-report.json` |
-| `check-truth-primitive-coverage.ts` | `truth-primitive-coverage` | WARN | `generated/truth-primitive-coverage.json` |
-| `check-page-state-coverage.ts` | `frontend-page-state-coverage` | WARN | `generated/page-state-coverage.json` |
-| `check-layout-grammar.ts` | `layout-grammar-coverage` | WARN | `generated/layout-grammar-coverage.json` |
-| `check-accessibility-baseline.ts` | `accessibility-baseline` | WARN | `generated/accessibility-closure.json` |
-| `check-mobile-adaptive-coverage.ts` | `mobile-adaptive-coverage` | WARN | `generated/mobile-adaptive-coverage.json` |
-| `check-page-performance-budgets.ts` | `page-performance-budget` | WARN | `generated/page-performance-budget-report.json` |
+### Phase F — Gate Registration and Verification
 
-### PART 7 — No-Duplication Enforcement
+- Register `workflow-proof-closure` as BLOCK gate in `check-os-release-readiness.ts`
+- Register `provider-contract-closure` as BLOCK gate
+- Register 8 ADVISORY gates for remaining validators
+- `npx tsc --noEmit` — zero errors
+- Run all 10 new validators — all green
 
-- Component canonical map becomes the single source of truth for "what family does this component belong to"
-- Primitive deprecation registry lists all 7 MIGRATING families from duplication-map with explicit enforcement paths
-- `check-component-canonicalization.ts` BLOCK gate prevents introduction of new undeclared component families
-- Existing `check-duplicate-families.ts` continues to enforce name-collision governance
-- No new primitive families created — all referenced primitives already exist in `src/components/primitives/`
+### No-Duplication Enforcement
 
-### PART 8 — Implementation Phases
+- Workflow proof registry imports from existing `WorkflowEngine`, `WorkflowReplayEngine`, `WorkflowRecoveryManager` in `core-services/workflow-engine.ts` — no second engine
+- Provider contract registry extends existing `CONNECTOR_PROVIDER_REGISTRY` and `CONNECTOR_STATE_GRAMMAR` — no second connector system
+- Provider lifecycle manager extends existing `ConnectorAuthState` — no second auth model
+- Provider health model wraps existing `fetchConnectorHealth()` — no second health service
 
-**Phase A** (Core registries): Create component-canonical-map, component-family-taxonomy, primitive-deprecation-registry (3 files)
+### Deployment Closure Checklist
 
-**Phase B** (Layout/shell): Create layout-grammar-map, page-shell-compliance-map (2 files)
-
-**Phase C** (Policies): Extend truth-surface-registry, create accessibility-baseline, mobile-adaptive-policy, page-performance-budget (4 files)
-
-**Phase D** (Validators): Replace check-component-canonicalization stub, create 6 new validators (7 files)
-
-**Phase E** (Proof + gates): Generate frontend-closure-bundle.json, register gates in release aggregator
-
-**Phase F** (Verification): `npx tsc --noEmit` — zero errors, verify no duplicate frontend systems
-
-### PART 9 — Deployment Closure Checklist
-
-- [ ] `component-canonical-map.ts` with ~25 families, canonical paths, deprecated paths
-- [ ] `component-family-taxonomy.ts` with classification + grammar roles
-- [ ] `primitive-deprecation-registry.ts` with 7+ deprecated families and enforcement levels
-- [ ] `layout-grammar-map.ts` with 10 canonical layout patterns
-- [ ] `page-shell-compliance-map.ts` with ~30 route prefix mappings
-- [ ] `truth-surface-registry.ts` expanded to ~20 entries with requiredPrimitives
-- [ ] `accessibility-baseline.ts` with per-page-class requirements
-- [ ] `mobile-adaptive-policy.ts` with breakpoints, touch targets, collapse rules
-- [ ] `page-performance-budget.ts` with per-class budgets
-- [ ] 7 validator scripts in `scripts/frontend/`
-- [ ] 8 generated proof artifacts
-- [ ] `component-canonicalization` registered as BLOCK gate
-- [ ] 6 WARN gates registered
+- [ ] 12 workflow families registered with proof closure
+- [ ] ~60 step contracts defined across all families
+- [ ] Evidence builder, replay declarations, failure injection, rollback map complete
+- [ ] 15 providers registered with full contract
+- [ ] OAuth security closure artifact generated
+- [ ] Token encryption rotation proof generated
+- [ ] 10 validator scripts passing
+- [ ] 2 BLOCK gates + 8 ADVISORY gates registered
 - [ ] TypeScript builds with 0 errors
-- [ ] No duplicate frontend architecture systems
+- [ ] No duplicate workflow or integration systems
 
