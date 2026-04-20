@@ -1,13 +1,44 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "oauth-security-closure",
-  "tokenEncryption": "at-rest-via-vault",
-  "expiryIndexed": true,
-  "refreshPathProven": true,
-  "deadLetterPath": "connector-dead-letter-queue",
-  "providers": [
-    "google",
-    "microsoft",
-    "slack"
-  ]
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "policy": {
+    "encryptionAtRest": {
+      "enabled": true,
+      "algorithm": "aes-256-gcm",
+      "keyRotationDays": 90
+    },
+    "tokenAccessAuditing": {
+      "enabled": true,
+      "logTable": "admin_action_audit"
+    },
+    "expiryIndexing": {
+      "enabled": true,
+      "indexColumns": [
+        "expires_at",
+        "refresh_token_expires_at"
+      ]
+    },
+    "supportSafeRedaction": {
+      "enabled": true,
+      "redactedFields": [
+        "access_token",
+        "refresh_token",
+        "client_secret",
+        "private_key"
+      ]
+    },
+    "refreshTokenProtection": {
+      "rotateOnUse": true,
+      "maxLifetimeDays": 90
+    }
+  },
+  "oauthProviders": [
+    "gmail",
+    "google-calendar",
+    "google-drive",
+    "quickbooks",
+    "hubspot",
+    "slack",
+    "dropbox"
+  ],
+  "status": "enforced"
 }

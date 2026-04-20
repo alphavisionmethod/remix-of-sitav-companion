@@ -1,0 +1,315 @@
+{
+  "generatedAt": "2026-04-20T23:56:53.198Z",
+  "entries": [
+    {
+      "familyId": "auth",
+      "reversibleSteps": [
+        "auth.session-issue",
+        "auth.logout"
+      ],
+      "irreversibleSteps": [
+        "auth.signup",
+        "auth.account-delete"
+      ],
+      "compensatingActions": {
+        "auth.session-issue": "invalidate-session",
+        "auth.mfa-challenge": "reset-mfa"
+      },
+      "partialRollbackPaths": [
+        "auth.session-issue→compensate",
+        "auth.logout→compensate"
+      ],
+      "escalationRules": [
+        "3-failed-attempts-lockout",
+        "account-delete-cooldown-72h"
+      ],
+      "runbookRef": "RB-001",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "onboarding",
+      "reversibleSteps": [
+        "onboard.checkpoint",
+        "onboard.branch-select"
+      ],
+      "irreversibleSteps": [
+        "onboard.complete"
+      ],
+      "compensatingActions": {
+        "onboard.checkpoint": "reset-to-previous-checkpoint"
+      },
+      "partialRollbackPaths": [
+        "onboard.checkpoint→compensate",
+        "onboard.branch-select→compensate"
+      ],
+      "escalationRules": [
+        "stuck-user-after-48h"
+      ],
+      "runbookRef": "RB-002",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "app-lifecycle",
+      "reversibleSteps": [
+        "app.install",
+        "app.permission-grant",
+        "app.update"
+      ],
+      "irreversibleSteps": [
+        "app.remove"
+      ],
+      "compensatingActions": {
+        "app.install": "uninstall",
+        "app.update": "rollback-version"
+      },
+      "partialRollbackPaths": [
+        "app.install→compensate",
+        "app.permission-grant→compensate",
+        "app.update→compensate"
+      ],
+      "escalationRules": [
+        "crash-loop-3x-disable"
+      ],
+      "runbookRef": "RB-003",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "advisor",
+      "reversibleSteps": [
+        "advisor.execute"
+      ],
+      "irreversibleSteps": [
+        "advisor.refusal"
+      ],
+      "compensatingActions": {
+        "advisor.execute": "rollback-via-proof-pack"
+      },
+      "partialRollbackPaths": [
+        "advisor.execute→compensate"
+      ],
+      "escalationRules": [
+        "high-risk-dual-approval",
+        "budget-exceeded-block"
+      ],
+      "runbookRef": "RB-010",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "boardroom",
+      "reversibleSteps": [
+        "board.execute"
+      ],
+      "irreversibleSteps": [
+        "board.approve",
+        "board.reconcile"
+      ],
+      "compensatingActions": {
+        "board.execute": "revert-dispatch"
+      },
+      "partialRollbackPaths": [
+        "board.execute→compensate"
+      ],
+      "escalationRules": [
+        "outcome-missed-7d-escalate"
+      ],
+      "runbookRef": "RB-011",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "payment",
+      "reversibleSteps": [
+        "pay.auth"
+      ],
+      "irreversibleSteps": [
+        "pay.settle",
+        "pay.receipt"
+      ],
+      "compensatingActions": {
+        "pay.auth": "void-authorization",
+        "pay.settle": "initiate-refund"
+      },
+      "partialRollbackPaths": [
+        "pay.auth→compensate"
+      ],
+      "escalationRules": [
+        "dispute-auto-escalate",
+        "settlement-mismatch-block"
+      ],
+      "runbookRef": "RB-005",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "crm-connector",
+      "reversibleSteps": [
+        "crm.sync"
+      ],
+      "irreversibleSteps": [
+        "crm.conflict-resolve"
+      ],
+      "compensatingActions": {
+        "crm.sync": "revert-to-snapshot"
+      },
+      "partialRollbackPaths": [
+        "crm.sync→compensate"
+      ],
+      "escalationRules": [
+        "sync-failure-3x-disable-connector"
+      ],
+      "runbookRef": "RB-012",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "file",
+      "reversibleSteps": [
+        "file.upload",
+        "file.process"
+      ],
+      "irreversibleSteps": [
+        "file.action-trigger"
+      ],
+      "compensatingActions": {
+        "file.upload": "delete-object",
+        "file.process": "revert-processed-output"
+      },
+      "partialRollbackPaths": [
+        "file.upload→compensate",
+        "file.process→compensate"
+      ],
+      "escalationRules": [
+        "malware-detected-quarantine"
+      ],
+      "runbookRef": "RB-013",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "desktop-recovery",
+      "reversibleSteps": [
+        "desktop.shell-restart"
+      ],
+      "irreversibleSteps": [
+        "desktop.safe-mode"
+      ],
+      "compensatingActions": {
+        "desktop.shell-restart": "force-stop-and-restart"
+      },
+      "partialRollbackPaths": [
+        "desktop.shell-restart→compensate"
+      ],
+      "escalationRules": [
+        "3x-restart-enter-safe-mode"
+      ],
+      "runbookRef": "RB-014",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "os-recovery",
+      "reversibleSteps": [
+        "os.shell-launch"
+      ],
+      "irreversibleSteps": [
+        "os.boot"
+      ],
+      "compensatingActions": {
+        "os.shell-launch": "fallback-to-safe-mode"
+      },
+      "partialRollbackPaths": [
+        "os.shell-launch→compensate"
+      ],
+      "escalationRules": [
+        "boot-failure-3x-recovery-image"
+      ],
+      "runbookRef": "RB-015",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "operator-incident",
+      "reversibleSteps": [
+        "incident.kill-switch"
+      ],
+      "irreversibleSteps": [
+        "incident.close"
+      ],
+      "compensatingActions": {
+        "incident.kill-switch": "deactivate-switch"
+      },
+      "partialRollbackPaths": [
+        "incident.kill-switch→compensate"
+      ],
+      "escalationRules": [
+        "critical-incident-dual-approval",
+        "auto-expire-ttl"
+      ],
+      "runbookRef": "RB-016",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    },
+    {
+      "familyId": "support-bundle",
+      "reversibleSteps": [
+        "support.generate-bundle"
+      ],
+      "irreversibleSteps": [
+        "support.escalate"
+      ],
+      "compensatingActions": {
+        "support.generate-bundle": "regenerate-bundle"
+      },
+      "partialRollbackPaths": [
+        "support.generate-bundle→compensate"
+      ],
+      "escalationRules": [
+        "unresolved-72h-auto-escalate"
+      ],
+      "runbookRef": "RB-017",
+      "auditRequirements": [
+        "rollback-event-logged",
+        "compensating-action-receipt-emitted",
+        "operator-notified-if-escalated"
+      ]
+    }
+  ],
+  "totalReversibleSteps": 17
+}

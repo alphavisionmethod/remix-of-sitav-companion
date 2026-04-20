@@ -1,13 +1,25 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// SITA OS — OAuth Security Closure Validator
-import { existsSync } from "node:fs";
+// SITA OS — OAuth Security Closure Validator (BLOCK)
+import { existsSync, readFileSync } from "node:fs";
 import { emitGateReport, type GateIssue } from "../validation/_lib/emit-gate-report";
 
 const issues: GateIssue[] = [];
 
-if (!existsSync("generated/oauth-security-closure.json")) {
-  issues.push({ severity: "error", area: "oauth", message: "Missing generated/oauth-security-closure.json" });
+try {
+  const { OAUTH_SECURITY_POLICY } = require("../../src/lib/integrations/oauth-security-closure");
+  if (!OAUTH_SECURITY_POLICY.encryptionAtRest.enabled) {
+    issues.push({ severity: "error", area: "encryption", message: "Encryption at rest not enabled" });
+  }
+  if (!OAUTH_SECURITY_POLICY.tokenAccessAuditing.enabled) {
+    issues.push({ severity: "error", area: "auditing", message: "Token access auditing not enabled" });
+  }
+  if (!OAUTH_SECURITY_POLICY.supportSafeRedaction.enabled) {
+    issues.push({ severity: "warning", area: "redaction", message: "Support-safe redaction not enabled" });
+  }
+  console.log(`  🔐 OAuth: encryption=${OAUTH_SECURITY_POLICY.encryptionAtRest.algorithm}, rotation=${OAUTH_SECURITY_POLICY.encryptionAtRest.keyRotationDays}d`);
+} catch (e) {
+  issues.push({ severity: "error", area: "import", message: `Failed: ${e}` });
 }
 
 const ok = issues.filter(i => i.severity === "error").length === 0;
