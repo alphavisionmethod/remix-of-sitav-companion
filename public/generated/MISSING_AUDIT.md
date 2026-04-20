@@ -287,23 +287,19 @@ Each cluster reports: what exists · what is wired · what is partial · what is
 
 ### `src/lib/ai*`
 
-**Exists**
-- `ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`
+✅ **RESOLVED 2026-04-20** — Cluster naming overlap structurally collapsed.
 
-**Wired**
-- `ai-gateway` invoked by callers; `ai-engineering` admin uses `admin-ai`
+**Canonical home**
+- `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/` — single source of truth, anchored by `src/lib/ai-platform/README.md`
 
-**Partial / weak**
-- Ownership not documented per cluster
+**Legacy folders** (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`)
+- All 32 files converted to thin `DEPRECATED SHIM` re-exports pointing at `@/lib/ai-platform/*`
+- Zero physical duplication; no divergent implementations
 
-**Dead / duplicate**
-- No identical re-implementations found
-
-**Missing**
-- Cluster ownership doc
-
-**Exact fixes**
-- Add `src/lib/ai-engineering/README.md` differentiating from runtime gateway
+**Enforcement**
+- BLOCK Gate #28 `ai-shim-integrity` — asserts every legacy file remains a valid shim (32/32 passing)
+- BLOCK Gate #27 `cluster-readme-coverage` — asserts canonical `ai-platform/README.md` exists with required headings
+- Both registered in `scripts/architecture/checks/check-os-release-readiness.ts`
 
 ### `src/lib/connectors`
 
@@ -722,7 +718,7 @@ disk path / Supabase Storage object
 ### 4.3 AI invocation (caller → gateway → provider → receipts)
 
 ```text
-Caller (UI/edge) → src/lib/ai-gateway/*
+Caller (UI/edge) → src/lib/ai-gateway/*  (legacy shim → ai-platform/gateway)
   ↓
 edge function `ai-gateway` (Lovable AI)
   ↓
@@ -1301,9 +1297,9 @@ Deprecated parallel engine: `src/lib/services/onboarding-daemon/` + `useOnboardi
 - ✅ **Multiple onboarding entrypoints — RESOLVED 2026-04-20** (3-tier registry at `src/lib/architecture/onboarding-surface-registry.ts`; phantom barrels at `src/domains/setup`, `src/platform/setup`, `src/lib/services/onboarding` collapsed to re-exports; `useOnboardingDaemon` deprecated; enforced by `check:onboarding-surface-truth`)
 
 ### 13.3 Naming overlap (cognitive drift, not runtime drift)
-- `src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`
-- `src/lib/services`, `core-services`
-- `src/lib/platform`, `platform-law`, `platform-plane`, `web-platform`
+- ~~`src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`~~ → **RESOLVED 2026-04-20** (Gate #27 + #28; 32/32 shims → `ai-platform/`)
+- ~~`src/lib/services`, `core-services`~~ → **RESOLVED 2026-04-20** (Gate #27; per-cluster READMEs)
+- ~~`src/lib/platform`, `platform-law`, `platform-plane`, `web-platform`~~ → **RESOLVED 2026-04-20** (Gate #27; per-cluster READMEs)
 - ~~`src/lib/setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`~~ → **CONSOLIDATED** in `onboarding-surface-registry.ts` (3 declared tiers; rest classified as library/façade/config)
 
 Mitigation: per-cluster README + Part II annotations.
