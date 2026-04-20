@@ -835,10 +835,10 @@ release.yml workflow blocks if aggregator exits non-zero
 | # | Hop | State | Notes |
 |---:|---|---|---|
 | 1 | Validators | ✅ | 183 present |
-| 2 | Artifact emit | ✅ | 459 JSONs in generated/ |
-| 3 | Aggregator | ✅ | Single block point |
+| 2 | Artifact emit | ✅ | 913 JSONs in generated/ |
+| 3 | Aggregator | ✅ | Single block point (21/21 BLOCK gates green) |
 | 4 | CI integration | ✅ | release + nightly workflows |
-| 5 | Producer/consumer index | 🔴 | Missing — P1 |
+| 5 | Producer/consumer index | ✅ | **RESOLVED 2026-04-20** — `generated/artifact-ownership-manifest.json` (94% coverage, 858/913 producers mapped, 115 declared in `MANIFEST_REGISTRY`); enforced by `npm run check:artifact-ownership-coverage` |
 
 ### 4.8 Watchdog / heartbeat / health
 
