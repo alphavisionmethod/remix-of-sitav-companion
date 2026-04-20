@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — DEPRECATED SHIM
-// Canonical home: @/lib/ai-platform/sovereign/types
-// Preserved to support legacy `from "@/lib/sovereign-ai-gateway/types"`.
+// SITA OS — DEPRECATED SHIM → @/lib/ai-platform/sovereign/types
+// File preserved as a transparent re-export for backward compatibility.
+// New code MUST import from the canonical path above.
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/lib/ai-platform/sovereign/types";

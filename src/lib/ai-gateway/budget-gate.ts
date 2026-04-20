@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — DEPRECATED SHIM
-// Canonical home: @/lib/ai-platform/gateway/budget-gate
-// Preserved to support legacy `from "@/lib/ai-gateway/budget-gate"`.
+// SITA OS — DEPRECATED SHIM → @/lib/ai-platform/gateway/budget-gate
+// File preserved as a transparent re-export for backward compatibility.
+// New code MUST import from the canonical path above.
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/lib/ai-platform/gateway/budget-gate";

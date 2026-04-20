@@ -1,39 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — useDailyPulse Hook
-// Digest synthesis for daily pulse generation
+// SITA OS — DEPRECATED SHIM → @/lib/ai-platform/runtime/hooks/use-daily-pulse
+// File preserved as a transparent re-export for backward compatibility.
+// New code MUST import from the canonical path above.
 // ═══════════════════════════════════════════════════════════════
 
-import { useCallback } from "react";
-import { useAICapability } from "./use-ai-capability";
-
-interface UseDailyPulseOptions {
-  capabilityKey?: string;
-}
-
-export function useDailyPulse(options: UseDailyPulseOptions = {}) {
-  const { capabilityKey = "daily_pulse.generate" } = options;
-  const ai = useAICapability();
-
-  const generate = useCallback(async (contextData: string) => {
-    return ai.invoke({
-      capabilityKey,
-      messages: [
-        {
-          role: "system",
-          content: "You are a concise daily briefing generator for SITA OS. Summarize the key events, priorities, and actions for today in a calm, clear, actionable format.",
-        },
-        { role: "user", content: contextData },
-      ],
-      taskClass: "balanced_assistant",
-      surface: "web.pulse",
-      intent: "summarize",
-      maxTokens: 800,
-    });
-  }, [capabilityKey, ai.invoke]);
-
-  return {
-    ...ai,
-    generate,
-    regenerate: ai.retry,
-  };
-}
+export * from "@/lib/ai-platform/runtime/hooks/use-daily-pulse";
