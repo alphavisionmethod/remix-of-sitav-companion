@@ -1,10 +1,10 @@
 
 
-## Wave 12.7 — Windowing System Closure
+## Wave 12.8 — Route-to-System Coherence Closure
 
 ### Summary
 
-Formalize the existing windowing foundations into a canonical, OS-grade windowing platform. The project has two parallel window management systems (the `useWindowManager` hook + `WindowManagerContext` used by `FloatingWindow`, and the `OSWindowProvider`/`WindowContext` used by `AppWindow`/`WindowCompositor`) plus a typed static registry (`src/lib/windowing/`). This wave unifies them, adds missing governance layers (contracts, lifecycle state machine, focus history, modal policy, DPI/monitor/communication/performance policies), and generates proof artifacts.
+Formalize the existing route architecture into a fully coherent, deployment-ready system. The project has strong foundations: `route-registry.ts` (25 families), `route-plane-map.ts` (23 entries), `route-profile-map.ts` (11 entries), `route-runtime-map.ts` (8 entries), `context-membership-map.ts` (90+ route bindings), `admin-route-registry.ts` (136 admin routes, 12 domains), `page-owner-map.ts` (9 entries), and `layer-manifest.ts` (27 prefix-layer mappings). Missing: route intent taxonomy, route-to-backend mapping, route truth requirements, route support mapping, route observability mapping, route auth-capability matrix, dead/duplicate governance, and unified route metadata model. This wave fills every gap.
 
 ---
 
@@ -12,203 +12,186 @@ Formalize the existing windowing foundations into a canonical, OS-grade windowin
 
 | System | Path | Action |
 |---|---|---|
-| Window Registry (static) | `src/lib/windowing/window-registry.ts` | Extend with lifecycle, placement, modal, runtime fields |
-| Window Session Store | `src/lib/windowing/window-session-store.ts` | Extend with z-order, workspace, focus history, monitor |
-| Window Recovery | `src/lib/windowing/window-recovery.ts` | Extend with corrupted state quarantine, modal chain repair, selective restore |
-| Window Capability Policy | `src/lib/windowing/window-capability-policy.ts` | Extend with host bridge, filesystem, privileged modal, and permission escalation rules |
-| App Window Policy | `src/lib/app-platform/app-window-policy.ts` | Keep as-is, reference from contracts |
-| Window Physics | `src/lib/services/window-physics.ts` | Keep as-is (magnetic, bounce, shake) |
-| Window Snap | `src/hooks/useWindowSnap.ts` | Keep as-is |
-| Window Perf Monitor | `src/platform/nova-sdk/kernel/window-perf.ts` | Keep as-is, referenced by performance policy |
-| FloatingWindow | `src/components/sita/shell/FloatingWindow.tsx` | Keep as primary window renderer (887 lines, full-featured) |
-| AppWindow | `src/components/sita/os/AppWindow.tsx` | Keep as secondary renderer for OSWindowProvider consumers |
-| ShellWindowLayer launcher | `src/components/sita/shell/ShellWindowLayer.tsx` | Keep as canonical app-to-window mapping |
+| Route Registry | `src/platform/architecture/route-registry.ts` | Extend `RouteEntry` with intent, tier, backend, truth, support, observability fields |
+| Route Plane Map | `src/platform/architecture/route-plane-map.ts` | Extend entries to cover all 26+ route prefixes (currently 23) |
+| Route Profile Map | `src/platform/architecture/route-profile-map.ts` | Extend from 11 entries to full coverage (~30 prefixes) |
+| Route Runtime Map | `src/platform/architecture/route-runtime-map.ts` | Extend from 8 entries to full coverage (~30 prefixes) |
+| Context Membership Map | `src/platform/architecture/context-membership-map.ts` | Keep as-is (90+ bindings, already comprehensive) |
+| Admin Route Registry | `src/platform/architecture/admin-route-registry.ts` | Keep as-is (136 routes, 12 domains) |
+| Page Owner Map | `src/platform/architecture/page-owner-map.ts` | Extend from 9 entries to ~30 critical pages |
+| Layer Manifest | `src/platform/architecture/layer-manifest.ts` | Keep as-is (27 prefix-layer mappings) |
+| ShellComposer | `src/runtimes/shell/ShellComposer.tsx` | Keep as-is — consumes route-plane-map |
+| App.tsx route wiring | `src/App.tsx` | Keep as-is (16 route family imports, 3-tier structure) |
 
 ### PART 2 — Duplicate/Shadow Systems to Consolidate
 
-| Duplicate | Canonical Target | Action |
-|---|---|---|
-| `useWindowManager` hook (src/hooks/) | Remains as the primary runtime hook, but internal types aligned to new contract | Align `WindowState` fields to `WindowContract` |
-| `OSWindowProvider` (src/components/sita/os/WindowContext.tsx) | Secondary system used by `WindowCompositor` | Keep as-is — it serves a different render path (AppWindow). Add note marking it as the OS-layer compositor context vs. the shell-layer `WindowManagerContext` |
-| `APP_REGISTRY` in ShellWindowLayer | `WINDOW_REGISTRY` in windowing/window-registry.ts | Cross-reference; no merge needed since they serve different purposes (runtime components vs. static metadata) |
+No major duplicates. The layer-manifest `ROUTE_LAYER_MAP` and `ROUTE_PLANE_MAP` serve complementary purposes (6-layer classification vs 5-plane membership). Both stay.
 
-No deletions required. The two window contexts serve distinct render pipelines and are used in different shell layers.
+Minor alignment needed:
+- `route-profile-map.ts` has 11 entries vs `route-plane-map.ts` has 23. Sync coverage.
+- `route-runtime-map.ts` has 8 entries vs 23+ actual prefixes. Sync coverage.
+- `page-owner-map.ts` has 9 entries. Extend to match critical page count.
 
-### PART 3 — Window Contract and Lifecycle
+### PART 3 — New Canonical Artifacts
 
-**New file: `src/packages/window-contracts/index.ts`**
+**New: `src/platform/architecture/route-intent-taxonomy.ts`**
 
-Typed contracts including:
-- `WindowContract` — full identity: windowId, appId, windowType (primary/secondary/modal/panel/dialog), windowRole, title, runtimeSurface, shellTarget, workspaceId, monitorId, placement, size, zIndex, focusState, visibilityState, lifecycleState, persistencePolicy, recoveryPolicy, permissionScope, communicationPolicy, modalOwnerWindowId, parentWindowId, launchCause, evidence metadata
-- `WindowLifecycleState` — 15-state enum: CREATED, INITIALIZING, OPEN, FOCUSED, BLURRED, BACKGROUNDED, MINIMIZED, HIDDEN, SUSPENDED, MODAL_OPEN, CRASHED, RECOVERING, CLOSING, CLOSED, RESTORING
-- `WindowLifecycleTransition` — typed transition table with source states, requirements, permission implications, persistence requirements, focus/z-order updates
-- `WindowType`, `WindowRole`, `FocusState`, `VisibilityState`, `PersistencePolicy`, `RecoveryPolicy`, `PermissionScope`, `CommunicationPolicy`, `LaunchCause`
-- `WindowPlacement` — x, y, width, height, monitorId, workspaceId, dpiScale
-- `WindowRecoveryMetadata` — lastStableSnapshot, crashCount, lastCrashAt, quarantined
+Route intent classes:
+- `LANDING`, `AUTH`, `ONBOARDING`, `USER_WORKSPACE`, `ADMIN_OPERATOR`, `OWNER_OVERRIDE`, `APP_PLATFORM`, `DESKTOP_OS`, `SETTINGS`, `INTEGRATION`, `SUPPORT`, `EXPERIMENTAL`, `SYSTEM_RECOVERY`, `INTERNAL_TOOLING`
 
-**New file: `src/lib/windowing/window-lifecycle-manager.ts`**
+Route tier classes:
+- `PUBLIC`, `AUTHENTICATED`, `PRIVILEGED`, `OPERATOR_CRITICAL`, `SYSTEM_CRITICAL`, `EXPERIMENTAL`, `DEPRECATED`
 
-- Canonical 15-state machine with validated transitions
-- `transitionWindow(windowId, targetState)` with guards
-- Event emission for each transition
-- Fallback behavior for invalid transitions
+Canonical `RouteMetadata` type unifying all dimensions:
+- `routeId`, `path`, `prefix`, `family`, `intent`, `tier`, `plane`, `layer`, `owner`, `domain`
+- `supportedRuntimes`, `degradedRuntimes`, `blockedRuntimes`
+- `profiles`, `authRequired`, `requiredCapabilities`
+- `shell`, `lazyEntry`, `pageSource`
+- `backendSources`, `dataDependencies`, `truthPrimitives`
+- `supportMapping`, `observabilityMapping`
+- `deprecationStatus`, `evidence`
 
-### PART 4 — Registry / Persistence / Recovery Extensions
+Master registry: `ROUTE_METADATA_REGISTRY` — ~30 entries covering all major route families with full metadata.
 
-**Extend: `src/lib/windowing/window-registry.ts`**
+**New: `src/platform/architecture/route-backend-map.ts`**
 
-Add runtime fields:
-- `windowType`, `windowRole`, `runtimeSurface`, `shellTarget`
-- `persistencePolicy`, `recoveryPolicy`, `permissionScope`
-- `communicationPolicy`, `modalSupport`, `standaloneSupport`
+Backend source types: `PUBLIC_BFF`, `ADMIN_BFF`, `DOMAIN_FUNCTION`, `ORCHESTRATION_FUNCTION`, `RUNTIME_SYSTEM`, `EXTERNAL_PROVIDER`, `STATIC`
 
-Add runtime APIs:
-- `getActiveWindows()`, `getSuspendedWindows()`, `getCrashedWindows()`
-- `getWindowStack()` (z-order sorted)
-- `getWindowsForWorkspace(workspaceId)`
-- `getModalOwner(windowId)`, `getChildWindows(parentId)`
-- `registerModal(windowId, ownerWindowId)`
+Per-route-family mapping to primary backend sources and key edge functions/tables.
 
-**Extend: `src/lib/windowing/window-session-store.ts`**
+**New: `src/platform/architecture/route-truth-requirements.ts`**
 
-Add fields to `WindowSessionSnapshot`:
-- `workspaceId`, `monitorId`, `focusOrder`, `lifecycleState`
-- `dpiScale`, `snapZone`
+Truth primitive types: `STATUS`, `PROVENANCE`, `EVIDENCE`, `AI_DISCLOSURE`, `TRUST_COPY`, `RECEIPT`, `PROOF_BUNDLE`
 
-**Extend: `src/lib/windowing/window-recovery.ts`**
+Per-route mapping declaring which truth primitives are required for trust-sensitive routes (boardroom, money, approvals, AI surfaces, connectors).
 
-Add:
-- `quarantineCorruptedState(windowId)` — isolate corrupted session data
-- `repairModalChain(snapshot)` — re-link orphaned modals
-- `selectiveRestore(windowIds)` — restore subset of windows
-- `degradedRestore(snapshot, capabilities)` — fallback when native APIs missing
+**New: `src/platform/architecture/route-support-map.ts`**
 
-### PART 5 — New Policy Modules
+Per-route mapping to:
+- Runbook reference (from existing runbook registry)
+- Kill-switch relevance (from existing kill-switch registry)
+- Escalation path (operator / engineering / external)
+- Diagnostic entry point
 
-**New: `src/lib/windowing/window-permission-boundary.ts`**
-- `canAccessNativeBridge(windowId)` — checks permission scope
-- `canRequestFileSystem(windowId)`
-- `canLaunchExternal(windowId)`
-- `canCommunicateWith(sourceId, targetId)` — wraps and extends capability-policy
-- `canOpenPrivilegedModal(windowId)`
-- `canExportSupportData(windowId)`
-- `resolveEffectivePermissions(windowId)` — combines app + runtime + shell + window policies
+**New: `src/platform/architecture/route-observability-map.ts`**
 
-**New: `src/lib/windowing/window-monitor-policy.ts`**
-- `resolveMonitorPlacement(windowId, monitors)` — assign to monitor
-- `recoverOffScreen(window, viewport)` — bring off-screen windows back
-- `handleMonitorDetach(detachedMonitorId, windows)` — redistribute
-- `getSafePlacement(size, monitors)` — initial safe placement
+Per-route mapping to:
+- Error reporting expectations (structured / best-effort / none)
+- Telemetry hooks (page-view, action, latency)
+- Admin diagnostic path
 
-**New: `src/lib/windowing/window-dpi-policy.ts`**
-- `normalizePlacement(placement, fromDPI, toDPI)` — scale geometry
-- `getEffectiveDPI()` — resolve current DPI
-- `shouldUseHighDPIRendering(windowId)` — per-window decision
-- `getMinMaxBounds(registryEntry, dpi)` — DPI-aware min/max
+**New: `src/platform/architecture/route-auth-capability-map.ts`**
 
-**New: `src/lib/windowing/window-z-order-manager.ts`**
-- `bringToFront(windowId)`, `sendToBack(windowId)`
-- `getStack()` — ordered array
-- `insertAbove(windowId, referenceId)`, `insertBelow(windowId, referenceId)`
-- `getPinnedWindows()` — always-on-top list
+Per-route mapping to:
+- Auth requirement (public / authenticated / admin / owner)
+- Required capabilities/permissions
+- Role requirement
 
-**New: `src/lib/windowing/window-focus-history.ts`**
-- `recordFocus(windowId)` — append to history
-- `getPreviousFocus()` — for Alt-Tab style switching
-- `getFocusHistory(limit)` — recent focus order
-- `clearHistory()`
+**New: `src/platform/architecture/route-deprecation-registry.ts`**
 
-**New: `src/lib/windowing/window-modal-policy.ts`**
-- `canOpenModal(parentId)` — checks nesting depth
-- `getModalStack(parentId)` — chain of modals
-- `resolveModalClosure(modalId)` — what happens when modal closes
-- `isBlocked(windowId)` — true if a modal is open on top
-- Max nesting depth: 3
+Registry of deprecated routes with:
+- Original path, replacement path, deprecation date, migration status
 
-**New: `src/lib/windowing/window-communication-policy.ts`**
-- `canSendMessage(sourceId, targetId, channel)` — extends IPC policy with channel granularity
-- `getAvailableChannels(windowId)` — list of permitted channels
-- `isIsolated(windowId)` — true for sandboxed/restricted windows
-- Channel types: `broadcast`, `direct`, `system`, `domain`
+**New: `src/platform/architecture/route-dead-page-registry.ts`**
 
-**New: `src/lib/windowing/window-performance-policy.ts`**
-- `getDragFrameBudget()` — target 16ms (60fps)
-- `shouldUseTransformDrag(windowId)` — always true (GPU compositing)
-- `shouldThrottleContent(windowId, isFocused)` — throttle unfocused windows
-- `getReducedMotionPolicy()` — respect prefers-reduced-motion
-- `shouldDeferRendering(windowCount)` — true when >8 windows open
+Registry tracking dead/orphaned pages found by check-dead-pages and check-route-drift validators.
 
-**New: `src/lib/windowing/window-layout-engine.ts`**
-- `cascadePosition(existingWindows, newSize)` — compute cascade offset
-- `tileWindows(windows, viewport)` — grid tiling
-- `stackWindows(windows, viewport)` — overlap-free stacking
-- `computeSafeStartPosition(size, viewport, existingWindows)` — avoid overlap
+### PART 4 — Extensions to Existing Files
 
-### PART 6 — Runtime Integration
+**Extend: `src/platform/architecture/route-profile-map.ts`**
 
-**New: `src/lib/windowing/window-runtime-compatibility.ts`**
-- Maps every window feature to runtime tier (Web, PWA, Desktop, Appliance)
-- Features: drag, snap, multi-monitor, DPI scaling, native bridge, IPC, crash recovery, session persistence, performance monitoring
-- `isFeatureAvailable(feature, tier)`, `getDegradedBehavior(feature, tier)`
+Add entries for all missing route families:
+- `/business/*`, `/money/*`, `/concierge/*`, `/investment-office/*`, `/revenue-office/*`, `/digital-presence/*`, `/advisors/*`, `/apps/*`, `/communications/*`, `/experimental/*`, `/owner/*`, `/mobile/*`, `/onboarding`, `/first-win`, `/learn-later`
 
-### PART 7 — Generated Proof Artifacts
+Increase from 11 to ~30 entries.
 
-Create `generated/windowing-proof/` directory containing:
+**Extend: `src/platform/architecture/route-runtime-map.ts`**
+
+Add entries for all missing route families with explicit surface availability per runtime tier.
+
+Increase from 8 to ~30 entries.
+
+**Extend: `src/platform/architecture/page-owner-map.ts`**
+
+Add entries for ~20 additional critical pages covering all major domain entry points.
+
+**Extend: `src/platform/architecture/route-registry.ts`**
+
+Add `intent` and `tier` fields to `RouteEntry` type. Add missing route families to `ROUTE_FAMILIES` (currently 25, target ~30).
+
+### PART 5 — Generated Proof Artifacts
 
 | Artifact | Contents |
 |---|---|
-| `window-contract-coverage.json` | Every registered window mapped to contract fields |
-| `window-lifecycle-matrix.json` | All 15 states, valid transitions, handler existence |
-| `window-session-closure.json` | Persistence field coverage per window |
-| `window-recovery-closure.json` | Recovery capability coverage |
-| `window-permission-audit.json` | Per-window permission scope resolution |
-| `window-monitor-compatibility.json` | Multi-monitor and off-screen recovery status |
-| `window-dpi-compatibility.json` | DPI scaling coverage per window |
-| `window-communication-audit.json` | IPC permission matrix |
-| `window-runtime-compatibility.json` | Feature-to-tier support matrix |
+| `generated/route-closure-matrix.json` | Updated — all routes with full metadata coverage status |
+| `generated/route-runtime-compatibility.json` | Per-route runtime tier availability matrix |
+| `generated/route-backend-wiring-audit.json` | Route-to-backend source mapping completeness |
+| `generated/route-truth-coverage.json` | Truth primitive coverage for trust-sensitive routes |
+| `generated/route-support-coverage.json` | Support/runbook/kill-switch mapping coverage |
+| `generated/route-observability-coverage.json` | Observability hook coverage per route |
+| `generated/route-dead-duplicate-report.json` | Dead routes, orphaned pages, duplicate prefixes |
 
-### PART 8 — Validators and Gates
+### PART 6 — Validators and Gates
 
-Create `scripts/windowing/` with 7 validators:
+| Script | Gate ID | Level |
+|---|---|---|
+| `scripts/architecture/checks/check-route-metadata-closure.ts` | `route-metadata-closure` | BLOCK |
+| `scripts/architecture/checks/check-route-backend-wiring.ts` | `route-backend-wiring` | ADVISORY |
+| `scripts/architecture/checks/check-route-truth-coverage.ts` | `route-truth-coverage` | ADVISORY |
+| `scripts/architecture/checks/check-route-support-linkage.ts` | `route-support-linkage` | ADVISORY |
+| `scripts/architecture/checks/check-route-dead-duplicate-cleanup.ts` | `route-dead-duplicate-cleanup` | ADVISORY |
+| `scripts/architecture/checks/check-route-observability-coverage.ts` | `route-observability-coverage` | ADVISORY |
 
-| Script | Gate ID | Level | Checks |
-|---|---|---|---|
-| `check-window-contract-closure.ts` | `window-contract-closure` | BLOCK | Every window has canonical contract coverage |
-| `check-window-lifecycle-coverage.ts` | `window-lifecycle-coverage` | BLOCK | Lifecycle states and transitions are explicit |
-| `check-window-session-persistence.ts` | `window-session-persistence` | ADVISORY | Geometry/focus/z-order persisted where required |
-| `check-window-permission-boundaries.ts` | `window-permission-boundaries` | ADVISORY | Permissions explicit for every window |
-| `check-window-runtime-compatibility.ts` | `window-runtime-compatibility` | ADVISORY | Runtime tier compatibility declared |
-| `check-window-shell-integration.ts` | `window-shell-integration` | ADVISORY | Shell entry points and registry wiring consistent |
-| `check-window-recovery-closure.ts` | `window-recovery-closure` | ADVISORY | Recovery logic exists and proof generated |
+Register `route-metadata-closure` as a BLOCK gate in `check-os-release-readiness.ts`.
 
-Register `window-contract-closure` and `window-lifecycle-coverage` as BLOCK gates in `check-os-release-readiness.ts`.
+### PART 7 — Implementation Phases
 
-### PART 9 — Shell / Route Integration
+**Phase A** (Core contracts):
+1. Create `route-intent-taxonomy.ts` with `RouteIntent`, `RouteTier`, and `RouteMetadata` types
+2. Create `ROUTE_METADATA_REGISTRY` with ~30 fully-declared route family entries
+3. Extend `RouteEntry` in `route-registry.ts` with `intent` and `tier` fields
 
-- Wire `window-lifecycle-manager` into `useWindowLauncher` in `ShellWindowLayer.tsx` — call `transitionWindow` on open/close/minimize/maximize
-- Wire `window-session-store` periodic persistence into `ShellLayout.tsx` via `useEffect` interval (every 5s)
-- Wire `markCleanShutdown()` on `beforeunload` event in `ShellLayout.tsx`
-- Wire `probeRecoveryState()` on shell boot in `ShellLayout.tsx`
+**Phase B** (Coverage extensions):
+4. Extend `route-profile-map.ts` from 11 to ~30 entries
+5. Extend `route-runtime-map.ts` from 8 to ~30 entries
+6. Extend `page-owner-map.ts` from 9 to ~30 entries
 
-### PART 10 — Deployment Closure Checklist
+**Phase C** (Backend/truth/support/observability):
+7. Create `route-backend-map.ts`
+8. Create `route-truth-requirements.ts`
+9. Create `route-support-map.ts`
+10. Create `route-observability-map.ts`
+11. Create `route-auth-capability-map.ts`
 
-- [ ] One canonical `WindowContract` type exists in `src/packages/window-contracts/`
-- [ ] 15-state lifecycle machine with validated transitions
-- [ ] 10 registered windows have full contract coverage
-- [ ] Session persistence includes z-order, workspace, focus history, monitor, DPI
-- [ ] Crash-safe restore with quarantine, modal repair, selective/degraded restore
-- [ ] Permission boundary resolves app + runtime + shell + window policies
-- [ ] Multi-monitor placement, off-screen recovery, detach handling
-- [ ] DPI normalization and high-DPI rendering policy
-- [ ] Z-order manager with pinned window support
-- [ ] Focus history for Alt-Tab style switching
-- [ ] Modal ownership with max nesting depth 3
-- [ ] Communication policy with channel-granular IPC
-- [ ] Performance policy with 60fps drag budget and reduced-motion
-- [ ] Layout engine with cascade, tile, stack, safe-start
-- [ ] Runtime compatibility matrix across 4 tiers
-- [ ] 9 generated proof artifacts in `generated/windowing-proof/`
-- [ ] 7 validators, 2 BLOCK gates wired into release aggregator
-- [ ] Zero duplicates — both window contexts documented as serving distinct render pipelines
+**Phase D** (Governance):
+12. Create `route-deprecation-registry.ts`
+13. Create `route-dead-page-registry.ts`
+
+**Phase E** (Validators and proof):
+14. Create 6 validator scripts
+15. Generate 7 proof artifacts
+16. Register BLOCK gate in release readiness aggregator
+
+**Phase F** (Verification):
+17. `npx tsc --noEmit` — zero errors
+18. Verify no duplicate route metadata systems exist
+
+### PART 8 — Deployment Closure Checklist
+
+- [ ] One canonical `RouteMetadata` type with 20+ fields
+- [ ] `ROUTE_METADATA_REGISTRY` with ~30 fully-declared entries
+- [ ] Route intent taxonomy with 14 intent classes and 7 tier classes
+- [ ] `route-profile-map.ts` covers all 30 route families
+- [ ] `route-runtime-map.ts` covers all 30 route families
+- [ ] `page-owner-map.ts` covers ~30 critical pages
+- [ ] `route-backend-map.ts` maps all dynamic routes to backend sources
+- [ ] `route-truth-requirements.ts` maps all trust-sensitive routes
+- [ ] `route-support-map.ts` maps critical routes to runbooks/kill-switches
+- [ ] `route-observability-map.ts` maps routes to telemetry expectations
+- [ ] `route-auth-capability-map.ts` maps routes to auth/capability requirements
+- [ ] `route-deprecation-registry.ts` and `route-dead-page-registry.ts` exist
+- [ ] 7 generated proof artifacts in `generated/`
+- [ ] 6 validators, 1 BLOCK gate wired into release aggregator
 - [ ] TypeScript builds with 0 errors
+- [ ] No duplicate route metadata systems
 
