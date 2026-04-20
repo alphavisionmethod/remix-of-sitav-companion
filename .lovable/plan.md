@@ -2,83 +2,91 @@
 
 ## Diagnosis
 
-User wants `PROJECT_TREE_AUDIT.md` reconciled with verified filesystem reality. Three classes of falsehoods to remove:
-1. **Class 1**: Items already resolved by Phase 18 (Electron `_layout.cjs`, OS CI `os-build-iso.yml`) still listed as open in sections F/G/H/I/Appendix.
-2. **Class 2**: Fabricated folders the doc claims exist but don't (`src/lib/policies`, `sync`, `sync-engine`, `proof`, `execution`, `eventing`, `notifications`, `services-unclassified`, `unclassified`).
-3. **Class 3**: Stale "Biggest Remaining Issues" list referencing the above phantoms.
+User wants a brand-new artifact — `MISSING_AUDIT.md` — generated as a deep, file-level repository reality audit and made downloadable. This is a **non-build, artifact-generation task** (a long markdown document), not a UI feature. It should be produced via `code--exec` writing to `/mnt/documents/` and surfaced via `<lov-artifact>`. A copy should also land in `public/generated/` so it's reachable from the in-app document viewer alongside the existing `PROJECT_TREE_AUDIT.md`.
 
-This is a doc-only reconciliation. Zero code changes. Zero risk to the 21/21 BLOCK gates.
+I am in plan mode (read-only), so I'll present the plan and execute on approval.
 
-## Verification before edits
+## Exploration I'll perform during execution
 
-Need to confirm during execution:
-- Read current `public/generated/PROJECT_TREE_AUDIT.md` in full
-- `ls src/lib/` to confirm absence of the 8 phantom folders
-- `ls electron/` to confirm `_layout.cjs` exists
-- `ls .github/workflows/os-build-iso.yml` to confirm OS CI workflow
+Before writing the audit, I need to ground every claim in real filesystem evidence (the user's primary rule: "Truth only"). I'll inventory:
 
-## Plan — Doc reconciliation
+| Surface | Command / probe |
+|---|---|
+| Top-level layout | `ls -la`, `ls src/`, `ls electron/`, `ls os/`, `ls supabase/{functions,migrations}` |
+| `src/lib/` cluster (91 dirs) | `ls src/lib/` + `wc -l` per subdir, identify duplicates/legacy |
+| Routes vs pages | grep `<Route` in `src/App.tsx` + `ls src/pages/**`, find dead pages |
+| Edge functions | `ls supabase/functions/` + cross-check with callers via `grep "supabase.functions.invoke"` |
+| Migrations | `ls supabase/migrations/` count + scan recent files for RLS patterns |
+| Generated artifacts | `ls generated/`, `ls public/generated/` — flag stale outputs |
+| Validators | `ls scripts/architecture/checks/` cross-checked vs `check-os-release-readiness.ts` aggregator |
+| Electron | `ls electron/` vs `_layout.cjs` registry |
+| OS image | `ls os/image-builder/` + `.github/workflows/os-build-iso.yml` |
+| Internal agents | `ls src/lib/internal-agents/` + the 40-agent registry |
+| Onboarding | grep first-use screens vs the 29-screen master spec |
+| Connectors | `ls src/lib/connectors/` + connector_tokens table refs |
+| AI gateway | `ls src/lib/services/ai-gateway/` + `supabase/functions/ai-gateway` |
 
-### Step 1 — Rewrite `public/generated/PROJECT_TREE_AUDIT.md`
+I'll also read key truth files: `PROJECT_TREE_AUDIT.md`, `MASTER_REMEDIATION_BLUEPRINT_v2.md`, `MASTER_REMEDIATION_VERIFICATION_v2.md`, `check-os-release-readiness.ts`, and 5-10 representative generated reports to detect drift.
 
-**Section A (Biggest Remaining Issues)**:
-- Remove #4 (policy/policies dup — only `policy/` exists)
-- Remove #6 (Electron flat — resolved Phase 18)
-- Reframe #7 mobile as "intentionally archived per `mobile-deferral-attestation` BLOCK gate"
-- Renumber
+## Plan — Generate `MISSING_AUDIT.md`
 
-**Section F (Structural Risks)**:
-- F1: Soften — `src/lib/` is 91 dirs but verified: no `services-unclassified`, `unclassified`, `proof`, `execution`, `eventing`, `notifications`, `sync`, `sync-engine`, `policies`
-- F3: Keep only verified duplicates (`canonical-backend` lib+legacy, `simulation` lib+legacy); drop all fabricated dups
-- F5: Mark RESOLVED with link to `electron/_layout.cjs`
+### Step 1 — Filesystem reconnaissance (parallel reads)
+Run a batch of `ls`, `wc`, and targeted `grep` calls to build the evidence base. Outputs feed directly into Parts II–XII.
 
-**Section G (Open Gaps)**:
-- G0.1: Drop fabricated bucket names; keep only "consider `src/services/` extraction" recommendation
-- G0.2: Keep only verified `canonical-backend` + `simulation` duplicates
-- G1.1: Mark RESOLVED — Phase 18, link to `electron/_layout.cjs` + BLOCK gate
-- G3.2: Mark RESOLVED — Phase 18, link to `.github/workflows/os-build-iso.yml`
+### Step 2 — Targeted file reads
+Read the 8–12 most-important truth files (release aggregator, route map, electron layout, latest migration index, generated coverage reports) to cross-validate claims vs reality.
 
-**Section H (Deployment Readiness table)**:
-- Electron runtime: ⚠️ → ✅ Strongly ready
-- OS image: ⚠️ → ✅ Strongly ready
-- Update overall Verdict line
+### Step 3 — Compose the audit (single Python heredoc → `/mnt/documents/MISSING_AUDIT.md`)
+Document follows the user's exact 15-part structure:
 
-**Section I (Recommended Next Actions)**:
-- Strike Wave 3 step #8 (Electron decompose — superseded)
-- Strike Wave 5 step #12 (OS CI — superseded)
-- Renumber
+- **Part I** — Executive Reality Summary (solid / weak / missing / overstated / duplicated / critical path)
+- **Part II** — Full Repository Topology (table: directory · purpose · canonical status · owner · risks · missing proof)
+- **Part III** — File Cluster Audit (12 clusters, each with: exists / wired / partial / dead / missing / fixes)
+- **Part IV** — End-to-End Wiring Audit (8 representative traces with breakpoints)
+- **Part V** — Integration Audit (auth, Supabase, Google, MS, Slack, Twilio, SendGrid, Stripe, Plaid, AI providers, voice, runtime, update channels)
+- **Part VI** — Database & Policy Audit (tables · RLS · indexes · append-only · receipts · missing migrations)
+- **Part VII** — Runtime / Electron / OS Audit
+- **Part VIII** — AI / Advisor / Autonomy Audit
+- **Part IX** — App Platform / SDK / Windowing Audit
+- **Part X** — Admin / Operator / Support Audit
+- **Part XI** — Onboarding / Journey Audit (29-screen first-use spec vs reality)
+- **Part XII** — Validation / Evidence / Release Audit (21 BLOCK gates verified line-by-line)
+- **Part XIII** — Contradictions, Drift, Legacy (verified phantom folders, stale generated artifacts, deprecated-but-live paths)
+- **Part XIV** — Exact Fix Plan (P0/P1/P2/P3, each with title · problem · files · wiring · validator · proof · rollback)
+- **Part XV** — 30/60/90 day execution plan with critical path + parallel workstreams
 
-**"Specifically Verified Questions" table**:
-- Electron answer → "Domain-classified via `_layout.cjs`; flat is Forge convention; BLOCK-gated"
-- Biggest-weaknesses list → drop Electron + non-existent duplicates
+Target: ~3,000–4,500 lines of dense, table-heavy, evidence-cited markdown. Every claim hyperlinked to a real file path discovered in Step 1/2.
 
-**Appendix (Numbers At A Glance)**:
-- "Electron .cjs files: 15 (14 runtime + 1 domain registry)"
-- Add "BLOCK gates passing: 21/21"
-- Add "OS CI workflow: nightly + release-publish (`os-build-iso.yml`)"
+### Step 4 — Mirror & surface
+- Write to `/mnt/documents/MISSING_AUDIT.md` (downloadable artifact).
+- Copy to `public/generated/MISSING_AUDIT.md` so it's reachable from the in-app document viewer alongside `PROJECT_TREE_AUDIT.md`.
+- Verify both copies are byte-identical (`md5sum`).
+- Emit `<lov-artifact path="MISSING_AUDIT.md" mime_type="text/markdown">`.
 
-### Step 2 — Add "Reconciliation Notes" footer
-Date-stamped 2026-04-20 section explaining:
-- Phase 18 closed Electron flatness + OS CI gaps
-- Filesystem re-verification confirmed 8 previously-claimed `src/lib/` duplicates do not exist
-- Master aggregator: 21/21 BLOCK gates green
-
-### Step 3 — Mirror to `/mnt/documents/PROJECT_TREE_AUDIT.md`
-Identical content so download and in-app viewer stay synchronized.
+### Step 5 — QA pass
+Open the generated file, spot-check 5 random claims against the filesystem, and confirm:
+- All 15 parts present
+- No phantom-folder claims (e.g., no `src/lib/policies/`, `sync/`, `proof/` etc. — verified non-existent per memory)
+- Every "missing" item paired with an exact fix
+- Honest classification of deferred items (mobile, calendar streaks, etc.)
 
 ## What this does NOT touch
 
-- No code, validators, registries, or generated JSON
-- No changes to the 21 BLOCK gate count
-- No edits to `electron/`, `src/lib/`, `scripts/architecture/`, or any business logic
-- No DB, edge function, or auth changes
+- No code changes
+- No DB migrations, edge functions, auth changes
+- No edits to `src/`, `electron/`, `os/`, `scripts/`, `supabase/`
+- No changes to the 21 BLOCK gates or release aggregator
+- No edits to `PROJECT_TREE_AUDIT.md` or any existing generated artifact
 
 ## Verification after approval
 
 ```bash
-grep -E "policies|services-unclassified|src/lib/(sync|proof|execution|eventing|notifications)" public/generated/PROJECT_TREE_AUDIT.md   # 0 hits
-grep -E "Electron.*flat|OS CI.*missing" public/generated/PROJECT_TREE_AUDIT.md                                                          # 0 hits
-diff public/generated/PROJECT_TREE_AUDIT.md /mnt/documents/PROJECT_TREE_AUDIT.md                                                        # identical
-npm run release:readiness                                                                                                                # 21/21 BLOCK GREEN (unchanged)
+ls -la /mnt/documents/MISSING_AUDIT.md public/generated/MISSING_AUDIT.md
+md5sum /mnt/documents/MISSING_AUDIT.md public/generated/MISSING_AUDIT.md     # identical
+wc -l /mnt/documents/MISSING_AUDIT.md                                          # ~3000-4500 lines
+grep -cE "^## Part " /mnt/documents/MISSING_AUDIT.md                          # 15
+grep -E "src/lib/(policies|sync|proof|execution|eventing|notifications)/" /mnt/documents/MISSING_AUDIT.md  # 0 phantom claims
 ```
+
+Deliverable: a downloadable `MISSING_AUDIT.md` that a CTO, principal engineer, release manager, and security lead can execute against immediately.
 
