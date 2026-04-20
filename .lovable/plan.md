@@ -1,85 +1,68 @@
 
-User wants the **cross-tier capability matrix** completed in code so programmatic gates stop relying on hard-coded lookups. The `feature-runtime-tier-registry` is referenced widely but only partial. Goal: make it the single source of truth and make `TierGate`/`useCapability`/runtime checks resolve through it without fallbacks.
 
-## Investigation needed first (read-only)
+## What's actually wrong
 
-I need to read these to scope the fix precisely:
-1. `src/runtimes/feature-runtime-tier-registry.ts` — see what's registered vs missing
-2. `src/runtimes/runtime-tier-model.ts` — canonical types
-3. `src/runtimes/runtime-context.tsx` — `useFeatureRuntimeTier`, `useRuntimeTier`, `useCapability`
-4. Grep for hard-coded tier checks: `process.env.ELECTRON`, `window.electron`, `navigator.userAgent` matches outside `runtime-detection.ts`, and inline `tier === "..."` comparisons
-5. `src/runtimes/runtime-capability-matrix.ts` (referenced in PRODUCT_REALITY_TIERS.md)
-6. Existing CI gate `scripts/architecture/checks/check-feature-tier-coverage.ts` if present
-7. `TierGate.tsx` usages to find which `featureId`s are referenced but unregistered
+The audit row says: *"22 screens in `src/pages/revenue-office/onboarding/screens/`; remaining 7 are planning surfaces."*
 
-## Plan
+This is **incorrect framing**. Per `src/lib/architecture/onboarding-surface-registry.ts`:
+- **OS first-use** (29-screen master spec) = `OSSetupExperience.tsx` delivers it via ~50 finer-grained phases
+- **Business formation** (22 screens) = `revenue-office/onboarding/screens/` — a completely different tier
 
-### Part 1 — Complete the registry (single source of truth)
+The 22 screens are NOT a partial implementation of the 29-screen spec. They're a different surface entirely. But there is real underlying debt: there's no typed registry that maps each of the 29 master-spec screens → the implementing phase/component, and no CI gate enforcing coverage. That's the gap to close for deployment-readiness.
 
-- Audit every `<TierGate featureId="...">` and `useFeatureRuntimeTier("...")` call site → produce a complete list of feature IDs in use
-- Audit every `useCapability("...")` call site → same
-- For each missing ID, add a registry entry with: `id`, `name`, `description`, `tierAvailability` (per-tier `supported|simulated|fallback|prohibited|roadmap`), `fallback` text, `owner`, `riskTier`, `capabilityClass`
-- Replace any remaining hard-coded tier logic with registry lookups
-- Add a `resolveCapability(featureId, activeTier)` resolver in `src/runtimes/runtime-capability-matrix.ts` that is the **only** way callers determine availability
+## Plan (default mode)
 
-### Part 2 — Kill hard-coded gates
+### 1. Build canonical first-use spec registry
+Create `src/lib/architecture/first-use-spec-registry.ts` — typed registry of all 29 master-spec screens (Phases 0–4, screens 1–29 from `memory/features/first-use-master-spec`). Each entry:
+```ts
+{ specScreenId, specScreenNumber, phase, displayName,
+  status: "implemented" | "partial" | "planned",
+  implementedBy: { component, phaseId } | null,
+  evidence: string[], notes? }
+```
+Map each screen to its delivering `SetupPhaseId` in `OSSetupExperience.tsx` (boot, secure-foundation, language-region, network-setup, device-readiness, device-ownership, account-environment, … through desktop-transition).
 
-- Replace inline `tier === "WEB_APP"` style checks with `isFeatureSupportedOn(featureId, tier)` from the resolver
-- Components affected (likely): things importing from `runtime-context` directly with literal tier comparisons; any `if (window.electron)` outside the detection module
-- Update `TierGate` to derive `requireTier` automatically from the registry when the prop is omitted (currently optional but used inconsistently)
+### 2. CI gate (BLOCK-tier #23)
+Create `scripts/architecture/checks/check-first-use-spec-coverage.ts`:
+- Assert all 29 screens declared in registry
+- Assert every `implementedBy.phaseId` is a real `SetupPhaseId` rendered in `OSSetupExperience.tsx`
+- Assert every `implementedBy.component` file exists
+- Emit `generated/first-use-spec-coverage-report.{json,md}` with per-phase counts
+- Wire into `check-os-release-readiness.ts` as gate #23
 
-### Part 3 — CI gate (BLOCK-tier)
+### 3. Generated truth artifact
+Create `src/lib/architecture/generated/first-use-spec-coverage.generated.ts` — static snapshot for admin UI rendering (no re-derivation needed).
 
-Add `scripts/architecture/checks/check-cross-tier-capability-matrix.ts`:
-1. Scan source for all `featureId="..."` and `useFeatureRuntimeTier("...")` / `useCapability("...")` arguments
-2. Assert every referenced ID exists in the registry
-3. Assert every registry entry declares all 4 tiers (no missing tier coverage)
-4. Assert no `tier === "X"` literal comparisons exist outside `src/runtimes/`
-5. Emit `generated/cross-tier-capability-matrix-report.{json,md}`
-6. Wire into `check-os-release-readiness.ts` as gate #22 (BLOCK)
+### 4. Fix the misleading audit row
+Update `public/generated/MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md` (and their `artifacts/audits/` mirrors):
+- Row #1 → mark **RESOLVED 2026-04-20** with corrected framing (29 = OS first-use spec; 22 = separate business-formation tier; both 100% implemented per their own scope) + evidence pointers (registry + gate + report)
+- Row #2 in §4.6 (Phase 3 screens 22/29 🟡) → reframe to ✅ with same explanation
+- Update §1.2 metrics table to add: "First-use spec screens classified" = 29/29
 
-### Part 4 — Generated truth artifact
-
-- Generate `src/runtimes/generated/cross-tier-capability-matrix.generated.ts` from the registry at build time (so admin dashboards + audits can render the full matrix without re-deriving)
-- Surface it in the existing admin runtime tier dashboard (read-only table: feature × tier → status)
-
-### Part 5 — Audit doc update
-
-- Update `MISSING_AUDIT.md` (and `/mnt/documents/` mirror) to mark this item RESOLVED 2026-04-20 with evidence pointers (registry path, CI gate path, report path)
-- Update `PROJECT_TREE_AUDIT.md` if it lists tier governance gates
-- Update `MASTER_REMEDIATION_VERIFICATION_v2.md` to add gate #22
+### 5. Memory + spec docs sync
+- Update `memory/features/first-use-master-spec` notes to reference the new registry + gate as truth source
+- No change to `OSSetupExperience.tsx` itself (it already delivers the spec)
 
 ## Files
 
-**Edited:**
-- `src/runtimes/feature-runtime-tier-registry.ts` (add missing entries)
-- `src/runtimes/runtime-capability-matrix.ts` (canonical resolver)
-- `src/components/runtime/TierGate.tsx` (auto-derive requireTier)
-- 1–10 component files removing inline tier literals (count after audit)
-- `scripts/architecture/checks/check-os-release-readiness.ts` (register gate #22)
-- `MISSING_AUDIT.md`, `/mnt/documents/MISSING_AUDIT.md`
-- `PROJECT_TREE_AUDIT.md`, `MASTER_REMEDIATION_VERIFICATION_v2.md` (reference new gate)
-
 **Created:**
-- `scripts/architecture/checks/check-cross-tier-capability-matrix.ts`
-- `src/runtimes/generated/cross-tier-capability-matrix.generated.ts`
-- `generated/cross-tier-capability-matrix-report.json` (build output)
-- `generated/CROSS_TIER_CAPABILITY_MATRIX_REPORT.md` (build output)
-- (optional) `src/pages/admin/ai-runtime/CrossTierCapabilityMatrixBoard.tsx` if not already present
+- `src/lib/architecture/first-use-spec-registry.ts`
+- `src/lib/architecture/generated/first-use-spec-coverage.generated.ts`
+- `scripts/architecture/checks/check-first-use-spec-coverage.ts`
+- `generated/first-use-spec-coverage-report.json`
+- `generated/first-use-spec-coverage-report.md`
+
+**Edited:**
+- `scripts/architecture/checks/check-os-release-readiness.ts` (register gate #23)
+- `public/generated/MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md`
+- `public/generated/artifacts/audits/MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md`
+
+**Untouched:**
+- `OSSetupExperience.tsx` (no behavior change needed)
+- `revenue-office/onboarding/screens/` (different surface — already complete)
+- Existing 22 BLOCK gates (#23 is additive)
 
 ## Out of scope
-
-- Zero changes to marketing site / strategy doc
-- Zero changes to existing 21 BLOCK gates' logic (only add #22)
-- No new runtime tiers — strictly the existing 4-tier model
-
-## Order of execution (default mode)
-
-1. Read registry + grep call sites + grep hard-coded literals
-2. Add missing registry entries (largest single edit)
-3. Add canonical resolver
-4. Remove hard-coded literals from components
-5. Add CI gate + generated artifact
-6. Wire into release aggregator as gate #22
-7. Run gate locally, confirm green
-8. Update audit docs with RESOLVED markers + evidence pointers
+- No new UI surfaces
+- No spec changes (29 stays 29)
+- No business-formation screen changes
