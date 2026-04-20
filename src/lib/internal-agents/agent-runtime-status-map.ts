@@ -239,8 +239,10 @@ export const AGENT_RUNTIME_STATUS_MAP: Record<string, AgentRuntimeStatusEntry> =
     deferredEta: "indefinite (mobile scope archived)",
   },
   "aw-documentation": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-suggestion-generator",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-suggestion-generator; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-qa-architect": {
     runtimeStatus: "scheduled-only",
