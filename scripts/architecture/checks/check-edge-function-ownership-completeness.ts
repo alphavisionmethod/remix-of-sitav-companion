@@ -143,7 +143,8 @@ const report = {
   manifestArtifacts: {
     canonical: { path: CANONICAL, md5: canonicalMd5, present: !!canonicalMd5 },
     publicMirror: { path: PUBLIC_MIRROR, md5: mirrorMd5, present: !!mirrorMd5 },
-    parityOk: !!canonicalMd5 && canonicalMd5 === mirrorMd5,
+    colocated: { path: COLOCATED_MIRROR, md5: colocatedMd5, present: !!colocatedMd5 },
+    parityOk: !!canonicalMd5 && canonicalMd5 === mirrorMd5 && canonicalMd5 === colocatedMd5,
   },
   violations,
   ok: violations.length === 0,
