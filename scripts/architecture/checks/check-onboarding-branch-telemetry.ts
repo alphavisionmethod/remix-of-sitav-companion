@@ -45,6 +45,21 @@ if (!edgeFunctionPresent) {
   issues.push({ severity: "error", area: "edge-function", message: "onboarding-resume-checkpoint edge function missing" });
 }
 
+// --- Client-wiring assertion: the hook exists AND is imported by Onboarding.tsx ---
+const hookPath = "src/hooks/useOnboardingResume.ts";
+const onboardingPagePath = "src/pages/Onboarding.tsx";
+const hookPresent = existsSync(hookPath);
+const onboardingPageContents = existsSync(onboardingPagePath) ? readFileSync(onboardingPagePath, "utf8") : "";
+const hookImportedByPage = /from\s+["']@\/hooks\/useOnboardingResume["']/.test(onboardingPageContents)
+  || /from\s+["']\.\.\/hooks\/useOnboardingResume["']/.test(onboardingPageContents);
+const clientWired = hookPresent && hookImportedByPage;
+if (!hookPresent) {
+  issues.push({ severity: "error", area: "client", message: "useOnboardingResume hook missing at src/hooks/useOnboardingResume.ts" });
+}
+if (!hookImportedByPage) {
+  issues.push({ severity: "error", area: "client", message: "src/pages/Onboarding.tsx does not import useOnboardingResume — resume loop not wired" });
+}
+
 const errorCount = issues.filter((i) => i.severity === "error").length;
 const warningCount = issues.filter((i) => i.severity === "warning").length;
 const ok = errorCount === 0;
