@@ -1,19 +1,13 @@
 {
-  "generatedAt": "2026-04-20T10:42:54.665Z",
+  "generatedAt": "2026-04-20T10:43:28.292Z",
   "gate": "cluster-readme-coverage",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "src/lib/ai-platform",
-      "message": "src/lib/ai-platform/README.md missing required heading(s): ## Purpose, ## Layer, ## Canonical neighbors"
-    }
-  ],
+  "issues": [],
   "totalClusters": 9,
-  "okCount": 8,
-  "failCount": 1,
+  "okCount": 9,
+  "failCount": 0,
   "perCluster": [
     {
       "cluster": "src/lib/services",
@@ -73,12 +67,8 @@
     },
     {
       "cluster": "src/lib/ai-platform",
-      "ok": false,
-      "missingHeadings": [
-        "## Purpose",
-        "## Layer",
-        "## Canonical neighbors"
-      ],
+      "ok": true,
+      "missingHeadings": [],
       "readmePath": "src/lib/ai-platform/README.md",
       "exists": true
     }
