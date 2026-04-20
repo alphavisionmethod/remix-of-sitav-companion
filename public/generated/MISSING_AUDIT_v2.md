@@ -30,6 +30,7 @@
 | Mandatory BLOCK release gates | 21 | `scripts/architecture/checks/check-os-release-readiness.ts` |
 | First-use screens implemented (revenue-office cluster) | 22 | `src/pages/revenue-office/onboarding/screens/` |
 | First-use screens in master spec | 29 | `memory/features/first-use-master-spec` |
+| First-use spec screens classified | 29/29 | `src/lib/architecture/first-use-spec-registry.ts` |
 
 ---
 
