@@ -30,7 +30,7 @@ import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/da
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 
 

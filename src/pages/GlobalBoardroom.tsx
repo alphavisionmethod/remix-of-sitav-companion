@@ -21,7 +21,7 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMoneyKPIs } from "@/hooks/use-domain-data";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 
 

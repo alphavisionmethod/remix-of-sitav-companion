@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 
 

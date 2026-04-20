@@ -30,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 
 

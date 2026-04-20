@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
