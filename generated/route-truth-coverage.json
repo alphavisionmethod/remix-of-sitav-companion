@@ -1,0 +1,6 @@
+{
+  "generatedAt": "2026-04-20T23:15:06.221Z",
+  "gate": "route-truth-coverage",
+  "truthSensitiveRoutes": 13,
+  "allCovered": true
+}
