@@ -1,59 +1,29 @@
 {
-  "generatedAt": "2026-04-19T16:56:32.530Z",
+  "generatedAt": "2026-04-20T16:52:13.665Z",
   "gate": "flagship-surface-responsive-quality",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 14,
+  "warningCount": 8,
   "issues": [
     {
       "severity": "warning",
       "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
+      "message": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
     },
     {
       "severity": "warning",
       "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
+      "message": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
     },
     {
       "severity": "warning",
       "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/ai-runtime/TenantFederationBoard.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
+      "message": "src/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
     },
     {
       "severity": "warning",
       "area": "admin-ai-responsive-coverage",
       "message": "src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/components/admin/ai-runtime/TruthPanelActions.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/components/admin/ai-runtime/_shared/BoardSection.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
-    },
-    {
-      "severity": "warning",
-      "area": "admin-ai-responsive-coverage",
-      "message": "src/pages/admin/integrations/IntegrationsHome.tsx does not use canonical responsive primitives (sm:/md:/lg:/xl:/grid-cols-/flex-col). Acceptable if leaf primitive."
     },
     {
       "severity": "warning",
@@ -77,8 +47,8 @@
     }
   ],
   "classification": "hybrid-pass-with-honest-warn-deferrals",
-  "adminAIScanned": 35,
-  "adminAIWithResponsive": 25,
-  "coveragePct": 71,
+  "adminAIScanned": 42,
+  "adminAIWithResponsive": 38,
+  "coveragePct": 90,
   "threshold": 60
 }
