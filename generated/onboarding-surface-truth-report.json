@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T01:22:45.487Z",
+  "generatedAt": "2026-04-20T01:26:20.461Z",
   "validator": "check-onboarding-surface-truth",
   "tier": "WARN",
   "registry": "src/lib/architecture/onboarding-surface-registry.ts",

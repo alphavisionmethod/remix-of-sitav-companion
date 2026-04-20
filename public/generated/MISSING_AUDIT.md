@@ -56,7 +56,7 @@
 | # | Surface | Why weak | Mitigation tier |
 |---:|---|---|---|
 | 1 | `src/lib/` cluster sprawl | 86 top-level subdirectories with overlapping names (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`); cognitive load is high even though no duplicates run | P2 |
-| 2 | Multiple onboarding entrypoints | Master spec defines 29 screens; revenue-office cluster implements 22 with overlapping scope; `setup`, `surfaces`, `business-journey-config.ts` also touch the same intent surface | P1 |
+| 2 | ~~Multiple onboarding entrypoints~~ | **RESOLVED 2026-04-20** — 3-tier canonical model declared in `src/lib/architecture/onboarding-surface-registry.ts` (`os-first-boot` / `business-formation` / `money-introduction`); legacy daemon engine deprecated; phantom barrels collapsed; enforced by `check:onboarding-surface-truth` (0 errors / 0 warnings) | ✅ |
 | 3 | Generated-artifact ownership | 459 JSONs in `generated/`; only a subset have a declared producer in any manifest | P2 |
 | 4 | Validator-to-gate mapping | 183 validators exist but only 21 are wired into the BLOCK aggregator; many advisory checks have no surfaced consumer | P2 |
 | 5 | Route inventory | Only 14 `<Route>` lines in `src/App.tsx`; routing is delegated into nested shells/launchers — there is no flat truth file `routes.json` for external consumers | P1 |
@@ -98,7 +98,7 @@
 | 1 | `src/lib/ai`, `src/lib/ai-engineering`, `src/lib/ai-gateway`, `src/lib/sovereign-ai-gateway` | 4 AI clusters with overlapping naming | Cognitive risk; no runtime duplication detected | Document responsibility per cluster (Part III) |
 | 2 | `src/lib/services` and `src/lib/core-services` | Façade vs. implementations? unclear from name | Low | Add README to each |
 | 3 | `src/lib/platform`, `src/lib/platform-law`, `src/lib/platform-plane`, `src/lib/web-platform` | Naming sprawl | Low | Annotate purpose per cluster |
-| 4 | Onboarding intent in `setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/` | Multiple intent surfaces | Medium | Designate one canonical entry |
+| 4 | ~~Onboarding intent in `setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`~~ | **RESOLVED 2026-04-20** — see `src/lib/architecture/onboarding-surface-registry.ts` (3 declared tiers; non-entrypoints classified as library/façade/config) | n/a | ✅ Done |
 | 5 | `src/lib/observability` and `src/lib/incidents` | Could fold into one | Low | Optional cleanup |
 
 ### 1.6 Critical path to closure
@@ -404,25 +404,27 @@ Each cluster reports: what exists · what is wired · what is partial · what is
 **Exact fixes**
 - Optional P3 merge
 
-### `src/lib/setup + src/lib/surfaces + src/pages/revenue-office/onboarding/screens/`
+### `src/lib/setup + src/lib/surfaces + src/pages/revenue-office/onboarding/screens/` — **CONSOLIDATED 2026-04-20**
 
-**Exists**
-- 3 onboarding-adjacent intent surfaces
+**Truth source**
+- `src/lib/architecture/onboarding-surface-registry.ts` — 3 declared tiers (`os-first-boot`, `business-formation`, `money-introduction`)
 
-**Wired**
-- `revenue-office/onboarding/screens/` contains 22 implemented screens
+**Tier mapping**
+- **OS** (`os-first-boot`) → `/onboarding` → `src/components/sita/OSSetupExperience.tsx` (~50 phases covering 29-screen master spec)
+- **Business** (`business-formation`) → mounted in `BusinessAppShell` → `src/pages/revenue-office/onboarding/FormationShell.tsx` (22 screens, runs AFTER OS first-boot)
+- **Money** (`money-introduction`) → mounted in Money app → `src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx` (6 screens, optional)
 
-**Partial / weak**
-- Master spec defines 29; 7 not yet implemented
+**Non-entrypoints (classified, not duplicates)**
+- `src/lib/setup/` — copy/data helpers (library)
+- `src/components/sita/setup/` — UI primitives (library)
+- `src/lib/business-journey-config.ts` — sidebar visibility config
+- `src/features/onboarding`, `src/domains/setup`, `src/platform/setup`, `src/lib/services/onboarding/` — façade barrels re-exporting the registry
 
-**Dead / duplicate**
-- No identical re-implementation
+**Deprecated**
+- `src/lib/services/onboarding-daemon/` + `src/hooks/useOnboardingDaemon.ts` — alternative 11-step OS engine, retained for `pages/FirstBootSetup.tsx` compat only; banner present, no new importers permitted
 
-**Missing**
-- Implementation status column in master spec; designation of canonical entry
-
-**Exact fixes**
-- Mark `revenue-office/onboarding/` as canonical; deprecate-or-document `setup`/`surfaces`
+**Validator**
+- `npm run check:onboarding-surface-truth` → enforces registry truth, banner presence, daemon-import ban (0 errors / 0 warnings)
 
 ### `src/lib/app-platform + src/lib/pack-store`
 
@@ -1196,6 +1198,19 @@ ingest → manifest.sign → trust_tier → admin approval (if needed) → insta
 - **Branch telemetry:** wired via the BLOCK gate `check-onboarding-branch-telemetry`
 - **Resume / re-entry:** partial — no persistent resume table evidence
 
+### 11.2.1 Three-tier canonical onboarding model — **DECLARED 2026-04-20**
+
+The historical "22 vs 29" mismatch was a category error: the 22-screen revenue-office cluster is **not** the OS first-boot flow — it is a separate per-business workspace formation flow that runs *after* OS onboarding. Truth source: `src/lib/architecture/onboarding-surface-registry.ts`.
+
+| Tier | Registry ID | Entrypoint | Screens | Runs when |
+|---|---|---|---|---|
+| OS | `os-first-boot` | `src/components/sita/OSSetupExperience.tsx` (route `/onboarding`) | ~50 phases (covers 29-spec) | First device boot |
+| Business | `business-formation` | `src/pages/revenue-office/onboarding/FormationShell.tsx` (mounted in `BusinessAppShell`) | 22 | Per-business, after OS first-boot, when `business_onboarding.completed_at IS NULL` |
+| Money | `money-introduction` | `src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx` | 6 | Optional, on first Money-app open |
+
+Validator: `npm run check:onboarding-surface-truth` (0 errors / 0 warnings).
+Deprecated parallel engine: `src/lib/services/onboarding-daemon/` + `useOnboardingDaemon` (banners present; no new importers permitted).
+
 ### 11.3 Wow moments (9 signature) — implementation status
 
 | # | Wow moment | Implementation | Evidence |
@@ -1283,12 +1298,13 @@ ingest → manifest.sign → trust_tier → admin approval (if needed) → insta
 - ✅ Electron flatness — RESOLVED (Phase 18; `electron/_layout.cjs`)
 - ✅ OS CI end-to-end — RESOLVED (Phase 18; `.github/workflows/os-build-iso.yml`)
 - ✅ Service constitution duplication — RESOLVED (single facade)
+- ✅ **Multiple onboarding entrypoints — RESOLVED 2026-04-20** (3-tier registry at `src/lib/architecture/onboarding-surface-registry.ts`; phantom barrels at `src/domains/setup`, `src/platform/setup`, `src/lib/services/onboarding` collapsed to re-exports; `useOnboardingDaemon` deprecated; enforced by `check:onboarding-surface-truth`)
 
 ### 13.3 Naming overlap (cognitive drift, not runtime drift)
 - `src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`
 - `src/lib/services`, `core-services`
 - `src/lib/platform`, `platform-law`, `platform-plane`, `web-platform`
-- `src/lib/setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`
+- ~~`src/lib/setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`~~ → **CONSOLIDATED** in `onboarding-surface-registry.ts` (3 declared tiers; rest classified as library/façade/config)
 
 Mitigation: per-cluster README + Part II annotations.
 
@@ -1307,7 +1323,7 @@ Mitigation: per-cluster README + Part II annotations.
 
 ### 13.7 Cleanup candidates
 - Fold `core-services` into `services` (or document boundary)
-- Document or designate canonical entry for onboarding intent
+- ~~Document or designate canonical entry for onboarding intent~~ → ✅ DONE 2026-04-20 (`onboarding-surface-registry.ts`)
 - Promote or delete unconsumed advisory validators
 
 ---
