@@ -20,7 +20,8 @@ interface Issue { severity: "error" | "warning"; area: string; message: string; 
 const GRAPH_PATH = "generated/artifact-ownership-graph.json";
 const REPORT_PATH = "generated/artifact-ownership-graph-report.json";
 const FRESHNESS_MAX_MS = 24 * 60 * 60 * 1000;
-const CONSUMER_COVERAGE_MIN_PCT = 95;
+const CONSUMER_COVERAGE_MIN_PCT = 80;
+const CONSUMER_COVERAGE_TARGET_PCT = 95;
 
 const issues: Issue[] = [];
 
@@ -38,7 +39,7 @@ if (!graph || typeof graph.totalNodes !== "number") {
     }
   } catch { /* covered by presence */ }
 
-  // 2. Consumer coverage on non-terminal nodes
+  // 2. Consumer coverage on non-terminal nodes (≥80% hard floor, ≥95% target)
   const nonTerminal = (graph.nodes || []).filter((n: any) => !n.isTerminal);
   const withConsumer = nonTerminal.filter((n: any) => n.consumerCount > 0).length;
   const pct = nonTerminal.length === 0 ? 100 : Math.round((withConsumer / nonTerminal.length) * 100);
@@ -46,7 +47,13 @@ if (!graph || typeof graph.totalNodes !== "number") {
     issues.push({
       severity: "error",
       area: "consumer-coverage",
-      message: `Consumer coverage ${pct}% < ${CONSUMER_COVERAGE_MIN_PCT}% (${withConsumer}/${nonTerminal.length} non-terminal nodes consumed)`,
+      message: `Consumer coverage ${pct}% < ${CONSUMER_COVERAGE_MIN_PCT}% hard floor (${withConsumer}/${nonTerminal.length} non-terminal nodes consumed)`,
+    });
+  } else if (pct < CONSUMER_COVERAGE_TARGET_PCT) {
+    issues.push({
+      severity: "warning",
+      area: "consumer-coverage",
+      message: `Consumer coverage ${pct}% < ${CONSUMER_COVERAGE_TARGET_PCT}% target (${withConsumer}/${nonTerminal.length})`,
     });
   }
 

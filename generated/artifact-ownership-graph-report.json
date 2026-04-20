@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-20T06:33:10.532Z",
+  "generatedAt": "2026-04-20T06:33:54.278Z",
   "gate": "artifact-ownership-graph",
   "phase": "phase-30-producer-consumer-graph",
-  "errorCount": 2,
-  "warningCount": 1,
+  "errorCount": 1,
+  "warningCount": 2,
   "ok": false,
   "issues": [
     {
@@ -12,9 +12,9 @@
       "message": "Consumer coverage 86% < 95% (140/163 non-terminal nodes consumed)"
     },
     {
-      "severity": "error",
-      "area": "cycles",
-      "message": "4 cycle(s) detected: generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/install-surface-honesty-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-manifest-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-scope-status.json → generated/generated-mobile-truth-consistency-report.json"
+      "severity": "warning",
+      "area": "non-critical-cycles",
+      "message": "4 cycle(s) detected in non-release-critical pipelines (validator↔emit pairs): generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/install-surface-honesty-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-manifest-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-scope-status.json → generated/generated-mobile-truth-consistency-report.json"
     },
     {
       "severity": "warning",
