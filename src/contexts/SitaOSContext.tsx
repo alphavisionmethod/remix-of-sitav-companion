@@ -368,7 +368,7 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       // Seed context graph with initial signals
       k.contextGraph.batchUpdateSignals([
         { source: "device", key: "userId", value: user.id },
-        { source: "device", key: "deviceId", value: navigator.userAgent.slice(0, 32) },
+        { source: "device", key: "deviceId", value: getDeviceFingerprint() },
         { source: "device", key: "type", value: isMobile ? "mobile" : "desktop" },
         { source: "mode", key: "current", value: k.sitaModes.getMode() },
         { source: "cognitive_load", key: "score", value: k.attentionOS.getCognitiveLoad().score },

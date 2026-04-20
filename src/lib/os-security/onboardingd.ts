@@ -330,8 +330,10 @@ export class OnboardingDaemon {
   // ── Hardware Detection ────────────────────────────────────
 
   private detectHardware(): HardwareDetection {
+    // Registry-routed hardware model classification
+    const platform = getDevicePlatform();
     return {
-      hardwareModel: navigator.userAgent.includes("Mac") ? "SITA Book Pro" : "SITA Station",
+      hardwareModel: platform === "macos" ? "SITA Book Pro" : "SITA Station",
       batteryPresent: "getBattery" in navigator,
       tpmPresent: true, // simulated
       biometricPresent: "credentials" in navigator,

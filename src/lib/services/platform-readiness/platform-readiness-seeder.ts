@@ -135,12 +135,13 @@ export async function seedPlatformReadiness(): Promise<void> {
   const familyMap = new Map((savedFamilies ?? []).map((f: any) => [f.family_key, f.id]));
 
   // ═══════════════════════════════════════════════════════════════
-  // 6. CONNECTED DEVICES (user's current browser)
+  // 6. CONNECTED DEVICES (user's current browser) — registry-routed
   // ═══════════════════════════════════════════════════════════════
-  const ua = navigator.userAgent;
-  const isMobile = /Mobile|Android/i.test(ua);
-  const isTablet = /Tablet|iPad/i.test(ua);
+  const formFactor = getDeviceFormFactor();
+  const isMobile = formFactor === "mobile";
+  const isTablet = formFactor === "tablet";
   const familyKey = isTablet ? "tablet_browser" : isMobile ? "mobile_browser" : "web_browser";
+  const platform = getDevicePlatform();
 
   const devices = [
     {
@@ -148,8 +149,8 @@ export async function seedPlatformReadiness(): Promise<void> {
       device_family_id: familyMap.get(familyKey),
       device_name: `${isMobile ? "Mobile" : isTablet ? "Tablet" : "Desktop"} Browser`,
       device_identifier: `web-${Date.now()}`,
-      platform: navigator.platform || "unknown",
-      os_version: ua.match(/(?:OS |Android )([\d._]+)/)?.[1] ?? "unknown",
+      platform,
+      os_version: getOSVersionString(),
       app_version: "1.0.0",
       trust_level: "standard",
       biometric_capable: false,

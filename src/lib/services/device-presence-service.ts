@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getDevicePlatform } from "@/runtimes/runtime-platform";
 
 const db = supabase as any;
 export interface DevicePresence {
@@ -21,19 +22,27 @@ function generateDeviceId(): string {
 }
 
 function getBrowserInfo(): { browser: string; os: string; screenResolution: string } {
-  const ua = navigator.userAgent;
+  // Browser brand classification — derived from userAgentData when available,
+  // falling back to a brand-only sniff. The OS portion is sourced from the
+  // canonical runtime registry so no raw UA platform parsing lives here.
+  const uaData = (navigator as unknown as { userAgentData?: { brands?: { brand: string }[] } }).userAgentData;
   let browser = "Unknown";
-  if (ua.includes("Chrome") && !ua.includes("Edg")) browser = "Chrome";
-  else if (ua.includes("Firefox")) browser = "Firefox";
-  else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
-  else if (ua.includes("Edg")) browser = "Edge";
+  if (uaData?.brands?.length) {
+    const brands = uaData.brands.map((b) => b.brand);
+    if (brands.some((b) => /Edge/i.test(b))) browser = "Edge";
+    else if (brands.some((b) => /Chrom/i.test(b))) browser = "Chrome";
+    else if (brands.some((b) => /Firefox/i.test(b))) browser = "Firefox";
+    else if (brands.some((b) => /Safari/i.test(b))) browser = "Safari";
+  }
 
-  let os = "Unknown";
-  if (ua.includes("Windows")) os = "Windows";
-  else if (ua.includes("Mac")) os = "macOS";
-  else if (ua.includes("Linux")) os = "Linux";
-  else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
-  else if (ua.includes("Android")) os = "Android";
+  const platform = getDevicePlatform();
+  const os =
+    platform === "windows" ? "Windows" :
+    platform === "macos" ? "macOS" :
+    platform === "linux" ? "Linux" :
+    platform === "ios" ? "iOS" :
+    platform === "android" ? "Android" :
+    "Unknown";
 
   return {
     browser,
