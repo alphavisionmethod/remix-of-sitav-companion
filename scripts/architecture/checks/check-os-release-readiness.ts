@@ -359,6 +359,9 @@ const REQUIRED_GATES = [
   "runbook-linkage",
   "artifact-proof-closure",
   "evidence-graph-completeness-v2",
+  // Wave 12.6 — App Platform Lifecycle Closure (2 BLOCK gates)
+  "app-identity-closure",
+  "app-lifecycle-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
