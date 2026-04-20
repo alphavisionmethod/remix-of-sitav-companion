@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T01:40:29.152Z
+> Generated: 2026-04-20T01:46:28.988Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -8,10 +8,12 @@
 | Metric | Value |
 |---|---|
 | Gates required | 230 |
-| Gates present  | 234 |
+| Gates present  | 353 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 3621 |
+| Advisory gates surfaced | 119 |
+| Validator-map coverage | 100% (186 validators) |
 
 ## Per-gate results
 
@@ -251,6 +253,125 @@
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
 | `ai-engineer-action-coverage (warn)` | ✅ | 0 | 18 |
+| `action-envelope-boundary (advisory)` | ❌ | 0 | 0 |
+| `admin-command-palette-coherence (advisory)` | ❌ | 0 | 0 |
+| `admin-domain-budget (advisory)` | ❌ | 0 | 0 |
+| `admin-ia (advisory)` | ❌ | 0 | 0 |
+| `admin-page-classification-coverage (advisory)` | ❌ | 0 | 0 |
+| `admin-route-coherence (advisory)` | ❌ | 0 | 0 |
+| `admin-route-registry-conformance (advisory)` | ❌ | 0 | 0 |
+| `admin-shell-consistency (advisory)` | ❌ | 0 | 0 |
+| `admin-top-level-domain-count (advisory)` | ❌ | 0 | 0 |
+| `advisor-registry (advisory)` | ❌ | 0 | 0 |
+| `ai-advisor-reality (advisory)` | ✅ | 0 | 0 |
+| `app-plane-coverage (advisory)` | ❌ | 0 | 0 |
+| `appliance-deployability (advisory)` | ✅ | 0 | 0 |
+| `artifact-ownership-coverage (advisory)` | ❌ | 0 | 0 |
+| `backend-api-deployability (advisory)` | ✅ | 0 | 0 |
+| `boot-chain (advisory)` | ❌ | 0 | 0 |
+| `bounded-context-coverage (advisory)` | ❌ | 0 | 0 |
+| `capability-families (advisory)` | ❌ | 0 | 0 |
+| `ci-umbrella-integrity (advisory)` | ❌ | 0 | 0 |
+| `component-classification (advisory)` | ❌ | 0 | 0 |
+| `connector-catalog (advisory)` | ❌ | 0 | 0 |
+| `connector-reality (advisory)` | ✅ | 0 | 0 |
+| `context-membership (advisory)` | ❌ | 0 | 0 |
+| `contract-family-completeness (advisory)` | ❌ | 0 | 0 |
+| `contract-registry (advisory)` | ❌ | 0 | 0 |
+| `contract-topology (advisory)` | ❌ | 0 | 0 |
+| `cosmetic-debt-closure (advisory)` | ✅ | 0 | 0 |
+| `cta-wiring (advisory)` | ❌ | 0 | 0 |
+| `db-reality (advisory)` | ✅ | 0 | 0 |
+| `dead-pages (advisory)` | ❌ | 0 | 0 |
+| `delegation-receipts (advisory)` | ❌ | 0 | 0 |
+| `demo-data-imports (advisory)` | ❌ | 0 | 0 |
+| `deployability-coverage (advisory)` | ❌ | 0 | 0 |
+| `deployable-plane-isolation (advisory)` | ❌ | 0 | 0 |
+| `deprecated-wrappers (advisory)` | ❌ | 0 | 0 |
+| `desktop-deployability (advisory)` | ✅ | 0 | 0 |
+| `domain-purity (advisory)` | ❌ | 0 | 0 |
+| `domain-reality (advisory)` | ✅ | 0 | 0 |
+| `drift (advisory)` | ❌ | 0 | 0 |
+| `duplicate-families (advisory)` | ❌ | 0 | 0 |
+| `edge-function-health-replay (advisory)` | ✅ | 0 | 0 |
+| `edge-function-membership-completeness (advisory)` | ❌ | 0 | 0 |
+| `electron-shell-session-readiness (advisory)` | ❌ | 0 | 0 |
+| `engine-no-io (advisory)` | ❌ | 0 | 0 |
+| `error-boundaries (advisory)` | ❌ | 0 | 0 |
+| `event-catalog (advisory)` | ❌ | 0 | 0 |
+| `event-receipt-linkage (advisory)` | ❌ | 0 | 0 |
+| `experimental-isolation (advisory)` | ❌ | 0 | 0 |
+| `feature-governance (advisory)` | ❌ | 0 | 0 |
+| `feature-integration-completeness (advisory)` | ❌ | 0 | 0 |
+| `feature-reality-coverage (advisory)` | ❌ | 0 | 0 |
+| `golden-path-coverage (advisory)` | ❌ | 0 | 0 |
+| `hook-purity (advisory)` | ❌ | 0 | 0 |
+| `ia-coherence (advisory)` | ❌ | 0 | 0 |
+| `inline-mocks (advisory)` | ❌ | 0 | 0 |
+| `integration-map (advisory)` | ❌ | 0 | 0 |
+| `its-real-gate (advisory)` | ✅ | 0 | 0 |
+| `kill-switch-coverage (advisory)` | ❌ | 0 | 0 |
+| `layer-boundaries (advisory)` | ❌ | 0 | 0 |
+| `mock-leak (advisory)` | ✅ | 0 | 0 |
+| `module-count (advisory)` | ❌ | 0 | 0 |
+| `no-backend-in-ui (advisory)` | ❌ | 0 | 0 |
+| `no-duplicate-primary-concept (advisory)` | ❌ | 0 | 0 |
+| `no-hidden-executor (advisory)` | ❌ | 0 | 0 |
+| `no-inline-empty-states (advisory)` | ❌ | 0 | 0 |
+| `no-page-mocks (advisory)` | ❌ | 0 | 0 |
+| `no-runtime-in-shared (advisory)` | ❌ | 0 | 0 |
+| `no-ui-in-backend (advisory)` | ❌ | 0 | 0 |
+| `no-workflow-bypass (advisory)` | ❌ | 0 | 0 |
+| `observability-reality (advisory)` | ❌ | 0 | 0 |
+| `onboarding-surface-truth (advisory)` | ✅ | 0 | 0 |
+| `orchestration-authority (advisory)` | ❌ | 0 | 0 |
+| `os-release-readiness (advisory)` | ✅ | 0 | 0 |
+| `outbound-communication-policy (advisory)` | ❌ | 0 | 0 |
+| `owner-workflow-map (advisory)` | ❌ | 0 | 0 |
+| `page-registry-completeness (advisory)` | ✅ | 0 | 0 |
+| `page-state-coverage (advisory)` | ❌ | 0 | 0 |
+| `plane-import-graph (advisory)` | ❌ | 0 | 0 |
+| `plane-transitive (advisory)` | ❌ | 0 | 0 |
+| `platform-anti-patterns (advisory)` | ❌ | 0 | 0 |
+| `platform-readiness (advisory)` | ❌ | 0 | 0 |
+| `policy-coverage (advisory)` | ❌ | 0 | 0 |
+| `policy-mapping (advisory)` | ❌ | 0 | 0 |
+| `policy-resolver-coverage (advisory)` | ❌ | 0 | 0 |
+| `primitive-purity (advisory)` | ❌ | 0 | 0 |
+| `production-operations (advisory)` | ✅ | 0 | 0 |
+| `projection-purity (advisory)` | ❌ | 0 | 0 |
+| `proof-coverage (advisory)` | ❌ | 0 | 0 |
+| `protocol-purity (advisory)` | ❌ | 0 | 0 |
+| `receipt-coverage (advisory)` | ❌ | 0 | 0 |
+| `redirect-coverage (advisory)` | ❌ | 0 | 0 |
+| `registry-integrity (advisory)` | ❌ | 0 | 0 |
+| `residual-lib-canonicality (advisory)` | ✅ | 0 | 0 |
+| `route-drift (advisory)` | ❌ | 0 | 0 |
+| `route-page-contract-layer-usage (advisory)` | ❌ | 0 | 0 |
+| `route-registry-completeness (advisory)` | ✅ | 0 | 0 |
+| `route-truth (advisory)` | ❌ | 0 | 0 |
+| `route-wrapper-usage (advisory)` | ❌ | 0 | 0 |
+| `runbook-coverage (advisory)` | ❌ | 0 | 0 |
+| `runtime-foundations (advisory)` | ❌ | 0 | 0 |
+| `sensitive-document-privacy (advisory)` | ❌ | 0 | 0 |
+| `service-authority-unique (advisory)` | ❌ | 0 | 0 |
+| `service-consolidation-alignment (advisory)` | ❌ | 0 | 0 |
+| `service-layer-boundaries (advisory)` | ❌ | 0 | 0 |
+| `service-registry-sync (advisory)` | ❌ | 0 | 0 |
+| `service-sprawl (advisory)` | ❌ | 0 | 0 |
+| `service-topology (advisory)` | ❌ | 0 | 0 |
+| `services-structure-hygiene (advisory)` | ❌ | 0 | 0 |
+| `stale-deleted-paths (advisory)` | ✅ | 0 | 0 |
+| `status-truth-tags (advisory)` | ❌ | 0 | 0 |
+| `surface-ownership (advisory)` | ❌ | 0 | 0 |
+| `system-stack (advisory)` | ❌ | 0 | 0 |
+| `table-membership-completeness (advisory)` | ❌ | 0 | 0 |
+| `validator-gate-coverage (advisory)` | ✅ | 0 | 0 |
+| `web-deployability (advisory)` | ✅ | 0 | 0 |
+| `workflow-reality (advisory)` | ✅ | 0 | 0 |
+| `workflow-state-usage (advisory)` | ❌ | 0 | 0 |
+| `workflow-states (advisory)` | ❌ | 0 | 0 |
+| `wrapper-purity (advisory)` | ❌ | 0 | 0 |
 
 ## Verdict
 
