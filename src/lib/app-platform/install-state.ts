@@ -9,7 +9,9 @@ export type InstallStatus =
   | "updating"
   | "update_available"
   | "uninstalling"
-  | "blocked";
+  | "blocked"
+  | "crashed"
+  | "recovering";
 
 export interface InstalledAppRow {
   app_id: string;
@@ -47,5 +49,5 @@ export function deriveInstallStatus(
 }
 
 export function isLaunchable(status: InstallStatus): boolean {
-  return status === "installed" || status === "update_available" || status === "updating";
+  return status === "installed" || status === "update_available" || status === "updating" || status === "recovering";
 }

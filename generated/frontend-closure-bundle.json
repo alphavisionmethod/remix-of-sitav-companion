@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "truthSurfaces": 8,
+  "disclosureTypes": {
+    "aiGenerated": 3,
+    "aiAssisted": 2,
+    "simulation": 2
+  },
+  "pageStateContract": true,
+  "pagePhases": [
+    "loading",
+    "loaded",
+    "empty",
+    "error",
+    "retrying",
+    "offline"
+  ]
+}

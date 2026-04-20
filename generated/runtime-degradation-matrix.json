@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "daemons": [
+    {
+      "id": "healthd",
+      "implemented": true,
+      "systemUsableWithout": true,
+      "impact": "Health metrics unavailable"
+    },
+    {
+      "id": "settingsd",
+      "implemented": false,
+      "systemUsableWithout": true,
+      "impact": "Settings changes unavailable"
+    },
+    {
+      "id": "crashd",
+      "implemented": false,
+      "systemUsableWithout": true,
+      "impact": "Crash evidence not collected"
+    },
+    {
+      "id": "timed",
+      "implemented": true,
+      "systemUsableWithout": false,
+      "impact": "Clock drift possible"
+    },
+    {
+      "id": "accessibilityd",
+      "implemented": false,
+      "systemUsableWithout": true,
+      "impact": "Accessibility features unavailable"
+    },
+    {
+      "id": "ota-agent",
+      "implemented": true,
+      "systemUsableWithout": true,
+      "impact": "No automatic updates"
+    },
+    {
+      "id": "recovery-agent",
+      "implemented": true,
+      "systemUsableWithout": true,
+      "impact": "Automated backups unavailable"
+    }
+  ],
+  "criticalDaemons": [
+    "timed"
+  ],
+  "implementedCount": 4,
+  "roadmapCount": 3
+}

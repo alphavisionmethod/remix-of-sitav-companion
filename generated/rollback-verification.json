@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "surfaces": [
+    {
+      "surface": "web",
+      "rollbackPath": "CDN cache invalidation + redeploy previous dist",
+      "tested": true
+    },
+    {
+      "surface": "desktop",
+      "rollbackPath": "Electron auto-update downgrade channel",
+      "tested": false,
+      "note": "Requires enrolled Apple/Windows signing"
+    },
+    {
+      "surface": "appliance",
+      "rollbackPath": "sita-ota-agent.sh rollback to previous image",
+      "tested": true,
+      "evidence": "scripts/release/iso/sita-ota-agent.sh"
+    }
+  ]
+}

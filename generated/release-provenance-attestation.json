@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "surfaces": {
+    "web": {
+      "buildTool": "vite",
+      "outputDir": "dist/",
+      "deployTarget": "CDN",
+      "signingStatus": "n/a"
+    },
+    "desktop": {
+      "buildTool": "electron-packager",
+      "signingStatus": "deferred-notarization",
+      "platforms": [
+        "linux",
+        "darwin",
+        "win32"
+      ]
+    },
+    "appliance": {
+      "formats": [
+        "ISO",
+        "OVA",
+        "RAW"
+      ],
+      "buildScripts": [
+        "scripts/release/vmware/generate-vmware-iso-image.ts",
+        "scripts/release/vmware/build-ova.sh"
+      ],
+      "signingStatus": "sha256-checksums"
+    }
+  },
+  "rollbackPaths": {
+    "web": "CDN rollback to previous build",
+    "desktop": "Auto-update rollback channel",
+    "appliance": "OTA rollback via sita-ota-agent.sh"
+  }
+}

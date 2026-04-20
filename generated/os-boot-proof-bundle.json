@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "gate": "os-boot-recovery-closure",
+  "ok": true,
+  "bootChainStages": 8,
+  "sitaOwnedStages": 4,
+  "allSitaStagesImplemented": true,
+  "shellFailureIsolated": true,
+  "recoveryActionsWithImplementation": 4,
+  "recoveryActionsTotal": 4,
+  "bootChainFile": "src/runtimes/appliance/boot-chain-contract.ts",
+  "daemonRegistryFile": "src/runtimes/appliance/platform-daemon-registry.ts"
+}

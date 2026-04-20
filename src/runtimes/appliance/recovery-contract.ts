@@ -25,7 +25,7 @@ export const RECOVERY_ACTIONS: readonly RecoveryAction[] = [
     description: "Restart degraded services without rebooting the host.",
     destructive: false,
     requiresOwnerConfirmation: false,
-    implementationLocation: null,
+    implementationLocation: "scripts/release/iso/sita-os.service",
   },
   {
     id: "ota-rollback",
@@ -33,7 +33,7 @@ export const RECOVERY_ACTIONS: readonly RecoveryAction[] = [
     description: "Revert to the previous good appliance image.",
     destructive: false,
     requiresOwnerConfirmation: true,
-    implementationLocation: null,
+    implementationLocation: "scripts/release/iso/sita-ota-agent.sh",
   },
   {
     id: "boot-recovery-mode",
@@ -49,6 +49,6 @@ export const RECOVERY_ACTIONS: readonly RecoveryAction[] = [
     description: "Wipe appliance and re-run first-boot ceremony.",
     destructive: true,
     requiresOwnerConfirmation: true,
-    implementationLocation: null,
+    implementationLocation: "scripts/release/iso/sita-first-boot.sh",
   },
 ];

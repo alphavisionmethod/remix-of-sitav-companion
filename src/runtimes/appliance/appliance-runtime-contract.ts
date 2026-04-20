@@ -1,22 +1,31 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Appliance Runtime Contract
-// Defines the APPLIANCE_RUNTIME tier (ISO/OVA/bootable image).
+// SITA OS — Appliance Runtime Contract (consolidated re-export)
+// Re-exports the canonical capability contract from parent dir
+// AND preserves the legacy APPLIANCE_RUNTIME_CONTRACT shape
+// consumed by admin pages and CI validators.
 // ═══════════════════════════════════════════════════════════════
 
 import type { RuntimeTier } from "../runtime-tier-model";
+
+export {
+  APPLIANCE_RUNTIME_CAPABILITIES,
+  getApplianceCapability,
+  getApplianceClaimState,
+  type ApplianceCapability,
+  type ApplianceCapabilityState,
+  type ApplianceCapabilityEntry,
+} from "../appliance-runtime-contract";
+
+// ── Legacy shape (preserved for back-compat) ────────────────────
 
 export const APPLIANCE_RUNTIME_TIER: RuntimeTier = "APPLIANCE_RUNTIME";
 
 export interface ApplianceRuntimeContract {
   tier: typeof APPLIANCE_RUNTIME_TIER;
   hostAuthority: "appliance-runtime";
-  /** Required first-boot phases. */
   firstBootPhases: readonly string[];
-  /** Required runtime services (started by appliance init). */
   runtimeServices: readonly string[];
-  /** Capabilities the appliance honestly delivers today. */
   honestCapabilities: readonly string[];
-  /** Capabilities marketed only after real implementation lands. */
   roadmapCapabilities: readonly string[];
 }
 

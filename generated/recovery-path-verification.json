@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-20T21:20:30.255Z",
+  "actions": [
+    {
+      "id": "soft-restart",
+      "implemented": true,
+      "location": "scripts/release/iso/sita-os.service"
+    },
+    {
+      "id": "ota-rollback",
+      "implemented": true,
+      "location": "scripts/release/iso/sita-ota-agent.sh"
+    },
+    {
+      "id": "boot-recovery-mode",
+      "implemented": true,
+      "location": "src/components/sita/boot/BootRecoveryCard.tsx"
+    },
+    {
+      "id": "factory-reset",
+      "implemented": true,
+      "location": "scripts/release/iso/sita-first-boot.sh"
+    }
+  ],
+  "allImplemented": true
+}
