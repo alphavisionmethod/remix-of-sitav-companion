@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
-import { useRuntimeTier } from "@/runtimes/runtime-context";
+import { useRuntimeTier, useFeatureRuntimeTier } from "@/runtimes/runtime-context";
 
 interface UpdateState {
   checking: boolean;
@@ -31,10 +31,13 @@ export function useElectronBridge() {
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [deepLink, setDeepLink] = useState<DeepLinkPayload | null>(null);
   const [updateState, setUpdateState] = useState<UpdateState | null>(null);
-  // Runtime-tier truth: bridge methods are only honest in DESKTOP_HOST tier.
-  // Other tiers see no-ops with explicit `tier`/`isElectron` exposure.
+  // Runtime-tier truth: bridge methods are only honest when the
+  // feature-runtime-tier registry classifies "window-control" as supported
+  // on the active tier. The registry — not a hard-coded tier literal — is
+  // the single source of truth for cross-tier capability resolution.
   const tier = useRuntimeTier();
-  const electron = isElectron() && tier === "DESKTOP_HOST";
+  const windowControlAvailability = useFeatureRuntimeTier("window-control");
+  const electron = isElectron() && windowControlAvailability === "supported";
 
   useEffect(() => {
     if (!electron) return;
