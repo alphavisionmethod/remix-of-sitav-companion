@@ -13,7 +13,7 @@ import {
   Send, Phone, Mail, MessageSquare, Shield, FileText, Scale
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
-import type { CollectionsAccount } from "@/lib/mock-data/collections";
+import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
 
 import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/components/sita/cards";
 import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";

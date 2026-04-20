@@ -1,9 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/lib/mock-data/automation";
-import { MOCK_REPLAYABLE_WORKFLOWS } from "@/lib/mock-data/workflows";
-import { MOCK_ADMIN_USERS } from "@/lib/mock-data/admin";
-import { mockAdminIncidents } from "@/lib/mock-data/admin-ops";
+import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/data/fixtures/mock-data/automation";
+import { MOCK_REPLAYABLE_WORKFLOWS } from "@/data/fixtures/mock-data/workflows";
+import { MOCK_ADMIN_USERS } from "@/data/fixtures/mock-data/admin";
+import { mockAdminIncidents } from "@/data/fixtures/mock-data/admin-ops";
 
 export async function fetchAutomationRules() {
   const { data: { user } } = await supabase.auth.getUser();

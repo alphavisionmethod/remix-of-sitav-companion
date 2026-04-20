@@ -8,9 +8,9 @@ import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/hooks/useRealityProvider";
 
-export type { MockDoc, MockSheet, MockDeck, MockSlide } from "@/lib/mock-data/workspace";
-import type { MockDoc, MockSheet, MockDeck } from "@/lib/mock-data/workspace";
-import { MOCK_DOCS, MOCK_SHEETS, MOCK_DECKS } from "@/lib/mock-data/workspace";
+export type { MockDoc, MockSheet, MockDeck, MockSlide } from "@/data/fixtures/mock-data/workspace";
+import type { MockDoc, MockSheet, MockDeck } from "@/data/fixtures/mock-data/workspace";
+import { MOCK_DOCS, MOCK_SHEETS, MOCK_DECKS } from "@/data/fixtures/mock-data/workspace";
 
 const DOC_TYPES = ["document", "proposal", "report", "boardroom-packet", "note"];
 

@@ -19,12 +19,12 @@ import {
   type SimulationProgress,
   type SimulationResult,
   type SimulationVariable,
-} from "@/lib/simulation/monte-carlo-engine";
+} from "@/domains/simulation/monte-carlo-engine";
 import {
   fetchMarketIntelligence,
   applyIntelligenceToVariables,
   type IntelligenceReport,
-} from "@/lib/simulation/market-intelligence";
+} from "@/domains/simulation/market-intelligence";
 
 type RightTab = "results" | "intelligence";
 

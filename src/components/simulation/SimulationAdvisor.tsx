@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Brain, Loader2, Swords, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { generateDecisionBrief, generateDevilsAdvocate } from "@/lib/simulation/market-intelligence";
-import type { SimulationResult } from "@/lib/simulation/monte-carlo-engine";
+import { generateDecisionBrief, generateDevilsAdvocate } from "@/domains/simulation/market-intelligence";
+import type { SimulationResult } from "@/domains/simulation/monte-carlo-engine";
 
 interface SimulationAdvisorProps {
   result: SimulationResult | null;

@@ -4,7 +4,7 @@
 // mock-data/ files but pages import from here (type-only).
 // ═══════════════════════════════════════════════════════════════
 
-export type { CollectionsAccount } from "@/lib/mock-data/collections";
-export type { OwnerApprovalItem, OwnerPricingItem } from "@/lib/mock-data/owner";
-export type { MockDoc, MockSheet, MockDeck, MockSlide } from "@/lib/mock-data/workspace";
-export type { CallingContact, CallingCallLog, CallingCallScript } from "@/lib/mock-data/revenue-calling";
+export type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
+export type { OwnerApprovalItem, OwnerPricingItem } from "@/data/fixtures/mock-data/owner";
+export type { MockDoc, MockSheet, MockDeck, MockSlide } from "@/data/fixtures/mock-data/workspace";
+export type { CallingContact, CallingCallLog, CallingCallScript } from "@/data/fixtures/mock-data/revenue-calling";

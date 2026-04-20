@@ -13,7 +13,7 @@ interface ConnectorSyncDashboardProps {
   compact?: boolean;
 }
 
-import { DEMO_SYNC_CONNECTORS } from "@/lib/mock-data/connector-sync";
+import { DEMO_SYNC_CONNECTORS } from "@/data/fixtures/mock-data/connector-sync";
 const DEMO_CONNECTORS = DEMO_SYNC_CONNECTORS;
 
 const statusConfig: Record<string, { color: string; icon: typeof CheckCircle }> = {

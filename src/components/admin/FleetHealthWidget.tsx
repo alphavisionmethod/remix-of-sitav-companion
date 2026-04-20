@@ -16,7 +16,7 @@ import type {
 } from "@/lib/core-services/self-healing/types";
 
 // ── Demo fleet data (shared module) ─────────────────────────────
-import { DEMO_FLEET_SERVICES } from "@/lib/mock-data/fleet-health";
+import { DEMO_FLEET_SERVICES } from "@/data/fixtures/mock-data/fleet-health";
 const DEMO_SERVICES = [...DEMO_FLEET_SERVICES];
 
 interface AutoIncident {

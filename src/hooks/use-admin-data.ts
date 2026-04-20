@@ -10,7 +10,7 @@ import {
   mockTrustCenter, mockReleases, mockModelRouting, mockKnowledgeHealth,
   mockSupportCases, mockChangeReviews, mockRollbackCenter, mockServiceMap,
   mockSLOs, mockArchGates, mockDeploymentRings, mockTestCoverage,
-} from "@/lib/mock-data/admin-ops";
+} from "@/data/fixtures/mock-data/admin-ops";
 import { ALL_DETAILED_AGENTS, COUNCILS, SUPERVISORS } from "@/lib/internal-agents";
 import { toast } from "sonner";
 

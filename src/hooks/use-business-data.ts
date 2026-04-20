@@ -7,8 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/lib/mock-data/revenue-autopilot";
-import { MOCK_CONTACTS } from "@/lib/mock-data/revenue-calling";
+import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/data/fixtures/mock-data/revenue-autopilot";
+import { MOCK_CONTACTS } from "@/data/fixtures/mock-data/revenue-calling";
 
 async function fetchRevenueLeaks(mode: string): Promise<any> {
   if (mode !== "real") return MOCK_LEAKAGE_INPUT;

@@ -12,7 +12,7 @@ import {
   Loader2, RefreshCw, Newspaper, Shield,
 } from "lucide-react";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
-import type { IntelligenceReport, MarketDataPoint } from "@/lib/simulation/market-intelligence";
+import type { IntelligenceReport, MarketDataPoint } from "@/domains/simulation/market-intelligence";
 
 interface MarketIntelligencePanelProps {
   intelligence: IntelligenceReport | null;

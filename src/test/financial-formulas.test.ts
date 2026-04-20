@@ -10,7 +10,7 @@ import {
   expectedShortfall,
   sortinoRatio,
   maxDrawdown,
-} from "@/lib/simulation/financial-formulas";
+} from "@/domains/simulation/financial-formulas";
 
 describe("Financial Formula Library", () => {
   describe("DCF / NPV", () => {

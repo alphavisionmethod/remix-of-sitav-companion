@@ -6,7 +6,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import * as legacyMocks from "@/lib/mock-data/legacy-display-mocks";
+import * as legacyMocks from "@/data/fixtures/mock-data/legacy-display-mocks";
 
 export interface BoardroomDataBundle {
   leads: typeof legacyMocks.mockLeads;
