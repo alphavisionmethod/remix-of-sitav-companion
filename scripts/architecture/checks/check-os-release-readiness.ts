@@ -326,6 +326,10 @@ const REQUIRED_GATES = [
   // wired" overclaim by failing if status coverage < 100% or if any "wired"
   // agent's runtimeInvocationPath does not actually reference the agent ID.
   "internal-agent-deferred-set-explicitness",
+  // Phase 27 Cluster README coverage (1 BLOCK gate — anchors src/lib ambiguous clusters
+  // with canonical README.md files containing Purpose/Layer/Canonical-neighbors headings.
+  // Prevents cognitive-risk regressions from folder-browsing without context.)
+  "cluster-readme-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
