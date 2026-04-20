@@ -355,6 +355,36 @@ const ADMIN_AI_ENGINEER_WARN_GATES: string[] = [
 const GENERATED_DIR = "generated";
 mkdirSync(GENERATED_DIR, { recursive: true });
 
+// ─── REQUIRED_OUTPUT_WRITERS (Wave 3 lock-in) ─────────────────────
+// Maps required gate ids to the validator scripts that MUST write
+// generated/<gate-id>-report.json. The startup assertion below fails the
+// aggregator immediately if a writer script is missing — turning a generic
+// "missing report" failure at the end into a precise, actionable one at the
+// top. Wave 1 fixed three gaps (runbook-coverage, connector-client-registry-
+// completeness, admin-runbook-surface-wiring); this lock-in prevents
+// silent regression.
+// ──────────────────────────────────────────────────────────────────
+const REQUIRED_OUTPUT_WRITERS: Record<string, string> = {
+  "runbook-coverage": "scripts/architecture/checks/check-runbook-coverage.ts",
+  "connector-client-registry-completeness":
+    "scripts/architecture/checks/check-connector-client-registry.ts",
+  "admin-runbook-surface-wiring":
+    "scripts/architecture/checks/check-admin-runbook-surface-wiring.ts",
+};
+const writerStartupErrors: string[] = [];
+for (const [gateId, scriptPath] of Object.entries(REQUIRED_OUTPUT_WRITERS)) {
+  if (!existsSync(scriptPath)) {
+    writerStartupErrors.push(
+      `REQUIRED_OUTPUT_WRITERS["${gateId}"] points to missing script: ${scriptPath}`,
+    );
+  }
+}
+if (writerStartupErrors.length > 0) {
+  console.error("❌ Wave-3 startup assertion failed:");
+  for (const err of writerStartupErrors) console.error(`  • ${err}`);
+  process.exit(1);
+}
+
 const inputs: AggregateReport["inputs"] = [];
 const missingGates: string[] = [];
 let totalErrors = 0;
