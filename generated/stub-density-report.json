@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-20T18:38:11.751Z",
+  "gate": "stub-density",
+  "advisory": true,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "total": 4,
+  "byKind": {
+    "TODO": 1,
+    "FIXME": 0,
+    "XXX": 3,
+    "HACK": 0
+  },
+  "filesAffected": 3,
+  "baseline": 54,
+  "budgetSlack": 50,
+  "issues": []
+}
