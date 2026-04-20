@@ -23,3 +23,4 @@ export type * as FinanceContracts from "@/packages/finance-contracts";
 export type * as PolicyContracts from "@/packages/policy-contracts";
 export type * as TelemetryContracts from "@/packages/telemetry";
 export type * as WorkflowContracts from "@/packages/workflow-primitives";
+export type * as WindowContracts from "@/packages/window-contracts";
