@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "description": "Canonical lifecycle authority manifest — boot targets, restart strategies, crash-loop triggers, dependency pressure, replay requirements",
+  "bootTargets": [
+    { "target": "firmware-init", "order": 0, "required": true, "timeoutMs": 10000, "attestation": true },
+    { "target": "secure-boot-verify", "order": 1, "required": true, "timeoutMs": 5000, "attestation": true },
+    { "target": "initramfs", "order": 2, "required": true, "timeoutMs": 15000, "attestation": true },
+    { "target": "dm-verity-root", "order": 3, "required": true, "timeoutMs": 30000, "attestation": true },
+    { "target": "systemd-init", "order": 4, "required": true, "timeoutMs": 20000, "attestation": false },
+    { "target": "sita-runtime", "order": 5, "required": true, "timeoutMs": 30000, "attestation": false },
+    { "target": "first-boot-provisioning", "order": 6, "required": false, "timeoutMs": 300000, "attestation": false },
+    { "target": "capability-services", "order": 7, "required": true, "timeoutMs": 60000, "attestation": false },
+    { "target": "desktop-surface", "order": 8, "required": true, "timeoutMs": 15000, "attestation": false }
+  ],
+  "restartStrategies": ["crash", "oom-kill", "update-applied", "user-requested", "operator-commanded", "quarantine-exit", "rollback-completed"],
+  "crashLoopThresholds": { "default": 5, "sita-runtime": 3, "capability-services": 4 },
+  "quarantineReasons": ["retry-budget-exhausted", "crash-loop-detected", "dependency-chain-broken", "trust-violation", "integrity-check-failed", "operator-commanded", "security-incident"],
+  "dependencyPressureSources": ["memory-pressure", "cpu-saturation", "disk-io-saturation", "network-degradation", "upstream-timeout", "downstream-backlog"],
+  "lifecycleStates": ["booting", "running", "degraded", "quarantined", "restarting", "updating", "rolling-back", "recovery", "safe-mode", "halted", "shutting-down"],
+  "receiptTypes": ["boot-completed", "restart-executed", "quarantine-entered", "quarantine-exited", "rollback-decided", "rollback-executed", "rollback-verified", "update-applied", "crash-loop-detected", "safe-mode-entered", "recovery-completed"]
+}

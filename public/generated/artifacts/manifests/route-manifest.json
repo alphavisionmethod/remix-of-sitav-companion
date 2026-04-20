@@ -1,0 +1,4268 @@
+{
+  "version": "3.0.0",
+  "generatedAt": "2026-04-20T01:55:40.886Z",
+  "totalRoutes": 696,
+  "ownerDistribution": {
+    "identity": 3,
+    "forgot-password": 1,
+    "reset-password": 1,
+    "root": 1,
+    "*": 2,
+    "onboarding": 3,
+    "platform-admin": 241,
+    "mobile-shell": 25,
+    "owner-mode": 37,
+    "advisors": 11,
+    "agent-activity": 1,
+    "app-platform": 8,
+    "business-os": 57,
+    "proof": 5,
+    "workflows": 4,
+    "approvals": 4,
+    "approval-chamber": 1,
+    "comms-hub": 2,
+    "concierge-os": 20,
+    "finance-os": 97,
+    "revenue-office": 39,
+    "digital-presence": 19,
+    "store": 12,
+    "app-store": 1,
+    "digital-twins": 4,
+    "scenario-lab": 1,
+    "ai-economics": 1,
+    "recovered-value": 1,
+    "document-engine": 12,
+    "trust": 7,
+    "home": 1,
+    "desktop": 1,
+    "brain-core": 5,
+    "daily-pulse": 1,
+    "profile": 1,
+    "life": 1,
+    "life-simulator": 1,
+    "personal-life": 1,
+    "downloads": 1,
+    "download": 1,
+    "wealth-command": 1,
+    "time-machine": 1,
+    "achievements": 1,
+    "simulation-engine": 1,
+    "storage": 1,
+    "network": 1,
+    "planning-canvas": 1,
+    "my-activity": 1,
+    "search": 1,
+    "inbox": 4,
+    "activity": 1,
+    "opportunities": 1,
+    "outcomes": 1,
+    "spillovers": 1,
+    "ai-workforce": 1,
+    "capital-allocation": 1,
+    "sovereign-export": 1,
+    "notifications": 2,
+    "personalization": 6,
+    "memory": 7,
+    "automation": 4,
+    "mission-control": 1,
+    "display-modes": 1,
+    "communication-inbox": 1,
+    "command-history": 1,
+    "environment-switcher": 1,
+    "update-center": 1,
+    "first-boot": 1,
+    "clipboard-history": 1,
+    "print-scan": 1,
+    "recovery": 1,
+    "personal-brain": 1,
+    "calendar": 1,
+    "tasks": 1,
+    "notes": 1,
+    "people": 1,
+    "team": 1,
+    "editor": 1,
+    "reporting": 1,
+    "media": 1,
+    "templates": 1,
+    "import-export": 1,
+    "workspace": 1
+  },
+  "routes": [
+    {
+      "path": "/login",
+      "component": "PublicLayout",
+      "domain": "login",
+      "owner": "identity"
+    },
+    {
+      "path": "/signup",
+      "component": "PublicLayout",
+      "domain": "signup",
+      "owner": "identity"
+    },
+    {
+      "path": "/forgot-password",
+      "component": "PublicLayout",
+      "domain": "forgot-password",
+      "owner": "forgot-password"
+    },
+    {
+      "path": "/reset-password",
+      "component": "PublicLayout",
+      "domain": "reset-password",
+      "owner": "reset-password"
+    },
+    {
+      "path": "/",
+      "component": "PublicLayout",
+      "domain": "root",
+      "owner": "root"
+    },
+    {
+      "path": "/*",
+      "component": "AuthenticatedProviders",
+      "domain": "*",
+      "owner": "*"
+    },
+    {
+      "path": "/onboarding",
+      "component": "OnboardingGuard",
+      "domain": "onboarding",
+      "owner": "onboarding"
+    },
+    {
+      "path": "/auth/callback",
+      "component": "EmailVerificationHandler",
+      "domain": "auth",
+      "owner": "identity"
+    },
+    {
+      "path": "/first-win",
+      "component": "ProtectedRoute",
+      "domain": "first-win",
+      "owner": "onboarding"
+    },
+    {
+      "path": "/learn-later",
+      "component": "ProtectedRoute",
+      "domain": "learn-later",
+      "owner": "onboarding"
+    },
+    {
+      "path": "*",
+      "component": "MobileGuard",
+      "domain": "root",
+      "owner": "*"
+    },
+    {
+      "path": "/admin/*",
+      "component": "AdminRoute",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/overview",
+      "component": "OverviewHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/alerts",
+      "component": "AlertsHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/approvals",
+      "component": "ApprovalsHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/environments",
+      "component": "EnvironmentsHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases",
+      "component": "ReleasesHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/support",
+      "component": "SupportHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/health",
+      "component": "HealthHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security",
+      "component": "TrustSecurityHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/verification",
+      "component": "VerificationHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime",
+      "component": "AIRuntimeHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/internal-agent-intents",
+      "component": "InternalAgentIntentTimeline",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/reflection-board",
+      "component": "ReflectionBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/suggestions",
+      "component": "SuggestionsBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/weekly-digest",
+      "component": "WeeklyDigestBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/dependency-findings",
+      "component": "DependencyFindingsBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/policy-drafts",
+      "component": "PolicyDraftReviewBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/trust-ladder",
+      "component": "TrustLadderBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/cross-council",
+      "component": "CrossCouncilBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/observatory",
+      "component": "SLOObservabilityBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot",
+      "component": "OwnerCopilotBriefings",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot-sessions",
+      "component": "OwnerCopilotSessionConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/launch-attestation",
+      "component": "ProductionLaunchAttestationConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/boardroom-sla",
+      "component": "BoardroomSLADrillDown",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/tenant-federation",
+      "component": "TenantFederationBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/assurance",
+      "component": "AssuranceChaosBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/external-api",
+      "component": "ExternalWorkforceApiBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/federation",
+      "component": "KnowledgeFederationBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/sovereign-dr",
+      "component": "SovereignDeploymentDRBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/compliance",
+      "component": "ComplianceAttestationBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/tenant-console",
+      "component": "TenantSelfServiceConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/integrations",
+      "component": "IntegrationsHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/config",
+      "component": "ConfigHome",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin",
+      "component": "AdminRootLanding",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/health/incidents",
+      "component": "MCIncidents",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/health/error-patrol",
+      "component": "ErrorPatrolBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases/launch-readiness",
+      "component": "LaunchReadinessBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/overview/generated-truth",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/intelligence/efficiency",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/verification/launch-honesty",
+      "component": "LaunchHonestyBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/verification/cross-domain-coherence",
+      "component": "CrossDomainCoherence",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/health/cost-spotlight",
+      "component": "CostSpotlight",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases/sbom-history",
+      "component": "SbomHistory",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-runtime/costs",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/environments/users",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/environments/devices",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/environments/integration-state",
+      "component": "WorkflowStepStub",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/environments/workflow-state",
+      "component": "WorkflowStepStub",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/support/cases",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/support/replay",
+      "component": "WorkflowStepStub",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/support/recovery",
+      "component": "MCFailureRecovery",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases/mobile-parity",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases/deployment-rings",
+      "component": "AdminDeploymentRings",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/releases/rollback",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security/policies",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security/proofs",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security/permissions",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security/sensitive-actions",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/trust-security/audit",
+      "component": "AuditComplianceWorkspace",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/data-retention",
+      "component": "DataRetentionDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/user-seed-health",
+      "component": "UserSeedHealth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/readiness",
+      "component": "PlatformReadinessScorecard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/incidents/dashboard",
+      "component": "IncidentDashboardPage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta-arch",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta-arch/atlas",
+      "component": "META01ArchitectureAtlas",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta-arch/control-plane",
+      "component": "META02ControlPlaneCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta-arch/golden-paths",
+      "component": "META03GoldenPathHealth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta/reality",
+      "component": "META04ProductReality",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/meta/completeness",
+      "component": "META05CompletenessMatrix",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ci/umbrella",
+      "component": "CI01CIUmbrellaCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/generated-truth",
+      "component": "GeneratedTruthDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/runtime-tier-governance",
+      "component": "RuntimeTierGovernanceDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/fleet-health",
+      "component": "FleetHealthPage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/dashboard",
+      "component": "AdminDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/team",
+      "component": "TeamManagement",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/system",
+      "component": "SystemManagement",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/users",
+      "component": "UserManagement",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-tokens",
+      "component": "AITokenDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence-efficiency",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/truth-indices",
+      "component": "TruthIndexDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/overview",
+      "component": "AIT01TeamOverview",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/roles",
+      "component": "AIT02RoleRegistry",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/invoke",
+      "component": "AIT03TaskInvocation",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/activity",
+      "component": "AIT04ActivityFeed",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/cost",
+      "component": "AIT05CostEfficiency",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/recommendations",
+      "component": "AIT06Recommendations",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/approvals",
+      "component": "AIT07ApprovalQueue",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/launch-truth",
+      "component": "AIT08LaunchTruth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/approval-queue",
+      "component": "HQApprovalQueue",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-team/setup-checklist",
+      "component": "AITSetupChecklist",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/reuse",
+      "component": "IntelligenceReuseOverview",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/assets",
+      "component": "IntelligenceAssetLibrary",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/differential",
+      "component": "DifferentialReasoningExplorer",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/packets",
+      "component": "IntelligencePacketInspector",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/efficiency",
+      "component": "AIEfficiencyScoreboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/outcomes",
+      "component": "OutcomeEconomicsBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/escalation",
+      "component": "EscalationControlCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/patterns",
+      "component": "PatternLearningCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/prompts",
+      "component": "ZeroWastePromptView",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/digests",
+      "component": "SmartDigestCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/cross-tenant",
+      "component": "CrossTenantGovernance",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/intelligence/layer",
+      "component": "IntelligenceLayerAdmin",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/providers",
+      "component": "AIG01ProviderRegistry",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/models",
+      "component": "AIG02ModelRegistry",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/routing",
+      "component": "AIG03RoutingMatrix",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/budget",
+      "component": "AIG04BudgetCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/receipts",
+      "component": "AIG05ReceiptsExplorer",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/honesty",
+      "component": "AIG06LaunchTruth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/launch-truth",
+      "component": "AIG07LaunchTruth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/diagnostics",
+      "component": "AIG08DegradedDiagnostics",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-gateway/verification",
+      "component": "AIG09RuntimeVerification",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/capital",
+      "component": "IntelligenceCapitalDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/cost-confidence",
+      "component": "CostToConfidenceDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/quality-floor",
+      "component": "QualityFloorDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/insurance",
+      "component": "IntelligenceInsuranceDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/market",
+      "component": "IntelligenceMarketDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/time-to-truth",
+      "component": "TimeToTruthDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/reasoning-replay",
+      "component": "ReasoningReplayDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/decay",
+      "component": "DecayMonitorDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/portfolio",
+      "component": "PortfolioAllocationDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/benchmark",
+      "component": "BenchmarkLabDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/value-risk",
+      "component": "ValueRiskDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/strategic/operator-taste",
+      "component": "OperatorTasteDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/graph",
+      "component": "CAI01PersonalGraphExplorer",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/intent",
+      "component": "CAI02IntentTraceBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/attention",
+      "component": "CAI03AttentionCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/continuity",
+      "component": "CAI04ContinuityCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/trust-actions",
+      "component": "CAI05TrustActionsBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/chief-of-staff",
+      "component": "CAI06ChiefOfStaffCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/timing",
+      "component": "CAI07TimingStudio",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/relationships",
+      "component": "CAI08RelationshipCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/digest",
+      "component": "CAI09DigestConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/modes",
+      "component": "CAI10ModesCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/interface",
+      "component": "CAI11InterfaceProfiler",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/opportunities",
+      "component": "CAI12OpportunityBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/memory",
+      "component": "CAI13MemoryGovernance",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/boundaries",
+      "component": "CAI14BoundaryControl",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cai/signature",
+      "component": "CAI15SignatureStudio",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ecosystem/command",
+      "component": "ECO01EcosystemCommand",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/security/sessions",
+      "component": "SEC01SessionSecrets",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/security/foundation",
+      "component": "SEC02SecurityFoundation",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/security/command-center",
+      "component": "SecurityCommandCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/system-intelligence",
+      "component": "SYS01SystemIntelligence",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/os-platform",
+      "component": "OS01PlatformCommandCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/cloud-backbone",
+      "component": "CloudBackboneAdmin",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/communication-hub",
+      "component": "CommunicationHub",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/command",
+      "component": "FCC01FounderCommandConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/tasks",
+      "component": "FCC02TaskDecompositionGraph",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/cicd",
+      "component": "FCC03CICDPipelineBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/runbooks",
+      "component": "FCC04RunbookCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/support/runbooks/:id",
+      "component": "AdminRunbookViewerPage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/dashboard",
+      "component": "FCC05FounderDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/programs",
+      "component": "FCC06ProgramManagementBoard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/cost",
+      "component": "FCC07PlatformCostCapacity",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/sync-ops",
+      "component": "FCC08SyncStorageOps",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/security",
+      "component": "FCC09SecurityRiskCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/oversight",
+      "component": "FCC10HumanOversightEscalation",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/incidents",
+      "component": "FCC11IncidentResponseTimeline",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/founder/knowledge",
+      "component": "FCC12KnowledgeMemorySystem",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/validation",
+      "component": "SRE01ValidationCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/builder-critic",
+      "component": "SRE02BuilderCriticConsole",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/simulation",
+      "component": "SRE03SimulationLab",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/standards",
+      "component": "SRE04CodeStandardsTestGen",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/chaos",
+      "component": "SRE05ChaosTestingFramework",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/rollback",
+      "component": "SRE06AutoRollbackCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/version-intel",
+      "component": "SRE07VersionIntelligence",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/engineering/optimization",
+      "component": "SRE08SelfOptimizationBudgets",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/devices",
+      "component": "MCDevicesCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/storage",
+      "component": "MCStorageCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/users",
+      "component": "MCUsersCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/workspaces",
+      "component": "MCWorkspacesContinuity",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/sync-cloud",
+      "component": "MCSyncCloud",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/jobs",
+      "component": "MCJobsMaintenance",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/trust-security",
+      "component": "MCTrustSecurity",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/releases",
+      "component": "MCReleasesUpdates",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/ai-control",
+      "component": "MCAIControl",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/incidents",
+      "component": "MCIncidents",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/policies",
+      "component": "MCPoliciesFlags",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/costs",
+      "component": "MCCostsAIBudgets",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/logs",
+      "component": "MCLogsAudit",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/support",
+      "component": "MCSupport",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/knowledge",
+      "component": "MCKnowledgeBase",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/system-health",
+      "component": "MCSystemHealth",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/authority-matrix",
+      "component": "MCAuthorityMatrix",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/control-receipts",
+      "component": "MCControlReceipts",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/emergency",
+      "component": "MCEmergencyAuthority",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/platform-adaptation",
+      "component": "MCPlatformAdaptation",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/state-authority",
+      "component": "MCStateAuthority",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/architecture",
+      "component": "MCArchitectureDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/feature-ownership",
+      "component": "MCFeatureOwnership",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/command-routing",
+      "component": "MCCommandRouting",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/approval-flow",
+      "component": "MCApprovalFlow",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/failure-recovery",
+      "component": "MCFailureRecovery",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/event-routing",
+      "component": "MCEventRouting",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mc/architecture-tests",
+      "component": "MCArchitectureTests",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/catalog",
+      "component": "AdvisorBoardCatalog",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/recommendations",
+      "component": "AdvisorRecommendationMonitor",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/actions",
+      "component": "AdvisorActionApprovalAdmin",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/memory",
+      "component": "AdvisorMemoryInspectorAdmin",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/autonomy",
+      "component": "AdvisorAutonomyPolicyEditor",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/advisor-board/profitability",
+      "component": "AdvisorProfitabilityDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/release-engineering",
+      "component": "ReleaseEngineeringPage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/graph-intelligence",
+      "component": "GraphIntelligencePage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/ai-governance",
+      "component": "AIGovernancePage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/simulation-center",
+      "component": "SimulationCenterPage",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/backend-topology",
+      "component": "BackendTopologyDashboard",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/db-truth-explorer",
+      "component": "DbTruthExplorer",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mobile-parity",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/mobile/store-readiness",
+      "component": "Navigate",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/web/deployability",
+      "component": "WEB01DeployabilityCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/desktop/deployability",
+      "component": "DSK01DeployabilityCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/appliance/deployability",
+      "component": "APP01ApplianceDeployabilityCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/backend-api/deployability",
+      "component": "BAP01BackendApiDeployabilityCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/edge-functions/health",
+      "component": "EFH01EdgeFunctionHealthCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/admin/automation/kill-switches",
+      "component": "AR08KillSwitchCenter",
+      "domain": "admin",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/mobile",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/business",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/money",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/concierge",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/approvals",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/proof",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/alerts",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/boardroom",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/workflow/:id",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/receipt/:id",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/approval/:id",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/settings",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/device-trust",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/emergency",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/capture",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/more",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/investment",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/files",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/command",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/ai-chat",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/system-monitor",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/sync",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/notifications",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/timeline",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/mobile/inbox",
+      "component": "ProtectedRoute",
+      "domain": "mobile",
+      "owner": "mobile-shell"
+    },
+    {
+      "path": "/owner",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/home",
+      "component": "Navigate",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/health",
+      "component": "Navigate",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/pulse",
+      "component": "OwnerPulsePage",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/trust",
+      "component": "Navigate",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/approvals",
+      "component": "OwnerApprovalsPage",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/ai-team",
+      "component": "Navigate",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/ai-team/updates",
+      "component": "OwnerAiTeamUpdatesPage",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/incidents",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/intelligence",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/policies",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/fleet",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/council",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/audit",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/connector-health",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/connectors",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/costs",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/internal-agents",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/workflow-control",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/trust-center",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/autopilot",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/billing",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/releases",
+      "component": "ReleaseDeploymentWorkspace",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/model-routing",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/system-map",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/knowledge",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/support",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/change-review",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/rollback-center",
+      "component": "ReleaseDeploymentWorkspace",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/governance",
+      "component": "OwnerCenter",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/pricing",
+      "component": "PricingEditor",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/packs",
+      "component": "PackEditorPage",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/advisors",
+      "component": "AdvisorConfigPage",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/leases",
+      "component": "LeaseDashboard",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner/constitution",
+      "component": "ConstitutionEditor",
+      "domain": "owner",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner-mode",
+      "component": "Navigate",
+      "domain": "owner-mode",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/owner-mode/home",
+      "component": "Navigate",
+      "domain": "owner-mode",
+      "owner": "owner-mode"
+    },
+    {
+      "path": "/advisors",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/chat",
+      "component": "CalmAssistantChat",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/council-dashboard",
+      "component": "AdvisorCouncilDashboard",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/overview",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/compare",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/simulations",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/approvals",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/proof",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/memory",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/:advisorId",
+      "component": "AdvisorWorkspace",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/advisors/registry",
+      "component": "AdvisorRegistry",
+      "domain": "advisors",
+      "owner": "advisors"
+    },
+    {
+      "path": "/agent-activity",
+      "component": "AgentActivityDashboard",
+      "domain": "agent-activity",
+      "owner": "agent-activity"
+    },
+    {
+      "path": "/apps/store",
+      "component": "AppStoreCenter",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/downloads",
+      "component": "DownloadsCenter",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/boardroom",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/business",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/finance",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/family",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/opportunity",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/morning",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/weekly",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/incidents",
+      "component": "Boardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/replay",
+      "component": "BoardroomReplay",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/history",
+      "component": "BoardroomHistory",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/boardroom/weekly-review",
+      "component": "WeeklyBoardroom",
+      "domain": "boardroom",
+      "owner": "business-os"
+    },
+    {
+      "path": "/proof",
+      "component": "ProofCenter",
+      "domain": "proof",
+      "owner": "proof"
+    },
+    {
+      "path": "/proof/receipts",
+      "component": "ProofCenter",
+      "domain": "proof",
+      "owner": "proof"
+    },
+    {
+      "path": "/proof/executions",
+      "component": "ProofCenter",
+      "domain": "proof",
+      "owner": "proof"
+    },
+    {
+      "path": "/proof/verifications",
+      "component": "ProofCenter",
+      "domain": "proof",
+      "owner": "proof"
+    },
+    {
+      "path": "/proof/rollbacks",
+      "component": "ProofCenter",
+      "domain": "proof",
+      "owner": "proof"
+    },
+    {
+      "path": "/workflows",
+      "component": "WorkflowsCenter",
+      "domain": "workflows",
+      "owner": "workflows"
+    },
+    {
+      "path": "/workflows/active",
+      "component": "WorkflowsCenter",
+      "domain": "workflows",
+      "owner": "workflows"
+    },
+    {
+      "path": "/workflows/history",
+      "component": "WorkflowsCenter",
+      "domain": "workflows",
+      "owner": "workflows"
+    },
+    {
+      "path": "/workflows/templates",
+      "component": "WorkflowsCenter",
+      "domain": "workflows",
+      "owner": "workflows"
+    },
+    {
+      "path": "/approvals",
+      "component": "ApprovalsCenter",
+      "domain": "approvals",
+      "owner": "approvals"
+    },
+    {
+      "path": "/approvals/pending",
+      "component": "ApprovalsCenter",
+      "domain": "approvals",
+      "owner": "approvals"
+    },
+    {
+      "path": "/approvals/simulated",
+      "component": "ApprovalsCenter",
+      "domain": "approvals",
+      "owner": "approvals"
+    },
+    {
+      "path": "/approvals/history",
+      "component": "ApprovalsCenter",
+      "domain": "approvals",
+      "owner": "approvals"
+    },
+    {
+      "path": "/approval-chamber",
+      "component": "ApprovalChamber",
+      "domain": "approval-chamber",
+      "owner": "approval-chamber"
+    },
+    {
+      "path": "/business",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/overview",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/leads",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/customers",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/customers/:id",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/customer-health",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/opportunities",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/quotes",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/invoices",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/collections",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/revenue-autopilot",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/autopilot-hub",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/revenue-impact",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/playbook-builder",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/revenue-forecast",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/communications",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/boardroom",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/proof",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/files",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/settings",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/website-builder",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/proposals",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/lead-recovery",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/social",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/ecommerce",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/integrations",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/follow-through",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/support",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/appointments",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/operations",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/documents",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-home",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-contacts",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-companies",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-pipeline",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-health",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-timeline",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-tasks",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-notes",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-segments",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-automations",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-import",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-duplicates",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-advisor",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-fields",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/business/crm-communications",
+      "component": "BusinessCenter",
+      "domain": "business",
+      "owner": "business-os"
+    },
+    {
+      "path": "/communications/inbox",
+      "component": "CommunicationInbox",
+      "domain": "communications",
+      "owner": "comms-hub"
+    },
+    {
+      "path": "/communications",
+      "component": "CommunicationsPage",
+      "domain": "communications",
+      "owner": "comms-hub"
+    },
+    {
+      "path": "/concierge",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/overview",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/calendar",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/tasks",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/school",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/grocery",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/appointments",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/travel",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/providers",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/events",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/workflows",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/proof",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/files",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/boardroom",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/settings",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/life-admin",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/errands",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/upcoming",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/recurring",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/concierge/household",
+      "component": "ConciergeCenter",
+      "domain": "concierge",
+      "owner": "concierge-os"
+    },
+    {
+      "path": "/investments",
+      "component": "InvestmentGate",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/boardroom",
+      "component": "InvestmentBoardroom",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/markets",
+      "component": "MarketExplorer",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/instrument/:instrumentId",
+      "component": "InstrumentDetail",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/portfolio",
+      "component": "PortfolioOffice",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/strategy",
+      "component": "StrategyStudio",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/execute",
+      "component": "ExecutionDesk",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/research",
+      "component": "ResearchLibrary",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/journal",
+      "component": "ThesisJournal",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/risk",
+      "component": "RiskOffice",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/advisors",
+      "component": "InvestmentAdvisorBoard",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/platforms",
+      "component": "PlatformConnections",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/events",
+      "component": "EventMarketsWorkspace",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/watchlists",
+      "component": "WatchlistsSignals",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/receipts",
+      "component": "InvestmentReceipts",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/beginner",
+      "component": "BeginnerMode",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/advanced",
+      "component": "AdvancedMode",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/capital-twin",
+      "component": "CapitalTwin",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/decision-theater",
+      "component": "DecisionTheater",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/trading-floor",
+      "component": "TradingFloor",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/war-room",
+      "component": "InvestmentWarRoom",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/time-machine",
+      "component": "TimeMachineReview",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/catalysts",
+      "component": "CatalystWarRoom",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/opportunity-map",
+      "component": "OpportunityMap",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/constitution",
+      "component": "InvestmentConstitution",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/behavioral",
+      "component": "BehavioralFirewall",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/memory",
+      "component": "MarketMemoryFeed",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/dossier",
+      "component": "IntelligenceDossier",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/probability-lab",
+      "component": "EventProbabilityLab",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/strategy-dna",
+      "component": "StrategyDNA",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/post-trade",
+      "component": "PostTradeLoop",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/cross-asset",
+      "component": "CrossAssetStoryEngine",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/conviction",
+      "component": "ConvictionEngine",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/sizing",
+      "component": "PositionSizingCoach",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/modes",
+      "component": "OperatingModes",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/readiness",
+      "component": "DecisionReadiness",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/capital-purpose",
+      "component": "CapitalPurpose",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/what-would-break",
+      "component": "WhatWouldBreak",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/disagreements",
+      "component": "DisagreementEngine",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/family-office",
+      "component": "FamilyOffice",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investments/knowledge-graph",
+      "component": "KnowledgeGraph",
+      "domain": "investments",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/investments",
+      "component": "InvestmentGate",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/revenue-office",
+      "component": "RevenueGate",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/boardroom",
+      "component": "GrowthBoardroom",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/relationships",
+      "component": "RelationshipCenter",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/pipeline",
+      "component": "PipelineStudio",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/funnels",
+      "component": "FunnelBuilder",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/campaigns",
+      "component": "CampaignOrchestrator",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/bookings",
+      "component": "BookingCenter",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/offers",
+      "component": "OffersWorkspace",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/reputation",
+      "component": "ReputationEngine",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/intelligence",
+      "component": "RevenueIntelligence",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/retention",
+      "component": "RetentionOffice",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/advisors",
+      "component": "GrowthAdvisorBoard",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/journey-twin",
+      "component": "JourneyTwin",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/leaks",
+      "component": "LeakDetector",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/conversion-lab",
+      "component": "ConversionLab",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/memberships",
+      "component": "MembershipCourseOffice",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/opportunities",
+      "component": "OpportunityBoard",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/trust-pulse",
+      "component": "TrustPulse",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/white-label",
+      "component": "WhiteLabelOffice",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/time-machine",
+      "component": "BusinessTimeMachine",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/decision-theater",
+      "component": "RevenueDecisionTheater",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/what-breaks",
+      "component": "WhatBreaksGrowth",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/growth-dna",
+      "component": "GrowthDNA",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/operating-modes",
+      "component": "GrowthOperatingModes",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/synthesis",
+      "component": "ChiefRevenueSynthesis",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/memory-feed",
+      "component": "CommercialMemoryFeed",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/forms",
+      "component": "FormsBuilder",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/segmentation",
+      "component": "SegmentationEngine",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/client-onboarding",
+      "component": "ClientOnboarding",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation",
+      "component": "AutomationOffice",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/builder",
+      "component": "AutomationBuilder",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/templates",
+      "component": "AutomationTemplates",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/simulation",
+      "component": "AutomationSimLab",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/health",
+      "component": "AutomationHealth",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/receipts",
+      "component": "AutomationReceipts",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/automation/policy",
+      "component": "AutomationPolicy",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/quotes",
+      "component": "QuoteStudio",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/calls",
+      "component": "CallDesk",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/revenue-office/onboarding",
+      "component": "BusinessOnboarding",
+      "domain": "revenue-office",
+      "owner": "revenue-office"
+    },
+    {
+      "path": "/digital-presence",
+      "component": "PresenceGate",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/boardroom",
+      "component": "PresenceBoardroom",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/twin",
+      "component": "WebsiteTwin",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/builder",
+      "component": "SiteBuilder",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/brand-studio",
+      "component": "BrandStudio",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/connected-sites",
+      "component": "ConnectedSites",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/cro",
+      "component": "CROOffice",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/ecommerce",
+      "component": "EcommerceOffice",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/promotions",
+      "component": "PromotionsOffice",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/ai-team",
+      "component": "AIWebTeam",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/radar",
+      "component": "ErrorRadar",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/content-freshness",
+      "component": "ContentFreshness",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/launch",
+      "component": "LaunchWarRoom",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/time-machine",
+      "component": "PresenceTimeMachine",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/self-healing",
+      "component": "SelfHealingQueue",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/app-studio",
+      "component": "AppExperienceStudio",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/analytics",
+      "component": "PresenceAnalytics",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/domains",
+      "component": "DomainPublishManager",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/digital-presence/onboarding",
+      "component": "DPOOnboarding",
+      "domain": "digital-presence",
+      "owner": "digital-presence"
+    },
+    {
+      "path": "/store",
+      "component": "PackStorePage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/featured",
+      "component": "PackStorePage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/installed",
+      "component": "PackInstalledPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/analytics",
+      "component": "StoreAnalyticsPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/packs/:packId",
+      "component": "PackDetailPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/apps/:appId",
+      "component": "OldAppDetailPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/founders",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/families",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/finance",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/connectors",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/surfaces",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/store/:segment",
+      "component": "StoreCategoryPage",
+      "domain": "store",
+      "owner": "store"
+    },
+    {
+      "path": "/app-store/*",
+      "component": "AppStoreCenter",
+      "domain": "app-store",
+      "owner": "app-store"
+    },
+    {
+      "path": "/digital-twins",
+      "component": "DigitalTwinsPage",
+      "domain": "digital-twins",
+      "owner": "digital-twins"
+    },
+    {
+      "path": "/digital-twins/business",
+      "component": "DigitalTwinsPage",
+      "domain": "digital-twins",
+      "owner": "digital-twins"
+    },
+    {
+      "path": "/digital-twins/money",
+      "component": "DigitalTwinsPage",
+      "domain": "digital-twins",
+      "owner": "digital-twins"
+    },
+    {
+      "path": "/digital-twins/household",
+      "component": "DigitalTwinsPage",
+      "domain": "digital-twins",
+      "owner": "digital-twins"
+    },
+    {
+      "path": "/scenario-lab",
+      "component": "ScenarioLabPage",
+      "domain": "scenario-lab",
+      "owner": "scenario-lab"
+    },
+    {
+      "path": "/ai-economics",
+      "component": "AIEconomicsPage",
+      "domain": "ai-economics",
+      "owner": "ai-economics"
+    },
+    {
+      "path": "/recovered-value",
+      "component": "RecoveredValuePage",
+      "domain": "recovered-value",
+      "owner": "recovered-value"
+    },
+    {
+      "path": "/files",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/overview",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/explorer",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/all",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/processing",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/review",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/search",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/memory",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/memory-review",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/sensitive",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/files/settings",
+      "component": "FilesCenter",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/trust",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/autonomy",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/devices",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/permissions",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/proof",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/audit",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/trust/settings",
+      "component": "TrustCenter",
+      "domain": "trust",
+      "owner": "trust"
+    },
+    {
+      "path": "/investment",
+      "component": "InvestmentGate",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/boardroom",
+      "component": "InvestmentBoardroom",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/markets",
+      "component": "MarketExplorer",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/instrument/:instrumentId",
+      "component": "InstrumentDetail",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/portfolio",
+      "component": "PortfolioOffice",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/strategy",
+      "component": "StrategyStudio",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/execute",
+      "component": "ExecutionDesk",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/research",
+      "component": "ResearchLibrary",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/journal",
+      "component": "ThesisJournal",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/risk",
+      "component": "RiskOffice",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/advisors",
+      "component": "InvestmentAdvisorBoard",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/platforms",
+      "component": "PlatformConnections",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/trading-floor",
+      "component": "TradingFloor",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/war-room",
+      "component": "InvestmentWarRoom",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/watchlists",
+      "component": "WatchlistsSignals",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/receipts",
+      "component": "InvestmentReceipts",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/behavioral",
+      "component": "BehavioralFirewall",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/investment/family-office",
+      "component": "FamilyOffice",
+      "domain": "investment",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/onboarding",
+      "component": "MoneyOnboarding",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/overview",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/bills",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/subscriptions",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/reserves",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/cash-timing",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/receivables",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/investment-office",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/tax",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/family-office",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/approvals",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/proof",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/files",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/documents",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/boardroom",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/settings",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/net-worth",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/debt-credit",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/budgets",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/transactions",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/household",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/health",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/advisors",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/scenarios",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/stress-radar",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/life-impact",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/modes",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/allocator",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/trust-graph",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/opportunity-cost",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/rituals",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/peace-score",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/boundaries",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/spending-pulse",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/reconciliation",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/money/automations",
+      "component": "MoneyCenter",
+      "domain": "money",
+      "owner": "finance-os"
+    },
+    {
+      "path": "/home",
+      "component": "DailyPulse",
+      "domain": "home",
+      "owner": "home"
+    },
+    {
+      "path": "/desktop",
+      "component": "DesktopPage",
+      "domain": "desktop",
+      "owner": "desktop"
+    },
+    {
+      "path": "/pulse",
+      "component": "DailyPulse",
+      "domain": "pulse",
+      "owner": "brain-core"
+    },
+    {
+      "path": "/daily-pulse",
+      "component": "DailyPulse",
+      "domain": "daily-pulse",
+      "owner": "daily-pulse"
+    },
+    {
+      "path": "/profile",
+      "component": "UserProfilePage",
+      "domain": "profile",
+      "owner": "profile"
+    },
+    {
+      "path": "/life",
+      "component": "LifeDashboard",
+      "domain": "life",
+      "owner": "life"
+    },
+    {
+      "path": "/life-simulator",
+      "component": "LifeSimulator",
+      "domain": "life-simulator",
+      "owner": "life-simulator"
+    },
+    {
+      "path": "/personal-life",
+      "component": "PersonalLifeWorkspace",
+      "domain": "personal-life",
+      "owner": "personal-life"
+    },
+    {
+      "path": "/downloads",
+      "component": "DownloadsCenter",
+      "domain": "downloads",
+      "owner": "downloads"
+    },
+    {
+      "path": "/download",
+      "component": "DownloadPage",
+      "domain": "download",
+      "owner": "download"
+    },
+    {
+      "path": "/wealth-command",
+      "component": "WealthCommandCenter",
+      "domain": "wealth-command",
+      "owner": "wealth-command"
+    },
+    {
+      "path": "/time-machine",
+      "component": "TimeMachinePage",
+      "domain": "time-machine",
+      "owner": "time-machine"
+    },
+    {
+      "path": "/achievements",
+      "component": "AchievementsPage",
+      "domain": "achievements",
+      "owner": "achievements"
+    },
+    {
+      "path": "/simulation-engine",
+      "component": "SimulationEnginePage",
+      "domain": "simulation-engine",
+      "owner": "simulation-engine"
+    },
+    {
+      "path": "/storage",
+      "component": "StorageManager",
+      "domain": "storage",
+      "owner": "storage"
+    },
+    {
+      "path": "/network",
+      "component": "NetworkUtility",
+      "domain": "network",
+      "owner": "network"
+    },
+    {
+      "path": "/planning-canvas",
+      "component": "PlanningCanvas",
+      "domain": "planning-canvas",
+      "owner": "planning-canvas"
+    },
+    {
+      "path": "/my-activity",
+      "component": "MyActivity",
+      "domain": "my-activity",
+      "owner": "my-activity"
+    },
+    {
+      "path": "/search",
+      "component": "SearchPage",
+      "domain": "search",
+      "owner": "search"
+    },
+    {
+      "path": "/inbox",
+      "component": "InboxCapture",
+      "domain": "inbox",
+      "owner": "inbox"
+    },
+    {
+      "path": "/inbox/capture",
+      "component": "InboxCapture",
+      "domain": "inbox",
+      "owner": "inbox"
+    },
+    {
+      "path": "/inbox/processed",
+      "component": "InboxCapture",
+      "domain": "inbox",
+      "owner": "inbox"
+    },
+    {
+      "path": "/inbox/review",
+      "component": "InboxCapture",
+      "domain": "inbox",
+      "owner": "inbox"
+    },
+    {
+      "path": "/activity",
+      "component": "ActivityStream",
+      "domain": "activity",
+      "owner": "activity"
+    },
+    {
+      "path": "/opportunities",
+      "component": "OpportunityEngine",
+      "domain": "opportunities",
+      "owner": "opportunities"
+    },
+    {
+      "path": "/outcomes",
+      "component": "OutcomeEnginePage",
+      "domain": "outcomes",
+      "owner": "outcomes"
+    },
+    {
+      "path": "/spillovers",
+      "component": "SpilloverDashboard",
+      "domain": "spillovers",
+      "owner": "spillovers"
+    },
+    {
+      "path": "/ai-workforce",
+      "component": "AIWorkforcePage",
+      "domain": "ai-workforce",
+      "owner": "ai-workforce"
+    },
+    {
+      "path": "/capital-allocation",
+      "component": "CapitalAllocationPage",
+      "domain": "capital-allocation",
+      "owner": "capital-allocation"
+    },
+    {
+      "path": "/sovereign-export",
+      "component": "SovereignExportPage",
+      "domain": "sovereign-export",
+      "owner": "sovereign-export"
+    },
+    {
+      "path": "/notifications/settings",
+      "component": "NotificationSettingsPage",
+      "domain": "notifications",
+      "owner": "notifications"
+    },
+    {
+      "path": "/settings/notifications",
+      "component": "NotificationPreferences",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/notifications",
+      "component": "NotificationCenter",
+      "domain": "notifications",
+      "owner": "notifications"
+    },
+    {
+      "path": "/settings",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/trust",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/profile",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/connectors",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/permissions",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/billing",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/privacy",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/appearance",
+      "component": "SettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/plan-usage",
+      "component": "MyPlanUsage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/accessibility",
+      "component": "AccessibilitySettings",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/device",
+      "component": "DeviceSettingsPage",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/trusted-devices",
+      "component": "TrustedDeviceManager",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/mfa",
+      "component": "MFAEnrollment",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/passkey",
+      "component": "PasskeyManagement",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/personalization",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/personalization/profile",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/personalization/preferences",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/personalization/memory",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/personalization/automation",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/personalization/boardroom",
+      "component": "PersonalizationStudio",
+      "domain": "personalization",
+      "owner": "personalization"
+    },
+    {
+      "path": "/memory",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/profile",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/business",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/money",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/household",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/workflows",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/memory/preferences",
+      "component": "MemoryCenter",
+      "domain": "memory",
+      "owner": "memory"
+    },
+    {
+      "path": "/automation",
+      "component": "AutomationCenter",
+      "domain": "automation",
+      "owner": "automation"
+    },
+    {
+      "path": "/automation/rules",
+      "component": "AutomationCenter",
+      "domain": "automation",
+      "owner": "automation"
+    },
+    {
+      "path": "/automation/trust",
+      "component": "AutomationCenter",
+      "domain": "automation",
+      "owner": "automation"
+    },
+    {
+      "path": "/automation/delegations",
+      "component": "AutomationCenter",
+      "domain": "automation",
+      "owner": "automation"
+    },
+    {
+      "path": "/system",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/trust",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/health",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/connectors",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/history",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/slos",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/self-healing",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/incidents",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/system/fleet",
+      "component": "SystemStatus",
+      "domain": "system",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/mission-control",
+      "component": "MissionControl",
+      "domain": "mission-control",
+      "owner": "mission-control"
+    },
+    {
+      "path": "/display-modes",
+      "component": "CalmFocusMode",
+      "domain": "display-modes",
+      "owner": "display-modes"
+    },
+    {
+      "path": "/communication-inbox",
+      "component": "CommunicationInbox",
+      "domain": "communication-inbox",
+      "owner": "communication-inbox"
+    },
+    {
+      "path": "/command-history",
+      "component": "CommandHistory",
+      "domain": "command-history",
+      "owner": "command-history"
+    },
+    {
+      "path": "/environment-switcher",
+      "component": "EnvironmentSwitcherPage",
+      "domain": "environment-switcher",
+      "owner": "environment-switcher"
+    },
+    {
+      "path": "/update-center",
+      "component": "UpdateCenterPage",
+      "domain": "update-center",
+      "owner": "update-center"
+    },
+    {
+      "path": "/first-boot",
+      "component": "FirstBootSetup",
+      "domain": "first-boot",
+      "owner": "first-boot"
+    },
+    {
+      "path": "/clipboard-history",
+      "component": "ClipboardHistory",
+      "domain": "clipboard-history",
+      "owner": "clipboard-history"
+    },
+    {
+      "path": "/print-scan",
+      "component": "PrintScanCenter",
+      "domain": "print-scan",
+      "owner": "print-scan"
+    },
+    {
+      "path": "/recovery",
+      "component": "RecoveryCenter",
+      "domain": "recovery",
+      "owner": "recovery"
+    },
+    {
+      "path": "/personal-brain",
+      "component": "PersonalBrain",
+      "domain": "personal-brain",
+      "owner": "personal-brain"
+    },
+    {
+      "path": "/calendar",
+      "component": "CalendarWorkspace",
+      "domain": "calendar",
+      "owner": "calendar"
+    },
+    {
+      "path": "/tasks",
+      "component": "TasksWorkflowsCenter",
+      "domain": "tasks",
+      "owner": "tasks"
+    },
+    {
+      "path": "/notes",
+      "component": "NotesWorkspace",
+      "domain": "notes",
+      "owner": "notes"
+    },
+    {
+      "path": "/people",
+      "component": "PeopleWorkspace",
+      "domain": "people",
+      "owner": "people"
+    },
+    {
+      "path": "/team",
+      "component": "TeamWorkspace",
+      "domain": "team",
+      "owner": "team"
+    },
+    {
+      "path": "/editor",
+      "component": "DocumentEditor",
+      "domain": "editor",
+      "owner": "editor"
+    },
+    {
+      "path": "/reporting",
+      "component": "ReportingWorkspace",
+      "domain": "reporting",
+      "owner": "reporting"
+    },
+    {
+      "path": "/media",
+      "component": "MediaWorkspace",
+      "domain": "media",
+      "owner": "media"
+    },
+    {
+      "path": "/templates",
+      "component": "TemplateCenter",
+      "domain": "templates",
+      "owner": "templates"
+    },
+    {
+      "path": "/import-export",
+      "component": "ImportExportCenter",
+      "domain": "import-export",
+      "owner": "import-export"
+    },
+    {
+      "path": "/files/pdf-viewer",
+      "component": "PDFViewerWorkspace",
+      "domain": "files",
+      "owner": "document-engine"
+    },
+    {
+      "path": "/workspace/data-grid",
+      "component": "SpreadsheetWorkspace",
+      "domain": "workspace",
+      "owner": "workspace"
+    },
+    {
+      "path": "/apps/email",
+      "component": "EmailApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/messenger",
+      "component": "MessengerApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/vault",
+      "component": "VaultApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/health",
+      "component": "HealthApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/gallery",
+      "component": "GalleryApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/apps/weather-news",
+      "component": "WeatherNewsApp",
+      "domain": "apps",
+      "owner": "app-platform"
+    },
+    {
+      "path": "/intelligence",
+      "component": "IntelligenceDashboard",
+      "domain": "intelligence",
+      "owner": "brain-core"
+    },
+    {
+      "path": "/intelligence/dashboard",
+      "component": "IntelligenceDashboard",
+      "domain": "intelligence",
+      "owner": "brain-core"
+    },
+    {
+      "path": "/intelligence/device-mesh",
+      "component": "DeviceMeshPanel",
+      "domain": "intelligence",
+      "owner": "brain-core"
+    },
+    {
+      "path": "/intelligence/privacy",
+      "component": "PrivacyControlCenter",
+      "domain": "intelligence",
+      "owner": "brain-core"
+    },
+    {
+      "path": "/settings/environment",
+      "component": "EnvironmentSwitcher",
+      "domain": "settings",
+      "owner": "platform-admin"
+    },
+    {
+      "path": "/settings/self-service",
+      "component": "TenantSelfServiceConsole",
+      "domain": "settings",
+      "owner": "platform-admin"
+    }
+  ]
+}

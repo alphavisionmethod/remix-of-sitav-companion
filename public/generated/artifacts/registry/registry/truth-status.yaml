@@ -1,0 +1,63 @@
+# SITA OS — Truth Status Registry
+# Tracks what is deterministic vs narrative, verified vs scaffold
+
+truth_boundaries:
+  deterministic:
+    description: Must use sovereign-calculation, never LLM approximation
+    fields:
+      - tax-estimation
+      - safe-to-spend
+      - reserve-calculations
+      - burn-rate
+      - burn-multiple
+      - invoice-aging
+      - budget-utilization
+      - cash-flow-projections
+      - payment-amounts
+      - transaction-categorization-rules
+
+  verified-external:
+    description: Must come from connector sync, not generated
+    fields:
+      - account-balances
+      - transaction-records
+      - calendar-events
+      - email-content
+      - file-contents
+      - booking-confirmations
+      - payment-confirmations
+
+  canonical-record:
+    description: Must come from database, not inferred
+    fields:
+      - customer-records
+      - invoice-records
+      - approval-decisions
+      - receipt-hashes
+      - workflow-states
+      - pack-install-states
+
+  narrative-allowed:
+    description: LLM generation acceptable with confidence scoring
+    fields:
+      - executive-summaries
+      - opportunity-descriptions
+      - risk-narratives
+      - follow-up-suggestions
+      - household-briefings
+      - boardroom-synthesis
+      - explanation-text
+
+staleness_thresholds:
+  finance: 3600       # 1 hour
+  calendar: 1800      # 30 minutes
+  email: 900          # 15 minutes
+  crm: 7200           # 2 hours
+  household: 14400    # 4 hours
+  connectors: 300     # 5 minutes
+
+downgrade_behavior:
+  stale_data: caveat     # Add warning, still show
+  missing_source: refuse  # Don't generate
+  contradiction: flag     # Show both, let user decide
+  low_confidence: caveat  # Add uncertainty indicator

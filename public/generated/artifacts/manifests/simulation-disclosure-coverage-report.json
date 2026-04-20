@@ -1,0 +1,248 @@
+{
+  "generatedAt": "2026-04-19T18:37:26.281Z",
+  "gate": "simulation-disclosure-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 47,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/components/admin/integrations/IntegrationStreakPanel.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/AIChangePlanViewer.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/ActionLineageExplorer.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/AuditComplianceWorkspace.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/BuilderKnowledgeBase.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/CN01ConnectorRealityOverview.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/CN03AccountLinkageBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/ComputeGovernanceBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/ConscienceGateDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/ContractBackendReadiness.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/DRS06DemoPolicySafety.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/DRS10DualRealityLaunchGate.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/DomainManifestDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/FL03FlagshipPrioritization.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/FeatureRealityDetail.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/InfraRealityClassificationBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/KernelDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/LaunchHonestyBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/MigrationWavePlanner.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/MockEliminationCenter.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/MockReplacementProgram.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/MockSourceInventory.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/OutcomeEconomicsDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/PolicySimulator.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/RealityProgressTimeline.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/RouteSourceDiagnostics.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/RuntimeRealityValidation.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/RuntimeTierGovernanceDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/RuntimeTruthCoverageDashboard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/SimulatedCoreServicesBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/UserSeedHealth.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/implementation-truth/ITC09RouteInventory.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/CoreServicePersistence.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/LaunchHonestyBoard.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/MockReplacementProgram.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP03FeatureDetail.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP05MockSourceInventory.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP07RouteHeatmap.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP08ContractReadiness.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP10WavePlanner.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RCP11ProgressTimeline.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RealityClassificationMatrix.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    },
+    {
+      "severity": "warning",
+      "area": "missing-simulation-disclosure",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx: contains simulation/demo/preview tokens without an explicit disclosure badge"
+    }
+  ],
+  "scanned": 581,
+  "withSim": 53,
+  "offenders": 47,
+  "classification": "warn-tier-disclosure-coverage"
+}

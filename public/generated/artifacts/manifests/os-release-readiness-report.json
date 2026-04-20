@@ -1,0 +1,2483 @@
+{
+  "generatedAt": "2026-04-20T01:46:28.988Z",
+  "gate": "os-release-readiness",
+  "phase": "phase-12-native-deployability",
+  "inputs": [
+    {
+      "file": "generated/os-build-pipeline-report.json",
+      "gate": "os-build-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-trust-chain-readiness-report.json",
+      "gate": "os-trust-chain-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-update-readiness-report.json",
+      "gate": "os-update-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-recovery-readiness-report.json",
+      "gate": "os-recovery-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/native-shell-session-readiness-report.json",
+      "gate": "native-shell-session-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/qemu-vm-readiness-report.json",
+      "gate": "qemu-vm-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-support-bundle-readiness-report.json",
+      "gate": "os-support-bundle-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/native-observability-readiness-report.json",
+      "gate": "native-observability-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/deployment-profile-coverage-report.json",
+      "gate": "deployment-profile-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-plane-coverage-report.json",
+      "gate": "route-plane-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/5-plane-boundaries-report.json",
+      "gate": "5-plane-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-plane-map-report.json",
+      "gate": "app-plane-map",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/user-profile-readiness-report.json",
+      "gate": "user-profile-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/operator-readiness-report.json",
+      "gate": "operator-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-store-readiness-report.json",
+      "gate": "mobile-store-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-build-pipeline-report.json",
+      "gate": "mobile-build-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 5
+    },
+    {
+      "file": "generated/ks-payments-auth-readiness-report.json",
+      "gate": "ks-payments-auth-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ci-artifacts-proof-report.json",
+      "gate": "ci-artifacts-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/electron-signing-readiness-report.json",
+      "gate": "electron-signing-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/lib-decomposition-readiness-report.json",
+      "gate": "lib-decomposition-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1731
+    },
+    {
+      "file": "generated/lib-ownership-drift-report.json",
+      "gate": "lib-ownership-drift",
+      "ok": true,
+      "errors": 0,
+      "warnings": 82
+    },
+    {
+      "file": "generated/misplaced-runtime-logic-report.json",
+      "gate": "misplaced-runtime-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/misplaced-data-logic-report.json",
+      "gate": "misplaced-data-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/misplaced-domain-logic-report.json",
+      "gate": "misplaced-domain-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/legacy-wrapper-usage-report.json",
+      "gate": "legacy-wrapper-usage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1518
+    },
+    {
+      "file": "generated/profile-runtime-hardening-report.json",
+      "gate": "profile-runtime-hardening",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/launcher-registry-completeness-report.json",
+      "gate": "launcher-registry-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-profile-matrix-report.json",
+      "gate": "app-profile-matrix",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/hidden-app-routes-report.json",
+      "gate": "hidden-app-routes",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-capability-truth-report.json",
+      "gate": "mobile-capability-truth",
+      "ok": true,
+      "errors": 0,
+      "warnings": 5
+    },
+    {
+      "file": "generated/profile-route-coverage-report.json",
+      "gate": "profile-route-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/command-palette-profile-leakage-report.json",
+      "gate": "command-palette-profile-leakage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/shared-component-profile-pollution-report.json",
+      "gate": "shared-component-profile-pollution",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-guard-coverage-report.json",
+      "gate": "route-guard-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/profile-runtime-baseline-drift-report.json",
+      "gate": "profile-runtime-baseline-drift",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/boardroom-layer7-closure-report.json",
+      "gate": "boardroom-layer7-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-claim-safety-report.json",
+      "gate": "os-claim-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/track-b-language-boundaries-report.json",
+      "gate": "track-b-language-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-prohibited-native-claims-report.json",
+      "gate": "no-prohibited-native-claims",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/demo-only-surface-badging-report.json",
+      "gate": "demo-only-surface-badging",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/future-vision-route-containment-report.json",
+      "gate": "future-vision-route-containment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/device-surface-claim-safety-report.json",
+      "gate": "device-surface-claim-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/deployment-wording-safety-report.json",
+      "gate": "deployment-wording-safety",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/launch-honesty-alignment-report.json",
+      "gate": "launch-honesty-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/qualifier-required-claims-report.json",
+      "gate": "qualifier-required-claims",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/gate-meaningfulness-report.json",
+      "gate": "gate-meaningfulness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-store-lifecycle-reality-report.json",
+      "gate": "app-store-lifecycle-reality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/frontend-polish-coverage-report.json",
+      "gate": "frontend-polish-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-operator-coherence-report.json",
+      "gate": "admin-operator-coherence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/human-use-operational-readiness-report.json",
+      "gate": "human-use-operational-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-registry-report.json",
+      "gate": "internal-agent-registry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-runtime-coverage-report.json",
+      "gate": "internal-agent-runtime-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-admin-pages-report.json",
+      "gate": "internal-agent-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-escalation-runtime-report.json",
+      "gate": "internal-agent-escalation-runtime",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-seed-integrity-report.json",
+      "gate": "internal-agent-seed-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-runtime-loop-report.json",
+      "gate": "internal-agent-runtime-loop",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-ai-runtime-drilldowns-report.json",
+      "gate": "admin-ai-runtime-drilldowns",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-integrations-health-visibility-report.json",
+      "gate": "admin-integrations-health-visibility",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-simulated-persona-disclosure-report.json",
+      "gate": "onboarding-simulated-persona-disclosure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/boardroom-briefing-truth-alignment-report.json",
+      "gate": "boardroom-briefing-truth-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/concierge-ai-state-handling-report.json",
+      "gate": "concierge-ai-state-handling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/communications-connector-state-alignment-report.json",
+      "gate": "communications-connector-state-alignment",
+      "ok": true,
+      "errors": 0,
+      "warnings": 2
+    },
+    {
+      "file": "generated/flagship-surface-trust-copy-report.json",
+      "gate": "flagship-surface-trust-copy",
+      "ok": true,
+      "errors": 0,
+      "warnings": 4
+    },
+    {
+      "file": "generated/flagship-surface-responsive-quality-report.json",
+      "gate": "flagship-surface-responsive-quality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 14
+    },
+    {
+      "file": "generated/admin-empty-state-patterns-report.json",
+      "gate": "admin-empty-state-patterns",
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    {
+      "file": "generated/cross-domain-coherence-empty-state-report.json",
+      "gate": "cross-domain-coherence-empty-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cost-spotlight-empty-state-report.json",
+      "gate": "cost-spotlight-empty-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/sbom-history-empty-state-report.json",
+      "gate": "sbom-history-empty-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-execute-action-report.json",
+      "gate": "internal-agent-execute-action",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-safety-gates-report.json",
+      "gate": "autonomous-action-safety-gates",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-receipts-report.json",
+      "gate": "autonomous-action-receipts",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/autonomous-action-rollback-coverage-report.json",
+      "gate": "autonomous-action-rollback-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/error-patrol-triage-page-report.json",
+      "gate": "error-patrol-triage-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/agent-primitive-wiring-report.json",
+      "gate": "agent-primitive-wiring",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/priority-bridge-wiring-report.json",
+      "gate": "priority-bridge-wiring",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/kill-switch-backfill-report.json",
+      "gate": "kill-switch-backfill",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/bridge-status-contract-report.json",
+      "gate": "bridge-status-contract",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-reflection-table-report.json",
+      "gate": "internal-agent-reflection-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-reflect-function-report.json",
+      "gate": "internal-agent-reflect-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/reflection-board-page-report.json",
+      "gate": "reflection-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/implementation-suggestions-pipeline-report.json",
+      "gate": "implementation-suggestions-pipeline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/suggestion-generator-function-report.json",
+      "gate": "suggestion-generator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/weekly-digest-generation-report.json",
+      "gate": "weekly-digest-generation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dependency-upgrade-proposer-report.json",
+      "gate": "dependency-upgrade-proposer",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-score-update-logic-report.json",
+      "gate": "trust-score-update-logic",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/reflection-to-action-linkage-report.json",
+      "gate": "reflection-to-action-linkage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-policy-drafts-table-report.json",
+      "gate": "internal-agent-policy-drafts-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-policy-architect-function-report.json",
+      "gate": "internal-agent-policy-architect-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/policy-draft-review-page-report.json",
+      "gate": "policy-draft-review-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/policy-draft-never-auto-apply-report.json",
+      "gate": "policy-draft-never-auto-apply",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-trust-ladder-table-report.json",
+      "gate": "internal-agent-trust-ladder-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-trust-evaluator-function-report.json",
+      "gate": "internal-agent-trust-evaluator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-board-page-report.json",
+      "gate": "trust-ladder-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-never-self-promote-report.json",
+      "gate": "trust-ladder-never-self-promote",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/knowledge-bus-write-discipline-report.json",
+      "gate": "knowledge-bus-write-discipline",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-ladder-supervisor-readout-report.json",
+      "gate": "trust-ladder-supervisor-readout",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-consensus-tables-report.json",
+      "gate": "internal-agent-consensus-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-cost-proposals-table-report.json",
+      "gate": "internal-agent-cost-proposals-table",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-runbook-tables-report.json",
+      "gate": "internal-agent-runbook-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cross-council-l3-ceiling-report.json",
+      "gate": "cross-council-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cost-proposals-never-auto-apply-report.json",
+      "gate": "cost-proposals-never-auto-apply",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/self-healer-safe-catalogue-report.json",
+      "gate": "self-healer-safe-catalogue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cross-council-board-page-report.json",
+      "gate": "cross-council-board-page",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase7-tables-report.json",
+      "gate": "internal-agent-phase7-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-l3-ceiling-report.json",
+      "gate": "tenant-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/owner-copilot-bff-readonly-report.json",
+      "gate": "owner-copilot-bff-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-kill-switch-justification-report.json",
+      "gate": "tenant-kill-switch-justification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/slo-evaluator-function-report.json",
+      "gate": "slo-evaluator-function",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase7-admin-pages-report.json",
+      "gate": "phase7-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase8-tables-report.json",
+      "gate": "internal-agent-phase8-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/assurance-l3-ceiling-report.json",
+      "gate": "assurance-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/chaos-safe-catalogue-report.json",
+      "gate": "chaos-safe-catalogue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/external-workforce-api-readonly-report.json",
+      "gate": "external-workforce-api-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/webhook-hmac-signing-report.json",
+      "gate": "webhook-hmac-signing",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/federation-optin-required-report.json",
+      "gate": "federation-optin-required",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dp-noise-floor-report.json",
+      "gate": "dp-noise-floor",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/knowledge-anonymization-report.json",
+      "gate": "knowledge-anonymization",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase8-admin-pages-report.json",
+      "gate": "phase8-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/internal-agent-phase9-tables-report.json",
+      "gate": "internal-agent-phase9-tables",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dr-l3-ceiling-report.json",
+      "gate": "dr-l3-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/signed-release-artifacts-report.json",
+      "gate": "signed-release-artifacts",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/audit-export-immutable-report.json",
+      "gate": "audit-export-immutable",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-self-service-isolation-report.json",
+      "gate": "tenant-self-service-isolation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-quota-hard-ceiling-report.json",
+      "gate": "tenant-quota-hard-ceiling",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/compliance-evidence-allowlisted-report.json",
+      "gate": "compliance-evidence-allowlisted",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/attestation-packet-signed-report.json",
+      "gate": "attestation-packet-signed",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/phase9-admin-pages-report.json",
+      "gate": "phase9-admin-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/tenant-admin-role-gate-report.json",
+      "gate": "tenant-admin-role-gate",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dp-epsilon-budget-ledger-report.json",
+      "gate": "dp-epsilon-budget-ledger",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/webhook-retry-queue-report.json",
+      "gate": "webhook-retry-queue",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/compliance-collector-allowlist-report.json",
+      "gate": "compliance-collector-allowlist",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/pg-cron-schedules-report.json",
+      "gate": "pg-cron-schedules",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/pg-extensions-enabled-report.json",
+      "gate": "pg-extensions-enabled",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/release-artifact-signer-report.json",
+      "gate": "release-artifact-signer",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-deployment-readiness-report.json",
+      "gate": "final-deployment-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-runtime-proof-report.json",
+      "gate": "final-runtime-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-mobile-truth-report.json",
+      "gate": "final-mobile-truth",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-ai-workforce-readiness-report.json",
+      "gate": "final-ai-workforce-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-launch-honesty-report.json",
+      "gate": "final-launch-honesty",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-supportability-readiness-report.json",
+      "gate": "final-supportability-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/final-gate-meaningfulness-report.json",
+      "gate": "final-gate-meaningfulness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-live-provider-nightly-report.json",
+      "gate": "ai-live-provider-nightly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-receipt-persistence-report.json",
+      "gate": "ai-receipt-persistence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-ledger-write-verification-report.json",
+      "gate": "ai-ledger-write-verification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-fallback-verification-report.json",
+      "gate": "ai-fallback-verification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-budget-enforcement-under-load-report.json",
+      "gate": "ai-budget-enforcement-under-load",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-runtime-streak-health-report.json",
+      "gate": "ai-runtime-streak-health",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/google-refresh-nightly-report.json",
+      "gate": "google-refresh-nightly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/microsoft-refresh-nightly-report.json",
+      "gate": "microsoft-refresh-nightly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/slack-refresh-nightly-report.json",
+      "gate": "slack-refresh-nightly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/connector-health-state-consistency-report.json",
+      "gate": "connector-health-state-consistency",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/no-ambiguous-connected-state-report.json",
+      "gate": "no-ambiguous-connected-state",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/long-tail-provider-classification-report.json",
+      "gate": "long-tail-provider-classification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/connector-refresh-streak-report.json",
+      "gate": "connector-refresh-streak",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/mobile-native-out-of-scope-truth-report.json",
+      "gate": "mobile-native-out-of-scope-truth",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-active-native-mobile-claims-report.json",
+      "gate": "no-active-native-mobile-claims",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/install-page-mobile-honesty-report.json",
+      "gate": "install-page-mobile-honesty",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-manifest-archive-classification-report.json",
+      "gate": "mobile-manifest-archive-classification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/generated-mobile-truth-consistency-report.json",
+      "gate": "generated-mobile-truth-consistency",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/empty-state-coverage-report.json",
+      "gate": "empty-state-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cta-integrity-report.json",
+      "gate": "cta-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-shell-only-production-pages-report.json",
+      "gate": "no-shell-only-production-pages",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/state-handling-consistency-report.json",
+      "gate": "state-handling-consistency",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-board-polish-report.json",
+      "gate": "admin-board-polish",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/trust-copy-quality-report.json",
+      "gate": "trust-copy-quality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/responsive-surface-integrity-report.json",
+      "gate": "responsive-surface-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-top-task-discoverability-report.json",
+      "gate": "admin-top-task-discoverability",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-museum-boards-report.json",
+      "gate": "no-museum-boards",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/admin-action-orientation-report.json",
+      "gate": "admin-action-orientation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-contract-coverage-report.json",
+      "gate": "edge-function-contract-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/warn-ratchet-meaningfulness-report.json",
+      "gate": "warn-ratchet-meaningfulness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/evidence-freshness-blocking-report.json",
+      "gate": "evidence-freshness-blocking",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/behavioral-ci-coverage-report.json",
+      "gate": "behavioral-ci-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/gate-quality-classification-report.json",
+      "gate": "gate-quality-classification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/real-hardware-proof-report.json",
+      "gate": "real-hardware-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/hardware-certification-matrix-report.json",
+      "gate": "hardware-certification-matrix",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/attestation-evidence-freshness-report.json",
+      "gate": "attestation-evidence-freshness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/operator-drill-execution-report.json",
+      "gate": "operator-drill-execution",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/runbook-human-use-proof-report.json",
+      "gate": "runbook-human-use-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/kill-switch-drill-readiness-report.json",
+      "gate": "kill-switch-drill-readiness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/supportability-freshness-report.json",
+      "gate": "supportability-freshness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/secret-rotation-cadence-report.json",
+      "gate": "secret-rotation-cadence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/secret-rotation-freshness-report.json",
+      "gate": "secret-rotation-freshness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 8
+    },
+    {
+      "file": "generated/security-adversarial-proof-report.json",
+      "gate": "security-adversarial-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 4
+    },
+    {
+      "file": "generated/rls-under-stress-report.json",
+      "gate": "rls-under-stress",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/electron-threat-detection-proof-report.json",
+      "gate": "electron-threat-detection-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    {
+      "file": "generated/debugger-tamper-proof-report.json",
+      "gate": "debugger-tamper-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/session-threat-behavior-report.json",
+      "gate": "session-threat-behavior",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/no-browser-trapped-shared-hooks-report.json",
+      "gate": "no-browser-trapped-shared-hooks",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/runtime-host-abstraction-report.json",
+      "gate": "runtime-host-abstraction",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/portability-boundaries-report.json",
+      "gate": "portability-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-browser-globals-in-portable-code-report.json",
+      "gate": "no-browser-globals-in-portable-code",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-structured-logging-report.json",
+      "gate": "edge-function-structured-logging",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/no-duplicate-truth-manifests-report.json",
+      "gate": "no-duplicate-truth-manifests",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-stale-canonical-docs-report.json",
+      "gate": "no-stale-canonical-docs",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/safe-cleanup-regressions-report.json",
+      "gate": "safe-cleanup-regressions",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/per-user-ai-ceilings-report.json",
+      "gate": "per-user-ai-ceilings",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-budget-hard-stop-report.json",
+      "gate": "ai-budget-hard-stop",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/calm-mode-default-posture-report.json",
+      "gate": "calm-mode-default-posture",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/agency-wording-lockdown-report.json",
+      "gate": "agency-wording-lockdown",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/future-surfaces-registered-report.json",
+      "gate": "future-surfaces-registered",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/negative-receipts-emitted-report.json",
+      "gate": "negative-receipts-emitted",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/economic-trust-future-closure-report.json",
+      "gate": "economic-trust-future-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/runtime-host-boundaries-report.json",
+      "gate": "runtime-host-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/shell-runtime-portability-report.json",
+      "gate": "shell-runtime-portability",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-log-shape-report.json",
+      "gate": "edge-function-log-shape",
+      "ok": true,
+      "errors": 0,
+      "warnings": 38
+    },
+    {
+      "file": "generated/mobile-archived-scope-report.json",
+      "gate": "mobile-archived-scope",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/no-kernel-overclaim-report.json",
+      "gate": "no-kernel-overclaim",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/doc-canonicality-report.json",
+      "gate": "doc-canonicality",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/canonical-paths-report.json",
+      "gate": "canonical-paths",
+      "ok": true,
+      "errors": 0,
+      "warnings": 6
+    },
+    {
+      "file": "generated/5-plane-boundaries-report.json",
+      "gate": "5-plane-boundaries",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/evidence-graph-completeness-report.json",
+      "gate": "evidence-graph-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/cron-execution-evidence-report.json",
+      "gate": "cron-execution-evidence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 12
+    },
+    {
+      "file": "generated/release-decision-persistence-report.json",
+      "gate": "release-decision-persistence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 1
+    },
+    {
+      "file": "generated/ai-receipt-completeness-report.json",
+      "gate": "ai-receipt-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/connector-reauth-telemetry-report.json",
+      "gate": "connector-reauth-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/security-fabric-probes-report.json",
+      "gate": "security-fabric-probes",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-sdk-extension-registry-report.json",
+      "gate": "app-sdk-extension-registry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/boardroom-cockpit-telemetry-report.json",
+      "gate": "boardroom-cockpit-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-branch-telemetry-report.json",
+      "gate": "onboarding-branch-telemetry",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-deferral-attestation-report.json",
+      "gate": "mobile-deferral-attestation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/app-sdk-extension-events-report.json",
+      "gate": "app-sdk-extension-events",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/release-evidence-graph-snapshot-report.json",
+      "gate": "release-evidence-graph-snapshot",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/owner-copilot-readonly-report.json",
+      "gate": "owner-copilot-readonly",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/federation-optin-append-only-report.json",
+      "gate": "federation-optin-append-only",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/dr-drill-evidence-report.json",
+      "gate": "dr-drill-evidence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/chaos-drill-classification-report.json",
+      "gate": "chaos-drill-classification",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/production-launch-attestation-report.json",
+      "gate": "production-launch-attestation",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/electron-domain-layout-report.json",
+      "gate": "electron-domain-layout",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-ci-end-to-end-report.json",
+      "gate": "os-ci-end-to-end",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-engineer-tab-registry-report.json",
+      "gate": "ai-engineer-tab-registry (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-engineer-wiring-coverage-report.json",
+      "gate": "ai-engineer-wiring-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 68
+    },
+    {
+      "file": "generated/ai-engineer-primitive-coverage-report.json",
+      "gate": "ai-engineer-primitive-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 72
+    },
+    {
+      "file": "generated/ai-engineer-action-coverage-report.json",
+      "gate": "ai-engineer-action-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 18
+    },
+    {
+      "file": "",
+      "gate": "action-envelope-boundary (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-command-palette-coherence (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-domain-budget (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-ia (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-page-classification-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-route-coherence (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-route-registry-conformance (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-shell-consistency (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "admin-top-level-domain-count (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "advisor-registry (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-advisor-reality-report.json",
+      "gate": "ai-advisor-reality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "app-plane-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/appliance-deployability-report.json",
+      "gate": "appliance-deployability (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "artifact-ownership-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/backend-api-deployability-report.json",
+      "gate": "backend-api-deployability (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "boot-chain (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "bounded-context-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "capability-families (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "ci-umbrella-integrity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "component-classification (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "connector-catalog (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/connector-reality-report.json",
+      "gate": "connector-reality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "context-membership (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "contract-family-completeness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "contract-registry (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "contract-topology (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/cosmetic-debt-closure-report.json",
+      "gate": "cosmetic-debt-closure (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "cta-wiring (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/db-reality-report.json",
+      "gate": "db-reality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "dead-pages (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "delegation-receipts (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "demo-data-imports (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "deployability-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "deployable-plane-isolation (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "deprecated-wrappers (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/desktop-deployability-report.json",
+      "gate": "desktop-deployability (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "domain-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/domain-reality-report.json",
+      "gate": "domain-reality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "drift (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "duplicate-families (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-health-replay-report.json",
+      "gate": "edge-function-health-replay (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "edge-function-membership-completeness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "electron-shell-session-readiness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "engine-no-io (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "error-boundaries (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "event-catalog (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "event-receipt-linkage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "experimental-isolation (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "feature-governance (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "feature-integration-completeness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "feature-reality-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "golden-path-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "hook-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "ia-coherence (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "inline-mocks (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "integration-map (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/its-real-gate-report.json",
+      "gate": "its-real-gate (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "kill-switch-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "layer-boundaries (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mock-leak-report.json",
+      "gate": "mock-leak (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "module-count (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-backend-in-ui (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-duplicate-primary-concept (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-hidden-executor (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-inline-empty-states (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-page-mocks (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-runtime-in-shared (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-ui-in-backend (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "no-workflow-bypass (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "observability-reality (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-surface-truth-report.json",
+      "gate": "onboarding-surface-truth (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "orchestration-authority (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-release-readiness-report.json",
+      "gate": "os-release-readiness (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "outbound-communication-policy (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "owner-workflow-map (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/page-registry-completeness-report.json",
+      "gate": "page-registry-completeness (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "page-state-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "plane-import-graph (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "plane-transitive (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "platform-anti-patterns (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "platform-readiness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "policy-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "policy-mapping (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "policy-resolver-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "primitive-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/production-operations-report.json",
+      "gate": "production-operations (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "projection-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "proof-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "protocol-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "receipt-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "redirect-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "registry-integrity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/residual-lib-canonicality-report.json",
+      "gate": "residual-lib-canonicality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "route-drift (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "route-page-contract-layer-usage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-registry-completeness-report.json",
+      "gate": "route-registry-completeness (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "route-truth (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "route-wrapper-usage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "runbook-coverage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "runtime-foundations (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "sensitive-document-privacy (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-authority-unique (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-consolidation-alignment (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-layer-boundaries (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-registry-sync (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-sprawl (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "service-topology (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "services-structure-hygiene (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/stale-deleted-paths-report.json",
+      "gate": "stale-deleted-paths (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "status-truth-tags (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "surface-ownership (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "system-stack (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "table-membership-completeness (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/validator-gate-coverage-report.json",
+      "gate": "validator-gate-coverage (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/web-deployability-report.json",
+      "gate": "web-deployability (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/workflow-reality-report.json",
+      "gate": "workflow-reality (advisory)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "workflow-state-usage (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "workflow-states (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "",
+      "gate": "wrapper-purity (advisory)",
+      "ok": false,
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "totalErrors": 0,
+  "totalWarnings": 3621,
+  "missingGates": [],
+  "ok": true,
+  "verdict": "YELLOW"
+}

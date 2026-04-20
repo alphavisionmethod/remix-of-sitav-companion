@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T16:25:59.246Z",
+  "gate": "no-kernel-overclaim",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 5183,
+  "violations": 0,
+  "permittedRoots": [
+    "docs/architecture/native-os-future/",
+    "archive/",
+    "scripts/validation/",
+    "generated/",
+    "node_modules/",
+    ".git/"
+  ]
+}

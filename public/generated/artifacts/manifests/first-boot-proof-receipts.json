@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "receiptTypes": [
+    {
+      "type": "first-boot",
+      "source": "src/packages/proof-model/receipts/first-boot-receipt.ts",
+      "interface": "FirstBootReceipt",
+      "phases": [
+        "hardware-detection",
+        "secure-foundation",
+        "trust-baseline",
+        "key-generation",
+        "vault-initialization",
+        "network-connectivity",
+        "runtime-bootstrap",
+        "proof-chain-genesis",
+        "provisioning-complete"
+      ],
+      "fields": {
+        "phase": "FirstBootReceiptPhase — which provisioning phase emitted this receipt",
+        "deviceId": "Unique device identifier established during provisioning",
+        "attestationHash": "Hash of the TPM attestation or software attestation",
+        "trustBaselineScore": "0-100 score representing hardware trust baseline",
+        "secureBootVerified": "Whether Secure Boot chain was verified",
+        "tpmPresent": "Whether TPM 2.0 was detected",
+        "outcome": "success | degraded | failed"
+      },
+      "chainBehavior": {
+        "extendsChain": true,
+        "requiresPreviousHash": true,
+        "genesisAllowed": true
+      }
+    },
+    {
+      "type": "system",
+      "source": "src/packages/proof-model/index.ts",
+      "emittedDuringBoot": true,
+      "bootPhases": ["runtime-bootstrap", "service-start", "boot-complete"]
+    },
+    {
+      "type": "action",
+      "source": "src/packages/proof-model/index.ts",
+      "emittedDuringBoot": false,
+      "note": "Not emitted during first-boot; begins after provisioning completes"
+    }
+  ],
+  "expectedBootSequence": [
+    { "order": 1, "receiptType": "first-boot", "phase": "hardware-detection" },
+    { "order": 2, "receiptType": "first-boot", "phase": "secure-foundation" },
+    { "order": 3, "receiptType": "first-boot", "phase": "trust-baseline" },
+    { "order": 4, "receiptType": "first-boot", "phase": "key-generation" },
+    { "order": 5, "receiptType": "first-boot", "phase": "vault-initialization" },
+    { "order": 6, "receiptType": "first-boot", "phase": "network-connectivity" },
+    { "order": 7, "receiptType": "first-boot", "phase": "runtime-bootstrap" },
+    { "order": 8, "receiptType": "first-boot", "phase": "proof-chain-genesis" },
+    { "order": 9, "receiptType": "first-boot", "phase": "provisioning-complete" },
+    { "order": 10, "receiptType": "system", "phase": "boot-complete" }
+  ]
+}

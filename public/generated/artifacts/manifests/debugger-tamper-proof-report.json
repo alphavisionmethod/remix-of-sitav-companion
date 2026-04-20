@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T14:47:58.706Z",
+  "gate": "debugger-tamper-proof",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "drills",
+      "message": "pending-drill — no real-device tamper drill recorded yet (honest WARN-tier)"
+    }
+  ],
+  "drillCount": 0
+}

@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "gate": "production-operations",
+  "phase": "phase-20.1-production-operations-closure",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "evidence": {
+    "A1_error_monitoring": {
+      "sentry_init_present": true,
+      "sentry_init_called": true,
+      "native_error_ingest_present": true,
+      "error_service_targets_ingest": true,
+      "error_explorer_present": true
+    },
+    "A2_apm_tracing": {
+      "request_context_present": true,
+      "apm_present": true,
+      "trace_shared_present": true,
+      "trace_ingest_present": true,
+      "fetch_interceptor_installed": true,
+      "span_exporter_started": true,
+      "hot_fns_wrapped": 6,
+      "hot_fns_total": 6,
+      "wrapped": [
+        "supabase/functions/agent-executor/index.ts",
+        "supabase/functions/admin-bff-gateway/index.ts",
+        "supabase/functions/user-bff-gateway/index.ts",
+        "supabase/functions/ai-gateway/index.ts",
+        "supabase/functions/payment-process/index.ts",
+        "supabase/functions/connector-proxy/index.ts"
+      ]
+    },
+    "A3_uptime": {
+      "health_check_real_probes": true,
+      "ready_present": true,
+      "live_present": true,
+      "beat_present": true,
+      "cron_present": true,
+      "uptime_lib_present": true,
+      "client_heartbeat_started": true,
+      "cron_scheduled": true,
+      "cron_jobname": "sita-health-cron-1m",
+      "cron_schedule": "* * * * *"
+    },
+    "A4_alert_routing": {
+      "ingest_present": true,
+      "route_present": true,
+      "actions_present": true,
+      "client_present": true,
+      "triage_board_demo_free": true,
+      "triage_board_live_wired": true
+    },
+    "A5_phase_20_1_closure": {
+      "alert_producers_wired": 6,
+      "alert_producers_total": 6,
+      "producers": [
+        "src/lib/observability/slo-tracking.ts",
+        "src/lib/observability/anomaly-detection.ts",
+        "supabase/functions/payment-kill-switch/index.ts",
+        "supabase/functions/connector-health/index.ts",
+        "supabase/functions/ai-health/index.ts",
+        "supabase/functions/error-ingest/index.ts"
+      ],
+      "observability_ui_wired": true,
+      "sourcemap_upload_wired": true,
+      "shared_alert_emitter": "supabase/functions/_shared/alert-emitter.ts",
+      "uptime_rollup_fn": "supabase/functions/uptime-rollup/index.ts"
+    }
+  }
+}

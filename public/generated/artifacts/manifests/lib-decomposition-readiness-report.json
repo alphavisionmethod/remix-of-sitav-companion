@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-04-18T03:07:37.996Z",
+  "gate": "lib-decomposition-readiness",
+  "remainingLibFiles": 1731,
+  "allowlistedLibFiles": 36,
+  "canonicalCounts": {
+    "src/domains": {
+      "files": 86,
+      "nonBarrel": 70
+    },
+    "src/platform": {
+      "files": 59,
+      "nonBarrel": 23
+    },
+    "src/runtimes": {
+      "files": 10,
+      "nonBarrel": 2
+    },
+    "src/data": {
+      "files": 84,
+      "nonBarrel": 77
+    },
+    "src/integrations": {
+      "files": 8,
+      "nonBarrel": 3
+    },
+    "src/contracts": {
+      "files": 3,
+      "nonBarrel": 0
+    },
+    "src/legacy": {
+      "files": 3,
+      "nonBarrel": 0
+    }
+  },
+  "populatedCanonicalDirs": 5,
+  "shimWrappers": 329,
+  "shimWrapperSample": [
+    {
+      "path": "src/lib/admin-ai/index.ts",
+      "loc": 7,
+      "reExportsFrom": "./admin-ai-workforce-client"
+    },
+    {
+      "path": "src/lib/advisor-intelligence/index.ts",
+      "loc": 15,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/advisor-topology.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/advisors/topology"
+    },
+    {
+      "path": "src/lib/ai-engineering/index.ts",
+      "loc": 22,
+      "reExportsFrom": "./observation-layer"
+    },
+    {
+      "path": "src/lib/api/index.ts",
+      "loc": 4,
+      "reExportsFrom": "./edge-client"
+    },
+    {
+      "path": "src/lib/app-platform/index.ts",
+      "loc": 8,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/app-platform/types.ts",
+      "loc": 1,
+      "reExportsFrom": "@/domains/apps/types"
+    },
+    {
+      "path": "src/lib/backend-topology/index.ts",
+      "loc": 14,
+      "reExportsFrom": "./edge-function-registry"
+    },
+    {
+      "path": "src/lib/boardroom/index.ts",
+      "loc": 5,
+      "reExportsFrom": "./types"
+    },
+    {
+      "path": "src/lib/capabilities/index.ts",
+      "loc": 16,
+      "reExportsFrom": "./capability-registry"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-abuse-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-abuse-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-audit-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-audit-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-device-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-device-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-lifecycle-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-lifecycle-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-quota-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-quota-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-storage-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-storage-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-support-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-support-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-sync-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-sync-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-tenant-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-tenant-service"
+    },
+    {
+      "path": "src/lib/cloud-backbone/cloud-worker-service.ts",
+      "loc": 1,
+      "reExportsFrom": "@/platform/cloud/cloud-worker-service"
+    }
+  ],
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1731
+}

@@ -1,0 +1,280 @@
+{
+  "generated_at": "2026-04-15T00:00:00.000Z",
+  "description": "Maps every source directory to its owning plane, deployment target, and allowed dependencies.",
+  "planes": {
+    "shared": {
+      "directories": [
+        "src/packages/contracts",
+        "src/packages/business-contracts",
+        "src/packages/finance-contracts",
+        "src/packages/concierge-contracts",
+        "src/packages/boardroom-contracts",
+        "src/packages/enterprise-contracts",
+        "src/packages/moat-contracts",
+        "src/packages/policy-contracts",
+        "src/packages/proof-model",
+        "src/packages/reality-contracts",
+        "src/packages/audit-contracts",
+        "src/packages/protocols",
+        "src/packages/design-tokens",
+        "src/packages/database-schemas",
+        "src/packages/auth",
+        "src/packages/event-types",
+        "src/packages/client-sdk",
+        "src/packages/shell-grammar",
+        "src/packages/workflow-primitives",
+        "src/packages/feature-flags",
+        "src/packages/entitlements",
+        "src/packages/store-metadata",
+        "src/packages/template-registry",
+        "src/packages/microinteraction-engine",
+        "src/packages/pack-manifests",
+        "src/packages/telemetry",
+        "src/packages/advisor-config",
+        "src/packages/feature-governance",
+        "src/packages/internal-agent-config"
+      ],
+      "deployment_target": "npm_package",
+      "runtime": "any",
+      "allowed_dependencies": [],
+      "forbidden_dependencies": [
+        "backend",
+        "os",
+        "admin",
+        "founder",
+        "mobile",
+        "product",
+        "internal-tools"
+      ]
+    },
+    "backend": {
+      "directories": [
+        "src/lib/core-services",
+        "src/lib/platform-plane",
+        "src/lib/ai",
+        "src/lib/cloud-backbone",
+        "src/lib/persistence",
+        "src/lib/observability",
+        "src/lib/services/ai-gateway",
+        "src/lib/intelligence-architecture",
+        "src/lib/advisor-intelligence",
+        "src/lib/advisor-protocol",
+        "src/lib/boardroom",
+        "src/lib/strategic-intelligence",
+        "src/lib/domain-engines",
+        "src/lib/compute-governance",
+        "src/lib/no-hallucination",
+        "src/lib/ai-engineering",
+        "src/lib/detection",
+        "src/lib/verification",
+        "src/lib/shopify",
+        "src/lib/sovereign-ai-gateway",
+        "src/lib/internal-agents",
+        "src/lib/platform-law",
+        "src/lib/capabilities",
+        "src/lib/delivery-methodology",
+        "src/lib/dual-reality",
+        "src/lib/services/release-intelligence",
+        "src/lib/services/degraded-mode",
+        "src/lib/services/digest-journal",
+        "src/lib/services",
+        "src/lib/ai-gateway",
+        "src/lib/engines",
+        "supabase/functions"
+      ],
+      "deployment_target": "edge_functions_and_api",
+      "runtime": "deno",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "founder",
+        "mobile"
+      ]
+    },
+    "os": {
+      "directories": [
+        "src/lib/nova-sdk",
+        "src/lib/os-services",
+        "src/lib/os-security",
+        "src/lib/sync-engine",
+        "src/components/sita/shell",
+        "src/components/sita/os",
+        "src/components/sita/boot",
+        "src/components/sita/kernel"
+      ],
+      "deployment_target": "electron_or_docker",
+      "runtime": "electron",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "backend",
+        "admin",
+        "founder",
+        "mobile"
+      ]
+    },
+    "admin": {
+      "directories": [
+        "src/pages/admin",
+        "src/components/admin",
+        "src/components/admin-ai",
+        "src/components/admin-os",
+        "src/components/governance",
+        "src/lib/admin-ai"
+      ],
+      "deployment_target": "spa_cdn",
+      "runtime": "browser",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "founder",
+        "mobile",
+        "backend"
+      ]
+    },
+    "founder": {
+      "directories": [
+        "src/pages/owner",
+        "src/pages/owner-mode",
+        "src/pages/mission-control",
+        "src/pages/enterprise"
+      ],
+      "deployment_target": "spa_cdn",
+      "runtime": "browser",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "mobile",
+        "backend"
+      ]
+    },
+    "mobile": {
+      "directories": [
+        "src/pages/mobile",
+        "src/components/mobile"
+      ],
+      "deployment_target": "flutter_app",
+      "runtime": "flutter",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "os",
+        "admin",
+        "founder",
+        "backend"
+      ]
+    },
+    "internal-tools": {
+      "directories": [
+        "src/domains/simulation",
+        "src/lib/fip",
+        "src/lib/dual-reality",
+        "src/lib/reality-audit",
+        "src/lib/reality-records",
+        "src/data/fixtures/demo-data",
+        "src/lib/demo-scenarios",
+        "src/data/fixtures/mock-data",
+        "src/data/fixtures/seed"
+      ],
+      "deployment_target": "local_dev",
+      "runtime": "node",
+      "allowed_dependencies": [
+        "shared"
+      ],
+      "forbidden_dependencies": [
+        "backend",
+        "os",
+        "admin",
+        "founder",
+        "mobile"
+      ]
+    },
+    "product": {
+      "directories": [
+        "src/pages",
+        "src/components",
+        "src/hooks",
+        "src/lib/engines",
+        "src/lib/engine",
+        "src/lib/services",
+        "src/lib/customer-journey",
+        "src/lib/app-platform",
+        "src/lib/design-system",
+        "src/lib/investment-office",
+        "src/lib/pack-store",
+        "src/lib/ux-trust",
+        "src/lib/setup",
+        "src/lib/data-services",
+        "src/contexts",
+        "src/lib/hooks",
+        "src/lib/constants",
+        "src/lib/types",
+        "src/lib/utils",
+        "src/lib/architecture",
+        "src/lib/api",
+        "src/lib/contracts",
+        "src/lib/integrations"
+      ],
+      "deployment_target": "spa_cdn",
+      "runtime": "browser",
+      "allowed_dependencies": [
+        "shared",
+        "backend",
+        "os"
+      ],
+      "forbidden_dependencies": []
+    }
+  },
+  "dependency_matrix": {
+    "shared": {
+      "can_import_from": []
+    },
+    "backend": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "os": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "admin": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "founder": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "mobile": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "internal-tools": {
+      "can_import_from": [
+        "shared"
+      ]
+    },
+    "product": {
+      "can_import_from": [
+        "shared",
+        "backend",
+        "os"
+      ]
+    }
+  }
+}

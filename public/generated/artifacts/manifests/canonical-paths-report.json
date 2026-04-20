@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-19T20:31:37.233Z",
+  "gate": "canonical-paths",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 6,
+  "sentinelsScanned": 13,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/architecture (claimed in v3 audit — track drift)"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "file missing: src/lib/architecture/route-plane-map.ts (claimed in v3 audit — track drift)"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "file missing: src/lib/architecture/plane-registry.ts (claimed in v3 audit — track drift)"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/runtime/desktop (claimed in v3 audit — track drift)"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "dir missing: src/lib/nova-sdk (claimed in v3 audit — track drift)"
+    },
+    {
+      "severity": "warning",
+      "area": "canonical-paths",
+      "message": "dir missing: electron/security (may be at electron/main/security)"
+    }
+  ]
+}

@@ -1,0 +1,3726 @@
+{
+  "generatedAt": "2026-04-20T02:57:20.569Z",
+  "totalArtifacts": 527,
+  "categories": [
+    {
+      "name": "audits",
+      "count": 86,
+      "files": [
+        {
+          "path": "audits/ADMIN_INFORMATION_ARCHITECTURE.md",
+          "sourcePath": "docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md",
+          "sizeBytes": 4044,
+          "lastModified": "2026-04-20T02:57:20.475Z",
+          "sha256": "d6ae07d62afb58abbd0b484e25c0fdad4615c1a87b06f220505591a5db545ffb"
+        },
+        {
+          "path": "audits/ADVISOR_COUNCIL_SYSTEM.md",
+          "sourcePath": "docs/architecture/ADVISOR_COUNCIL_SYSTEM.md",
+          "sizeBytes": 2333,
+          "lastModified": "2026-04-20T02:57:20.477Z",
+          "sha256": "b4684f03eb2d8de955642ca177f2cc8514f626c2805521e05ca404957f04ee4b"
+        },
+        {
+          "path": "audits/APP_PLATFORM_AND_INTEGRATIONS.md",
+          "sourcePath": "docs/architecture/APP_PLATFORM_AND_INTEGRATIONS.md",
+          "sizeBytes": 2030,
+          "lastModified": "2026-04-20T02:57:20.477Z",
+          "sha256": "505b56f971e0f17c070ba360c7ed9ae42d1a710ba4a469d3007d69b4ed8740bf"
+        },
+        {
+          "path": "audits/ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md",
+          "sourcePath": "docs/architecture/ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md",
+          "sizeBytes": 2019,
+          "lastModified": "2026-04-20T02:57:20.477Z",
+          "sha256": "ea018b0de5d4bfa010d6057c40ac4db9a76cf2d896d5787b09bc26a64e66cdb5"
+        },
+        {
+          "path": "audits/AUTH_AND_IDENTITY_RUNTIME.md",
+          "sourcePath": "docs/architecture/AUTH_AND_IDENTITY_RUNTIME.md",
+          "sizeBytes": 2287,
+          "lastModified": "2026-04-20T02:57:20.478Z",
+          "sha256": "25cdc6bc51416c250f8be49ff2c1ec2b5fbfe83609888e1e4ff153a582c0d4be"
+        },
+        {
+          "path": "audits/BACKEND_TOPOLOGY_MAP.md",
+          "sourcePath": "docs/architecture/BACKEND_TOPOLOGY_MAP.md",
+          "sizeBytes": 5027,
+          "lastModified": "2026-04-20T02:57:20.478Z",
+          "sha256": "3eb059146969de3d6d1ea0c0113d03c97d909765ed3294df20bf5b65e0379daa"
+        },
+        {
+          "path": "audits/BOARDROOM_SYSTEM.md",
+          "sourcePath": "docs/architecture/BOARDROOM_SYSTEM.md",
+          "sizeBytes": 2509,
+          "lastModified": "2026-04-20T02:57:20.478Z",
+          "sha256": "6e1635675357399773ab204d4d825c89c38e68535a23bce635ad870281a50c61"
+        },
+        {
+          "path": "audits/BOUNDED_CONTEXT_MAP.md",
+          "sourcePath": "docs/architecture/BOUNDED_CONTEXT_MAP.md",
+          "sizeBytes": 4131,
+          "lastModified": "2026-04-20T02:57:20.479Z",
+          "sha256": "6149c5f8cbb87203e67cf9ac6f8d8ac62cc00fc165991161b7de8fa3a1745ce4"
+        },
+        {
+          "path": "audits/CANONICAL_OWNERSHIP_MODEL.md",
+          "sourcePath": "docs/architecture/CANONICAL_OWNERSHIP_MODEL.md",
+          "sizeBytes": 4104,
+          "lastModified": "2026-04-20T02:57:20.479Z",
+          "sha256": "98d0817c8fd819c20a1a465ca73409316cdf402b854792520a8ec86730c36b65"
+        },
+        {
+          "path": "audits/COMPONENT_CONSTITUTION.md",
+          "sourcePath": "docs/architecture/COMPONENT_CONSTITUTION.md",
+          "sizeBytes": 4512,
+          "lastModified": "2026-04-20T02:57:20.479Z",
+          "sha256": "9b834094e90cc9e4d9ca1e84cc81540f4862246794ece37632088134c68473cc"
+        },
+        {
+          "path": "audits/COMPONENT_NAMING_POLICY.md",
+          "sourcePath": "docs/architecture/COMPONENT_NAMING_POLICY.md",
+          "sizeBytes": 3456,
+          "lastModified": "2026-04-20T02:57:20.479Z",
+          "sha256": "727f145002379b33ad2935f8bf289e35bad54364a6f68965acd95dfc35f28626"
+        },
+        {
+          "path": "audits/CORE_OS_USER_ADMIN_BACKEND_MODEL.md",
+          "sourcePath": "docs/architecture/CORE_OS_USER_ADMIN_BACKEND_MODEL.md",
+          "sizeBytes": 3175,
+          "lastModified": "2026-04-20T02:57:20.480Z",
+          "sha256": "4644190187c39fe3e090405584f8db0f44416731236acf3b0913b2024c11f1b8"
+        },
+        {
+          "path": "audits/CRM_AND_CUSTOMER_DASHBOARD.md",
+          "sourcePath": "docs/architecture/CRM_AND_CUSTOMER_DASHBOARD.md",
+          "sizeBytes": 1549,
+          "lastModified": "2026-04-20T02:57:20.480Z",
+          "sha256": "5c2930140dcdabcc4493b2b99873dfa20684473a39d87473a1466d99a505f0f8"
+        },
+        {
+          "path": "audits/DATABASE_ARCHITECTURE.md",
+          "sourcePath": "docs/architecture/DATABASE_ARCHITECTURE.md",
+          "sizeBytes": 4899,
+          "lastModified": "2026-04-20T02:57:20.480Z",
+          "sha256": "d341e84e0a8c0df3a5372ed9cf213b518ae57676b2f37de51de5212a8fcbc918"
+        },
+        {
+          "path": "audits/DB_OWNERSHIP_MATRIX.md",
+          "sourcePath": "docs/architecture/DB_OWNERSHIP_MATRIX.md",
+          "sizeBytes": 2945,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "93a458d148a85bab021986e81c9fd69b4e82edb39ad2995af2897d6113bcd787"
+        },
+        {
+          "path": "audits/DIGITAL_PRESENCE_AND_WEB_SYSTEM.md",
+          "sourcePath": "docs/architecture/DIGITAL_PRESENCE_AND_WEB_SYSTEM.md",
+          "sizeBytes": 2009,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "7df18b1b62656ce9301a15a0df73b19c6acea6a0f6dae21f3199fa1d73d9f579"
+        },
+        {
+          "path": "audits/DOMAIN_MANIFEST_SYSTEM.md",
+          "sourcePath": "docs/architecture/DOMAIN_MANIFEST_SYSTEM.md",
+          "sizeBytes": 2551,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "f0eac6e7594bce18512388321ceed2559e5c2d4f6b82048b9fd8c8d27a57b761"
+        },
+        {
+          "path": "audits/EXECUTION_MODEL.md",
+          "sourcePath": "docs/architecture/EXECUTION_MODEL.md",
+          "sizeBytes": 2128,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "6842ede07da7bae7c681b8004ddcf4f0615351f5e87161231d6003cf39ee0c8b"
+        },
+        {
+          "path": "audits/FILE_INGESTION_AND_KNOWLEDGE.md",
+          "sourcePath": "docs/architecture/FILE_INGESTION_AND_KNOWLEDGE.md",
+          "sizeBytes": 1288,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "c0b4a7cacb9335f44930deb206e1a5e714d539bc096329306e73ffc95d239bb0"
+        },
+        {
+          "path": "audits/GOLDEN_PATH_REGISTRY.md",
+          "sourcePath": "docs/architecture/GOLDEN_PATH_REGISTRY.md",
+          "sizeBytes": 4074,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "a9bbdf3d4496adc26205686396fbf1cc3caed1d8ec6c0d1baaf4fcdf4699ff97"
+        },
+        {
+          "path": "audits/INTERNAL_AGENT_RIGHTS_MODEL.md",
+          "sourcePath": "docs/architecture/INTERNAL_AGENT_RIGHTS_MODEL.md",
+          "sizeBytes": 1796,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "bf8b95eecbf14f74e1b2b7681bb2061063f96e3dd98135fc097b62bf1d9bdcc0"
+        },
+        {
+          "path": "audits/INTERNAL_AI_WORKFORCE.md",
+          "sourcePath": "docs/architecture/INTERNAL_AI_WORKFORCE.md",
+          "sizeBytes": 2434,
+          "lastModified": "2026-04-20T02:57:20.481Z",
+          "sha256": "de986cd58522044f9f6c054f9f1005ec90b245276818f2030b68bdd4fb857989"
+        },
+        {
+          "path": "audits/INVESTMENT_OFFICE_AND_CAPITAL_SYSTEM.md",
+          "sourcePath": "docs/architecture/INVESTMENT_OFFICE_AND_CAPITAL_SYSTEM.md",
+          "sizeBytes": 2433,
+          "lastModified": "2026-04-20T02:57:20.482Z",
+          "sha256": "6681bd963856fcdc3fa808abd81430b5ea3dff794a4af00910876909a6d59f8b"
+        },
+        {
+          "path": "audits/KILL_SWITCH_REGISTRY.md",
+          "sourcePath": "docs/architecture/KILL_SWITCH_REGISTRY.md",
+          "sizeBytes": 5220,
+          "lastModified": "2026-04-20T02:57:20.482Z",
+          "sha256": "5af230048b6546ca692c09a3361c572d0a869154375cefea41a6225e6db1601d"
+        },
+        {
+          "path": "audits/LAYER_SEPARATION.md",
+          "sourcePath": "docs/architecture/LAYER_SEPARATION.md",
+          "sizeBytes": 11147,
+          "lastModified": "2026-04-20T02:57:20.482Z",
+          "sha256": "163d1fbf733b8e02d2740649e0c30ed32a0fb99a34a18626a204cbae7a52b634"
+        },
+        {
+          "path": "audits/LEGACY_AND_WRAPPER_POLICY.md",
+          "sourcePath": "docs/architecture/LEGACY_AND_WRAPPER_POLICY.md",
+          "sizeBytes": 2958,
+          "lastModified": "2026-04-20T02:57:20.482Z",
+          "sha256": "8f17a99b6657cd6f43b1fdd97363c5fad7e6e21c40e0fb63f35ea684c3b845ab"
+        },
+        {
+          "path": "audits/legacy/DIRECTORY_ORGANIZATION.md",
+          "sourcePath": "docs/architecture/legacy/DIRECTORY_ORGANIZATION.md",
+          "sizeBytes": 3001,
+          "lastModified": "2026-04-20T02:57:20.483Z",
+          "sha256": "4ffd3f089c37fb9f30885e79c20322f4268a3591ea2e963a20bcc3bdb90a543a"
+        },
+        {
+          "path": "audits/MASTER_REMEDIATION_BLUEPRINT_v1.md",
+          "sourcePath": "public/generated/MASTER_REMEDIATION_BLUEPRINT_v1.md",
+          "sizeBytes": 85698,
+          "lastModified": "2026-04-20T02:57:20.484Z",
+          "sha256": "f0f1b0b51c207f100c899fc5f9ed7e2015d988da0f2e116a68d01b14fc31cbd8"
+        },
+        {
+          "path": "audits/MASTER_REMEDIATION_BLUEPRINT_v2.md",
+          "sourcePath": "public/generated/MASTER_REMEDIATION_BLUEPRINT_v2.md",
+          "sizeBytes": 9531,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "fb223a864c1c92b5c9c84681ba390934192bfb4595825fbf175dfa0dfbcc603c"
+        },
+        {
+          "path": "audits/MASTER_REMEDIATION_VERIFICATION_v2.md",
+          "sourcePath": "public/generated/MASTER_REMEDIATION_VERIFICATION_v2.md",
+          "sizeBytes": 4699,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "8dc79dca15e3c1e516dac9c5d7f15ec22e8bc60603991e542b8c8d4d0f607f73"
+        },
+        {
+          "path": "audits/META_ARCH_REGISTRY.md",
+          "sourcePath": "docs/architecture/META_ARCH_REGISTRY.md",
+          "sizeBytes": 3901,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "5de8fe5cdda36edc76ea49dda1d793b76d2f68e289f1b62ffd6ed46273fd00b9"
+        },
+        {
+          "path": "audits/MIGRATION_POLICY_AND_ROLLOUTS.md",
+          "sourcePath": "docs/architecture/MIGRATION_POLICY_AND_ROLLOUTS.md",
+          "sizeBytes": 3316,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "a3777b17ed490fb92a6169f1333c123a9342a793e93d8ad11f1b344552e4a89f"
+        },
+        {
+          "path": "audits/MIGRATION-BLUEPRINT.md",
+          "sourcePath": "docs/architecture/MIGRATION-BLUEPRINT.md",
+          "sizeBytes": 14268,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "9d273921f31a38a410fe6cf63059abd9f4db87a4e4084476ca6e2134dee091db"
+        },
+        {
+          "path": "audits/MISSING_AUDIT_v2.md",
+          "sourcePath": "public/generated/MISSING_AUDIT_v2.md",
+          "sizeBytes": 75519,
+          "lastModified": "2026-04-20T02:57:20.485Z",
+          "sha256": "eaaa7b43497fa7f1ff7e86e66cd2d7a2a9555d289564ddb7d5675bf3627de96d"
+        },
+        {
+          "path": "audits/MISSING_AUDIT.md",
+          "sourcePath": "public/generated/MISSING_AUDIT.md",
+          "sizeBytes": 80108,
+          "lastModified": "2026-04-20T02:57:20.486Z",
+          "sha256": "a38a4a168878b6f77e67dfc33538de4f25bc83389b121c9b9f4ec7fa0fa2c6d3"
+        },
+        {
+          "path": "audits/MISSION_CONTROL_SHELL.md",
+          "sourcePath": "docs/architecture/MISSION_CONTROL_SHELL.md",
+          "sizeBytes": 2287,
+          "lastModified": "2026-04-20T02:57:20.486Z",
+          "sha256": "d2adcf26fb2dba9e0c437c245fad6051735c2a5ce17a5b22cafadd91bf150a0d"
+        },
+        {
+          "path": "audits/MOBILE_DEPLOYMENT_VERIFICATION.md",
+          "sourcePath": "public/generated/MOBILE_DEPLOYMENT_VERIFICATION.md",
+          "sizeBytes": 5564,
+          "lastModified": "2026-04-20T02:57:20.486Z",
+          "sha256": "359def80e428f7fee2a727da389a5866071ec8155bc60ce83e5e60648a0a5f29"
+        },
+        {
+          "path": "audits/MOBILE_EXPERIENCE_SYSTEM.md",
+          "sourcePath": "docs/architecture/MOBILE_EXPERIENCE_SYSTEM.md",
+          "sizeBytes": 1698,
+          "lastModified": "2026-04-20T02:57:20.489Z",
+          "sha256": "773fa749c667ecdfdabf3cb0d68351bfa337de879982f32a68134f2346f5cbfc"
+        },
+        {
+          "path": "audits/MOBILE_PLATFORM_SYSTEM.md",
+          "sourcePath": "docs/architecture/MOBILE_PLATFORM_SYSTEM.md",
+          "sizeBytes": 5534,
+          "lastModified": "2026-04-20T02:57:20.489Z",
+          "sha256": "6a564d23f4e09e863f1b5b2783fcf6a479482ccb4fef7f15491c9647120f2cb7"
+        },
+        {
+          "path": "audits/MONOREPO-SCAFFOLD.md",
+          "sourcePath": "docs/architecture/MONOREPO-SCAFFOLD.md",
+          "sizeBytes": 3931,
+          "lastModified": "2026-04-20T02:57:20.490Z",
+          "sha256": "c083e3756f6562ef702f2322cf2eee7f809f8b0109112524d29a5c368693ac54"
+        },
+        {
+          "path": "audits/native-os-future/ABI_AND_NATIVE_APP_PLATFORM_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/ABI_AND_NATIVE_APP_PLATFORM_GAP.md",
+          "sizeBytes": 913,
+          "lastModified": "2026-04-20T02:57:20.490Z",
+          "sha256": "98c3985337b126c9b7b42029bbabcdde71f8aa0538d108350c576f22f0de2b92"
+        },
+        {
+          "path": "audits/native-os-future/BOOT_CHAIN_OWNERSHIP_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/BOOT_CHAIN_OWNERSHIP_GAP.md",
+          "sizeBytes": 1017,
+          "lastModified": "2026-04-20T02:57:20.491Z",
+          "sha256": "17c85caa1909cf27530b382ae4de19ac2e990707bd5803813f899ebfa9dcbc46"
+        },
+        {
+          "path": "audits/native-os-future/HAL_AND_DRIVER_MODEL_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/HAL_AND_DRIVER_MODEL_GAP.md",
+          "sizeBytes": 692,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "04a6428ab4f34806b89ad13b40da210c0ea8e031f5deab61032f3c48b28ecf84"
+        },
+        {
+          "path": "audits/native-os-future/HARDWARE_CERTIFICATION_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/HARDWARE_CERTIFICATION_GAP.md",
+          "sizeBytes": 759,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "eda1436de7f7b4a8c8a05659006dca1c04bd5f4fba24d6aab1dc321b2403ff33"
+        },
+        {
+          "path": "audits/native-os-future/KERNEL_OWNERSHIP_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/KERNEL_OWNERSHIP_GAP.md",
+          "sizeBytes": 1326,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "5b3cb0fd5ecb5b17b9e5c00288312a2bb660a57b810c0494b92c583dc4410be6"
+        },
+        {
+          "path": "audits/native-os-future/NATIVE_COMPOSITOR_STACK_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/NATIVE_COMPOSITOR_STACK_GAP.md",
+          "sizeBytes": 854,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "9bbf95ecb8f2a7f9299941d1a2547ec5fe07ec8a445fff92674956a61cf0118d"
+        },
+        {
+          "path": "audits/native-os-future/OS_LEVEL_I18N_ACCESSIBILITY_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/OS_LEVEL_I18N_ACCESSIBILITY_GAP.md",
+          "sizeBytes": 809,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "37971f56c115dda68e157c7022cfc6ae9ea315b0969c6a5b7a8e148fd638b707"
+        },
+        {
+          "path": "audits/native-os-future/POWER_AND_SCHEDULER_GAP.md",
+          "sourcePath": "docs/architecture/native-os-future/POWER_AND_SCHEDULER_GAP.md",
+          "sizeBytes": 746,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "a82300227bdf1f25f44d59f41876be6c9370874ca2179a2e730b3c8a9e23c95e"
+        },
+        {
+          "path": "audits/native-os-future/README.md",
+          "sourcePath": "docs/architecture/native-os-future/README.md",
+          "sizeBytes": 1820,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "783166998199d8b124916dad26319b6f2655a4bbae2de2f36f6a16e41c30db56"
+        },
+        {
+          "path": "audits/NOTIFICATION_RUNTIME_MODEL.md",
+          "sourcePath": "docs/architecture/NOTIFICATION_RUNTIME_MODEL.md",
+          "sizeBytes": 2758,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "df968bc3de3f36ac6ba7ce01dc4191a3ce6650222b194aa61c3e080a76a7c570"
+        },
+        {
+          "path": "audits/OBSERVABILITY_AND_INCIDENT_MODEL.md",
+          "sourcePath": "docs/architecture/OBSERVABILITY_AND_INCIDENT_MODEL.md",
+          "sizeBytes": 1994,
+          "lastModified": "2026-04-20T02:57:20.492Z",
+          "sha256": "3305b5ab9fbdd6a78b84ce08a8797c5abf71bc13f42297cb17ecacc7c7a2472e"
+        },
+        {
+          "path": "audits/OFFICE_AND_PRODUCTIVITY_SYSTEM.md",
+          "sourcePath": "docs/architecture/OFFICE_AND_PRODUCTIVITY_SYSTEM.md",
+          "sizeBytes": 1014,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "4634a507fcd4f5b3e773ed6d3d96f7b114825261bdbc42bde11015eb13e327d9"
+        },
+        {
+          "path": "audits/OUTBOUND_COMMUNICATION_AND_CALLING.md",
+          "sourcePath": "docs/architecture/OUTBOUND_COMMUNICATION_AND_CALLING.md",
+          "sizeBytes": 1060,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "d5c83f8596d05baea5460ecae2374769d3d3747d84817e506e548a42ea83b653"
+        },
+        {
+          "path": "audits/OWNER_MODE_GUIDE.md",
+          "sourcePath": "docs/architecture/OWNER_MODE_GUIDE.md",
+          "sizeBytes": 1166,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "0c6d2f6b0029ece31ed46c2b155ed5838d5a3436fe92c309fe6afc2b9983fa81"
+        },
+        {
+          "path": "audits/OWNER_WORKFLOW_MAP.md",
+          "sourcePath": "docs/architecture/OWNER_WORKFLOW_MAP.md",
+          "sizeBytes": 3119,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "da1acca9c00b6067f3b4f6964606137b13767fa2bc86ff9a838c5c0c238f0599"
+        },
+        {
+          "path": "audits/PACK_STORE_AND_INTERNAL_APPS.md",
+          "sourcePath": "docs/architecture/PACK_STORE_AND_INTERNAL_APPS.md",
+          "sizeBytes": 1651,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "e5e3e0e645055a18f128c79c527244d6d1d6b9d388a2e1eda4aba8626acceb83"
+        },
+        {
+          "path": "audits/PERSISTENCE_AND_RECOVERY_MODEL.md",
+          "sourcePath": "docs/architecture/PERSISTENCE_AND_RECOVERY_MODEL.md",
+          "sizeBytes": 2756,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "1ffdf8f510fac01172690cfb10b3d7e8861278b4f95e16f9b5d6d48f1f2cd0eb"
+        },
+        {
+          "path": "audits/PREMIUM_OS_EXPERIENCE_SYSTEM.md",
+          "sourcePath": "docs/architecture/PREMIUM_OS_EXPERIENCE_SYSTEM.md",
+          "sizeBytes": 2899,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "b63c865bae82b1c5f24fb01333ee4deadcc51f7a5f68d77d804c7ee62dca3b64"
+        },
+        {
+          "path": "audits/PRODUCT_REALITY_BASELINE.md",
+          "sourcePath": "docs/architecture/PRODUCT_REALITY_BASELINE.md",
+          "sizeBytes": 3535,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "172ac330a1b11d6566466716f42c5e62d01c5b83d6e85ff862368170bac1259c"
+        },
+        {
+          "path": "audits/PRODUCT_REALITY_TIERS.md",
+          "sourcePath": "docs/architecture/PRODUCT_REALITY_TIERS.md",
+          "sizeBytes": 2990,
+          "lastModified": "2026-04-20T02:57:20.493Z",
+          "sha256": "a5c7f9267acdf74bc300ea9fa747c80a8cfae798f2e8ab94dcf940ccfb1f75b8"
+        },
+        {
+          "path": "audits/PROJECT_TREE_AUDIT.md",
+          "sourcePath": "public/generated/PROJECT_TREE_AUDIT.md",
+          "sizeBytes": 14005,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "3c0edc1c0e45453857326f2e9c40b1c18bc3082af844cfa4d7c4f64b49065ffa"
+        },
+        {
+          "path": "audits/PROOF_AND_AUDIT_MODEL.md",
+          "sourcePath": "docs/architecture/PROOF_AND_AUDIT_MODEL.md",
+          "sizeBytes": 2127,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "33597b7302974fd7eaf3df28bccb64ef961b0321e81bd1ea11cdf1d41f20b2cc"
+        },
+        {
+          "path": "audits/QUICKEN_LIKE_FINANCE_AND_FAMILY_OFFICE.md",
+          "sourcePath": "docs/architecture/QUICKEN_LIKE_FINANCE_AND_FAMILY_OFFICE.md",
+          "sizeBytes": 1658,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "66cfb6e8b6a2287c9e2c32371a6b364635691e35285fb38834ffdf38067f570b"
+        },
+        {
+          "path": "audits/REVENUE_OFFICE_AND_GROWTH_SYSTEM.md",
+          "sourcePath": "docs/architecture/REVENUE_OFFICE_AND_GROWTH_SYSTEM.md",
+          "sizeBytes": 2262,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "c38ae3731dbbf247bfebcbd7660fa4143115df0898ad9dc975aba4f42773a804"
+        },
+        {
+          "path": "audits/ROUTE_AND_APP_PLANE_MAP.md",
+          "sourcePath": "docs/architecture/ROUTE_AND_APP_PLANE_MAP.md",
+          "sizeBytes": 2686,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "d72c1fbe1a2b362c3ab61c9acd44229ff89f020d4e9fb43ef48a7e8a1d145345"
+        },
+        {
+          "path": "audits/RUNBOOK_INDEX.md",
+          "sourcePath": "docs/architecture/RUNBOOK_INDEX.md",
+          "sizeBytes": 3979,
+          "lastModified": "2026-04-20T02:57:20.494Z",
+          "sha256": "ea18c53bdc2b81c5e74880f3fcd61fc670a384eee16481ba13f7fbc630a55503"
+        },
+        {
+          "path": "audits/RUNTIME_CAPABILITY_MATRIX.md",
+          "sourcePath": "docs/architecture/RUNTIME_CAPABILITY_MATRIX.md",
+          "sizeBytes": 4015,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "95b4bd717b8269ff273f74db4e8f489014e64fb271061abd2e576c6d2964aea2"
+        },
+        {
+          "path": "audits/RUNTIME_MESSAGING_ARCHITECTURE.md",
+          "sourcePath": "docs/architecture/RUNTIME_MESSAGING_ARCHITECTURE.md",
+          "sizeBytes": 2279,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "34afb1f02ba6b0b2012b55d8c22b90b0b1ce65aee9bfa6b9751b3d59108550bb"
+        },
+        {
+          "path": "audits/SCHEMA_TRUTH_REGISTRY.md",
+          "sourcePath": "docs/architecture/SCHEMA_TRUTH_REGISTRY.md",
+          "sizeBytes": 2367,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "b3837bb353d5b12d24e5550da36ff161d4c465e7c90b657f6b1e522071e9ae3f"
+        },
+        {
+          "path": "audits/SCRIPT_LANGUAGE_POLICY.md",
+          "sourcePath": "docs/architecture/SCRIPT_LANGUAGE_POLICY.md",
+          "sizeBytes": 720,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "35d76e163d95410cd31d212b1c0092131e2ebb29fdb5d1f3ea80701aac4d64f1"
+        },
+        {
+          "path": "audits/SCRIPT_OUTPUT_AND_CI_BINDING_MAP.md",
+          "sourcePath": "docs/architecture/SCRIPT_OUTPUT_AND_CI_BINDING_MAP.md",
+          "sizeBytes": 718,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "3a5e2455ac91212e8fe2efb501f3de31c252a94f4e22d5ddfa31e3341df4dd4b"
+        },
+        {
+          "path": "audits/SCRIPT_PERMANENCE_AND_LIFECYCLE_MODEL.md",
+          "sourcePath": "docs/architecture/SCRIPT_PERMANENCE_AND_LIFECYCLE_MODEL.md",
+          "sizeBytes": 993,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "6cbcac790b16735775faf1e46e2647d30224aaf62a0512dfb1a49b0df386f6ab"
+        },
+        {
+          "path": "audits/SCRIPT_SYSTEM_ARCHITECTURE.md",
+          "sourcePath": "docs/architecture/SCRIPT_SYSTEM_ARCHITECTURE.md",
+          "sizeBytes": 2839,
+          "lastModified": "2026-04-20T02:57:20.495Z",
+          "sha256": "a2c98946adb2bbe8fed94d3f22bef480b8535aed52d502e4e61786b1e317f557"
+        },
+        {
+          "path": "audits/SCRIPT_TAXONOMY_AND_EXECUTION_POLICY.md",
+          "sourcePath": "docs/architecture/SCRIPT_TAXONOMY_AND_EXECUTION_POLICY.md",
+          "sizeBytes": 1357,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "455c40829360943e4574d8c07e8e2bf01f23d6c86a2dd1be4b9549227ad63474"
+        },
+        {
+          "path": "audits/SELF_HEALING_OPERATIONS.md",
+          "sourcePath": "docs/architecture/SELF_HEALING_OPERATIONS.md",
+          "sizeBytes": 8873,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "e757e840e65839a1ff6e9087804e0a8f93b9f8a27c058d4f58fbbc443913c623"
+        },
+        {
+          "path": "audits/SENSITIVE_DOCUMENT_GOVERNED_MODE.md",
+          "sourcePath": "docs/architecture/SENSITIVE_DOCUMENT_GOVERNED_MODE.md",
+          "sizeBytes": 1308,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "964dbede60bd327b1b8896ba8befc9cc732f26c8632c4faa0ccd11ebb0e1faaf"
+        },
+        {
+          "path": "audits/SERVICE_LAYER_CONSTITUTION.md",
+          "sourcePath": "docs/architecture/SERVICE_LAYER_CONSTITUTION.md",
+          "sizeBytes": 4361,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "bd3b0fade76025bda935473fe3971c607df4fd71668cc1263acfb4f113cc1631"
+        },
+        {
+          "path": "audits/SITA_SYSTEM_STACK.md",
+          "sourcePath": "docs/architecture/SITA_SYSTEM_STACK.md",
+          "sizeBytes": 3129,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "6a25e0e7f177c56eae83c74a334b97a47ea350720878ab3197cf79a3ec3c8b28"
+        },
+        {
+          "path": "audits/SRC_LIB_DECOMPOSITION_MODEL.md",
+          "sourcePath": "docs/architecture/SRC_LIB_DECOMPOSITION_MODEL.md",
+          "sizeBytes": 4111,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "f7ff3dcaa924657050e9e190d76e6cf8af04bd3fa46addfdf7bd7090aebc8ee8"
+        },
+        {
+          "path": "audits/SYNC_AND_CONTINUITY_MODEL.md",
+          "sourcePath": "docs/architecture/SYNC_AND_CONTINUITY_MODEL.md",
+          "sizeBytes": 2206,
+          "lastModified": "2026-04-20T02:57:20.496Z",
+          "sha256": "db5eeb4ce586a19a8bffb7c9de1c611487eea71549ff1ddff419038559b03995"
+        },
+        {
+          "path": "audits/TENANCY_AND_RLS_MODEL.md",
+          "sourcePath": "docs/architecture/TENANCY_AND_RLS_MODEL.md",
+          "sizeBytes": 3366,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "84cb930e28c300fc80fc31ec41b4946323cc0c1ee5830b9f04287a007d8b5953"
+        },
+        {
+          "path": "audits/TRAVEL_AND_BOOKING_INTEGRATION.md",
+          "sourcePath": "docs/architecture/TRAVEL_AND_BOOKING_INTEGRATION.md",
+          "sizeBytes": 1076,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "37bef062a13b0cd5b80c563cfc12f52dcc154b10753d362eb1da798aaf329379"
+        },
+        {
+          "path": "audits/UNIFIED_PERMISSION_AND_POLICY_MATRIX.md",
+          "sourcePath": "docs/architecture/UNIFIED_PERMISSION_AND_POLICY_MATRIX.md",
+          "sizeBytes": 3898,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "2df64f3fac9d7cca3ef571b93a51e89e98750f647d8cd164cdb9b2d04f00d7a4"
+        },
+        {
+          "path": "audits/UX_EXPERIENCE_SYSTEM.md",
+          "sourcePath": "docs/architecture/UX_EXPERIENCE_SYSTEM.md",
+          "sizeBytes": 5071,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "8ab923ad75baaf69887233d6f2fd09054e4b91b64f00ff28bab1bf14f7f3afeb"
+        },
+        {
+          "path": "audits/VMWARE_DEPLOYMENT_AND_OPS.md",
+          "sourcePath": "docs/architecture/VMWARE_DEPLOYMENT_AND_OPS.md",
+          "sizeBytes": 1961,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "cfc495e213aa730d7422649e628f1614a2cc9ca5b9b032fb860d65f077319236"
+        },
+        {
+          "path": "audits/WEBSITE_AND_LEAD_CAPTURE_SYSTEM.md",
+          "sourcePath": "docs/architecture/WEBSITE_AND_LEAD_CAPTURE_SYSTEM.md",
+          "sizeBytes": 930,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "7a6db709530a8a264b0a2af3037077243ed988bbd97cc5155c981ff8eac3b5ec"
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "count": 5,
+      "files": [
+        {
+          "path": "docs/MOBILE_HONESTY.md",
+          "sourcePath": "docs/MOBILE_HONESTY.md",
+          "sizeBytes": 4288,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "606e8fa70881024c4da5187a3cdb2afb7f672a8855e5d04db887fac98003306d"
+        },
+        {
+          "path": "docs/PLATFORM_SCOPE.md",
+          "sourcePath": "docs/PLATFORM_SCOPE.md",
+          "sizeBytes": 3062,
+          "lastModified": "2026-04-20T02:57:20.497Z",
+          "sha256": "f2f664c80245754efebfa9964540507c5b3eeab1d67135338ee78f67ea0eaa4e"
+        },
+        {
+          "path": "docs/REAL_VS_SIMULATED.md",
+          "sourcePath": "docs/REAL_VS_SIMULATED.md",
+          "sizeBytes": 36303,
+          "lastModified": "2026-04-20T02:57:20.498Z",
+          "sha256": "f8f4a3a0781452d596ae77c3dbe6e21e23fcf9849b4b8fbab7cbbb2ee826ddd5"
+        },
+        {
+          "path": "docs/self-hosted-deployment.md",
+          "sourcePath": "docs/self-hosted-deployment.md",
+          "sizeBytes": 4791,
+          "lastModified": "2026-04-20T02:57:20.498Z",
+          "sha256": "ae06bd47e3447caeb3e9f92badec11d03c160763c98c7a4b8a6ea713c10a338c"
+        },
+        {
+          "path": "docs/vmware-deployment.md",
+          "sourcePath": "docs/vmware-deployment.md",
+          "sizeBytes": 4017,
+          "lastModified": "2026-04-20T02:57:20.498Z",
+          "sha256": "8177063476e156dbb651f4a109582a37ab88124d15d92062e64b84f3acb8cb7a"
+        }
+      ]
+    },
+    {
+      "name": "manifests",
+      "count": 414,
+      "files": [
+        {
+          "path": "manifests/5-plane-boundaries-report.json",
+          "sourcePath": "generated/5-plane-boundaries-report.json",
+          "sizeBytes": 177,
+          "lastModified": "2026-04-20T02:57:20.498Z",
+          "sha256": "fd1bc572fccbd8106703ae421ffdc725cd8d754c59515244a8eb0ba26168bfe9"
+        },
+        {
+          "path": "manifests/accessibility-summary.json",
+          "sourcePath": "generated/accessibility-summary.json",
+          "sizeBytes": 276319,
+          "lastModified": "2026-04-20T02:57:20.499Z",
+          "sha256": "67315ea44da1e9a828f02e50acad285f9d051d6f0fcf6565d925baa13e53d8c2"
+        },
+        {
+          "path": "manifests/admin-action-orientation-report.json",
+          "sourcePath": "generated/admin-action-orientation-report.json",
+          "sizeBytes": 196,
+          "lastModified": "2026-04-20T02:57:20.499Z",
+          "sha256": "34efeb7127160b13a9ec40ff85b3670a80dde1f0e5351f108761a792b762ea77"
+        },
+        {
+          "path": "manifests/admin-action-panel-hierarchy-report.json",
+          "sourcePath": "generated/admin-action-panel-hierarchy-report.json",
+          "sizeBytes": 407,
+          "lastModified": "2026-04-20T02:57:20.499Z",
+          "sha256": "96207f9588e5b318993a1b4aa250a1f0ce846704cdec355ae763bc1ed953507f"
+        },
+        {
+          "path": "manifests/admin-ai-runtime-drilldowns-report.json",
+          "sourcePath": "generated/admin-ai-runtime-drilldowns-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.499Z",
+          "sha256": "920df915887c511835b26f358ebe98f3ab661deb09e0bcef95442472d00ee7c2"
+        },
+        {
+          "path": "manifests/admin-ai-runtime-proof-language-report.json",
+          "sourcePath": "generated/admin-ai-runtime-proof-language-report.json",
+          "sizeBytes": 465,
+          "lastModified": "2026-04-20T02:57:20.499Z",
+          "sha256": "fa12209b3c8fa6462a2bee2036923e3b3498820603140511913c7546baa4e6d9"
+        },
+        {
+          "path": "manifests/admin-board-polish-report.json",
+          "sourcePath": "generated/admin-board-polish-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "2487974e246818056e9cb7e8bcbc5b28ca5d71905f03847955b726f92050a9df"
+        },
+        {
+          "path": "manifests/admin-empty-state-consistency-report.json",
+          "sourcePath": "generated/admin-empty-state-consistency-report.json",
+          "sizeBytes": 438,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "c4baf42552a98579f812acc6d93824a05ce78b634f28de413686e3863ec9c722"
+        },
+        {
+          "path": "manifests/admin-empty-state-patterns-report.json",
+          "sourcePath": "generated/admin-empty-state-patterns-report.json",
+          "sizeBytes": 1349,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "98ba9c614035e7731482524f71c092b62cde7b5ce0dde33f312bf6b763a727c2"
+        },
+        {
+          "path": "manifests/admin-integrations-health-visibility-report.json",
+          "sourcePath": "generated/admin-integrations-health-visibility-report.json",
+          "sizeBytes": 167,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "34ade411a57e1d9337675b2aff309f4366890933819c9450a9ba5b1a9217ffc5"
+        },
+        {
+          "path": "manifests/admin-microcopy-rules-report.json",
+          "sourcePath": "generated/admin-microcopy-rules-report.json",
+          "sizeBytes": 427,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "a0afec009bd8361aee8637dbcd6e29c86cb438799425547b1ae78a3a05840ade"
+        },
+        {
+          "path": "manifests/admin-operator-coherence-report.json",
+          "sourcePath": "generated/admin-operator-coherence-report.json",
+          "sizeBytes": 172,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "0699e7448c826dc58ac10c11238bc88f04bb594189b8a43a9c87f16374e982c9"
+        },
+        {
+          "path": "manifests/admin-status-semantics-report.json",
+          "sourcePath": "generated/admin-status-semantics-report.json",
+          "sizeBytes": 21555,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "fb10b98c98f2e6ad3e06f87026c9e745e47bc806a31be93d44363f5197dce483"
+        },
+        {
+          "path": "manifests/admin-support-visibility-manifest.json",
+          "sourcePath": "generated/admin-support-visibility-manifest.json",
+          "sizeBytes": 2761,
+          "lastModified": "2026-04-20T02:57:20.500Z",
+          "sha256": "e5d1ba575dd3b444e23df466be223303526d2540b07b338a0ded15a6685ecfac"
+        },
+        {
+          "path": "manifests/admin-top-task-discoverability-report.json",
+          "sourcePath": "generated/admin-top-task-discoverability-report.json",
+          "sizeBytes": 252,
+          "lastModified": "2026-04-20T02:57:20.501Z",
+          "sha256": "5d415209a0d2a54bbcca31d0de464a8a4ee1d0e1109713d85c73e6fac8a13fbe"
+        },
+        {
+          "path": "manifests/advisor-registry.json",
+          "sourcePath": "generated/advisor-registry.json",
+          "sizeBytes": 3945,
+          "lastModified": "2026-04-20T02:57:20.501Z",
+          "sha256": "0b9a9de262275d2662e8c7fb165ac6a20206c01fd16370d28c70cbb7af36382e"
+        },
+        {
+          "path": "manifests/agency-wording-lockdown-report.json",
+          "sourcePath": "generated/agency-wording-lockdown-report.json",
+          "sizeBytes": 154,
+          "lastModified": "2026-04-20T02:57:20.501Z",
+          "sha256": "816dd631b80039052bae87b32410b03df3036f34a05edddc0a02fef4c0b8cb02"
+        },
+        {
+          "path": "manifests/agent-primitive-wiring-report.json",
+          "sourcePath": "generated/agent-primitive-wiring-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.501Z",
+          "sha256": "9fccf627f29b7b819f499f6af963623c98f24a0788c0f4928197998596392f09"
+        },
+        {
+          "path": "manifests/ai-advisor-reality-report.json",
+          "sourcePath": "generated/ai-advisor-reality-report.json",
+          "sizeBytes": 2102,
+          "lastModified": "2026-04-20T02:57:20.501Z",
+          "sha256": "ed6552d847f91cb8547ef67eb16f4518410a33465a2a567545d10e561e8fdc6c"
+        },
+        {
+          "path": "manifests/ai-budget-enforcement-under-load-report.json",
+          "sourcePath": "generated/ai-budget-enforcement-under-load-report.json",
+          "sizeBytes": 163,
+          "lastModified": "2026-04-20T02:57:20.502Z",
+          "sha256": "7e6ad3da0295b9019632c3300ae9d2355fe8e67565f62fbab6a5c57facec69e5"
+        },
+        {
+          "path": "manifests/ai-budget-hard-stop-report.json",
+          "sourcePath": "generated/ai-budget-hard-stop-report.json",
+          "sizeBytes": 458,
+          "lastModified": "2026-04-20T02:57:20.502Z",
+          "sha256": "b9aa0dd6e420ce0a3dcabfdf69a78f8f8ea3c330815b5b974a3136448741210f"
+        },
+        {
+          "path": "manifests/ai-engineer-action-coverage-report.json",
+          "sourcePath": "generated/ai-engineer-action-coverage-report.json",
+          "sizeBytes": 4841,
+          "lastModified": "2026-04-20T02:57:20.502Z",
+          "sha256": "617386cf379114c167f22b0dfc4f6b5749224edb0b9f8aaab6cb02a51cadde3a"
+        },
+        {
+          "path": "manifests/ai-engineer-primitive-coverage-report.json",
+          "sourcePath": "generated/ai-engineer-primitive-coverage-report.json",
+          "sizeBytes": 19835,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "60dce9e9889512a031f7ffdd1cb7db83407aab65f2d0c02e2276681dee7bbb21"
+        },
+        {
+          "path": "manifests/ai-engineer-tab-registry-report.json",
+          "sourcePath": "generated/ai-engineer-tab-registry-report.json",
+          "sizeBytes": 358,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "f07417a2338502ba654e8d9a7c2e9fc3b02cc2bd7558e94bacd65bb138014608"
+        },
+        {
+          "path": "manifests/ai-engineer-wiring-coverage-report.json",
+          "sourcePath": "generated/ai-engineer-wiring-coverage-report.json",
+          "sizeBytes": 19604,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "e18eb242123ce92e036e53fd34c52fd05298afc93ebb5b989feddda36db93905"
+        },
+        {
+          "path": "manifests/ai-fallback-verification-report.json",
+          "sourcePath": "generated/ai-fallback-verification-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "cc5435b224c80ba296046763b41a3aa533569dcfc9b78ebea6c24ab860a87802"
+        },
+        {
+          "path": "manifests/ai-ledger-write-verification-report.json",
+          "sourcePath": "generated/ai-ledger-write-verification-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "82ca98cbc9838f87a333b2cd3e53ddf56da68604dc065c3f03ee0110e195f4fc"
+        },
+        {
+          "path": "manifests/ai-live-provider-nightly-report.json",
+          "sourcePath": "generated/ai-live-provider-nightly-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "0448e034af9fe2506cfdee0817cb964bd7126303284835aba5cb1c5aa11a43d8"
+        },
+        {
+          "path": "manifests/ai-receipt-completeness-report.json",
+          "sourcePath": "generated/ai-receipt-completeness-report.json",
+          "sizeBytes": 154,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "cb68351aa9d92034fa1d09b0a6ab09082e786fc4d844cf30081c2291f5470916"
+        },
+        {
+          "path": "manifests/ai-receipt-persistence-report.json",
+          "sourcePath": "generated/ai-receipt-persistence-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.503Z",
+          "sha256": "c6621027efce9792ccab628cb45c13792fd2fac78ebaf1d0893f45df7cb350be"
+        },
+        {
+          "path": "manifests/ai-runtime-streak-health-report.json",
+          "sourcePath": "generated/ai-runtime-streak-health-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "75a7862122ba8dadd6569026db383479db007552ad096afca493660c72dc7cc9"
+        },
+        {
+          "path": "manifests/ai-runtime-truth-artifacts-report.json",
+          "sourcePath": "generated/ai-runtime-truth-artifacts-report.json",
+          "sizeBytes": 208,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "2dbf823f2aafe2a441d4d7bbb98de878d15fab0062da34f2a14dbe59a238fe52"
+        },
+        {
+          "path": "manifests/android-native-generation-report.json",
+          "sourcePath": "generated/android-native-generation-report.json",
+          "sizeBytes": 652,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "80983eb004458858e82e73be069fd8162d2438352ea55c947edd1248f7a51553"
+        },
+        {
+          "path": "manifests/android-release-path-report.json",
+          "sourcePath": "generated/android-release-path-report.json",
+          "sizeBytes": 647,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "542ca9aeee354d56f2cae85cc8198f57e3a3aabed89972062d1d5f4f2920a208"
+        },
+        {
+          "path": "manifests/app-plane-map-report.json",
+          "sourcePath": "generated/app-plane-map-report.json",
+          "sizeBytes": 7146,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "538c71d3445487252c0fb5c19e06cc700f40548678eddc1964955a0d670bb620"
+        },
+        {
+          "path": "manifests/app-plane-map.json",
+          "sourcePath": "generated/app-plane-map.json",
+          "sizeBytes": 7146,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "538c71d3445487252c0fb5c19e06cc700f40548678eddc1964955a0d670bb620"
+        },
+        {
+          "path": "manifests/app-profile-matrix-report.json",
+          "sourcePath": "generated/app-profile-matrix-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "dcb613821bb25eaca9ab3d09ac35418400bec3f22a51238607607ba1744ce92c"
+        },
+        {
+          "path": "manifests/app-profile-matrix.json",
+          "sourcePath": "generated/app-profile-matrix.json",
+          "sizeBytes": 170,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "05f98b719217d144f9736dd2d94199828b87c8f1a43d028a5bdd7f2185de61dc"
+        },
+        {
+          "path": "manifests/app-sdk-extension-events-report.json",
+          "sourcePath": "generated/app-sdk-extension-events-report.json",
+          "sizeBytes": 276,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "24e44c760ff3f761190d1aee50ef00100fbc8e0a6d6af1f6678fe1b1d92b6f5f"
+        },
+        {
+          "path": "manifests/app-sdk-extension-registry-report.json",
+          "sourcePath": "generated/app-sdk-extension-registry-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "851c60e889f46afa06506b6e9dea38767a13248c610d621547dadfa8a43da6f0"
+        },
+        {
+          "path": "manifests/app-store-lifecycle-reality-report.json",
+          "sourcePath": "generated/app-store-lifecycle-reality-report.json",
+          "sizeBytes": 199,
+          "lastModified": "2026-04-20T02:57:20.504Z",
+          "sha256": "c86377571fcd92d930914f4e95fdcee3872bfa69e1f6aaddc9ca52f65b3880db"
+        },
+        {
+          "path": "manifests/appliance-deployability-report.json",
+          "sourcePath": "generated/appliance-deployability-report.json",
+          "sizeBytes": 6334,
+          "lastModified": "2026-04-20T02:57:20.505Z",
+          "sha256": "84425bebee5c3b9090c52c7d9f2cac713d739cc220eba389526e40a6558ae6c2"
+        },
+        {
+          "path": "manifests/appliance-esxi-status.json",
+          "sourcePath": "generated/appliance-esxi-status.json",
+          "sizeBytes": 857,
+          "lastModified": "2026-04-20T02:57:20.505Z",
+          "sha256": "286a253a9d608cd8c4cd0f84fe2861817b96a4cd86f074883737416a49ff0ee6"
+        },
+        {
+          "path": "manifests/architecture-compliance-report.json",
+          "sourcePath": "generated/architecture-compliance-report.json",
+          "sizeBytes": 248,
+          "lastModified": "2026-04-20T02:57:20.505Z",
+          "sha256": "ce1a2679277f2faa8391770064ea05a276f756ade974a98c00e701312bde20d3"
+        },
+        {
+          "path": "manifests/artifact-ownership-manifest.json",
+          "sourcePath": "generated/artifact-ownership-manifest.json",
+          "sizeBytes": 352593,
+          "lastModified": "2026-04-20T02:57:20.505Z",
+          "sha256": "22d2a8b216e8f3ca3860f39f385769c9dfd476afe89dfa6b3f6f631d002c385c"
+        },
+        {
+          "path": "manifests/assurance-l3-ceiling-report.json",
+          "sourcePath": "generated/assurance-l3-ceiling-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "27065422bff3a34208761557d774e9bdae804c88ec9b594597f26d56d05b149f"
+        },
+        {
+          "path": "manifests/attestation-evidence-freshness-report.json",
+          "sourcePath": "generated/attestation-evidence-freshness-report.json",
+          "sizeBytes": 433,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "e957ed359a573eb114c841fccd79f608874ac450fedd06c4ec35cf1c8a46975f"
+        },
+        {
+          "path": "manifests/attestation-packet-signed-report.json",
+          "sourcePath": "generated/attestation-packet-signed-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "ff203e8858fed238c85b498a294cd144b506e8c39f359b77a9e07789c4c25b6c"
+        },
+        {
+          "path": "manifests/audit-export-immutable-report.json",
+          "sourcePath": "generated/audit-export-immutable-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "129b7a43e723914edaf4187531a2119d776c8120777a126b44b2ed6950950eba"
+        },
+        {
+          "path": "manifests/auth-policy-reality-report.json",
+          "sourcePath": "generated/auth-policy-reality-report.json",
+          "sizeBytes": 5022,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "ca80ae06da2c9c56d20e4457ff914ecbc2ebd6242db3b38a6e98ff6842694cea"
+        },
+        {
+          "path": "manifests/autonomous-action-receipts-report.json",
+          "sourcePath": "generated/autonomous-action-receipts-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "35af8d300327d9570f5bdfc5b26ce4fc274f0e6d11cfeab947e2c51ab0bea931"
+        },
+        {
+          "path": "manifests/autonomous-action-rollback-coverage-report.json",
+          "sourcePath": "generated/autonomous-action-rollback-coverage-report.json",
+          "sizeBytes": 166,
+          "lastModified": "2026-04-20T02:57:20.506Z",
+          "sha256": "010f6b7c8c6e0fe9e535931b003313877026c20e105236aadc67bf364ae7bb0b"
+        },
+        {
+          "path": "manifests/autonomous-action-safety-gates-report.json",
+          "sourcePath": "generated/autonomous-action-safety-gates-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "ebffb52dd4ce982054fbd82748a2f145f0112a06acc1a26d373c2c6589375d1e"
+        },
+        {
+          "path": "manifests/backend-api-deployability-report.json",
+          "sourcePath": "generated/backend-api-deployability-report.json",
+          "sizeBytes": 7858,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "a8c844113f4f8e784bfe9f0baebe07f8403f1f47bf10b4fa49b6a5bf7de03088"
+        },
+        {
+          "path": "manifests/base-os-manifest.json",
+          "sourcePath": "generated/base-os-manifest.json",
+          "sizeBytes": 1406,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "96a24f99997ae98b409189dc607d332465b0e72cb50476b321ca58d7536af97a"
+        },
+        {
+          "path": "manifests/behavioral-ci-coverage-report.json",
+          "sourcePath": "generated/behavioral-ci-coverage-report.json",
+          "sizeBytes": 199,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "585d923465b0c36d6963be20df02d8f0aca21e82a1fa42873c8c5f0285aec9a4"
+        },
+        {
+          "path": "manifests/boardroom-briefing-narrow-width-report.json",
+          "sourcePath": "generated/boardroom-briefing-narrow-width-report.json",
+          "sizeBytes": 291,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "1722fd7de506bb922ad5490a128e3d6bab5fa8f4991400b3defc7c38f68feae8"
+        },
+        {
+          "path": "manifests/boardroom-briefing-truth-alignment-report.json",
+          "sourcePath": "generated/boardroom-briefing-truth-alignment-report.json",
+          "sizeBytes": 978,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "01411642e77da940b368e9b99345a7c3dab5781974ba348aadb4d7ba20b7a8b4"
+        },
+        {
+          "path": "manifests/boardroom-cockpit-telemetry-report.json",
+          "sourcePath": "generated/boardroom-cockpit-telemetry-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "689066e162e82370e2cbb01b377efc1e481705a5a6ba25c93bed1c9698e08bdc"
+        },
+        {
+          "path": "manifests/boardroom-layer7-closure-report.json",
+          "sourcePath": "generated/boardroom-layer7-closure-report.json",
+          "sizeBytes": 1548,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "2b508f1621bc3b0dcdfbd5a6e885cdd7b97c8104ffe947363a08884d4c670a24"
+        },
+        {
+          "path": "manifests/boardroom-template-index.json",
+          "sourcePath": "generated/boardroom-template-index.json",
+          "sizeBytes": 1584,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "e6a26912a5a40cd3ce54c079cc8ed50f7b7462a2f90e6f349d9b4301369c96fc"
+        },
+        {
+          "path": "manifests/boardroom-trust-copy-report.json",
+          "sourcePath": "generated/boardroom-trust-copy-report.json",
+          "sizeBytes": 423,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "bd1d8bab2e2d95d71ca4ed7ce063d9263a657682380e5e0d610a56f402546577"
+        },
+        {
+          "path": "manifests/boot-chain-manifest.json",
+          "sourcePath": "generated/boot-chain-manifest.json",
+          "sizeBytes": 2890,
+          "lastModified": "2026-04-20T02:57:20.507Z",
+          "sha256": "3ee5de711cf5b3a1c107ec2a4b99b4c2be5c9fe79322c75f5ba98343e16812d3"
+        },
+        {
+          "path": "manifests/bounded-context-manifest.json",
+          "sourcePath": "generated/bounded-context-manifest.json",
+          "sizeBytes": 5179,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "98a325f3eacee99a3158a176e9a03c539bd9c67ca3439878b808b4f54a448beb"
+        },
+        {
+          "path": "manifests/bridge-status-contract-report.json",
+          "sourcePath": "generated/bridge-status-contract-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "53a81746e3a9cec176991e70e36b14066e9514aefd43accc4d0625820cdbe267"
+        },
+        {
+          "path": "manifests/build-artifact-manifest.json",
+          "sourcePath": "generated/build-artifact-manifest.json",
+          "sizeBytes": 311,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "39a12322a674363025f3b0ca1848c9db6bc68115e7b649d2b576403f7b69c398"
+        },
+        {
+          "path": "manifests/calm-mode-default-posture-report.json",
+          "sourcePath": "generated/calm-mode-default-posture-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "8789b7fc5784d6f79371687ef07d62bcd6b157ae70c6be3d18a904fd90bf85f1"
+        },
+        {
+          "path": "manifests/canonical-paths-report.json",
+          "sourcePath": "generated/canonical-paths-report.json",
+          "sizeBytes": 1202,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "314dba88de875e8aafad045bd0b47f9689b882bc50b4a7dc72f15481021962b5"
+        },
+        {
+          "path": "manifests/capability-event-matrix.json",
+          "sourcePath": "generated/capability-event-matrix.json",
+          "sizeBytes": 103136,
+          "lastModified": "2026-04-20T02:57:20.508Z",
+          "sha256": "0af25b48699e5fa4d94cd65a343fe209c8c0c6029e18af17647007a6b53c0e30"
+        },
+        {
+          "path": "manifests/capability-family-index.json",
+          "sourcePath": "generated/capability-family-index.json",
+          "sizeBytes": 10250,
+          "lastModified": "2026-04-20T02:57:20.509Z",
+          "sha256": "0012af2be672dfa6d63b2d98c6b779a4c7410126d6188ebfcff822435290dc45"
+        },
+        {
+          "path": "manifests/capability-index.json",
+          "sourcePath": "generated/capability-index.json",
+          "sizeBytes": 57876,
+          "lastModified": "2026-04-20T02:57:20.509Z",
+          "sha256": "356dab577a2f419871ad64cfa506f2a4eca89b587aca4a37b9305e862f78331d"
+        },
+        {
+          "path": "manifests/capability-owner-map.json",
+          "sourcePath": "generated/capability-owner-map.json",
+          "sizeBytes": 74709,
+          "lastModified": "2026-04-20T02:57:20.509Z",
+          "sha256": "5b552c030117643768343a829d1a76bb9b947f7517255a9a8704cdb2287c4682"
+        },
+        {
+          "path": "manifests/capability-policy-matrix.json",
+          "sourcePath": "generated/capability-policy-matrix.json",
+          "sizeBytes": 91255,
+          "lastModified": "2026-04-20T02:57:20.509Z",
+          "sha256": "f64e30ea37e5bf90b7ced169e745d236f7d80c42e4579255db1907884bf3a23e"
+        },
+        {
+          "path": "manifests/capability-quality-metric.json",
+          "sourcePath": "generated/capability-quality-metric.json",
+          "sizeBytes": 104784,
+          "lastModified": "2026-04-20T02:57:20.510Z",
+          "sha256": "2ea49965d9a47f5d64eb81f6b80b4b12856a6806cfb47a47704f75842fd87f98"
+        },
+        {
+          "path": "manifests/capability-receipt-matrix.json",
+          "sourcePath": "generated/capability-receipt-matrix.json",
+          "sizeBytes": 81574,
+          "lastModified": "2026-04-20T02:57:20.510Z",
+          "sha256": "d55e9b7261ba7dbe2096564de51a23bf1e5727966c1e49cbaea695d037134b32"
+        },
+        {
+          "path": "manifests/capability-surface-matrix.json",
+          "sourcePath": "generated/capability-surface-matrix.json",
+          "sizeBytes": 95298,
+          "lastModified": "2026-04-20T02:57:20.510Z",
+          "sha256": "ce6f15de9d23ab99f470335a015f40f8b0aa22b30e85ce78c14f1198d6a52fd7"
+        },
+        {
+          "path": "manifests/capacitor-mobile-truth-report.json",
+          "sourcePath": "generated/capacitor-mobile-truth-report.json",
+          "sizeBytes": 649,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "9462a7bfdc15a5925aff48ccf391b53621d6f9c03c06c0a969ae81a4c8edfba4"
+        },
+        {
+          "path": "manifests/chaos-drill-classification-report.json",
+          "sourcePath": "generated/chaos-drill-classification-report.json",
+          "sizeBytes": 248,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "f6934b9deeb73fc923c3fd91ed2f33aec06c3e3d7f963a23a8e656c6985eedbe"
+        },
+        {
+          "path": "manifests/chaos-safe-catalogue-report.json",
+          "sourcePath": "generated/chaos-safe-catalogue-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "2f7e6f97bc073ff3724b064567d17cdb87a752e5b43beb847044eb738a22acf0"
+        },
+        {
+          "path": "manifests/ci-artifacts-proof-report.json",
+          "sourcePath": "generated/ci-artifacts-proof-report.json",
+          "sizeBytes": 2391,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "da7d6e60136125348cc361513966824bdb5aa050a963c2aca04912585200ebbb"
+        },
+        {
+          "path": "manifests/ci-umbrella-manifest.json",
+          "sourcePath": "generated/ci-umbrella-manifest.json",
+          "sizeBytes": 20181,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "108d48c541fa4d356243a148ad6dd64df16b983205b19f2144bc9489d4981aea"
+        },
+        {
+          "path": "manifests/command-palette-profile-leakage-report.json",
+          "sourcePath": "generated/command-palette-profile-leakage-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "302ea28aeddf56c864baf084aaa7d34a00c06c5a01d01078996f35df8cc8a07b"
+        },
+        {
+          "path": "manifests/command-palette-profile-leakage.json",
+          "sourcePath": "generated/command-palette-profile-leakage.json",
+          "sizeBytes": 174,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "e4aa8495f1d0b305c74c0b19949475df083d43c56db730ad2c1f631a260503c3"
+        },
+        {
+          "path": "manifests/communications-connector-state-alignment-report.json",
+          "sourcePath": "generated/communications-connector-state-alignment-report.json",
+          "sizeBytes": 1076,
+          "lastModified": "2026-04-20T02:57:20.511Z",
+          "sha256": "f111d1de065f66d0ced23628b2d17c0f6ada172b9c9f78177298c65bb9a1bcd2"
+        },
+        {
+          "path": "manifests/communications-provider-copy-report.json",
+          "sourcePath": "generated/communications-provider-copy-report.json",
+          "sizeBytes": 433,
+          "lastModified": "2026-04-20T02:57:20.512Z",
+          "sha256": "0fad3344fa2749b70d9e6bff220cf918948d119836d978ce299ce3c0eb7ff466"
+        },
+        {
+          "path": "manifests/compliance-collector-allowlist-report.json",
+          "sourcePath": "generated/compliance-collector-allowlist-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.512Z",
+          "sha256": "6f60270eb6a4d7535882a071612d6d328e1b6386b87d2534997bec76769e30d7"
+        },
+        {
+          "path": "manifests/compliance-evidence-allowlisted-report.json",
+          "sourcePath": "generated/compliance-evidence-allowlisted-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.512Z",
+          "sha256": "78d01d55ce8f8cf608ff37f57f8c6a421303cd789c80b12f8dcf3639eb4a2802"
+        },
+        {
+          "path": "manifests/component-duplication-map.json",
+          "sourcePath": "generated/component-duplication-map.json",
+          "sizeBytes": 3343,
+          "lastModified": "2026-04-20T02:57:20.512Z",
+          "sha256": "1b6522fe02b2393ca5ec67ae0d34e8623a5376f4be9dc8b52610120d79be592d"
+        },
+        {
+          "path": "manifests/component-registry.json",
+          "sourcePath": "generated/component-registry.json",
+          "sizeBytes": 334076,
+          "lastModified": "2026-04-20T02:57:20.514Z",
+          "sha256": "94457e4f67d103a78965a92f681e4d1efad735bcdf58baee314971dcfa39fc7c"
+        },
+        {
+          "path": "manifests/concierge-ai-state-handling-report.json",
+          "sourcePath": "generated/concierge-ai-state-handling-report.json",
+          "sizeBytes": 709,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "afeebf3cc7d582e240cfda2552229eaf83d35f531ca1bbd7edde9efbf4127dca"
+        },
+        {
+          "path": "manifests/concierge-ai-trust-copy-report.json",
+          "sourcePath": "generated/concierge-ai-trust-copy-report.json",
+          "sizeBytes": 394,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "daafea1765432c9af80075b186a1a2c66ab5826ca1666a0af1d53d05ce0547c0"
+        },
+        {
+          "path": "manifests/connector-capability-completeness-report.json",
+          "sourcePath": "generated/connector-capability-completeness-report.json",
+          "sizeBytes": 261,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "af393112e0cf21851c4c292aa6f3e418d2fed0d592b74b39992aec7e65a6765a"
+        },
+        {
+          "path": "manifests/connector-catalog.json",
+          "sourcePath": "generated/connector-catalog.json",
+          "sizeBytes": 3693,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "92d2c64ffdedc98bb2b65c3d720b861d2c7d926d343558af284865814b1a8404"
+        },
+        {
+          "path": "manifests/connector-health-state-consistency-report.json",
+          "sourcePath": "generated/connector-health-state-consistency-report.json",
+          "sizeBytes": 366,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "692ee4ba6fb9fdfb65c64bdcf01982813362359e160b102ff2737e21be43fe73"
+        },
+        {
+          "path": "manifests/connector-reality-report.json",
+          "sourcePath": "generated/connector-reality-report.json",
+          "sizeBytes": 858,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "6c0f22d147846cb61a54eae310f23a5eff4843912a94a036ac5be68d79cbb3ff"
+        },
+        {
+          "path": "manifests/connector-reauth-telemetry-report.json",
+          "sourcePath": "generated/connector-reauth-telemetry-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.515Z",
+          "sha256": "2fbeb9db5158adaaca17f5bdad88bfb53a83f35cd163acd74841e67ca04bc05e"
+        },
+        {
+          "path": "manifests/connector-refresh-streak-report.json",
+          "sourcePath": "generated/connector-refresh-streak-report.json",
+          "sizeBytes": 342,
+          "lastModified": "2026-04-20T02:57:20.517Z",
+          "sha256": "d98f8cbd395d170e931988fbd115fd436645bb7953d979894d089f3d20c15eac"
+        },
+        {
+          "path": "manifests/connector-truth-artifacts-report.json",
+          "sourcePath": "generated/connector-truth-artifacts-report.json",
+          "sizeBytes": 412,
+          "lastModified": "2026-04-20T02:57:20.518Z",
+          "sha256": "45b4e65540081884657e182b069c466cef3f8aeebdbdbb419453f2cccb25b6e2"
+        },
+        {
+          "path": "manifests/context-membership-manifest.json",
+          "sourcePath": "generated/context-membership-manifest.json",
+          "sizeBytes": 2079,
+          "lastModified": "2026-04-20T02:57:20.518Z",
+          "sha256": "79a53ead83da6dd64677b4d88c624545e8cb36d0ae055564282be85ad2975a34"
+        },
+        {
+          "path": "manifests/contract-manifest.json",
+          "sourcePath": "generated/contract-manifest.json",
+          "sizeBytes": 309377,
+          "lastModified": "2026-04-20T02:57:20.518Z",
+          "sha256": "df8880e6028ae7ff686bb009e7c24cc5471d984539d986d9e067efb3cdef4f5b"
+        },
+        {
+          "path": "manifests/contract-topology-drift.json",
+          "sourcePath": "generated/contract-topology-drift.json",
+          "sizeBytes": 180,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "12ce98e2baf37db3b919748cc2126473a56b74946d5dca63901242d33984d11f"
+        },
+        {
+          "path": "manifests/cosmetic-debt-closure-report.json",
+          "sourcePath": "generated/cosmetic-debt-closure-report.json",
+          "sizeBytes": 1379,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "4f87dc160646876afc8d47a8b03e9aba525d607a18d3abf968878bd4a63307d6"
+        },
+        {
+          "path": "manifests/cost-proposals-never-auto-apply-report.json",
+          "sourcePath": "generated/cost-proposals-never-auto-apply-report.json",
+          "sizeBytes": 147,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "046b0fb116cede5b90325e44f0c61e60057769be8d2148777ce2c869f53229c3"
+        },
+        {
+          "path": "manifests/cost-spotlight-empty-state-report.json",
+          "sourcePath": "generated/cost-spotlight-empty-state-report.json",
+          "sizeBytes": 565,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "ebe3cd1eb693e18f0d0fdad11fa70d8fef36a27b727185d0835342230b6d3a1b"
+        },
+        {
+          "path": "manifests/cron-execution-evidence-report.json",
+          "sourcePath": "generated/cron-execution-evidence-report.json",
+          "sizeBytes": 3085,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "525c72ea91cf0b07d5ffd9d6156d07ba435dad9471342ac3fbc5f7a7b4873ddb"
+        },
+        {
+          "path": "manifests/cross-council-board-page-report.json",
+          "sourcePath": "generated/cross-council-board-page-report.json",
+          "sizeBytes": 138,
+          "lastModified": "2026-04-20T02:57:20.519Z",
+          "sha256": "52649315b682bfbe9205cdc6cc814e419460079e03f7497fb3a20c988a38aaa5"
+        },
+        {
+          "path": "manifests/cross-council-l3-ceiling-report.json",
+          "sourcePath": "generated/cross-council-l3-ceiling-report.json",
+          "sizeBytes": 138,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "54b431c90de851e7a500de2b1199c222c72f81b79eb5c0abc5806b047ee24b75"
+        },
+        {
+          "path": "manifests/cross-domain-coherence-empty-state-report.json",
+          "sourcePath": "generated/cross-domain-coherence-empty-state-report.json",
+          "sizeBytes": 528,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "390e3952336a25eb91d43d3e366208e953d5bca51cd98cdc954d9bb888874419"
+        },
+        {
+          "path": "manifests/cta-integrity-report.json",
+          "sourcePath": "generated/cta-integrity-report.json",
+          "sizeBytes": 144,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "68b6c69ff94020134c3ac81ff122ecfa5e591bd7a1c47c3bd9f50af73f8d667f"
+        },
+        {
+          "path": "manifests/db-reality-report.json",
+          "sourcePath": "generated/db-reality-report.json",
+          "sizeBytes": 2843,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "305d2978d49f308b0faccaa8381c8d804c6a79dd9f0acc4134f3bbee63c126e4"
+        },
+        {
+          "path": "manifests/db-schema-snapshot.json",
+          "sourcePath": "generated/db-schema-snapshot.json",
+          "sizeBytes": 45174,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "2a0e7bff8b3978537ee5d5e8044db18b7a7c5f0f37d67a4849ac61bace8452ed"
+        },
+        {
+          "path": "manifests/dead-pages.json",
+          "sourcePath": "generated/dead-pages.json",
+          "sizeBytes": 1798,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "6277feb0f981ab9ed8308b2c267fa6ee05eb0f89e564171e3adb03bb4dfb97e0"
+        },
+        {
+          "path": "manifests/debugger-tamper-proof-report.json",
+          "sourcePath": "generated/debugger-tamper-proof-report.json",
+          "sizeBytes": 336,
+          "lastModified": "2026-04-20T02:57:20.520Z",
+          "sha256": "2106a217644818da9dea7d9dc64e3dc3d2f3c465415e292362c9e902037733ad"
+        },
+        {
+          "path": "manifests/demo-only-surface-badging-report.json",
+          "sourcePath": "generated/demo-only-surface-badging-report.json",
+          "sizeBytes": 180,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "5c7d3fe7c2642f89ef41e15c59017ff24d66ad5b1298f79949977a6a64882cf7"
+        },
+        {
+          "path": "manifests/dependency-upgrade-proposer-report.json",
+          "sourcePath": "generated/dependency-upgrade-proposer-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "6b0b1cc1e29e20f3eea9d44fd540ac9886e0d4c90585672ba928abc22a4aa44b"
+        },
+        {
+          "path": "manifests/deployability-report.json",
+          "sourcePath": "generated/deployability-report.json",
+          "sizeBytes": 6757,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "004f274bb61f202d83e9dde7c84030ce4c039e551ffadcac5d63ff60dbb3f3c0"
+        },
+        {
+          "path": "manifests/deployment-profile-coverage-report.json",
+          "sourcePath": "generated/deployment-profile-coverage-report.json",
+          "sizeBytes": 590,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "b103be2136144881d522813dacd15e01bba45a400eff044697e57300a56de66f"
+        },
+        {
+          "path": "manifests/deployment-wording-safety-report.json",
+          "sourcePath": "generated/deployment-wording-safety-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "2fd204ced4195c57c8172859ac29a399064c17694c4725094f20898cdce6e700"
+        },
+        {
+          "path": "manifests/desktop-deployability-report.json",
+          "sourcePath": "generated/desktop-deployability-report.json",
+          "sizeBytes": 5059,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "13832fe12631c054089d3bb972b4ed86d2964405e53b0830c71167bea1cefbd3"
+        },
+        {
+          "path": "manifests/desktop-honest-narrow-width-report.json",
+          "sourcePath": "generated/desktop-honest-narrow-width-report.json",
+          "sizeBytes": 336,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "da0ad8f199d0e7f14d9f8a0607056de02ba87890ac40177a23e768bc20212512"
+        },
+        {
+          "path": "manifests/desktop-signing-status.json",
+          "sourcePath": "generated/desktop-signing-status.json",
+          "sizeBytes": 854,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "a759b9b39e45f5288f10b1917e50417f50d1e33af55bd772cd3210e7ad3a4f77"
+        },
+        {
+          "path": "manifests/device-surface-claim-safety-report.json",
+          "sourcePath": "generated/device-surface-claim-safety-report.json",
+          "sizeBytes": 179,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "06f3afbcc5a8343f31148eb2a2e57ddbd55c739f2dcbeefee61899a8eb38ade6"
+        },
+        {
+          "path": "manifests/doc-canonicality-report.json",
+          "sourcePath": "generated/doc-canonicality-report.json",
+          "sizeBytes": 226,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "e1b486a4b71031f4bd52231c958866c8fc620e62c07d7fcb7a763ef673684e13"
+        },
+        {
+          "path": "manifests/domain-reality-report.json",
+          "sourcePath": "generated/domain-reality-report.json",
+          "sizeBytes": 3709,
+          "lastModified": "2026-04-20T02:57:20.521Z",
+          "sha256": "02dad3888f42ce7b1ddc62d9aadf8713db11e77f87eba0cb9e295f63e8803097"
+        },
+        {
+          "path": "manifests/dp-epsilon-budget-ledger-report.json",
+          "sourcePath": "generated/dp-epsilon-budget-ledger-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "a666973a40a87a66c49170c12bb8645fe6229b736fcbc6ef16a32f8b0cb4e9eb"
+        },
+        {
+          "path": "manifests/dp-noise-floor-report.json",
+          "sourcePath": "generated/dp-noise-floor-report.json",
+          "sizeBytes": 145,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "92c7edb02ac1d71de160fb2b5a773065b269940886bb7215146040284cb43138"
+        },
+        {
+          "path": "manifests/dr-drill-evidence-report.json",
+          "sourcePath": "generated/dr-drill-evidence-report.json",
+          "sizeBytes": 283,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "b1a4c515b59a0badbbbb3c8bdf326c3c87546188c02cb37b6af9bb27d74d6a0c"
+        },
+        {
+          "path": "manifests/dr-l3-ceiling-report.json",
+          "sourcePath": "generated/dr-l3-ceiling-report.json",
+          "sizeBytes": 144,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "7c313dbdedefec037457932b994ddb32adf87165e2919951d946a2c8d68d183e"
+        },
+        {
+          "path": "manifests/economic-trust-future-closure-report.json",
+          "sourcePath": "generated/economic-trust-future-closure-report.json",
+          "sizeBytes": 190,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "5e80c7b72cf6c1d7dc96f873e14708aa455df83f4f8f27f01cc1cb26c692daf6"
+        },
+        {
+          "path": "manifests/edge-function-classification-audit.json",
+          "sourcePath": "generated/edge-function-classification-audit.json",
+          "sizeBytes": 57704,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "6f11374a012d14c885c451faf0422a40d3a6424f241448a95644191f1c452971"
+        },
+        {
+          "path": "manifests/edge-function-contract-coverage-report.json",
+          "sourcePath": "generated/edge-function-contract-coverage-report.json",
+          "sizeBytes": 435,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "b19cea4c2ca135d182b556322aac8d2b0b6812106462b6c72854aba1df8ca687"
+        },
+        {
+          "path": "manifests/edge-function-governance-coverage.json",
+          "sourcePath": "generated/edge-function-governance-coverage.json",
+          "sizeBytes": 1442,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "b288d57dc8d38699ed7b630a12b5891b9c87edfe5c7f1db4866275001f9bfa99"
+        },
+        {
+          "path": "manifests/edge-function-governance-report.json",
+          "sourcePath": "generated/edge-function-governance-report.json",
+          "sizeBytes": 1079,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "42974fd50c6b4d887b4afbfc5d1852eec097d60513af3f235565ca1d87a2609e"
+        },
+        {
+          "path": "manifests/edge-function-health-replay-report.json",
+          "sourcePath": "generated/edge-function-health-replay-report.json",
+          "sizeBytes": 446,
+          "lastModified": "2026-04-20T02:57:20.522Z",
+          "sha256": "55d4220c46b150708eec8acb5353540fd9dafec3f989c6243b939c439f21bd33"
+        },
+        {
+          "path": "manifests/edge-function-log-shape-report.json",
+          "sourcePath": "generated/edge-function-log-shape-report.json",
+          "sizeBytes": 7551,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "9e0b03ce9066b91e01eeb0723bac6b5cd211556ce515b0b88c6f72ade3871ace"
+        },
+        {
+          "path": "manifests/edge-function-membership-report.json",
+          "sourcePath": "generated/edge-function-membership-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "55e6c69b5bfca3161b2ae8a9d594459d90e0c757dbc4ce6710cff8c8140e356a"
+        },
+        {
+          "path": "manifests/edge-function-structured-logging-report.json",
+          "sourcePath": "generated/edge-function-structured-logging-report.json",
+          "sizeBytes": 519,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "cbdfe2d14bf9cceab1d802991c6b551c13da5ce05d13f197f90d64537579b54d"
+        },
+        {
+          "path": "manifests/electron-domain-layout-report.json",
+          "sourcePath": "generated/electron-domain-layout-report.json",
+          "sizeBytes": 1235,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "bbe3f198b7db64d009c513b3baee682f8ab196b1db92482ad0862abc6e073612"
+        },
+        {
+          "path": "manifests/electron-signing-readiness-report.json",
+          "sourcePath": "generated/electron-signing-readiness-report.json",
+          "sizeBytes": 763,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "8d530e2d47b8b4c86f803403cbffdf57d5399c9416497ec328811d6d31fb0204"
+        },
+        {
+          "path": "manifests/electron-threat-detection-proof-report.json",
+          "sourcePath": "generated/electron-threat-detection-proof-report.json",
+          "sizeBytes": 691,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "aa21c962347a240cd51ef77d56faac2224d9bc2ae8209d469e1341d6990cc091"
+        },
+        {
+          "path": "manifests/empty-state-coverage-report.json",
+          "sourcePath": "generated/empty-state-coverage-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "8011d3c331fc34c72a526b728dc279db00f7cf264ac6d5cf889b86ad93bdf60d"
+        },
+        {
+          "path": "manifests/error-patrol-triage-page-report.json",
+          "sourcePath": "generated/error-patrol-triage-page-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "0a8e28747b06fb42fe26ed79e2b06bf27563ed87c2ab6e1194fb6efefab62d3f"
+        },
+        {
+          "path": "manifests/evidence-freshness-blocking-report.json",
+          "sourcePath": "generated/evidence-freshness-blocking-report.json",
+          "sizeBytes": 444,
+          "lastModified": "2026-04-20T02:57:20.523Z",
+          "sha256": "63cbaab910d2479e5095137ddd50bd21b4e54f9feaca0728b0a7bfba77c2e239"
+        },
+        {
+          "path": "manifests/evidence-freshness-report.json",
+          "sourcePath": "generated/evidence-freshness-report.json",
+          "sizeBytes": 2130,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "0db7059658473ee7772f2633e102aee855fd210bc862bb103abad47bbfdb20c4"
+        },
+        {
+          "path": "manifests/evidence-graph-completeness-report.json",
+          "sourcePath": "generated/evidence-graph-completeness-report.json",
+          "sizeBytes": 436,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "a5beb7e3e5a4e0d8106a3c5004ff53b3cb4916e158a4acc932dd910c2f4e345f"
+        },
+        {
+          "path": "manifests/evidence-persistence-layer-status.json",
+          "sourcePath": "generated/evidence-persistence-layer-status.json",
+          "sizeBytes": 3812,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "24db0453125f2972d2acc6560d634d40fc28ff354ea48d9a16bf9be904b030e2"
+        },
+        {
+          "path": "manifests/external-workforce-api-readonly-report.json",
+          "sourcePath": "generated/external-workforce-api-readonly-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "b8c75c95d20e4cc7cba216d0b5b8a85a616d42bdb3fc3c9c972dbccbab6eceba"
+        },
+        {
+          "path": "manifests/feature-integration-index.json",
+          "sourcePath": "generated/feature-integration-index.json",
+          "sizeBytes": 2809,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "bc7d217048f4a0202270a476a26135eca7372af77db4be163f39b64c5d51c78e"
+        },
+        {
+          "path": "manifests/feature-reality-report.json",
+          "sourcePath": "generated/feature-reality-report.json",
+          "sizeBytes": 150,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "8c3a23ded40981abbca73cc0ff29249ffac07de543e7141d4e77d3c79710cf4f"
+        },
+        {
+          "path": "manifests/federation-optin-append-only-report.json",
+          "sourcePath": "generated/federation-optin-append-only-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "00450637389c0a14839260fcfb73e28fc5a8ece1c669c0883a45dccfed5035bb"
+        },
+        {
+          "path": "manifests/federation-optin-required-report.json",
+          "sourcePath": "generated/federation-optin-required-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "2e9261f7b0771560cd924994a806b605a07c6187597a3b412ef35768206fe659"
+        },
+        {
+          "path": "manifests/final-ai-workforce-readiness-report.json",
+          "sourcePath": "generated/final-ai-workforce-readiness-report.json",
+          "sizeBytes": 230,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "a6d2f31fc95ce897bef4f4b602c366f87cebb8b5e04b52fd93de52d0bd8c2c3d"
+        },
+        {
+          "path": "manifests/final-deployment-readiness-report.json",
+          "sourcePath": "generated/final-deployment-readiness-report.json",
+          "sizeBytes": 827,
+          "lastModified": "2026-04-20T02:57:20.524Z",
+          "sha256": "3ed2e35c2245f74c881640828398a10f686862f02a4e8451fa269f345b0ce9d7"
+        },
+        {
+          "path": "manifests/final-gate-meaningfulness-report.json",
+          "sourcePath": "generated/final-gate-meaningfulness-report.json",
+          "sizeBytes": 284,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "8e580a9e873cffd99885027a5b702d82fb4fa1666a255fbf2dbf6492be7a46bf"
+        },
+        {
+          "path": "manifests/final-launch-honesty-report.json",
+          "sourcePath": "generated/final-launch-honesty-report.json",
+          "sizeBytes": 223,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "9e64e49ae2d4d74aff26c9135ae95e758fb457ac54778b83ccfd61603934303e"
+        },
+        {
+          "path": "manifests/final-mobile-truth-report.json",
+          "sourcePath": "generated/final-mobile-truth-report.json",
+          "sizeBytes": 221,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "3ce4402bee1597c495c6a0fa6cc8a381acb0a11c57f2700d80e61221f14d09ce"
+        },
+        {
+          "path": "manifests/final-runtime-proof-report.json",
+          "sourcePath": "generated/final-runtime-proof-report.json",
+          "sizeBytes": 732,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "d28554bde4784767cce330cf066cd2e5a7dce29ccd4bdbdc21e868899dbbf948"
+        },
+        {
+          "path": "manifests/final-supportability-readiness-report.json",
+          "sourcePath": "generated/final-supportability-readiness-report.json",
+          "sizeBytes": 196,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "026ab55645c975535208e2c08f6ba24ebe85a7508716c1fec4e767c3a921f7d5"
+        },
+        {
+          "path": "manifests/first-boot-contract-manifest.json",
+          "sourcePath": "generated/first-boot-contract-manifest.json",
+          "sizeBytes": 2870,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "f39f495b0c16903c1415fa85a713e42d8a31cc277be381e2cbfca6e2fa45189b"
+        },
+        {
+          "path": "manifests/first-boot-proof-receipts.json",
+          "sourcePath": "generated/first-boot-proof-receipts.json",
+          "sizeBytes": 2437,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "1a0992aa1d90b99edbbeeec30c867f92f986feb2a98c426dd64b4f5997517574"
+        },
+        {
+          "path": "manifests/flagship-surface-responsive-quality-report.json",
+          "sourcePath": "generated/flagship-surface-responsive-quality-report.json",
+          "sizeBytes": 4085,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "cce3c5a7c0ac229ed07c9598ed760ebc51d2fa14b079a76fbe516e118a1eef80"
+        },
+        {
+          "path": "manifests/flagship-surface-trust-copy-report.json",
+          "sourcePath": "generated/flagship-surface-trust-copy-report.json",
+          "sizeBytes": 1296,
+          "lastModified": "2026-04-20T02:57:20.525Z",
+          "sha256": "0edd0ce484b264d1fc521cc2d15580b84fe78532b4f1a877dd8fb77452bf1cb8"
+        },
+        {
+          "path": "manifests/formula-registry.json",
+          "sourcePath": "generated/formula-registry.json",
+          "sizeBytes": 10738,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "747f5fef405b408c2ec71d3cd90cedfb990444327746997e7b35a79bb999cf79"
+        },
+        {
+          "path": "manifests/frontend-polish-coverage-report.json",
+          "sourcePath": "generated/frontend-polish-coverage-report.json",
+          "sizeBytes": 172,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "a52902a1a118479c6ade5dd491a34bedb707f68e038e06a31faa4e6a4b495c3e"
+        },
+        {
+          "path": "manifests/future-surfaces-registered-report.json",
+          "sourcePath": "generated/future-surfaces-registered-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "b1155c9f2413b325a7ed3aeefbbbbca43331cd5a8f0ffac002bf1be6b0019258"
+        },
+        {
+          "path": "manifests/future-vision-route-containment-report.json",
+          "sourcePath": "generated/future-vision-route-containment-report.json",
+          "sizeBytes": 183,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "1dbf85328f790f9d014bbdd12e0cbb2f1e3c96324b3ff60003b1ddc91702948d"
+        },
+        {
+          "path": "manifests/gate-meaningfulness-report.json",
+          "sourcePath": "generated/gate-meaningfulness-report.json",
+          "sizeBytes": 191,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "1021d3eb9afb38c705070447bab0812a4614c670f9ee912672e1ba0bc7ca6695"
+        },
+        {
+          "path": "manifests/gate-quality-classification-report.json",
+          "sourcePath": "generated/gate-quality-classification-report.json",
+          "sizeBytes": 184,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "3ae9362d2d4c887450e02bf26235aadd51f785d53aafc945e2a8615be8fc9b66"
+        },
+        {
+          "path": "manifests/generated-mobile-truth-consistency-report.json",
+          "sourcePath": "generated/generated-mobile-truth-consistency-report.json",
+          "sizeBytes": 208,
+          "lastModified": "2026-04-20T02:57:20.526Z",
+          "sha256": "2d87346d3fd65ba13d6b1f999ce9d5e886f2d6eb02a8724634393c21ee960474"
+        },
+        {
+          "path": "manifests/golden-path-reality-report.json",
+          "sourcePath": "generated/golden-path-reality-report.json",
+          "sizeBytes": 921,
+          "lastModified": "2026-04-20T02:57:20.527Z",
+          "sha256": "55a29c9f5117d67826bb2731cae29251c296fb24b118b7706f956907b2c001b3"
+        },
+        {
+          "path": "manifests/golden-path-registry.json",
+          "sourcePath": "generated/golden-path-registry.json",
+          "sizeBytes": 19177,
+          "lastModified": "2026-04-20T02:57:20.527Z",
+          "sha256": "0f7ecdace5f2ed17ce413f59fb1919be915c2f686403954f6f2d644607b687d6"
+        },
+        {
+          "path": "manifests/google-refresh-nightly-report.json",
+          "sourcePath": "generated/google-refresh-nightly-report.json",
+          "sizeBytes": 333,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "53b79d91cd7ff45e413f8b671d895f3707add8a6d6f8ba0f1ed15e6a8b8fa1c6"
+        },
+        {
+          "path": "manifests/hardware-certification-matrix-report.json",
+          "sourcePath": "generated/hardware-certification-matrix-report.json",
+          "sizeBytes": 312,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "c55df316aa09b00e329757c1f9ce5006f9ed128bd3eeb81726477dbd6b055195"
+        },
+        {
+          "path": "manifests/hidden-app-routes-report.json",
+          "sourcePath": "generated/hidden-app-routes-report.json",
+          "sizeBytes": 148,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "708b4a4a614a588a9c1c506b3e1205eab3d058d8a648aeb468252c4a47526d62"
+        },
+        {
+          "path": "manifests/hidden-app-routes.json",
+          "sourcePath": "generated/hidden-app-routes.json",
+          "sizeBytes": 163,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "bc576ea1352b61ec6006c2f0597f3774e72e89cd9afdee4a6bef7f508eb2c3eb"
+        },
+        {
+          "path": "manifests/human-use-operational-readiness-report.json",
+          "sourcePath": "generated/human-use-operational-readiness-report.json",
+          "sizeBytes": 224,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "48044e9421aab0745bbc39eaebc73eda7302efe0e695b2d4c15d2f54138e2950"
+        },
+        {
+          "path": "manifests/implementation-suggestions-pipeline-report.json",
+          "sourcePath": "generated/implementation-suggestions-pipeline-report.json",
+          "sizeBytes": 166,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "439a4d9853894916cf1a00ddcd9f7f73ef70d46ef72c5bb571d3c45a3a66c4bb"
+        },
+        {
+          "path": "manifests/install-page-mobile-honesty-report.json",
+          "sourcePath": "generated/install-page-mobile-honesty-report.json",
+          "sizeBytes": 347,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "ae1e82f338b387e3edae4ae45271c5a24f41fa7dff10f8be10aac6bd0ffef756"
+        },
+        {
+          "path": "manifests/integration-map.json",
+          "sourcePath": "generated/integration-map.json",
+          "sizeBytes": 13758,
+          "lastModified": "2026-04-20T02:57:20.528Z",
+          "sha256": "1ab0991cbccf1a5b4f46814199aae38b8e38c273d7aa19d924c89b92e03c19a9"
+        },
+        {
+          "path": "manifests/internal-agent-admin-pages-report.json",
+          "sourcePath": "generated/internal-agent-admin-pages-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "1cadf8e55745959e1e8bd4216a74be1cbac3f2d6b3ecac6bcd9b8249e60ac4ef"
+        },
+        {
+          "path": "manifests/internal-agent-consensus-tables-report.json",
+          "sourcePath": "generated/internal-agent-consensus-tables-report.json",
+          "sizeBytes": 250,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "a3a643f2f98afa31ab14e6e525c3de1b73ccf0013a65ef4d3e65e957592af335"
+        },
+        {
+          "path": "manifests/internal-agent-cost-proposals-table-report.json",
+          "sourcePath": "generated/internal-agent-cost-proposals-table-report.json",
+          "sizeBytes": 205,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "9f467ecbfb53c2f8f108e56187e96297488a25e86739b132bd2de47a842b3880"
+        },
+        {
+          "path": "manifests/internal-agent-escalation-runtime-report.json",
+          "sourcePath": "generated/internal-agent-escalation-runtime-report.json",
+          "sizeBytes": 203,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "e4ce6fe7da4833ebd3a007c50d49718d26cec98040f8f4cdc5882418bac8952d"
+        },
+        {
+          "path": "manifests/internal-agent-execute-action-report.json",
+          "sourcePath": "generated/internal-agent-execute-action-report.json",
+          "sizeBytes": 160,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "add92b4b94c00d0e53cbc278416eaf14a9d20cedea8fb694ea99ef20d6acc082"
+        },
+        {
+          "path": "manifests/internal-agent-phase7-tables-report.json",
+          "sourcePath": "generated/internal-agent-phase7-tables-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "3787247f9960783729469f315f4773e6e67341d0f3076db0341ad06b363872f0"
+        },
+        {
+          "path": "manifests/internal-agent-phase8-tables-report.json",
+          "sourcePath": "generated/internal-agent-phase8-tables-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.529Z",
+          "sha256": "f597952bed6efd8a3ef6459c2a0589c92fc8c43c0eb478c8b565eddc1c9edc8d"
+        },
+        {
+          "path": "manifests/internal-agent-phase9-tables-report.json",
+          "sourcePath": "generated/internal-agent-phase9-tables-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "b8d967584e38b2c0054c573d619afd0e9f2a75db5638ffccb69dfa76868eae04"
+        },
+        {
+          "path": "manifests/internal-agent-policy-architect-function-report.json",
+          "sourcePath": "generated/internal-agent-policy-architect-function-report.json",
+          "sizeBytes": 171,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "c8357ee9fcd46f76df22ad6bcdcb4aad5ce1a55382d4a50c8a9ae5dd1078f28b"
+        },
+        {
+          "path": "manifests/internal-agent-policy-drafts-table-report.json",
+          "sourcePath": "generated/internal-agent-policy-drafts-table-report.json",
+          "sizeBytes": 165,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "1a957325f0ce5ed7b3f30336805afe7ae8dee6f49447dbd198b4224a47787f91"
+        },
+        {
+          "path": "manifests/internal-agent-reflect-function-report.json",
+          "sourcePath": "generated/internal-agent-reflect-function-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "1467201c6e8cd76bcbab43118d96b895d0c5aba41defb70f7ebe421fa8ca9c0c"
+        },
+        {
+          "path": "manifests/internal-agent-reflection-table-report.json",
+          "sourcePath": "generated/internal-agent-reflection-table-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "3989ac24aeaa9716741cbb363c14828fa9b9af8bc603a946a22465f98618b2c9"
+        },
+        {
+          "path": "manifests/internal-agent-registry-report.json",
+          "sourcePath": "generated/internal-agent-registry-report.json",
+          "sizeBytes": 199,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "eb701cad216f60efb079d7c35ef72938b88f5f592ec76220c1c94fc359bc6616"
+        },
+        {
+          "path": "manifests/internal-agent-registry.json",
+          "sourcePath": "generated/internal-agent-registry.json",
+          "sizeBytes": 791,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "fd94bb14aed10ae0af31924b9a8e9558fad16a8a8e31cd6774d39c0a59805036"
+        },
+        {
+          "path": "manifests/internal-agent-runbook-tables-report.json",
+          "sourcePath": "generated/internal-agent-runbook-tables-report.json",
+          "sizeBytes": 242,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "f05d0e01966d40f3f28001027229342cc1d0e46bdc0f17c3d2970da93112d6c6"
+        },
+        {
+          "path": "manifests/internal-agent-runtime-coverage-report.json",
+          "sourcePath": "generated/internal-agent-runtime-coverage-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "9466c89d9be313f4f7939352a25b10cb561734987749e153b3ff70cf4b712cc7"
+        },
+        {
+          "path": "manifests/internal-agent-runtime-loop-report.json",
+          "sourcePath": "generated/internal-agent-runtime-loop-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "30747b73bd58f0c6695b11a04dc57ef9b2597e99879121208abba8823916bfe7"
+        },
+        {
+          "path": "manifests/internal-agent-seed-integrity-report.json",
+          "sourcePath": "generated/internal-agent-seed-integrity-report.json",
+          "sizeBytes": 238,
+          "lastModified": "2026-04-20T02:57:20.530Z",
+          "sha256": "1181e392481213903f16129351e56c8f6655ba33bd2370f00718ee209f0e2562"
+        },
+        {
+          "path": "manifests/internal-agent-trust-evaluator-function-report.json",
+          "sourcePath": "generated/internal-agent-trust-evaluator-function-report.json",
+          "sizeBytes": 170,
+          "lastModified": "2026-04-20T02:57:20.531Z",
+          "sha256": "d3f67b337f4af5fe2261447dcc444cf5afae204d6e53759e08b7122d33e7db1e"
+        },
+        {
+          "path": "manifests/internal-agent-trust-ladder-table-report.json",
+          "sourcePath": "generated/internal-agent-trust-ladder-table-report.json",
+          "sizeBytes": 184,
+          "lastModified": "2026-04-20T02:57:20.531Z",
+          "sha256": "3a6d5b51bdc743cfca4c0543007edcb44cd69a8dad244d0a7d09e5feaac6b387"
+        },
+        {
+          "path": "manifests/ios-native-generation-report.json",
+          "sourcePath": "generated/ios-native-generation-report.json",
+          "sizeBytes": 648,
+          "lastModified": "2026-04-20T02:57:20.531Z",
+          "sha256": "12ebf30d6405a2154bae6ea1f59a67ac683903aa0e03fa471cceb33e1608bc5b"
+        },
+        {
+          "path": "manifests/ios-release-path-report.json",
+          "sourcePath": "generated/ios-release-path-report.json",
+          "sizeBytes": 643,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "3ccc08249c2cb16ba365ba9e56d39ea7dee5f3dbc7b94112dcbd90ecc94b5ef7"
+        },
+        {
+          "path": "manifests/its-real-gate-report.json",
+          "sourcePath": "generated/its-real-gate-report.json",
+          "sizeBytes": 5601,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "6f04e02ef5184870387d092ff2167432326c3b040ee89500a27438337b4082f6"
+        },
+        {
+          "path": "manifests/kernel-architecture-manifest.json",
+          "sourcePath": "generated/kernel-architecture-manifest.json",
+          "sizeBytes": 2040,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "07dd0ecbe12b7a6cdc2a670c03e5c2a68bd91b72b8eb8a89145b968f5ece5a64"
+        },
+        {
+          "path": "manifests/kill-switch-backfill-report.json",
+          "sourcePath": "generated/kill-switch-backfill-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "86964b01b1c121ddfe1dce148662a33cd0f81dc4df8470a8a131fa1de0e3d1a1"
+        },
+        {
+          "path": "manifests/kill-switch-drill-readiness-report.json",
+          "sourcePath": "generated/kill-switch-drill-readiness-report.json",
+          "sizeBytes": 4423,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "0b9a05e58911f83c311b20220a074fa4a49e8ff045ca224bf01c90d684a81b82"
+        },
+        {
+          "path": "manifests/kill-switch-enforcement-report.json",
+          "sourcePath": "generated/kill-switch-enforcement-report.json",
+          "sizeBytes": 4616,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "1cca40cc5bc180b2a785fd702a3ea3ec1344f1374447f25bbaf1fad6769625dd"
+        },
+        {
+          "path": "manifests/knowledge-anonymization-report.json",
+          "sourcePath": "generated/knowledge-anonymization-report.json",
+          "sizeBytes": 154,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "91e639645cf7dbe64ceac52d660ca624992c3f0cccc1cc2715393049b732b08b"
+        },
+        {
+          "path": "manifests/knowledge-bus-write-discipline-report.json",
+          "sourcePath": "generated/knowledge-bus-write-discipline-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.532Z",
+          "sha256": "c8560fabc20d216f72b563db4c61c41f5ea56918a730d0b2d82140dda56af6d6"
+        },
+        {
+          "path": "manifests/ks-payments-auth-readiness-report.json",
+          "sourcePath": "generated/ks-payments-auth-readiness-report.json",
+          "sizeBytes": 408,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "ade996d1e6461779adc004528beeb94a781dde3f70771eb9b78f8141ee445fed"
+        },
+        {
+          "path": "manifests/launch-honesty-alignment-report.json",
+          "sourcePath": "generated/launch-honesty-alignment-report.json",
+          "sizeBytes": 181,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "9450b479651419f990d81f9538ca0315161ff35b84371e9dc0f53b7111c4efdf"
+        },
+        {
+          "path": "manifests/launch-tier-index.json",
+          "sourcePath": "generated/launch-tier-index.json",
+          "sizeBytes": 65848,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "3f8c27733e2431220f0709ad93a948e6ddbde95936ea3cd252c8f5a56b6210dd"
+        },
+        {
+          "path": "manifests/launcher-registry-completeness-report.json",
+          "sourcePath": "generated/launcher-registry-completeness-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "15dc2218e671656fa7f35b4ed5fdde92157122eb811660d6d97a024c5fb35d64"
+        },
+        {
+          "path": "manifests/launcher-registry-completeness.json",
+          "sourcePath": "generated/launcher-registry-completeness.json",
+          "sizeBytes": 206,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "2009eadf7e691710c5fe1340f224cc0a90008cd870393867024dcb1fec374878"
+        },
+        {
+          "path": "manifests/legacy-wrapper-usage-report.json",
+          "sourcePath": "generated/legacy-wrapper-usage-report.json",
+          "sizeBytes": 11327,
+          "lastModified": "2026-04-20T02:57:20.533Z",
+          "sha256": "6f3120e64daf37896e81571ddf8c7a8379e45dad96454a0218912a19d5a1a422"
+        },
+        {
+          "path": "manifests/lib-decomposition-readiness-report.json",
+          "sourcePath": "generated/lib-decomposition-readiness-report.json",
+          "sizeBytes": 3546,
+          "lastModified": "2026-04-20T02:57:20.534Z",
+          "sha256": "bae3ba391b7520b1cf9f4241ab6d88bc6cadfc99e76e6d5bfb92bdc4abeb5713"
+        },
+        {
+          "path": "manifests/lib-ownership-drift-report.json",
+          "sourcePath": "generated/lib-ownership-drift-report.json",
+          "sizeBytes": 2668,
+          "lastModified": "2026-04-20T02:57:20.534Z",
+          "sha256": "b39c9e892f7310f344b8977aa9e2fdf5cb9f6ac4257fdd1fdfd38ddfc3c4d689"
+        },
+        {
+          "path": "manifests/lifecycle-authority-manifest.json",
+          "sourcePath": "generated/lifecycle-authority-manifest.json",
+          "sizeBytes": 2218,
+          "lastModified": "2026-04-20T02:57:20.534Z",
+          "sha256": "83c4ebb3732cf3b156a5a77e3c1aa3627f63aba5bea57a712b84bf91a800ac8c"
+        },
+        {
+          "path": "manifests/long-tail-provider-classification-report.json",
+          "sourcePath": "generated/long-tail-provider-classification-report.json",
+          "sizeBytes": 372,
+          "lastModified": "2026-04-20T02:57:20.534Z",
+          "sha256": "9536231ae6d292d3aa7dd2bbe9374990dd45e2fdf7ed9017e8c414933f8c17bb"
+        },
+        {
+          "path": "manifests/manifest-theater-report.json",
+          "sourcePath": "generated/manifest-theater-report.json",
+          "sizeBytes": 589,
+          "lastModified": "2026-04-20T02:57:20.534Z",
+          "sha256": "ff21c3b4d0e35dbf4b9680ffc6b9c7b970cde0401c90253c3a6e184131664514"
+        },
+        {
+          "path": "manifests/master-remediation-progress.json",
+          "sourcePath": "generated/master-remediation-progress.json",
+          "sizeBytes": 1042,
+          "lastModified": "2026-04-20T02:57:20.535Z",
+          "sha256": "92247f2451e82736f1b61c3f4b0e58d7f013300446058a54e5da96657f4a58a8"
+        },
+        {
+          "path": "manifests/maturity-thresholds.json",
+          "sourcePath": "generated/maturity-thresholds.json",
+          "sizeBytes": 95277,
+          "lastModified": "2026-04-20T02:57:20.535Z",
+          "sha256": "0da1c5ce76d4dcc0cb20a428851971a9217a97846202ec11c7b9710a63c43a6b"
+        },
+        {
+          "path": "manifests/microsoft-refresh-nightly-report.json",
+          "sourcePath": "generated/microsoft-refresh-nightly-report.json",
+          "sizeBytes": 336,
+          "lastModified": "2026-04-20T02:57:20.535Z",
+          "sha256": "04e49105531242ec69db8f55a9736acaf4bfb29e34d4fb746d7be79bbbd36053"
+        },
+        {
+          "path": "manifests/migration-registry.json",
+          "sourcePath": "generated/migration-registry.json",
+          "sizeBytes": 111930,
+          "lastModified": "2026-04-20T02:57:20.535Z",
+          "sha256": "26d8e5b46974174b0cc6d26690e1249ffc8938dfd71c3bf6d16572277d4ca667"
+        },
+        {
+          "path": "manifests/misplaced-data-logic-report.json",
+          "sourcePath": "generated/misplaced-data-logic-report.json",
+          "sizeBytes": 266,
+          "lastModified": "2026-04-20T02:57:20.535Z",
+          "sha256": "19ef18cd6015921e043202b209668f53e1c7e13e64dd01360bfa498cbc238127"
+        },
+        {
+          "path": "manifests/misplaced-domain-logic-report.json",
+          "sourcePath": "generated/misplaced-domain-logic-report.json",
+          "sizeBytes": 198,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "d2f332a3667786ee46debbdbee6f62c7153b9f915320e259df109a56438ee96d"
+        },
+        {
+          "path": "manifests/misplaced-runtime-logic-report.json",
+          "sourcePath": "generated/misplaced-runtime-logic-report.json",
+          "sizeBytes": 225,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "d887215541068294977fa0f6616b6d88148fbdd0ce20b8b631b7fd988c2fe352"
+        },
+        {
+          "path": "manifests/mobile-archived-scope-report.json",
+          "sourcePath": "generated/mobile-archived-scope-report.json",
+          "sizeBytes": 235,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "4f39ea1a0610e482a549b8c3c8737def41d6e256cb2f50a7d8013c326d84b206"
+        },
+        {
+          "path": "manifests/mobile-bootstrap-contract-report.json",
+          "sourcePath": "generated/mobile-bootstrap-contract-report.json",
+          "sizeBytes": 652,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "f48bb844a45d2b333811ce3d27a2a85c89c0c782a9f31fa4508f0c7c469d3df2"
+        },
+        {
+          "path": "manifests/mobile-build-model-consistency-report.json",
+          "sourcePath": "generated/mobile-build-model-consistency-report.json",
+          "sizeBytes": 657,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "66a055a18aba9d7e4c325f0aa74ca5e79108c60d5ae8f1b577f226ab7a89b29f"
+        },
+        {
+          "path": "manifests/mobile-build-pipeline-report.json",
+          "sourcePath": "generated/mobile-build-pipeline-report.json",
+          "sizeBytes": 1333,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "3b87968a6fca9a051422b00b89e7bafebdcebe9b0d5a42cdcac1b7f7335a83c8"
+        },
+        {
+          "path": "manifests/mobile-canonical-stack-report.json",
+          "sourcePath": "generated/mobile-canonical-stack-report.json",
+          "sizeBytes": 649,
+          "lastModified": "2026-04-20T02:57:20.536Z",
+          "sha256": "59a09607d318d5bddd5535d78a347bdfb5aea2ccc4a8f43f9c43485aa6d72c81"
+        },
+        {
+          "path": "manifests/mobile-capability-truth-report.json",
+          "sourcePath": "generated/mobile-capability-truth-report.json",
+          "sizeBytes": 1412,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "2c210f08cbae1d3999ec4c5f0e4f8c1c15ac29fad4d83e8c718e80e15408beb8"
+        },
+        {
+          "path": "manifests/mobile-deferral-attestation-report.json",
+          "sourcePath": "generated/mobile-deferral-attestation-report.json",
+          "sizeBytes": 219,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "4fa7fa1d579b3daca6a523e161909a336f3db3bee886407c69775dea86281320"
+        },
+        {
+          "path": "manifests/mobile-env-strategy-consistency-report.json",
+          "sourcePath": "generated/mobile-env-strategy-consistency-report.json",
+          "sizeBytes": 658,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "4346c6ed8e40d9b0d6d978e719bc8ddc04cc5a4fbb3ca03d08fd5048827dd903"
+        },
+        {
+          "path": "manifests/mobile-identity-source-of-truth-report.json",
+          "sourcePath": "generated/mobile-identity-source-of-truth-report.json",
+          "sizeBytes": 658,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "b97433d80d31a4c8b5cb5cf7fd48e3f9122e2f295ea57ac702a947e656e808eb"
+        },
+        {
+          "path": "manifests/mobile-manifest-archive-classification-report.json",
+          "sourcePath": "generated/mobile-manifest-archive-classification-report.json",
+          "sizeBytes": 169,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "5bbddc418baf8d287908db8f96e5100b49798b5a427ce5e28ef39afae04ff317"
+        },
+        {
+          "path": "manifests/mobile-native-out-of-scope-truth-report.json",
+          "sourcePath": "generated/mobile-native-out-of-scope-truth-report.json",
+          "sizeBytes": 233,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "7c08dce5a70cb9347a829b8fbaf3690b10f32da659ff890a18e2da31de5c01f8"
+        },
+        {
+          "path": "manifests/mobile-project-identification-report.json",
+          "sourcePath": "generated/mobile-project-identification-report.json",
+          "sizeBytes": 656,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "af36543fd20cdca5abda2eaa1decf82fd6f2be64ccced58a2abd9a48efeade2e"
+        },
+        {
+          "path": "manifests/mobile-push-claim-safety-report.json",
+          "sourcePath": "generated/mobile-push-claim-safety-report.json",
+          "sizeBytes": 651,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "05fffe1e1d6066b3c43c969942828d5fd46d8f56598b9b815069cbcf8991c2cf"
+        },
+        {
+          "path": "manifests/mobile-store-readiness-report.json",
+          "sourcePath": "generated/mobile-store-readiness-report.json",
+          "sizeBytes": 293,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "4939807e4e3175fc15b746f9c97aab21f54b735cf44786e42c1f6871f7bd3672"
+        },
+        {
+          "path": "manifests/mobile-submission-blockers-report.json",
+          "sourcePath": "generated/mobile-submission-blockers-report.json",
+          "sizeBytes": 653,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "2135179ee1f1eca03f67d6b0dd6722253dff44ee76581d78c1b9d658682e084b"
+        },
+        {
+          "path": "manifests/mock-leak-report.json",
+          "sourcePath": "generated/mock-leak-report.json",
+          "sizeBytes": 2302,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "3bfa9af076612d72ea71080a3a1dc65f0c7600fb8c577a93f3bfdb23e095cac3"
+        },
+        {
+          "path": "manifests/native-observability-readiness-report.json",
+          "sourcePath": "generated/native-observability-readiness-report.json",
+          "sizeBytes": 205,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "20ccf9ca744cfdc48a4ec7bef580ed3f25ad053bc149b210d8c0c9f1828893ad"
+        },
+        {
+          "path": "manifests/native-project-generation-contract-report.json",
+          "sourcePath": "generated/native-project-generation-contract-report.json",
+          "sizeBytes": 661,
+          "lastModified": "2026-04-20T02:57:20.537Z",
+          "sha256": "8f4c8f8ee4e95855f19df945bcad6c540be53422dd1309b670df084476c2f0a8"
+        },
+        {
+          "path": "manifests/native-shell-session-readiness-report.json",
+          "sourcePath": "generated/native-shell-session-readiness-report.json",
+          "sizeBytes": 231,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "910a5f63ac0b527d5160928c6a9edeca071b26fbd323e821ceb5b91ce792ede3"
+        },
+        {
+          "path": "manifests/negative-receipts-emitted-report.json",
+          "sourcePath": "generated/negative-receipts-emitted-report.json",
+          "sizeBytes": 204,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "aa3f1551a49a9a0bfde77db04759487ee464c74e3a2c4ca24825f073d8643ef0"
+        },
+        {
+          "path": "manifests/no-active-native-mobile-claims-report.json",
+          "sourcePath": "generated/no-active-native-mobile-claims-report.json",
+          "sizeBytes": 261,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "1f2b8d7b5f5511580308d6b53a3ca5693324d63996c0d09c23924aac9db09096"
+        },
+        {
+          "path": "manifests/no-ambiguous-connected-state-report.json",
+          "sourcePath": "generated/no-ambiguous-connected-state-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "e1d63ecaf60e7241855d70e2e0c902d1a1abf4fcb9c41fda9bd8da859d732581"
+        },
+        {
+          "path": "manifests/no-browser-globals-in-portable-code-report.json",
+          "sourcePath": "generated/no-browser-globals-in-portable-code-report.json",
+          "sizeBytes": 244,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "e10085a6adbaea09555037e1036273de64402da4a742c9326d0c422d630e9085"
+        },
+        {
+          "path": "manifests/no-browser-trapped-shared-hooks-report.json",
+          "sourcePath": "generated/no-browser-trapped-shared-hooks-report.json",
+          "sizeBytes": 220,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "a951f041d9fd3ada0d6cddc4aee226558c5f0376c01f0946d47fa70dc11d3f06"
+        },
+        {
+          "path": "manifests/no-dead-cta-on-production-surfaces-report.json",
+          "sourcePath": "generated/no-dead-cta-on-production-surfaces-report.json",
+          "sizeBytes": 527,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "caa65df1792a9ca17d6eea69c77fcffff19fccb83b6229838e44df15baca91a2"
+        },
+        {
+          "path": "manifests/no-duplicate-truth-manifests-report.json",
+          "sourcePath": "generated/no-duplicate-truth-manifests-report.json",
+          "sizeBytes": 202,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "b646464a35e5ae2af2f7531273122a5b9c7c4fa3a94e06c94225e34c29e6bd84"
+        },
+        {
+          "path": "manifests/no-flutter-mobile-truth-drift-report.json",
+          "sourcePath": "generated/no-flutter-mobile-truth-drift-report.json",
+          "sizeBytes": 656,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "349fdcdd19632e33aae8d93a0ff1697330ad306b36ba2ae0725b65614ab11045"
+        },
+        {
+          "path": "manifests/no-flutter-stack-drift-report.json",
+          "sourcePath": "generated/no-flutter-stack-drift-report.json",
+          "sizeBytes": 649,
+          "lastModified": "2026-04-20T02:57:20.538Z",
+          "sha256": "da400bc4c6ceb62ad02f36a4a8726a51e09117f468e3fd02ffd0dec76450a309"
+        },
+        {
+          "path": "manifests/no-kernel-overclaim-report.json",
+          "sourcePath": "generated/no-kernel-overclaim-report.json",
+          "sizeBytes": 352,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "715d5ef31b05ce4caec8de4f77afe9e3d0264e150f0d1b6978a07fecfdb0b3f4"
+        },
+        {
+          "path": "manifests/no-museum-boards-report.json",
+          "sourcePath": "generated/no-museum-boards-report.json",
+          "sizeBytes": 194,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "6cff803ce05472e22db0e467992c51a6dbf543438beda385fe43632417cf25d1"
+        },
+        {
+          "path": "manifests/no-oneoff-trust-state-components-report.json",
+          "sourcePath": "generated/no-oneoff-trust-state-components-report.json",
+          "sizeBytes": 1306,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "01a1e3980e946956f0d89745a6229c56a623586ecaebe808cad4fda1124ac028"
+        },
+        {
+          "path": "manifests/no-prohibited-native-claims-report.json",
+          "sourcePath": "generated/no-prohibited-native-claims-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "a09924ab2e05de6ca21ac7e2f87096a0ae144bce1e0584c4f54606d407294a02"
+        },
+        {
+          "path": "manifests/no-shell-only-production-pages-report.json",
+          "sourcePath": "generated/no-shell-only-production-pages-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "ccb0596d311b1f46ee5ad7ca4df768246230dfe6d322577101f8f577a779dcb6"
+        },
+        {
+          "path": "manifests/no-stale-canonical-docs-report.json",
+          "sourcePath": "generated/no-stale-canonical-docs-report.json",
+          "sizeBytes": 407,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "91eb3408adc288f343a7b2e3ef4e99be01bc8118d18744bb6265b295e36a1830"
+        },
+        {
+          "path": "manifests/observability-truth-report.json",
+          "sourcePath": "generated/observability-truth-report.json",
+          "sizeBytes": 2897,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "ca6bc268515946d7c6500bedbc31a404dc8ab5475a560d247f81663dcb4de2f3"
+        },
+        {
+          "path": "manifests/onboarding-branch-telemetry-report.json",
+          "sourcePath": "generated/onboarding-branch-telemetry-report.json",
+          "sizeBytes": 362,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "1b3cbd7334647738e823a3f1e8e63d5c077be5881613ef0fbd4d630045bc55eb"
+        },
+        {
+          "path": "manifests/onboarding-simulated-persona-disclosure-report.json",
+          "sourcePath": "generated/onboarding-simulated-persona-disclosure-report.json",
+          "sizeBytes": 1024,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "d71f287b1874f59813867e0de719d1640760bee5b3f53c7f433608cc4e923caf"
+        },
+        {
+          "path": "manifests/onboarding-surface-truth-report.json",
+          "sourcePath": "generated/onboarding-surface-truth-report.json",
+          "sizeBytes": 1516,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "35026dedc5805e4412e10806ed3ec493eda92bc671853b43359c41d6ea3f846c"
+        },
+        {
+          "path": "manifests/operational-metrics-snapshot.json",
+          "sourcePath": "generated/operational-metrics-snapshot.json",
+          "sizeBytes": 223,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "41569baa112b0fec50aa85dc03ca112f5218a8e4f411615f9f806c122c079e05"
+        },
+        {
+          "path": "manifests/operational-scorecards.json",
+          "sourcePath": "generated/operational-scorecards.json",
+          "sizeBytes": 86559,
+          "lastModified": "2026-04-20T02:57:20.539Z",
+          "sha256": "a4fc1fedf5b5e9d174f368848b001958379fb0acc2f49ddd55312015f1bb80bc"
+        },
+        {
+          "path": "manifests/operator-drill-execution-report.json",
+          "sourcePath": "generated/operator-drill-execution-report.json",
+          "sizeBytes": 463,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "fda2be2de6431690f00b17467bc6ac7e9b097e809187d7e285bb539a285f0a24"
+        },
+        {
+          "path": "manifests/operator-readiness-report.json",
+          "sourcePath": "generated/operator-readiness-report.json",
+          "sizeBytes": 1218,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "589b13a40b531c9af9e1664ac1d6ce8b3c0ea577dc378f26fc14f79fb1b9774f"
+        },
+        {
+          "path": "manifests/os-build-pipeline-report.json",
+          "sourcePath": "generated/os-build-pipeline-report.json",
+          "sizeBytes": 235,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "09b499e3ab35853026bb977bbff38b9e25155ff9135c37f6c1a0179832ad6575"
+        },
+        {
+          "path": "manifests/os-ci-end-to-end-report.json",
+          "sourcePath": "generated/os-ci-end-to-end-report.json",
+          "sizeBytes": 714,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "79a1cfcbc8e41394e0090f680e07484f6d80ef316fc8fbfefb964e196b92bf39"
+        },
+        {
+          "path": "manifests/os-claim-safety-report.json",
+          "sourcePath": "generated/os-claim-safety-report.json",
+          "sizeBytes": 146,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "72df2d91c01193a0a08d7532d3f762cedb05d125d92b483a65cfa64453436278"
+        },
+        {
+          "path": "manifests/os-recovery-readiness-report.json",
+          "sourcePath": "generated/os-recovery-readiness-report.json",
+          "sizeBytes": 196,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "2b18333bcc024475c93b40e26b062c44f7dafc93cb5f31b7fd5f96e7b981dbef"
+        },
+        {
+          "path": "manifests/os-release-readiness-report.json",
+          "sourcePath": "generated/os-release-readiness-report.json",
+          "sizeBytes": 59277,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "0360076857a1f8e22bef0707a0bb34b561e54e2ca77e6c6c26e34d9dfe0bd383"
+        },
+        {
+          "path": "manifests/os-support-bundle-readiness-report.json",
+          "sourcePath": "generated/os-support-bundle-readiness-report.json",
+          "sizeBytes": 202,
+          "lastModified": "2026-04-20T02:57:20.540Z",
+          "sha256": "7c86a5a0d2902f9775aa8d3a2fd9de954b9d906fcc13466c4d164af12ac0a30f"
+        },
+        {
+          "path": "manifests/os-trust-chain-readiness-report.json",
+          "sourcePath": "generated/os-trust-chain-readiness-report.json",
+          "sizeBytes": 222,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "9a2a9f2e3456511bd8f17a21c14cf7742ab540529600c2d95afd7956e8f25e6d"
+        },
+        {
+          "path": "manifests/os-update-readiness-report.json",
+          "sourcePath": "generated/os-update-readiness-report.json",
+          "sizeBytes": 194,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "f3b3911f6467cd708a1665898d38645d529b6f8e8481625cb6a25afeb8470323"
+        },
+        {
+          "path": "manifests/outcome-index.json",
+          "sourcePath": "generated/outcome-index.json",
+          "sizeBytes": 1923,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "cad49ebef7cc0d95fe50db7c22ab997cf030a87d6253a91addccf2ccbf5ff44b"
+        },
+        {
+          "path": "manifests/owner-copilot-bff-readonly-report.json",
+          "sourcePath": "generated/owner-copilot-bff-readonly-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "b126245c300315e9d19fe858e5eeb7afeb7c15b2ba4892a65a0e07784d8f30a1"
+        },
+        {
+          "path": "manifests/owner-copilot-readonly-report.json",
+          "sourcePath": "generated/owner-copilot-readonly-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "5b8d48350312c3db7230c4638c91b7e607cb6ebe18b601ebbe952708d590b65a"
+        },
+        {
+          "path": "manifests/owner-workflow-reality-report.json",
+          "sourcePath": "generated/owner-workflow-reality-report.json",
+          "sizeBytes": 1245,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "35d341d6e20d3fb45dfd268c7977efd2dc28e9a792b58ba8f8d1c5f931a3e8e2"
+        },
+        {
+          "path": "manifests/ownership-manifest.json",
+          "sourcePath": "generated/ownership-manifest.json",
+          "sizeBytes": 43884,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "c2bd67a8c3085f2ce34430d8f8df7db54c344815f1ac8ce8153746187df4a580"
+        },
+        {
+          "path": "manifests/page-registry-completeness-report.json",
+          "sourcePath": "generated/page-registry-completeness-report.json",
+          "sizeBytes": 253,
+          "lastModified": "2026-04-20T02:57:20.541Z",
+          "sha256": "023895535ab40a0fc57b1c1d67545d3a33fa250c1191699d55ee5d5b027e95b5"
+        },
+        {
+          "path": "manifests/per-bucket-warn-ratchet-report.json",
+          "sourcePath": "generated/per-bucket-warn-ratchet-report.json",
+          "sizeBytes": 572,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "642d4c89957462cc76080632071f01f59562d11d2ece621a416c61d77bdfa75f"
+        },
+        {
+          "path": "manifests/per-user-ai-ceilings-report.json",
+          "sourcePath": "generated/per-user-ai-ceilings-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "ad453355bd63b7b819b7fbc79ee8676a02544d0f9877a8879740699352c75040"
+        },
+        {
+          "path": "manifests/persistence-audit.json",
+          "sourcePath": "generated/persistence-audit.json",
+          "sizeBytes": 3609,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "87f59958fa83f2a70c592b1033b3c67826948633b1cd242081419fd5811c7e12"
+        },
+        {
+          "path": "manifests/pg-cron-schedules-report.json",
+          "sourcePath": "generated/pg-cron-schedules-report.json",
+          "sizeBytes": 148,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "1ff3d9713f0c6f684f61f84e0465adfc308c8ddbd86beb6c3dd873fe1e79772d"
+        },
+        {
+          "path": "manifests/pg-extensions-enabled-report.json",
+          "sourcePath": "generated/pg-extensions-enabled-report.json",
+          "sizeBytes": 152,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "ce3e00e33ad1b93f3fed9622d05537caf4dab7c72987f57e14677d78c7c4580f"
+        },
+        {
+          "path": "manifests/phase-5-9-closure-gates-report.json",
+          "sourcePath": "generated/phase-5-9-closure-gates-report.json",
+          "sizeBytes": 480,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "84e4fb347b92adc8164c5b6d8fba0aef1f50ede5f92880081f1a6b218748a093"
+        },
+        {
+          "path": "manifests/phase7-admin-pages-report.json",
+          "sourcePath": "generated/phase7-admin-pages-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "236d23a536859bf501a3154b7c779f1f816df4b0225333c64c4f2e8c7d8c2e0d"
+        },
+        {
+          "path": "manifests/phase8-admin-pages-report.json",
+          "sourcePath": "generated/phase8-admin-pages-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "45b6f25d0c82def49e00f4aed4c8a8bae4e22ef2e90493d3c155f9302b4e641d"
+        },
+        {
+          "path": "manifests/phase9-admin-pages-report.json",
+          "sourcePath": "generated/phase9-admin-pages-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.542Z",
+          "sha256": "35447e89a2ede7f24c979d31aa96396a52aed2b98893a614385b1bc6150af022"
+        },
+        {
+          "path": "manifests/plane-import-graph.json",
+          "sourcePath": "generated/plane-import-graph.json",
+          "sizeBytes": 179,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "8b3547512bc7ec8a03c939da47d901fe3c757e92a915666bd8543c4eddf872e8"
+        },
+        {
+          "path": "manifests/plane-ownership.json",
+          "sourcePath": "generated/plane-ownership.json",
+          "sizeBytes": 7036,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "94c1640781dad24ea37fe0f5575372f71bc2a786f4a28d0458f2d408591709d5"
+        },
+        {
+          "path": "manifests/plane-transitive.json",
+          "sourcePath": "generated/plane-transitive.json",
+          "sizeBytes": 2282,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "9e6ecab5a9179e8ab914d824fb815413d397a20f07cdc57a6ec4ce2024709e73"
+        },
+        {
+          "path": "manifests/policy-draft-never-auto-apply-report.json",
+          "sourcePath": "generated/policy-draft-never-auto-apply-report.json",
+          "sizeBytes": 160,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "7b968e3e7d98065d5e854106cd9dbda38c79c23b91120fd0aa953c107716343f"
+        },
+        {
+          "path": "manifests/policy-draft-review-page-report.json",
+          "sourcePath": "generated/policy-draft-review-page-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "ac6af887bae06d6c94c5ef895440df8276de51157244c64e7ba29e737a9c742c"
+        },
+        {
+          "path": "manifests/policy-resolver-coverage.json",
+          "sourcePath": "generated/policy-resolver-coverage.json",
+          "sizeBytes": 1001,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "5cea0bd113afecb487ac84eda2fbdea61ba452554e8ac6e974fef391e95f80ca"
+        },
+        {
+          "path": "manifests/portability-boundaries-report.json",
+          "sourcePath": "generated/portability-boundaries-report.json",
+          "sizeBytes": 335,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "e5a2da586791b93058cb52d2cf3844d7cfb5a68e5bda2812e85b5154856e754b"
+        },
+        {
+          "path": "manifests/priority-bridge-wiring-report.json",
+          "sourcePath": "generated/priority-bridge-wiring-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "869e01256601f6335006be6e31c6db488d4ec49c6618b94f2c25cd29cd165f92"
+        },
+        {
+          "path": "manifests/production-launch-attestation-report.json",
+          "sourcePath": "generated/production-launch-attestation-report.json",
+          "sizeBytes": 255,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "8fe24a2caa0146b207bea4a78494e30781f8bc10d53c6f10c17626d0a2b5404d"
+        },
+        {
+          "path": "manifests/production-operations-report.json",
+          "sourcePath": "generated/production-operations-report.json",
+          "sizeBytes": 2382,
+          "lastModified": "2026-04-20T02:57:20.543Z",
+          "sha256": "4b67acf77a5efd9268ca12cb5fd6f6eee4db4bc4ff6f5549a4d87dc4eb9ba8f6"
+        },
+        {
+          "path": "manifests/production-truth-final.json",
+          "sourcePath": "generated/production-truth-final.json",
+          "sizeBytes": 7915,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "9352fac7afb90e83059ac54ab2896713a9afa84f058208a110b0409dc04d3289"
+        },
+        {
+          "path": "manifests/profile-composition-operator.json",
+          "sourcePath": "generated/profile-composition-operator.json",
+          "sizeBytes": 11901,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "8cbd1d271e7c80daf1894335d8cddb9e2b260b529aa4f8828c17d1356d437fc9"
+        },
+        {
+          "path": "manifests/profile-composition-user.json",
+          "sourcePath": "generated/profile-composition-user.json",
+          "sizeBytes": 9209,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "ff6a7c2840aebbf64bf5b1fd1059cdb3fc19a749f40309b5070fb110b54c9ef1"
+        },
+        {
+          "path": "manifests/profile-route-coverage-report.json",
+          "sourcePath": "generated/profile-route-coverage-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "8079605a5392f37f450b9c73c7dedbeb7145d72bc7a05b55e2db68f71072dcbf"
+        },
+        {
+          "path": "manifests/profile-route-coverage.json",
+          "sourcePath": "generated/profile-route-coverage.json",
+          "sizeBytes": 168,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "18a9b5057e5f48e836d1e858a9e2d550b4e1a1a046c7d3031071d7042eb0bd81"
+        },
+        {
+          "path": "manifests/profile-runtime-baseline-drift-report.json",
+          "sourcePath": "generated/profile-runtime-baseline-drift-report.json",
+          "sizeBytes": 161,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "811bba6aabb888f728289fb2783fe24ce7411e872ef6cd94f02641b3c3cd0fef"
+        },
+        {
+          "path": "manifests/profile-runtime-baseline-drift.json",
+          "sourcePath": "generated/profile-runtime-baseline-drift.json",
+          "sizeBytes": 768,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "6a44b556124c0e52421d12d2f9907da8b7556020ed50f5eab84002efafe77df5"
+        },
+        {
+          "path": "manifests/profile-runtime-hardening-report.json",
+          "sourcePath": "generated/profile-runtime-hardening-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "3c36daf5e6f2bdadcf18b12dab73d73619f8b85eaeee337c3cec78b2e2eb2139"
+        },
+        {
+          "path": "manifests/profile-visibility-report.json",
+          "sourcePath": "generated/profile-visibility-report.json",
+          "sizeBytes": 7870,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "3045f2ab3e7e487c1b59455cb7c178d22f2d77b0a9272a5dc16b0df6ce184f1e"
+        },
+        {
+          "path": "manifests/prompt-index.json",
+          "sourcePath": "generated/prompt-index.json",
+          "sizeBytes": 500,
+          "lastModified": "2026-04-20T02:57:20.544Z",
+          "sha256": "79e81a56744c09a2b15090588968e5ed69e5b37a22b0301bc32d1df1ab020fff"
+        },
+        {
+          "path": "manifests/provider-state-chip-consistency-report.json",
+          "sourcePath": "generated/provider-state-chip-consistency-report.json",
+          "sizeBytes": 134415,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "c184d77d38ce398e11cc85288d0d81901259887ce0a128a4b3b567c1fa229f33"
+        },
+        {
+          "path": "manifests/qemu-vm-readiness-report.json",
+          "sourcePath": "generated/qemu-vm-readiness-report.json",
+          "sizeBytes": 192,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "6f1a348b69bcc84d6fc35856d8f61f66b8e7df7d7992f89b9e99bef0c65aefc5"
+        },
+        {
+          "path": "manifests/qualified-surface-copy-report.json",
+          "sourcePath": "generated/qualified-surface-copy-report.json",
+          "sizeBytes": 509,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "4c787c7c45e9cd945d24e71d81c37dad66586d174acfb5e5fee266371fa7cc3e"
+        },
+        {
+          "path": "manifests/qualifier-required-claims-report.json",
+          "sourcePath": "generated/qualifier-required-claims-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "b2a1e20f9289684f6e4fbff85f8bd3502e56133b9419df06869b5004ed18c730"
+        },
+        {
+          "path": "manifests/real-hardware-proof-report.json",
+          "sourcePath": "generated/real-hardware-proof-report.json",
+          "sizeBytes": 368,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "07c67508bfd4683a47406c8d77e3d219459e14da30ebcceeb0520b6787f63d23"
+        },
+        {
+          "path": "manifests/recovery-outcome-manifest.json",
+          "sourcePath": "generated/recovery-outcome-manifest.json",
+          "sizeBytes": 1841,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "7650a322ba9814ca8ebd80b1b790a7ec201ef47c41064f15b4eca28d3001316f"
+        },
+        {
+          "path": "manifests/reflection-board-page-report.json",
+          "sourcePath": "generated/reflection-board-page-report.json",
+          "sizeBytes": 152,
+          "lastModified": "2026-04-20T02:57:20.545Z",
+          "sha256": "101430f1b6e2ecabc270a4c89a3a504f45390c891bc01c48eadadedce35acc14"
+        },
+        {
+          "path": "manifests/reflection-to-action-linkage-report.json",
+          "sourcePath": "generated/reflection-to-action-linkage-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "6cfff89895d86d3b145b5456b5c8e73e7c513ff7dfaea3a41950cb8e25d7aa19"
+        },
+        {
+          "path": "manifests/release-artifact-signer-report.json",
+          "sourcePath": "generated/release-artifact-signer-report.json",
+          "sizeBytes": 154,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "95f676d4a0c9e0bbf449566ce6738cf7a7a84f96f32e1da4b246033b0b98fd1c"
+        },
+        {
+          "path": "manifests/release-decision-persistence-report.json",
+          "sourcePath": "generated/release-decision-persistence-report.json",
+          "sizeBytes": 453,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "16838df30ae43ddfb7f29a57447d420e5933e67d293a5c1dbe6a9280c7f9a648"
+        },
+        {
+          "path": "manifests/release-evidence-graph-snapshot-report.json",
+          "sourcePath": "generated/release-evidence-graph-snapshot-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "99a461384c217abbdb10f53737b9873700e48b36b273523ecbf9a0b014712a29"
+        },
+        {
+          "path": "manifests/release-gate-thresholds.json",
+          "sourcePath": "generated/release-gate-thresholds.json",
+          "sizeBytes": 1526,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "898a8dd7c7abbe51e61819fa1719458596c178c60568f9dceff33b3cf81bdcb9"
+        },
+        {
+          "path": "manifests/release-notes.json",
+          "sourcePath": "generated/release-notes.json",
+          "sizeBytes": 55664,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "2ebef5d84e9ef7954a88ff66b0e500e9dcc7787783dccee27e6b95019e466050"
+        },
+        {
+          "path": "manifests/rendering-pipeline-manifest.json",
+          "sourcePath": "generated/rendering-pipeline-manifest.json",
+          "sizeBytes": 2128,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "08c31de6915a9a70402d489af406c66194b8c1d9a9a4331506804d8a1850c378"
+        },
+        {
+          "path": "manifests/residual-lib-canonicality-report.json",
+          "sourcePath": "generated/residual-lib-canonicality-report.json",
+          "sizeBytes": 286,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "9583a0c8a6355efc2b8d285a085155493efac239246c4c24c7650f220d0170eb"
+        },
+        {
+          "path": "manifests/responsive-admin-layout-integrity-report.json",
+          "sourcePath": "generated/responsive-admin-layout-integrity-report.json",
+          "sizeBytes": 270,
+          "lastModified": "2026-04-20T02:57:20.546Z",
+          "sha256": "6fad42a344f925fa78783347787412bf97cf7b34b046ca3b9e4aafbd121700f8"
+        },
+        {
+          "path": "manifests/responsive-operator-surfaces-report.json",
+          "sourcePath": "generated/responsive-operator-surfaces-report.json",
+          "sizeBytes": 339,
+          "lastModified": "2026-04-20T02:57:20.547Z",
+          "sha256": "6a24f8eaa408920c34eea8788bb79d0831cd3c49edd5c11d48d629af5835cba1"
+        },
+        {
+          "path": "manifests/responsive-surface-integrity-report.json",
+          "sourcePath": "generated/responsive-surface-integrity-report.json",
+          "sizeBytes": 159,
+          "lastModified": "2026-04-20T02:57:20.547Z",
+          "sha256": "9ebd463d1e233865e3dbcd6d8eb4de1e884e2925619711e38f507b38bb58372c"
+        },
+        {
+          "path": "manifests/restore-drill-report.json",
+          "sourcePath": "generated/restore-drill-report.json",
+          "sizeBytes": 336,
+          "lastModified": "2026-04-20T02:57:20.547Z",
+          "sha256": "451333e9b9d4bfaf96dcff626207fd4b23aea1dc5c2c06349309ca253224c85a"
+        },
+        {
+          "path": "manifests/rls-policy-registry.json",
+          "sourcePath": "generated/rls-policy-registry.json",
+          "sizeBytes": 50031,
+          "lastModified": "2026-04-20T02:57:20.547Z",
+          "sha256": "e5ad44e46b094a79424b686ad5eb3d7b07e953fb80ed6b6da87401e6f57069f6"
+        },
+        {
+          "path": "manifests/rls-under-stress-report.json",
+          "sourcePath": "generated/rls-under-stress-report.json",
+          "sizeBytes": 299,
+          "lastModified": "2026-04-20T02:57:20.548Z",
+          "sha256": "53a183f880dc74eb9f6f906ec4ef6325181557599f2af136153ef95563e75ec3"
+        },
+        {
+          "path": "manifests/route-guard-coverage-report.json",
+          "sourcePath": "generated/route-guard-coverage-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.548Z",
+          "sha256": "d36864815a513c97141d1502622a32e76ca55c87a5995d00ae551de9b4797e29"
+        },
+        {
+          "path": "manifests/route-guard-coverage.json",
+          "sourcePath": "generated/route-guard-coverage.json",
+          "sizeBytes": 204,
+          "lastModified": "2026-04-20T02:57:20.548Z",
+          "sha256": "39afdd9ee30387a730cd32ba5fd28192ab8b6b141aadacff9c2f88e951eb9fae"
+        },
+        {
+          "path": "manifests/route-manifest.json",
+          "sourcePath": "generated/route-manifest.json",
+          "sizeBytes": 104587,
+          "lastModified": "2026-04-20T02:57:20.548Z",
+          "sha256": "8ea5130fa08f740ae37d08a83e335a3dcc1e9912e6edacc968d29dff06aff756"
+        },
+        {
+          "path": "manifests/route-plane-coverage-report.json",
+          "sourcePath": "generated/route-plane-coverage-report.json",
+          "sizeBytes": 206,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "8ffbcef7b513972d73287cc0faa490c8459ddea3c903831c4dd79651770a0e19"
+        },
+        {
+          "path": "manifests/route-registry-completeness-report.json",
+          "sourcePath": "generated/route-registry-completeness-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "274f92c785f82aedb6fa32a67f5698b835c48c87e7592c3ac5fc1639d285358f"
+        },
+        {
+          "path": "manifests/route-tier-manifest.json",
+          "sourcePath": "generated/route-tier-manifest.json",
+          "sizeBytes": 11355,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "079ab3a2298542313d500a2b8634092bb5cfa093d953defacd8252374f1a610d"
+        },
+        {
+          "path": "manifests/route-topology-truth.json",
+          "sourcePath": "generated/route-topology-truth.json",
+          "sizeBytes": 255,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "11ecc3fcf3b81c71199f506f7c15abbe84d0ab043e22747ffa1133263982fd45"
+        },
+        {
+          "path": "manifests/route-truth.json",
+          "sourcePath": "generated/route-truth.json",
+          "sizeBytes": 3983,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "039dff8614f5b86dbab471c73f19ecbaec4d095c0611036bdb16c43b1309346f"
+        },
+        {
+          "path": "manifests/route-wrapper-usage.json",
+          "sourcePath": "generated/route-wrapper-usage.json",
+          "sizeBytes": 678,
+          "lastModified": "2026-04-20T02:57:20.549Z",
+          "sha256": "bb8568ecb1a24503a75fc91635f6b6fe56e90212f5bf74896eb5afd75453fa06"
+        },
+        {
+          "path": "manifests/routes-inventory-completeness-report.json",
+          "sourcePath": "generated/routes-inventory-completeness-report.json",
+          "sizeBytes": 457,
+          "lastModified": "2026-04-20T02:57:20.550Z",
+          "sha256": "2e01f386e32a3b442dc8cc9562665dd5c334e0b9aa403b879474d85ce545daec"
+        },
+        {
+          "path": "manifests/routes.json",
+          "sourcePath": "generated/routes.json",
+          "sizeBytes": 170077,
+          "lastModified": "2026-04-20T02:57:20.550Z",
+          "sha256": "a31712c0ccdcf7b94e2bcb5a42b49407cb313c5b7a8cb9cd34de7a951edb07a8"
+        },
+        {
+          "path": "manifests/runbook-human-use-proof-report.json",
+          "sourcePath": "generated/runbook-human-use-proof-report.json",
+          "sizeBytes": 4366,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "53d8aabe7022d266b978fba357e326c55a73b7f422be227290e6a2ba0a85fdc4"
+        },
+        {
+          "path": "manifests/runbook-operability-report.json",
+          "sourcePath": "generated/runbook-operability-report.json",
+          "sizeBytes": 1130,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "373c98b1d4413202554ad0ad2747b5f3819ddfbdaa2cc3e412987a9f6d2275b9"
+        },
+        {
+          "path": "manifests/runtime-capability-matrix.json",
+          "sourcePath": "generated/runtime-capability-matrix.json",
+          "sizeBytes": 13195,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "497ce1f31be31ff5bb9139484e7158bcf7932b75a1415c2b8d13b20b802221f0"
+        },
+        {
+          "path": "manifests/runtime-conformance-manifest.json",
+          "sourcePath": "generated/runtime-conformance-manifest.json",
+          "sizeBytes": 66283,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "e46137e1c7eab7660fbcaf3ab458fd020b0e95d49947bd2d32dc547a4e40bdba"
+        },
+        {
+          "path": "manifests/runtime-host-abstraction-report.json",
+          "sourcePath": "generated/runtime-host-abstraction-report.json",
+          "sizeBytes": 214,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "5bf93bae0fefb9aa3f052dbf3811623ad0ad2592849f775e9d6e9ed5f780a17f"
+        },
+        {
+          "path": "manifests/runtime-host-boundaries-report.json",
+          "sourcePath": "generated/runtime-host-boundaries-report.json",
+          "sizeBytes": 258,
+          "lastModified": "2026-04-20T02:57:20.551Z",
+          "sha256": "b951928e90195cc734687c6040245b3fb448dd48dc35308ddfa61b365af8cf9b"
+        },
+        {
+          "path": "manifests/runtime-ports.json",
+          "sourcePath": "generated/runtime-ports.json",
+          "sizeBytes": 40542,
+          "lastModified": "2026-04-20T02:57:20.552Z",
+          "sha256": "8ee00e6029b9ed092a014ce01f21bc6ea253f6bfe6720ac39a3580ad079928f5"
+        },
+        {
+          "path": "manifests/runtime-tier-deployment-map.json",
+          "sourcePath": "generated/runtime-tier-deployment-map.json",
+          "sizeBytes": 2448,
+          "lastModified": "2026-04-20T02:57:20.552Z",
+          "sha256": "f440cfed8bd425f77a953b58cbabd96d50a64cc5bf7781292c629316c472c67f"
+        },
+        {
+          "path": "manifests/runtime-tier-governance-report.json",
+          "sourcePath": "generated/runtime-tier-governance-report.json",
+          "sizeBytes": 3338,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "8b2a28f2c64ed36cbc31d26798694d2496476f3c5a792c592a88e7c9e3dd4753"
+        },
+        {
+          "path": "manifests/safe-cleanup-regressions-report.json",
+          "sourcePath": "generated/safe-cleanup-regressions-report.json",
+          "sizeBytes": 203,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "6ab31eaaa6261ea0050d1fdf8e7bab8e3a32d25663e4fd7f4e0b1fb89aac0150"
+        },
+        {
+          "path": "manifests/sbom-history-empty-state-report.json",
+          "sourcePath": "generated/sbom-history-empty-state-report.json",
+          "sizeBytes": 571,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "dc1da228e5a111d5fa760cf3966d5bf9d35c1a45ce02ed3c839570a8c014dcca"
+        },
+        {
+          "path": "manifests/schema-registry.json",
+          "sourcePath": "generated/schema-registry.json",
+          "sizeBytes": 45371,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "4134e9401ef3abd41bb0e9b2cf74e63755ff0ebe9c65c516c2e65d52fdbf9ff5"
+        },
+        {
+          "path": "manifests/secret-rotation-cadence-report.json",
+          "sourcePath": "generated/secret-rotation-cadence-report.json",
+          "sizeBytes": 175,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "44e9bb2faa59a58d492f628f955594ec46716794b6c26ce2642d91d64db40bf9"
+        },
+        {
+          "path": "manifests/secret-rotation-freshness-report.json",
+          "sourcePath": "generated/secret-rotation-freshness-report.json",
+          "sizeBytes": 1369,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "80332acc5527e91d73fdc7d844348d9ad00853a68b0c224d557400002690a933"
+        },
+        {
+          "path": "manifests/security-adversarial-proof-report.json",
+          "sourcePath": "generated/security-adversarial-proof-report.json",
+          "sizeBytes": 983,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "3a99b6352314cc319cec5adf580acf03f52b9be57db1228f1ca14646f5264f12"
+        },
+        {
+          "path": "manifests/security-fabric-probes-report.json",
+          "sourcePath": "generated/security-fabric-probes-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.553Z",
+          "sha256": "c8f701b3fddf3cfcd2b515ed6d94c5a29300b485c522bba97be0c68928e9a0ee"
+        },
+        {
+          "path": "manifests/security-model-manifest.json",
+          "sourcePath": "generated/security-model-manifest.json",
+          "sizeBytes": 2054,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "313083e5751791e78539188d60c283790b91b886572c462e00a019b17c365ee7"
+        },
+        {
+          "path": "manifests/security-review-manifest.json",
+          "sourcePath": "generated/security-review-manifest.json",
+          "sizeBytes": 16904,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "512b981cb90162c4f63efb3e367b70879eac0a332056f44dbedd68651612fdca"
+        },
+        {
+          "path": "manifests/self-healer-safe-catalogue-report.json",
+          "sourcePath": "generated/self-healer-safe-catalogue-report.json",
+          "sizeBytes": 140,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "152b5f5aac6d81be889f38e8bcfe4055b5ea27499ba12a59b0da617b1bc57a7f"
+        },
+        {
+          "path": "manifests/service-authority-report.json",
+          "sourcePath": "generated/service-authority-report.json",
+          "sizeBytes": 34415,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "610805e66fe589cd047cd56dd0381c494d8ba4b8499d620b5274214aed4ddee8"
+        },
+        {
+          "path": "manifests/service-consolidation-manifest.json",
+          "sourcePath": "generated/service-consolidation-manifest.json",
+          "sizeBytes": 12200,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "c6e812c62f4518c79662c8258b492080b2f289894eff06ce43169219c9a6d976"
+        },
+        {
+          "path": "manifests/service-manifest.json",
+          "sourcePath": "generated/service-manifest.json",
+          "sizeBytes": 79432,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "ace8c314e4c6d8d1efa33e7ad0739cdf8892bb59694a2bd1ed803d1334e5f774"
+        },
+        {
+          "path": "manifests/service-topology-drift.json",
+          "sourcePath": "generated/service-topology-drift.json",
+          "sizeBytes": 1702,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "bc24fc53e89ba562f52feeafde88d77c5df22a42c5b567c9308b223af22c1228"
+        },
+        {
+          "path": "manifests/session-threat-behavior-report.json",
+          "sourcePath": "generated/session-threat-behavior-report.json",
+          "sizeBytes": 343,
+          "lastModified": "2026-04-20T02:57:20.554Z",
+          "sha256": "0b5d22431396dfe0ad39bc05db5c128c680c07502aff18b5a60d2928509f88d8"
+        },
+        {
+          "path": "manifests/shared-component-profile-pollution-report.json",
+          "sourcePath": "generated/shared-component-profile-pollution-report.json",
+          "sizeBytes": 165,
+          "lastModified": "2026-04-20T02:57:20.555Z",
+          "sha256": "eea966891a208c78df02087010a1573f3cda1afcc5184a8536d641fb173e8d9e"
+        },
+        {
+          "path": "manifests/shared-component-profile-pollution.json",
+          "sourcePath": "generated/shared-component-profile-pollution.json",
+          "sizeBytes": 182,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "04f4f8557ffef2d62b45a772542f649e09a244345b894f2ca04aef86a2ff5c26"
+        },
+        {
+          "path": "manifests/shell-runtime-portability-report.json",
+          "sourcePath": "generated/shell-runtime-portability-report.json",
+          "sizeBytes": 257,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "1c1771e14286914c4ab0bab51d14d0d2bbd83aeb6087eeb5f5e3b26544aee10f"
+        },
+        {
+          "path": "manifests/shell-space-registry.json",
+          "sourcePath": "generated/shell-space-registry.json",
+          "sizeBytes": 2635,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "2740c9bbc3cd53a204f28cea5accd3fdff8763ae334369e019e32aa20bcf4f89"
+        },
+        {
+          "path": "manifests/signed-release-artifacts-report.json",
+          "sourcePath": "generated/signed-release-artifacts-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "caaaaba1130b6e64046cd6091e2bd441b29a81510f1c398e75fc94e997ab8036"
+        },
+        {
+          "path": "manifests/simulation-and-future-labeling-report.json",
+          "sourcePath": "generated/simulation-and-future-labeling-report.json",
+          "sizeBytes": 288,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "12aae68efdf562cea746d955811e92cc9dd68edc00f5a4deda6ad5221d9ca605"
+        },
+        {
+          "path": "manifests/simulation-disclosure-coverage-report.json",
+          "sourcePath": "generated/simulation-disclosure-coverage-report.json",
+          "sizeBytes": 11233,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "13a57f67ef150aa2ea3fd82558f90efc078eaf332336d7681413cb96ebeeb269"
+        },
+        {
+          "path": "manifests/slack-refresh-nightly-report.json",
+          "sourcePath": "generated/slack-refresh-nightly-report.json",
+          "sizeBytes": 332,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "e28a1fda1f30cac198aef9bcd86c37604b23b18c89f03e36c4b5ccf69b3bc85e"
+        },
+        {
+          "path": "manifests/slo-evaluator-function-report.json",
+          "sourcePath": "generated/slo-evaluator-function-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "58b2a81ad0628bc783172cdca77bfd3e604bc8fb4e09f12232969b2e4faac150"
+        },
+        {
+          "path": "manifests/stale-deleted-paths-report.json",
+          "sourcePath": "generated/stale-deleted-paths-report.json",
+          "sizeBytes": 1044,
+          "lastModified": "2026-04-20T02:57:20.556Z",
+          "sha256": "ffb7ad9405774a23f9946528f4dbc3f8f47c19b51bf14638f3188dbe7c72807b"
+        },
+        {
+          "path": "manifests/startup-order.json",
+          "sourcePath": "generated/startup-order.json",
+          "sizeBytes": 1496,
+          "lastModified": "2026-04-20T02:57:20.557Z",
+          "sha256": "336adc9ebb60713ca3390faf6beb9f60ac2a98b6485f823da97f4b4f85330b61"
+        },
+        {
+          "path": "manifests/state-handling-consistency-report.json",
+          "sourcePath": "generated/state-handling-consistency-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.557Z",
+          "sha256": "08486e8733aba4cccabd43409625148c46befe7341c68db2265977f477f16985"
+        },
+        {
+          "path": "manifests/subject-manifest.json",
+          "sourcePath": "generated/subject-manifest.json",
+          "sizeBytes": 171,
+          "lastModified": "2026-04-20T02:57:20.557Z",
+          "sha256": "6ec94edf7604f8af2c34430131aece25a7a8a7a8dce31c9fe2d07e9d0b112051"
+        },
+        {
+          "path": "manifests/subscription-replacement-matrix.json",
+          "sourcePath": "generated/subscription-replacement-matrix.json",
+          "sizeBytes": 12263,
+          "lastModified": "2026-04-20T02:57:20.557Z",
+          "sha256": "842a075d412a7153c111e5b97f3b6501c17004d5b3a66c1b3294c7be7898fc85"
+        },
+        {
+          "path": "manifests/suggestion-generator-function-report.json",
+          "sourcePath": "generated/suggestion-generator-function-report.json",
+          "sizeBytes": 160,
+          "lastModified": "2026-04-20T02:57:20.558Z",
+          "sha256": "1532765beda2a59a52db296bfaf8906383f600a173092fe1c66f878c946771e5"
+        },
+        {
+          "path": "manifests/supportability-freshness-report.json",
+          "sourcePath": "generated/supportability-freshness-report.json",
+          "sizeBytes": 2081,
+          "lastModified": "2026-04-20T02:57:20.558Z",
+          "sha256": "5d5ff9b2076d77e0d053255e7f4ac0fd5c4712dcba1a050edda24f816de9d7a8"
+        },
+        {
+          "path": "manifests/surface-performance-budget.json",
+          "sourcePath": "generated/surface-performance-budget.json",
+          "sizeBytes": 217047,
+          "lastModified": "2026-04-20T02:57:20.558Z",
+          "sha256": "20454e9670ceee37491aee01b98f4f521a04acab1568ad6a9a92cf9a5bb663be"
+        },
+        {
+          "path": "manifests/syscall-manifest.json",
+          "sourcePath": "generated/syscall-manifest.json",
+          "sizeBytes": 812,
+          "lastModified": "2026-04-20T02:57:20.558Z",
+          "sha256": "ad2a5aa9352bd5fdeaaae960743a0580f5781bde8c01e5fce45075e0f518c80e"
+        },
+        {
+          "path": "manifests/table-membership-report.json",
+          "sourcePath": "generated/table-membership-report.json",
+          "sizeBytes": 157,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "24aef3fdc84e51e9479e606debf4cb057d8a9203633636fcaff3106b6ddc6641"
+        },
+        {
+          "path": "manifests/tenancy-boundary-map.json",
+          "sourcePath": "generated/tenancy-boundary-map.json",
+          "sizeBytes": 21024,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "a674816a577bb97cc8d92ba7f489012c0e88c421ac992ba30fdbe20e00d9d87e"
+        },
+        {
+          "path": "manifests/tenant-admin-role-gate-report.json",
+          "sourcePath": "generated/tenant-admin-role-gate-report.json",
+          "sizeBytes": 153,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "5e527e7efb92d7f810fb13d107e656ebbb491d613c4a28997eb65715507cb88a"
+        },
+        {
+          "path": "manifests/tenant-kill-switch-justification-report.json",
+          "sourcePath": "generated/tenant-kill-switch-justification-report.json",
+          "sizeBytes": 163,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "3fa97d04921147c478273765bacea369580e439b7cadcbd9d5e10ba167ff7d96"
+        },
+        {
+          "path": "manifests/tenant-l3-ceiling-report.json",
+          "sourcePath": "generated/tenant-l3-ceiling-report.json",
+          "sizeBytes": 148,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "70587600cffa47d5514df9078f91526ea4c2772957ca6e284133b66ef6b8d348"
+        },
+        {
+          "path": "manifests/tenant-quota-hard-ceiling-report.json",
+          "sourcePath": "generated/tenant-quota-hard-ceiling-report.json",
+          "sizeBytes": 156,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "0c8e818b5d69f0986a9c30c6ced7d18b5a015035af8a5495db37a1b632c04bf7"
+        },
+        {
+          "path": "manifests/tenant-self-service-isolation-report.json",
+          "sourcePath": "generated/tenant-self-service-isolation-report.json",
+          "sizeBytes": 160,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "101878c0446936a87e79f0d9e7ee5acc3d7a3512f92a66375789ea4155e03ad2"
+        },
+        {
+          "path": "manifests/test-and-release-truth-report.json",
+          "sourcePath": "generated/test-and-release-truth-report.json",
+          "sizeBytes": 3466,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "9d3697298d8e5bc86b6597117194f7e571d887c0f860d0123a438baa22916844"
+        },
+        {
+          "path": "manifests/thin-admin-empty-states-report.json",
+          "sourcePath": "generated/thin-admin-empty-states-report.json",
+          "sizeBytes": 334,
+          "lastModified": "2026-04-20T02:57:20.559Z",
+          "sha256": "fa536e5799ded68cdce0c91d4c7aec19c0e9ab7367e742209e28a2004e9521d7"
+        },
+        {
+          "path": "manifests/track-b-language-boundaries-report.json",
+          "sourcePath": "generated/track-b-language-boundaries-report.json",
+          "sizeBytes": 158,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "d278a404e7c8dad34f366d56aadea555ce8de97bac262acc276f8d7c9ce6b1fd"
+        },
+        {
+          "path": "manifests/trust-copy-quality-report.json",
+          "sourcePath": "generated/trust-copy-quality-report.json",
+          "sizeBytes": 149,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "c6662132e3bd06f0fce20bb2f2df931a6602575c6d61208eb3a59b005ec2c26a"
+        },
+        {
+          "path": "manifests/trust-ladder-board-page-report.json",
+          "sourcePath": "generated/trust-ladder-board-page-report.json",
+          "sizeBytes": 154,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "672617f66b501cdaf347d23ccc7e73a677e249f6892f3ddefbf074931d1a4e5d"
+        },
+        {
+          "path": "manifests/trust-ladder-never-self-promote-report.json",
+          "sourcePath": "generated/trust-ladder-never-self-promote-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "b4bd2dc41798ef0f94f6108c9582b8bccaec51d3314fbe5cd45ac50dd78ae6cc"
+        },
+        {
+          "path": "manifests/trust-ladder-supervisor-readout-report.json",
+          "sourcePath": "generated/trust-ladder-supervisor-readout-report.json",
+          "sizeBytes": 162,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "f6d76392d85e3bf8263a2aeb130db3891d6ea7fdde53ddd77fd4cdea66c07734"
+        },
+        {
+          "path": "manifests/trust-score-update-logic-report.json",
+          "sourcePath": "generated/trust-score-update-logic-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "912092fd930b78ce2975cc69827cb5f093cfd81205ce3e957eb3c56b3c539169"
+        },
+        {
+          "path": "manifests/trust-state-consistency-report.json",
+          "sourcePath": "generated/trust-state-consistency-report.json",
+          "sizeBytes": 282,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "94d29aaff8ab46d4a4a17cc2ce4a4c4efd11f2a63bdf57ca78af46b7a19dfe0e"
+        },
+        {
+          "path": "manifests/user-profile-readiness-report.json",
+          "sourcePath": "generated/user-profile-readiness-report.json",
+          "sizeBytes": 1128,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "367b294a9992e4c94edd2c646d604727771ae6d518e9756c8628e7e613c62b2d"
+        },
+        {
+          "path": "manifests/userspace-services-manifest.json",
+          "sourcePath": "generated/userspace-services-manifest.json",
+          "sizeBytes": 2546,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "b2610ff8c2e6c3c58629feb90b1ab188ce342341f18da58ebc9a922fc1783dc5"
+        },
+        {
+          "path": "manifests/validation-summary.json",
+          "sourcePath": "generated/validation-summary.json",
+          "sizeBytes": 5239,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "5478ffbf8742577093208e58d2ce829727366bde96d7e92807ef9f3a3a8eefa3"
+        },
+        {
+          "path": "manifests/validator-gate-coverage-report.json",
+          "sourcePath": "generated/validator-gate-coverage-report.json",
+          "sizeBytes": 344,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "0170c2c9e0fb805b8d79c014366088c5a9f0353b240483a0a98c78c6abe85225"
+        },
+        {
+          "path": "manifests/validator-gate-map.json",
+          "sourcePath": "generated/validator-gate-map.json",
+          "sizeBytes": 73324,
+          "lastModified": "2026-04-20T02:57:20.560Z",
+          "sha256": "59a023d1b7e8d0b0671c4249e3ab1b48f68e0ae5e404544518ef6a83cada9fc2"
+        },
+        {
+          "path": "manifests/visual-regression-baseline.json",
+          "sourcePath": "generated/visual-regression-baseline.json",
+          "sizeBytes": 7734,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "3a6257b6664f9f2eccfc2b799022dded288ba56bae0262f8309c75eb84a24000"
+        },
+        {
+          "path": "manifests/warn-ratchet-meaningfulness-report.json",
+          "sourcePath": "generated/warn-ratchet-meaningfulness-report.json",
+          "sizeBytes": 178,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "af1b743b0f28b5e336e0157c97366f3ffdc9784c6e55b14ac3b657c6e9dc76fa"
+        },
+        {
+          "path": "manifests/warn-ratchet-report.json",
+          "sourcePath": "generated/warn-ratchet-report.json",
+          "sizeBytes": 194,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "d17f342b5b2a925ca3836a3fe560fff98d24e47931659614d8fb949ca6fdd243"
+        },
+        {
+          "path": "manifests/web-deployability-report.json",
+          "sourcePath": "generated/web-deployability-report.json",
+          "sizeBytes": 4813,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "155b7a01ff9721883bcdffb50cd55434fe5e518a969a5f83272885c3f53f5355"
+        },
+        {
+          "path": "manifests/webhook-hmac-signing-report.json",
+          "sourcePath": "generated/webhook-hmac-signing-report.json",
+          "sizeBytes": 151,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "573061027484d745c264ae217e8f148f833471591c9ca891278a75589a2745f9"
+        },
+        {
+          "path": "manifests/webhook-retry-queue-report.json",
+          "sourcePath": "generated/webhook-retry-queue-report.json",
+          "sizeBytes": 150,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "0a4be20133f52700768b96a52973150af25f024c9032f18a9930d73f1eba8e6a"
+        },
+        {
+          "path": "manifests/weekly-digest-generation-report.json",
+          "sourcePath": "generated/weekly-digest-generation-report.json",
+          "sizeBytes": 155,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "d7fe899e2dd2dc915fb23a10a253231395cd9796190aaf0b9ffc1287114f1223"
+        },
+        {
+          "path": "manifests/workflow-reality-report.json",
+          "sourcePath": "generated/workflow-reality-report.json",
+          "sizeBytes": 1685,
+          "lastModified": "2026-04-20T02:57:20.561Z",
+          "sha256": "1a5d4c53665fef04a8d3efe8c26a6ab18212ac512a7af1d91903a3db833ebb54"
+        }
+      ]
+    },
+    {
+      "name": "registry",
+      "count": 9,
+      "files": [
+        {
+          "path": "registry/registry/boardrooms.yaml",
+          "sourcePath": "docs/architecture/registry/boardrooms.yaml",
+          "sizeBytes": 2114,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "ba22b769b5b8e93615170cbd8c9fe09278fc4e35f06a6644831b590fed71923d"
+        },
+        {
+          "path": "registry/registry/capabilities.yaml",
+          "sourcePath": "docs/architecture/registry/capabilities.yaml",
+          "sizeBytes": 1607,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "0e312c16f06dea64ad76d72c6ede880b79299cf66b4780151095ab6df2d27b10"
+        },
+        {
+          "path": "registry/registry/connectors.yaml",
+          "sourcePath": "docs/architecture/registry/connectors.yaml",
+          "sizeBytes": 7918,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "6feec3ae873da379cb0ced60876e62dc1c408019e485c0d5216b7e66d18f00c5"
+        },
+        {
+          "path": "registry/registry/events.yaml",
+          "sourcePath": "docs/architecture/registry/events.yaml",
+          "sizeBytes": 2747,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "cdcfd38be8cccdc549d1758d11bc15ae591aab24f5fbae28cca374b7ff872e70"
+        },
+        {
+          "path": "registry/registry/prompts.yaml",
+          "sourcePath": "docs/architecture/registry/prompts.yaml",
+          "sizeBytes": 1901,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "e540b2a8a0dfbba8c43f2d12e5cab7b134a44b63772f31601f341ca440168bf5"
+        },
+        {
+          "path": "registry/registry/receipts.yaml",
+          "sourcePath": "docs/architecture/registry/receipts.yaml",
+          "sizeBytes": 2259,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "3e0ee5887f21db73375c346a205643d75b18aa863201035ad23eddd931356f1c"
+        },
+        {
+          "path": "registry/registry/services.yaml",
+          "sourcePath": "docs/architecture/registry/services.yaml",
+          "sizeBytes": 4159,
+          "lastModified": "2026-04-20T02:57:20.562Z",
+          "sha256": "568499c0d4b9a0c3cb032328a8239e4933cb5bbbd10ddc77b371f2262929c959"
+        },
+        {
+          "path": "registry/registry/truth-status.yaml",
+          "sourcePath": "docs/architecture/registry/truth-status.yaml",
+          "sizeBytes": 1740,
+          "lastModified": "2026-04-20T02:57:20.563Z",
+          "sha256": "cbc56aae82da12d255e91ffe6df0ea586657a6aff9495d772687bff9f72f92d3"
+        },
+        {
+          "path": "registry/registry/workflows.yaml",
+          "sourcePath": "docs/architecture/registry/workflows.yaml",
+          "sizeBytes": 1984,
+          "lastModified": "2026-04-20T02:57:20.563Z",
+          "sha256": "dc0e0349595d12e19d8cd1fc401336d9a75a678f9679f6542b53adc5aa3641c2"
+        }
+      ]
+    },
+    {
+      "name": "reports",
+      "count": 13,
+      "files": [
+        {
+          "path": "reports/COMPONENT_GOVERNANCE_REPORT.md",
+          "sourcePath": "generated/COMPONENT_GOVERNANCE_REPORT.md",
+          "sizeBytes": 3562,
+          "lastModified": "2026-04-20T02:57:20.563Z",
+          "sha256": "93f5ad421cd322b9e5e0c36bd6a26d0ebdf59d0a7393f1dc109a7e335bb5bc6b"
+        },
+        {
+          "path": "reports/DEPLOYMENT_AUDIT.md",
+          "sourcePath": "generated/DEPLOYMENT_AUDIT.md",
+          "sizeBytes": 110156,
+          "lastModified": "2026-04-20T02:57:20.563Z",
+          "sha256": "5307743ceb4cd747536390efd401752a08aed30455816371638450c8e40d635d"
+        },
+        {
+          "path": "reports/drift-report.md",
+          "sourcePath": "generated/drift-report.md",
+          "sizeBytes": 224,
+          "lastModified": "2026-04-20T02:57:20.564Z",
+          "sha256": "88d13886f2b4e9ff2d85fb9ace6b70a94fd11ddeb74c9bd03e09cd8b7feca07a"
+        },
+        {
+          "path": "reports/FULL_ISSUES_AND_FIXES.md",
+          "sourcePath": "generated/FULL_ISSUES_AND_FIXES.md",
+          "sizeBytes": 23242,
+          "lastModified": "2026-04-20T02:57:20.564Z",
+          "sha256": "da3b0b82073947de3a9705064bdd0578f9c84c94973ff6ecbbce915d77ea3564"
+        },
+        {
+          "path": "reports/FULL_MASTER_AUDIT.md",
+          "sourcePath": "generated/FULL_MASTER_AUDIT.md",
+          "sizeBytes": 20351,
+          "lastModified": "2026-04-20T02:57:20.564Z",
+          "sha256": "fc4520a9edfdc24ad1ada6f1bea8d2b129dc4e0559b9f97f7d7ded7554bc5e81"
+        },
+        {
+          "path": "reports/MARKDOWN_REFRESH_REPORT.md",
+          "sourcePath": "generated/MARKDOWN_REFRESH_REPORT.md",
+          "sizeBytes": 2204,
+          "lastModified": "2026-04-20T02:57:20.564Z",
+          "sha256": "4c0246bc301d83f39ed26c8d29caa607fc3714ea32edbfd08aa51065c4ad90f2"
+        },
+        {
+          "path": "reports/os-release-readiness-summary.md",
+          "sourcePath": "generated/os-release-readiness-summary.md",
+          "sizeBytes": 17678,
+          "lastModified": "2026-04-20T02:57:20.565Z",
+          "sha256": "f7926333932e6e525070d0c266d8e762a9aa1b15843dc5090fef45fe16024a75"
+        },
+        {
+          "path": "reports/production-truth-dashboard.md",
+          "sourcePath": "generated/production-truth-dashboard.md",
+          "sizeBytes": 2185,
+          "lastModified": "2026-04-20T02:57:20.565Z",
+          "sha256": "6c02551ce8130684ee34a642aac50dfb9557a74a2dfcdd7bcdb8297b0aa029c1"
+        },
+        {
+          "path": "reports/RELEASE_NOTES.md",
+          "sourcePath": "generated/RELEASE_NOTES.md",
+          "sizeBytes": 11127,
+          "lastModified": "2026-04-20T02:57:20.566Z",
+          "sha256": "cccc8e264a07cfaa8b33a41fda5f25c7f946f4ad4926ef053f0b88096cd83f23"
+        },
+        {
+          "path": "reports/RUNTIME_TIER_GOVERNANCE_REPORT.md",
+          "sourcePath": "generated/RUNTIME_TIER_GOVERNANCE_REPORT.md",
+          "sizeBytes": 3004,
+          "lastModified": "2026-04-20T02:57:20.566Z",
+          "sha256": "a65cd6f8b6f4f595c147cbe6cd3c278a3329d5600304975a1995e8f857f3ff87"
+        },
+        {
+          "path": "reports/SERVICE_GOVERNANCE_REPORT.md",
+          "sourcePath": "generated/SERVICE_GOVERNANCE_REPORT.md",
+          "sizeBytes": 2506,
+          "lastModified": "2026-04-20T02:57:20.566Z",
+          "sha256": "5e9935f3dbe7c1f1d89ed411d44f224b3ed42b469e87eb9f4a7ba99185c8f03d"
+        },
+        {
+          "path": "reports/SITA_MASTER_AUDIT.md",
+          "sourcePath": "generated/SITA_MASTER_AUDIT.md",
+          "sizeBytes": 141168,
+          "lastModified": "2026-04-20T02:57:20.566Z",
+          "sha256": "0d064797eb881c47d07ec377f317c2d7589f753cbe268259dd537fb3d9928ce8"
+        },
+        {
+          "path": "reports/STUBS_AND_PLACEHOLDERS_REGISTER.md",
+          "sourcePath": "generated/STUBS_AND_PLACEHOLDERS_REGISTER.md",
+          "sizeBytes": 11729,
+          "lastModified": "2026-04-20T02:57:20.566Z",
+          "sha256": "2d4a313db09e0a8cf0ed821fa8967af7d96678f46bf1c194dbf75e119a867eef"
+        }
+      ]
+    }
+  ],
+  "policyVersion": "1.0.0"
+}

@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-04-19T22:10:40.373Z",
+  "gate": "electron-domain-layout",
+  "phase": "phase-18-layout-and-ci-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "domains": [
+    "main",
+    "preload",
+    "bridges",
+    "security",
+    "updater",
+    "license",
+    "packaging"
+  ],
+  "registeredCount": 14,
+  "onDiskCount": 14,
+  "onDisk": [
+    "auto-updater.cjs",
+    "crash-reporter.cjs",
+    "dlp-guard.cjs",
+    "forge.config.cjs",
+    "fs-bridge.cjs",
+    "integrity-check.cjs",
+    "license-guard.cjs",
+    "license-preload.cjs",
+    "license-ui.cjs",
+    "main.cjs",
+    "network-sentinel.cjs",
+    "preload.cjs",
+    "runtime-shield.cjs",
+    "sita-apps-bridge.cjs"
+  ],
+  "classification": {
+    "main.cjs": "main",
+    "preload.cjs": "preload",
+    "license-preload.cjs": "preload",
+    "fs-bridge.cjs": "bridges",
+    "sita-apps-bridge.cjs": "bridges",
+    "runtime-shield.cjs": "security",
+    "dlp-guard.cjs": "security",
+    "network-sentinel.cjs": "security",
+    "integrity-check.cjs": "security",
+    "auto-updater.cjs": "updater",
+    "crash-reporter.cjs": "updater",
+    "license-guard.cjs": "license",
+    "license-ui.cjs": "license",
+    "forge.config.cjs": "packaging"
+  },
+  "issues": []
+}

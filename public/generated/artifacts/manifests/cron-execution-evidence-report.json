@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-04-19T20:31:43.581Z",
+  "gate": "cron-execution-evidence",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 12,
+  "declaredJobs": 11,
+  "jobReports": [
+    {
+      "job_name": "webhook-retry-processor",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "ai-internal-agent-loop",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "boardroom-l7-sla-scan",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "oauth-refresh-probe",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "sita-security-council-tick",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "ai-runtime-nightly-verify",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "connector-truth-nightly",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "compliance-evidence-collect",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "expire-overdue-kill-switches",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "trim-kill-switch-audit-log",
+      "status": "missing",
+      "ageHours": null
+    },
+    {
+      "job_name": "cron-receipt-collector",
+      "status": "missing",
+      "ageHours": null
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "cron-receipts-snapshot.json not yet produced — validator in WARN mode until first aggregator run with DB read"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "webhook-retry-processor: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "ai-internal-agent-loop: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "boardroom-l7-sla-scan: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "oauth-refresh-probe: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "sita-security-council-tick: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "ai-runtime-nightly-verify: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "connector-truth-nightly: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "compliance-evidence-collect: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "expire-overdue-kill-switches: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "trim-kill-switch-audit-log: no receipt found"
+    },
+    {
+      "severity": "warning",
+      "area": "cron-evidence",
+      "message": "cron-receipt-collector: no receipt found"
+    }
+  ]
+}

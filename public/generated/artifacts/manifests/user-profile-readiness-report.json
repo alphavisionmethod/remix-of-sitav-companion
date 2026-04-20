@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-04-18T02:08:29.740Z",
+  "gate": "user-profile-readiness",
+  "phase": "phase-12-native-deployability",
+  "profile": "user",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "overall": "GREEN",
+  "counts": {
+    "pass": 7,
+    "warn": 0,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "id": "manifest-present",
+      "status": "pass",
+      "message": "profile manifest loaded"
+    },
+    {
+      "id": "planes-declared",
+      "status": "pass",
+      "message": "4 planes enabled"
+    },
+    {
+      "id": "routes-mapped",
+      "status": "pass",
+      "message": "16 routes resolve to this profile"
+    },
+    {
+      "id": "apps-allowed",
+      "status": "pass",
+      "message": "10 apps shippable in this profile"
+    },
+    {
+      "id": "default-shell-home",
+      "status": "pass",
+      "message": "shell home → /desktop"
+    },
+    {
+      "id": "admin-plane-gated",
+      "status": "pass",
+      "message": "admin plane correctly excluded from user profile"
+    },
+    {
+      "id": "support-tooling",
+      "status": "pass",
+      "message": "support tooling = self-service"
+    }
+  ]
+}

@@ -1,0 +1,4343 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:47.445Z",
+  "total": 333,
+  "averageQualityScore": 27,
+  "gradeDistribution": {
+    "A": 2,
+    "B": 20,
+    "C": 311,
+    "D": 0
+  },
+  "metrics": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": true,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 100,
+      "grade": "A"
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MessageChannel",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MessageDirection",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MessageSentiment",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CustomerMessage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MessageThread",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealRiskCategory",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealRisk",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealRiskAssessment",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealStage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealCloseReason",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealStakeholder",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DealTimeline",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "Deal",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 75,
+      "grade": "A"
+    },
+    {
+      "capabilityId": "DealForecast",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HandoffTrigger",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HandoffRoute",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HandoffCondition",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HandoffExecution",
+      "domain": "business",
+      "riskTier": "high",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HandoffMetrics",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvoiceAgingBucket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvoiceFollowUpPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FollowUpStep",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionsMetrics",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PaymentPlanProposal",
+      "domain": "business",
+      "riskTier": "high",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadSource",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadTemperature",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadScoreBreakdown",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadEnriched",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadReactivationPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NoShowRisk",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NoShowRiskFactor",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NoShowAnalytics",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OpportunityStage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OpportunityRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OpportunityActivity",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutboundChannel",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutboundPurpose",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutboundTemplate",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutboundCampaign",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CommunicationPreferences",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SequenceEnrollment",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutreachGoal",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutreachPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutreachAudienceFilter",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutreachStep",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OutreachPerformanceReport",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PipelineStageConfig",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PipelineAutomation",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PipelineConfig",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PipelineSnapshot",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PricingModel",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DiscountType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PricingProposal",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PricingLineItem",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AppliedDiscount",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PricingGuidance",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteLineItem",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteExpanded",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteComparisonResult",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReferralStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReferralPrompt",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReferralRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReferralProgramMetrics",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RepeatPurchaseTiming",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PurchasePatternAnalysis",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueLeakType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueLeakageSignal",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueLeakageDashboard",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionsStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CollectionsAccountState",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EstimateStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EstimateRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvoiceStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvoiceRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OnboardingRevenueBootstrapPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PaymentProofLink",
+      "domain": "business",
+      "riskTier": "high",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ProposalRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReminderPackage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueApprovalPackage",
+      "domain": "business",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueMetricsSnapshot",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueWaterfall",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CohortAnalysis",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RevenueSendPackage",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReviewType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReviewUrgency",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReviewRequest",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReviewPolicy",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceOrderStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceOrder",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceLineItem",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceOrderMetrics",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TaskPriority",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TaskStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "TaskAssignment",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TaskWorkload",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalApprovalDefault",
+      "domain": "business",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ApprovalCondition",
+      "domain": "business",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalCommsTemplate",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalPackConfig",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalModule",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalPlaybook",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PlaybookStep",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VerticalRoleDefault",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BookingRequestSubmission",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FormFieldType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FormDefinition",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FormSubmission",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeadAttributionRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OnboardingSiteBootstrapPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PageType",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PageRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PageVersion",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PublishRequest",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PublishResult",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "QuoteRequestSubmission",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SiteStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SiteRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "WebsiteLeadRoutingPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StressSeverity",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StressCategory",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StressSignal",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StressRadarResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LifeEventType",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LifeEvent",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LifeMoneyImpact",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MoneyModeId",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MoneyMode",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AllocationBucket",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AllocationEntry",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AllocationStrategy",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CashAllocationPlan",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "IncomeQualityDimension",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "IncomeQualityScore",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PeaceScoreDimension",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PeaceScoreResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TrustNodeType",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TrustEdgeHealth",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FinancialTrustNode",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FinancialTrustEdge",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FinancialTrustGraph",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "OpportunityCostEntry",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RitualFrequency",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MoneyRitual",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RitualStep",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EmotionalPatternType",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EmotionalPattern",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DebtProfile",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DebtAccount",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PayoffPlan",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PayoffMilestone",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CreditScorePulse",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CreditFactor",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EnvelopeBudget",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EnvelopeGroup",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "Envelope",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "EnvelopeAllocationRule",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdFinanceSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SharedGoal",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MemberFinanceSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FinancialHealthScore",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HealthDimension",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HealthActionItem",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FounderBoundaryAlert",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": true,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "riskTier": "high",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ScenarioInput",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ScenarioOutput",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "AppointmentType",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "Appointment",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "AvailabilityWindow",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": true,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "AvailabilityMatrix",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CalendarConflict",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ConciergeBoardroomPacket",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PulseCategory",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DailyPulseItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "DailyPulse",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "ErrandBundle",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ErrandItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EventPlan",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FamilyBoardroomPacket",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FamilyLoadBalance",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MemberLoad",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "FamilyMemberProfile",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "GiftPlan",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdMaintenanceItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "HouseholdResponsibility",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "InventoryItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "Itinerary",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": true,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "ItineraryDay",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ItineraryActivity",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PackingPlan",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PackingCategory",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PantryReplenishment",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PrepSequence",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "PrepStep",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReservationMemory",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "Reservation",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RouteGrouping",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ScheduleItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SchoolActivity",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ServiceProviderMemory",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TravelDisruption",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "TripLeg",
+      "domain": "concierge",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "riskTier": "medium",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": true
+      },
+      "qualityScore": 50,
+      "grade": "B"
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "checks": {
+        "sourceExists": true,
+        "hasBarrelExport": false,
+        "hasServiceConsumer": false,
+        "hasTestCoverage": false
+      },
+      "qualityScore": 25,
+      "grade": "C"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:33.367Z",
+  "total": 1,
+  "subjects": [
+    {
+      "name": "EntityScope",
+      "kind": "interface"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-19T13:32:48.677Z",
+  "gate": "connector-truth-artifacts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "credentials",
+      "message": "SUPABASE_SERVICE_ROLE_KEY missing — emitted credentials_unavailable artifacts (production CI emits live evidence)."
+    }
+  ],
+  "classification": "credentials_unavailable"
+}

@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:22.463Z",
+  "total": 12,
+  "prompts": [
+    "id: business-advisor-system",
+    "id: money-advisor-system",
+    "id: concierge-advisor-system",
+    "id: strategy-advisor-system",
+    "id: boardroom-synthesis",
+    "id: explanation-assembly",
+    "id: lead-scoring-narrative",
+    "id: cashflow-summary",
+    "id: household-briefing",
+    "id: incident-classification",
+    "id: cost-anomaly-detection",
+    "id: policy-compliance-check"
+  ]
+}

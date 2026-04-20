@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T23:52:28.183Z",
+  "gate": "frontend-polish-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "surfaces": 9
+}

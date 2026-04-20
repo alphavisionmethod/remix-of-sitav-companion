@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-19T18:10:54.830Z",
+  "gate": "admin-ai-runtime-proof-language",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-proof-language-guard",
+  "spec": "generated/trust-state-and-copy-closure/ADMIN_AI_RUNTIME_TRUST_COPY_SPEC.md",
+  "surfacesScanned": 38,
+  "collapseHits": 0,
+  "proofTiers": [
+    "structurally-wired",
+    "behaviorally-proven",
+    "nightly-verified",
+    "degraded"
+  ]
+}

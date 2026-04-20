@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-18T11:43:49.874Z",
+  "totalOnDisk": 1042,
+  "countsByBucket": {
+    "critical": 6,
+    "admin": 539,
+    "internal": 449,
+    "dev": 48
+  },
+  "registered": 22,
+  "orphanCritical": [],
+  "ghostsRegistered": [],
+  "ok": true
+}

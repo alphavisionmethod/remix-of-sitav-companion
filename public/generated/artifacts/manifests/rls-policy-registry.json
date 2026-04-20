@@ -1,0 +1,2018 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-16T21:22:02.914Z",
+  "totalTables": 201,
+  "totalPolicies": 358,
+  "entries": [
+    {
+      "name": "action_safety_classifications",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "admin_action_audit",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "admin_action_confirmations",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": false,
+      "policyCount": 3,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "admin_role_permissions",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "admin_safety_actions",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "admin_sessions",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 3,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_action_queue",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_agents",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_autonomy_policies",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_board_actions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_board_memory",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_board_recommendations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_board_reflections",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_board_tool_executions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_feedback",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_knowledge",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_memories",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "advisor_profiles",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_inference_receipts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_approval_queue",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_budget_classes",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_cached_outputs",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_invocations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_launch_honesty",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_outputs",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_recommendation_scores",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_recommendations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_role_health",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_role_task_permissions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_roles",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ai_workforce_task_types",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "api_gateway_routes",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "appointments",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "approval_decisions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "biometric_credentials",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "boardroom_decision_receipts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "boardroom_evidence",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "boardroom_items",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "boardroom_recommendations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "boardroom_sessions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "business_health_scores",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "business_onboarding",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "calendar_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "client_capability_matrix",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_abuse_events",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_account_closure_requests",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_activity_journal",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_admin_role_assignments",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_admin_roles",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_archive_jobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_audit_events",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "cloud_backup_snapshots",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_blobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_bootstrap_markers",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_compliance_hooks",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_conflicts",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_device_sessions",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_devices",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 3,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_feature_flags",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_file_versions",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_files",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_folders",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_import_export_jobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_lifecycle_rules",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_maintenance_modes",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_metrics_snapshots",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_namespace_registry",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "owner_id"
+    },
+    {
+      "name": "cloud_plans",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_policies",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_preview_jobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_reconciliation_runs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_search_index",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_shared_workspaces",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "tenant_id"
+    },
+    {
+      "name": "cloud_shares",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 3,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_storage_providers",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_storage_tiers",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_storage_usage",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": false,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_support_sessions",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_sync_changes",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_sync_checkpoints",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_sync_jobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_sync_objects",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_tenant_memberships",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_tenant_plans",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "tenant_id"
+    },
+    {
+      "name": "cloud_tenant_policies",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "tenant_id"
+    },
+    {
+      "name": "cloud_tenant_quotas",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "tenant_id"
+    },
+    {
+      "name": "cloud_tenants",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": ""
+    },
+    {
+      "name": "cloud_trash",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_user_plans",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "cloud_worker_jobs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "command_memory",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "command_routing_decisions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "command_steps",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "communication_metrics",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "concierge_automations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "concierge_documents",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "concierge_errands",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "concierge_recurring_obligations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "config_change_history",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "connector_oauth_flows",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "connector_sync_runs",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "connector_tokens",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "context_graph_snapshots",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_automations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_communications",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_companies",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_contact_company",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_contacts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_import_jobs",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_merge_log",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_notes",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_opportunities",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_pipeline_stages",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_segments",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_tags",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "crm_tasks",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "device_attestations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "device_mesh_peers",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "device_ownership",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 5,
+      "tenancyCol": ""
+    },
+    {
+      "name": "domain_ownership_registry",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "dual_authority_challenges",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ecosystem_commands",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ecosystem_contracts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "ecosystem_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "environment_configs",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "flagship_loops",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "founder_directives",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "gift_tracker",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "graph_edges",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "grocery_items",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "grocery_lists",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "health_validation_results",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "incidents",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "layer_health_snapshots",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "lead_inbox_items",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "leads",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "license_activations",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": ""
+    },
+    {
+      "name": "license_audit_log",
+      "pattern": "append_only",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "licenses",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": false,
+      "policyCount": 3,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "managed_apps",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "notification_delivery_receipts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "notification_preferences",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "notifications",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "onboarding_choices",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "onboarding_completion_markers",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "onboarding_hardware_detection",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "onboarding_restore_sources",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "onboarding_sessions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "onboarding_steps",
+      "pattern": "authenticated_all",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "org_members",
+      "pattern": "org_membership",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "organizations",
+      "pattern": "org_membership",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "owner_id"
+    },
+    {
+      "name": "os_audit_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_auth_methods",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_capabilities",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_command_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 2,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_commands",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "os_elevation_tokens",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_keyrings",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_policies",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_role_capabilities",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_secrets_metadata",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_service_identities",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_sessions",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "os_user_accounts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "outcome_verifications",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "plane_service_assignments",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "platform_notifications",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": false,
+      "policyCount": 5,
+      "tenancyCol": ""
+    },
+    {
+      "name": "platform_planes",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "platform_runbooks",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "profiles",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 4,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "profit_signals",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "read_model_snapshots",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "recommendation_execution_bindings",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "recommendation_execution_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "recommendation_learning_signals",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "recommendation_outcome_verifications",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "release_compatibility_matrix",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "remediation_programs",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "remediation_tasks",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "rollback_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "runtime_agents",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "school_activities",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "service_identity_registry",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "service_providers_list",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "simulations",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "support_access_grants",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 3,
+      "tenancyCol": ""
+    },
+    {
+      "name": "support_case_events",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 4,
+      "tenancyCol": "actor_user_id"
+    },
+    {
+      "name": "support_cases",
+      "pattern": "admin_permission",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": false,
+      "policyCount": 5,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "system_guarantees",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "system_slots",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "timeline_events",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "token_classes",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 2,
+      "tenancyCol": ""
+    },
+    {
+      "name": "travel_plans",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "update_boot_attempts",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "update_catalog",
+      "pattern": "read_only",
+      "selectPolicy": true,
+      "insertPolicy": false,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 1,
+      "tenancyCol": ""
+    },
+    {
+      "name": "update_channels",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "update_history",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "update_preflight_results",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "update_staging",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "user_roles",
+      "pattern": "user_id_match",
+      "selectPolicy": true,
+      "insertPolicy": false,
+      "updatePolicy": false,
+      "deletePolicy": false,
+      "policyCount": 1,
+      "tenancyCol": "user_id"
+    },
+    {
+      "name": "vapid_keys",
+      "pattern": "admin_role",
+      "selectPolicy": true,
+      "insertPolicy": true,
+      "updatePolicy": true,
+      "deletePolicy": true,
+      "policyCount": 1,
+      "tenancyCol": ""
+    }
+  ]
+}

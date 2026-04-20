@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-18T02:57:11.083Z",
+  "gate": "misplaced-runtime-logic",
+  "scanRoots": [
+    "src/domains",
+    "src/data"
+  ],
+  "hits": [],
+  "hitCount": 0,
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0
+}

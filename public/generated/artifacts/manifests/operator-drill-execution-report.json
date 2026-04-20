@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-19T16:24:58.830Z",
+  "gate": "operator-drill-execution",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "drills",
+      "message": "No operator drill executions recorded — pending-human-execution"
+    }
+  ],
+  "drills": 0,
+  "distinctScenarios": 0,
+  "scenarioTarget": 6,
+  "source": "live-db",
+  "classification": "pending-human-execution",
+  "perScenario": []
+}

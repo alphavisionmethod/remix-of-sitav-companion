@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-13T09:01:27.743Z",
+  "total": 6,
+  "agents": [
+    {
+      "name": "architecture-governance",
+      "file": "src/lib/internal-agents/agents/architecture-governance.ts"
+    },
+    {
+      "name": "knowledge-coordination",
+      "file": "src/lib/internal-agents/agents/knowledge-coordination.ts"
+    },
+    {
+      "name": "product-build",
+      "file": "src/lib/internal-agents/agents/product-build.ts"
+    },
+    {
+      "name": "reliability-ops",
+      "file": "src/lib/internal-agents/agents/reliability-ops.ts"
+    },
+    {
+      "name": "runtime-cost",
+      "file": "src/lib/internal-agents/agents/runtime-cost.ts"
+    },
+    {
+      "name": "security-trust",
+      "file": "src/lib/internal-agents/agents/security-trust.ts"
+    }
+  ]
+}

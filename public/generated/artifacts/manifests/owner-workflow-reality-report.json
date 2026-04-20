@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-17T00:00:00.000Z",
+  "ok": true,
+  "phase": "phase-25-owner-workflow-reality",
+  "gate": "owner-workflow-reality",
+  "workflows": {
+    "daily": {
+      "label": "Daily Command",
+      "entry": "/admin/overview",
+      "entryOk": true,
+      "mounted": 5,
+      "total": 5,
+      "missingSteps": []
+    },
+    "weekly": {
+      "label": "Weekly Strategic Review",
+      "entry": "/admin/overview/generated-truth",
+      "entryOk": true,
+      "mounted": 5,
+      "total": 5,
+      "missingSteps": []
+    },
+    "support": {
+      "label": "Support / Repair",
+      "entry": "/admin/support",
+      "entryOk": true,
+      "mounted": 6,
+      "total": 6,
+      "missingSteps": []
+    },
+    "release": {
+      "label": "Release Safety",
+      "entry": "/admin/releases",
+      "entryOk": true,
+      "mounted": 6,
+      "total": 6,
+      "missingSteps": []
+    },
+    "trust-safety": {
+      "label": "Trust & Safety",
+      "entry": "/admin/trust-security",
+      "entryOk": true,
+      "mounted": 6,
+      "total": 6,
+      "missingSteps": []
+    }
+  },
+  "totals": {
+    "workflowKeys": 5,
+    "mountedRoutes": 136,
+    "registryRedirects": 16,
+    "stepsTotal": 28,
+    "stepsMounted": 28
+  },
+  "violations": []
+}

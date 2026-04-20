@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T18:37:24.120Z",
+  "gate": "responsive-admin-layout-integrity",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 562,
+  "withTables": 53,
+  "offenders": 0,
+  "classification": "warn-tier-adoption-tracker"
+}

@@ -1,0 +1,207 @@
+# SITA OS — Release Notes
+
+**Tag:** `HEAD`  
+**Range:** `HEAD~50..HEAD`  
+**Generated:** 2026-04-17T14:28:27.548Z  
+**Total commits:** 175
+
+## 🐛 Fixes (5)
+
+- `5db7444909` Fixed build errors in META03 — _gpt-engineer-app[bot]_
+- `9a42c1023c` Fixed Reality Map counter bug — _gpt-engineer-app[bot]_
+- `a030911acb` Fixed RB-020 deduplication — _gpt-engineer-app[bot]_
+- `7f65feb9d2` Fixed Phase 26.1 gaps — _gpt-engineer-app[bot]_
+- `481a4f8eb9` Fixed gate edgeFn logic — _gpt-engineer-app[bot]_
+
+## 📦 Other (170)
+
+- `20821d666e` Changes — _gpt-engineer-app[bot]_
+- `bafedb4127` Changes — _gpt-engineer-app[bot]_
+- `ab98cf25d2` Changes — _gpt-engineer-app[bot]_
+- `41faa056a4` Changes — _gpt-engineer-app[bot]_
+- `6b46ed4674` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `956add148e` Changes — _gpt-engineer-app[bot]_
+- `11e6b6a792` Changes — _gpt-engineer-app[bot]_
+- `68388c3979` Changes — _gpt-engineer-app[bot]_
+- `1b431ab446` Changes — _gpt-engineer-app[bot]_
+- `fc7988de71` Changes — _gpt-engineer-app[bot]_
+- `bf45854004` Changes — _gpt-engineer-app[bot]_
+- `bebaa2cbe5` Changes — _gpt-engineer-app[bot]_
+- `8d1861d241` Changes — _gpt-engineer-app[bot]_
+- `bc91ca49f0` Changes — _gpt-engineer-app[bot]_
+- `fb819a6371` Changes — _gpt-engineer-app[bot]_
+- `186ea2114d` Completed Phase 29 edge impl. — _gpt-engineer-app[bot]_
+- `9e61fc3188` Changes — _gpt-engineer-app[bot]_
+- `de5a33a881` Changes — _gpt-engineer-app[bot]_
+- `9e5d14a809` Changes — _gpt-engineer-app[bot]_
+- `28b697b15c` Changes — _gpt-engineer-app[bot]_
+- `e232c95741` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `c6736fd784` Changes — _gpt-engineer-app[bot]_
+- `5e2a629757` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `b6976c1231` Completed Phase 28 fixes — _gpt-engineer-app[bot]_
+- `976582e717` Changes — _gpt-engineer-app[bot]_
+- `80bfe02017` Changes — _gpt-engineer-app[bot]_
+- `b06f5b43a5` Changes — _gpt-engineer-app[bot]_
+- `9ea27ecea0` Changes — _gpt-engineer-app[bot]_
+- `37155d376d` Added RB-020 & ingress mandatory — _gpt-engineer-app[bot]_
+- `028dd6a2c7` Changes — _gpt-engineer-app[bot]_
+- `431f6d3d1e` Changes — _gpt-engineer-app[bot]_
+- `e7adf5ec2a` Changes — _gpt-engineer-app[bot]_
+- `7c32cbd5bb` Changes — _gpt-engineer-app[bot]_
+- `eb088cb110` Changes — _gpt-engineer-app[bot]_
+- `56a696e2a3` Changes — _gpt-engineer-app[bot]_
+- `ce372cba94` Changes — _gpt-engineer-app[bot]_
+- `5f28c7215c` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `1fafbac1d9` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `90fcf109e6` Wired kill-switches and fixed refs — _gpt-engineer-app[bot]_
+- `7f7298e2c2` Changes — _gpt-engineer-app[bot]_
+- `8ace002f93` Changes — _gpt-engineer-app[bot]_
+- `619f49ddbc` Changes — _gpt-engineer-app[bot]_
+- `1ef47e5c86` Changes — _gpt-engineer-app[bot]_
+- `6ac7abbaa6` Changes — _gpt-engineer-app[bot]_
+- `2d285c278c` Changes — _gpt-engineer-app[bot]_
+- `6620d46a32` Changes — _gpt-engineer-app[bot]_
+- `c40cdcbfef` Implemented kill-switch helpers — _gpt-engineer-app[bot]_
+- `857bc612ea` Changes — _gpt-engineer-app[bot]_
+- `3e4dfc3286` Changes — _gpt-engineer-app[bot]_
+- `9ba6689011` Changes — _gpt-engineer-app[bot]_
+- `aa2c2b53ff` Changes — _gpt-engineer-app[bot]_
+- `ee481d3b79` Changes — _gpt-engineer-app[bot]_
+- `75222b5d33` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `6267e91115` Changes — _gpt-engineer-app[bot]_
+- `88a89d2cb6` Changes — _gpt-engineer-app[bot]_
+- `39c16ec7e7` Changes — _gpt-engineer-app[bot]_
+- `797cf79be9` Changes — _gpt-engineer-app[bot]_
+- `81e512c1f0` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `e4a9943d68` Removed orphan files & added Gate — _gpt-engineer-app[bot]_
+- `ecbbecfae3` Changes — _gpt-engineer-app[bot]_
+- `62524e8e04` Changes — _gpt-engineer-app[bot]_
+- `a0aae448cd` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `4e88814e38` Completed Phase 25.1 audit — _gpt-engineer-app[bot]_
+- `75af1df1b1` Changes — _gpt-engineer-app[bot]_
+- `ad08392bab` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `11d0c7b28f` Added phase-25 title to PHASE — _gpt-engineer-app[bot]_
+- `b37e44ed62` Changes — _gpt-engineer-app[bot]_
+- `a435f79fa8` Implemented Phase 25 hub pages — _gpt-engineer-app[bot]_
+- `bf25022f60` Changes — _gpt-engineer-app[bot]_
+- `75434bd711` Changes — _gpt-engineer-app[bot]_
+- `ce587fbc24` Changes — _gpt-engineer-app[bot]_
+- `4577701e21` Changes — _gpt-engineer-app[bot]_
+- `43e2236534` Changes — _gpt-engineer-app[bot]_
+- `f6d876ce2b` Changes — _gpt-engineer-app[bot]_
+- `d3b3c2aaaf` Changes — _gpt-engineer-app[bot]_
+- `65c26ea302` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `6c0f4cdfc2` Changes — _gpt-engineer-app[bot]_
+- `3cfccdff0c` Changes — _gpt-engineer-app[bot]_
+- `3c307419c3` Changes — _gpt-engineer-app[bot]_
+- `3dad870d26` Changes — _gpt-engineer-app[bot]_
+- `6b56208651` Changes — _gpt-engineer-app[bot]_
+- `482f3bfc5a` Changes — _gpt-engineer-app[bot]_
+- `8d22366227` Changes — _gpt-engineer-app[bot]_
+- `3392e92de3` Work in progress — _gpt-engineer-app[bot]_
+- `c89fa966c3` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `6982b8a698` Completed Phase 24 domain OS — _gpt-engineer-app[bot]_
+- `e15086fae8` Changes — _gpt-engineer-app[bot]_
+- `2e51e8103e` Changes — _gpt-engineer-app[bot]_
+- `49a607b91e` Changes — _gpt-engineer-app[bot]_
+- `9c5dddbcd4` Changes — _gpt-engineer-app[bot]_
+- `a88ab04759` Changes — _gpt-engineer-app[bot]_
+- `5836114683` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `13745a96b1` Closed workflow bypass gap — _gpt-engineer-app[bot]_
+- `3d9be21594` Changes — _gpt-engineer-app[bot]_
+- `a49c9fc068` Changes — _gpt-engineer-app[bot]_
+- `8e8995f2a3` Changes — _gpt-engineer-app[bot]_
+- `03ed77df63` Changes — _gpt-engineer-app[bot]_
+- `688c1cbaa5` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `aa82c523c5` Added missing workflows tables — _gpt-engineer-app[bot]_
+- `7b00e79b4d` Changes — _gpt-engineer-app[bot]_
+- `53883ae784` Changes — _gpt-engineer-app[bot]_
+- `04908fc24d` Changes — _gpt-engineer-app[bot]_
+- `58463b35c8` Changes — _gpt-engineer-app[bot]_
+- `e2bdcb2a8a` Changes — _gpt-engineer-app[bot]_
+- `a9cad0341a` Changes — _gpt-engineer-app[bot]_
+- `5f54adeca5` Changes — _gpt-engineer-app[bot]_
+- `441cb6bb55` Changes — _gpt-engineer-app[bot]_
+- `f9450e0dae` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `503d0f975a` Delivered Phase 22.1 changes — _gpt-engineer-app[bot]_
+- `a96c6905a0` Changes — _gpt-engineer-app[bot]_
+- `37d1bb2f0f` Changes — _gpt-engineer-app[bot]_
+- `95069c894c` Changes — _gpt-engineer-app[bot]_
+- `9ed5803a6e` Changes — _gpt-engineer-app[bot]_
+- `2182db77a8` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `b0af6ead2e` Seeded connector registry — _gpt-engineer-app[bot]_
+- `6e34425393` Changes — _gpt-engineer-app[bot]_
+- `e30ea5de6c` Changes — _gpt-engineer-app[bot]_
+- `5e8c974b53` Changes — _gpt-engineer-app[bot]_
+- `b35b4b98e3` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `d22eb95449` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `6cef1dc13d` Seeded honesty, cron + badges — _gpt-engineer-app[bot]_
+- `275acb470e` Changes — _gpt-engineer-app[bot]_
+- `9758b128d3` Changes — _gpt-engineer-app[bot]_
+- `c10a3f3a82` Changes — _gpt-engineer-app[bot]_
+- `7f0ee03869` Changes — _gpt-engineer-app[bot]_
+- `b353ae17b6` Changes — _gpt-engineer-app[bot]_
+- `6204a36a13` Changes — _gpt-engineer-app[bot]_
+- `64caa7e916` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `ccabdf8ecd` Implemented Phase 21 audit fixes — _gpt-engineer-app[bot]_
+- `fb6bd5e251` Changes — _gpt-engineer-app[bot]_
+- `995d8f35a3` Changes — _gpt-engineer-app[bot]_
+- `cf5880e8c5` Changes — _gpt-engineer-app[bot]_
+- `b19c4f3a05` Changes — _gpt-engineer-app[bot]_
+- `a08cf15326` Changes — _gpt-engineer-app[bot]_
+- `b9bf7f801e` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `e595a09e85` Executed Phase 20.1 closure — _gpt-engineer-app[bot]_
+- `dc2e87c8ed` Changes — _gpt-engineer-app[bot]_
+- `2c8b641ec1` Changes — _gpt-engineer-app[bot]_
+- `5117a8e162` Changes — _gpt-engineer-app[bot]_
+- `ba4e835c33` Changes — _gpt-engineer-app[bot]_
+- `98daaa17e4` Changes — _gpt-engineer-app[bot]_
+- `8580b91923` Changes — _gpt-engineer-app[bot]_
+- `4dff1ad939` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `f6f34bd630` Completed Phase 20 (items 11–20) — _gpt-engineer-app[bot]_
+- `25d1a011a3` Changes — _gpt-engineer-app[bot]_
+- `5cb0c93bc8` Changes — _gpt-engineer-app[bot]_
+- `c3265d162f` Changes — _gpt-engineer-app[bot]_
+- `e554265030` Changes — _gpt-engineer-app[bot]_
+- `1f8ee4ee65` Changes — _gpt-engineer-app[bot]_
+- `ae2d4fd053` Changes — _gpt-engineer-app[bot]_
+- `6f60b00b39` Completed Phase 20 ops closure — _gpt-engineer-app[bot]_
+- `38bedd5f14` Changes — _gpt-engineer-app[bot]_
+- `3ca0174149` Changes — _gpt-engineer-app[bot]_
+- `b486f95228` Changes — _gpt-engineer-app[bot]_
+- `5966f41a2e` Changes — _gpt-engineer-app[bot]_
+- `a92970479e` Changes — _gpt-engineer-app[bot]_
+- `0a9e86a4e1` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `51d256fff7` Wired MFA flow to routes and UI — _gpt-engineer-app[bot]_
+- `b09fa80d80` Changes — _gpt-engineer-app[bot]_
+- `8cd40c5fe0` Changes — _gpt-engineer-app[bot]_
+- `425d6464d7` Changes — _gpt-engineer-app[bot]_
+- `6ebd53f6e6` Changes — _gpt-engineer-app[bot]_
+- `a0df90f0ce` Changes — _gpt-engineer-app[bot]_
+- `feb081180d` Changes — _gpt-engineer-app[bot]_
+- `6854ea5a62` Changes — _gpt-engineer-app[bot]_
+- `e64cdbdbd3` Changes — _gpt-engineer-app[bot]_
+- `c5fe870eb0` Changes — _gpt-engineer-app[bot]_
+- `0f655f12e4` Save plan in Lovable — _gpt-engineer-app[bot]_
+- `353220810b` Update plan — _gpt-engineer-app[bot]_
+- `89832a4327` Update plan — _gpt-engineer-app[bot]_
+
+
+
+---
+
+## Active Caveats
+
+The following P1 evidence gaps remain open as of 2026-04-18. Status claims in this document are made **subject to** this list:
+
+| # | Caveat | Owner | Tracking |
+|---|---|---|---|
+| 1 | TPM hardware proof on real hardware | Trust Council | `generated/final-hardening/MOK_TEST_MATRIX.md` |
+| 2 | Production-shape restore drill — first scheduled live execution | DR Owner | `generated/restore-and-oauth-hardening/PRODUCTION_RESTORE_DRILL_RUNBOOK.md` |
+| 3 | OAuth refresh probe — 7-day continuous health window | Connectors Owner | `generated/restore-and-oauth-hardening/OAUTH_REFRESH_PROBE_LOGGING_AND_RECEIPTS.md` |
+| 4 | Boardroom L7 follow-through — operator-trained runbook drill | Boardroom Owner | `generated/final-hardening/BOARDROOM_FOLLOWTHROUGH_RUNBOOK.md` |
+| 5 | MOK per-distro live tests — Fedora 40 + Arch | Install Owner | `generated/final-hardening/MOK_TEST_MATRIX.md` |
+
+Until each caveat is independently closed with evidence linked from the corresponding tracking doc, **deployability claims must be read together with this list**, not in isolation.
+
+Policy: `generated/claim-safety-hardening/DEPLOYMENT_WORDING_POLICY.md`

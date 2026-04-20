@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T16:24:04.748Z",
+  "gate": "final-launch-honesty",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "downstreamOk": 8,
+  "totalClaimGates": 8,
+  "topLevelViolations": 0
+}

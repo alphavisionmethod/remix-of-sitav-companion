@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-04-20T00:13:33.656Z",
+  "gate": "cosmetic-debt-closure",
+  "mode": "PHYSICAL-DELETION",
+  "tier": "BLOCK-composite",
+  "parentGate": "lib-ownership-drift",
+  "totalAssertions": 14,
+  "verified": [
+    {
+      "closes": "A1",
+      "path": "src/lib/canonical-backend"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/simulation"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/mock-data"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/demo-data"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/seed"
+    },
+    {
+      "closes": "A1",
+      "path": "src/integrations/canonical-backend/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/domains/simulation/monte-carlo-engine.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/data/fixtures/mock-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/data/fixtures/demo-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/data/fixtures/seed/index.ts"
+    },
+    {
+      "closes": "A2",
+      "path": "src/services/index.ts"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/canonical-backend"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/simulation"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/unclassified"
+    }
+  ],
+  "violations": [],
+  "ok": true,
+  "errorCount": 0
+}

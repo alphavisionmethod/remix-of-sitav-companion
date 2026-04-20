@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-19T16:56:26.144Z",
+  "gate": "concierge-ai-state-handling",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "ai-state-treatments",
+      "message": "Concierge AI degraded/budget/error treatments and trust-disclosure block require user-flagship-pass polish. Runtime IS proven; UX is honestly deferred."
+    }
+  ],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/flagship-surface-closure/CONCIERGE_CHAT_CLOSURE_SPEC.md",
+  "runtimePresent": 2,
+  "runtimeExpected": 3,
+  "requiredForGreen": "user-flagship-pass: wire /concierge/* to AI runtime status surfaces with shared state primitives"
+}

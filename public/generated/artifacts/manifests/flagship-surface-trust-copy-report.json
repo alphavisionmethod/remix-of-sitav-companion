@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-19T16:56:30.423Z",
+  "gate": "flagship-surface-trust-copy",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 4,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "deferred-onboarding",
+      "message": "Trust-copy review for onboarding DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/ONBOARDING_WIRING_AUDIT.md."
+    },
+    {
+      "severity": "warning",
+      "area": "deferred-boardroom-briefing",
+      "message": "Trust-copy review for boardroom-briefing DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/BOARDROOM_BRIEFING_CLOSURE_SPEC.md."
+    },
+    {
+      "severity": "warning",
+      "area": "deferred-concierge",
+      "message": "Trust-copy review for concierge DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/CONCIERGE_CHAT_CLOSURE_SPEC.md."
+    },
+    {
+      "severity": "warning",
+      "area": "deferred-communications",
+      "message": "Trust-copy review for communications DEFERRED to user-flagship-pass. See generated/flagship-surface-closure/COMMUNICATIONS_INBOX_CLOSURE_SPEC.md."
+    }
+  ],
+  "classification": "hybrid-pass-with-honest-warn-deferrals",
+  "adminAIScanned": 35,
+  "adminAIOverclaimHits": 0,
+  "deferralDocsPresent": 4,
+  "deferralDocsExpected": 4
+}

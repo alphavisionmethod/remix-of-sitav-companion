@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T17:25:03.405Z",
+  "gate": "sbom-history-empty-state",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "honest-warn-deferred",
+  "deferralDoc": "generated/admin-empty-state-closure/SBOM_HISTORY_EMPTY_STATE_SPEC.md",
+  "expectedPagePath": "src/pages/admin/releases/SbomHistory.tsx",
+  "canonicalAlternativesPresent": 2,
+  "canonicalAlternativesExpected": 2,
+  "requiredForGreen": "releases-domain-pass: build SbomHistory.tsx + adopt PremiumEmptyState with link to ReleasesHome and AIReleasesCenter"
+}

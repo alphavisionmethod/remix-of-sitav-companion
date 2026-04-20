@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T18:11:46.830Z",
+  "gate": "simulation-and-future-labeling",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "classification": "warn-tier-truth-labeling-guard",
+  "surfacesScanned": 143,
+  "labeledSurfaces": 1,
+  "nakedOffenders": 0
+}

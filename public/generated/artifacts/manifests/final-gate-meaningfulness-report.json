@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T16:24:10.557Z",
+  "gate": "final-gate-meaningfulness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "totalGates": 45,
+  "structuralGates": 0,
+  "behavioralGates": 0,
+  "smokeGates": 0,
+  "e2eGates": 0,
+  "structuralRatio": 0
+}

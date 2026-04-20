@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T16:38:36.318Z",
+  "gate": "final-mobile-truth",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "okGates": 16,
+  "warnGates": 0,
+  "errGates": 0,
+  "totalGates": 16
+}

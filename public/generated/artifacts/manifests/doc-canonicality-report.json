@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T16:26:02.444Z",
+  "gate": "doc-canonicality",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalDocs": 18,
+  "referenced": 18,
+  "orphans": 0,
+  "orphanList": []
+}

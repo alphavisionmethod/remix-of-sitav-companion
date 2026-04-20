@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-04-17T02:20:00.000Z",
+  "total": 12,
+  "connectors": [
+    { "id": "gmail", "name": "Gmail", "provider": "google", "class": "communication", "auth": "oauth2", "scopes": ["gmail.readonly","gmail.send"], "status": "beta", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 250 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "google-calendar", "name": "Google Calendar", "provider": "google", "class": "calendar", "auth": "oauth2", "scopes": ["calendar"], "status": "beta", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 600 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "google-drive", "name": "Google Drive", "provider": "google", "class": "cloud-storage", "auth": "oauth2", "scopes": ["drive.readonly"], "status": "beta", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 1000 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "plaid", "name": "Plaid", "provider": "plaid", "class": "banking", "auth": "oauth2", "scopes": ["transactions","accounts"], "status": "beta", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 600 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "stripe", "name": "Stripe", "provider": "stripe", "class": "payments", "auth": "api_key", "scopes": ["read","write"], "status": "beta", "webhookSupported": true, "refreshSupported": false, "rateLimit": { "rpm": 100 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "quickbooks", "name": "QuickBooks", "provider": "intuit", "class": "accounting", "auth": "oauth2", "scopes": ["accounting"], "status": "planned", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 500 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "twilio", "name": "Twilio", "provider": "twilio", "class": "communication", "auth": "api_key", "scopes": ["sms","voice"], "status": "beta", "webhookSupported": true, "refreshSupported": false, "rateLimit": { "rpm": 100 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "sendgrid", "name": "SendGrid", "provider": "sendgrid", "class": "communication", "auth": "api_key", "scopes": ["mail.send"], "status": "planned", "webhookSupported": true, "refreshSupported": false, "rateLimit": { "rpm": 600 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "instacart", "name": "Instacart", "provider": "instacart", "class": "commerce", "auth": "oauth2", "scopes": ["orders.read"], "status": "planned", "webhookSupported": false, "refreshSupported": true, "rateLimit": { "rpm": 60 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "hubspot", "name": "HubSpot", "provider": "hubspot", "class": "crm", "auth": "oauth2", "scopes": ["contacts","deals"], "status": "planned", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 100 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "slack", "name": "Slack", "provider": "slack", "class": "communication", "auth": "oauth2", "scopes": ["chat:write","channels:read"], "status": "planned", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 60 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } },
+    { "id": "dropbox", "name": "Dropbox", "provider": "dropbox", "class": "cloud-storage", "auth": "oauth2", "scopes": ["files.content.read"], "status": "planned", "webhookSupported": true, "refreshSupported": true, "rateLimit": { "rpm": 600 }, "retry": { "maxAttempts": 5, "backoff": "exponential" } }
+  ]
+}

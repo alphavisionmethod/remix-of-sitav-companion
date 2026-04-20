@@ -1,0 +1,60 @@
+# SITA OS — Receipt Registry
+
+receipt_families:
+  execution:
+    - id: action-receipt
+      description: Proof that an action was executed
+      fields: [action_id, action_type, executor, timestamp, input_hash, output_hash, status]
+
+    - id: payment-receipt
+      description: Proof of payment execution
+      fields: [payment_id, amount_cents, currency, payee, method, confirmation, timestamp]
+
+    - id: communication-receipt
+      description: Proof of outbound communication
+      fields: [comm_id, type, recipient, subject, send_timestamp, delivery_status]
+
+  approval:
+    - id: approval-receipt
+      description: Proof of approval decision
+      fields: [approval_id, action_id, approver, decision, reason, timestamp]
+
+    - id: escalation-receipt
+      description: Proof of approval escalation
+      fields: [escalation_id, original_approval, escalated_to, reason, timestamp]
+
+  verification:
+    - id: verification-receipt
+      description: Proof of postcondition verification
+      fields: [verification_id, action_id, expected, actual, match, timestamp]
+
+    - id: rollback-receipt
+      description: Proof of action rollback
+      fields: [rollback_id, original_action_id, reason, rollback_steps, timestamp]
+
+  proof:
+    - id: proof-bundle
+      description: Collection of related receipts for an action chain
+      fields: [bundle_id, intent_id, receipts, chain_hash, timestamp]
+
+  boardroom:
+    - id: decision-receipt
+      description: Proof of boardroom decision
+      fields: [decision_id, session_id, topic, decision, advisor_inputs, confidence, timestamp]
+
+    - id: carryover-receipt
+      description: Proof of unresolved item carried forward
+      fields: [carryover_id, session_id, item, age_count, timestamp]
+
+  system:
+    - id: pack-change-receipt
+      description: Proof of pack install/update/uninstall
+      fields: [pack_id, action, version, affected_workflows, affected_advisors, timestamp]
+
+    - id: safe-mode-receipt
+      description: Proof of safe mode activation/deactivation
+      fields: [action, scope, reason, activated_by, timestamp]
+
+    - id: agent-override-receipt
+      description: Proof of internal agent override by supervisor
+      fields: [agent_id, supervisor_id, override_type, reason, timestamp]

@@ -1,0 +1,1651 @@
+{
+    "count": 274,
+    "source": "live pg_tables",
+    "tables": [
+        {
+            "tablename": "accounts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "action_safety_classifications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "admin_action_audit",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "admin_action_confirmations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "admin_role_permissions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "admin_safety_actions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "admin_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_action_queue",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_agents",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_autonomy_policies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_board_actions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_board_memory",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_board_recommendations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_board_reflections",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_board_tool_executions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_feedback",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_knowledge",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_memories",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_profiles",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "advisor_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_capability_routing",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_inference_receipts",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_model_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_prompt_families",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_prompt_invocations",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_prompt_versions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_provider_health",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_provider_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_routing_policies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_approval_queue",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_budget_classes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_cached_outputs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_invocations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_launch_honesty",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_outputs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_recommendation_scores",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_recommendations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_role_health",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_role_task_permissions",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_roles",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ai_workforce_task_types",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "alert_routes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "alerts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "api_gateway_routes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "appointments",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "approval_decisions",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "assets",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "automation_kill_switches",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "bills",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "biometric_credentials",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "boardroom_decision_receipts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "boardroom_evidence",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "boardroom_items",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "boardroom_recommendations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "boardroom_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "bookings",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "budgets",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "business_health_scores",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "business_onboarding",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "calendar_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "capital_buckets",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "client_capability_matrix",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_abuse_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_account_closure_requests",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_activity_journal",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_admin_role_assignments",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_admin_roles",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_archive_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_audit_events",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_backup_snapshots",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_blobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_bootstrap_markers",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_compliance_hooks",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_conflicts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_device_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_devices",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_feature_flags",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_file_versions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_files",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_folders",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_import_export_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_lifecycle_rules",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_maintenance_modes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_metrics_snapshots",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_namespace_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_policies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_preview_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_reconciliation_runs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_search_index",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_shared_workspaces",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_shares",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_storage_providers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_storage_tiers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_storage_usage",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_support_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_sync_changes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_sync_checkpoints",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_sync_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_sync_objects",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_tenant_memberships",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_tenant_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_tenant_policies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_tenant_quotas",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_tenants",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_trash",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_user_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "cloud_worker_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "command_memory",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "command_routing_decisions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "command_steps",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "communication_metrics",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "communications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "concierge_automations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "concierge_documents",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "concierge_recurring_obligations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "config_change_history",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_accounts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_configs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_oauth_flows",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_oauth_tokens",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_receipts",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_sync_cursors",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_sync_runs",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "connector_tokens",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "consent_scope_records",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "contacts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "context_graph_snapshots",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_automations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_communications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_companies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_contact_company",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_contacts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_import_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_merge_log",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_notes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_opportunities",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_pipeline_stages",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_segments",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_tags",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "crm_tasks",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "customers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "deals",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "debt_obligations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "device_attestations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "device_mesh_peers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "device_ownership",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "domain_ownership_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "dual_authority_challenges",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ecosystem_commands",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ecosystem_contracts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "ecosystem_events",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "envelopes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "environment_configs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "errands",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "error_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "event_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "family_members",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "flagship_loops",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "founder_directives",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "gift_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "gift_tracker",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "graph_edges",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "grocery_items",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "grocery_lists",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "health_validation_results",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "holdings",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "household_tasks",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "incidents",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "instruments",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "investment_theses",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "invoices",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "job_executions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "layer_health_snapshots",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "lead_inbox_items",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "leads",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "license_activations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "license_audit_log",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "licenses",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "maintenance_items",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "managed_apps",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "mobile_push_tokens",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "notification_delivery_receipts",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "notification_preferences",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "notifications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_choices",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_completion_markers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_hardware_detection",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_restore_sources",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "onboarding_steps",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "org_members",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "organizations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_audit_events",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_auth_methods",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_capabilities",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_command_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_commands",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_elevation_tokens",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_keyrings",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_policies",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_role_capabilities",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_secrets_metadata",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_service_identities",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_sessions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "os_user_accounts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "outcome_verifications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "plane_service_assignments",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "platform_notifications",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "platform_planes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "platform_runbooks",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "portfolios",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "positions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "profiles",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "profit_signals",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "proposals",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "providers",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "quotes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "read_model_snapshots",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "receivables",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "recommendation_execution_bindings",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "recommendation_execution_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "recommendation_learning_signals",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "recommendation_outcome_verifications",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "release_compatibility_matrix",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "remediation_programs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "remediation_tasks",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "reservations",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "reserves",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "responsibilities",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "rollback_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "runtime_agents",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "scenarios",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "scheduled_jobs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "schedules",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "school_activities",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "service_identity_registry",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "service_orders",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "service_providers_list",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "simulations",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "sinking_funds",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "subscriptions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "support_access_grants",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "support_case_events",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "support_cases",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "system_guarantees",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "system_slots",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "theses",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "timeline_events",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "token_classes",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "trace_spans",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "trades",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "transactions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "travel_plans",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "trips",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_boot_attempts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_catalog",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_channels",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_history",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_preflight_results",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "update_staging",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "uptime_heartbeats",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "user_passkeys",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "user_roles",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "vapid_keys",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "watchlists",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "webauthn_challenges",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "webhook_events",
+            "hasindexes": true,
+            "hastriggers": false,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "workflow_receipts",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "workflow_runs",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "workflow_state_transitions",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "workflow_steps",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        },
+        {
+            "tablename": "workflows",
+            "hasindexes": true,
+            "hastriggers": true,
+            "rowsecurity": true
+        }
+    ],
+    "generatedAt": "2026-04-17T12:36:40.1848+00:00"
+}

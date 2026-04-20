@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-18T02:21:41.544Z",
+  "gate": "ks-payments-auth-readiness",
+  "phase": "phase-14-production-launch-hardening",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "killSwitch": "KS-PAYMENTS-AUTH",
+  "contract": {
+    "registered": true,
+    "dualApproval": true,
+    "enforcementMapped": false,
+    "runbookLinked": true,
+    "approvalsTablePresent": true
+  },
+  "issues": []
+}

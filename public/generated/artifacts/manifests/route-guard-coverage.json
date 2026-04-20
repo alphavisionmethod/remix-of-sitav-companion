@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-18T12:37:03.017Z",
+  "gate": "route-guard-coverage",
+  "level": "block",
+  "budget": 0,
+  "adminRouteTotal": 191,
+  "unguardedCount": 0,
+  "unguardedSample": [],
+  "ok": true
+}

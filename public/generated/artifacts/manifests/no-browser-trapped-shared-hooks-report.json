@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-19T14:48:02.686Z",
+  "gate": "no-browser-trapped-shared-hooks",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 178,
+  "allowlisted": 32,
+  "violations": 0
+}

@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-19T20:31:33.547Z",
+  "gate": "phase-5-9-closure-gates",
+  "ok": true,
+  "pass": 4,
+  "fail": 0,
+  "results": [
+    {
+      "gate": "check-ai-receipt-completeness",
+      "status": "pass"
+    },
+    {
+      "gate": "check-connector-reauth-telemetry",
+      "status": "pass"
+    },
+    {
+      "gate": "check-security-fabric-probes",
+      "status": "pass"
+    },
+    {
+      "gate": "check-app-sdk-extension-registry",
+      "status": "pass"
+    }
+  ]
+}

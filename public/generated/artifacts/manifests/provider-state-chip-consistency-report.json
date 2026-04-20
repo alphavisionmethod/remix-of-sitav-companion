@@ -1,0 +1,2923 @@
+{
+  "generatedAt": "2026-04-19T18:37:22.032Z",
+  "gate": "provider-state-chip-consistency",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 582,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:40: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:288: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:289: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:401: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIEngineeringBoard.tsx:415: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIG01ProviderRegistry.tsx:144: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIG07LaunchTruth.tsx:179: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIG09RuntimeVerification.tsx:433: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:13: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:187: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:188: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:189: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIRuntimeStatus.tsx:239: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AIT04to08Boards.tsx:461: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AITSetupChecklist.tsx:171: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AITSetupChecklist.tsx:176: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/APL02AppleDevicesTrust.tsx:105: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/APL06AppleLaunchReadiness.tsx:137: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:32: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:39: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ActionStateDriftViewer.tsx:134: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:61: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:184: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:186: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:328: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:374: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:385: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminDashboard.tsx:400: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:111: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:113: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:116: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:118: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:145: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:147: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:171: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:176: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminMutationAudit.tsx:215: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:53: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:54: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:55: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:56: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:193: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminOperationsHub.tsx:240: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:39: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:40: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:110: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:112: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:169: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:193: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminProjectionModels.tsx:212: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminTruthClaims.tsx:45: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminTruthClaims.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminTruthClaims.tsx:47: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminTruthClaims.tsx:137: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AdminTruthClaims.tsx:162: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AlertTriageBoard.tsx:42: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AlertTriageBoard.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AlertTriageBoard.tsx:44: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/AlertTriageBoard.tsx:169: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BackendTopologyDashboard.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BackendTopologyDashboard.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BackendTopologyDashboard.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BackendTopologyDashboard.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:47: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:265: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:266: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:355: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:360: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/BrainCoreDashboard.tsx:361: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN01ConnectorRealityOverview.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN01ConnectorRealityOverview.tsx:126: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN03AccountLinkageBoard.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN03AccountLinkageBoard.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN03AccountLinkageBoard.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN04SyncTruthCenter.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN04SyncTruthCenter.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN06ConnectorDemoReview.tsx:51: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN06ConnectorDemoReview.tsx:92: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN07ConnectorLaunchGate.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CN07ConnectorLaunchGate.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CanonicalChainExplorer.tsx:115: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CanonicalChainExplorer.tsx:118: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ChangeImpactAnalyzer.tsx:107: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:281: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:388: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:472: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:530: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:536: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:637: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:807: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:808: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:809: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:989: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:991: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:992: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:995: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:998: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1003: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1004: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1005: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1006: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1039: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1294: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CommunicationHub.tsx:1295: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ComputeGovernanceBoard.tsx:1016: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:39: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:40: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:41: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:42: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:194: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConnectorGovernanceCenter.tsx:214: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConscienceGateDashboard.tsx:90: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConscienceGateDashboard.tsx:91: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ConscienceGateDashboard.tsx:287: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:41: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:71: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:72: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/CrossDomainMemoryExplorer.tsx:73: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS01RealityModeOverview.tsx:53: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS02ModeRegistryConsole.tsx:39: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS03ScenarioLibrary.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS03ScenarioLibrary.tsx:52: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS05ProviderConsole.tsx:56: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS06DemoPolicySafety.tsx:66: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS06DemoPolicySafety.tsx:105: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS08AnalyticsSegregation.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS09TruthLabeling.tsx:41: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS09TruthLabeling.tsx:59: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS10DualRealityLaunchGate.tsx:76: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DRS10DualRealityLaunchGate.tsx:103: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DeliveryReadinessBoard.tsx:88: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DeliveryWavePlanner.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DeliveryWavePlanner.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DeliveryWavePlanner.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DesktopHostCapabilityExplorer.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DesktopHostCapabilityExplorer.tsx:88: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DomainMethodologyPacks.tsx:62: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/DomainRealityBoard.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:77: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:105: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:151: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:202: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:220: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:221: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:222: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:243: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:257: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:266: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:292: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:313: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:465: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:467: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:661: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:702: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:725: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:764: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:765: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:820: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:821: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:822: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:917: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ECO01EcosystemCommand.tsx:972: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ErrorEventsExplorer.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ErrorEventsExplorer.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ErrorEventsExplorer.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FeatureLifecycleBoard.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FeatureLifecycleBoard.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FeatureLifecycleBoard.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:40: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:41: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:42: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:126: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:147: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/FleetHealthPage.tsx:168: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:60: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:64: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:98: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:101: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:140: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:144: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:148: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:161: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:172: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:209: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:259: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:263: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GeneratedTruthDashboard.tsx:313: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:27: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:125: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:172: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:216: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:282: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/GoogleProviderFamilyDashboard.tsx:300: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx:26: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:73: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:71: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:122: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:143: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:181: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx:182: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:26: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:164: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:165: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:166: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:267: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx:268: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:90: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:100: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:105: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IncidentCommandCenter.tsx:110: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:80: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:130: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:150: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:175: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:185: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntegrationConciergePage.tsx:186: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/IntelligenceDashboard.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/InvestorProofLedger.tsx:101: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/InvestorProofLedger.tsx:136: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/InvestorProofLedger.tsx:152: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/InvestorProofLedger.tsx:173: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/InvestorProofLedger.tsx:196: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:178: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:311: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:494: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:509: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:665: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:748: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:787: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:807: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:843: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:848: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:880: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:972: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:980: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1120: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1366: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1367: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1368: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1445: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1611: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1622: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1623: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1628: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1630: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1639: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1683: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1684: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1685: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1732: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1755: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1797: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1856: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1889: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1913: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:1967: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/KernelDashboard.tsx:2002: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/META03GoldenPathHealth.tsx:79: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA01MultiSurfaceOverview.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA01MultiSurfaceOverview.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA01MultiSurfaceOverview.tsx:26: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA01MultiSurfaceOverview.tsx:99: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA02CoreSurfaceBoundary.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA02CoreSurfaceBoundary.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA02CoreSurfaceBoundary.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA02CoreSurfaceBoundary.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA03CapabilityPortability.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA03CapabilityPortability.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA03CapabilityPortability.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA03CapabilityPortability.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA04SurfaceAdapterRegistry.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA04SurfaceAdapterRegistry.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:24: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:142: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MSA05CompatibilityRadar.tsx:143: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MissionControlHome.tsx:44: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MissionControlHome.tsx:45: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MissionControlHome.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MissionControlHome.tsx:47: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MissionControlHome.tsx:119: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MockEliminationCenter.tsx:29: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/MockEliminationCenter.tsx:31: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT01NotificationRuntimeVerification.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT01NotificationRuntimeVerification.tsx:193: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT01NotificationRuntimeVerification.tsx:263: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT01NotificationRuntimeVerification.tsx:265: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT02NotificationRoutingBoard.tsx:52: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT02NotificationRoutingBoard.tsx:60: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT02NotificationRoutingBoard.tsx:61: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT02NotificationRoutingBoard.tsx:62: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx:131: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NRC06NotificationLaunchHonesty.tsx:108: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/NRC06NotificationLaunchHonesty.tsx:109: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:49: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:51: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:96: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:160: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:412: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/OS01PlatformCommandCenter.tsx:577: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA01ProviderFamilyRegistry.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA03OAuthClientRegistry.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA03OAuthClientRegistry.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA03OAuthClientRegistry.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA04ConsentLedgerExplorer.tsx:30: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA05ScopePolicyMatrix.tsx:54: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA06PermissionUpgradeCenter.tsx:75: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA07ConnectorHealthDrift.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA07ConnectorHealthDrift.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA09ConnectedAccountsCenter.tsx:12: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA09ConnectedAccountsCenter.tsx:82: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PersistenceStatus.tsx:108: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PersistenceStatus.tsx:171: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PlatformMaturityDashboard.tsx:16: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/PlatformMaturityDashboard.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/REX03RecommendationExecution.tsx:29: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/REX03RecommendationExecution.tsx:31: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/REX03RecommendationExecution.tsx:33: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/REX03RecommendationExecution.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:168: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:245: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:247: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:298: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:300: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:301: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:358: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityClassificationMatrix.tsx:517: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityConversionOverview.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RealityConversionOverview.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ReleaseRingCommandBoard.tsx:136: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ReleaseRingCommandBoard.tsx:137: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ReleaseRingCommandBoard.tsx:166: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RouteSourceDiagnostics.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/RouteSourceDiagnostics.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:112: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:323: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:353: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:396: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:426: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:427: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:428: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:453: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:500: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:594: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:595: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:599: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:676: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:694: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:697: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SEC02SecurityFoundation.tsx:703: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SRE03SimulationLab.tsx:32: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SRE04CodeStandardsTestGen.tsx:31: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SRE04CodeStandardsTestGen.tsx:32: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SRE04CodeStandardsTestGen.tsx:33: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:66: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:339: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:567: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:601: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:713: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SecurityCommandCenter.tsx:929: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SystemHealthDashboard.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/SystemHealthDashboard.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TeamManagement.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TeamManagement.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TeamManagement.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:72: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:73: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:74: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:144: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:149: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:196: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/TrustStateRegistry.tsx:202: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO02ConnectedDevices.tsx:17: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO02ConnectedDevices.tsx:100: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO03AmbientTeamControl.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO03AmbientTeamControl.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO04NotificationRouter.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO06DeviceTrust.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO06DeviceTrust.tsx:83: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO07CrossSurfaceJourney.tsx:14: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO07CrossSurfaceJourney.tsx:15: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UAO08AmbientLaunchReadiness.tsx:18: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/UserSeedHealth.tsx:31: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/WorkflowReplayAudit.tsx:214: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:139: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/CouncilsBoard.tsx:41: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/CouncilsBoard.tsx:42: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/CouncilsBoard.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:44: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:45: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:125: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:126: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:127: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:19: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:72: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:74: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:76: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:77: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:112: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:244: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:245: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:246: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:248: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:396: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx:69: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx:71: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:20: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:54: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:55: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:56: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:57: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:58: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:59: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:61: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:62: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:64: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:65: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:66: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:67: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:68: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:83: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:203: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:204: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:281: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:283: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:28: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:29: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:30: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:32: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:77: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:78: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:86: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:31: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:32: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:35: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:137: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:57: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:58: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:59: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:61: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:66: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:67: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:73: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:75: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:76: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:81: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:211: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:212: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:213: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx:82: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx:83: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx:84: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx:85: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:28: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:30: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:39: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:44: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:176: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx:245: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/architecture/GodTierRuntimeBoard.tsx:187: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ClientCapabilityAdmin.tsx:37: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ClientCapabilityAdmin.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudAuditAdmin.tsx:127: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudAuditAdmin.tsx:173: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDashboard.tsx:101: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDashboard.tsx:161: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDashboard.tsx:183: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDashboard.tsx:185: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDeviceIdentityAdmin.tsx:82: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/CloudDeviceIdentityAdmin.tsx:84: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/DomainOwnershipAdmin.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ReleaseGovernanceAdmin.tsx:34: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ReleaseGovernanceAdmin.tsx:36: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ReleaseGovernanceAdmin.tsx:139: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/cloud/ServiceIdentityAdmin.tsx:25: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx:91: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/implementation-truth/ITC12ValidationPipeline.tsx:154: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCArchitectureDashboard.tsx:126: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCArchitectureDashboard.tsx:127: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCArchitectureDashboard.tsx:128: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCArchitectureDashboard.tsx:157: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCArchitectureDashboard.tsx:159: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCSystemHealth.tsx:21: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCSystemHealth.tsx:22: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCSystemHealth.tsx:23: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCTrustSecurity.tsx:43: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCTrustSecurity.tsx:44: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCTrustSecurity.tsx:45: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/modules/MCTrustSecurity.tsx:46: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/platform-law/PLE02LawRegistry.tsx:38: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/platform-law/PLE02LawRegistry.tsx:180: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/platform-law/PLE04CIGateMonitor.tsx:98: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/platform-law/PLE04CIGateMonitor.tsx:225: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx:85: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx:119: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx:132: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx:153: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx:174: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/sag/SAGFallbackCenter.tsx:80: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/sag/SAGOverview.tsx:85: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/sag/SAGReceiptExplorer.tsx:54: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/sag/SAGRoutingPolicy.tsx:92: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/security/SEC01PostureExecutive.tsx:87: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/verification/JVC14LaunchInteractionGate.tsx:106: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/pages/admin/verification/JVC14LaunchInteractionGate.tsx:108: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx:26: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/components/admin/ai-runtime/ConnectorTruthSummaryPanel.tsx:28: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx:190: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx:230: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    },
+    {
+      "severity": "warning",
+      "area": "hardcoded-provider-color",
+      "message": "src/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel.tsx:165: provider-state context with hardcoded color — drive via ConnectorStateBadge"
+    }
+  ],
+  "scanned": 582,
+  "offenders": 582,
+  "canonical": "ConnectorStateBadge composes StatusBadge with grammar-derived tone",
+  "classification": "warn-tier-adoption-tracker"
+}

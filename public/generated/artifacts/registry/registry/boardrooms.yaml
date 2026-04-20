@@ -1,0 +1,96 @@
+# SITA OS — Boardroom Template Registry
+
+boardrooms:
+  - id: business-weekly
+    name: Weekly Business Review
+    domain: business
+    cadence: weekly
+    sections:
+      - executive-summary
+      - pipeline-health
+      - revenue-trend
+      - client-health
+      - opportunities
+      - risks
+      - follow-ups
+      - advisor-tracks
+      - disagreements
+      - proof-summary
+      - carryover
+      - next-actions
+
+  - id: finance-weekly
+    name: Weekly Finance Review
+    domain: finance
+    cadence: weekly
+    sections:
+      - executive-summary
+      - cash-position
+      - obligations
+      - reserves
+      - waste-opportunities
+      - receivables
+      - investment-performance
+      - tax-obligations
+      - advisor-tracks
+      - disagreements
+      - proof-summary
+      - carryover
+      - next-actions
+
+  - id: family-weekly
+    name: Weekly Family Review
+    domain: concierge
+    cadence: weekly
+    sections:
+      - executive-summary
+      - calendar-overview
+      - task-status
+      - logistics-health
+      - upcoming-events
+      - school-activities
+      - budget-check
+      - advisor-tracks
+      - proof-summary
+      - next-actions
+
+  - id: opportunity-review
+    name: Opportunity Review
+    domain: cross-domain
+    cadence: on-demand
+    sections:
+      - opportunity-summary
+      - cross-domain-impact
+      - risk-assessment
+      - advisor-positions
+      - disagreements
+      - confidence-ladder
+      - action-recommendations
+
+  - id: executive-monthly
+    name: Monthly Executive Review
+    domain: cross-domain
+    cadence: monthly
+    sections:
+      - executive-summary
+      - all-domain-health
+      - strategic-priorities
+      - financial-position
+      - business-performance
+      - family-wellbeing
+      - decision-memory
+      - carryover
+      - next-quarter-outlook
+
+  - id: family-office
+    name: Family Office Review
+    domain: finance
+    cadence: quarterly
+    sections:
+      - portfolio-overview
+      - asset-allocation
+      - tax-obligations
+      - estate-planning
+      - entity-performance
+      - risk-assessment
+      - advisor-tracks

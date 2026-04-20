@@ -1,0 +1,150 @@
+{
+  "generatedAt": "2026-04-17T12:39:21.000Z",
+  "gate": "phase-24-domain-reality",
+  "ok": true,
+  "dbSnapshotSource": "live pg_tables",
+  "dbSnapshotTableCount": 274,
+  "domainCount": 5,
+  "okDomainCount": 5,
+  "domains": [
+    {
+      "domain": "business-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest": {
+          "ok": true,
+          "detail": "/dev-server/src/lib/domain-system/manifests/business-manifest.ts"
+        },
+        "routes": {
+          "ok": true,
+          "detail": "business-routes.tsx"
+        },
+        "e2e": {
+          "ok": true,
+          "detail": "business-journey.spec.ts"
+        },
+        "edgeFn": {
+          "ok": true,
+          "detail": "business-advisor-intelligence, business-board-api"
+        },
+        "dbTables": {
+          "ok": true,
+          "detail": "11 declared, 0 missing (all present in live schema)"
+        }
+      }
+    },
+    {
+      "domain": "finance-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest": {
+          "ok": true,
+          "detail": "/dev-server/src/lib/domain-system/manifests/finance-manifest.ts"
+        },
+        "routes": {
+          "ok": true,
+          "detail": "money-routes.tsx"
+        },
+        "e2e": {
+          "ok": true,
+          "detail": "money-journey.spec.ts"
+        },
+        "edgeFn": {
+          "ok": true,
+          "detail": "check-ai-budget"
+        },
+        "dbTables": {
+          "ok": true,
+          "detail": "14 declared, 0 missing (all present in live schema)"
+        }
+      }
+    },
+    {
+      "domain": "concierge-os",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest": {
+          "ok": true,
+          "detail": "/dev-server/src/lib/domain-system/manifests/concierge-manifest.ts"
+        },
+        "routes": {
+          "ok": true,
+          "detail": "concierge-routes.tsx"
+        },
+        "e2e": {
+          "ok": true,
+          "detail": "concierge-journey.spec.ts"
+        },
+        "edgeFn": {
+          "ok": true,
+          "detail": "provider-family-operations"
+        },
+        "dbTables": {
+          "ok": true,
+          "detail": "13 declared, 0 missing (all present in live schema)"
+        }
+      }
+    },
+    {
+      "domain": "investment-office",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest": {
+          "ok": true,
+          "detail": "/dev-server/src/lib/domain-system/manifests/investment-manifest.ts"
+        },
+        "routes": {
+          "ok": true,
+          "detail": "investment-routes.tsx"
+        },
+        "e2e": {
+          "ok": true,
+          "detail": "investment-journey.spec.ts"
+        },
+        "edgeFn": {
+          "ok": true,
+          "detail": "investment-portfolio-api"
+        },
+        "dbTables": {
+          "ok": true,
+          "detail": "8 declared, 0 missing (all present in live schema)"
+        }
+      }
+    },
+    {
+      "domain": "boardroom",
+      "ok": true,
+      "score": 10,
+      "checks": {
+        "manifest": {
+          "ok": true,
+          "detail": "/dev-server/src/lib/domain-system/manifests/boardroom-manifest.ts"
+        },
+        "routes": {
+          "ok": true,
+          "detail": "boardroom-routes.tsx"
+        },
+        "e2e": {
+          "ok": true,
+          "detail": "boardroom-journey.spec.ts"
+        },
+        "edgeFn": {
+          "ok": true,
+          "detail": "boardroom-replay, boardroom-session"
+        },
+        "proofWriter": {
+          "ok": true,
+          "detail": "boardroom-session"
+        },
+        "dbTables": {
+          "ok": true,
+          "detail": "5 declared, 0 missing (all present in live schema)"
+        }
+      }
+    }
+  ]
+}

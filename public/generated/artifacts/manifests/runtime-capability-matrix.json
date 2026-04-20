@@ -1,0 +1,512 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-04-16T22:11:02.227Z",
+  "phase": "phase-2-meta-architecture",
+  "surfaces": {
+    "hardware": [
+      "web",
+      "desktop",
+      "mobilePwa",
+      "appliance"
+    ],
+    "canonical": [
+      "web",
+      "electron",
+      "appliance",
+      "ios",
+      "android",
+      "offline",
+      "demo",
+      "real"
+    ]
+  },
+  "hardwareCapabilityMatrix": {
+    "count": 17,
+    "entries": [
+      {
+        "capabilityId": "auth",
+        "name": "Authentication",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "data-persistence",
+        "name": "Cloud Data Persistence",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "realtime",
+        "name": "Realtime Subscriptions",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "ai-inference",
+        "name": "AI Inference",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "notifications-push",
+        "name": "Push Notifications",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "fallback",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "fallback",
+          "android": "fallback",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "notifications-native",
+        "name": "Native OS Notifications",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "fallback",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "fallback",
+          "android": "fallback",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "filesystem-local",
+        "name": "Local Filesystem Access",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "unavailable",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "unavailable",
+          "android": "unavailable",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "auto-update",
+        "name": "Auto-Update",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "window-control",
+        "name": "Window Management",
+        "hardware": {
+          "web": "unavailable",
+          "desktop": "native",
+          "mobilePwa": "unavailable",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "unavailable",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "unavailable",
+          "android": "unavailable",
+          "offline": "unavailable",
+          "demo": "unavailable",
+          "real": "unavailable"
+        }
+      },
+      {
+        "capabilityId": "deep-linking",
+        "name": "Deep Linking",
+        "hardware": {
+          "web": "native",
+          "desktop": "native",
+          "mobilePwa": "native",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "native",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "native",
+          "android": "native",
+          "offline": "native",
+          "demo": "native",
+          "real": "native"
+        }
+      },
+      {
+        "capabilityId": "local-backup",
+        "name": "Local Backup/Restore",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "unavailable",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "unavailable",
+          "android": "unavailable",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "crash-reporting",
+        "name": "Crash Reporting",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "fallback",
+          "appliance": "fallback"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "fallback",
+          "ios": "fallback",
+          "android": "fallback",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "offline-mode",
+        "name": "Offline Mode",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "fallback",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "fallback",
+          "android": "fallback",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "system-info",
+        "name": "System Information",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "native",
+          "mobilePwa": "fallback",
+          "appliance": "native"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "native",
+          "appliance": "native",
+          "ios": "fallback",
+          "android": "fallback",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      },
+      {
+        "capabilityId": "tray-icon",
+        "name": "System Tray Icon",
+        "hardware": {
+          "web": "unavailable",
+          "desktop": "native",
+          "mobilePwa": "unavailable",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "unavailable",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "unavailable",
+          "android": "unavailable",
+          "offline": "unavailable",
+          "demo": "unavailable",
+          "real": "unavailable"
+        }
+      },
+      {
+        "capabilityId": "menu-bar",
+        "name": "Native Menu Bar",
+        "hardware": {
+          "web": "unavailable",
+          "desktop": "native",
+          "mobilePwa": "unavailable",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "unavailable",
+          "electron": "native",
+          "appliance": "unavailable",
+          "ios": "unavailable",
+          "android": "unavailable",
+          "offline": "unavailable",
+          "demo": "unavailable",
+          "real": "unavailable"
+        }
+      },
+      {
+        "capabilityId": "biometric-auth",
+        "name": "Biometric Authentication",
+        "hardware": {
+          "web": "fallback",
+          "desktop": "unavailable",
+          "mobilePwa": "native",
+          "appliance": "unavailable"
+        },
+        "canonical": {
+          "web": "fallback",
+          "electron": "unavailable",
+          "appliance": "unavailable",
+          "ios": "native",
+          "android": "native",
+          "offline": "fallback",
+          "demo": "fallback",
+          "real": "fallback"
+        }
+      }
+    ]
+  },
+  "featureCapabilityRegistry": {
+    "count": 23,
+    "features": [
+      "auth-email-password",
+      "auth-biometric",
+      "boardroom-session",
+      "boardroom-vote",
+      "crm-lead-capture",
+      "crm-pipeline-management",
+      "finance-cashflow",
+      "finance-payment-execution",
+      "concierge-task-prioritization",
+      "investment-portfolio",
+      "mission-control-overview",
+      "control-plane-kill-switches",
+      "integrations-oauth-connect",
+      "integrations-webhook-ingest",
+      "proof-receipt-generation",
+      "proof-chain-verification",
+      "runtime-window-management",
+      "runtime-system-tray",
+      "runtime-deep-linking",
+      "mobile-push-notifications",
+      "mobile-offline-sync",
+      "mobile-secure-storage",
+      "admin-control-plane"
+    ],
+    "contextLinks": [
+      {
+        "featureId": "auth-email-password",
+        "contextId": "setup-identity"
+      },
+      {
+        "featureId": "auth-biometric",
+        "contextId": "setup-identity"
+      },
+      {
+        "featureId": "boardroom-session",
+        "contextId": "boardroom"
+      },
+      {
+        "featureId": "boardroom-vote",
+        "contextId": "boardroom"
+      },
+      {
+        "featureId": "crm-lead-capture",
+        "contextId": "business-os"
+      },
+      {
+        "featureId": "crm-pipeline-management",
+        "contextId": "business-os"
+      },
+      {
+        "featureId": "finance-cashflow",
+        "contextId": "finance-os"
+      },
+      {
+        "featureId": "finance-payment-execution",
+        "contextId": "finance-os"
+      },
+      {
+        "featureId": "concierge-task-prioritization",
+        "contextId": "concierge-os"
+      },
+      {
+        "featureId": "investment-portfolio",
+        "contextId": "investment-office"
+      },
+      {
+        "featureId": "mission-control-overview",
+        "contextId": "mission-control"
+      },
+      {
+        "featureId": "control-plane-kill-switches",
+        "contextId": "cloud-control-plane"
+      },
+      {
+        "featureId": "integrations-oauth-connect",
+        "contextId": "integrations"
+      },
+      {
+        "featureId": "integrations-webhook-ingest",
+        "contextId": "integrations"
+      },
+      {
+        "featureId": "proof-receipt-generation",
+        "contextId": "proof-trust"
+      },
+      {
+        "featureId": "proof-chain-verification",
+        "contextId": "proof-trust"
+      },
+      {
+        "featureId": "runtime-window-management",
+        "contextId": "runtime-kernel"
+      },
+      {
+        "featureId": "runtime-system-tray",
+        "contextId": "runtime-kernel"
+      },
+      {
+        "featureId": "runtime-deep-linking",
+        "contextId": "runtime-kernel"
+      },
+      {
+        "featureId": "mobile-push-notifications",
+        "contextId": "mobile"
+      },
+      {
+        "featureId": "mobile-offline-sync",
+        "contextId": "mobile"
+      },
+      {
+        "featureId": "mobile-secure-storage",
+        "contextId": "mobile"
+      },
+      {
+        "featureId": "admin-control-plane",
+        "contextId": "admin"
+      }
+    ],
+    "stateLiteralCounts": {
+      "supported": 38,
+      "simulated": 25,
+      "degraded": 17,
+      "fallback": 8,
+      "prohibited": 6,
+      "roadmap": 1,
+      "unsupported": 12
+    }
+  },
+  "fallbacks": {
+    "total": 27,
+    "byStrategy": {
+      "use-cache": 6,
+      "downgrade-ui": 6,
+      "delegate-to-host": 2,
+      "refuse-with-receipt": 4,
+      "queue-and-flush": 3,
+      "delegate-to-server": 3,
+      "none": 1,
+      "simulate-only": 2
+    }
+  }
+}

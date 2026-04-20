@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-19T19:55:40.286Z",
+  "gate": "responsive-operator-surfaces",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "scanned": 681,
+  "offenderCount": 0,
+  "canonicalPattern": "<div className=\"overflow-x-auto\"><table>...</table></div>",
+  "classification": "warn-tier-responsive-discipline"
+}

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-17T02:27:15.756Z",
+  "gate": "Gate 33 — Connector Reality (Phase 22 + 22.1)",
+  "requiredTables": [
+    "connector_registry",
+    "connector_accounts",
+    "connector_oauth_tokens",
+    "connector_receipts",
+    "connector_configs",
+    "consent_scope_records",
+    "webhook_events",
+    "connector_sync_cursors"
+  ],
+  "requiredFunctions": [
+    "supabase/functions/webhook-ingest/index.ts",
+    "supabase/functions/webhook-process/index.ts",
+    "supabase/functions/webhook-replay/index.ts",
+    "supabase/functions/connector-token-refresh/index.ts",
+    "supabase/functions/seed-connector-registry/index.ts"
+  ],
+  "catalogTotal": 12,
+  "reconnectAssertions": {
+    "reconnectAction": true,
+    "reconnectButton": true,
+    "fakeFailureFn": true,
+    "fakeEngageFn": true
+  },
+  "errors": [],
+  "warnings": [],
+  "ok": true
+}

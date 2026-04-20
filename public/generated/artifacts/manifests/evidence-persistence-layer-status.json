@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-04-19T20:30:00.000Z",
+  "phase": "Phase 0–4 Closure Pack",
+  "status": "shipped",
+  "tables": [
+    {
+      "name": "evidence_graph_nodes",
+      "purpose": "Registry of every manifest, validator, generated artifact",
+      "rls": "admin-read + service-role-manage",
+      "owner": "release-aggregator",
+      "indexes": ["kind", "owner", "(kind,ref) UNIQUE"],
+      "appendOnly": false
+    },
+    {
+      "name": "evidence_graph_edges",
+      "purpose": "Relationships between evidence nodes (validated_by, depends_on, etc.)",
+      "rls": "admin-read + service-role-manage",
+      "owner": "release-aggregator",
+      "indexes": ["from_node", "to_node", "relation"],
+      "appendOnly": false
+    },
+    {
+      "name": "cron_run_receipts",
+      "purpose": "Proof that scheduled jobs (verifiers, drills, sweeps) actually fired",
+      "rls": "admin-read + service-role-manage",
+      "owner": "platform-cron",
+      "indexes": ["job_name", "started_at", "status"],
+      "appendOnly": false
+    },
+    {
+      "name": "release_decisions",
+      "purpose": "Append-only record of every gate outcome from the master release aggregator",
+      "rls": "admin-read + service-role-insert",
+      "owner": "release-aggregator",
+      "indexes": ["release_id", "gate_name", "decided_at"],
+      "appendOnly": true,
+      "appendOnlyTrigger": "block_release_decision_mutation"
+    },
+    {
+      "name": "installed_apps_receipts",
+      "purpose": "Owner-scoped proof of every install/uninstall/update in the App Platform",
+      "rls": "owner-read + admin-read + owner-insert + service-role-manage",
+      "owner": "app-platform",
+      "indexes": ["user_id", "app_id", "occurred_at"],
+      "appendOnly": false,
+      "validationTrigger": "validate_installed_apps_receipt"
+    },
+    {
+      "name": "advisor_action_proof_packs",
+      "purpose": "Reversibility evidence + rollback tokens for every advisor-executed action",
+      "rls": "owner-read + admin-read + service-role-manage",
+      "owner": "advisor-board",
+      "indexes": ["action_id", "advisor_id", "user_id"],
+      "appendOnly": false
+    },
+    {
+      "name": "kill_switch_ttl_expiry_receipts",
+      "purpose": "Append-only proof that kill-switch auto-expiry actually ran",
+      "rls": "admin-read + service-role-insert",
+      "owner": "security-fabric",
+      "indexes": ["switch_id", "expired_at"],
+      "appendOnly": true,
+      "appendOnlyTrigger": "block_kill_switch_ttl_mutation"
+    }
+  ],
+  "edgeFunctions": [
+    {
+      "name": "evidence-graph-builder",
+      "purpose": "Populates evidence_graph_nodes/edges from manifest-registry",
+      "verifyJwt": false,
+      "callerClass": "service-role + aggregator"
+    },
+    {
+      "name": "cron-receipt-collector",
+      "purpose": "Persists cron job heartbeats into cron_run_receipts",
+      "verifyJwt": false,
+      "callerClass": "pg_cron + service-role"
+    },
+    {
+      "name": "app-manifest-verifier",
+      "purpose": "Verifies app manifest signatures, writes installed_apps_receipts",
+      "verifyJwt": false,
+      "callerClass": "authenticated user (in-code JWT validation)"
+    }
+  ],
+  "validators": [
+    "check-canonical-paths",
+    "check-5-plane-boundaries",
+    "check-evidence-graph-completeness",
+    "check-cron-execution-evidence",
+    "check-release-decision-persistence"
+  ],
+  "aggregatorScript": "scripts/architecture/checks/run-evidence-persistence-gates.ts",
+  "last_known_node_count": 0,
+  "burnInPeriodDays": 14,
+  "blockingAfter": "2026-05-03T00:00:00.000Z",
+  "notes": [
+    "All 7 tables have RLS enabled. Append-only tables enforce via triggers.",
+    "Node count starts at 0 — populated by first evidence-graph-builder invocation.",
+    "Validators run in WARN mode during 14-day burn-in, then promote to BLOCK."
+  ]
+}

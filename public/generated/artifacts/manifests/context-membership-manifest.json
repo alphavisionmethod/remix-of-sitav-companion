@@ -1,0 +1,105 @@
+{
+  "generatedAt": "2026-04-16T23:13:41.753Z",
+  "routeBindings": [
+    {
+      "kind": "route",
+      "identifier": "/business",
+      "contextId": "business-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/money",
+      "contextId": "finance-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/finance",
+      "contextId": "finance-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/concierge",
+      "contextId": "concierge-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/communications",
+      "contextId": "concierge-os"
+    },
+    {
+      "kind": "route",
+      "identifier": "/investment",
+      "contextId": "investment-office"
+    },
+    {
+      "kind": "route",
+      "identifier": "/capital",
+      "contextId": "investment-office"
+    },
+    {
+      "kind": "route",
+      "identifier": "/boardroom",
+      "contextId": "boardroom"
+    },
+    {
+      "kind": "route",
+      "identifier": "/files",
+      "contextId": "runtime-kernel"
+    },
+    {
+      "kind": "route",
+      "identifier": "/apps",
+      "contextId": "runtime-kernel"
+    },
+    {
+      "kind": "route",
+      "identifier": "/settings",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/auth",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/login",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/signup",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/onboarding",
+      "contextId": "setup-identity"
+    },
+    {
+      "kind": "route",
+      "identifier": "/admin",
+      "contextId": "admin"
+    },
+    {
+      "kind": "route",
+      "identifier": "/m/",
+      "contextId": "mobile"
+    },
+    {
+      "kind": "route",
+      "identifier": "/mobile",
+      "contextId": "mobile"
+    }
+  ],
+  "contextCount": 13,
+  "stats": {
+    "routesBound": 18,
+    "edgeFunctions": 85,
+    "services": 29,
+    "tables": 33,
+    "duplicates": 0
+  },
+  "issues": [],
+  "ok": true
+}

@@ -1,0 +1,5689 @@
+{
+  "version": "3.0.0",
+  "generatedAt": "2026-04-20T01:55:40.886Z",
+  "totalRoutes": 696,
+  "byPlane": {
+    "user": 410,
+    "admin": 261,
+    "shell-runtime": 25
+  },
+  "byOwner": {
+    "identity": 3,
+    "forgot-password": 1,
+    "reset-password": 1,
+    "root": 1,
+    "*": 2,
+    "onboarding": 3,
+    "platform-admin": 241,
+    "mobile-shell": 25,
+    "owner-mode": 37,
+    "advisors": 11,
+    "agent-activity": 1,
+    "app-platform": 8,
+    "business-os": 57,
+    "proof": 5,
+    "workflows": 4,
+    "approvals": 4,
+    "approval-chamber": 1,
+    "comms-hub": 2,
+    "concierge-os": 20,
+    "finance-os": 97,
+    "revenue-office": 39,
+    "digital-presence": 19,
+    "store": 12,
+    "app-store": 1,
+    "digital-twins": 4,
+    "scenario-lab": 1,
+    "ai-economics": 1,
+    "recovered-value": 1,
+    "document-engine": 12,
+    "trust": 7,
+    "home": 1,
+    "desktop": 1,
+    "brain-core": 5,
+    "daily-pulse": 1,
+    "profile": 1,
+    "life": 1,
+    "life-simulator": 1,
+    "personal-life": 1,
+    "downloads": 1,
+    "download": 1,
+    "wealth-command": 1,
+    "time-machine": 1,
+    "achievements": 1,
+    "simulation-engine": 1,
+    "storage": 1,
+    "network": 1,
+    "planning-canvas": 1,
+    "my-activity": 1,
+    "search": 1,
+    "inbox": 4,
+    "activity": 1,
+    "opportunities": 1,
+    "outcomes": 1,
+    "spillovers": 1,
+    "ai-workforce": 1,
+    "capital-allocation": 1,
+    "sovereign-export": 1,
+    "notifications": 2,
+    "personalization": 6,
+    "memory": 7,
+    "automation": 4,
+    "mission-control": 1,
+    "display-modes": 1,
+    "communication-inbox": 1,
+    "command-history": 1,
+    "environment-switcher": 1,
+    "update-center": 1,
+    "first-boot": 1,
+    "clipboard-history": 1,
+    "print-scan": 1,
+    "recovery": 1,
+    "personal-brain": 1,
+    "calendar": 1,
+    "tasks": 1,
+    "notes": 1,
+    "people": 1,
+    "team": 1,
+    "editor": 1,
+    "reporting": 1,
+    "media": 1,
+    "templates": 1,
+    "import-export": 1,
+    "workspace": 1
+  },
+  "byRuntimeTier": {
+    "tier1_public": 5,
+    "tier3_authenticated_with_shell": 472,
+    "tier2_authenticated_no_shell": 4,
+    "tier4_admin": 215
+  },
+  "bySource": {
+    "src/App.tsx": 12,
+    "src/routes/AdminRoutes.tsx": 214,
+    "src/routes/MobileRoutes.tsx": 25,
+    "src/routes/OwnerRoutes.tsx": 37,
+    "src/routes/advisor-routes.tsx": 12,
+    "src/routes/apps-routes.tsx": 2,
+    "src/routes/boardroom-routes.tsx": 25,
+    "src/routes/business-routes.tsx": 46,
+    "src/routes/communications-routes.tsx": 2,
+    "src/routes/concierge-routes.tsx": 20,
+    "src/routes/experimental-routes.tsx": 120,
+    "src/routes/files-routes.tsx": 18,
+    "src/routes/investment-routes.tsx": 18,
+    "src/routes/money-routes.tsx": 37,
+    "src/routes/os-routes.tsx": 106,
+    "src/routes/settings-routes.tsx": 2
+  },
+  "routes": [
+    {
+      "path": "/login",
+      "component": "PublicLayout",
+      "plane": "user",
+      "runtimeTier": "tier1_public",
+      "owner": "identity",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/signup",
+      "component": "PublicLayout",
+      "plane": "user",
+      "runtimeTier": "tier1_public",
+      "owner": "identity",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/forgot-password",
+      "component": "PublicLayout",
+      "plane": "user",
+      "runtimeTier": "tier1_public",
+      "owner": "forgot-password",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/reset-password",
+      "component": "PublicLayout",
+      "plane": "user",
+      "runtimeTier": "tier1_public",
+      "owner": "reset-password",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/",
+      "component": "PublicLayout",
+      "plane": "user",
+      "runtimeTier": "tier1_public",
+      "owner": "root",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/*",
+      "component": "AuthenticatedProviders",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "*",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/onboarding",
+      "component": "OnboardingGuard",
+      "plane": "user",
+      "runtimeTier": "tier2_authenticated_no_shell",
+      "owner": "onboarding",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/auth/callback",
+      "component": "EmailVerificationHandler",
+      "plane": "user",
+      "runtimeTier": "tier2_authenticated_no_shell",
+      "owner": "identity",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/first-win",
+      "component": "ProtectedRoute",
+      "plane": "user",
+      "runtimeTier": "tier2_authenticated_no_shell",
+      "owner": "onboarding",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/learn-later",
+      "component": "ProtectedRoute",
+      "plane": "user",
+      "runtimeTier": "tier2_authenticated_no_shell",
+      "owner": "onboarding",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "*",
+      "component": "MobileGuard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "*",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/admin/*",
+      "component": "AdminRoute",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/App.tsx"
+    },
+    {
+      "path": "/admin/overview",
+      "component": "OverviewHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/alerts",
+      "component": "AlertsHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/approvals",
+      "component": "ApprovalsHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments",
+      "component": "EnvironmentsHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases",
+      "component": "ReleasesHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support",
+      "component": "SupportHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/health",
+      "component": "HealthHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security",
+      "component": "TrustSecurityHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/verification",
+      "component": "VerificationHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime",
+      "component": "AIRuntimeHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/internal-agent-intents",
+      "component": "InternalAgentIntentTimeline",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/reflection-board",
+      "component": "ReflectionBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/suggestions",
+      "component": "SuggestionsBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/weekly-digest",
+      "component": "WeeklyDigestBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/dependency-findings",
+      "component": "DependencyFindingsBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/policy-drafts",
+      "component": "PolicyDraftReviewBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/trust-ladder",
+      "component": "TrustLadderBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/cross-council",
+      "component": "CrossCouncilBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/observatory",
+      "component": "SLOObservabilityBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot",
+      "component": "OwnerCopilotBriefings",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot-sessions",
+      "component": "OwnerCopilotSessionConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/launch-attestation",
+      "component": "ProductionLaunchAttestationConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/boardroom-sla",
+      "component": "BoardroomSLADrillDown",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/tenant-federation",
+      "component": "TenantFederationBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/assurance",
+      "component": "AssuranceChaosBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/external-api",
+      "component": "ExternalWorkforceApiBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/federation",
+      "component": "KnowledgeFederationBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/sovereign-dr",
+      "component": "SovereignDeploymentDRBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/compliance",
+      "component": "ComplianceAttestationBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/tenant-console",
+      "component": "TenantSelfServiceConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/integrations",
+      "component": "IntegrationsHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/config",
+      "component": "ConfigHome",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin",
+      "component": "AdminRootLanding",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/health/incidents",
+      "component": "MCIncidents",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/health/error-patrol",
+      "component": "ErrorPatrolBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/launch-readiness",
+      "component": "LaunchReadinessBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/overview/generated-truth",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/intelligence/efficiency",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/verification/launch-honesty",
+      "component": "LaunchHonestyBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/verification/cross-domain-coherence",
+      "component": "CrossDomainCoherence",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/health/cost-spotlight",
+      "component": "CostSpotlight",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/sbom-history",
+      "component": "SbomHistory",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-runtime/costs",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/users",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/devices",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/integration-state",
+      "component": "WorkflowStepStub",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/environments/workflow-state",
+      "component": "WorkflowStepStub",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support/cases",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support/replay",
+      "component": "WorkflowStepStub",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support/recovery",
+      "component": "MCFailureRecovery",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/mobile-parity",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/deployment-rings",
+      "component": "AdminDeploymentRings",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/releases/rollback",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/policies",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/proofs",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/permissions",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/sensitive-actions",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/trust-security/audit",
+      "component": "AuditComplianceWorkspace",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/data-retention",
+      "component": "DataRetentionDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/user-seed-health",
+      "component": "UserSeedHealth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/readiness",
+      "component": "PlatformReadinessScorecard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/incidents/dashboard",
+      "component": "IncidentDashboardPage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta-arch",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta-arch/atlas",
+      "component": "META01ArchitectureAtlas",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta-arch/control-plane",
+      "component": "META02ControlPlaneCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta-arch/golden-paths",
+      "component": "META03GoldenPathHealth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta/reality",
+      "component": "META04ProductReality",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/meta/completeness",
+      "component": "META05CompletenessMatrix",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ci/umbrella",
+      "component": "CI01CIUmbrellaCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/generated-truth",
+      "component": "GeneratedTruthDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/runtime-tier-governance",
+      "component": "RuntimeTierGovernanceDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/fleet-health",
+      "component": "FleetHealthPage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/dashboard",
+      "component": "AdminDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/team",
+      "component": "TeamManagement",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/system",
+      "component": "SystemManagement",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/users",
+      "component": "UserManagement",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-tokens",
+      "component": "AITokenDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence-efficiency",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/truth-indices",
+      "component": "TruthIndexDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/overview",
+      "component": "AIT01TeamOverview",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/roles",
+      "component": "AIT02RoleRegistry",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/invoke",
+      "component": "AIT03TaskInvocation",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/activity",
+      "component": "AIT04ActivityFeed",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/cost",
+      "component": "AIT05CostEfficiency",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/recommendations",
+      "component": "AIT06Recommendations",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/approvals",
+      "component": "AIT07ApprovalQueue",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/launch-truth",
+      "component": "AIT08LaunchTruth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/approval-queue",
+      "component": "HQApprovalQueue",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-team/setup-checklist",
+      "component": "AITSetupChecklist",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/reuse",
+      "component": "IntelligenceReuseOverview",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/assets",
+      "component": "IntelligenceAssetLibrary",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/differential",
+      "component": "DifferentialReasoningExplorer",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/packets",
+      "component": "IntelligencePacketInspector",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/efficiency",
+      "component": "AIEfficiencyScoreboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/outcomes",
+      "component": "OutcomeEconomicsBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/escalation",
+      "component": "EscalationControlCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/patterns",
+      "component": "PatternLearningCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/prompts",
+      "component": "ZeroWastePromptView",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/digests",
+      "component": "SmartDigestCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/cross-tenant",
+      "component": "CrossTenantGovernance",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/intelligence/layer",
+      "component": "IntelligenceLayerAdmin",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/providers",
+      "component": "AIG01ProviderRegistry",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/models",
+      "component": "AIG02ModelRegistry",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/routing",
+      "component": "AIG03RoutingMatrix",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/budget",
+      "component": "AIG04BudgetCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/receipts",
+      "component": "AIG05ReceiptsExplorer",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/honesty",
+      "component": "AIG06LaunchTruth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/launch-truth",
+      "component": "AIG07LaunchTruth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/diagnostics",
+      "component": "AIG08DegradedDiagnostics",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-gateway/verification",
+      "component": "AIG09RuntimeVerification",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/capital",
+      "component": "IntelligenceCapitalDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/cost-confidence",
+      "component": "CostToConfidenceDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/quality-floor",
+      "component": "QualityFloorDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/insurance",
+      "component": "IntelligenceInsuranceDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/market",
+      "component": "IntelligenceMarketDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/time-to-truth",
+      "component": "TimeToTruthDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/reasoning-replay",
+      "component": "ReasoningReplayDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/decay",
+      "component": "DecayMonitorDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/portfolio",
+      "component": "PortfolioAllocationDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/benchmark",
+      "component": "BenchmarkLabDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/value-risk",
+      "component": "ValueRiskDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/strategic/operator-taste",
+      "component": "OperatorTasteDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/graph",
+      "component": "CAI01PersonalGraphExplorer",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/intent",
+      "component": "CAI02IntentTraceBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/attention",
+      "component": "CAI03AttentionCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/continuity",
+      "component": "CAI04ContinuityCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/trust-actions",
+      "component": "CAI05TrustActionsBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/chief-of-staff",
+      "component": "CAI06ChiefOfStaffCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/timing",
+      "component": "CAI07TimingStudio",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/relationships",
+      "component": "CAI08RelationshipCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/digest",
+      "component": "CAI09DigestConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/modes",
+      "component": "CAI10ModesCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/interface",
+      "component": "CAI11InterfaceProfiler",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/opportunities",
+      "component": "CAI12OpportunityBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/memory",
+      "component": "CAI13MemoryGovernance",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/boundaries",
+      "component": "CAI14BoundaryControl",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cai/signature",
+      "component": "CAI15SignatureStudio",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ecosystem/command",
+      "component": "ECO01EcosystemCommand",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/security/sessions",
+      "component": "SEC01SessionSecrets",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/security/foundation",
+      "component": "SEC02SecurityFoundation",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/security/command-center",
+      "component": "SecurityCommandCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/system-intelligence",
+      "component": "SYS01SystemIntelligence",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/os-platform",
+      "component": "OS01PlatformCommandCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/cloud-backbone",
+      "component": "CloudBackboneAdmin",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/communication-hub",
+      "component": "CommunicationHub",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/command",
+      "component": "FCC01FounderCommandConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/tasks",
+      "component": "FCC02TaskDecompositionGraph",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/cicd",
+      "component": "FCC03CICDPipelineBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/runbooks",
+      "component": "FCC04RunbookCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/support/runbooks/:id",
+      "component": "AdminRunbookViewerPage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/dashboard",
+      "component": "FCC05FounderDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/programs",
+      "component": "FCC06ProgramManagementBoard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/cost",
+      "component": "FCC07PlatformCostCapacity",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/sync-ops",
+      "component": "FCC08SyncStorageOps",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/security",
+      "component": "FCC09SecurityRiskCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/oversight",
+      "component": "FCC10HumanOversightEscalation",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/incidents",
+      "component": "FCC11IncidentResponseTimeline",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/founder/knowledge",
+      "component": "FCC12KnowledgeMemorySystem",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/validation",
+      "component": "SRE01ValidationCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/builder-critic",
+      "component": "SRE02BuilderCriticConsole",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/simulation",
+      "component": "SRE03SimulationLab",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/standards",
+      "component": "SRE04CodeStandardsTestGen",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/chaos",
+      "component": "SRE05ChaosTestingFramework",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/rollback",
+      "component": "SRE06AutoRollbackCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/version-intel",
+      "component": "SRE07VersionIntelligence",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/engineering/optimization",
+      "component": "SRE08SelfOptimizationBudgets",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/devices",
+      "component": "MCDevicesCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/storage",
+      "component": "MCStorageCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/users",
+      "component": "MCUsersCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/workspaces",
+      "component": "MCWorkspacesContinuity",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/sync-cloud",
+      "component": "MCSyncCloud",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/jobs",
+      "component": "MCJobsMaintenance",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/trust-security",
+      "component": "MCTrustSecurity",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/releases",
+      "component": "MCReleasesUpdates",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/ai-control",
+      "component": "MCAIControl",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/incidents",
+      "component": "MCIncidents",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/policies",
+      "component": "MCPoliciesFlags",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/costs",
+      "component": "MCCostsAIBudgets",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/logs",
+      "component": "MCLogsAudit",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/support",
+      "component": "MCSupport",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/knowledge",
+      "component": "MCKnowledgeBase",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/system-health",
+      "component": "MCSystemHealth",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/authority-matrix",
+      "component": "MCAuthorityMatrix",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/control-receipts",
+      "component": "MCControlReceipts",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/emergency",
+      "component": "MCEmergencyAuthority",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/platform-adaptation",
+      "component": "MCPlatformAdaptation",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/state-authority",
+      "component": "MCStateAuthority",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/architecture",
+      "component": "MCArchitectureDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/feature-ownership",
+      "component": "MCFeatureOwnership",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/command-routing",
+      "component": "MCCommandRouting",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/approval-flow",
+      "component": "MCApprovalFlow",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/failure-recovery",
+      "component": "MCFailureRecovery",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/event-routing",
+      "component": "MCEventRouting",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mc/architecture-tests",
+      "component": "MCArchitectureTests",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/catalog",
+      "component": "AdvisorBoardCatalog",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/recommendations",
+      "component": "AdvisorRecommendationMonitor",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/actions",
+      "component": "AdvisorActionApprovalAdmin",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/memory",
+      "component": "AdvisorMemoryInspectorAdmin",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/autonomy",
+      "component": "AdvisorAutonomyPolicyEditor",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/advisor-board/profitability",
+      "component": "AdvisorProfitabilityDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/release-engineering",
+      "component": "ReleaseEngineeringPage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/graph-intelligence",
+      "component": "GraphIntelligencePage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/ai-governance",
+      "component": "AIGovernancePage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/simulation-center",
+      "component": "SimulationCenterPage",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/backend-topology",
+      "component": "BackendTopologyDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/db-truth-explorer",
+      "component": "DbTruthExplorer",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mobile-parity",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/mobile/store-readiness",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/web/deployability",
+      "component": "WEB01DeployabilityCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/desktop/deployability",
+      "component": "DSK01DeployabilityCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/appliance/deployability",
+      "component": "APP01ApplianceDeployabilityCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/backend-api/deployability",
+      "component": "BAP01BackendApiDeployabilityCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/edge-functions/health",
+      "component": "EFH01EdgeFunctionHealthCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/automation/kill-switches",
+      "component": "AR08KillSwitchCenter",
+      "plane": "admin",
+      "runtimeTier": "tier4_admin",
+      "owner": "platform-admin",
+      "source": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/mobile",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/business",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/money",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/concierge",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/approvals",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/proof",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/alerts",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/boardroom",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/workflow/:id",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/receipt/:id",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/approval/:id",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/settings",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/device-trust",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/emergency",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/capture",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/more",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/investment",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/files",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/command",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/ai-chat",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/system-monitor",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/sync",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/notifications",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/timeline",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/mobile/inbox",
+      "component": "ProtectedRoute",
+      "plane": "shell-runtime",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mobile-shell",
+      "source": "src/routes/MobileRoutes.tsx"
+    },
+    {
+      "path": "/owner",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/home",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/health",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/pulse",
+      "component": "OwnerPulsePage",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/trust",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/approvals",
+      "component": "OwnerApprovalsPage",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/ai-team",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/ai-team/updates",
+      "component": "OwnerAiTeamUpdatesPage",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/incidents",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/intelligence",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/policies",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/fleet",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/council",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/audit",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/connector-health",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/connectors",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/costs",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/internal-agents",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/workflow-control",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/trust-center",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/autopilot",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/billing",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/releases",
+      "component": "ReleaseDeploymentWorkspace",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/model-routing",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/system-map",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/knowledge",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/support",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/change-review",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/rollback-center",
+      "component": "ReleaseDeploymentWorkspace",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/governance",
+      "component": "OwnerCenter",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/pricing",
+      "component": "PricingEditor",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/packs",
+      "component": "PackEditorPage",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/advisors",
+      "component": "AdvisorConfigPage",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/leases",
+      "component": "LeaseDashboard",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner/constitution",
+      "component": "ConstitutionEditor",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner-mode",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/owner-mode/home",
+      "component": "Navigate",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "owner-mode",
+      "source": "src/routes/OwnerRoutes.tsx"
+    },
+    {
+      "path": "/advisors",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/chat",
+      "component": "CalmAssistantChat",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/council-dashboard",
+      "component": "AdvisorCouncilDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/overview",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/compare",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/simulations",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/approvals",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/proof",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/memory",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/:advisorId",
+      "component": "AdvisorWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/advisors/registry",
+      "component": "AdvisorRegistry",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "advisors",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/agent-activity",
+      "component": "AgentActivityDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "agent-activity",
+      "source": "src/routes/advisor-routes.tsx"
+    },
+    {
+      "path": "/apps/store",
+      "component": "AppStoreCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/apps-routes.tsx"
+    },
+    {
+      "path": "/apps/downloads",
+      "component": "DownloadsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/apps-routes.tsx"
+    },
+    {
+      "path": "/boardroom",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/business",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/finance",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/family",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/opportunity",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/morning",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/weekly",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/incidents",
+      "component": "Boardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/replay",
+      "component": "BoardroomReplay",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/history",
+      "component": "BoardroomHistory",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/boardroom/weekly-review",
+      "component": "WeeklyBoardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/proof",
+      "component": "ProofCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "proof",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/proof/receipts",
+      "component": "ProofCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "proof",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/proof/executions",
+      "component": "ProofCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "proof",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/proof/verifications",
+      "component": "ProofCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "proof",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/proof/rollbacks",
+      "component": "ProofCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "proof",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/workflows",
+      "component": "WorkflowsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "workflows",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/workflows/active",
+      "component": "WorkflowsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "workflows",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/workflows/history",
+      "component": "WorkflowsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "workflows",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/workflows/templates",
+      "component": "WorkflowsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "workflows",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/approvals",
+      "component": "ApprovalsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "approvals",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/approvals/pending",
+      "component": "ApprovalsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "approvals",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/approvals/simulated",
+      "component": "ApprovalsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "approvals",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/approvals/history",
+      "component": "ApprovalsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "approvals",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/approval-chamber",
+      "component": "ApprovalChamber",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "approval-chamber",
+      "source": "src/routes/boardroom-routes.tsx"
+    },
+    {
+      "path": "/business",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/overview",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/leads",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/customers",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/customers/:id",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/customer-health",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/opportunities",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/quotes",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/invoices",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/collections",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/revenue-autopilot",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/autopilot-hub",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/revenue-impact",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/playbook-builder",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/revenue-forecast",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/communications",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/boardroom",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/proof",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/files",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/settings",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/website-builder",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/proposals",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/lead-recovery",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/social",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/ecommerce",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/integrations",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/follow-through",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/support",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/appointments",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/operations",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/documents",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-home",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-contacts",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-companies",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-pipeline",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-health",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-timeline",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-tasks",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-notes",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-segments",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-automations",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-import",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-duplicates",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-advisor",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-fields",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/business/crm-communications",
+      "component": "BusinessCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "business-os",
+      "source": "src/routes/business-routes.tsx"
+    },
+    {
+      "path": "/communications/inbox",
+      "component": "CommunicationInbox",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "comms-hub",
+      "source": "src/routes/communications-routes.tsx"
+    },
+    {
+      "path": "/communications",
+      "component": "CommunicationsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "comms-hub",
+      "source": "src/routes/communications-routes.tsx"
+    },
+    {
+      "path": "/concierge",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/overview",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/calendar",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/tasks",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/school",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/grocery",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/appointments",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/travel",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/providers",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/events",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/workflows",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/proof",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/files",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/boardroom",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/settings",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/life-admin",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/errands",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/upcoming",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/recurring",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/concierge/household",
+      "component": "ConciergeCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "concierge-os",
+      "source": "src/routes/concierge-routes.tsx"
+    },
+    {
+      "path": "/investments",
+      "component": "InvestmentGate",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/boardroom",
+      "component": "InvestmentBoardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/markets",
+      "component": "MarketExplorer",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/instrument/:instrumentId",
+      "component": "InstrumentDetail",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/portfolio",
+      "component": "PortfolioOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/strategy",
+      "component": "StrategyStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/execute",
+      "component": "ExecutionDesk",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/research",
+      "component": "ResearchLibrary",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/journal",
+      "component": "ThesisJournal",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/risk",
+      "component": "RiskOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/advisors",
+      "component": "InvestmentAdvisorBoard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/platforms",
+      "component": "PlatformConnections",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/events",
+      "component": "EventMarketsWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/watchlists",
+      "component": "WatchlistsSignals",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/receipts",
+      "component": "InvestmentReceipts",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/beginner",
+      "component": "BeginnerMode",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/advanced",
+      "component": "AdvancedMode",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/capital-twin",
+      "component": "CapitalTwin",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/decision-theater",
+      "component": "DecisionTheater",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/trading-floor",
+      "component": "TradingFloor",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/war-room",
+      "component": "InvestmentWarRoom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/time-machine",
+      "component": "TimeMachineReview",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/catalysts",
+      "component": "CatalystWarRoom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/opportunity-map",
+      "component": "OpportunityMap",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/constitution",
+      "component": "InvestmentConstitution",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/behavioral",
+      "component": "BehavioralFirewall",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/memory",
+      "component": "MarketMemoryFeed",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/dossier",
+      "component": "IntelligenceDossier",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/probability-lab",
+      "component": "EventProbabilityLab",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/strategy-dna",
+      "component": "StrategyDNA",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/post-trade",
+      "component": "PostTradeLoop",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/cross-asset",
+      "component": "CrossAssetStoryEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/conviction",
+      "component": "ConvictionEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/sizing",
+      "component": "PositionSizingCoach",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/modes",
+      "component": "OperatingModes",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/readiness",
+      "component": "DecisionReadiness",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/capital-purpose",
+      "component": "CapitalPurpose",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/what-would-break",
+      "component": "WhatWouldBreak",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/disagreements",
+      "component": "DisagreementEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/family-office",
+      "component": "FamilyOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/investments/knowledge-graph",
+      "component": "KnowledgeGraph",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/money/investments",
+      "component": "InvestmentGate",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office",
+      "component": "RevenueGate",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/boardroom",
+      "component": "GrowthBoardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/relationships",
+      "component": "RelationshipCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/pipeline",
+      "component": "PipelineStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/funnels",
+      "component": "FunnelBuilder",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/campaigns",
+      "component": "CampaignOrchestrator",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/bookings",
+      "component": "BookingCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/offers",
+      "component": "OffersWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/reputation",
+      "component": "ReputationEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/intelligence",
+      "component": "RevenueIntelligence",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/retention",
+      "component": "RetentionOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/advisors",
+      "component": "GrowthAdvisorBoard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/journey-twin",
+      "component": "JourneyTwin",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/leaks",
+      "component": "LeakDetector",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/conversion-lab",
+      "component": "ConversionLab",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/memberships",
+      "component": "MembershipCourseOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/opportunities",
+      "component": "OpportunityBoard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/trust-pulse",
+      "component": "TrustPulse",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/white-label",
+      "component": "WhiteLabelOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/time-machine",
+      "component": "BusinessTimeMachine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/decision-theater",
+      "component": "RevenueDecisionTheater",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/what-breaks",
+      "component": "WhatBreaksGrowth",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/growth-dna",
+      "component": "GrowthDNA",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/operating-modes",
+      "component": "GrowthOperatingModes",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/synthesis",
+      "component": "ChiefRevenueSynthesis",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/memory-feed",
+      "component": "CommercialMemoryFeed",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/forms",
+      "component": "FormsBuilder",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/segmentation",
+      "component": "SegmentationEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/client-onboarding",
+      "component": "ClientOnboarding",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation",
+      "component": "AutomationOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/builder",
+      "component": "AutomationBuilder",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/templates",
+      "component": "AutomationTemplates",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/simulation",
+      "component": "AutomationSimLab",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/health",
+      "component": "AutomationHealth",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/receipts",
+      "component": "AutomationReceipts",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/automation/policy",
+      "component": "AutomationPolicy",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/quotes",
+      "component": "QuoteStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/calls",
+      "component": "CallDesk",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/revenue-office/onboarding",
+      "component": "BusinessOnboarding",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "revenue-office",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence",
+      "component": "PresenceGate",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/boardroom",
+      "component": "PresenceBoardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/twin",
+      "component": "WebsiteTwin",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/builder",
+      "component": "SiteBuilder",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/brand-studio",
+      "component": "BrandStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/connected-sites",
+      "component": "ConnectedSites",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/cro",
+      "component": "CROOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/ecommerce",
+      "component": "EcommerceOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/promotions",
+      "component": "PromotionsOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/ai-team",
+      "component": "AIWebTeam",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/radar",
+      "component": "ErrorRadar",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/content-freshness",
+      "component": "ContentFreshness",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/launch",
+      "component": "LaunchWarRoom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/time-machine",
+      "component": "PresenceTimeMachine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/self-healing",
+      "component": "SelfHealingQueue",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/app-studio",
+      "component": "AppExperienceStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/analytics",
+      "component": "PresenceAnalytics",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/domains",
+      "component": "DomainPublishManager",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-presence/onboarding",
+      "component": "DPOOnboarding",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-presence",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store",
+      "component": "PackStorePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/featured",
+      "component": "PackStorePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/installed",
+      "component": "PackInstalledPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/analytics",
+      "component": "StoreAnalyticsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/packs/:packId",
+      "component": "PackDetailPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/apps/:appId",
+      "component": "OldAppDetailPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/founders",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/families",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/finance",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/connectors",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/surfaces",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/store/:segment",
+      "component": "StoreCategoryPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/app-store/*",
+      "component": "AppStoreCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-store",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-twins",
+      "component": "DigitalTwinsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-twins",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-twins/business",
+      "component": "DigitalTwinsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-twins",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-twins/money",
+      "component": "DigitalTwinsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-twins",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/digital-twins/household",
+      "component": "DigitalTwinsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "digital-twins",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/scenario-lab",
+      "component": "ScenarioLabPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "scenario-lab",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/ai-economics",
+      "component": "AIEconomicsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "ai-economics",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/recovered-value",
+      "component": "RecoveredValuePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "recovered-value",
+      "source": "src/routes/experimental-routes.tsx"
+    },
+    {
+      "path": "/files",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/overview",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/explorer",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/all",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/processing",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/review",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/search",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/memory",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/memory-review",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/sensitive",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/files/settings",
+      "component": "FilesCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/autonomy",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/devices",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/permissions",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/proof",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/audit",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/trust/settings",
+      "component": "TrustCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "trust",
+      "source": "src/routes/files-routes.tsx"
+    },
+    {
+      "path": "/investment",
+      "component": "InvestmentGate",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/boardroom",
+      "component": "InvestmentBoardroom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/markets",
+      "component": "MarketExplorer",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/instrument/:instrumentId",
+      "component": "InstrumentDetail",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/portfolio",
+      "component": "PortfolioOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/strategy",
+      "component": "StrategyStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/execute",
+      "component": "ExecutionDesk",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/research",
+      "component": "ResearchLibrary",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/journal",
+      "component": "ThesisJournal",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/risk",
+      "component": "RiskOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/advisors",
+      "component": "InvestmentAdvisorBoard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/platforms",
+      "component": "PlatformConnections",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/trading-floor",
+      "component": "TradingFloor",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/war-room",
+      "component": "InvestmentWarRoom",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/watchlists",
+      "component": "WatchlistsSignals",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/receipts",
+      "component": "InvestmentReceipts",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/behavioral",
+      "component": "BehavioralFirewall",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/investment/family-office",
+      "component": "FamilyOffice",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/investment-routes.tsx"
+    },
+    {
+      "path": "/money/onboarding",
+      "component": "MoneyOnboarding",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/overview",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/bills",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/subscriptions",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/reserves",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/cash-timing",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/receivables",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/investment-office",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/tax",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/family-office",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/approvals",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/proof",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/files",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/documents",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/boardroom",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/settings",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/net-worth",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/debt-credit",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/budgets",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/transactions",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/household",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/health",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/advisors",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/scenarios",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/stress-radar",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/life-impact",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/modes",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/allocator",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/trust-graph",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/opportunity-cost",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/rituals",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/peace-score",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/boundaries",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/spending-pulse",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/reconciliation",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/money/automations",
+      "component": "MoneyCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "finance-os",
+      "source": "src/routes/money-routes.tsx"
+    },
+    {
+      "path": "/home",
+      "component": "DailyPulse",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "home",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/desktop",
+      "component": "DesktopPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "desktop",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/pulse",
+      "component": "DailyPulse",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "brain-core",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/daily-pulse",
+      "component": "DailyPulse",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "daily-pulse",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/profile",
+      "component": "UserProfilePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "profile",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/life",
+      "component": "LifeDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "life",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/life-simulator",
+      "component": "LifeSimulator",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "life-simulator",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personal-life",
+      "component": "PersonalLifeWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personal-life",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/downloads",
+      "component": "DownloadsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "downloads",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/download",
+      "component": "DownloadPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "download",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/wealth-command",
+      "component": "WealthCommandCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "wealth-command",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/time-machine",
+      "component": "TimeMachinePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "time-machine",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/achievements",
+      "component": "AchievementsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "achievements",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/simulation-engine",
+      "component": "SimulationEnginePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "simulation-engine",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/storage",
+      "component": "StorageManager",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "storage",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/network",
+      "component": "NetworkUtility",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "network",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/planning-canvas",
+      "component": "PlanningCanvas",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "planning-canvas",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/my-activity",
+      "component": "MyActivity",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "my-activity",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/search",
+      "component": "SearchPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "search",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/inbox",
+      "component": "InboxCapture",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "inbox",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/inbox/capture",
+      "component": "InboxCapture",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "inbox",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/inbox/processed",
+      "component": "InboxCapture",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "inbox",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/inbox/review",
+      "component": "InboxCapture",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "inbox",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/activity",
+      "component": "ActivityStream",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "activity",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/opportunities",
+      "component": "OpportunityEngine",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "opportunities",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/outcomes",
+      "component": "OutcomeEnginePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "outcomes",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/spillovers",
+      "component": "SpilloverDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "spillovers",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/ai-workforce",
+      "component": "AIWorkforcePage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "ai-workforce",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/capital-allocation",
+      "component": "CapitalAllocationPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "capital-allocation",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/sovereign-export",
+      "component": "SovereignExportPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "sovereign-export",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/notifications/settings",
+      "component": "NotificationSettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "notifications",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/notifications",
+      "component": "NotificationPreferences",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/notifications",
+      "component": "NotificationCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "notifications",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/trust",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/profile",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/connectors",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/permissions",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/billing",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/privacy",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/appearance",
+      "component": "SettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/plan-usage",
+      "component": "MyPlanUsage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/accessibility",
+      "component": "AccessibilitySettings",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/device",
+      "component": "DeviceSettingsPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/trusted-devices",
+      "component": "TrustedDeviceManager",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/mfa",
+      "component": "MFAEnrollment",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/passkey",
+      "component": "PasskeyManagement",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization/profile",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization/preferences",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization/memory",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization/automation",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personalization/boardroom",
+      "component": "PersonalizationStudio",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personalization",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/profile",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/business",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/money",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/household",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/workflows",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/memory/preferences",
+      "component": "MemoryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "memory",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/automation",
+      "component": "AutomationCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "automation",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/automation/rules",
+      "component": "AutomationCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "automation",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/automation/trust",
+      "component": "AutomationCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "automation",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/automation/delegations",
+      "component": "AutomationCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "automation",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/trust",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/health",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/connectors",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/history",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/slos",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/self-healing",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/incidents",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/system/fleet",
+      "component": "SystemStatus",
+      "plane": "admin",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/mission-control",
+      "component": "MissionControl",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "mission-control",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/display-modes",
+      "component": "CalmFocusMode",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "display-modes",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/communication-inbox",
+      "component": "CommunicationInbox",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "communication-inbox",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/command-history",
+      "component": "CommandHistory",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "command-history",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/environment-switcher",
+      "component": "EnvironmentSwitcherPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "environment-switcher",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/update-center",
+      "component": "UpdateCenterPage",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "update-center",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/first-boot",
+      "component": "FirstBootSetup",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "first-boot",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/clipboard-history",
+      "component": "ClipboardHistory",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "clipboard-history",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/print-scan",
+      "component": "PrintScanCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "print-scan",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/recovery",
+      "component": "RecoveryCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "recovery",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/personal-brain",
+      "component": "PersonalBrain",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "personal-brain",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/calendar",
+      "component": "CalendarWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "calendar",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/tasks",
+      "component": "TasksWorkflowsCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "tasks",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/notes",
+      "component": "NotesWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "notes",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/people",
+      "component": "PeopleWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "people",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/team",
+      "component": "TeamWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "team",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/editor",
+      "component": "DocumentEditor",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "editor",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/reporting",
+      "component": "ReportingWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "reporting",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/media",
+      "component": "MediaWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "media",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/templates",
+      "component": "TemplateCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "templates",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/import-export",
+      "component": "ImportExportCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "import-export",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/files/pdf-viewer",
+      "component": "PDFViewerWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "document-engine",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/workspace/data-grid",
+      "component": "SpreadsheetWorkspace",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "workspace",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/email",
+      "component": "EmailApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/messenger",
+      "component": "MessengerApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/vault",
+      "component": "VaultApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/health",
+      "component": "HealthApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/gallery",
+      "component": "GalleryApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/apps/weather-news",
+      "component": "WeatherNewsApp",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "app-platform",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/intelligence",
+      "component": "IntelligenceDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "brain-core",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/intelligence/dashboard",
+      "component": "IntelligenceDashboard",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "brain-core",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/intelligence/device-mesh",
+      "component": "DeviceMeshPanel",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "brain-core",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/intelligence/privacy",
+      "component": "PrivacyControlCenter",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "brain-core",
+      "source": "src/routes/os-routes.tsx"
+    },
+    {
+      "path": "/settings/environment",
+      "component": "EnvironmentSwitcher",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/settings-routes.tsx"
+    },
+    {
+      "path": "/settings/self-service",
+      "component": "TenantSelfServiceConsole",
+      "plane": "user",
+      "runtimeTier": "tier3_authenticated_with_shell",
+      "owner": "platform-admin",
+      "source": "src/routes/settings-routes.tsx"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-19T16:25:16.113Z",
+  "gate": "no-duplicate-truth-manifests",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "concernsChecked": 5,
+  "duplicates": 0
+}

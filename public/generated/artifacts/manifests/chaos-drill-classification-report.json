@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-19T20:53:39.610Z",
+  "gate": "chaos-drill-classification",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "validBlastRadius": [
+    "isolated",
+    "subsystem",
+    "regional",
+    "global"
+  ],
+  "issues": []
+}

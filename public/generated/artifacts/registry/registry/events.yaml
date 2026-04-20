@@ -1,0 +1,120 @@
+# SITA OS — Event Registry
+
+event_families:
+  business:
+    - lead.captured
+    - lead.scored
+    - lead.qualified
+    - lead.converted
+    - customer.created
+    - customer.health-changed
+    - customer.churned
+    - customer.reactivated
+    - opportunity.created
+    - opportunity.stage-changed
+    - opportunity.won
+    - opportunity.lost
+    - quote.sent
+    - quote.accepted
+    - invoice.created
+    - invoice.sent
+    - invoice.paid
+    - invoice.overdue
+    - communication.drafted
+    - communication.approved
+    - communication.sent
+
+  finance:
+    - account.synced
+    - transaction.categorized
+    - bill.upcoming
+    - bill.paid
+    - bill.overdue
+    - subscription.detected
+    - subscription.flagged-waste
+    - subscription.cancelled
+    - reserve.allocated
+    - reserve.rebalanced
+    - cashflow.projected
+    - tax.estimated
+    - payment.executed
+    - payment.failed
+
+  concierge:
+    - task.created
+    - task.completed
+    - task.deferred
+    - booking.searched
+    - booking.scored
+    - booking.approved
+    - booking.confirmed
+    - calendar.conflict-detected
+    - calendar.reconciled
+    - grocery.list-generated
+    - grocery.ordered
+    - reminder.triggered
+    - household.coordinated
+
+  platform:
+    - file.uploaded
+    - file.classified
+    - file.extracted
+    - file.indexed
+    - workflow.started
+    - workflow.step-completed
+    - workflow.failed
+    - workflow.stuck
+    - workflow.recovered
+    - approval.requested
+    - approval.approved
+    - approval.rejected
+    - approval.expired
+    - receipt.created
+    - verification.completed
+    - verification.failed
+
+  boardroom:
+    - boardroom.session-started
+    - boardroom.packet-generated
+    - boardroom.decision-recorded
+    - boardroom.carryover-created
+
+  advisor:
+    - advisor.recommendation-generated
+    - advisor.simulation-completed
+    - advisor.action-approved
+    - advisor.action-executed
+    - advisor.disagreement-surfaced
+
+  internal-agent:
+    - agent.finding-reported
+    - agent.action-taken
+    - agent.escalated
+    - agent.paused
+    - agent.resumed
+
+  store:
+    - pack.installed
+    - pack.updated
+    - pack.uninstalled
+    - pack.trial-started
+    - pack.trial-ended
+
+  moat:
+    - moat.event-registered
+    - moat.simulation-converted
+    - moat.export-pack-created
+    - moat.export-integrity-verified
+    - moat.competitive-gap-evaluated
+    - moat.trust-posture-generated
+    - moat.adoption-stage-advanced
+    - moat.proof-density-calculated
+    - moat.sovereignty-report-generated
+
+  enterprise:
+    - enterprise.firewall-rule-created
+    - enterprise.firewall-rule-triggered
+    - enterprise.audit-review-completed
+    - enterprise.role-granted
+    - enterprise.role-revoked
+    - enterprise.tenant-config-changed
