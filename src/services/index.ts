@@ -10,7 +10,7 @@ export * from "@/lib/core-services";
 export * from "@/lib/data-services";
 
 // Layer 3 — OS Daemons (namespaced to avoid name collisions across ~33 daemons)
-export * as OS from "@/lib/os-services";
+export * as OS from "@/lib/core-services/os-services";
 
 // Layer 1 — Core Platform packages, namespaced to avoid name collision
 export * as Platform from "@/packages";
