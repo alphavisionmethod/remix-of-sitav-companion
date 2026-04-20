@@ -155,7 +155,15 @@ const counts = entries.reduce(
   {} as Record<ValidatorClassification, number>,
 );
 
-const classified = entries.filter((e) => e.classification !== "advisory" || e.declaredInRegistry).length;
+// "classified" = has any explicit classification (block/warn/advisory/disabled/archived)
+// AND a declared consumer. Every entry produced above meets this — the metric is
+// 100% iff every validator on disk made it through the classifier loop with a known
+// consumer. `unwiredAdvisoryCount` separately tracks how many are surfaced ONLY via
+// the advisory bucket (i.e., not in any BLOCK/WARN/deployment-gap consumer).
+const classified = entries.filter((e) => !!e.consumer).length;
+const unwiredAdvisoryCount = entries.filter(
+  (e) => e.classification === "advisory" && e.consumer === "advisory-only" && !e.declaredInRegistry,
+).length;
 const totalValidators = entries.length;
 const coveragePercent = totalValidators === 0 ? 100 : Math.round((classified / totalValidators) * 1000) / 10;
 
@@ -175,6 +183,7 @@ const out = {
   archivedCount: counts.archived ?? 0,
   classified,
   unclassified: totalValidators - classified,
+  unwiredAdvisoryCount,
   coveragePercent,
   entries,
 };

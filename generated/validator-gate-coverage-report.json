@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-20T01:46:06.266Z",
+  "gate": "validator-gate-coverage",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
+    {
+      "severity": "error",
+      "area": "coverage",
+      "message": "Validator classification coverage is 36% (< floor 80%). 119 validators have no declared consumer."
+    }
+  ],
+  "totalValidators": 186,
+  "blockCount": 50,
+  "warnCount": 17,
+  "advisoryCount": 119,
+  "disabledCount": 0,
+  "archivedCount": 0,
+  "coveragePercent": 36,
+  "floor": 80,
+  "target": 95
+}
