@@ -49,7 +49,7 @@ export default function SupportHome() {
       id: "runbooks",
       label: "Runbooks",
       description: "Recovery procedures and runbooks.",
-      legacyPath: "/admin/founder/runbooks",
+      legacyPath: "/admin/support/runbooks",
       render: wrap(FCC04RunbookCenter),
     },
     {

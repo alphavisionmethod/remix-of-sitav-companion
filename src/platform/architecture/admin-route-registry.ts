@@ -346,7 +346,10 @@ const LEGACY_ROUTES: AdminRouteEntry[] = [
   // ── Support cluster ──────────────────────────────────────────
   { path: "/admin/mc/support", domain: "support", pageClass: "SECONDARY_SUBVIEW", nav: "subnav", component: "MCSupport", breadcrumb: ["Support", "Cases"], workflows: ["support"] },
   { path: "/admin/mc/logs", domain: "support", pageClass: "DETAIL_EXPLORER", nav: "explorer", component: "MCLogsAudit", breadcrumb: ["Support", "Logs"], workflows: ["support"] },
-  { path: "/admin/founder/runbooks", domain: "support", pageClass: "DETAIL_EXPLORER", nav: "explorer", breadcrumb: ["Support", "Runbooks"] },
+  // Canonical runbook surface (Phase 28 — wired into 12-domain IA)
+  { path: "/admin/support/runbooks", domain: "support", pageClass: "SECONDARY_SUBVIEW", nav: "subnav", component: "FCC04RunbookCenter", breadcrumb: ["Support", "Runbooks"], permission: "maintenance.view", workflows: ["support"] },
+  { path: "/admin/support/runbooks/:id", domain: "support", pageClass: "DETAIL_EXPLORER", nav: "explorer", component: "AdminRunbookViewerPage", breadcrumb: ["Support", "Runbooks", "Detail"], permission: "maintenance.view", workflows: ["support"] },
+  { path: "/admin/founder/runbooks", domain: "support", pageClass: "DEPRECATE_WITH_REDIRECT", nav: "deprecated", breadcrumb: ["Support", "Runbooks"], replacedBy: "/admin/support/runbooks" },
   { path: "/admin/founder/cicd", domain: "support", pageClass: "DETAIL_EXPLORER", nav: "explorer", breadcrumb: ["Support", "CI/CD"] },
   { path: "/admin/founder/cost", domain: "support", pageClass: "DETAIL_EXPLORER", nav: "explorer", breadcrumb: ["Support", "Cost"] },
   { path: "/admin/founder/dashboard", domain: "support", pageClass: "DUPLICATE_MERGE_REQUIRED", nav: "deprecated", breadcrumb: ["Support"], replacedBy: "/admin/support" },
