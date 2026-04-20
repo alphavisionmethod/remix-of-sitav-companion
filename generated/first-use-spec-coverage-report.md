@@ -1,6 +1,6 @@
 # First-Use Spec Coverage Report
 
-Generated: 2026-04-20T07:55:52.703Z
+Generated: 2026-04-20T07:57:27.598Z
 Gate: `first-use-spec-coverage` (BLOCK)
 
 ## Summary
