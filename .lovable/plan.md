@@ -1,35 +1,51 @@
 
 
-## Reality check — real project is 100% deployment-ready ✅
+## Reality check
 
-Verified on disk:
-- **Runtime status manifest**: `generated/internal-agent-runtime-status.json` — total 40, **wired 8 / scheduledOnly 19 / uiSurfaceOnly 5 / deferred 8** (sum = 40 = 100% coverage). Honest claim string emitted.
-- **BLOCK Gate #22**: `check-internal-agent-deferred-set-explicitness` — `ok: true`, `errorCount: 0`, `coveragePercent: 100`. Registered at line 328 of `check-os-release-readiness.ts`.
-- **Supporting code**: `agent-runtime-status-map.ts`, `agent-id-alias-map.ts`, generator script, gate script — all present.
-- **Type extension**: `runtimeStatus`, `runtimeInvocationPath`, `deferredReason`, `deferredEta` shipped in `src/packages/internal-agent-config/types.ts`.
+**Real project: ownership system already built and enforced.** ✅
+- `src/lib/backend-topology/edge-function-owner-map.ts` — single source of truth, 186 entries with team + primary contact + escalation + Slack + runbook + kill-switch + reviewer codeowners
+- `generated/edge-function-ownership.json` + `public/generated/edge-function-ownership.json` — generated manifest, **100% coverage / 186 of 186 / 13 teams**
+- `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts` — generator
+- `scripts/architecture/checks/check-edge-function-ownership-completeness.ts` — completeness gate, `ok: true`, 0 orphans / 0 phantoms / 0 metadata violations
+- Registered in `check-os-release-readiness.ts` line 311
 
-The "40 wired" overclaim is now **structurally impossible to repeat** — every agent carries an explicit runtime classification enforced by CI.
+The "185 / no central manifest" claim is **stale**. Real count is 186 (audit caught it at 185), and the central manifest exists at `generated/edge-function-ownership.json`.
 
-## Plan (default mode — doc sync only, 6 mirrors)
+**However, the user explicitly asks for `supabase/functions/_owners.json`** — the conventional Supabase-colocated location. That file does not exist. Adding it closes the literal request and gives the manifest a co-located home next to the functions themselves (useful for `supabase functions deploy` workflows and any reviewer reading the functions tree).
 
-Patch **Row #4** in §2 (Phantom-claim corrections) of all 6 audit mirrors. Currently reads:
+## Plan (default mode — colocated mirror + gate extension)
 
-> `| 4 | "40 internal agents are wired into runtime" | 40 agents are in the registry; runtime invocation paths exist for ≤ 15 | Mark deferred set explicitly |`
+### 1. Generator emits a third mirror at `supabase/functions/_owners.json`
+Edit `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts`:
+- Add `supabase/functions/_owners.json` to the `targets` array.
+- Same JSON schema (no divergence — single content hash across all 3 mirrors).
+- The `_` prefix means it's already in the `SHARED_DIRS` skip-set used by the disk-walker, so it won't be mistaken for a function.
 
-Replace with:
+### 2. Completeness gate asserts the colocated mirror exists + matches
+Edit `scripts/architecture/checks/check-edge-function-ownership-completeness.ts`:
+- Extend `manifestArtifacts` block with a third entry `colocated` pointing at `supabase/functions/_owners.json`.
+- Assert MD5 parity across all 3 mirrors (canonical, public, colocated).
+- Same BLOCK level — any drift fails the gate.
 
-> `| 4 | ~~"40 internal agents are wired into runtime"~~ | **RESOLVED 2026-04-20** — honest classification now enforced. Of 40 registered agents: **8 wired** (Security Council via `supabase/functions/security-council-tick`), **19 scheduled-only** (cron row, executor pending), **5 ui-surface-only** (admin cards), **8 deferred** (each with `deferredReason` + `deferredEta`). Status lives in `src/lib/internal-agents/agent-runtime-status-map.ts` and is overlaid onto every `InternalAgentDefinition` via 4 new fields (`runtimeStatus`, `runtimeInvocationPath`, `deferredReason`, `deferredEta`) in `src/packages/internal-agent-config/types.ts`. Legacy `st-*` / `ro-*` / `rc-*` IDs resolved to canonical `aw-*` via `src/lib/internal-agents/agent-id-alias-map.ts`. Enforced by **BLOCK Gate #22** `scripts/architecture/checks/check-internal-agent-deferred-set-explicitness.ts` — asserts 100% status coverage, `wired` paths exist on disk, `deferred` carry reason+ETA. Passes (`coveragePercent: 100`, 0 errors). Reports: `generated/internal-agent-runtime-status.json` + `generated/internal-agent-deferred-set-explicitness-report.json`. | RESOLVED |`
+### 3. Run generator + gate to materialize the file and prove green
+Single npm run to emit the new mirror and re-run the BLOCK gate.
 
-Also patch the supporting line ~334 (`- 40 agents wired into the registry export ALL_DETAILED_AGENTS`) → `- 40 agents in registry export ALL_DETAILED_AGENTS (8 wired to runtime, 32 explicitly classified scheduled-only / ui-surface-only / deferred — see Row #4)`.
+### 4. Sync MISSING_AUDIT.md mirrors
+Patch the matching row in §2 of all 6 audit mirrors:
+> RESOLVED 2026-04-20 — central ownership manifest exists at 3 mirrors (`generated/`, `public/generated/`, `supabase/functions/_owners.json`). 186 functions, 100% coverage, 13 owner teams. Source: `src/lib/backend-topology/edge-function-owner-map.ts`. Enforced by BLOCK gate `check-edge-function-ownership-completeness` (registered line 311 of `check-os-release-readiness.ts`) — asserts coverage, MD5 parity across all 3 mirrors, zero orphans/phantoms.
 
-**Files edited (6):**
-1. `public/generated/MISSING_AUDIT.md` (lines 92, 334)
-2. `public/generated/MISSING_AUDIT_v2.md` (same rows)
-3. `public/generated/artifacts/audits/MISSING_AUDIT.md`
-4. `public/generated/artifacts/audits/MISSING_AUDIT_v2.md`
-5. `/mnt/documents/MISSING_AUDIT.md` (lines 91, 333)
-6. `/mnt/documents/MISSING_AUDIT_v2.md`
+## Files
+
+**Edited (3):**
+- `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts` — add 3rd target
+- `scripts/architecture/checks/check-edge-function-ownership-completeness.ts` — add MD5 parity for 3rd mirror
+- 6 audit doc mirrors (sync row + narrative)
+
+**Created (1):**
+- `supabase/functions/_owners.json` — written by generator
 
 ## Out of scope
-No code, gate, generator, runtime, or DB changes (already shipped previous turn).
+- No new owner data (already 100%)
+- No new gate registration in master aggregator (gate already registered)
+- No edits to `edge-function-owner-map.ts` content
 
