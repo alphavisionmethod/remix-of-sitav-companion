@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-20T23:37:19.853Z",
+  "gate": "component-canonicalization",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "canonicalFamilies": 25,
+  "taxonomyEntries": 25,
+  "deprecatedEntries": 8,
+  "deprecatedPaths": [
+    "src/components/sita/admin/StatusBadge.tsx",
+    "src/components/sita/TrustBadge.tsx",
+    "src/components/sita/badges/TrustBadge.tsx",
+    "src/components/sita/badges/UrgencyBadge.tsx",
+    "src/components/sita/badges/ProofBadge.tsx",
+    "src/components/sita/badges/FreshnessBadge.tsx",
+    "src/components/sita/badges/ModeBadge.tsx",
+    "src/components/sita/EmptyState.tsx"
+  ]
+}
