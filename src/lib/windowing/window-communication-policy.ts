@@ -20,8 +20,8 @@ export function canSendMessage(sourceId: string, targetId: string, channel: Chan
   const srcPolicy = getPolicy(sourceId);
   const tgtPolicy = getPolicy(targetId);
 
-  if (srcPolicy === "isolated" || tgtPolicy === "isolated") return false;
-  if (channel === "system") return srcPolicy !== "isolated" && tgtPolicy !== "isolated";
+  if ((srcPolicy as string) === "isolated" || (tgtPolicy as string) === "isolated") return false;
+  if (channel === "system") return true;
   if (channel === "broadcast") return srcPolicy === "open" || srcPolicy === "domain-only";
   if (channel === "domain") return srcPolicy !== "system-only" && tgtPolicy !== "system-only";
   if (channel === "direct") return srcPolicy === "open" && tgtPolicy === "open";
