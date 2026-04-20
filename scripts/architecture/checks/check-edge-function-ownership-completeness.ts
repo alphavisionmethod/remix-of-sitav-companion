@@ -31,6 +31,7 @@ const FUNCTIONS_DIR = "supabase/functions";
 const SHARED_DIRS = new Set(["_shared", "_tests", "shared", "_lib"]);
 const CANONICAL = "generated/edge-function-ownership.json";
 const PUBLIC_MIRROR = "public/generated/edge-function-ownership.json";
+const COLOCATED_MIRROR = "supabase/functions/_owners.json";
 const FRESHNESS_DAYS = 7;
 const REPORT_PATH = "generated/edge-function-ownership-completeness-report.json";
 
