@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-20T01:33:36.471Z",
+  "generatedAt": "2026-04-20T01:34:29.357Z",
   "generator": "scripts/manifests/generate/generate-artifact-ownership-manifest.ts",
   "totalArtifacts": 913,
-  "withProducer": 452,
-  "withoutProducer": 461,
-  "coveragePercent": 49.5,
-  "orphanCount": 425,
+  "withProducer": 487,
+  "withoutProducer": 426,
+  "coveragePercent": 53.3,
+  "orphanCount": 390,
   "declaredInRegistry": 115,
   "ownerBreakdown": {
     "architecture": 641,
@@ -24,8 +24,8 @@
   "sourceBreakdown": {
     "auto-discovered": 227,
     "registry": 36,
-    "orphan": 425,
-    "directory-inferred": 225
+    "orphan": 390,
+    "directory-inferred": 260
   },
   "orphans": [
     "generated/SITA_MASTER_AUDIT.md",
@@ -34,19 +34,6 @@
     "generated/admin-action-panel-hierarchy-report.json",
     "generated/admin-ai-runtime-drilldowns-report.json",
     "generated/admin-ai-runtime-proof-language-report.json",
-    "generated/admin-and-validation-closure/ADMIN_AND_VALIDATION_FINAL_VERIFICATION.md",
-    "generated/admin-and-validation-closure/ADMIN_CONTROL_PLANE_USABILITY_AUDIT.md",
-    "generated/admin-and-validation-closure/ADMIN_DOMAIN_CONSOLIDATION_AND_LINKAGE_PLAN.md",
-    "generated/admin-and-validation-closure/CI_BEHAVIORAL_TRUTH_AUDIT.md",
-    "generated/admin-and-validation-closure/EDGE_FUNCTION_CONTRACT_COVERAGE_AUDIT.md",
-    "generated/admin-and-validation-closure/EDGE_FUNCTION_CONTRACT_EXPANSION_PLAN.md",
-    "generated/admin-and-validation-closure/EVIDENCE_FRESHNESS_POLICY.md",
-    "generated/admin-and-validation-closure/GATE_TAXONOMY_AND_QUALITY_MODEL.md",
-    "generated/admin-and-validation-closure/MUSEUM_BOARD_AUDIT.md",
-    "generated/admin-and-validation-closure/OPERATOR_STRESS_TEST_REPORT.md",
-    "generated/admin-and-validation-closure/OPERATOR_TOP_TASK_PATHFINDING_MODEL.md",
-    "generated/admin-and-validation-closure/WARN_GATE_AND_RATCHET_AUDIT.md",
-    "generated/admin-and-validation-closure/admin-and-validation-verification.json",
     "generated/admin-board-polish-report.json",
     "generated/admin-coherence-and-responsive-closure/ADMIN_ACTION_PANEL_HIERARCHY_SPEC.md",
     "generated/admin-coherence-and-responsive-closure/ADMIN_COHERENCE_AND_RESPONSIVE_FINAL_VERIFICATION.md",
@@ -92,20 +79,6 @@
     "generated/app-plane-map.json",
     "generated/app-profile-matrix-report.json",
     "generated/app-store-lifecycle-reality-report.json",
-    "generated/architectural-cleanup/ARCHITECTURAL_CLEANUP_INVENTORY.md",
-    "generated/architectural-cleanup/BROWSER_GLOBAL_ASSUMPTION_AUDIT.md",
-    "generated/architectural-cleanup/CLEANUP_DEPENDENCY_MAP.md",
-    "generated/architectural-cleanup/DOCUMENTATION_CLEANUP_AUDIT.md",
-    "generated/architectural-cleanup/EDGE_FUNCTION_LOGGING_AUDIT.md",
-    "generated/architectural-cleanup/EDGE_FUNCTION_LOGGING_STANDARDIZATION_PLAN.md",
-    "generated/architectural-cleanup/FILE_REMOVAL_SAFETY_POLICY.md",
-    "generated/architectural-cleanup/POST_CLEANUP_VERIFICATION_REPORT.md",
-    "generated/architectural-cleanup/RUNTIME_HOST_BOUNDARY_CLEANUP_PLAN.md",
-    "generated/architectural-cleanup/SCRIPT_AND_WORKFLOW_CLEANUP_AUDIT.md",
-    "generated/architectural-cleanup/TRUTH_MANIFEST_AUDIT.md",
-    "generated/architectural-cleanup/TRUTH_MANIFEST_RECONCILIATION_PLAN.md",
-    "generated/architectural-cleanup/architectural-cleanup-verification.json",
-    "generated/architectural-cleanup/portability-cleanup-status.json",
     "generated/assurance-l3-ceiling-report.json",
     "generated/attestation-evidence-freshness-report.json",
     "generated/attestation-packet-signed-report.json",
@@ -127,7 +100,34 @@
     "generated/claim-safety-hardening/CLAIM_SAFETY_HARDENING_FINAL_VERIFICATION.md",
     "generated/claim-safety-hardening/DEMO_AND_FUTURE_CLAIM_SAFETY_UPDATE.md",
     "generated/claim-safety-hardening/DEMO_CONTAINMENT_MODEL.md",
-    "generated/claim-safety-hardening/DEMO_ONLY_SURFACE_AUDIT.md"
+    "generated/claim-safety-hardening/DEMO_ONLY_SURFACE_AUDIT.md",
+    "generated/claim-safety-hardening/DEPLOYABILITY_LANGUAGE_AUDIT.md",
+    "generated/claim-safety-hardening/DEPLOYMENT_WORDING_POLICY.md",
+    "generated/claim-safety-hardening/OS_LANGUAGE_REFERENCE_AUDIT.md",
+    "generated/claim-safety-hardening/claim-safety-verification.json",
+    "generated/claim-safety-hardening/demo-containment-status.json",
+    "generated/claim-safety-hardening/deployability-language-status.json",
+    "generated/claim-safety-hardening/os-language-status.json",
+    "generated/command-palette-profile-leakage-report.json",
+    "generated/communications-connector-state-alignment-report.json",
+    "generated/communications-provider-copy-report.json",
+    "generated/compliance-collector-allowlist-report.json",
+    "generated/compliance-evidence-allowlisted-report.json",
+    "generated/concierge-ai-state-handling-report.json",
+    "generated/concierge-ai-trust-copy-report.json",
+    "generated/connector-health-state-consistency-report.json",
+    "generated/connector-refresh-streak-report.json",
+    "generated/connector-truth-artifacts-report.json",
+    "generated/cost-spotlight-empty-state-report.json",
+    "generated/cross-domain-coherence-empty-state-report.json",
+    "generated/cta-integrity-report.json",
+    "generated/debugger-tamper-proof-report.json",
+    "generated/demo-only-surface-badging-report.json",
+    "generated/dependency-upgrade-proposer-report.json",
+    "generated/deployment-wording-safety-report.json",
+    "generated/desktop-honest-narrow-width-report.json",
+    "generated/device-surface-claim-safety-report.json",
+    "generated/doc-canonicality-report.json"
   ],
   "entries": [
     {
@@ -282,43 +282,43 @@
     },
     {
       "artifact": "generated/admin-and-validation-closure/ADMIN_AND_VALIDATION_FINAL_VERIFICATION.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/ADMIN_CONTROL_PLANE_USABILITY_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/ADMIN_DOMAIN_CONSOLIDATION_AND_LINKAGE_PLAN.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/admin-and-validation-verification.json",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/admin-usability-status.json",
@@ -332,53 +332,53 @@
     },
     {
       "artifact": "generated/admin-and-validation-closure/CI_BEHAVIORAL_TRUTH_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/EDGE_FUNCTION_CONTRACT_COVERAGE_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/EDGE_FUNCTION_CONTRACT_EXPANSION_PLAN.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.824Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/EVIDENCE_FRESHNESS_POLICY.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/GATE_TAXONOMY_AND_QUALITY_MODEL.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/gate-quality-status.json",
@@ -392,13 +392,13 @@
     },
     {
       "artifact": "generated/admin-and-validation-closure/MUSEUM_BOARD_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/observation-window-status.json",
@@ -412,23 +412,23 @@
     },
     {
       "artifact": "generated/admin-and-validation-closure/OPERATOR_STRESS_TEST_REPORT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/OPERATOR_TOP_TASK_PATHFINDING_MODEL.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/top-tasks-status.json",
@@ -442,13 +442,13 @@
     },
     {
       "artifact": "generated/admin-and-validation-closure/WARN_GATE_AND_RATCHET_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:admin-validation:emit",
       "npmScript": null,
       "owner": "operations",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.825Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/admin-and-validation-closure/warn-ratchet-status.json",
@@ -1159,13 +1159,13 @@
     },
     {
       "artifact": "generated/architectural-cleanup/ARCHITECTURAL_CLEANUP_INVENTORY.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/architectural-cleanup-status.json",
@@ -1179,73 +1179,73 @@
     },
     {
       "artifact": "generated/architectural-cleanup/architectural-cleanup-verification.json",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.829Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/BROWSER_GLOBAL_ASSUMPTION_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/CLEANUP_DEPENDENCY_MAP.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/DOCUMENTATION_CLEANUP_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/EDGE_FUNCTION_LOGGING_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/EDGE_FUNCTION_LOGGING_STANDARDIZATION_PLAN.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/FILE_REMOVAL_SAFETY_POLICY.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/logging-cleanup-status.json",
@@ -1259,63 +1259,63 @@
     },
     {
       "artifact": "generated/architectural-cleanup/portability-cleanup-status.json",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.829Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/POST_CLEANUP_VERIFICATION_REPORT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/RUNTIME_HOST_BOUNDARY_CLEANUP_PLAN.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/SCRIPT_AND_WORKFLOW_CLEANUP_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/TRUTH_MANIFEST_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.828Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architectural-cleanup/TRUTH_MANIFEST_RECONCILIATION_PLAN.md",
-      "producer": null,
+      "producer": "package.json#closure:architectural-cleanup:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.829Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/architecture-compliance-report.json",
@@ -3467,23 +3467,23 @@
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/AI_BUDGET_CURRENT_STATE_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/AI_BUDGET_RECEIPT_MODEL.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/budget-load-runs/README.md",
@@ -3497,13 +3497,13 @@
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/FUTURE_SURFACE_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/future-surface-status.json",
@@ -3517,23 +3517,23 @@
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/PER_USER_AI_CEILING_MODEL.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/PER_USER_BUDGET_ENFORCEMENT_PROOF.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/per-user-budget-status.json",
@@ -3547,33 +3547,33 @@
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/TRUST_COPY_ALIGNMENT_MODEL.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/TRUST_SENSITIVE_UX_AUDIT.md",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-and-future-closure/trust-ux-status.json",
-      "producer": null,
+      "producer": "package.json#closure:economic-trust-future:emit",
       "npmScript": null,
       "owner": "architecture",
       "consumers": [],
       "declaredInRegistry": false,
       "lastWrittenAt": "2026-04-19T23:17:56.842Z",
-      "source": "orphan"
+      "source": "directory-inferred"
     },
     {
       "artifact": "generated/economic-trust-future-closure-report.json",
