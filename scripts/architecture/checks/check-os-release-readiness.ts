@@ -314,6 +314,8 @@ const REQUIRED_GATES = [
   // Phase 28 Admin runbook surface IA wiring (1 BLOCK gate — registry + mount + hub tab parity)
   "admin-runbook-surface-wiring",
   "recovery-boot-evidence",
+  // Phase 30 Producer→consumer ownership graph (1 BLOCK gate — directed graph + transitive staleness for 459 artifacts)
+  "artifact-ownership-graph",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
