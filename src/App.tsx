@@ -234,9 +234,6 @@ const App = () => (
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
 
-            {/* Root redirects to login */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
-
             {/* TIER 2+3: AUTHENTICATED */}
             <Route path="/*" element={
               <AuthenticatedProviders>
