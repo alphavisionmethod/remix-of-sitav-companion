@@ -1,14 +1,63 @@
 {
-  "generatedAt": "2026-04-19T16:25:50.300Z",
+  "generatedAt": "2026-04-20T15:47:20.231Z",
   "gate": "shell-runtime-portability",
-  "ok": true,
-  "errorCount": 0,
+  "ok": false,
+  "errorCount": 6,
   "warningCount": 0,
-  "issues": [],
-  "scanned": 664,
-  "sharedRoots": [
-    "src/hooks",
-    "src/lib/services"
+  "issues": [
+    {
+      "severity": "error",
+      "area": "src/contexts/SitaOSContext.tsx",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    },
+    {
+      "severity": "error",
+      "area": "src/lib/os-security/onboardingd.ts",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    },
+    {
+      "severity": "error",
+      "area": "src/lib/os-services/diagnostic-bundle.ts",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    },
+    {
+      "severity": "error",
+      "area": "src/lib/services/device-presence-service.ts",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    },
+    {
+      "severity": "error",
+      "area": "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    },
+    {
+      "severity": "error",
+      "area": "src/lib/services/surface-detection/index.ts",
+      "message": "Inline runtime probe(s) [navigator.userAgent] outside src/runtimes/. Route through src/runtimes/runtime-platform.ts or useElectronBridge."
+    }
   ],
-  "violations": 0
+  "pass1": {
+    "scanned": 665,
+    "sharedRoots": [
+      "src/hooks",
+      "src/lib/services"
+    ],
+    "violations": 0
+  },
+  "pass2": {
+    "scanned": 4903,
+    "scanRoots": [
+      "src"
+    ],
+    "allowlistSize": 7,
+    "violations": 6,
+    "offendingFiles": [
+      "src/contexts/SitaOSContext.tsx",
+      "src/lib/os-security/onboardingd.ts",
+      "src/lib/os-services/diagnostic-bundle.ts",
+      "src/lib/services/device-presence-service.ts",
+      "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
+      "src/lib/services/surface-detection/index.ts"
+    ]
+  }
 }
