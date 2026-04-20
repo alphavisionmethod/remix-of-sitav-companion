@@ -128,6 +128,8 @@
     "check:onboarding-surface-truth": "tsx scripts/architecture/checks/check-onboarding-surface-truth.ts",
     "generate:artifact-ownership": "npx tsx scripts/manifests/generate/generate-artifact-ownership-manifest.ts",
     "check:artifact-ownership-coverage": "npx tsx scripts/architecture/checks/check-artifact-ownership-coverage.ts",
+    "generate:artifact-index": "npx tsx scripts/manifests/generate/generate-artifact-index.ts",
+    "check:artifact-index-traceability": "npx tsx scripts/architecture/checks/check-artifact-index-traceability.ts",
     "generate:validator-gate-map": "npx tsx scripts/manifests/generate/generate-validator-gate-map.ts",
     "check:validator-gate-coverage": "npx tsx scripts/architecture/checks/check-validator-gate-coverage.ts",
     "validators:run-advisory": "npx tsx scripts/architecture/checks/run-all-advisory-validators.ts",
