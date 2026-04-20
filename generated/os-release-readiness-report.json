@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T17:06:18.712Z",
+  "generatedAt": "2026-04-20T18:26:18.141Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1707,6 +1707,27 @@
     {
       "file": "generated/ai-shim-integrity-report.json",
       "gate": "ai-shim-integrity",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/iso-artifact-presence-report.json",
+      "gate": "iso-artifact-presence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ova-artifact-presence-report.json",
+      "gate": "ova-artifact-presence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/raw-img-artifact-presence-report.json",
+      "gate": "raw-img-artifact-presence",
       "ok": true,
       "errors": 0,
       "warnings": 0
