@@ -9,7 +9,7 @@ import { probeRuntimeTier, type RuntimeTierProbe } from "./runtime-detection";
 import { getWebCapability } from "./web/web-capability-map";
 import { getApplianceCapability } from "./appliance/appliance-capabilities";
 import { probeDesktopCapabilities } from "./desktop/desktop-host-capabilities";
-import { getFeatureRuntimeTier } from "./feature-runtime-tier-registry";
+import { resolveFeatureTierAvailability } from "./feature-runtime-tier-registry";
 
 interface RuntimeTierContextValue {
   probe: RuntimeTierProbe;
@@ -48,15 +48,8 @@ export function RuntimeTierProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    const resolveFeature = (featureId: string): TierAvailability => {
-      const feature = getFeatureRuntimeTier(featureId);
-      if (!feature) return "prohibited";
-      if (feature.supportedTiers.includes(tier)) return "supported";
-      if (feature.simulatedTiers.includes(tier)) return "simulated";
-      if (feature.fallbackTiers.includes(tier)) return "fallback";
-      if (feature.roadmapTiers.includes(tier)) return "roadmap";
-      return "prohibited";
-    };
+    const resolveFeature = (featureId: string): TierAvailability =>
+      resolveFeatureTierAvailability(featureId, tier);
 
     return { probe, tier, resolveCapability, resolveFeature };
   }, []);
