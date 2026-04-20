@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-04-20T00:00:20.833Z",
+  "gate": "cosmetic-debt-closure",
+  "mode": "PHYSICAL",
+  "tier": "BLOCK-composite",
+  "parentGate": "lib-ownership-drift",
+  "totalAssertions": 12,
+  "verified": [
+    {
+      "closes": "A1",
+      "path": "src/lib/canonical-backend/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/integrations/canonical-backend/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/simulation/monte-carlo-engine.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/domains/simulation/monte-carlo-engine.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/mock-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/data/fixtures/mock-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/demo-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/seed/index.ts"
+    },
+    {
+      "closes": "A2",
+      "path": "src/services/index.ts"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/canonical-backend"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/simulation"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/unclassified"
+    }
+  ],
+  "violations": [],
+  "ok": true,
+  "errorCount": 0
+}
