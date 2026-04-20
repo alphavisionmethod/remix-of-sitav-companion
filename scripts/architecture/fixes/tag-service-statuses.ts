@@ -14,13 +14,15 @@ const MANIFEST_PATH = path.resolve("generated/service-manifest.json");
 
 // Heuristic overrides — domains/paths that imply non-active status.
 // Conservative: when in doubt, keep `active`.
+// Canonical statuses (per check-status-truth-tags.ts):
+//   scaffold | alpha | beta | ga | deprecated | retired
 const OVERRIDES: Array<{ matcher: RegExp; status: string; reason: string }> = [
-  { matcher: /\.test$/, status: "active", reason: "test harness" },
-  { matcher: /__tests__/, status: "active", reason: "test harness" },
+  { matcher: /\.test$/, status: "ga", reason: "test harness" },
+  { matcher: /__tests__/, status: "ga", reason: "test harness" },
   // Mobile pipeline is intentionally retired to FUTURE_VISION (per WAVE plan).
-  { matcher: /(^|\/)mobile-(pipeline|shell|companion)/i, status: "deprecated", reason: "mobile retired to FUTURE_VISION" },
+  { matcher: /(^|\/)mobile-(pipeline|shell|companion)/i, status: "retired", reason: "mobile retired to FUTURE_VISION" },
   { matcher: /\/legacy\//, status: "deprecated", reason: "legacy directory" },
-  { matcher: /scaffold/i, status: "experimental", reason: "scaffold service" },
+  { matcher: /scaffold/i, status: "scaffold", reason: "scaffold service" },
 ];
 
 function classify(svc: { name?: string; domain?: string; path?: string }): { status: string; reason: string } {
@@ -28,7 +30,7 @@ function classify(svc: { name?: string; domain?: string; path?: string }): { sta
   for (const o of OVERRIDES) {
     if (o.matcher.test(fields)) return { status: o.status, reason: o.reason };
   }
-  return { status: "active", reason: "default — service is shipped in current build" };
+  return { status: "ga", reason: "default — service is shipped in current production build" };
 }
 
 function main() {
