@@ -1,91 +1,81 @@
 
 
-## Plan — Route remaining inline runtime probes through the canonical registry
+## Goal
+Restore master aggregator to fully GREEN by generating the 3 missing required-gate outputs, then triage the 98 advisory failures into fix / accept / suppress buckets without dropping any of the 21 BLOCK gates.
 
-### Goal
-Eliminate every inline `window.electron` / `navigator.userAgent` runtime/platform check outside `src/runtimes/` so all tier + platform truth flows through the canonical detectors (`detectActiveRuntimeTier`, `detectDesktopRuntime`, `getElectronBridge`, `isElectronRuntime`) — exactly the pattern that already governs `useElectronBridge`.
+## Ground truth verified this session
+- `public/generated/connector-client-registry-report.json` already exists and reports `ok: true, errorCount: 0`. The required output the aggregator looks for is `generated/connector-client-registry-completeness-report.json` (different path / filename).
+- `scripts/architecture/checks/check-runbook-coverage.ts` exists but emits via `ViolationCollector.report()` only — it never writes `generated/runbook-coverage-report.json`, so the aggregator can't find it.
+- `scripts/validation/check-runbook-human-use-proof.ts` already uses `emitGateReport`. The pattern is proven; we apply it to the 3 missing emitters.
+- No `check-admin-runbook-surface-wiring.ts` exists yet — needs to be authored against the existing tab-registry + runbook-registry.
 
-### Scope decision per match
+## Wave 1 — Generate the 3 missing required outputs (unblocks aggregator)
 
-| Pattern | Files | Action |
-|---|---|---|
-| `VITE_APPLIANCE_RUNTIME` | `src/runtimes/runtime-detection.ts` only | ✅ Already canonical — no change |
-| Observability sinks (raw UA string for telemetry only) | `src/lib/observability/runtime-error-context.ts`, `src/lib/observability/uptime.ts` | ✅ Keep — tier-agnostic crash/heartbeat metadata, not a runtime decision |
-| Documentation contracts describing fallbacks | `src/runtimes/desktop/desktop-host-capabilities.ts`, `src/runtimes/desktop/desktop-fallbacks.ts`, `src/lib/surfaces/host-window-vs-simulated-map.ts`, `src/lib/web-platform/release/web-runtime-min-contract.ts` | ✅ Keep — these are spec strings, not live probes |
-| Live runtime/platform probes outside `src/runtimes/` | 9 files (listed below) | 🔧 Migrate |
+### Fix 1.1 — `runbook-coverage-report.json`
+- **File**: `scripts/architecture/checks/check-runbook-coverage.ts` (extend, don't rewrite)
+- **Change**: After the existing per-runbook validation loop, emit `generated/runbook-coverage-report.json` via `emitGateReport` with: `gate: "runbook-coverage"`, `ok` (= no errors collected), `extra: { totalRunbooks, subsystemsCovered, mandatorySubsystems, criticalSubsystemCoverage, perRunbook: [{runbookId, subsystem, severity, hasMarkdown, hasValidContext, hasValidKillSwitch, stepCount}] }`, plus `issues` mirrored from the ViolationCollector.
+- **No registry/SQL change.**
 
-### New canonical helper (single file, no second abstraction)
+### Fix 1.2 — `connector-client-registry-completeness-report.json`
+- **File**: `scripts/architecture/checks/check-connector-client-registry.ts` (extend)
+- **Change**: Add a second write that mirrors the existing `public/generated/connector-client-registry-report.json` to `generated/connector-client-registry-completeness-report.json` with `gate: "connector-client-registry-completeness"` (matching the aggregator's expected gate id) and the same payload shape. Keep the public mirror intact for the existing dashboard.
 
-**Add `src/runtimes/runtime-platform.ts`** — pure helper layered on the existing detectors. No new abstraction layer; it just re-exports the registry's truth in the shapes the call sites need:
+### Fix 1.3 — `admin-runbook-surface-wiring-report.json` (new validator)
+- **New file**: `scripts/architecture/checks/check-admin-runbook-surface-wiring.ts`
+- **Asserts**:
+  1. Every runbook in `RUNBOOK_REGISTRY` (`src/lib/support/runbook-registry.ts`) has at least one admin surface that references it (search `src/pages/admin/**` + `src/components/admin/**` for the runbook id literal).
+  2. Every kill-switch with `runbookRef` resolves to a real surface that links runbook + kill-switch together.
+  3. The `tab-registry.ts` declares an entry for the runbook console / safety surface.
+- **Emits**: `generated/admin-runbook-surface-wiring-report.json` via `emitGateReport` with per-runbook coverage rows.
+- **Aggregator binding**: register the new gate id `admin-runbook-surface-wiring` in `check-os-release-readiness.ts` REQUIRED_GATES list (replacing whatever placeholder currently fails to resolve it).
 
-```ts
-// ── exports ──────────────────────────────────────────────
-export type DevicePlatform = "ios" | "android" | "macos" | "windows" | "linux" | "web";
-export type DeviceFormFactor = "desktop" | "mobile" | "tablet";
+### Checkpoint A
+- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts`.
+- Expected: all 3 missing-output errors clear; 21/21 BLOCK gates GREEN.
+- If any BLOCK gate flips RED → **STOP and report** per gate policy.
 
-export function getDevicePlatform(): DevicePlatform        // uses detectDesktopRuntime + UA fallback
-export function getDeviceFormFactor(): DeviceFormFactor    // mobile/desktop classification
-export function getDeviceLabel(): string                   // "iPhone" / "Mac Browser" / "SITA Desktop"
-export function getDeviceFingerprint(): string             // stable short id for state-sync / continuity
-export function getOSVersionString(): string               // for diagnostics rows
-export function isMobileSurface(): boolean
-```
+## Wave 2 — Triage the 98 advisory failures
 
-All UA parsing lives in this one file. Internally it calls `detectActiveRuntimeTier()` first (so `DESKTOP_HOST` short-circuits to `"SITA Desktop"`), then falls back to a single UA regex table.
+Group the 98 into 4 buckets via the aggregator's `architecture-compliance-report.json` (advisory section). For each bucket I will produce a short table (gate id · failure category · proposed disposition · file evidence):
 
-### Migrations (9 files)
+- **Bucket A — Real drift, low-risk auto-fix** (e.g. stale generated artifacts that just need their generator script re-run). Apply fix in-place.
+- **Bucket B — Real drift, requires source change** (e.g. tier-disclosure missing on 6 boot components). Apply minimal source edit using established patterns (the boot tier-disclosure work already has a canonical primitive).
+- **Bucket C — Known intentional drift** (e.g. `pending-human-execution` classifier in `check-runbook-human-use-proof.ts`). Confirm it stays advisory; no change needed; document in `WAVE2_ADVISORY_DISPOSITION.md`.
+- **Bucket D — Suppress with justification** (advisory checks that are obsolete given new architecture). Mark in their own gate report as `intentional` with rationale; never silently delete.
 
-| File | Inline check today | Replaced with |
-|---|---|---|
-| `src/lib/services/surface-detection/index.ts` | `('electron' in window) \|\| ua.includes("Electron")`; mobile UA regex; `getDeviceName()` UA chain | `isElectronRuntime()` + `isMobileSurface()` + `getDeviceLabel()` |
-| `src/lib/app-platform/runtime.ts` | `window.electron`, `window.electron.platform`, mobile UA | `detectDesktopRuntime()` + `getDevicePlatform()` |
-| `src/lib/app-platform/sdk.ts` | `window.electron?.platform`, `!!window.electron`, UA regex | `getDevicePlatform()` + `isElectronRuntime()` |
-| `src/hooks/use-realtime-notifications.ts` | direct `window.electron?.sendNotification` call + local `isElectron()` | Use `useElectronBridge().sendNotification` (already the canonical bridge) |
-| `src/contexts/SitaOSContext.tsx` | `/iPhone\|iPad\|Android/i.test(ua)` + `ua.slice(0,32)` for deviceId | `isMobileSurface()` + `getDeviceFingerprint()` |
-| `src/lib/services/biometric-auth/index.ts` | UA-based device label | `getDeviceLabel()` |
-| `src/lib/services/system-updates/index.ts` | raw `navigator.userAgent`/`platform`/`language` for device profile | `getDeviceLabel()` + `getDevicePlatform()`; keep `language` (locale, not runtime) |
-| `src/lib/services/push-notification/push-registration-service.ts` | UA chain for device name | `getDeviceLabel()` |
-| `src/lib/services/universal-state-sync/index.ts` | `web_${ua.slice(0,20)}` device id | `getDeviceFingerprint()` |
-| `src/components/sita/OSSetupExperience.tsx` | `navigator.userAgent.slice(0,60)` x2 (osVersion + os) | `getOSVersionString()` |
+### Checkpoint B
+- Re-run aggregator + 6 evidence gates.
+- Expected: advisory failure count drops materially; 0 BLOCK regressions.
+- Print `WAVE2_ADVISORY_DISPOSITION.md` showing exactly what was fixed vs accepted vs suppressed.
 
-### Validator extension (enforces the new boundary going forward)
+## Wave 3 — Lock the fix in place (prevent re-drift)
 
-Update **`scripts/validation/check-shell-runtime-portability.ts`** to add a second pass: any `*.ts/*.tsx` file outside `src/runtimes/`, `src/lib/observability/`, the doc-contract files listed above, and the canonical `useElectronBridge.ts` must NOT contain the literal tokens `window.electron`, `navigator.userAgent`, or `import.meta.env.VITE_APPLIANCE_RUNTIME`. Emit `error` issues into the existing gate report (no new gate ID needed — extends the same shell/runtime portability gate already wired into the master aggregator).
+- **File**: `scripts/architecture/checks/check-os-release-readiness.ts`
+- **Change**: Add a startup assertion that every gate id in `REQUIRED_GATES` has a corresponding `generated/<id>-report.json` writer registered in a new `REQUIRED_OUTPUT_WRITERS` constant (script path + gate id). Fail aggregator with a clear message if any required output is unwritable, instead of the current "missing report" generic error.
+- **Doc**: append a one-line correction note to `MASTER_AUDIT.md` Part XII confirming the 3 required outputs are now produced (no rewrite — just the corrected status line).
 
-Add an explicit allowlist constant `RUNTIME_PROBE_ALLOWLIST` at the top of the validator with the 6 doc/observability files, so future additions are an obvious code review signal.
+## Out of scope
+- No DB schema / migration changes.
+- No new CI gates beyond the one new validator (`check-admin-runbook-surface-wiring.ts`).
+- No edits to `src/runtimes/`, `supabase/migrations/`, `types.ts`, or lockfiles.
+- No rewrites of `MISSING_AUDIT.md` or `PROJECT_TREE_AUDIT.md`.
 
-### Out of scope
+## Stop conditions
+1. Any of the 21 BLOCK gates flips RED → halt, report, await direction.
+2. Wave 1 produces an output whose validator reports `ok: false` for substantive reasons (not just missing emitter) → halt, surface the real issue rather than mask it.
+3. Wave 2 advisory count fails to drop by ≥30% → halt and re-bucket with you.
 
-- No changes to `src/runtimes/**` detectors (already canonical).
-- No changes to observability files (`runtime-error-context.ts`, `uptime.ts`) — UA there is opaque telemetry, not a runtime decision.
-- No changes to `useElectronBridge.ts` (it IS the canonical bridge consumer).
-- No DB / edge function / migration / README changes.
-- No deletion of the doc-contract strings that mention `navigator.userAgent` as a *described* web fallback.
+## Files to be created
+- `scripts/architecture/checks/check-admin-runbook-surface-wiring.ts`
+- `generated/runbook-coverage-report.json` (script output)
+- `generated/connector-client-registry-completeness-report.json` (script output)
+- `generated/admin-runbook-surface-wiring-report.json` (script output)
+- `WAVE2_ADVISORY_DISPOSITION.md` (triage record)
 
-### Validation (after implementation)
-
-1. `npx tsx scripts/validation/check-shell-runtime-portability.ts` → 0 violations.
-2. `npx tsx scripts/validation/check-runtime-host-boundaries.ts` → still PASS (unchanged surface).
-3. Spot-check `src/lib/services/surface-detection` — `detectSurfaceType()` should now return identical values for Electron/PWA/mobile/web without referencing `navigator` or `window.electron` directly.
-4. Master aggregator (`os-release-readiness-report.json`) — no regression in the 28 BLOCK gates.
-
-### Files touched
-
-**Created (1)**
-- `src/runtimes/runtime-platform.ts`
-
-**Edited (10)**
-- `src/lib/services/surface-detection/index.ts`
-- `src/lib/app-platform/runtime.ts`
-- `src/lib/app-platform/sdk.ts`
-- `src/hooks/use-realtime-notifications.ts`
-- `src/contexts/SitaOSContext.tsx`
-- `src/lib/services/biometric-auth/index.ts`
-- `src/lib/services/system-updates/index.ts`
-- `src/lib/services/push-notification/push-registration-service.ts`
-- `src/lib/services/universal-state-sync/index.ts`
-- `src/components/sita/OSSetupExperience.tsx`
-
-**Validator extended (1)**
-- `scripts/validation/check-shell-runtime-portability.ts`
+## Files to be edited
+- `scripts/architecture/checks/check-runbook-coverage.ts` (add report emitter)
+- `scripts/architecture/checks/check-connector-client-registry.ts` (add second mirror to canonical path)
+- `scripts/architecture/checks/check-os-release-readiness.ts` (register new gate id + add `REQUIRED_OUTPUT_WRITERS` startup assertion)
+- 0–6 source files in Wave 2 Bucket B (boot tier-disclosure), only if flagged
+- `MASTER_AUDIT.md` Part XII (one-line correction)
 
