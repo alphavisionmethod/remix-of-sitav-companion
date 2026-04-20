@@ -150,9 +150,9 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 2 | `src/lib/admin-ai` | AI-engineering admin (separate from operator-admin) | ✅ | Pair with `admin` |
 | 3 | `src/lib/advisor-intelligence` | Advisor knowledge + recommendation prep | ✅ |  |
 | 4 | `src/lib/advisor-protocol` | Cross-advisor protocol contracts | ✅ |  |
-| 5 | `src/lib/ai` | Top-level AI primitives | 🟡 | Overlaps with `ai-engineering`/`ai-gateway` |
-| 6 | `src/lib/ai-engineering` | AI-builder facing engineering surface | 🟡 | Cluster naming |
-| 7 | `src/lib/ai-gateway` | Routing client to AI providers | ✅ |  |
+| 5 | `src/lib/ai` | Legacy shim → src/lib/ai-platform/runtime | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
+| 6 | `src/lib/ai-engineering` | Legacy shim → src/lib/ai-platform/engineering | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
+| 7 | `src/lib/ai-gateway` | Legacy shim → src/lib/ai-platform/gateway | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
 | 8 | `src/lib/api` | Browser-side API helpers | ✅ |  |
 | 9 | `src/lib/app-platform` | App registry + install lifecycle | ✅ |  |
 | 10 | `src/lib/backend-topology` | Edge-function role enforcement | ✅ |  |
@@ -167,7 +167,7 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 19 | `src/lib/context-menu` | Right-click + command palette context | ✅ |  |
 | 20 | `src/lib/contracts` | Cross-plane TypeScript contracts | ✅ |  |
 | 21 | `src/lib/control-plane` | Operator command surfaces | ✅ |  |
-| 22 | `src/lib/core-services` | Core service implementations | 🟡 | Naming overlap with `services` |
+| 22 | `src/lib/core-services` | Layer-1 Platform Canonical (organs + façade) | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/core-services/README.md (BLOCK gate #27) |
 | 23 | `src/lib/data-services` | Data fetch services | ✅ |  |
 | 24 | `src/lib/db` | DB client helpers + schema-registry | ✅ |  |
 | 25 | `src/lib/delivery-methodology` | Delivery method library | ✅ |  |
@@ -182,31 +182,31 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 34 | `src/lib/engine` | General execution engine helpers | ✅ |  |
 | 35 | `src/lib/fip` | Federation interop primitives | ✅ |  |
 | 36 | `src/lib/hooks` | Reusable React hooks | ✅ |  |
-| 37 | `src/lib/incidents` | Incident pipeline | ✅ |  |
+| 37 | `src/lib/incidents` | Symptom→runbook classifier | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/incidents/README.md (BLOCK gate #27) |
 | 38 | `src/lib/intelligence-architecture` | Intelligence-layer wiring | ✅ |  |
 | 39 | `src/lib/internal-agents` | 40-agent autonomy registry | ✅ |  |
 | 40 | `src/lib/meta-arch` | Meta-architecture helpers | ✅ |  |
 | 41 | `src/lib/migration` | Client-side migration helpers | ✅ |  |
 | 42 | `src/lib/mission-control-launcher.ts` | Single-file launcher | ✅ |  |
 | 43 | `src/lib/no-hallucination` | Anti-hallucination guards | ✅ |  |
-| 44 | `src/lib/observability` | Telemetry primitives | ✅ |  |
+| 44 | `src/lib/observability` | Telemetry primitives (logs/traces/SLO/sentry) | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/observability/README.md (BLOCK gate #27) |
 | 45 | `src/lib/operations` | Ops dashboards client | ✅ |  |
 | 46 | `src/lib/os-security` | OS-tier security UI | ✅ |  |
 | 47 | `src/lib/os-services` | OS-tier service clients | ✅ |  |
 | 48 | `src/lib/pack-store` | App pack store client | ✅ |  |
-| 49 | `src/lib/platform` | Platform primitives | 🟡 | Overlap with platform-law/platform-plane/web-platform |
-| 50 | `src/lib/platform-law` | Platform constitutional rules | ✅ |  |
-| 51 | `src/lib/platform-plane` | Platform-plane truths | ✅ |  |
+| 49 | `src/lib/platform` | Layer-3 Platform Services barrel | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/platform/README.md (BLOCK gate #27) |
+| 50 | `src/lib/platform-law` | Pure law registry (rules-as-data, not runtime) | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/platform-law/README.md (BLOCK gate #27) |
+| 51 | `src/lib/platform-plane` | BFF + RBAC + safety per Admin/User plane | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/platform-plane/README.md (BLOCK gate #27) |
 | 52 | `src/lib/policy` | Policy engine (NB: not `policies/`) | ✅ |  |
 | 53 | `src/lib/query-config.ts` | Query client config | ✅ |  |
 | 54 | `src/lib/reality` | Reality classification | ✅ |  |
 | 55 | `src/lib/reality-records` | Reality record store | ✅ |  |
 | 56 | `src/lib/security` | Client-side security primitives | ✅ |  |
-| 57 | `src/lib/services` | Façade for cross-cutting services | ✅ |  |
+| 57 | `src/lib/services` | Layer-2 Domain Services (implementations) | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/services/README.md (BLOCK gate #27) |
 | 58 | `src/lib/setup` | Setup wizards (overlap with onboarding) | 🟡 | Intent overlap |
 | 59 | `src/lib/shopify` | Shopify-specific client (account-blocked) | ⚪ | Tested only against fixtures |
 | 60 | `src/lib/sita-kernel.ts` | Kernel boot code | ✅ |  |
-| 61 | `src/lib/sovereign-ai-gateway` | Sovereign / on-prem AI routing | 🟡 | Overlap naming with ai-gateway |
+| 61 | `src/lib/sovereign-ai-gateway` | Legacy shim → src/lib/ai-platform/sovereign | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |
 | 62 | `src/lib/storage` | Storage clients | ✅ |  |
 | 63 | `src/lib/strategic-intelligence` | Strategic intel surfacing | ✅ |  |
 | 64 | `src/lib/supabase-helpers.ts` | Single-file helpers | ✅ |  |
@@ -218,7 +218,7 @@ Each cluster is annotated with its intent and its current canonical status. Nami
 | 70 | `src/lib/types` | Shared TS types | ✅ |  |
 | 71 | `src/lib/ux-trust` | UX trust badges | ✅ |  |
 | 72 | `src/lib/verification` | Verifier client | ✅ |  |
-| 73 | `src/lib/web-platform` | Web-platform primitives | 🟡 | Overlap with platform |
+| 73 | `src/lib/web-platform` | Web-target deployability contract | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/web-platform/README.md (BLOCK gate #27) |
 
 ### 2.3 `src/pages/` topology
 
