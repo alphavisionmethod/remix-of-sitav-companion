@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-20T04:22:09.317Z",
+  "totalFunctionsOnDisk": 186,
+  "totalFunctionsOwned": 186,
+  "coveragePercent": 100,
+  "ownerTeamCount": 13,
+  "ownersByTeam": {
+    "compliance-security": 29,
+    "admin-governance": 6,
+    "advisor-intelligence": 9,
+    "agent-runtime": 20,
+    "ai-engineering": 10,
+    "notification-services": 7,
+    "os-kernel": 7,
+    "platform-core": 34,
+    "app-platform": 14,
+    "user-experience": 20,
+    "finance-engine": 9,
+    "cloud-infrastructure": 8,
+    "connector-integrations": 13
+  },
+  "orphanCount": 0,
+  "phantomCount": 0,
+  "metadataViolationCount": 0,
+  "manifestArtifacts": {
+    "canonical": {
+      "path": "generated/edge-function-ownership.json",
+      "md5": "e19557e95d19d7658d77cf706d57a48b",
+      "present": true
+    },
+    "publicMirror": {
+      "path": "public/generated/edge-function-ownership.json",
+      "md5": "e19557e95d19d7658d77cf706d57a48b",
+      "present": true
+    },
+    "parityOk": true
+  },
+  "violations": [],
+  "ok": true
+}
