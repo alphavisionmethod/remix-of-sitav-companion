@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T01:22:21.867Z",
+  "generatedAt": "2026-04-20T01:22:45.487Z",
   "validator": "check-onboarding-surface-truth",
   "tier": "WARN",
   "registry": "src/lib/architecture/onboarding-surface-registry.ts",
@@ -40,15 +40,8 @@
   "summary": {
     "totalSurfaces": 3,
     "errors": 0,
-    "warnings": 1,
+    "warnings": 0,
     "status": "PASS"
   },
-  "issues": [
-    {
-      "severity": "warning",
-      "area": "intent-banner-missing",
-      "message": "Surface \"money-introduction\" entrypoint \"src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx\" missing intent banner token \"ONBOARDING SURFACE: money-introduction\".",
-      "evidence": "src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx"
-    }
-  ]
+  "issues": []
 }
