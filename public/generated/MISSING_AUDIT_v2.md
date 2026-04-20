@@ -74,7 +74,7 @@
 | 2 | `public/generated/routes.json` | ✅ RESOLVED 2026-04-20 — emitted (696 routes; planes user/admin/shell-runtime; tiers tier1-4); `manifest-routes-flat` registered in manifest-registry; WARN gate PASS | P1 (RESOLVED) |
 | 3 | `docs/runbooks/` (incident + kill-switch playbooks) | Operators have no runbook linkage; the support-bundle gate produces evidence but no operator narrative **RESOLVED 2026-04-20** — docs/runbooks/ has 29 narratives + infra/runbooks/RB-005-AUTH.md; RUNBOOK_REGISTRY (src/lib/support/runbook-registry.ts) now has 22 entries (RB-005-AUTH added, dangling KS-PAYMENTS-AUTH→RB-005-AUTH reference resolved); runbook-subsystem-map declares 20 mandatory subsystems (added payments-auth); generated/runbook-index.json (31 entries) mirrored to public/generated/; check-runbook-coverage is BLOCK gate #25 in MANDATORY_BLOCK_GATES (scripts/architecture/checks/check-os-release-readiness.ts) — asserts mandatory subsystem coverage + markdown existence + bidirectional kill-switch ↔ runbook linkage. | P1 |
 | 4 | ~~Per-edge-function ownership manifest~~ | **RESOLVED 2026-04-20** — `src/lib/backend-topology/edge-function-owner-map.ts` now covers **186/186 functions (100%)** across **13 owner teams** (added `app-platform` team + 101 backfilled entries). Per-function ownership manifest at `generated/edge-function-ownership.json` (mirrored to `public/generated/`) carries `ownerTeam` + `primaryContact` + `escalationContact` + `slackChannel` + `runbookRef` + `killSwitchRef` for every function. `.github/CODEOWNERS` routes PRs to owning teams. `check-edge-function-ownership-completeness` is BLOCK gate #26 in master release roster, asserts 100% coverage + mirror parity + freshness ≤ 7 days. Mirror parity preserved via md5sum. | ✅ |
-| 5 | `src/lib/connectors/<provider>/client.ts` per OAuth provider | Real provider logic lives in edge functions; no client-side capability registry export | P2 |
+| 5 | ~~`src/lib/connectors/<provider>/client.ts` per OAuth provider~~ | **RESOLVED 2026-04-20** — Created per-provider client modules at `src/lib/connectors/<id>/client.ts` for **all 12 catalog connectors** (gmail, google-calendar, google-drive, plaid, stripe, quickbooks, twilio, sendgrid, instacart, hubspot, slack, dropbox). Each exports `*_CAPABILITY` + `*_SCOPES` + `*_ACTIONS` + singleton `*Client` + `create*Client()` factory bound through `createEdgeFunctionClient` (real logic stays in edge functions). Canonical client-side registry at `src/lib/connectors/providers.ts` (`CONNECTOR_PROVIDER_REGISTRY`, `getProviderEntry`, `getProviderClient`, `getProviderCapability`). New BLOCK gate `check-connector-client-registry-completeness` (gate #27 in `MANDATORY_BLOCK_GATES`) asserts 1:1 catalog ↔ per-provider module coverage + capability/client exports + registry parity. Report: `generated/connector-client-registry-report.json`. | ✅ |
 | 6 | ~~First-use resume/re-entry telemetry table~~ | **RESOLVED 2026-04-20** — `public.onboarding_resume_checkpoints` table live with owner-scoped RLS (`users_select_own_resume_checkpoint`, `users_insert_own_resume_checkpoint`, `users_update_own_resume_checkpoint`); validation trigger enforces `current_screen 1..29` and `branch IN (quick,balanced,deep)`; resume token + 30-day expiry; edge function deployed; gate `check-onboarding-branch-telemetry` enforces presence | P1 (RESOLVED) |
 | 7 | Admin runbook surface in 12-domain IA | Admin shells exist; runbook tab is not wired | P2 |
 | 8 | `recovery-mode-evidence.json` produced from a real recovery boot | Recovery is documented but evidence comes from QEMU only | P3 |
@@ -1380,14 +1380,14 @@ Mitigation: per-cluster README + Part II annotations.
 - **Proof artifact:** _owners.json hash referenced in release readiness
 - **Rollback:** Rollback: delete file; check downgrades to warning
 
-#### P2.2 — Per-provider connector capability surface in TS
-- **Problem:** Real provider logic lives in edge functions; no client-side capability registry
-- **Files / new artifacts:** src/lib/connectors/<provider>/capabilities.ts (new × N)
-- **Artifact shape:** Each exports CAPABILITIES: ReadonlyArray<CapabilityId>
-- **Wiring:** Wire into admin Connectors page to render capability matrix
-- **Validator / gate:** check-connector-capability-completeness already exists; tighten to assert TS surface present
-- **Proof artifact:** connector-capability-completeness-report.json gains tsCoverage field
-- **Rollback:** Rollback: relax assertion
+#### P2.2 — Per-provider connector capability surface in TS — ✅ RESOLVED 2026-04-20
+- **Problem:** ~~Real provider logic lives in edge functions; no client-side capability registry~~ → resolved.
+- **Files / new artifacts:** `src/lib/connectors/<id>/client.ts` × 12 (gmail, google-calendar, google-drive, plaid, stripe, quickbooks, twilio, sendgrid, instacart, hubspot, slack, dropbox); canonical aggregator at `src/lib/connectors/providers.ts`.
+- **Artifact shape:** Each module exports `*_CAPABILITY: ConnectorCapability`, `*_SCOPES`, `*_ACTIONS`, singleton `*Client: ConnectorClient`, and `create*Client()` factory bound to its edge function via `createEdgeFunctionClient`. `providers.ts` exposes `CONNECTOR_PROVIDER_REGISTRY: ReadonlyArray<ConnectorProviderEntry>` + `CONNECTOR_PROVIDER_BY_ID` + lookup helpers.
+- **Wiring:** App code, agents, and the autonomy-gating layer reach connectors through `getProviderClient(connectorId)`; real provider logic remains in edge functions.
+- **Validator / gate:** New BLOCK gate `check-connector-client-registry-completeness` (scripts/architecture/checks/check-connector-client-registry.ts) — asserts every catalog connector has `src/lib/connectors/<id>/client.ts`, capability/client exports present, edge-function binding present, and registry 1:1 parity. Wired as gate #27 in `MANDATORY_BLOCK_GATES` in `check-os-release-readiness.ts`.
+- **Proof artifact:** `generated/connector-client-registry-report.json` (`catalogConnectors: 12`, `perProviderClients: 12`, `ok: true`).
+- **Rollback:** Delete the per-provider directories or `providers.ts`; gate immediately fails BLOCK and prevents release.
 
 #### P2.3 — Validator-to-consumer coverage map
 - **Problem:** 183 validators; ~17% unconsumed externally
