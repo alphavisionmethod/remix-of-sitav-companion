@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:52.930Z",
+  "gate": "service-authority-unique",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-authority-unique.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 67 canonical families, 77 total entries\n✅ check-service-authority-unique: All checks passed\n"
+}

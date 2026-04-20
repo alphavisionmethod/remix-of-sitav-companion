@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-17T15:16:54.316Z",
-  "gateCount": 38,
+  "generatedAt": "2026-04-20T16:30:11.659Z",
+  "gateCount": 39,
   "byPhase": {
     "phase-1-bounded-context": 1,
     "phase-2-runtime-tier": 2,
@@ -12,7 +12,7 @@
     "phase-8-ci-umbrella": 1,
     "phase-9-reality-deployability": 6,
     "phase-10-completeness": 4,
-    "phase-12-mobile-deployability": 3,
+    "phase-12-native-deployability": 1,
     "phase-13-web-deployability": 1,
     "phase-14-desktop-deployability": 1,
     "phase-15-appliance-deployability": 1,
@@ -25,11 +25,11 @@
     "phase-23-workflow-reality": 2,
     "phase-24-domain-reality": 1,
     "phase-25-owner-workflow-reality": 1,
-    "phase-26-manifest-truth": 1,
+    "phase-26-manifest-truth": 4,
     "phase-32-its-real-gate": 1
   },
   "bySeverity": {
-    "blocker": 37,
+    "blocker": 38,
     "warning": 1
   },
   "registry": [
@@ -223,33 +223,14 @@
       "producesArtifact": "generated/route-registry-completeness-report.json"
     },
     {
-      "id": "mobile-store-readiness",
-      "phase": "phase-12-mobile-deployability",
-      "title": "Mobile store readiness (iOS + Android)",
-      "script": "scripts/architecture/checks/check-mobile-store-readiness.ts",
+      "id": "os-build-pipeline",
+      "phase": "phase-12-native-deployability",
+      "title": "Ubuntu-native build pipeline (ISO + IMG + OVA)",
+      "script": "scripts/architecture/checks/check-os-build-pipeline.ts",
       "owner": "release-team",
       "severity": "blocker",
-      "description": "iOS App Store + Google Play Store 36-item checklist: zero missing, partial items must have remediation.",
-      "producesArtifact": "generated/mobile-store-readiness-report.json"
-    },
-    {
-      "id": "mobile-min-os-floor",
-      "phase": "phase-12-mobile-deployability",
-      "title": "Mobile minimum OS floor",
-      "script": "scripts/architecture/checks/check-mobile-store-readiness.ts",
-      "owner": "release-team",
-      "severity": "blocker",
-      "description": "iOS ≥ 16.0 and Android API ≥ 26 enforced via min-os-version-contract."
-    },
-    {
-      "id": "mobile-build-pipeline",
-      "phase": "phase-12-mobile-deployability",
-      "title": "Mobile build pipeline (Capacitor + IPA + AAB)",
-      "script": "scripts/architecture/checks/check-mobile-build-pipeline.ts",
-      "owner": "release-team",
-      "severity": "blocker",
-      "description": "Capacitor deps installed, capacitor.config.ts parses, exportOptions.plist exists, build scripts present.",
-      "producesArtifact": "generated/mobile-build-pipeline-report.json"
+      "description": "OS build scripts present, qemu validation green, signing artifacts wired. (iOS/Capacitor archived — see docs/PLATFORM_SCOPE.md.)",
+      "producesArtifact": "generated/os-build-pipeline-report.json"
     },
     {
       "id": "web-deployability",
@@ -391,6 +372,26 @@
       "producesArtifact": "generated/manifest-theater-report.json"
     },
     {
+      "id": "onboarding-components-folder",
+      "phase": "phase-26-manifest-truth",
+      "title": "Onboarding components folder (canonical primitives + consumer adoption)",
+      "script": "scripts/architecture/checks/check-onboarding-components-folder.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Asserts src/components/onboarding/ exists with ≥ 5 primitive .tsx files + index.ts barrel, and that ≥ 5 ceremony screens under src/pages/revenue-office/onboarding/screens/ import from @/components/onboarding. Drift-prevents the audit-flagged P2 (folder does not exist; UI lives entirely under pages/).",
+      "producesArtifact": "generated/onboarding-components-folder-report.json"
+    },
+    {
+      "id": "artifact-index-traceability",
+      "phase": "phase-26-manifest-truth",
+      "title": "Artifact index traceability (producer ↔ artifact ↔ consuming-gate)",
+      "script": "scripts/architecture/checks/check-artifact-index-traceability.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Asserts generated/INDEX.json exists, is schema-valid (v1), has ≥90% traceability coverage, every producer path is on disk (or a known external source like .github/, supabase/functions/, package.json), and public/generated/INDEX.json is byte-identical (sha256 parity). Drift-prevents the audit-flagged P1 (external validators cannot trace any artifact back to its producer-script or downstream consuming-gate without parsing the heavyweight 913-entry ownership manifest).",
+      "producesArtifact": "generated/artifact-index-traceability-report.json"
+    },
+    {
       "id": "its-real-gate",
       "phase": "phase-32-its-real-gate",
       "title": "Final \"It's Real\" Gate (Checklist 27: 13-clause aggregator)",
@@ -399,11 +400,21 @@
       "severity": "blocker",
       "description": "Aggregates the 13 upstream truth reports (feature reality, route completeness, edge function membership+health, db reality, table membership, auth/policy/trust, mobile store+build, owner workflows, manifest theater, runbook operability, kill switches, golden paths, test+release truth, observability truth, mock leak) into a single verdict. Emits verdict=\"real\" only when all 13 clauses are green. Last gate in the launch pipeline.",
       "producesArtifact": "generated/its-real-gate-report.json"
+    },
+    {
+      "id": "edge-function-ownership-completeness",
+      "phase": "phase-26-manifest-truth",
+      "title": "Edge function ownership completeness (per-function manifest, 100% coverage)",
+      "script": "scripts/architecture/checks/check-edge-function-ownership-completeness.ts",
+      "owner": "platform-architecture",
+      "severity": "blocker",
+      "description": "Asserts every supabase/functions/<name>/index.ts on disk has an owner team, primaryContact, escalationContact, slackChannel, and reviewerCodeOwners in EDGE_FUNCTION_OWNER_MAP / EDGE_FUNCTION_OWNERSHIP_MANIFEST. Asserts no phantom entries, mirror parity (generated/ ↔ public/generated/), and freshness ≤ 7 days. Drives the canonical machine-readable ownership manifest at generated/edge-function-ownership.json and the public mirror used by external probes.",
+      "producesArtifact": "generated/edge-function-ownership-completeness-report.json"
     }
   ],
   "integrity": {
-    "checkedAt": "2026-04-17T15:16:54.315Z",
-    "gateCount": 38,
+    "checkedAt": "2026-04-20T16:30:11.659Z",
+    "gateCount": 39,
     "issues": [],
     "errorCount": 0,
     "warningCount": 0,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T01:10:43.008Z",
+  "generatedAt": "2026-04-20T16:32:19.991Z",
   "edgeCallers": [
     "supabase/functions/admin-bff-gateway/index.ts",
     "supabase/functions/advisor-agent-loop/index.ts",
@@ -10,9 +10,9 @@
   ],
   "uiCallers": [
     "src/lib/ci/ci-gate-registry.ts",
+    "src/lib/truth-manifests/manifest-registry.ts",
     "src/pages/admin/AIApprovalDesk.tsx",
     "src/pages/admin/AIT07ApprovalQueuePage.tsx",
-    "src/pages/admin/AR08KillSwitchCenter.tsx",
     "src/pages/admin/AdvisorActionApprovalAdmin.tsx",
     "src/pages/admin/AdvisorAgentDashboard.tsx",
     "src/pages/admin/AdvisorAutonomyPolicyEditor.tsx"

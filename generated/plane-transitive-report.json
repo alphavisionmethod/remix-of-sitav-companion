@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:09.195Z",
+  "gate": "plane-transitive",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-plane-transitive.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "plane-transitive: direct=0, transitive=12 (budget 20) — OK\n"
+}

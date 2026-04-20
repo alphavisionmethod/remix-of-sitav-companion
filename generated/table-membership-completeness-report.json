@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:17.984Z",
+  "gate": "table-membership-completeness",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-table-membership-completeness.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "   - sinking_funds\n   - subscriptions\n   - theses\n   - trace_spans\n   - trades\n   - transactions\n   - trips\n   - uptime_heartbeats\n   - user_passkeys\n   - watchlists\n   - webauthn_challenges\n   - webhook_events\n   - workflow_receipts\n   - workflow_runs\n   - workflow_state_transitions\n   - workflow_steps\n   - workflows\n❌ 1 ghost table claims:\n   - concierge_errands\n"
+}

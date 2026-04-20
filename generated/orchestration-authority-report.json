@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:58.013Z",
+  "gate": "orchestration-authority",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-orchestration-authority.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "[VIOLATION] src/lib/services/architecture/god-tier-integration-engine.ts:41 — orchestration verb in non-canonical file\n[VIOLATION] src/lib/services/architecture/god-tier-integration-engine.ts:59 — orchestration verb in non-canonical file\n[VIOLATION] src/lib/services/architecture/god-tier-integration-engine.ts:61 — orchestration verb in non-canonical file\n[VIOLATION] src/lib/services/architecture/god-tier-integration-engine.ts:756 — orchestration verb in non-canonical file\n[VIOLATION] src/lib/services/service-registry/service-ownership-registry.ts:320 — orchestration verb in non-canonical file\n[VIOLATION] src/lib/core-services/brain-core/index.ts:2 — orchestration verb in non-canonical file\n[VIOLATION] src/pages/admin/DeliveryReadinessBoard.tsx:53 — orchestration verb in non-canonical file\n[VIOLATION] src/pages/advisors/CalmAssistantChat.tsx:21 — orchestration verb in non-canonical file\n\n❌ 8 orchestration authority violations found.\nOnly files in src/lib/orchestration/ may own orchestration authority.\n"
+}

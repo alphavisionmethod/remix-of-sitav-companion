@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:00.235Z",
+  "gate": "outbound-communication-policy",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-outbound-communication-policy.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ check-outbound-communication-policy: All checks passed\n"
+}

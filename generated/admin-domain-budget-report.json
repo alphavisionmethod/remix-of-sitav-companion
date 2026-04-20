@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:38.642Z",
+  "gate": "admin-domain-budget",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-domain-budget.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 12 top-level admin domains: overview, alerts, approvals, environments, ai-runtime, integrations, trust-security, health, releases, verification, config, support\n✅ check-admin-domain-budget: All checks passed\n"
+}

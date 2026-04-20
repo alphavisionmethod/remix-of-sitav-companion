@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:45.125Z",
+  "gate": "no-inline-empty-states",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-inline-empty-states.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "Inline empty-state scan: 1079 page files checked\n✅ Pass — no inline empty states in src/pages/**\n"
+}

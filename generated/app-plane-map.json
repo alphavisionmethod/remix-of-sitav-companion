@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-04-18T02:08:28.086Z",
+  "generatedAt": "2026-04-20T16:29:58.600Z",
   "gate": "app-plane-map",
   "phase": "phase-12-native-deployability",
   "ok": true,
   "errorCount": 0,
   "warningCount": 0,
-  "totalApps": 19,
+  "totalApps": 20,
   "byPlane": {
     "user": 6,
-    "shell-runtime": 4,
+    "shell-runtime": 5,
     "admin": 9
   },
   "byProfile": {
-    "user": 10,
-    "operator": 13
+    "user": 11,
+    "operator": 14
   },
   "issues": [],
   "apps": [
@@ -102,6 +102,20 @@
       "defaultPinned": [],
       "riskTier": "R1",
       "description": "App platform store / catalog"
+    },
+    {
+      "appId": "desktop",
+      "displayName": "Desktop",
+      "plane": "shell-runtime",
+      "profiles": [
+        "user",
+        "operator"
+      ],
+      "launcherVisible": false,
+      "commandVisible": false,
+      "defaultPinned": [],
+      "riskTier": "R0",
+      "description": "Desktop shell host (canonical launcher surface, not itself launchable)"
     },
     {
       "appId": "files",

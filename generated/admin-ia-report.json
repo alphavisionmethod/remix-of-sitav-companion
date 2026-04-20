@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:41.308Z",
+  "gate": "admin-ia",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-ia.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 565 admin pages found\n  🐚 Admin control plane shell found\n  🏗️ 33/565 admin pages use a shell wrapper\n✅ check-admin-ia: All checks passed\n"
+}

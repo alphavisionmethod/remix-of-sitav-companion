@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:30.762Z",
+  "gate": "cta-wiring",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-cta-wiring.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "CTA wiring scan: 43 pages scanned, 0 placeholder hits\n✅ Pass (warnings only)\n"
+}

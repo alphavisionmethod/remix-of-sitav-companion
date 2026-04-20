@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:51.200Z",
+  "gate": "no-ui-in-backend",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-no-ui-in-backend.ts",
+  "ok": false,
+  "errorCount": 3,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ❌ [backend-imports-ui] src/lib/services/adaptive-visual-system.ts: Backend services must not import React or UI components\n  ❌ [backend-imports-ui] src/lib/services/background-intelligence.ts: Backend services must not import React or UI components\n  ❌ [backend-imports-ui] src/lib/services/surface-detection/index.ts: Backend services must not import React or UI components\n❌ check-no-ui-in-backend: 3 error(s), 0 warning(s)\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:48.709Z",
+  "gate": "domain-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-domain-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🧪 Auditing 577 domain component(s)...\n✅ check-domain-purity: All checks passed\n"
+}

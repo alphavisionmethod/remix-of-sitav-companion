@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:17.237Z",
+  "gate": "policy-mapping",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-policy-mapping.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🛡️ 0/333 capabilities have policy mappings\n  📜 0 policy definitions found\n✅ check-policy-mapping: All checks passed\n"
+}

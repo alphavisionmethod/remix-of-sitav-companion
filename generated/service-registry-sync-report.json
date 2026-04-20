@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:33:00.756Z",
+  "gate": "service-registry-sync",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-registry-sync.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [phantom-service] service-manifest.json: Service \"connection-recommendation-engine\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"first-win-recommendation-engine\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"hardware-capability-service\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"setup-summary-builder\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"trust-calibration-service\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"world-model-service\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"diagnostic-bundle\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"incident-classification\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"replay-metadata\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"support-summary\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"surface-adapter-registry\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"surface-portability-service\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"trust-weighted-actions\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"truth-index-aggregator\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"postcondition-checks\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"receipt-verification\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"replay-verification\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"rollback-signals\" in manifest but not on disk\n  ⚠️ [phantom-service] service-manifest.json: Service \"verification\" in manifest but not on disk\n"
+}

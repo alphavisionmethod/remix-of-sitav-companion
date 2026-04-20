@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:47.873Z",
+  "gate": "runtime-foundations",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-runtime-foundations.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ✅ Service manifest\n  ✅ Route manifest\n  ✅ Capability index\n  ✅ Contract manifest\n  ✅ Runtime conformance\n  📊 Phase 4: 5/5 foundations met\n✅ check-phase4-foundations: All checks passed\n"
+}

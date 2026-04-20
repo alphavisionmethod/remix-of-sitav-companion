@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:55.663Z",
+  "gate": "edge-function-membership-completeness",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-edge-function-membership-completeness.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "   - security-council-tick\n   - security-fabric-runtime-probe\n   - security-kill-switch-recommender\n   - seed-advisor-registry\n   - seed-connector-registry\n   - tenant-self-service-bff\n   - trace-ingest\n   - uptime-rollup\n   - waitlist-signup\n   - waitlist-stats\n   - webauthn-challenge\n   - webhook-ingest\n   - webhook-process\n   - webhook-replay\n   - webhook-retry-processor\n   - workflow-execute\n   - workflow-repair\n   - workflow-replay\n   - workflow-stuck-detector\n"
+}

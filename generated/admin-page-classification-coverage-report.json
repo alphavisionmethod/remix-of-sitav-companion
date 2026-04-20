@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:44.047Z",
+  "gate": "admin-page-classification-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-page-classification-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 565 admin pages\n  ✏️  39 curated (7%)\n  🤖 513 auto-classified by prefix (290 prefixes known)\n  ✅ 98% total coverage\n  ❓ 13 unknown\n  ⚠️ [unclassified-page] AssuranceChaosBoard (ai-runtime/AssuranceChaosBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] BoardroomSLADrillDown (ai-runtime/BoardroomSLADrillDown.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] ComplianceAttestationBoard (ai-runtime/ComplianceAttestationBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] CouncilsBoard (ai-runtime/CouncilsBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] ExternalWorkforceApiBoard (ai-runtime/ExternalWorkforceApiBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] InternalAgentIntentTimeline (ai-runtime/InternalAgentIntentTimeline.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] InternalAgentsBoard (ai-runtime/InternalAgentsBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] ReflectionBoard (ai-runtime/ReflectionBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] SLOObservabilityBoard (ai-runtime/SLOObservabilityBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] SovereignDeploymentDRBoard (ai-runtime/SovereignDeploymentDRBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] SuggestionsBoard (ai-runtime/SuggestionsBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] WeeklyDigestBoard (ai-runtime/WeeklyDigestBoard.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n  ⚠️ [unclassified-page] SbomHistory (releases/SbomHistory.tsx): No curated entry and no known prefix — extend CLUSTER_DOMAIN_MAP.\n"
+}

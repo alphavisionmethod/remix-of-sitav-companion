@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:58.060Z",
+  "gate": "service-layer-boundaries",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-service-layer-boundaries.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 scanned 167 L1, 11 L5, 2 L4 files\n✅ check-service-layer-boundaries: All checks passed\n"
+}

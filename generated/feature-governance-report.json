@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:13.535Z",
+  "gate": "feature-governance",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-feature-governance.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "\n═══ Feature Governance Check ═══\nTotal features: 0\nCompliant: 0\nFailing: 0\n\n── Capability Audit ──\nTotal capability mappings: 0\nFeatures without capabilities: 0\nCapability classes available: 15\n\n── Schema Coverage ──\n\n═══ Done ═══\n\n"
+}

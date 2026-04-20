@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T16:20:31.957Z",
+  "generatedAt": "2026-04-20T16:33:35.970Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1740,72 +1740,72 @@
       "warnings": 18
     },
     {
-      "file": "",
+      "file": "generated/action-envelope-boundary-report.json",
       "gate": "action-envelope-boundary (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-command-palette-coherence-report.json",
       "gate": "admin-command-palette-coherence (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-domain-budget-report.json",
       "gate": "admin-domain-budget (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-ia-report.json",
       "gate": "admin-ia (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-page-classification-coverage-report.json",
       "gate": "admin-page-classification-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-route-coherence-report.json",
       "gate": "admin-route-coherence (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-route-registry-conformance-report.json",
       "gate": "admin-route-registry-conformance (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 29
     },
     {
-      "file": "",
+      "file": "generated/admin-shell-consistency-report.json",
       "gate": "admin-shell-consistency (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/admin-top-level-domain-count-report.json",
       "gate": "admin-top-level-domain-count (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/advisor-registry-report.json",
       "gate": "advisor-registry (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1817,9 +1817,9 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/app-plane-coverage-report.json",
       "gate": "app-plane-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1831,9 +1831,9 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/artifact-ownership-coverage-report.json",
       "gate": "artifact-ownership-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1845,44 +1845,44 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/boot-chain-report.json",
       "gate": "boot-chain (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/bounded-context-coverage-report.json",
       "gate": "bounded-context-coverage (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 4
     },
     {
-      "file": "",
+      "file": "generated/capability-families-report.json",
       "gate": "capability-families (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/ci-umbrella-integrity-report.json",
       "gate": "ci-umbrella-integrity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/component-classification-report.json",
       "gate": "component-classification (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/connector-catalog-report.json",
       "gate": "connector-catalog (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1894,30 +1894,30 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/context-membership-report.json",
       "gate": "context-membership (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/contract-family-completeness-report.json",
       "gate": "contract-family-completeness (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/contract-registry-report.json",
       "gate": "contract-registry (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/contract-topology-report.json",
       "gate": "contract-topology (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1929,9 +1929,9 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/cta-wiring-report.json",
       "gate": "cta-wiring (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1943,44 +1943,44 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/dead-pages-report.json",
       "gate": "dead-pages (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/delegation-receipts-report.json",
       "gate": "delegation-receipts (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/demo-data-imports-report.json",
       "gate": "demo-data-imports (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/deployability-coverage-report.json",
       "gate": "deployability-coverage (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/deployable-plane-isolation-report.json",
       "gate": "deployable-plane-isolation (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/deprecated-wrappers-report.json",
       "gate": "deprecated-wrappers (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -1992,9 +1992,9 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/domain-purity-report.json",
       "gate": "domain-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2006,16 +2006,16 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/drift-report.json",
       "gate": "drift (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/duplicate-families-report.json",
       "gate": "duplicate-families (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2027,107 +2027,107 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/edge-function-membership-completeness-report.json",
       "gate": "edge-function-membership-completeness (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/electron-shell-session-readiness-report.json",
       "gate": "electron-shell-session-readiness (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/engine-no-io-report.json",
       "gate": "engine-no-io (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/error-boundaries-report.json",
       "gate": "error-boundaries (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/event-catalog-report.json",
       "gate": "event-catalog (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/event-receipt-linkage-report.json",
       "gate": "event-receipt-linkage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/experimental-isolation-report.json",
       "gate": "experimental-isolation (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/feature-governance-report.json",
       "gate": "feature-governance (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/feature-integration-completeness-report.json",
       "gate": "feature-integration-completeness (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/feature-reality-coverage-report.json",
       "gate": "feature-reality-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/golden-path-coverage-report.json",
       "gate": "golden-path-coverage (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 7
     },
     {
-      "file": "",
+      "file": "generated/hook-purity-report.json",
       "gate": "hook-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/ia-coherence-report.json",
       "gate": "ia-coherence (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/inline-mocks-report.json",
       "gate": "inline-mocks (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/integration-map-report.json",
       "gate": "integration-map (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2139,16 +2139,16 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/kill-switch-coverage-report.json",
       "gate": "kill-switch-coverage (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/layer-boundaries-report.json",
       "gate": "layer-boundaries (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2160,74 +2160,74 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/module-count-report.json",
       "gate": "module-count (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 2
     },
     {
-      "file": "",
+      "file": "generated/no-backend-in-ui-report.json",
       "gate": "no-backend-in-ui (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-duplicate-primary-concept-report.json",
       "gate": "no-duplicate-primary-concept (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-hidden-executor-report.json",
       "gate": "no-hidden-executor (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-inline-empty-states-report.json",
       "gate": "no-inline-empty-states (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-page-mocks-report.json",
       "gate": "no-page-mocks (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-runtime-in-shared-report.json",
       "gate": "no-runtime-in-shared (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/no-ui-in-backend-report.json",
       "gate": "no-ui-in-backend (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 3
     },
     {
-      "file": "",
+      "file": "generated/no-workflow-bypass-report.json",
       "gate": "no-workflow-bypass (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/observability-reality-report.json",
       "gate": "observability-reality (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "file": "generated/onboarding-surface-truth-report.json",
@@ -2237,11 +2237,11 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/orchestration-authority-report.json",
       "gate": "orchestration-authority (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "file": "generated/os-release-readiness-report.json",
@@ -2251,16 +2251,16 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/outbound-communication-policy-report.json",
       "gate": "outbound-communication-policy (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/owner-workflow-map-report.json",
       "gate": "owner-workflow-map (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2272,65 +2272,65 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/page-state-coverage-report.json",
       "gate": "page-state-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/plane-import-graph-report.json",
       "gate": "plane-import-graph (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/plane-transitive-report.json",
       "gate": "plane-transitive (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/platform-anti-patterns-report.json",
       "gate": "platform-anti-patterns (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 9
     },
     {
-      "file": "",
+      "file": "generated/platform-readiness-report.json",
       "gate": "platform-readiness (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/policy-coverage-report.json",
       "gate": "policy-coverage (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 334
     },
     {
-      "file": "",
+      "file": "generated/policy-mapping-report.json",
       "gate": "policy-mapping (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/policy-resolver-coverage-report.json",
       "gate": "policy-resolver-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/primitive-purity-report.json",
       "gate": "primitive-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2342,44 +2342,44 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/projection-purity-report.json",
       "gate": "projection-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/proof-coverage-report.json",
       "gate": "proof-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/protocol-purity-report.json",
       "gate": "protocol-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/receipt-coverage-report.json",
       "gate": "receipt-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/redirect-coverage-report.json",
       "gate": "redirect-coverage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/registry-integrity-report.json",
       "gate": "registry-integrity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2391,16 +2391,16 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/route-drift-report.json",
       "gate": "route-drift (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/route-page-contract-layer-usage-report.json",
       "gate": "route-page-contract-layer-usage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2412,16 +2412,16 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/route-truth-report.json",
       "gate": "route-truth (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/route-wrapper-usage-report.json",
       "gate": "route-wrapper-usage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2433,65 +2433,65 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/runtime-foundations-report.json",
       "gate": "runtime-foundations (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/sensitive-document-privacy-report.json",
       "gate": "sensitive-document-privacy (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-authority-unique-report.json",
       "gate": "service-authority-unique (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-consolidation-alignment-report.json",
       "gate": "service-consolidation-alignment (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-layer-boundaries-report.json",
       "gate": "service-layer-boundaries (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-registry-sync-report.json",
       "gate": "service-registry-sync (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-sprawl-report.json",
       "gate": "service-sprawl (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/service-topology-report.json",
       "gate": "service-topology (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/services-structure-hygiene-report.json",
       "gate": "services-structure-hygiene (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
@@ -2503,32 +2503,32 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/status-truth-tags-report.json",
       "gate": "status-truth-tags (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 235
     },
     {
-      "file": "",
+      "file": "generated/surface-ownership-report.json",
       "gate": "surface-ownership (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/system-stack-report.json",
       "gate": "system-stack (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
-      "file": "",
+      "file": "generated/table-membership-completeness-report.json",
       "gate": "table-membership-completeness (advisory)",
       "ok": false,
       "errors": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "file": "generated/validator-gate-coverage-report.json",
@@ -2552,29 +2552,29 @@
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/workflow-state-usage-report.json",
       "gate": "workflow-state-usage (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/workflow-states-report.json",
       "gate": "workflow-states (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     },
     {
-      "file": "",
+      "file": "generated/wrapper-purity-report.json",
       "gate": "wrapper-purity (advisory)",
-      "ok": false,
+      "ok": true,
       "errors": 0,
       "warnings": 0
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3624,
+  "totalWarnings": 4260,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"

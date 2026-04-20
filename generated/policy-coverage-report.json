@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:15.189Z",
+  "gate": "policy-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-policy-coverage.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 333,
+  "issues": [],
+  "legacyOutputTail": "  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"RouteGrouping\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"ScheduleItem\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"SchoolActivityItem\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"SchoolFeeItem\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"SchoolActivity\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"ServiceProviderMemory\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"ReservationRecord\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"TravelDisruption\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"TripLeg\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"ApprovalThreshold\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"MultiStepApproval\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"MultiStepApprovalStep\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"NarrativeVsDeterministicBoundary\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"CallAutomationPolicy\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"SensitivityTier\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"RetentionPolicy\" has no policy binding\n  ⚠️ [no-policy] capability-policy-matrix.json: Capability \"RedactionPolicy\" has no policy binding\n  ❌ [missing-phase3-file] src/lib/runtime/surface-types.ts: Required Phase 3 file not found: src/lib/runtime/surface-types.ts\n❌ check-policy-coverage: 1 error(s), 333 warning(s)\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:51.014Z",
+  "gate": "admin-shell-consistency",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-shell-consistency.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ✅ 33 pages use canonical shell\n  ⚠️ 0 pages use legacy shell\n  ❓ 532 pages have no shell wrapper\n✅ check-admin-shell-consistency: All checks passed\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:37.913Z",
+  "gate": "demo-data-imports",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-demo-data-imports.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": ""
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:29:36.677Z",
+  "gate": "admin-command-palette-coherence",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-admin-command-palette-coherence.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  ✅ Palette is registry-driven (0 hard-coded paths)\n✅ check-admin-command-palette-coherence: All checks passed\n"
+}

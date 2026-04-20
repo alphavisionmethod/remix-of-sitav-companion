@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:17.518Z",
+  "gate": "connector-catalog",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-connector-catalog.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📡 12 connectors registered, 0 found in source\n✅ check-connector-catalog: All checks passed\n"
+}

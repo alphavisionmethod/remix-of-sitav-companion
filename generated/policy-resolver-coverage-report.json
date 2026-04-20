@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:20.030Z",
+  "gate": "policy-resolver-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-policy-resolver-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ Policy resolver coverage: edge=6 ui=7 security-pages-reachable=2/2\n"
+}

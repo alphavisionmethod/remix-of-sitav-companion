@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:30:20.124Z",
+  "gate": "context-membership",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-context-membership.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "   - [edge-function] security-council-tick: Function exists on disk but no bounded context claims it\n   - [edge-function] security-fabric-runtime-probe: Function exists on disk but no bounded context claims it\n   - [edge-function] security-kill-switch-recommender: Function exists on disk but no bounded context claims it\n   - [edge-function] seed-advisor-registry: Function exists on disk but no bounded context claims it\n   - [edge-function] seed-connector-registry: Function exists on disk but no bounded context claims it\n   - [edge-function] tenant-self-service-bff: Function exists on disk but no bounded context claims it\n   - [edge-function] trace-ingest: Function exists on disk but no bounded context claims it\n   - [edge-function] uptime-rollup: Function exists on disk but no bounded context claims it\n   - [edge-function] waitlist-signup: Function exists on disk but no bounded context claims it\n   - [edge-function] waitlist-stats: Function exists on disk but no bounded context claims it\n   - [edge-function] webauthn-challenge: Function exists on disk but no bounded context claims it\n   - [edge-function] webhook-ingest: Function exists on disk but no bounded context claims it\n   - [edge-function] webhook-process: Function exists on disk but no bounded context claims it\n   - [edge-function] webhook-replay: Function exists on disk but no bounded context claims it\n   - [edge-function] webhook-retry-processor: Function exists on disk but no bounded context claims it\n   - [edge-function] workflow-execute: Function exists on disk but no bounded context claims it\n   - [edge-function] workflow-repair: Function exists on disk but no bounded context claims it\n   - [edge-function] workflow-replay: Function exists on disk but no bounded context claims it\n   - [edge-function] workflow-stuck-detector: Function exists on disk but no bounded context claims it\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:05.557Z",
+  "gate": "event-catalog",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-event-catalog.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📨 3 event types exported, 3 consumed in services\n✅ check-event-catalog: All checks passed\n"
+}

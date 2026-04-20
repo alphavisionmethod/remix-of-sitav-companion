@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:30.722Z",
+  "gate": "integration-map",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-integration-map.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  🔗 Integration: 0 complete, 0 partial, 12 empty\n  ⚠️ [low-integration] feature-integration-index.json: 12/12 features have no integration points\n"
+}

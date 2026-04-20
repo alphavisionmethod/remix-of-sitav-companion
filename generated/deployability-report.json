@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T23:13:47.799Z",
+  "generatedAt": "2026-04-20T16:30:40.112Z",
   "minThreshold": 80,
   "health": {
     "surfaces": 7,
@@ -282,6 +282,22 @@
       ]
     }
   ],
-  "issues": [],
-  "ok": true
+  "issues": [
+    "electron/build artifact missing: src/lib/runtime/desktop",
+    "electron/sign artifact missing: src/lib/runtime/desktop",
+    "electron/distribute artifact missing: src/lib/runtime/desktop",
+    "electron/update artifact missing: src/lib/runtime/desktop",
+    "ios/build artifact missing: infra/deploy/mobile.yaml",
+    "ios/sign artifact missing: infra/deploy/mobile.yaml",
+    "ios/distribute artifact missing: infra/deploy/mobile.yaml",
+    "ios/update artifact missing: infra/deploy/mobile.yaml",
+    "ios/recover artifact missing: src/runtimes/mobile/index.ts",
+    "android/build artifact missing: infra/deploy/mobile.yaml",
+    "android/sign artifact missing: infra/deploy/mobile.yaml",
+    "android/distribute artifact missing: infra/deploy/mobile.yaml",
+    "android/update artifact missing: infra/deploy/mobile.yaml",
+    "android/recover artifact missing: src/runtimes/mobile/index.ts",
+    "mobile-pwa/recover artifact missing: src/runtimes/mobile/index.ts"
+  ],
+  "ok": false
 }

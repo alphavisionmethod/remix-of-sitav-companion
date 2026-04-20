@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:26.060Z",
+  "gate": "ia-coherence",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-ia-coherence.ts",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  [DOMAIN_NAV_COMPLETENESS] AdminDomainNav missing domain: governance\n    → src/components/admin/shells/AdminDomainNav.tsx\n  [DOMAIN_NAV_COMPLETENESS] AdminDomainNav missing domain: launch\n    → src/components/admin/shells/AdminDomainNav.tsx\n  [DOMAIN_NAV_COMPLETENESS] AdminDomainNav missing domain: security\n    → src/components/admin/shells/AdminDomainNav.tsx\n  [DOMAIN_NAV_COMPLETENESS] AdminDomainNav missing domain: operations\n    → src/components/admin/shells/AdminDomainNav.tsx\n  [DOMAIN_NAV_COMPLETENESS] AdminDomainNav missing domain: support\n    → src/components/admin/shells/AdminDomainNav.tsx\n\n⚠️  WARNINGS: 2\n  [ROUTE_FILE_EXPORTS] Route file does not export a function: src/routes/MobileRoutes.tsx\n    → src/routes/MobileRoutes.tsx\n  [BREADCRUMB_LABEL_COVERAGE] AdminBreadcrumbs missing label for segment: communications\n    → src/components/admin/shells/AdminBreadcrumbs.tsx\n\nTotal: 7 errors, 2 warnings\n═══════════════════════════════════════════════════════\n"
+}

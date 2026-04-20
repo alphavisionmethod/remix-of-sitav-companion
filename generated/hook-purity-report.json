@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:23.608Z",
+  "gate": "hook-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-hook-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "✅ Hook purity check passed — no forbidden orchestration imports.\n"
+}

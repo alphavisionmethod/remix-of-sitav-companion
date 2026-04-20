@@ -1,0 +1,1015 @@
+{
+  "generatedAt": "2026-04-20T16:33:25.473Z",
+  "totalAdvisoryValidators": 119,
+  "synthesized": 97,
+  "skippedExisting": 22,
+  "missingScript": 0,
+  "execFailed": 0,
+  "results": [
+    {
+      "gateId": "action-envelope-boundary",
+      "validator": "check-action-envelope-boundary",
+      "scriptPath": "scripts/architecture/checks/check-action-envelope-boundary.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-command-palette-coherence",
+      "validator": "check-admin-command-palette-coherence",
+      "scriptPath": "scripts/architecture/checks/check-admin-command-palette-coherence.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-domain-budget",
+      "validator": "check-admin-domain-budget",
+      "scriptPath": "scripts/architecture/checks/check-admin-domain-budget.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-ia",
+      "validator": "check-admin-ia",
+      "scriptPath": "scripts/architecture/checks/check-admin-ia.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-page-classification-coverage",
+      "validator": "check-admin-page-classification-coverage",
+      "scriptPath": "scripts/architecture/checks/check-admin-page-classification-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-route-coherence",
+      "validator": "check-admin-route-coherence",
+      "scriptPath": "scripts/architecture/checks/check-admin-route-coherence.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-route-registry-conformance",
+      "validator": "check-admin-route-registry-conformance",
+      "scriptPath": "scripts/architecture/checks/check-admin-route-registry-conformance.ts",
+      "action": "synthesized",
+      "errorCount": 29,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "admin-shell-consistency",
+      "validator": "check-admin-shell-consistency",
+      "scriptPath": "scripts/architecture/checks/check-admin-shell-consistency.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "admin-top-level-domain-count",
+      "validator": "check-admin-top-level-domain-count",
+      "scriptPath": "scripts/architecture/checks/check-admin-top-level-domain-count.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "advisor-registry",
+      "validator": "check-advisor-registry",
+      "scriptPath": "scripts/architecture/checks/check-advisor-registry.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "ai-advisor-reality",
+      "validator": "check-ai-advisor-reality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "app-plane-coverage",
+      "validator": "check-app-plane-coverage",
+      "scriptPath": "scripts/architecture/checks/check-app-plane-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "appliance-deployability",
+      "validator": "check-appliance-deployability",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "artifact-ownership-coverage",
+      "validator": "check-artifact-ownership-coverage",
+      "scriptPath": "scripts/architecture/checks/check-artifact-ownership-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "backend-api-deployability",
+      "validator": "check-backend-api-deployability",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "boot-chain",
+      "validator": "check-boot-chain",
+      "scriptPath": "scripts/architecture/checks/check-boot-chain.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "bounded-context-coverage",
+      "validator": "check-bounded-context-coverage",
+      "scriptPath": "scripts/architecture/checks/check-bounded-context-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 4,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "capability-families",
+      "validator": "check-capability-families",
+      "scriptPath": "scripts/architecture/checks/check-capability-families.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "ci-umbrella-integrity",
+      "validator": "check-ci-umbrella-integrity",
+      "scriptPath": "scripts/architecture/checks/check-ci-umbrella-integrity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "component-classification",
+      "validator": "check-component-classification",
+      "scriptPath": "scripts/architecture/checks/check-component-classification.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "connector-catalog",
+      "validator": "check-connector-catalog",
+      "scriptPath": "scripts/architecture/checks/check-connector-catalog.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "connector-reality",
+      "validator": "check-connector-reality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "context-membership",
+      "validator": "check-context-membership",
+      "scriptPath": "scripts/architecture/checks/check-context-membership.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "contract-family-completeness",
+      "validator": "check-contract-family-completeness",
+      "scriptPath": "scripts/architecture/checks/check-contract-family-completeness.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "contract-registry",
+      "validator": "check-contract-registry",
+      "scriptPath": "scripts/architecture/checks/check-contract-registry.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "contract-topology",
+      "validator": "check-contract-topology",
+      "scriptPath": "scripts/architecture/checks/check-contract-topology.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "cosmetic-debt-closure",
+      "validator": "check-cosmetic-debt-closure",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "cta-wiring",
+      "validator": "check-cta-wiring",
+      "scriptPath": "scripts/architecture/checks/check-cta-wiring.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "db-reality",
+      "validator": "check-db-reality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "dead-pages",
+      "validator": "check-dead-pages",
+      "scriptPath": "scripts/architecture/checks/check-dead-pages.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "delegation-receipts",
+      "validator": "check-delegation-receipts",
+      "scriptPath": "scripts/architecture/checks/check-delegation-receipts.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "demo-data-imports",
+      "validator": "check-demo-data-imports",
+      "scriptPath": "scripts/architecture/checks/check-demo-data-imports.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "deployability-coverage",
+      "validator": "check-deployability-coverage",
+      "scriptPath": "scripts/architecture/checks/check-deployability-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "deployable-plane-isolation",
+      "validator": "check-deployable-plane-isolation",
+      "scriptPath": "scripts/architecture/checks/check-deployable-plane-isolation.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "deprecated-wrappers",
+      "validator": "check-deprecated-wrappers",
+      "scriptPath": "scripts/architecture/checks/check-deprecated-wrappers.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "desktop-deployability",
+      "validator": "check-desktop-deployability",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "domain-purity",
+      "validator": "check-domain-purity",
+      "scriptPath": "scripts/architecture/checks/check-domain-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "domain-reality",
+      "validator": "check-domain-reality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "drift",
+      "validator": "check-drift",
+      "scriptPath": "scripts/architecture/checks/check-drift.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "duplicate-families",
+      "validator": "check-duplicate-families",
+      "scriptPath": "scripts/architecture/checks/check-duplicate-families.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "edge-function-health-replay",
+      "validator": "check-edge-function-health-replay",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "edge-function-membership-completeness",
+      "validator": "check-edge-function-membership-completeness",
+      "scriptPath": "scripts/architecture/checks/check-edge-function-membership-completeness.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "electron-shell-session-readiness",
+      "validator": "check-electron-shell-session-readiness",
+      "scriptPath": "scripts/architecture/checks/check-electron-shell-session-readiness.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "engine-no-io",
+      "validator": "check-engine-no-io",
+      "scriptPath": "scripts/architecture/checks/check-engine-no-io.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "error-boundaries",
+      "validator": "check-error-boundaries",
+      "scriptPath": "scripts/architecture/checks/check-error-boundaries.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "event-catalog",
+      "validator": "check-event-catalog",
+      "scriptPath": "scripts/architecture/checks/check-event-catalog.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "event-receipt-linkage",
+      "validator": "check-event-receipt-linkage",
+      "scriptPath": "scripts/architecture/checks/check-event-receipt-linkage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "experimental-isolation",
+      "validator": "check-experimental-isolation",
+      "scriptPath": "scripts/architecture/checks/check-experimental-isolation.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "feature-governance",
+      "validator": "check-feature-governance",
+      "scriptPath": "scripts/architecture/checks/check-feature-governance.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "feature-integration-completeness",
+      "validator": "check-feature-integration-completeness",
+      "scriptPath": "scripts/architecture/checks/check-feature-integration-completeness.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "feature-reality-coverage",
+      "validator": "check-feature-reality-coverage",
+      "scriptPath": "scripts/architecture/checks/check-feature-reality-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "golden-path-coverage",
+      "validator": "check-golden-path-coverage",
+      "scriptPath": "scripts/architecture/checks/check-golden-path-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 7,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "hook-purity",
+      "validator": "check-hook-purity",
+      "scriptPath": "scripts/architecture/checks/check-hook-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "ia-coherence",
+      "validator": "check-ia-coherence",
+      "scriptPath": "scripts/architecture/checks/check-ia-coherence.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "inline-mocks",
+      "validator": "check-inline-mocks",
+      "scriptPath": "scripts/architecture/checks/check-inline-mocks.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "integration-map",
+      "validator": "check-integration-map",
+      "scriptPath": "scripts/architecture/checks/check-integration-map.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "its-real-gate",
+      "validator": "check-its-real-gate",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "kill-switch-coverage",
+      "validator": "check-kill-switch-coverage",
+      "scriptPath": "scripts/architecture/checks/check-kill-switch-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "layer-boundaries",
+      "validator": "check-layer-boundaries",
+      "scriptPath": "scripts/architecture/checks/check-layer-boundaries.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "mock-leak",
+      "validator": "check-mock-leak",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "module-count",
+      "validator": "check-module-count",
+      "scriptPath": "scripts/architecture/checks/check-module-count.ts",
+      "action": "synthesized",
+      "errorCount": 2,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "no-backend-in-ui",
+      "validator": "check-no-backend-in-ui",
+      "scriptPath": "scripts/architecture/checks/check-no-backend-in-ui.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-duplicate-primary-concept",
+      "validator": "check-no-duplicate-primary-concept",
+      "scriptPath": "scripts/architecture/checks/check-no-duplicate-primary-concept.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-hidden-executor",
+      "validator": "check-no-hidden-executor",
+      "scriptPath": "scripts/architecture/checks/check-no-hidden-executor.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-inline-empty-states",
+      "validator": "check-no-inline-empty-states",
+      "scriptPath": "scripts/architecture/checks/check-no-inline-empty-states.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-page-mocks",
+      "validator": "check-no-page-mocks",
+      "scriptPath": "scripts/architecture/checks/check-no-page-mocks.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-runtime-in-shared",
+      "validator": "check-no-runtime-in-shared",
+      "scriptPath": "scripts/architecture/checks/check-no-runtime-in-shared.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "no-ui-in-backend",
+      "validator": "check-no-ui-in-backend",
+      "scriptPath": "scripts/architecture/checks/check-no-ui-in-backend.ts",
+      "action": "synthesized",
+      "errorCount": 3,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "no-workflow-bypass",
+      "validator": "check-no-workflow-bypass",
+      "scriptPath": "scripts/architecture/checks/check-no-workflow-bypass.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "observability-reality",
+      "validator": "check-observability-reality",
+      "scriptPath": "scripts/architecture/checks/check-observability-reality.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "onboarding-surface-truth",
+      "validator": "check-onboarding-surface-truth",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "orchestration-authority",
+      "validator": "check-orchestration-authority",
+      "scriptPath": "scripts/architecture/checks/check-orchestration-authority.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "os-release-readiness",
+      "validator": "check-os-release-readiness",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "outbound-communication-policy",
+      "validator": "check-outbound-communication-policy",
+      "scriptPath": "scripts/architecture/checks/check-outbound-communication-policy.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "owner-workflow-map",
+      "validator": "check-owner-workflow-map",
+      "scriptPath": "scripts/architecture/checks/check-owner-workflow-map.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "page-registry-completeness",
+      "validator": "check-page-registry-completeness",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "page-state-coverage",
+      "validator": "check-page-state-coverage",
+      "scriptPath": "scripts/architecture/checks/check-page-state-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "plane-import-graph",
+      "validator": "check-plane-import-graph",
+      "scriptPath": "scripts/architecture/checks/check-plane-import-graph.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "plane-transitive",
+      "validator": "check-plane-transitive",
+      "scriptPath": "scripts/architecture/checks/check-plane-transitive.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "platform-anti-patterns",
+      "validator": "check-platform-anti-patterns",
+      "scriptPath": "scripts/architecture/checks/check-platform-anti-patterns.ts",
+      "action": "synthesized",
+      "errorCount": 7,
+      "warningCount": 2,
+      "ok": false
+    },
+    {
+      "gateId": "platform-readiness",
+      "validator": "check-platform-readiness",
+      "scriptPath": "scripts/architecture/checks/check-platform-readiness.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "policy-coverage",
+      "validator": "check-policy-coverage",
+      "scriptPath": "scripts/architecture/checks/check-policy-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 333,
+      "ok": false
+    },
+    {
+      "gateId": "policy-mapping",
+      "validator": "check-policy-mapping",
+      "scriptPath": "scripts/architecture/checks/check-policy-mapping.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "policy-resolver-coverage",
+      "validator": "check-policy-resolver-coverage",
+      "scriptPath": "scripts/architecture/checks/check-policy-resolver-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "primitive-purity",
+      "validator": "check-primitive-purity",
+      "scriptPath": "scripts/architecture/checks/check-primitive-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "production-operations",
+      "validator": "check-production-operations",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "projection-purity",
+      "validator": "check-projection-purity",
+      "scriptPath": "scripts/architecture/checks/check-projection-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "proof-coverage",
+      "validator": "check-proof-coverage",
+      "scriptPath": "scripts/architecture/checks/check-proof-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "protocol-purity",
+      "validator": "check-protocol-purity",
+      "scriptPath": "scripts/architecture/checks/check-protocol-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "receipt-coverage",
+      "validator": "check-receipt-coverage",
+      "scriptPath": "scripts/architecture/checks/check-receipt-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "redirect-coverage",
+      "validator": "check-redirect-coverage",
+      "scriptPath": "scripts/architecture/checks/check-redirect-coverage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "registry-integrity",
+      "validator": "check-registry-integrity",
+      "scriptPath": "scripts/architecture/checks/check-registry-integrity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "residual-lib-canonicality",
+      "validator": "check-residual-lib-canonicality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "route-drift",
+      "validator": "check-route-drift",
+      "scriptPath": "scripts/architecture/checks/check-route-drift.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "route-page-contract-layer-usage",
+      "validator": "check-route-page-contract-layer-usage",
+      "scriptPath": "scripts/architecture/checks/check-route-page-contract-layer-usage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "route-registry-completeness",
+      "validator": "check-route-registry-completeness",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "route-truth",
+      "validator": "check-route-truth",
+      "scriptPath": "scripts/architecture/checks/check-route-truth.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "route-wrapper-usage",
+      "validator": "check-route-wrapper-usage",
+      "scriptPath": "scripts/architecture/checks/check-route-wrapper-usage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "runbook-coverage",
+      "validator": "check-runbook-coverage",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "runtime-foundations",
+      "validator": "check-runtime-foundations",
+      "scriptPath": "scripts/architecture/checks/check-runtime-foundations.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "sensitive-document-privacy",
+      "validator": "check-sensitive-document-privacy",
+      "scriptPath": "scripts/architecture/checks/check-sensitive-document-privacy.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-authority-unique",
+      "validator": "check-service-authority-unique",
+      "scriptPath": "scripts/architecture/checks/check-service-authority-unique.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-consolidation-alignment",
+      "validator": "check-service-consolidation-alignment",
+      "scriptPath": "scripts/architecture/checks/check-service-consolidation-alignment.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-layer-boundaries",
+      "validator": "check-service-layer-boundaries",
+      "scriptPath": "scripts/architecture/checks/check-service-layer-boundaries.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-registry-sync",
+      "validator": "check-service-registry-sync",
+      "scriptPath": "scripts/architecture/checks/check-service-registry-sync.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-sprawl",
+      "validator": "check-service-sprawl",
+      "scriptPath": "scripts/architecture/checks/check-service-sprawl.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "service-topology",
+      "validator": "check-service-topology",
+      "scriptPath": "scripts/architecture/checks/check-service-topology.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "services-structure-hygiene",
+      "validator": "check-services-structure-hygiene",
+      "scriptPath": "scripts/architecture/checks/check-services-structure-hygiene.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "stale-deleted-paths",
+      "validator": "check-stale-deleted-paths",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "status-truth-tags",
+      "validator": "check-status-truth-tags",
+      "scriptPath": "scripts/architecture/checks/check-status-truth-tags.ts",
+      "action": "synthesized",
+      "errorCount": 235,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "surface-ownership",
+      "validator": "check-surface-ownership",
+      "scriptPath": "scripts/architecture/checks/check-surface-ownership.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "system-stack",
+      "validator": "check-system-stack",
+      "scriptPath": "scripts/architecture/checks/check-system-stack.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "table-membership-completeness",
+      "validator": "check-table-membership-completeness",
+      "scriptPath": "scripts/architecture/checks/check-table-membership-completeness.ts",
+      "action": "synthesized",
+      "errorCount": 1,
+      "warningCount": 0,
+      "ok": false
+    },
+    {
+      "gateId": "validator-gate-coverage",
+      "validator": "check-validator-gate-coverage",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "web-deployability",
+      "validator": "check-web-deployability",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "workflow-reality",
+      "validator": "check-workflow-reality",
+      "scriptPath": null,
+      "action": "skipped-existing"
+    },
+    {
+      "gateId": "workflow-state-usage",
+      "validator": "check-workflow-state-usage",
+      "scriptPath": "scripts/architecture/checks/check-workflow-state-usage.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "workflow-states",
+      "validator": "check-workflow-states",
+      "scriptPath": "scripts/architecture/checks/check-workflow-states.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    },
+    {
+      "gateId": "wrapper-purity",
+      "validator": "check-wrapper-purity",
+      "scriptPath": "scripts/architecture/checks/check-wrapper-purity.ts",
+      "action": "synthesized",
+      "errorCount": 0,
+      "warningCount": 0,
+      "ok": true
+    }
+  ]
+}

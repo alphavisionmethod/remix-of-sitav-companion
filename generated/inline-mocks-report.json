@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:31:28.566Z",
+  "gate": "inline-mocks",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-inline-mocks.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": ""
+}

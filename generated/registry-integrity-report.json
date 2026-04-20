@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:35.969Z",
+  "gate": "registry-integrity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-registry-integrity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "🔎 Phase 7 registry integrity — 13 contexts · 16 kill switches · 22 runbooks · 15 golden paths\n   0 errors · 0 warnings\n✅ check-registry-integrity: All checks passed\n"
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:24.275Z",
+  "gate": "projection-purity",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-projection-purity.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "  📊 scanned 2 projection file(s)\n✅ check-projection-purity: All checks passed\n"
+}

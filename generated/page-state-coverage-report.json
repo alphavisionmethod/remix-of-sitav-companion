@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T16:32:04.281Z",
+  "gate": "page-state-coverage",
+  "classification": "advisory",
+  "synthesizedBy": "scripts/architecture/lib/synthesize-advisory-reports.ts",
+  "sourceValidator": "scripts/architecture/checks/check-page-state-coverage.ts",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "legacyOutputTail": "Page state coverage: 43/43 fully covered (100.0%)\n✅ Pass\n"
+}
