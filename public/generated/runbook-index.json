@@ -1,0 +1,162 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-20T04:08:50.510Z",
+  "totalRunbooks": 31,
+  "entries": [
+    {
+      "id": "APPLIANCE_ESXI_TPM_PROVISIONING",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "DESKTOP_SIGNING_PROVISIONING",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "RB-005",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "ai-provider-degradation",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "approval-queue-jam",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "attestation-export",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "auth-outage",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "boardroom-l7-stuck",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "connector-token-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "db-restore-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "dependency-upgrade-proposer",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "desktop-host-bridge-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "dr-failover",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "generated-vs-runtime-drift",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "ingress-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "mobile-push-registration",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "pg-cron-schedules",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "proof-mismatch",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "provider-outage",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "push-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "release-rollback",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "rls-misconfig",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "runtime-probe-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "setup-checkpoint-corruption",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "stuck-workflow",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "support-escalation-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "sync-lag",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "tenant-quota-breach",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "vmware-boot-failure",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "generate-golden-path-registry",
+      "system": "platform",
+      "type": "documented"
+    },
+    {
+      "id": "generate-runbook-index",
+      "system": "platform",
+      "type": "documented"
+    }
+  ]
+}
