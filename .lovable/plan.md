@@ -2,78 +2,107 @@
 
 ## Diagnosis
 
-User wants `MISSING_AUDIT.md` expanded so every one of the 15 mandated parts is present, deeply detailed, and grounded in real filesystem evidence. Current file is ~850 lines (per prior summary) — target is a 3,000–5,000 line, table-heavy, deeply technical document with no missing or shallow sections.
+User wants the **`src/lib/` cluster sprawl** issue from `MISSING_AUDIT.md` (P2) physically fixed in the project — not just attested in a doc. The complaint: 86 top-level subdirectories with overlapping names in the AI family (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`) creating cognitive load.
+
+This is a structural consolidation, not a behavioral change. Goal: collapse the AI-family overlap into a clear, single-tier hierarchy without breaking any of the 21 BLOCK gates or the ~4,800 source files that import from these clusters.
 
 ## Verification I'll do during execution
 
-1. Read current `public/generated/MISSING_AUDIT.md` end-to-end, then run `grep -c "^## Part"` to confirm which of the 15 parts exist and which are stubs.
-2. Re-inventory the repo for fresh evidence (counts may have changed):
-   - `src/lib/` subdir count + per-cluster line totals
-   - `src/pages/**` page count + cross-check vs `<Route>` declarations in `src/App.tsx`
-   - `supabase/functions/` (count + classify into the 6 edge-function roles)
-   - `supabase/migrations/` (count + RLS coverage spot-check)
-   - `electron/*.cjs` vs `_layout.cjs` registry domains
-   - `os/image-builder/`, `os/scripts/`, `.github/workflows/os-build-iso.yml`
-   - `scripts/architecture/checks/` (validator count vs the 21 BLOCK gates)
-   - `generated/` and `public/generated/` artifact freshness (mtimes)
-   - `src/lib/internal-agents/` (40-agent registry verification)
-   - First-use screens vs the 29-screen master spec
-3. Read the truth files: `PROJECT_TREE_AUDIT.md`, `MASTER_REMEDIATION_BLUEPRINT_v2.md`, `MASTER_REMEDIATION_VERIFICATION_v2.md`, `check-os-release-readiness.ts`, route-plane-map, app-plane-map.
+1. `ls -la src/lib/` to confirm the 86 subdir count and current AI-family folders
+2. `ls src/lib/{ai,ai-engineering,ai-gateway,sovereign-ai-gateway}` to inventory contents of each
+3. `grep -rn "from \"@/lib/ai" src --include="*.ts" --include="*.tsx" | wc -l` to count importers per cluster
+4. Read each cluster's `index.ts` barrel to understand export surface
+5. Check `scripts/architecture/checks/check-service-sprawl.ts` and `check-lib-ownership-drift.ts` to confirm what the gates allow
+6. Read `src/lib/internal/` and `src/services/index.ts` façade to plan the canonical re-home target
+7. Check `tsconfig.json` paths and `vite.config.ts` aliases for any pinned references
 
-## Plan — Expand `MISSING_AUDIT.md` to a true principal-engineer audit
+## Plan — Consolidate AI-family clusters under a single namespace
 
-### Step 1 — Reconnaissance batch (parallel `ls`/`wc`/`grep`/`find`)
-Build a fresh evidence base: cluster sizes, route inventory, edge function classification, migration count, validator count, generated-artifact mtimes, electron module count, OS daemon list.
+### Strategy: Canonical re-home + transparent shim
 
-### Step 2 — Targeted file reads
-Read the 12-15 most authoritative files (release aggregator, route registry, plane maps, electron layout, internal-agents registry, top 5 generated reports) to anchor every claim.
+Rather than mass-renaming imports across thousands of files (high risk, would touch the BLOCK-gated frontier-truth attestation), I'll do a **registry consolidation under `src/lib/ai-platform/`** and convert the 4 overlapping folders into thin re-export shims. This is the same pattern Phase 18 used for `canonical-backend` and `simulation`.
 
-### Step 3 — Rewrite `MISSING_AUDIT.md` (single Python heredoc → both locations)
-Each of the 15 parts will be expanded to the depths below. **Target: 3,500–5,000 lines.**
+### Step 1 — Create canonical home `src/lib/ai-platform/`
 
-| Part | Required content | Target lines |
-|---|---|---|
-| I. Executive Reality Summary | Solid / Weak / Missing / Overstated / Duplicated tables + critical-path narrative | 150 |
-| II. Full Repository Topology | Per-directory table: directory · purpose · canonical status · owner · risks · missing proof, covering ~25 top-level dirs and ~40 `src/lib/` clusters | 400 |
-| III. File Cluster Audit | 12 clusters, each with sub-tables for: exists / wired / partial / dead / missing / fixes | 600 |
-| IV. End-to-End Wiring Audit | 8 traces (auth, files, AI invocation, connector refresh, app install, onboarding, release evidence, watchdog) — each as ASCII diagram + breakpoint table | 350 |
-| V. Integration Audit | 13 providers, each with: state · token flow · refresh · health · kill-switch · proof · gaps | 350 |
-| VI. Database & Policy Audit | Table-by-table coverage for the 11 canonical tables + RLS gaps + missing indexes + missing migrations | 300 |
-| VII. Runtime / Electron / OS Audit | Per-module .cjs audit, preload exposure matrix, OS daemon table, watchdog escalation, recovery flow | 300 |
-| VIII. AI / Advisor / Autonomy Audit | Provider registry, model routing matrix, receipt coverage, fallback chain, autonomy ladder L0-L6, simulation paths | 300 |
-| IX. App Platform / SDK / Windowing Audit | Type A/B/C/D matrix, manifest schema, install lifecycle, Native Bridge, SDK hooks, window isolation | 250 |
-| X. Admin / Operator / Support Audit | 12-domain admin IA, dashboards, kill-switch UX, support bundle, runbook linkage | 250 |
-| XI. Onboarding / Journey Audit | All 29 screens × {implemented, telemetry, branching, copy adaptation, resume} | 300 |
-| XII. Validation / Evidence / Release Audit | All 21 BLOCK gates + their validator + artifact + line in aggregator + freshness | 300 |
-| XIII. Contradictions, Drift, Legacy | Phantom folders verified absent, stale generated artifacts (mtime evidence), duplicate paths, dead validators | 200 |
-| XIV. Exact Fix Plan | P0/P1/P2/P3 grouped — each fix: title · problem · files · new artifacts · wiring · validator · proof · rollback | 500 |
-| XV. 30/60/90 Day Plan | Critical path Gantt-style ASCII + parallel workstreams + owner suggestions | 200 |
-
-### Step 4 — Mirror & verify
-- Write to `/mnt/documents/MISSING_AUDIT_v2.md` (preserves v1 for diff) AND overwrite `public/generated/MISSING_AUDIT.md`.
-- `md5sum` confirms `/mnt/documents/MISSING_AUDIT.md` (overwrite) ≡ `public/generated/MISSING_AUDIT.md`.
-- `grep -c "^## Part "` returns 15.
-- `wc -l` ≥ 3,500.
-- Spot-check 8 random claims against filesystem.
-
-### Step 5 — Emit artifact tag for download
+New structure:
 ```
-<lov-artifact path="MISSING_AUDIT.md" mime_type="text/markdown"></lov-artifact>
+src/lib/ai-platform/
+├── index.ts              # Single barrel, namespaced sub-exports
+├── README.md             # Domain map (gateway / engineering / sovereign / runtime)
+├── gateway/              # ← was src/lib/ai-gateway
+├── engineering/          # ← was src/lib/ai-engineering
+├── sovereign/            # ← was src/lib/sovereign-ai-gateway
+└── runtime/              # ← was src/lib/ai (the runtime client surface)
 ```
+
+The new barrel exports each subdomain under a namespace:
+```ts
+export * as Gateway from "./gateway";
+export * as Engineering from "./engineering";
+export * as Sovereign from "./sovereign";
+export * as Runtime from "./runtime";
+```
+
+### Step 2 — Move content (file moves, not rewrites)
+
+For each of the 4 source folders, move all files into the new home preserving relative imports inside each cluster. Internal cross-cluster imports (rare) get rewritten to the new paths.
+
+### Step 3 — Convert old folders into transparent shims
+
+Each old folder (`src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`) keeps **only** an `index.ts` that re-exports from the new home. This preserves all ~hundreds of existing `import { X } from "@/lib/ai-gateway"` statements without touching them.
+
+```ts
+// src/lib/ai-gateway/index.ts (shim)
+export * from "@/lib/ai-platform/gateway";
+```
+
+Mark each shim with a deprecation header so future code uses the canonical path.
+
+### Step 4 — Update governance artifacts
+
+- Add `ai-platform` to the allowlist in `scripts/architecture/checks/check-lib-ownership-drift.ts`
+- Add the 4 shim folders to the residual baseline in `generated/lib-remediation/lib-canonicality-baseline.json` (already there as in-migration; confirm)
+- Update `src/services/index.ts` façade if it references the old paths
+- Update `MISSING_AUDIT.md` Part XIII (drift) and Part XIV (P2 fix #) to mark AI-family consolidation as RESOLVED, with `before/after` cluster count (86 → 86 physically, but 4 are now thin shims pointing at 1 canonical home)
+
+### Step 5 — Validators & gates (no new gates needed)
+
+Run the existing 21 BLOCK gates plus:
+- `npm run check:service-sprawl`
+- `npm run check:lib-ownership-drift`
+- `npm run check:residual-lib-canonicality`
+- `npx tsc --noEmit` — must be 0 errors
+- `npm run release:readiness` — must remain 21/21 GREEN
+
+### Step 6 — Doc reconciliation
+
+Update `public/generated/MISSING_AUDIT.md` AND `/mnt/documents/MISSING_AUDIT.md`:
+- Part III (Cluster Audit) — mark the AI family as consolidated, link to `ai-platform/README.md`
+- Part XIII (Drift) — add the 4 new shims to the "intentional in-migration" list
+- Part XIV (Fix Plan) — strike the "AI-family sprawl" P2 item, add a "RESOLVED 2026-04-20" marker
 
 ## What this does NOT touch
 
-- No code, validators, registries, edge functions, migrations, or generated JSON.
-- No changes to the 21 BLOCK gates or any release pipeline.
-- No edits anywhere except `/mnt/documents/MISSING_AUDIT.md` and `public/generated/MISSING_AUDIT.md`.
+- No edits to any `import` statements outside the 4 affected folders
+- No DB, edge function, auth, or RLS changes
+- No changes to the 21 BLOCK gate count or any release pipeline behavior
+- No changes to `src/components/`, `src/pages/`, `src/hooks/`, or `electron/`
+- No package.json, tsconfig, or vite.config changes (aliases stay intact)
 
 ## Verification after approval
 
 ```bash
-wc -l public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md
-md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md
-grep -c "^## Part " public/generated/MISSING_AUDIT.md           # 15
-grep -E "src/lib/(policies|sync|proof|execution|eventing|notifications)/" public/generated/MISSING_AUDIT.md  # only in proof-of-absence context
-npm run release:readiness                                        # 21/21 BLOCK GREEN (unchanged)
+ls src/lib/ai-platform/                                      # 4 subdirs + index.ts + README.md
+cat src/lib/ai-gateway/index.ts                              # 1-line re-export shim
+cat src/lib/ai/index.ts                                      # 1-line re-export shim
+cat src/lib/ai-engineering/index.ts                          # 1-line re-export shim
+cat src/lib/sovereign-ai-gateway/index.ts                    # 1-line re-export shim
+npx tsc --noEmit                                             # 0 errors
+npm run check:service-sprawl                                 # PASS
+npm run check:lib-ownership-drift                            # PASS
+npm run release:readiness                                    # 21/21 BLOCK GREEN
+md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md  # identical
 ```
+
+Result: AI-family cognitive load is collapsed to a single canonical home, every existing importer keeps working unchanged, and the 21 BLOCK gates stay green.
 
