@@ -311,6 +311,8 @@ const REQUIRED_GATES = [
   "edge-function-ownership-completeness",
   // Phase 27 Per-provider client registry (1 BLOCK gate — src/lib/connectors/<provider>/client.ts coverage + canonical registry)
   "connector-client-registry-completeness",
+  // Phase 28 Admin runbook surface IA wiring (1 BLOCK gate — registry + mount + hub tab parity)
+  "admin-runbook-surface-wiring",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
