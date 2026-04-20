@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-20T01:35:26.361Z",
+  "generatedAt": "2026-04-20T01:36:03.831Z",
   "generator": "scripts/manifests/generate/generate-artifact-ownership-manifest.ts",
   "totalArtifacts": 913,
   "withProducer": 699,
