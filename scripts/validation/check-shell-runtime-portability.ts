@@ -47,6 +47,9 @@ const RUNTIME_PROBE_ALLOWLIST = new Set<string>([
   // Observability sinks (UA = opaque crash/heartbeat metadata)
   "src/lib/observability/runtime-error-context.ts",
   "src/lib/observability/uptime.ts",
+  // Diagnostic bundle export — privacy-safe export-quality bundle that
+  // intentionally captures raw UA inside a redactable section.
+  "src/lib/os-services/diagnostic-bundle.ts",
   // Doc/contract surfaces describing fallbacks
   "src/runtimes/desktop/desktop-host-capabilities.ts",
   "src/runtimes/desktop/desktop-fallbacks.ts",
