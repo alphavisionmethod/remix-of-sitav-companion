@@ -33,3 +33,19 @@ export class OnboardingService {
 }
 export const createOnboarding = () => new OnboardingService();
 
+
+// ════════════════════════════════════════════════════════════════
+// Canonical onboarding surface registry re-export.
+// Truth source: src/lib/architecture/onboarding-surface-registry.ts
+// ════════════════════════════════════════════════════════════════
+export {
+  ONBOARDING_SURFACES,
+  ONBOARDING_NON_ENTRYPOINTS,
+  ONBOARDING_DEPRECATED_SURFACES,
+  ONBOARDING_SURFACE_TIERS,
+  getOnboardingSurface,
+  getOnboardingSurfacesByTier,
+  type OnboardingSurface,
+  type OnboardingSurfaceTier,
+  type OnboardingSurfaceStatus,
+} from "@/lib/architecture/onboarding-surface-registry";

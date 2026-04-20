@@ -1,8 +1,21 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Onboarding Daemon (onboardingd)
-// First-boot detection, session management, step orchestration,
-// hardware detection, policy-aware defaults, resume support
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// SITA OS — Onboarding Daemon (onboardingd)  [DEPRECATED]
+// ----------------------------------------------------------------
+// DEPRECATED: This module implements an alternative 11-step OS
+// onboarding orchestrator that has been SUPERSEDED by the canonical
+// OSSetupExperience (~50 phases, 29-screen master spec).
+//
+// CANONICAL REPLACEMENT:  src/components/sita/OSSetupExperience.tsx
+// REGISTRY:               src/lib/architecture/onboarding-surface-registry.ts
+//                         (see ONBOARDING_DEPRECATED_SURFACES)
+//
+// Retained for compat with src/pages/FirstBootSetup.tsx and the
+// useOnboardingDaemon hook. NEW CODE MUST NOT IMPORT THIS MODULE —
+// enforced by scripts/architecture/checks/check-onboarding-surface-truth.ts
+//
+// Original purpose: First-boot detection, session management, step
+// orchestration, hardware detection, policy-aware defaults, resume.
+// ════════════════════════════════════════════════════════════════
 
 export type OnboardingGlobalState =
   | "not_started" | "initializing" | "in_progress" | "blocked"
