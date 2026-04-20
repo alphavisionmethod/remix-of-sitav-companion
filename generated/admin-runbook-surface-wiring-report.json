@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-20T16:20:25.332Z",
+  "gate": "admin-runbook-surface-wiring",
+  "phase": "phase-28-runbook-ia-wiring",
+  "canonicalSubnav": true,
+  "canonicalViewer": true,
+  "legacyDeprecated": true,
+  "canonicalRouteMounted": true,
+  "hubModuleWired": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "ok": true,
+  "issues": []
+}
