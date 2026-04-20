@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "edge-function-topology-v2",
+  "totalFunctions": 193,
+  "roleDistribution": {
+    "PUBLIC_BFF": 42,
+    "ADMIN_BFF": 18,
+    "DOMAIN": 55,
+    "ORCHESTRATION": 22,
+    "WEBHOOK": 15,
+    "RUNTIME_SYSTEM": 24,
+    "VERIFIER": 12,
+    "SUPPORT": 5
+  },
+  "receiptCoverage": {
+    "emitting": 145,
+    "notEmitting": 48,
+    "coveragePct": 75
+  }
+}

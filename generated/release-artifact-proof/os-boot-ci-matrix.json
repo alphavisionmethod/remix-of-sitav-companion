@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "os-boot-ci-matrix",
+  "artifacts": [
+    {
+      "format": "ISO",
+      "ciValidated": true,
+      "gate": "os-build-pipeline"
+    },
+    {
+      "format": "OVA",
+      "ciValidated": true,
+      "gate": "os-build-pipeline"
+    },
+    {
+      "format": "RAW-IMG",
+      "ciValidated": true,
+      "gate": "os-build-pipeline"
+    }
+  ]
+}

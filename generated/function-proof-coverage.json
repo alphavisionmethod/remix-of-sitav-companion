@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "function-proof-coverage",
+  "totalFunctions": 193,
+  "withReceipts": 145,
+  "withoutReceipts": 48,
+  "coveragePct": 75,
+  "exemptRoles": [
+    "RUNTIME_SYSTEM",
+    "SUPPORT"
+  ]
+}

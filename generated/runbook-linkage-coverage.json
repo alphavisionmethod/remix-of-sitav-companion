@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "runbook-linkage",
+  "runbooks": [
+    {
+      "ref": "RB-OPS-001",
+      "systems": [
+        "kill-switches",
+        "health-checks"
+      ],
+      "killSwitches": [
+        "KS-PAYMENTS",
+        "KS-CONNECTORS"
+      ],
+      "drillStatus": "executed"
+    },
+    {
+      "ref": "RB-AUTH-001",
+      "systems": [
+        "auth",
+        "sessions"
+      ],
+      "killSwitches": [
+        "KS-AUTH"
+      ],
+      "drillStatus": "executed"
+    },
+    {
+      "ref": "RB-SECURITY-001",
+      "systems": [
+        "rls",
+        "audit"
+      ],
+      "killSwitches": [
+        "KS-ALL"
+      ],
+      "drillStatus": "executed"
+    },
+    {
+      "ref": "RB-AI-001",
+      "systems": [
+        "ai-gateway",
+        "model-providers"
+      ],
+      "killSwitches": [
+        "KS-MODEL-PROVIDERS"
+      ],
+      "drillStatus": "executed"
+    },
+    {
+      "ref": "RB-RELEASE-001",
+      "systems": [
+        "ci-cd",
+        "release-gates"
+      ],
+      "killSwitches": [],
+      "drillStatus": "executed"
+    }
+  ],
+  "totalRunbooks": 5,
+  "linkedToKillSwitch": 4,
+  "linkedToDrills": 5
+}

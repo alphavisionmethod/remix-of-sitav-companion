@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "gate": "route-closure-matrix",
+  "routes": [
+    {
+      "path": "/",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": true,
+      "shell": "desktop"
+    },
+    {
+      "path": "/login",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": false,
+      "shell": "auth"
+    },
+    {
+      "path": "/register",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": false,
+      "shell": "desktop"
+    },
+    {
+      "path": "/desktop",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": true,
+      "shell": "desktop"
+    },
+    {
+      "path": "/admin",
+      "plane": "admin",
+      "runtime": "all",
+      "profile": "operator",
+      "auth": true,
+      "shell": "admin"
+    },
+    {
+      "path": "/settings",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": true,
+      "shell": "desktop"
+    },
+    {
+      "path": "/files",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": true,
+      "shell": "desktop"
+    },
+    {
+      "path": "/boardroom",
+      "plane": "user",
+      "runtime": "all",
+      "profile": "both",
+      "auth": true,
+      "shell": "desktop"
+    }
+  ]
+}
