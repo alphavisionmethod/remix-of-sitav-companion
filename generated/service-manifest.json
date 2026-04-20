@@ -7,7 +7,7 @@
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/predictive-intent.test.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
       "statusReason": "test harness"
     },
@@ -16,7 +16,7 @@
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/system-updates.test.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
       "statusReason": "test harness"
     },
@@ -25,7 +25,7 @@
       "domain": "__tests__",
       "path": "src/lib/services/__tests__/window-physics.test.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
       "statusReason": "test harness"
     },
@@ -41,9 +41,9 @@
         "AdaptiveInterfaceService",
         "createAdaptiveInterface"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "agent-control",
@@ -57,9 +57,9 @@
         "AgentControlService",
         "createAgentControl"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "summarizer",
@@ -71,9 +71,9 @@
         "ConversationSummarizer",
         "conversationSummarizer"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "cost-circuit-breaker",
@@ -89,9 +89,9 @@
         "CostCircuitBreakerService",
         "createCostCircuitBreaker"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "budget",
@@ -100,9 +100,9 @@
       "exports": [
         "UsageLedgerStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "callable",
@@ -112,9 +112,9 @@
         "BrainCoreResponse",
         "AIGatewayResponse"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "diagnostics",
@@ -123,9 +123,9 @@
       "exports": [
         "DegradedDiagnostic"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "launch-honesty",
@@ -134,36 +134,36 @@
       "exports": [
         "AICapabilityLaunchStatus"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "provider-registry",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/provider-registry.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "receipts",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/receipts.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "routing",
       "domain": "ai-gateway",
       "path": "src/lib/services/ai-gateway/routing.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "types",
@@ -212,9 +212,9 @@
         "AIBudgetSummary",
         "AIProviderStatus"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "admin-budget-routing-policy",
@@ -236,9 +236,9 @@
         "getCostSavingSuggestions",
         "buildInvocationHistory"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "agent-governance",
@@ -251,9 +251,9 @@
         "AgentGovernanceService",
         "createAgentGovernance"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "agent-health-monitor",
@@ -266,9 +266,9 @@
         "AgentHealthMonitorService",
         "createAgentHealthMonitor"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "workforce-orchestrator",
@@ -279,9 +279,9 @@
         "WorkforceInvocationRequest",
         "WorkforceInvocation"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "workforce-service",
@@ -292,9 +292,9 @@
         "AIWorkforceService",
         "createAIWorkforce"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "approval-history",
@@ -306,9 +306,9 @@
         "getApprovalHistory",
         "computeMetrics"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "approval-requests",
@@ -323,9 +323,9 @@
         "expireStale",
         "persistState"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "approval-routing",
@@ -338,9 +338,9 @@
         "canDelegate",
         "getNextDelegate"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "escalation-rules",
@@ -354,9 +354,9 @@
         "createMultiStepApproval",
         "advanceMultiStep"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "god-tier-integration-engine",
@@ -396,9 +396,9 @@
         "getSprawlDangers",
         "computeIntegrationScore"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "attention-os",
@@ -416,9 +416,9 @@
         "AttentionOSService",
         "createAttentionOS"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "advisor-track-composer",
@@ -429,9 +429,9 @@
         "composeAdvisorTracks",
         "getAdvisorName"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "carryover",
@@ -444,9 +444,9 @@
         "getOpenCarryovers",
         "getAllCarryovers"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "decision-memory",
@@ -459,9 +459,9 @@
         "searchDecisions",
         "getRecentDecisions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "boundary-engine",
@@ -474,9 +474,9 @@
         "BoundaryEngineService",
         "createBoundaryEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "build-approval-package",
@@ -488,9 +488,9 @@
         "RiskAssessment",
         "buildApprovalPackage"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "build-boardroom-request",
@@ -501,9 +501,9 @@
         "AgendaItem",
         "buildBoardroomRequest"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "build-explanation",
@@ -514,9 +514,9 @@
         "buildExplanationPackage",
         "formatDuration"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "build-simulation-request",
@@ -528,9 +528,9 @@
         "SimulationScenario",
         "buildSimulationRequest"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "choose-advisors",
@@ -542,9 +542,9 @@
         "chooseAdvisors",
         "scoreAdvisor"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "choose-execution-mode",
@@ -555,9 +555,9 @@
         "selectExecutionMode",
         "canBypassApproval"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "councils",
@@ -571,9 +571,9 @@
         "runConciergeCouncil",
         "runMetaCouncil"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "model-router",
@@ -591,9 +591,9 @@
         "setModelBudget",
         "resetDailySpend"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "orchestrate-intent",
@@ -611,9 +611,9 @@
         "buildOrchestrationPlan",
         "buildExplanation"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "accounts",
@@ -623,9 +623,9 @@
         "AccountHealthRollup",
         "segmentAccounts"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "business-boardroom-inputs",
@@ -635,9 +635,9 @@
         "BusinessBoardroomPacket",
         "buildBusinessBoardroomPacket"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "callback-queue",
@@ -648,9 +648,9 @@
         "buildCallbackQueue",
         "prioritizeCallbacks"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "collections-command",
@@ -660,9 +660,9 @@
         "buildEscalationQueue",
         "computeCollectionsKpis"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "collections",
@@ -673,9 +673,9 @@
         "categorizeByAging",
         "buildCollectionsStatuses"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "contacts",
@@ -686,9 +686,9 @@
         "enrichContact",
         "mergeContacts"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "customer-dashboard",
@@ -700,9 +700,9 @@
         "computeCustomerHealth",
         "buildDashboard"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "customer-health",
@@ -714,9 +714,9 @@
         "computeHealthScore",
         "identifyChurnRisk"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "customer-timeline",
@@ -728,9 +728,9 @@
         "detectEngagementGaps",
         "summarizeEngagement"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "follow-up",
@@ -741,9 +741,9 @@
         "generateFollowUpSequence",
         "shouldEscalateFollowUp"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "invoice-linking",
@@ -755,9 +755,9 @@
         "detectUnlinkedInvoices",
         "computeQuoteToInvoiceRate"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "lead-intake",
@@ -769,9 +769,9 @@
         "deduplicateLeads",
         "trackLeadSource"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "lead-scoring",
@@ -783,9 +783,9 @@
         "detectStaleLead",
         "buildCallbackQueue"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "leakage-engine",
@@ -794,9 +794,9 @@
       "exports": [
         "detectLeakageComprehensive"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "no-show-recovery",
@@ -809,9 +809,9 @@
         "buildNoShowRecoveryActions",
         "computeNoShowRate"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "opportunity-engine",
@@ -823,9 +823,9 @@
         "scoreOpportunity",
         "rankOpportunities"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "opportunity-ranking",
@@ -836,9 +836,9 @@
         "RankedOpportunity",
         "rankOpportunitiesWeighted"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "proposals",
@@ -850,9 +850,9 @@
         "createProposal",
         "computeWinRate"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "quotes",
@@ -864,9 +864,9 @@
         "isQuoteExpired",
         "reviseQuote"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "reactivation",
@@ -876,9 +876,9 @@
         "ReactivationCandidate",
         "identifyReactivationCandidates"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "recovered-value-ledger",
@@ -889,9 +889,9 @@
         "RecoveryLedgerSummary",
         "summarizeLedger"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "recovery-engine",
@@ -903,9 +903,9 @@
         "createRecoveryPlan",
         "advanceRecoveryStep"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "revenue-autopilot",
@@ -916,9 +916,9 @@
         "buildCollectionsEscalation",
         "computeKpiSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "stale-lead-detector",
@@ -929,9 +929,9 @@
         "detectStaleLeads",
         "buildStaleLeadReport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "website-management",
@@ -949,9 +949,9 @@
         "WebsiteManager",
         "createWebsiteManager"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "pipeline-orchestrator",
@@ -966,9 +966,9 @@
         "PipelineOrchestrator",
         "pipelineOrchestrator"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "capability-registry",
@@ -985,9 +985,9 @@
         "getRegistryHealth",
         "persistState"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "pack-enablement",
@@ -1001,9 +1001,9 @@
         "getPackDefinition",
         "listPacks"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "shell-space-routing",
@@ -1017,9 +1017,9 @@
         "getDeepLinkableRoutes",
         "registerRoute"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "chief-of-staff",
@@ -1037,9 +1037,9 @@
         "ChiefOfStaffService",
         "createChiefOfStaff"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "activity-prep",
@@ -1050,9 +1050,9 @@
         "buildActivityChecklist",
         "getMockActivityChecklists"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "conflict-detector",
@@ -1063,9 +1063,9 @@
         "detectConflicts",
         "suggestResolutions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "event-continuity",
@@ -1076,9 +1076,9 @@
         "buildEventPlan",
         "getMockEventPlans"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "gift-reminders",
@@ -1089,9 +1089,9 @@
         "getUpcomingGiftReminders",
         "filterUrgent"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "grocery-continuity",
@@ -1102,9 +1102,9 @@
         "generateShoppingList",
         "computeMonthlyGroceryBudget"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "home-admin",
@@ -1114,9 +1114,9 @@
         "getExpiringItems",
         "computeAdminLoad"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "household-boardroom-inputs",
@@ -1126,9 +1126,9 @@
         "HouseholdBoardroomPacket",
         "buildHouseholdBoardroomPacket"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "household-ops",
@@ -1138,9 +1138,9 @@
         "computeHouseholdKpis",
         "balanceLoad"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "household-overview",
@@ -1150,9 +1150,9 @@
         "HouseholdOverview",
         "buildHouseholdOverview"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "load-balance",
@@ -1163,9 +1163,9 @@
         "analyzeLoad",
         "suggestRebalance"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "prep-checklist",
@@ -1174,9 +1174,9 @@
       "exports": [
         "generateTripChecklist"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "prep-derivation",
@@ -1185,9 +1185,9 @@
       "exports": [
         "derivePrepTasks"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "provider-memory",
@@ -1198,9 +1198,9 @@
         "getFavorites",
         "suggestProvider"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "reconciliation",
@@ -1212,9 +1212,9 @@
         "CalendarConflict",
         "reconcileCalendars"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "recurring-supplies",
@@ -1224,9 +1224,9 @@
         "detectResupplyNeeded",
         "estimateMonthlySupplyCost"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "reservation-ingest",
@@ -1235,9 +1235,9 @@
       "exports": [
         "ingestReservationFromEmail"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "responsibilities",
@@ -1247,9 +1247,9 @@
         "ResponsibilityAssignment",
         "assignResponsibilities"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "school-items",
@@ -1260,9 +1260,9 @@
         "getUpcomingSchoolItems",
         "groupByChild"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "travel-continuity",
@@ -1273,9 +1273,9 @@
         "ingestReservation",
         "assessTripReadiness"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "trip-overview",
@@ -1285,9 +1285,9 @@
         "TripDashboard",
         "buildTripDashboard"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-auth",
@@ -1300,9 +1300,9 @@
         "refreshToken",
         "revokeAuth"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-fake-mode",
@@ -1316,9 +1316,9 @@
         "getFakeResponse",
         "getFakeModeConfig"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-health",
@@ -1331,9 +1331,9 @@
         "recordSync",
         "getFreshnessPolicy"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-truth-service",
@@ -1344,9 +1344,9 @@
         "SyncJobRecord",
         "getConnectorTruthIndex"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "conscience-gate",
@@ -1362,9 +1362,9 @@
         "ConscienceGateService",
         "conscienceGate"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "critique-loop",
@@ -1380,9 +1380,9 @@
         "getCritiqueLog",
         "getCritiqueStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "continuity-engine",
@@ -1398,9 +1398,9 @@
         "ContinuityEngineService",
         "createContinuityEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "council-automation",
@@ -1413,9 +1413,9 @@
         "CouncilAutomationService",
         "createCouncilAutomation"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "persistence-adapters",
@@ -1439,9 +1439,9 @@
         "SovereignExportRow",
         "sovereignExportsAdapter"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "demo-governance-service",
@@ -1451,9 +1451,9 @@
         "DemoGovernanceStatus",
         "getDemoGovernanceIndex"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "desk-executor",
@@ -1468,9 +1468,9 @@
         "DeskExecutor",
         "deskExecutor"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "digest-engine",
@@ -1487,9 +1487,9 @@
         "DigestEngineService",
         "createDigestEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "domain-runtime-service",
@@ -1500,9 +1500,9 @@
         "getRuntimeTruthIndex",
         "getDomainList"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "assumption-registry",
@@ -1527,9 +1527,9 @@
         "assumeNoNewObligations",
         "getAssumptionStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "cite-checker",
@@ -1545,9 +1545,9 @@
         "runCiteCheck",
         "getCiteCheckPolicy"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "cortex-loop",
@@ -1569,9 +1569,9 @@
         "getOutcomeLearningStats",
         "getCortexLoopConfig"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "evidence-grader",
@@ -1590,9 +1590,9 @@
         "getDomainEvidencePolicy",
         "isHighTrustDomain"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "negative-receipt",
@@ -1610,9 +1610,9 @@
         "getNegativeReceipts",
         "getNegativeReceiptStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "sentinel-engine",
@@ -1632,9 +1632,9 @@
         "getInvariants",
         "getInvariantById"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "tool-grounding",
@@ -1653,9 +1653,9 @@
         "logGroundingCheck",
         "getGroundingStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "event-envelope",
@@ -1668,9 +1668,9 @@
         "markDeadLettered",
         "incrementRetry"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "publish-event",
@@ -1682,9 +1682,9 @@
         "getEventLog",
         "getDeadLetterQueue"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "subscribe-event",
@@ -1697,9 +1697,9 @@
         "clearSubscriptions",
         "subscribeOnce"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "unified-event-service",
@@ -1710,9 +1710,9 @@
         "UnifiedEventService",
         "unifiedEventService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "execute-action",
@@ -1728,9 +1728,9 @@
         "markRolledBack",
         "listExecutions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "execute-connector-action",
@@ -1746,9 +1746,9 @@
         "getAllConnectorHealth",
         "setConnectorHealth"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "execute-workflow-step",
@@ -1762,9 +1762,9 @@
         "executeStep",
         "canRetry"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "experience-signature",
@@ -1779,9 +1779,9 @@
         "ExperienceSignatureService",
         "createExperienceSignature"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "account-summary",
@@ -1793,9 +1793,9 @@
         "groupAccountsByType",
         "detectStaleAccounts"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "balance-sync",
@@ -1807,9 +1807,9 @@
         "reconcileBalance",
         "buildSyncHealthReport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "bill-calendar",
@@ -1821,9 +1821,9 @@
         "buildBillCalendar",
         "getNextDueBills"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "capital-map",
@@ -1834,9 +1834,9 @@
         "getMockCapitalMap",
         "computeEntityConcentration"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "cash-allocator",
@@ -1846,9 +1846,9 @@
         "CashAllocatorInput",
         "computeCashAllocations"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "committee-boardroom-inputs",
@@ -1858,9 +1858,9 @@
         "CommitteeBriefing",
         "buildCommitteeBriefing"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "crypto-exposure",
@@ -1870,9 +1870,9 @@
         "CryptoRiskAssessment",
         "assessCryptoRisk"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "debt-analyzer",
@@ -1882,9 +1882,9 @@
         "computeDebtProfile",
         "simulateDebtPayoff"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "due-soon-alerts",
@@ -1895,9 +1895,9 @@
         "generateDueSoonAlerts",
         "countUpcomingTotal"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "entity-capital",
@@ -1908,9 +1908,9 @@
         "analyzeEntityCapital",
         "computeInterEntityTransfers"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "envelope-budget",
@@ -1922,9 +1922,9 @@
         "applyRollover",
         "computePaceStatus"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "execution-review",
@@ -1934,9 +1934,9 @@
         "ExecutionQualityReport",
         "buildExecutionReview"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "family-office-review",
@@ -1946,9 +1946,9 @@
         "buildFamilyOfficeReview",
         "computeReviewScore"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "finance-boardroom-inputs",
@@ -1957,9 +1957,9 @@
       "exports": [
         "buildFinanceBoardroomPacket"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "financial-health",
@@ -1968,9 +1968,9 @@
       "exports": [
         "computeFinancialHealth"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "fx-watchlist",
@@ -1980,9 +1980,9 @@
         "FxAlert",
         "monitorFxExposure"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "income-quality",
@@ -1992,9 +1992,9 @@
         "IncomeQualityInput",
         "computeIncomeQuality"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "investment-memory",
@@ -2016,9 +2016,9 @@
         "buildPortfolioMemory",
         "buildEventMemory"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "investment-office-runtime",
@@ -2037,9 +2037,9 @@
         "InvestmentOfficeRuntimeService",
         "createInvestmentOfficeRuntime"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "investment-office",
@@ -2079,9 +2079,9 @@
         "getInvestmentTrustMode",
         "getAvailableTrustModes"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "liquidity",
@@ -2091,9 +2091,9 @@
         "computeLiquidity",
         "runLiquidityStressTest"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "overview",
@@ -2102,9 +2102,9 @@
       "exports": [
         "computeAllocationDrift"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "peace-score",
@@ -2114,9 +2114,9 @@
         "PeaceScoreInput",
         "computePeaceScore"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "portfolio-risk",
@@ -2126,9 +2126,9 @@
         "PortfolioRiskReport",
         "buildPortfolioRiskReport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "receivables",
@@ -2139,9 +2139,9 @@
         "buildAgingReport",
         "flagOverdueReceivables"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "recurring-obligation",
@@ -2151,9 +2151,9 @@
         "RecurringObligationSummary",
         "summarizeRecurringObligations"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "regime-engine",
@@ -2164,9 +2164,9 @@
         "buildRegimeHistory",
         "shouldAdjustPosture"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "renewal-risk",
@@ -2176,9 +2176,9 @@
         "RenewalRiskReport",
         "buildRenewalRiskReport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "reserve-engine",
@@ -2188,9 +2188,9 @@
         "computeSafeToSpend",
         "assessReserveHealth"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "revenue-memory",
@@ -2207,9 +2207,9 @@
         "AlignmentCluster",
         "computeAlignmentMap"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "safe-to-spend",
@@ -2219,9 +2219,9 @@
         "SafeToSpendForecast",
         "computeSafeToSpendForecast"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "scenario-engine",
@@ -2231,9 +2231,9 @@
         "runScenario",
         "generatePresetScenarios"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "sinking-fund",
@@ -2244,9 +2244,9 @@
         "assessFundProgress",
         "recommendContributionAdjustment"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "stress-radar",
@@ -2256,9 +2256,9 @@
         "StressRadarInput",
         "computeStressRadar"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "subscription-detector",
@@ -2268,9 +2268,9 @@
         "DetectedSubscription",
         "detectSubscriptions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "subscription-waste",
@@ -2281,9 +2281,9 @@
         "assessRenewalRisks",
         "computeTotalWaste"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "thesis-vault",
@@ -2293,9 +2293,9 @@
         "getMockTheses",
         "assessThesisHealth"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "transaction-categorizer",
@@ -2306,9 +2306,9 @@
         "categorizeTransaction",
         "aggregateSpend"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "waste-detector",
@@ -2318,9 +2318,9 @@
         "WasteReport",
         "buildWasteReport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "flagship-loop-service",
@@ -2334,9 +2334,9 @@
         "getImportanceBadge",
         "getStatusBadge"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "frontend-quality-engine",
@@ -2356,9 +2356,9 @@
         "MISSING_TO_WORLD_CLASS",
         "computeFrontendQualityScore"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "google-demo-provider",
@@ -2367,9 +2367,9 @@
       "exports": [
         "getGoogleDemoState"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "google-provider-family",
@@ -2380,9 +2380,9 @@
         "resolveOAuthClient",
         "isScopeUpgradeSafe"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "types",
@@ -2409,45 +2409,45 @@
         "GOOGLE_API_REQUIREMENTS",
         "GOOGLE_OAUTH_CLIENT_TEMPLATES"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "account-graph",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/account-graph.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-access",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/connector-access.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "consent",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/consent.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "identity-provider",
       "domain": "identity-auth",
       "path": "src/lib/services/identity-auth/identity-provider.service.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "types",
@@ -2489,9 +2489,9 @@
         "AccountGraphSummaryView",
         "AuthSeparationContract"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connector-sdk",
@@ -2514,9 +2514,9 @@
         "createDemoHealthCheck",
         "createDemoDryRun"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "demo-connections",
@@ -2531,9 +2531,9 @@
         "DEMO_ACTION_REQUESTS",
         "DEMO_AUDIT_LOG"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "providers",
@@ -2545,9 +2545,9 @@
         "getProvidersByCategory",
         "PROVIDER_CATEGORIES"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "intent-orchestrator",
@@ -2566,9 +2566,9 @@
         "IntentMiddleware",
         "createIntentOrchestrator"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "launch-gate-service",
@@ -2583,9 +2583,9 @@
         "deriveHonestyClass",
         "getLaunchHonestyIndex"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "launch-readiness-engine",
@@ -2604,9 +2604,9 @@
         "GoNoGoCondition",
         "getGoNoGoConditions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "financial-literacy-engine",
@@ -2625,9 +2625,9 @@
         "FinancialLiteracyEngine",
         "createFinancialLiteracyEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "household-coaching-engine",
@@ -2644,9 +2644,9 @@
         "HouseholdCoachingEngine",
         "createHouseholdCoachingEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "life-goal-tracker",
@@ -2664,9 +2664,9 @@
         "LifeGoalTracker",
         "createLifeGoalTracker"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "skill-monetization-advisor",
@@ -2684,9 +2684,9 @@
         "SkillMonetizationAdvisor",
         "createSkillMonetizationAdvisor"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "wealth-building-engine",
@@ -2702,9 +2702,9 @@
         "WealthBuildingEngine",
         "createWealthBuildingEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "life-shock-simulator",
@@ -2718,9 +2718,9 @@
         "LifeShockSimulator",
         "createLifeShockSimulator"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "memory-governance-engine",
@@ -2733,9 +2733,9 @@
         "MemoryGovernanceEngine",
         "createMemoryGovernance"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "boardroom-memory",
@@ -2750,9 +2750,9 @@
         "resolveCarryover",
         "listCarryovers"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "correction",
@@ -2765,9 +2765,9 @@
         "getCorrections",
         "computeCorrectionStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "preference-memory",
@@ -2781,9 +2781,9 @@
         "resetToDefaults",
         "exportPreferences"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "profile-memory",
@@ -2796,9 +2796,9 @@
         "deleteProfileMemory",
         "clearExpired"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "trust-memory",
@@ -2815,9 +2815,9 @@
         "addTrustFlag",
         "resolveFlag"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "workflow-memory",
@@ -2832,9 +2832,9 @@
         "deleteWorkflowCheckpoint",
         "pruneOldCheckpoints"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "collector",
@@ -2844,9 +2844,9 @@
         "MetaGovernanceCollectorService",
         "getMetaGovernanceCollector"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "context-assembler",
@@ -2859,9 +2859,9 @@
         "ContextAssembler",
         "contextAssembler"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "health-aggregator",
@@ -2877,9 +2877,9 @@
         "HealthAggregatorService",
         "createHealthAggregator"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "observability-service",
@@ -2890,9 +2890,9 @@
         "ProbeRunRecord",
         "HealthSnapshot"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "persistence",
@@ -2902,9 +2902,9 @@
         "startPeriodicFlush",
         "stopPeriodicFlush"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "ambient-intelligence",
@@ -2917,9 +2917,9 @@
         "AmbientIntelligenceService",
         "createAmbientIntelligence"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "personal-operating-graph",
@@ -2936,9 +2936,9 @@
         "PersonalOperatingGraphService",
         "createPersonalOperatingGraph"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "auto-rules",
@@ -2951,9 +2951,9 @@
         "AutoRulesEngine",
         "createAutoRulesEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "behavioral-learning",
@@ -2966,18 +2966,18 @@
         "BehavioralLearningEngine",
         "createBehavioralLearningEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "platform-readiness-seeder",
       "domain": "platform-readiness",
       "path": "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
       "exports": [],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "approval-requirements",
@@ -2988,9 +2988,9 @@
         "resolveApprovalRequirements",
         "getThresholdsForDomain"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "outbound-comm-policy",
@@ -3003,9 +3003,9 @@
         "getPolicyForType",
         "getRemainingQuota"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "sensitive-doc-policy",
@@ -3017,9 +3017,9 @@
         "getRedactionRules",
         "bulkClassify"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "truth-boundaries",
@@ -3034,9 +3034,9 @@
         "listProtectedFields",
         "isFieldProtected"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "types",
@@ -3058,9 +3058,9 @@
         "PROVIDER_FAMILY_CONFIGS",
         "doesIdentityImplyConnectorGeneric"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "push-registration-service",
@@ -3072,9 +3072,9 @@
         "isPushSupported",
         "getPermissionState"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "approval-receipts",
@@ -3084,9 +3084,9 @@
         "generateApprovalReceipt",
         "generateSingleApprovalReceipt"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "execution-receipts",
@@ -3096,9 +3096,9 @@
         "generateExecutionReceipt",
         "generateBatchExecutionReceipts"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "proof-bundles",
@@ -3109,9 +3109,9 @@
         "validateBundle",
         "mergeBundles"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "receipts",
@@ -3126,9 +3126,9 @@
         "getReceiptById",
         "createFirstBootReceipt"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "recommendation-loop-service",
@@ -3137,9 +3137,9 @@
       "exports": [
         "getValidTransitions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "business-model-advisor",
@@ -3155,9 +3155,9 @@
         "BusinessModelAdvisor",
         "createBusinessModelAdvisor"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "income-discovery-engine",
@@ -3173,9 +3173,9 @@
         "IncomeDiscoveryEngine",
         "createIncomeDiscoveryEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "market-intelligence",
@@ -3190,9 +3190,9 @@
         "MarketIntelligenceService",
         "createMarketIntelligence"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "security-posture-engine",
@@ -3235,9 +3235,9 @@
         "getThreatsByStatus",
         "getHighRiskFunctions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "security-privacy-service",
@@ -3246,9 +3246,9 @@
       "exports": [
         "SecurityCheckResult"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "heartbeat",
@@ -3260,9 +3260,9 @@
         "ServiceHeartbeat",
         "serviceHeartbeat"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "route-to-service-inventory",
@@ -3279,9 +3279,9 @@
         "getAllActions",
         "getDuplicateActionPatterns"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "service-ownership-registry",
@@ -3307,9 +3307,9 @@
         "getDirectoriesByClass",
         "getClassificationSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "advisor-recommendation-engine",
@@ -3319,9 +3319,9 @@
         "AdvisorRecommendationEngine",
         "advisorRecommendationEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "connection-recommendation-engine",
@@ -3332,9 +3332,9 @@
         "ConnectionRecommendationEngine",
         "connectionRecommendationEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "first-win-recommendation-engine",
@@ -3344,9 +3344,9 @@
         "FirstWinRecommendationEngine",
         "firstWinRecommendationEngine"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "hardware-capability-service",
@@ -3356,9 +3356,9 @@
         "HardwareCapabilityService",
         "hardwareCapabilityService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "setup-summary-builder",
@@ -3369,9 +3369,9 @@
         "SetupSummaryBuilder",
         "setupSummaryBuilder"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "trust-calibration-service",
@@ -3381,9 +3381,9 @@
         "TrustCalibrationService",
         "trustCalibrationService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "world-model-service",
@@ -3393,9 +3393,9 @@
         "WorldModelService",
         "worldModelService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "diagnostic-bundle",
@@ -3405,9 +3405,9 @@
         "generateDiagnosticBundle",
         "generateExtendedDiagnostic"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "incident-classification",
@@ -3417,9 +3417,9 @@
         "IncidentClassification",
         "classifyIncident"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "replay-metadata",
@@ -3430,9 +3430,9 @@
         "captureReplayMetadata",
         "redactReplayForSupport"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "support-summary",
@@ -3442,9 +3442,9 @@
         "SupportSummary",
         "generateSupportSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "surface-adapter-registry",
@@ -3458,9 +3458,9 @@
         "getActiveAdapters",
         "getAdapterCountSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "surface-portability-service",
@@ -3473,9 +3473,9 @@
         "getSurfacePortabilityIndex",
         "getSurfaceAdapterSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "timing-intelligence",
@@ -3491,9 +3491,9 @@
         "TimingIntelligenceService",
         "createTimingIntelligence"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "trust-weighted-actions",
@@ -3510,9 +3510,9 @@
         "TrustWeightedActionService",
         "createTrustWeightedActions"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "truth-index-aggregator",
@@ -3521,9 +3521,9 @@
       "exports": [
         "TruthIndexSummary"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "postcondition-checks",
@@ -3536,9 +3536,9 @@
         "runPostconditionChecks",
         "summarizeChecks"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "receipt-verification",
@@ -3551,9 +3551,9 @@
         "ReceiptVerificationService",
         "createReceiptVerificationService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "replay-verification",
@@ -3569,9 +3569,9 @@
         "ReplayVerificationService",
         "createReplayVerificationService"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "rollback-signals",
@@ -3582,9 +3582,9 @@
         "detectRollbackCondition",
         "generateRollbackProof"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     },
     {
       "name": "verification",
@@ -3595,11 +3595,11 @@
         "getVerificationHistory",
         "getVerificationStats"
       ],
-      "status": "active",
+      "status": "ga",
       "statusSource": "wave5-auto-tagger",
-      "statusReason": "default — service is shipped in current build"
+      "statusReason": "default — service is shipped in current production build"
     }
   ],
-  "statusTaggedAt": "2026-04-20T17:04:02.535Z",
+  "statusTaggedAt": "2026-04-20T17:06:01.147Z",
   "statusTaggerVersion": "wave5.3"
 }
