@@ -60,7 +60,7 @@ describe("Integration: Mode Resolution → Provider Selection", () => {
   });
 
   it("seed bootstrap exports correctly", async () => {
-    const mod = await import("@/lib/seed/index");
+    const mod = await import("@/data/fixtures/seed/index");
     expect(typeof mod.bootstrapSitaOS).toBe("function");
     expect(typeof mod.seedEcosystemData).toBe("function");
     expect(typeof mod.initializeDataFlows).toBe("function");
