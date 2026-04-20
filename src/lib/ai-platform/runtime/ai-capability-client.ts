@@ -7,7 +7,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeGatewayResponse } from "./ai-response-normalizer";
 import type { AICapabilityRequest, AIResponseEnvelope } from "./ai-state-types";
-import { enforceAIBudget } from "@/lib/ai-gateway/budget-gate";
+import { enforceAIBudget } from "@/lib/ai-platform/gateway/budget-gate";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
 import { pipelineOrchestrator } from "@/lib/services/canonical-pipeline/pipeline-orchestrator";
 import {
