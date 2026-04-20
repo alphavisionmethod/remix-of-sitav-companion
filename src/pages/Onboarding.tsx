@@ -1,10 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useOnboardingResume, type OnboardingBranch } from "@/hooks/useOnboardingResume";
 
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ import logo from "@/assets/logo.webp";
 import {
   Briefcase, DollarSign, Headphones, ChevronRight, ChevronLeft, Check, User, Building,
   Shield, Brain, Zap, Clock, Mail, Calendar, FileText, Sparkles, CheckCircle, ArrowRight,
-  Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders
+  Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders, RotateCcw
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
@@ -70,13 +71,65 @@ const Onboarding = () => {
   const [step, setStep] = useState<Step>("welcome");
   const [state, setState] = useState<OnboardingState>(defaultState);
   const [isSaving, setIsSaving] = useState(false);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+
+  // Resume/re-entry telemetry — first-use audit P1.4 client wiring
+  const { checkpoint, isLoading: resumeLoading, saveCheckpoint, clearCheckpoint } = useOnboardingResume();
 
   const idx = stepOrder.indexOf(step);
+
+  // Map step index → 1..29 ceremony screen (master spec)
+  const screenForStep = useCallback((s: Step) => {
+    const i = stepOrder.indexOf(s);
+    // 10 steps mapped onto screens 1..29 (welcome=1, complete=29)
+    return Math.max(1, Math.min(29, Math.round(1 + (i / (stepOrder.length - 1)) * 28)));
+  }, []);
+
+  // Persist checkpoint on every step change after welcome (debounced inside hook)
+  useEffect(() => {
+    if (!user || step === "welcome" || step === "complete") return;
+    const branch: OnboardingBranch = "balanced"; // legacy flow → balanced depth
+    saveCheckpoint({
+      currentScreen: screenForStep(step),
+      branch,
+      profileSnapshot: state as unknown as Record<string, unknown>,
+      conditionalState: { step },
+      lastCompletedScreen: idx > 0 ? screenForStep(stepOrder[idx - 1]) : null,
+    });
+  }, [step, state, user, idx, screenForStep, saveCheckpoint]);
+
+  // Surface resume prompt once checkpoint loads (only at welcome)
+  useEffect(() => {
+    if (!resumeLoading && checkpoint && step === "welcome") {
+      setShowResumePrompt(true);
+    }
+  }, [resumeLoading, checkpoint, step]);
+
+  const handleResume = () => {
+    if (!checkpoint) return;
+    const restoredStep = (checkpoint.conditional_state?.step as Step) ?? "role";
+    const restoredState = checkpoint.profile_snapshot as Partial<OnboardingState>;
+    setState((prev) => ({ ...prev, ...restoredState }));
+    setStep(restoredStep);
+    setShowResumePrompt(false);
+    toast.success("Resumed where you left off");
+  };
+
+  const handleStartFresh = () => {
+    clearCheckpoint();
+    setShowResumePrompt(false);
+  };
+
   const next = async () => {
     if (step === "review") {
       await persistOnboardingData();
     }
-    if (idx < stepOrder.length - 1) setStep(stepOrder[idx + 1]);
+    if (idx < stepOrder.length - 1) {
+      const nextStep = stepOrder[idx + 1];
+      setStep(nextStep);
+      // On final completion, clear server-side checkpoint
+      if (nextStep === "complete") clearCheckpoint();
+    }
   };
   const prev = () => idx > 0 && setStep(stepOrder[idx - 1]);
 
@@ -149,6 +202,28 @@ const Onboarding = () => {
             {/* ======================== WELCOME ======================== */}
             {step === "welcome" && (
               <div className="text-center space-y-8">
+                {showResumePrompt && checkpoint && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-primary/40 bg-primary/5 p-5 max-w-md mx-auto text-left"
+                    data-testid="resume-prompt"
+                  >
+                    <div className="flex items-start gap-3">
+                      <RotateCcw className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-foreground">Resume where you left off?</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          We saved your progress on screen {checkpoint.current_screen} of 29.
+                        </p>
+                        <div className="mt-3 flex gap-2">
+                          <SitaButton variant="primary" size="sm" onClick={handleResume} data-testid="resume-accept">Resume</SitaButton>
+                          <SitaButton variant="ghost" size="sm" onClick={handleStartFresh} data-testid="resume-decline">Start Fresh</SitaButton>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
                 <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
                   <img src={logo} loading="lazy" alt="SITA OS" className="mx-auto h-24 w-24 rounded-3xl shadow-glow-purple" />
                 </motion.div>

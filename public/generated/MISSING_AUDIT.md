@@ -1371,9 +1371,11 @@ Mitigation: per-cluster README + Part II annotations.
 - **Shipped edge function:** `supabase/functions/onboarding-resume-checkpoint/index.ts` — POST upsert by `(user_id, session_id)`, GET by `resume_token`; JWT-validated in-code; CORS-clean
 - **Shipped RLS:** 3 owner-scoped policies (`users_select_own_resume_checkpoint`, `users_insert_own_resume_checkpoint`, `users_update_own_resume_checkpoint`); no delete policy (TTL handles cleanup)
 - **Shipped validation:** trigger `validate_onboarding_resume_checkpoint` enforces `current_screen ∈ [1,29]` and `branch ∈ {quick,balanced,deep}`
-- **Shipped gate:** `scripts/architecture/checks/check-onboarding-branch-telemetry.ts` extended with 3 new assertions; report shape adds `resumePersistence: { tablePresent, rlsComplete, edgeFunctionPresent }`
+- **Shipped gate:** `scripts/architecture/checks/check-onboarding-branch-telemetry.ts` extended with 4 assertions; report shape adds `resumePersistence: { tablePresent, rlsComplete, edgeFunctionPresent, clientWired }` — gate runs green: `client:true`
 - **Persistence audit impact:** `setup_checkpoints` domain promoted to **covered (8 backing tables)** in `generated/persistence-audit.json`
 - **Rollback:** drop table via reverse migration; gate detects absence and re-flags as missing
+- **Client wiring (2026-04-20):** `src/hooks/useOnboardingResume.ts` debounces `saveCheckpoint` (500ms) on every step change in `src/pages/Onboarding.tsx`, restores prior session via `resume_token` on mount, and prompts "Resume where you left off?" with `data-testid="resume-prompt"`; `clearCheckpoint()` is called on completion
+- **E2E coverage (2026-04-20):** `tests/e2e/customer-journey/auth/setup-continuation.spec.ts` upgraded from stub → real flow (start → advance → reload → assert resume)
 
 #### P1.5 — Admin runbook tab in 12-domain IA
 - **Problem:** Admin shells exist; runbook tab is not wired
