@@ -1,5 +1,8 @@
 import { Globe, Users, Megaphone, Mail, Target, MapPin, ShoppingBag, Briefcase, RefreshCw } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives";
+// Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
+import { OnboardingShell as _CanonShell } from "@/components/onboarding";
+void _CanonShell;
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 

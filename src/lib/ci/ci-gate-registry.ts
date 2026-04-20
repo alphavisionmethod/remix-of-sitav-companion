@@ -403,6 +403,19 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     producesArtifact: "generated/manifest-theater-report.json",
   },
 
+  // ── Phase 23 ── Onboarding canonical components folder (Checklist 23: drift-prevent P2)
+  {
+    id: "onboarding-components-folder",
+    phase: "phase-26-manifest-truth",
+    title: "Onboarding components folder (canonical primitives + consumer adoption)",
+    script: "scripts/architecture/checks/check-onboarding-components-folder.ts",
+    owner: "platform-architecture",
+    severity: "blocker",
+    description:
+      "Asserts src/components/onboarding/ exists with ≥ 5 primitive .tsx files + index.ts barrel, and that ≥ 5 ceremony screens under src/pages/revenue-office/onboarding/screens/ import from @/components/onboarding. Drift-prevents the audit-flagged P2 (folder does not exist; UI lives entirely under pages/).",
+    producesArtifact: "generated/onboarding-components-folder-report.json",
+  },
+
   // ── Phase 32 ── Final "It's Real" Gate (Checklist 27)
   {
     id: "its-real-gate",

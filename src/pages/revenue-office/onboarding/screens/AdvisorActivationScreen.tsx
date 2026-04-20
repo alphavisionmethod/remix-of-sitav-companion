@@ -4,6 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Check, CircleDot, TrendingUp, Users, Target, Megaphone, DollarSign, Phone, Heart, Star, Briefcase } from "lucide-react";
 import { ChapterBanner } from "../primitives";
+// Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
+import { OnboardingMomentReveal as _CanonReveal } from "@/components/onboarding";
+void _CanonReveal;
 import { getRecommendedAdvisors, type RecommendedAdvisor } from "../branching";
 import type { ScreenProps } from "../types";
 

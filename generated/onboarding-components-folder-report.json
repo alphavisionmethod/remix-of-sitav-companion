@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-20T03:34:54.729Z",
+  "gate": "onboarding-components-folder",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "folder": "src/components/onboarding",
+  "screensDir": "src/pages/revenue-office/onboarding/screens",
+  "primitiveCount": 6,
+  "hasBarrel": true,
+  "presentPrimitives": [
+    "OnboardingShell.tsx",
+    "OnboardingProgress.tsx",
+    "OnboardingChoiceCard.tsx",
+    "OnboardingStepHeader.tsx",
+    "OnboardingFooterNav.tsx",
+    "OnboardingMomentReveal.tsx"
+  ],
+  "consumerCount": 6,
+  "consumers": [
+    "AcquisitionScreen.tsx",
+    "AdvisorActivationScreen.tsx",
+    "AutomationScreen.tsx",
+    "ConversionScreen.tsx",
+    "DeliveryScreen.tsx",
+    "FrictionScreen.tsx"
+  ],
+  "issues": []
+}

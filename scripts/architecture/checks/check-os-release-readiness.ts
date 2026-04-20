@@ -301,6 +301,8 @@ const REQUIRED_GATES = [
   "os-ci-end-to-end",
   // Phase 19 Public Artifact Surfacing (1 BLOCK gate — mirror drift detector)
   "public-artifact-mirror",
+  // Phase 23 Onboarding components folder canonicalization (1 BLOCK gate)
+  "onboarding-components-folder",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
