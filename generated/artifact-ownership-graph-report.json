@@ -1,16 +1,37 @@
 {
-  "generatedAt": "2026-04-20T06:30:43.706Z",
+  "generatedAt": "2026-04-20T06:31:28.309Z",
   "gate": "artifact-ownership-graph",
   "phase": "phase-30-producer-consumer-graph",
-  "errorCount": 1,
-  "warningCount": 0,
+  "errorCount": 2,
+  "warningCount": 1,
   "ok": false,
   "issues": [
     {
       "severity": "error",
-      "area": "presence",
-      "message": "Missing or malformed generated/artifact-ownership-graph.json. Run: npm run generate:artifact-ownership-graph"
+      "area": "consumer-coverage",
+      "message": "Consumer coverage 78% < 95% (205/263 non-terminal nodes consumed)"
+    },
+    {
+      "severity": "error",
+      "area": "cycles",
+      "message": "132 cycle(s) detected: generated/accessibility-summary.json → generated/validation-summary.json → generated/accessibility-summary.json; generated/accessibility-summary.json → generated/validation-summary.json → generated/visual-regression-baseline.json → generated/accessibility-summary.json; generated/validation-summary.json → generated/visual-regression-baseline.json → generated/validation-summary.json"
+    },
+    {
+      "severity": "warning",
+      "area": "orphan-consumers",
+      "message": "46 artifact(s) consumed but lack a declared producer."
     }
   ],
-  "metrics": null
+  "metrics": {
+    "totalNodes": 598,
+    "totalEdges": 2128,
+    "artifactToArtifactEdges": 1521,
+    "fresh": 598,
+    "aging": 0,
+    "stale": 0,
+    "transitivelyStale": 0,
+    "cycles": 132,
+    "orphanProducers": 0,
+    "releaseCriticalStale": 0
+  }
 }
