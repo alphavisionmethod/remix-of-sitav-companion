@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T19:10:46.668Z
+> Generated: 2026-04-20T19:11:21.145Z
 > Verdict: **GREEN** ✅
 
 ## Summary
@@ -393,7 +393,7 @@
 
 ## Verdict
 
-✅ All required readiness gates passed with no warnings. Release is **cuttable**.
+✅ All 248 required readiness gates passed (0 errors, 0 missing). 4252 advisory warning(s) are informational only. Release is **cuttable**.
 
 ## Related
 
