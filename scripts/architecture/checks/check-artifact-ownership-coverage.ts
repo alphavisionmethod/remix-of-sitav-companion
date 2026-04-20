@@ -43,8 +43,8 @@ if (data.coveragePercent < 80) {
 // Rule 2: every producer script must exist on disk
 let missingProducers = 0;
 for (const e of data.entries) {
-  if (e.producer && !e.producer.startsWith(".github/") && !e.producer.startsWith("supabase/functions/")) {
-    if (!fs.existsSync(e.producer)) {
+  if (e.producer && !e.producer.startsWith(".github/") && !e.producer.startsWith("supabase/functions/") && !e.producer.startsWith("package.json")) {
+    if (!fs.existsSync(e.producer.split(" ")[0])) {
       missingProducers++;
       if (missingProducers <= 5) issues.push(`producer missing on disk: ${e.producer} (for ${e.artifact})`);
     }
