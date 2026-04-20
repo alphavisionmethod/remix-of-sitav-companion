@@ -31,7 +31,8 @@ export type RunbookSubsystem =
   | "runtime-probe"
   | "support-escalation"
   | "ingress"
-  | "boardroom-followthrough";
+  | "boardroom-followthrough"
+  | "payments-auth";
 
 export interface RunbookStep {
   readonly order: number;

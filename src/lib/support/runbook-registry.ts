@@ -384,6 +384,25 @@ export const RUNBOOK_REGISTRY: readonly RunbookEntry[] = [
     boundedContextId: "boardroom", subsystem: "boardroom-followthrough", markdownRef: "docs/runbooks/boardroom-l7-stuck.md",
   },
 
+  // ═══ RB-005-AUTH — Payment Authentication / 3DS Recovery ═══
+  {
+    runbookId: "RB-005-AUTH", title: "Payment Authentication / 3DS Recovery",
+    description: "Recover from payment authentication, tokenization, or 3DS/SCA gateway failures while preserving capture/settlement/refund flows",
+    severity: "critical", status: "reviewed",
+    triggerCondition: "3DS/SCA gateway 5xx > 2% over 5 min, tokenization provider returning ERR_TOKEN_REJECTED at scale, or WebAuthn challenges timing out",
+    affectedServices: ["payment-auth-service", "tokenization-service", "sca-3ds-gateway"],
+    killSwitchRef: "KS-PAYMENTS-AUTH", messageCodeRef: "PAY-AUTH-001",
+    steps: [
+      { order: 1, action: "Confirm incident pattern at /admin/health/incidents matches payments:auth-error and verify 3DS provider health probe at /admin/integrations/payments/health", command: null, expectedOutcome: "Auth-only incident confirmed; capture/settlement still healthy", rollbackAction: null, timeoutMs: 120_000 },
+      { order: 2, action: "Activate KS-PAYMENTS-AUTH from /admin/trust-security with ≥20-char justification (incident link or PagerDuty ID)", command: null, expectedOutcome: "Switch armed; new auth attempts return 503 payments_auth_paused while captures/refunds continue", rollbackAction: "Disarm switch via single-admin deactivation", timeoutMs: 60_000 },
+      { order: 3, action: "Obtain second-admin approval via /admin/approvals dual-approval queue", command: null, expectedOutcome: "Dual-approval recorded in admin_safety_actions; switch state propagates within 30s via Realtime", rollbackAction: null, timeoutMs: 300_000 },
+      { order: 4, action: "Verify enforcement: curl payment-process authorize → expect 503; curl payment-process capture → expect 200", command: null, expectedOutcome: "Auth path blocked, capture/refund path healthy", rollbackAction: null, timeoutMs: 60_000 },
+      { order: 5, action: "After 3DS provider green for ≥10 min: deactivate switch, then run payment-process replay-queued-auths (window=PT15M) and watch /admin/incidents/dashboard for 15 min until auth success rate > 97%", command: null, expectedOutcome: "Auth success rate returns to baseline; queued auths flushed", rollbackAction: "Re-arm switch if auth success rate drops below 90%", timeoutMs: 1_200_000 },
+    ],
+    escalationTarget: "admin", estimatedResolutionMs: 1_800_000, lastTestedAt: null, owner: "finance",
+    boundedContextId: "finance-os", subsystem: "payments-auth", markdownRef: "infra/runbooks/RB-005-AUTH.md",
+  },
+
 ] as const;
 
 // ── Query Functions ────────────────────────────────────────────
