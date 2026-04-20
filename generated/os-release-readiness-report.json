@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T01:46:28.988Z",
+  "generatedAt": "2026-04-20T06:34:17.767Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1614,6 +1614,48 @@
       "warnings": 0
     },
     {
+      "file": "generated/public-artifact-mirror-report.json",
+      "gate": "public-artifact-mirror",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/onboarding-components-folder-report.json",
+      "gate": "onboarding-components-folder",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/artifact-index-traceability-report.json",
+      "gate": "artifact-index-traceability",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/edge-function-ownership-completeness-report.json",
+      "gate": "edge-function-ownership-completeness",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/recovery-boot-evidence-report.json",
+      "gate": "recovery-boot-evidence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/artifact-ownership-graph-report.json",
+      "gate": "artifact-ownership-graph",
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    {
       "file": "generated/ai-engineer-tab-registry-report.json",
       "gate": "ai-engineer-tab-registry (warn)",
       "ok": true,
@@ -2476,8 +2518,12 @@
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 3621,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "YELLOW"
+  "totalWarnings": 3624,
+  "missingGates": [
+    "runbook-coverage",
+    "connector-client-registry-completeness",
+    "admin-runbook-surface-wiring"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }

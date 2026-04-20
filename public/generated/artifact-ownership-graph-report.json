@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-04-20T06:34:07.657Z",
+  "gate": "artifact-ownership-graph",
+  "phase": "phase-30-producer-consumer-graph",
+  "errorCount": 0,
+  "warningCount": 3,
+  "ok": true,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "consumer-coverage",
+      "message": "Consumer coverage 86% < 95% target (140/163)"
+    },
+    {
+      "severity": "warning",
+      "area": "non-critical-cycles",
+      "message": "4 cycle(s) detected in non-release-critical pipelines (validator↔emit pairs): generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/install-surface-honesty-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-manifest-status.json → generated/generated-mobile-truth-consistency-report.json; generated/generated-mobile-truth-consistency-report.json → generated/mobile-scope-closure/mobile-scope-status.json → generated/generated-mobile-truth-consistency-report.json"
+    },
+    {
+      "severity": "warning",
+      "area": "orphan-consumers",
+      "message": "46 artifact(s) consumed but lack a declared producer."
+    }
+  ],
+  "metrics": {
+    "totalNodes": 598,
+    "totalEdges": 1154,
+    "artifactToArtifactEdges": 547,
+    "fresh": 598,
+    "aging": 0,
+    "stale": 0,
+    "transitivelyStale": 0,
+    "cycles": 4,
+    "orphanProducers": 0,
+    "releaseCriticalStale": 0
+  }
+}
