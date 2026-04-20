@@ -1,37 +1,38 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — os-services barrel (Layer 3 OS daemons)
-// Auto-generated to enable namespaced re-export from @/services.
+// Namespaced per-module to avoid cross-daemon name collisions
+// (e.g. DiagnosticBundle exported by both crashd and diagnostic-bundle).
 // ═══════════════════════════════════════════════════════════════
-export * from "./abi-versioning";
-export * from "./accessibilityd";
-export * from "./app-lifecycle";
-export * from "./audiod";
-export * from "./automationd";
-export * from "./btd";
-export * from "./capability-catalog";
-export * from "./crashd";
-export * from "./deviced";
-export * from "./diagnostic-bundle";
-export * from "./entity-identity";
-export * from "./health-graph";
-export * from "./healthd";
-export * from "./help-engine";
-export * from "./localization-infra";
-export * from "./migration-engine";
-export * from "./network-policy-matrix";
-export * from "./notification-classifier";
-export * from "./os-event-system";
-export * from "./platform-ipc-bus";
-export * from "./policy-resolver";
-export * from "./powerd";
-export * from "./quota-governor";
-export * from "./recommendation-ranker";
-export * from "./recovery-levels";
-export * from "./release-lifecycle";
-export * from "./search-indexer";
-export * from "./settingsd";
-export * from "./signing-trust-chain";
-export * from "./slo-targets";
-export * from "./storage-strategy";
-export * from "./timed";
-export * from "./wifid";
+export * as abiVersioning from "./abi-versioning";
+export * as accessibilityd from "./accessibilityd";
+export * as appLifecycle from "./app-lifecycle";
+export * as audiod from "./audiod";
+export * as automationd from "./automationd";
+export * as btd from "./btd";
+export * as capabilityCatalog from "./capability-catalog";
+export * as crashd from "./crashd";
+export * as deviced from "./deviced";
+export * as diagnosticBundle from "./diagnostic-bundle";
+export * as entityIdentity from "./entity-identity";
+export * as healthGraph from "./health-graph";
+export * as healthd from "./healthd";
+export * as helpEngine from "./help-engine";
+export * as localizationInfra from "./localization-infra";
+export * as migrationEngine from "./migration-engine";
+export * as networkPolicyMatrix from "./network-policy-matrix";
+export * as notificationClassifier from "./notification-classifier";
+export * as osEventSystem from "./os-event-system";
+export * as platformIpcBus from "./platform-ipc-bus";
+export * as policyResolver from "./policy-resolver";
+export * as powerd from "./powerd";
+export * as quotaGovernor from "./quota-governor";
+export * as recommendationRanker from "./recommendation-ranker";
+export * as recoveryLevels from "./recovery-levels";
+export * as releaseLifecycle from "./release-lifecycle";
+export * as searchIndexer from "./search-indexer";
+export * as settingsd from "./settingsd";
+export * as signingTrustChain from "./signing-trust-chain";
+export * as sloTargets from "./slo-targets";
+export * as storageStrategy from "./storage-strategy";
+export * as timed from "./timed";
+export * as wifid from "./wifid";
