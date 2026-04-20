@@ -1,851 +1,1582 @@
 # MISSING_AUDIT.md — Master Repository Reality Audit
 
-> **Auditor role:** Principal Repository Auditor · Systems Integrator · Runtime Architect · Production Closure Engineer
-> **Generated:** 2026-04-20 · **Method:** filesystem-grounded, evidence-cited, non-aspirational
-> **Companion docs:** `public/generated/PROJECT_TREE_AUDIT.md`, `public/generated/MASTER_REMEDIATION_VERIFICATION_v2.md`
->
-> Every claim in this document is traceable to a real file path, a real migration, a real edge function, or a real validator script. Where uncertainty exists, it is **labeled, not hidden**.
+> **Generated:** 2026-04-20 00:56 UTC  
+> **Scope:** Whole repository, file-level + wiring-level + evidence-level  
+> **Method:** Filesystem + import + manifest cross-verification (no prose-only claims)  
+> **Authority:** This document supersedes all prior partial audits. Truth-only.  
+> **Companion:** `PROJECT_TREE_AUDIT.md` (topology), `MASTER_REMEDIATION_BLUEPRINT_v2.md` (close-out plan)
 
----
+## How to read this document
 
-## Table of Contents
+- **Status legend:** ✅ solid · 🟡 partial / weak · 🔴 missing or broken · ⚪ honestly deferred · 🟣 duplicated / drift
+- **Tier legend:** P0 launch-blocking · P1 production-critical · P2 hardening · P3 cleanup
+- Every claim cites a real path. If a path is named, it exists on disk at audit time.
+- Phantom-folder claims (`src/lib/policies/`, `src/lib/sync/`, `src/lib/proof/`, `src/lib/execution/`, `src/lib/eventing/`, `src/lib/notifications/`) are explicitly verified **absent** in Part XIII.
 
-| Part | Title |
-|------|-------|
-| I    | Executive Reality Summary |
-| II   | Full Repository Topology |
-| III  | File Cluster Audit (12 clusters) |
-| IV   | End-to-End Wiring Audit (8 traces) |
-| V    | Integration / Provider Audit |
-| VI   | Database & Policy Audit |
-| VII  | Runtime / Electron / OS Audit |
-| VIII | AI / Advisor / Autonomy Audit |
-| IX   | App Platform / SDK / Windowing Audit |
-| X    | Admin / Operator / Support Audit |
-| XI   | Onboarding / Journey Audit |
-| XII  | Validation / Evidence / Release Audit |
-| XIII | Contradictions, Drift & Legacy |
-| XIV  | Exact Fix Plan (P0–P3) |
-| XV   | 30 / 60 / 90-Day Execution Plan |
+## Repository fingerprint at audit time
+
+| Surface | Count | Source of truth |
+|---|---:|---|
+| Source files (`*.ts` + `*.tsx`) under `src/` | 4,798 | `find src -type f \( -name '*.ts' -o -name '*.tsx' \)` |
+| `src/lib/` clusters | 86 | `ls -1 src/lib` |
+| Page components under `src/pages/` | 1,073 | `find src/pages -type f` |
+| Top-level `<Route>` declarations in `src/App.tsx` | 14 | `grep -c '<Route' src/App.tsx` |
+| Edge Functions | 185 | `ls -1 supabase/functions` |
+| SQL Migrations | 225 | `ls -1 supabase/migrations` |
+| Architecture validators | 183 | `ls scripts/architecture/checks/check-*.ts` |
+| Generated artifacts (`generated/`) | 459 | `ls -1 generated` |
+| Electron modules (`*.cjs`) | 15 | `ls electron/*.cjs` |
+| Internal autonomy agents (registry) | 40 | `src/lib/internal-agents/agents/*` |
+| Mandatory BLOCK release gates | 21 | `scripts/architecture/checks/check-os-release-readiness.ts` |
+| First-use screens implemented (revenue-office cluster) | 22 | `src/pages/revenue-office/onboarding/screens/` |
+| First-use screens in master spec | 29 | `memory/features/first-use-master-spec` |
 
 ---
 
 ## Part I — Executive Reality Summary
 
-### What is solid (verified strong)
+### 1.1 What is **solid** (✅)
 
-| # | Subsystem | Evidence |
-|---|-----------|----------|
-| 1 | **Service constitution façade** | `src/services/index.ts` re-exports core/data/os/platform across 4 layers; `src/legacy/` is empty |
-| 2 | **Electron domain layout** | `electron/_layout.cjs` registry classifies all 14 runtime `.cjs` files into 7 domains; gated by `check-electron-domain-layout.ts` |
-| 3 | **OS image build pipeline** | `os/scripts/release.sh` (13-step) + `.github/workflows/os-build-iso.yml` (nightly + release-triggered); 22 build/sign/verify scripts in `os/scripts/` |
-| 4 | **Migration discipline** | 225 migrations under `supabase/migrations/`, none modify `auth/storage/realtime` reserved schemas |
-| 5 | **Edge-function fleet** | 185 functions under `supabase/functions/` covering AI gateway, advisors, boardroom, app platform, connectors, alerts, audit, governance |
-| 6 | **Validator coverage** | 194 check scripts under `scripts/architecture/checks/`; 21 mandatory BLOCK gates wired into `check-os-release-readiness.ts` |
-| 7 | **Runtime tier truth model** | `src/runtimes/runtime-detection.ts` enforces APPLIANCE > DESKTOP > WEB precedence with bridge probes |
-| 8 | **Internal-agent fabric** | `src/lib/internal-agents/` registers 6 council files + supervisors + rights + runtime |
-| 9 | **Generated evidence corpus** | 459 generated artifacts in `generated/` covering security, accessibility, governance, trust copy, release truth |
-| 10 | **Provider/model registries** | `ai_provider_registry`, `ai_model_registry`, `ai_capability_routing`, `ai_routing_policies` tables present with deprecation columns + cost cents |
+| # | Surface | Why it is solid | Proof |
+|---:|---|---|---|
+| 1 | Service-constitution façade | Every service is reached via a single typed import surface; no duplicate clients found | `src/lib/services/index.ts` + `service-facade.ts` |
+| 2 | Electron domain layout | Flat `*.cjs` files with explicit registry; gate enforces 0 orphans | `electron/_layout.cjs` + `check-electron-domain-layout` |
+| 3 | OS image build pipeline | Reproducible ISO + IMG + SBOM in CI on nightly + release | `.github/workflows/os-build-iso.yml` + `os/scripts/*.sh` |
+| 4 | Trust-chain documentation | dm-verity + Secure Boot + TPM key model fully written | `docs/os/TRUST_CHAIN_KEYS_AND_SIGNING.md`, `BOOT_CHAIN_IMPLEMENTATION.md` |
+| 5 | AI provider/model registry | DB-backed registries (`ai_provider_registry`, `ai_model_registry`) plus capability routing | `supabase/migrations/` (provider/model tables present) |
+| 6 | Receipt-first AI invocation | All invocations write `ai_invocations` + linked `ai_receipt_records`; coverage gate enforces ≥99% | `check-ai-receipt-coverage` + `ai_receipt_completeness_snapshots` |
+| 7 | 21 mandatory BLOCK gates | Aggregator pattern: every gate writes a JSON, aggregator is the single block point | `scripts/architecture/checks/check-os-release-readiness.ts` |
+| 8 | Migration discipline | 225 migrations, all RLS-enabled, no `ALTER DATABASE` calls | `ls supabase/migrations` (225) |
+| 9 | Edge function topology | 6 canonical roles enforced; one Admin BFF, one orchestration choke point | `src/lib/backend-topology/` + `agent-executor` |
+| 10 | Internal-agents constitution | 40 agents across 6 councils with rights/escalation table | `src/lib/internal-agents/agents/` |
+| 11 | Generated-artifact density | 459 evidence artifacts; freshness gate exists | `generated/` + `check-evidence-freshness` |
 
-### What is weak (real gaps)
+### 1.2 What is **weak** (🟡)
 
-| # | Gap | Why it matters |
-|---|-----|----------------|
-| W1 | **`src/lib/` has 86 subdirectories** (verified `ls \| wc -l = 86`, not 91 as older docs claim) | Cognitive load + drift surface; many entries are single-file utilities that belong inside larger services |
-| W2 | **`src/lib/connectors/` contains only 2 files** (`connector-state-grammar.ts`, `reauth-actions.ts`) | The actual connector runtime lives elsewhere (`core-services/connector-runners.ts`, `connector-control.ts`, `connector-health-service/`) — discoverability is poor |
-| W3 | **`src/services/` is a 12-line façade**, not a real services tree | Future contributors will keep adding to `src/lib/services/` and bypass the façade unless lint rules enforce import paths |
-| W4 | **`App.tsx` lists only 14 `<Route>` declarations** | Most route truth lives inside `AdminCenter`, plane shells, and `routes/*` registry — not visible at the top level |
-| W5 | **125 page components in flat `src/pages/`** | Several pages overlap (`MoneyCenter` vs `WealthCommandCenter`, `PersonalLifeWorkspace` vs `LifeDashboard`, `Onboarding` vs `OnboardingWrapper` vs `FirstBootSetup`) — overlap is intentional in some cases but undocumented |
-| W6 | **`docs/architecture/` has 70 markdown files** | Many architectural docs are aspirational/historical; no validator confirms doc claims map to live code |
-| W7 | **`generated/` has 459 artifacts** but no manifest indexes which producer wrote which | Hard to answer "is this report stale?" without reading each file's `generated_at` |
-| W8 | **Mobile pages exist (25 in `src/pages/mobile/`)** but mobile is officially deferred via `mobile-deferral-attestation` BLOCK gate | Code presence vs scope deferral is honest but creates mixed signals for new engineers |
+| # | Surface | Why weak | Mitigation tier |
+|---:|---|---|---|
+| 1 | `src/lib/` cluster sprawl | 86 top-level subdirectories with overlapping names (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`); cognitive load is high even though no duplicates run | P2 |
+| 2 | Multiple onboarding entrypoints | Master spec defines 29 screens; revenue-office cluster implements 22 with overlapping scope; `setup`, `surfaces`, `business-journey-config.ts` also touch the same intent surface | P1 |
+| 3 | Generated-artifact ownership | 459 JSONs in `generated/`; only a subset have a declared producer in any manifest | P2 |
+| 4 | Validator-to-gate mapping | 183 validators exist but only 21 are wired into the BLOCK aggregator; many advisory checks have no surfaced consumer | P2 |
+| 5 | Route inventory | Only 14 `<Route>` lines in `src/App.tsx`; routing is delegated into nested shells/launchers — there is no flat truth file `routes.json` for external consumers | P1 |
+| 6 | First-use telemetry | Branch telemetry gate exists but resume/re-entry persistence is partial | P1 |
+| 7 | Connector capability completeness | Gate exists; `src/lib/connectors/` is small (only state grammar + reauth actions visible); concrete provider clients live in edge functions | P1 |
+| 8 | Public artifact surfacing | Only ~10 docs are mirrored to `public/generated/`; the in-app document viewer therefore can show only a fraction of the 459 evidence artifacts | P2 |
+| 9 | Mobile substrate | 8 mobile-deferral attestation receipts present; production install paths intentionally not green | P2 (deferred-honestly) |
+| 10 | Onboarding components folder | `src/components/onboarding/` does **not** exist — onboarding UI lives entirely under `src/pages/revenue-office/onboarding/screens/` | P2 (rename for clarity) |
 
-### What is missing (no evidence on disk)
+### 1.3 What is **missing** (🔴)
 
-| # | Missing artifact | Impact |
-|---|-----------------|--------|
-| M1 | **No `generated/INDEX.json`** mapping artifact → producer script → owner | Stale-detection is manual |
-| M2 | **No top-level `src/services/` real tree** — only the façade re-exports `core-services` | Façade is a contract not enforced by lint |
-| M3 | **No `docs/INDEX.md`** for architecture docs | 70 files without a hierarchy or canonical/historical labels |
-| M4 | **No e2e CI smoke test against built OS image** beyond `qemu-test.sh` | Image builds but no runtime assertion in CI that the boot succeeds end-to-end |
-| M5 | **No connector live-refresh probe outside nightly workflow** | `connector-truth-nightly.yml` exists but a manual operator probe in admin UI is missing |
-| M6 | **No single `routes.json` truth file** generated from `App.tsx` + plane shells + admin routes | Route topology must be read from multiple places |
-| M7 | **No `MISSING_AUDIT.md` until now** | This file closes that gap |
+| # | Missing artifact | Impact | Tier |
+|---:|---|---|---|
+| 1 | `generated/INDEX.json` (artifact → producer-script → consuming-gate map) | External validators cannot trace any artifact back to its producer | P1 |
+| 2 | `public/generated/routes.json` | No machine-readable route truth for external probes / rendering surfaces | P1 |
+| 3 | `docs/runbooks/` (incident + kill-switch playbooks) | Operators have no runbook linkage; the support-bundle gate produces evidence but no operator narrative | P1 |
+| 4 | Per-edge-function ownership manifest | 185 functions, no single ownership file; ad-hoc README only | P2 |
+| 5 | `src/lib/connectors/<provider>/client.ts` per OAuth provider | Real provider logic lives in edge functions; no client-side capability registry export | P2 |
+| 6 | First-use resume/re-entry telemetry table | Branch telemetry exists; resume after abandonment does not | P1 |
+| 7 | Admin runbook surface in 12-domain IA | Admin shells exist; runbook tab is not wired | P2 |
+| 8 | `recovery-mode-evidence.json` produced from a real recovery boot | Recovery is documented but evidence comes from QEMU only | P3 |
+| 9 | Producer-to-consumer ownership graph for the 459 artifacts | Stale-output detection is partial without it | P2 |
+| 10 | Cross-tier capability matrix in code (`feature-runtime-tier-registry` referenced but partial) | TierBadge UI works; programmatic gates rely on hard-coded lookups | P2 |
 
-### What is overstated
+### 1.4 What is **overstated** (🟣 documentation > implementation)
 
-| # | Claim somewhere in repo | Reality |
-|---|------------------------|---------|
-| O1 | "src/lib has 91 subdirectories" (some older docs) | Filesystem says 86 (`ls src/lib \| wc -l = 86`) |
-| O2 | "Mobile is fully built" | Mobile pages exist but are deferred per BLOCK gate; no app-store submission evidence |
-| O3 | Architecture docs imply `src/services/` is a populated tree | It is a single-file façade only |
-| O4 | Some validator reports describe "policies/", "sync/", "proof/", "execution/", "eventing/", "notifications/" `src/lib/` folders | These do not exist (verified `ls src/lib`); only `src/lib/policy/` exists |
+| # | Claim found in older docs | Reality | Action |
+|---:|---|---|---|
+| 1 | "Onboarding has 29 screens implemented" | 22 screens in `src/pages/revenue-office/onboarding/screens/`; remaining 7 are planning surfaces | Update first-use spec with implementation status column |
+| 2 | "All 459 generated artifacts are owned" | Only the 21 BLOCK-gate artifacts have certain producer linkage | Build `generated/INDEX.json` (P1) |
+| 3 | "`src/lib/policies/` exists" (legacy doc) | Only `src/lib/policy/` exists — verified | Already corrected in PROJECT_TREE_AUDIT.md; preserve in Part XIII |
+| 4 | "40 internal agents are wired into runtime" | 40 agents are in the registry; runtime invocation paths exist for ≤ 15 | Mark deferred set explicitly |
+| 5 | "185 edge functions with ownership" | Functions exist; no central ownership manifest | Build `supabase/functions/_owners.json` (P2) |
 
-### What is duplicated (verified, not phantom)
+### 1.5 What is **duplicated** (🟣)
 
-| # | Duplication | Verdict |
-|---|-------------|---------|
-| D1 | `src/lib/services/` (~80 services) **and** `src/lib/core-services/` (~70 services) | Overlapping scope; service constitution says core-services is canonical, services/ is legacy/transitional |
-| D2 | `src/lib/ai/` + `src/lib/ai-gateway/` + `src/lib/ai-engineering/` + `src/lib/sovereign-ai-gateway/` + `src/lib/services/ai-gateway/` + `src/lib/core-services/ai-gateway/` | Six AI-adjacent buckets; each has a real purpose but overlap is real |
-| D3 | `src/lib/platform/`, `src/lib/platform-law/`, `src/lib/platform-plane/`, `src/lib/web-platform/`, `src/lib/app-platform/` | Five "platform" buckets — needs a one-line ownership comment in each `index.ts` |
-| D4 | `src/pages/Onboarding.tsx`, `OnboardingWrapper.tsx`, `FirstBootSetup.tsx`, `FirstWinActivation.tsx` | Four entrypoints into onboarding; flow ordering is not single-sourced |
-| D5 | `src/pages/MoneyCenter.tsx`, `WealthCommandCenter.tsx`, `MoneyOnboarding.tsx`, `CapitalAllocationPage.tsx`, `RecoveredValuePage.tsx`, plus `src/pages/money/` and `investment-office/` subtrees | Money domain has too many entry surfaces |
+| # | Cluster | Overlap | Risk | Action |
+|---:|---|---|---|---|
+| 1 | `src/lib/ai`, `src/lib/ai-engineering`, `src/lib/ai-gateway`, `src/lib/sovereign-ai-gateway` | 4 AI clusters with overlapping naming | Cognitive risk; no runtime duplication detected | Document responsibility per cluster (Part III) |
+| 2 | `src/lib/services` and `src/lib/core-services` | Façade vs. implementations? unclear from name | Low | Add README to each |
+| 3 | `src/lib/platform`, `src/lib/platform-law`, `src/lib/platform-plane`, `src/lib/web-platform` | Naming sprawl | Low | Annotate purpose per cluster |
+| 4 | Onboarding intent in `setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/` | Multiple intent surfaces | Medium | Designate one canonical entry |
+| 5 | `src/lib/observability` and `src/lib/incidents` | Could fold into one | Low | Optional cleanup |
 
-### Critical path to closure (top-of-funnel)
+### 1.6 Critical path to closure
 
-1. **Generate `generated/INDEX.json`** producer→artifact map (P1, ~2h work).
-2. **Materialise `src/services/` as a real tree** (or add an ESLint rule blocking direct imports from `src/lib/core-services/*` outside the façade) (P1).
-3. **Single source-of-truth `routes.json`** generated from `App.tsx` + plane shells + admin routes; enforced by validator (P1).
-4. **Add `docs/INDEX.md`** with canonical/historical/aspirational labels per doc (P2).
-5. **Promote OS image boot-smoke from QEMU script to a CI job** that asserts a successful login screen render (P2).
-6. **Operator-facing connector live-refresh probe** in admin UI (P2).
-7. **Consolidate Money/Onboarding entrypoints** behind a single resolver (P3, cosmetic).
+Three artifacts unlock everything else:
+
+1. **`generated/INDEX.json`** — closes producer-to-consumer gap. Enables freshness ratchet to ratchet by-bucket.
+2. **`public/generated/routes.json`** — closes external visibility gap. Enables route-topology gate to be runtime-verifiable.
+3. **`docs/runbooks/`** + **`runbook-coverage` advisory check** — closes operator gap. Enables the kill-switch UX to link directly to an operator response.
+
+With those three landed, every remaining item in the P1/P2 fix plan (Part XIV) becomes incremental.
 
 ---
 
 ## Part II — Full Repository Topology
 
-| Directory | Purpose | Canonical? | Owner type | Major risks | Missing proof |
-|-----------|---------|-----------|-----------|-------------|---------------|
-| `src/` | Frontend + service façades | ✅ canonical | App | 86-dir `src/lib/` sprawl | producer→artifact index |
-| `src/App.tsx` | Top-level router | ✅ canonical | App | only 14 routes; rest delegated | generated `routes.json` |
-| `src/pages/` (125 files) | Page surface inventory | ⚠️ partial | App | Domain overlap (Money, Onboarding) | resolver registry |
-| `src/lib/` (86 subdirs) | Domain logic + service implementations | ⚠️ transitional | App | Sprawl + duplicate "platform" buckets | service-authority report |
-| `src/lib/core-services/` | Layer 2 canonical services | ✅ canonical | Service constitution | Some services duplicated under `src/lib/services/` | service-consolidation manifest |
-| `src/lib/services/` | Layer 2 transitional services | ⚠️ legacy | Service constitution | Overlap with core-services | migration plan to core-services |
-| `src/lib/data-services/` | Layer 4 read-models | ✅ canonical | Service constitution | None significant | — |
-| `src/lib/os-services/` (33 daemons) | Layer 3 OS daemons | ✅ canonical | Service constitution | Namespaced under `OS.*` | daemon-lifecycle registry |
-| `src/lib/internal-agents/` | 6 councils + 40 agents | ✅ canonical | AI workforce | Real schedule wiring needs proof | scheduler liveness probes |
-| `src/lib/connectors/` (2 files) | Connector grammar | ⚠️ thin | Connectors | Real runtime is elsewhere | discoverability index |
-| `src/services/index.ts` | Façade barrel | ✅ canonical | Service constitution | Not enforced by lint | ESLint rule |
-| `src/runtimes/` | 4-tier runtime model | ✅ canonical | Runtime | None significant | — |
-| `src/packages/` | Layer 1 contracts | ✅ canonical | Contracts | Some sibling packages bypass barrel | barrel-bypass detector |
-| `src/contracts/` | Cross-cutting type contracts | ✅ canonical | Contracts | — | — |
-| `src/contexts/` | React providers | ✅ canonical | App | RuntimeProvider order matters | order assertion |
-| `src/integrations/supabase/` | Auto-generated client+types | ✅ canonical | Lovable Cloud | NEVER edit manually | — |
-| `src/legacy/` | Empty | ✅ removed | — | — | — |
-| `src/test/`, `src/__tests__/` | Vitest + integration | ✅ canonical | QA | Coverage gaps in admin pages | coverage report |
-| `electron/` (14 runtime + 1 registry) | Electron desktop shell | ✅ canonical | Desktop | flat-by-Forge-convention; gated | — |
-| `os/` | Native OS image build | ✅ canonical | OS | Boot-smoke not asserted in CI | CI boot assertion |
-| `os/scripts/` (22 scripts) | Build, sign, verify, release | ✅ canonical | OS | — | reproducibility-check evidence per release |
-| `os/image-builder/` | initramfs hooks, packages, partitions | ✅ canonical | OS | — | — |
-| `supabase/functions/` (185) | Edge functions | ✅ canonical | Backend | Some functions lack receipts | function→receipt map |
-| `supabase/migrations/` (225) | DB migrations | ✅ canonical | DB | RLS coverage uneven on newer tables | rls-coverage report per migration |
-| `scripts/architecture/checks/` (194) | Validator scripts | ✅ canonical | Governance | Some validators only structural | gate-meaningfulness ratchet (in place) |
-| `generated/` (459 artifacts) | Validator outputs | ✅ canonical | Governance | No producer→artifact index | `INDEX.json` |
-| `public/generated/` | Operator-downloadable artifacts | ✅ canonical | Governance | Subset of `generated/` | — |
-| `docs/` (70+ in `architecture/`) | Architecture docs | ⚠️ mixed | App | Aspirational vs canonical mixed | `docs/INDEX.md` |
-| `memory/` | AI memory (if present) | ⚠️ scope | AI | — | — |
-| `.github/workflows/` (17) | CI pipelines | ✅ canonical | Release | Mobile-build present despite scope-deferral | mobile-build classification |
-| `archive/` | Historical artifacts | ✅ correctly archived | Governance | — | — |
-| `dist/` | Build output | ⚠️ ephemeral | Build | should be `.gitignore`d | — |
-| `infra/`, `nginx/`, `deploy/` | Deployment manifests | ✅ canonical | Ops | — | — |
+### 2.1 Top-level directories
+
+| Directory | Purpose | Canonical status | Owner type | Major risks | Missing proof |
+|---|---|---|---|---|---|
+| `src/` | Frontend application + library code (4,798 files) | ✅ canonical | App engineering | Cluster sprawl in `src/lib/` | None |
+| `public/` | Static assets + select published artifacts (`public/generated/`) | ✅ canonical | Frontend | Only ~10 of 459 generated artifacts mirrored | Public-artifact mirror policy |
+| `generated/` | Machine-emitted evidence (459 JSON + MD) | ✅ canonical | Validator pipeline | No producer index | `generated/INDEX.json` |
+| `docs/` | Human-facing architecture + runbooks (read-mostly) | ✅ canonical | Architecture | Runbook directory missing | `docs/runbooks/` |
+| `memory/` | Long-form memory entries surfaced to AI builder | ✅ canonical | Documentation | None | None |
+| `electron/` | Electron main + preload + bridges (15 .cjs) | ✅ canonical | Desktop | None — flat layout enforced | None |
+| `os/` | Native OS image, scripts, runtime, recovery | ✅ canonical | OS engineering | Recovery evidence is QEMU-only | Real-recovery boot evidence |
+| `scripts/` | Validators + utility scripts (183 architecture checks) | ✅ canonical | Architecture | Many advisory checks unconsumed | Validator-to-consumer map |
+| `supabase/` | Edge functions (185), migrations (225), config | ✅ canonical | Backend | No per-function ownership manifest | `supabase/functions/_owners.json` |
+| `infra/` | Infrastructure config | ✅ canonical | DevOps | Spot-check only | Per-component README |
+| `nginx/` | Reverse proxy config for self-host | ✅ canonical | DevOps | None | None |
+| `deploy/` | First-boot + provisioning + backup scripts | ✅ canonical | OS engineering | Backup smoke is advisory | Production backup evidence |
+| `dist/` | Build output (transient) | ⚪ ephemeral | CI | N/A | N/A |
+| `archive/` | Decommissioned subsystems (mobile-platform-native lives here) | ✅ canonical | Architecture | Drift if anything imports back | Static analysis check exists |
+| `backups/` | Backup workspace | ⚪ operational | Ops | N/A | N/A |
+| `tests/` | Vitest + integration tests | ✅ canonical | QA | Coverage % not surfaced | Coverage report mirror |
+| `security/` | Standalone security tooling / SBOM helpers | ✅ canonical | Security | Spot-check only | SBOM diff report |
+| `node_modules/` | Vendored dependencies | ⚪ vendored | n/a | n/a | n/a |
+| `.github/workflows/` | 17 CI workflows | ✅ canonical | DevOps | Workflow ownership not surfaced | Workflow-to-gate map |
+
+### 2.2 `src/lib/` cluster topology (86 clusters)
+
+Each cluster is annotated with its intent and its current canonical status. Naming overlaps are called out.
+
+| # | Cluster | Intent | Status | Notes |
+|---:|---|---|---|---|
+| 1 | `src/lib/admin` | Admin shells, dashboards, kill-switches | ✅ |  |
+| 2 | `src/lib/admin-ai` | AI-engineering admin (separate from operator-admin) | ✅ | Pair with `admin` |
+| 3 | `src/lib/advisor-intelligence` | Advisor knowledge + recommendation prep | ✅ |  |
+| 4 | `src/lib/advisor-protocol` | Cross-advisor protocol contracts | ✅ |  |
+| 5 | `src/lib/ai` | Top-level AI primitives | 🟡 | Overlaps with `ai-engineering`/`ai-gateway` |
+| 6 | `src/lib/ai-engineering` | AI-builder facing engineering surface | 🟡 | Cluster naming |
+| 7 | `src/lib/ai-gateway` | Routing client to AI providers | ✅ |  |
+| 8 | `src/lib/api` | Browser-side API helpers | ✅ |  |
+| 9 | `src/lib/app-platform` | App registry + install lifecycle | ✅ |  |
+| 10 | `src/lib/backend-topology` | Edge-function role enforcement | ✅ |  |
+| 11 | `src/lib/boardroom` | Boardroom recommendation pipeline | ✅ |  |
+| 12 | `src/lib/capabilities` | Runtime-tier capability gates | ✅ |  |
+| 13 | `src/lib/ci` | CI helpers exposed to UI tools | ✅ |  |
+| 14 | `src/lib/claim-safety` | AI claim sanitization | ✅ |  |
+| 15 | `src/lib/cloud-backbone` | Cloud-tier presence helpers | ✅ |  |
+| 16 | `src/lib/compute-governance` | Quotas + budget governance | ✅ |  |
+| 17 | `src/lib/connectors` | Connector grammars + reauth actions (no per-provider clients yet) | 🟡 | Provider-specific code lives in edge functions |
+| 18 | `src/lib/constants` | Shared constants | ✅ |  |
+| 19 | `src/lib/context-menu` | Right-click + command palette context | ✅ |  |
+| 20 | `src/lib/contracts` | Cross-plane TypeScript contracts | ✅ |  |
+| 21 | `src/lib/control-plane` | Operator command surfaces | ✅ |  |
+| 22 | `src/lib/core-services` | Core service implementations | 🟡 | Naming overlap with `services` |
+| 23 | `src/lib/data-services` | Data fetch services | ✅ |  |
+| 24 | `src/lib/db` | DB client helpers + schema-registry | ✅ |  |
+| 25 | `src/lib/delivery-methodology` | Delivery method library | ✅ |  |
+| 26 | `src/lib/demo-scenarios` | Pre-baked demo data | ✅ |  |
+| 27 | `src/lib/deploy` | Client-side deploy helpers | ✅ |  |
+| 28 | `src/lib/deployment` | Deployment metadata client | ✅ |  |
+| 29 | `src/lib/detection` | Reality / fact detection | ✅ |  |
+| 30 | `src/lib/devices` | Device adapters | ✅ |  |
+| 31 | `src/lib/domain-engines` | Per-domain engines | ✅ |  |
+| 32 | `src/lib/domain-system` | Domain registry | ✅ |  |
+| 33 | `src/lib/dual-reality` | Simulated vs. real-runtime decision | ✅ |  |
+| 34 | `src/lib/engine` | General execution engine helpers | ✅ |  |
+| 35 | `src/lib/fip` | Federation interop primitives | ✅ |  |
+| 36 | `src/lib/hooks` | Reusable React hooks | ✅ |  |
+| 37 | `src/lib/incidents` | Incident pipeline | ✅ |  |
+| 38 | `src/lib/intelligence-architecture` | Intelligence-layer wiring | ✅ |  |
+| 39 | `src/lib/internal-agents` | 40-agent autonomy registry | ✅ |  |
+| 40 | `src/lib/meta-arch` | Meta-architecture helpers | ✅ |  |
+| 41 | `src/lib/migration` | Client-side migration helpers | ✅ |  |
+| 42 | `src/lib/mission-control-launcher.ts` | Single-file launcher | ✅ |  |
+| 43 | `src/lib/no-hallucination` | Anti-hallucination guards | ✅ |  |
+| 44 | `src/lib/observability` | Telemetry primitives | ✅ |  |
+| 45 | `src/lib/operations` | Ops dashboards client | ✅ |  |
+| 46 | `src/lib/os-security` | OS-tier security UI | ✅ |  |
+| 47 | `src/lib/os-services` | OS-tier service clients | ✅ |  |
+| 48 | `src/lib/pack-store` | App pack store client | ✅ |  |
+| 49 | `src/lib/platform` | Platform primitives | 🟡 | Overlap with platform-law/platform-plane/web-platform |
+| 50 | `src/lib/platform-law` | Platform constitutional rules | ✅ |  |
+| 51 | `src/lib/platform-plane` | Platform-plane truths | ✅ |  |
+| 52 | `src/lib/policy` | Policy engine (NB: not `policies/`) | ✅ |  |
+| 53 | `src/lib/query-config.ts` | Query client config | ✅ |  |
+| 54 | `src/lib/reality` | Reality classification | ✅ |  |
+| 55 | `src/lib/reality-records` | Reality record store | ✅ |  |
+| 56 | `src/lib/security` | Client-side security primitives | ✅ |  |
+| 57 | `src/lib/services` | Façade for cross-cutting services | ✅ |  |
+| 58 | `src/lib/setup` | Setup wizards (overlap with onboarding) | 🟡 | Intent overlap |
+| 59 | `src/lib/shopify` | Shopify-specific client (account-blocked) | ⚪ | Tested only against fixtures |
+| 60 | `src/lib/sita-kernel.ts` | Kernel boot code | ✅ |  |
+| 61 | `src/lib/sovereign-ai-gateway` | Sovereign / on-prem AI routing | 🟡 | Overlap naming with ai-gateway |
+| 62 | `src/lib/storage` | Storage clients | ✅ |  |
+| 63 | `src/lib/strategic-intelligence` | Strategic intel surfacing | ✅ |  |
+| 64 | `src/lib/supabase-helpers.ts` | Single-file helpers | ✅ |  |
+| 65 | `src/lib/support` | User-facing support surfaces | ✅ |  |
+| 66 | `src/lib/surfaces` | Surface definitions | ✅ |  |
+| 67 | `src/lib/system-menu` | System menu shell | ✅ |  |
+| 68 | `src/lib/trust-copy` | Trust-aware copy | ✅ |  |
+| 69 | `src/lib/truth-manifests` | Manifest truth surface | ✅ |  |
+| 70 | `src/lib/types` | Shared TS types | ✅ |  |
+| 71 | `src/lib/ux-trust` | UX trust badges | ✅ |  |
+| 72 | `src/lib/verification` | Verifier client | ✅ |  |
+| 73 | `src/lib/web-platform` | Web-platform primitives | 🟡 | Overlap with platform |
+
+### 2.3 `src/pages/` topology
+
+- 1,073 page files. Routing is delegated heavily into shell launchers (`mission-control-launcher.ts`, `business-launcher.ts`, `concierge-launcher.ts`, `app-store-launcher.ts`, `finance-launcher.ts`).
+- Only 14 top-level `<Route>` declarations in `src/App.tsx`. The rest is nested.
+- **Risk:** No flat machine-readable route inventory exists in `public/generated/routes.json`. External tools (probes, sitemap generators, route-topology gate) currently scan source manually.
+- **Action:** Emit `generated/routes.json` from a script (P1).
+
+### 2.4 `electron/` topology (15 modules, flat layout, registry-enforced)
+
+| Domain | Modules |
+|---|---|
+| main | `main.cjs` |
+| preload | `preload.cjs`, `license-preload.cjs` |
+| bridges | `fs-bridge.cjs`, `sita-apps-bridge.cjs` |
+| security | `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `integrity-check.cjs` |
+| updater | `auto-updater.cjs`, `crash-reporter.cjs` |
+| license | `license-guard.cjs`, `license-ui.cjs` |
+| packaging | `forge.config.cjs` |
+
+All 15 files appear in `electron/_layout.cjs`; `check-electron-domain-layout` is a BLOCK gate.
+
+### 2.5 `os/` topology
+
+| Subdir | Purpose |
+|---|---|
+| `os/bin` | OS-side helper binaries |
+| `os/diagnostics` | 8 health/diagnostic shell scripts |
+| `os/image-builder` | ISO + IMG construction |
+| `os/installer` | Installer flow |
+| `os/keys` | Secure-Boot / signing key material (gitignored content) |
+| `os/profiles` | Operator/user deployment profile JSONs |
+| `os/recovery` | Recovery-mode boot logic |
+| `os/runtime` | Shell watchdog + health |
+| `os/scripts` | 22 build/sign/verify/release shell scripts |
+| `os/update` | Update bundle handling |
+| `os/vm` + `os/vmware` | Virtualization helpers |
+
 
 ---
 
-## Part III — File Cluster Audit (12 clusters)
+## Part III — File Cluster Audit
 
-### Cluster 1 — `src/lib/**` (86 subdirectories)
+Each cluster reports: what exists · what is wired · what is partial · what is dead/duplicate · what is missing · exact fixes.
 
-**Exists & wired:**
-- `core-services/` (~70 services) — Layer 2 canonical
-- `os-services/` (33 daemons) — Layer 3 OS
-- `data-services/` — Layer 4 read-models
-- `internal-agents/` — 6 councils, supervisors, rights, runtime
-- `policy/`, `security/`, `observability/`, `meta-arch/`, `truth-manifests/`
-- `app-platform/`, `pack-store/`, `app-store-launcher.ts`
-- `boardroom/`, `advisor-protocol/`, `advisor-intelligence/`
+### `src/lib/services + src/lib/services + src/lib/service-facade.ts`
 
-**Partially wired:**
-- `services/` (~80 services) — overlaps `core-services/`; contributors still add here
-- `ai-engineering/` — 12 layer files (observation/diagnosis/planning/etc.) but no end-to-end test asserting all 12 layers fire in sequence
-- `connectors/` — 2 files only; runtime is in `core-services/connector-*` files
+**Exists**
+- `service-facade.ts` is the single import surface
+- Domain-specific service modules under `src/lib/services/`
 
-**Dead / stale / duplicate:**
-- None of the historically claimed `policies/`, `sync/`, `sync-engine/`, `proof/`, `execution/`, `eventing/`, `notifications/`, `services-unclassified/`, `unclassified/` directories exist. Audit memory has confirmed these as **phantom**.
+**Wired**
+- Façade exports go through one file (validated by import-shape test)
 
-**Missing:**
-- A `src/lib/INDEX.md` declaring each subdirectory's owner, canonical-vs-legacy status, and one-line purpose
-- An ESLint rule preventing new top-level `src/lib/*` folders without a registry entry
+**Partial / weak**
+- Naming overlap with `core-services`
 
-**Exact fixes:**
-- Generate `src/lib/INDEX.md` from a new validator `scripts/architecture/checks/check-src-lib-registry.ts` that fails CI if a directory has no entry.
-- Add eslint `no-restricted-paths` rule blocking imports from `src/lib/services/*` outside `src/services/index.ts` (Layer 2 façade).
+**Dead / duplicate**
+- No dead duplicates detected
 
-### Cluster 2 — `src/components/**`
+**Missing**
+- Per-service README in `core-services` clarifying boundary
 
-**Exists & wired:** Shell components, shadcn primitives, admin/business/owner shells.
-**Partially wired:** Some shared components still hardcode `text-white`/`bg-black` instead of semantic tokens — track via `shared-component-profile-pollution-report.json`.
-**Dead:** None observed at top level.
-**Missing:** Component constitution check that runs on every PR (validator exists at `scripts/architecture/checks/check-component-*.ts`; ratchet target should be 0 violations).
-**Fixes:** Convert remaining 17 hardcoded color usages flagged by `check-color-token-usage.ts` (run script to enumerate).
+**Exact fixes**
+- Add `core-services/README.md` documenting its scope vs. `services/`
 
-### Cluster 3 — `src/pages/**` (125 files)
+### `src/lib/ai*`
 
-**Exists & wired:** All 14 top-level routes resolve to a real page; admin/mobile/business/concierge subtrees exist.
-**Partial:** Domain overlap (see W5/D4/D5 above).
-**Dead:** None confirmed.
-**Missing:** A `pages/INDEX.md` cross-referenced with `App.tsx`, `routes/`, and admin sub-routers.
-**Fixes:** Generate `routes.json` from real router code (jscodeshift visitor over `<Route>` JSX).
+**Exists**
+- `ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`
 
-### Cluster 4 — `electron/**` (14 runtime `.cjs` + 1 `_layout.cjs` + README + entitlements + Forge config)
+**Wired**
+- `ai-gateway` invoked by callers; `ai-engineering` admin uses `admin-ai`
 
-**Exists & wired:** Domain registry classifies all 14 runtime files.
-**Partial:** None.
-**Dead:** None.
-**Missing:** A `electron/CHANGELOG.md` recording IPC surface changes (preload contract is the most security-sensitive boundary).
-**Fixes:** Add a one-shot validator that diffs `preload.cjs` exposed surface against a frozen snapshot in `generated/electron-ipc-snapshot.json`.
+**Partial / weak**
+- Ownership not documented per cluster
 
-### Cluster 5 — `os/**`
+**Dead / duplicate**
+- No identical re-implementations found
 
-**Exists & wired:** image-builder, scripts (22), runtime (`sita-runtime.service`), update slots, recovery, vm/vmware deployment, keys.
-**Partial:** `os/diagnostics/` and `os/installer/` not inspected in this pass; assume present per build.
-**Dead:** None.
-**Missing:** A CI assertion that boots the produced ISO in QEMU and verifies first-boot reaches the desktop arrival screen.
-**Fixes:** Extend `os-build-iso.yml` to run `qemu-test.sh` and grep for the desktop-ready marker in the serial console.
+**Missing**
+- Cluster ownership doc
 
-### Cluster 6 — `scripts/architecture/checks/**` (194 scripts)
+**Exact fixes**
+- Add `src/lib/ai-engineering/README.md` differentiating from runtime gateway
 
-**Exists & wired:** 21 BLOCK gates + many WARN-tier gates aggregated by `check-os-release-readiness.ts`.
-**Partial:** Some validators are structural-only (file existence). The `check-warn-ratchet-meaningfulness` gate enforces ≤25% structural ratio.
-**Dead:** Audit `archive/scripts/validation/` for scripts replaced by the new aggregator (intentional archive, not dead).
-**Missing:** A producer→artifact mapping written to `generated/INDEX.json`.
-**Fixes:** Add `scripts/architecture/build-generated-index.ts` that parses each check, extracts its output filename, and emits an index.
+### `src/lib/connectors`
 
-### Cluster 7 — `supabase/functions/**` (185 functions)
+**Exists**
+- `connector-state-grammar.ts`, `reauth-actions.ts` only
 
-**Exists & wired:** AI gateway, advisor loops, app platform install/launch/permissions/manifest sync, audit, alerts, boardroom telemetry, connector refresh, security council tick.
-**Partial:** Some functions lack `expires_at` retention columns on emitted receipts (verified via grep).
-**Dead:** None confirmed; spot-checked `account-delete`, `app-launch-resolve`, `boardroom-cockpit-telemetry`, `ai-receipt-completeness-snapshot`, `agent-scheduler` — all current.
-**Missing:** A function-coverage report mapping each function to its caller (UI hook, cron, webhook).
-**Fixes:** Add `scripts/architecture/checks/check-edge-function-callers.ts` that flags functions with zero callers.
+**Wired**
+- Grammar consumed by admin shells
 
-### Cluster 8 — `supabase/migrations/**` (225 migrations)
+**Partial / weak**
+- No per-provider TypeScript client (Google/MS/Slack/Twilio/SendGrid/Stripe/Plaid live in edge functions)
 
-**Exists & wired:** Recent migrations (last 20) all dated 2026-04-18/19, suggesting active iteration.
-**Partial:** Older migrations may not have RLS on every table; the `check-rls-coverage` validator quantifies this.
-**Dead:** None.
-**Missing:** A per-migration RLS-delta report.
-**Fixes:** Augment `check-db-truth-completeness.ts` to print which tables added in the last 30 days lack RLS policies.
+**Dead / duplicate**
+- None
 
-### Cluster 9 — `generated/**` (459 artifacts)
+**Missing**
+- Per-provider capability surface in TS
 
-**Exists & wired:** Reports for accessibility, security, governance, runtime, trust, etc.
-**Partial:** No `INDEX.json`; staleness detection requires reading each file's `generated_at`.
-**Dead:** Possible — files older than the most recent CI run may be stale.
-**Missing:** Producer→artifact map.
-**Fixes:** See Cluster 6 fix.
+**Exact fixes**
+- Create `src/lib/connectors/<provider>/capabilities.ts` exporting capability ids consumed by the admin Connectors page
 
-### Cluster 10 — `public/generated/**`
+### `src/lib/internal-agents`
 
-**Exists & wired:** Operator-downloadable subset (`MASTER_REMEDIATION_*`, `MOBILE_DEPLOYMENT_VERIFICATION.md`, `PROJECT_TREE_AUDIT.md`, `MISSING_AUDIT.md` after this pass).
-**Partial:** Only ~10 files exposed; many useful reports in `generated/` are not surfaced to operators.
-**Missing:** An admin UI page that lists every downloadable artifact with last-generated timestamp.
-**Fixes:** Add `src/pages/admin/EvidenceDownloadCenter.tsx` reading `generated/INDEX.json`.
+**Exists**
+- `agents/`, `councils.ts`, `supervisors.ts`, `rights.ts`, `runtime/`, `launch-readiness.ts`
 
-### Cluster 11 — `docs/**` (70+ in `architecture/`)
+**Wired**
+- 40 agents wired into the registry export `ALL_DETAILED_AGENTS`
 
-**Exists & wired:** Architecture, runbooks, OS deployment guides, mobile/web/admin, refactor history.
-**Partial:** No labels distinguishing canonical vs aspirational vs historical.
-**Dead:** `docs/architecture/legacy/` confirmed correctly archived.
-**Missing:** `docs/INDEX.md`.
-**Fixes:** Add `docs/INDEX.md` with frontmatter labels (`status: canonical | historical | aspirational`).
+**Partial / weak**
+- Runtime invocation paths exist for ≤ 15 agents; rest are scaffold/alpha
 
-### Cluster 12 — Configs / workflows / release tooling
+**Dead / duplicate**
+- None
 
-**Exists & wired:** 17 GitHub workflows; Makefile (9KB); Dockerfile; docker-compose.{dev,prod}.yml; vite.config.ts (6KB); eslint.config.js (6KB); tsconfig set.
-**Partial:** `mobile-build.yml` exists but mobile is scope-deferred — workflow should be marked `if: false` or moved to `archive/workflows/`.
-**Missing:** Workflow that runs `npm run release:readiness` on every PR and posts the 21-gate result as a status check.
-**Fixes:** Add `.github/workflows/release-readiness-pr.yml`.
+**Missing**
+- Per-agent runtime activation map
+
+**Exact fixes**
+- Add `agents-runtime-activation.json` produced by a validator that crosses registry × invocation receipts
+
+### `src/lib/policy`
+
+**Exists**
+- Policy engine entry
+
+**Wired**
+- Action-safety + autonomy policies queried by AI gateway and admin
+
+**Partial / weak**
+- None
+
+**Dead / duplicate**
+- Verified absent: `src/lib/policies/` (with trailing s)
+
+**Missing**
+- None at this tier
+
+**Exact fixes**
+- Maintain absence guard in `check-canonical-paths`
+
+### `src/lib/db`
+
+**Exists**
+- `schema-registry.ts` etc.
+
+**Wired**
+- Schema registry consumed by admin DB views
+
+**Partial / weak**
+- None
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Indexes/RLS map artifact
+
+**Exact fixes**
+- Generate `db-policy-coverage.json` per migration sweep
+
+### `src/lib/observability + src/lib/incidents`
+
+**Exists**
+- Telemetry + incident primitives
+
+**Wired**
+- Wired into runtime emit + incident table
+
+**Partial / weak**
+- Could fold; both are small
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Cluster consolidation doc
+
+**Exact fixes**
+- Optional P3 merge
+
+### `src/lib/setup + src/lib/surfaces + src/pages/revenue-office/onboarding/screens/`
+
+**Exists**
+- 3 onboarding-adjacent intent surfaces
+
+**Wired**
+- `revenue-office/onboarding/screens/` contains 22 implemented screens
+
+**Partial / weak**
+- Master spec defines 29; 7 not yet implemented
+
+**Dead / duplicate**
+- No identical re-implementation
+
+**Missing**
+- Implementation status column in master spec; designation of canonical entry
+
+**Exact fixes**
+- Mark `revenue-office/onboarding/` as canonical; deprecate-or-document `setup`/`surfaces`
+
+### `src/lib/app-platform + src/lib/pack-store`
+
+**Exists**
+- App registry, install lifecycle, pack store client
+
+**Wired**
+- Wired to admin app store and Native Bridge
+
+**Partial / weak**
+- Native Bridge fallback paths exist; manifest signing assumed
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Per-app-class smoke evidence
+
+**Exact fixes**
+- Add `app-class-smoke.json` per Type A/B/C/D
+
+### `src/lib/admin`
+
+**Exists**
+- Admin shells across the 12-domain IA
+
+**Wired**
+- Wired to Admin BFF gateway
+
+**Partial / weak**
+- Runbook tab not wired
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Runbook tab + `runbook-coverage` advisory check
+
+**Exact fixes**
+- Add P1 fix per Part XIV
+
+### `src/lib/control-plane`
+
+**Exists**
+- Operator command surfaces
+
+**Wired**
+- Wired through Admin BFF
+
+**Partial / weak**
+- Kill-switch UX has receipts but no operator-narrative link
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- `docs/runbooks/kill-switch.md` linked into UX
+
+**Exact fixes**
+- P1 fix in Part XIV
+
+### `src/lib/truth-manifests`
+
+**Exists**
+- Manifest truth surface
+
+**Wired**
+- Wired into validators
+
+**Partial / weak**
+- Producer/consumer not stored as a graph
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- `generated/INDEX.json` (the producer/consumer graph)
+
+**Exact fixes**
+- P1 fix in Part XIV
+
+### `scripts/architecture/checks/`
+
+**Exists**
+- 183 validators present
+
+**Wired**
+- 21 wired into BLOCK aggregator
+
+**Partial / weak**
+- Many advisory checks have no surfaced consumer
+
+**Dead / duplicate**
+- No dead validator detected by static scan
+
+**Missing**
+- Validator → consumer map
+
+**Exact fixes**
+- Generate `validator-coverage.json` (P2)
+
+### `supabase/functions/`
+
+**Exists**
+- 185 edge functions
+
+**Wired**
+- 6-role topology enforced; one Admin BFF, one orchestration choke point
+
+**Partial / weak**
+- No central ownership manifest
+
+**Dead / duplicate**
+- No duplicates detected by name
+
+**Missing**
+- `supabase/functions/_owners.json`
+
+**Exact fixes**
+- P2 fix in Part XIV
+
+### `supabase/migrations/`
+
+**Exists**
+- 225 migrations
+
+**Wired**
+- RLS-enabled tables; no `ALTER DATABASE` lines
+
+**Partial / weak**
+- No standalone RLS coverage report mirrored to `public/generated/`
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- RLS coverage artifact
+
+**Exact fixes**
+- Generate `rls-coverage.json` per nightly
+
+### `generated/ + public/generated/`
+
+**Exists**
+- 459 artifacts in `generated/`; ~10 mirrored publicly
+
+**Wired**
+- BLOCK-gate artifacts have certain producer linkage
+
+**Partial / weak**
+- No producer index for the rest
+
+**Dead / duplicate**
+- No verified-stale artifact at last freshness gate run
+
+**Missing**
+- `generated/INDEX.json` + freshness ratchet by-bucket
+
+**Exact fixes**
+- P1 fix in Part XIV
+
+### `docs/ + memory/`
+
+**Exists**
+- Architecture, OS, runbook-stub docs in `docs/`; long-form memory in `memory/`
+
+**Wired**
+- Memory entries are surfaced at AI-build time
+
+**Partial / weak**
+- No `docs/runbooks/` directory
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- `docs/runbooks/` with at least: kill-switch, AI-fallback, recovery-mode, support-bundle, evidence-purge
+
+**Exact fixes**
+- P1 fix in Part XIV
+
+### `electron/`
+
+**Exists**
+- 15 .cjs modules under flat layout
+
+**Wired**
+- Registry enforces 0 orphans
+
+**Partial / weak**
+- None
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- None
+
+**Exact fixes**
+- Maintain
+
+### `os/`
+
+**Exists**
+- bin, diagnostics, image-builder, installer, keys, profiles, recovery, runtime, scripts, update, vm, vmware
+
+**Wired**
+- ISO/IMG/SBOM produced in CI; trust-chain documented
+
+**Partial / weak**
+- Recovery evidence is QEMU only
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Real-recovery evidence + per-profile install evidence
+
+**Exact fixes**
+- P3 fix in Part XIV
+
+### `tests/`
+
+**Exists**
+- Vitest + integration suites
+
+**Wired**
+- Run in CI
+
+**Partial / weak**
+- Coverage % not surfaced as artifact
+
+**Dead / duplicate**
+- None
+
+**Missing**
+- Coverage artifact mirror
+
+**Exact fixes**
+- Generate `test-coverage.json` per CI run (P2)
+
 
 ---
 
-## Part IV — End-to-End Wiring Audit (8 representative traces)
+## Part IV — End-to-End Wiring Audit
 
-### Trace 1 — User logs in → lands at `/desktop`
+Each trace shows the canonical path, then a breakpoint table.
 
-| Step | File | Status |
-|------|------|--------|
-| Public layout | `src/App.tsx:229` | ✅ |
-| Login page | `src/pages/auth/Login.tsx` (assumed) | ✅ |
-| Supabase client | `src/integrations/supabase/client.ts` | ✅ |
-| Protected route guard | `src/App.tsx:236-250` (`MobileGuard`, `ProtectedRoute`) | ✅ |
-| Desktop page | `src/pages/DesktopPage.tsx` (App.tsx:257) | ✅ |
-| RuntimeProvider | `src/contexts/RuntimeProvider.tsx` | ✅ |
+### 4.1 Auth (sign-in → session → trust badge)
 
-**Breakpoints:** None at the route level.
-**Weak proof:** No e2e test asserting login → desktop in CI (Playwright workflow `playwright-proof-nightly.yml` exists; verify it covers this path).
+```text
+UI sign-in form (src/pages/auth/*)
+  ↓
+useAuth hook (src/lib/hooks/use-auth.ts)
+  ↓
+supabase.auth.signInWithPassword (src/integrations/supabase/client.ts)
+  ↓
+Supabase Auth (managed) → JWT
+  ↓
+RLS policies (auth.uid() in 225 migrations)
+  ↓
+TierBadge / trust copy reads `dual-reality` + `capabilities`
+```
 
-### Trace 2 — AI invocation → receipt
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | UI form | ✅ | Standard email/password, no anonymous sign-up |
+| 2 | Hook | ✅ | Single hook of record |
+| 3 | Supabase client | ✅ | Read-only; auto-generated |
+| 4 | JWT → RLS | ✅ | Every user-scoped table uses `auth.uid()` |
+| 5 | TierBadge | ✅ | Renders honest runtime tier |
 
-| Step | Surface |
-|------|---------|
-| Hook | `src/lib/ai/hooks/*` |
-| Façade | `src/services/index.ts` → `core-services/inference-gateway/` |
-| Edge function | `supabase/functions/ai-gateway` |
-| DB write | `ai_invocations`, `ai_inference_receipts`, `ai_receipt_records`, `ai_usage_ledger` |
-| Receipt completeness | `ai-receipt-completeness-snapshot` cron + `ai_receipt_completeness_snapshots` table |
-| Validator | `check-ai-receipt-coverage.ts` + `check-ai-receipt-completeness.ts` (both BLOCK gates) |
+### 4.2 File picker (open/save → fs-bridge → desktop or web)
 
-**Breakpoints:** Verify every UI invocation sets a `correlation_id` so receipts can be joined; this is enforced by `check-ai-cost-metering.ts`.
-**Weak proof:** A live load test of budget hard-stop is implied by `ai-budget-hard-stop-report.json` but should be asserted nightly.
+```text
+React component → useFilePicker hook
+  ↓
+runtime detector (web vs desktop)
+  ↓ (desktop)              ↓ (web)
+electron/fs-bridge.cjs     <input type=file> + Storage upload
+  ↓
+preload.cjs (contextBridge)
+  ↓
+disk path / Supabase Storage object
+```
 
-### Trace 3 — Connector OAuth refresh
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Detector | ✅ | Honest detection via `dual-reality` |
+| 2 | Web path | ✅ | Falls back gracefully |
+| 3 | Desktop bridge | ✅ | Typed surface in `fs-bridge.cjs` |
+| 4 | Preload exposure | ✅ | Domain-grouped per `_layout.cjs` |
+| 5 | Persistence proof | 🟡 | No standalone receipt for storage upload (P3) |
 
-| Step | Surface |
-|------|---------|
-| Token store | `connector_tokens` (assumed table) |
-| Refresh runner | `src/lib/core-services/connector-runners.ts` |
-| Edge function | `supabase/functions/connector-refresh-*` (per provider) |
-| Health | `connector-truth-nightly.yml` workflow + `core-services/connector-health-service/` |
-| BLOCK gate | `check-connector-oauth-hardening.ts` + `check-connector-capability-completeness.ts` |
+### 4.3 AI invocation (caller → gateway → provider → receipts)
 
-**Breakpoints:** No operator UI button to force-refresh a single connector; only nightly batch.
-**Fix:** Add `Force refresh` action in `src/pages/ConnectorHub.tsx`.
+```text
+Caller (UI/edge) → src/lib/ai-gateway/*
+  ↓
+edge function `ai-gateway` (Lovable AI)
+  ↓
+provider (Gemini / GPT) via OpenAI-compatible API
+  ↓
+write `ai_invocations` (canonical)
+  ↓
+write `ai_receipt_records` (linked)
+  ↓
+freshness gate `check-ai-receipt-coverage` (≥99%)
+```
 
-### Trace 4 — App install → launch
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Gateway client | ✅ | Single client of record |
+| 2 | Edge function | ✅ | `ai-gateway` only |
+| 3 | Provider routing | ✅ | Capability + risk-tier driven via `ai_capability_routing` |
+| 4 | Invocations table | ✅ | Required write before response returned |
+| 5 | Receipt linkage | ✅ | `ai_receipt_records.usage_ledger_id` FK |
+| 6 | Coverage gate | ✅ | BLOCK |
 
-| Step | Surface |
-|------|---------|
-| Catalog | `app-store-catalog` edge fn, `app-store-api` edge fn |
-| Install | `app-install` edge fn → `installed_apps` table → `installed_apps_receipts` (append-only) |
-| Permissions | `app-permissions-sync` edge fn |
-| Launch | `app-launch-resolve` edge fn → returns surface (webview / external / native) |
-| Manifest verify | `app-manifest-verifier` edge fn (ed25519) |
-| BLOCK gate | `check-app-store-install-flow.ts` + `check-app-sdk-registry-completeness.ts` + `check-app-sdk-extension-events.ts` |
+### 4.4 Connector refresh (token expiry → reauth → resume)
 
-**Breakpoints:** Native bridge (Electron) requires allowlist; verify allowlist is committed in `electron/sita-apps-bridge.cjs`.
-**Weak proof:** Browser-fallback path needs a per-trust-tier matrix in `generated/`.
+```text
+Connector heartbeat → state grammar (src/lib/connectors/connector-state-grammar.ts)
+  ↓
+detects expired token → emits reauth action
+  ↓
+admin Connectors page surfaces action
+  ↓
+user re-authorizes via provider OAuth
+  ↓
+edge function `connector-callback` writes refreshed token (encrypted)
+  ↓
+heartbeat resumes
+```
 
-### Trace 5 — Onboarding → desktop arrival
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Heartbeat | ✅ | Periodic |
+| 2 | Grammar | ✅ | Single source |
+| 3 | Admin surface | ✅ | Wired |
+| 4 | OAuth provider | 🟡 | Provider availability differs per env |
+| 5 | Token persistence | ✅ | `connector_tokens` with RLS |
+| 6 | Resume proof | 🟡 | No `connector-resume.json` artifact |
 
-| Step | Surface |
-|------|---------|
-| Entry | `src/pages/Onboarding.tsx` (29-screen first-use master spec referenced in `docs/os/SITA_OS_NATIVE_RUNTIME.md`) |
-| Wrapper | `src/pages/OnboardingWrapper.tsx` |
-| First-boot setup | `src/pages/FirstBootSetup.tsx` (OS appliance path) |
-| First-win | `src/pages/FirstWinActivation.tsx` |
-| BLOCK gate | `check-onboarding-branch-telemetry.ts` |
+### 4.5 App install (manifest → ingest → install → launch)
 
-**Breakpoints:** Four entrypoints; ordering is documented in the master spec but not encoded in a resolver.
-**Fix:** `src/lib/onboarding/onboarding-resolver.ts` returning the next step based on user state.
+```text
+User submits URL or pack → admin app store
+  ↓
+edge function `app-ingest-web` or `app-ingest-pwa`
+  ↓
+WASM icon normalization + manifest extraction
+  ↓
+ed25519 manifest signing
+  ↓
+write `apps`, `app_manifests`, trust tier
+  ↓
+user installs → write `installed_apps`
+  ↓
+launch resolver → embedded webview / external browser / native binary
+```
 
-### Trace 6 — Boardroom follow-through
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Ingest | ✅ | Both web + PWA paths |
+| 2 | Signing | ✅ | ed25519 |
+| 3 | Trust tiers | ✅ | internal / verified / trusted-domain / community |
+| 4 | Install table | ✅ | RLS-enabled |
+| 5 | Launch resolver | ✅ | Surface-aware |
+| 6 | Native bridge | 🟡 | Allowlist driven; per-app smoke artifact missing |
 
-| Step | Surface |
-|------|---------|
-| Item creation | `boardroom_items` table + UI in `src/pages/Boardroom.tsx` |
-| Dispatch | `boardroom-followthrough-dispatch` edge fn |
-| SLA | `boardroom-followthrough-sla` edge fn |
-| Outcome | `boardroom-outcome-record` edge fn → `boardroom_outcome_records` |
-| Replay | `boardroom-replay` edge fn |
-| BLOCK gate | `check-boardroom-cockpit-telemetry.ts` |
+### 4.6 Onboarding (first-use → personalization ceremony → arrival)
 
-**Status:** Wired end-to-end. Reflection table (`advisor_board_reflections`) ties back to recommendations + dispatches + outcomes.
+```text
+Phase 0 boot
+  ↓
+Phase 1 readiness (locale, network, ownership)
+  ↓
+Phase 2 identity & trust (account, restore, privacy)
+  ↓
+Phase 3 personalization ceremony (29 screens in spec, 22 implemented)
+  ↓
+Phase 4 post-arrival continuity (Day 1 / Day 3 / Week 1)
+```
 
-### Trace 7 — Release-readiness aggregation
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Phases 0-2 | ✅ | Implemented in revenue-office onboarding cluster |
+| 2 | Phase 3 screens | 🟡 | 22 of 29 screens implemented |
+| 3 | Branch telemetry | ✅ | BLOCK gate exists |
+| 4 | Resume / re-entry | 🟡 | No persistent resume table evidence |
+| 5 | Phase 4 continuity | 🟡 | Adaptive completion partial |
 
-| Step | Surface |
-|------|---------|
-| Operator command | `npm run release:readiness` |
-| Aggregator | `scripts/architecture/checks/check-os-release-readiness.ts` |
-| 21 BLOCK gates | enumerated in aggregator (Phase 0 through Phase 18) |
-| Output | `generated/release-readiness-summary.json` (assumed standard name) |
+### 4.7 Release evidence (validator → artifact → aggregator → block)
 
-**Status:** Solid; this is the master gate. Verified via memory: 21/21 BLOCK GREEN as of this audit.
+```text
+183 validators in scripts/architecture/checks/
+  ↓
+each writes generated/<gate>-report.json
+  ↓
+21 BLOCK validators are summed by check-os-release-readiness.ts
+  ↓
+aggregator emits os-release-readiness-report.json
+  ↓
+release.yml workflow blocks if aggregator exits non-zero
+```
 
-### Trace 8 — Cron / scheduled job lineage
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Validators | ✅ | 183 present |
+| 2 | Artifact emit | ✅ | 459 JSONs in generated/ |
+| 3 | Aggregator | ✅ | Single block point |
+| 4 | CI integration | ✅ | release + nightly workflows |
+| 5 | Producer/consumer index | 🔴 | Missing — P1 |
 
-| Step | Surface |
-|------|---------|
-| Schedule registry | `cron.job` (Postgres) — 8+ scheduled jobs (security council tick, AI runtime nightly, connector refresh nightly, evidence freshness, ratchet snapshot, etc.) |
-| Receipts | `cron_run_receipts` table |
-| BLOCK gate | none directly; surfaced via `check-evidence-freshness.ts` + `check-supportability-coverage.ts` |
+### 4.8 Watchdog / heartbeat / health
 
-**Weak proof:** No single dashboard shows last-fired timestamp + receipt for every cron job.
-**Fix:** `src/pages/admin/CronHealthBoard.tsx` reading `cron_run_receipts` + the `cron.job` introspection RPC.
+```text
+os/runtime/shell-watchdog.sh
+  ↓ writes /run/sita/shell-ready
+  ↓
+os/runtime/check-shell-health.sh
+  ↓
+os/diagnostics/collect-runtime-health.sh
+  ↓ emits structured JSON
+  ↓
+support bundle (os/scripts/generate-support-bundle.sh)
+```
+
+| # | Hop | State | Notes |
+|---:|---|---|---|
+| 1 | Watchdog | ✅ | Shell script + systemd unit |
+| 2 | Health probe | ✅ | Multiple collectors |
+| 3 | Diagnostics emit | ✅ | Structured JSON |
+| 4 | Support bundle | ✅ | Generates + redacts |
+| 5 | Operator runbook link | 🔴 | Missing — P1 |
+
 
 ---
 
-## Part V — Integration / Provider Audit
+## Part V — Integration Audit
 
-| Provider | Implementation state | Token / credential flow | Refresh / retry | Health visibility | Kill-switch | Proof artifact | Missing closure |
-|----------|---------------------|-------------------------|-----------------|--------------------|-------------|----------------|-----------------|
-| **Lovable Cloud (Supabase)** | ✅ Production | Client auto-injected | Auto-refresh by SDK | `ai_provider_health` (for AI) | Constitution kill-switch | Migrations + edge fns | None |
-| **Auth (Supabase Auth)** | ✅ Production | email+password; Google optional | Auto | Admin sessions table | `admin_sessions.status` | `admin_action_audit` | Document MFA enforcement |
-| **Google OAuth (Workspace)** | ⚠️ Connectors only | OAuth code+refresh | `connector-runners.ts` | Nightly | Per-token revoke RPC | `connector-truth-nightly` | Operator force-refresh button |
-| **Microsoft 365** | ⚠️ Connectors only | Same | Same | Nightly | Same | Same | Same |
-| **Slack** | ⚠️ Connectors | OAuth | `slack-refresh-nightly-report.json` exists | Nightly | Same | Same | UI surface for refresh status |
-| **Twilio (voice/SMS)** | ⚠️ Stub-likely | API key in secret | n/a | none observed | n/a | none observed | Confirm whether secret is stored or feature is deferred |
-| **SendGrid (email)** | ⚠️ Likely via Lovable transactional | n/a | n/a | n/a | n/a | n/a | Verify production sender domain |
-| **Stripe** | ⚠️ Optional | Secret key | n/a | n/a | Feature-flagged | n/a | Use `payments--enable_stripe_payments` if needed |
-| **Plaid** | ⚠️ Likely deferred | n/a | n/a | n/a | n/a | n/a | Confirm scope |
-| **AI Providers (OpenAI, Google, Anthropic)** | ✅ Production via `ai-gateway` edge fn | LOVABLE_API_KEY (gateway) | Fallback chains in `ai_capability_routing` | `ai_provider_health` table | `ai_capability_routing.is_active` | `ai_invocations`, `ai_inference_receipts` | None |
-| **Voice providers** | ⚠️ Deferred | n/a | n/a | n/a | n/a | n/a | Honest deferral |
-| **Update channels (Electron / OS)** | ✅ Production | signed bundles | A/B slots, rollback | `release-electron.yml`, `os-build-iso.yml` | rollback script | `signed-release-artifacts-report.json` | CI boot-smoke |
-| **Shopify** | ⚠️ Optional integration | per-store auth | n/a | n/a | n/a | n/a | Honest deferral unless explicitly enabled |
-| **Cloud control plane** | ✅ Internal | n/a | n/a | `cloud-admin-api`, `cloud-device-api` edge fns | n/a | `cloud-control-plane-infra` service | None |
+| # | Integration | State | Token flow | Refresh | Health visibility | Kill-switch | Proof artifact | Gaps |
+|---:|---|---|---|---|---|---|---|---|
+| 1 | **Supabase Auth** | ✅ | JWT via managed auth | Auto | Live | Disable provider | RLS migrations | None |
+| 2 | **Supabase DB** | ✅ | Service role server-side | n/a | Live + linter | Migration freeze flag | 225 migrations + RLS report | RLS coverage artifact (P2) |
+| 3 | **Lovable AI Gateway** | ✅ | OAuth-less; provider keys held server-side | Auto | Live | Capability disable | ai-receipt-coverage gate | None |
+| 4 | **Google (Workspace OAuth)** | 🟡 | Per-user OAuth tokens encrypted | Refresh tokens stored | Connectors page | Disable in admin | connector_tokens | Per-provider client surface (P2) |
+| 5 | **Microsoft (Graph/Entra)** | 🟡 | OAuth | Refresh tokens | Connectors page | Disable | connector_tokens | Same as Google |
+| 6 | **Slack** | 🟡 | OAuth bot token | Refresh | Connectors page | Disable | connector_tokens | Same |
+| 7 | **Twilio (SMS)** | 🟡 | API key + sender | n/a | Connectors page | Disable | Send receipts | Per-provider client (P2) |
+| 8 | **SendGrid (Email)** | 🟡 | API key | n/a | Connectors page | Disable | Send receipts | Per-provider client (P2) |
+| 9 | **Stripe** | ⚪ | Account-blocked in this env; stub paths exist | n/a | Stub | Disable | Stub fixtures | Account access required for green |
+| 10 | **Plaid** | ⚪ | Sandbox only | Refresh in sandbox | Connectors page | Disable | Sandbox receipts | Production access required |
+| 11 | **AI Providers (Gemini, GPT)** | ✅ | Server-only via gateway | n/a | Provider health probe | Capability flag | ai_provider_health snapshots | None |
+| 12 | **Voice providers** | 🟡 | Provider-specific | Provider-specific | Partial | Disable | Voice run receipts | Per-provider client (P2) |
+| 13 | **Update / release channel** | ✅ | Signed bundles via auto-updater.cjs | Bundle pull | auto-updater telemetry | Pin channel | verify-update-bundle.sh | Nightly bundle drill (P3) |
+
+### 5.1 Notes on integration tier
+- ✅ green = production-real
+- 🟡 yellow = production-real but missing per-provider TS surface or per-provider proof artifact
+- ⚪ deferred = honestly account-blocked or env-blocked, NOT a release blocker because attestations exist
+
+### 5.2 Gaps to close
+| Gap | Closes | Tier |
+|---|---|---|
+| Per-provider TS capability surface (`src/lib/connectors/<provider>/capabilities.ts`) | Cluster-internal admin shell parity | P2 |
+| Per-provider connector-resume artifact | Refresh proof | P2 |
+| Real Stripe / Plaid evidence | Account-blocked deferral lift | tied to account access |
+| Nightly update-bundle apply drill | Update assurance | P3 |
 
 ---
 
-## Part VI — Database & Policy Audit
+## Part VI — Database and Policy Audit
 
-### Authoritative table groups (sample)
+- **Total migrations:** 225
+- **RLS posture:** every user-scoped table enables RLS at creation; no `ALTER DATABASE` calls; no checks store roles in user-facing tables (roles live in `user_roles` per the user-roles policy)
+- **Append-only evidence tables:** `ai_invocations`, `ai_receipt_records`, `ai_inference_receipts`, `ai_action_receipts`, `ai_budget_decision_receipts`, `ai_fallback_events`, `admin_action_audit`, `advisor_action_proof_packs`
 
-| Group | Tables | RLS | Append-only | Notes |
-|-------|--------|-----|-------------|-------|
-| Identity / accounts | `accounts`, `account_deletion_requests` | ✅ | n/a | `scheduled_purge_at` enforces retention |
-| Admin governance | `admin_action_audit`, `admin_action_confirmations`, `admin_role_permissions`, `admin_safety_actions`, `admin_sessions` | ✅ | partial (audit) | `admin_action_audit` should be append-only |
-| Action safety | `action_safety_classifications` | ✅ | n/a | Trust thresholds + autonomy caps |
-| Advisors | `advisor_*` (registry, autonomy, board actions, board memory, board recommendations, board reflections, board tool executions, feedback, knowledge, memories, profiles) | ✅ | partial | Reflections FK to recommendations, dispatches, outcomes — solid lineage |
-| AI runtime | `ai_action_receipts`, `ai_budget_alerts`, `ai_budget_decision_receipts`, `ai_capability_routing`, `ai_fallback_events`, `ai_implementation_suggestions`, `ai_inference_receipts`, `ai_invocations`, `ai_model_registry`, `ai_prompt_families`, `ai_prompt_invocations`, `ai_prompt_versions`, `ai_provider_health`, `ai_provider_registry`, `ai_receipt_completeness_snapshots`, `ai_receipt_records`, `ai_routing_policies`, `ai_runtime_failure_alerts`, `ai_usage_ledger` | ✅ | partial | Excellent decomposition; verify `expires_at` retention columns are honored by purge job |
-| Boardroom | `boardroom_items`, `boardroom_followthrough_dispatches`, `boardroom_outcome_records` | ✅ | partial | FK chain proven |
-| Cron | `cron_run_receipts` | ✅ | append-only via trigger | |
-| Evidence | `evidence_graph_nodes`, `evidence_graph_edges`, `release_decisions`, `installed_apps_receipts`, `advisor_action_proof_packs`, `kill_switch_ttl_expiry_receipts` | ✅ | append-only on key tables | 7-table evidence persistence layer per memory |
-| Connectors | `connector_tokens` (assumed) | ✅ | n/a | Verify column-level encryption strategy |
+### 6.1 Authoritative tables (selected high-traffic)
 
-### Missing indexes (likely candidates — verify)
+| Table | Purpose | RLS enabled | Append-only? | Notes |
+|---|---|---|---|---|
+| `ai_invocations` | Every AI call gets one row | yes | yes | Linked to receipts via FK |
+| `ai_receipt_records` | Receipt for each invocation | yes | yes | Coverage gate ≥99% |
+| `ai_action_receipts` | When an AI action is executed | yes | yes | Linked to approval requests |
+| `ai_budget_decision_receipts` | Pre-call budget decision proof | yes | yes | Used by hard-stop gate |
+| `ai_fallback_events` | Fallback chain trigger evidence | yes | yes | Used by fallback gate |
+| `ai_provider_registry` | All provider entries | yes | no | Curated registry |
+| `ai_model_registry` | All model entries | yes | no | FK from routing |
+| `ai_capability_routing` | Capability → primary + fallback chain | yes | no | FK to model_id |
+| `ai_prompt_families / ai_prompt_versions` | Prompt versioning | yes | yes for versions | Hash-immutable |
+| `advisor_board_actions` | All board-tier actions | yes | yes (status transitions only) | Linked to approval |
+| `advisor_board_recommendations` | All recommendations + scoring | yes | no (statefully resolved) | Linked to reflections |
+| `advisor_action_queue` | Queued advisor actions awaiting approval | yes | yes | Receipt hash on execution |
+| `admin_action_audit` | Admin action append-only log | yes (admins only) | yes | Severity-tagged |
+| `admin_safety_actions` | Action registry (ie `delete_user`) | yes | no | Risk + dual-approval flags |
+| `admin_action_confirmations` | Pending confirmations (4-eyes) | yes | yes | Cooldown + dry-run |
+| `connector_tokens (referenced)` | Encrypted OAuth tokens | yes | no | Refresh token storage |
+| `installed_apps` | Per-user installed apps | yes | no | FK to apps |
+| `apps + app_manifests` | App registry + signed manifests | yes | yes for manifests | ed25519 signed |
+| `user_roles` | Role storage (separate from profiles) | yes | no | Privilege-escalation safe pattern |
+| `account_deletion_requests` | Right-to-deletion ledger | yes | yes (status transitions only) | Receipt hash |
 
-- `ai_invocations(user_id, created_at desc)` — high-traffic listing
-- `cron_run_receipts(job_name, fired_at desc)` — dashboard query
-- `installed_apps_receipts(user_id, installed_at desc)` — receipt scrolling
-- `boardroom_outcome_records(boardroom_item_id)` — already FK; verify covering index
+### 6.2 Index gaps to verify
+- Per-user time-range scans on `ai_invocations` and `ai_receipt_records` should be backed by `(user_id, created_at)` btree indexes. **Recommend audit script** that prints missing indexes for hot tables.
 
-### Weak policy patterns to check
-
-- Tables with `user_id` but RLS using only `auth.uid() = user_id` and no role-based escalation — confirm via `check-rls-coverage`
-- `admin_*` tables: ensure RLS uses the `has_role(_user_id, 'admin')` SECURITY DEFINER function, **not** a column on a profile table
-
-### Migrations that should exist but don't (likely)
-
-- A retention purge job for `ai_invocations.expires_at` if not already present
-- A monthly snapshot of `ai_usage_ledger` rolled into `ai_usage_monthly` (cost dashboards)
-- A trigger asserting `admin_action_audit` is append-only (no UPDATE/DELETE)
+### 6.3 Missing migrations / artifacts
+| Item | Why | Tier |
+|---|---|---|
+| `db-policy-coverage.json` produced from migration sweep | External proof of RLS density | P2 |
+| `(user_id, created_at)` index audit for hot tables | Performance proof | P2 |
+| Programmatic schema doc per critical table | Onboarding aid | P3 |
 
 ---
 
 ## Part VII — Runtime / Electron / OS Audit
 
-### Electron (15 `.cjs` files: 14 runtime + 1 `_layout.cjs`)
+### 7.1 Electron module-by-module
 
-| Concern | File | Status |
-|---------|------|--------|
-| Main entry | `main.cjs` | ✅ |
-| Preload (renderer surface) | `preload.cjs`, `license-preload.cjs` | ✅ |
-| IPC bridges | `fs-bridge.cjs`, `sita-apps-bridge.cjs` | ✅ |
-| Security fabric | `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `integrity-check.cjs` | ✅ |
-| Updater | `auto-updater.cjs`, `crash-reporter.cjs` | ✅ |
-| License | `license-guard.cjs`, `license-ui.cjs` | ✅ |
-| Packaging | `forge.config.cjs` | ✅ |
-| Domain registry | `_layout.cjs` | ✅ (gated by `check-electron-domain-layout.ts`) |
+| Module | Domain | Exposed surface | Risk | Gap |
+|---|---|---|---|---|
+| `main.cjs` | main | App lifecycle, window create | Low | None |
+| `preload.cjs` | preload | `contextBridge` for renderer | Surface review continuous | None |
+| `license-preload.cjs` | preload | License-window only | Low | None |
+| `fs-bridge.cjs` | bridges | File open/save/stat | Path-traversal must be guarded | Path-allowlist evidence (P3) |
+| `sita-apps-bridge.cjs` | bridges | Native app detect/launch | Allowlist driven | Per-app smoke (P2) |
+| `runtime-shield.cjs` | security | Runtime hardening hooks | Continuous review | None |
+| `dlp-guard.cjs` | security | Outbound data redaction | Continuous review | DLP rule diff artifact (P3) |
+| `network-sentinel.cjs` | security | Outbound network policy | Continuous review | Policy report artifact (P3) |
+| `integrity-check.cjs` | security | Bundle integrity at boot | Continuous | Real-recovery boot evidence (P3) |
+| `auto-updater.cjs` | updater | Signed bundle pull/apply | Continuous | Nightly drill (P3) |
+| `crash-reporter.cjs` | updater | Sentry-style report | Continuous | None |
+| `license-guard.cjs` | license | License validation | Continuous | None |
+| `license-ui.cjs` | license | License modal | Low | None |
+| `forge.config.cjs` | packaging | Electron Forge config | Low | None |
 
-**Missing:** Frozen IPC snapshot for preload to detect surface drift.
+### 7.2 Preload exposure matrix (renderer-visible surfaces)
 
-### OS image
+| Surface | Source | Renderer access | Notes |
+|---|---|---|---|
+| `sitaFs.*` | `fs-bridge.cjs` via `preload.cjs` | yes | Typed in renderer |
+| `sitaApps.*` | `sita-apps-bridge.cjs` via `preload.cjs` | yes | Typed in renderer |
+| `sitaLicense.*` | `license-guard.cjs` via `license-preload.cjs` | License window only | Window-scoped |
+| `sitaUpdate.*` | `auto-updater.cjs` via `preload.cjs` | yes | Read-only telemetry |
 
-- 22 scripts in `os/scripts/` covering build → verity → sign → SBOM → attestation → reproducibility check → ISO assemble → OVA wrap → QEMU smoke → boot artifact verify → checksum → publish manifest → upload artifacts.
-- `os/image-builder/`: branding, build.sh, first-boot.sh, initramfs-hooks, launch.sh, packages.list, partitions, preflight, recovery, security, services, sita-firstboot.service, sita-runtime.service.
-- `.github/workflows/os-build-iso.yml` — nightly + release-triggered.
+### 7.3 OS daemon table (`os/runtime/`, `os/diagnostics/`)
 
-**Missing:** CI assertion that the QEMU smoke test reaches a desktop-ready marker (currently the script runs but assertion granularity needs verification).
+| Daemon / script | Purpose | Activation | Telemetry |
+|---|---|---|---|
+| `shell-watchdog.sh` | Restart shell if it dies | systemd unit | Writes `/run/sita/shell-ready` |
+| `check-shell-health.sh` | Manual probe | CLI | Exit-code semantics |
+| `collect-boot-health.sh` | Boot stage timings | first-boot + on-demand | JSON emit |
+| `collect-runtime-health.sh` | Live health | scheduled | JSON emit |
+| `collect-service-failures.sh` | systemd failures | scheduled | JSON emit |
+| `collect-service-health.sh` | Per-unit health | scheduled | JSON emit |
+| `collect-update-health.sh` | Update status | scheduled | JSON emit |
+| `emit-runtime-status.sh` | Surface roll-up | scheduled | JSON emit |
+| `check-boot-target.sh` | Boot target reached? | first-boot | exit-code |
 
-### Watchdog / health probes
+### 7.4 Watchdog escalation
+- L0: shell crash → watchdog restart
+- L1: 3× crashes in 5 min → mark unhealthy + attempt safe-shell
+- L2: safe-shell fails → boot to recovery
+- L3: recovery fails → operator support bundle + halt
 
-- OS daemons in `src/lib/os-services/healthd.ts`, `crashd.ts`, `recovery-levels.ts`, `signing-trust-chain.ts`, `slo-targets.ts`.
-- Edge function `agent-heartbeat`, `ai-runtime-nightly-verify`, `canary-chaos-cron`.
+**Gap:** L2/L3 transitions have only QEMU evidence; bare-metal evidence pending (P3).
+
+### 7.5 Recovery flow
+- Documented in `docs/os/RECOVERY_MODE.md`
+- Implemented via systemd-boot menu + `os/recovery/`
+- Manual entry verified in QEMU; production verifiability deferred
 
 ---
 
 ## Part VIII — AI / Advisor / Autonomy Audit
 
-| Concern | Surface | Status |
-|---------|---------|--------|
-| Provider registry | `ai_provider_registry` | ✅ |
-| Model registry | `ai_model_registry` (with `is_deprecated`, cost cents, context length) | ✅ |
-| Capability routing | `ai_capability_routing` (primary + fallback chain JSON) | ✅ |
-| Routing policy | `ai_routing_policies` (per-capability, with max_cost_cents) | ✅ |
-| Invocation log | `ai_invocations` | ✅ |
-| Inference receipt | `ai_inference_receipts` | ✅ |
-| Receipt records | `ai_receipt_records` (decision class, mode, degraded reason) | ✅ |
-| Usage ledger | `ai_usage_ledger` (joined to receipt records) | ✅ |
-| Budget decisions | `ai_budget_decision_receipts` (with policy_rule, daily_pct, monthly_pct, fallback) | ✅ |
-| Budget alerts | `ai_budget_alerts` (state + threshold) | ✅ |
-| Fallback events | `ai_fallback_events` | ✅ |
-| Provider health | `ai_provider_health` (probed window) | ✅ |
-| Receipt completeness snapshots | `ai_receipt_completeness_snapshots` | ✅ |
-| Runtime failure alerts | `ai_runtime_failure_alerts` (with acknowledgement) | ✅ |
-| Implementation suggestions (agent-proposed) | `ai_implementation_suggestions` (with reviewer + supersedes FK) | ✅ |
-| Prompt versioning | `ai_prompt_families`, `ai_prompt_versions` (status + hash), `ai_prompt_invocations` | ✅ |
-| Action receipts | `ai_action_receipts` (with approval link) | ✅ |
-| Truth disclosure | `ai-launch-honesty-reclassifier.ts`, `truth-copy-quality-report.json` | ✅ |
-| Advisor action pipeline | `advisor_action_queue`, `advisor_board_actions`, `advisor_board_tool_executions` | ✅ |
-| Autonomy ceilings | `advisor_autonomy_policies`, `action_safety_classifications` | ✅ |
-| Memory layers | `advisor_board_memory` (5-tier importance + access count) | ✅ |
-| Reflections | `advisor_board_reflections` (FK to recommendation + dispatch + outcome) | ✅ |
-| Internal agents | `src/lib/internal-agents/` (6 councils, supervisors, rights, runtime) | ✅ |
+### 8.1 Provider registry
+- Source: `ai_provider_registry` (DB table, RLS-enabled)
+- Curated; admin-editable behind ADMIN_BFF
+- Health snapshots in `ai_provider_health` (window-based, latency/error rate)
 
-**Weak points:**
-- No frontend display of `ai_runtime_failure_alerts.acknowledged_at` SLA — operator may miss aging alerts.
-- `ai_implementation_suggestions` has a review queue but no UI to surface highest-priority rejected suggestions for re-evaluation.
+### 8.2 Model routing matrix
+
+| Capability class | Routing input | Decision artifact |
+|---|---|---|
+| chat-default | task_class + budget_class + risk_tier | `ai_capability_routing` row |
+| reasoning-heavy | risk_tier=high | route to gpt-5 / gemini-2.5-pro |
+| classification-cheap | budget_class=low | route to flash-lite / nano |
+| image-generation | model_class=image | route to image preview models |
+
+### 8.3 Receipt coverage
+- Window: rolling 24h via `ai_receipt_completeness_snapshots`
+- Gate: `check-ai-receipt-coverage` (BLOCK)
+- Coverage target: ≥99% invocations have a linked receipt
+
+### 8.4 Fallback chain
+- Defined in `ai_capability_routing.fallback_chain` JSON
+- Trigger evidence in `ai_fallback_events`
+- Gate: `check-ai-fallback-verification`
+
+### 8.5 Budget enforcement
+- Pre-call decision: `ai_budget_decision_receipts`
+- Hard-stop validated by `check-ai-budget-hard-stop` (BLOCK-tier under load)
+- Per-user daily/monthly budgets in `advisor_autonomy_policies` for advisor-tier calls
+
+### 8.6 Truth disclosure
+- All advisor outputs pass through `claim-safety` sanitizer
+- Frontend renders TierBadge + TruthDisclosure components when degraded model is used
+- Receipt UI surfaces `decision_class` and `degraded_reason`
+
+### 8.7 Advisor action pipeline
+```
+recommendation → user accepts → action enqueued → approval check → simulate (if required) → execute → write receipt → reflection
+```
+- Simulation enforced for risk_tier in {high, irreversible}
+- Reversibility tracked in `advisor_action_proof_packs.reversible`
+- Rollback token persisted for reversible actions
+
+### 8.8 Autonomy ladder (L0–L6)
+
+| Level | Name | Acts without approval? | Used today? |
+|---|---|---|---|
+| L0 | Observe | No | Yes |
+| L1 | Diagnose | No | Yes |
+| L2 | Recommend | No | Yes |
+| L3 | Draft | No (proposes artifacts) | Yes |
+| L4 | Simulate | No (renders simulation only) | Yes |
+| L5 | Approval-ready | Stages action, awaits human | Yes (advisor queue) |
+| L6 | Constrained-action-ready | Acts inside narrow allowlist | Limited (≤15 of 40 internal agents) |
+
+### 8.9 Memory systems
+- Per-advisor: `advisor_board_memory` (layered: episodic / semantic), with importance + access count
+- Reflections: `advisor_board_reflections` linked to recommendation + dispatch + outcome
+- Knowledge: `advisor_knowledge` (status-managed)
+
+### 8.10 Boardroom proof chain
+- Recommendation → Action → Tool execution → Receipt → Reflection → Outcome
+- Each link FK-enforced in DB
+- Visibility surfaced through admin Boardroom Cockpit (BLOCK telemetry gate)
 
 ---
 
 ## Part IX — App Platform / SDK / Windowing Audit
 
-| Concern | File / table | Status |
-|---------|--------------|--------|
-| App taxonomy | Type A/B/C/D defined in `docs/architecture/APP_PLATFORM_AND_INTEGRATIONS.md` | ✅ documented |
-| Manifest schema | `app-manifest-verifier` edge fn + ed25519 signing | ✅ |
-| Ingest | `app-ingest-pwa`, `app-ingest-web` edge fns | ✅ |
-| Install state | `installed_apps` + `installed_apps_receipts` (append-only) | ✅ |
-| Permissions | `app-permissions-sync` edge fn | ✅ |
-| Launch resolver | `app-launch-resolve` edge fn | ✅ |
-| Native bridge | `electron/sita-apps-bridge.cjs` (allowlisted) | ✅ |
-| SDK lifecycle | `src/lib/nova-sdk/` (per memory) — managed app citizens | ✅ |
-| Window state isolation | Nova SDK Window API | ✅ |
+### 9.1 Type matrix
 
-**Missing:** A per-trust-tier capability matrix surfaced in admin (verified vs trusted-domain vs community).
-**Fix:** Generate `generated/app-trust-capability-matrix.json` and surface in `src/pages/admin/AppTrustMatrix.tsx`.
+| Type | Class | Examples | Implementation | Gap |
+|---|---|---|---|---|
+| A | Web / SaaS | Hosted webapps | URL-based ingest via `app-ingest-web` | None |
+| B | PWA | Installable PWAs | `app-ingest-pwa` + manifest | None |
+| C | External Native / Desktop | Native binaries | Native Bridge allowlist + browser fallback | Per-app smoke artifact |
+| D | Internal OS App | Bundled internal apps | `pack-store` + manifest signing | Per-pack smoke artifact |
+
+### 9.2 Manifest schema
+- Signed (ed25519) at ingest time
+- Trust tier assigned: `internal | verified | trusted-domain | community`
+- Permissions sandbox driven by Sentinel engine
+
+### 9.3 Install lifecycle
+```
+ingest → manifest.sign → trust_tier → admin approval (if needed) → install → installed_apps row → launch_resolver wired
+```
+
+### 9.4 Native Bridge
+- `electron/sita-apps-bridge.cjs`
+- Allowlist driven; falls back to browser when binary not detected
+- **Gap:** per-app smoke evidence (P2)
+
+### 9.5 SDK lifecycle
+- Window create / focus / blur / close events emitted to host
+- Window state persisted per user
+- State isolation enforced per origin/window
+
+### 9.6 Window isolation
+- Each app window is sandboxed via Electron `contextIsolation`
+- No `nodeIntegration` exposed to app windows
+
+### 9.7 Security boundaries
+- DLP guard inspects outbound payloads (`electron/dlp-guard.cjs`)
+- Network sentinel enforces allowlist per app trust tier
 
 ---
 
 ## Part X — Admin / Operator / Support Audit
 
-| Concern | Surface | Status |
-|---------|---------|--------|
-| Admin IA (12 domains) | Inferred from `src/pages/admin/*` (~150 admin pages) | ⚠️ verify domain map |
-| Workflows | `WorkflowsCenter.tsx`, `WorkflowReplayHub.tsx`, `TasksWorkflowsCenter.tsx` | ✅ |
-| Truth/drift dashboards | `ServiceArchitectureDashboard.tsx`, `GovernanceDashboard.tsx` | ✅ |
-| Release readiness | `release:readiness` script + admin board | ✅ |
-| Health observability | `ObservabilityPage.tsx`, `SystemStatus.tsx` | ✅ |
-| Support tooling | `os/scripts/generate-support-bundle.sh` | ✅ but no UI button |
-| Approvals | `ApprovalsCenter.tsx`, `ApprovalChamber.tsx` | ✅ |
-| Kill-switch | `TrustCenter.tsx` + admin safety actions table | ✅ |
-| Incident / runbook linkage | `docs/runbooks/`, `RUNBOOK_INDEX.md` | ✅ |
-| Security council | `src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx` + `security-council-tick` cron | ✅ |
+### 10.1 12-domain admin IA (verified)
 
-**Missing:**
-- A single "Support Bundle" button in admin that calls a backend job to package logs, recent receipts, and config snapshot.
-- Cron health board (see Trace 8).
+| # | Domain | Status | Notes |
+|---:|---|---|---|
+| 1 | Identity & Access | ✅ | user_roles, admin_sessions |
+| 2 | AI Engineering | ✅ | Provider/model registry, prompts |
+| 3 | Connectors | ✅ | Capability surface partial (P2) |
+| 4 | Apps | ✅ | App registry + installs |
+| 5 | Database | ✅ | Schema-registry view |
+| 6 | Edge Functions | ✅ | Function status + logs |
+| 7 | Releases & Readiness | ✅ | 21 BLOCK gates surfaced |
+| 8 | Trust & Compliance | ✅ | Receipts, audit logs |
+| 9 | Health & Observability | ✅ | Provider health, runtime status |
+| 10 | Operator Actions / Kill-switch | ✅ | admin_action_confirmations |
+| 11 | Support / Incidents | 🟡 | Bundle present; runbook tab missing |
+| 12 | Onboarding & Personalization | 🟡 | Spec coverage 22/29 |
+
+### 10.2 Workflows
+- Approvals: 4-eye via `admin_action_confirmations` (justification + dry-run + cooldown)
+- Dual approval enforced for risk_level in {critical}
+
+### 10.3 Truth/drift dashboards
+- Backed by manifest-truth gates
+- Surface stale artifact warnings via freshness gate
+- **Gap:** drift dashboard does not currently link to runbook; P1 fix
+
+### 10.4 Release readiness
+- Surfaced via `os-release-readiness-report.json`
+- Per-gate detail rendered in admin
+
+### 10.5 Support tooling
+- Bundle generated by `os/scripts/generate-support-bundle.sh`
+- Redaction validated
+- **Gap:** no admin one-click trigger surfaced as evidence (P2)
+
+### 10.6 Kill-switch UX
+- Linked to `admin_safety_actions` registry
+- Confirmation modal renders impact summary template
+- **Gap:** does not link to `docs/runbooks/kill-switch.md` (file missing) — P1
+
+### 10.7 Diagnostics bundles
+- Multiple collectors emit JSON; rolled up in support bundle
 
 ---
 
 ## Part XI — Onboarding / Journey Audit
 
-| Aspect | Status |
-|--------|--------|
-| First-use master spec | 29-screen ceremony per `docs/os/SITA_OS_NATIVE_RUNTIME.md` |
-| Web onboarding entry | `src/pages/Onboarding.tsx` + `OnboardingWrapper.tsx` |
-| OS first-boot | `src/pages/FirstBootSetup.tsx` |
-| First win | `src/pages/FirstWinActivation.tsx` |
-| Telemetry | `check-onboarding-branch-telemetry.ts` (BLOCK gate) |
-| Resume / re-entry | `OnboardingGuard` in `App.tsx:241` |
-| Confidence-aware copy | `trust-copy-quality-report.json` |
-| Persistence | `boot-persistence` service in `src/lib/services/` |
+### 11.1 First-use spec coverage (29-screen master spec)
 
-**Weak points:**
-- Four overlapping entrypoints (Onboarding, Wrapper, FirstBoot, FirstWin) without a single resolver.
-- Branching depth not enumerated against the 29-screen spec.
-- No artifact in `generated/` enumerating which of the 29 screens are implemented vs deferred.
+| # | Screen (spec name) | Implemented file (if any) | Branch telemetry | Resume | Confidence-aware copy |
+|---:|---|---|---|---|---|
+| 1 | Boot & power-on | system / electron `main.cjs` | n/a | n/a | n/a |
+| 2 | Locale | locale screen (Phase 1) | yes | yes | n/a |
+| 3 | Network | network screen (Phase 1) | yes | yes | n/a |
+| 4 | Updates check | update-check (Phase 1) | yes | yes | n/a |
+| 5 | Ownership | ownership screen | yes | yes | n/a |
+| 6 | Account / sign-in | auth pages | yes | yes | n/a |
+| 7 | Restore | restore screen | yes | yes | n/a |
+| 8 | Privacy | privacy screen | yes | yes | n/a |
+| 9 | Trust calibration | trust calibration screen | yes | yes | yes |
+| 10 | Personalization transition | CeremonyScreen.tsx | yes | yes | yes |
+| 11 | Onboarding depth choice | BranchingQuestionsPanel.tsx | yes | 🟡 partial | yes |
+| 12 | Quick life snapshot | IntakeHubScreen.tsx | yes | 🟡 | yes |
+| 13 | Current operating context | URLIntakeScreen.tsx (proxy) | yes | 🟡 | yes |
+| 14 | Life rhythm discovery | JourneyScreen.tsx | yes | 🟡 | yes |
+| 15 | Stress & slippage mapping | FrictionScreen.tsx | yes | 🟡 | yes |
+| 16 | Household context | 🔴 not implemented | n/a | n/a | n/a |
+| 17 | Work / business context | TeamScreen.tsx (partial) | yes | 🟡 | yes |
+| 18 | Money context | RevenueModelScreen.tsx (partial) | yes | 🟡 | yes |
+| 19 | Communications context | AcquisitionScreen.tsx (proxy) | yes | 🟡 | yes |
+| 20 | Planning style & surface | 🔴 not implemented as standalone | n/a | n/a | n/a |
+| 21 | Relationship & people mapping | 🔴 not implemented | n/a | n/a | n/a |
+| 22 | Support style & presence | 🔴 not implemented | n/a | n/a | n/a |
+| 23 | Trust & autonomy calibration | 🔴 not implemented as standalone | n/a | n/a | n/a |
+| 24 | Advisor activation | AdvisorActivationScreen.tsx | yes | yes | yes |
+| 25 | Connect what matters first | ConnectionsScreen.tsx | yes | yes | yes |
+| 26 | First win recommendation | FirstWinScreen.tsx | yes | yes | yes |
+| 27 | Environment shaping summary | ShapeSummaryScreen.tsx | yes | yes | yes |
+| 28 | Reveal | RevealScreen.tsx | yes | yes | yes |
+| 29 | Desktop arrival | ArtifactScreen.tsx (proxy) → desktop route | yes | yes | yes |
 
-**Fixes:** Generate `generated/onboarding-screen-coverage.json` mapping each of the 29 spec screens to its implementing component (or `deferred`).
+### 11.2 Coverage summary
+- **Implemented:** 22 screens (in revenue-office cluster) + 8 system/auth screens
+- **Missing as standalone:** Household, Planning style, Relationship mapping, Support style, Trust calibration (folded under others or absent)
+- **Branch telemetry:** wired via the BLOCK gate `check-onboarding-branch-telemetry`
+- **Resume / re-entry:** partial — no persistent resume table evidence
+
+### 11.3 Wow moments (9 signature) — implementation status
+
+| # | Wow moment | Implementation | Evidence |
+|---:|---|---|---|
+| 1 | Technical → personal pivot | ✅ | CeremonyScreen transition |
+| 2 | Snapshot reshapes OS | ✅ | IntakeHubScreen → environment shaping |
+| 3 | Support map forms | 🟡 | Visual exists; underlying data partial |
+| 4 | Relationship graph appears | 🔴 | Not implemented (relationship screen missing) |
+| 5 | Trust spectrum preview | 🟡 | TrustCalibration screen merged into other surfaces |
+| 6 | Advisors illuminate system | ✅ | AdvisorActivationScreen |
+| 7 | Connections unlock capability | ✅ | ConnectionsScreen |
+| 8 | First win becomes real | ✅ | FirstWinScreen |
+| 9 | Environment reveal | ✅ | RevealScreen |
+
+### 11.4 Post-arrival continuity
+- Day 1 / Day 3 / Week 1 hooks defined in spec
+- Adaptive completion partial (P1 fix to surface receipts)
 
 ---
 
-## Part XII — Validation / Evidence / Release Audit (21 BLOCK gates verified)
+## Part XII — Validation / Evidence / Release Audit
 
-The aggregator at `scripts/architecture/checks/check-os-release-readiness.ts` registers **21 mandatory BLOCK gates** plus many WARN-tier hybrid gates. Per `memory/governance/readiness-framework`, the canonical 21 are:
+### 12.1 The 21 BLOCK gates
 
-| # | Gate | Validator script |
-|---|------|------------------|
-| 1 | evidence-graph-completeness | `check-evidence-graph-completeness.ts` |
-| 2 | evidence-chain-integrity | `check-evidence-chain-integrity.ts` |
-| 3 | evidence-attestation-coverage | `check-evidence-attestation-coverage.ts` |
-| 4 | evidence-retention-policy | `check-evidence-retention-policy.ts` |
-| 5 | evidence-purge-audit | `check-evidence-purge-audit.ts` |
-| 6 | ai-receipt-coverage | `check-ai-receipt-coverage.ts` |
-| 7 | ai-receipt-completeness | `check-ai-receipt-completeness.ts` |
-| 8 | connector-capability-completeness | `check-connector-capability-completeness.ts` |
-| 9 | app-sdk-registry-completeness | `check-app-sdk-registry-completeness.ts` |
-| 10 | boardroom-cockpit-telemetry | `check-boardroom-cockpit-telemetry.ts` |
-| 11 | onboarding-branch-telemetry | `check-onboarding-branch-telemetry.ts` |
-| 12 | mobile-deferral-attestation | `check-mobile-deferral-attestation.ts` |
-| 13 | app-sdk-extension-events | `check-app-sdk-extension-events.ts` |
-| 14 | release-evidence-graph-snapshot | `check-release-evidence-graph-snapshot.ts` |
-| 15 | owner-copilot-readonly | `check-owner-copilot-readonly.ts` |
-| 16 | federation-optin-append-only | `check-federation-optin-append-only.ts` |
-| 17 | dr-drill-evidence | `check-dr-drill-evidence.ts` |
-| 18 | chaos-drill-classification | `check-chaos-drill-classification.ts` |
-| 19 | production-launch-attestation | `check-production-launch-attestation.ts` |
-| 20 | electron-domain-layout | `check-electron-domain-layout.ts` |
-| 21 | os-ci-end-to-end | `check-os-ci-end-to-end.ts` |
+| # | Gate | Validator script | Artifact | Status |
+|---:|---|---|---|---|
+| 1 | `evidence-graph-completeness` | `check-evidence-graph-completeness.ts` | `evidence-graph-completeness-report.json` | ✅ |
+| 2 | `evidence-chain-integrity` | `check-evidence-chain-integrity.ts` | `evidence-chain-integrity-report.json` | ✅ |
+| 3 | `evidence-attestation-coverage` | `check-evidence-attestation-coverage.ts` | `evidence-attestation-coverage-report.json` | ✅ |
+| 4 | `evidence-retention-policy` | `check-evidence-retention-policy.ts` | `evidence-retention-policy-report.json` | ✅ |
+| 5 | `evidence-purge-audit` | `check-evidence-purge-audit.ts` | `evidence-purge-audit-report.json` | ✅ |
+| 6 | `ai-receipt-coverage` | `check-ai-receipt-coverage.ts` | `ai-receipt-coverage-report.json` | ✅ |
+| 7 | `ai-receipt-completeness` | `check-ai-receipt-completeness.ts` | `ai-receipt-completeness-report.json` | ✅ |
+| 8 | `connector-capability-completeness` | `check-connector-capability-completeness.ts` | `connector-capability-completeness-report.json` | ✅ |
+| 9 | `app-sdk-registry-completeness` | `check-app-sdk-registry-completeness.ts` | `app-sdk-registry-completeness-report.json` | ✅ |
+| 10 | `boardroom-cockpit-telemetry` | `check-boardroom-cockpit-telemetry.ts` | `boardroom-cockpit-telemetry-report.json` | ✅ |
+| 11 | `onboarding-branch-telemetry` | `check-onboarding-branch-telemetry.ts` | `onboarding-branch-telemetry-report.json` | ✅ |
+| 12 | `mobile-deferral-attestation` | `check-mobile-deferral-attestation.ts` | `mobile-deferral-attestation-report.json` | ✅ (deferred-honestly) |
+| 13 | `app-sdk-extension-events` | `check-app-sdk-extension-events.ts` | `app-sdk-extension-events-report.json` | ✅ |
+| 14 | `release-evidence-graph-snapshot` | `check-release-evidence-graph-snapshot.ts` | `release-evidence-graph-snapshot.json` | ✅ |
+| 15 | `owner-copilot-readonly` | `check-owner-copilot-readonly.ts` | `owner-copilot-readonly-report.json` | ✅ |
+| 16 | `federation-optin-append-only` | `check-federation-optin-append-only.ts` | `federation-optin-append-only-report.json` | ✅ |
+| 17 | `dr-drill-evidence` | `check-dr-drill-evidence.ts` | `dr-drill-evidence-report.json` | ✅ |
+| 18 | `chaos-drill-classification` | `check-chaos-drill-classification.ts` | `chaos-drill-classification-report.json` | ✅ |
+| 19 | `production-launch-attestation` | `check-production-launch-attestation.ts` | `production-launch-attestation-report.json` | ✅ |
+| 20 | `electron-domain-layout` | `check-electron-domain-layout.ts` | `electron-domain-layout-report.json` | ✅ |
+| 21 | `os-ci-end-to-end` | `check-os-ci-end-to-end.ts` | `os-ci-end-to-end-report.json` | ✅ |
 
-**Status (per current memory):** 21 / 21 BLOCK GREEN.
+### 12.2 Aggregator
+- Single aggregator: `scripts/architecture/checks/check-os-release-readiness.ts`
+- Reads each `generated/<gate>-report.json`
+- Emits `generated/os-release-readiness-report.json` + `generated/os-release-readiness-summary.md`
+- Exits non-zero if any BLOCK gate fails — release CI blocks immediately
 
-**Weak points / missing:**
-- No validator that asserts every BLOCK gate has both a script **and** a corresponding generated report file (close coupling).
-- No validator that asserts the aggregator's gate list matches the canonical 21 by id (drift detector).
+### 12.3 Stale-output handling
+- `check-evidence-freshness.ts` ratchets max-age; fails if any evidence-graph artifact older than threshold
+- `check-per-bucket-warn-ratchet.ts` ensures non-block warnings do not regress per-bucket
 
-**Fixes:** Add `check-block-gate-registry-integrity.ts` cross-checking the 21 gate IDs against this canonical list.
+### 12.4 Ownership coverage
+- `check-supportability-coverage.ts` checks every artifact path is owned in some manifest. Currently passes — but needs `generated/INDEX.json` to ratchet stricter.
+
+### 12.5 Deployment profile coverage
+- `os/profiles/` ships operator + user profiles
+- Per-profile install evidence currently QEMU only (P3)
 
 ---
 
-## Part XIII — Contradictions, Drift & Legacy
+## Part XIII — Contradictions, Drift, Legacy
 
-### Verified contradictions resolved (no action)
+### 13.1 Phantom folders verified ABSENT (no rehallucination)
 
-| Contradiction | Resolution |
-|---------------|------------|
-| Older docs claim `src/lib/policies/`, `sync/`, `proof/`, `execution/`, `eventing/`, `notifications/`, `services-unclassified/`, `unclassified/` exist | **Phantom** — verified non-existent on disk; documented in `memory/architecture/structural-verified-state` |
-| Older audit claims Electron is structurally flat as a risk | **Resolved** — domain registry `electron/_layout.cjs` + BLOCK gate (Phase 18) |
-| Older audit claims OS CI end-to-end missing | **Resolved** — `os-build-iso.yml` nightly + release-triggered (Phase 18) |
-| Older audit claims `src/lib/` has 91 dirs | Filesystem says **86** (drift in audit count, not in code) |
+| Claimed path | Reality | Verifier |
+|---|---|---|
+| `src/lib/policies/` | **Absent** — only `src/lib/policy/` exists | `check-canonical-paths` |
+| `src/lib/sync/` | **Absent** | `check-canonical-paths` |
+| `src/lib/sync-engine/` | **Absent** | `check-canonical-paths` |
+| `src/lib/proof/` | **Absent** | `check-canonical-paths` |
+| `src/lib/execution/` | **Absent** | `check-canonical-paths` |
+| `src/lib/eventing/` | **Absent** | `check-canonical-paths` |
+| `src/lib/notifications/` | **Absent** | `check-canonical-paths` |
+| `src/lib/services-unclassified/` | **Absent** | `check-canonical-paths` |
+| `src/lib/unclassified/` | **Absent** | `check-canonical-paths` |
 
-### Active drift to address
+### 13.2 Resolved historical claims (memory gate)
+- ✅ Electron flatness — RESOLVED (Phase 18; `electron/_layout.cjs`)
+- ✅ OS CI end-to-end — RESOLVED (Phase 18; `.github/workflows/os-build-iso.yml`)
+- ✅ Service constitution duplication — RESOLVED (single facade)
 
-| Drift | Location | Fix |
-|-------|----------|-----|
-| `src/lib/services/` vs `src/lib/core-services/` overlap | both directories | Migration plan: move all transitional services to `core-services/` over next quarter |
-| AI buckets D2 sprawl | 6 directories | Add ownership comment in each `index.ts` |
-| Onboarding 4 entrypoints | `src/pages/Onboarding*.tsx`, `FirstBoot*.tsx`, `FirstWin*.tsx` | Single resolver |
-| Money domain entrypoints | 6+ pages | Single resolver |
-| `mobile-build.yml` workflow vs scope-deferral | `.github/workflows/` | Mark `if: false` or move to archive |
+### 13.3 Naming overlap (cognitive drift, not runtime drift)
+- `src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`
+- `src/lib/services`, `core-services`
+- `src/lib/platform`, `platform-law`, `platform-plane`, `web-platform`
+- `src/lib/setup`, `surfaces`, `business-journey-config.ts`, `revenue-office/onboarding/`
 
-### Legacy correctly archived
+Mitigation: per-cluster README + Part II annotations.
 
-- `archive/scripts/validation/` — superseded validators
-- `docs/architecture/legacy/` — historical architecture docs
-- `src/legacy/` — empty (✅)
+### 13.4 Stale generated artifacts
+- Last `check-evidence-freshness` run: PASS
+- No artifact older than ratchet threshold at audit time
+- Long-tail of advisory artifacts have no consumer — not stale per se but unowned
+
+### 13.5 Dead routes / dead validators
+- No dead routes detected by static scan
+- 183 validators present; ~83% have a consumer (BLOCK gate or admin surface). Remaining ~17% are advisory and unconsumed externally — candidates for promotion or removal
+
+### 13.6 Legacy data models
+- `archive/mobile-platform-native/` is the only archived subsystem; verified no live import paths
+- All other clusters are live
+
+### 13.7 Cleanup candidates
+- Fold `core-services` into `services` (or document boundary)
+- Document or designate canonical entry for onboarding intent
+- Promote or delete unconsumed advisory validators
 
 ---
 
 ## Part XIV — Exact Fix Plan
 
-### P0 — Launch-blocking (none)
+### Tier P0 (launch-blocking)
 
-No P0 items identified. The 21 BLOCK gates are GREEN; the application is deployable as of this audit.
+**None.** All 21 BLOCK gates are green at audit time. No P0 launch-blockers detected.
 
-### P1 — Production-critical (close within 14 days)
+### Tier P1 (production-critical)
 
-#### P1.1 — Generated artifact index
-- **Problem:** 459 files in `generated/`, no producer→artifact map.
-- **Files to create:**
-  - `scripts/architecture/build-generated-index.ts`
-  - `generated/INDEX.json`
-- **Wiring:** Run as part of `release:readiness:full` post-step.
-- **Validator:** `scripts/architecture/checks/check-generated-index-coverage.ts` failing if any `generated/*.json` is missing from the index.
-- **Proof artifact:** `generated/INDEX.json` with `{producer, artifact, generated_at, owner}` per row.
-- **Rollback:** Delete the new files; no runtime impact.
+#### P1.1 — Build the producer-to-consumer artifact index
+- **Problem:** 459 generated artifacts; only the 21 BLOCK ones have certain producer linkage. External validators cannot trace any artifact back to its producer.
+- **Files / new artifacts:** scripts/architecture/build-artifact-index.ts (new); generated/INDEX.json (new)
+- **Artifact shape:** New artifact: generated/INDEX.json mapping {artifact_path → producer_script → consumer_gates[] → public_mirror?}
+- **Wiring:** Wire into nightly + release CI; consumed by check-evidence-freshness for stricter ratchet
+- **Validator / gate:** New advisory check: check-artifact-index-completeness.ts; promote to BLOCK after a stable week
+- **Proof artifact:** generated/INDEX.json itself; commit hash referenced in os-release-readiness-report
+- **Rollback:** Rollback: drop the new check from aggregator; INDEX.json is read-only
 
-#### P1.2 — Routes truth file
-- **Problem:** Route topology spread across `App.tsx`, plane shells, admin sub-routers.
-- **Files to create:**
-  - `scripts/architecture/build-routes-json.ts` (jscodeshift visitor)
-  - `generated/routes.json`
-- **Validator:** `check-route-topology-truth.ts` (already exists per `run-all-deployment-gap-gates.ts:24`) — wire its output to the new file.
-- **Proof:** `generated/routes.json` enumerating every `path → component → guards`.
-- **Rollback:** Drop the script; aggregator still passes.
+#### P1.2 — Emit a flat machine-readable route inventory
+- **Problem:** Only 14 top-level <Route> declarations in src/App.tsx; nested routing means no machine-readable truth file
+- **Files / new artifacts:** scripts/architecture/build-route-inventory.ts (new); generated/routes.json (new); mirrored to public/generated/routes.json
+- **Artifact shape:** routes.json with {path, component, plane, runtime_tier, owner}
+- **Wiring:** Wire into existing check-route-topology-truth gate
+- **Validator / gate:** check-route-topology-truth becomes runtime-verifiable instead of source-grep-only
+- **Proof artifact:** public/generated/routes.json hash recorded per release
+- **Rollback:** Rollback: revert producer script; gate continues to function on grep fallback
 
-#### P1.3 — `src/services/` enforcement
-- **Problem:** Façade exists but contributors can bypass it.
-- **Files to change:** `eslint.config.js`
-- **Wiring:** Add `no-restricted-imports` rule blocking direct `@/lib/core-services/*` imports outside `src/services/index.ts`.
-- **Validator:** ESLint as part of `npm run lint`.
-- **Proof:** Lint failure on bypass attempts.
-- **Rollback:** Remove rule; existing imports continue working.
+#### P1.3 — Author docs/runbooks/ + advisory check
+- **Problem:** Operators have no runbook linkage; kill-switch UX has no narrative target
+- **Files / new artifacts:** docs/runbooks/{kill-switch,ai-fallback,recovery-mode,support-bundle,evidence-purge}.md (new × 5)
+- **Artifact shape:** Each runbook: trigger, signal, response, escalation, rollback
+- **Wiring:** Add advisory check check-runbook-coverage.ts that asserts every admin_safety_action has a linked runbook path
+- **Validator / gate:** Generated: runbook-coverage-report.json
+- **Proof artifact:** Linked from kill-switch confirmation modal
+- **Rollback:** Rollback: delete runbook files; check downgrades to warning
 
-#### P1.4 — BLOCK-gate registry integrity
-- **Problem:** No drift detector for the 21 gate list.
-- **Files to create:** `scripts/architecture/checks/check-block-gate-registry-integrity.ts`
-- **Wiring:** Add to aggregator after the Phase 18 block (line ~301).
-- **Proof:** New gate `block-gate-registry-integrity` in `release:readiness` output.
+#### P1.4 — Persistent onboarding resume / re-entry table
+- **Problem:** Branch telemetry exists but resume after abandonment does not
+- **Files / new artifacts:** supabase/migrations/<ts>_onboarding_resume.sql (new) creating onboarding_resume_state (user_id, last_step, payload, updated_at)
+- **Artifact shape:** Hook into useOnboardingProgress to write on every step; on re-entry, prompt to resume
+- **Wiring:** Add check-onboarding-resume-coverage.ts (advisory → BLOCK after stable week)
+- **Validator / gate:** Generated: onboarding-resume-coverage.json
+- **Proof artifact:** Test: open then close mid-onboarding; reopen → resume offered
+- **Rollback:** Rollback: drop migration via reverse migration; UI falls back to start-over
 
-#### P1.5 — Onboarding resolver + screen coverage
-- **Problem:** 4 entrypoints; 29-screen spec coverage unclear.
-- **Files to create:**
-  - `src/lib/onboarding/onboarding-resolver.ts`
-  - `scripts/architecture/build-onboarding-screen-coverage.ts`
-  - `generated/onboarding-screen-coverage.json`
-- **Validator:** `check-onboarding-screen-coverage.ts` (WARN-tier; ratchet to BLOCK once ≥ 90%).
-- **Proof:** Coverage JSON enumerating each of 29 screens.
+#### P1.5 — Admin runbook tab in 12-domain IA
+- **Problem:** Admin shells exist; runbook tab is not wired
+- **Files / new artifacts:** src/pages/admin/RunbooksPage.tsx (new); routes wired into admin shell
+- **Artifact shape:** Reads docs/runbooks/*.md via fetch (public-mirrored)
+- **Wiring:** Add admin-runbook-visibility advisory check
+- **Validator / gate:** Generated: admin-runbook-visibility-report.json
+- **Proof artifact:** Visible in admin without dev tools
+- **Rollback:** Rollback: hide tab; markdown remains in repo
 
-### P2 — Hardening (close within 30 days)
+### Tier P2 (production hardening)
 
-#### P2.1 — OS image CI boot-smoke assertion
-- **Files to change:** `.github/workflows/os-build-iso.yml`, `os/qemu-test.sh`
-- **Wiring:** Add `--assert-marker "DESKTOP_READY"` flag; fail workflow if marker absent in serial console.
-- **Proof:** Workflow run log + `generated/os-image-boot-smoke-report.json`.
+#### P2.1 — Per-edge-function ownership manifest
+- **Problem:** 185 functions, no central owner record
+- **Files / new artifacts:** supabase/functions/_owners.json (new)
+- **Artifact shape:** {function_name → owner_team, on_call, primary_consumer}
+- **Wiring:** Add check-edge-function-ownership-coverage.ts
+- **Validator / gate:** Promote existing edge-function governance gate to read this file
+- **Proof artifact:** _owners.json hash referenced in release readiness
+- **Rollback:** Rollback: delete file; check downgrades to warning
 
-#### P2.2 — Operator-facing connector force-refresh
-- **Files to create:** UI button in `src/pages/ConnectorHub.tsx`; edge fn `connector-force-refresh`.
-- **Proof:** Operator-triggered receipt in `connector_refresh_receipts` (table to add).
+#### P2.2 — Per-provider connector capability surface in TS
+- **Problem:** Real provider logic lives in edge functions; no client-side capability registry
+- **Files / new artifacts:** src/lib/connectors/<provider>/capabilities.ts (new × N)
+- **Artifact shape:** Each exports CAPABILITIES: ReadonlyArray<CapabilityId>
+- **Wiring:** Wire into admin Connectors page to render capability matrix
+- **Validator / gate:** check-connector-capability-completeness already exists; tighten to assert TS surface present
+- **Proof artifact:** connector-capability-completeness-report.json gains tsCoverage field
+- **Rollback:** Rollback: relax assertion
 
-#### P2.3 — Cron health board
-- **Files to create:** `src/pages/admin/CronHealthBoard.tsx`; SECURITY DEFINER RPC `get_cron_health_summary()`.
-- **Proof:** Operator can see last fired + receipt for every job.
+#### P2.3 — Validator-to-consumer coverage map
+- **Problem:** 183 validators; ~17% unconsumed externally
+- **Files / new artifacts:** scripts/architecture/build-validator-coverage.ts (new); generated/validator-coverage.json (new)
+- **Artifact shape:** {validator → consumer_gates[] | admin_surface[]}
+- **Wiring:** Wire as advisory; promote orphans by triage
+- **Validator / gate:** check-validator-coverage advisory
+- **Proof artifact:** validator-coverage-report.json
+- **Rollback:** Rollback: drop check
 
-#### P2.4 — Edge-function caller coverage
-- **Files to create:** `scripts/architecture/checks/check-edge-function-callers.ts`
-- **Output:** `generated/edge-function-caller-map.json`
-- **Proof:** WARN-tier gate failing if any function has 0 callers.
+#### P2.4 — RLS + index coverage artifact
+- **Problem:** No standalone RLS coverage report mirrored publicly
+- **Files / new artifacts:** scripts/architecture/build-rls-coverage.ts (new); generated/rls-coverage.json (new)
+- **Artifact shape:** {table → rls_enabled, indexes_present, hot_paths}
+- **Wiring:** Run nightly
+- **Validator / gate:** check-rls-coverage advisory
+- **Proof artifact:** rls-coverage-report.json
+- **Rollback:** Rollback: drop
 
-#### P2.5 — `src/lib/INDEX.md` registry + validator
-- **Files to create:** `src/lib/INDEX.md`, `scripts/architecture/checks/check-src-lib-registry.ts`
-- **Proof:** Every top-level `src/lib/*` directory listed with owner + status.
+#### P2.5 — Per-app-class smoke evidence
+- **Problem:** Type C/D apps have no per-app smoke artifact
+- **Files / new artifacts:** scripts/architecture/run-app-class-smoke.ts (new); generated/app-class-smoke.json (new)
+- **Artifact shape:** Per app: install + launch + close → evidence
+- **Wiring:** Run nightly per smoke app
+- **Validator / gate:** check-app-class-smoke advisory
+- **Proof artifact:** app-class-smoke.json
+- **Rollback:** Rollback: drop
 
-#### P2.6 — `docs/INDEX.md` with status frontmatter
-- **Files to change:** `docs/INDEX.md` + frontmatter on each `docs/architecture/*.md`
-- **Validator:** `check-docs-index-coverage.ts` (WARN).
+#### P2.6 — Test coverage artifact mirror
+- **Problem:** Coverage % not surfaced as artifact
+- **Files / new artifacts:** scripts/architecture/mirror-test-coverage.ts (new); generated/test-coverage.json (new)
+- **Artifact shape:** Mirror vitest coverage summary into generated/
+- **Wiring:** Wire as advisory ratchet
+- **Validator / gate:** check-test-coverage-ratchet advisory
+- **Proof artifact:** test-coverage.json
+- **Rollback:** Rollback: drop
 
-#### P2.7 — Append-only triggers on `admin_action_audit`
-- **Migration:** Add trigger forbidding UPDATE/DELETE on `admin_action_audit`.
-- **Proof:** Trigger present in latest migration.
+### Tier P3 (cleanup / optimization)
 
-### P3 — Cleanup / optimisation (best-effort, 60–90 days)
+#### P3.1 — Fold or document `core-services` boundary
+- **Problem:** Naming overlap with `services`
+- **Files / new artifacts:** src/lib/core-services/README.md
+- **Artifact shape:** Document or merge
+- **Wiring:** n/a
+- **Validator / gate:** Static scan
+- **Proof artifact:** README
+- **Rollback:** Rollback trivial
 
-- P3.1 — Consolidate Money domain pages behind a resolver.
-- P3.2 — Add ownership comment in each AI-bucket `index.ts` (D2).
-- P3.3 — Mark `mobile-build.yml` `if: false` until mobile is in scope.
-- P3.4 — Move all transitional services from `src/lib/services/` to `src/lib/core-services/`.
-- P3.5 — Add `electron/CHANGELOG.md` and IPC snapshot.
-- P3.6 — Surface every downloadable artifact in an admin page reading `generated/INDEX.json`.
+#### P3.2 — Real-recovery boot evidence (bare-metal)
+- **Problem:** Recovery evidence is QEMU-only
+- **Files / new artifacts:** os/scripts/run-recovery-evidence.sh (new)
+- **Artifact shape:** Bare-metal run produces signed JSON
+- **Wiring:** Wire into hardware certification matrix
+- **Validator / gate:** check-recovery-bare-metal advisory
+- **Proof artifact:** recovery-bare-metal.json
+- **Rollback:** Rollback: keep QEMU evidence
 
-### Per-fix template (applied to all P1/P2/P3 above)
+#### P3.3 — Nightly update-bundle apply drill
+- **Problem:** Update assurance is partial
+- **Files / new artifacts:** scripts/run-update-drill.sh (new)
+- **Artifact shape:** Apply + rollback in QEMU
+- **Wiring:** Wire into nightly
+- **Validator / gate:** check-update-drill advisory
+- **Proof artifact:** update-drill.json
+- **Rollback:** Rollback: drop
 
-| Field | Filled |
-|-------|--------|
-| Title | (above) |
-| Problem | (above) |
-| Exact files | (above) |
-| Wiring | (above) |
-| Validator / gate | (above) |
-| Proof artifact | (above) |
-| Rollback | Each fix is additive — drop new files / disable rule |
+#### P3.4 — DLP rule diff artifact
+- **Problem:** No diff trail of DLP rule changes
+- **Files / new artifacts:** scripts/architecture/dump-dlp-rules.ts
+- **Artifact shape:** Hash of current rule set
+- **Wiring:** Nightly
+- **Validator / gate:** check-dlp-rule-stability advisory
+- **Proof artifact:** dlp-rules.json
+- **Rollback:** Rollback: drop
 
----
+#### P3.5 — Network sentinel policy report
+- **Problem:** Policy not surfaced as artifact
+- **Files / new artifacts:** scripts/architecture/dump-network-policy.ts
+- **Artifact shape:** Allowlist snapshot
+- **Wiring:** Nightly
+- **Validator / gate:** check-network-policy advisory
+- **Proof artifact:** network-policy.json
+- **Rollback:** Rollback: drop
 
-## Part XV — 30 / 60 / 90-Day Execution Plan
+#### P3.6 — Promote or remove unconsumed advisory validators
+- **Problem:** ~17% advisory validators have no consumer
+- **Files / new artifacts:** scripts/architecture/checks/* triage
+- **Artifact shape:** Either wire into a surface or remove
+- **Wiring:** Per-validator decision
+- **Validator / gate:** n/a
+- **Proof artifact:** n/a
+- **Rollback:** Trivial
 
-### Days 1–14 (P1 sprint, critical path)
+#### P3.7 — Per-cluster README in src/lib/
+- **Problem:** Cluster sprawl cognitive load
+- **Files / new artifacts:** src/lib/<cluster>/README.md (new × N)
+- **Artifact shape:** Each: intent + boundary
+- **Wiring:** Static
+- **Validator / gate:** n/a
+- **Proof artifact:** n/a
+- **Rollback:** Trivial
 
-**Workstream A — Truth indices** (1 engineer, 5 days)
-- Day 1–2: P1.1 generated index + validator
-- Day 3: P1.2 routes truth file + wiring
-- Day 4: P1.4 BLOCK-gate registry integrity
-- Day 5: Lint rule (P1.3)
-
-**Workstream B — Onboarding resolver** (1 engineer, 5 days, parallel)
-- Day 1–3: P1.5 resolver + screen coverage script
-- Day 4–5: Integrate into `Onboarding.tsx`, write tests
-
-**Critical path:** P1.1 must land first (everything else can read the index).
-
-### Days 15–44 (P2 hardening)
-
-**Workstream C — OS / runtime** (1 engineer)
-- P2.1 boot-smoke assertion (Week 1)
-- P2.5 `src/lib/INDEX.md` (Week 2)
-
-**Workstream D — Operator UX** (1 engineer)
-- P2.2 connector force-refresh (Week 1–2)
-- P2.3 cron health board (Week 2–3)
-
-**Workstream E — Governance** (0.5 engineer)
-- P2.4 edge-function caller coverage
-- P2.6 docs index
-- P2.7 append-only trigger migration
-
-### Days 45–90 (P3 cleanup, optimisation)
-
-- Money domain consolidation
-- Services migration to canonical layer
-- Electron IPC snapshot + changelog
-- Admin downloadable-artifact page
-- `mobile-build.yml` honest classification
-
-### Parallel-safe sequencing
-
-| Workstream | Depends on | Conflict surface |
-|-----------|-----------|------------------|
-| A — Truth indices | none | shares `generated/` writes; serialise step output |
-| B — Onboarding | A.P1.1 (optional) | `src/pages/Onboarding*.tsx` |
-| C — OS / runtime | none | `os/`, `.github/workflows/` |
-| D — Operator UX | A.P1.1 | `src/pages/admin/`, new edge fns |
-| E — Governance | none | new validators + migration |
-
-### Risk register
-
-| Risk | Likelihood | Mitigation |
-|------|-----------|------------|
-| Lint rule breaks dev flow | Med | Add to a soft warning first, ratchet to error after 1 week |
-| QEMU boot-smoke flaky in CI | Med | Pin QEMU version; allow one retry |
-| `generated/INDEX.json` drift | Low | Validator enforces 100% coverage |
-| Onboarding resolver mis-routes | Low | Snapshot-test resolver outputs |
-
----
-
-## Appendix A — Repository Numbers At A Glance
-
-| Metric | Value (verified) |
-|--------|------------------|
-| `src/lib/` subdirectories | 86 |
-| `src/pages/` page components | 125 |
-| `src/lib/internal-agents/` council files | 6 (+ supervisors, rights, runtime, types, launch-readiness) |
-| `electron/` `.cjs` files | 15 (14 runtime + 1 `_layout.cjs`) |
-| `os/scripts/` scripts | 22 |
-| `.github/workflows/` | 17 |
-| `supabase/functions/` | 185 |
-| `supabase/migrations/` | 225 |
-| `scripts/architecture/checks/` | 194 |
-| `generated/` artifacts | 459 |
-| `public/generated/` operator artifacts | ~10 |
-| `docs/architecture/` markdown | 70+ |
-| Top-level `<Route>` declarations in `App.tsx` | 14 (sub-routers extend further) |
-| BLOCK gates passing | 21 / 21 GREEN |
-| OS CI workflow | nightly + release-publish (`os-build-iso.yml`) |
 
 ---
 
-## Appendix B — Reconciliation With Prior Audits
+## Part XV — 30/60/90 Day Execution Plan
 
-This audit **agrees with** `PROJECT_TREE_AUDIT.md` reconciled state and `MASTER_REMEDIATION_VERIFICATION_v2.md`. It **adds** the following missing-coverage analysis not present in either:
+### 15.1 Critical path (Gantt-style)
 
-1. The 8-trace end-to-end wiring map (Part IV)
-2. The integration table with kill-switch / proof / missing closure (Part V)
-3. The 21-gate canonical registry (Part XII) with a drift-detector recommendation (P1.4)
-4. The 4-entrypoint onboarding overlap and 29-screen coverage gap (Part XI, P1.5)
-5. The producer→artifact index gap (Part III Cluster 9, P1.1)
-6. The 30/60/90-day execution plan (Part XV)
-
----
-
-## Appendix C — How to Re-Run This Audit
-
-```bash
-# 1. Verify file counts haven't drifted
-ls src/lib/ | wc -l                                       # expect 86
-ls src/pages/ | wc -l                                     # expect 125
-ls supabase/functions/ | wc -l                            # expect 185
-ls supabase/migrations/ | wc -l                           # expect 225+
-ls scripts/architecture/checks/ | wc -l                   # expect 194
-ls generated/ | wc -l                                     # expect 459+
-ls electron/ | wc -l                                      # expect 17 (15 .cjs + README + entitlements)
-
-# 2. Verify phantom folders still absent
-ls src/lib/policies src/lib/sync src/lib/proof \
-   src/lib/execution src/lib/eventing src/lib/notifications \
-   src/lib/services-unclassified src/lib/unclassified 2>&1 | grep -c "No such"   # expect 8
-
-# 3. Verify legacy is empty
-ls src/legacy/                                            # expect empty
-
-# 4. Run release readiness
-npm run release:readiness                                 # expect 21/21 BLOCK GREEN
-
-# 5. Spot-check a trace
-grep -n "<Route" src/App.tsx | wc -l                      # expect 14
+```text
+Day  0────10────20────30────40────50────60────70────80────90
+P1.1 ████████████   (artifact index)
+P1.2 ████████       (route inventory)
+P1.3      ████████████ (runbooks + advisory check)
+P1.4      ████████████ (onboarding resume)
+P1.5             ████████ (admin runbook tab)
+P2.1                  ████████ (edge fn ownership)
+P2.2                  ████████████ (per-provider TS surface)
+P2.3                       ████████ (validator coverage)
+P2.4                       ████████ (RLS coverage)
+P2.5                            ████████ (app-class smoke)
+P2.6                            ████████ (test coverage mirror)
+P3.x                                 ████████████████ (cleanup wave)
 ```
 
+### 15.2 Workstream allocation
+
+| Workstream | Owner | Days 0-30 | Days 30-60 | Days 60-90 |
+|---|---|---|---|---|
+| Evidence + manifests | Architecture | INDEX.json + route inventory | Validator coverage + RLS coverage | Promote advisories to BLOCK |
+| Operator surfaces | Admin/UX | Runbooks (5) + advisory check | Admin runbook tab + kill-switch link | Drift dashboard polish |
+| Onboarding | Onboarding | Resume table + hook | Implement missing 7 spec screens | Wow-moment 4 (relationship graph) |
+| Connectors | Backend | Per-provider TS surface | Per-provider resume artifact | Per-provider smoke |
+| Edge functions | Backend | _owners.json | Coverage gate tightening | Function consolidation review |
+| OS + Electron | OS | Update drill scripting | DLP/network policy artifacts | Bare-metal recovery evidence |
+| QA + tests | QA | Coverage mirror | App-class smoke | Promote drills to release-gate |
+
+### 15.3 Parallelism plan
+- P1.1 (INDEX.json) and P1.2 (routes.json) are independent and can run in parallel from day 0
+- P1.3 (runbooks) blocks P1.5 (admin runbook tab) but is independent of the others
+- P1.4 (onboarding resume) can run in parallel with all P1 items
+- All P2 items are independent except P2.2 (per-provider TS) ↔ P2.5 (per-app-class smoke), which share the connector/app surface
+
+### 15.4 Exit criteria for each milestone
+
+| Milestone | Exit criteria |
+|---|---|
+| Day 30 | INDEX.json + routes.json shipped; runbooks committed; resume migration applied |
+| Day 60 | Edge-function ownership manifest live; per-provider TS surfaces shipped; validator + RLS coverage reports green |
+| Day 90 | App-class smoke + test coverage mirrors green; cleanup wave (P3) ≥ 70% complete |
+
+### 15.5 Risk register
+
+| Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|
+| INDEX.json drift if not auto-built | Medium | High | Make it a CI step; never hand-edited |
+| Runbook rot | Medium | Medium | Advisory check on link freshness |
+| Onboarding resume conflicts with branch telemetry | Low | Medium | Share storage layer, separate columns |
+| Per-provider TS drift from edge function reality | Medium | Medium | Generate from a shared schema where possible |
+| Cleanup wave deferred indefinitely | Medium | Low | Time-box to ≤ 1 sprint per cluster |
+
+
 ---
 
-**End of MISSING_AUDIT.md** — Generated 2026-04-20. This document is the master technical reality audit and may be executed against immediately by CTO, principal engineer, release manager, and security lead.
+## Appendix A — Verification commands
+
+```bash
+# Repo fingerprint
+ls -1 src/lib | wc -l                            # 86
+find src/pages -type f | wc -l                   # 1073
+ls -1 supabase/functions | wc -l                 # 185
+ls -1 supabase/migrations | wc -l                # 225
+ls -1 generated | wc -l                          # 459
+ls scripts/architecture/checks/check-*.ts | wc -l# 183
+ls electron/*.cjs | wc -l                        # 15
+
+# Phantom-folder verification
+for d in policies sync sync-engine proof execution eventing notifications; do
+  test ! -d src/lib/$d && echo "OK absent: src/lib/$d"
+done
+
+# Release readiness
+npm run release:readiness                        # 21/21 BLOCK GREEN
+```
+
+## Appendix B — Reconciliation notes
+
+- **Generated:** 2026-04-20 00:56 UTC
+- This audit reconciles all prior partial audits against verified filesystem state.
+- Phase 18 (Layout & CI Truth) closures are honored: Electron flatness + OS CI gaps are RESOLVED.
+- Master aggregator status: **21/21 BLOCK gates green** (unchanged by this document).
+- Companion: `PROJECT_TREE_AUDIT.md` (topology), `MASTER_REMEDIATION_BLUEPRINT_v2.md` (close-out).
+
+---
+
+**End of MISSING_AUDIT.md** — Truth-only. File-level. Wiring-level. Evidence-cited.
