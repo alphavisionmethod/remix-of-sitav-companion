@@ -362,6 +362,9 @@ const REQUIRED_GATES = [
   // Wave 12.6 — App Platform Lifecycle Closure (2 BLOCK gates)
   "app-identity-closure",
   "app-lifecycle-coverage",
+  // Wave 12.7 — Windowing System Closure (2 BLOCK gates)
+  "window-contract-closure",
+  "window-lifecycle-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
