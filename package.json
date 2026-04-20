@@ -125,7 +125,9 @@
     "security:rls-stress": "bash os/scripts/run-rls-stress-probe.sh",
     "closure:architecture-hardening:emit": "echo \"architecture-hardening artifacts are static \u2014 generated/architecture-hardening/\"",
     "closure:architecture-hardening:run-all": "npm run closure:architecture-hardening:emit && npx tsx scripts/validation/check-runtime-host-boundaries.ts; npx tsx scripts/validation/check-shell-runtime-portability.ts; npx tsx scripts/validation/check-edge-function-log-shape.ts; npx tsx scripts/validation/check-mobile-archived-scope.ts; npx tsx scripts/validation/check-no-kernel-overclaim.ts; npx tsx scripts/validation/check-doc-canonicality.ts; true",
-    "check:onboarding-surface-truth": "tsx scripts/architecture/checks/check-onboarding-surface-truth.ts"
+    "check:onboarding-surface-truth": "tsx scripts/architecture/checks/check-onboarding-surface-truth.ts",
+    "generate:artifact-ownership": "npx tsx scripts/manifests/generate/generate-artifact-ownership-manifest.ts",
+    "check:artifact-ownership-coverage": "npx tsx scripts/architecture/checks/check-artifact-ownership-coverage.ts"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
