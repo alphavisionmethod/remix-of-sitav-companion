@@ -404,6 +404,58 @@ for (const gate of ADMIN_AI_ENGINEER_WARN_GATES) {
 inputs.push(...adminAIEngineerInputs);
 totalWarnings += adminAIEngineerWarnings;
 
+// Advisory ingestion — surfaces every validator classified as `advisory`
+// in generated/validator-gate-map.json. Failures NEVER affect BLOCK verdict.
+interface AdvisoryEntry { validator: string; gateId: string; classification: string }
+const advisoryInputs: AggregateReport["inputs"] = [];
+let advisoryWarnings = 0;
+let validatorMapCoverage: number | null = null;
+let validatorMapTotal = 0;
+const VALIDATOR_MAP_FILE = join(GENERATED_DIR, "validator-gate-map.json");
+if (existsSync(VALIDATOR_MAP_FILE)) {
+  try {
+    const vmap = JSON.parse(readFileSync(VALIDATOR_MAP_FILE, "utf8")) as {
+      coveragePercent?: number;
+      totalValidators?: number;
+      entries?: AdvisoryEntry[];
+    };
+    validatorMapCoverage = vmap.coveragePercent ?? null;
+    validatorMapTotal = vmap.totalValidators ?? 0;
+    const advisoryGates = (vmap.entries ?? []).filter(e => e.classification === "advisory");
+    for (const entry of advisoryGates) {
+      const file = gateToFile.get(entry.gateId);
+      if (!file || !existsSync(file)) {
+        // Missing advisory report = soft warning (not a blocker, not an error).
+        advisoryInputs.push({ file: "", gate: `${entry.gateId} (advisory)`, ok: false, errors: 0, warnings: 0 });
+        continue;
+      }
+      try {
+        const data = JSON.parse(readFileSync(file, "utf8")) as GateReport;
+        const errors = data.errorCount ?? 0;
+        const warnings = data.warningCount ?? 0;
+        const surfaced = errors + warnings;
+        advisoryInputs.push({
+          file,
+          gate: `${entry.gateId} (advisory)`,
+          ok: surfaced === 0,
+          errors: 0,
+          warnings: surfaced,
+        });
+        advisoryWarnings += surfaced;
+      } catch {
+        advisoryInputs.push({ file, gate: `${entry.gateId} (advisory)`, ok: false, errors: 0, warnings: 1 });
+        advisoryWarnings += 1;
+      }
+    }
+  } catch {
+    // Malformed map — surface as a single warning, never block.
+    advisoryWarnings += 1;
+  }
+}
+inputs.push(...advisoryInputs);
+totalWarnings += advisoryWarnings;
+
+// BLOCK verdict — derived ONLY from REQUIRED_GATES. Advisory state is informational.
 const ok = missingGates.length === 0 && totalErrors === 0;
 const verdict: AggregateReport["verdict"] =
   missingGates.length > 0 || totalErrors > 0
@@ -444,6 +496,8 @@ const md = [
   `| Gates missing  | ${missingGates.length} |`,
   `| Total errors   | ${totalErrors} |`,
   `| Total warnings | ${totalWarnings} |`,
+  `| Advisory gates surfaced | ${advisoryInputs.length} |`,
+  `| Validator-map coverage | ${validatorMapCoverage === null ? "n/a" : validatorMapCoverage + "%"} (${validatorMapTotal} validators) |`,
   ``,
   `## Per-gate results`,
   ``,
